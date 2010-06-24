@@ -1,8 +1,8 @@
 <?php
-class Nabu_Reflection_Class extends Nabu_Abstract
+class Nabu_Reflection_Class extends Nabu_Reflection_BracesAbstract
 {
   protected $name        = '';
-  protected $docBlock    = null;
+  protected $doc_block    = null;
   protected $abstract    = false;
   protected $final       = false;
   protected $extends     = false;
@@ -14,18 +14,13 @@ class Nabu_Reflection_Class extends Nabu_Abstract
   protected $properties  = array();
   protected $methods     = array();
 
-  public function parseTokenizer(Nabu_TokenIterator $tokens)
+  public function processGenericInformation(Nabu_TokenIterator $tokens)
   {
-    $this->debug('Started to parse class');
-    $docblock          = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('}'));
-
     // retrieve generic information about the class
-    $this->name       = $tokens->findNextByType(T_STRING, 5, array('{'))->getContent();
-    $this->debug('  Name of class is: '.$this->name);
-
-    $this->docBlock   = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : '';
-    $this->abstract = $tokens->findPreviousByType(T_ABSTRACT, 5, array('}')) ? true : false;
-    $this->final    = $tokens->findPreviousByType(T_FINAL, 5, array('}')) ? true : false;
+    $this->name      = $tokens->findNextByType(T_STRING, 5, array('{'))->getContent();
+    $this->doc_block = $this->findDocBlock($tokens);
+    $this->abstract  = $this->findAbstract($tokens) ? true : false;
+    $this->final     = $this->findFinal($tokens)    ? true : false;
 
     // parse a EXTENDS section
     $extends = $tokens->gotoNextByType(T_EXTENDS, 5, array('{'));
@@ -42,57 +37,41 @@ class Nabu_Reflection_Class extends Nabu_Abstract
         $interfaces[] = $interface_token->getContent();
       }
     }
+
     $this->implements = ($implements) ? true : false;
     $this->interfaces = $interfaces;
+  }
 
-    // register the start and end of this class
-    list($start_index, $end_index) = $tokens->getTokenIdsOfBracePair();
-    $this->token_start = $start_index;
-    $this->token_end = $end_index;
+  protected function processConst($tokens)
+  {
+    $this->resetTimer('const');
 
-    // parse class contents
-    $this->debug('  Parsing class contents');
-    $tokens_time = microtime(true);
-    while ($tokens->valid() && $tokens->key() <= $end_index)
-    {
-      $token = $tokens->current();
-      switch ($token->getType())
-      {
-        case T_CONST:
-          $time = microtime(true);
-          $constant = new Nabu_Reflection_Constant();
-          $constant->parseTokenizer($tokens);
-          $this->constants[] = $constant;
-          $elapsed = microtime(true) - $time;
-          $this->debug('  Processed constant '.$constant->getName().' in '.$elapsed.' seconds');
-          break;
-        case T_VARIABLE:
-          $time = microtime(true);
-          $property = new Nabu_Reflection_Property();
-          $property->parseTokenizer($tokens);
-          $this->properties[] = $property;
-          $elapsed = microtime(true) - $time;
-          $this->debug('  Processed property '.$property->getName().' in '.$elapsed.' seconds');
-          break;
-        case T_FUNCTION:
-          $time = microtime(true);
-          $method = new Nabu_Reflection_Method();
-          $method->parseTokenizer($tokens);
-          $this->methods[] = $method;
-          $elapsed = microtime(true) - $time;
-          $this->debug('  Processed method '.$method->getName().' in '.$elapsed.' seconds');
-          break;
-        case '':
-          $this->log('CLASS: Literal encountered ('.$tokens->key().'): '.$token->getContent());
-          break;
-        default:
-          $this->log('CLASS: Unhandled token encountered ('.$tokens->key().'): '.$token->getName().(($token->getType() == T_STRING) ? ': '.$token->getContent() : ''), Zend_Log::WARN);
-      }
+    $constant = new Nabu_Reflection_Constant();
+    $constant->parseTokenizer($tokens);
+    $this->constants[] = $constant;
 
-      $tokens->next();
-    }
-    $tokens_elapsed = microtime(true) - $tokens_time;
-    $this->debug('  Processed all tokens in '.$tokens_elapsed.' seconds');
+    $this->debugTimer('    Processed const '.$constant->getName(), 'const');
+  }
+
+  protected function processVariable($tokens)
+  {
+    $this->resetTimer('variable');
+
+    $property = new Nabu_Reflection_Property();
+    $property->parseTokenizer($tokens);
+    $this->properties[] = $property;
+
+    $this->debugTimer('    Processed property '.$property->getName(), 'variable');
+  }
+
+  protected function processFunction($tokens)
+  {
+    $this->resetTimer('method');
+
+    $method = new Nabu_Reflection_Method();
+    $method->parseTokenizer($tokens);
+    $this->methods[] = $method;
+    $this->debugTimer('    Processed method '.$method->getName(), 'method');
   }
 
   public function getName()
@@ -110,9 +89,14 @@ class Nabu_Reflection_Class extends Nabu_Abstract
     return $this->final;
   }
 
+  /**
+   * Returns the docblock associated with this class; if any
+   *
+   * @return Zend_Reflection_Docblock|null
+   */
   public function getDocBlock()
   {
-    return $this->docBlock;
+    return $this->doc_block;
   }
 
   public function getParentClass()
@@ -138,6 +122,8 @@ class Nabu_Reflection_Class extends Nabu_Abstract
     $xml['abstract']   = $this->isAbstract() ? 'true' : 'false';
     $xml->extends      = $this->getParentClass();
 
+    $this->addDocblockToSimpleXmlElement($xml);
+
     foreach ($this->getParentInterfaces() as $interface)
     {
       $xml->addChild('implements', $interface);
@@ -146,46 +132,17 @@ class Nabu_Reflection_Class extends Nabu_Abstract
     $dom = new DOMDocument('1.0', 'UTF-8');
     $dom->loadXML($xml->asXML());
 
-    // import constants into class xml
     foreach ($this->constants as $constant)
     {
-      $dom_prop = new DOMDocument();
-      $dom_prop->loadXML(trim($constant->__toXml()));
-
-      $xpath = new DOMXPath($dom_prop);
-      $qry = $xpath->query('/*');
-      for ($i = 0; $i < $qry->length; $i++)
-      {
-        $dom->documentElement->appendChild($dom->importNode($qry->item($i), true));
-      }
+      $this->mergeXmlToDomDocument($dom, $constant->__toXml());
     }
-
-    // import properties into class xml
     foreach ($this->properties as $property)
     {
-      $dom_prop = new DOMDocument();
-      $dom_prop->loadXML(trim($property->__toXml()));
-
-      $xpath = new DOMXPath($dom_prop);
-      $qry = $xpath->query('/*');
-      for ($i = 0; $i < $qry->length; $i++)
-      {
-        $dom->documentElement->appendChild($dom->importNode($qry->item($i), true));
-      }
+      $this->mergeXmlToDomDocument($dom, $property->__toXml());
     }
-
-    // import methods into class xml
     foreach ($this->methods as $method)
     {
-      $dom_method = new DOMDocument();
-      $dom_method->loadXML(trim($method->__toXml()));
-
-      $xpath = new DOMXPath($dom_method);
-      $qry = $xpath->query('/*');
-      for ($i = 0; $i < $qry->length; $i++)
-      {
-        $dom->documentElement->appendChild($dom->importNode($qry->item($i), true));
-      }
+      $this->mergeXmlToDomDocument($dom, $method->__toXml());
     }
 
     return trim($dom->saveXML());

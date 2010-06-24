@@ -1,3 +1,6 @@
 debug.log
 errors.log
 .idea
+structure.xml
+output/*
+phpdoc_example

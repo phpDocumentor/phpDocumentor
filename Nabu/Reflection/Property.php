@@ -2,35 +2,20 @@
 class Nabu_Reflection_Property extends Nabu_Abstract
 {
   protected $name        = '';
-  protected $docBlock    = null;
+  protected $doc_block   = null;
   protected $static      = false;
   protected $final       = false;
   protected $default     = null;
   protected $visibility  = 'public';
 
-  public function parseTokenizer(Nabu_TokenIterator $tokens)
+  protected function processGenericInformation(Nabu_TokenIterator $tokens)
   {
-    // extract general information
-    $this->name   = $tokens->current()->getContent();
-    $this->static = $tokens->findPreviousByType(T_STATIC, 5, array('{', ';')) ? true : false;
-    $this->final  = $tokens->findPreviousByType(T_FINAL, 5, array('{', ';')) ? true : false;
-
-    // determine visibility
-    $this->visibility = 'public';
-    $this->visibility = $tokens->findPreviousByType(T_PRIVATE, 5, array('{', ';')) ? 'private' : $this->visibility;
-    $this->visibility = $tokens->findPreviousByType(T_PROTECTED, 5, array('{', ';')) ? 'protected' : $this->visibility;
-
-    // check for a default value, can be an array, string type (also boolean and null) or integer
-    $default_token        = $tokens->findNextByType(T_STRING, 5, array(';'));
-    if (!$default_token)
-    {
-      $default_token      = $tokens->findNextByType(T_LNUMBER, 5, array(';'));
-    }
-    if (!$default_token)
-    {
-      $default_token      = $tokens->findNextByType(T_ARRAY, 5, array(';'));
-    }
-    $this->default    = $default_token ? $default_token->getContent() : null;
+    $this->name       = $tokens->current()->getContent();
+    $this->static     = $this->findStatic($tokens) ? true : false;
+    $this->final      = $this->findFinal($tokens)  ? true : false;
+    $this->visibility = $this->findVisibility($tokens);
+    $this->doc_block  = $this->findDocBlock($tokens);
+    $this->default    = $this->findDefault($tokens);
   }
 
   public function getName()
@@ -60,7 +45,7 @@ class Nabu_Reflection_Property extends Nabu_Abstract
 
   public function getDocBlock()
   {
-    return $this->docBlock;
+    return $this->doc_block;
   }
 
   public function __toString()
@@ -76,6 +61,8 @@ class Nabu_Reflection_Property extends Nabu_Abstract
     $xml['final']      = $this->isFinal() ? 'true' : 'false';
     $xml['static']     = $this->isStatic() ? 'true' : 'false';
     $xml['visibility'] = $this->getVisibility();;
+
+    $this->addDocblockToSimpleXmlElement($xml);
 
     return $xml->asXML();
   }

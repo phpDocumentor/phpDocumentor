@@ -1,26 +1,15 @@
 <?php
 class Nabu_Reflection_Constant extends Nabu_Abstract
 {
-  protected $name        = '';
-  protected $docBlock    = null;
-  protected $value       = '';
+  protected $name      = '';
+  protected $doc_block = null;
+  protected $value     = '';
 
-  public function parseTokenizer(Nabu_TokenIterator $tokens)
+  public function processGenericInformation(Nabu_TokenIterator $tokens)
   {
-    // extract general information
-    $this->name       = $tokens->current()->getContent();
-
-    // check for a default value, can be an array, string type (also boolean and null) or integer
-    $default_token        = $tokens->findNextByType(T_STRING, 5, array(';'));
-    if (!$default_token)
-    {
-      $default_token      = $tokens->findNextByType(T_LNUMBER, 5, array(';'));
-    }
-    if (!$default_token)
-    {
-      $default_token      = $tokens->findNextByType(T_ARRAY, 5, array(';'));
-    }
-    $this->value    = $default_token ? $default_token->getContent() : null;
+    $this->name      = $tokens->current()->getContent();
+    $this->value     = $this->findDefault($tokens);
+    $this->doc_block = $this->findDocBlock($tokens);
   }
 
   public function getName()
@@ -35,7 +24,7 @@ class Nabu_Reflection_Constant extends Nabu_Abstract
 
   public function getDocBlock()
   {
-    return $this->docBlock;
+    return $this->doc_block;
   }
 
   public function __toString()
@@ -48,6 +37,7 @@ class Nabu_Reflection_Constant extends Nabu_Abstract
     $xml = new SimpleXMLElement('<constant></constant>');
     $xml->name         = $this->getName();
     $xml->value        = $this->getValue();
+    $this->addDocblockToSimpleXmlElement($xml);
 
     return $xml->asXML();
   }

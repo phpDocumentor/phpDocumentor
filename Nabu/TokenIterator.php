@@ -2,16 +2,43 @@
 
 class BidiArrayIterator implements Countable, ArrayAccess, Serializable, SeekableIterator
 {
-  protected $store = array();
-  protected $key_index = array();
+  /**
+   * Array containing the items to store
+   *
+   * @var mixed[]
+   */
+  protected $store         = array();
+
+  /**
+   * Array matching 'store keys' => 'sequence/pointer number'
+   *
+   * @var int[]
+   */
+  protected $key_index     = array();
+
+  /**
+   * Array matching 'sequence/pointer number' => 'store keys'
+   *
+   * @var int[]
+   */
+  protected $pointer_index = array();
+
+  /**
+   * Internal array pointer; contains the actual key in the datastore
+   *
+   * @var int
+   */
+  protected $pointer       = null;
 
   public function __construct(array $data)
   {
     $this->store = $data;
-    $this->rewind();
 
-    $this->key_index = array_keys($this->store);
-    $this->key_index = array_flip($this->key_index);
+    // cache sequence and sequence lookup hashes
+    $this->pointer_index = array_keys($this->store);
+    $this->key_index     = array_flip($this->pointer_index);
+
+    $this->rewind();
   }
 
   public function unserialize($serialized)
@@ -26,11 +53,16 @@ class BidiArrayIterator implements Countable, ArrayAccess, Serializable, Seekabl
 
   public function offsetUnset($offset)
   {
-    unset($this->store[$offset]);
+    throw new Exception('BidiArrayIterator does not support adding or removing of items');
   }
 
   public function offsetSet($offset, $value)
   {
+    if (!$this->offsetExists($offset))
+    {
+      throw new Exception('BidiArrayIterator does not support adding or removing of items');
+    }
+
     $this->store[$offset] = $value;
   }
 
@@ -51,32 +83,66 @@ class BidiArrayIterator implements Countable, ArrayAccess, Serializable, Seekabl
 
   public function rewind()
   {
-    return reset($this->store);
+    $this->pointer = $this->pointer_index[0];
+
+    return $this->offsetGet($this->pointer);
   }
 
   public function valid()
   {
-    return key($this->store) === null ? false : true;
+    return (($this->pointer !== null) && $this->offsetExists($this->pointer));
   }
 
   public function key()
   {
-    return key($this->store);
+    return $this->pointer;
   }
 
   public function next()
   {
-    return next($this->store);
+    // get the sequence number; if it does not exist return false to indicate invalid position
+    $sequence_nr = isset($this->key_index[$this->pointer]) ? $this->key_index[$this->pointer] : null;
+    if ($sequence_nr === null)
+    {
+      return false;
+    }
+
+    // add 1 to the sequence number and get the new pointer location
+    $sequence_nr++;
+    $this->pointer = isset($this->pointer_index[$sequence_nr]) ? $this->pointer_index[$sequence_nr] : null;
+    if ($this->pointer === null)
+    {
+      return false;
+    }
+
+    // return data
+    return $this->offsetGet($this->pointer);
   }
 
   public function previous()
   {
-    return prev($this->store);
+    // get the sequence number; if it does not exist return false to indicate invalid position
+    $sequence_nr = isset($this->key_index[$this->pointer]) ? $this->key_index[$this->pointer] : null;
+    if ($sequence_nr === null)
+    {
+      return false;
+    }
+
+    // subtract 1 to the sequence number and get the new pointer location
+    $sequence_nr--;
+    $this->pointer = isset($this->pointer_index[$sequence_nr]) ? $this->pointer_index[$sequence_nr] : null;
+    if ($this->pointer === null)
+    {
+      return false;
+    }
+
+    // return data
+    return $this->offsetGet($this->pointer);
   }
 
   public function current()
   {
-    return current($this->store);
+    return $this->offsetGet($this->pointer);
   }
 
   /**
@@ -89,59 +155,11 @@ class BidiArrayIterator implements Countable, ArrayAccess, Serializable, Seekabl
    *
    * @return mixed
    */
-  public function seek($position)
+  public function seek($key)
   {
-    // item does not exist; move to an invalid location
-    if (($position === null) || !isset($this->store[$position]))
-    {
-      $this->rewind();
-      $this->previous();
-      return;
-    }
+    $this->pointer = $key;
 
-    // determine distance from current pointer position, first item and last
-    // then move from that position
-    $current_index = isset($this->key_index[$this->key()]) ? $this->key_index[$this->key()] : 99999999999999999999;
-    $distance_from_start   = $this->key_index[$position];
-    $distance_from_end     = (count($this->key_index) - 1) - $this->key_index[$position];
-    $distance_from_current = $this->key_index[$position] - $current_index;
-
-    if (($distance_from_start < $distance_from_end) && ($distance_from_start < abs($distance_from_current)))
-    {
-      // if the distance to the start is smallest; start there
-      $this->rewind();
-      while (($position !== $this->key()) && $this->valid())
-      {
-        $this->next();
-      }
-
-      return $this->current();
-    }
-    else
-    if (($distance_from_end < $distance_from_start) && ($distance_from_end < abs($distance_from_current)))
-    {
-      // if the distance to the end is smallest; start there
-      end($this->store);
-      while (($position !== $this->key()) && $this->valid())
-      {
-        $this->previous();
-      }
-
-      return $this->current();
-    }
-    else
-    {
-      // if the distance to the current is smallest; start there and detect the direction
-      $method_name = ($distance_from_current < 0) ? 'previous' : 'next';
-
-      while (($position !== $this->key()) && $this->valid())
-      {
-        $this->$method_name();
-      }
-
-      return $this->current();
-    }
-
+    return $this->offsetGet($this->key());
   }
 
 }
@@ -150,7 +168,7 @@ class Nabu_TokenIterator extends BidiArrayIterator
 {
   public function  __construct($array)
   {
-    // convert to token objects
+    // convert to token objects; converting up front is _faster_ than ad hoc conversion
     foreach ($array as &$token)
     {
       if ($token instanceof Nabu_Token)
@@ -164,19 +182,6 @@ class Nabu_TokenIterator extends BidiArrayIterator
     parent::__construct($array);
   }
 
-//  public function prev()
-//  {
-//    // TODO: BIG ASSUMPTION! This assumes the keys are always ordered!
-//    $key = $this->key();
-//    if (!isset($keys[$key - 1]))
-//    {
-//      return false;
-//    }
-//
-//    $this->seek($keys[$key - 1]);
-//    return false;
-//  }
-//
   protected function gotoTokenByTypeInDirection($type, $direction = 'next', $max_count = 0, $stop_at = null)
   {
     if (!in_array($direction, array('next', 'previous')))

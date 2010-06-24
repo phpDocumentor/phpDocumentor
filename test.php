@@ -1,17 +1,48 @@
 <?php
 /**
+ * File docblock
+ *
+ * @package Nabu
+ */
+
+/**
  * Function docblock for SingleFunction
  *
  * @param int $argument
  *
  * @return void
  */
-function single_function($argument)
+function single_function($argument = 'test')
 {
+
 }
 
 /**
- * test
+ * This is a test method
+ *
+ * @return int description
+ */
+function test_function()
+{
+
+}
+
+/**
+ * This is a test method
+ *
+ * @return int description
+ */
+function test_function2()
+{
+
+}
+
+
+
+/**
+ * test.
+ *
+ * This is a test
  *
  * @author Mike
  */
@@ -27,7 +58,8 @@ class SingleClass
   /**
    * Method Docblock for StaticPublicMethod
    *
-   * @var int $argument test argument
+   * @param array $argument_a test argument
+   * @param FooBarClass $argument_b test argument
    *
    * @return void
    */
@@ -38,7 +70,7 @@ class SingleClass
   /**
    * Method Docblock
    *
-   * @var int $argument test argument
+   * @param int $argument test argument
    *
    * @return void
    */
