@@ -1,7 +1,0 @@
-2010-07-06T06:46:49+02:00 INFO (6): Found class: BaseFeature
-2010-07-06T06:46:50+02:00 INFO (6): Found function: single_function
-2010-07-06T06:46:50+02:00 INFO (6): Found function: test_function
-2010-07-06T06:46:50+02:00 INFO (6): Found function: test_function2
-2010-07-06T06:46:50+02:00 INFO (6): Found class: SingleClass
-2010-07-06T06:46:50+02:00 INFO (6): Found class: FooBarClass
-2010-07-06T06:46:50+02:00 INFO (6): Found class: FooBarClass2

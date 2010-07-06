@@ -4,3 +4,4 @@ errors.log
 structure.xml
 output/*
 phpdoc_example
+log/*
