@@ -140,6 +140,9 @@ class BidiArrayIterator implements Countable, ArrayAccess, Serializable, Seekabl
     return $this->offsetGet($this->pointer);
   }
 
+  /**
+   * @return Nabu_Token
+   */
   public function current()
   {
     return $this->offsetGet($this->pointer);

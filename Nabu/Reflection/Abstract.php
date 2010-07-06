@@ -19,6 +19,18 @@ abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
   protected $token_end   = 0;
   protected $line_start  = 0;
 
+  protected $namespace   = 'default';
+
+  public function setNamespace($namespace)
+  {
+    $this->namespace = $namespace;
+  }
+
+  public function getNamespace()
+  {
+    return $this->namespace;
+  }
+
   protected function findType(Nabu_TokenIterator $tokens)
   {
     $type = $tokens->findPreviousByType(T_STRING, 5, array(',', '('));

@@ -59,6 +59,7 @@ class Nabu_Reflection_Function extends Nabu_Reflection_BracesAbstract
   public function __toXml()
   {
     $xml = new SimpleXMLElement('<function></function>');
+    $xml['namespace']  = $this->getNamespace();
     $xml->name = $this->getName();
     $this->addDocblockToSimpleXmlElement($xml);
 

@@ -120,6 +120,7 @@ class Nabu_Reflection_Class extends Nabu_Reflection_BracesAbstract
     $xml->name         = $this->getName();
     $xml['final']      = $this->isFinal() ? 'true' : 'false';
     $xml['abstract']   = $this->isAbstract() ? 'true' : 'false';
+    $xml['namespace']  = $this->getNamespace();
     $xml->extends      = $this->getParentClass();
 
     $this->addDocblockToSimpleXmlElement($xml);

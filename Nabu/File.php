@@ -1,11 +1,12 @@
 <?php
 class Nabu_File extends Nabu_Reflection_Abstract
 {
-  protected $filename   = '';
-  protected $tokens     = null;
-  protected $contents   = '';
-  protected $classes    = array();
-  protected $functions    = array();
+  protected $filename         = '';
+  protected $tokens           = null;
+  protected $contents         = '';
+  protected $classes          = array();
+  protected $functions        = array();
+  protected $active_namespace = 'default';
 
   public function __construct($file)
   {
@@ -61,9 +62,23 @@ class Nabu_File extends Nabu_Reflection_Abstract
     }
   }
 
+  protected function processNamespace(Nabu_TokenIterator $tokens)
+  {
+    // collect all namespace parts
+    $namespace = array();
+    while($token = $tokens->gotoNextByType(T_STRING, 5, array(';', '{')))
+    {
+      $namespace[] = $token->getContent();
+    }
+    $namespace = implode('\\', $namespace);
+
+    $this->active_namespace = $namespace;
+  }
+
   protected function processClass(Nabu_TokenIterator $tokens)
   {
     $class = new Nabu_Reflection_Class();
+    $class->setNamespace($this->active_namespace);
     $class->parseTokenizer($tokens);
     $this->log('Found class: '.$class->getName());
 
@@ -73,6 +88,7 @@ class Nabu_File extends Nabu_Reflection_Abstract
   protected function processFunction(Nabu_TokenIterator $tokens)
   {
     $function = new Nabu_Reflection_Function();
+    $function->setNamespace($this->active_namespace);
     $function->parseTokenizer($tokens);
     $this->log('Found function: '.$function->getName());
 

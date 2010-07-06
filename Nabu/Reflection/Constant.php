@@ -38,6 +38,7 @@ class Nabu_Reflection_Constant extends Nabu_Reflection_Abstract
     $xml = new SimpleXMLElement('<constant></constant>');
     $xml->name         = $this->getName();
     $xml->value        = $this->getValue();
+    $xml['namespace']  = $this->getNamespace();
     $this->addDocblockToSimpleXmlElement($xml);
 
     return $xml->asXML();

@@ -4,6 +4,7 @@
  *
  * @package Nabu
  */
+namespace Test\Test2;
 
 /**
  * Function docblock for SingleFunction
