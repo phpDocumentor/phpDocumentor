@@ -12,6 +12,7 @@ class Nabu_Arguments extends Zend_Console_Getopt
       'extensions|e-s' => 'optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
       'target|t-s' => 'path where to save the generated files (optional, defaults to "output")',
       'verbose|v' => 'Outputs any information collected by this application, may slow down the process slightly',
+      'ignore|i-s' => 'file(s) that will be ignored, multiple separated by ",".  Wildcards * and ? are ok',
     ));
   }
 
@@ -107,5 +108,15 @@ class Nabu_Arguments extends Zend_Console_Getopt
     }
 
     return $target;
+  }
+
+  public function getIgnorePatterns()
+  {
+    if (!$this->getOption('ignore'))
+    {
+      return array();
+    }
+
+    return explode(',', $this->getOption('ignore'));
   }
 }

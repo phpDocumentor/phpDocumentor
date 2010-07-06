@@ -1,6 +1,18 @@
 <?php
 class Nabu extends Nabu_Abstract
 {
+  protected $ignore_patterns = array();
+
+  public function addIgnorePattern($pattern)
+  {
+    $this->ignore_patterns[] = $patterns;
+  }
+
+  public function setIgnorePatterns(array $patterns)
+  {
+    $this->ignore_patterns = $patterns;
+  }
+
   function parseFile($file)
   {
     $this->debug('Starting to parse file: '.$file);
@@ -26,10 +38,25 @@ class Nabu extends Nabu_Abstract
     echo 'Starting to process '.count($files).' files'.PHP_EOL;
     $timer = new sfTimer();
 
+    // convert patterns to regex's
+    foreach($this->ignore_patterns as &$pattern)
+    {
+      $pattern = $this->convertToPregCompliant($pattern);
+    }
+
     $dom = new DOMDocument('1.0', 'UTF-8');
     $dom->loadXML('<project></project>');
     foreach ($files as $file)
     {
+      foreach($this->ignore_patterns as $pattern)
+      {
+        if (preg_match('/^'.$pattern.'$/', $file))
+        {
+          echo '  File "'.$file.'" matches ignore pattern, skipping'.PHP_EOL;
+          continue 2;
+        }
+      }
+
       echo '  Parsing "'.$file.'" ... ';
       $timer_file = new sfTimer();
 
@@ -59,4 +86,32 @@ class Nabu extends Nabu_Abstract
     return $xml;
   }
 
+  /**
+   * Converts $s into a string that can be used with preg_match
+   *
+   * @param string $string string with wildcards ? and *
+   *
+   * @author Greg Beaver <cellog@php.net>
+   *
+   * @see PhpDocumentor/phpDocumentor/Io.php
+   *
+   * @return string converts * to .*, ? to ., etc.
+   */
+  function convertToPregCompliant($string)
+  {
+      $y = '\/';
+      if (DIRECTORY_SEPARATOR == '\\')
+      {
+          $y = '\\\\';
+      }
+      $string = str_replace('/', DIRECTORY_SEPARATOR, $string);
+      $x = strtr($string, array('?' => '.','*' => '.*','.' => '\\.','\\' => '\\\\','/' => '\\/',
+                              '[' => '\\[',']' => '\\]','-' => '\\-'));
+      if (strpos($string, DIRECTORY_SEPARATOR) !== false &&
+          strrpos($string, DIRECTORY_SEPARATOR) === strlen($string) - 1)
+      {
+          $x = "(?:.*$y$x?.*|$x.*)";
+      }
+      return $x;
+  }
 }

@@ -17,6 +17,7 @@ try
   }
 } catch (Zend_Console_Getopt_Exception $e)
 {
+  echo $e->getMessage();
   echo $opts->getUsageMessage();
 }
 
@@ -26,7 +27,7 @@ if ($opts->getOption('verbose'))
 {
   $nabu->setLogLevel(Zend_Log::DEBUG);
 }
-
+$nabu->setIgnorePatterns($opts->getIgnorePatterns());
 file_put_contents($path.'/structure.xml', $nabu->parseFiles($opts->getFiles()));
 
 

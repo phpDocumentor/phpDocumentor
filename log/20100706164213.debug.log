@@ -1,0 +1,501 @@
+2010-07-06T16:42:13+02:00 DEBUG (7): Starting to parse file: ../../../Projects/emma.unet.nl/plugins/emmaProductManagementPlugin/lib/model/om/BaseFeature.php
+2010-07-06T16:42:13+02:00 DEBUG (7): Hashed contents in 0.0023899078369141 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_OPEN_TAG
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_CLASS
+2010-07-06T16:42:15+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_CONST
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 22->22
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0016188621520996 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed const PEER in 0.0022048950195312 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 35->35
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031988620758057 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $peer in 0.003917932510376 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 42->42
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030629634857178 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_id in 0.0032439231872559 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 49->49
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030241012573242 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_type_id in 0.0032050609588623 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 56->56
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030279159545898 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $deployment_type_id in 0.0032110214233398 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 63->63
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030560493469238 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_group_id in 0.0032360553741455 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 70->70
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030150413513184 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_category_id in 0.0031998157501221 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 77->77
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031039714813232 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_code in 0.0032892227172852 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 84->84
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030248165130615 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_code_external in 0.0032072067260742 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 91->91
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030269622802734 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_name_en in 0.0032119750976562 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 98->98
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030419826507568 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_name_nl in 0.0032279491424561 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 105->105
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.003026008605957 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_comment in 0.003209114074707 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 112->112
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030307769775391 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_created_on in 0.0032119750976562 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 119->119
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030159950256348 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $feature_updated_on in 0.0031991004943848 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 126->126
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0029799938201904 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $aFeatureType in 0.0031640529632568 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 133->133
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030641555786133 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $aDeploymentType in 0.0032520294189453 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 140->140
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0032570362091064 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $aFeatureGroup in 0.0034468173980713 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 147->147
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0030667781829834 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $aFeatureCategory in 0.0032570362091064 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 154->154
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031039714813232 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collInvoiceItems in 0.0032930374145508 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 161->161
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021328926086426 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastInvoiceItemCriteria in 0.0023319721221924 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 172->172
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031318664550781 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collInvoiceTransactions in 0.0033249855041504 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 179->179
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021569728851318 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastInvoiceTransactionCriteria in 0.0023632049560547 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 190->190
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031120777130127 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collAoipProductionOrders in 0.0033020973205566 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 197->197
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021119117736816 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastAoipProductionOrderCriteria in 0.0023012161254883 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 208->208
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031192302703857 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collAoipServices in 0.0033130645751953 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 215->215
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021440982818604 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastAoipServiceCriteria in 0.0023379325866699 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 226->226
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.003101110458374 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collAtmConfigurationProductionOrders in 0.0032930374145508 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 233->233
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0022690296173096 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastAtmConfigurationProductionOrderCriteria in 0.0024650096893311 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 244->244
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031321048736572 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collBulkOrderUploads in 0.0033199787139893 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 251->251
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021140575408936 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastBulkOrderUploadCriteria in 0.0023047924041748 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 262->262
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031239986419678 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collInstallationProductionOrdersRelatedByInstallationTypeId in 0.0033161640167236 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 269->269
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021200180053711 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastInstallationProductionOrderRelatedByInstallationTypeIdCriteria in 0.0023138523101807 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 280->280
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0032100677490234 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collInstallationProductionOrdersRelatedByInstallationPartyId in 0.0034048557281494 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 287->287
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021440982818604 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastInstallationProductionOrderRelatedByInstallationPartyIdCriteria in 0.0023438930511475 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 298->298
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0032210350036621 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collIpDefinitions in 0.0034129619598389 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 305->305
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021419525146484 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastIpDefinitionCriteria in 0.0023341178894043 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 316->316
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0032718181610107 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collIpSubnets in 0.0034611225128174 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 323->323
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021359920501709 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastIpSubnetCriteria in 0.0023319721221924 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 334->334
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031368732452393 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnCarrierTypeId in 0.0033321380615234 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 341->341
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021319389343262 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnCarrierTypeIdCriteria in 0.0023231506347656 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 352->352
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031309127807617 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnTechnologyTypeId in 0.0033218860626221 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 359->359
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021328926086426 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnTechnologyTypeIdCriteria in 0.0023269653320312 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 370->370
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031449794769287 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnTelephonyTypeId in 0.0033390522003174 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 377->377
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021390914916992 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnTelephonyTypeIdCriteria in 0.0023329257965088 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 388->388
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031321048736572 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnAccessClassId in 0.0033237934112549 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 395->395
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021240711212158 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnAccessClassIdCriteria in 0.002316951751709 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 406->406
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0032358169555664 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnServiceClassId in 0.0034410953521729 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 413->413
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021319389343262 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnServiceClassIdCriteria in 0.0023229122161865 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 424->424
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031759738922119 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnInpTypeId in 0.0033688545227051 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 431->431
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0022008419036865 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnInpTypeIdCriteria in 0.0023951530456543 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 442->442
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031640529632568 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnPortfolioId in 0.0033559799194336 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 449->449
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.087423086166382 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnPortfolioIdCriteria in 0.087632894515991 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 460->460
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0032758712768555 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnSlaTypeId in 0.0036280155181885 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 467->467
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0022449493408203 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnSlaTypeIdCriteria in 0.0024421215057373 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 478->478
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031731128692627 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnQosTypeId in 0.0033679008483887 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 485->485
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.002173900604248 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnQosTypeIdCriteria in 0.0023701190948486 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 496->496
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031850337982178 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnOverbookingTypeId in 0.0033800601959229 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 503->503
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0022459030151367 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnOverbookingTypeIdCriteria in 0.0024411678314209 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 514->514
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031192302703857 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnBandwidthDownId in 0.00331711769104 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 521->521
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021829605102539 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnBandwidthDownIdCriteria in 0.002377986907959 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 532->532
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.003216028213501 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnBandwidthUpId in 0.0034129619598389 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 539->539
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021598339080811 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnBandwidthUpIdCriteria in 0.0023531913757324 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 550->550
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.003183126449585 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnConnectionServicesRelatedByKpnServiceTypeId in 0.0033779144287109 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 557->557
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021538734436035 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnConnectionServiceRelatedByKpnServiceTypeIdCriteria in 0.0023488998413086 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 568->568
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0031530857086182 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnOrderTypeId in 0.0033459663391113 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 575->575
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0021181106567383 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnOrderTypeIdCriteria in 0.0023229122161865 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 586->586
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0032029151916504 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnScenarioTypeId in 0.0034019947052002 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:15+02:00 DEBUG (7):     Manually determined method range token ids at 593->593
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed all tokens in 0.0022170543670654 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnScenarioTypeIdCriteria in 0.0024149417877197 seconds
+2010-07-06T16:42:15+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 604->604
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031747817993164 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnCarrierTypeId in 0.0033700466156006 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 611->611
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0022079944610596 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnCarrierTypeIdCriteria in 0.0024030208587646 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 622->622
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0033328533172607 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnTechnologyTypeId in 0.0035300254821777 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 629->629
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021657943725586 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnTechnologyTypeIdCriteria in 0.0023610591888428 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 640->640
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031819343566895 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnTelephonyTypeId in 0.0033769607543945 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 647->647
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.002140998840332 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnTelephonyTypeIdCriteria in 0.0023539066314697 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 658->658
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031158924102783 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnAccessClassId in 0.0033090114593506 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 665->665
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021350383758545 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnAccessClassIdCriteria in 0.0023300647735596 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 676->676
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031259059906006 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnServiceClassId in 0.0033199787139893 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 683->683
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021390914916992 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnServiceClassIdCriteria in 0.0023329257965088 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 694->694
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031230449676514 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnInpTypeId in 0.0033149719238281 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 701->701
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021510124206543 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnInpTypeIdCriteria in 0.002345085144043 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 712->712
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0032229423522949 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnPortfolioId in 0.0034341812133789 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 719->719
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021710395812988 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnPortfolioIdCriteria in 0.0023701190948486 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 730->730
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031239986419678 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnSlaTypeId in 0.0033199787139893 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 737->737
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021281242370605 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnSlaTypeIdCriteria in 0.0023210048675537 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 748->748
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.003140926361084 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnQosTypeId in 0.0033349990844727 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 755->755
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0022811889648438 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnQosTypeIdCriteria in 0.0024890899658203 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 766->766
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0032391548156738 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnOverbookingTypeId in 0.0034370422363281 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 773->773
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021710395812988 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnOverbookingTypeIdCriteria in 0.002363920211792 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 784->784
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031430721282959 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnBandwidthDownId in 0.0033388137817383 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 791->791
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0022859573364258 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnBandwidthDownIdCriteria in 0.0024869441986084 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 802->802
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031650066375732 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnBandwidthUpId in 0.003371000289917 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 809->809
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021171569824219 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnBandwidthUpIdCriteria in 0.0023119449615479 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 820->820
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0032010078430176 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collKpnProductionOrdersRelatedByKpnServiceTypeId in 0.0033979415893555 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 827->827
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021741390228271 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastKpnProductionOrderRelatedByKpnServiceTypeIdCriteria in 0.0023689270019531 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 838->838
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.003180980682373 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collLineConfigurationProductionOrdersRelatedByLineConfigurationTemplateFeatureId in 0.0033729076385498 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 845->845
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021431446075439 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastLineConfigurationProductionOrderRelatedByLineConfigurationTemplateFeatureIdCriteria in 0.0023379325866699 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 856->856
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0032029151916504 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collLineConfigurationProductionOrdersRelatedByLineConfigurationConnectionMethodId in 0.003399133682251 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 863->863
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.002133846282959 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastLineConfigurationProductionOrderRelatedByLineConfigurationConnectionMethodIdCriteria in 0.0023269653320312 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 874->874
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031940937042236 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collLineConfigurationServicesRelatedByLineConfigurationConnectionMethodId in 0.0033929347991943 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 881->881
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021488666534424 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastLineConfigurationServiceRelatedByLineConfigurationConnectionMethodIdCriteria in 0.002345085144043 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 892->892
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031640529632568 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collLineConfigurationServicesRelatedByAtmConfigurationTypeId in 0.0033590793609619 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 899->899
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021378993988037 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastLineConfigurationServiceRelatedByAtmConfigurationTypeIdCriteria in 0.0023338794708252 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 910->910
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.003154993057251 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collLineConfigurationTemplateProductionOrders in 0.0033509731292725 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 917->917
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021460056304932 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastLineConfigurationTemplateProductionOrderCriteria in 0.0023348331451416 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 928->928
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031270980834961 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collLineConfigurationTemplatesRelatedByLineConfigurationTemplateFeatureId in 0.0033199787139893 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 935->935
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021100044250488 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastLineConfigurationTemplateRelatedByLineConfigurationTemplateFeatureIdCriteria in 0.0023009777069092 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 946->946
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0032050609588623 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collLineConfigurationTemplatesRelatedByLineConfigurationTemplateTypeId in 0.003399133682251 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 953->953
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021569728851318 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastLineConfigurationTemplateRelatedByLineConfigurationTemplateTypeIdCriteria in 0.002349853515625 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 964->964
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0032589435577393 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collMobileInternetProductionOrders in 0.0034539699554443 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 971->971
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021390914916992 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastMobileInternetProductionOrderCriteria in 0.0023329257965088 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 982->982
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0032608509063721 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collMobileInternetServices in 0.0034542083740234 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 989->989
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021340847015381 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastMobileInternetServiceCriteria in 0.0023288726806641 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1000->1000
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031280517578125 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collMvoipSiteProductionOrders in 0.0033180713653564 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1007->1007
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021231174468994 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastMvoipSiteProductionOrderCriteria in 0.0023159980773926 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1018->1018
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.003169059753418 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collMvoipSiteServices in 0.0033650398254395 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1025->1025
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021219253540039 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastMvoipSiteServiceCriteria in 0.0023140907287598 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1036->1036
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031359195709229 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collMvoipTenantProductionOrders in 0.0033299922943115 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1043->1043
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021941661834717 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastMvoipTenantProductionOrderCriteria in 0.0023839473724365 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1054->1054
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0031788349151611 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collMvoipTenantServices in 0.0033731460571289 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1061->1061
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021309852600098 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastMvoipTenantServiceCriteria in 0.0023269653320312 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1072->1072
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.003154993057251 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collSubscriptions in 0.0033490657806396 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1079->1079
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0029921531677246 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastSubscriptionCriteria in 0.0032181739807129 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1090->1090
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0038681030273438 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $collVoipLiteProductionOrdersRelatedByVoipLiteSipDomain in 0.0040709972381592 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T16:42:16+02:00 DEBUG (7):     Manually determined method range token ids at 1097->1097
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed all tokens in 0.0021710395812988 seconds
+2010-07-06T16:42:16+02:00 DEBUG (7):     Processed property $lastVoipLiteProductionOrderRelatedByVoipLiteSipDomainCriteria in 0.0023660659790039 seconds
