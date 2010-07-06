@@ -1,5 +1,5 @@
 <?php
-class Nabu_Reflection_Property extends Nabu_Abstract
+class Nabu_Reflection_Property extends Nabu_Reflection_Abstract
 {
   protected $name        = '';
   protected $doc_block   = null;

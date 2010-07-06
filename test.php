@@ -42,17 +42,24 @@ function test_function2()
 /**
  * test.
  *
- * This is a test
+ * This is a class test
  *
  * @author Mike
  */
 class SingleClass
 {
+
   private $test = null;
   private $test2 = array(
     'test' => 1
   );
   private $test3 = 1;
+
+  /**
+   * This is a property test
+   *
+   * @var boolean
+   */
   private $test4 = true;
 
   /**
@@ -84,6 +91,11 @@ class SingleClass
 }
 
 abstract class FooBarClass extends SingleClass implements Reflector, Traversable
+{
+  const TEST = 'test2';
+}
+
+class FooBarClass2 extends SingleClass
 {
   const TEST = 'test2';
 }

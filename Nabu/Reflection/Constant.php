@@ -1,5 +1,5 @@
 <?php
-class Nabu_Reflection_Constant extends Nabu_Abstract
+class Nabu_Reflection_Constant extends Nabu_Reflection_Abstract
 {
   protected $name      = '';
   protected $doc_block = null;
@@ -7,7 +7,8 @@ class Nabu_Reflection_Constant extends Nabu_Abstract
 
   public function processGenericInformation(Nabu_TokenIterator $tokens)
   {
-    $this->name      = $tokens->current()->getContent();
+    $this->name      = $tokens->gotoNextByType(T_STRING, 5, array('='))->getContent();
+
     $this->value     = $this->findDefault($tokens);
     $this->doc_block = $this->findDocBlock($tokens);
   }

@@ -1,5 +1,5 @@
 <?php
-abstract class Nabu_Reflection_BracesAbstract extends Nabu_Abstract
+abstract class Nabu_Reflection_BracesAbstract extends Nabu_Reflection_Abstract
 {
   public function processTokens(Nabu_TokenIterator $tokens)
   {

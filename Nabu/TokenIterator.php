@@ -83,7 +83,7 @@ class BidiArrayIterator implements Countable, ArrayAccess, Serializable, Seekabl
 
   public function rewind()
   {
-    $this->pointer = $this->pointer_index[0];
+    $this->pointer = isset($this->pointer_index[0]) ? $this->pointer_index[0] : false;
 
     return $this->offsetGet($this->pointer);
   }

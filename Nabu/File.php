@@ -1,5 +1,5 @@
 <?php
-class Nabu_File extends Nabu_Abstract
+class Nabu_File extends Nabu_Reflection_Abstract
 {
   protected $filename   = '';
   protected $tokens     = null;
@@ -23,8 +23,18 @@ class Nabu_File extends Nabu_Abstract
     }
 
     $this->filename = $file;
-    $tokens = token_get_all(file_get_contents($file));
+
+    $contents = file_get_contents($file);
+    $this->resetTimer('md5');
+    $this->hash = md5($contents);
+    $this->debugTimer('Hashed contents', 'md5');
+
+    $tokens = token_get_all($contents);
     $this->tokens = new Nabu_TokenIterator($tokens);
+  }
+
+  public function process()
+  {
     $this->parseTokenizer($this->tokens);
 
     // preserve memory by unsetting the $this->tokens

@@ -1,0 +1,67 @@
+body
+{
+  margin: 0px;
+  padding: 0px;
+}
+
+.ui-widget
+{
+  font-size: 0.90em;
+}
+
+div#nb-header
+{
+  height: 100px;
+  line-height: 150px;
+  vertical-align: bottom;
+  color: #6495ed;
+  font-family: Times New Roman;
+  text-align: left;
+  font-size: 1.6em;
+  border-bottom: 4px solid silver;
+  background: black url("'../../../images/logo.png'") no-repeat right 25px;
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+div.nb-sidebar
+{
+  width: 250px;
+  margin-right: 10px;
+  border-right: 1px solid silver;
+  overflow: auto;
+  font-size: 0.8em;
+  float: left;
+}
+
+div.nb-right-of-sidebar
+{
+  margin-left: 270px;
+}
+
+.nb-faded-text
+{
+  color: silver;
+}
+
+.nb-class-properties
+{
+  width: 100%;
+}
+
+.nb-class-properties th
+{
+  text-align: left;
+  text-transform: capitalize;
+}
+
+.nb-class-properties td
+{
+  text-align: right;
+  word-wrap: break-word;
+}
+
+.nb-class-properties th, .nb-class-properties td
+{
+  font-size: 0.8em;
+}

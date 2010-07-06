@@ -1,0 +1,92 @@
+2010-07-06T06:45:56+02:00 DEBUG (7): Starting to parse file: test.php
+2010-07-06T06:45:56+02:00 DEBUG (7): Hashed contents in 8.6069107055664E-5 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_OPEN_TAG
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_FUNCTION
+2010-07-06T06:45:56+02:00 DEBUG (7):     determined argument range token ids in 0.010622024536133 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 9->9
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0065851211547852 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed argument $argument in 0.0085580348968506 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 16->18
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.011809110641479 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_FUNCTION
+2010-07-06T06:45:56+02:00 DEBUG (7):     determined argument range token ids in 0.001183032989502 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 28->30
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0017149448394775 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_FUNCTION
+2010-07-06T06:45:56+02:00 DEBUG (7):     determined argument range token ids in 0.0011811256408691 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 40->42
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0015988349914551 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_CLASS
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 54->54
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0064771175384521 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed property $test in 0.020762920379639 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 63->63
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0084328651428223 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed property $test2 in 0.0095908641815186 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 81->81
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0090479850769043 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed property $test3 in 0.0094671249389648 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 92->92
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0042779445648193 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed property $test4 in 0.0044701099395752 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_FUNCTION
+2010-07-06T06:45:56+02:00 DEBUG (7):     determined argument range token ids in 0.0031139850616455 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 111->111
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0028369426727295 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed argument $argument_a in 0.0032579898834229 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 116->116
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0018060207366943 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed argument $argument_b in 0.0022571086883545 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 123->125
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0093140602111816 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed method StaticPublicMethod in 0.041108131408691 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_FUNCTION
+2010-07-06T06:45:56+02:00 DEBUG (7):     determined argument range token ids in 0.00073099136352539 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_VARIABLE
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 135->135
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.001101016998291 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed argument $argument in 0.0012788772583008 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 138->140
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0025880336761475 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed method PublicMethod in 0.0079960823059082 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_FUNCTION
+2010-07-06T06:45:56+02:00 DEBUG (7):     determined argument range token ids in 0.0007321834564209 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 150->152
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.00068092346191406 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed method ProtectedMethod in 0.0033121109008789 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 50->154
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.11203789710999 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_CLASS
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_CONST
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 177->177
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0020630359649658 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed const TEST in 0.057010889053345 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 173->184
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.060923099517822 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_CLASS
+2010-07-06T06:45:56+02:00 DEBUG (7):     Parsing tokens
+2010-07-06T06:45:56+02:00 DEBUG (7):   Started to parse T_CONST
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 198->198
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0021889209747314 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed const TEST in 0.0023748874664307 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at 194->205
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.0074810981750488 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):     Manually determined method range token ids at ->
+2010-07-06T06:45:56+02:00 DEBUG (7):     Processed all tokens in 0.67557787895203 seconds
+2010-07-06T06:45:56+02:00 DEBUG (7):   Used memory: 1533104
+2010-07-06T06:45:56+02:00 DEBUG (7):   Parsed file in 0.67979097366333 seconds
