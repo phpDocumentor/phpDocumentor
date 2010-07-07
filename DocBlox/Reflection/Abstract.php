@@ -11,7 +11,7 @@
  * @package
  * @subpackage
  */
-abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
+abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
 {
   static $token_method_cache = array();
 
@@ -31,7 +31,7 @@ abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
     return $this->namespace;
   }
 
-  protected function findType(Nabu_TokenIterator $tokens)
+  protected function findType(DocBlox_TokenIterator $tokens)
   {
     $type = $tokens->findPreviousByType(T_STRING, 5, array(',', '('));
     if (!$type)
@@ -42,7 +42,7 @@ abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
     return $type ? $type->getContent() : null;
   }
 
-  public function findDefault(Nabu_TokenIterator $tokens)
+  public function findDefault(DocBlox_TokenIterator $tokens)
   {
     $default_token        = $tokens->findNextByType(T_STRING, 5, array(',', ')'));
     if (!$default_token)
@@ -60,22 +60,22 @@ abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
     return $default_token ? trim($default_token->getContent(), '\'"') : null;
   }
 
-  public function findAbstract(Nabu_TokenIterator $tokens)
+  public function findAbstract(DocBlox_TokenIterator $tokens)
   {
     return $tokens->findPreviousByType(T_ABSTRACT, 5, array('}'));
   }
 
-  public function findFinal(Nabu_TokenIterator $tokens)
+  public function findFinal(DocBlox_TokenIterator $tokens)
   {
     return $tokens->findPreviousByType(T_FINAL, 5, array('}'));
   }
 
-  public function findStatic(Nabu_TokenIterator $tokens)
+  public function findStatic(DocBlox_TokenIterator $tokens)
   {
     return $tokens->findPreviousByType(T_STATIC, 5, array('{', ';'));
   }
 
-  public function findDocBlock(Nabu_TokenIterator $tokens)
+  public function findDocBlock(DocBlox_TokenIterator $tokens)
   {
     $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{'. '}', ';'));
     try
@@ -88,7 +88,7 @@ abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
     }
   }
 
-  protected function findVisibility(Nabu_TokenIterator $tokens)
+  protected function findVisibility(DocBlox_TokenIterator $tokens)
   {
     $result = 'public';
     $result = $tokens->findPreviousByType(T_PRIVATE, 5, array('{', ';')) ? 'private' : $result;
@@ -97,7 +97,7 @@ abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
     return $result;
   }
 
-  protected function processToken(Nabu_Token $token, Nabu_TokenIterator $tokens)
+  protected function processToken(DocBlox_Token $token, DocBlox_TokenIterator $tokens)
   {
     static $token_method_exists_cache = array();
 
@@ -122,14 +122,14 @@ abstract class Nabu_Reflection_Abstract extends Nabu_Abstract
     }
   }
 
-  abstract protected function processGenericInformation(Nabu_TokenIterator $tokens);
+  abstract protected function processGenericInformation(DocBlox_TokenIterator $tokens);
 
-  protected function processTokens(Nabu_TokenIterator $tokens)
+  protected function processTokens(DocBlox_TokenIterator $tokens)
   {
     return array($tokens->key(), $tokens->key());
   }
 
-  public function parseTokenizer(Nabu_TokenIterator $tokens)
+  public function parseTokenizer(DocBlox_TokenIterator $tokens)
   {
     if (!$tokens->current())
     {

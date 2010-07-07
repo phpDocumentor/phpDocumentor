@@ -11,7 +11,7 @@
  * @package
  * @subpackage
  */
-class Nabu_Writer_Xslt_ClassGraph
+class DocBlox_Writer_Xslt_ClassGraph
 {
   protected $target = './output';
 

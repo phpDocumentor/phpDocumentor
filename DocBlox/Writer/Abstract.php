@@ -11,7 +11,7 @@
  * @package
  * @subpackage
  */
-class Nabu_Writer_Abstract
+class DocBlox_Writer_Abstract
 {
   protected $theme = 'default';
   protected $theme_path = 'resources/themes';

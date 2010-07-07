@@ -1,11 +1,11 @@
 <?php
-class Nabu_Reflection_Argument extends Nabu_Reflection_Abstract
+class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
 {
   protected $name        = '';
   protected $default     = null;
   protected $type        = null;
 
-  public function processGenericInformation(Nabu_TokenIterator $tokens)
+  public function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->name    = $tokens->current()->getContent();
     $this->type    = $this->findType($tokens);

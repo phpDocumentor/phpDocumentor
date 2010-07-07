@@ -1,5 +1,5 @@
 <?php
-class Nabu_Token
+class DocBlox_Token
 {
   protected $type = null;
   protected $content = '';

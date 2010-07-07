@@ -1,12 +1,12 @@
 <?php
-class Nabu_Reflection_Method extends Nabu_Reflection_Function
+class DocBlox_Reflection_Method extends DocBlox_Reflection_Function
 {
   protected $abstract   = false;
   protected $final      = false;
   protected $static     = false;
   protected $visibility = 'public';
 
-  protected function processGenericInformation(Nabu_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->static     = $this->findStatic($tokens)   ? true : false;
     $this->abstract   = $this->findAbstract($tokens) ? true : false;

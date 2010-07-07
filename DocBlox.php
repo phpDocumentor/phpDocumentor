@@ -1,11 +1,27 @@
 <?php
-class Nabu extends Nabu_Abstract
+class DocBlox extends DocBlox_Abstract
 {
   protected $ignore_patterns = array();
+  protected $existing_xml = null;
+
+  /**
+   * Imports an existing XML source to enable incremental parsing
+   *
+   * @param string $xml
+   *
+   * @return void
+   */
+  public function setExistingXml($xml)
+  {
+    $dom = new DOMDocument();
+    $dom->loadXML($xml);
+
+    $this->existing_xml = $dom;
+  }
 
   public function addIgnorePattern($pattern)
   {
-    $this->ignore_patterns[] = $patterns;
+    $this->ignore_patterns[] = $pattern;
   }
 
   public function setIgnorePatterns(array $patterns)
@@ -13,24 +29,47 @@ class Nabu extends Nabu_Abstract
     $this->ignore_patterns = $patterns;
   }
 
-  function parseFile($file)
+  function parseFile($filename)
   {
-    $this->debug('Starting to parse file: '.$file);
+    $this->debug('Starting to parse file: '.$filename);
     $this->resetTimer();
+    $result = null;
+
     try
     {
-      $file = new Nabu_File($file);
-      $file->process();
+      $file = new DocBlox_Reflection_File($filename);
+
+      if ($this->existing_xml !== null)
+      {
+        $xpath = new DOMXPath($this->existing_xml);
+
+        /** @var DOMNodeList $qry */
+        $qry = $xpath->query('/project/file[@path=\''.$filename.'\' and @hash=\''.$file->getHash().'\']');
+        if ($qry->length > 0)
+        {
+          $new_dom = new DOMDocument;
+          $new_dom->appendChild($new_dom->importNode($qry->item(0), true));
+          $result = $new_dom->saveXML();
+
+          $this->log('  File "'.$filename.'" has not changed since last build, reusing the old definition');
+        }
+      }
+
+      if ($result === null)
+      {
+        $file->process();
+        $result = $file->__toXml();
+      }
     } catch(Exception $e)
     {
       $this->log('  Unable to parse file, an error was detected: '.$e->getMessage());
       $this->debug('  Unable to parse file, an error was detected: '.$e->getMessage());
-      $file = false;
+      $result = false;
     }
     $this->debug('  Used memory: '.memory_get_usage());
     $this->debugTimer('  Parsed file');
 
-    return $file;
+    return $result;
   }
 
   function parseFiles($files)
@@ -60,14 +99,14 @@ class Nabu extends Nabu_Abstract
       echo '  Parsing "'.$file.'" ... ';
       $timer_file = new sfTimer();
 
-      $object = $this->parseFile($file);
-      if ($object === false)
+      $xml = $this->parseFile($file);
+      if ($xml === false)
       {
         continue;
       }
 
       $dom_prop = new DOMDocument();
-      $dom_prop->loadXML(trim($object->__toXml()));
+      $dom_prop->loadXML(trim($xml));
 
       $xpath = new DOMXPath($dom_prop);
       $qry = $xpath->query('/*');

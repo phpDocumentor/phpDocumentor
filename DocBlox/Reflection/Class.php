@@ -1,5 +1,5 @@
 <?php
-class Nabu_Reflection_Class extends Nabu_Reflection_BracesAbstract
+class DocBlox_Reflection_Class extends DocBlox_Reflection_BracesAbstract
 {
   protected $name        = '';
   protected $doc_block    = null;
@@ -14,7 +14,7 @@ class Nabu_Reflection_Class extends Nabu_Reflection_BracesAbstract
   protected $properties  = array();
   protected $methods     = array();
 
-  public function processGenericInformation(Nabu_TokenIterator $tokens)
+  public function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // retrieve generic information about the class
     $this->name      = $tokens->findNextByType(T_STRING, 5, array('{'))->getContent();
@@ -46,7 +46,7 @@ class Nabu_Reflection_Class extends Nabu_Reflection_BracesAbstract
   {
     $this->resetTimer('const');
 
-    $constant = new Nabu_Reflection_Constant();
+    $constant = new DocBlox_Reflection_Constant();
     $constant->parseTokenizer($tokens);
     $this->constants[] = $constant;
 
@@ -57,7 +57,7 @@ class Nabu_Reflection_Class extends Nabu_Reflection_BracesAbstract
   {
     $this->resetTimer('variable');
 
-    $property = new Nabu_Reflection_Property();
+    $property = new DocBlox_Reflection_Property();
     $property->parseTokenizer($tokens);
     $this->properties[] = $property;
 
@@ -68,7 +68,7 @@ class Nabu_Reflection_Class extends Nabu_Reflection_BracesAbstract
   {
     $this->resetTimer('method');
 
-    $method = new Nabu_Reflection_Method();
+    $method = new DocBlox_Reflection_Method();
     $method->parseTokenizer($tokens);
     $this->methods[] = $method;
     $this->debugTimer('    Processed method '.$method->getName(), 'method');

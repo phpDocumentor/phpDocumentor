@@ -3,13 +3,13 @@ set_include_path(get_include_path().PATH_SEPARATOR.'./lib');
 require_once('Zend/Loader/Autoloader.php');
 require_once('symfony/sfTimer.class.php');
 $autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('Nabu_');
+$autoloader->registerNamespace('DocBlox_');
 
-require_once('Nabu.php');
+require_once('DocBlox.php');
 
 try
 {
-  $opts = new Nabu_Arguments();
+  $opts = new DocBlox_Arguments();
   $opts->parse();
   if ($opts->getOption('h'))
   {
@@ -21,16 +21,21 @@ try
   echo $opts->getUsageMessage();
 }
 
-$nabu = new Nabu();
+$docblox = new DocBlox();
 $path = $opts->getTarget();
 if ($opts->getOption('verbose'))
 {
-  $nabu->setLogLevel(Zend_Log::DEBUG);
+  $docblox->setLogLevel(Zend_Log::DEBUG);
 }
-$nabu->setIgnorePatterns($opts->getIgnorePatterns());
-file_put_contents($path.'/structure.xml', $nabu->parseFiles($opts->getFiles()));
+$docblox->setIgnorePatterns($opts->getIgnorePatterns());
+
+if (file_exists($path.'/structure.xml'))
+{
+  $docblox->setExistingXml(file_get_contents($path.'/structure.xml'));
+}
+file_put_contents($path.'/structure.xml', $docblox->parseFiles($opts->getFiles()));
 
 
-//$file = $nabu->parseFile('../../Projects/emma.unet.nl/plugins/emmaProductManagementPlugin/lib/model/om/BaseFeature.php');
-//file_put_contents('structure.xml', $nabu->parseDirectory('.'));
-//file_put_contents('structure.xml', $nabu->parseDirectory('../../Projects/emma.unet.nl/plugins/emmaProductManagementPlugin/lib/model/'));
+//$file = $docblox->parseFile('../../Projects/emma.unet.nl/plugins/emmaProductManagementPlugin/lib/model/om/BaseFeature.php');
+//file_put_contents('structure.xml', $docblox->parseDirectory('.'));
+//file_put_contents('structure.xml', $docblox->parseDirectory('../../Projects/emma.unet.nl/plugins/emmaProductManagementPlugin/lib/model/'));

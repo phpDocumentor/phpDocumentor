@@ -141,7 +141,7 @@ class BidiArrayIterator implements Countable, ArrayAccess, Serializable, Seekabl
   }
 
   /**
-   * @return Nabu_Token
+   * @return DocBlox_Token
    */
   public function current()
   {
@@ -167,19 +167,19 @@ class BidiArrayIterator implements Countable, ArrayAccess, Serializable, Seekabl
 
 }
 
-class Nabu_TokenIterator extends BidiArrayIterator
+class DocBlox_TokenIterator extends BidiArrayIterator
 {
   public function  __construct($array)
   {
     // convert to token objects; converting up front is _faster_ than ad hoc conversion
     foreach ($array as &$token)
     {
-      if ($token instanceof Nabu_Token)
+      if ($token instanceof DocBlox_Token)
       {
         continue;
       }
 
-      $token = new Nabu_Token($token);
+      $token = new DocBlox_Token($token);
     }
 
     parent::__construct($array);

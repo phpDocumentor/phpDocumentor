@@ -1,5 +1,5 @@
 <?php
-abstract class Nabu_Abstract
+abstract class DocBlox_Abstract
 {
   static protected $logger       = null;
   static protected $debug_logger = null;

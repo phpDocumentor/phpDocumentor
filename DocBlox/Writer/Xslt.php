@@ -1,6 +1,6 @@
 <?php
 
-class Nabu_Writer_Xslt extends Nabu_Writer_Abstract
+class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 {
   function generateFilename($file)
   {
@@ -69,7 +69,7 @@ class Nabu_Writer_Xslt extends Nabu_Writer_Abstract
 
     $this->generateFiles($files, $xml);
 
-    $class_graph = new Nabu_Writer_Xslt_ClassGraph();
+    $class_graph = new DocBlox_Writer_Xslt_ClassGraph();
     $class_graph->execute($xml);
   }
 }

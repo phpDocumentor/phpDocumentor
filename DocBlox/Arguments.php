@@ -1,5 +1,5 @@
 <?php
-class Nabu_Arguments extends Zend_Console_Getopt
+class DocBlox_Arguments extends Zend_Console_Getopt
 {
   protected $files = array();
   protected $allowed_extensions = array('php', 'php3', 'phtml');

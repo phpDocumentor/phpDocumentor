@@ -1,5 +1,5 @@
 <?php
-class Nabu_Reflection_Property extends Nabu_Reflection_Abstract
+class DocBlox_Reflection_Property extends DocBlox_Reflection_Abstract
 {
   protected $name        = '';
   protected $doc_block   = null;
@@ -8,7 +8,7 @@ class Nabu_Reflection_Property extends Nabu_Reflection_Abstract
   protected $default     = null;
   protected $visibility  = 'public';
 
-  protected function processGenericInformation(Nabu_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->name       = $tokens->current()->getContent();
     $this->static     = $this->findStatic($tokens) ? true : false;

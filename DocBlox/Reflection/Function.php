@@ -1,5 +1,5 @@
 <?php
-class Nabu_Reflection_Function extends Nabu_Reflection_BracesAbstract
+class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 {
   protected $name       = '';
   protected $doc_block  = null;
@@ -8,7 +8,7 @@ class Nabu_Reflection_Function extends Nabu_Reflection_BracesAbstract
 
   protected $arguments     = array();
 
-  protected function processGenericInformation(Nabu_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->name = $this->findName($tokens);
 
@@ -21,14 +21,14 @@ class Nabu_Reflection_Function extends Nabu_Reflection_BracesAbstract
     $this->debugTimer('    determined argument range token ids');
   }
 
-  public function processVariable(Nabu_TokenIterator $tokens)
+  public function processVariable(DocBlox_TokenIterator $tokens)
   {
     // is the variable occurs within arguments parenthesis then it is an argument
     if (($tokens->key() > $this->arguments_token_start) && ($tokens->key() < $this->arguments_token_end))
     {
       $this->resetTimer('variable');
 
-      $argument = new Nabu_Reflection_Argument();
+      $argument = new DocBlox_Reflection_Argument();
       $argument->parseTokenizer($tokens);
       $this->arguments[$argument->getName()] = $argument;
 
@@ -36,7 +36,7 @@ class Nabu_Reflection_Function extends Nabu_Reflection_BracesAbstract
     }
   }
 
-  protected function findName(Nabu_TokenIterator $tokens)
+  protected function findName(DocBlox_TokenIterator $tokens)
   {
     return $tokens->findNextByType(T_STRING, 5, array('{'))->getContent();
   }

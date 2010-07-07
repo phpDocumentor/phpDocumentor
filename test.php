@@ -2,9 +2,9 @@
 /**
  * File docblock
  *
- * @package Nabu
+ * @package DocBlox
  */
-namespace Test\Test2;
+namespace Test\Tests5;
 
 /**
  * Function docblock for SingleFunction

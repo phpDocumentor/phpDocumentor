@@ -1,7 +1,7 @@
 <?php
-abstract class Nabu_Reflection_BracesAbstract extends Nabu_Reflection_Abstract
+abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abstract
 {
-  public function processTokens(Nabu_TokenIterator $tokens)
+  public function processTokens(DocBlox_TokenIterator $tokens)
   {
     $level = -1;
     $start = 0;

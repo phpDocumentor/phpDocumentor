@@ -1,11 +1,11 @@
 <?php
-class Nabu_Reflection_Constant extends Nabu_Reflection_Abstract
+class DocBlox_Reflection_Constant extends DocBlox_Reflection_Abstract
 {
   protected $name      = '';
   protected $doc_block = null;
   protected $value     = '';
 
-  public function processGenericInformation(Nabu_TokenIterator $tokens)
+  public function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->name      = $tokens->gotoNextByType(T_STRING, 5, array('='))->getContent();
 
