@@ -35,7 +35,7 @@
         </ul>
 
         <div id="description_{name}">
-          <div style="float: right; width: 200px; padding: 5px;" class="ui-corner-all ui-widget-content">
+          <div class="nb-properties ui-corner-all ui-widget-content">
             <strong>Properties</strong><br />
             <hr />
             <table class="nb-class-properties">

@@ -32,6 +32,7 @@ if (file_exists($path.'/structure.xml'))
 {
   $docblox->setExistingXml(file_get_contents($path.'/structure.xml'));
 }
+$docblox->setForced($opts->getOption('force'));
 file_put_contents($path.'/structure.xml', $docblox->parseFiles($opts->getFiles()));
 
 

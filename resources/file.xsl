@@ -39,6 +39,7 @@
   <xsl:template match="/project/file">
     <div class="tabs">
       <ul>
+        <li><a href="#file_description">Description</a></li>
         <xsl:if test="function">
         <li><a href="#file_functions">Functions</a></li>
         </xsl:if>
@@ -49,6 +50,27 @@
         <li><a href="#{name}"><xsl:value-of select="name" /></a></li>
         </xsl:for-each>
       </ul>
+
+      <div id="file_description">
+        <div class="nb-properties ui-corner-all ui-widget-content">
+          <strong>Properties</strong><br />
+          <hr />
+          <table class="nb-class-properties">
+            <xsl:for-each select="docblock/tag">
+              <xsl:sort select="@name" />
+              <tr><th><xsl:value-of select="@name" /></th><td><xsl:value-of select="." /></td></tr>
+            </xsl:for-each>
+          </table>
+        </div>
+        <h2>Description</h2>
+        Docblock subject<br />
+        Docblock long description <br />
+
+        <h3>Includes</h3>
+        <xsl:for-each select="include">
+          <xsl:value-of select="name" />&#160;<span class="nb-faded-text">(<xsl:value-of select="@type" />)</span><br />
+        </xsl:for-each>
+      </div>
 
       <xsl:if test="function">
       <div id="file_functions">

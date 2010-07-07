@@ -13,6 +13,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       'target|t-s' => 'path where to save the generated files (optional, defaults to "output")',
       'verbose|v' => 'Outputs any information collected by this application, may slow down the process slightly',
       'ignore|i-s' => 'file(s) that will be ignored, multiple separated by ",".  Wildcards * and ? are ok',
+      'force' => 'forces a full build of the documentation, does not increment existing documentation',
     ));
   }
 

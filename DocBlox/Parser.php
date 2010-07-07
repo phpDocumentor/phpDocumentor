@@ -3,6 +3,17 @@ class DocBlox_Parser extends DocBlox_Abstract
 {
   protected $ignore_patterns = array();
   protected $existing_xml = null;
+  protected $force = false;
+
+  public function isForced()
+  {
+    return $this->force;
+  }
+
+  public function setForced($forced)
+  {
+    $this->force = $forced;
+  }
 
   /**
    * Imports an existing XML source to enable incremental parsing
@@ -40,7 +51,7 @@ class DocBlox_Parser extends DocBlox_Abstract
     {
       $file = new DocBlox_Reflection_File($filename);
 
-      if ($this->existing_xml !== null)
+      if (($this->existing_xml !== null) && (!$this->isForced()))
       {
         $xpath = new DOMXPath($this->existing_xml);
 

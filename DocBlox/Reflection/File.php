@@ -9,6 +9,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   protected $functions        = array();
   protected $constants        = array();
   protected $includes         = array();
+  protected $doc_block        = null;
   protected $active_namespace = 'default';
 
   public function __construct($file)
@@ -45,6 +46,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $this->hash = $hash;
   }
 
+  public function getDocBlock()
+  {
+    return $this->doc_block;
+  }
+
   public function initializeTokens()
   {
     if ($this->tokens instanceof DocBlox_TokenIterator)
@@ -69,6 +75,36 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   {
     // find file docblock; standard function does not suffice as this scans backwards and we have to make sure it isn't
     // the docblock of another element
+    $this->doc_block = $this->findDocBlock($tokens);
+  }
+
+  public function findDocBlock(DocBlox_TokenIterator $tokens)
+  {
+    $docblock = $tokens->findNextByType(T_DOC_COMMENT, 10, array(T_CLASS, T_NAMESPACE));
+    try
+    {
+      $result = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
+    }
+    catch (Exception $e)
+    {
+      $this->log($e->getMessage(), Zend_Log::CRIT);
+    }
+
+    // TODO: add a check if a class immediately follows this docblock, if so this is not a page level docblock
+    // but a class docblock
+
+    // even with a docblock at top (which may belong to some other component) does it need to have a package
+    // tag to classify
+    if ($result && !$result->hasTag('package'))
+    {
+      $result = null;
+    }
+
+    if (!$result)
+    {
+      $this->log('No Page-level DocBlock was found '.$this->getName(), Zend_Log::ERR);
+    }
+    return $result;
   }
 
   public function processTokens(DocBlox_TokenIterator $tokens)
@@ -169,6 +205,10 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   {
     $xml_text  = '<?xml version="1.0" encoding="utf-8"?>';
     $xml_text .= '<file path="'.$this->filename.'" hash="'.$this->hash.'">';
+    $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><dummy></dummy>');
+    $this->addDocblockToSimpleXmlElement($xml);
+    $xml_text .= $xml->docblock->asXml();
+
     foreach($this->includes as $include)
     {
       $include = explode("\n", trim($include->__toXml()));

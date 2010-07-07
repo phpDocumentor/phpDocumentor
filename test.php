@@ -4,7 +4,13 @@
  *
  * @package DocBlox
  */
-namespace Test\Tests5;
+
+class test
+{
+
+}
+
+//namespace Test\Tests5;
 require 'test2.php';
 require_once 'test2.php';
 include('test2.php');
