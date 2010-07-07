@@ -8,6 +8,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   protected $classes          = array();
   protected $functions        = array();
   protected $constants        = array();
+  protected $includes         = array();
   protected $active_namespace = 'default';
 
   public function __construct($file)
@@ -136,19 +137,52 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $this->constants[$constant->getName()] = $constant;
   }
 
+  protected function processRequire(DocBlox_TokenIterator $tokens)
+  {
+    $this->processInclude($tokens);
+  }
+
+  protected function processRequireOnce(DocBlox_TokenIterator $tokens)
+  {
+    $this->processInclude($tokens);
+  }
+
+  protected function processIncludeOnce(DocBlox_TokenIterator $tokens)
+  {
+    $this->processInclude($tokens);
+  }
+
+  protected function processInclude(DocBlox_TokenIterator $tokens)
+  {
+    $this->resetTimer('include');
+
+    $include = new DocBlox_Reflection_Include();
+    $include->setNamespace($this->active_namespace);
+    $include->parseTokenizer($tokens);
+
+    $this->debugTimer('>> Processed constant '.$include->getName(), 'include');
+
+    $this->includes[] = $include;
+  }
+
   public function __toXml()
   {
     $xml_text  = '<?xml version="1.0" encoding="utf-8"?>';
     $xml_text .= '<file path="'.$this->filename.'" hash="'.$this->hash.'">';
-    foreach($this->functions as $function)
+    foreach($this->includes as $include)
     {
-      $function = explode("\n", trim($function->__toXml()));
-      $xml_text .= array_pop($function);
+      $include = explode("\n", trim($include->__toXml()));
+      $xml_text .= array_pop($include);
     }
     foreach($this->constants as $constant)
     {
       $constant = explode("\n", trim($constant->__toXml()));
       $xml_text .= array_pop($constant);
+    }
+    foreach($this->functions as $function)
+    {
+      $function = explode("\n", trim($function->__toXml()));
+      $xml_text .= array_pop($function);
     }
     foreach($this->classes as $class)
     {

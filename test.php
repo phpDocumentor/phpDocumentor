@@ -5,6 +5,10 @@
  * @package DocBlox
  */
 namespace Test\Tests5;
+require 'test2.php';
+require_once 'test2.php';
+include('test2.php');
+include_once 'test2.php';
 
 const GLOBAL_CONST = '1';
 const GLOBAL_CONST2 = '2';
