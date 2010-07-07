@@ -7,6 +7,7 @@
 namespace Test\Tests5;
 
 const GLOBAL_CONST = '1';
+const GLOBAL_CONST2 = '2';
 
 /**
  * Function docblock for SingleFunction

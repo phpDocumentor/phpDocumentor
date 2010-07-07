@@ -40,7 +40,10 @@
     <div class="tabs">
       <ul>
         <xsl:if test="function">
-        <li><a href="#global">Global elements</a></li>
+        <li><a href="#file_functions">Functions</a></li>
+        </xsl:if>
+        <xsl:if test="constant">
+        <li><a href="#file_constants">Constants</a></li>
         </xsl:if>
         <xsl:for-each select="class">
         <li><a href="#{name}"><xsl:value-of select="name" /></a></li>
@@ -48,24 +51,31 @@
       </ul>
 
       <xsl:if test="function">
-      <div id="global">
-        <xsl:if test="function">
-          <div class="nb-sidebar">
-            <xsl:for-each select="function">
-              <a href="#{../name}::{name}()">
-                <xsl:value-of select="name" />
-              </a>
-              <br />
-            </xsl:for-each>
-          </div>
+      <div id="file_functions">
+        <div class="nb-sidebar">
+          <xsl:for-each select="function">
+            <a href="#{../name}::{name}()">
+              <xsl:value-of select="name" />
+            </a>
+            <br />
+          </xsl:for-each>
+        </div>
 
-          <div class="nb-right-of-sidebar">
-            <h2>Functions</h2>
-            <xsl:for-each select="function">
-              <xsl:apply-templates select="." />
-            </xsl:for-each>
-          </div>
-        </xsl:if>
+        <div class="nb-right-of-sidebar">
+          <h2>Functions</h2>
+          <xsl:for-each select="function">
+            <xsl:apply-templates select="." />
+          </xsl:for-each>
+        </div>
+      </div>
+      </xsl:if>
+
+      <xsl:if test="constant">
+      <div id="file_constants">
+        <h2>Constants</h2>
+        <xsl:for-each select="constant">
+          <xsl:apply-templates select="." />
+        </xsl:for-each>
       </div>
       </xsl:if>
 
