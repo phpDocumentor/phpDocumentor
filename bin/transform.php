@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 set_include_path(get_include_path().PATH_SEPARATOR.'./lib');
 require_once('Zend/Loader/Autoloader.php');
