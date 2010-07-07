@@ -1,7 +1,6 @@
 <?php
 class DocBlox_Reflection_Constant extends DocBlox_Reflection_Abstract
 {
-  protected $name      = '';
   protected $doc_block = null;
   protected $value     = '';
 
@@ -11,11 +10,6 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_Abstract
 
     $this->value     = $this->findDefault($tokens);
     $this->doc_block = $this->findDocBlock($tokens);
-  }
-
-  public function getName()
-  {
-    return $this->name;
   }
 
   public function getValue()

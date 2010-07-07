@@ -15,11 +15,22 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
 {
   static $token_method_cache = array();
 
+  protected $name      = 'Unknown';
   protected $token_start = 0;
   protected $token_end   = 0;
   protected $line_start  = 0;
 
   protected $namespace   = 'default';
+
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+
+  public function getName()
+  {
+    return $this->name;
+  }
 
   public function setNamespace($namespace)
   {
@@ -80,12 +91,18 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{'. '}', ';'));
     try
     {
-      return $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
+      $result = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
     }
     catch (Exception $e)
     {
-      $this->log($e->getMessage(), Zend_Log::ERR);
+      $this->log($e->getMessage(), Zend_Log::CRIT);
     }
+
+    if (!$result)
+    {
+      $this->log('No DocBlock was found for '.substr(get_class($this), strrpos(get_class($this), '_')+1).' '.$this->getName().' on line '.$this->getLineNumber(), Zend_Log::ERR);
+    }
+    return $result;
   }
 
   protected function findVisibility(DocBlox_TokenIterator $tokens)
@@ -95,6 +112,11 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     $result = $tokens->findPreviousByType(T_PROTECTED, 5, array('{', ';')) ? 'protected' : $result;
 
     return $result;
+  }
+
+  protected function processTokens(DocBlox_TokenIterator $tokens)
+  {
+    return array($tokens->key(), $tokens->key());
   }
 
   protected function processToken(DocBlox_Token $token, DocBlox_TokenIterator $tokens)
@@ -124,20 +146,15 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
 
   abstract protected function processGenericInformation(DocBlox_TokenIterator $tokens);
 
-  protected function processTokens(DocBlox_TokenIterator $tokens)
-  {
-    return array($tokens->key(), $tokens->key());
-  }
-
   public function parseTokenizer(DocBlox_TokenIterator $tokens)
   {
     if (!$tokens->current())
     {
-      $this->debug('  No tokens found to parse');
+      $this->log('>> No contents found to parse');
       return;
     }
 
-    $this->debug('  Started to parse '.$tokens->current()->getName());
+    $this->debug('== Parsing token '.$tokens->current()->getName());
     $this->line_start = $tokens->current()->getLineNumber();
 
     // retrieve generic information about the class
@@ -147,9 +164,9 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     $this->token_start = $start;
     $this->token_end   = $end;
 
-    $this->debug('    Manually determined method range token ids at '.$start.'->'.$end);
+    $this->debug('== Determined token index range to be '.$start.' => '.$end);
 
-    $this->debugTimer('    Processed all tokens');
+    $this->debugTimer('>> Processed all tokens');
   }
 
   public function getStartTokenId()

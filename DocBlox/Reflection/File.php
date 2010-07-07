@@ -30,7 +30,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
 
     $this->resetTimer('md5');
     $this->setHash(md5($this->contents));
-    $this->debugTimer('Hashed contents', 'md5');
+    $this->debugTimer('>> Hashed contents', 'md5');
   }
 
   public function getHash()
@@ -98,20 +98,26 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
 
   protected function processClass(DocBlox_TokenIterator $tokens)
   {
+    $this->resetTimer('class');
+
     $class = new DocBlox_Reflection_Class();
     $class->setNamespace($this->active_namespace);
     $class->parseTokenizer($tokens);
-    $this->log('Found class: '.$class->getName());
+
+    $this->debugTimer('>> Processed class '.$class->getName(), 'class');
 
     $this->classes[$class->getName()] = $class;
   }
 
   protected function processFunction(DocBlox_TokenIterator $tokens)
   {
+    $this->resetTimer('function');
+
     $function = new DocBlox_Reflection_Function();
     $function->setNamespace($this->active_namespace);
     $function->parseTokenizer($tokens);
-    $this->log('Found function: '.$function->getName());
+
+    $this->debugTimer('>> Processed function '.$function->getName(), 'function');
 
     $this->functions[$function->getName()] = $function;
   }

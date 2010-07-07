@@ -1,20 +1,14 @@
 <?php
 class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
 {
-  protected $name        = '';
   protected $default     = null;
   protected $type        = null;
 
   public function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
-    $this->name    = $tokens->current()->getContent();
+    $this->setName($tokens->current()->getContent());
     $this->type    = $this->findType($tokens);
     $this->default = $this->findDefault($tokens);
-  }
-
-  public function getName()
-  {
-    return $this->name;
   }
 
   public function getDefault()

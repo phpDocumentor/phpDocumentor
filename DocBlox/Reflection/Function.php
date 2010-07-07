@@ -1,7 +1,6 @@
 <?php
 class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 {
-  protected $name       = '';
   protected $doc_block  = null;
   protected $arguments_token_start = 0;
   protected $arguments_token_end   = 0;
@@ -10,7 +9,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
-    $this->name = $this->findName($tokens);
+    $this->setName($this->findName($tokens));
 
     $this->resetTimer();
     $this->doc_block  = $this->findDocBlock($tokens);
@@ -18,7 +17,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     list($start_index, $end_index) = $tokens->getTokenIdsOfParenthesisPair();
     $this->arguments_token_start = $start_index;
     $this->arguments_token_end   = $end_index;
-    $this->debugTimer('    determined argument range token ids');
+    $this->debugTimer('>> Determined argument range token ids');
   }
 
   public function processVariable(DocBlox_TokenIterator $tokens)
@@ -32,7 +31,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
       $argument->parseTokenizer($tokens);
       $this->arguments[$argument->getName()] = $argument;
 
-      $this->debugTimer('    Processed argument '.$argument->getName(), 'variable');
+      $this->debugTimer('>> Processed argument '.$argument->getName(), 'variable');
     }
   }
 
@@ -41,19 +40,9 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     return $tokens->findNextByType(T_STRING, 5, array('{'))->getContent();
   }
 
-  public function getName()
-  {
-    return $this->name;
-  }
-
   public function getDocBlock()
   {
     return $this->doc_block;
-  }
-
-  public function __toString()
-  {
-    return $this->getName();
   }
 
   public function __toXml()
@@ -73,4 +62,10 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 
     return trim($dom->saveXML());
   }
+
+  public function __toString()
+  {
+    return $this->getName();
+  }
+
 }

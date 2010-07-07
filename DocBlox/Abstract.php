@@ -29,7 +29,7 @@ abstract class DocBlox_Abstract
 
   protected function debugTimer($message, $name = 'default')
   {
-    $this->debug($message.' in '.$this->getElapsedTime($name).' seconds');
+    $this->debug($message.' in '.number_format($this->getElapsedTime($name), 4).' seconds');
     $this->resetTimer($name);
   }
 
@@ -79,6 +79,14 @@ abstract class DocBlox_Abstract
       self::$logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen('log/'.date('YmdHis').'.errors.log', 'w')));
     }
 
+    static $priority_names = null;
+    if ($priority_names === null)
+    {
+      $r = new ReflectionClass('Zend_Log');
+      $priority_names = array_flip($r->getConstants());
+    }
+
+    echo '['.$priority_names[$priority].': '.date('H:i').']: '.$message.PHP_EOL;
     self::$logger->log($message, $priority);
   }
 

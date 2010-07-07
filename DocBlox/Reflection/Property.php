@@ -1,7 +1,6 @@
 <?php
 class DocBlox_Reflection_Property extends DocBlox_Reflection_Abstract
 {
-  protected $name        = '';
   protected $doc_block   = null;
   protected $static      = false;
   protected $final       = false;
@@ -10,17 +9,12 @@ class DocBlox_Reflection_Property extends DocBlox_Reflection_Abstract
 
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
-    $this->name       = $tokens->current()->getContent();
+    $this->setName($tokens->current()->getContent());
     $this->static     = $this->findStatic($tokens) ? true : false;
     $this->final      = $this->findFinal($tokens)  ? true : false;
     $this->visibility = $this->findVisibility($tokens);
     $this->doc_block  = $this->findDocBlock($tokens);
     $this->default    = $this->findDefault($tokens);
-  }
-
-  public function getName()
-  {
-    return $this->name;
   }
 
   public function getDefault()

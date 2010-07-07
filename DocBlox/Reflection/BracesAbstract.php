@@ -8,12 +8,15 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abst
     $end   = 0;
 
     // parse class contents
-    $this->debug('    Parsing tokens');
+    $this->debug('>> Processing tokens');
     $token = null;
     while ($tokens->valid())
     {
       $token = $token === null ? $tokens->current() : $tokens->next();
 
+      // determine where the 'braced' section starts and end.
+      // the first open brace encountered is considered the opening brace for the block and processing will
+      // be 'breaked' when the closing brace is encountered
       if ($token && !$token->getType() && (($token->getContent() == '{') || (($token->getContent() == '}'))))
       {
         switch ($token->getContent())
@@ -35,7 +38,7 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abst
             if ($level === 0)
             {
               $end = $tokens->key();
-              break 2;
+              break 2; // time to say goodbye
             }
             break;
         }

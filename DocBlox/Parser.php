@@ -31,6 +31,7 @@ class DocBlox_Parser extends DocBlox_Abstract
 
   function parseFile($filename)
   {
+    $this->log('Starting to parse file: '.$filename);
     $this->debug('Starting to parse file: '.$filename);
     $this->resetTimer();
     $result = null;
@@ -51,7 +52,7 @@ class DocBlox_Parser extends DocBlox_Abstract
           $new_dom->appendChild($new_dom->importNode($qry->item(0), true));
           $result = $new_dom->saveXML();
 
-          $this->log('  File "'.$filename.'" has not changed since last build, reusing the old definition');
+          $this->log('>> File has not changed since last build, reusing the old definition');
         }
       }
 
@@ -62,19 +63,19 @@ class DocBlox_Parser extends DocBlox_Abstract
       }
     } catch(Exception $e)
     {
-      $this->log('  Unable to parse file, an error was detected: '.$e->getMessage());
-      $this->debug('  Unable to parse file, an error was detected: '.$e->getMessage());
+      $this->log('>>  Unable to parse file, an error was detected: '.$e->getMessage(), Zend_Log::ALERT);
+      $this->debug('Unable to parse file "'.$filename.'", an error was detected: '.$e->getMessage());
       $result = false;
     }
-    $this->debug('  Used memory: '.memory_get_usage());
-    $this->debugTimer('  Parsed file');
+    $this->debug('>> Memory after processing of file: '.number_format(memory_get_usage()).' bytes');
+    $this->debugTimer('>> Parsed file');
 
     return $result;
   }
 
   function parseFiles($files)
   {
-    echo 'Starting to process '.count($files).' files'.PHP_EOL;
+    $this->log('Starting to process '.count($files).' files').PHP_EOL;
     $timer = new sfTimer();
 
     // convert patterns to regex's
@@ -87,17 +88,15 @@ class DocBlox_Parser extends DocBlox_Abstract
     $dom->loadXML('<project></project>');
     foreach ($files as $file)
     {
+      // check if the file is in an ignore pattern, if so, skip it
       foreach($this->ignore_patterns as $pattern)
       {
         if (preg_match('/^'.$pattern.'$/', $file))
         {
-          echo '  File "'.$file.'" matches ignore pattern, skipping'.PHP_EOL;
+          $this->log('-- File "'.$file.'" matches ignore pattern, skipping');
           continue 2;
         }
       }
-
-      echo '  Parsing "'.$file.'" ... ';
-      $timer_file = new sfTimer();
 
       $xml = $this->parseFile($file);
       if ($xml === false)
@@ -114,13 +113,12 @@ class DocBlox_Parser extends DocBlox_Abstract
       {
         $dom->documentElement->appendChild($dom->importNode($qry->item($i), true));
       }
-
-      echo 'memory: '.memory_get_usage().', duration: '.round($timer_file->getElapsedTime(), 2).'s'.PHP_EOL;
     }
 
     $dom->formatOutput = true;
     $xml = $dom->saveXML();
-    echo 'Elapsed time: '.round($timer->getElapsedTime(), 2).'s'.PHP_EOL;
+    $this->log('--');
+    $this->log('Elapsed time to parse all files: '.round($timer->getElapsedTime(), 2).'s');
 
     return $xml;
   }

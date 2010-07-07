@@ -1,7 +1,6 @@
 <?php
 class DocBlox_Reflection_Class extends DocBlox_Reflection_BracesAbstract
 {
-  protected $name        = '';
   protected $doc_block    = null;
   protected $abstract    = false;
   protected $final       = false;
@@ -17,7 +16,7 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_BracesAbstract
   public function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // retrieve generic information about the class
-    $this->name      = $tokens->findNextByType(T_STRING, 5, array('{'))->getContent();
+    $this->setName($tokens->findNextByType(T_STRING, 5, array('{'))->getContent());
     $this->doc_block = $this->findDocBlock($tokens);
     $this->abstract  = $this->findAbstract($tokens) ? true : false;
     $this->final     = $this->findFinal($tokens)    ? true : false;
@@ -50,7 +49,7 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_BracesAbstract
     $constant->parseTokenizer($tokens);
     $this->constants[] = $constant;
 
-    $this->debugTimer('    Processed const '.$constant->getName(), 'const');
+    $this->debugTimer('>> Processed class constant '.$constant->getName(), 'const');
   }
 
   protected function processVariable($tokens)
@@ -61,7 +60,7 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_BracesAbstract
     $property->parseTokenizer($tokens);
     $this->properties[] = $property;
 
-    $this->debugTimer('    Processed property '.$property->getName(), 'variable');
+    $this->debugTimer('>> Processed property '.$property->getName(), 'variable');
   }
 
   protected function processFunction($tokens)
@@ -71,12 +70,7 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_BracesAbstract
     $method = new DocBlox_Reflection_Method();
     $method->parseTokenizer($tokens);
     $this->methods[] = $method;
-    $this->debugTimer('    Processed method '.$method->getName(), 'method');
-  }
-
-  public function getName()
-  {
-    return $this->name;
+    $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
   }
 
   public function isAbstract()
