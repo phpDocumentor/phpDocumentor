@@ -7,6 +7,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   protected $contents         = '';
   protected $classes          = array();
   protected $functions        = array();
+  protected $constants        = array();
   protected $active_namespace = 'default';
 
   public function __construct($file)
@@ -122,6 +123,19 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $this->functions[$function->getName()] = $function;
   }
 
+  protected function processConst(DocBlox_TokenIterator $tokens)
+  {
+    $this->resetTimer('constant');
+
+    $constant = new DocBlox_Reflection_Constant();
+    $constant->setNamespace($this->active_namespace);
+    $constant->parseTokenizer($tokens);
+
+    $this->debugTimer('>> Processed constant '.$constant->getName(), 'constant');
+
+    $this->constants[$constant->getName()] = $constant;
+  }
+
   public function __toXml()
   {
     $xml_text  = '<?xml version="1.0" encoding="utf-8"?>';
@@ -130,6 +144,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     {
       $function = explode("\n", trim($function->__toXml()));
       $xml_text .= array_pop($function);
+    }
+    foreach($this->constants as $constant)
+    {
+      $constant = explode("\n", trim($constant->__toXml()));
+      $xml_text .= array_pop($constant);
     }
     foreach($this->classes as $class)
     {

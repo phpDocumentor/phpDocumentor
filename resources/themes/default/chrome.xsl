@@ -5,7 +5,7 @@
 
   <xsl:template name="header">
     <xsl:param name="title" />
-    
+
     <div id="nb-header"><xsl:value-of select="$title" /></div>
   </xsl:template>
 
