@@ -203,33 +203,29 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
 
   public function __toXml()
   {
-    $xml_text  = '<?xml version="1.0" encoding="utf-8"?>';
-    $xml_text .= '<file path="'.$this->filename.'" hash="'.$this->hash.'">';
-    $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><dummy></dummy>');
+    $xml = new SimpleXMLElement('<file path="'.ltrim($this->filename, './').'" hash="'.$this->hash.'"></file>');
     $this->addDocblockToSimpleXmlElement($xml);
-    $xml_text .= $xml->docblock->asXml();
+
+    $dom = new DOMDocument();
+    $dom->loadXML(trim($xml->asXML()));
 
     foreach($this->includes as $include)
     {
-      $include = explode("\n", trim($include->__toXml()));
-      $xml_text .= array_pop($include);
+      $this->mergeXmlToDomDocument($dom, trim($include->__toXml()));
     }
     foreach($this->constants as $constant)
     {
-      $constant = explode("\n", trim($constant->__toXml()));
-      $xml_text .= array_pop($constant);
+      $this->mergeXmlToDomDocument($dom, trim($constant->__toXml()));
     }
     foreach($this->functions as $function)
     {
-      $function = explode("\n", trim($function->__toXml()));
-      $xml_text .= array_pop($function);
+      $this->mergeXmlToDomDocument($dom, trim($function->__toXml()));
     }
     foreach($this->classes as $class)
     {
-      $class = explode("\n", trim($class->__toXml()));
-      $xml_text .= array_pop($class);
+      $this->mergeXmlToDomDocument($dom, trim($class->__toXml()));
     }
-    $xml_text .= '</file>';
-    return $xml_text;
+
+    return trim($dom->saveXml());
   }
 }

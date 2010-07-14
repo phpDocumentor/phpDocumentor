@@ -124,7 +124,7 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_BracesAbstract
       $xml->addChild('implements', $interface);
     }
 
-    $dom = new DOMDocument('1.0', 'UTF-8');
+    $dom = new DOMDocument('1.0');
     $dom->loadXML($xml->asXML());
 
     foreach ($this->constants as $constant)

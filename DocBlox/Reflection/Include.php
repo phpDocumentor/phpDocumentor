@@ -6,7 +6,15 @@ class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
   public function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->type = ucwords(strtolower(str_replace('_', ' ', substr($tokens->current()->getName(), 2))));
-    $this->name = trim($tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 10, array(';'))->getContent(), '\'"');
+
+    if ($token = $tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 10, array(';')))
+    {
+      $this->setName(trim($token->getContent(), '\'"'));
+    }
+    elseif ($token = $tokens->gotoNextByType(T_VARIABLE, 10, array(';')))
+    {
+      $this->setName(trim($token->getContent(), '\'"'));
+    }
   }
 
   public function getType()

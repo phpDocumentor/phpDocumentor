@@ -1,4 +1,5 @@
 <?php
+namespace Test\Tests5;
 /**
  * File docblock
  *
@@ -10,7 +11,6 @@ class test
 
 }
 
-//namespace Test\Tests5;
 require 'test2.php';
 require_once 'test2.php';
 include('test2.php');
@@ -52,6 +52,8 @@ function test_function2()
 }
 
 
+
+namespace Test;
 
 /**
  * test.

@@ -81,7 +81,7 @@ class DocBlox_Writer_Xslt_ClassGraph
       $tree['stdClass']['?'][$node] = $this->buildTreenode($extend_classes, $node);
     }
 
-    $graph = new Image_GraphViz(true, array('rankdir' => 'RL', 'concentrate' => 'true', 'ratio' => '0.7'), 'Classes');
+    $graph = new Image_GraphViz(true, array('rankdir' => 'RL', 'splines' => true, 'concentrate' => 'true', 'ratio' => '0.9'), 'Classes');
     $this->buildGraphNode($graph, $tree);
     $dot_file = $graph->saveParsedGraph();
     $graph->renderDotFile($dot_file, $path.'/classes.svg');

@@ -88,6 +88,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
 
   public function findDocBlock(DocBlox_TokenIterator $tokens)
   {
+    $result = null;
     $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{'. '}', ';'));
     try
     {
@@ -102,6 +103,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     {
       $this->log('No DocBlock was found for '.substr(get_class($this), strrpos(get_class($this), '_')+1).' '.$this->getName().' on line '.$this->getLineNumber(), Zend_Log::ERR);
     }
+
     return $result;
   }
 
@@ -192,13 +194,13 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
       {
         $xml->addChild('docblock');
       }
-      $xml->docblock->description = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription());
-        $xml->docblock->{'long-description'} = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription());
+      $xml->docblock->description = utf8_encode(str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription()));
+        $xml->docblock->{'long-description'} = utf8_encode(str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription()));
 
       /** @var Zend_Reflection_Docblock_Tag $tag */
       foreach ($this->getDocBlock()->getTags() as $tag)
       {
-        $tag_object = $xml->docblock->addChild('tag', htmlspecialchars($tag->getDescription()));
+        $tag_object = $xml->docblock->addChild('tag', utf8_encode(htmlspecialchars($tag->getDescription())));
         $tag_object['name'] = trim($tag->getName(), '@');
         if (method_exists($tag, 'getType'))
         {

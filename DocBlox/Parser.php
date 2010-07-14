@@ -126,6 +126,38 @@ class DocBlox_Parser extends DocBlox_Abstract
       }
     }
 
+    // collect all packages and store them in the XML
+    // TODO: the subpackages should be collected and stored as well!
+    $this->log('Collecting all packages');
+    $xpath = new DOMXPath($dom);
+    $packages = array();
+    $qry = $xpath->query('//class/docblock/tag[@name="package"]|//file/docblock/tag[@name="package"]');
+    for ($i = 0; $i < $qry->length; $i++)
+    {
+      if (isset($packages[$qry->item($i)->nodeValue]))
+      {
+        continue;
+      }
+      $packages[$qry->item($i)->nodeValue] = true;
+      $node = new DOMElement('package', $qry->item($i)->nodeValue);
+      $dom->documentElement->appendChild($node);
+    }
+
+    $this->log('Collecting all namespaces');
+    $xpath = new DOMXPath($dom);
+    $namespaces = array();
+    $qry = $xpath->query('//@namespace');
+    for ($i = 0; $i < $qry->length; $i++)
+    {
+      if (isset($namespaces[$qry->item($i)->nodeValue]))
+      {
+        continue;
+      }
+      $namespaces[$qry->item($i)->nodeValue] = true;
+      $node = new DOMElement('namespace', $qry->item($i)->nodeValue);
+      $dom->documentElement->appendChild($node);
+    }
+
     $dom->formatOutput = true;
     $xml = $dom->saveXML();
     $this->log('--');
