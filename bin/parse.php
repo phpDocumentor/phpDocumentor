@@ -34,8 +34,3 @@ if (file_exists($path.'/structure.xml'))
 }
 $docblox->setForced($opts->getOption('force'));
 file_put_contents($path.'/structure.xml', $docblox->parseFiles($opts->getFiles()));
-
-
-//$file = $docblox->parseFile('../../Projects/emma.unet.nl/plugins/emmaProductManagementPlugin/lib/model/om/BaseFeature.php');
-//file_put_contents('structure.xml', $docblox->parseDirectory('.'));
-//file_put_contents('structure.xml', $docblox->parseDirectory('../../Projects/emma.unet.nl/plugins/emmaProductManagementPlugin/lib/model/'));

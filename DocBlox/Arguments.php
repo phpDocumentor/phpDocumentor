@@ -103,8 +103,8 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       return './output';
     }
 
-    $target = ltrim($this->getOption('target'), DIRECTORY_SEPARATOR);
-    if ($target == '')
+    $target = trim($this->getOption('target'));
+    if (($target == '/') || ($target == '/'))
     {
       throw new Exception('Either an empty path or root was given');
     }
