@@ -7,6 +7,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   public function __construct()
   {
     parent::__construct(array(
+      'help|h' => 'show this help message',
       'filename|f=s' => 'name of file(s) to parse file1,file2. Can contain complete path and * ? wildcards',
       'directory|d=s' => 'name of a directory(s) to recursively parse directory1,directory2',
       'extensions|e-s' => 'optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
