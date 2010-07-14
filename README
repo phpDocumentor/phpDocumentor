@@ -1,0 +1,64 @@
+README
+======
+
+What is DocBlox?
+----------------
+DocBlox is a documentation generator, just like phpDocumentor. Though the big difference is that it was written
+with certain goals in mind:
+- Performance
+- Low memory usage
+- PHP 5.3 compatible
+- Integrates nicely with Continuous integration environments (incremental parsing)
+
+The reason I am building this application is actually because the company which I work for currently
+has a project which cannot be parsed by phpDocumentor (due to memory constraints) and I wanted to generate API docs.
+
+I could write quite bit more about this project but will stick to this text for the moment.
+
+Please keep in mind: this is _ALPHA_ software. It has been tested against Zend Framework, Symfony and even larger
+projects but it does not yet contain the full featureset of phpDocumentor.
+
+Requirements
+------------
+DocBlox requires the following:
+- PHP 5.2.1 or higher
+- Graphviz (optional, used for generating Class diagrams)
+
+How to use DocBlox?
+-------------------
+DocBlox takes a two step approach to generating documentation:
+1. parse the source files and create a XML file (structure.xml) containing all metadata
+2. transform the XML file to human readable output (currently only static HTML is supported)
+
+Parsing
+-------
+The parsing is accomplished by executing the file parse.php in the bin directory.
+This file takes several arguments (see './bin/parse.php -h' for a full list) and with it you can select which files
+or directories to parse and which to ignore.
+
+Example:
+./bin/parse.php -d /home/me/project
+The example above parses the /home/me/project directory for any file suffixed with .php and write a structure.xml file
+to the output directory.
+
+By executing this command you construct the building block for the transformation process, the meta data store a.k.a.
+structure.xml.
+
+Please note: if an existing structure.xml is found on the target location it will attempt to check every target file
+if it has changed. If not, it will not re-parse and thus it will reuse the existing definition. Speeding up the process.
+
+Transformation
+--------------
+Unfortunately the transformation process is quite alpha, it works splendidly but it has some hardcoded things,
+like paths, in it.
+
+you can start the transformation process by running ./bin/transform.php; make sure your structure.xml is in the output
+folder of this project (this will become configurable).
+It has no options and will start creating HTML files in the output folder.
+
+That is all, now you have the API documentation of your project.
+
+Documentation
+-------------
+Along the way I will be creating more elaborate documentation, even this file will be improved. But for now I have
+to admit that this is it. (yes, even the docblocks in the code are lacking, this is a Work In Progress ;))
