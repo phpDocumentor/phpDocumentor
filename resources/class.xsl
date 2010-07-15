@@ -24,6 +24,11 @@
             <hr />
             <table class="nb-class-properties">
             <tr><th>Extends</th><td><xsl:value-of select="extends" /></td></tr>
+            <tr><th>Implements</th><td>
+              <xsl:for-each select="implements">
+                <xsl:value-of select="." /><br />
+              </xsl:for-each>
+            </td></tr>
             <xsl:for-each select="docblock/tag">
               <xsl:sort select="@name" />
               <tr><th><xsl:value-of select="@name" /></th><td><xsl:value-of select="." /></td></tr>
@@ -33,6 +38,9 @@
             </table>
           </div>
           <h2>Description</h2>
+          <xsl:if test="not(docblock/description) and not(docblock/long-description)">
+            <strong><em>No description is available</em></strong>
+          </xsl:if>
           <strong><xsl:value-of select="docblock/description" /></strong><br />
           <xsl:value-of disable-output-escaping="yes" select="docblock/long-description" /><br />
           <div style="clear: both"></div>
