@@ -1,8 +1,9 @@
 * global search
+* add argument handling to tranform.php
 * back option to get back to the classes.html
 * rename classes.html to index.html
 * error message when graphviz is not installed
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * description tab of class goes out of bounds if the tags are too big
 
-Any one reading this: this is (not yet) the whole todo ;)
+Any one reading this: this is (not yet) the whole to do ;)
