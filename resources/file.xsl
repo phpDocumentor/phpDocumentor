@@ -6,6 +6,7 @@
   <xsl:include href="class.xsl" />
 
   <xsl:template match="/project">
+    <div id="nb-toolbar"><a href="{$root}/index.html">Back to overview</a></div>
     <xsl:apply-templates select="/project/file[@path=$file]" />
   </xsl:template>
 

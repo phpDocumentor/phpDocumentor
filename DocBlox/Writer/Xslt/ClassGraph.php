@@ -17,18 +17,19 @@ class DocBlox_Writer_Xslt_ClassGraph
 
   public function execute(DomDocument $xml)
   {
+    $path = realpath($this->target);
+
     // prepare the xsl document
     $xsl = new DOMDocument;
-    $xsl->load('resources/class_overview.xsl');
+    $xsl->load('resources/index.xsl');
 
     // configure the transformer
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl); // attach the xsl rules
-    $path = realpath($this->target);
 
     $proc->setParameter('', 'title', 'Classes');
     $proc->setParameter('', 'root', $path);
-    $proc->transformToURI($xml, 'file://'.$path.'/classes.html');
+    $proc->transformToURI($xml, 'file://'.$path.'/index.html');
 
     // generate graphviz
     $xpath = new DOMXPath($xml);

@@ -72,3 +72,12 @@ div.nb-properties
 {
   font-size: 0.8em;
 }
+
+#nb-toolbar
+{
+  font-size: 0.8em;
+  border-bottom: 1px solid silver;
+  padding-bottom: 3px;
+  margin: 3px 8px;
+  margin-top: -6px;
+}
