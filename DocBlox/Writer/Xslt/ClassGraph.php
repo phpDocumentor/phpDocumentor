@@ -27,6 +27,7 @@ class DocBlox_Writer_Xslt_ClassGraph
     $path = realpath($this->target);
 
     $proc->setParameter('', 'title', 'Classes');
+    $proc->setParameter('', 'root', $path);
     $proc->transformToURI($xml, 'file://'.$path.'/classes.html');
 
     // generate graphviz

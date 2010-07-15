@@ -4,23 +4,7 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="/project">
-    <html xmlns="http://www.w3.org/1999/xhtml">
-      <head>
-        <title>Docs for file
-          <xsl:value-of select="@path" />
-        </title>
-        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-        <link rel="stylesheet" href="./css/black-tie/jquery-ui-1.7.3.custom.css" type="text/css" />
-        <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-        <script type="text/javascript" src="js/plugins/jquery-ui-1.7.2.custom.min.js"></script>
-      </head>
-      <body>
-
-        <xsl:apply-templates select="/project/class[name=$class]" />
-
-      </body>
-    </html>
-
+    <xsl:apply-templates select="/project/class[name=$class]" />
   </xsl:template>
 
   <xsl:template match="class">
