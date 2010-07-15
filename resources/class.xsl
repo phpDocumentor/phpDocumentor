@@ -13,9 +13,15 @@
       <div class="tabs">
         <ul>
           <li><a href="#description_{name}">Description</a></li>
+          <xsl:if test="count(method) > 0">
           <li><a href="#methods_{name}">Methods</a></li>
+          </xsl:if>
+          <xsl:if test="count(property) > 0">
           <li><a href="#properties_{name}">Properties</a></li>
+          </xsl:if>
+          <xsl:if test="count(constant) > 0">
           <li><a href="#constants_{name}">Constants</a></li>
+          </xsl:if>
         </ul>
 
         <div id="description_{name}">
@@ -46,6 +52,7 @@
           <div style="clear: both"></div>
         </div>
 
+        <xsl:if test="count(method) > 0">
         <div id="methods_{name}">
           <h2>Methods</h2>
           <div class="nb-sidebar">
@@ -77,7 +84,9 @@
           </div>
           <div style="clear: both"></div>
         </div>
+        </xsl:if>
 
+        <xsl:if test="count(property) > 0">
         <div id="properties_{name}">
           <h2>Properties</h2>
           <div class="nb-sidebar">
@@ -97,7 +106,9 @@
             </xsl:for-each>
           </div>
         </div>
+        </xsl:if>
 
+        <xsl:if test="count(constant) > 0">
         <div id="constants_{name}">
           <h2>Constants</h2>
           <xsl:for-each select="constant">
@@ -106,6 +117,7 @@
             <xsl:apply-templates select="." />
           </xsl:for-each>
         </div>
+        </xsl:if> 
       </div>
     </div>
   </xsl:template>
