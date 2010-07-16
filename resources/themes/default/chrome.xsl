@@ -8,17 +8,45 @@
       <head>
         <title><xsl:value-of select="$title" /></title>
         <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-        <link rel="stylesheet" href="{$root}/css/black-tie/jquery-ui-1.7.3.custom.css" type="text/css" />
+        <link rel="stylesheet" href="{$root}/css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
         <link rel="stylesheet" href="{$root}/css/default.css" type="text/css" />
-        <script type="text/javascript" src="{$root}/js/jquery-1.3.2.min.js"></script>
-        <script type="text/javascript" src="{$root}/js/plugins/jquery-ui-1.7.2.custom.min.js"></script>
-        <script type="text/javascript" src="{$root}/js/plugins/jquery.autocomplete.min.js"></script>
+        <script type="text/javascript" src="{$root}/js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="{$root}/js/jquery-ui-1.8.2.custom.min.js"></script>
       </head>
       <body>
         <script type="text/javascript">
+          function jq_escape(myid)
+          {
+            return '#' + myid.replace(/(#|\$|:|\.|\(|\))/g, '\\$1');
+          }
+
+          function applySearchHash()
+          {
+            hashes = document.location.hash.substr(1, document.location.hash.length);
+            if (hashes != "")
+            {
+              hashes = hashes.split('/');
+              $.each(hashes, function(index, hash)
+              {
+                node = $(jq_escape(hash));
+                switch (node[0].nodeName)
+                {
+                  case 'DIV':
+                    tabs = node.parents('.tabs');
+                    $(tabs[0]).tabs('select', '#' + hash)
+                    break;
+                  case 'A':
+                    window.scrollTo(0, node.offset().top);
+                    break;
+                }
+              });
+            }
+          }
+
           jQuery(function()
           {
             jQuery(".tabs").tabs();
+            applySearchHash();
           });
         </script>
 
@@ -39,12 +67,33 @@
 
     <script type="text/javascript">
       $(function() {
-        $("#search_box").autocomplete({
-          source: ["test", "test2", "class", "function"],//"search_index.json",
-          minLength: 0//,
-//          select: function(event, ui) {
-//            console.debug(ui.item ? ("Selected: " + ui.item.value + ", name: " + ui.item.id) : "Nothing selected, input was " + this.value);
-//          }
+        var search_index = {};
+        $.ajax({
+          url: "<xsl:value-of select="$root" />/search_index.xml",
+          dataType: "xml",
+          error: function(data) {
+            console.debug('an error occurred, ');
+            console.debug(data);
+          },
+          success: function( data ) {
+            search_index = $("node", data).map(function() {
+              type = $("type", this).text();
+              return {
+                value: $("value", this).text(),
+                label: '<img src="{$root}/images/icons/'+type+'.png" align="absmiddle" />'+$("value", this).text(),
+                id: $("id", this).text(),
+              };
+            }).get();
+
+            $("#search_box").autocomplete({
+              source: search_index,
+              select: function(event, ui) {
+                // redirect to the documentation
+                $(location).attr('href', ui.item.id);
+                applySearchHash();
+              }
+            });
+          }
         });
       });
     </script>

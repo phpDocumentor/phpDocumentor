@@ -81,3 +81,8 @@ div.nb-properties
   margin: 3px 8px;
   margin-top: -6px;
 }
+
+#search_box
+{
+  width: 350px;
+}

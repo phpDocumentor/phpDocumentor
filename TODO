@@ -1,13 +1,14 @@
-* global search
-* back option to get back to the classes.html
 * add argument handling to transform.php
+* add interface parsing (and search indexing)
+* add file variable parsing (and search indexing)
 * add parsing of docblock annotations and adding specific functionality per annotation
-* rename classes.html to index.html
 * error message when graphviz is not installed
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * description tab of class goes out of bounds if the tags are too big
 * Parse all (defined) markers (i.e. FIXME, TODO, etc) and @todo annotations
 * syntax highlight @example annotation content
+* revisit template and make it prettier
+* investigate search performance on bigger projects
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 

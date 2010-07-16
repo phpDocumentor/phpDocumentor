@@ -38,23 +38,71 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 
   protected function generateSearchIndex($xml)
   {
-    $output = array();
+    $output = new SimpleXMLElement('<nodes></nodes>');
     $xml    = simplexml_import_dom($xml);
 
     foreach ($xml->file as $file)
     {
       foreach($file->class as $class)
       {
-        $output[] = array(
-          'name' => (string)$class->name,
-          'id' => (string)$class->name,
-        );
+        $class_node        = $output->addChild('node');
+        $class_node->value = (string)$class->name;
+        $class_node->id    = $file['generated-path'].'#'.$class_node->value;
+        $class_node->type  = 'class';
+
+        foreach ($class->constant as $constant)
+        {
+          $node        = $output->addChild('node');
+          $js_path     = (string)$class->name.'/constants_'.(string)$class->name.'/';
+          $node->value = (string)$class->name.'::'.(string)$constant->name;
+          $node->id    = $file['generated-path'].'#'.$js_path.$node->value;
+          $node->type  = 'constant';
+        }
+        foreach ($class->property as $property)
+        {
+          $node        = $output->addChild('node');
+          $js_path     = (string)$class->name.'/properties_'.(string)$class->name.'/';
+          $node->value = (string)$class->name.'::'.(string)$property->name;
+          $node->id    = $file['generated-path'].'#'.$js_path.$node->value;
+          $node->type  = 'property';
+        }
+        foreach ($class->method as $method)
+        {
+          $node        = $output->addChild('node');
+          $js_path     = (string)$class->name.'/methods_'.(string)$class->name.'/';
+          $node->value = (string)$class->name.'::'.(string)$method->name.'()';
+          $node->id    = $file['generated-path'].'#'.$js_path.$node->value;
+          $node->type  = 'method';
+        }
+      }
+      foreach ($file->constant as $constant)
+      {
+        $node        = $output->addChild('node');
+        $js_path     = 'file_constants/';
+        $node->value = (string)$constant->name;
+        $node->id    = $file['generated-path'].'#'.$js_path.$node->value;
+        $node->type  = 'constant';
+      }
+      foreach ($file->function as $function)
+      {
+        $node        = $output->addChild('node');
+        $js_path     = 'file_functions/';
+        $node->value = (string)$function->name.'()';
+        $node->id    = $file['generated-path'].'#'.$js_path.$node->value;
+        $node->type  = 'function';
       }
     }
 
     $target_path = realpath($this->target);
-    $json = json_encode($output);
-    file_put_contents($target_path.'/search_index.json', $json);
+    $output->asXML($target_path.'/search_index.xml');
+  }
+
+  function generateFullPath($path)
+  {
+    $target_path = realpath($this->target);
+    $files_path = $target_path.'/files';
+
+    return $files_path.'/'.$this->generateFilename($path);
   }
 
   public function execute()
@@ -81,12 +129,11 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     $xpath = new DOMXPath($xml);
     $qry = $xpath->query("/project/file[@path]");
 
-    $files_path = $target_path.'/files';
     /** @var DOMElement $element */
     foreach ($qry as $element)
     {
       $files[] = $element->getAttribute('path');
-      $element->setAttribute('generated-path', $files_path.'/'.$this->generateFilename($element->getAttribute('path')));
+      $element->setAttribute('generated-path', $this->generateFullPath($element->getAttribute('path')));
     }
 
     $this->generateFiles($files, $xml);
