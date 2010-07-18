@@ -11,11 +11,40 @@
  * @package
  * @subpackage
  */
-class DocBlox_Writer_Abstract
+class DocBlox_Writer_Abstract extends DocBlox_Abstract
 {
-  protected $theme = 'default';
-  protected $theme_path = 'resources/themes';
-  protected $target = './output';
+  protected $theme         = 'default';
+  protected $theme_path    = '';
+  protected $target        = '';
+  protected $resource_path = '';
+
+  public function __construct()
+  {
+    $root_path           = realpath(dirname(__FILE__).'/../..');
+    $this->resource_path = $root_path.'/resources';
+    $this->theme_path    = $this->resource_path.'/themes';
+    $this->target        = $root_path.'/output';
+  }
+
+  public function getTarget()
+  {
+    return $this->target;
+  }
+
+  public function setTarget($target)
+  {
+    $this->target = $target;
+  }
+
+  public function getTheme()
+  {
+    return $this->theme;
+  }
+
+  public function setTheme($theme)
+  {
+    $this->theme = $theme;
+  }
 
   function copyRecursive($src, $dst)
   {

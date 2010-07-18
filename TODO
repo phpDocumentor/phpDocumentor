@@ -1,15 +1,16 @@
-* add argument handling to transform.php
-* add interface parsing (and search indexing)
-* add file variable parsing (and search indexing)
+* add 'interface' parsing (and search indexing)
+* add 'file variable' parsing (and search indexing)
 * add parsing of docblock annotations and adding specific functionality per annotation
+* Parse all (defined) markers (i.e. FIXME, TODO, etc) and @todo annotations
+* add possibility for README, INSTALL, TODO in markdown format
+* add possibility for custom documents in markdown format
+* separate source and target parameter for transform.php
+* add output format parameter to transform.php
+* description tab of class goes out of bounds if the tags are too big
 * error message when graphviz is not installed
 * safari does not show the svg nicely, it places it into a very small scrollbox
-* description tab of class goes out of bounds if the tags are too big
-* Parse all (defined) markers (i.e. FIXME, TODO, etc) and @todo annotations
 * syntax highlight @example annotation content
 * revisit template and make it prettier
 * investigate search performance on bigger projects
-* add possibility for README, INSTALL, TODO in markdown format
-* add possibility for custom documents in markdown format
 
-Any one reading this: this is (not yet) the whole to do ;)
+More items will be added to this list as the project furthers.

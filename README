@@ -49,16 +49,18 @@ if it has changed. If not, it will not re-parse and thus it will reuse the exist
 
 Transformation
 --------------
-Unfortunately the transformation process is quite alpha, it works splendidly but it has some hardcoded things,
-like paths, in it.
+The transformation process is responsible for creating human-readable output from the generated XML file.
 
-you can start the transformation process by running ./bin/transform.php; make sure your structure.xml is in the output
-folder of this project (this will become configurable).
-It has no options and will start creating HTML files in the output folder.
+You can start the transformation process by running ./bin/transform.php; by default it will look in the output subfolder
+of your DocBlox installation root for the structure.xml file.
+During the transformation the structure.xml file will be interpreted and (static) XHTML files will be created in the
+same folder, additionally a search index and class diagram will be generated.
 
 That is all, now you have the API documentation of your project.
+If you want to see which options are available for transformation, see './bin/transform.php -h' for a full list.
 
 Documentation
 -------------
 Along the way I will be creating more elaborate documentation, even this file will be improved. But for now I have
-to admit that this is it. (yes, even the docblocks in the code are lacking, this is a Work In Progress ;))
+to admit that this is it. (yes, even the docblocks in the code are lacking, this is a Work In Progress and are used
+for testing purposes ;))

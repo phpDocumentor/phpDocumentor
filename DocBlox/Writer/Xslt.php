@@ -11,9 +11,11 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 
   function generateFiles($files, $xml)
   {
+    $this->log('Started generating the static HTML files');
+
     // prepare the xsl document
     $xsl = new DOMDocument;
-    $xsl->load('resources/file.xsl');
+    $xsl->load($this->resource_path.'/file.xsl');
     $target = realpath($this->target);
 
     // configure the transformer
@@ -28,16 +30,23 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
       mkdir($files_path, 0755, true);
     }
 
-    foreach($files as $file)
+    $file_count = count($files);
+    foreach($files as $key => $file)
     {
+      $this->log('Processing file #'.str_pad(($key+1), strlen($file_count), ' ', STR_PAD_LEFT).' of '.$file_count.': '.$file);
       $proc->setParameter('', 'file', $file);
       $proc->setParameter('', 'title', $file);
       $proc->transformToURI($xml, 'file://'.$files_path.'/'.$this->generateFilename($file));
     }
+
+    $this->log('Finished generating the static HTML files');
+
   }
 
   protected function generateSearchIndex($xml)
   {
+    $this->log('Generating the search index');
+
     $output = new SimpleXMLElement('<nodes></nodes>');
     $xml    = simplexml_import_dom($xml);
 
@@ -110,9 +119,9 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     $target_path = realpath($this->target);
 
     // copy all generic files to the target folder
-    $this->copyRecursive('./resources/js', $target_path.'/js');
-    $this->copyRecursive('./resources/css', $target_path.'/css');
-    $this->copyRecursive('./resources/images', $target_path.'/images');
+    $this->copyRecursive($this->resource_path.'/js', $target_path.'/js');
+    $this->copyRecursive($this->resource_path.'/css', $target_path.'/css');
+    $this->copyRecursive($this->resource_path.'/images', $target_path.'/images');
 
     // copy all theme files over the previously copied directories, this enables us to override generic files
     $theme_path = $this->theme_path.DIRECTORY_SEPARATOR.$this->theme;
@@ -139,6 +148,7 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     $this->generateFiles($files, $xml);
     $this->generateSearchIndex($xml);
 
+    $this->log('Generating the class diagram');
     $class_graph = new DocBlox_Writer_Xslt_ClassGraph();
     $class_graph->execute($xml);
   }

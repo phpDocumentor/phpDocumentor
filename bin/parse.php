@@ -16,8 +16,8 @@ try
   }
 } catch (Zend_Console_Getopt_Exception $e)
 {
-  echo $e->getMessage();
   echo $opts->getUsageMessage();
+  exit;
 }
 
 $docblox = new DocBlox_Parser();
