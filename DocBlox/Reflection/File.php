@@ -29,6 +29,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     }
 
     $this->filename = $file;
+    $this->name = $this->filename;
 
     $this->contents = file_get_contents($file);
 
@@ -104,7 +105,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
 
     if (!$result)
     {
-      $this->log('No Page-level DocBlock was found '.$this->getName(), Zend_Log::ERR);
+      $this->log('No Page-level DocBlock was found for '.$this->getName(), Zend_Log::ERR);
     }
     return $result;
   }

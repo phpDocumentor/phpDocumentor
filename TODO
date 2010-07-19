@@ -1,4 +1,3 @@
-* when no page level docblock is found it returns Unknown as name
 * add parsing of docblock annotations and adding specific functionality per annotation
 * Parse all (defined) markers (i.e. FIXME, TODO, etc) and @todo annotations
 * add possibility for README, INSTALL, TODO in markdown format
