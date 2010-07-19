@@ -156,7 +156,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $class = new DocBlox_Reflection_Class();
     $class->setNamespace($this->active_namespace);
     $class->parseTokenizer($tokens);
-    echo $class->getName().PHP_EOL;
 
     $this->debugTimer('>> Processed class '.$class->getName(), 'class');
 
