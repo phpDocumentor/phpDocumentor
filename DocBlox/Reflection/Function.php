@@ -37,7 +37,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 
   protected function findName(DocBlox_TokenIterator $tokens)
   {
-    return $tokens->findNextByType(T_STRING, 5, array('{'))->getContent();
+    return $tokens->findNextByType(T_STRING, 5, array('{', ';'))->getContent();
   }
 
   public function getDocBlock()

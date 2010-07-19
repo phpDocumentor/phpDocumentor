@@ -16,6 +16,17 @@ class DocBlox_Reflection_Method extends DocBlox_Reflection_Function
     parent::processGenericInformation($tokens);
   }
 
+  public function processTokens(DocBlox_TokenIterator $tokens)
+  {
+    // an abstract function does not have a body thus we stop searching
+    if ($this->isAbstract())
+    {
+      return array(0,0);
+    }
+
+    return parent::processTokens($tokens);
+  }
+
   public function getVisibility()
   {
     return $this->visibility;

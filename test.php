@@ -13,7 +13,7 @@ interface iTest extends \Countable
 
 abstract class test implements iTest
 {
-  public function count(){}
+  abstract public function count();
 }
 
 require 'test2.php';
