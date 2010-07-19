@@ -20,6 +20,9 @@
         <xsl:if test="constant">
         <li><a href="#file_constants">Constants</a></li>
         </xsl:if>
+        <xsl:for-each select="interface">
+        <li><a href="#{name}"><xsl:value-of select="name" /></a></li>
+        </xsl:for-each>
         <xsl:for-each select="class">
         <li><a href="#{name}"><xsl:value-of select="name" /></a></li>
         </xsl:for-each>
@@ -74,6 +77,12 @@
         </xsl:for-each>
       </div>
       </xsl:if>
+
+      <xsl:for-each select="interface">
+      <div id="{name}">
+        <xsl:apply-templates select="."/>
+      </div>
+      </xsl:for-each>
 
       <xsl:for-each select="class">
       <div id="{name}">

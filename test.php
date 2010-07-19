@@ -6,9 +6,14 @@ namespace Test\Tests5;
  * @package DocBlox
  */
 
-class test
+interface iTest extends \Countable
 {
 
+}
+
+abstract class test implements iTest
+{
+  public function count(){}
 }
 
 require 'test2.php';

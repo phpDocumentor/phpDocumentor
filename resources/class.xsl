@@ -7,7 +7,7 @@
     <xsl:apply-templates select="/project/class[name=$class]" />
   </xsl:template>
 
-  <xsl:template match="class">
+  <xsl:template match="class|interface">
 
     <div>
       <div class="tabs">
@@ -117,7 +117,7 @@
             <xsl:apply-templates select="." />
           </xsl:for-each>
         </div>
-        </xsl:if> 
+        </xsl:if>
       </div>
     </div>
   </xsl:template>

@@ -5,6 +5,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   protected $hash             = null;
   protected $tokens           = null;
   protected $contents         = '';
+  protected $interfaces       = array();
   protected $classes          = array();
   protected $functions        = array();
   protected $constants        = array();
@@ -59,6 +60,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     }
 
     $this->tokens = token_get_all($this->contents);
+    $this->debug(count($this->tokens).' tokens found in class '.$this->getName());
     $this->tokens = new DocBlox_TokenIterator($this->tokens);
   }
 
@@ -134,6 +136,19 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $this->active_namespace = $namespace;
   }
 
+  protected function processInterface(DocBlox_TokenIterator $tokens)
+  {
+    $this->resetTimer('interface');
+
+    $interface = new DocBlox_Reflection_Interface();
+    $interface->setNamespace($this->active_namespace);
+    $interface->parseTokenizer($tokens);
+
+    $this->debugTimer('>> Processed interface '.$interface->getName(), 'interface');
+
+    $this->interfaces[$interface->getName()] = $interface;
+  }
+
   protected function processClass(DocBlox_TokenIterator $tokens)
   {
     $this->resetTimer('class');
@@ -141,6 +156,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $class = new DocBlox_Reflection_Class();
     $class->setNamespace($this->active_namespace);
     $class->parseTokenizer($tokens);
+    echo $class->getName().PHP_EOL;
 
     $this->debugTimer('>> Processed class '.$class->getName(), 'class');
 
@@ -220,6 +236,10 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     foreach($this->functions as $function)
     {
       $this->mergeXmlToDomDocument($dom, trim($function->__toXml()));
+    }
+    foreach($this->interfaces as $interface)
+    {
+      $this->mergeXmlToDomDocument($dom, trim($interface->__toXml()));
     }
     foreach($this->classes as $class)
     {
