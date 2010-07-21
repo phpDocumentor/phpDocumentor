@@ -14,6 +14,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       'target|t-s' => 'path where to save the generated files (optional, defaults to "output")',
       'verbose|v' => 'Outputs any information collected by this application, may slow down the process slightly',
       'ignore|i-s' => 'file(s) that will be ignored, multiple separated by ",".  Wildcards * and ? are ok',
+      'markers|m-s' => 'Comma-separated list of markers to filter, example (and default): TODO,FIXME',
       'force' => 'forces a full build of the documentation, does not increment existing documentation',
     ));
   }
@@ -120,5 +121,15 @@ class DocBlox_Arguments extends Zend_Console_Getopt
     }
 
     return explode(',', $this->getOption('ignore'));
+  }
+
+  public function getMarkers()
+  {
+    if (!$this->getOption('markers'))
+    {
+      return array('TODO', 'FIXME');
+    }
+
+    return explode(',', $this->getOption('markers'));
   }
 }

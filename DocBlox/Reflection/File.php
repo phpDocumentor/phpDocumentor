@@ -12,6 +12,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   protected $includes         = array();
   protected $doc_block        = null;
   protected $active_namespace = 'default';
+  protected $markers          = array();
+  protected $marker_terms     = array('TODO', 'FIXME');
 
   public function __construct($file)
   {
@@ -36,6 +38,16 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $this->resetTimer('md5');
     $this->setHash(md5($this->contents));
     $this->debugTimer('>> Hashed contents', 'md5');
+  }
+
+  public function addMarker($name)
+  {
+    $this->marker_terms[] = $name;
+  }
+
+  public function setMarkers(array $markers)
+  {
+    $this->marker_terms = $markers;
   }
 
   public function getHash()
@@ -79,11 +91,23 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     // find file docblock; standard function does not suffice as this scans backwards and we have to make sure it isn't
     // the docblock of another element
     $this->doc_block = $this->findDocBlock($tokens);
+
+    // find all markers, get the entire line
+    preg_match_all('~//[\s]*('.implode('|', $this->marker_terms).')\:?[\s]*(.*)~', $this->contents, $matches, PREG_SET_ORDER);
+
+    // store marker results and remove first entry (entire match), this results in an array with 2 entries:
+    // marker name and content
+    $this->markers = $matches;
+    foreach($this->markers as &$marker)
+    {
+      array_shift($marker);
+    }
   }
 
   public function findDocBlock(DocBlox_TokenIterator $tokens)
   {
     $docblock = $tokens->findNextByType(T_DOC_COMMENT, 10, array(T_CLASS, T_NAMESPACE));
+
     try
     {
       $result = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
@@ -93,11 +117,10 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
       $this->log($e->getMessage(), Zend_Log::CRIT);
     }
 
-    // TODO: add a check if a class immediately follows this docblock, if so this is not a page level docblock
-    // but a class docblock
+    // TODO: add a check if a class immediately follows this docblock, if so this is not a page level docblock but a class docblock
 
-    // even with a docblock at top (which may belong to some other component) does it need to have a package
-    // tag to classify
+    // even with a docblock at top (which may belong to some other component) does it
+    // need to have a package tag to classify
     if ($result && !$result->hasTag('package'))
     {
       $result = null;
@@ -107,6 +130,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     {
       $this->log('No Page-level DocBlock was found for '.$this->getName(), Zend_Log::ERR);
     }
+
     return $result;
   }
 
@@ -217,10 +241,25 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $this->includes[] = $include;
   }
 
+  /**
+   *
+   * @todo iets
+   * @return bool|string
+   */
   public function __toXml()
   {
     $xml = new SimpleXMLElement('<file path="'.ltrim($this->filename, './').'" hash="'.$this->hash.'"></file>');
     $this->addDocblockToSimpleXmlElement($xml);
+
+    foreach($this->markers as $marker)
+    {
+      if (!isset($xml->markers))
+      {
+        $xml->addChild('markers');
+      }
+
+      $xml->markers->addChild(strtolower($marker[0]), trim($marker[1]));
+    }
 
     $dom = new DOMDocument();
     $dom->loadXML(trim($xml->asXML()));

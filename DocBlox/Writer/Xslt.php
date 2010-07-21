@@ -41,6 +41,16 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 
     $this->log('Finished generating the static HTML files');
 
+    $this->log('Processing markers');
+    $xsl = new DOMDocument;
+    $xsl->load($this->resource_path.'/markers.xsl');
+
+    // configure the transformer
+    $proc = new XSLTProcessor();
+    $proc->importStyleSheet($xsl); // attach the xsl rules
+    $proc->setParameter('', 'root', $target);
+    $proc->setParameter('', 'title', 'Markers');
+    $proc->transformToURI($xml, 'file://'.$target.'/markers.html');
   }
 
   protected function generateSearchIndex($xml)

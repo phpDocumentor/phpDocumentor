@@ -1,5 +1,6 @@
+* Add Marker page to submenu and 'back to index' to marker page
+* add Zend_Config support for projects and default configuration (command-line options override settings)
 * add parsing of docblock annotations and adding specific functionality per annotation
-* Parse all (defined) markers (i.e. FIXME, TODO, etc) and @todo annotations
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 * separate source and target parameter for transform.php
@@ -9,6 +10,7 @@
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * syntax highlight @example annotation content
 * revisit template and make it prettier
+* add line numbers to markers
 * investigate search performance on bigger projects
 
 More items will be added to this list as the project furthers.

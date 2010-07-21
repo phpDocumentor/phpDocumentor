@@ -1,6 +1,8 @@
 <?php
 abstract class DocBlox_Abstract
 {
+  const VERSION = '0.5.0';
+  
   static protected $logger       = null;
   static protected $debug_logger = null;
   static protected $log_level    = Zend_Log::WARN;

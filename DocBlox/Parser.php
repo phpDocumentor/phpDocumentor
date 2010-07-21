@@ -4,6 +4,7 @@ class DocBlox_Parser extends DocBlox_Abstract
   protected $ignore_patterns = array();
   protected $existing_xml = null;
   protected $force = false;
+  protected $markers = array('TODO', 'FIXME');
 
   public function isForced()
   {
@@ -15,6 +16,16 @@ class DocBlox_Parser extends DocBlox_Abstract
     $this->force = $forced;
   }
 
+  public function getMarkers()
+  {
+    return $this->markers;
+  }
+
+  public function setMarkers($markers)
+  {
+    $this->markers = $markers;
+  }
+
   /**
    * Imports an existing XML source to enable incremental parsing
    *
@@ -24,8 +35,12 @@ class DocBlox_Parser extends DocBlox_Abstract
    */
   public function setExistingXml($xml)
   {
-    $dom = new DOMDocument();
-    $dom->loadXML($xml);
+    $dom = null;
+    if ($xml !== null)
+    {
+      $dom = new DOMDocument();
+      $dom->loadXML($xml);
+    }
 
     $this->existing_xml = $dom;
   }
@@ -50,6 +65,7 @@ class DocBlox_Parser extends DocBlox_Abstract
     try
     {
       $file = new DocBlox_Reflection_File($filename);
+      $file->setMarkers($this->getMarkers());
 
       if (($this->existing_xml !== null) && (!$this->isForced()))
       {
@@ -155,6 +171,13 @@ class DocBlox_Parser extends DocBlox_Abstract
       }
       $namespaces[$qry->item($i)->nodeValue] = true;
       $node = new DOMElement('namespace', $qry->item($i)->nodeValue);
+      $dom->documentElement->appendChild($node);
+    }
+
+    $this->log('Collecting all marker types');
+    foreach ($this->getMarkers() as $marker)
+    {
+      $node = new DOMElement('marker', strtolower($marker));
       $dom->documentElement->appendChild($node);
     }
 
