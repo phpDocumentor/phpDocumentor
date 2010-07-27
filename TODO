@@ -1,16 +1,31 @@
+0.6: Add configuration files, clean up and fixes
+* Clean up code
+* Consider making all Reflection Classes children of SimpleXMLElement to simplify serialization
+* Tweak the usage/help message
 * Add Marker page to submenu and 'back to index' to marker page
+* error message when graphviz is not installed
+* Check theming support and improve
 * add Zend_Config support for projects and default configuration (command-line options override settings)
+* separate source and target parameter for transform.php
+* description tab of class goes out of bounds if the tags are too big
+* safari does not show the svg nicely, it places it into a very small scrollbox
+* add line numbers to markers
+* Add license (information)
+
+0.7: Enhance docblock support, statistics support and add support for multiple writers
+* add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
 * add parsing of docblock annotations and adding specific functionality per annotation
+* Keep track of number of docblock successes and fails and show at the end of the process
+* Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
+* add output format parameter to transform.php and support for multiple writers
+* syntax highlight @example annotation content
+
+0.8: Add custom documents
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
-* separate source and target parameter for transform.php
-* add output format parameter to transform.php
-* description tab of class goes out of bounds if the tags are too big
-* error message when graphviz is not installed
-* safari does not show the svg nicely, it places it into a very small scrollbox
-* syntax highlight @example annotation content
-* revisit template and make it prettier
-* add line numbers to markers
+
+0.9: Pre 1.0 cleanup
 * investigate search performance on bigger projects
+* revisit template and make it prettier
 
 More items will be added to this list as the project furthers.

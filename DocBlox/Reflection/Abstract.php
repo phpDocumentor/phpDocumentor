@@ -53,7 +53,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     return $type ? $type->getContent() : null;
   }
 
-  public function findDefault(DocBlox_TokenIterator $tokens)
+  protected function findDefault(DocBlox_TokenIterator $tokens)
   {
     $default_token        = $tokens->findNextByType(T_STRING, 5, array(',', ')'));
     if (!$default_token)
@@ -71,22 +71,22 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     return $default_token ? trim($default_token->getContent(), '\'"') : null;
   }
 
-  public function findAbstract(DocBlox_TokenIterator $tokens)
+  protected function findAbstract(DocBlox_TokenIterator $tokens)
   {
     return $tokens->findPreviousByType(T_ABSTRACT, 5, array('}'));
   }
 
-  public function findFinal(DocBlox_TokenIterator $tokens)
+  protected function findFinal(DocBlox_TokenIterator $tokens)
   {
     return $tokens->findPreviousByType(T_FINAL, 5, array('}'));
   }
 
-  public function findStatic(DocBlox_TokenIterator $tokens)
+  protected function findStatic(DocBlox_TokenIterator $tokens)
   {
     return $tokens->findPreviousByType(T_STATIC, 5, array('{', ';'));
   }
 
-  public function findDocBlock(DocBlox_TokenIterator $tokens)
+  protected function findDocBlock(DocBlox_TokenIterator $tokens)
   {
     $result = null;
     $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{'. '}', ';'));
@@ -186,7 +186,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     return $this->token_end;
   }
 
-  public function addDocblockToSimpleXmlElement(SimpleXMLElement $xml)
+  protected function addDocblockToSimpleXmlElement(SimpleXMLElement $xml)
   {
     if ($this->getDocBlock())
     {
@@ -222,7 +222,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     $this->mergeDomDocuments($origin, $dom_arguments);
   }
 
-  public function mergeDomDocuments(DOMDocument $origin, DOMDocument $document)
+  protected function mergeDomDocuments(DOMDocument $origin, DOMDocument $document)
   {
     $xpath = new DOMXPath($document);
     $qry = $xpath->query('/*');
@@ -233,5 +233,10 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
   }
 
   abstract public function __toXml();
+
+  public function getDocBlock()
+  {
+    return false;
+  }
 
 }
