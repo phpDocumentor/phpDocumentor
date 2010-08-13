@@ -165,7 +165,6 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    */
   public function getIgnorePatterns()
   {
-    var_dump($this->getOption('ignore'));
     if (!$this->getOption('ignore'))
     {
       return array();
