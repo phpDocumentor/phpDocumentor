@@ -1,174 +1,22 @@
 <?php
 
-class BidiArrayIterator implements Countable, ArrayAccess, Serializable, SeekableIterator
+/**
+ * Iterator class responsible for navigating through a list of Tokens.
+ *
+ * @package    DocBlox
+ * @subpackage Tokens
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
+class DocBlox_TokenIterator extends DocBlox_BidiArrayIterator
 {
   /**
-   * Array containing the items to store
+   * Initializes the token store.
    *
-   * @var mixed[]
+   * @param  DocBlox_Token|string[] $array contains the result from a token_get_all() function call or list of DocBlox_Tokens
+   * @see    token_get_all()
+   *
+   * @return void
    */
-  protected $store         = array();
-
-  /**
-   * Array matching 'store keys' => 'sequence/pointer number'
-   *
-   * @var int[]
-   */
-  protected $key_index     = array();
-
-  /**
-   * Array matching 'sequence/pointer number' => 'store keys'
-   *
-   * @var int[]
-   */
-  protected $pointer_index = array();
-
-  /**
-   * Internal array pointer; contains the actual key in the datastore
-   *
-   * @var int
-   */
-  protected $pointer       = null;
-
-  public function __construct(array $data)
-  {
-    $this->store = $data;
-
-    // cache sequence and sequence lookup hashes
-    $this->pointer_index = array_keys($this->store);
-    $this->key_index     = array_flip($this->pointer_index);
-
-    $this->rewind();
-  }
-
-  public function unserialize($serialized)
-  {
-    $this->store = unserialize($serialized);
-  }
-
-  public function serialize()
-  {
-    return serialize($this->store);
-  }
-
-  public function offsetUnset($offset)
-  {
-    throw new Exception('BidiArrayIterator does not support adding or removing of items');
-  }
-
-  public function offsetSet($offset, $value)
-  {
-    if (!$this->offsetExists($offset))
-    {
-      throw new Exception('BidiArrayIterator does not support adding or removing of items');
-    }
-
-    $this->store[$offset] = $value;
-  }
-
-  public function offsetGet($offset)
-  {
-    return isset($this->store[$offset]) ? $this->store[$offset] : null;
-  }
-
-  public function offsetExists($offset)
-  {
-    return isset($this->store[$offset]);
-  }
-
-  public function count()
-  {
-    return count($this->store);
-  }
-
-  public function rewind()
-  {
-    $this->pointer = isset($this->pointer_index[0]) ? $this->pointer_index[0] : false;
-
-    return $this->offsetGet($this->pointer);
-  }
-
-  public function valid()
-  {
-    return (($this->pointer !== null) && $this->offsetExists($this->pointer));
-  }
-
-  public function key()
-  {
-    return $this->pointer;
-  }
-
-  public function next()
-  {
-    // get the sequence number; if it does not exist return false to indicate invalid position
-    $sequence_nr = isset($this->key_index[$this->pointer]) ? $this->key_index[$this->pointer] : null;
-    if ($sequence_nr === null)
-    {
-      return false;
-    }
-
-    // add 1 to the sequence number and get the new pointer location
-    $sequence_nr++;
-    $this->pointer = isset($this->pointer_index[$sequence_nr]) ? $this->pointer_index[$sequence_nr] : null;
-    if ($this->pointer === null)
-    {
-      return false;
-    }
-
-    // return data
-    return $this->offsetGet($this->pointer);
-  }
-
-  public function previous()
-  {
-    // get the sequence number; if it does not exist return false to indicate invalid position
-    $sequence_nr = isset($this->key_index[$this->pointer]) ? $this->key_index[$this->pointer] : null;
-    if ($sequence_nr === null)
-    {
-      return false;
-    }
-
-    // subtract 1 to the sequence number and get the new pointer location
-    $sequence_nr--;
-    $this->pointer = isset($this->pointer_index[$sequence_nr]) ? $this->pointer_index[$sequence_nr] : null;
-    if ($this->pointer === null)
-    {
-      return false;
-    }
-
-    // return data
-    return $this->offsetGet($this->pointer);
-  }
-
-  /**
-   * @return DocBlox_Token
-   */
-  public function current()
-  {
-    return $this->offsetGet($this->pointer);
-  }
-
-  /**
-   *
-   *
-   * NOTE: this function is used A LOT during the reflection process.
-   * This should be as high-performant as possible and ways should be devised to not use it.
-   *
-   * @param int|string $position
-   *
-   * @return mixed
-   */
-  public function seek($key)
-  {
-    $this->pointer = $key;
-
-    return $this->offsetGet($this->key());
-  }
-
-}
-
-class DocBlox_TokenIterator extends BidiArrayIterator
-{
   public function  __construct($array)
   {
     // convert to token objects; converting up front is _faster_ than ad hoc conversion
@@ -185,18 +33,38 @@ class DocBlox_TokenIterator extends BidiArrayIterator
     parent::__construct($array);
   }
 
+  /**
+   * Finds a token of $type within $max_count tokens in the given $direction, moves the internal pointer when found
+   * and returns the found token, false if none found.
+   *
+   * @throws InvalidArgumentException
+   * @param int      $type      The type of token to find as identified by the token constants, i.e. T_STRING
+   * @param string   $direction The direction where to search, may be 'next' or 'previous'
+   * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
+   * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
+   *
+   * @return bool|DocBlox_Token
+   */
   protected function gotoTokenByTypeInDirection($type, $direction = 'next', $max_count = 0, $stop_at = null)
   {
+    // direction must be 'next' or 'previous'
     if (!in_array($direction, array('next', 'previous')))
     {
-      throw new Exception('The direction must be a string containing either "next" or "previous"');
+      throw new InvalidArgumentException('The direction must be a string containing either "next" or "previous"');
     }
 
+    if ($max_count < 0)
+    {
+      throw new InvalidArgumentException('The maximum count must be a greater or equal to 0');
+    }
+
+    // initialize basic data
     $token = null;
     $found = false;
     $count = 0;
     $index = $this->key();
 
+    // if $stop_at is a single value, convert to array for ease of parsing
     if (!is_array($stop_at) && ($stop_at !== null))
     {
       $stop_at = array($stop_at);
@@ -207,6 +75,8 @@ class DocBlox_TokenIterator extends BidiArrayIterator
     while ($this->valid())
     {
       $count++;
+
+      // break away if we found our token
       $token = $this->current();
       if ($token->getType() == $type)
       {
@@ -214,11 +84,13 @@ class DocBlox_TokenIterator extends BidiArrayIterator
         break;
       }
 
-      // the prev method returns false when there is nothing left to iterate
       $result = $this->$direction();
-      if ($result === false ||
-        (($max_count > 0) && ($count == $max_count)) ||
-        (($stop_at !== null) && (in_array($token->getType(), $stop_at) || in_array($token->getContent(), $stop_at))))
+
+      // the direction methods (next() and previous()) return false if the end of the store is encountered
+      if ($result === false || // End of Array (EoA)
+        (($max_count > 0) && ($count == $max_count)) || // the max_count is reached
+        (($stop_at !== null) && // when a stop is defined, stop if this token matches the condition
+          (in_array($token->getType(), $stop_at) || in_array($token->getContent(), $stop_at))))
       {
         break;
       }
@@ -234,6 +106,20 @@ class DocBlox_TokenIterator extends BidiArrayIterator
     return $found ? $token : false;
   }
 
+  /**
+   * Finds a token of $type within $max_count tokens in the given $direction and returns
+   * the found token, false if none found.
+   *
+   * Note: this function does _not_ move the internal pointer.
+   *
+   * @throws InvalidArgumentException
+   * @param int      $type      The type of token to find as identified by the token constants, i.e. T_STRING
+   * @param string   $direction The direction where to search, may be 'next' or 'previous'
+   * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
+   * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
+   *
+   * @return bool|DocBlox_Token
+   */
   protected function findByTypeInDirection($type, $direction = 'next', $max_count = 0, $stop_at = null)
   {
     // store current position
@@ -242,76 +128,135 @@ class DocBlox_TokenIterator extends BidiArrayIterator
     // move to token (if found) and get that token
     $found = $this->gotoTokenByTypeInDirection($type, $direction, $max_count, $stop_at);
 
-    // return to the last position
-    $this->seek($index);
+    // return to the last position if the item was found, otherwise the goto method has done the seek for us
+    if ($found)
+    {
+      $this->seek($index);
+    }
 
     // return the result
-    return $found ? $found : null;
+    return $found ? $found : false;
   }
 
+  /**
+   * Search forward for a token of $type and move the internal pointer when found.
+   *
+   * @param int      $type      The type of token to find as identified by the token constants, i.e. T_STRING
+   * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
+   * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
+   *
+   * @return bool|DocBlox_Token
+   */
   public function gotoNextByType($type, $max_count = 0, $stop_at = null)
   {
     return $this->gotoTokenByTypeInDirection($type, 'next', $max_count, $stop_at);
   }
 
+  /**
+   * Search backward for a token of $type and move the internal pointer when found.
+   *
+   * @param int      $type      The type of token to find as identified by the token constants, i.e. T_STRING
+   * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
+   * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
+   *
+   * @return bool|DocBlox_Token
+   */
   public function gotoPreviousByType($type, $max_count = 0, $stop_at = null)
   {
     return $this->gotoTokenByTypeInDirection($type, 'previous', $max_count, $stop_at);
   }
 
+  /**
+   * Search forward for a token of $type and _not_ move the internal pointer when found.
+   *
+   * @param int      $type      The type of token to find as identified by the token constants, i.e. T_STRING
+   * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
+   * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
+   *
+   * @return bool|DocBlox_Token
+   */
   public function findNextByType($type, $max_count = 0, $stop_at = null)
   {
     return $this->findByTypeInDirection($type, 'next', $max_count, $stop_at);
   }
 
+  /**
+   * Search backward for a token of $type and _not_ move the internal pointer when found.
+   *
+   * @param int      $type      The type of token to find as identified by the token constants, i.e. T_STRING
+   * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
+   * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
+   *
+   * @return bool|DocBlox_Token
+   */
   public function findPreviousByType($type, $max_count = 0, $stop_at = null)
   {
     return $this->findByTypeInDirection($type, 'previous', $max_count, $stop_at);
   }
 
+  /**
+   * Find the first and last index of a set of matching pair literals (i.e. {}, (), []).
+   *
+   * @param string $start_literal
+   * @param string $end_literal
+   *
+   * @return int[]
+   */
   protected function getTokenIdsBetweenPair($start_literal, $end_literal)
   {
     // store current position
     $index = $this->key();
+
+    // initialize basic variables
     $level = -1;
     $start = null;
     $end   = null;
 
+    // iterate through the list until a matching pair is found
     $this->next();
     while ($this->valid())
     {
       $token = $this->current();
-      if (($token->getType() === null))
-      {
-        if($token->getContent() == $start_literal)
-        {
-          if ($level == -1)
-          {
-            $level++;
-            $start = $this->key();
-          }
-          $level++;
-          $this->next();
-          continue;
-        }
-        elseif ($token->getContent() == $end_literal)
-        {
-          if ($level == -1)
-          {
-            // expect the first brace to be an opening brace
-            break;
-          }
-          $level--;
 
-          // reached the end!
-          if ($level === 0)
-          {
-            $end = $this->key();
-            break;
-          }
-          $this->next();
-          continue;
+      // only respond to literals
+      if (($token->getType() !== null))
+      {
+        $this->next();
+        continue;
+      }
+
+      // if the literal is the same as our starting literal then increase the nesting level
+      if($token->getContent() == $start_literal)
+      {
+        // if the nesting level is -1 then we found our opening brace
+        if ($level == -1)
+        {
+          // increase the level an additional time because we started at -1
+          $level++;
+          $start = $this->key();
         }
+        $level++;
+        $this->next();
+        continue;
+      }
+      elseif ($token->getContent() == $end_literal)
+      {
+        if ($level == -1)
+        {
+          // expect the first brace to be an opening brace
+          break;
+        }
+        $level--;
+
+        // reached the end!
+        if ($level === 0)
+        {
+          $end = $this->key();
+          break;
+        }
+
+        $this->next();
+        continue;
       }
 
       $this->next();
@@ -326,11 +271,21 @@ class DocBlox_TokenIterator extends BidiArrayIterator
     );
   }
 
+  /**
+   * Returns the starting and ending position of the next curly braces pair, i.e. {}.
+   *
+   * @return int[]
+   */
   public function getTokenIdsOfBracePair()
   {
     return $this->getTokenIdsBetweenPair('{', '}');
   }
 
+  /**
+   * Returns the starting and ending position of the next parenthesis pair, i.e. ().
+   *
+   * @return int[]
+   */
   public function getTokenIdsOfParenthesisPair()
   {
     return $this->getTokenIdsBetweenPair('(', ')');

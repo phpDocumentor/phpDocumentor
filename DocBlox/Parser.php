@@ -72,7 +72,7 @@ class DocBlox_Parser extends DocBlox_Abstract
         $xpath = new DOMXPath($this->existing_xml);
 
         /** @var DOMNodeList $qry */
-        $qry = $xpath->query('/project/file[@path=\''.ltrim($file->getName(), './').'\' and @hash=\''.$file->getHash().'\']');
+        $qry = $xpath->query('/project/file[@path=\''.ltrim($file->getName()  , './').'\' and @hash=\''.$file->getHash().'\']');
         if ($qry->length > 0)
         {
           $new_dom = new DOMDocument;

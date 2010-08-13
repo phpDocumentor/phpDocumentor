@@ -1,6 +1,18 @@
 <?php
 abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abstract
 {
+  /**
+   * Generic method which iterates through all tokens between the braces following the current position in the token
+   * iterator.
+   *
+   * Please note: This method will also move the cursor position in the token iterator forward.
+   * When a token is encountered this method will invoke the processToken method, which is defined in the
+   * DocBlox_Reflection_Abstract class. Literals are ignored.
+   *
+   * @see    DocBlox_Reflection_Abstract
+   * @param  DocBlox_TokenIterator $tokens
+   * @return int[]
+   */
   public function processTokens(DocBlox_TokenIterator $tokens)
   {
     $level = -1;
@@ -22,6 +34,7 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abst
         switch ($token->getContent())
         {
           case '{':
+            // expect the first brace to be an opening brace
             if ($level == -1)
             {
               $level++;
@@ -30,7 +43,6 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abst
             $level++;
             break;
           case '}':
-            // expect the first brace to be an opening brace
             if ($level == -1) continue;
             $level--;
 
@@ -47,10 +59,12 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abst
 
       if ($token && $token->getType())
       {
+        // if a token is encountered and it is not a literal, invoke the processToken method
         $this->processToken($token, $tokens);
       }
     }
 
+    // return the start and end token index
     return array($start, $end);
   }
 

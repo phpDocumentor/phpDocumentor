@@ -1,4 +1,7 @@
 ??/??/??: Version 0.6
 ---------------------
 
-* FIXED: Ignore path argument was broken, 
+* FIXED:   Ignore path argument was broken, made fixes
+* FIXED:   Added more comments to the code
+* ADDED:   changelog
+* CHANGED: TODO to have more of a roadmap function
