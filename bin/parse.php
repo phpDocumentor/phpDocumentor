@@ -24,6 +24,12 @@ try
   {
     throw new Zend_Console_Getopt_Exception('');
   }
+
+  if (count($opts->getFiles()) < 1)
+  {
+    throw new Zend_Console_Getopt_Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
+  }
+
 } catch (Zend_Console_Getopt_Exception $e)
 {
   // if the message actually contains anything, show it.
