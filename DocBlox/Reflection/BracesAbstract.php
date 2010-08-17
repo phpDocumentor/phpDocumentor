@@ -1,5 +1,5 @@
 <?php
-abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_Abstract
+abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocBlockedAbstract
 {
   /**
    * Generic method which iterates through all tokens between the braces following the current position in the token

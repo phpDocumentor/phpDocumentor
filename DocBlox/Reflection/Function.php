@@ -1,7 +1,6 @@
 <?php
 class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 {
-  protected $doc_block  = null;
   protected $arguments_token_start = 0;
   protected $arguments_token_end   = 0;
 
@@ -12,7 +11,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     $this->setName($this->findName($tokens));
 
     $this->resetTimer();
-    $this->doc_block  = $this->findDocBlock($tokens);
+    parent::processGenericInformation($tokens);
 
     list($start_index, $end_index) = $tokens->getTokenIdsOfParenthesisPair();
     $this->arguments_token_start = $start_index;
@@ -40,11 +39,6 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     return $tokens->findNextByType(T_STRING, 5, array('{', ';'))->getContent();
   }
 
-  public function getDocBlock()
-  {
-    return $this->doc_block;
-  }
-
   public function __toXml()
   {
     $xml = new SimpleXMLElement('<function></function>');
@@ -61,11 +55,6 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     }
 
     return trim($dom->saveXML());
-  }
-
-  public function __toString()
-  {
-    return $this->getName();
   }
 
 }

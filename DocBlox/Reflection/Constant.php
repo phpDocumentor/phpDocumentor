@@ -1,30 +1,24 @@
 <?php
-class DocBlox_Reflection_Constant extends DocBlox_Reflection_Abstract
+class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
 {
-  protected $doc_block = null;
   protected $value     = '';
 
-  public function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
-    $this->name      = $tokens->gotoNextByType(T_STRING, 5, array('='))->getContent();
+    $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->getContent());
+    $this->setValue($this->findDefault($tokens));
 
-    $this->value     = $this->findDefault($tokens);
-    $this->doc_block = $this->findDocBlock($tokens);
+    parent::processGenericInformation($tokens);
+  }
+
+  public function setValue($value)
+  {
+    $this->value = $value;
   }
 
   public function getValue()
   {
     return $this->value;
-  }
-
-  public function getDocBlock()
-  {
-    return $this->doc_block;
-  }
-
-  public function __toString()
-  {
-    return $this->getName();
   }
 
   public function __toXml()
@@ -37,4 +31,5 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_Abstract
 
     return $xml->asXML();
   }
+
 }

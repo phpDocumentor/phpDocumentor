@@ -4,7 +4,7 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
   protected $abstract    = false;
   protected $final       = false;
 
-  public function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // retrieve generic information about the class
     $this->abstract  = $this->findAbstract($tokens) ? true : false;

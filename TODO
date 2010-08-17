@@ -1,6 +1,5 @@
 0.6: Add configuration files, clean up and fixes
 * Clean up code
-* Consider making all Reflection Classes children of SimpleXMLElement to simplify serialization
 * Tweak the usage/help message
 * Add Marker page to submenu and 'back to index' to marker page
 * error message when graphviz is not installed

@@ -11,31 +11,21 @@
  * @package
  * @subpackage
  */
-class DocBlox_Reflection_Variable extends DocBlox_Reflection_Abstract
+class DocBlox_Reflection_Variable extends DocBlox_Reflection_DocBlockedAbstract
 {
-  protected $doc_block   = null;
   protected $default     = null;
 
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->setName($tokens->current()->getContent());
-    $this->doc_block  = $this->findDocBlock($tokens);
     $this->default    = $this->findDefault($tokens);
+
+    parent::processGenericInformation($tokens);
   }
 
   public function getDefault()
   {
     return $this->default;
-  }
-
-  public function getDocBlock()
-  {
-    return $this->doc_block;
-  }
-
-  public function __toString()
-  {
-    return $this->getName();
   }
 
   public function __toXml(SimpleXMLElement $xml = null)

@@ -13,7 +13,6 @@
  */
 class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
 {
-  protected $doc_block    = null;
   protected $extends     = false;
   protected $extendsFrom = null;
   protected $implements  = false;
@@ -23,7 +22,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   protected $properties  = array();
   protected $methods     = array();
 
-  public function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // retrieve generic information about the class
     $this->setName($tokens->findNextByType(T_STRING, 5, array('{'))->getContent());
@@ -83,16 +82,6 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
   }
 
-  /**
-   * Returns the docblock associated with this class; if any
-   *
-   * @return Zend_Reflection_Docblock|null
-   */
-  public function getDocBlock()
-  {
-    return $this->doc_block;
-  }
-
   public function getParentClass()
   {
     return $this->extends ? $this->extendsFrom : null;
@@ -137,11 +126,6 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     }
 
     return trim($dom->saveXML());
-  }
-
-  public function __toString()
-  {
-    return $this->getName();
   }
 
 }

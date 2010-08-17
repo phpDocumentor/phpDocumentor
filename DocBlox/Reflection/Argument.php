@@ -26,7 +26,7 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
    * @param  DocBlox_TokenIterator $tokens
    * @return void
    */
-  public function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->setName($tokens->current()->getContent());
     $this->type    = $this->findType($tokens);

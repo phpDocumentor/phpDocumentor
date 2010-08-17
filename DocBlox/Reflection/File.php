@@ -1,5 +1,5 @@
 <?php
-class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
+class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 {
   protected $filename         = '';
   protected $hash             = null;
@@ -10,7 +10,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
   protected $functions        = array();
   protected $constants        = array();
   protected $includes         = array();
-  protected $doc_block        = null;
   protected $active_namespace = 'default';
   protected $markers          = array();
   protected $marker_terms     = array('TODO', 'FIXME');
@@ -60,11 +59,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     $this->hash = $hash;
   }
 
-  public function getDocBlock()
-  {
-    return $this->doc_block;
-  }
-
   public function initializeTokens()
   {
     if ($this->tokens instanceof DocBlox_TokenIterator)
@@ -86,7 +80,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_Abstract
     unset($this->tokens);
   }
 
-  public function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // find file docblock; standard function does not suffice as this scans backwards and we have to make sure it isn't
     // the docblock of another element
