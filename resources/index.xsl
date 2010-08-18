@@ -5,6 +5,10 @@
   <xsl:include href="themes/default/chrome.xsl" />
 
   <xsl:template match="/project">
+    <div id="nb-toolbar">
+      <a href="{$root}/markers.html">Markers</a>
+    </div>
+
     <div class="nb-sidebar">
       <div class="tabs">
         <ul>

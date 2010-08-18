@@ -1,8 +1,6 @@
 0.6: Add configuration files, clean up and fixes
 * Clean up code
-* Tweak the usage/help message
-* Add Marker page to submenu and 'back to index' to marker page
-* error message when graphviz is not installed
+* Capture STDERR message when graphviz is not installed (ClassGraph.php:26)
 * Check theming support and improve
 * add Zend_Config support for projects and default configuration (command-line options override settings)
 * separate source and target parameter for transform.php

@@ -1,22 +1,35 @@
 <?php
 /**
- * @author    mvriel
- * @copyright
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Base
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
- * Provide a short description for this class.
+ * Class diagram generator.
  *
- * @author     mvriel
- * @package
- * @subpackage
+ * Checks whether graphviz is enabled and logs an error if not.
+ *
+ * @category   DocBlox
+ * @package    Base
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Writer_Xslt_ClassGraph
+class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
 {
   protected $target = './output';
 
   public function execute(DomDocument $xml)
   {
+    // NOTE: the -V flag sends output using STDERR and STDOUT
+    exec('dot -V', $output, $error);
+    if ($error != 0)
+    {
+      $this->log('Unable to find the `dot` command of the GraphViz package. Is GraphViz correctly installed and present in your path?', Zend_Log::ERR);
+      return;
+    }
+
     $path = realpath($this->target);
 
     // prepare the xsl document

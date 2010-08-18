@@ -23,16 +23,57 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   public function __construct()
   {
     parent::__construct(array(
-      'help|h'         => 'show this help message',
-      'filename|f=s'   => 'name of file(s) to parse file1,file2. Can contain complete path and * ? wildcards',
-      'directory|d=s'  => 'name of a directory(s) to recursively parse directory1,directory2',
-      'extensions|e-s' => 'optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
-      'target|t-s'     => 'path where to save the generated files (optional, defaults to "output")',
-      'verbose|v'      => 'Outputs any information collected by this application, may slow down the process slightly',
-      'ignore|i-s'     => 'file(s) that will be ignored, multiple separated by ",".  Wildcards * and ? are ok',
-      'markers|m-s'    => 'Comma-separated list of markers to filter, example (and default): TODO,FIXME',
-      'force'          => 'forces a full build of the documentation, does not increment existing documentation',
+      'h|help'         => 'Show this help message',
+      'f|filename=s'   => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
+      'd|directory=s'  => 'Comma-separated list of directories to (recursively) parse.',
+      'e|extensions-s' => 'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
+      't|target-s'     => 'Path where to store the generated output (optional, defaults to "output")',
+      'v|verbose'      => 'Provides additional information during parsing, usually only needed for debuggin purposes',
+      'i|ignore-s'     => 'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported',
+      'm|markers-s'    => 'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")',
+      'force'          => 'Forces a full build of the documentation, does not increment existing documentation',
     ));
+  }
+
+  public function getUsageMessage()
+  {
+    $usage = "Usage: {$this->_progname}\n";
+    $maxLen = 20;
+    foreach ($this->_rules as $rule) {
+        $flags = array();
+        if (is_array($rule['alias'])) {
+            foreach ($rule['alias'] as $flag) {
+                $flags[] = (strlen($flag) == 1 ? '-' : '--') . $flag;
+            }
+        }
+        $linepart['name'] = implode(' [', $flags).(count($flags) > 1 ? ']' : '');
+        if (isset($rule['param']) && $rule['param'] != 'none') {
+            $linepart['name'] .= ' ';
+            $rule['paramType'] = strtoupper($rule['paramType']);
+            switch ($rule['param']) {
+                case 'optional':
+                    $linepart['name'] .= "[{$rule['paramType']}]";
+                    break;
+                case 'required':
+                    $linepart['name'] .= "{$rule['paramType']}";
+                    break;
+            }
+        }
+        if (strlen($linepart['name']) > $maxLen) {
+            $maxLen = strlen($linepart['name']);
+        }
+        $linepart['help'] = '';
+        if (isset($rule['help'])) {
+            $linepart['help'] .= $rule['help'];
+        }
+        $lines[] = $linepart;
+    }
+    foreach ($lines as $linepart) {
+        $usage .= sprintf("%s %s\n",
+        str_pad($linepart['name'], $maxLen),
+        $linepart['help']);
+    }
+    return $usage;
   }
 
   /**

@@ -5,6 +5,9 @@
   <xsl:include href="themes/default/chrome.xsl" />
 
   <xsl:template match="/project">
+    <div id="nb-toolbar">
+      <a href="{$root}/index.html">Back to overview</a>
+    </div>
 
     <div class="tabs">
       <ul>

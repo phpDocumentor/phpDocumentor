@@ -1,4 +1,21 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Base
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Base class used for all classes which need to support logging and core functionality.
+ *
+ * This class also contains the (leading) current version number.
+ *
+ * @category   DocBlox
+ * @package    Base
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 abstract class DocBlox_Abstract
 {
   /**
