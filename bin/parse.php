@@ -45,7 +45,7 @@ try
 
 // initialize the parser and pass the options as provided by the user or defaults
 $docblox = new DocBlox_Parser();
-$docblox->setLogLevel($opts->getOption('verbose') ? Zend_Log::DEBUG : Zend_Log::WARN);
+$docblox->setLogLevel($opts->getOption('verbose') ? Zend_Log::DEBUG : $docblox->getLogLevel());
 $docblox->setExistingXml(is_readable($path.'/structure.xml') ? file_get_contents($path.'/structure.xml') : null);
 $docblox->setIgnorePatterns($opts->getIgnorePatterns());
 $docblox->setForced($opts->getOption('force'));

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<docblox>
+  <target>output</target>
+  <extension>php</extension>
+  <extension>php3</extension>
+  <extension>phtml</extension>
+  <logging>
+    <level>warn</level>
+    <paths>
+      <default>log/{DATE}.log</default>
+      <errors>log/{DATE}.errors.log</errors>
+    </paths>
+  </logging>
+</docblox>

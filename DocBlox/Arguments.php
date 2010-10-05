@@ -13,7 +13,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    *
    * @var string[]
    */
-  protected $allowed_extensions = array('php', 'php3', 'phtml');
+  protected $allowed_extensions = null;
 
   /**
    * Initializes the object with all supported parameters.
@@ -168,9 +168,17 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    */
   public function getExtensions()
   {
-    if ($this->getOption('extensions'))
+    if ($this->allowed_extensions === null)
     {
-      $this->allowed_extensions = explode(',', $this->getOption('extensions'));
+      if ($this->getOption('extensions'))
+      {
+        $this->allowed_extensions = explode(',', $this->getOption('extensions'));
+      }
+      else
+      {
+        $this->allowed_extensions = DocBlox_Abstract::config()->extensions;
+        var_dump($this->allowed_extensions);
+      }
     }
 
     return $this->allowed_extensions;
@@ -184,16 +192,20 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    */
   public function getTarget()
   {
-    if (!$this->getOption('target'))
+    $target = $this->getOption('target');
+    if ($target === null)
     {
-      return './output';
+      $target = DocBlox_Abstract::config()->target;
     }
 
-    $target = trim($this->getOption('target'));
+    $target = trim($target);
     if (($target == '') || ($target == '/'))
     {
       throw new Exception('Either an empty path or root was given');
     }
+
+    // remove any ending slashes
+    $target = rtrim($target, DIRECTORY_SEPARATOR);
 
     return $target;
   }

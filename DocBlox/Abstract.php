@@ -34,6 +34,14 @@ abstract class DocBlox_Abstract
   static protected $logger       = null;
 
   /**
+   * The config containing overrides for the defaults.
+   *
+   * @see DocBlox_Abstract::getConfig()
+   * @var Zend_Config
+   */
+  static protected $config       = null;
+
+  /**
    * The logger used to capture the debug messages send by the debug method.
    *
    * @see DocBlox_Abstract::debug()
@@ -48,7 +56,7 @@ abstract class DocBlox_Abstract
    *
    * @var string
    */
-  static protected $log_level    = Zend_Log::WARN;
+  static protected $log_level    = null;
 
   /**
    * Associative array containing all timers by name.
@@ -90,6 +98,23 @@ abstract class DocBlox_Abstract
   }
 
   /**
+   * Returns the level of messages to log.
+   *
+   * If no level is set it tries to get the level from the config file.
+   * @see    Zend_Log
+   * @return void
+   */
+  public function getLogLevel()
+  {
+    if (self::$log_level === null)
+    {
+      $this->setLogLevel($this->getConfig()->logging->level);
+    }
+
+    return self::$log_level;
+  }
+
+  /**
    * Sets a new level to log messages of.
    *
    * @param  string $level Must be one of the Zend_Log LOG_* constants
@@ -98,6 +123,11 @@ abstract class DocBlox_Abstract
    */
   public function setLogLevel($level)
   {
+    if (!is_numeric($level))
+    {
+      $level = constant('Zend_Log::'.strtoupper($level));
+    }
+
     self::$log_level = $level;
   }
 
@@ -135,15 +165,16 @@ abstract class DocBlox_Abstract
   protected function debug($message)
   {
     // is the log level is below debugging; just skip this
-    if (self::$log_level < Zend_Log::DEBUG)
+    if ($this->getLogLevel() < Zend_Log::DEBUG)
     {
       return;
     }
 
     if (!self::$debug_logger)
     {
-      // TODO convert to loading from config
-      self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen('log/'.date('YmdHis').'.debug.log', 'w')));
+      $file = str_replace(array('{DATE}'), array(date('YmdHis')), $this->getConfig()->logging->paths->errors);
+
+      self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
     }
 
     // if the given is not a string then we var dump the object|array to inspect it
@@ -173,7 +204,7 @@ abstract class DocBlox_Abstract
   public function log($message, $priority = Zend_Log::INFO)
   {
     // is the log level is below the priority; just skip this
-    if (self::$log_level < $priority)
+    if ($this->getLogLevel() < $priority)
     {
       return;
     }
@@ -186,8 +217,9 @@ abstract class DocBlox_Abstract
 
     if (!self::$logger)
     {
-      // TODO convert to loading from config
-      self::$logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen('log/'.date('YmdHis').'.errors.log', 'w')));
+      $file = str_replace(array('{DATE}'), array(date('YmdHis')), $this->getConfig()->logging->paths->default);
+
+      self::$logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
     }
 
     static $priority_names = null;
@@ -201,4 +233,28 @@ abstract class DocBlox_Abstract
     self::$logger->log($message, $priority);
   }
 
+  /**
+   * Returns the configuration for DocBlox.
+   *
+   * @return Zend_Config
+   */
+  public function getConfig()
+  {
+    return self::config();
+  }
+
+  /**
+   * Returns the configuration for DocBlox.
+   *
+   * @return Zend_Config
+   */
+  public static function config()
+  {
+    if (self::$config === null)
+    {
+      self::$config = new Zend_Config_Xml(file_get_contents(dirname(__FILE__).'/../config.xml'));
+    }
+
+    return self::$config;
+  }
 }
