@@ -160,7 +160,8 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 
   public function execute()
   {
-    $target_path = realpath($this->target);
+    $target_path = realpath($this->getTarget());
+    $source_file = realpath($this->getSource());
 
     // copy all generic files to the target folder
     $this->copyRecursive($this->resource_path.'/js', $target_path.'/js');
@@ -175,7 +176,7 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 
     // Load the XML source
     $xml = new DOMDocument();
-    $xml->load($target_path.'/structure.xml');
+    $xml->load($source_file);
 
     // get a list of contained files
     $files = array();
@@ -194,6 +195,7 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 
     $this->log('Generating the class diagram');
     $class_graph = new DocBlox_Writer_Xslt_ClassGraph();
+    $class_graph->setTarget($this->getTarget());
     $class_graph->execute($xml);
   }
 }

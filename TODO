@@ -1,20 +1,21 @@
 0.6: Add configuration files, clean up and fixes
 + Add Zend_Config support for projects and default configuration (command-line options override settings)
-* Clean up code
 + Capture STDERR message when graphviz is not installed (ClassGraph.php:26)
++ Get Transformation Writer from Config
++ separate source and target parameter for transform.php
++ Add license (information)
++ add output format parameter to transform.php
 * Check theming support and improve
-* separate source and target parameter for transform.php
 * description tab of class goes out of bounds if the tags are too big
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * add line numbers to markers
-* Add license (information)
 
 0.7: Enhance docblock support, statistics support and add support for multiple writers
 * add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
 * add parsing of docblock annotations and adding specific functionality per annotation
 * Keep track of number of docblock successes and fails and show at the end of the process
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
-* add output format parameter to transform.php and support for multiple writers
+* Add PDF output writer
 * syntax highlight @example annotation content
 
 0.8: Add custom documents

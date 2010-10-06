@@ -16,6 +16,7 @@ class DocBlox_Writer_Abstract extends DocBlox_Abstract
   protected $theme         = 'default';
   protected $theme_path    = '';
   protected $target        = '';
+  protected $source        = '';
   protected $resource_path = '';
 
   public function __construct()
@@ -24,6 +25,17 @@ class DocBlox_Writer_Abstract extends DocBlox_Abstract
     $this->resource_path = $root_path.'/resources';
     $this->theme_path    = $this->resource_path.'/themes';
     $this->target        = $root_path.'/output';
+    $this->source        = $root_path.'/output/structure.xml';
+  }
+
+  public function getSource()
+  {
+    return $this->source;
+  }
+
+  public function setSource($source)
+  {
+    $this->source = $source;
   }
 
   public function getTarget()

@@ -16,8 +16,10 @@ try
   // initialize the argument parser
   $opts = new Zend_Console_Getopt(array(
     'help|h'     => 'show this help message',
-    'target|t-s' => 'path where the structure.xml is located and where to save the generated files (optional, defaults to "output")',
-    'theme-s'      => 'name of the theme to use (optional, defaults to "default")',
+    'source|s-s' => 'path where the structure.xml is located (optional, defaults to "output/structure.xml")',
+    'target|t-s' => 'path where to save the generated files (optional, defaults to "output")',
+    'output|o-s' => 'output format to use (optional, defaults to "xslt")',
+    'theme-s'    => 'name of the theme to use (optional, defaults to "default")',
     'verbose|v'  => 'Outputs any information collected by this application, may slow down the process slightly',
   ));
 
@@ -29,7 +31,60 @@ try
   {
     throw new Zend_Console_Getopt_Exception('');
   }
-} catch (Zend_Console_Getopt_Exception $e)
+
+  // initialize timer
+  $timer = new sfTimer();
+
+  if ($opts->getOption('output'))
+  {
+    $writer = $opts->getOption('output');
+  } else
+  {
+    if (!isset(DocBlox_Abstract::config()->transformation->writer))
+    {
+      throw new Exception('Unable to find configuration entry for the transformation writer, please check your configuration file.');
+    }
+    $writer = DocBlox_Abstract::config()->transformation->writer;
+  }
+  $writer = 'DocBlox_Writer_'.ucfirst($writer);
+  $writer = new $writer();
+
+  // set target option if it was provided by the user
+  if ($opts->getOption('target'))
+  {
+    $path = realpath($opts->getOption('target'));
+    if (!file_exists($path) && !is_dir($path) && !is_writable($path))
+    {
+      throw new Exception('Given target directory does not exist or is not writable');
+    }
+
+    $writer->setTarget($path);
+  }
+
+  // set source option if it was provided by the user
+  if ($opts->getOption('source'))
+  {
+    $path = realpath($opts->getOption('source'));
+    if (!file_exists($path) || !is_readable($path))
+    {
+      throw new Exception('Given source does not exist or is not readable');
+    }
+
+    $writer->setSource($path);
+  }
+
+  // set theme / chrome path if provided
+  if ($opts->getOption('theme'))
+  {
+    $writer->setTheme($opts->getOption('theme'));
+  }
+
+  // enable verbose mode if the flag was set
+  if ($opts->getOption('verbose'))
+  {
+    $writer->setLogLevel(Zend_Log::DEBUG);
+  }
+} catch (Exception $e)
 {
   // if the message actually contains anything, show it.
   if ($e->getMessage())
@@ -42,39 +97,8 @@ try
   exit;
 }
 
-// initialize timer
-$timer = new sfTimer();
-
-echo 'Starting transformation of files (this could take a while depending upon the size of your project)'.PHP_EOL;
-
-// TODO: for now we have hardcoded the Xslt writer, this must become a config entry or argument
-$writer = new DocBlox_Writer_Xslt();
-
-// set target option if it was provided by the user
-if ($opts->getOption('t'))
-{
-  $path = realpath($opts->getOption('t'));
-  if (!file_exists($path) || !is_readable($path.'/structure.xml'))
-  {
-    throw new Exception('Given target or structure.xml does not exist or is not readable');
-  }
-
-  $writer->setTarget($path);
-}
-
-// set theme / chrome path if provided
-if ($opts->getOption('theme'))
-{
-  $writer->setTheme($opts->getOption('theme'));
-}
-
-// enable verbose mode if the flag was set
-if ($opts->getOption('verbose'))
-{
-  $writer->setLogLevel(Zend_Log::DEBUG);
-}
-
 // start the transformation process
+echo 'Starting transformation of files (this could take a while depending upon the size of your project)'.PHP_EOL;
 $writer->execute();
 
 echo 'Finished transformation in '.round($timer->getElapsedTime(), 2).' seconds'.PHP_EOL;

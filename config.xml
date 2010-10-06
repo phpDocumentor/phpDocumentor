@@ -17,4 +17,7 @@
     <item>TODO</item>
     <item>FIXME</item>
   </markers>
+  <transformation>
+    <writer>xslt</writer>
+  </transformation>
 </docblox>

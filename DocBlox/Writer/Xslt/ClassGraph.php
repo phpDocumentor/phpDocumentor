@@ -20,6 +20,26 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
 {
   protected $target = './output';
 
+  /**
+   * Returns the target location for the SVG.
+   *
+   * @return string
+   */
+  public function getTarget()
+  {
+    return $this->target;
+  }
+
+  /**
+   * Sets the target location for the SVG.
+   *
+   * @return string
+   */
+  public function setTarget($target)
+  {
+    $this->target = $target;
+  }
+
   public function execute(DomDocument $xml)
   {
     // NOTE: the -V flag sends output using STDERR and STDOUT
@@ -102,7 +122,7 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
     $graph->renderDotFile($dot_file, $path.'/classes.svg');
   }
 
-  function buildTreenode($node_list, $parent = 'stdClass')
+  protected function buildTreenode($node_list, $parent = 'stdClass')
   {
     if (!isset($node_list[$parent]))
     {
@@ -118,7 +138,7 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
     return $result;
   }
 
-  function buildGraphNode(Image_GraphViz $graph, $nodes, $parent = null)
+  protected function buildGraphNode(Image_GraphViz $graph, $nodes, $parent = null)
   {
     foreach($nodes as $node => $children)
     {
