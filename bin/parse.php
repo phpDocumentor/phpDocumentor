@@ -16,14 +16,27 @@ try
   $opts = new DocBlox_Arguments();
   $opts->parse();
 
-  // getTarget throws an exception if an incorrect path was given; in which case we want to show the help
-  $path = $opts->getTarget();
-
   // the user has indicated that he would like help
   if ($opts->getOption('h'))
   {
     throw new Zend_Console_Getopt_Exception('');
   }
+
+  // merge config with a new one if it is provided
+  if ($opts->getOption('c'))
+  {
+    $filename = $opts->getOption('c');
+    if (!is_readable($filename))
+    {
+      throw new Exception('Config file "'.$filename.'" is not readable');
+    }
+
+    DocBlox_Abstract::config()->merge(new Zend_Config_Xml(file_get_contents($filename)));
+    DocBlox_Abstract::config()->setReadOnly();
+  }
+
+  // getTarget throws an exception if an incorrect path was given; in which case we want to show the help
+  $path = $opts->getTarget();
 
   if (count($opts->getFiles()) < 1)
   {

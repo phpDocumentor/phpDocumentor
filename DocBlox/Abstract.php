@@ -244,6 +244,21 @@ abstract class DocBlox_Abstract
   }
 
   /**
+   * Loads the configuration for DocBlox.
+   *
+   * @param string $filename
+   */
+  public static function loadConfig($filename)
+  {
+    if (!is_readable($filename))
+    {
+      throw new Exception('Config file "'.$filename.'" is not readable');
+    }
+
+    self::$config = new Zend_Config_Xml(file_get_contents($filename), null, true);
+  }
+
+  /**
    * Returns the configuration for DocBlox.
    *
    * @return Zend_Config
@@ -252,7 +267,7 @@ abstract class DocBlox_Abstract
   {
     if (self::$config === null)
     {
-      self::$config = new Zend_Config_Xml(file_get_contents(dirname(__FILE__).'/../config.xml'));
+      self::loadConfig(dirname(__FILE__).'/../config.xml');
     }
 
     return self::$config;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  This config file will automatically be merged with the config.xml in the DocBlox root.
+  You can use this config by invoking DocBloc with the -c option, i.e.: php ./bin/parse.php -c example_config.xml
+-->
+<docblox>
+  <files>
+    <file>bin/parse.php</file>
+    <directory>DocBlox</directory>
+  </files>
+  <ignore>
+    <item>DocBlox/Reflection/*</item>
+  </ignore>
+</docblox>

@@ -1,8 +1,8 @@
 0.6: Add configuration files, clean up and fixes
++ Add Zend_Config support for projects and default configuration (command-line options override settings)
 * Clean up code
 * Capture STDERR message when graphviz is not installed (ClassGraph.php:26)
 * Check theming support and improve
-* add Zend_Config support for projects and default configuration (command-line options override settings)
 * separate source and target parameter for transform.php
 * description tab of class goes out of bounds if the tags are too big
 * safari does not show the svg nicely, it places it into a very small scrollbox

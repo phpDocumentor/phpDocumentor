@@ -24,6 +24,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   {
     parent::__construct(array(
       'h|help'         => 'Show this help message',
+      'c|config-s'     => 'Configuration filename, if none is given the config.xml in the root of DocBlox is used',
       'f|filename=s'   => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
       'd|directory=s'  => 'Comma-separated list of directories to (recursively) parse.',
       'e|extensions-s' => 'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
@@ -90,8 +91,25 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   {
     $files = array();
 
+    // get the file from the config is present
+    $config_files = (isset(DocBlox_Abstract::config()->files) && isset(DocBlox_Abstract::config()->files->file)) ?
+      DocBlox_Abstract::config()->files->file :
+      array();
+    if ($config_files instanceof Zend_Config)
+    {
+      $config_files = $config_files->toArray();
+    }
+    if (is_string($config_files))
+    {
+      $config_files = array($config_files);
+    }
+
     // read the filename argument in search for files (wildcards are explicitly allowed)
-    $expressions = $this->getOption('filename') ? explode(',', $this->getOption('filename')) : array();
+    $expressions = $this->getOption('filename') ?
+      explode(',', $this->getOption('filename')) :
+      $config_files;
+    $expressions = array_unique($expressions);
+
     foreach($expressions as $expr)
     {
       // search file(s) with the given expressions
@@ -117,8 +135,24 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       $files = array_merge($files, $result);
     }
 
+    // get the file from the config is present
+    $config_dirs = (isset(DocBlox_Abstract::config()->files) && isset(DocBlox_Abstract::config()->files->directory)) ?
+      DocBlox_Abstract::config()->files->directory :
+      array();
+    if ($config_dirs instanceof Zend_Config)
+    {
+      $config_dirs = $config_dirs->toArray();
+    }
+    if (is_string($config_dirs))
+    {
+      $config_dirs = array($config_dirs);
+    }
+
     // get all directories which must be recursively checked
-    $option_directories = $this->getOption('directory') ? explode(',', $this->getOption('directory')) : array();
+    $option_directories = $this->getOption('directory') ?
+      explode(',', $this->getOption('directory')) :
+      $config_dirs;
+
     foreach ($option_directories as $directory)
     {
       // if the given is not a directory, skip it
@@ -176,8 +210,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       }
       else
       {
-        $this->allowed_extensions = DocBlox_Abstract::config()->extensions;
-        var_dump($this->allowed_extensions);
+        $this->allowed_extensions = DocBlox_Abstract::config()->extensions->extension->toArray();
       }
     }
 
@@ -218,12 +251,25 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    */
   public function getIgnorePatterns()
   {
-    if (!$this->getOption('ignore'))
+    // get the file from the config is present
+    $config_ignores = (isset(DocBlox_Abstract::config()->ignore) && isset(DocBlox_Abstract::config()->ignore->item)) ?
+      DocBlox_Abstract::config()->ignore->item :
+      array();
+    if ($config_ignores instanceof Zend_Config)
     {
-      return array();
+      $config_ignores = $config_ignores->toArray();
+    }
+    if (is_string($config_ignores))
+    {
+      $config_ignores = array($config_ignores);
     }
 
-    return explode(',', $this->getOption('ignore'));
+    // get all directories which must be recursively checked
+    $option_ignore = $this->getOption('ignore') ?
+      explode(',', $this->getOption('ignore')) :
+      $config_ignores;
+
+    return $option_ignore;
   }
 
   /**
@@ -233,11 +279,25 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    */
   public function getMarkers()
   {
-    if (!$this->getOption('markers'))
+    // get the file from the config is present
+    $config_markers = (isset(DocBlox_Abstract::config()->markers) && isset(DocBlox_Abstract::config()->markers->item)) ?
+      DocBlox_Abstract::config()->markers->item :
+      array();
+    if ($config_markers instanceof Zend_Config)
     {
-      return array('TODO', 'FIXME');
+      $config_markers = $config_markers->toArray();
+    }
+    if (is_string($config_markers))
+    {
+      $config_markers = array($config_markers);
     }
 
-    return explode(',', $this->getOption('markers'));
+    // get all directories which must be recursively checked
+    $option_marker = $this->getOption('marker') ?
+      explode(',', $this->getOption('marker')) :
+      $config_markers;
+
+    return $option_marker;
   }
+
 }

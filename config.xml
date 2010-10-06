@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <docblox>
   <target>output</target>
-  <extension>php</extension>
-  <extension>php3</extension>
-  <extension>phtml</extension>
+  <extensions>
+    <extension>php</extension>
+    <extension>php3</extension>
+    <extension>phtml</extension>
+  </extensions>
   <logging>
     <level>warn</level>
     <paths>
@@ -11,4 +13,8 @@
       <errors>log/{DATE}.errors.log</errors>
     </paths>
   </logging>
+  <markers>
+    <item>TODO</item>
+    <item>FIXME</item>
+  </markers>
 </docblox>
