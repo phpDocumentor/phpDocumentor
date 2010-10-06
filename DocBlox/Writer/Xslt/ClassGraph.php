@@ -23,7 +23,7 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
   public function execute(DomDocument $xml)
   {
     // NOTE: the -V flag sends output using STDERR and STDOUT
-    exec('dot -V', $output, $error);
+    exec('dot -V 2>&1', $output, $error);
     if ($error != 0)
     {
       $this->log('Unable to find the `dot` command of the GraphViz package. Is GraphViz correctly installed and present in your path?', Zend_Log::ERR);
