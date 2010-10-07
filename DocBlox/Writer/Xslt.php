@@ -2,14 +2,14 @@
 
 class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
 {
-  function generateFilename($file)
+  protected function generateFilename($file)
   {
     $info = pathinfo(str_replace('/', '_', trim($file, '/.')));
 
     return $info['filename'].'.html';
   }
 
-  function generateFiles($files, $xml)
+  protected function generateFiles($files, $xml)
   {
     $this->log('Started generating the static HTML files');
 
@@ -188,6 +188,13 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     {
       $files[] = $element->getAttribute('path');
       $element->setAttribute('generated-path', $this->generateFullPath($element->getAttribute('path')));
+    }
+
+    $qry = $xpath->query('//docblock/tag');
+    /** @var DOMElement $element */
+    foreach ($qry as $element)
+    {
+      $element->setAttribute('excerpt', substr($element->nodeValue, 0, 15).(strlen($element->nodeValue) > 15 ? '...' : ''));
     }
 
     $this->generateFiles($files, $xml);

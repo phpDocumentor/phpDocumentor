@@ -37,7 +37,7 @@
             </td></tr>
             <xsl:for-each select="docblock/tag">
               <xsl:sort select="@name" />
-              <tr><th><xsl:value-of select="@name" /></th><td><xsl:value-of select="." /></td></tr>
+              <tr><th><xsl:value-of select="@name" /></th><td><a title="{.}" style="border-bottom: 1px dashed green; cursor: help"><xsl:value-of select="@excerpt" /></a></td></tr>
             </xsl:for-each>
             <tr><th>Abstract</th><td><xsl:if test="@abstract='true'">Yes</xsl:if><xsl:if test="@abstract != 'true'">No</xsl:if></td></tr>
             <tr><th>Final</th><td><xsl:if test="@final='true'">Yes</xsl:if><xsl:if test="@final != 'true'">No</xsl:if></td></tr>

@@ -5,7 +5,7 @@
 + separate source and target parameter for transform.php
 + Add license (information)
 + add output format parameter to transform.php
-* description tab of class goes out of bounds if the tags are too big
++ Properties sidebar of class goes out of bounds if the tags are too big
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * add line numbers to markers
 
