@@ -6,7 +6,6 @@
 + Add license (information)
 + add output format parameter to transform.php
 + Properties sidebar of class goes out of bounds if the tags are too big
-* safari does not show the svg nicely, it places it into a very small scrollbox
 * add line numbers to markers
 
 0.7: Enhance docblock support, statistics support and add support for multiple writers
@@ -18,6 +17,7 @@
 * syntax highlight @example annotation content
 
 0.8: Add custom documents and improve theming
+* safari does not show the svg nicely, it places it into a very small scrollbox
 * Check theming support and improve
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
