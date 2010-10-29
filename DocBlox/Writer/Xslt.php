@@ -194,7 +194,7 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     /** @var DOMElement $element */
     foreach ($qry as $element)
     {
-      $element->setAttribute('excerpt', substr($element->nodeValue, 0, 15).(strlen($element->nodeValue) > 15 ? '...' : ''));
+      $element->setAttribute('excerpt', utf8_encode(substr($element->nodeValue, 0, 15).(strlen($element->nodeValue) > 15 ? '...' : '')));
     }
 
     $this->generateFiles($files, $xml);

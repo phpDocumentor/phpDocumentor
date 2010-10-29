@@ -86,12 +86,20 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     // the docblock of another element
     $this->doc_block = $this->findDocBlock($tokens);
 
+    $result = array();
     // find all markers, get the entire line
-    preg_match_all('~//[\s]*('.implode('|', $this->marker_terms).')\:?[\s]*(.*)~', $this->contents, $matches, PREG_SET_ORDER);
-
+    foreach(explode("\n", $this->contents) as $line_number => $line)
+    {
+      preg_match_all('~//[\s]*('.implode('|', $this->marker_terms).')\:?[\s]*(.*)~', $line, $matches, PREG_SET_ORDER);
+      foreach ($matches as &$match)
+      {
+        $match[3] = $line_number+1;
+      }
+      $result = array_merge($result, $matches);
+    }
     // store marker results and remove first entry (entire match), this results in an array with 2 entries:
     // marker name and content
-    $this->markers = $matches;
+    $this->markers = $result;
     foreach($this->markers as &$marker)
     {
       array_shift($marker);
@@ -252,7 +260,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $xml->addChild('markers');
       }
 
-      $xml->markers->addChild(strtolower($marker[0]), trim($marker[1]));
+      $marker_obj = $xml->markers->addChild(strtolower($marker[0]), trim($marker[1]));
+      $marker_obj->addAttribute('line', $marker[2]);
     }
 
     $dom = new DOMDocument();

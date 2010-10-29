@@ -31,11 +31,11 @@
           <tr><th>Path</th><th>Description</th></tr>
         <xsl:if test="$marker='todo'">
           <xsl:for-each select="//tag[@name='todo']">
-            <tr><td><xsl:value-of select="../../../../@path|../../@path|../../../@path" /></td><td><xsl:value-of select="." /></td></tr>
+            <tr><td><xsl:value-of select="../../../../@path|../../@path|../../../@path" />:<xsl:value-of select="./@line" /></td><td><xsl:value-of select="." /></td></tr>
           </xsl:for-each>
         </xsl:if>
         <xsl:for-each select="../file/markers/*[name()=$marker]">
-          <tr><td><xsl:value-of select="../../@path" /></td><td><xsl:value-of select="." /></td></tr>
+          <tr><td><xsl:value-of select="../../@path" />:<xsl:value-of select="./@line" /></td><td><xsl:value-of select="." /></td></tr>
         </xsl:for-each>
         </table>
       </div>

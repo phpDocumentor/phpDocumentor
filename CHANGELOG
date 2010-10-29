@@ -1,7 +1,15 @@
-??/??/??: Version 0.6
+29/10/2010: Version 0.6: Add configuration files, clean up and fixes
 ---------------------
 
 * FIXED:   Ignore path argument was broken, made fixes
 * FIXED:   Added more comments to the code
 * ADDED:   changelog
 * CHANGED: TODO to have more of a roadmap function
+* ADDED:   Zend_Config support for projects and default configuration (command-line options override settings)
+* FIXED:   Capture STDERR message when graphviz is not installed (ClassGraph.php:26)
+* CHANGED: Get Transformation Writer from Config
+* CHANGED: separated source and target parameter for transform.php
+* ADDED:   license (information)
+* ADDED:   output format parameter to transform.php
+* FIXED:   Properties sidebar of class goes out of bounds if the tags are too big
+* ADDED:   line numbers to markers

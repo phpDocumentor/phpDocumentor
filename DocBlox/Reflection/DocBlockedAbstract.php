@@ -20,6 +20,11 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     $this->doc_block = $this->findDocBlock($tokens);
   }
 
+  /**
+   * Returns the DocBlock reflection object.
+   *
+   * @return Zend_Reflection_Docblock
+   */
   public function getDocBlock()
   {
     return $this->doc_block;
@@ -40,6 +45,11 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     try
     {
       $result = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
+      if ($result)
+      {
+        // attach line number to class, the Zend_Reflection_DocBlock does not know the number
+        $result->line_number = $docblock->getLineNumber();
+      }
     }
     catch (Exception $e)
     {
@@ -63,20 +73,28 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         $xml->addChild('docblock');
       }
       $xml->docblock->description = utf8_encode(str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription()));
-        $xml->docblock->{'long-description'} = utf8_encode(str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription()));
+      $xml->docblock->{'long-description'} = utf8_encode(str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription()));
 
       /** @var Zend_Reflection_Docblock_Tag $tag */
       foreach ($this->getDocBlock()->getTags() as $tag)
       {
         $tag_object = $xml->docblock->addChild('tag', utf8_encode(htmlspecialchars($tag->getDescription())));
         $tag_object['name'] = trim($tag->getName(), '@');
+
         if (method_exists($tag, 'getType'))
         {
           $tag_object['type'] = $tag->getType();
         }
+
         if (method_exists($tag, 'getVariableName'))
         {
           $tag_object['variable'] = $tag->getVariableName();
+        }
+
+        // custom attached member variable, see line 51
+        if (isset($this->getDocBlock()->line_number))
+        {
+          $tag_object['line'] = $this->getDocBlock()->line_number;
         }
       }
     }
