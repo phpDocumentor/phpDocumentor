@@ -22,10 +22,28 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   protected $properties  = array();
   protected $methods     = array();
 
+  protected function extractClassName($tokens)
+  {
+    // a class name can be a combination of a T_NAMESPACE and T_STRING
+    $name = '';
+    while ($token = $tokens->next())
+    {
+      if (!in_array($token->getType(), array(T_WHITESPACE, T_STRING, T_NS_SEPARATOR)))
+      {
+        $tokens->previous();
+        break;
+      }
+
+      $name .= $token->getContent();
+    }
+
+    return trim($name);
+  }
+
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // retrieve generic information about the class
-    $this->setName($tokens->findNextByType(T_STRING, 5, array('{'))->getContent());
+    $this->setName($this->extractClassName($tokens));
     $this->doc_block = $this->findDocBlock($tokens);
     $this->abstract  = $this->findAbstract($tokens) ? true : false;
     $this->final     = $this->findFinal($tokens)    ? true : false;
@@ -33,17 +51,17 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     // parse a EXTENDS section
     $extends = $tokens->gotoNextByType(T_EXTENDS, 5, array('{'));
     $this->extends = ($extends) ? true : false;
-    $this->extendsFrom = ($extends) ? $tokens->gotoNextByType(T_STRING, 5, array('{'))->getContent() : null;
+    $this->extendsFrom = ($extends) ? $this->extractClassName($tokens) : null;
 
     // Parse an eventual implements section: implements _always_ follows extends
     $implements = $tokens->gotoNextByType(T_IMPLEMENTS, 5, array('{'));
     $interfaces = array();
     if ($implements)
     {
-      while (($interface_token = $tokens->gotoNextByType(T_STRING, 5, array('{'))) !== false)
+      do
       {
-        $interfaces[] = $interface_token->getContent();
-      }
+        $interfaces[] = $this->extractClassName($tokens);
+      } while ($tokens->next()->getContent() == ',');
     }
 
     $this->implements = ($implements) ? true : false;

@@ -122,17 +122,25 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
     $graph->renderDotFile($dot_file, $path.'/classes.svg');
   }
 
-  protected function buildTreenode($node_list, $parent = 'stdClass')
+  protected function buildTreenode($node_list, $parent = 'stdClass', $chain = array())
   {
+    if (count($chain) > 50)
+    {
+      $path = implode(' => ', array_slice($chain, -10));
+      $this->log('Maximum nesting level reached of 50, last 10 classes in the hierarchy path: '.$path, Zend_Log::WARN);
+      return array();
+    }
+
     if (!isset($node_list[$parent]))
     {
       return array();
     }
 
     $result = array();
+    $chain[] = $parent;
     foreach($node_list[$parent] as $node)
     {
-      $result[$node] = $this->buildTreenode($node_list, $node);
+      $result[$node] = $this->buildTreenode($node_list, $node, $chain);
     }
 
     return $result;
