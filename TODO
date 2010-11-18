@@ -1,20 +1,23 @@
-0.7: Enhance docblock support, statistics support and add support for multiple writers
-* add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
-* add parsing of docblock annotations and adding specific functionality per annotation
-* Keep track of number of docblock successes and fails and show at the end of the process
-* Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
-* Add PDF output writer
-* syntax highlight @example annotation content
+0.7: Enhance docblock support and add support for multiple writers
+* Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name
+* investigate search performance on bigger projects
 * add links to other classes with the @param and @return annotation information
+* add parsing of docblock annotations and adding specific functionality per annotation
+* syntax highlight @example annotation content
+* add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
+* Add PDF output writer
+* Zend_Reflection_DocBlock does not correctly parse docblocks. It sometimes fail to see the diff between a short and
+  long description.
 
-0.8: Add custom documents and improve theming
-* safari does not show the svg nicely, it places it into a very small scrollbox
+0.8: Add custom documents, statistics and improve theming
+* Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
+* Keep track of number of docblock successes and fails and show at the end of the process
 * Check theming support and improve
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 
 0.9: Pre 1.0 cleanup
-* investigate search performance on bigger projects
+* safari does not show the svg nicely, it places it into a very small scrollbox
 * revisit template and make it prettier
 
 More items will be added to this list as the project furthers.
