@@ -85,7 +85,7 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
         $extend_classes[$extends] = array();
       }
 
-      $extend_classes[$extends][] = $element->getElementsByTagName('name')->item(0)->nodeValue;
+      $extend_classes[$extends][] = $element->getAttribute('namespace') . '\\' . $element->getElementsByTagName('name')->item(0)->nodeValue;
       $classes[] = $element->getElementsByTagName('name')->item(0)->nodeValue;
     }
 
@@ -150,10 +150,11 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
   {
     foreach($nodes as $node => $children)
     {
-      $graph->addNode($node, array('label' => $node, 'shape' => 'box'));
+      $node_array = explode('\\', $node);
+      $graph->addNode(md5($node), array('label' => end($node_array), 'shape' => 'box'));
       if ($parent !== null)
       {
-        $graph->addEdge(array($node => $parent), array('arrowhead' => 'empty', 'minlen' => '2'));
+        $graph->addEdge(array(md5($node) => md5($parent)), array('arrowhead' => 'empty', 'minlen' => '2'));
       }
       $this->buildGraphNode($graph, $children, $node);
     }
