@@ -61,7 +61,7 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
     $proc->importStyleSheet($xsl); // attach the xsl rules
 
     $proc->setParameter('', 'title', 'Classes');
-    $proc->setParameter('', 'root', $path);
+    $proc->setParameter('', 'root', '.');
     $proc->transformToURI($xml, 'file://'.$path.'/index.html');
 
     // generate graphviz

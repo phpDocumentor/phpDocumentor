@@ -21,7 +21,7 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     // configure the transformer
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl); // attach the xsl rules
-    $proc->setParameter('', 'root', $target);
+    $proc->setParameter('', 'root', '.');
 
     // process each file and store it in a separate .html file
     $files_path = $target.'/files';
@@ -36,7 +36,10 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
       $this->log('Processing file #'.str_pad(($key+1), strlen($file_count), ' ', STR_PAD_LEFT).' of '.$file_count.': '.$file);
       $proc->setParameter('', 'file', $file);
       $proc->setParameter('', 'title', $file);
-      $proc->transformToURI($xml, 'file://'.$files_path.'/'.$this->generateFilename($file));
+      $file_name = $this->generateFilename($file);
+      $root = str_repeat('../', substr_count($file_name, '/')+1);
+      $proc->setParameter('', 'root', substr($root ? $root : './', 0, -1));
+      $proc->transformToURI($xml, 'file://'.$files_path.'/'.$file_name);
     }
 
     $this->log('Finished generating the static HTML files');
@@ -48,7 +51,7 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     // configure the transformer
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl); // attach the xsl rules
-    $proc->setParameter('', 'root', $target);
+    $proc->setParameter('', 'root', '.');
     $proc->setParameter('', 'title', 'Markers');
     $proc->transformToURI($xml, 'file://'.$target.'/markers.html');
   }
@@ -150,12 +153,16 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     $output->asXML($target_path.'/search_index.xml');
   }
 
-  function generateFullPath($path)
+  /**
+   * Returns _the_ path used to identify file locations.
+   *
+   * @param string $path
+   *
+   * @return string
+   */
+  protected function generateFullPath($path)
   {
-    $target_path = realpath($this->target);
-    $files_path = $target_path.'/files';
-
-    return $files_path.'/'.$this->generateFilename($path);
+    return 'files/'.$this->generateFilename($path);
   }
 
   public function execute()
@@ -205,4 +212,5 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     $class_graph->setTarget($this->getTarget());
     $class_graph->execute($xml);
   }
+
 }

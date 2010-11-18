@@ -89,7 +89,7 @@
               source: search_index,
               select: function(event, ui) {
                 // redirect to the documentation
-                $(location).attr('href', ui.item.id);
+                $(location).attr('href', '<xsl:value-of select="$root" />/'+ui.item.id);
                 applySearchHash();
               }
             });
