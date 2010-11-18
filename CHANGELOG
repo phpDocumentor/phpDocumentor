@@ -1,3 +1,8 @@
+xx/xx/xxxx: Version 0.7
+---------------------
+
+* FIXED: Generated paths where set absolute to the file system preventing the running of generated output in a webserver
+
 29/10/2010: Version 0.6: Add configuration files, clean up and fixes
 ---------------------
 

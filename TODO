@@ -5,6 +5,7 @@
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
 * Add PDF output writer
 * syntax highlight @example annotation content
+* add links to other classes with the @param and @return annotation information
 
 0.8: Add custom documents and improve theming
 * safari does not show the svg nicely, it places it into a very small scrollbox
