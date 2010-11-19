@@ -44,6 +44,11 @@ div.nb-right-of-sidebar
   color: silver;
 }
 
+.nb-faded-text a
+{
+  color: silver;
+}
+
 div.nb-properties
 {
   float: right;
@@ -85,4 +90,11 @@ div.nb-properties
 #search_box
 {
   width: 350px;
+}
+
+h3
+{
+  padding-bottom: 5px;
+  font-size: 16px;
+  border-bottom: 1px dashed rgb(100, 149, 237);
 }

@@ -64,6 +64,31 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     return $result;
   }
 
+  /**
+   * Tries to expand a type to it's full namespaced equivalent.
+   *
+   * @param string $type
+   *
+   * @return string
+   */
+  protected function expandType($type)
+  {
+    $non_objects = array('string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
+      'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback');
+    $namespace = $this->getNamespace() == 'default' ? '' : '\\'.$this->getNamespace().'\\';
+
+    $type = explode('|', $type);
+    foreach($type as &$item)
+    {
+      $item = trim($item);
+      $item = (substr($item, 0, 1) != '\\') && (!in_array(strtolower($item), $non_objects))
+        ? $namespace.$item
+        : $item;
+    }
+
+    return implode('|', $type);
+  }
+
   protected function addDocblockToSimpleXmlElement(SimpleXMLElement $xml)
   {
     if ($this->getDocBlock())
@@ -78,12 +103,31 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       /** @var Zend_Reflection_Docblock_Tag $tag */
       foreach ($this->getDocBlock()->getTags() as $tag)
       {
-        $tag_object = $xml->docblock->addChild('tag', utf8_encode(htmlspecialchars($tag->getDescription())));
+        $type = null;
+        $description = utf8_encode(htmlspecialchars($tag->getDescription()));
+        if (trim($tag->getName(), '@') == 'var')
+        {
+          $elements = explode(' ', trim((string)$description));
+          $elements[0] = $this->expandType($elements[0]);
+
+          $type = $elements[0];
+          $description = implode(' ', $elements);
+        }
+
+        $tag_object = $xml->docblock->addChild('tag', $description);
         $tag_object['name'] = trim($tag->getName(), '@');
 
-        if (method_exists($tag, 'getType'))
+        // store the type if it was set
+        if ($type !== null)
         {
-          $tag_object['type'] = $tag->getType();
+          $tag_object['type'] = $type;
+        }
+
+        if (method_exists($tag, 'getType') && ($type === null))
+        {
+          // only add namespacing to object types
+          $type = $this->expandType($tag->getType());
+          $tag_object['type'] = $type;
         }
 
         if (method_exists($tag, 'getVariableName'))

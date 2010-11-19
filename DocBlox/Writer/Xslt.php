@@ -165,6 +165,10 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     return 'files/'.$this->generateFilename($path);
   }
 
+  public function preProcessFiles($xml)
+  {
+
+  }
   public function execute()
   {
     $target_path = realpath($this->getTarget());
@@ -188,19 +192,37 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Abstract
     // get a list of contained files
     $files = array();
     $xpath = new DOMXPath($xml);
-    $qry = $xpath->query("/project/file[@path]");
 
-    /** @var DOMElement $element */
+    // find all files and add a generated-path variable
+    $qry = $xpath->query("/project/file[@path]");
     foreach ($qry as $element)
     {
       $files[] = $element->getAttribute('path');
       $element->setAttribute('generated-path', $this->generateFullPath($element->getAttribute('path')));
     }
 
+    // add extra xml elements to tags
     $qry = $xpath->query('//docblock/tag');
     /** @var DOMElement $element */
     foreach ($qry as $element)
     {
+      // if a tag has a type, add a link to the given file if it exists in the xml
+      if ($element->hasAttribute('type'))
+      {
+        // find the path of the file of the class referred by the type (namespaces are taken into account (full_name))
+        $query = '//class[full_name=\''.$element->getAttribute('type').'\']/../@path';
+
+        /** @var DOMNodeList $res */
+        $res = $xpath->query($query);
+        if ($res->length > 0)
+        {
+          // if a path was found, convert it to a filename and add it onto the element
+          $file_name = $this->generateFilename($res->item(0)->nodeValue);
+          $element->setAttribute('link', $file_name);
+        }
+      }
+
+      // add a 15 character excerpt of the node contents, meant for the sidebar
       $element->setAttribute('excerpt', utf8_encode(substr($element->nodeValue, 0, 15).(strlen($element->nodeValue) > 15 ? '...' : '')));
     }
 

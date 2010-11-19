@@ -37,7 +37,7 @@
             </td></tr>
             <xsl:for-each select="docblock/tag">
               <xsl:sort select="@name" />
-              <tr><th><xsl:value-of select="@name" /></th><td><a title="{.}" style="border-bottom: 1px dashed green; cursor: help"><xsl:value-of select="@excerpt" /></a></td></tr>
+              <tr><th><xsl:value-of select="@name" /></th><td><a title="{.}" href="{@link}" style="border-bottom: 1px dashed green; cursor: help"><xsl:value-of select="@excerpt" /></a></td></tr>
             </xsl:for-each>
             <tr><th>Abstract</th><td><xsl:if test="@abstract='true'">Yes</xsl:if><xsl:if test="@abstract != 'true'">No</xsl:if></td></tr>
             <tr><th>Final</th><td><xsl:if test="@final='true'">Yes</xsl:if><xsl:if test="@final != 'true'">No</xsl:if></td></tr>
@@ -126,7 +126,15 @@
     <a id="{../name}::{name}()" />
     <h3>
       <span class="nb-faded-text">
-        <xsl:if test="not(docblock/tag[@name='return']/@type)">n/a</xsl:if><xsl:value-of select="docblock/tag[@name='return']/@type" />
+        <xsl:if test="not(docblock/tag[@name='return']/@type)">n/a</xsl:if>
+        <xsl:if test="docblock/tag[@name='return']/@type">
+          <xsl:if test="docblock/tag[@name='return']/@link">
+            <a href="{$root}/files/{docblock/tag[@name='return']/@link}"><xsl:value-of select="docblock/tag[@name='return']/@type" /></a>
+          </xsl:if>
+          <xsl:if test="not(docblock/tag[@name='return']/@link)">
+            <xsl:value-of select="docblock/tag[@name='return']/@type" />
+          </xsl:if>
+        </xsl:if>
       </span>
       &#160;<xsl:value-of select="name" />
       <span class="nb-faded-text">(
@@ -148,7 +156,7 @@
     <a id="{../name}::{name}" />
     <h3>
       <span class="nb-faded-text">
-        <xsl:value-of select="docblock/tag[@name='var']/." />&#160;
+        <xsl:value-of select="docblock/tag[@name='var']/@type" />&#160;
         <xsl:value-of select="@visibility" />&#160;
         <xsl:if test="@static='true'">static&#160;</xsl:if>
         <xsl:if test="@final='true'">final&#160;</xsl:if>
