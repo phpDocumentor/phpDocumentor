@@ -1,5 +1,4 @@
 0.7: Enhance docblock support and add support for multiple writers
-* Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name
 * investigate search performance on bigger projects
 * add links to other classes with the @param and @return annotation information
 * add parsing of docblock annotations and adding specific functionality per annotation

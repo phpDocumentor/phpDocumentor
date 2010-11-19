@@ -4,6 +4,8 @@ xx/xx/xxxx: Version 0.7: Enhance docblock support and add support for multiple w
 * FIXED: Generated paths where set absolute to the file system preventing the running of generated output in a webserver
 * FIXED: Namespaces where not included in the extend and implement xml nodes
 * FIXED: Class hierarchy chart entered an endless recursion if a class extended another class with the same name in a different namespace
+* FIXED: Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name. CLosures receive the name 'Closure'
+* ADDED: Line numbers to all objects in the xml output
 
 29/10/2010: Version 0.6: Add configuration files, clean up and fixes
 ---------------------
