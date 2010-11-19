@@ -3,5 +3,6 @@ errors.log
 .idea
 structure.xml
 output/*.*
+output/*/
 phpdoc_example
 log/*.*
