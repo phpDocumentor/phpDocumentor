@@ -5,6 +5,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
   protected $arguments_token_end   = 0;
 
   protected $arguments     = array();
+  protected $type          = 'function';
 
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
@@ -36,14 +37,29 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 
   protected function findName(DocBlox_TokenIterator $tokens)
   {
-    return $tokens->findNextByType(T_STRING, 5, array('{', ';'))->getContent();
+    $name = $tokens->findNextByType(T_STRING, 5, array('{', ';'));
+    $this->setType($name ? 'function' : 'closure');
+
+    return $name ? $name->getContent() : 'Closure';
+  }
+
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+
+  public function getType()
+  {
+    return $this->type;
   }
 
   public function __toXml()
   {
     $xml = new SimpleXMLElement('<function></function>');
     $xml['namespace']  = $this->getNamespace();
+    $xml['line'] = $this->getLineNumber();
     $xml->name = $this->getName();
+    $xml->type = $this->getType();
     $this->addDocblockToSimpleXmlElement($xml);
 
     $dom = new DOMDocument('1.0', 'UTF-8');

@@ -61,6 +61,7 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
   public function __toXml()
   {
     $xml = new SimpleXMLElement('<argument></argument>');
+    $xml['line']       = $this->getLineNumber();    
     $xml->name         = $this->getName();
     $xml->default      = $this->getDefault();
     $xml->type         = $this->getType();

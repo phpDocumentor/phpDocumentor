@@ -37,6 +37,8 @@ class DocBlox_Reflection_Variable extends DocBlox_Reflection_DocBlockedAbstract
 
     $xml->name    = $this->getName();
     $xml->default = $this->getDefault();
+    $xml['line']  = $this->getLineNumber();
+
     $this->addDocblockToSimpleXmlElement($xml);
 
     return $xml->asXML();

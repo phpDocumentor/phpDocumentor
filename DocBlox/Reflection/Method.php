@@ -53,8 +53,9 @@ class DocBlox_Reflection_Method extends DocBlox_Reflection_Function
     $xml->name         = $this->getName();
     $xml['final']      = $this->isFinal() ? 'true' : 'false';
     $xml['abstract']   = $this->isAbstract() ? 'true' : 'false';
-    $xml['static']   = $this->isStatic() ? 'true' : 'false';
+    $xml['static']     = $this->isStatic() ? 'true' : 'false';
     $xml['visibility'] = $this->getVisibility();
+    $xml['line']       = $this->getLineNumber();
 
     $this->addDocblockToSimpleXmlElement($xml);
 

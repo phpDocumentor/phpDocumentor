@@ -39,6 +39,7 @@ class DocBlox_Reflection_Property extends DocBlox_Reflection_Variable
     $xml['final']      = $this->isFinal() ? 'true' : 'false';
     $xml['static']     = $this->isStatic() ? 'true' : 'false';
     $xml['visibility'] = $this->getVisibility();
+    $xml['line']       = $this->getLineNumber();
 
     return parent::__toXml($xml);
   }
