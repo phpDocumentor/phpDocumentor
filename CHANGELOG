@@ -10,6 +10,8 @@ xx/xx/xxxx: Version 0.7: Enhance docblock support and add support for multiple w
 * FIXED: Namespace support was not converting local class notation to a full_name class notation (including namespaces)
 * FIXED: Namespace was not registered with anything else other than a file, class or interface
 * ADDED: Property @var tag also links to other files
+* ADDED: AJAX search box for larger projects, use the option '--search=Ajax' with the transformer to use it
+* ADDED: NONE search option to disable the search action, use the option '--search=None' with the transformer to use it
 
 29/10/2010: Version 0.6: Add configuration files, clean up and fixes
 ---------------------

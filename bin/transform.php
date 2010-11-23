@@ -20,6 +20,7 @@ try
     'target|t-s' => 'path where to save the generated files (optional, defaults to "output")',
     'output|o-s' => 'output format to use (optional, defaults to "xslt")',
     'theme-s'    => 'name of the theme to use (optional, defaults to "default")',
+    'search-s'   => 'type of searchbox to use, may be "None", "XmlJs" or "Ajax"',
     'verbose|v'  => 'Outputs any information collected by this application, may slow down the process slightly',
   ));
 
@@ -77,6 +78,19 @@ try
   if ($opts->getOption('theme'))
   {
     $writer->setTheme($opts->getOption('theme'));
+  }
+
+  // set theme / chrome path if provided
+  if ($opts->getOption('search'))
+  {
+    if (method_exists($writer, 'setSearchObject'))
+    {
+      $writer->setSearchObject($opts->getOption('search'));
+    }
+    else
+    {
+      echo 'The chosen output format does not support different search methods'.PHP_EOL;
+    }
   }
 
   // enable verbose mode if the flag was set

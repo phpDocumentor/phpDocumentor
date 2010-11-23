@@ -1,8 +1,8 @@
 0.7: Enhance docblock support and add support for multiple writers
-* investigate search performance on bigger projects
 * Add support for the T_USE token
 * add parsing of docblock annotations and adding specific functionality per annotation
 * Add PDF output writer
+* Add Twig output writer
 * Zend_Reflection_DocBlock does not correctly parse docblocks. It sometimes fail to see the diff between a short and
   long description.
 * Revisit namespace support to check for consistency

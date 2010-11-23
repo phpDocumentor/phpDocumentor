@@ -2,6 +2,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output indent="yes" method="html" />
+  <xsl:include href="../../search.xsl" />
 
   <xsl:template match="/">
     <html xmlns="http://www.w3.org/1999/xhtml">
@@ -65,45 +66,17 @@
   <xsl:template name="header">
     <xsl:param name="title" />
 
-    <script type="text/javascript">
-      $(function() {
-        var search_index = {};
-        $.ajax({
-          url: "<xsl:value-of select="$root" />/search_index.xml",
-          dataType: "xml",
-          error: function(data) {
-            console.debug('an error occurred, ');
-            console.debug(data);
-          },
-          success: function( data ) {
-            search_index = $("node", data).map(function() {
-              type = $("type", this).text();
-              return {
-                value: $("value", this).text(),
-                label: '<img src="{$root}/images/icons/'+type+'.png" align="absmiddle" />'+$("value", this).text(),
-                id: $("id", this).text(),
-              };
-            }).get();
-
-            $("#search_box").autocomplete({
-              source: search_index,
-              select: function(event, ui) {
-                // redirect to the documentation
-                $(location).attr('href', '<xsl:value-of select="$root" />/'+ui.item.id);
-                applySearchHash();
-              }
-            });
-          }
-        });
-      });
-    </script>
+    <xsl:call-template name="search">
+      <xsl:with-param name="search_template" select="$search_template" />
+      <xsl:with-param name="root" select="$root" />
+    </xsl:call-template>
 
     <div id="nb-header">
       <xsl:value-of select="$title" />
 
       <div class="ui-widget" style="display: inline; float: right; font-size: 0.5em; margin-top: 8px;">
         <label for="search_box">Search</label>
-        <input id="search_box" />
+        <input id="search_box" style="display: none"/>
       </div>
     </div>
   </xsl:template>

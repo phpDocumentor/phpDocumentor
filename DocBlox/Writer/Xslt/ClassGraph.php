@@ -16,30 +16,8 @@
  * @package    Base
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
+class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Writer_Xslt_Abstract
 {
-  protected $target = './output';
-
-  /**
-   * Returns the target location for the SVG.
-   *
-   * @return string
-   */
-  public function getTarget()
-  {
-    return $this->target;
-  }
-
-  /**
-   * Sets the target location for the SVG.
-   *
-   * @return string
-   */
-  public function setTarget($target)
-  {
-    $this->target = $target;
-  }
-
   public function execute(DomDocument $xml)
   {
     // NOTE: the -V flag sends output using STDERR and STDOUT
@@ -62,6 +40,13 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Abstract
 
     $proc->setParameter('', 'title', 'Classes');
     $proc->setParameter('', 'root', '.');
+    $proc->setParameter(
+      '',
+      'search_template',
+      ($this->getSearchObject() !== false)
+        ? $this->getSearchObject()->getXslTemplateName()
+        : 'none'
+    );
     $proc->transformToURI($xml, 'file://'.$path.'/index.html');
 
     // generate graphviz
