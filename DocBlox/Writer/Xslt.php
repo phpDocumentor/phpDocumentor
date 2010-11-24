@@ -12,63 +12,64 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Xslt_Abstract
 
   protected function generateFiles($files, $xml)
   {
-    $this->log('Started generating the static HTML files');
+      $this->log('Started generating the static HTML files');
 
-    // prepare the xsl document
-    $xsl = new DOMDocument;
-    $xsl->load($this->resource_path.'/file.xsl');
-    $target = realpath($this->target);
+      // prepare the xsl document
+      $xsl = new DOMDocument;
+      $xsl->load($this->resource_path.'/file.xsl');
+      $target = realpath($this->target);
 
-    // configure the transformer
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($xsl); // attach the xsl rules
-    $proc->setParameter('', 'root', '.');
-    $proc->setParameter(
-      '',
-      'search_template',
-      ($this->getSearchObject() !== false)
-        ? $this->getSearchObject()->getXslTemplateName()
-        : 'none'
-    );
+      // configure the transformer
+      $proc = new XSLTProcessor();
+      $proc->importStyleSheet($xsl); // attach the xsl rules
+      $proc->setParameter('', 'root', '.');
+      $proc->setParameter(
+          '',
+          'search_template',
+          ($this->getSearchObject() !== false)
+                  ? $this->getSearchObject()->getXslTemplateName()
+                  : 'none'
+      );
 
-    // process each file and store it in a separate .html file
-    $files_path = $target.'/files';
-    if (!file_exists($files_path))
-    {
-      mkdir($files_path, 0755, true);
-    }
+      // process each file and store it in a separate .html file
+      $files_path = $target.'/files';
+      if (!file_exists($files_path))
+      {
+          $this->log('>> Add "files" directory');
+          mkdir($files_path, 0755, true);
+      }
 
-    $file_count = count($files);
-    foreach($files as $key => $file)
-    {
-      $this->log('Processing file #'.str_pad(($key+1), strlen($file_count), ' ', STR_PAD_LEFT).' of '.$file_count.': '.$file);
-      $proc->setParameter('', 'file', $file);
-      $proc->setParameter('', 'title', $file);
-      $file_name = $this->generateFilename($file);
-      $root = str_repeat('../', substr_count($file_name, '/')+1);
-      $proc->setParameter('', 'root', substr($root ? $root : './', 0, -1));
-      $proc->transformToURI($xml, 'file://'.$files_path.'/'.$file_name);
-    }
+      $file_count = count($files);
+      foreach($files as $key => $file)
+      {
+          $this->log('Processing file #'.str_pad(($key+1), strlen($file_count), ' ', STR_PAD_LEFT).' of '.$file_count.': '.$file);
+          $proc->setParameter('', 'file', $file);
+          $proc->setParameter('', 'title', $file);
+          $file_name = $this->generateFilename($file);
+          $root = str_repeat('../', substr_count($file_name, '/')+1);
+          $proc->setParameter('', 'root', substr($root ? $root : './', 0, -1));
+          $proc->transformToURI($xml, 'file://'.$files_path.'/'.$file_name);
+      }
 
-    $this->log('Finished generating the static HTML files');
+      $this->log('Finished generating the static HTML files');
 
-    $this->log('Processing markers');
-    $xsl = new DOMDocument;
-    $xsl->load($this->resource_path.'/markers.xsl');
+      $this->log('Processing markers');
+      $xsl = new DOMDocument;
+      $xsl->load($this->resource_path.'/markers.xsl');
 
-    // configure the transformer
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($xsl); // attach the xsl rules
-    $proc->setParameter('', 'root', '.');
-    $proc->setParameter('', 'title', 'Markers');
-    $proc->setParameter(
-      '',
-      'search_template',
-      ($this->getSearchObject() !== false)
-        ? $this->getSearchObject()->getXslTemplateName()
-        : 'none'
-    );
-    $proc->transformToURI($xml, 'file://'.$target.'/markers.html');
+      // configure the transformer
+      $proc = new XSLTProcessor();
+      $proc->importStyleSheet($xsl); // attach the xsl rules
+      $proc->setParameter('', 'root', '.');
+      $proc->setParameter('', 'title', 'Markers');
+      $proc->setParameter(
+          '',
+          'search_template',
+          ($this->getSearchObject() !== false)
+                  ? $this->getSearchObject()->getXslTemplateName()
+                  : 'none'
+      );
+      $proc->transformToURI($xml, 'file://'.$target.'/markers.html');
   }
 
   /**
@@ -85,16 +86,20 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Xslt_Abstract
 
   public function execute()
   {
+    $this->log('Starting transformation');
+
     $target_path = realpath($this->getTarget());
     $source_file = realpath($this->getSource());
 
     // copy all generic files to the target folder
+    $this->log('Copying layout files');
     copy($this->resource_path.'/ajax_search.php', $target_path.'/ajax_search.php');
     $this->copyRecursive($this->resource_path.'/js', $target_path.'/js');
     $this->copyRecursive($this->resource_path.'/css', $target_path.'/css');
     $this->copyRecursive($this->resource_path.'/images', $target_path.'/images');
 
     // copy all theme files over the previously copied directories, this enables us to override generic files
+    $this->log('Copying theme');
     $theme_path = $this->theme_path.DIRECTORY_SEPARATOR.$this->theme;
     $this->copyRecursive($theme_path.'/js', $target_path.'/js');
     $this->copyRecursive($theme_path.'/css', $target_path.'/css');
@@ -109,6 +114,7 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Xslt_Abstract
     $xpath = new DOMXPath($xml);
 
     // find all files and add a generated-path variable
+    $this->log('Adding path information to each xml "file" tag');
     $qry = $xpath->query("/project/file[@path]");
     foreach ($qry as $element)
     {
@@ -116,23 +122,33 @@ class DocBlox_Writer_Xslt extends DocBlox_Writer_Xslt_Abstract
       $element->setAttribute('generated-path', $this->generateFullPath($element->getAttribute('path')));
     }
 
+    $qry = $xpath->query('//class[full_name]/..');
+    $class_paths = array();
+
+    /** @var DOMElement $element */
+    foreach($qry as $element)
+    {
+      $path = $element->getAttribute('path');
+      foreach($element->getElementsByTagName('class') as $class)
+      {
+        $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
+      }
+    }
+
     // add extra xml elements to tags
+    $this->log('Adding link information and excerpts to all DocBlock tags');
     $qry = $xpath->query('//docblock/tag');
+
     /** @var DOMElement $element */
     foreach ($qry as $element)
     {
       // if a tag has a type, add a link to the given file if it exists in the xml
       if ($element->hasAttribute('type'))
       {
-        // find the path of the file of the class referred by the type (namespaces are taken into account (full_name))
-        $query = '//class[full_name=\''.$element->getAttribute('type').'\']/../@path';
-
-        /** @var DOMNodeList $res */
-        $res = $xpath->query($query);
-        if ($res->length > 0)
-        {
           // if a path was found, convert it to a filename and add it onto the element
-          $file_name = $this->generateFilename($res->item(0)->nodeValue);
+        if (isset($class_paths[$element->getAttribute('type')]))
+        {
+          $file_name = $this->generateFilename($class_paths[$element->getAttribute('type')]);
           $element->setAttribute('link', $file_name);
         }
       }
