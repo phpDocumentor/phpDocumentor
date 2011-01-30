@@ -146,7 +146,6 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         }
       }
     }
-      file_put_contents('bla3', $xml->saveXML());
   }
 
 }
