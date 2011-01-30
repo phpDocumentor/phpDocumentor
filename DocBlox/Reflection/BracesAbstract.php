@@ -24,12 +24,18 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
     $token = null;
     while ($tokens->valid())
     {
+        /** @var DocBlox_Token $token */
       $token = $token === null ? $tokens->current() : $tokens->next();
 
       // determine where the 'braced' section starts and end.
       // the first open brace encountered is considered the opening brace for the block and processing will
       // be 'breaked' when the closing brace is encountered
-      if ($token && !$token->getType() && (($token->getContent() == '{') || (($token->getContent() == '}'))))
+      if ($token
+          && (!$token->getType()
+              || ($token->getType() == T_CURLY_OPEN)
+              || ($token->getType() == T_DOLLAR_OPEN_CURLY_BRACES))
+          && (($token->getContent() == '{')
+              || (($token->getContent() == '}'))))
       {
         switch ($token->getContent())
         {

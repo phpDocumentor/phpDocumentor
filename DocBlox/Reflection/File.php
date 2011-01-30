@@ -14,7 +14,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   protected $markers          = array();
   protected $marker_terms     = array('TODO', 'FIXME');
 
-  public function __construct($file)
+  public function __construct($file, $validate)
   {
     parent::__construct();
 
@@ -23,20 +23,30 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
       throw new DocBlox_Reflection_Exception('The given file should be a string, should exist on the filesystem and should be readable');
     }
 
-    exec('php -l '.escapeshellarg($file), $output, $result);
-    if ($result != 0)
+    if ($validate)
     {
-      throw new DocBlox_Reflection_Exception('The given file could not be interpreted as it contains errors: '.implode(PHP_EOL, $output));
+      exec('php -l '.escapeshellarg($file), $output, $result);
+      if ($result != 0)
+      {
+        throw new DocBlox_Reflection_Exception('The given file could not be interpreted as it contains errors: '.implode(PHP_EOL, $output));
+      }
     }
 
     $this->filename = $file;
     $this->name = $this->filename;
+    $contents = file_get_contents($file);
 
-    $this->contents = file_get_contents($file);
+    // detect encoding and transform to UTF-8
+    $info = new finfo();
+    $mime = $info->file($file, FILEINFO_MIME);
+    $mime_info = explode('=', $mime);
+    if (strtolower($mime_info[1]) != 'utf-8')
+    {
+        $contents = iconv($mime_info[1], 'UTF-8', $contents);
+    }
 
-    $this->resetTimer('md5');
-    $this->setHash(md5($this->contents));
-    $this->debugTimer('>> Hashed contents', 'md5');
+    $this->contents = $contents;
+    $this->setHash(filemtime($file));
   }
 
   public function addMarker($name)
@@ -245,7 +255,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
   /**
    *
-   * @todo iets
    * @return bool|string
    */
   public function __toXml()
@@ -264,7 +273,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
       $marker_obj->addAttribute('line', $marker[2]);
     }
 
-    $dom = new DOMDocument();
+    $dom = new DOMDocument('1.0', 'utf-8');
     $dom->loadXML(trim($xml->asXML()));
 
     foreach($this->includes as $include)

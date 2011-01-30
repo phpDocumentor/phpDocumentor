@@ -2,18 +2,29 @@
 class DocBlox_Parser extends DocBlox_Abstract
 {
   protected $ignore_patterns = array();
-  protected $existing_xml = null;
-  protected $force = false;
-  protected $markers = array('TODO', 'FIXME');
+  protected $existing_xml    = null;
+  protected $force           = false;
+  protected $validate        = false;
+  protected $markers         = array('TODO', 'FIXME');
 
   public function isForced()
   {
     return $this->force;
   }
 
+  public function doValidation()
+  {
+    return $this->validate;
+  }
+
   public function setForced($forced)
   {
     $this->force = $forced;
+  }
+
+  public function setValidate($validate)
+  {
+    $this->validate = $validate;
   }
 
   public function getMarkers()
@@ -64,7 +75,7 @@ class DocBlox_Parser extends DocBlox_Abstract
 
     try
     {
-      $file = new DocBlox_Reflection_File($filename);
+      $file = new DocBlox_Reflection_File($filename, $this->doValidation());
       $file->setMarkers($this->getMarkers());
 
       if (($this->existing_xml !== null) && (!$this->isForced()))
@@ -75,7 +86,7 @@ class DocBlox_Parser extends DocBlox_Abstract
         $qry = $xpath->query('/project/file[@path=\''.ltrim($file->getName()  , './').'\' and @hash=\''.$file->getHash().'\']');
         if ($qry->length > 0)
         {
-          $new_dom = new DOMDocument;
+          $new_dom = new DOMDocument('1.0', 'utf-8');
           $new_dom->appendChild($new_dom->importNode($qry->item(0), true));
           $result = $new_dom->saveXML();
 
@@ -100,19 +111,79 @@ class DocBlox_Parser extends DocBlox_Abstract
     return $result;
   }
 
-  function parseFiles($files)
+  /**
+   * Generates a hierarchical array of namespaces with their singular name from a single level list of namespaces
+   * with their full name.
+   *
+   * @param array $namespaces
+   *
+   * @return array
+   */
+  protected function generateNamespaceTree($namespaces)
+  {
+    sort($namespaces);
+
+    $result = array();
+    foreach ($namespaces as $namespace)
+    {
+      $namespace_list = explode('\\', $namespace);
+
+      $node = &$result;
+      foreach($namespace_list as $singular)
+      {
+        if (!isset($node[$singular]))
+        {
+          $node[$singular] = array();
+        }
+
+        $node = &$node[$singular];
+      }
+    }
+
+    return $result;
+  }
+
+  /**
+   * Recursive method to create a hierarchical set of nodes in the dom.
+   *
+   * @param array $namespaces
+   * @param DOMElement $parent_element
+   *
+   * @return void
+   */
+  protected function generateNamespaceElements($namespaces, $parent_element)
+  {
+    foreach($namespaces as $name => $sub_namespaces)
+    {
+      $node = new DOMElement('namespace');
+      $parent_element->appendChild($node);
+      $node->setAttribute('name', $name);
+      $this->generateNamespaceElements($sub_namespaces, $node);
+    }
+  }
+
+  public function parseFiles($files)
   {
     $this->log('Starting to process '.count($files).' files').PHP_EOL;
     $timer = new sfTimer();
+
+    // if the version has changed and we are not doing a full rebuild; force one
+    if (($this->existing_xml->documentElement->getAttribute('version') != DocBlox_Abstract::VERSION) && (!$this->isForced()))
+    {
+      $this->log('Version of DocBlox has changed since the last build; forcing a full re-build');
+      $this->setForced(true);
+    }
 
     // convert patterns to regex's
     foreach($this->ignore_patterns as &$pattern)
     {
       $pattern = $this->convertToPregCompliant($pattern);
     }
+//    $this->log('Time1: '.round($timer->getElapsedTime(),4).'s').PHP_EOL;
 
-    $dom = new DOMDocument('1.0', 'UTF-8');
-    $dom->loadXML('<project></project>');
+    $dom = new DOMDocument('1.0', 'utf-8');
+    $dom->loadXML('<project version="'.DocBlox_Abstract::VERSION.'"></project>');
+
     foreach ($files as $file)
     {
       // check if the file is in an ignore pattern, if so, skip it
@@ -170,9 +241,10 @@ class DocBlox_Parser extends DocBlox_Abstract
         continue;
       }
       $namespaces[$qry->item($i)->nodeValue] = true;
-      $node = new DOMElement('namespace', $qry->item($i)->nodeValue);
-      $dom->documentElement->appendChild($node);
     }
+
+    $namespaces = $this->generateNamespaceTree(array_keys($namespaces));
+    $this->generateNamespaceElements($namespaces, $dom->documentElement);
 
     $this->log('Collecting all marker types');
     foreach ($this->getMarkers() as $marker)
@@ -185,6 +257,7 @@ class DocBlox_Parser extends DocBlox_Abstract
     $xml = $dom->saveXML();
     $this->log('--');
     $this->log('Elapsed time to parse all files: '.round($timer->getElapsedTime(), 2).'s');
+    $this->log('Peak memory usage: '.round(memory_get_peak_usage() / 1024 / 1024, 2).'M');
 
     return $xml;
   }

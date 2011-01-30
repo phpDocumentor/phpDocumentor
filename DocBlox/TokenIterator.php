@@ -20,14 +20,14 @@ class DocBlox_TokenIterator extends DocBlox_BidiArrayIterator
   public function  __construct($array)
   {
     // convert to token objects; converting up front is _faster_ than ad hoc conversion
-    foreach ($array as &$token)
+    foreach ($array as $key => $token)
     {
       if ($token instanceof DocBlox_Token)
       {
         continue;
       }
 
-      $token = new DocBlox_Token($token);
+      $array[$key] = new DocBlox_Token($token);
     }
 
     parent::__construct($array);

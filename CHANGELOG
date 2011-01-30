@@ -1,17 +1,32 @@
 xx/xx/xxxx: Version 0.7: Enhance docblock support and add support for multiple writers
 ---------------------
 
-* FIXED: Generated paths where set absolute to the file system preventing the running of generated output in a webserver
-* FIXED: Namespaces where not included in the extend and implement xml nodes
-* FIXED: Class hierarchy chart entered an endless recursion if a class extended another class with the same name in a different namespace
-* FIXED: Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name. CLosures receive the name 'Closure'
-* ADDED: Line numbers to all objects in the xml output
-* ADDED: add links to other classes with the @param and @return annotation information
-* FIXED: Namespace support was not converting local class notation to a full_name class notation (including namespaces)
-* FIXED: Namespace was not registered with anything else other than a file, class or interface
-* ADDED: Property @var tag also links to other files
-* ADDED: AJAX search box for larger projects, use the option '--search=Ajax' with the transformer to use it
-* ADDED: NONE search option to disable the search action, use the option '--search=None' with the transformer to use it
+* FIXED:    Generated paths where set absolute to the file system preventing the running of generated output in a webserver
+* FIXED:    Namespaces where not included in the extend and implement xml nodes
+* FIXED:    Class hierarchy chart entered an endless recursion if a class extended another class with the same name in a different namespace
+* FIXED:    Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name. CLosures receive the name 'Closure'
+* ADDED:    Line numbers to all objects in the xml output
+* ADDED:    Add links to other classes with the @param and @return annotation information
+* FIXED:    Namespace support was not converting local class notation to a full_name class notation (including namespaces)
+* FIXED:    Namespace was not registered with anything else other than a file, class or interface
+* ADDED:    Property @var tag also links to other files
+* ADDED:    AJAX search box for larger projects, use the option '--search=Ajax' with the transformer to use it
+* ADDED:    NONE search option to disable the search action, use the option '--search=None' with the transformer to use it
+* ADDED:    New theme
+* FIXED:    Theming did not support different XSL files per theme. this has now been fixed
+* BC-BREAK: Namespaces and their sub-spaces are now stored hierarchically at the bottom of the XML file, this used to
+            be a flat list
+* ADDED:    Themes can now preprocess XSL templates present in the 'preprocess' folder and store them in memory to
+            speed up parsing of seldom changing data
+* FIXED:    variables in methods were recognized as properties when enclosed in accolades (thanks for noticing @pmjones)
+* FIXED:    Improved performance by changing hash from md5 to filemtime (thanks to @pmjones for this tip!)
+* ADDED:    Recognition of file character encoding and conversion to UTF-8 (thanks to @dzuelke)
+* FIXED:    Improved performance by disabling the PHP Lint check by default; can be enabled using the --validate option
+* ADDED:    Make packages foldable as i done with namespaces (no support for subpackages yet!) (thanks to @pmjones)
+* FIXED:    Support for Unicode characters in @author annotations
+* FIXED:    The generation of filenames for the transformation process produced the wrong names on Windows. A '/' was
+            hardcoded while this should have been a DIRECTORY_SEPARATOR
+* ADDED:    Version to parsed data (structure.xml) and enforce a full re-parse when the version number has changed
 
 29/10/2010: Version 0.6: Add configuration files, clean up and fixes
 ---------------------

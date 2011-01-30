@@ -97,14 +97,14 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       {
         $xml->addChild('docblock');
       }
-      $xml->docblock->description = utf8_encode(str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription()));
-      $xml->docblock->{'long-description'} = utf8_encode(str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription()));
+      $xml->docblock->description = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription());
+      $xml->docblock->{'long-description'} = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription());
 
       /** @var Zend_Reflection_Docblock_Tag $tag */
       foreach ($this->getDocBlock()->getTags() as $tag)
       {
         $type = null;
-        $description = utf8_encode(htmlspecialchars($tag->getDescription()));
+        $description = htmlspecialchars($tag->getDescription(), ENT_QUOTES, 'UTF-8');
         if (trim($tag->getName(), '@') == 'var')
         {
           $elements = explode(' ', trim((string)$description));
@@ -114,7 +114,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
           $description = implode(' ', $elements);
         }
 
-        $tag_object = $xml->docblock->addChild('tag', $description);
+        $tag_object = $xml->docblock->addChild('tag', trim($description));
         $tag_object['name'] = trim($tag->getName(), '@');
 
         // store the type if it was set
@@ -132,6 +132,10 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
 
         if (method_exists($tag, 'getVariableName'))
         {
+          if (trim($tag->getVariableName()) == '')
+          {
+            // TODO: get the name from the argument list
+          }
           $tag_object['variable'] = $tag->getVariableName();
         }
 
@@ -142,6 +146,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         }
       }
     }
+      file_put_contents('bla3', $xml->saveXML());
   }
 
 }

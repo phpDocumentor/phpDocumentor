@@ -229,7 +229,8 @@ abstract class DocBlox_Abstract
       $priority_names = array_flip($r->getConstants());
     }
 
-    echo '['.$priority_names[$priority].': '.date('H:i').']: '.$message.PHP_EOL;
+    $debug_info = ($this->getLogLevel() == Zend_Log::DEBUG) ? ', '.round(memory_get_usage() / 1024 / 1024, 2).'mb' : '';
+    echo '['.$priority_names[$priority].': '.date('H:i').$debug_info.']: '.$message.PHP_EOL;
     self::$logger->log($message, $priority);
   }
 

@@ -33,6 +33,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       'i|ignore-s'     => 'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported',
       'm|markers-s'    => 'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")',
       'force'          => 'Forces a full build of the documentation, does not increment existing documentation',
+      'validate'       => 'Validates every processed file using PHP Lint, costs a lot of performance',
     ));
   }
 
@@ -232,9 +233,14 @@ class DocBlox_Arguments extends Zend_Console_Getopt
     }
 
     $target = trim($target);
-    if (($target == '') || ($target == '/'))
+    if (($target == '') || ($target == DIRECTORY_SEPARATOR))
     {
       throw new Exception('Either an empty path or root was given');
+    }
+
+    if (!is_writable($target))
+    {
+      throw new Exception('The given path "'.$target.'" either does not exist or is not writable.');
     }
 
     // remove any ending slashes

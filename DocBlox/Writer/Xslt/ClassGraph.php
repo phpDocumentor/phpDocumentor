@@ -20,6 +20,16 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Writer_Xslt_Abstract
 {
   public function execute(DomDocument $xml)
   {
+    $path = realpath($this->target);
+
+    // prepare the xsl document
+    $xsl  = new DOMDocument;
+    $proc = new XSLTProcessor();
+    $xsl->load($this->getThemePath() . '/index.xsl');
+    $proc->importStyleSheet($xsl); // attach the xsl rules
+    $proc->setParameter('', 'title', 'Classes');
+    $this->transformTemplateToFile($xml, $proc, '../index.html');
+
     // NOTE: the -V flag sends output using STDERR and STDOUT
     exec('dot -V 2>&1', $output, $error);
     if ($error != 0)
@@ -27,27 +37,6 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Writer_Xslt_Abstract
       $this->log('Unable to find the `dot` command of the GraphViz package. Is GraphViz correctly installed and present in your path?', Zend_Log::ERR);
       return;
     }
-
-    $path = realpath($this->target);
-
-    // prepare the xsl document
-    $xsl = new DOMDocument;
-    $xsl->load('resources/index.xsl');
-
-    // configure the transformer
-    $proc = new XSLTProcessor();
-    $proc->importStyleSheet($xsl); // attach the xsl rules
-
-    $proc->setParameter('', 'title', 'Classes');
-    $proc->setParameter('', 'root', '.');
-    $proc->setParameter(
-      '',
-      'search_template',
-      ($this->getSearchObject() !== false)
-        ? $this->getSearchObject()->getXslTemplateName()
-        : 'none'
-    );
-    $proc->transformToURI($xml, 'file://'.$path.'/index.html');
 
     // generate graphviz
     $xpath = new DOMXPath($xml);

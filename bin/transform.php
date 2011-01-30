@@ -113,6 +113,7 @@ try
 
 // start the transformation process
 echo 'Starting transformation of files (this could take a while depending upon the size of your project)'.PHP_EOL;
+echo 'The theme '.$writer->getTheme().' was used.'.PHP_EOL;
 $writer->execute();
 
 echo 'Finished transformation in '.round($timer->getElapsedTime(), 2).' seconds'.PHP_EOL;
