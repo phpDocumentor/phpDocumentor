@@ -12,6 +12,7 @@
 * Zend_Reflection_DocBlock does not correctly parse docblocks. It sometimes fail to see the diff between a short and
   long description.
 * Add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
+* Add documentation
 
 0.9: Add custom documents, statistics and improve theming
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
