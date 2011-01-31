@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 // set path to add lib folder, load the Zend Autoloader and include the symfony timer and graphviz lib
-set_include_path(get_include_path().PATH_SEPARATOR.'./lib');
+set_include_path(dirname(__FILE__).'/../'.PATH_SEPARATOR.dirname(__FILE__).'/../lib'.PATH_SEPARATOR.get_include_path());
 require_once('Zend/Loader/Autoloader.php');
 require_once('symfony/sfTimer.class.php');
 require_once('pear/GraphViz.php');
