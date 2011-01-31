@@ -19,7 +19,7 @@
     <h1>Packages</h1>
     <ul id="packages-" class="treeview-docblox">
       <xsl:apply-templates select="/project/package">
-        <xsl:sort select="." />
+        <xsl:sort select="@name" />
       </xsl:apply-templates>
     </ul>
 
@@ -55,18 +55,16 @@
   </xsl:template>
 
   <xsl:template match="package">
-      <li class="package closed">
-        <div class="content">
-          <span>
-      <xsl:if test=".=''">Default</xsl:if>
-      <xsl:if test="not(.='')">
-        <xsl:value-of select="." />
-      </xsl:if>
-          </span>
-        </div>
-    <xsl:variable name="package" select="." />
-    <ul id="packages_{$package}" class="treeview-docblox">
-      <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package]]">
+    <li class="package closed">
+      <div class="content">
+        <span>
+          <xsl:if test="@name=''">Default</xsl:if>
+          <xsl:if test="not(@name='')"><xsl:value-of select="@name" /></xsl:if>
+        </span>
+      </div>
+      <xsl:variable name="package" select="@name" />
+      <ul id="packages_{$package}" class="treeview-docblox">
+        <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package]]">
         <li>
           <div class="content">
             <span>
@@ -79,8 +77,8 @@
             </small>
           </div>
         </li>
-      </xsl:for-each>
-    </ul>
+        </xsl:for-each>
+      </ul>
       </li>
   </xsl:template>
 
