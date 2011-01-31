@@ -225,6 +225,12 @@ class DocBlox_Parser extends DocBlox_Abstract
       {
         continue;
       }
+      $qry2 = $xpath->query('//docblock/tag[@name="package" and .="'.$qry->item($i)->nodeValue.'"]/../tag[@name="subpackage"]');
+      for ($i2 = 0; $i2 < $qry2->length; $i2++)
+      {
+        var_dump($qry->item($i)->nodeValue.': '.$qry2->item($i2)->nodeValue);
+      }
+
       $packages[$qry->item($i)->nodeValue] = true;
       $node = new DOMElement('package', $qry->item($i)->nodeValue);
       $dom->documentElement->appendChild($node);
