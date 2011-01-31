@@ -168,7 +168,9 @@ class DocBlox_Parser extends DocBlox_Abstract
     $timer = new sfTimer();
 
     // if the version has changed and we are not doing a full rebuild; force one
-    if (($this->existing_xml->documentElement->getAttribute('version') != DocBlox_Abstract::VERSION) && (!$this->isForced()))
+    if (($this->existing_xml)
+      && ($this->existing_xml->documentElement->getAttribute('version') != DocBlox_Abstract::VERSION)
+      && (!$this->isForced()))
     {
       $this->log('Version of DocBlox has changed since the last build; forcing a full re-build');
       $this->setForced(true);
