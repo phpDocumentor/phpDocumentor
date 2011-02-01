@@ -64,22 +64,51 @@
       </div>
       <xsl:variable name="package" select="@name" />
       <ul id="packages_{$package}" class="treeview-docblox">
-        <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package]]">
-        <li>
+        <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package] and not(docblock/tag[@name='subpackage'])]">
+          <li class="closed">
+            <div class="content">
+              <span>
+                <a href="{$root}/{../@generated-path}#{name}">
+                  <xsl:value-of select="name" />
+                </a>
+              </span>
+              <small>
+                <xsl:value-of select="docblock/description" />
+              </small>
+            </div>
+          </li>
+        </xsl:for-each>
+        <xsl:for-each select="subpackage">
+          <li class="closed">
+          <xsl:variable name="subpackage" select="." />
           <div class="content">
             <span>
-              <a href="{$root}/{../@generated-path}#{name}">
-                <xsl:value-of select="name" />
-              </a>
+              <xsl:if test="$subpackage=''">Default</xsl:if>
+              <xsl:if test="not($subpackage='')">
+                <xsl:value-of select="$subpackage" />
+              </xsl:if>
             </span>
-            <small>
-              <xsl:value-of select="docblock/description" />
-            </small>
           </div>
-        </li>
+          <ul id="packages_{$package}_{$subpackage}" class="treeview-docblox">
+            <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package] and docblock/tag[@name='subpackage'][.=$subpackage]]">
+            <li>
+              <div class="content">
+                <span>
+                  <a href="{$root}/{../@generated-path}#{name}">
+                    <xsl:value-of select="name" />
+                  </a>
+                </span>
+                <small>
+                  <xsl:value-of select="docblock/description" />
+                </small>
+              </div>
+            </li>
+            </xsl:for-each>
+          </ul>
+          </li>
         </xsl:for-each>
       </ul>
-      </li>
+    </li>
   </xsl:template>
 
   <xsl:template match="namespace">
