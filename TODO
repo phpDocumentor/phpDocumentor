@@ -1,7 +1,3 @@
-0.7: Enhance docblock support and add support for multiple writers
-* Revisit template and make it prettier
-* fix search on default2
-
 0.8: Fix known issues
 * Add docblocks to DocBlox
 * Class docblocks are also used as file docblocks when generating the new theme.
@@ -28,5 +24,6 @@
 0.10: Pre 1.0 cleanup
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * Refactor static reflection to return contents in a different way and change the way XML is handled
+* Revisit template and make it prettier
 
 More items will be added to this list as the project furthers.

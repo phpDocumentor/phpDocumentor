@@ -1,10 +1,10 @@
-xx/xx/xxxx: Version 0.7: Enhance docblock support and add support for multiple writers
+01/02/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------
 
 * FIXED:    Generated paths where set absolute to the file system preventing the running of generated output in a webserver
 * FIXED:    Namespaces where not included in the extend and implement xml nodes
 * FIXED:    Class hierarchy chart entered an endless recursion if a class extended another class with the same name in a different namespace
-* FIXED:    Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name. CLosures receive the name 'Closure'
+* FIXED:    Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name. Closures receive the name 'Closure'
 * ADDED:    Line numbers to all objects in the xml output
 * ADDED:    Add links to other classes with the @param and @return annotation information
 * FIXED:    Namespace support was not converting local class notation to a full_name class notation (including namespaces)
@@ -27,7 +27,11 @@ xx/xx/xxxx: Version 0.7: Enhance docblock support and add support for multiple w
 * FIXED:    The generation of filenames for the transformation process produced the wrong names on Windows. A '/' was
             hardcoded while this should have been a DIRECTORY_SEPARATOR
 * ADDED:    Version to parsed data (structure.xml) and enforce a full re-parse when the version number has changed
+* BC-BREAK: Packages and subpackages are now stored hierarchically at the bottom of the XML file, this used to
+            be a flat list
 * ADDED:    Added support for the @subpackage in the sidebar of the default2 theme
+* FIXED:    Renamed default2 template to default template
+* ADDED:    Added search capabilities to default template (does not work in Chrome when running locally)
 
 29/10/2010: Version 0.6: Add configuration files, clean up and fixes
 ---------------------
