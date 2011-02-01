@@ -19,7 +19,7 @@
     <h1>Packages</h1>
     <ul id="packages-" class="treeview-docblox">
       <xsl:apply-templates select="/project/package">
-        <xsl:sort select="." />
+        <xsl:sort select="@name" />
       </xsl:apply-templates>
     </ul>
 
@@ -55,33 +55,60 @@
   </xsl:template>
 
   <xsl:template match="package">
-      <li class="package closed">
-        <div class="content">
-          <span>
-      <xsl:if test=".=''">Default</xsl:if>
-      <xsl:if test="not(.='')">
-        <xsl:value-of select="." />
-      </xsl:if>
-          </span>
-        </div>
-    <xsl:variable name="package" select="." />
-    <ul id="packages_{$package}" class="treeview-docblox">
-      <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package]]">
-        <li>
+    <li class="package closed">
+      <div class="content">
+        <span>
+          <xsl:if test="@name=''">Default</xsl:if>
+          <xsl:if test="not(@name='')"><xsl:value-of select="@name" /></xsl:if>
+        </span>
+      </div>
+      <xsl:variable name="package" select="@name" />
+      <ul id="packages_{$package}" class="treeview-docblox">
+        <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package] and not(docblock/tag[@name='subpackage'])]">
+          <li class="closed">
+            <div class="content">
+              <span>
+                <a href="{$root}/{../@generated-path}#{name}">
+                  <xsl:value-of select="name" />
+                </a>
+              </span>
+              <small>
+                <xsl:value-of select="docblock/description" />
+              </small>
+            </div>
+          </li>
+        </xsl:for-each>
+        <xsl:for-each select="subpackage">
+          <li class="closed">
+          <xsl:variable name="subpackage" select="." />
           <div class="content">
             <span>
-              <a href="{$root}/{../@generated-path}#{name}">
-                <xsl:value-of select="name" />
-              </a>
+              <xsl:if test="$subpackage=''">Default</xsl:if>
+              <xsl:if test="not($subpackage='')">
+                <xsl:value-of select="$subpackage" />
+              </xsl:if>
             </span>
-            <small>
-              <xsl:value-of select="docblock/description" />
-            </small>
           </div>
-        </li>
-      </xsl:for-each>
-    </ul>
-      </li>
+          <ul id="packages_{$package}_{$subpackage}" class="treeview-docblox">
+            <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package] and docblock/tag[@name='subpackage'][.=$subpackage]]">
+            <li>
+              <div class="content">
+                <span>
+                  <a href="{$root}/{../@generated-path}#{name}">
+                    <xsl:value-of select="name" />
+                  </a>
+                </span>
+                <small>
+                  <xsl:value-of select="docblock/description" />
+                </small>
+              </div>
+            </li>
+            </xsl:for-each>
+          </ul>
+          </li>
+        </xsl:for-each>
+      </ul>
+    </li>
   </xsl:template>
 
   <xsl:template match="namespace">

@@ -223,13 +223,28 @@ class DocBlox_Parser extends DocBlox_Abstract
     $qry = $xpath->query('//class/docblock/tag[@name="package"]|//file/docblock/tag[@name="package"]');
     for ($i = 0; $i < $qry->length; $i++)
     {
-      if (isset($packages[$qry->item($i)->nodeValue]))
+      $package_name = $qry->item($i)->nodeValue;
+      if (isset($packages[$package_name]))
       {
         continue;
       }
-      $packages[$qry->item($i)->nodeValue] = true;
-      $node = new DOMElement('package', $qry->item($i)->nodeValue);
+
+      $packages[$package_name] = array();
+      $qry2 = $xpath->query('//docblock/tag[@name="package" and .="'.$qry->item($i)->nodeValue.'"]/../tag[@name="subpackage"]');
+      for ($i2 = 0; $i2 < $qry2->length; $i2++)
+      {
+        $packages[$package_name][] = $qry2->item($i2)->nodeValue;
+      }
+      $packages[$package_name] = array_unique($packages[$package_name]);
+
+      // create package XMl and subpackages
+      $node = new DOMElement('package');
       $dom->documentElement->appendChild($node);
+      $node->setAttribute('name', $package_name);
+      foreach ($packages[$package_name] as $subpackage)
+      {
+        $node->appendChild(new DOMElement('subpackage', $subpackage));
+      }
     }
 
     $this->log('Collecting all namespaces');
