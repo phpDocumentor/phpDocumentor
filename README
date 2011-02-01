@@ -15,8 +15,8 @@ has a project which cannot be parsed by phpDocumentor (due to memory constraints
 
 I could write quite bit more about this project but will stick to this text for the moment.
 
-Please keep in mind: this is _ALPHA_ software. It has been tested against Zend Framework, Symfony and even larger
-projects but it does not yet contain the full featureset of phpDocumentor.
+Please keep in mind: this is pre-release software. It has been tested against Zend Framework, Symfony, Agavi, Solar
+Framework and even larger projects but it does not yet contain the full feature set of phpDocumentor.
 
 Requirements
 ------------
@@ -59,6 +59,9 @@ same folder, additionally a search index and class diagram will be generated.
 
 That is all, now you have the API documentation of your project.
 If you want to see which options are available for transformation, see './bin/transform.php -h' for a full list.
+
+Please note: if your project has more than approx. 1000 php files that can be documented, either set the 'search'
+argument to 'None' or 'Ajax'. The default 'XmlJs' search option tends to become really slow with large projects.
 
 Documentation
 -------------
