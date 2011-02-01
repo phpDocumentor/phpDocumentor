@@ -1,7 +1,6 @@
 0.7: Enhance docblock support and add support for multiple writers
 * Revisit template and make it prettier
-* Add parsing of docblock annotations and adding specific functionality per annotation
-* Add support for subpackages
+* fix search on default2
 
 0.8: Fix known issues
 * Add docblocks to DocBlox
