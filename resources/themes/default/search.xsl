@@ -23,17 +23,34 @@
 
     <script type="text/javascript">
       $(function() {
+
+        var is_chrome = /chrome/.test( navigator.userAgent.toLowerCase() );
+        var is_local = /file:\/\//.test(document.location.href);
+        if (is_chrome &amp;&amp; is_local)
+        {
+          // search is disabled on chrome with local files due to http://code.google.com/p/chromium/issues/detail?id=40787
+          return;
+        }
+
         $("#search_box").show();
         var search_index = {};
         $.ajax({
           url: "<xsl:value-of select="$root" />/search_index.xml",
-          dataType: "xml",
+          dataType: ($.browser.msie) ? "text" : "xml",
           error: function(data) {
-          console.debug('an error occurred, ');
-          console.debug(data);
+            alert('An error occurred using the search data');
           },
           success: function( data ) {
-            search_index = $("node", data).map(function() {
+            var xml;
+            if (typeof data == "string") {
+              xml = new ActiveXObject("Microsoft.XMLDOM");
+              xml.async = false;
+              xml.loadXML(data);
+            } else {
+              xml = data;
+            }
+
+            search_index = $("node", xml).map(function() {
               type = $("type", this).text();
               return {
                 value: $("value", this).text(),

@@ -79,17 +79,20 @@
               <h1><img src="{$root}/images/logo.png" alt="" /></h1>
 
               <div id="search-box">
-                <input type="text" name="search" id="search" />
+                <xsl:call-template name="search">
+                  <xsl:with-param name="search_template" select="$search_template" />
+                  <xsl:with-param name="root" select="$root" />
+                </xsl:call-template>
+                <input id="search_box" style="display: none" />
               </div>
               <h4>Documentation</h4>
                 <ul>
-                  <li>Namespaces</li>
-                  <li>Packages</li>
-                  <li>Files</li>
+                  <li><a href="{$root}/index.html">Class diagram</a></li>
+                  <!--<li>Packages</li>-->
+                  <!--<li>Files</li>-->
                   <li><a href="{$root}/markers.html">TODO / Markers</a></li>
               </ul>
-              <br />
-              <h4>Charts</h4>
+              <!--<h4>Charts</h4>-->
             </div>
           </div>
 
