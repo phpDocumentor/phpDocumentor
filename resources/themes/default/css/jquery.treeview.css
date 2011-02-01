@@ -17,6 +17,7 @@
 	float: left;
 	cursor: pointer;
 }
+
 /* fix for IE6 */
 * html .hitarea {
 	display: inline;

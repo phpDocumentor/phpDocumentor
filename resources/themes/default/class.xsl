@@ -8,173 +8,256 @@
   </xsl:template>
 
   <xsl:template match="class|interface">
-
-    <div>
-      <div class="tabs">
-        <ul>
-          <li><a href="#description_{name}">Description</a></li>
-          <xsl:if test="count(method) > 0">
-          <li><a href="#methods_{name}">Methods</a></li>
-          </xsl:if>
-          <xsl:if test="count(property) > 0">
-          <li><a href="#properties_{name}">Properties</a></li>
-          </xsl:if>
-          <xsl:if test="count(constant) > 0">
-          <li><a href="#constants_{name}">Constants</a></li>
-          </xsl:if>
-        </ul>
-
-        <div id="description_{name}">
-          <div class="nb-properties ui-corner-all ui-widget-content">
-            <strong>Properties</strong><br />
-            <hr />
-            <table class="nb-class-properties">
-            <tr><th>Extends</th><td><xsl:value-of select="extends" /></td></tr>
-            <tr><th>Implements</th><td>
-              <xsl:for-each select="implements">
-                <xsl:value-of select="." /><br />
-              </xsl:for-each>
-            </td></tr>
-            <xsl:for-each select="docblock/tag">
-              <xsl:sort select="@name" />
-              <tr><th><xsl:value-of select="@name" /></th><td><a title="{.}" href="{@link}" style="border-bottom: 1px dashed green; cursor: help"><xsl:value-of select="@excerpt" /></a></td></tr>
-            </xsl:for-each>
-            <tr><th>Abstract</th><td><xsl:if test="@abstract='true'">Yes</xsl:if><xsl:if test="@abstract != 'true'">No</xsl:if></td></tr>
-            <tr><th>Final</th><td><xsl:if test="@final='true'">Yes</xsl:if><xsl:if test="@final != 'true'">No</xsl:if></td></tr>
-            </table>
-          </div>
-          <h2>Description</h2>
-          <xsl:if test="not(docblock/description) and not(docblock/long-description)">
-            <strong><em>No description is available</em></strong>
-          </xsl:if>
-          <strong><xsl:value-of select="docblock/description" /></strong><br />
-          <xsl:value-of disable-output-escaping="yes" select="docblock/long-description" /><br />
-          <div style="clear: both"></div>
+    <h3><xsl:value-of select="name" /></h3>
+    <div class="properties">
+      <h1>Properties</h1>
+      <label class="property-key">Extends</label>
+      <div class="property-value"><xsl:value-of select="extends" />&#160;</div>
+      <label class="property-key">Implements</label>
+      <div class="property-value">
+        <xsl:for-each select="implements"><xsl:value-of select="." /><br /></xsl:for-each>&#160;
+      </div>
+      <xsl:for-each select="docblock/tag">
+        <xsl:sort select="@name" />
+        <label class="property-key"><xsl:value-of select="@name" /></label>
+        <div class="property-value">
+          <xsl:if test="@link and @link != ''"><a title="{.}" href="{@link}"><xsl:value-of select="." /></a></xsl:if>
+          <xsl:if test="not(@link) or @link = ''"><a title="{.}"><xsl:value-of select="." /></a></xsl:if>
+            &#160;
         </div>
-
-        <xsl:if test="count(method) > 0">
-        <div id="methods_{name}">
-          <h2>Methods</h2>
-          <div class="nb-sidebar">
-
-            <script>
-              function searchMethod(input)
-              {
-                jQuery(input).parent().children('div.results').find('a').show();
-                jQuery(input).parent().children('div.results').find('a').not('a[href*="'+jQuery('input#search_method').val()+'"]').hide();
-              }
-            </script>
-            <input type="text" id="search_method" name="search_method" onkeyup="searchMethod(this)"/>
-            <div class="results">
-            <xsl:for-each select="method">
-              <xsl:sort select="name" />
-              <a href="#{../name}::{name}()">
-                <xsl:value-of select="name" />
-                <br />
-              </a>
-            </xsl:for-each>
-            </div>
-          </div>
-
-          <div class="nb-right-of-sidebar">
-            <xsl:for-each select="method">
-              <xsl:sort select="name" />
-              <xsl:apply-templates select="." />
-            </xsl:for-each>
-          </div>
-          <div style="clear: both"></div>
-        </div>
-        </xsl:if>
-
-        <xsl:if test="count(property) > 0">
-        <div id="properties_{name}">
-          <h2>Properties</h2>
-          <div class="nb-sidebar">
-            <xsl:for-each select="property">
-              <xsl:sort select="name" />
-              <a href="#{../name}::{name}">
-                <xsl:value-of select="name" />
-              </a>
-              <br />
-            </xsl:for-each>
-          </div>
-
-          <div class="nb-right-of-sidebar">
-            <xsl:for-each select="property">
-              <xsl:sort select="name" />
-              <xsl:apply-templates select="." />
-            </xsl:for-each>
-          </div>
-        </div>
-        </xsl:if>
-
-        <xsl:if test="count(constant) > 0">
-        <div id="constants_{name}">
-          <h2>Constants</h2>
-          <xsl:for-each select="constant">
-            <xsl:sort select="name" />
-
-            <xsl:apply-templates select="." />
-          </xsl:for-each>
-        </div>
-        </xsl:if>
+      </xsl:for-each>
+      <label class="property-key">Abstract</label>
+      <div class="property-value">
+        <xsl:if test="@abstract='true'">Yes</xsl:if>
+        <xsl:if test="@abstract != 'true'">No</xsl:if>&#160;
+      </div>
+      <label class="property-key">Final</label>
+      <div class="property-value">
+        <xsl:if test="@final='true'">Yes</xsl:if>
+        <xsl:if test="@final != 'true'">No</xsl:if>&#160;
       </div>
     </div>
+
+    <h4>Description</h4>
+    <xsl:if test="not(docblock/description) and not(docblock/long-description)">
+      <strong><em>No description is available</em></strong>
+    </xsl:if>
+    <xsl:if test="docblock/description">
+    <em><xsl:value-of select="docblock/description" /></em><br />
+    </xsl:if>
+    <xsl:if test="docblock/long-description">
+    <xsl:value-of select="docblock/long-description" disable-output-escaping="yes" /><br />
+    </xsl:if>
+
+    <xsl:if test="count(method) > 0">
+    <div id="methods_{name}">
+      <h4>Methods</h4>
+      <xsl:for-each select="method">
+        <xsl:sort select="name" />
+        <a style="font-style: italic;" href="#{../name}::{name}()"><xsl:value-of select="name" /></a>,
+      </xsl:for-each>
+
+      <xsl:for-each select="method">
+        <xsl:sort select="name" />
+        <xsl:apply-templates select="." />
+      </xsl:for-each>
+    </div>
+    </xsl:if>
+
+    <xsl:if test="count(property) > 0">
+    <div id="properties_{name}">
+      <h2>Properties</h2>
+      <xsl:for-each select="property">
+        <xsl:sort select="name" />
+        <a href="#{../name}::{name}">
+          <xsl:value-of select="name" />
+        </a>,
+      </xsl:for-each>
+
+      <xsl:for-each select="property">
+        <xsl:sort select="name" />
+        <xsl:apply-templates select="." />
+      </xsl:for-each>
+    </div>
+    </xsl:if>
+
+    <xsl:if test="count(constant) > 0">
+    <div id="constants_{name}">
+      <h2>Constants</h2>
+      <xsl:for-each select="constant">
+        <xsl:sort select="name" />
+
+        <xsl:apply-templates select="." />
+      </xsl:for-each>
+    </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="method|function">
-    <a id="{../name}::{name}()" />
-    <h3>
-      <span class="nb-faded-text">
-        <xsl:if test="not(docblock/tag[@name='return']/@type)">n/a</xsl:if>
-        <xsl:if test="docblock/tag[@name='return']/@type">
-          <xsl:if test="docblock/tag[@name='return']/@link">
-            <a href="{$root}/files/{docblock/tag[@name='return']/@link}"><xsl:value-of select="docblock/tag[@name='return']/@type" /></a>
+    <div class="method">
+      <a id="{../name}::{name}()" />
+      <h3>
+        <xsl:value-of select="name" />
+        <span class="nb-faded-text">(
+          <xsl:for-each select="argument">
+            <xsl:variable name="variable_name" select="name" />
+            <xsl:value-of select="../docblock/tag[@name='param' and @variable=$variable_name]/@type" />&#160;<xsl:value-of select="$variable_name" />
+            <xsl:if test="default != ''">
+            = <xsl:value-of select="default" disable-output-escaping="yes"/>
+            </xsl:if>,
+          </xsl:for-each>
+          )
+        </span>
+        :
+        <span class="nb-faded-text">
+          <xsl:if test="not(docblock/tag[@name='return']/@type)">n/a</xsl:if>
+          <xsl:if test="docblock/tag[@name='return']/@type">
+            <xsl:if test="docblock/tag[@name='return']/@link">
+              <a href="{$root}/files/{docblock/tag[@name='return']/@link}">
+                <xsl:value-of select="docblock/tag[@name='return']/@type" />
+              </a>
+            </xsl:if>
+            <xsl:if test="not(docblock/tag[@name='return']/@link)">
+              <xsl:value-of select="docblock/tag[@name='return']/@type" />
+            </xsl:if>
           </xsl:if>
-          <xsl:if test="not(docblock/tag[@name='return']/@link)">
-            <xsl:value-of select="docblock/tag[@name='return']/@type" />
-          </xsl:if>
-        </xsl:if>
-      </span>
-      &#160;<xsl:value-of select="name" />
-      <span class="nb-faded-text">(
-        <xsl:for-each select="argument">
-          <xsl:variable name="variable_name" select="name" />
-          <xsl:value-of select="../docblock/tag[@name='param' and @variable=$variable_name]/@type" />&#160;<xsl:value-of select="$variable_name" /> =
-          <xsl:value-of select="default" disable-output-escaping="yes"/>,
+        </span>
+
+      </h3>
+      <xsl:if test="docblock/description != '' or docblock/long-description != ''">
+        <h4>Description</h4>
+      </xsl:if>
+      <xsl:if test="docblock/description != ''">
+        <em><xsl:value-of select="docblock/description" /></em><br />
+      </xsl:if>
+      <xsl:if test="docblock/long-description != ''">
+        <small><xsl:value-of select="docblock/long-description" /></small><br />
+      </xsl:if>
+      <xsl:if test="count(argument) > 0">
+      <h4>Arguments</h4>
+      <table>
+        <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Default</th></tr></thead>
+        <tbody>
+          <xsl:for-each select="argument">
+            <xsl:variable name="variable_name" select="name" />
+            <xsl:variable name="variable_type" select="../docblock/tag[@name='param' and @variable=$variable_name]/@type" />
+            <xsl:variable name="variable_description" select="../docblock/tag[@name='param' and @variable=$variable_name]/." />
+            <tr>
+              <td>
+                <xsl:value-of select="$variable_name" />
+              </td>
+              <td>
+                <xsl:if test="not($variable_type)">n/a</xsl:if>
+                <xsl:if test="$variable_type">
+                  <xsl:if test="../docblock/tag[@name='param' and @variable=$variable_name]/@link">
+                    <a href="{$root}/files/{../docblock/tag[@name='param' and @variable=$variable_name]/@link}">
+                      <xsl:value-of select="$variable_type" />
+                    </a>
+                  </xsl:if>
+                  <xsl:if test="not(../docblock/tag[@name='param' and @variable=$variable_name]/@link)">
+                    <xsl:value-of select="$variable_type" />
+                  </xsl:if>
+                </xsl:if>
+              </td>
+              <td>
+                <xsl:value-of select="$variable_description" disable-output-escaping="yes"/>
+              </td>
+              <td>
+                <xsl:value-of select="default" disable-output-escaping="yes" />
+              </td>
+            </tr>
+          </xsl:for-each>
+        </tbody>
+      </table>
+      </xsl:if>
+
+      <h4>Return value</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <xsl:if test="not(docblock/tag[@name='return']/@type)">n/a</xsl:if>
+              <xsl:if test="docblock/tag[@name='return']/@type">
+                <xsl:if test="docblock/tag[@name='return']/@link">
+                  <a href="{$root}/files/{docblock/tag[@name='return']/@link}">
+                    <xsl:value-of select="docblock/tag[@name='return']/@type" />
+                  </a>
+                </xsl:if>
+                <xsl:if test="not(docblock/tag[@name='return']/@link)">
+                  <xsl:value-of select="docblock/tag[@name='return']/@type" />
+                </xsl:if>
+              </xsl:if>
+            </td>
+            <td>
+              <xsl:if test="not(docblock/tag[@name='return'])">n/a</xsl:if>
+              <xsl:value-of select="docblock/tag[@name='return']" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <xsl:if test="docblock/tag[@name != 'return' and @name != 'param']">
+        <h4>Tags</h4>
+        <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+        <xsl:for-each select="docblock/tag[@name != 'return' and @name != 'param']">
+          <tr>
+            <td>
+              <xsl:value-of select="@name" />
+            </td>
+            <td>
+                <xsl:if test="@link and @link != ''"><a href="{$root}\files\{@link}"><xsl:value-of select="." /></a></xsl:if>
+                <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="." /></xsl:if>
+            </td>
+            <td>
+              <xsl:value-of select="@link" />
+            </td>
+          </tr>
         </xsl:for-each>
-        )
-      </span>
-    </h3>
-    <em><xsl:value-of select="docblock/description" /></em><br />
-    <xsl:if test="docblock/long-description"><small><xsl:value-of select="docblock/long-description" /></small><br /></xsl:if>
-    <br />
-    <hr />
+        </tbody>
+        </table>
+      </xsl:if>
+    </div>
+
   </xsl:template>
 
   <xsl:template match="property">
-    <a id="{../name}::{name}" />
-    <h3>
-      <span class="nb-faded-text">
-        <xsl:value-of select="docblock/tag[@name='var']/@type" />&#160;
-        <xsl:value-of select="@visibility" />&#160;
-        <xsl:if test="@static='true'">static&#160;</xsl:if>
-        <xsl:if test="@final='true'">final&#160;</xsl:if>
-      </span>
-      <xsl:value-of select="name" />
-    </h3>
-    <em>
-      <xsl:value-of select="docblock/description" />
-    </em>
-    <br />
-    <xsl:if test="docblock/long-description">
-      <small>
-        <xsl:value-of select="docblock/long-description" />
-      </small>
+    <div class="method">
+      <a id="{../name}::{name}" />
+      <h3>
+        <span class="nb-faded-text">
+          <xsl:value-of select="docblock/tag[@name='var']/@type" />&#160;
+          <xsl:value-of select="@visibility" />&#160;
+          <xsl:if test="@static='true'">static&#160;</xsl:if>
+          <xsl:if test="@final='true'">final&#160;</xsl:if>
+        </span>
+        <xsl:value-of select="name" />
+      </h3>
+      <em>
+        <xsl:value-of select="docblock/description" />
+      </em>
       <br />
-    </xsl:if>
-    <br />
-    <hr />
+      <xsl:if test="docblock/long-description">
+        <small>
+          <xsl:value-of select="docblock/long-description" />
+        </small>
+        <br />
+      </xsl:if>
+      <br />
+    </div>
 
   </xsl:template>
 

@@ -8,23 +8,14 @@
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <title><xsl:value-of select="$title" /></title>
-        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
         <link rel="stylesheet" href="{$root}/css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
-        <link rel="stylesheet" href="{$root}/css/jquery.treeview.css" type="text/css" />
         <link rel="stylesheet" href="{$root}/css/default.css" type="text/css" />
         <script type="text/javascript" src="{$root}/js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="{$root}/js/jquery-ui-1.8.2.custom.min.js"></script>
-        <script type="text/javascript" src="{$root}/js/jquery.treeview.js"></script>
       </head>
       <body>
         <script type="text/javascript">
-          $(document).ready(function()
-          {
-            $(".treeview-docblox").treeview({
-              animated: 'fast'
-            });
-          });
-
           function jq_escape(myid)
           {
             return '#' + myid.replace(/(#|\$|:|\.|\(|\))/g, '\\$1');
@@ -60,52 +51,11 @@
           });
         </script>
 
-        <div id="maincontainer">
+        <xsl:call-template name="header">
+          <xsl:with-param name="title" select="$title" />
+        </xsl:call-template>
 
-          <div id="header">
-            <div class="padder"></div>
-          </div>
-
-          <div id="content_container">
-            <div id="content">
-              <div class="padder">
-                <xsl:apply-templates />
-              </div>
-            </div>
-          </div>
-
-          <div id="menu">
-            <div class="padder">
-              <h1><img src="{$root}/images/logo.png" alt="" /></h1>
-
-              <div id="search-box">
-                <input type="text" name="search" id="search" />
-              </div>
-              <h4>Documentation</h4>
-                <ul>
-                  <li>Namespaces</li>
-                  <li>Packages</li>
-                  <li>Files</li>
-                  <li><a href="{$root}/markers.html">TODO / Markers</a></li>
-              </ul>
-              <br />
-              <h4>Charts</h4>
-            </div>
-          </div>
-
-          <div id="index">
-            <div class="padder">
-
-              <xsl:value-of select="$object-index" disable-output-escaping="yes"/>
-
-            </div>
-          </div>
-
-          <div id="footer">
-            <div class="padder"></div>
-          </div>
-
-        </div>
+        <xsl:apply-templates />
 
       </body>
     </html>
@@ -129,6 +79,10 @@
         <input id="search_box" style="display: none"/>
       </div>
     </div>
+  </xsl:template>
+
+  <xsl:template name="footer">
+
   </xsl:template>
 
 </xsl:stylesheet>
