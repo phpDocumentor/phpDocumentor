@@ -1,15 +1,19 @@
 <?php
 /**
- * @author    mvriel
- * @copyright
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
  * Provide a short description for this class.
  *
- * @author     mvriel
- * @package
- * @subpackage
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @subpackage Base
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
 {
@@ -58,59 +62,98 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    */
   protected $namespace   = 'default';
 
-
   /**
-   * Sets the name for this Reflection Object.
+   * Main function which reads the token iterator and parses the current token.
    *
-   * @throws InvalidArgumentException
-   * @param  string $name
+   * @param DocBlox_TokenIterator $tokens The iterator with tokens.
+   *
    * @return void
    */
-  public function setName($name)
+  public function parseTokenizer(DocBlox_TokenIterator $tokens)
   {
-    if (!is_string($name))
+    if (!$tokens->current())
     {
-      throw new InvalidArgumentException('Expected name to be a string');
+      $this->log('>> No contents found to parse');
+      return;
     }
 
-    $this->name = $name;
+    $this->debug('== Parsing token '.$tokens->current()->getName());
+    $this->line_start = $tokens->current()->getLineNumber();
+
+    // retrieve generic information about the class
+    $this->processGenericInformation($tokens);
+
+    list($start, $end) = $this->processTokens($tokens);
+    $this->token_start = $start;
+    $this->token_end   = $end;
+
+    $this->debug('== Determined token index range to be '.$start.' => '.$end);
+
+    $this->debugTimer('>> Processed all tokens');
   }
 
   /**
-   * Returns the name for this Reflection object.
+   * Processes the meta-data of the 'main' token.
    *
-   * @return string
-   */
-  public function getName()
-  {
-    return $this->name;
-  }
-
-  /**
-   * Sets the name of the namespace to which this belongs.
+   * Example: for the DocBlox_Reflection_Function class this would be the name, parameters, etc.
    *
-   * @throws InvalidArgumentException
-   * @param  $namespace
+   * @abstract
+   *
+   * @param DocBlox_TokenIterator $tokens The iterator with tokens.
+   *
    * @return void
    */
-  public function setNamespace($namespace)
-  {
-    if (!is_string($namespace))
-    {
-      throw new InvalidArgumentException('Expected the namespace to be a string');
-    }
+  abstract protected function processGenericInformation(DocBlox_TokenIterator $tokens);
 
-    $this->namespace = $namespace;
+  /**
+   * Scans all tokens within the scope of the current token and invokes the process* methods.
+   *
+   * This is a base class which may be overridden in sub-classes to scan the scope of the current token
+   * (i.e. the method body in case of the method)
+   *
+   * @param DocBlox_TokenIterator $tokens iterator with the current position
+   *
+   * @return int[] Start and End token id
+   */
+  protected function processTokens(DocBlox_TokenIterator $tokens)
+  {
+    return array($tokens->key(), $tokens->key());
   }
 
   /**
-   * Returns the name of the namespace to which this belongs.
+   * Processes the current token and invokes the correct process* method.
    *
-   * @return string
+   * Tokens are automatically parsed by invoking a process* method (i.e. processFunction for a T_FUNCTION).
+   * If a method, which conforms to the standard above, does not exist the token is ignored.
+   *
+   * @param DocBlox_Token         $token  The specific token which needs processing.
+   * @param DocBlox_TokenIterator $tokens The iterator with tokens.
+   *
+   * @return void
    */
-  public function getNamespace()
+  protected function processToken(DocBlox_Token $token, DocBlox_TokenIterator $tokens)
   {
-    return $this->namespace;
+    static $token_method_exists_cache = array();
+
+    // cache method name; I expect to find this a lot
+    $token_name = $token->getName();
+    if (!isset(self::$token_method_cache[$token_name]))
+    {
+      self::$token_method_cache[$token_name] = 'process'.str_replace(' ', '', ucwords(strtolower(substr(str_replace('_', ' ', $token_name), 2))));
+    }
+
+    // cache the method_exists calls to speed up processing
+    $method_name = self::$token_method_cache[$token_name];
+    if (!isset($token_method_exists_cache[$method_name]))
+    {
+      $token_method_exists_cache[$method_name] = method_exists($this, $method_name);
+    }
+
+    // if method exists; parse the token
+    if ($token_method_exists_cache[$method_name])
+    {
+      $this->$method_name($tokens);
+    }
   }
 
   /**
@@ -208,6 +251,13 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     return $tokens->findPreviousByType(T_STATIC, 5, array('{', ';'));
   }
 
+  /**
+   * Searches for visibility specifiers with the current token.
+   *
+   * @param DocBlox_TokenIterator $tokens Token iterator to search in.
+   *
+   * @return string public|private|protected
+   */
   protected function findVisibility(DocBlox_TokenIterator $tokens)
   {
     $result = 'public';
@@ -217,76 +267,98 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     return $result;
   }
 
-  protected function processTokens(DocBlox_TokenIterator $tokens)
+  /**
+   * Sets the name for this Reflection Object.
+   *
+   * @throws InvalidArgumentException
+   * @param  string $name
+   * @return void
+   */
+  public function setName($name)
   {
-    return array($tokens->key(), $tokens->key());
-  }
-
-  protected function processToken(DocBlox_Token $token, DocBlox_TokenIterator $tokens)
-  {
-    static $token_method_exists_cache = array();
-
-    // cache method name; I expect to find this a lot
-    $token_name = $token->getName();
-    if (!isset(self::$token_method_cache[$token_name]))
+    if (!is_string($name))
     {
-      self::$token_method_cache[$token_name] = 'process'.str_replace(' ', '', ucwords(strtolower(substr(str_replace('_', ' ', $token_name), 2))));
+      throw new InvalidArgumentException('Expected name to be a string');
     }
 
-    // cache the method_exists calls to speed up processing
-    $method_name = self::$token_method_cache[$token_name];
-    if (!isset($token_method_exists_cache[$method_name]))
-    {
-      $token_method_exists_cache[$method_name] = method_exists($this, $method_name);
-    }
-
-    // if method exists; parse the token
-    if ($token_method_exists_cache[$method_name])
-    {
-      $this->$method_name($tokens);
-    }
+    $this->name = $name;
   }
 
-  abstract protected function processGenericInformation(DocBlox_TokenIterator $tokens);
-
-  public function parseTokenizer(DocBlox_TokenIterator $tokens)
+  /**
+   * Returns the name for this Reflection object.
+   *
+   * @return string
+   */
+  public function getName()
   {
-    if (!$tokens->current())
+    return $this->name;
+  }
+
+  /**
+   * Sets the name of the namespace to which this belongs.
+   *
+   * @throws InvalidArgumentException
+   * @param  $namespace
+   * @return void
+   */
+  public function setNamespace($namespace)
+  {
+    if (!is_string($namespace))
     {
-      $this->log('>> No contents found to parse');
-      return;
+      throw new InvalidArgumentException('Expected the namespace to be a string');
     }
 
-    $this->debug('== Parsing token '.$tokens->current()->getName());
-    $this->line_start = $tokens->current()->getLineNumber();
-
-    // retrieve generic information about the class
-    $this->processGenericInformation($tokens);
-
-    list($start, $end) = $this->processTokens($tokens);
-    $this->token_start = $start;
-    $this->token_end   = $end;
-
-    $this->debug('== Determined token index range to be '.$start.' => '.$end);
-
-    $this->debugTimer('>> Processed all tokens');
+    $this->namespace = $namespace;
   }
 
-  public function getStartTokenId()
+  /**
+   * Returns the name of the namespace to which this belongs.
+   *
+   * @return string
+   */
+  public function getNamespace()
   {
-    return $this->token_start;
+    return $this->namespace;
   }
 
+  /**
+   * Returns the line number where this token starts.
+   *
+   * @return int
+   */
   public function getLineNumber()
   {
     return $this->line_start;
   }
 
+  /**
+   * Getter; returns the token id which identifies the start of this object.
+   *
+   * @return int
+   */
+  public function getStartTokenId()
+  {
+    return $this->token_start;
+  }
+
+  /**
+   * Returns the token id which identifies the end of the object.
+   *
+   * @return int
+   */
   public function getEndTokenId()
   {
     return $this->token_end;
   }
 
+  /**
+   * Helper used to merge a given XML string into a given DOMDocument.
+   *
+   * @param DOMDocument $origin Destination to merge the XML into.
+   * @param string      $xml    The XML to merge with the document.
+   *
+   * @return void
+   */
   protected function mergeXmlToDomDocument(DOMDocument $origin, $xml)
   {
     $dom_arguments = new DOMDocument();
@@ -295,6 +367,14 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     $this->mergeDomDocuments($origin, $dom_arguments);
   }
 
+  /**
+   * Helper method which merges a $document into $origin.
+   *
+   * @param DOMDocument $origin   The document to accept the changes.
+   * @param DOMDocument $document The changes which are to be merged into the origin.
+   *
+   * @return void
+   */
   protected function mergeDomDocuments(DOMDocument $origin, DOMDocument $document)
   {
     $xpath = new DOMXPath($document);
@@ -305,6 +385,13 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
     }
   }
 
+  /**
+   * Returns an XML representation of this object.
+   *
+   * @abstract
+   *
+   * @return string
+   */
   abstract public function __toXml();
 
   /**
