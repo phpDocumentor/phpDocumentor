@@ -43,7 +43,7 @@
       <strong><em>No description is available</em></strong>
     </xsl:if>
     <xsl:if test="docblock/description">
-    <em><xsl:value-of select="docblock/description" /></em><br />
+    <em><xsl:value-of select="docblock/description" disable-output-escaping="yes" /></em><br />
     </xsl:if>
     <xsl:if test="docblock/long-description">
     <xsl:value-of select="docblock/long-description" disable-output-escaping="yes" /><br />
@@ -128,10 +128,10 @@
         <h4>Description</h4>
       </xsl:if>
       <xsl:if test="docblock/description != ''">
-        <em><xsl:value-of select="docblock/description" /></em><br />
+        <em><xsl:value-of select="docblock/description" disable-output-escaping="yes" /></em><br />
       </xsl:if>
       <xsl:if test="docblock/long-description != ''">
-        <small><xsl:value-of select="docblock/long-description" /></small><br />
+        <small><xsl:value-of select="docblock/long-description" disable-output-escaping="yes" /></small><br />
       </xsl:if>
       <xsl:if test="count(argument) > 0">
       <h4>Arguments</h4>
@@ -247,7 +247,7 @@
         <xsl:value-of select="name" />
       </h3>
       <em>
-        <xsl:value-of select="docblock/description" />
+        <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
       </em>
       <br />
       <xsl:if test="docblock/long-description">
@@ -273,7 +273,7 @@
       </span>
     </h3>
     <em>
-      <xsl:value-of select="docblock/description" />
+      <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
     </em>
     <br />
     <xsl:if test="docblock/long-description">
