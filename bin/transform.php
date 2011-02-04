@@ -66,7 +66,7 @@ try
   if ($opts->getOption('source'))
   {
     $path = realpath($opts->getOption('source'));
-    if (!file_exists($path) || !is_readable($path))
+    if (!file_exists($path) || !is_readable($path) || !is_file($path))
     {
       throw new Exception('Given source does not exist or is not readable');
     }
