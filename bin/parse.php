@@ -64,6 +64,7 @@ $docblox->setIgnorePatterns($opts->getIgnorePatterns());
 $docblox->setForced($opts->getOption('force'));
 $docblox->setMarkers($opts->getMarkers());
 $docblox->setValidate($opts->getOption('validate'));
+$docblox->setPath($opts->getOption('directory'));
 
 // save the generate file to the path given as the 'target' option
 file_put_contents($path.'/structure.xml', $docblox->parseFiles($opts->getFiles()));

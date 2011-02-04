@@ -54,6 +54,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->marker_terms[] = $name;
   }
 
+  public function setRelativeFilename($filename)
+  {
+	  $this->filename = $filename;
+  }
+
   public function setMarkers(array $markers)
   {
     $this->marker_terms = $markers;
