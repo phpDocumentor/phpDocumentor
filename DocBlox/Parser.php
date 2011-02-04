@@ -78,7 +78,7 @@ class DocBlox_Parser extends DocBlox_Abstract
     {
       $file = new DocBlox_Reflection_File($filename, $this->doValidation());
       $file->setMarkers($this->getMarkers());
-      $file->setRelativeFilename($this->getRelativeFilename($filename));
+      $file->setFilename($this->getRelativeFilename($filename));
       if (($this->existing_xml !== null) && (!$this->isForced()))
       {
         $xpath = new DOMXPath($this->existing_xml);
@@ -135,7 +135,7 @@ class DocBlox_Parser extends DocBlox_Abstract
   {
     // strip path from filename
     $filename = substr($filename, strlen($this->path));
-    
+
     return ltrim($filename,'/');
   }
 
