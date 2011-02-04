@@ -1,18 +1,19 @@
 <?php
 class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 {
-  protected $filename         = '';
-  protected $hash             = null;
-  protected $tokens           = null;
-  protected $contents         = '';
-  protected $interfaces       = array();
-  protected $classes          = array();
-  protected $functions        = array();
-  protected $constants        = array();
-  protected $includes         = array();
-  protected $active_namespace = 'default';
-  protected $markers          = array();
-  protected $marker_terms     = array('TODO', 'FIXME');
+  protected $filename           = '';
+  protected $hash               = null;
+  protected $tokens             = null;
+  protected $contents           = '';
+  protected $interfaces         = array();
+  protected $classes            = array();
+  protected $functions          = array();
+  protected $constants          = array();
+  protected $includes           = array();
+  protected $namespace_aliases  = array();
+  protected $active_namespace   = 'default';
+  protected $markers            = array();
+  protected $marker_terms       = array('TODO', 'FIXME');
 
   public function __construct($file, $validate)
   {
@@ -161,7 +162,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   }
 
   /**
-   * Processes the T_USE and extracts all namespace aliases.
+   * Processes the T_USE token and extracts all namespace aliases.
    *
    * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
    *
@@ -182,8 +183,28 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
       $aliases[count($aliases)-1] .= $token->getContent();
     }
-    var_dump($aliases);
-    die('FOUND IT!');
+
+    $result = array();
+    foreach($aliases as $key => $alias)
+    {
+      // an AS is always surrounded by spaces; by trimming the $alias we then know that the first element is the
+      // namespace and the last is the alias.
+      // We explicitly do not use spliti to prevent regular expressions for performance reasons (the AS may be any case).
+      $alias = explode(' ', trim($alias));
+
+      // if there is only one part, that means no AS is given and the last segment of the namespace functions as
+      // alias.
+      if (count($alias) == 1)
+      {
+        $alias_parts = explode('\\', $alias[0]);
+        $alias[] = $alias_parts[count($alias_parts)-1];
+      }
+
+      $result[$alias[count($alias) -1]] = $alias[0];
+      unset($aliases[$key]);
+    }
+
+    $this->namespace_aliases = array_merge($this->namespace_aliases, $result);
   }
 
   protected function processNamespace(DocBlox_TokenIterator $tokens)
@@ -288,6 +309,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $xml = new SimpleXMLElement('<file path="'.ltrim($this->filename, './').'" hash="'.$this->hash.'"></file>');
     $this->addDocblockToSimpleXmlElement($xml);
 
+    // add markers
     foreach($this->markers as $marker)
     {
       if (!isset($xml->markers))
@@ -297,6 +319,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
       $marker_obj = $xml->markers->addChild(strtolower($marker[0]), trim($marker[1]));
       $marker_obj->addAttribute('line', $marker[2]);
+    }
+
+    // add namespace aliases
+    foreach($this->namespace_aliases as $alias => $namespace)
+    {
+      $alias_obj = $xml->addChild('namespace-alias', $namespace);
+      $alias_obj->addAttribute('name', $alias);
     }
 
     $dom = new DOMDocument('1.0', 'utf-8');
