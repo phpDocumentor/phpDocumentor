@@ -113,17 +113,19 @@ class DocBlox_Parser extends DocBlox_Abstract
   }
 
   /**
-   * Sets the path to the files that will be parsed.
+   * Sets the base path of the files that will be parsed.
    *
    * @param string $path
+   *
+   * @return void
    */
   function setPath($path)
   {
-	  $this->path=$path;
+    $this->path = $path;
   }
 
   /**
-   * Returns the filename, relative to the root of the source-directory.
+   * Returns the filename, relative to the root of the project directory.
    *
    * @param string $filename
    *
@@ -131,8 +133,10 @@ class DocBlox_Parser extends DocBlox_Abstract
    */
   protected function getRelativeFilename($filename)
   {
-	  $filename=preg_replace('~^'.preg_quote($this->path).'~','',$filename);
-	  return ltrim($filename,'/');
+    // strip path from filename
+    $filename = substr($filename, strlen($this->path));
+    
+    return ltrim($filename,'/');
   }
 
   /**
