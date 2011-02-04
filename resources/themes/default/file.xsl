@@ -26,7 +26,7 @@
       <h3>Description</h3>
     </xsl:if>
     <xsl:if test="docblock/description != ''">
-      <xsl:value-of select="docblock/description" /><br />
+      <xsl:value-of select="docblock/description" disable-output-escaping="yes" /><br />
       <br />
     </xsl:if>
     <xsl:if test="docblock/long-description != ''">
