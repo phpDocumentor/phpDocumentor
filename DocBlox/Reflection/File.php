@@ -160,6 +160,32 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     }
   }
 
+  /**
+   * Processes the T_USE and extracts all namespace aliases.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
+  protected function processUse(DocBlox_TokenIterator $tokens)
+  {
+    /** @var DocBlox_Token $token */
+    $aliases = array('');
+    while(($token = $tokens->next()) && ($token->getContent() != ';'))
+    {
+      // if a comma is found, go to the next alias
+      if (!$token->getType() && $token->getContent() == ',')
+      {
+        $aliases[] = '';
+        continue;
+      }
+
+      $aliases[count($aliases)-1] .= $token->getContent();
+    }
+    var_dump($aliases);
+    die('FOUND IT!');
+  }
+
   protected function processNamespace(DocBlox_TokenIterator $tokens)
   {
     // collect all namespace parts
