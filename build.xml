@@ -1,4 +1,4 @@
-<project name="phpOpenNOS" default="build" basedir=".">
+<project name="DocBlox" default="build" basedir=".">
  <property file="build.properties"/>
 
  <target name="clean">
