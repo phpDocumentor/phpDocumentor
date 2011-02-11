@@ -1,10 +1,20 @@
 <?php
 /**
- * Provide a short description for this class.
+ * DocBlox
  *
- * @package    emma
- * @subpackage
- * @author     mvriel
+ * @category   DocBlox
+ * @package    Writers
+ * @subpackage Xslt
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Base class used for all the XSLT writer classes.
+ *
+ * @category   DocBlox
+ * @package    Writers
+ * @subpackage Xslt
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlox_Writer_Xslt_Abstract extends DocBlox_Writer_Abstract
 {

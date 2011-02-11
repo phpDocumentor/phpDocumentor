@@ -6,6 +6,7 @@ class DocBlox_Parser extends DocBlox_Abstract
   protected $force           = false;
   protected $validate        = false;
   protected $markers         = array('TODO', 'FIXME');
+  protected $path            = null;
 
   public function isForced()
   {
@@ -77,7 +78,7 @@ class DocBlox_Parser extends DocBlox_Abstract
     {
       $file = new DocBlox_Reflection_File($filename, $this->doValidation());
       $file->setMarkers($this->getMarkers());
-
+      $file->setFilename($this->getRelativeFilename($filename));
       if (($this->existing_xml !== null) && (!$this->isForced()))
       {
         $xpath = new DOMXPath($this->existing_xml);
@@ -109,6 +110,33 @@ class DocBlox_Parser extends DocBlox_Abstract
     $this->debugTimer('>> Parsed file');
 
     return $result;
+  }
+
+  /**
+   * Sets the base path of the files that will be parsed.
+   *
+   * @param string $path
+   *
+   * @return void
+   */
+  function setPath($path)
+  {
+    $this->path = $path;
+  }
+
+  /**
+   * Returns the filename, relative to the root of the project directory.
+   *
+   * @param string $filename
+   *
+   * @return string
+   */
+  protected function getRelativeFilename($filename)
+  {
+    // strip path from filename
+    $filename = substr($filename, strlen($this->path));
+
+    return ltrim($filename,'/');
   }
 
   /**

@@ -146,6 +146,7 @@ th, td
   margin-bottom:       2px;
   padding-top:         5px;
   padding-bottom:      5px;
+  border-radius:       5px;
 }
 
 .treeview li .content
@@ -203,6 +204,7 @@ th, td
   padding:             5px;
   background:          white;
   word-wrap:           break-word;
+  border-radius:       5px;
 }
 
 #content .properties div.property-value
@@ -250,6 +252,10 @@ th, td
   white-space:         pre-wrap;
 }
 
+#content .class, #content .interface {
+	clear: right;
+}
+
 #content h1
 {
   border-bottom:       1px solid #5E8CDF;
@@ -259,7 +265,7 @@ th, td
 #content h2
 {
   border-bottom:       1px dashed #5E8CDF;
-  padding-bottom:      6px;
+  padding: 10px 0px;
 }
 
 #content h5

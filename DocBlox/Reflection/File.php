@@ -32,7 +32,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
       }
     }
 
-    $this->filename = $file;
+    $this->setFilename($file);
     $this->name = $this->filename;
     $contents = file_get_contents($file);
 
@@ -42,7 +42,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $mime_info = explode('=', $mime);
     if (strtolower($mime_info[1]) != 'utf-8')
     {
-        $contents = iconv($mime_info[1], 'UTF-8', $contents);
+      $contents = iconv($mime_info[1], 'UTF-8', $contents);
     }
 
     $this->contents = $contents;
@@ -52,6 +52,18 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   public function addMarker($name)
   {
     $this->marker_terms[] = $name;
+  }
+
+  /**
+   * Sets the file name for this file.
+   *
+   * @param string $filename
+   *
+   * @return void
+   */
+  public function setFilename($filename)
+  {
+    $this->filename = $filename;
   }
 
   public function setMarkers(array $markers)
