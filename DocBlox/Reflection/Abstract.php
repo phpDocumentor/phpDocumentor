@@ -8,7 +8,7 @@
  */
 
 /**
- * Provide a short description for this class.
+ * Provides the basic functionality for every static reflection class.
  *
  * @category   DocBlox
  * @package    Static_Reflection

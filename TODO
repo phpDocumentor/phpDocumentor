@@ -1,13 +1,14 @@
 0.8: Fix known issues
+* Add support for the T_USE token
 * Add docblocks to DocBlox
 * Class docblocks are also used as file docblocks when generating the new theme.
 * Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
 * Revisit namespace support to check for consistency
-* Add support for the T_USE token
 * Zend_Reflection_DocBlock does not correctly parse docblocks. It sometimes fail to see the diff between a short and
   long description.
 * Add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
 * Add documentation
+* write tests
 
 0.9: Add custom documents, statistics and improve theming
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
@@ -20,10 +21,15 @@
 * add possibility for custom documents in markdown format
 * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
+* write tests
 
 0.10: Pre 1.0 cleanup
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * Refactor static reflection to return contents in a different way and change the way XML is handled
 * Revisit template and make it prettier
+* write tests
+
+BONUS:
+* UML Class Diagram
 
 More items will be added to this list as the project furthers.

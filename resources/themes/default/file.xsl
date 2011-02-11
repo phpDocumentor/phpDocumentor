@@ -26,7 +26,7 @@
       <h3>Description</h3>
     </xsl:if>
     <xsl:if test="docblock/description != ''">
-      <xsl:value-of select="docblock/description" /><br />
+      <xsl:value-of select="docblock/description" disable-output-escaping="yes" /><br />
       <br />
     </xsl:if>
     <xsl:if test="docblock/long-description != ''">
@@ -55,7 +55,7 @@
     <xsl:if test="class">
       <h2>Classes</h2>
       <xsl:for-each select="class">
-        <div id="{name}">
+        <div id="{name}" class="class">
           <xsl:apply-templates select="." />
         </div>
       </xsl:for-each>
@@ -63,7 +63,7 @@
 
     <xsl:if test="interface">
       <h2>Interfaces</h2>
-      <xsl:for-each select="interface">
+      <xsl:for-each select="interface" class="interface">
         <div id="{name}">
           <xsl:apply-templates select="." />
         </div>
