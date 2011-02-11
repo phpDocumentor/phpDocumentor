@@ -81,9 +81,34 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     foreach($type as &$item)
     {
       $item = trim($item);
-      $item = (substr($item, 0, 1) != '\\') && (!in_array(strtolower($item), $non_objects))
-        ? $namespace.$item
-        : $item;
+
+      // add support for array notation
+      $is_array = false;
+      if (substr($item, 0, -2) == '[]')
+      {
+        $is_array = true;
+      }
+
+      if ((substr($item, 0, 1) != '\\') && (!in_array(strtolower($item), $non_objects)))
+      {
+        $type_parts = explode('\\', $item);
+        if (isset($this->namespace_aliases[$type_parts[0]]))
+        {
+          $type_parts[0] = $this->namespace_aliases[$type_parts[0]];
+
+          $item = implode('\\', $type_parts);
+        }
+        else
+        {
+          $item = $namespace . $item;
+        }
+      }
+
+      // re-add the array notation markers
+      if ($is_array)
+      {
+        $item .= '[]';
+      }
     }
 
     return implode('|', $type);

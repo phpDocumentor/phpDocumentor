@@ -4,8 +4,8 @@
 * Class docblocks are also used as file docblocks when generating the new theme.
 * Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
 * Revisit namespace support to check for consistency
-* Zend_Reflection_DocBlock does not correctly parse docblocks. It sometimes fail to see the diff between a short and
-  long description.
+* Zend_Reflection_DocBlock: It sometimes fails to see the diff between a short and long description.
+* Zend_Reflection_DocBlock: Array notation ([]) breaks tag parsing
 * Add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
 * Add documentation
 * write tests

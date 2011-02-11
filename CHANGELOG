@@ -1,3 +1,8 @@
+--/--/----: Version 0.8L fix known issues
+
+* ADDED:    Support for array notation of types (i.e. string[] or MyClass[])
+* ADDED:    Support for the T_USE token (namespace aliasing)
+
 01/02/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------
 

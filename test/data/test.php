@@ -1,5 +1,8 @@
 <?php
 namespace Test\Tests5;
+
+use My\Test as TestAlias, My\Test\ClassName;
+
 /**
  * File docblock
  *
@@ -33,6 +36,19 @@ const GLOBAL_CONST2 = '2';
  * @return void
  */
 function single_function($argument = 'test')
+{
+
+}
+
+/**
+ * Function docblock for SingleFunction2
+ *
+ * @param TestAlias\ClassName[] $argument
+ * @param ClassName $argument2
+ *
+ * @return void
+ */
+function single_function2($argument, $argument2)
 {
 
 }

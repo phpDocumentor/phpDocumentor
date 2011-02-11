@@ -27,7 +27,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   protected $functions          = array();
   protected $constants          = array();
   protected $includes           = array();
-  protected $namespace_aliases  = array();
   protected $active_namespace   = 'default';
   protected $markers            = array();
   protected $marker_terms       = array('TODO', 'FIXME');
@@ -296,6 +295,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $interface = new DocBlox_Reflection_Interface();
     $interface->setNamespace($this->active_namespace);
+    $interface->setNamespaceAliases($this->namespace_aliases);
     $interface->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed interface '.$interface->getName(), 'interface');
@@ -309,6 +309,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $class = new DocBlox_Reflection_Class();
     $class->setNamespace($this->active_namespace);
+    $class->setNamespaceAliases($this->namespace_aliases);
     $class->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed class '.$class->getName(), 'class');
@@ -322,6 +323,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $function = new DocBlox_Reflection_Function();
     $function->setNamespace($this->active_namespace);
+    $function->setNamespaceAliases($this->namespace_aliases);
     $function->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed function '.$function->getName(), 'function');
@@ -335,6 +337,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $constant = new DocBlox_Reflection_Constant();
     $constant->setNamespace($this->active_namespace);
+    $constant->setNamespaceAliases($this->namespace_aliases);
     $constant->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed constant '.$constant->getName(), 'constant');
@@ -424,4 +427,5 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     return trim($dom->saveXml());
   }
+
 }

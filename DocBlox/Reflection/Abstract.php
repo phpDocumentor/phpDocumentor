@@ -63,6 +63,13 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
   protected $namespace   = 'default';
 
   /**
+   * Stores the aliases and full names of any defined namespace alias (T_USE).
+   *
+   * @var string[]
+   */
+  protected $namespace_aliases = array();
+
+  /**
    * Main function which reads the token iterator and parses the current token.
    *
    * @param DocBlox_TokenIterator $tokens The iterator with tokens.
@@ -319,6 +326,33 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
   public function getNamespace()
   {
     return $this->namespace;
+  }
+
+  /**
+   * Sets the name of the namespace to which this belongs.
+   *
+   * @throws InvalidArgumentException
+   * @param  $namespace
+   * @return void
+   */
+  public function setNamespaceAliases($namespace_aliases)
+  {
+    if (!is_array($namespace_aliases))
+    {
+      throw new InvalidArgumentException('Expected the namespace alaises to be an array of strings');
+    }
+
+    $this->namespace_aliases = $namespace_aliases;
+  }
+
+  /**
+   * Returns the namespace aliases which can be applied to the types in this object.
+   *
+   * @return string
+   */
+  public function getNamespaceAliases()
+  {
+    return $this->namespace_aliases;
   }
 
   /**
