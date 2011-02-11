@@ -1,4 +1,21 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Reflection
+ * @subpackage File
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Reflection class for a full file.
+ *
+ * @category   DocBlox
+ * @package    Reflection
+ * @subpackage File
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 {
   protected $filename           = '';
@@ -15,6 +32,16 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   protected $markers            = array();
   protected $marker_terms       = array('TODO', 'FIXME');
 
+  /**
+   * Opens the file and retrieves it's contents.
+   *
+   * @throws DocBlox_Reflection_Exception when the filename is incorrect or the file can not be opened
+   *
+   * @param string  $file     Name of the file.
+   * @param boolean $validate Whether to check the file using PHP Lint.
+   *
+   * @return void
+   */
   public function __construct($file, $validate)
   {
     parent::__construct();
@@ -50,11 +77,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->setHash(filemtime($file));
   }
 
-  public function addMarker($name)
-  {
-    $this->marker_terms[] = $name;
-  }
-
   /**
    * Sets the file name for this file.
    *
@@ -67,16 +89,52 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->filename = $filename;
   }
 
-  public function setMarkers(array $markers)
+  /**
+   * Adds a marker to scan for.
+   *
+   * @param string $name The Marker term, i.e. FIXME or TODO
+   *
+   * @return void
+   */
+  public function addMarker($name)
   {
-    $this->marker_terms = $markers;
+    $this->marker_terms[] = $name;
   }
 
+  /**
+   * Sets a list of markers to search for.
+   *
+   * @param string[] $markers
+   *
+   * @see DocBlox_Reflection_File::addMarker()
+   *
+   * @return void
+   */
+  public function setMarkers(array $markers)
+  {
+    foreach($markers as $marker)
+    {
+      $this->addMarker($marker);
+    }
+  }
+
+  /**
+   * Returns the hash identifying this file.
+   *
+   * @return string
+   */
   public function getHash()
   {
     return $this->hash;
   }
 
+  /**
+   * Sets the hash for this file.
+   *
+   * @param string $hash
+   *
+   * @return void
+   */
   public function setHash($hash)
   {
     $this->hash = $hash;
