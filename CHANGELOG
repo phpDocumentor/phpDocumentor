@@ -2,6 +2,8 @@
 
 * ADDED:    Support for array notation of types (i.e. string[] or MyClass[])
 * ADDED:    Support for the T_USE token (namespace aliasing)
+* FIXED:    PHP 5.2.6 compatibility was restored; changed in the previous versions broke this
+* FIXED:    Improved file character encoding methods; using forward compatibility (uses finfo when available)
 
 01/02/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------
