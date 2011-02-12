@@ -184,10 +184,17 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       }
 
       // get all files recursively to the files array
-      $files_iterator = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
+      $files_iterator = new RecursiveDirectoryIterator($directory);
+      
       /** @var SplFileInfo $file */
       foreach(new RecursiveIteratorIterator($files_iterator) as $file)
       {
+        // skipping dots (should any be encountered)
+        if (($file->getFilename() == '.') || ($file->getFilename() == '..'))
+        {
+          continue;
+        }
+
         // check if the file has the correct extension
         $info = pathinfo($file);
         if (!isset($info['extension']) || !in_array(strtolower($info['extension']), $this->getExtensions()))
@@ -275,7 +282,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    * Returns all ignore patterns.
    *
    * @todo consider moving the conversion from glob to regex to here.
-   * 
+   *
    * @return array
    */
   public function getIgnorePatterns()

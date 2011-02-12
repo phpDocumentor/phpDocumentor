@@ -60,20 +60,88 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     }
 
     $this->setFilename($file);
-    $this->name = $this->filename;
-    $contents = file_get_contents($file);
+    $this->name     = $this->filename;
+    $this->contents = $this->convertToUtf8($file, file_get_contents($file));
+    $this->setHash(filemtime($file));
+  }
+
+  /**
+   * Converts a piece of text to UTF-8 if it isn't.
+   *
+   * @param string $contents String to convert.
+   *
+   * @return string
+   */
+  protected function convertToUtf8($filename, $contents)
+  {
+    $encoding   = null;
 
     // detect encoding and transform to UTF-8
-    $info = new finfo();
-    $mime = $info->file($file, FILEINFO_MIME);
-    $mime_info = explode('=', $mime);
-    if (strtolower($mime_info[1]) != 'utf-8')
+    if (class_exists('finfo'))
     {
-      $contents = iconv($mime_info[1], 'UTF-8', $contents);
+      // PHP 5.3 or PECL extension
+      $info      = new finfo();
+      $encoding  = $info->file($filename, FILEINFO_MIME_ENCODING);
+    } elseif(function_exists('mb_detect_encoding'))
+    {
+      // OR with mbstring
+      $encoding = mb_detect_encoding($contents);
+    } elseif(function_exists('iconv'))
+    {
+      // OR using iconv (performance hit)
+      $this->log(
+        'Neither the finfo nor the mbstring extensions are active; special character handling may '
+        . 'not give the best results',
+        Zend_Log::WARN
+      );
+      $encoding = $this->detectEncodingFallback($contents);
+    } else
+    {
+      // or not..
+      $this->log(
+        'Unable to handle character encoding; finfo, mbstring and iconv extensions are not enabled',
+        Zend_Log::CRIT
+      );
     }
 
-    $this->contents = $contents;
-    $this->setHash(filemtime($file));
+    // convert if a source encoding is found; otherwise we throw an error and have to continue using the given data
+    if (($encoding !== null) && (strtolower($encoding) != 'utf-8'))
+    {
+      $contents = iconv($encoding, 'UTF-8', $contents);
+      if ($contents === false)
+      {
+        $this->log(
+          'Encoding of file ' . $filename . ' from ' . $encoding . ' to UTF-8 failed, please check the notice for a '
+            . 'detailed error message',
+          Zend_Log::EMERG
+        );
+      }
+    }
+
+    return $contents;
+  }
+
+  /**
+   * This is a fallback mechanism; if no finfo or mbstring extension are activated this is used.
+   *
+   * WARNING: try to prevent this; it is assumed that this method is not fool-proof nor performing as well as the other
+   * options.
+   *
+   * @param string $string String to detect the encoding of.
+   *
+   * @return string Name of the encoding to return.
+   */
+  private function detectEncodingFallback($string)
+  {
+    static $list = array('UTF-8', 'ASCII', 'ISO-8859-1', 'UTF-7', 'WINDOWS-1251');
+
+    foreach ($list as $item) {
+      $sample = iconv($item, $item, $string);
+      if (md5($sample) == md5($string))
+        return $item;
+    }
+
+    return null;
   }
 
   /**
