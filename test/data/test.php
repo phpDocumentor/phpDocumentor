@@ -1,139 +1,62 @@
 <?php
-namespace Test\Tests5;
+namespace foo;
+use My\Full\Classname as Another;
 
-use My\Test as TestAlias, My\Test\ClassName;
+// this is the same as use My\Full\NSname as NSname
+use My\Full\NSname;
 
-/**
- * File docblock
- *
- * @package DocBlox
- */
+// importing a global class
+use \ArrayObject;
 
-interface iTest extends \Countable
+class NamespaceTest
 {
-
-}
-
-abstract class test implements iTest
-{
-  public function count() {}
-  abstract public function count2();
-}
-
-require 'test2.php';
-require_once 'test2.php';
-include('test2.php');
-include_once 'test2.php';
-
-const GLOBAL_CONST = '1';
-const GLOBAL_CONST2 = '2';
-
-/**
- * Function docblock for SingleFunction
- *
- * @param int $argument
- *
- * @return void
- */
-function single_function($argument = 'test')
-{
-
-}
-
-/**
- * Function docblock for SingleFunction2
- *
- * @param TestAlias\ClassName[] $argument
- * @param ClassName $argument2
- *
- * @return void
- */
-function single_function2($argument, $argument2)
-{
-
-}
-
-/**
- * This is a test method
- *
- * @return int description
- */
-function test_function()
-{
-
-}
-
-/**
- * This is a test method
- *
- * @return int description
- */
-function test_function2()
-{
-
-}
-
-
-
-namespace Test;
-
-/**
- * test.
- *
- * This is a class test
- *
- * @author Mike
- */
-class SingleClass
-{
-
-  private $test = null;
-  private $test2 = array(
-    'test' => 1
-  );
-  private $test3 = 1;
+  /**
+   * Expected type is foo\Classname
+   *
+   * @var Classname
+   */
+  public $singleNameClass = null;
 
   /**
-   * This is a property test
+   * Expected type is My\Full\Classname
    *
-   * @var boolean
+   * @var My\Full\Classname
    */
-  private $test4 = true;
+  public $namespacedClass = null;
 
   /**
-   * Method Docblock for StaticPublicMethod
+   * Expected type is \ArrayObject
    *
-   * @param array $argument_a test argument
-   * @param FooBarClass $argument_b test argument
-   *
-   * @return void
+   * @var \ArrayObject
    */
-  static public function StaticPublicMethod(array $argument_a, FooBarClass $argument_b = null)
-  {
-  }
+  public $globalClass = null;
 
   /**
-   * Method Docblock
+   * Expected type is foo\Another
    *
-   * @param int $argument test argument
-   *
-   * @return void
+   * @var namespace\Another
    */
-  public function PublicMethod($argument)
-  {
-  }
+  public $sameSpaceClassAnother = null;
 
-  protected function ProtectedMethod()
-  {
-  }
-}
+  /**
+   * Expected type is My\Full\Classname
+   *
+   * @var Another
+   */
+  public $aliasClassAnother = null;
 
-abstract class FooBarClass extends SingleClass implements Reflector, Traversable
-{
-  const TEST = 'test2';
-}
+  /**
+   * Expected type is My\Full\NSname\subns
+   *
+   * @var NSname\subns
+   */
+  public $aliasSpaceNSname = null;
 
-class FooBarClass2 extends SingleClass
-{
-  const TEST = 'test2';
+  /**
+   * Expected type is \ArrayObject
+   *
+   * @var ArrayObject
+   */
+  public $aliasGlobalClass = null;
+
 }

@@ -75,6 +75,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $constant = new DocBlox_Reflection_Constant();
     $constant->parseTokenizer($tokens);
     $constant->setNamespace($this->getNamespace());
+    $constant->setNamespaceAliases($this->getNamespaceAliases());
     $this->constants[] = $constant;
 
     $this->debugTimer('>> Processed class constant '.$constant->getName(), 'const');
@@ -87,6 +88,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $property = new DocBlox_Reflection_Property();
     $property->parseTokenizer($tokens);
     $property->setNamespace($this->getNamespace());
+    $property->setNamespaceAliases($this->getNamespaceAliases());
     $this->properties[] = $property;
 
     $this->debugTimer('>> Processed property '.$property->getName(), 'variable');
@@ -99,6 +101,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $method = new DocBlox_Reflection_Method();
     $method->parseTokenizer($tokens);
     $method->setNamespace($this->getNamespace());
+    $method->setNamespaceAliases($this->getNamespaceAliases());
     $this->methods[] = $method;
     $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
   }

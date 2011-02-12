@@ -75,7 +75,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   {
     $non_objects = array('string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
       'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback');
-    $namespace = $this->getNamespace() == 'default' ? '' : '\\'.$this->getNamespace().'\\';
+    $namespace = $this->getNamespace() == 'default' ? '' : $this->getNamespace().'\\';
 
     $type = explode('|', $type);
     foreach($type as &$item)
@@ -92,14 +92,24 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       if ((substr($item, 0, 1) != '\\') && (!in_array(strtolower($item), $non_objects)))
       {
         $type_parts = explode('\\', $item);
+
+        // if the first part is the keyword 'namespace', replace it with the current namespace
+        if ($type_parts[0] == 'namespace')
+        {
+          $type_parts[0] = $this->getNamespace();
+          $item = implode('\\', $type_parts);
+        }
+
+        // if the first segment is an alias; replace with full name
         if (isset($this->namespace_aliases[$type_parts[0]]))
         {
           $type_parts[0] = $this->namespace_aliases[$type_parts[0]];
 
           $item = implode('\\', $type_parts);
         }
-        else
+        elseif (count($type_parts) == 1)
         {
+          // prefix the item with the namespace if there is only one part and no alias
           $item = $namespace . $item;
         }
       }
