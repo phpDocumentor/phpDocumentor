@@ -23,7 +23,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   /**
    * Returns the DocBlock reflection object.
    *
-   * @return Zend_Reflection_Docblock
+   * @return DocBlox_Reflection_Docblock
    */
   public function getDocBlock()
   {
@@ -36,7 +36,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
    * Please note that the iterator cursor does not change due to this method
    *
    * @param  DocBlox_TokenIterator $tokens
-   * @return Zend_Reflection_DocBlock|null
+   * @return DocBlox_Reflection_DocBlock|null
    */
   protected function findDocBlock(DocBlox_TokenIterator $tokens)
   {
@@ -44,10 +44,10 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{'. '}', ';'));
     try
     {
-      $result = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
+      $result = $docblock ? new DocBlox_Reflection_DocBlock($docblock->getContent()) : null;
       if ($result)
       {
-        // attach line number to class, the Zend_Reflection_DocBlock does not know the number
+        // attach line number to class, the DocBlox_Reflection_DocBlock does not know the number
         $result->line_number = $docblock->getLineNumber();
       }
     }
@@ -135,7 +135,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       $xml->docblock->description = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription());
       $xml->docblock->{'long-description'} = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription());
 
-      /** @var Zend_Reflection_Docblock_Tag $tag */
+      /** @var DocBlox_Reflection_Docblock_Tag $tag */
       foreach ($this->getDocBlock()->getTags() as $tag)
       {
         $type = null;

@@ -256,11 +256,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
   public function findDocBlock(DocBlox_TokenIterator $tokens)
   {
+    $result = null;
     $docblock = $tokens->findNextByType(T_DOC_COMMENT, 10, array(T_CLASS, T_NAMESPACE));
 
     try
     {
-      $result = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
+      $result = $docblock ? new DocBlox_Reflection_Docblock($docblock->getContent()) : null;
     }
     catch (Exception $e)
     {
