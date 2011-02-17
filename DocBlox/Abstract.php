@@ -276,7 +276,7 @@ abstract class DocBlox_Abstract
   {
     if (self::$config === null)
     {
-      self::loadConfig(dirname(__FILE__).'/../config.xml');
+      self::loadConfig(dirname(__FILE__).'/../docblox.config.xml');
     }
 
     return self::$config;

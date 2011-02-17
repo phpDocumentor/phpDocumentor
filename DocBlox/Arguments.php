@@ -39,7 +39,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   {
     parent::__construct(array(
       'h|help'         => 'Show this help message',
-      'c|config-s'     => 'Configuration filename, if none is given the config.xml in the root of DocBlox is used',
+      'c|config-s'     => 'Configuration filename, if none is given the defaults of the docblox.config.xml in the root of DocBlox is used',
       'f|filename=s'   => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
       'd|directory=s'  => 'Comma-separated list of directories to (recursively) parse.',
       'e|extensions-s' => 'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
@@ -185,7 +185,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
 
       // get all files recursively to the files array
       $files_iterator = new RecursiveDirectoryIterator($directory);
-      
+
       /** @var SplFileInfo $file */
       foreach(new RecursiveIteratorIterator($files_iterator) as $file)
       {

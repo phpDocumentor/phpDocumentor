@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-  This config file will automatically be merged with the config.xml in the DocBlox root.
+  This config file will automatically be merged with the docblox.config.xml in the DocBlox root.
   You can use this config by invoking DocBloc with the -c option, i.e.: php ./bin/parse.php -c example_config.xml
+  Please note that this file does not replace the keys in the 'master' config file that have not been defined here.
 -->
 <docblox>
   <files>
