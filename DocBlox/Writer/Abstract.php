@@ -25,7 +25,7 @@ class DocBlox_Writer_Abstract extends DocBlox_Abstract
     $this->resource_path = $root_path.'/resources';
     $this->theme_path    = $this->resource_path.'/themes';
     $this->target        = $root_path.'/output';
-    $this->source        = $root_path.'/output/structure.xml';
+    $this->setSource($root_path.'/output/structure.xml');
   }
 
   public function getSource()
@@ -36,6 +36,15 @@ class DocBlox_Writer_Abstract extends DocBlox_Abstract
   public function setSource($source)
   {
     $this->source = $source;
+
+    $dom = new DOMDocument();
+    $dom->loadXML(file_get_contents(realpath($this->getSource())));
+    $version = $dom->documentElement->getAttribute('version');
+    if ($version != DocBlox_Abstract::VERSION)
+    {
+      throw new Exception('Version of transformer ('. DocBlox_Abstract::VERSION.') did not match the '
+        . 'structure file (' . $version . '); please re-parse the project first');
+    }
   }
 
   public function getTarget()
