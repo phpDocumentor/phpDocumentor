@@ -9,8 +9,8 @@
   <logging>
     <level>warn</level>
     <paths>
-      <default>log/{DATE}.log</default>
-      <errors>log/{DATE}.errors.log</errors>
+      <default>{APP_ROOT}/log/{DATE}.log</default>
+      <errors>{APP_ROOT}/log/{DATE}.errors.log</errors>
     </paths>
   </logging>
   <markers>

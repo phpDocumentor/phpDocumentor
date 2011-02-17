@@ -172,7 +172,11 @@ abstract class DocBlox_Abstract
 
     if (!self::$debug_logger)
     {
-      $file = str_replace(array('{DATE}'), array(date('YmdHis')), $this->getConfig()->logging->paths->errors);
+      $file = str_replace(
+        array('{APP_ROOT}', '{DATE}'),
+        array(realpath(dirname(__FILE__) . '/..'), date('YmdHis')),
+        $this->getConfig()->logging->paths->errors
+      );
 
       self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
     }
@@ -217,7 +221,11 @@ abstract class DocBlox_Abstract
 
     if (!self::$logger)
     {
-      $file = str_replace(array('{DATE}'), array(date('YmdHis')), $this->getConfig()->logging->paths->default);
+      $file = str_replace(
+        array('{APP_ROOT}', '{DATE}'),
+        array(realpath(dirname(__FILE__).'/..'), date('YmdHis')),
+        $this->getConfig()->logging->paths->default
+      );
 
       self::$logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
     }
