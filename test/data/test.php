@@ -127,9 +127,11 @@ class DocBlocTest
    * but intentionally did not @end with a dot and forgot extra newline
    * long @description
    *
+   * @param string[] $test
+   *
    * @return void
    */
-  public function function5()
+  public function function5($test)
   {
 
   }
