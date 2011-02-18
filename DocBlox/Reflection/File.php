@@ -267,7 +267,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     try
     {
-      $result = $docblock ? new DocBlox_Reflection_Docblock($docblock->getContent()) : null;
+      $result = $docblock ? new DocBlox_Reflection_DocBlock($docblock->getContent()) : null;
     }
     catch (Exception $e)
     {
