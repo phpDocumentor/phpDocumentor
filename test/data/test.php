@@ -1,123 +1,138 @@
 <?php
-namespace Test\Tests5;
-/**
- * File docblock
- *
- * @package DocBlox
- */
+namespace foo;
+use My\Full\Classname as Another;
 
-interface iTest extends \Countable
+// this is the same as use My\Full\NSname as NSname
+use My\Full\NSname;
+
+// importing a global class
+use \ArrayObject;
+
+class NamespaceTest
 {
-
-}
-
-abstract class test implements iTest
-{
-  public function count() {}
-  abstract public function count2();
-}
-
-require 'test2.php';
-require_once 'test2.php';
-include('test2.php');
-include_once 'test2.php';
-
-const GLOBAL_CONST = '1';
-const GLOBAL_CONST2 = '2';
-
-/**
- * Function docblock for SingleFunction
- *
- * @param int $argument
- *
- * @return void
- */
-function single_function($argument = 'test')
-{
-
-}
-
-/**
- * This is a test method
- *
- * @return int description
- */
-function test_function()
-{
-
-}
-
-/**
- * This is a test method
- *
- * @return int description
- */
-function test_function2()
-{
-
-}
-
-
-
-namespace Test;
-
-/**
- * test.
- *
- * This is a class test
- *
- * @author Mike
- */
-class SingleClass
-{
-
-  private $test = null;
-  private $test2 = array(
-    'test' => 1
-  );
-  private $test3 = 1;
-
   /**
-   * This is a property test
+   * Expected type is foo\Classname
    *
-   * @var boolean
+   * @var Classname
    */
-  private $test4 = true;
+  public $singleNameClass = null;
 
   /**
-   * Method Docblock for StaticPublicMethod
+   * Expected type is My\Full\Classname
    *
-   * @param array $argument_a test argument
-   * @param FooBarClass $argument_b test argument
+   * @var My\Full\Classname
+   */
+  public $namespacedClass = null;
+
+  /**
+   * Expected type is \ArrayObject
+   *
+   * @var \ArrayObject
+   */
+  public $globalClass = null;
+
+  /**
+   * Expected type is foo\Another
+   *
+   * @var namespace\Another
+   */
+  public $sameSpaceClassAnother = null;
+
+  /**
+   * Expected type is My\Full\Classname
+   *
+   * @var Another
+   */
+  public $aliasClassAnother = null;
+
+  /**
+   * Expected type is My\Full\NSname\subns
+   *
+   * @var NSname\subns
+   */
+  public $aliasSpaceNSname = null;
+
+  /**
+   * Expected type is \ArrayObject
+   *
+   * @var ArrayObject
+   */
+  public $aliasGlobalClass = null;
+
+}
+
+/**
+ * Contains the test data for the
+ * docblox parser.
+ *
+ * This is a long description
+ *
+ * @category   DocBlox
+ * @package    CLI
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
+class DocBlocTest
+{
+
+  /** @var string $a */
+  public $a = '';
+
+
+  /**
+   * This is a multi-line test where
+   * we want to see if it works.
+   *
+   * We include a long description as well
+   * that spans multiple lines.
    *
    * @return void
    */
-  static public function StaticPublicMethod(array $argument_a, FooBarClass $argument_b = null)
+  public function function1()
   {
+
   }
 
   /**
-   * Method Docblock
-   *
-   * @param int $argument test argument
+   * Only a single line.
    *
    * @return void
    */
-  public function PublicMethod($argument)
+  public function function2()
   {
+
   }
 
-  protected function ProtectedMethod()
+  /**
+   * Multiline short description
+   * but intentionally did not end with a dot
+   *
+   * long description
+   *
+   * @return void
+   */
+  public function function3()
   {
+
   }
-}
 
-abstract class FooBarClass extends SingleClass implements Reflector, Traversable
-{
-  const TEST = 'test2';
-}
+  /**
+   * Only a short description
+   */
+  public function function4()
+  {
 
-class FooBarClass2 extends SingleClass
-{
-  const TEST = 'test2';
+  }
+  /**
+   * Multiline short description
+   * but intentionally did not @end with a dot and forgot extra newline
+   * long @description
+   *
+   * @param string[] $test
+   *
+   * @return void
+   */
+  public function function5($test)
+  {
+
+  }
 }

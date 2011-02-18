@@ -1,4 +1,19 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    CLI
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Contains the arguments for the parser.
+ *
+ * @category   DocBlox
+ * @package    CLI
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Arguments extends Zend_Console_Getopt
 {
   /**
@@ -24,7 +39,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   {
     parent::__construct(array(
       'h|help'         => 'Show this help message',
-      'c|config-s'     => 'Configuration filename, if none is given the config.xml in the root of DocBlox is used',
+      'c|config-s'     => 'Configuration filename, if none is given the defaults of the docblox.config.xml in the root of DocBlox is used',
       'f|filename=s'   => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
       'd|directory=s'  => 'Comma-separated list of directories to (recursively) parse.',
       'e|extensions-s' => 'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
@@ -37,6 +52,11 @@ class DocBlox_Arguments extends Zend_Console_Getopt
     ));
   }
 
+  /**
+   * Generates the usage / help message.
+   *
+   * @return string
+   */
   public function getUsageMessage()
   {
     $usage = "Usage: {$this->_progname}\n";
@@ -84,8 +104,9 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    * This method does take the extension option into account but _not_ the
    * ignore list. The ignore list is handled in the parser.
    *
-   * @todo method contains duplicate code, refactor
+   * @todo method contains duplicate code and is too large, refactor
    * @todo consider moving the filtering on ignore_paths here
+   *
    * @return string[]
    */
   protected function parseFiles()
@@ -163,10 +184,17 @@ class DocBlox_Arguments extends Zend_Console_Getopt
       }
 
       // get all files recursively to the files array
-      $files_iterator = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
+      $files_iterator = new RecursiveDirectoryIterator($directory);
+
       /** @var SplFileInfo $file */
       foreach(new RecursiveIteratorIterator($files_iterator) as $file)
       {
+        // skipping dots (should any be encountered)
+        if (($file->getFilename() == '.') || ($file->getFilename() == '..'))
+        {
+          continue;
+        }
+
         // check if the file has the correct extension
         $info = pathinfo($file);
         if (!isset($info['extension']) || !in_array(strtolower($info['extension']), $this->getExtensions()))
@@ -222,6 +250,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    * Retrieves the path to save the result to.
    *
    * @throws Exception
+   *
    * @return string
    */
   public function getTarget()
@@ -253,6 +282,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    * Returns all ignore patterns.
    *
    * @todo consider moving the conversion from glob to regex to here.
+   *
    * @return array
    */
   public function getIgnorePatterns()

@@ -1,3 +1,20 @@
+--/--/----: Version 0.8L fix known issues
+
+* ADDED:    Support for array notation of types (i.e. string[] or MyClass[])
+* ADDED:    Support for the T_USE token (namespace aliasing)
+* FIXED:    PHP 5.2.6 compatibility was restored; changed in the previous versions broke this
+* FIXED:    Improved file character encoding methods; using forward compatibility (uses finfo when available)
+* FIXED:    renamed config.xml to doctrine.config.xml to help Jenkins config
+* FIXED:    transformer now also checks the version of DocBlox vs. the structure.xml; if  it differs you need to
+            regenerate your structure.xml
+* FIXED:    DocBlox no longer tries to find the log directory in the working directory but in the DocBlox root
+* FIXED:    Replaced Zend_Reflector_DocBlock with a new DocBlox_Reflector_DocBlock set of classes, this fixes
+            among others the following issues:
+            - Multi-line short descriptions were not possible
+            - Short descriptions now end if a closing dot is encountered (dot not in a word)
+            - Multi-line tags are now possible
+            - Correct handling of unicode characters in tags
+
 01/02/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------
 

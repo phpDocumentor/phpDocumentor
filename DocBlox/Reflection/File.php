@@ -1,19 +1,46 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Reflection
+ * @subpackage File
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Reflection class for a full file.
+ *
+ * @category   DocBlox
+ * @package    Reflection
+ * @subpackage File
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 {
-  protected $filename         = '';
-  protected $hash             = null;
-  protected $tokens           = null;
-  protected $contents         = '';
-  protected $interfaces       = array();
-  protected $classes          = array();
-  protected $functions        = array();
-  protected $constants        = array();
-  protected $includes         = array();
-  protected $active_namespace = 'default';
-  protected $markers          = array();
-  protected $marker_terms     = array('TODO', 'FIXME');
+  protected $filename           = '';
+  protected $hash               = null;
+  protected $tokens             = null;
+  protected $contents           = '';
+  protected $interfaces         = array();
+  protected $classes            = array();
+  protected $functions          = array();
+  protected $constants          = array();
+  protected $includes           = array();
+  protected $active_namespace   = 'default';
+  protected $markers            = array();
+  protected $marker_terms       = array('TODO', 'FIXME');
 
+  /**
+   * Opens the file and retrieves it's contents.
+   *
+   * @throws DocBlox_Reflection_Exception when the filename is incorrect or the file can not be opened
+   *
+   * @param string  $file     Name of the file.
+   * @param boolean $validate Whether to check the file using PHP Lint.
+   *
+   * @return void
+   */
   public function __construct($file, $validate)
   {
     parent::__construct();
@@ -33,25 +60,94 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     }
 
     $this->setFilename($file);
-    $this->name = $this->filename;
-    $contents = file_get_contents($file);
-
-    // detect encoding and transform to UTF-8
-    $info = new finfo();
-    $mime = $info->file($file, FILEINFO_MIME);
-    $mime_info = explode('=', $mime);
-    if (strtolower($mime_info[1]) != 'utf-8')
-    {
-      $contents = iconv($mime_info[1], 'UTF-8', $contents);
-    }
-
-    $this->contents = $contents;
+    $this->name     = $this->filename;
+    $this->contents = $this->convertToUtf8($file, file_get_contents($file));
     $this->setHash(filemtime($file));
   }
 
-  public function addMarker($name)
+  /**
+   * Converts a piece of text to UTF-8 if it isn't.
+   *
+   * @param string $contents String to convert.
+   *
+   * @return string
+   */
+  protected function convertToUtf8($filename, $contents)
   {
-    $this->marker_terms[] = $name;
+    $encoding   = null;
+
+    // empty files need not be converted (even worse: finfo detects them as binary!)
+    if (trim($contents) === '')
+    {
+      return '';
+    }
+
+    // detect encoding and transform to UTF-8
+    if (class_exists('finfo'))
+    {
+      // PHP 5.3 or PECL extension
+      $info      = new finfo();
+      $encoding  = $info->file($filename, FILEINFO_MIME_ENCODING);
+    } elseif(function_exists('mb_detect_encoding'))
+    {
+      // OR with mbstring
+      $encoding = mb_detect_encoding($contents);
+    } elseif(function_exists('iconv'))
+    {
+      // OR using iconv (performance hit)
+      $this->log(
+        'Neither the finfo nor the mbstring extensions are active; special character handling may '
+        . 'not give the best results',
+        Zend_Log::WARN
+      );
+      $encoding = $this->detectEncodingFallback($contents);
+    } else
+    {
+      // or not..
+      $this->log(
+        'Unable to handle character encoding; finfo, mbstring and iconv extensions are not enabled',
+        Zend_Log::CRIT
+      );
+    }
+
+    // convert if a source encoding is found; otherwise we throw an error and have to continue using the given data
+    if (($encoding !== null) && (strtolower($encoding) != 'utf-8'))
+    {
+      $contents = iconv($encoding, 'UTF-8', $contents);
+      if ($contents === false)
+      {
+        $this->log(
+          'Encoding of file ' . $filename . ' from ' . $encoding . ' to UTF-8 failed, please check the notice for a '
+            . 'detailed error message',
+          Zend_Log::EMERG
+        );
+      }
+    }
+
+    return $contents;
+  }
+
+  /**
+   * This is a fallback mechanism; if no finfo or mbstring extension are activated this is used.
+   *
+   * WARNING: try to prevent this; it is assumed that this method is not fool-proof nor performing as well as the other
+   * options.
+   *
+   * @param string $string String to detect the encoding of.
+   *
+   * @return string Name of the encoding to return.
+   */
+  private function detectEncodingFallback($string)
+  {
+    static $list = array('UTF-8', 'ASCII', 'ISO-8859-1', 'UTF-7', 'WINDOWS-1251');
+
+    foreach ($list as $item) {
+      $sample = iconv($item, $item, $string);
+      if (md5($sample) == md5($string))
+        return $item;
+    }
+
+    return null;
   }
 
   /**
@@ -66,16 +162,52 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->filename = $filename;
   }
 
-  public function setMarkers(array $markers)
+  /**
+   * Adds a marker to scan for.
+   *
+   * @param string $name The Marker term, i.e. FIXME or TODO
+   *
+   * @return void
+   */
+  public function addMarker($name)
   {
-    $this->marker_terms = $markers;
+    $this->marker_terms[] = $name;
   }
 
+  /**
+   * Sets a list of markers to search for.
+   *
+   * @param string[] $markers
+   *
+   * @see DocBlox_Reflection_File::addMarker()
+   *
+   * @return void
+   */
+  public function setMarkers(array $markers)
+  {
+    foreach($markers as $marker)
+    {
+      $this->addMarker($marker);
+    }
+  }
+
+  /**
+   * Returns the hash identifying this file.
+   *
+   * @return string
+   */
   public function getHash()
   {
     return $this->hash;
   }
 
+  /**
+   * Sets the hash for this file.
+   *
+   * @param string $hash
+   *
+   * @return void
+   */
   public function setHash($hash)
   {
     $this->hash = $hash;
@@ -130,11 +262,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
   public function findDocBlock(DocBlox_TokenIterator $tokens)
   {
+    $result = null;
     $docblock = $tokens->findNextByType(T_DOC_COMMENT, 10, array(T_CLASS, T_NAMESPACE));
 
     try
     {
-      $result = $docblock ? new Zend_Reflection_Docblock($docblock->getContent()) : null;
+      $result = $docblock ? new DocBlox_Reflection_Docblock($docblock->getContent()) : null;
     }
     catch (Exception $e)
     {
@@ -172,6 +305,52 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     }
   }
 
+  /**
+   * Processes the T_USE token and extracts all namespace aliases.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
+  protected function processUse(DocBlox_TokenIterator $tokens)
+  {
+    /** @var DocBlox_Token $token */
+    $aliases = array('');
+    while(($token = $tokens->next()) && ($token->getContent() != ';'))
+    {
+      // if a comma is found, go to the next alias
+      if (!$token->getType() && $token->getContent() == ',')
+      {
+        $aliases[] = '';
+        continue;
+      }
+
+      $aliases[count($aliases)-1] .= $token->getContent();
+    }
+
+    $result = array();
+    foreach($aliases as $key => $alias)
+    {
+      // an AS is always surrounded by spaces; by trimming the $alias we then know that the first element is the
+      // namespace and the last is the alias.
+      // We explicitly do not use spliti to prevent regular expressions for performance reasons (the AS may be any case).
+      $alias = explode(' ', trim($alias));
+
+      // if there is only one part, that means no AS is given and the last segment of the namespace functions as
+      // alias.
+      if (count($alias) == 1)
+      {
+        $alias_parts = explode('\\', $alias[0]);
+        $alias[] = $alias_parts[count($alias_parts)-1];
+      }
+
+      $result[$alias[count($alias) -1]] = $alias[0];
+      unset($aliases[$key]);
+    }
+
+    $this->namespace_aliases = array_merge($this->namespace_aliases, $result);
+  }
+
   protected function processNamespace(DocBlox_TokenIterator $tokens)
   {
     // collect all namespace parts
@@ -191,6 +370,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $interface = new DocBlox_Reflection_Interface();
     $interface->setNamespace($this->active_namespace);
+    $interface->setNamespaceAliases($this->namespace_aliases);
     $interface->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed interface '.$interface->getName(), 'interface');
@@ -204,6 +384,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $class = new DocBlox_Reflection_Class();
     $class->setNamespace($this->active_namespace);
+    $class->setNamespaceAliases($this->namespace_aliases);
     $class->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed class '.$class->getName(), 'class');
@@ -217,6 +398,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $function = new DocBlox_Reflection_Function();
     $function->setNamespace($this->active_namespace);
+    $function->setNamespaceAliases($this->namespace_aliases);
     $function->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed function '.$function->getName(), 'function');
@@ -230,6 +412,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     $constant = new DocBlox_Reflection_Constant();
     $constant->setNamespace($this->active_namespace);
+    $constant->setNamespaceAliases($this->namespace_aliases);
     $constant->parseTokenizer($tokens);
 
     $this->debugTimer('>> Processed constant '.$constant->getName(), 'constant');
@@ -274,6 +457,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $xml = new SimpleXMLElement('<file path="'.ltrim($this->filename, './').'" hash="'.$this->hash.'"></file>');
     $this->addDocblockToSimpleXmlElement($xml);
 
+    // add markers
     foreach($this->markers as $marker)
     {
       if (!isset($xml->markers))
@@ -283,6 +467,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
       $marker_obj = $xml->markers->addChild(strtolower($marker[0]), trim($marker[1]));
       $marker_obj->addAttribute('line', $marker[2]);
+    }
+
+    // add namespace aliases
+    foreach($this->namespace_aliases as $alias => $namespace)
+    {
+      $alias_obj = $xml->addChild('namespace-alias', $namespace);
+      $alias_obj->addAttribute('name', $alias);
     }
 
     $dom = new DOMDocument('1.0', 'utf-8');
@@ -311,4 +502,5 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     return trim($dom->saveXml());
   }
+
 }

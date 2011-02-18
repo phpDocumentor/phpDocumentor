@@ -21,7 +21,7 @@ Framework and even larger projects but it does not yet contain the full feature 
 Requirements
 ------------
 DocBlox requires the following:
-- PHP 5.2.1 or higher
+- PHP 5.2.6 or higher (probably works on 5.2.x but I am unable to test this)
 - Graphviz (optional, used for generating Class diagrams)
 - The XSL extension, http://www.php.net/manual/en/book.xsl.php
 

@@ -1,4 +1,20 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Parses a method or function Argument.
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @subpackage Argument
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
 {
   /**
@@ -61,7 +77,7 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
   public function __toXml()
   {
     $xml = new SimpleXMLElement('<argument></argument>');
-    $xml['line']       = $this->getLineNumber();    
+    $xml['line']       = $this->getLineNumber();
     $xml->name         = $this->getName();
     $xml->default      = $this->getDefault();
     $xml->type         = $this->getType();
