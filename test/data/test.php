@@ -60,3 +60,77 @@ class NamespaceTest
   public $aliasGlobalClass = null;
 
 }
+
+/**
+ * Contains the test data for the
+ * docblox parser.
+ *
+ * This is a long description
+ *
+ * @category   DocBlox
+ * @package    CLI
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
+class DocBlocTest
+{
+
+  /** @var string $a */
+  public $a = '';
+
+
+  /**
+   * This is a multi-line test where
+   * we want to see if it works.
+   *
+   * We include a long description as well
+   * that spans multiple lines.
+   *
+   * @return void
+   */
+  public function function1()
+  {
+
+  }
+
+  /**
+   * Only a single line.
+   *
+   * @return void
+   */
+  public function function2()
+  {
+
+  }
+
+  /**
+   * Multiline short description
+   * but intentionally did not end with a dot
+   *
+   * long description
+   *
+   * @return void
+   */
+  public function function3()
+  {
+
+  }
+
+  /**
+   * Only a short description
+   */
+  public function function4()
+  {
+
+  }
+  /**
+   * Multiline short description
+   * but intentionally did not @end with a dot and forgot extra newline
+   * long @description
+   *
+   * @return void
+   */
+  public function function5()
+  {
+
+  }
+}

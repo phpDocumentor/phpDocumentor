@@ -14,7 +14,7 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
    * Factory method responsible for instantiating the correct sub type.
    *
    * @throws DocBlox_Reflection_Exception if an invalid tag line was presented.
-   * 
+   *
    * @return void
    */
   public static function createInstance($tag_line)
@@ -71,7 +71,7 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
    */
   public function getDescription()
   {
-
+    return $this->description;
   }
 
   static public function export()

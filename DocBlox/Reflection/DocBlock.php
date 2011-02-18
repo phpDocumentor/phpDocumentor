@@ -34,7 +34,7 @@ class DocBlox_Reflection_DocBlock implements Reflector
       $docblock = $docblock->getDocComment();
     }
 
-    $docblock = $this->stripAsterisks($docblock);
+    $docblock = $this->cleanInput($docblock);
 
     list($short, $long, $tags) = $this->splitDocBlock($docblock);
     $this->short_description = $short;
@@ -49,7 +49,7 @@ class DocBlox_Reflection_DocBlock implements Reflector
    *
    * @return string
    */
-  function stripAsterisks($comment)
+  protected function cleanInput($comment)
   {
     $comment = trim(preg_replace('#[ \t]*(?:\/\*\*|\*\/|\*)?[ ]{0,1}(.*)?#', '$1', $comment));
 
@@ -59,6 +59,9 @@ class DocBlox_Reflection_DocBlock implements Reflector
       $comment = trim(substr($comment, 0, -2));
     }
 
+    // normalize strings
+    $comment = str_replace(array("\r\n", "\r"), "\n", $comment);
+
     return $comment;
   }
 
@@ -67,6 +70,8 @@ class DocBlox_Reflection_DocBlock implements Reflector
    * Splits the DocBlock into a short description, long description and block of tags.
    *
    * @param string $comment
+   *
+   * @author RichardJ Special thanks to RichardJ for the regex responsible for the split
    *
    * @return string[] containing the short-, long description and an element containing the tags.
    */
@@ -85,8 +90,31 @@ class DocBlox_Reflection_DocBlock implements Reflector
        * - The long description, any character until a new line is encountered followed by an @ and word
        *   characters (a tag). This is optional.
        * - Tags; the remaining characters
+       *
+       * Big thanks to RichardJ for contributing this Regular Expression
        */
-      preg_match('/^(.+?)(?:(?:(?:\.\s+|\n\h*\n)(.*?))?(?:\n)?([^{|\w]@\w+.*))?$/usm', $comment, $matches);
+      preg_match('/(?x)
+        \A (
+          [^\n]+
+          (?:
+            (?! (?<=\.) \n | \n{2} )
+            \n [^\n]+
+          )*
+          \.?
+        )
+        (?:
+          \s*
+          (?! @[a-zA-Z] )
+          (
+            [^\n]+
+            (?: \n+
+              (?! [ \t]* @[a-zA-Z] )
+              [^\n]+
+            )*
+          )
+        )?
+        (\s+ [\s\S]*)?/usm', $comment, $matches
+      );
       array_shift($matches);
     }
 

@@ -22,7 +22,7 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
   {
     $this->tag = $type;
     $this->content = $content;
-    $content   = preg_split('/\s+/', $content);
+    $content   = preg_split('/\s+/u', $content);
 
     // if there is only 1, it is either a piece of content or a variable name
     if (count($content) > 1)
@@ -30,8 +30,8 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
       $this->type = array_shift($content);
     }
 
-    // if there is only one left it must be content unless it starts with a $
-    if ((count($content) > 1) || ($content[0]{0} == '$'))
+    // if the next item starts with a $ it must be the variable name
+    if ((strlen($content[0]) > 0) && ($content[0]{0} == '$'))
     {
       $this->variableName = array_shift($content);
     }

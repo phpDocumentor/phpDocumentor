@@ -76,6 +76,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   {
     $encoding   = null;
 
+    // empty files need not be converted (even worse: finfo detects them as binary!)
+    if (trim($contents) === '')
+    {
+      return '';
+    }
+
     // detect encoding and transform to UTF-8
     if (class_exists('finfo'))
     {
