@@ -41,7 +41,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   protected function findDocBlock(DocBlox_TokenIterator $tokens)
   {
     $result = null;
-    $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{'. '}', ';'));
+    $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{', '}', ';'));
     try
     {
       $result = $docblock ? new DocBlox_Reflection_DocBlock($docblock->getContent()) : null;
