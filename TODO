@@ -1,5 +1,4 @@
 0.8: Fix known issues
-* Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
 * Revisit namespace support to check for consistency
 * array notation is seen as a 'type', the [] should not be evaluated (i.e. string[] becomes \namespace\string[])
 * Add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
@@ -7,6 +6,7 @@
 
 0.9: Improve Theming and CLI
 * Check theming support and improve
+* Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
 * Add PDF output writer
 * Add Twig output writer
 * Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
