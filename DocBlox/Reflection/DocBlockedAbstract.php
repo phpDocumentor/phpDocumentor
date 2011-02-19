@@ -84,8 +84,9 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
 
       // add support for array notation
       $is_array = false;
-      if (substr($item, 0, -2) == '[]')
+      if (substr($item, -2) == '[]')
       {
+        $item = substr($item, 0, -2);
         $is_array = true;
       }
 

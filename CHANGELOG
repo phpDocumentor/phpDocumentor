@@ -16,6 +16,9 @@
             - Correct handling of unicode characters in tags
 * FIXED:    Bodyless methods (abstract or interface) kept searching for an opening brace and thus took the braces of
             the next structure. Now the code recognizes bodyless methods and skips trying to find a body.
+* FIXED:    Structures without DocBlocks would use the DocBlock within 10 tokens; sometimes incorrectly using
+            the DocBlock of another structure.
+* FIXED:    Array notation (string[]) was recognized as a new type of data instead of an array of scalar
 
 01/02/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------

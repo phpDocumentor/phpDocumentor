@@ -1,6 +1,5 @@
 0.8: Fix known issues
 * Revisit namespace support to check for consistency
-* array notation is seen as a 'type', the [] should not be evaluated (i.e. string[] becomes \namespace\string[])
 * Add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
 * Keep track of number of docblock successes and fails and show at the end of the process
 
