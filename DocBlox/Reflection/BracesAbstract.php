@@ -18,14 +18,24 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
     $level = -1;
     $start = 0;
     $end   = 0;
+    $token = null;
 
     // parse class contents
     $this->debug('>> Processing tokens');
-    $token = null;
     while ($tokens->valid())
     {
         /** @var DocBlox_Token $token */
       $token = $token === null ? $tokens->current() : $tokens->next();
+
+      // if we encounter a semi-colon before we have an opening brace then this is an abstract or interface function
+      // which have no body; stop looking!
+      if (($token instanceof DocBlox_Token)
+        && ($token->getType() === null)
+        && ($token->getContent() === ';')
+        && ($level === -1))
+      {
+        return array($start, $end);
+      }
 
       // determine where the 'braced' section starts and end.
       // the first open brace encountered is considered the opening brace for the block and processing will

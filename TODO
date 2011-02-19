@@ -1,5 +1,7 @@
 0.8: Fix known issues
 * Add docblocks to DocBlox
+* if a method follows to closely to a class declaration and has no docblock but the class has then it will use the
+  class docblock
 * Class docblocks are also used as file docblocks when generating the new theme.
 * Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
 * Revisit namespace support to check for consistency

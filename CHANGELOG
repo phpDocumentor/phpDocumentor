@@ -14,6 +14,8 @@
             - Short descriptions now end if a closing dot is encountered (dot not in a word)
             - Multi-line tags are now possible
             - Correct handling of unicode characters in tags
+* FIXED:    Bodyless methods (abstract or interface) kept searching for an opening brace and thus took the braces of
+            the next structure. Now the code recognizes bodyless methods and skips trying to find a body.
 
 01/02/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------
