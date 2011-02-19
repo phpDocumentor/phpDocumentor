@@ -1,37 +1,36 @@
 0.8: Fix known issues
-* Add docblocks to DocBlox
-* if a method follows to closely to a class declaration and has no docblock but the class has then it will use the
-  class docblock
-* Class docblocks are also used as file docblocks when generating the new theme.
 * Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
 * Revisit namespace support to check for consistency
 * array notation is seen as a 'type', the [] should not be evaluated (i.e. string[] becomes \namespace\string[])
 * Add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
-* Add documentation
-* Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
-  allow it to work for all three executables.
-* write tests
-
-0.9: Add custom documents, statistics and improve theming
-* Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
 * Keep track of number of docblock successes and fails and show at the end of the process
+
+0.9: Improve Theming and CLI
 * Check theming support and improve
-* Add theme.xml config file to themes; this can provide information what writer to use for a theme
 * Add PDF output writer
 * Add Twig output writer
+* Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
+  allow it to work for all three executables.
+
+0.10: Add custom documents, statistics and improve theming
+* Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
+* Add theme.xml config file to themes; this can provide information what writer to use for a theme
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
-* write tests
 
-0.10: Pre 1.0 cleanup
+0.11: Pre 1.0 cleanup
 * safari does not show the svg nicely, it places it into a very small scrollbox
 * Refactor static reflection to return contents in a different way and change the way XML is handled
 * Revisit template and make it prettier
-* write tests
 
 BONUS:
 * UML Class Diagram
+
+Technical Debt:
+* Add docblocks to DocBlox
+* Add documentation
+* Write unit tests
 
 More items will be added to this list as the project furthers.
