@@ -1,8 +1,3 @@
-0.8: Fix known issues
-* Revisit namespace support to check for consistency
-* Add inline parsing of annotations in docblock descriptions (see /lib/Zend/Log/Formatter/Firebug.php:40 for an example)
-* Keep track of number of docblock successes and fails and show at the end of the process
-
 0.9: Improve Theming and CLI
 * Check theming support and improve
 * Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2

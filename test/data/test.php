@@ -83,7 +83,7 @@ class DocBlocTest
    * we want to see if it works.
    *
    * We include a long description as well
-   * that spans multiple lines.
+   * that spans multiple lines. {@link http://www.github.com/mvriel/docblox}
    *
    * @return void
    */
@@ -135,4 +135,15 @@ class DocBlocTest
   {
 
   }
+}
+
+/**
+ *
+ * @param string[]|int[] $param
+ *
+ * @return void
+ */
+function test(array $param)
+{
+
 }

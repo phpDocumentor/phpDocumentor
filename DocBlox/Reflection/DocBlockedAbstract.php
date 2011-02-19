@@ -133,7 +133,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       {
         $xml->addChild('docblock');
       }
-      $xml->docblock->description = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription());
+      $xml->docblock->description          = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription());
       $xml->docblock->{'long-description'} = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription());
 
       /** @var DocBlox_Reflection_Docblock_Tag $tag */

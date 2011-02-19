@@ -1,14 +1,14 @@
---/--/----: Version 0.8L fix known issues
+02/19/2011: Version 0.8: fix known issues
 
 * ADDED:    Support for array notation of types (i.e. string[] or MyClass[])
 * ADDED:    Support for the T_USE token (namespace aliasing)
 * FIXED:    PHP 5.2.6 compatibility was restored; changed in the previous versions broke this
 * FIXED:    Improved file character encoding methods; using forward compatibility (uses finfo when available)
 * FIXED:    renamed config.xml to doctrine.config.xml to help Jenkins config
-* FIXED:    transformer now also checks the version of DocBlox vs. the structure.xml; if  it differs you need to
+* ADDED:    transformer now also checks the version of DocBlox vs. the structure.xml; if  it differs you need to
             regenerate your structure.xml
 * FIXED:    DocBlox no longer tries to find the log directory in the working directory but in the DocBlox root
-* FIXED:    Replaced Zend_Reflector_DocBlock with a new DocBlox_Reflector_DocBlock set of classes, this fixes
+* ADDED:    Replaced Zend_Reflector_DocBlock with a new DocBlox_Reflector_DocBlock set of classes, this fixes
             among others the following issues:
             - Multi-line short descriptions were not possible
             - Short descriptions now end if a closing dot is encountered (dot not in a word)
@@ -18,9 +18,9 @@
             the next structure. Now the code recognizes bodyless methods and skips trying to find a body.
 * FIXED:    Structures without DocBlocks would use the DocBlock within 10 tokens; sometimes incorrectly using
             the DocBlock of another structure.
-* FIXED:    Array notation (string[]) was recognized as a new type of data instead of an array of scalar
+* ADDED:    DocBlox now recognizes inline tags in long descriptions; the data is not yet included in the structure.xml
 
-01/02/2011: Version 0.7: Enhance docblock support, add new template and improve theming
+02/01/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------
 
 * FIXED:    Generated paths where set absolute to the file system preventing the running of generated output in a webserver
@@ -55,7 +55,7 @@
 * FIXED:    Renamed default2 template to default template
 * ADDED:    Added search capabilities to default template (does not work in Chrome when running locally)
 
-29/10/2010: Version 0.6: Add configuration files, clean up and fixes
+10/29/2010: Version 0.6: Add configuration files, clean up and fixes
 ---------------------
 
 * FIXED:   Ignore path argument was broken, made fixes
