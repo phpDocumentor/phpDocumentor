@@ -14,15 +14,7 @@ echo 'DocBlox transformer version ' . DocBlox_Abstract::VERSION . PHP_EOL . PHP_
 try
 {
   // initialize the argument parser
-  $opts = new Zend_Console_Getopt(array(
-    'help|h'     => 'show this help message',
-    'source|s-s' => 'path where the structure.xml is located (optional, defaults to "output/structure.xml")',
-    'target|t-s' => 'path where to save the generated files (optional, defaults to "output")',
-    'output|o-s' => 'output format to use (optional, defaults to "xslt")',
-    'theme-s'    => 'name of the theme to use (optional, defaults to "default")',
-    'search-s'   => 'type of searchbox to use, may be "None", "XmlJs" or "Ajax"',
-    'verbose|v'  => 'Outputs any information collected by this application, may slow down the process slightly',
-  ));
+  $opts = new Zend_Console_Getopt(DocBlox_Arguments::$transform_options);
 
   // parse the command line arguments
   $opts->parse();
