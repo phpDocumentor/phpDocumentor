@@ -1,19 +1,26 @@
 <?php
-require_once 'PHPUnit/Framework.php';
 
-set_include_path(get_include_path(). PATH_SEPARATOR .
-  realpath(dirname(__FILE__) . '/../../..') . PATH_SEPARATOR .
-  realpath(dirname(__FILE__) . '/../../../lib'));
-require_once('Zend/Loader/Autoloader.php');
-require_once('symfony/sfTimer.class.php');
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('DocBlox_');
+class TokenIteratorMock extends DocBlox_TokenIterator
+{
+  public function gotoUpByType()
+  {
+    $this->gotoTokenByTypeInDirection('{', 'up');
+  }
+
+  public function getBrokenTokenIdsOfBracePair()
+  {
+    return $this->getTokenIdsBetweenPair('}', '{');
+  }
+}
 
 /**
  * Test class for DocBlox_TokenIterator.
  */
 class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
 {
+  /** @var array[] tokens returned by token_get_all */
+  protected $tokens = array();
+
   /**
    * @var DocBlox_TokenIterator
    */
@@ -28,21 +35,51 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
    */
   protected function setUp()
   {
-    $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../data/test.php'));
-    $this->object = new DocBlox_TokenIterator($tokens);
+    $this->tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../data/TokenIteratorTestFixture.php'));
+    $this->object = new DocBlox_TokenIterator($this->tokens);
 
+    $this->object->seek(0);
+  }
+
+  public function testConstruct()
+  {
     $this->assertGreaterThan(0, count($this->object), 'Expected DocBlox_TokenIterator to contain more than 0 items');
-    $this->assertEquals(count($tokens), count($this->object), 'Expected DocBlox_TokenIterator to contain the same amount of items as the output of the tokenizer');
+    $this->assertEquals(
+      count($this->tokens),
+      count($this->object),
+      'Expected DocBlox_TokenIterator to contain the same amount of items as the output of the tokenizer'
+    );
 
-    foreach($this->object as $token)
+    foreach ($this->object as $token)
     {
       if (!($token instanceof DocBlox_Token))
       {
-        $this->fail('All tokens in the DocBlox_TokenIterator are expected to be of type DocBlox_Token, found: '.print_r($token, true));
+        $this->fail('All tokens in the DocBlox_TokenIterator are expected to be of type DocBlox_Token, found: '
+          . print_r($token, true));
       }
     }
 
-    $this->object->seek(0);
+    // test by inserting an array of Tokens ($this->object is effectively an array of objects)
+    $test_array = array(
+      $this->object[0], $this->object[1], $this->object[2]
+    );
+
+    $other_object = new DocBlox_TokenIterator($test_array);
+    $this->assertGreaterThan(0, count($other_object), 'Expected DocBlox_TokenIterator to contain more than 0 items');
+    $this->assertEquals(
+      count($test_array),
+      count($other_object),
+      'Expected DocBlox_TokenIterator to contain the same amount of items as the given array of Tokens'
+    );
+  }
+
+  public function testGotoTokenByTypeInDirection()
+  {
+    $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../data/TokenIteratorTestFixture.php'));
+    $mock = new TokenIteratorMock($tokens);
+
+    $this->setExpectedException('InvalidArgumentException');
+    $mock->gotoUpByType(); // expect an exception because this stub tries to use a wrong direction
   }
 
   /**
@@ -61,17 +98,17 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
 
     $this->object->seek(0);
     $token = $this->object->gotoNextByType(T_CLASS, 0);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
     $this->assertNotEquals(0, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek(0);
     $token = $this->object->gotoNextByType(T_CLASS, 40);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens');
     $this->assertNotEquals(0, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek(0);
     $token = $this->object->gotoNextByType(T_CLASS, 40, T_REQUIRE);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens before a T_REQUIRE is encountered');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens before a T_REQUIRE is encountered');
     $this->assertNotEquals(0, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek(0);
@@ -89,17 +126,17 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
 
     $this->object->seek($pos);
     $token = $this->object->gotoPreviousByType(T_CLASS, 0);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
     $this->assertNotEquals($pos, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek($pos);
     $token = $this->object->gotoPreviousByType(T_CLASS, $pos);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens');
     $this->assertNotEquals($pos, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek($pos);
     $token = $this->object->gotoPreviousByType(T_CLASS, $pos, T_NAMESPACE);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens before a T_NAMESPACE is encountered');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens before a T_NAMESPACE is encountered');
     $this->assertNotEquals($pos, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek($pos);
@@ -121,17 +158,17 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
 
     $this->object->seek(0);
     $token = $this->object->findNextByType(T_CLASS, 0);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
     $this->assertEquals(0, $this->object->key(), 'Expected the key to equal the starting position');
 
     $this->object->seek(0);
     $token = $this->object->findNextByType(T_CLASS, 40);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens');
     $this->assertEquals(0, $this->object->key(), 'Expected the key to equal the starting position');
 
     $this->object->seek(0);
     $token = $this->object->findNextByType(T_CLASS, 40, T_REQUIRE);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens before a T_REQUIRE is encountered');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within 40 tokens before a T_REQUIRE is encountered');
     $this->assertEquals(0, $this->object->key(), 'Expected the key to equal the starting position');
 
     $this->object->seek(0);
@@ -146,17 +183,17 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
 
     $this->object->seek($pos);
     $token = $this->object->findPreviousByType(T_CLASS, 0);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset');
     $this->assertEquals($pos, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek($pos);
     $token = $this->object->findPreviousByType(T_CLASS, $pos);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens');
     $this->assertEquals($pos, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek($pos);
     $token = $this->object->findPreviousByType(T_CLASS, $pos, T_NAMESPACE);
-    $this->assertType('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens before a T_NAMESPACE is encountered');
+    $this->assertInstanceOf('DocBlox_Token', $token, 'Expected to find a T_CLASS in the dataset within '.$pos.' tokens before a T_NAMESPACE is encountered');
     $this->assertEquals($pos, $this->object->key(), 'Expected the key to have a different position');
 
     $this->object->seek($pos);
@@ -165,17 +202,29 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
     $this->assertEquals($pos, $this->object->key(), 'Expected the key to be at the starting position');
   }
 
+  public function testGetBrokenTokenIdsOfBracePair()
+  {
+    $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../data/TokenIteratorTestFixture.php'));
+    $mock = new TokenIteratorMock($tokens);
+
+    // because we have switched the { and } in the stub method it should immediately find a closing brace and thus
+    // return null,null
+    $mock->seek(0);
+    $mock->gotoNextByType(T_CLASS, 0);
+    $this->assertEquals(array(null, null), $mock->getBrokenTokenIdsOfBracePair());
+  }
+
   public function testGetTokenIdsOfBracePair()
   {
     $this->object->seek(0);
     $this->object->gotoNextByType(T_CLASS, 0);
     $result = $this->object->getTokenIdsOfBracePair();
 
-    $this->assertType('array', $result, 'Expected result to be an array');
+    $this->assertInternalType('array', $result, 'Expected result to be an array');
     $this->assertArrayHasKey(0, $result, 'Expected result to have a start element');
     $this->assertArrayHasKey(1, $result, 'Expected result to have an end element');
     $this->assertEquals(33, $result[0], 'Expected the first brace to be at token id 33');
-    $this->assertEquals(57, $result[1], 'Expected the closing brace to be at token id 57');
+    $this->assertEquals(58, $result[1], 'Expected the closing brace to be at token id 57');
   }
 
   public function testGetTokenIdsOfParenthesisPair()
@@ -184,7 +233,7 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
     $this->object->gotoNextByType(T_FUNCTION, 0);
     $result = $this->object->getTokenIdsOfParenthesisPair();
 
-    $this->assertType('array', $result, 'Expected result to be an array');
+    $this->assertInternalType('array', $result, 'Expected result to be an array');
     $this->assertArrayHasKey(0, $result, 'Expected result to have a start element');
     $this->assertArrayHasKey(1, $result, 'Expected result to have an end element');
     $this->assertEquals(40, $result[0], 'Expected the first brace to be at token id 40');

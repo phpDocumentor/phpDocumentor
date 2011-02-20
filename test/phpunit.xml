@@ -1,0 +1,24 @@
+<phpunit bootstrap="common/bootstrap.php" colors="true">
+  <filter>
+    <whitelist>
+      <directory suffix=".php">../</directory>
+      <exclude>
+        <directory suffix=".php">../lib</directory>
+        <directory suffix=".php">../output*</directory>
+        <directory suffix=".php">../log</directory>
+        <directory suffix=".php">../test</directory>
+        <directory suffix=".php">../bin</directory>
+        <directory suffix=".php">../resources</directory>
+      </exclude>
+    </whitelist>
+  </filter>
+  <logging>
+    <log type="coverage-html"
+      target="../log/coverage"
+      charset="UTF-8"
+      yui="true"
+      highlight="false"
+      lowUpperBound="35"
+      highLowerBound="70" />
+  </logging>
+</phpunit>

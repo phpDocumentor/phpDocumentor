@@ -41,7 +41,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   protected function findDocBlock(DocBlox_TokenIterator $tokens)
   {
     $result = null;
-    $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{'. '}', ';'));
+    $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{', '}', ';'));
     try
     {
       $result = $docblock ? new DocBlox_Reflection_DocBlock($docblock->getContent()) : null;
@@ -84,8 +84,9 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
 
       // add support for array notation
       $is_array = false;
-      if (substr($item, 0, -2) == '[]')
+      if (substr($item, -2) == '[]')
       {
+        $item = substr($item, 0, -2);
         $is_array = true;
       }
 
@@ -132,7 +133,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       {
         $xml->addChild('docblock');
       }
-      $xml->docblock->description = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription());
+      $xml->docblock->description          = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getShortDescription());
       $xml->docblock->{'long-description'} = str_replace(PHP_EOL, '<br/>', $this->getDocBlock()->getLongDescription());
 
       /** @var DocBlox_Reflection_Docblock_Tag $tag */

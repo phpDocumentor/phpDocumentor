@@ -23,7 +23,7 @@ abstract class DocBlox_Abstract
    *
    * @var int
    */
-  const VERSION = '0.8.1-DEV';
+  const VERSION = '0.8.2';
 
   /**
    * The logger used to capture all messages send by the log method.
@@ -125,6 +125,11 @@ abstract class DocBlox_Abstract
   {
     if (!is_numeric($level))
     {
+      if (!defined('Zend_Log::' . strtoupper($level)))
+      {
+        throw new InvalidArgumentException('Expected one of the constants of the Zend_Log class, "'
+          . $level . '" received');
+      }
       $level = constant('Zend_Log::'.strtoupper($level));
     }
 

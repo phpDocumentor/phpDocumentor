@@ -1,11 +1,18 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Tokens
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
 
 /**
  * Iterator class responsible for navigating through a list of Tokens.
  *
- * @package    DocBlox
- * @subpackage Tokens
- * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @category DocBlox
+ * @package  Tokens
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlox_TokenIterator extends DocBlox_BidiArrayIterator
 {

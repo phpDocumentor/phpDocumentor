@@ -18,7 +18,7 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
       }
     }
 
-    $this->content = trim($content);
+    $this->contents = trim($content);
   }
 
   /**
