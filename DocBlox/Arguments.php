@@ -16,6 +16,30 @@
  */
 class DocBlox_Arguments extends Zend_Console_Getopt
 {
+  static public $parse_options = array(
+      'h|help'         => 'Show this help message',
+      'c|config-s'     => 'Configuration filename, if none is given the defaults of the docblox.config.xml in the root of DocBlox is used',
+      'f|filename=s'   => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
+      'd|directory=s'  => 'Comma-separated list of directories to (recursively) parse.',
+      'e|extensions-s' => 'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
+      't|target-s'     => 'Path where to store the generated output (optional, defaults to "output")',
+      'v|verbose'      => 'Provides additional information during parsing, usually only needed for debuggin purposes',
+      'i|ignore-s'     => 'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported',
+      'm|markers-s'    => 'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")',
+      'force'          => 'Forces a full build of the documentation, does not increment existing documentation',
+      'validate'       => 'Validates every processed file using PHP Lint, costs a lot of performance',
+    );
+
+  static public $transform_options = array(
+    'h|help'     => 'show this help message',
+    's|source-s' => 'path where the structure.xml is located (optional, defaults to "output/structure.xml")',
+    't|target-s' => 'path where to save the generated files (optional, defaults to "output")',
+    'o|output-s' => 'output format to use (optional, defaults to "xslt")',
+    'theme-s'    => 'name of the theme to use (optional, defaults to "default")',
+    'search-s'   => 'type of searchbox to use, may be "None", "XmlJs" or "Ajax"',
+    'v|verbose'  => 'Outputs any information collected by this application, may slow down the process slightly',
+  );
+
   /**
    * Contains all files identified using the -d and -f option
    *
@@ -37,19 +61,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
    */
   public function __construct()
   {
-    parent::__construct(array(
-      'h|help'         => 'Show this help message',
-      'c|config-s'     => 'Configuration filename, if none is given the defaults of the docblox.config.xml in the root of DocBlox is used',
-      'f|filename=s'   => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
-      'd|directory=s'  => 'Comma-separated list of directories to (recursively) parse.',
-      'e|extensions-s' => 'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml',
-      't|target-s'     => 'Path where to store the generated output (optional, defaults to "output")',
-      'v|verbose'      => 'Provides additional information during parsing, usually only needed for debuggin purposes',
-      'i|ignore-s'     => 'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported',
-      'm|markers-s'    => 'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")',
-      'force'          => 'Forces a full build of the documentation, does not increment existing documentation',
-      'validate'       => 'Validates every processed file using PHP Lint, costs a lot of performance',
-    ));
+    parent::__construct(self::$parse_options);
   }
 
   /**
