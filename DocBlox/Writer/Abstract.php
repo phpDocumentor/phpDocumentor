@@ -24,8 +24,6 @@ class DocBlox_Writer_Abstract extends DocBlox_Abstract
     $root_path           = realpath(dirname(__FILE__).'/../..');
     $this->resource_path = $root_path.'/resources';
     $this->theme_path    = $this->resource_path.'/themes';
-    $this->target        = $root_path.'/output';
-    $this->setSource($root_path.'/output/structure.xml');
   }
 
   public function getSource()
@@ -37,13 +35,11 @@ class DocBlox_Writer_Abstract extends DocBlox_Abstract
   {
     $this->source = $source;
 
-    $dom = new DOMDocument();
-    $dom->loadXML(file_get_contents(realpath($this->getSource())));
-    $version = $dom->documentElement->getAttribute('version');
-    if ($version != DocBlox_Abstract::VERSION)
+    $xml = simplexml_load_file(realpath($this->getSource()));
+    if ($xml['version'] != DocBlox_Abstract::VERSION)
     {
       throw new Exception('Version of transformer ('. DocBlox_Abstract::VERSION.') did not match the '
-        . 'structure file (' . $version . '); please re-parse the project first');
+        . 'structure file (' . $xml['version'] . '); please re-parse the project first');
     }
   }
 
