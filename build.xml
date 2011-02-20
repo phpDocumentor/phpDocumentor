@@ -15,7 +15,7 @@
 
  <!-- Run unit tests and generate junit.xml and clover.xml -->
  <target name="phpunit">
-  <exec executable="phpunit" failonerror="true"/>
+  <exec executable="phpunit" failonerror="true" />
  </target>
 
  <!-- Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks
@@ -25,7 +25,7 @@
    <antcall target="pdepend"/>
    <antcall target="phpmd"/>
    <antcall target="phpcpd"/>
-   <antcall target="phpcs"/>
+   <!--<antcall target="phpcs"/>-->
    <antcall target="phpdoc"/>
    <antcall target="phploc"/>
   </parallel>
