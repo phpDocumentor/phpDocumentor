@@ -1,47 +1,122 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Parser
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Core class responsible for parsing the given files to a strjucture.xml file.
+ *
+ * @category   DocBlox
+ * @package    Parser
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Parser extends DocBlox_Abstract
 {
+  /** @var string[] the glob patterns which directories/files to ignore during parsing */
   protected $ignore_patterns = array();
+
+  /** @var DOMDocument|null if any structure.xml was at the target location it is stored for comparison */
   protected $existing_xml    = null;
+
+  /** @var bool whether we force a full re-parse, independent of existing_xml is set */
   protected $force           = false;
+
+  /** @var bool whether to execute a PHPLint on every file */
   protected $validate        = false;
+
+  /** @var string[] which markers (i.e. TODO or FIXME) to collect */
   protected $markers         = array('TODO', 'FIXME');
+
+  /** @var string target location's root path */
   protected $path            = null;
 
-  public function isForced()
-  {
-    return $this->force;
-  }
-
-  public function doValidation()
-  {
-    return $this->validate;
-  }
-
+  /**
+   * Sets whether to force a full parse run of all files.
+   *
+   * @param bool $forced
+   *
+   * @return void
+   */
   public function setForced($forced)
   {
     $this->force = $forced;
   }
 
+  /**
+   * Returns whether a full rebuild is required.
+   *
+   * To prevent incompatibilities we force a full rebuild if the version of DocBlox does not equal
+   * the structure's version.
+   *
+   * @return bool
+   */
+  public function isForced()
+  {
+    $is_version_unequal = (($this->getExistingXml())
+      && ($this->getExistingXml()->documentElement->getAttribute('version') != DocBlox_Abstract::VERSION));
+
+    if ($is_version_unequal)
+    {
+      $this->log('Version of DocBlox has changed since the last build; forcing a full re-build');
+    }
+
+    return $this->force || $is_version_unequal;
+  }
+
+  /**
+   * Sets whether to run PHPLint on every file.
+   *
+   * PHPLint has a huge performance impact on the execution of DocBlox and is thus disabled by default.
+   *
+   * @param bool $validate
+   *
+   * @return void
+   */
   public function setValidate($validate)
   {
     $this->validate = $validate;
   }
 
-  public function getMarkers()
+  /**
+   * Returns whether we want to run PHPLint on every file.
+   *
+   * @return bool
+   */
+  public function doValidation()
   {
-    return $this->markers;
+    return $this->validate;
   }
 
-  public function setMarkers($markers)
+  /**
+   * Sets a list of markers to gather (i.e. TODO, FIXME).
+   *
+   * @param string[] $markers
+   *
+   * @return void
+   */
+  public function setMarkers(array $markers)
   {
     $this->markers = $markers;
   }
 
   /**
-   * Imports an existing XML source to enable incremental parsing
+   * Returns the list of markers.
    *
-   * @param string $xml
+   * @return string[]
+   */
+  public function getMarkers()
+  {
+    return $this->markers;
+  }
+
+  /**
+   * Imports an existing XML source to enable incremental parsing.
+   *
+   * @param string|null $xml
    *
    * @return void
    */
@@ -57,59 +132,54 @@ class DocBlox_Parser extends DocBlox_Abstract
     $this->existing_xml = $dom;
   }
 
+  /**
+   * Returns the existing data structure as DOMDocument.
+   *
+   * @return DOMDocument|null
+   */
+  public function getExistingXml()
+  {
+    return $this->existing_xml;
+  }
+
+  /**
+   * Adds an pattern to the parsing which determines which file(s) or directory(s) to skip.
+   *
+   * @param string $pattern
+   *
+   * @return void
+   */
   public function addIgnorePattern($pattern)
   {
+    $this->convertToPregCompliant($pattern);
     $this->ignore_patterns[] = $pattern;
   }
 
+  /**
+   * Sets all ignore patterns at once.
+   *
+   * @param string[] $patterns
+   *
+   * @return void
+   */
   public function setIgnorePatterns(array $patterns)
   {
-    $this->ignore_patterns = $patterns;
+    $this->ignore_patterns = array();
+
+    foreach($patterns as $pattern)
+    {
+      $this->addIgnorePattern($pattern);
+    }
   }
 
-  function parseFile($filename)
+  /**
+   * Returns an array with ignore patterns.
+   *
+   * @return string[]
+   */
+  public function getIgnorePatterns()
   {
-    $this->log('Starting to parse file: '.$filename);
-    $this->debug('Starting to parse file: '.$filename);
-    $this->resetTimer();
-    $result = null;
-
-    try
-    {
-      $file = new DocBlox_Reflection_File($filename, $this->doValidation());
-      $file->setMarkers($this->getMarkers());
-      $file->setFilename($this->getRelativeFilename($filename));
-      if (($this->existing_xml !== null) && (!$this->isForced()))
-      {
-        $xpath = new DOMXPath($this->existing_xml);
-
-        /** @var DOMNodeList $qry */
-        $qry = $xpath->query('/project/file[@path=\''.ltrim($file->getName()  , './').'\' and @hash=\''.$file->getHash().'\']');
-        if ($qry->length > 0)
-        {
-          $new_dom = new DOMDocument('1.0', 'utf-8');
-          $new_dom->appendChild($new_dom->importNode($qry->item(0), true));
-          $result = $new_dom->saveXML();
-
-          $this->log('>> File has not changed since last build, reusing the old definition');
-        }
-      }
-
-      if ($result === null)
-      {
-        $file->process();
-        $result = $file->__toXml();
-      }
-    } catch(Exception $e)
-    {
-      $this->log('>>  Unable to parse file, an error was detected: '.$e->getMessage(), Zend_Log::ALERT);
-      $this->debug('Unable to parse file "'.$filename.'", an error was detected: '.$e->getMessage());
-      $result = false;
-    }
-    $this->debug('>> Memory after processing of file: '.number_format(memory_get_usage()).' bytes');
-    $this->debugTimer('>> Parsed file');
-
-    return $result;
+    return $this->ignore_patterns;
   }
 
   /**
@@ -119,7 +189,7 @@ class DocBlox_Parser extends DocBlox_Abstract
    *
    * @return void
    */
-  function setPath($path)
+  public function setPath($path)
   {
     $this->path = $path;
   }
@@ -131,12 +201,88 @@ class DocBlox_Parser extends DocBlox_Abstract
    *
    * @return string
    */
-  protected function getRelativeFilename($filename)
+  public function getRelativeFilename($filename)
   {
     // strip path from filename
-    $filename = substr($filename, strlen($this->path));
+    $result = ltrim(substr($filename, strlen($this->path)), '/');
+    if ($result === '')
+    {
+      throw new InvalidArgumentException('File is not present in the given project path: '.$filename);
+    }
 
-    return ltrim($filename,'/');
+    return $result;
+  }
+
+  /**
+   * Runs a file through the static reflectors, generates an XML file element and returns it.
+   *
+   * @param string $filename The filename to parse.
+   *
+   * @return string|bool The XML element or false if none could be made.
+   */
+  function parseFile($filename)
+  {
+    // check if the file is in an ignore pattern, if so, skip it
+    foreach ($this->getIgnorePatterns() as $pattern)
+    {
+      if (preg_match('/^' . $pattern . '$/', $filename))
+      {
+        $this->log('-- File "' . $filename . '" matches ignore pattern, skipping');
+        return false;
+      }
+    }
+
+    $this->log('Starting to parse file: '.$filename);
+    $this->debug('Starting to parse file: '.$filename);
+    $this->resetTimer();
+    $result = null;
+
+    try
+    {
+      $file = new DocBlox_Reflection_File($filename, $this->doValidation());
+      $file->setMarkers($this->getMarkers());
+      $file->setFilename($this->getRelativeFilename($filename));
+
+      // if an existing structure exists; and we do not force re-generation; re-use the old definition if
+      // the hash differs
+      if (($this->getExistingXml() !== null) && (!$this->isForced()))
+      {
+        $xpath = new DOMXPath($this->getExistingXml());
+
+        // try to find the file with it's hash
+        /** @var DOMNodeList $qry */
+        $qry = $xpath->query(
+          '/project/file[@path=\''.ltrim($file->getName()  , './').'\' and @hash=\''.$file->getHash().'\']'
+        );
+
+        // if an existing entry who matches the file-to-be-parsed, then re-use
+        if ($qry->length > 0)
+        {
+          $new_dom = new DOMDocument('1.0', 'utf-8');
+          $new_dom->appendChild($new_dom->importNode($qry->item(0), true));
+          $result = $new_dom->saveXML();
+
+          $this->log('>> File has not changed since last build, re-using the old definition');
+        }
+      }
+
+      // if no result has been obtained; process the file
+      if ($result === null)
+      {
+        $file->process();
+        $result = $file->__toXml();
+      }
+    } catch(Exception $e)
+    {
+      $this->log('>>  Unable to parse file, an error was detected: '.$e->getMessage(), Zend_Log::ALERT);
+      $this->debug('Unable to parse file "'.$filename.'", an error was detected: '.$e->getMessage());
+      $result = false;
+    }
+
+    $this->debug('>> Memory after processing of file: '.number_format(memory_get_usage()).' bytes');
+    $this->debugTimer('>> Parsed file');
+
+    return $result;
   }
 
   /**
@@ -174,7 +320,7 @@ class DocBlox_Parser extends DocBlox_Abstract
   /**
    * Recursive method to create a hierarchical set of nodes in the dom.
    *
-   * @param array $namespaces
+   * @param array      $namespaces
    * @param DOMElement $parent_element
    *
    * @return void
@@ -190,52 +336,35 @@ class DocBlox_Parser extends DocBlox_Abstract
     }
   }
 
-  public function parseFiles($files)
+  /**
+   * Iterates through the given files and builds the structure.xml file.
+   *
+   * @param string[] $files
+   *
+   * @return bool|string
+   */
+  public function parseFiles(array $files)
   {
     $this->log('Starting to process '.count($files).' files').PHP_EOL;
     $timer = new sfTimer();
 
-    // if the version has changed and we are not doing a full rebuild; force one
-    if (($this->existing_xml)
-      && ($this->existing_xml->documentElement->getAttribute('version') != DocBlox_Abstract::VERSION)
-      && (!$this->isForced()))
-    {
-      $this->log('Version of DocBlox has changed since the last build; forcing a full re-build');
-      $this->setForced(true);
-    }
-
-    // convert patterns to regex's
-    foreach($this->ignore_patterns as &$pattern)
-    {
-      $pattern = $this->convertToPregCompliant($pattern);
-    }
-//    $this->log('Time1: '.round($timer->getElapsedTime(),4).'s').PHP_EOL;
-
     $dom = new DOMDocument('1.0', 'utf-8');
+    $dom->formatOutput = true;
     $dom->loadXML('<project version="'.DocBlox_Abstract::VERSION.'"></project>');
 
     foreach ($files as $file)
     {
-      // check if the file is in an ignore pattern, if so, skip it
-      foreach($this->ignore_patterns as $pattern)
-      {
-        if (preg_match('/^'.$pattern.'$/', $file))
-        {
-          $this->log('-- File "'.$file.'" matches ignore pattern, skipping');
-          continue 2;
-        }
-      }
-
       $xml = $this->parseFile($file);
       if ($xml === false)
       {
         continue;
       }
 
-      $dom_prop = new DOMDocument();
-      $dom_prop->loadXML(trim($xml));
+      $dom_file = new DOMDocument();
+      $dom_file->loadXML(trim($xml));
 
-      $xpath = new DOMXPath($dom_prop);
+      // merge generated XML document into the main document
+      $xpath = new DOMXPath($dom_file);
       $qry = $xpath->query('/*');
       for ($i = 0; $i < $qry->length; $i++)
       {
@@ -243,12 +372,35 @@ class DocBlox_Parser extends DocBlox_Abstract
       }
     }
 
+    $this->buildPackageTree($dom);
+    $this->buildNamespaceTree($dom);
+    $this->buildMarkerList($dom);
+
+    $xml = $dom->saveXML();
+    $this->log('--');
+    $this->log('Elapsed time to parse all files: ' . round($timer->getElapsedTime(), 2) . 's');
+    $this->log('Peak memory usage: ' . round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
+
+    return $xml;
+  }
+
+  /**
+   * Collects all packages and subpackages, and adds a new section in the DOM to provide an overview.
+   *
+   * @param DOMDocument $dom
+   *
+   * @return void
+   */
+  protected function buildPackageTree(DOMDocument &$dom)
+  {
     // collect all packages and store them in the XML
-    // TODO: the subpackages should be collected and stored as well!
     $this->log('Collecting all packages');
-    $xpath = new DOMXPath($dom);
     $packages = array();
-    $qry = $xpath->query('//class/docblock/tag[@name="package"]|//file/docblock/tag[@name="package"]');
+
+    $xpath = new DOMXPath($dom);
+    $qry   = $xpath->query('//class/docblock/tag[@name="package"]|//file/docblock/tag[@name="package"]');
+
+    // iterate through all packages
     for ($i = 0; $i < $qry->length; $i++)
     {
       $package_name = $qry->item($i)->nodeValue;
@@ -258,7 +410,9 @@ class DocBlox_Parser extends DocBlox_Abstract
       }
 
       $packages[$package_name] = array();
-      $qry2 = $xpath->query('//docblock/tag[@name="package" and .="'.$qry->item($i)->nodeValue.'"]/../tag[@name="subpackage"]');
+
+      // find all subpackages
+      $qry2 = $xpath->query('//docblock/tag[@name="package" and .="' . $qry->item($i)->nodeValue . '"]/../tag[@name="subpackage"]');
       for ($i2 = 0; $i2 < $qry2->length; $i2++)
       {
         $packages[$package_name][] = $qry2->item($i2)->nodeValue;
@@ -274,7 +428,17 @@ class DocBlox_Parser extends DocBlox_Abstract
         $node->appendChild(new DOMElement('subpackage', $subpackage));
       }
     }
+  }
 
+  /**
+   * Collects all namespaces and sub-namespaces, and adds a new section in the DOM to provide an overview.
+   *
+   * @param DOMDocument $dom
+   *
+   * @return void
+   */
+  protected function buildNamespaceTree(DOMDocument &$dom)
+  {
     $this->log('Collecting all namespaces');
     $xpath = new DOMXPath($dom);
     $namespaces = array();
@@ -290,49 +454,58 @@ class DocBlox_Parser extends DocBlox_Abstract
 
     $namespaces = $this->generateNamespaceTree(array_keys($namespaces));
     $this->generateNamespaceElements($namespaces, $dom->documentElement);
+  }
 
+  /**
+   * Retrieves a list of all marker types and adds them to the XML for easy referencing.
+   *
+   * @param DOMDocument $dom
+   *
+   * @return void
+   */
+  protected function buildMarkerList(DOMDocument &$dom)
+  {
     $this->log('Collecting all marker types');
     foreach ($this->getMarkers() as $marker)
     {
       $node = new DOMElement('marker', strtolower($marker));
       $dom->documentElement->appendChild($node);
     }
-
-    $dom->formatOutput = true;
-    $xml = $dom->saveXML();
-    $this->log('--');
-    $this->log('Elapsed time to parse all files: '.round($timer->getElapsedTime(), 2).'s');
-    $this->log('Peak memory usage: '.round(memory_get_peak_usage() / 1024 / 1024, 2).'M');
-
-    return $xml;
   }
 
   /**
-   * Converts $s into a string that can be used with preg_match
+   * Converts $string into a string that can be used with preg_match.
    *
-   * @param string $string string with wildcards ? and *
+   * @param string $string Glob-like pattern with wildcards ? and *.
    *
    * @author Greg Beaver <cellog@php.net>
+   * @author mike van Riel <mike.vanriel@naenius.com>
    *
    * @see PhpDocumentor/phpDocumentor/Io.php
    *
-   * @return string converts * to .*, ? to ., etc.
+   * @return void
    */
-  function convertToPregCompliant($string)
+  function convertToPregCompliant(&$string)
   {
-      $y = '\/';
-      if (DIRECTORY_SEPARATOR == '\\')
-      {
-          $y = '\\\\';
-      }
+      $y      = (DIRECTORY_SEPARATOR == '\\') ? '\\\\' : '\/';
       $string = str_replace('/', DIRECTORY_SEPARATOR, $string);
-      $x = strtr($string, array('?' => '.','*' => '.*','.' => '\\.','\\' => '\\\\','/' => '\\/',
-                              '[' => '\\[',']' => '\\]','-' => '\\-'));
-      if (strpos($string, DIRECTORY_SEPARATOR) !== false &&
-          strrpos($string, DIRECTORY_SEPARATOR) === strlen($string) - 1)
+      $x      = strtr($string, array(
+        '?' => '.',
+        '*' => '.*',
+        '.' => '\\.',
+        '\\' => '\\\\',
+        '/' => '\\/',
+        '[' => '\\[',
+        ']' => '\\]',
+        '-' => '\\-'
+      ));
+
+      if ((strpos($string, DIRECTORY_SEPARATOR) !== false)
+        && (strrpos($string, DIRECTORY_SEPARATOR) === strlen($string) - 1))
       {
           $x = "(?:.*$y$x?.*|$x.*)";
       }
-      return $x;
+
+      $string = $x;
   }
 }

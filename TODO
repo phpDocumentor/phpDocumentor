@@ -5,6 +5,7 @@
 * Add Twig output writer
 * Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
   allow it to work for all three executables.
+* Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 
 0.10: Add custom documents, statistics and improve theming
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
