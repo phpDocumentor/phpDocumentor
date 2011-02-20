@@ -34,11 +34,11 @@ try
 
 $args = $opts->getRemainingArgs();
 
-if ($args[0] == 'parse')
+if (isset($args[0]) && $args[0] == 'parse')
 {
     $callable = dirname(__FILE__).'/parse.php';
 }
-elseif ($args[0] == 'transform')
+elseif (isset($args[0]) && $args[0] == 'transform')
 {
     $callable = dirname(__FILE__).'/transform.php';
 }
