@@ -54,6 +54,4 @@ foreach($options as $option)
     $optionstring .= '-'.$option.' '.$opts->getOption($option).' ';
 }
 
-echo $callable.' '.$optionstring."\n";die();
-
 passthru($callable.' '.$optionstring);
