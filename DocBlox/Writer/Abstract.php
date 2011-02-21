@@ -1,15 +1,18 @@
 <?php
 /**
- * @author    mvriel
- * @copyright
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Writer
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
- * Provide a short description for this class.
+ * Base class for the actual transformation business logic (writers).
  *
- * @author     mvriel
- * @package
- * @subpackage
+ * @category   DocBlox
+ * @package    Writer
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlox_Writer_Abstract extends DocBlox_Abstract
 {
@@ -183,5 +186,24 @@ class DocBlox_Writer_Abstract extends DocBlox_Abstract
     $proc->transformToURI($xml, 'file://' . $files_path . '/' . $destination_file);
   }
 
+  /**
+   * Returns an instance of a writer and caches it; a single writer instance is capable of transforming multiple times.
+   *
+   * @param string $writer Name of thr writer to get.
+   *
+   * @return DocBlox_Writer_Abstract
+   */
+  static public function getInstanceOf($writer)
+  {
+    static $writers = array();
 
+    // if there is no writer; create it
+    if (!isset($writers[strtolower($writer)]))
+    {
+      $writer_class = 'DocBlox_Writer_' . ucfirst($writer);
+      $writers[strtolower($writer)] = new $writer_class();
+    }
+
+    return $writers[strtolower($writer)];
+  }
 }
