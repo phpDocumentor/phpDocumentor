@@ -31,6 +31,9 @@ class DocBlox_Transformation extends DocBlox_Abstract
   /** @var string[] */
   protected $parameters = array();
 
+  /** @var DocBlox_Transformer */
+  protected $transformer = null;
+
   /**
    * Constructs a new Transformation object and populates the required parameters.
    *
@@ -39,12 +42,35 @@ class DocBlox_Transformation extends DocBlox_Abstract
    * @param string $source   Which template or type of source to use.
    * @param string $artifact What is the filename of the result (relative to the generated root)
    */
-  public function __construct($query, $writer, $source, $artifact)
+  public function __construct(DocBlox_Transformer $transformer, $query, $writer, $source, $artifact)
   {
+    $this->setTransformer($transformer);
     $this->setQuery($query);
     $this->setWriter($writer);
     $this->setSource($source);
     $this->setArtifact($artifact);
+  }
+
+  /**
+   * Sets the transformer object responsible for maintaining the transformations.
+   *
+   * @param DocBlox_Transformer $transformer
+   *
+   * @return void
+   */
+  public function setTransformer(DocBlox_Transformer $transformer)
+  {
+    $this->transformer = $transformer;
+  }
+
+  /**
+   * Returns the transformer object which is responsible for maintaining this transformation.
+   *
+   * @return DocBlox_Transformer
+   */
+  public function getTransformer()
+  {
+    return $this->transformer;
   }
 
   /**
@@ -161,13 +187,28 @@ class DocBlox_Transformation extends DocBlox_Abstract
   }
 
   /**
+   * Returns a specific parameter, or $default if none exists.
+   *
+   * @param string $name
+   * @param mixed  $default
+   *
+   * @return string
+   */
+  public function getParameter($name, $default = null)
+  {
+    return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+  }
+
+  /**
    * Executes the transformation.
+   *
+   * @param string $structure_file The location of the structure file.
    *
    * @return void
    */
-  public function execute()
+  public function execute($structure_file)
   {
-
+    $this->getWriter()->transform($structure_file, $this);
   }
 
 }

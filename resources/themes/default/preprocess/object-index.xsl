@@ -68,7 +68,7 @@
           <li class="closed">
             <div class="content">
               <span>
-                <a href="{$root}/{../@generated-path}#{name}">
+                <a href="{$root}{../@generated-path}#{name}">
                   <xsl:value-of select="name" />
                 </a>
               </span>
@@ -94,7 +94,7 @@
             <li>
               <div class="content">
                 <span>
-                  <a href="{$root}/{../@generated-path}#{name}">
+                  <a href="{$root}{../@generated-path}#{name}">
                     <xsl:value-of select="name" />
                   </a>
                 </span>
@@ -129,7 +129,7 @@
           <li>
             <div class="content">
               <span>
-                <a href="{$root}/{../@generated-path}#{name}">
+                <a href="{$root}{../@generated-path}#{name}">
                   <xsl:value-of select="name" />
                 </a>
               </span>

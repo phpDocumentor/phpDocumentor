@@ -6,7 +6,7 @@
 
   <xsl:template match="/project">
     <div id="nb-toolbar">
-      <a href="{$root}/index.html">Back to overview</a>
+      <a href="{$root}index.html">Back to overview</a>
     </div>
 
     <div class="tabs">

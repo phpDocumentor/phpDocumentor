@@ -33,6 +33,11 @@ class DocBlox_AbstractTest extends PHPUnit_Framework_TestCase
     $config = DocBlox_Abstract::loadConfig(dirname(__FILE__) . '/../../../docblox.config.xml');
     $this->assertInstanceOf('Zend_Config_Xml', $config);
 
+    // loading of the template configs
+    $this->assertTrue(isset($config->templates));
+    $this->assertTrue(isset($config->templates->default));
+    $this->assertTrue(isset($config->templates->default->transformations));
+
     $this->setExpectedException('Exception');
     DocBlox_Abstract::loadConfig('blabla');
   }

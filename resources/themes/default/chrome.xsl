@@ -9,12 +9,12 @@
       <head>
         <title><xsl:value-of select="$title" /></title>
         <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-        <link rel="stylesheet" href="{$root}/css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
-        <link rel="stylesheet" href="{$root}/css/jquery.treeview.css" type="text/css" />
-        <link rel="stylesheet" href="{$root}/css/default.css" type="text/css" />
-        <script type="text/javascript" src="{$root}/js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="{$root}/js/jquery-ui-1.8.2.custom.min.js"></script>
-        <script type="text/javascript" src="{$root}/js/jquery.treeview.js"></script>
+        <link rel="stylesheet" href="{$root}css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
+        <link rel="stylesheet" href="{$root}css/jquery.treeview.css" type="text/css" />
+        <link rel="stylesheet" href="{$root}css/default.css" type="text/css" />
+        <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery.treeview.js"></script>
       </head>
       <body>
         <script type="text/javascript">
@@ -76,7 +76,7 @@
 
           <div id="menu">
             <div class="padder">
-              <h1><img src="{$root}/images/logo.png" alt="" /></h1>
+              <h1><img src="{$root}images/logo.png" alt="" /></h1>
 
               <div id="search-box">
                 <xsl:call-template name="search">
@@ -87,10 +87,10 @@
               </div>
               <h4>Documentation</h4>
                 <ul>
-                  <li><a href="{$root}/index.html">Class diagram</a></li>
+                  <li><a href="{$root}index.html">Class diagram</a></li>
                   <!--<li>Packages</li>-->
                   <!--<li>Files</li>-->
-                  <li><a href="{$root}/markers.html">TODO / Markers</a></li>
+                  <li><a href="{$root}markers.html">TODO / Markers</a></li>
               </ul>
               <!--<h4>Charts</h4>-->
             </div>

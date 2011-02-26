@@ -113,7 +113,7 @@
           <xsl:if test="not(docblock/tag[@name='return']/@type)">n/a</xsl:if>
           <xsl:if test="docblock/tag[@name='return']/@type">
             <xsl:if test="docblock/tag[@name='return']/@link">
-              <a href="{$root}/files/{docblock/tag[@name='return']/@link}">
+              <a href="{$root}{docblock/tag[@name='return']/@link}">
                 <xsl:value-of select="docblock/tag[@name='return']/@type" />
               </a>
             </xsl:if>
@@ -150,7 +150,7 @@
                 <xsl:if test="not($variable_type)">n/a</xsl:if>
                 <xsl:if test="$variable_type">
                   <xsl:if test="../docblock/tag[@name='param' and @variable=$variable_name]/@link">
-                    <a href="{$root}/files/{../docblock/tag[@name='param' and @variable=$variable_name]/@link}">
+                    <a href="{$root}{../docblock/tag[@name='param' and @variable=$variable_name]/@link}">
                       <xsl:value-of select="$variable_type" />
                     </a>
                   </xsl:if>
@@ -185,7 +185,7 @@
               <xsl:if test="not(docblock/tag[@name='return']/@type)">n/a</xsl:if>
               <xsl:if test="docblock/tag[@name='return']/@type">
                 <xsl:if test="docblock/tag[@name='return']/@link">
-                  <a href="{$root}/files/{docblock/tag[@name='return']/@link}">
+                  <a href="{$root}{docblock/tag[@name='return']/@link}">
                     <xsl:value-of select="docblock/tag[@name='return']/@type" />
                   </a>
                 </xsl:if>
@@ -219,7 +219,7 @@
               <xsl:value-of select="@name" />
             </td>
             <td>
-                <xsl:if test="@link and @link != ''"><a href="{$root}\files\{@link}"><xsl:value-of select="." /></a></xsl:if>
+                <xsl:if test="@link and @link != ''"><a href="{$root}{@link}"><xsl:value-of select="." /></a></xsl:if>
                 <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="." /></xsl:if>
             </td>
             <td>

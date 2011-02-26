@@ -6,3 +6,4 @@ output/*.*
 output/*/
 phpdoc_example
 log/*.*
+build/*

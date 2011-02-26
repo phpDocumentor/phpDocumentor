@@ -28,67 +28,42 @@ try
   // initialize timer
   $timer = new sfTimer();
 
-  if ($opts->getOption('output'))
-  {
-    $writer = $opts->getOption('output');
-  } else
-  {
-    if (!isset(DocBlox_Abstract::config()->transformation->writer))
-    {
-      throw new Exception('Unable to find configuration entry for the transformation writer, please check your configuration file.');
-    }
-    $writer = DocBlox_Abstract::config()->transformation->writer;
-  }
-  $writer = 'DocBlox_Writer_'.ucfirst($writer);
-  $writer = new $writer();
+  $transformer = new DocBlox_Transformer();
 
   // set target option if it was provided by the user
-  if ($opts->getOption('target'))
-  {
-    $path = realpath($opts->getOption('target'));
-    if (!file_exists($path) && !is_dir($path) && !is_writable($path))
-    {
-      throw new Exception('Given target directory does not exist or is not writable');
-    }
+  $transformer->setTarget($opts->getOption('target')
+    ? $opts->getOption('target')
+    : 'output'
+  );
 
-    $writer->setTarget($path);
-  }
+  $transformer->setSource($opts->getOption('source')
+    ? $opts->getOption('source')
+    : 'output/structure.xml'
+  );
 
-  // set source option if it was provided by the user
-  if ($opts->getOption('source'))
-  {
-    $path = realpath($opts->getOption('source'));
-    if (!file_exists($path) || !is_readable($path) || !is_file($path))
-    {
-      throw new Exception('Given source does not exist or is not readable');
-    }
-
-    $writer->setSource($path);
-  }
+  $transformer->setTemplate($opts->getOption('template')
+    ? $opts->getOption('template')
+    : 'default'
+  );
 
   // set theme / chrome path if provided
-  if ($opts->getOption('theme'))
-  {
-    $writer->setTheme($opts->getOption('theme'));
-  }
-
-  // set theme / chrome path if provided
-  if ($opts->getOption('search'))
-  {
-    if (method_exists($writer, 'setSearchObject'))
-    {
-      $writer->setSearchObject($opts->getOption('search'));
-    }
-    else
-    {
-      echo 'The chosen output format does not support different search methods'.PHP_EOL;
-    }
-  }
+// TODO: should become parameter of the XSLT writer / transformation rule
+//  if ($opts->getOption('search'))
+//  {
+//    if (method_exists($writer, 'setSearchObject'))
+//    {
+//      $writer->setSearchObject($opts->getOption('search'));
+//    }
+//    else
+//    {
+//      echo 'The chosen output format does not support different search methods'.PHP_EOL;
+//    }
+//  }
 
   // enable verbose mode if the flag was set
   if ($opts->getOption('verbose'))
   {
-    $writer->setLogLevel(Zend_Log::DEBUG);
+    $transformer->setLogLevel(Zend_Log::DEBUG);
   }
 } catch (Exception $e)
 {
@@ -105,7 +80,6 @@ try
 
 // start the transformation process
 echo 'Starting transformation of files (this could take a while depending upon the size of your project)'.PHP_EOL;
-echo 'The theme '.$writer->getTheme().' was used.'.PHP_EOL;
-$writer->execute();
+$transformer->execute();
 
 echo 'Finished transformation in '.round($timer->getElapsedTime(), 2).' seconds'.PHP_EOL;

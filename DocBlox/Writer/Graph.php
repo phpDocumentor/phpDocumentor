@@ -16,20 +16,10 @@
  * @package    Base
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Writer_Xslt_Abstract
+class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
 {
-  public function execute(DomDocument $xml)
+  public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
   {
-    $path = realpath($this->target);
-
-    // prepare the xsl document
-    $xsl  = new DOMDocument;
-    $proc = new XSLTProcessor();
-    $xsl->load($this->getThemePath() . '/index.xsl');
-    $proc->importStyleSheet($xsl); // attach the xsl rules
-    $proc->setParameter('', 'title', 'Classes');
-    $this->transformTemplateToFile($xml, $proc, '../index.html');
-
     // NOTE: the -V flag sends output using STDERR and STDOUT
     exec('dot -V 2>&1', $output, $error);
     if ($error != 0)
@@ -38,8 +28,14 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Writer_Xslt_Abstract
       return;
     }
 
+    $type_method = 'process'.ucfirst($transformation->getSource());
+    $this->$type_method($structure, $transformation);
+  }
+
+  public function processClass(DOMDocument $structure, DocBlox_Transformation $transformation)
+  {
     // generate graphviz
-    $xpath = new DOMXPath($xml);
+    $xpath = new DOMXPath($structure);
     $qry = $xpath->query("/project/file/class");
 
     $extend_classes = array();
@@ -93,7 +89,10 @@ class DocBlox_Writer_Xslt_ClassGraph extends DocBlox_Writer_Xslt_Abstract
     $graph = new Image_GraphViz(true, array('rankdir' => 'RL', 'splines' => true, 'concentrate' => 'true', 'ratio' => '0.9'), 'Classes');
     $this->buildGraphNode($graph, $tree);
     $dot_file = $graph->saveParsedGraph();
-    $graph->renderDotFile($dot_file, $path.'/classes.svg');
+    $graph->renderDotFile(
+      $dot_file,
+      $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact()
+    );
   }
 
   protected function buildTreenode($node_list, $parent = 'stdClass', $chain = array())

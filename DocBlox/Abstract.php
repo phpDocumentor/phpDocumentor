@@ -269,12 +269,35 @@ abstract class DocBlox_Abstract
       throw new Exception('Config file "'.$filename.'" is not readable');
     }
 
-    return new Zend_Config_Xml(file_get_contents($filename), null, true);
+    $config = new Zend_Config_Xml(file_get_contents($filename), null, true);
+    $config = self::mergeTemplateConfigurations($config);
+    return $config;
   }
 
-  public static function mergeTemplateConfigurations(&$config)
+  /**
+   * Merges the configurations of the templates into the main configuration.
+   *
+   * @param Zend_Config $config
+   *
+   * @return Zend_Config
+   */
+  protected static function mergeTemplateConfigurations(Zend_Config $config)
   {
+    $config->templates = array();
     $iterator = new DirectoryIterator(dirname(__FILE__).'/../resources/templates');
+
+    /** @var DirectoryIterator $path */
+    foreach ($iterator as $path)
+    {
+      $config_path = $path->getRealPath() . '/template.xml';
+      if ($path->isDir() && !$path->isDot() && is_readable($config_path))
+      {
+        $basename = $path->getBasename();
+        $config->templates->$basename = new Zend_Config_Xml($config_path);
+      }
+    }
+
+    return $config;
   }
 
   /**

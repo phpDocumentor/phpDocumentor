@@ -6,7 +6,7 @@
   <xsl:include href="class.xsl" />
 
   <xsl:template match="/project">
-    <xsl:apply-templates select="/project/file[@path=$file]" />
+    <xsl:apply-templates select="/project/file[@path=$path]" />
   </xsl:template>
 
   <xsl:template match="/project/file">

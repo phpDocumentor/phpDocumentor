@@ -1,3 +1,6 @@
+--/--/2011: Version 0.9: Improve Theming and CLI
+* ADDED     Templating support; it is now possible to mix and match transformations and actions in a template configuration.
+
 02/19/2011: Version 0.8: fix known issues
 
 * ADDED:    Support for array notation of types (i.e. string[] or MyClass[])

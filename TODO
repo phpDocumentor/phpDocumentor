@@ -1,11 +1,14 @@
 0.9: Improve Theming and CLI
-* Check theming support and improve
 * Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
-* Add PDF output writer
+* Add PDF output writer using ezPDF
 * Add Twig output writer
 * Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
   allow it to work for all three executables.
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
+* Links do not detect | notation; they just ignore them
+* @see tags which define methods (<class>::<method>) are not converted into a link
+* @throw tags exception class is not converted to a link
+* The file output can not be put in a sub-directory; need to change this
 
 0.10: Add custom documents, statistics and improve theming
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
@@ -17,10 +20,12 @@
 
 0.11: Pre 1.0 cleanup
 * safari does not show the svg nicely, it places it into a very small scrollbox
-* Refactor static reflection to return contents in a different way and change the way XML is handled
-* Revisit template and make it prettier
+* Refactor static reflection to:
+  * Be uniform with the Reflector interface and PHP's Dynamic Reflection
+  * Consistently use either DOMDocument or SimpleXMLElement
+* Add docblox templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
 
-BONUS:
+ BONUS:
 * UML Class Diagram
 
 Technical Debt:

@@ -21,12 +21,6 @@
     <writer>xslt</writer>
   </transformation>
   <transformations>
-    <transformation query="" writer="" source="" artifact="">
-      <parameters></parameters>
-      <dependencies></dependencies>
-    </transformation>
-    <template name="default">
-      <parameters></parameters>
-    </template>
+    <template name="default" />
   </transformations>
 </docblox>
