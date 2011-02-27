@@ -1,7 +1,13 @@
 #!/usr/bin/env php
 <?php
+// determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
+$base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
+  ? dirname(__FILE__) . '/../'
+  : '@php_dir@/DocBlox/';
+
 // set path to add lib folder, load the Zend Autoloader and include the symfony timer
-set_include_path(dirname(__FILE__).'/../'.PATH_SEPARATOR.dirname(__FILE__).'/../lib'.PATH_SEPARATOR.get_include_path());
+set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . 'lib' . PATH_SEPARATOR . get_include_path());
+
 require_once('Zend/Loader/Autoloader.php');
 require_once('symfony/sfTimer.class.php');
 $autoloader = Zend_Loader_Autoloader::getInstance();
@@ -36,11 +42,11 @@ $args = $opts->getRemainingArgs();
 
 if (isset($args[0]) && $args[0] == 'parse')
 {
-    $callable = dirname(__FILE__).'/parse.php';
+    $callable = $base_include_folder.'bin/parse.php';
 }
 elseif (isset($args[0]) && $args[0] == 'transform')
 {
-    $callable = dirname(__FILE__).'/transform.php';
+    $callable = $base_include_folder.'bin/transform.php';
 }
 else
 {

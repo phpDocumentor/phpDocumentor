@@ -1,263 +1,305 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-    http://pear.php.net/dtd/tasks-1.0.xsd
-    http://pear.php.net/dtd/package-2.0
-    http://pear.php.net/dtd/package-2.0.xsd">
- <name>DocBlox</name>
- <channel>pear.docblox-project.org</channel>
- <summary>PHP 5.3 compatible API Documentation generator aimed at projects of all sizes and Continuous Integration</summary>
- <description>
-DocBlox is a Documentation Generation Application (DGA) for use with PHP applications.
+<package packagerversion="1.9.0" version="2.0"
+  xmlns="http://pear.php.net/dtd/package-2.0"
+  xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+                      http://pear.php.net/dtd/tasks-1.0.xsd
+                      http://pear.php.net/dtd/package-2.0
+                      http://pear.php.net/dtd/package-2.0.xsd">
+  <name>DocBlox</name>
+  <channel>pear.docblox-project.org</channel>
+  <summary>PHP 5.3 compatible API Documentation generator aimed at projects of all sizes and Continuous Integration</summary>
+  <description>DocBlox is a Documentation Generation Application (DGA) for use with PHP applications.
 
-It is capable of transforming the comments in your source code into a full API reference document.
+    It is capable of transforming the comments in your source code into a full API reference document.
 
-DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption and easily integratable into Continuous Integration.</description>
- <lead>
-  <name>Mike van Riel</name>
-  <user>mvriel</user>
-  <email>mike.vanriel@naenius.com</email>
-  <active>yes</active>
- </lead>
- <date>2011-02-26</date>
- <time>22:14:15</time>
- <version>
-  <release>0.8.4</release>
-  <api>0.8.4</api>
- </version>
- <stability>
-  <release>alpha</release>
-  <api>alpha</api>
- </stability>
- <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
- <notes>Please see the CHANGELOG in the root of the application for the latest changes </notes>
- <contents>
-  <dir name="/">
-   <file baseinstalldir="/" md5sum="55f2dc1fcd3bca16c9fc6f9fc5879f7d" name="bin/docblox" role="data" />
-   <file baseinstalldir="/" md5sum="b3fd6f590e0a89bcbadbbe4c127d82c4" name="bin/parse.php" role="php" />
-   <file baseinstalldir="/" md5sum="bda8ed4607046d5955b5f3c60928fea4" name="bin/transform.php" role="php" />
-   <file baseinstalldir="/" md5sum="acbb6902b47ba2bcbb72c06168504181" name="DocBlox/Abstract.php" role="php" />
-   <file baseinstalldir="/" md5sum="c3a31554e2646b7bf38e6349b213bcbd" name="DocBlox/Arguments.php" role="php" />
-   <file baseinstalldir="/" md5sum="247e3faa148df8f5877e79d776d521b0" name="DocBlox/BidiArrayIterator.php" role="php" />
-   <file baseinstalldir="/" md5sum="0d1196e0ca145d1da8d8907ace889897" name="DocBlox/Parser.php" role="php" />
-   <file baseinstalldir="/" md5sum="09ba3b4d08401372325b3ebc2a4ec9d3" name="DocBlox/Token.php" role="php" />
-   <file baseinstalldir="/" md5sum="1b7efa9cef1fe625aa35c29afc7b7ced" name="DocBlox/TokenIterator.php" role="php" />
-   <file baseinstalldir="/" md5sum="03f75786340d34c49047d07b37aca233" name="DocBlox/Transformation.php" role="php" />
-   <file baseinstalldir="/" md5sum="da2369e79074834ee4d13d4896b28a41" name="DocBlox/Transformer.php" role="php" />
-   <file baseinstalldir="/" md5sum="fe74bf4e2152e6f52d783ab91c5aa603" name="DocBlox/Reflection/Abstract.php" role="php" />
-   <file baseinstalldir="/" md5sum="f87fc6510897ab1a88c14cab4948ba11" name="DocBlox/Reflection/Argument.php" role="php" />
-   <file baseinstalldir="/" md5sum="3e2a676464ded045a8b608c597a542b6" name="DocBlox/Reflection/BracesAbstract.php" role="php" />
-   <file baseinstalldir="/" md5sum="0c15b0202ea505209623ee7f373b8f90" name="DocBlox/Reflection/Class.php" role="php" />
-   <file baseinstalldir="/" md5sum="8496af0793c0938a1d1b296a154baac0" name="DocBlox/Reflection/Constant.php" role="php" />
-   <file baseinstalldir="/" md5sum="e87c8a1eee3be0c3151b0bbca67ee920" name="DocBlox/Reflection/DocBlock.php" role="php" />
-   <file baseinstalldir="/" md5sum="e39909e7ebd16a4f4ab53b9c90ac77a5" name="DocBlox/Reflection/DocBlockedAbstract.php" role="php" />
-   <file baseinstalldir="/" md5sum="e9149188ba412c6cf5dbdbcf98abd437" name="DocBlox/Reflection/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="49039aa7553d7ac3d970bcadb35cea78" name="DocBlox/Reflection/File.php" role="php" />
-   <file baseinstalldir="/" md5sum="8ed9cf15d58a470c43c65c69fab6e0dd" name="DocBlox/Reflection/Function.php" role="php" />
-   <file baseinstalldir="/" md5sum="e7baaa0202125c8449d72ad82de9c7be" name="DocBlox/Reflection/Include.php" role="php" />
-   <file baseinstalldir="/" md5sum="af0688ca382fd0fb96123768dd1f995c" name="DocBlox/Reflection/Interface.php" role="php" />
-   <file baseinstalldir="/" md5sum="c4b703d020f292fbe27d4bdcd24386bc" name="DocBlox/Reflection/Method.php" role="php" />
-   <file baseinstalldir="/" md5sum="5cc1dd8491b11b02d5282acf0259d022" name="DocBlox/Reflection/Property.php" role="php" />
-   <file baseinstalldir="/" md5sum="c45efe2d95cea57d357be9bac5575d65" name="DocBlox/Reflection/Variable.php" role="php" />
-   <file baseinstalldir="/" md5sum="e6615bbadc73203f6e2ab53f48d63bcc" name="DocBlox/Reflection/DocBlock/LongDescription.php" role="php" />
-   <file baseinstalldir="/" md5sum="047197cca8123f8300af21851c22eb6e" name="DocBlox/Reflection/DocBlock/Tag.php" role="php" />
-   <file baseinstalldir="/" md5sum="0ef5acaf610bcd297f369285da76eebc" name="DocBlox/Reflection/DocBlock/Tag/Param.php" role="php" />
-   <file baseinstalldir="/" md5sum="7f940b727b46b6da031c30c5a3760709" name="DocBlox/Reflection/DocBlock/Tag/Return.php" role="php" />
-   <file baseinstalldir="/" md5sum="12a1217930723ca689044123579e1fed" name="DocBlox/Reflection/DocBlock/Tag/Var.php" role="php" />
-   <file baseinstalldir="/" md5sum="1c9327d3cf72c6e5cfeb6a1ed610363a" name="DocBlox/Writer/Abstract.php" role="php" />
-   <file baseinstalldir="/" md5sum="258ee69c3a414cb1b9174091255e86da" name="DocBlox/Writer/FileIo.php" role="php" />
-   <file baseinstalldir="/" md5sum="e9b00ee889d85d67d743b612391be889" name="DocBlox/Writer/Graph.php" role="php" />
-   <file baseinstalldir="/" md5sum="8039291cf1007a61b321479892d7deb6" name="DocBlox/Writer/Search.php" role="php" />
-   <file baseinstalldir="/" md5sum="7ad7b0afb2d8dd620dcee65e0fe5e8e3" name="DocBlox/Writer/Xsl.php" role="php" />
-   <file baseinstalldir="/" md5sum="4d7a7e7d92aff3dac151dfa28e825c7d" name="docs/design/drawing.svg" role="doc" />
-   <file baseinstalldir="/" md5sum="b56f5bdb2ba2fd4049db3ad0130fc9a5" name="docs/design/templating.txt" role="doc" />
-   <file baseinstalldir="/" md5sum="3063d77f43ce8284ac5d83dab5674f96" name="docs/media/Greex.ttf" role="doc" />
-   <file baseinstalldir="/" md5sum="116dc414a4ea2aa0bdd28c749d61ec3b" name="docs/media/logo.svg" role="doc" />
-   <file baseinstalldir="/" md5sum="a872f8582a23ada0c6a8544da27f9633" name="docs/media/logo2.svg" role="doc" />
-   <file baseinstalldir="/" md5sum="9f895be44fd462d400a25832ec1095a1" name="docs/media/nyala.ttf" role="doc" />
-   <file baseinstalldir="/" md5sum="a559f7ce798c4a0554f42f941b2907e3" name="docs/media/zdeněk-gromnica_infrared.zip" role="doc" />
-   <file baseinstalldir="/" md5sum="493695a2ff9fd208073de7ccd89a5f24" name="lib/pear/GraphViz.php" role="php" />
-   <file baseinstalldir="/" md5sum="bd3a26716ab04a8d73c2320d7b409bcb" name="lib/symfony/sfTimer.class.php" role="php" />
-   <file baseinstalldir="/" md5sum="3d477a21aaa2ddfd155591d473e17c9a" name="lib/Zend/Config.php" role="php" />
-   <file baseinstalldir="/" md5sum="55ee8977abba3e9c8c56937432434c4c" name="lib/Zend/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="e9edda03a78527c8008669ff81b40638" name="lib/Zend/Loader.php" role="php" />
-   <file baseinstalldir="/" md5sum="bbbce4d3e510c0916f538946a71b9fc0" name="lib/Zend/Log.php" role="php" />
-   <file baseinstalldir="/" md5sum="5b033f4d99d7f32889021dcce5b89b5f" name="lib/Zend/Config/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="559a7b6020953c89b233b6dbf6b11ec8" name="lib/Zend/Config/Ini.php" role="php" />
-   <file baseinstalldir="/" md5sum="e214c9d4f37dd007e85f25beb657d6e0" name="lib/Zend/Config/Writer.php" role="php" />
-   <file baseinstalldir="/" md5sum="b8663844ebdd2587f3ac77d12befec03" name="lib/Zend/Config/Xml.php" role="php" />
-   <file baseinstalldir="/" md5sum="0c7e48be5b9cb78299e67af44a6eac56" name="lib/Zend/Config/Writer/Array.php" role="php" />
-   <file baseinstalldir="/" md5sum="bbce660745f357ede73cd52571788166" name="lib/Zend/Config/Writer/Ini.php" role="php" />
-   <file baseinstalldir="/" md5sum="46d9925679fac3fa319111ccd7e98385" name="lib/Zend/Config/Writer/Xml.php" role="php" />
-   <file baseinstalldir="/" md5sum="e4c1335f24d514a9c76611ab0b1c55df" name="lib/Zend/Console/Getopt.php" role="php" />
-   <file baseinstalldir="/" md5sum="79eb37440646675ca860687251d86850" name="lib/Zend/Console/Getopt/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="3aad0085810bb1a89223a24021bdc501" name="lib/Zend/Loader/Autoloader.php" role="php" />
-   <file baseinstalldir="/" md5sum="f6bbb81c336c1b2690a6cbdfa709501c" name="lib/Zend/Loader/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="aeb57b729a64b173d3d70db8bc0c9c3f" name="lib/Zend/Loader/PluginLoader.php" role="php" />
-   <file baseinstalldir="/" md5sum="011dd9c0a4f4148e98535479025f17f3" name="lib/Zend/Loader/Autoloader/Interface.php" role="php" />
-   <file baseinstalldir="/" md5sum="5de93d4bf6e110dc7d0f9c05902e6573" name="lib/Zend/Loader/Autoloader/Resource.php" role="php" />
-   <file baseinstalldir="/" md5sum="e0fb132d1f5c64687d559ede0f906330" name="lib/Zend/Loader/PluginLoader/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="76720deb90f2ef24d23a304cc7b96e64" name="lib/Zend/Loader/PluginLoader/Interface.php" role="php" />
-   <file baseinstalldir="/" md5sum="54b8550ae35eca6f605f7d16a6053608" name="lib/Zend/Log/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="e585ad2c4e312716ae843e416a2b69da" name="lib/Zend/Log/FactoryInterface.php" role="php" />
-   <file baseinstalldir="/" md5sum="39522e9c1ed6ba406f428ac53264d636" name="lib/Zend/Log/Filter/Abstract.php" role="php" />
-   <file baseinstalldir="/" md5sum="d59401f6c39879e0137802ee0f43fd28" name="lib/Zend/Log/Filter/Interface.php" role="php" />
-   <file baseinstalldir="/" md5sum="da5d396b2cf03fc6f0024fe6cbe995b9" name="lib/Zend/Log/Filter/Message.php" role="php" />
-   <file baseinstalldir="/" md5sum="17032fa0f5b1ba803a2c31f19930c20a" name="lib/Zend/Log/Filter/Priority.php" role="php" />
-   <file baseinstalldir="/" md5sum="efd4483688e16cbb90b504812b3bc2ec" name="lib/Zend/Log/Filter/Suppress.php" role="php" />
-   <file baseinstalldir="/" md5sum="1c69e7af369b505d7291c01308dcb381" name="lib/Zend/Log/Formatter/Firebug.php" role="php" />
-   <file baseinstalldir="/" md5sum="ef3f3e5016ab000d429b0556d758aefe" name="lib/Zend/Log/Formatter/Interface.php" role="php" />
-   <file baseinstalldir="/" md5sum="7258190d3f66898c5f03837afb968fd0" name="lib/Zend/Log/Formatter/Simple.php" role="php" />
-   <file baseinstalldir="/" md5sum="a5b5c30042e9a70261862d1aa76c9a30" name="lib/Zend/Log/Formatter/Xml.php" role="php" />
-   <file baseinstalldir="/" md5sum="5e859a7f859eb2178041119cb42f084b" name="lib/Zend/Log/Writer/Abstract.php" role="php" />
-   <file baseinstalldir="/" md5sum="b7325e0f6d0ec548ac32925cf7fb1072" name="lib/Zend/Log/Writer/Db.php" role="php" />
-   <file baseinstalldir="/" md5sum="aea815d51c4dd062a29681349bc84e10" name="lib/Zend/Log/Writer/Firebug.php" role="php" />
-   <file baseinstalldir="/" md5sum="ff02d0b37c5b1b7e00bfb96ee61f5f7c" name="lib/Zend/Log/Writer/Mail.php" role="php" />
-   <file baseinstalldir="/" md5sum="a9698e437211639fdf4e794df54998f5" name="lib/Zend/Log/Writer/Mock.php" role="php" />
-   <file baseinstalldir="/" md5sum="93aaf89c29ef50cb846ca6f6fa4bf13b" name="lib/Zend/Log/Writer/Null.php" role="php" />
-   <file baseinstalldir="/" md5sum="c74881e835eb93aaa444df8988f11aff" name="lib/Zend/Log/Writer/Stream.php" role="php" />
-   <file baseinstalldir="/" md5sum="3aefff51be2be9d0caec45a31e99c46e" name="lib/Zend/Log/Writer/Syslog.php" role="php" />
-   <file baseinstalldir="/" md5sum="bf0c1a10a985e8695134f100e9311e72" name="lib/Zend/Log/Writer/ZendMonitor.php" role="php" />
-   <file baseinstalldir="/" md5sum="e8d235d7b9b07279dfb2631d8c8f2a3f" name="resources/ajax_search.php" role="php" />
-   <file baseinstalldir="/" md5sum="b8fe31b5f981861c7e04079448ce2735" name="resources/images/icons/class.png" role="data" />
-   <file baseinstalldir="/" md5sum="316ef3dfd67937144ac4ba30662b5ba6" name="resources/images/icons/constant.png" role="data" />
-   <file baseinstalldir="/" md5sum="950b33dfdee53535c202cc567e72e34a" name="resources/images/icons/function.png" role="data" />
-   <file baseinstalldir="/" md5sum="28b1f1d79cb552143f1b313fd2b476f8" name="resources/images/icons/interface.png" role="data" />
-   <file baseinstalldir="/" md5sum="3259be223aa09edbb4771b0f6f3c9d1f" name="resources/images/icons/method.png" role="data" />
-   <file baseinstalldir="/" md5sum="08099cf3a200d7c6cddf75361d6086eb" name="resources/images/icons/property.png" role="data" />
-   <file baseinstalldir="/" md5sum="7dc876213eef62a1a00c590892eaa531" name="resources/images/icons/variable.png" role="data" />
-   <file baseinstalldir="/" md5sum="10092eee563dec2dca82b77d2cf5a1ae" name="resources/js/jquery-1.4.2.min.js" role="data" />
-   <file baseinstalldir="/" md5sum="b8ba22c2d061ccb1230276b05f83f07e" name="resources/js/jquery-ui-1.8.2.custom.min.js" role="data" />
-   <file baseinstalldir="/" md5sum="b8bebcbdde81a3a8509cc39c26f74e7b" name="resources/js/jquery.treeview.js" role="data" />
-   <file baseinstalldir="/" md5sum="80570cac6168893c4b18840e4705b183" name="resources/templates/default/template.xml" role="data" />
-   <file baseinstalldir="/" md5sum="bba4e5d94c7f7d2e30e03a73912475b8" name="resources/themes/default/chrome.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="901dac2d9c5645b54de8e9e99514b0c0" name="resources/themes/default/class.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="2ee77fe67a54cb1bfdb1ad210b26d4bc" name="resources/themes/default/file.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="0603481ab67257b26fb69cc329502b13" name="resources/themes/default/index.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="636d09cf9e194302ad6569486477216e" name="resources/themes/default/markers.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="e1bc6398699c83a53fac36adc30f247f" name="resources/themes/default/search.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="57513e07131987a3f1c4082a0b09b269" name="resources/themes/default/css/default.css" role="data" />
-   <file baseinstalldir="/" md5sum="8340d82b670f3bfbf6b00c747cad9732" name="resources/themes/default/css/jquery.treeview.css" role="data" />
-   <file baseinstalldir="/" md5sum="d5a5904e5d3241952d514b1e3c129517" name="resources/themes/default/css/black-tie/jquery-ui-1.8.2.custom.css" role="data" />
-   <file baseinstalldir="/" md5sum="03ce3dcc84af110e9da8699a841e5200" name="resources/themes/default/css/black-tie/images/ui-anim_basic_16x16.gif" role="data" />
-   <file baseinstalldir="/" md5sum="031711faf729f743a47372a6d3a7d577" name="resources/themes/default/css/black-tie/images/ui-bg_diagonals-thick_8_333333_40x40.png" role="data" />
-   <file baseinstalldir="/" md5sum="8692e6efddf882acbff144c38ea7dfdf" name="resources/themes/default/css/black-tie/images/ui-bg_flat_65_ffffff_40x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="79783632767dfba1273d725b198ebe82" name="resources/themes/default/css/black-tie/images/ui-bg_glass_40_111111_1x400.png" role="data" />
-   <file baseinstalldir="/" md5sum="8dcec286d1f099696bb7b1df38628ed2" name="resources/themes/default/css/black-tie/images/ui-bg_glass_55_1c1c1c_1x400.png" role="data" />
-   <file baseinstalldir="/" md5sum="6a6cf0682dd22752266dac09da75ff06" name="resources/themes/default/css/black-tie/images/ui-bg_highlight-hard_40_aaaaaa_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="b485312b4e4d8367b4c897a8efe7c5a3" name="resources/themes/default/css/black-tie/images/ui-bg_highlight-hard_100_f9f9f9_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="e90f82bfa28bebfe9d329cede9e0a6ed" name="resources/themes/default/css/black-tie/images/ui-bg_highlight-soft_50_aaaaaa_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="c217377b0d2fe357588052d1a85a448a" name="resources/themes/default/css/black-tie/images/ui-bg_inset-hard_45_cd0a0a_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="36e098096a2817bad3078ad53382a778" name="resources/themes/default/css/black-tie/images/ui-bg_inset-hard_55_ffeb80_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="0560b75f315f9fcb0a908d1254b84dc9" name="resources/themes/default/css/black-tie/images/ui-icons_4ca300_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="ebe6b6902a408fbf9cac6379a1477525" name="resources/themes/default/css/black-tie/images/ui-icons_222222_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="073d32a8433ed9ef0709811ecb37bd01" name="resources/themes/default/css/black-tie/images/ui-icons_bbbbbb_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="83a8da6cdfb2b4346080fd8b4d21d0b8" name="resources/themes/default/css/black-tie/images/ui-icons_ededed_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="be46cce01f0ce1e08578f71b298b6584" name="resources/themes/default/css/black-tie/images/ui-icons_ffcf29_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="342bc03f6264c75d3f1d7f99e34295b9" name="resources/themes/default/css/black-tie/images/ui-icons_ffffff_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="30d8e72bfdae694b1938658e1b087df0" name="resources/themes/default/css/images/ajax-loader.gif" role="data" />
-   <file baseinstalldir="/" md5sum="9ab0e28d85d8ab5eb954fc28f6ac1e80" name="resources/themes/default/css/images/file.gif" role="data" />
-   <file baseinstalldir="/" md5sum="262d69b7ca267be1994fca2aba46be32" name="resources/themes/default/css/images/folder-closed.gif" role="data" />
-   <file baseinstalldir="/" md5sum="9f41e1454905fd7416f89aa4380a65e1" name="resources/themes/default/css/images/folder.gif" role="data" />
-   <file baseinstalldir="/" md5sum="e009322a00011359f76cf7ae59b4d33d" name="resources/themes/default/css/images/minus.gif" role="data" />
-   <file baseinstalldir="/" md5sum="6c46b98e0c60e6dc2ef14f9d4a6607b8" name="resources/themes/default/css/images/plus.gif" role="data" />
-   <file baseinstalldir="/" md5sum="0cdd968bdb2f2852ec71e0264b3292cc" name="resources/themes/default/css/images/treeview-black-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="a3ffb8abd978b0464f7b5b508fcfdef0" name="resources/themes/default/css/images/treeview-black.gif" role="data" />
-   <file baseinstalldir="/" md5sum="5e3c0e0c48f48c23c45aef7b72c739c0" name="resources/themes/default/css/images/treeview-default-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="46878a9b3ede269c4e234550c9c89cd0" name="resources/themes/default/css/images/treeview-default.gif" role="data" />
-   <file baseinstalldir="/" md5sum="18b3e43abad26bdac6f4cea944777b62" name="resources/themes/default/css/images/treeview-famfamfam-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="dc335e786863262f594737e26198009c" name="resources/themes/default/css/images/treeview-famfamfam.gif" role="data" />
-   <file baseinstalldir="/" md5sum="9c2613b4de53f939bc770983976f66cd" name="resources/themes/default/css/images/treeview-gray-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="02b42894653cfd82e52aac669ad078ed" name="resources/themes/default/css/images/treeview-gray.gif" role="data" />
-   <file baseinstalldir="/" md5sum="feda280e7bffb057ca4c87491aab6943" name="resources/themes/default/css/images/treeview-red-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="c94a07253c14c98fe69dffafb59228a5" name="resources/themes/default/css/images/treeview-red.gif" role="data" />
-   <file baseinstalldir="/" md5sum="3f6c46f4a35135b8dd1d964e63a88cee" name="resources/themes/default/images/logo.png" role="data" />
-   <file baseinstalldir="/" md5sum="d4438a1f81bf9c0cb08df96efe91b8f8" name="resources/themes/default/images/menu-background.png" role="data" />
-   <file baseinstalldir="/" md5sum="a070ee43c55989bc1f9e4fb9395d86ce" name="resources/themes/default/preprocess/object-index.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="67d44061f60bf41c298555d034b14345" name="resources/themes/plain-light/chrome.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="a9b6b510fefed045f1c44b1fa2dd6ad2" name="resources/themes/plain-light/class.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="a65c10ec68c709ca8fb0849a9ddac8f4" name="resources/themes/plain-light/file.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="2b30b6bb1688be04c5815f4d4cfeb1c6" name="resources/themes/plain-light/index.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="56838f908d0a7490663015dc730f6747" name="resources/themes/plain-light/markers.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="6fb8d67c06a485eaa7702f6d94f75746" name="resources/themes/plain-light/search.xsl" role="data" />
-   <file baseinstalldir="/" md5sum="87561c0e5b1e9a0ec22d9518d82a0250" name="resources/themes/plain-light/css/default.css" role="data" />
-   <file baseinstalldir="/" md5sum="1ce3d98a553183d5f5ce38e06cb9ba5a" name="resources/themes/plain-light/css/jquery.treeview.css" role="data" />
-   <file baseinstalldir="/" md5sum="d5a5904e5d3241952d514b1e3c129517" name="resources/themes/plain-light/css/black-tie/jquery-ui-1.8.2.custom.css" role="data" />
-   <file baseinstalldir="/" md5sum="03ce3dcc84af110e9da8699a841e5200" name="resources/themes/plain-light/css/black-tie/images/ui-anim_basic_16x16.gif" role="data" />
-   <file baseinstalldir="/" md5sum="031711faf729f743a47372a6d3a7d577" name="resources/themes/plain-light/css/black-tie/images/ui-bg_diagonals-thick_8_333333_40x40.png" role="data" />
-   <file baseinstalldir="/" md5sum="8692e6efddf882acbff144c38ea7dfdf" name="resources/themes/plain-light/css/black-tie/images/ui-bg_flat_65_ffffff_40x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="79783632767dfba1273d725b198ebe82" name="resources/themes/plain-light/css/black-tie/images/ui-bg_glass_40_111111_1x400.png" role="data" />
-   <file baseinstalldir="/" md5sum="8dcec286d1f099696bb7b1df38628ed2" name="resources/themes/plain-light/css/black-tie/images/ui-bg_glass_55_1c1c1c_1x400.png" role="data" />
-   <file baseinstalldir="/" md5sum="6a6cf0682dd22752266dac09da75ff06" name="resources/themes/plain-light/css/black-tie/images/ui-bg_highlight-hard_40_aaaaaa_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="b485312b4e4d8367b4c897a8efe7c5a3" name="resources/themes/plain-light/css/black-tie/images/ui-bg_highlight-hard_100_f9f9f9_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="e90f82bfa28bebfe9d329cede9e0a6ed" name="resources/themes/plain-light/css/black-tie/images/ui-bg_highlight-soft_50_aaaaaa_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="c217377b0d2fe357588052d1a85a448a" name="resources/themes/plain-light/css/black-tie/images/ui-bg_inset-hard_45_cd0a0a_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="36e098096a2817bad3078ad53382a778" name="resources/themes/plain-light/css/black-tie/images/ui-bg_inset-hard_55_ffeb80_1x100.png" role="data" />
-   <file baseinstalldir="/" md5sum="0560b75f315f9fcb0a908d1254b84dc9" name="resources/themes/plain-light/css/black-tie/images/ui-icons_4ca300_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="ebe6b6902a408fbf9cac6379a1477525" name="resources/themes/plain-light/css/black-tie/images/ui-icons_222222_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="073d32a8433ed9ef0709811ecb37bd01" name="resources/themes/plain-light/css/black-tie/images/ui-icons_bbbbbb_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="83a8da6cdfb2b4346080fd8b4d21d0b8" name="resources/themes/plain-light/css/black-tie/images/ui-icons_ededed_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="be46cce01f0ce1e08578f71b298b6584" name="resources/themes/plain-light/css/black-tie/images/ui-icons_ffcf29_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="342bc03f6264c75d3f1d7f99e34295b9" name="resources/themes/plain-light/css/black-tie/images/ui-icons_ffffff_256x240.png" role="data" />
-   <file baseinstalldir="/" md5sum="30d8e72bfdae694b1938658e1b087df0" name="resources/themes/plain-light/css/images/ajax-loader.gif" role="data" />
-   <file baseinstalldir="/" md5sum="9ab0e28d85d8ab5eb954fc28f6ac1e80" name="resources/themes/plain-light/css/images/file.gif" role="data" />
-   <file baseinstalldir="/" md5sum="262d69b7ca267be1994fca2aba46be32" name="resources/themes/plain-light/css/images/folder-closed.gif" role="data" />
-   <file baseinstalldir="/" md5sum="9f41e1454905fd7416f89aa4380a65e1" name="resources/themes/plain-light/css/images/folder.gif" role="data" />
-   <file baseinstalldir="/" md5sum="e009322a00011359f76cf7ae59b4d33d" name="resources/themes/plain-light/css/images/minus.gif" role="data" />
-   <file baseinstalldir="/" md5sum="6c46b98e0c60e6dc2ef14f9d4a6607b8" name="resources/themes/plain-light/css/images/plus.gif" role="data" />
-   <file baseinstalldir="/" md5sum="0cdd968bdb2f2852ec71e0264b3292cc" name="resources/themes/plain-light/css/images/treeview-black-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="a3ffb8abd978b0464f7b5b508fcfdef0" name="resources/themes/plain-light/css/images/treeview-black.gif" role="data" />
-   <file baseinstalldir="/" md5sum="5e3c0e0c48f48c23c45aef7b72c739c0" name="resources/themes/plain-light/css/images/treeview-default-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="46878a9b3ede269c4e234550c9c89cd0" name="resources/themes/plain-light/css/images/treeview-default.gif" role="data" />
-   <file baseinstalldir="/" md5sum="18b3e43abad26bdac6f4cea944777b62" name="resources/themes/plain-light/css/images/treeview-famfamfam-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="dc335e786863262f594737e26198009c" name="resources/themes/plain-light/css/images/treeview-famfamfam.gif" role="data" />
-   <file baseinstalldir="/" md5sum="9c2613b4de53f939bc770983976f66cd" name="resources/themes/plain-light/css/images/treeview-gray-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="02b42894653cfd82e52aac669ad078ed" name="resources/themes/plain-light/css/images/treeview-gray.gif" role="data" />
-   <file baseinstalldir="/" md5sum="feda280e7bffb057ca4c87491aab6943" name="resources/themes/plain-light/css/images/treeview-red-line.gif" role="data" />
-   <file baseinstalldir="/" md5sum="c94a07253c14c98fe69dffafb59228a5" name="resources/themes/plain-light/css/images/treeview-red.gif" role="data" />
-   <file baseinstalldir="/" md5sum="3f6c46f4a35135b8dd1d964e63a88cee" name="resources/themes/plain-light/images/logo.png" role="data" />
-   <file baseinstalldir="/" md5sum="d4438a1f81bf9c0cb08df96efe91b8f8" name="resources/themes/plain-light/images/menu-background.png" role="data" />
-   <file baseinstalldir="/" md5sum="1b1732ac362d56a3077ff7d3be8ad60b" name="test/common/bootstrap.php" role="php" />
-   <file baseinstalldir="/" md5sum="8c0baa5d1baa12078bcf2241c5905ee2" name="test/data/test.php" role="php" />
-   <file baseinstalldir="/" md5sum="c17ab850bef5d2816e7ef8285cfce020" name="test/data/TokenIteratorTestFixture.php" role="php" />
-   <file baseinstalldir="/" md5sum="13230738e857a2532d98c88869babc8f" name="test/unit/DocBlox/AbstractTest.php" role="php" />
-   <file baseinstalldir="/" md5sum="9eb072e5484ebea7ba97d5d0bd181e04" name="test/unit/DocBlox/BidiArrayIteratorTest.php" role="php" />
-   <file baseinstalldir="/" md5sum="e9f2df51fcf37d12442b18da65742ee7" name="test/unit/DocBlox/ParserTest.php" role="php" />
-   <file baseinstalldir="/" md5sum="0ffcd29e7bb3b3543711f0ef1311021c" name="test/unit/DocBlox/TokenIteratorTest.php" role="php" />
-   <file baseinstalldir="/" md5sum="1d8cde0b1e5cdaa90385f3b49df5921c" name="test/unit/DocBlox/TokenTest.php" role="php" />
-   <file baseinstalldir="/" md5sum="e8dfb35eb2f4f1cd082b235d0205e54f" name="test/unit/DocBlox/TransformerTest.php" role="php" />
-   <file baseinstalldir="/" md5sum="fe4d47a415fb3899e6c9955e46033aa6" name="CHANGELOG" role="data" />
-   <file baseinstalldir="/" md5sum="71196ed1fe0a0e0b60c5d96e1da9e4a3" name="docblox.config.xml" role="data" />
-   <file baseinstalldir="/" md5sum="275d68ae6bce4906cee9ec962ab57cb3" name="example_config.xml" role="data" />
-   <file baseinstalldir="/" md5sum="f52af0b80affa82f8b241e4f68362884" name="LICENSE" role="data" />
-   <file baseinstalldir="/" md5sum="d70e8af7c0233499c55b170d1af9e75b" name="phpunit.xml.dist" role="data" />
-   <file baseinstalldir="/" md5sum="c3571ad679d44eadd147a83ce63611c7" name="README" role="data" />
-   <file baseinstalldir="/" md5sum="53f3ae6ce14a05c9559373b1790474c6" name="TODO" role="data" />
-  </dir>
- </contents>
- <dependencies>
-  <required>
-   <php>
-    <min>5.2.4</min>
-   </php>
-   <pearinstaller>
-    <min>1.4.0</min>
-   </pearinstaller>
-  </required>
- </dependencies>
- <phprelease />
- <changelog>
-  <release>
-   <version>
-    <release>0.8.4</release>
-    <api>0.8.4</api>
-   </version>
-   <stability>
+    DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption and easily integratable into Continuous Integration.
+  </description>
+  <lead>
+    <name>Mike van Riel</name>
+    <user>mvriel</user>
+    <email>mike.vanriel@naenius.com</email>
+    <active>yes</active>
+  </lead>
+  <date>2011-02-27</date>
+  <time>15:05:24</time>
+  <version>
+    <release>0.8.5</release>
+    <api>0.8.5</api>
+  </version>
+  <stability>
     <release>alpha</release>
     <api>alpha</api>
-   </stability>
-   <date>2011-02-26</date>
-   <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
-   <notes>Please see the CHANGELOG in the root of the application for the latest changes</notes>
-  </release>
- </changelog>
+  </stability>
+  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+  <notes>
+    Please see the CHANGELOG in the root of the application for the latest changes
+  </notes>
+  <contents>
+    <dir baseinstalldir="/" name="/">
+      <file baseinstalldir="/DocBlox/" md5sum="55f2dc1fcd3bca16c9fc6f9fc5879f7d" name="bin/docblox.php" role="script">
+        <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox/" md5sum="c72bbdeb964856234ac88008cd5b1216" name="bin/docblox.bat" role="script" />
+      <file baseinstalldir="/DocBlox/" md5sum="b3fd6f590e0a89bcbadbbe4c127d82c4" name="bin/parse.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="bda8ed4607046d5955b5f3c60928fea4" name="bin/transform.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e8d235d7b9b07279dfb2631d8c8f2a3f" name="data/ajax_search.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b8fe31b5f981861c7e04079448ce2735" name="data/images/icons/class.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="316ef3dfd67937144ac4ba30662b5ba6" name="data/images/icons/constant.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="950b33dfdee53535c202cc567e72e34a" name="data/images/icons/function.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="28b1f1d79cb552143f1b313fd2b476f8" name="data/images/icons/interface.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3259be223aa09edbb4771b0f6f3c9d1f" name="data/images/icons/method.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="08099cf3a200d7c6cddf75361d6086eb" name="data/images/icons/property.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="7dc876213eef62a1a00c590892eaa531" name="data/images/icons/variable.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="10092eee563dec2dca82b77d2cf5a1ae" name="data/js/jquery-1.4.2.min.js" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b8ba22c2d061ccb1230276b05f83f07e" name="data/js/jquery-ui-1.8.2.custom.min.js" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b8bebcbdde81a3a8509cc39c26f74e7b" name="data/js/jquery.treeview.js" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="829a080167a6656139cac563e7095903" name="data/templates/default/template.xml" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="bba4e5d94c7f7d2e30e03a73912475b8" name="data/themes/default/chrome.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="901dac2d9c5645b54de8e9e99514b0c0" name="data/themes/default/class.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="2ee77fe67a54cb1bfdb1ad210b26d4bc" name="data/themes/default/file.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0603481ab67257b26fb69cc329502b13" name="data/themes/default/index.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="636d09cf9e194302ad6569486477216e" name="data/themes/default/markers.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e1bc6398699c83a53fac36adc30f247f" name="data/themes/default/search.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="57513e07131987a3f1c4082a0b09b269" name="data/themes/default/css/default.css" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8340d82b670f3bfbf6b00c747cad9732" name="data/themes/default/css/jquery.treeview.css" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="d5a5904e5d3241952d514b1e3c129517" name="data/themes/default/css/black-tie/jquery-ui-1.8.2.custom.css" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="03ce3dcc84af110e9da8699a841e5200" name="data/themes/default/css/black-tie/images/ui-anim_basic_16x16.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="031711faf729f743a47372a6d3a7d577" name="data/themes/default/css/black-tie/images/ui-bg_diagonals-thick_8_333333_40x40.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8692e6efddf882acbff144c38ea7dfdf" name="data/themes/default/css/black-tie/images/ui-bg_flat_65_ffffff_40x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="79783632767dfba1273d725b198ebe82" name="data/themes/default/css/black-tie/images/ui-bg_glass_40_111111_1x400.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8dcec286d1f099696bb7b1df38628ed2" name="data/themes/default/css/black-tie/images/ui-bg_glass_55_1c1c1c_1x400.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="6a6cf0682dd22752266dac09da75ff06" name="data/themes/default/css/black-tie/images/ui-bg_highlight-hard_40_aaaaaa_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b485312b4e4d8367b4c897a8efe7c5a3" name="data/themes/default/css/black-tie/images/ui-bg_highlight-hard_100_f9f9f9_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e90f82bfa28bebfe9d329cede9e0a6ed" name="data/themes/default/css/black-tie/images/ui-bg_highlight-soft_50_aaaaaa_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c217377b0d2fe357588052d1a85a448a" name="data/themes/default/css/black-tie/images/ui-bg_inset-hard_45_cd0a0a_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="36e098096a2817bad3078ad53382a778" name="data/themes/default/css/black-tie/images/ui-bg_inset-hard_55_ffeb80_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0560b75f315f9fcb0a908d1254b84dc9" name="data/themes/default/css/black-tie/images/ui-icons_4ca300_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="ebe6b6902a408fbf9cac6379a1477525" name="data/themes/default/css/black-tie/images/ui-icons_222222_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="073d32a8433ed9ef0709811ecb37bd01" name="data/themes/default/css/black-tie/images/ui-icons_bbbbbb_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="83a8da6cdfb2b4346080fd8b4d21d0b8" name="data/themes/default/css/black-tie/images/ui-icons_ededed_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="be46cce01f0ce1e08578f71b298b6584" name="data/themes/default/css/black-tie/images/ui-icons_ffcf29_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="342bc03f6264c75d3f1d7f99e34295b9" name="data/themes/default/css/black-tie/images/ui-icons_ffffff_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="30d8e72bfdae694b1938658e1b087df0" name="data/themes/default/css/images/ajax-loader.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9ab0e28d85d8ab5eb954fc28f6ac1e80" name="data/themes/default/css/images/file.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="262d69b7ca267be1994fca2aba46be32" name="data/themes/default/css/images/folder-closed.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9f41e1454905fd7416f89aa4380a65e1" name="data/themes/default/css/images/folder.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e009322a00011359f76cf7ae59b4d33d" name="data/themes/default/css/images/minus.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="6c46b98e0c60e6dc2ef14f9d4a6607b8" name="data/themes/default/css/images/plus.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0cdd968bdb2f2852ec71e0264b3292cc" name="data/themes/default/css/images/treeview-black-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a3ffb8abd978b0464f7b5b508fcfdef0" name="data/themes/default/css/images/treeview-black.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="5e3c0e0c48f48c23c45aef7b72c739c0" name="data/themes/default/css/images/treeview-default-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="46878a9b3ede269c4e234550c9c89cd0" name="data/themes/default/css/images/treeview-default.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="18b3e43abad26bdac6f4cea944777b62" name="data/themes/default/css/images/treeview-famfamfam-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="dc335e786863262f594737e26198009c" name="data/themes/default/css/images/treeview-famfamfam.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9c2613b4de53f939bc770983976f66cd" name="data/themes/default/css/images/treeview-gray-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="02b42894653cfd82e52aac669ad078ed" name="data/themes/default/css/images/treeview-gray.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="feda280e7bffb057ca4c87491aab6943" name="data/themes/default/css/images/treeview-red-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c94a07253c14c98fe69dffafb59228a5" name="data/themes/default/css/images/treeview-red.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3f6c46f4a35135b8dd1d964e63a88cee" name="data/themes/default/images/logo.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="d4438a1f81bf9c0cb08df96efe91b8f8" name="data/themes/default/images/menu-background.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a070ee43c55989bc1f9e4fb9395d86ce" name="data/themes/default/preprocess/object-index.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="67d44061f60bf41c298555d034b14345" name="data/themes/plain-light/chrome.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a9b6b510fefed045f1c44b1fa2dd6ad2" name="data/themes/plain-light/class.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a65c10ec68c709ca8fb0849a9ddac8f4" name="data/themes/plain-light/file.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="2b30b6bb1688be04c5815f4d4cfeb1c6" name="data/themes/plain-light/index.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="56838f908d0a7490663015dc730f6747" name="data/themes/plain-light/markers.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="6fb8d67c06a485eaa7702f6d94f75746" name="data/themes/plain-light/search.xsl" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="87561c0e5b1e9a0ec22d9518d82a0250" name="data/themes/plain-light/css/default.css" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="1ce3d98a553183d5f5ce38e06cb9ba5a" name="data/themes/plain-light/css/jquery.treeview.css" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="d5a5904e5d3241952d514b1e3c129517" name="data/themes/plain-light/css/black-tie/jquery-ui-1.8.2.custom.css" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="03ce3dcc84af110e9da8699a841e5200" name="data/themes/plain-light/css/black-tie/images/ui-anim_basic_16x16.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="031711faf729f743a47372a6d3a7d577" name="data/themes/plain-light/css/black-tie/images/ui-bg_diagonals-thick_8_333333_40x40.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8692e6efddf882acbff144c38ea7dfdf" name="data/themes/plain-light/css/black-tie/images/ui-bg_flat_65_ffffff_40x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="79783632767dfba1273d725b198ebe82" name="data/themes/plain-light/css/black-tie/images/ui-bg_glass_40_111111_1x400.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8dcec286d1f099696bb7b1df38628ed2" name="data/themes/plain-light/css/black-tie/images/ui-bg_glass_55_1c1c1c_1x400.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="6a6cf0682dd22752266dac09da75ff06" name="data/themes/plain-light/css/black-tie/images/ui-bg_highlight-hard_40_aaaaaa_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b485312b4e4d8367b4c897a8efe7c5a3" name="data/themes/plain-light/css/black-tie/images/ui-bg_highlight-hard_100_f9f9f9_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e90f82bfa28bebfe9d329cede9e0a6ed" name="data/themes/plain-light/css/black-tie/images/ui-bg_highlight-soft_50_aaaaaa_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c217377b0d2fe357588052d1a85a448a" name="data/themes/plain-light/css/black-tie/images/ui-bg_inset-hard_45_cd0a0a_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="36e098096a2817bad3078ad53382a778" name="data/themes/plain-light/css/black-tie/images/ui-bg_inset-hard_55_ffeb80_1x100.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0560b75f315f9fcb0a908d1254b84dc9" name="data/themes/plain-light/css/black-tie/images/ui-icons_4ca300_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="ebe6b6902a408fbf9cac6379a1477525" name="data/themes/plain-light/css/black-tie/images/ui-icons_222222_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="073d32a8433ed9ef0709811ecb37bd01" name="data/themes/plain-light/css/black-tie/images/ui-icons_bbbbbb_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="83a8da6cdfb2b4346080fd8b4d21d0b8" name="data/themes/plain-light/css/black-tie/images/ui-icons_ededed_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="be46cce01f0ce1e08578f71b298b6584" name="data/themes/plain-light/css/black-tie/images/ui-icons_ffcf29_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="342bc03f6264c75d3f1d7f99e34295b9" name="data/themes/plain-light/css/black-tie/images/ui-icons_ffffff_256x240.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="30d8e72bfdae694b1938658e1b087df0" name="data/themes/plain-light/css/images/ajax-loader.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9ab0e28d85d8ab5eb954fc28f6ac1e80" name="data/themes/plain-light/css/images/file.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="262d69b7ca267be1994fca2aba46be32" name="data/themes/plain-light/css/images/folder-closed.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9f41e1454905fd7416f89aa4380a65e1" name="data/themes/plain-light/css/images/folder.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e009322a00011359f76cf7ae59b4d33d" name="data/themes/plain-light/css/images/minus.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="6c46b98e0c60e6dc2ef14f9d4a6607b8" name="data/themes/plain-light/css/images/plus.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0cdd968bdb2f2852ec71e0264b3292cc" name="data/themes/plain-light/css/images/treeview-black-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a3ffb8abd978b0464f7b5b508fcfdef0" name="data/themes/plain-light/css/images/treeview-black.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="5e3c0e0c48f48c23c45aef7b72c739c0" name="data/themes/plain-light/css/images/treeview-default-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="46878a9b3ede269c4e234550c9c89cd0" name="data/themes/plain-light/css/images/treeview-default.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="18b3e43abad26bdac6f4cea944777b62" name="data/themes/plain-light/css/images/treeview-famfamfam-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="dc335e786863262f594737e26198009c" name="data/themes/plain-light/css/images/treeview-famfamfam.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9c2613b4de53f939bc770983976f66cd" name="data/themes/plain-light/css/images/treeview-gray-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="02b42894653cfd82e52aac669ad078ed" name="data/themes/plain-light/css/images/treeview-gray.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="feda280e7bffb057ca4c87491aab6943" name="data/themes/plain-light/css/images/treeview-red-line.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c94a07253c14c98fe69dffafb59228a5" name="data/themes/plain-light/css/images/treeview-red.gif" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3f6c46f4a35135b8dd1d964e63a88cee" name="data/themes/plain-light/images/logo.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="d4438a1f81bf9c0cb08df96efe91b8f8" name="data/themes/plain-light/images/menu-background.png" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="4d7a7e7d92aff3dac151dfa28e825c7d" name="docs/design/drawing.svg" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b56f5bdb2ba2fd4049db3ad0130fc9a5" name="docs/design/templating.txt" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3063d77f43ce8284ac5d83dab5674f96" name="docs/media/Greex.ttf" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="116dc414a4ea2aa0bdd28c749d61ec3b" name="docs/media/logo.svg" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a872f8582a23ada0c6a8544da27f9633" name="docs/media/logo2.svg" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9f895be44fd462d400a25832ec1095a1" name="docs/media/nyala.ttf" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a559f7ce798c4a0554f42f941b2907e3" name="docs/media/zdeněk-gromnica_infrared.zip" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="f160cd89805d6b0d2b015be5e69734af" name="lib/DocBlox/Abstract.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c3a31554e2646b7bf38e6349b213bcbd" name="lib/DocBlox/Arguments.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="247e3faa148df8f5877e79d776d521b0" name="lib/DocBlox/BidiArrayIterator.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0d1196e0ca145d1da8d8907ace889897" name="lib/DocBlox/Parser.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="09ba3b4d08401372325b3ebc2a4ec9d3" name="lib/DocBlox/Token.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="1b7efa9cef1fe625aa35c29afc7b7ced" name="lib/DocBlox/TokenIterator.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="03f75786340d34c49047d07b37aca233" name="lib/DocBlox/Transformation.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="da2369e79074834ee4d13d4896b28a41" name="lib/DocBlox/Transformer.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="fe74bf4e2152e6f52d783ab91c5aa603" name="lib/DocBlox/Reflection/Abstract.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="f87fc6510897ab1a88c14cab4948ba11" name="lib/DocBlox/Reflection/Argument.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3e2a676464ded045a8b608c597a542b6" name="lib/DocBlox/Reflection/BracesAbstract.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0c15b0202ea505209623ee7f373b8f90" name="lib/DocBlox/Reflection/Class.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8496af0793c0938a1d1b296a154baac0" name="lib/DocBlox/Reflection/Constant.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e87c8a1eee3be0c3151b0bbca67ee920" name="lib/DocBlox/Reflection/DocBlock.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e39909e7ebd16a4f4ab53b9c90ac77a5" name="lib/DocBlox/Reflection/DocBlockedAbstract.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e9149188ba412c6cf5dbdbcf98abd437" name="lib/DocBlox/Reflection/Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="49039aa7553d7ac3d970bcadb35cea78" name="lib/DocBlox/Reflection/File.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8ed9cf15d58a470c43c65c69fab6e0dd" name="lib/DocBlox/Reflection/Function.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e7baaa0202125c8449d72ad82de9c7be" name="lib/DocBlox/Reflection/Include.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="af0688ca382fd0fb96123768dd1f995c" name="lib/DocBlox/Reflection/Interface.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c4b703d020f292fbe27d4bdcd24386bc" name="lib/DocBlox/Reflection/Method.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="5cc1dd8491b11b02d5282acf0259d022" name="lib/DocBlox/Reflection/Property.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c45efe2d95cea57d357be9bac5575d65" name="lib/DocBlox/Reflection/Variable.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e6615bbadc73203f6e2ab53f48d63bcc" name="lib/DocBlox/Reflection/DocBlock/LongDescription.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="047197cca8123f8300af21851c22eb6e" name="lib/DocBlox/Reflection/DocBlock/Tag.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0ef5acaf610bcd297f369285da76eebc" name="lib/DocBlox/Reflection/DocBlock/Tag/Param.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="7f940b727b46b6da031c30c5a3760709" name="lib/DocBlox/Reflection/DocBlock/Tag/Return.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="12a1217930723ca689044123579e1fed" name="lib/DocBlox/Reflection/DocBlock/Tag/Var.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="1c9327d3cf72c6e5cfeb6a1ed610363a" name="lib/DocBlox/Writer/Abstract.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="258ee69c3a414cb1b9174091255e86da" name="lib/DocBlox/Writer/FileIo.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e9b00ee889d85d67d743b612391be889" name="lib/DocBlox/Writer/Graph.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8039291cf1007a61b321479892d7deb6" name="lib/DocBlox/Writer/Search.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="7ad7b0afb2d8dd620dcee65e0fe5e8e3" name="lib/DocBlox/Writer/Xsl.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="493695a2ff9fd208073de7ccd89a5f24" name="lib/pear/GraphViz.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="bd3a26716ab04a8d73c2320d7b409bcb" name="lib/symfony/sfTimer.class.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3d477a21aaa2ddfd155591d473e17c9a" name="lib/Zend/Config.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="55ee8977abba3e9c8c56937432434c4c" name="lib/Zend/Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e9edda03a78527c8008669ff81b40638" name="lib/Zend/Loader.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="bbbce4d3e510c0916f538946a71b9fc0" name="lib/Zend/Log.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="5b033f4d99d7f32889021dcce5b89b5f" name="lib/Zend/Config/Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="559a7b6020953c89b233b6dbf6b11ec8" name="lib/Zend/Config/Ini.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e214c9d4f37dd007e85f25beb657d6e0" name="lib/Zend/Config/Writer.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b8663844ebdd2587f3ac77d12befec03" name="lib/Zend/Config/Xml.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0c7e48be5b9cb78299e67af44a6eac56" name="lib/Zend/Config/Writer/Array.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="bbce660745f357ede73cd52571788166" name="lib/Zend/Config/Writer/Ini.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="46d9925679fac3fa319111ccd7e98385" name="lib/Zend/Config/Writer/Xml.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e4c1335f24d514a9c76611ab0b1c55df" name="lib/Zend/Console/Getopt.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="79eb37440646675ca860687251d86850" name="lib/Zend/Console/Getopt/Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3aad0085810bb1a89223a24021bdc501" name="lib/Zend/Loader/Autoloader.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="f6bbb81c336c1b2690a6cbdfa709501c" name="lib/Zend/Loader/Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="aeb57b729a64b173d3d70db8bc0c9c3f" name="lib/Zend/Loader/PluginLoader.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="011dd9c0a4f4148e98535479025f17f3" name="lib/Zend/Loader/Autoloader/Interface.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="5de93d4bf6e110dc7d0f9c05902e6573" name="lib/Zend/Loader/Autoloader/Resource.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e0fb132d1f5c64687d559ede0f906330" name="lib/Zend/Loader/PluginLoader/Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="76720deb90f2ef24d23a304cc7b96e64" name="lib/Zend/Loader/PluginLoader/Interface.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="54b8550ae35eca6f605f7d16a6053608" name="lib/Zend/Log/Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e585ad2c4e312716ae843e416a2b69da" name="lib/Zend/Log/FactoryInterface.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="39522e9c1ed6ba406f428ac53264d636" name="lib/Zend/Log/Filter/Abstract.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="d59401f6c39879e0137802ee0f43fd28" name="lib/Zend/Log/Filter/Interface.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="da5d396b2cf03fc6f0024fe6cbe995b9" name="lib/Zend/Log/Filter/Message.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="17032fa0f5b1ba803a2c31f19930c20a" name="lib/Zend/Log/Filter/Priority.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="efd4483688e16cbb90b504812b3bc2ec" name="lib/Zend/Log/Filter/Suppress.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="1c69e7af369b505d7291c01308dcb381" name="lib/Zend/Log/Formatter/Firebug.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="ef3f3e5016ab000d429b0556d758aefe" name="lib/Zend/Log/Formatter/Interface.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="7258190d3f66898c5f03837afb968fd0" name="lib/Zend/Log/Formatter/Simple.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a5b5c30042e9a70261862d1aa76c9a30" name="lib/Zend/Log/Formatter/Xml.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="5e859a7f859eb2178041119cb42f084b" name="lib/Zend/Log/Writer/Abstract.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="b7325e0f6d0ec548ac32925cf7fb1072" name="lib/Zend/Log/Writer/Db.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="aea815d51c4dd062a29681349bc84e10" name="lib/Zend/Log/Writer/Firebug.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="ff02d0b37c5b1b7e00bfb96ee61f5f7c" name="lib/Zend/Log/Writer/Mail.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="a9698e437211639fdf4e794df54998f5" name="lib/Zend/Log/Writer/Mock.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="93aaf89c29ef50cb846ca6f6fa4bf13b" name="lib/Zend/Log/Writer/Null.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c74881e835eb93aaa444df8988f11aff" name="lib/Zend/Log/Writer/Stream.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="3aefff51be2be9d0caec45a31e99c46e" name="lib/Zend/Log/Writer/Syslog.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="bf0c1a10a985e8695134f100e9311e72" name="lib/Zend/Log/Writer/ZendMonitor.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="1b1732ac362d56a3077ff7d3be8ad60b" name="test/common/bootstrap.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="8c0baa5d1baa12078bcf2241c5905ee2" name="test/data/test.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c17ab850bef5d2816e7ef8285cfce020" name="test/data/TokenIteratorTestFixture.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="13230738e857a2532d98c88869babc8f" name="test/unit/DocBlox/AbstractTest.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="9eb072e5484ebea7ba97d5d0bd181e04" name="test/unit/DocBlox/BidiArrayIteratorTest.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e9f2df51fcf37d12442b18da65742ee7" name="test/unit/DocBlox/ParserTest.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="0ffcd29e7bb3b3543711f0ef1311021c" name="test/unit/DocBlox/TokenIteratorTest.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="1d8cde0b1e5cdaa90385f3b49df5921c" name="test/unit/DocBlox/TokenTest.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="e8dfb35eb2f4f1cd082b235d0205e54f" name="test/unit/DocBlox/TransformerTest.php" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="fe8830cddb7e8cc439f3b188b844c018" name="CHANGELOG" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="71196ed1fe0a0e0b60c5d96e1da9e4a3" name="docblox.config.xml" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="275d68ae6bce4906cee9ec962ab57cb3" name="example_config.xml" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="f52af0b80affa82f8b241e4f68362884" name="LICENSE" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="d70e8af7c0233499c55b170d1af9e75b" name="phpunit.xml.dist" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="c3571ad679d44eadd147a83ce63611c7" name="README" role="php" />
+      <file baseinstalldir="/DocBlox/" md5sum="53f3ae6ce14a05c9559373b1790474c6" name="TODO" role="php" />
+    </dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.4</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.0</min>
+      </pearinstaller>
+    </required>
+  </dependencies>
+  <phprelease>
+    <installconditions>
+      <os><name>windows</name></os>
+    </installconditions>
+    <filelist>
+      <install as="docblox" name="bin/docblox.php" />
+      <install as="docblox.bat" name="bin/docblox.bat" />
+    </filelist>
+  </phprelease>
+  <phprelease>
+    <filelist>
+      <install as="docblox" name="bin/docblox.php" />
+      <ignore name="bin/docblox.bat" />
+    </filelist>
+  </phprelease>
+  <changelog>
+    <release>
+      <version>
+        <release>0.8.4</release>
+        <api>0.8.4</api>
+      </version>
+      <stability>
+        <release>alpha</release>
+        <api>alpha</api>
+      </stability>
+      <date>2011-02-26</date>
+      <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+      <notes>
+        Please see the CHANGELOG in the root of the application for the latest changes
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.8.5</release>
+        <api>0.8.5</api>
+      </version>
+      <stability>
+        <release>alpha</release>
+        <api>alpha</api>
+      </stability>
+      <date>2011-02-27</date>
+      <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+      <notes>
+        Please see the CHANGELOG in the root of the application for the latest changes
+      </notes>
+    </release>
+  </changelog>
 </package>

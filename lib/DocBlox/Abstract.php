@@ -23,7 +23,7 @@ abstract class DocBlox_Abstract
    *
    * @var int
    */
-  const VERSION = '0.8.3';
+  const VERSION = '0.8.5';
 
   /**
    * The logger used to capture all messages send by the log method.
@@ -179,7 +179,7 @@ abstract class DocBlox_Abstract
     {
       $file = str_replace(
         array('{APP_ROOT}', '{DATE}'),
-        array(realpath(dirname(__FILE__) . '/..'), date('YmdHis')),
+        array(realpath(dirname(__FILE__) . '/../..'), date('YmdHis')),
         $this->getConfig()->logging->paths->errors
       );
 
@@ -228,7 +228,7 @@ abstract class DocBlox_Abstract
     {
       $file = str_replace(
         array('{APP_ROOT}', '{DATE}'),
-        array(realpath(dirname(__FILE__).'/..'), date('YmdHis')),
+        array(realpath(dirname(__FILE__).'/../..'), date('YmdHis')),
         $this->getConfig()->logging->paths->default
       );
 
@@ -284,7 +284,7 @@ abstract class DocBlox_Abstract
   protected static function mergeTemplateConfigurations(Zend_Config $config)
   {
     $config->templates = array();
-    $iterator = new DirectoryIterator(dirname(__FILE__).'/../resources/templates');
+    $iterator = new DirectoryIterator(dirname(__FILE__).'/../../data/templates');
 
     /** @var DirectoryIterator $path */
     foreach ($iterator as $path)
@@ -309,7 +309,7 @@ abstract class DocBlox_Abstract
   {
     if (self::$config === null)
     {
-      self::$config = self::loadConfig(dirname(__FILE__).'/../docblox.config.xml');
+      self::$config = self::loadConfig(dirname(__FILE__).'/../../docblox.config.xml');
     }
 
     return self::$config;
