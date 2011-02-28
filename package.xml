@@ -22,8 +22,8 @@
     <email>mike.vanriel@naenius.com</email>
     <active>yes</active>
   </lead>
-  <date>2011-02-27</date>
-  <time>15:05:24</time>
+  <date>2011-02-28</date>
+  <time>22:47:22</time>
   <version>
     <release>0.8.5</release>
     <api>0.8.5</api>
@@ -296,6 +296,21 @@
         <api>alpha</api>
       </stability>
       <date>2011-02-27</date>
+      <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
+      <notes>
+        Please see the CHANGELOG in the root of the application for the latest changes
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.8.6</release>
+        <api>0.8.6</api>
+      </version>
+      <stability>
+        <release>alpha</release>
+        <api>alpha</api>
+      </stability>
+      <date>2011-02-28</date>
       <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
       <notes>
         Please see the CHANGELOG in the root of the application for the latest changes
