@@ -21,9 +21,8 @@ class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
   {
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     $transformation->setArtifact($artifact);
-    $this->transformation = $transformation;
 
-    $method   = 'query'.ucfirst($transformation->getQuery());
+    $method   = 'executeQuery'.ucfirst($transformation->getQuery());
     if (!method_exists($this, $method))
     {
       throw new InvalidArgumentException(
@@ -31,7 +30,7 @@ class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
       );
     }
 
-    $this->$method();
+    $this->$method($transformation);
   }
 
   /**
@@ -41,25 +40,25 @@ class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
    *
    * @return void
    */
-  public function queryCopy()
+  public function executeQueryCopy(DocBlox_Transformation $transformation)
   {
-    if (!is_readable($this->transformation->getSource()))
+    if (!is_readable($transformation->getSource()))
     {
-      throw new Exception('Unable to read the source file: ' . $this->transformation->getSource());
+      throw new Exception('Unable to read the source file: ' . $transformation->getSource());
     }
 
-    if (!is_writable($this->transformation->getTransformer()->getTarget()))
+    if (!is_writable($transformation->getTransformer()->getTarget()))
     {
-      throw new Exception('Unable to write to: ' . dirname($this->transformation->getArtifact()));
+      throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
     }
 
-    if (is_dir($this->transformation->getSource()))
+    if (is_dir($transformation->getSource()))
     {
-      $this->copyRecursive($this->transformation->getSource(), $this->transformation->getArtifact());
+      $this->copyRecursive($transformation->getSource(), $transformation->getArtifact());
     }
     else
     {
-      copy($this->transformation->getSource(), $this->transformation->getArtifact());
+      copy($transformation->getSource(), $transformation->getArtifact());
     }
   }
 
