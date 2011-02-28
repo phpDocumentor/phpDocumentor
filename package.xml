@@ -38,12 +38,12 @@
   </notes>
   <contents>
     <dir baseinstalldir="/" name="/">
-      <file baseinstalldir="/DocBlox/" md5sum="55f2dc1fcd3bca16c9fc6f9fc5879f7d" name="bin/docblox.php" role="script">
+      <file baseinstalldir="/" md5sum="55f2dc1fcd3bca16c9fc6f9fc5879f7d" name="bin/docblox.php" role="script">
         <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
       </file>
-      <file baseinstalldir="/DocBlox/" md5sum="c72bbdeb964856234ac88008cd5b1216" name="bin/docblox.bat" role="script" />
+      <file baseinstalldir="/" md5sum="c72bbdeb964856234ac88008cd5b1216" name="bin/docblox.bat" role="script" />
       <file baseinstalldir="/DocBlox/" md5sum="b3fd6f590e0a89bcbadbbe4c127d82c4" name="bin/parse.php" role="php" />
       <file baseinstalldir="/DocBlox/" md5sum="bda8ed4607046d5955b5f3c60928fea4" name="bin/transform.php" role="php" />
       <file baseinstalldir="/DocBlox/" md5sum="e8d235d7b9b07279dfb2631d8c8f2a3f" name="data/ajax_search.php" role="php" />

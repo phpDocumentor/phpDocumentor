@@ -261,7 +261,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   /**
    * Retrieves the path to save the result to.
    *
-   * @throws Exception
+   * @throws Zend_Console_Getopt_Exception
    *
    * @return string
    */
@@ -276,12 +276,12 @@ class DocBlox_Arguments extends Zend_Console_Getopt
     $target = trim($target);
     if (($target == '') || ($target == DIRECTORY_SEPARATOR))
     {
-      throw new Exception('Either an empty path or root was given');
+      throw new Zend_Console_Getopt_Exception('Either an empty path or root was given');
     }
 
     if (!is_writable($target))
     {
-      throw new Exception('The given path "'.$target.'" either does not exist or is not writable.');
+      throw new Zend_Console_Getopt_Exception('The given path "'.$target.'" either does not exist or is not writable.');
     }
 
     // remove any ending slashes

@@ -60,4 +60,4 @@ foreach($options as $option)
     $optionstring .= '-'.$option.' '.$opts->getOption($option).' ';
 }
 
-passthru($callable.' '.$optionstring);
+passthru('php ' . $callable . ' ' . $optionstring);

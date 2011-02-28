@@ -177,12 +177,23 @@ abstract class DocBlox_Abstract
 
     if (!self::$debug_logger)
     {
+      $config = $this->getConfig();
       $file = str_replace(
         array('{APP_ROOT}', '{DATE}'),
-        array(realpath(dirname(__FILE__) . '/../..'), date('YmdHis')),
-        $this->getConfig()->logging->paths->errors
+        array($config->paths->application, date('YmdHis')),
+        $config->logging->paths->errors
       );
 
+      if (!is_writeable($file))
+      {
+        self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Null());
+        $this->log(
+          'The log directory does not appear to be writable; tried to log to: ' . $file
+            . ', disabled logging to file',
+          Zend_Log::ERR
+        );
+        return;
+      }
       self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
     }
 
@@ -226,11 +237,23 @@ abstract class DocBlox_Abstract
 
     if (!self::$logger)
     {
+      $config = $this->getConfig();
       $file = str_replace(
         array('{APP_ROOT}', '{DATE}'),
-        array(realpath(dirname(__FILE__).'/../..'), date('YmdHis')),
-        $this->getConfig()->logging->paths->default
+        array($config->paths->application, date('YmdHis')),
+        $config->logging->paths->default
       );
+
+      if (!is_writeable($file))
+      {
+        self::$logger = new Zend_Log(new Zend_Log_Writer_Null());
+        $this->log(
+          'The log directory does not appear to be writable; tried to log to: ' . $file
+            . ', disabled logging to file',
+          Zend_Log::ERR
+        );
+        return;
+      }
 
       self::$logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
     }
@@ -270,6 +293,12 @@ abstract class DocBlox_Abstract
     }
 
     $config = new Zend_Config_Xml(file_get_contents($filename), null, true);
+    if (!isset($config->paths))
+    {
+      $config->paths = new Zend_Config(array(), true);
+    }
+    $config->paths->application = realpath(dirname(__FILE__) . '/../..');
+    $config->paths->data = realpath(dirname(__FILE__) . '/../../data');
     $config = self::mergeTemplateConfigurations($config);
     return $config;
   }
