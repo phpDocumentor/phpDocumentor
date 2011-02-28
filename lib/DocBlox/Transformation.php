@@ -37,10 +37,11 @@ class DocBlox_Transformation extends DocBlox_Abstract
   /**
    * Constructs a new Transformation object and populates the required parameters.
    *
-   * @param string $query    What information to use as datasource for the writer's source.
-   * @param string $writer   What type of transformation to apply (XSLT, PDF, etc).
-   * @param string $source   Which template or type of source to use.
-   * @param string $artifact What is the filename of the result (relative to the generated root)
+   * @param DocBlox_Transformer $transformer  The parent transformer.
+   * @param string              $query        What information to use as datasource for the writer's source.
+   * @param string              $writer       What type of transformation to apply (XSLT, PDF, etc).
+   * @param string              $source       Which template or type of source to use.
+   * @param string              $artifact     What is the filename of the result (relative to the generated root)
    */
   public function __construct(DocBlox_Transformer $transformer, $query, $writer, $source, $artifact)
   {

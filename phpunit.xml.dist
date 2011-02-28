@@ -8,12 +8,14 @@
     <whitelist>
       <directory suffix=".php">./</directory>
       <exclude>
-        <directory suffix=".php">lib</directory>
+        <directory suffix=".php">lib/symfony</directory>
+        <directory suffix=".php">lib/Zend</directory>
+        <directory suffix=".php">lib/pear</directory>
         <directory suffix=".php">output</directory>
         <directory suffix=".php">log</directory>
         <directory suffix=".php">test</directory>
         <directory suffix=".php">bin</directory>
-        <directory suffix=".php">resources</directory>
+        <directory suffix=".php">data</directory>
       </exclude>
     </whitelist>
   </filter>

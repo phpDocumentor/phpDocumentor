@@ -185,23 +185,25 @@ class DocBlox_Transformer extends DocBlox_Abstract
       throw new InvalidArgumentException('Template could not be found');
     }
 
+    // track templates to be able to refer to them later
+    $this->templates[] = $name;
+
     // template does not have transformations; return
     if (!isset($config->templates->$name->transformations))
     {
       return;
     }
 
-    // track templates to be able to refer to them later
-    $this->templates[] = $name;
+    $transformations = $config->templates->$name->transformations->transformation->toArray();
 
     // if the array key is not numeric; then there is a single value instead of an array of transformations
-    $transformations = (is_numeric($config->templates->$name->transformations->transformation->key()))
-      ? $config->templates->$name->transformations->transformation
-      : array($config->templates->$name->transformations->transformation);
+    $transformations = (is_numeric(key($transformations)))
+      ? $transformations
+      : array($transformations);
 
     foreach($transformations as $transformation)
     {
-      $this->addTransformation($transformation->toArray());
+      $this->addTransformation($transformation);
     }
   }
 
