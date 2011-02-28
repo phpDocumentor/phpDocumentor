@@ -20,7 +20,10 @@ class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
   public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
   {
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-    $source = $this->getConfig()->paths->data . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+
+    $source = substr($transformation->getSource(), 0, 1) != DIRECTORY_SEPARATOR
+      ? $this->getConfig()->paths->data . DIRECTORY_SEPARATOR . $transformation->getSource()
+      : $transformation->getSource();
     $transformation->setArtifact($artifact);
     $transformation->setSource($source);
 
