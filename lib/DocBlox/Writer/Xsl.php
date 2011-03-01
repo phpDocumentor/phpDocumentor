@@ -12,7 +12,11 @@ class DocBlox_Writer_Xsl extends DocBlox_Writer_Abstract
     }
 
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-    $source = $this->getConfig()->paths->application . DIRECTORY_SEPARATOR . $transformation->getSource();
+
+    $source = substr($transformation->getSource(), 0, 1) != DIRECTORY_SEPARATOR
+      ? $this->getConfig()->paths->data . DIRECTORY_SEPARATOR . $transformation->getSource()
+      : $transformation->getSource();
+    $transformation->setSource($source);
 
     $xsl = new DOMDocument();
     $xsl->load($source);

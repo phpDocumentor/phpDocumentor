@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template>
   <transformations>
-    <transformation query="copy" writer="FileIo" source="data/ajax_search.php" artifact="ajax_search.php"/>
-    <transformation query="copy" writer="FileIo" source="data/js" artifact="js"/>
-    <transformation query="copy" writer="FileIo" source="data/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="data/images" artifact="images"/>
-    <transformation query="copy" writer="FileIo" source="data/themes/default/js" artifact="js"/>
-    <transformation query="copy" writer="FileIo" source="data/themes/default/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="data/themes/default/images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php"/>
+    <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
+    <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
-    <transformation query="" writer="xsl" source="data/themes/default/preprocess/object-index.xsl" artifact="$object-index" />
-    <transformation query="" writer="xsl" source="data/themes/default/index.xsl" artifact="index.html">
+    <transformation query="" writer="xsl" source="themes/default/preprocess/object-index.xsl" artifact="$object-index" />
+    <transformation query="" writer="xsl" source="themes/default/index.xsl" artifact="index.html">
       <parameters>
         <variables>
           <title>DocBlox</title>
@@ -18,7 +16,7 @@
         <search>xmljs</search>
       </parameters>
     </transformation>
-    <transformation query="/project/file/@path" writer="xsl" source="data/themes/default/file.xsl" artifact="{$path}">
+    <transformation query="/project/file/@path" writer="xsl" source="themes/default/file.xsl" artifact="{$path}">
       <parameters>
         <variables>
           <title>File</title>
@@ -26,7 +24,7 @@
         <search>xmljs</search>
       </parameters>
     </transformation>
-    <transformation query="" writer="xsl" source="data/themes/default/markers.xsl" artifact="markers.html">
+    <transformation query="" writer="xsl" source="themes/default/markers.xsl" artifact="markers.html">
       <parameters>
         <variables>
           <title>Markers</title>

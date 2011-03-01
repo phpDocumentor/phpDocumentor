@@ -2,6 +2,7 @@
 * ADDED:    Templating support; it is now possible to mix and match transformations and actions in a template configuration.
 * FIXED:    Added support for PEAR packages by adding a package.xml and moving directories
 * ADDED:    docblox.bat for use in windows environments (thanks to Tyrael)
+* FIXED:    Invoking docblox from an arbitrary location (to aid int he PEAR package)
 
 02/19/2011: Version 0.8: fix known issues
 
