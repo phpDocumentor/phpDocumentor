@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <transformations>
+    <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
+    <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/zend/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="themes/zend/images" artifact="images"/>
+    <transformation query="" writer="Search" source="" artifact="."/>
+    <!--<transformation query="" writer="xsl" source="themes/default/preprocess/object-index.xsl" artifact="$object-index" />-->
+    <transformation query="" writer="xsl" source="themes/zend/frameset.xsl" artifact="index.html">
+      <parameters>
+        <variables><title>Zend Framework: API Documentation</title></variables>
+        <search>none</search>
+      </parameters>
+    </transformation>
+    <transformation query="" writer="xsl" source="themes/zend/header.xsl" artifact="header.html">
+    <parameters><variables><title>Header</title></variables>
+    </parameters>
+    </transformation>
+    <transformation query="" writer="xsl" source="themes/zend/sidebar.xsl" artifact="sidebar.html">
+      <parameters><variables><title>Sidebar</title></variables></parameters>
+    </transformation>
+    <transformation query="" writer="xsl" source="themes/zend/classgraph.xsl" artifact="graph.html">
+      <parameters><variables><title>Class Diagram</title></variables></parameters>
+    </transformation>
+    <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
+    <transformation query="/project/file/@path" writer="xsl" source="themes/zend/file.xsl" artifact="{$path}">
+      <parameters><variables><title>File</title></variables></parameters>
+    </transformation>
+    <transformation query="" writer="xsl" source="themes/frames/markers.xsl" artifact="markers.html">
+      <parameters><variables><title>Markers</title></variables></parameters>
+    </transformation>
+  </transformations>
+</template>

@@ -34,9 +34,7 @@ class DocBlox_Arguments extends Zend_Console_Getopt
     'h|help'     => 'show this help message',
     's|source-s' => 'path where the structure.xml is located (optional, defaults to "output/structure.xml")',
     't|target-s' => 'path where to save the generated files (optional, defaults to "output")',
-    'o|output-s' => 'output format to use (optional, defaults to "xslt")',
-    'theme-s'    => 'name of the theme to use (optional, defaults to "default")',
-    'search-s'   => 'type of searchbox to use, may be "None", "XmlJs" or "Ajax"',
+    'template-s' => 'name of the theme to use (optional, defaults to "default")',
     'v|verbose'  => 'Outputs any information collected by this application, may slow down the process slightly',
   );
 

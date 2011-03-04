@@ -5,12 +5,22 @@
   <xsl:include href="chrome.xsl" />
   <xsl:include href="class.xsl" />
 
-  <xsl:template match="/project">
-    <xsl:apply-templates select="/project/file[@path=$path]" />
+  <xsl:template match="/project" name="file">
+    <div id="content">
+      <xsl:apply-templates select="/project/file[@path=$path]" />
+    </div>
   </xsl:template>
 
   <xsl:template match="/project/file">
     <h1><xsl:value-of select="@path" /></h1>
+    <div class="file_menu">
+      <a href="#includes">Includes</a> |
+      <a href="#functions">Functions</a> |
+      <a href="#constants">Constants</a> |
+      <a href="#classes">Classes</a> |
+      <a href="#interfaces">Interfaces</a>
+    </div>
+
     <xsl:if test="docblock/tag">
     <div class="properties">
       <h1>Properties</h1>
@@ -23,7 +33,7 @@
     </xsl:if>
 
     <xsl:if test="docblock/description != '' or docblock/long-description != ''">
-      <h3>Description</h3>
+      <h2>Description</h2>
     </xsl:if>
     <xsl:if test="docblock/description != ''">
       <xsl:value-of select="docblock/description" disable-output-escaping="yes" /><br />
@@ -34,25 +44,29 @@
     </xsl:if>
 
     <xsl:if test="include">
-      <h4>Includes</h4>
+      <a name="includes"/>
+      <h2>Includes</h2>
       <xsl:for-each select="include">
         <xsl:value-of select="name" />&#160;<span class="nb-faded-text">(<xsl:value-of select="@type" />)</span><br />
       </xsl:for-each>
     </xsl:if>
 
     <xsl:if test="function">
-    <h4>Functions</h4>
+      <a name="functions" />
+      <h2>Functions</h2>
       <xsl:for-each select="function">
         <xsl:apply-templates select="." />
       </xsl:for-each>
     </xsl:if>
 
     <xsl:if test="constant">
-    <h4>Constants</h4>
+      <a name="constants" />
+      <h2>Constants</h2>
       <xsl:for-each select="constant"><xsl:apply-templates select="." /></xsl:for-each>
     </xsl:if>
 
     <xsl:if test="class">
+      <a name="classes" />
       <h2>Classes</h2>
       <xsl:for-each select="class">
         <div id="{name}" class="class">
@@ -62,9 +76,10 @@
     </xsl:if>
 
     <xsl:if test="interface">
+      <a name="interfaces" />
       <h2>Interfaces</h2>
-      <xsl:for-each select="interface" class="interface">
-        <div id="{name}">
+      <xsl:for-each select="interface">
+        <div id="{name}" class="interface">
           <xsl:apply-templates select="." />
         </div>
       </xsl:for-each>

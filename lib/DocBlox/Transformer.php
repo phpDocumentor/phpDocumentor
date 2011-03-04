@@ -109,8 +109,12 @@ class DocBlox_Transformer extends DocBlox_Abstract
    *
    * @return void
    */
-  public function setTemplate($template)
+  public function setTemplates($template)
   {
+    // reset
+    $this->templates = array();
+    $this->transformations = array();
+
     if (!is_array($template))
     {
       $template = array($template);

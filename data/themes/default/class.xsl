@@ -66,7 +66,7 @@
 
     <xsl:if test="count(property) > 0">
     <div id="properties_{name}">
-      <h2>Properties</h2>
+      <h4>Properties</h4>
       <xsl:for-each select="property">
         <xsl:sort select="name" />
         <a href="#{../name}::{name}">
@@ -83,7 +83,7 @@
 
     <xsl:if test="count(constant) > 0">
     <div id="constants_{name}">
-      <h2>Constants</h2>
+      <h4>Constants</h4>
       <xsl:for-each select="constant">
         <xsl:sort select="name" />
 
@@ -91,6 +91,7 @@
       </xsl:for-each>
     </div>
     </xsl:if>
+    <div style="clear: both"></div>
   </xsl:template>
 
   <xsl:template match="method|function">
@@ -100,8 +101,20 @@
         <xsl:value-of select="name" />
         <span class="nb-faded-text">(
           <xsl:for-each select="argument">
+
             <xsl:variable name="variable_name" select="name" />
-            <xsl:value-of select="../docblock/tag[@name='param' and @variable=$variable_name]/@type" />&#160;<xsl:value-of select="$variable_name" />
+            <xsl:variable name="variable_type" select="../docblock/tag[@name='param' and @variable=$variable_name]/@type" />
+            <xsl:if test="../docblock/tag[@name='param' and @variable=$variable_name]/@link">
+              <a href="{$root}{../docblock/tag[@name='param' and @variable=$variable_name]/@link}">
+                <xsl:value-of select="$variable_type" />
+              </a>
+            </xsl:if>
+            <xsl:if test="not(../docblock/tag[@name='param' and @variable=$variable_name]/@link)">
+              <xsl:value-of select="$variable_type" />
+            </xsl:if>
+            &#160;
+            <xsl:value-of select="$variable_name" />
+
             <xsl:if test="default != ''">
             = <xsl:value-of select="default" disable-output-escaping="yes"/>
             </xsl:if>,
@@ -263,26 +276,27 @@
 
   <xsl:template match="constant">
     <a id="{../name}::{name}" />
-    <h3>
-      <span class="nb-faded-text">
-        <xsl:value-of select="docblock/tag[@name='var']/." />&#160;
-      </span>
-      <xsl:value-of select="name" />
-      <span class="nb-faded-text">
-       = <xsl:value-of select="value" />
-      </span>
-    </h3>
-    <em>
-      <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
-    </em>
-    <br />
-    <xsl:if test="docblock/long-description">
-      <small>
-        <xsl:value-of select="docblock/long-description" />
-      </small>
+    <div class="constant">
+      <h3>
+        <span class="nb-faded-text">
+          <xsl:value-of select="docblock/tag[@name='var']/." />&#160;
+        </span>
+        <xsl:value-of select="name" />
+        <span class="nb-faded-text">
+         = <xsl:value-of select="value" />
+        </span>
+      </h3>
+      <em>
+        <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
+      </em>
       <br />
-    </xsl:if>
-    <br />
-    <hr />
+      <xsl:if test="docblock/long-description">
+        <small>
+          <xsl:value-of select="docblock/long-description" />
+        </small>
+        <br />
+      </xsl:if>
+      <br />
+    </div>
   </xsl:template>
 </xsl:stylesheet>

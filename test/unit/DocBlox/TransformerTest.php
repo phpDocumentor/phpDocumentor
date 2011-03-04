@@ -53,11 +53,11 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
     DocBlox_Abstract::config()->templates->test = new Zend_Config(array());
     DocBlox_Abstract::config()->templates->test2 = new Zend_Config(array());
 
-    $this->fixture->setTemplate('test');
-    $this->assertEquals(array('default', 'test'), $this->fixture->getTemplates());
+    $this->fixture->setTemplates('test');
+    $this->assertEquals(array('test'), $this->fixture->getTemplates());
 
-    $this->fixture->setTemplate(array('test', 'test2'));
-    $this->assertEquals(array('default', 'test', 'test2'), $this->fixture->getTemplates());
+    $this->fixture->setTemplates(array('test', 'test2'));
+    $this->assertEquals(array('test', 'test2'), $this->fixture->getTemplates());
   }
 
   public function testTransformations()

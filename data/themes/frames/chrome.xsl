@@ -2,8 +2,6 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output indent="yes" method="html" />
-  <xsl:include href="menu.xsl" />
-  <xsl:include href="search.xsl" />
 
   <xsl:template match="/">
     <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,6 +11,7 @@
         <link rel="stylesheet" href="{$root}css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
         <link rel="stylesheet" href="{$root}css/jquery.treeview.css" type="text/css" />
         <link rel="stylesheet" href="{$root}css/default.css" type="text/css" />
+        <link rel="stylesheet" href="{$root}css/theme.css" type="text/css" />
         <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery.treeview.js"></script>
@@ -21,9 +20,10 @@
         <script type="text/javascript">
           $(document).ready(function()
           {
-            $(".filetree").treeview({
+            $(".treeview-docblox").treeview({
               animated: 'fast'
             });
+            $(".filetree").treeview();
           });
 
           function jq_escape(myid)
@@ -61,34 +61,11 @@
           });
         </script>
 
-        <div id="maincontainer">
-
-          <div id="header">
-            <div class="padder"></div>
-          </div>
-
-          <xsl:call-template name="menu" />
-
-          <div id="content_container">
-            <xsl:apply-templates />
-          </div>
-
-          <div id="index">
-            <div class="padder">
-              <xsl:if test="$object-index">
-              <xsl:value-of select="$object-index" disable-output-escaping="yes"/>
-              </xsl:if>
-            </div>
-          </div>
-
-          <div id="footer">
-            <div class="padder"></div>
-          </div>
-
-        </div>
+        <xsl:apply-templates />
 
       </body>
     </html>
+
   </xsl:template>
 
 </xsl:stylesheet>

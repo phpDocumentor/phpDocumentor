@@ -8,10 +8,10 @@ body
   margin:              0px;
   padding:             0px;
   line-height:         1.5em;
-  font-family:         Verdana, Helvetica;
+  font-family:         Verdana, Helvetica, sans-serif;
   font-size:           0.8em;
-  background:          white url('../images/menu-background.png') top left repeat-y;
   color:               black;
+  background:          black url('../images/background.png') repeat-x top left;
 }
 
 table
@@ -31,54 +31,89 @@ th, td
   padding-right:       8px;
 }
 
-/* A header is provided as hook for themes */
-#header
+#maincontainer
 {
-  display:             none;
+  margin: 0 auto;
+  background: white url('../images/top.png') top left no-repeat;
+  width: 980px;
 }
 
-/* A footer is provided as hook for themes */
+#header
+{
+  height: 70px;
+}
+
 #footer
 {
-  clear:               both;
-  width:               100%;
-  background:          black;
-  color:               #ffffff;
-  text-align:          center;
-  padding:             4px 0px;
-  visibility:          hidden;
+  clear:both;
 }
 
 #content_container
 {
   float:               right;
   width:               100%;
-  margin-left:         -450px; /*Set left margin to -(leftColumnWidth + RightColumnWidth)*/
+  margin-left:         -250px; /*Set left margin to -(leftColumnWidth + RightColumnWidth)*/
 }
 
 #content
 {
-  margin-left:         450px; /*Set left margin to (leftColumnWidth + RightColumnWidth)*/
+  margin-left:         250px; /*Set left margin to (leftColumnWidth + RightColumnWidth)*/
 }
 
-#menu
+ul#menu
 {
-  float:               left;
-  width:               200px; /*Width of left column in pixels*/
-  color:               white;
+  float:              left;
+  margin:             0px 10px;
+  -moz-border-radius: 5px;
+  border-radius:      5px;
+  background:         #f0f0f0;
+  display:            block;
+  width:              960px;
+  height:             32px;
+  line-height:        22px;
+  padding:            0px;
+}
+
+ul#menu li
+{
+  padding:      0px 10px;
+  margin:       5px 0px;
+  border-right: 1px solid gray;
+  display:      block;
+  float:        left;
+}
+
+ul#menu li a
+{
+  color:   black;
+  display: block;
+}
+
+div.section
+{
+  margin: 5px;
+  padding: 5px;
+  padding-top: 0px;
+  margin-bottom: 15px;
+  border: 1px solid silver;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+div.section h1
+{
+  border-bottom: 1px solid #5E8CDF;
+  text-align: center;
+  font-size: 1.1em;
+  padding-bottom: 5px;
+  /*font-variant: small-caps;*/
+  color: #5E8CDF;
 }
 
 #index
 {
   float:               left;
   width:               250px; /*Width of right column in pixels*/
-}
-
-#index h1
-{
-  text-align:          center;
-  font-size:           1.2em;
-  border-bottom:       1px solid black;
 }
 
 #index h2
@@ -126,73 +161,6 @@ th, td
   border:              2px solid #5E8CDF;
   -moz-border-radius:  5px;
   border-radius:       5px;
-}
-
-.treeview ul
-{
-  margin-top:          2px;
-}
-
-.treeview-docblox li
-{
-  background-image:    none;
-  padding:             0px 3px;
-}
-
-.treeview-docblox li.collapsable
-{
-  border:              1px dashed gray;
-  -moz-border-radius:  5px;
-  margin-bottom:       2px;
-  padding-top:         5px;
-  padding-bottom:      5px;
-  border-radius:       5px;
-}
-
-.treeview li .content
-{
-  border:              1px solid gray;
-  -moz-border-radius:  5px;
-  background-color:    #ECF1F7;
-  margin-bottom:       3px;
-  padding:             2px 5px;
-  width:               222px;
-  word-wrap:           break-word;
-}
-
-.treeview-docblox .hitarea, .treeview-docblox li.collapsable, .treeview-docblox li.expandable
-{
-  background-image:    url('../css/images/treeview-famfamfam.gif');
-}
-
-.treeview-docblox small
-{
-  color:               black;
-  line-height:         1.5em;
-  display:             block;
-  font-style:          italic;
-}
-
-.treeview-docblox a
-{
-  color:               #2B4167;
-}
-
-.treeview li.expandable, .treeview li.collapsable
-{
-  background-position: 0 -176px;
-}
-
-.treeview div.collapsable-hitarea, .treeview div.expandable-hitarea
-{
-  background-position: -80px -3px;
-  float:               right;
-  margin-right:        -7px;
-}
-
-.treeview div.collapsable-hitarea
-{
-  background-position: -64px -25px;
 }
 
 #content .properties
@@ -264,6 +232,7 @@ th, td
 
 #content h2
 {
+  color: #5E8CDF;
   border-bottom:       1px dashed #5E8CDF;
   padding: 10px 0px;
 }
@@ -274,7 +243,17 @@ th, td
   margin-top:          12px;
 }
 
-#content .method
+.file_menu
+{
+  background-color:   #f0f0f0;
+  -moz-border-radius: 5px;
+  border-radius:      5px;
+  text-align:         center;
+  margin-top:         -5px;
+  padding:            3px;
+}
+
+#content .method, #content .constant, #content .property, #content .class, #content .interface
 {
   border:              1px solid silver;
   background:          #f9fdf9;
@@ -282,27 +261,15 @@ th, td
   padding:             5px;
 }
 
-#content .method h4
+#content .method h4, #content .constant h4, #content .property h4, #content .class h4, #content .interface h4
 {
   margin-top:          10px;
   margin-bottom:       3px;
 }
 
-#content .property
+#content .class
 {
-  border:              1px solid silver;
-  background:          #f9fdf9;
-  margin:              8px 0px;
-  padding:             5px;
+  margin:        5px 0px;
+  margin-bottom: 15px;
 }
 
-#content .property h4
-{
-  margin-top:          10px;
-  margin-bottom:       3px;
-}
-
-/*li.namespace div.content */
-/*{*/
-  /*font-weight: bold;*/
-/*}*/

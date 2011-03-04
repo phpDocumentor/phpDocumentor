@@ -8,15 +8,18 @@
 * Links do not detect | notation; they just ignore them
 * @see tags which define methods (<class>::<method>) are not converted into a link
 * @throw tags exception class is not converted to a link
-* The file output can not be put in a sub-directory; need to change this
+* Links in the XSLT writer's output do not work with sub-directories; need to change this
+* include statement is shown in all include categories.
+* include section should be clickable (click-through)
+* Click-through on classes in parameter tags leads to the right file but without anchor
 
-0.10: Add custom documents, statistics and improve theming
+0.10: Add custom documents and statistics
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
-* Add theme.xml config file to themes; this can provide information what writer to use for a theme
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
+* Consider implementing disqus support
 
 0.11: Pre 1.0 cleanup
 * safari does not show the svg nicely, it places it into a very small scrollbox

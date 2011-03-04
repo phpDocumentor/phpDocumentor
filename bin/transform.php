@@ -41,24 +41,10 @@ try
     : 'output/structure.xml'
   );
 
-  $transformer->setTemplate($opts->getOption('template')
+  $transformer->setTemplates($opts->getOption('template')
     ? $opts->getOption('template')
     : 'default'
   );
-
-  // set theme / chrome path if provided
-// TODO: should become parameter of the XSLT writer / transformation rule
-//  if ($opts->getOption('search'))
-//  {
-//    if (method_exists($writer, 'setSearchObject'))
-//    {
-//      $writer->setSearchObject($opts->getOption('search'));
-//    }
-//    else
-//    {
-//      echo 'The chosen output format does not support different search methods'.PHP_EOL;
-//    }
-//  }
 
   // enable verbose mode if the flag was set
   if ($opts->getOption('verbose'))
