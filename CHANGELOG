@@ -3,6 +3,12 @@
 * FIXED:    Added support for PEAR packages by adding a package.xml and moving directories
 * ADDED:    docblox.bat for use in windows environments (thanks to Tyrael)
 * FIXED:    Invoking docblox from an arbitrary location (to aid int he PEAR package)
+* ADDED:    Redesigned DocBlox template
+* ADDED:    New template 'frames' for frame display
+* ADDED:    New template 'Zend' for Zend Framework
+* FIXED:    Changed DocBlox to support frames based templates
+* FIXED:    Added links for types in the signature of a method
+* FIXED:    Made changes in the generic styling to increase uniformity
 
 02/19/2011: Version 0.8: fix known issues
 

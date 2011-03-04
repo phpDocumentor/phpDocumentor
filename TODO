@@ -1,15 +1,14 @@
 0.9: Improve Theming and CLI
-* Large complex applications generate a large sidebar in the new theme; this should be solved for ZF2
 * Add PDF output writer using ezPDF
 * Add Twig output writer
 * Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
   allow it to work for all three executables.
+* restore search in new templates
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 * Links do not detect | notation; they just ignore them
 * @see tags which define methods (<class>::<method>) are not converted into a link
 * @throw tags exception class is not converted to a link
 * Links in the XSLT writer's output do not work with sub-directories; need to change this
-* include statement is shown in all include categories.
 * include section should be clickable (click-through)
 * Click-through on classes in parameter tags leads to the right file but without anchor
 
