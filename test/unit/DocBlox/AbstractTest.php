@@ -20,49 +20,42 @@ class DocBlox_AbstractTest extends PHPUnit_Framework_TestCase
 
   public function testGetConfig()
   {
-    $this->assertInstanceOf('Zend_Config_Xml', $this->fixture->getConfig());
-  }
-
-  public function testConfig()
-  {
-    $this->assertInstanceOf('Zend_Config_Xml', DocBlox_Abstract::config());
-  }
-
-  public function testLoadConfig()
-  {
-    $config = DocBlox_Abstract::loadConfig(dirname(__FILE__) . '/../../../docblox.config.xml');
-    $this->assertInstanceOf('Zend_Config_Xml', $config);
+    $config = $this->fixture->getConfig();
+    $this->assertInstanceOf('DocBlox_Config', $config);
 
     // loading of the template configs
     $this->assertTrue(isset($config->templates));
     $this->assertTrue(isset($config->templates->default));
     $this->assertTrue(isset($config->templates->default->transformations));
+  }
 
-    $this->setExpectedException('Exception');
-    DocBlox_Abstract::loadConfig('blabla');
+  public function testConfig()
+  {
+    $this->assertInstanceOf('DocBlox_Config', DocBlox_Abstract::config());
+
   }
 
   public function testGetLogLevel()
   {
     // test uninitialized
     $this->assertEquals(
-      constant('Zend_Log::' . strtoupper($this->fixture->getConfig()->logging->level)),
+      constant('DocBlox_Log::' . strtoupper($this->fixture->getConfig()->logging->level)),
       $this->fixture->getLogLevel()
     );
 
-    $this->fixture->setLogLevel(Zend_Log::ALERT);
-    $this->assertEquals(Zend_Log::ALERT, $this->fixture->getLogLevel());
-    $this->fixture->setLogLevel(Zend_Log::CRIT);
-    $this->assertEquals(Zend_Log::CRIT, $this->fixture->getLogLevel());
+    $this->fixture->setLogLevel(DocBlox_Log::ALERT);
+    $this->assertEquals(DocBlox_Log::ALERT, $this->fixture->getLogLevel());
+    $this->fixture->setLogLevel(DocBlox_Log::CRIT);
+    $this->assertEquals(DocBlox_Log::CRIT, $this->fixture->getLogLevel());
   }
 
   public function testSetLogLevel()
   {
-    $this->fixture->setLogLevel(Zend_Log::ALERT);
-    $this->assertEquals(Zend_Log::ALERT, $this->fixture->getLogLevel());
+    $this->fixture->setLogLevel(DocBlox_Log::ALERT);
+    $this->assertEquals(DocBlox_Log::ALERT, $this->fixture->getLogLevel());
 
     $this->fixture->setLogLevel('crit');
-    $this->assertEquals(Zend_Log::CRIT, $this->fixture->getLogLevel());
+    $this->assertEquals(DocBlox_Log::CRIT, $this->fixture->getLogLevel());
 
     $this->setExpectedException('InvalidArgumentException');
     $this->fixture->setLogLevel('crit2');

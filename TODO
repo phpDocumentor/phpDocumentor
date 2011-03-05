@@ -1,16 +1,16 @@
 0.9: Improve Theming and CLI
-* Add PDF output writer using ezPDF
-* Add Twig output writer
 * Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
   allow it to work for all three executables.
 * restore search in new templates
-* Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 * Links do not detect | notation; they just ignore them
 * @see tags which define methods (<class>::<method>) are not converted into a link
 * @throw tags exception class is not converted to a link
+* Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 * Links in the XSLT writer's output do not work with sub-directories; need to change this
 * include section should be clickable (click-through)
 * Click-through on classes in parameter tags leads to the right file but without anchor
+* Add PDF output writer using ezPDF|TCPDF|FPDF|DocBook|html2pdf (http://www.tufat.com/s_html2ps_html2pdf.htm)?
+* Add Twig output writer
 
 0.10: Add custom documents and statistics
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
@@ -22,9 +22,6 @@
 
 0.11: Pre 1.0 cleanup
 * safari does not show the svg nicely, it places it into a very small scrollbox
-* Refactor static reflection to:
-  * Be uniform with the Reflector interface and PHP's Dynamic Reflection
-  * Consistently use either DOMDocument or SimpleXMLElement
 * Add docblox templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
 
  BONUS:
@@ -34,5 +31,8 @@ Technical Debt:
 * Add docblocks to DocBlox
 * Add documentation
 * Write unit tests
+* Refactor static reflection to:
+  * Be uniform with the Reflector interface and PHP's Dynamic Reflection
+  * Consistently use either DOMDocument or SimpleXMLElement
 
 More items will be added to this list as the project furthers.

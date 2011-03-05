@@ -134,6 +134,16 @@ abstract class DocBlox_Abstract
    */
   public function setLogLevel($level)
   {
+    if (!is_numeric($level))
+    {
+      if (!defined('Zend_Log::' . strtoupper($level)))
+      {
+        throw new InvalidArgumentException('Expected one of the constants of the Zend_Log class, "'
+          . $level . '" received');
+      }
+      $level = constant('Zend_Log::'.strtoupper($level));
+    }
+
     self::$log_level = $level;
   }
 
@@ -199,7 +209,7 @@ abstract class DocBlox_Abstract
       return;
     }
 
-    if (!self::$logger)
+    if (!self::$logger || !self::$stdout_logger)
     {
       $config = $this->getConfig();
 
