@@ -37,7 +37,7 @@ abstract class DocBlox_Abstract
    * The config containing overrides for the defaults.
    *
    * @see DocBlox_Abstract::getConfig()
-   * @var Zend_Config
+   * @var DocBlox_Config
    */
   static protected $config       = null;
 
@@ -281,55 +281,6 @@ abstract class DocBlox_Abstract
   }
 
   /**
-   * Loads the configuration for DocBlox.
-   *
-   * @param string $filename
-   */
-  public static function loadConfig($filename)
-  {
-    if (!is_readable($filename))
-    {
-      throw new Exception('Config file "'.$filename.'" is not readable');
-    }
-
-    $config = new Zend_Config_Xml(file_get_contents($filename), null, true);
-    if (!isset($config->paths))
-    {
-      $config->paths = new Zend_Config(array(), true);
-    }
-    $config->paths->application = realpath(dirname(__FILE__) . '/../..');
-    $config->paths->data = realpath(dirname(__FILE__) . '/../../data');
-    $config = self::mergeTemplateConfigurations($config);
-    return $config;
-  }
-
-  /**
-   * Merges the configurations of the templates into the main configuration.
-   *
-   * @param Zend_Config $config
-   *
-   * @return Zend_Config
-   */
-  protected static function mergeTemplateConfigurations(Zend_Config $config)
-  {
-    $config->templates = array();
-    $iterator = new DirectoryIterator(dirname(__FILE__).'/../../data/templates');
-
-    /** @var DirectoryIterator $path */
-    foreach ($iterator as $path)
-    {
-      $config_path = $path->getRealPath() . '/template.xml';
-      if ($path->isDir() && !$path->isDot() && is_readable($config_path))
-      {
-        $basename = $path->getBasename();
-        $config->templates->$basename = new Zend_Config_Xml($config_path);
-      }
-    }
-
-    return $config;
-  }
-
-  /**
    * Returns the configuration for DocBlox.
    *
    * @return Zend_Config
@@ -338,7 +289,7 @@ abstract class DocBlox_Abstract
   {
     if (self::$config === null)
     {
-      self::$config = self::loadConfig(dirname(__FILE__).'/../../docblox.config.xml');
+      self::$config = new DocBlox_Config(dirname(__FILE__) . '/../../docblox.config.xml');
     }
 
     return self::$config;
