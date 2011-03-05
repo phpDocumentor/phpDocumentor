@@ -11,6 +11,8 @@
 * FIXED:    Made changes in the generic styling to increase uniformity
 * FIXED:    Github issue 24: FILEINFO_MIME_ENCODING is not supported on PHP 5.2.x
 * FIXED:    Github issue 23: detection whether log file can be written always detected false
+* ADDED:    Move the configuration code from DocBlox_Abstract to DocBlox_Config
+* ADDED:    Moved the logging code from DocBlox_Abstract to DocBlox_Log
 
 02/19/2011: Version 0.8: fix known issues
 

@@ -23,31 +23,42 @@ abstract class DocBlox_Abstract
    *
    * @var int
    */
-  const VERSION = '0.8.6';
+  const VERSION = '0.8.7';
 
   /**
    * The logger used to capture all messages send by the log method.
    *
    * @see DocBlox_Abstract::log()
-   * @var Zend_Log
+   *
+   * @var DocBlox_Log
    */
   static protected $logger       = null;
 
   /**
-   * The config containing overrides for the defaults.
+   * The logger used to capture all messages send by the log method and send them to stdout.
    *
-   * @see DocBlox_Abstract::getConfig()
-   * @var DocBlox_Config
+   * @see DocBlox_Abstract::log()
+   *
+   * @var DocBlox_Log
    */
-  static protected $config       = null;
+  static protected $stdout_logger       = null;
 
   /**
    * The logger used to capture the debug messages send by the debug method.
    *
    * @see DocBlox_Abstract::debug()
-   * @var Zend_Log
+   * @var DocBlox_Log
    */
   static protected $debug_logger = null;
+
+  /**
+   * The config containing overrides for the defaults.
+   *
+   * @see DocBlox_Abstract::getConfig()
+   *
+   * @var DocBlox_Config
+   */
+  static protected $config       = null;
 
   /**
    * The current level of logging,
@@ -123,16 +134,6 @@ abstract class DocBlox_Abstract
    */
   public function setLogLevel($level)
   {
-    if (!is_numeric($level))
-    {
-      if (!defined('Zend_Log::' . strtoupper($level)))
-      {
-        throw new InvalidArgumentException('Expected one of the constants of the Zend_Log class, "'
-          . $level . '" received');
-      }
-      $level = constant('Zend_Log::'.strtoupper($level));
-    }
-
     self::$log_level = $level;
   }
 
@@ -169,44 +170,13 @@ abstract class DocBlox_Abstract
    */
   protected function debug($message)
   {
-    // is the log level is below debugging; just skip this
-    if ($this->getLogLevel() < Zend_Log::DEBUG)
-    {
-      return;
-    }
-
     if (!self::$debug_logger)
     {
       $config = $this->getConfig();
-      $file = str_replace(
-        array('{APP_ROOT}', '{DATE}'),
-        array($config->paths->application, date('YmdHis')),
-        $config->logging->paths->errors
-      );
-
-      if (!is_writeable(dirname($file)))
-      {
-        self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Null());
-        $this->log(
-          'The log directory does not appear to be writable; tried to log to: ' . $file
-            . ', disabled logging to file',
-          Zend_Log::ERR
-        );
-        return;
-      }
-      self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
+      self::$debug_logger = new DocBlox_Log($config->logging->paths->errors);
     }
 
-    // if the given is not a string then we var dump the object|array to inspect it
-    $dump = $message;
-    if (!is_string($dump))
-    {
-      ob_start();
-      var_dump($message);
-      $dump = ob_get_clean();
-    }
-
-    self::$debug_logger->log($dump, Zend_Log::DEBUG);
+    self::$debug_logger->log($message, Zend_Log::DEBUG);
   }
 
   /**
@@ -221,15 +191,9 @@ abstract class DocBlox_Abstract
    * @param  string $message
    * @return void
    */
-  public function log($message, $priority = Zend_Log::INFO)
+  public function log($message, $priority = DocBlox_Log::INFO)
   {
-    // is the log level is below the priority; just skip this
-    if ($this->getLogLevel() < $priority)
-    {
-      return;
-    }
-
-    if ($priority == Zend_Log::DEBUG)
+    if ($priority == DocBlox_Log::DEBUG)
     {
       $this->debug($message);
       return;
@@ -238,36 +202,18 @@ abstract class DocBlox_Abstract
     if (!self::$logger)
     {
       $config = $this->getConfig();
-      $file = str_replace(
-        array('{APP_ROOT}', '{DATE}'),
-        array($config->paths->application, date('YmdHis')),
-        $config->logging->paths->default
-      );
 
-      if (!is_writeable(dirname($file)))
-      {
-        self::$logger = new Zend_Log(new Zend_Log_Writer_Null());
-        $this->log(
-          'The log directory does not appear to be writable; tried to log to: ' . $file
-            . ', disabled logging to file',
-          Zend_Log::ERR
-        );
-        return;
-      }
+      // log to file
+      self::$logger = new DocBlox_Log($config->logging->paths->default);
+      self::$logger->setThreshold($this->getLogLevel());
 
-      self::$logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
+      // log to stdout
+      self::$stdout_logger = new DocBlox_Log(DocBlox_Log::FILE_STDOUT);
+      self::$stdout_logger->setThreshold($this->getLogLevel());
     }
 
-    static $priority_names = null;
-    if ($priority_names === null)
-    {
-      $r = new ReflectionClass('Zend_Log');
-      $priority_names = array_flip($r->getConstants());
-    }
-
-    $debug_info = ($this->getLogLevel() == Zend_Log::DEBUG) ? ', '.round(memory_get_usage() / 1024 / 1024, 2).'mb' : '';
-    echo '['.$priority_names[$priority].': '.date('H:i').$debug_info.']: '.$message.PHP_EOL;
     self::$logger->log($message, $priority);
+    self::$stdout_logger->log($message, $priority);
   }
 
   /**
