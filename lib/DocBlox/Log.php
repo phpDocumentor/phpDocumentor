@@ -31,6 +31,13 @@ class DocBlox_Log
   protected $threshold = self::DEBUG;
 
   /**
+   * The name of the file/stream where the logs are written to.
+   *
+   * @var string
+   */
+  protected $filename = '';
+
+  /**
    * The logger to use for storing information.
    *
    * @var Zend_Log
@@ -69,13 +76,24 @@ class DocBlox_Log
           self::ERR
         );
 
+        $this->filename = null;
         return;
       }
     }
 
+    $this->filename = $file;
     $this->logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
   }
 
+  /**
+   * Returns the name of the file/stream where the output is written to or null if it is send to the void.
+   *
+   * @return null|string
+   */
+  public function getFilename()
+  {
+    return $this->filename;
+  }
   /**
    * Sets the logging threshold; anything more detailed than the given level will not be logged.
    *
