@@ -86,8 +86,23 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     if (class_exists('finfo'))
     {
       // PHP 5.3 or PECL extension
+      $flag      = defined('FILEINFO_MIME_ENCODING') ? FILEINFO_MIME_ENCODING : FILEINFO_MIME;
       $info      = new finfo();
-      $encoding  = $info->file($filename, FILEINFO_MIME_ENCODING);
+      $encoding  = $info->file($filename, $flag);
+
+      // Versions prior to PHP 5.3 do not support the FILEINFO_MIME_ENCODING constant; extract the encoding from the
+      // FILEINFO_MIME result; wo do nto do this by default for performance reasons
+      if ($flag != FILEINFO_MIME_ENCODING)
+      {
+        $encoding = explode('=', $encoding);
+        if (count($encoding) != 2)
+        {
+          throw new InvalidArgumentException(
+            'Mime type returned by finfo contains multiple parts separated by an equals sign, only one is expected'
+          );
+        }
+        $encoding = $encoding[1];
+      }
     } elseif(function_exists('mb_detect_encoding'))
     {
       // OR with mbstring
