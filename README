@@ -65,6 +65,14 @@ argument to 'None' or 'Ajax'. The default 'XmlJs' search option tends to become 
 
 Documentation
 -------------
-Along the way I will be creating more elaborate documentation, even this file will be improved. But for now I have
-to admit that this is it. (yes, even the docblocks in the code are lacking, this is a Work In Progress and are used
-for testing purposes ;))
+For more detailed information you can check our online documentation at http://www.docblox-project.org/documentation
+
+Contact
+-------
+To come in contact is actually dead simple and can be done in a variety of ways.
+
+# Twitter: @DocBlox
+# IRC:     Freenode, #docblox
+# Github:  http://www.github.com/mvriel/docblox
+# Website: http://www.docblox-project.org
+# E-mail:  mike.vanriel@naenius.com

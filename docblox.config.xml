@@ -17,9 +17,6 @@
     <item>TODO</item>
     <item>FIXME</item>
   </markers>
-  <transformation>
-    <writer>xslt</writer>
-  </transformation>
   <transformations>
     <template name="default" />
   </transformations>
