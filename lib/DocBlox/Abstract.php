@@ -184,7 +184,7 @@ abstract class DocBlox_Abstract
         $config->logging->paths->errors
       );
 
-      if (!is_writeable($file))
+      if (!is_writeable(dirname($file)))
       {
         self::$debug_logger = new Zend_Log(new Zend_Log_Writer_Null());
         $this->log(
@@ -244,7 +244,7 @@ abstract class DocBlox_Abstract
         $config->logging->paths->default
       );
 
-      if (!is_writeable($file))
+      if (!is_writeable(dirname($file)))
       {
         self::$logger = new Zend_Log(new Zend_Log_Writer_Null());
         $this->log(
