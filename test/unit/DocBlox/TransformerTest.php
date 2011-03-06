@@ -165,8 +165,19 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
     );
   }
 
+  public function testGenerateFilename()
+  {
+    $this->markTestIncomplete();
+  }
+
+  public function testLoadTransformations()
+  {
+    $this->markTestIncomplete();
+  }
+
   public function testExecute()
   {
+    $this->markTestIncomplete();
   }
 
 }
