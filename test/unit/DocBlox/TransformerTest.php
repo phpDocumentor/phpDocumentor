@@ -1,5 +1,4 @@
 <?php
-
 /**
 * Test class for DocBlox_Transformer.
 */
@@ -44,6 +43,9 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
     // unknown directories are not allowed
     $this->setExpectedException('Exception');
     $this->fixture->setSource('/tmpa');
+
+    $this->markTestIncomplete('We still need to test the structure.xml changes that are induced by '
+      . 'the addMetaDataToStructure method');
   }
 
   public function testTemplate()
@@ -167,17 +169,72 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
 
   public function testGenerateFilename()
   {
-    $this->markTestIncomplete();
+    // separate the directories with the DIRECTORY_SEPARATOR constant ot prevent failing tests on windows
+    $filename = 'directory'.DIRECTORY_SEPARATOR.'directory2'.DIRECTORY_SEPARATOR.'file.php';
+    $this->assertEquals('directory_directory2_file.html', $this->fixture->generateFilename($filename));
   }
 
   public function testLoadTransformations()
   {
+    DocBlox_Abstract::config()->transformations = array();
+
+    $this->fixture = new DocBlox_Transformer();
+    $this->assertEquals(
+      0,
+      count($this->fixture->getTransformations()),
+      'A transformer should not have transformations when initialized with an empty configuration'
+    );
+
+    DocBlox_Abstract::config()->transformations = array(
+      new Zend_Config_Xml(<<<XML
+<?xml version="1.0"?>
+<transformation>
+  <query>test1</query>
+  <writer>Xsl</writer>
+  <source>test3</source>
+  <artifact>test4</artifact>
+</transformation>
+XML
+      ));
+
+    $this->fixture->loadTransformations();
+    $this->assertEquals(
+      1,
+      count($this->fixture->getTransformations()),
+      'When invoking the loadTransformations method with only a single transformation in the configuration there '
+        . 'should be only 1'
+    );
+
+    // TODO: add test to check if a transformation which is passed as argument is added correctly
+    // TODO: add test to check if a template's transformations which is passed as argument is added correctly
     $this->markTestIncomplete();
   }
 
   public function testExecute()
   {
-    $this->markTestIncomplete();
+    DocBlox_Abstract::config()->transformations = array();
+    $this->fixture = new DocBlox_Transformer();
+
+    // when nothing is added; this moch should not be invoked
+    $transformation = $this->getMock(
+      'DocBlox_Transformation',
+      array('execute'),
+      array($this->fixture, '', 'Xsl', '', '')
+    );
+
+    $transformation->expects($this->never())->method('execute');
+    $this->fixture->execute();
+
+    // when we add this mock; we expect it to be invoked
+    $transformation = $this->getMock(
+      'DocBlox_Transformation',
+      array('execute'),
+      array($this->fixture, '', 'Xsl', '', '')
+    );
+
+    $transformation->expects($this->once())->method('execute');
+    $this->fixture->addTransformation($transformation);
+    $this->fixture->execute();
   }
 
 }
