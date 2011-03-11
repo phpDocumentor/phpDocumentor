@@ -11,9 +11,7 @@
       <xsl:with-param name="search_template" select="$search_template" />
     </xsl:call-template>
 
-    <div class="section">
-      <input id="search_box" />
-    </div>
+    <input id="search_box" />
 
     <xsl:if test="count(/project/namespace) > 0">
     <div class="section">

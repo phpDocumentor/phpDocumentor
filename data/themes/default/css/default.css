@@ -151,6 +151,7 @@ div.section h1
 
 #search_box
 {
+  display: none;
   width: 95%;
   margin: 5px;
   text-align:         center;
@@ -216,8 +217,9 @@ div.section h1
   white-space:         pre-wrap;
 }
 
-#content .class, #content .interface {
-	clear: right;
+#content .class, #content .interface
+{
+  clear: right;
 }
 
 #content h1
