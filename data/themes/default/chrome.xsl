@@ -63,9 +63,7 @@
 
         <div id="maincontainer">
 
-          <div id="header">
-            <div class="padder"></div>
-          </div>
+          <div id="header"></div>
 
           <xsl:call-template name="menu" />
 
@@ -75,6 +73,13 @@
 
           <div id="index">
             <div class="padder">
+              <xsl:call-template name="search">
+                <xsl:with-param name="root" select="$root" />
+                <xsl:with-param name="search_template" select="$search_template" />
+              </xsl:call-template>
+              <div class="section">
+                <input id="search_box" />
+              </div>
               <xsl:if test="$object-index">
               <xsl:value-of select="$object-index" disable-output-escaping="yes"/>
               </xsl:if>

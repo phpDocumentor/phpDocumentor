@@ -13,13 +13,21 @@
         <search>none</search>
       </parameters>
     </transformation>
-    <transformation query="" writer="xsl" source="themes/frames/header.xsl" artifact="header.html"/>
+    <transformation query="" writer="xsl" source="themes/frames/header.xsl" artifact="header.html">
+      <parameters>
+        <variables><title>DocBlox</title></variables>
+        <search>xmljs</search>
+      </parameters>
+    </transformation>
     <transformation query="" writer="xsl" source="themes/frames/empty.xsl" artifact="side.html"/>
     <transformation query="" writer="xsl" source="themes/frames/menu.xsl" artifact="menu.html">
       <parameters><variables><title>Menu</title></variables></parameters>
     </transformation>
     <transformation query="" writer="xsl" source="themes/frames/sidebar.xsl" artifact="sidebar.html">
-      <parameters><variables><title>Sidebar</title></variables></parameters>
+      <parameters>
+        <variables><title>Sidebar</title></variables>
+        <search>xmljs</search>
+      </parameters>
     </transformation>
     <transformation query="" writer="xsl" source="themes/frames/classgraph.xsl" artifact="graph.html">
       <parameters><variables><title>Class Diagram</title></variables></parameters>

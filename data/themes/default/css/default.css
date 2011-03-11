@@ -149,18 +149,14 @@ div.section h1
   border-bottom:       1px solid #5E8CDF;
 }
 
-#menu #search-box
+#search_box
 {
-  text-align:          center;
-  margin-bottom:       20px;
-}
-
-#menu #search-box input
-{
-  text-align:          center;
-  border:              2px solid #5E8CDF;
-  -moz-border-radius:  5px;
-  border-radius:       5px;
+  width: 95%;
+  margin: 5px;
+  text-align:         center;
+  border:             1px solid #5E8CDF;
+  -moz-border-radius: 5px;
+  border-radius:      5px;
 }
 
 #content .properties

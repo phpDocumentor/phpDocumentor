@@ -20,7 +20,9 @@
     </parameters>
     </transformation>
     <transformation query="" writer="xsl" source="themes/zend/sidebar.xsl" artifact="sidebar.html">
-      <parameters><variables><title>Sidebar</title></variables></parameters>
+      <parameters><variables><title>Sidebar</title></variables>
+        <search>ajax</search>
+      </parameters>
     </transformation>
     <transformation query="" writer="xsl" source="themes/zend/classgraph.xsl" artifact="graph.html">
       <parameters><variables><title>Class Diagram</title></variables></parameters>

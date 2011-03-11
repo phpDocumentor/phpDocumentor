@@ -1,6 +1,5 @@
 0.9: Improve Theming and CLI
 * Create a task to do both parse and transform
-* restore search in new templates
 * Links do not detect | notation; they just ignore them
 * @see tags which define methods (<class>::<method>) are not converted into a link
 * @throw tags exception class is not converted to a link

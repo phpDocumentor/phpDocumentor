@@ -18,6 +18,7 @@
 * ADDED:    Transformed parse and transform into tasks
 * ADDED:    List task which lists all available tasks
 * REMOVED:  sfTimer, replaced it with microtime calls
+* ADDED:    Re-implemented Search in the new templates
 
 02/19/2011: Version 0.8: fix known issues
 

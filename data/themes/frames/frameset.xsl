@@ -8,6 +8,8 @@
     <head>
       <title><xsl:value-of select="$title" /></title>
       <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+      <link type="text/css" href="css/default.css" rel="stylesheet" />
+      <link type="text/css" href="css/theme.css" rel="stylesheet" />
     </head>
     <frameset cols="*, 980, *" frameborder="no" framespacing="0" border="0">
       <frame src="side.html" />

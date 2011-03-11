@@ -35,7 +35,7 @@
         $("#search_box").show();
         var search_index = {};
         $.ajax({
-          url: "<xsl:value-of select="$root" />/search_index.xml",
+          url: "<xsl:value-of select="$root" />search_index.xml",
           dataType: ($.browser.msie) ? "text" : "xml",
           error: function(data) {
             alert('An error occurred using the search data');
@@ -54,7 +54,7 @@
               type = $("type", this).text();
               return {
                 value: $("value", this).text(),
-                label: '<img src="{$root}/images/icons/'+type+'.png" align="absmiddle" />'+$("value", this).text(),
+                label: '<img src="{$root}images/icons/'+type+'.png" align="absmiddle" />'+$("value", this).text(),
                 id: $("id", this).text(),
               };
             }).get();
@@ -63,7 +63,7 @@
               source: search_index,
               select: function(event, ui) {
                 // redirect to the documentation
-                $(location).attr('href', '<xsl:value-of select="$root" />/'+ui.item.id);
+                parent.content.document.location = '<xsl:value-of select="$root" />'+ui.item.id;
                 applySearchHash();
               }
             });
@@ -80,10 +80,10 @@
       $(function() {
         $("#search_box").show();
         $("#search_box").autocomplete({
-          source: "<xsl:value-of select="$root" />/ajax_search.php",
+          source: "<xsl:value-of select="$root" />ajax_search.php",
           minLength: 2,
           select: function(event, ui) {
-            $(location).attr('href', '<xsl:value-of select="$root" />/'+ui.item.id);
+            $(location).attr('href', '<xsl:value-of select="$root" />'+ui.item.id);
             applySearchHash();
           }
         });
