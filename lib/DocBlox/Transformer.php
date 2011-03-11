@@ -354,14 +354,18 @@ class DocBlox_Transformer extends DocBlox_Abstract
     /** @var DOMElement $element */
     foreach ($qry as $element)
     {
-      if ($element->getAttribute('name') == 'see')
+      switch($element->getAttribute('name'))
       {
-        $node_value = explode('::', $element->nodeValue);
-        if (isset($class_paths[$node_value[0]]))
-        {
-          $file_name = $this->generateFilename($class_paths[$node_value[0]]);
-          $element->setAttribute('link', $file_name . '#' . $element->nodeValue);
-        }
+        case 'see':
+        case 'throw':
+        case 'throws':
+          $node_value = explode('::', $element->nodeValue);
+          if (isset($class_paths[$node_value[0]]))
+          {
+            $file_name = $this->generateFilename($class_paths[$node_value[0]]);
+            $element->setAttribute('link', $file_name . '#' . $element->nodeValue);
+          }
+          break;
       }
 
       // if a tag has a type, add a link to the given file if it exists in the xml

@@ -19,6 +19,7 @@
 * ADDED:    List task which lists all available tasks
 * REMOVED:  sfTimer, replaced it with microtime calls
 * ADDED:    Re-implemented Search in the new templates
+* ADDED:    @throw and @throws are now clickable and redirect to the right page
 
 02/19/2011: Version 0.8: fix known issues
 

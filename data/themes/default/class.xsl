@@ -222,7 +222,6 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Link</th>
           </tr>
         </thead>
         <tbody>
@@ -234,9 +233,6 @@
             <td>
                 <xsl:if test="@link and @link != ''"><a href="{$root}{@link}"><xsl:value-of select="." /></a></xsl:if>
                 <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="." /></xsl:if>
-            </td>
-            <td>
-              <xsl:value-of select="@link" />
             </td>
           </tr>
         </xsl:for-each>
