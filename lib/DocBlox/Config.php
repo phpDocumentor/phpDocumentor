@@ -51,4 +51,42 @@ class DocBlox_Config extends Zend_Config_Xml
       }
     }
   }
+
+  /**
+   * Returns the items of the given path as an array.
+   *
+   * A path may be shown as item/item and will always be taken from this object and thus be relative to this object.
+   *
+   * @param string $path
+   *
+   * @return string[]
+   */
+  public function getArrayFromPath($path)
+  {
+    $path = explode('/', $path);
+
+    // walk through the path; if any segment was not found; return an empty array
+    $config = $this;
+    foreach ($path as $part)
+    {
+      if (!isset($config->$part))
+      {
+        return array();
+      }
+
+      $config = $config->$part;
+    }
+
+    if ($config instanceof Zend_Config)
+    {
+      $config = $config->toArray();
+    }
+
+    if (is_string($config))
+    {
+      $config = array($config);
+    }
+
+    return $config;
+  }
 }

@@ -23,7 +23,7 @@ abstract class DocBlox_Abstract
    *
    * @var int
    */
-  const VERSION = '0.8.7';
+  const VERSION = '0.8.8';
 
   /**
    * The logger used to capture all messages send by the log method.
@@ -72,7 +72,7 @@ abstract class DocBlox_Abstract
   /**
    * Associative array containing all timers by name.
    *
-   * @var sfTimer[]
+   * @var float[]
    */
   protected $timer = array();
 
@@ -136,14 +136,26 @@ abstract class DocBlox_Abstract
   {
     if (!is_numeric($level))
     {
-      if (!defined('Zend_Log::' . strtoupper($level)))
+      if (!defined('DocBlox_Log::' . strtoupper($level)))
       {
-        throw new InvalidArgumentException('Expected one of the constants of the Zend_Log class, "'
+        throw new InvalidArgumentException('Expected one of the constants of the DocBlox_Log class, "'
           . $level . '" received');
       }
-      $level = constant('Zend_Log::'.strtoupper($level));
+      $level = constant('DocBlox_Log::'.strtoupper($level));
     }
 
+    if (self::$logger)
+    {
+      self::$logger->setThreshold($level);
+    }
+    if (self::$stdout_logger)
+    {
+      self::$stdout_logger->setThreshold($level);
+    }
+    if (self::$debug_logger)
+    {
+      self::$debug_logger->setThreshold($level);
+    }
     self::$log_level = $level;
   }
 
@@ -186,7 +198,7 @@ abstract class DocBlox_Abstract
       self::$debug_logger = new DocBlox_Log($config->logging->paths->errors);
     }
 
-    self::$debug_logger->log($message, Zend_Log::DEBUG);
+    self::$debug_logger->log($message, DocBlox_Log::DEBUG);
   }
 
   /**
@@ -229,7 +241,7 @@ abstract class DocBlox_Abstract
   /**
    * Returns the configuration for DocBlox.
    *
-   * @return Zend_Config
+   * @return DocBlox_Config
    */
   public function getConfig()
   {
@@ -239,7 +251,7 @@ abstract class DocBlox_Abstract
   /**
    * Returns the configuration for DocBlox.
    *
-   * @return Zend_Config
+   * @return DocBlox_Config
    */
   public static function config()
   {

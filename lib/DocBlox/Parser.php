@@ -125,6 +125,13 @@ class DocBlox_Parser extends DocBlox_Abstract
     $dom = null;
     if ($xml !== null)
     {
+      if (substr(trim($xml), 0, 5) != '<?xml')
+      {
+        $xml = (is_readable($xml))
+          ? file_get_contents($xml)
+          : '<?xml version="1.0" encoding="utf-8"?><docblox></docblox>';
+      }
+
       $dom = new DOMDocument();
       $dom->loadXML($xml);
     }
@@ -346,7 +353,7 @@ class DocBlox_Parser extends DocBlox_Abstract
   public function parseFiles(array $files)
   {
     $this->log('Starting to process '.count($files).' files').PHP_EOL;
-    $timer = new sfTimer();
+    $timer = microtime(true);
 
     $dom = new DOMDocument('1.0', 'utf-8');
     $dom->formatOutput = true;
@@ -378,7 +385,7 @@ class DocBlox_Parser extends DocBlox_Abstract
 
     $xml = $dom->saveXML();
     $this->log('--');
-    $this->log('Elapsed time to parse all files: ' . round($timer->getElapsedTime(), 2) . 's');
+    $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');
     $this->log('Peak memory usage: ' . round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
 
     return $xml;

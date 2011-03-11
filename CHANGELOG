@@ -13,6 +13,11 @@
 * FIXED:    Github issue 23: detection whether log file can be written always detected false
 * ADDED:    Move the configuration code from DocBlox_Abstract to DocBlox_Config
 * ADDED:    Moved the logging code from DocBlox_Abstract to DocBlox_Log
+* ADDED:    Quiet mode to transform and parse
+* ADDED:    New tasks system (inspired by Symfony 1.x)
+* ADDED:    Transformed parse and transform into tasks
+* ADDED:    List task which lists all available tasks
+* REMOVED:  sfTimer, replaced it with microtime calls
 
 02/19/2011: Version 0.8: fix known issues
 

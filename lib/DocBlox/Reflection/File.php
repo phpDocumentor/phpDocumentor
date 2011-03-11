@@ -228,6 +228,16 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->hash = $hash;
   }
 
+  /**
+   * Returns all classes in this file.
+   *
+   * @return DocBlox_Reflection_Class
+   */
+  public function getClasses()
+  {
+    return $this->classes;
+  }
+
   public function initializeTokens()
   {
     if ($this->tokens instanceof DocBlox_TokenIterator)

@@ -14,7 +14,7 @@
  * @package    CLI
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Arguments extends Zend_Console_Getopt
+class DocBlox_Arguments extends DocBlox_Task_Abstract
 {
   static public $parse_options = array(
       'h|help'         => 'Show this help message',
@@ -38,6 +38,16 @@ class DocBlox_Arguments extends Zend_Console_Getopt
     'v|verbose'  => 'Outputs any information collected by this application, may slow down the process slightly',
   );
 
+  protected function configure()
+  {
+
+  }
+
+  protected function execute()
+  {
+
+  }
+
   /**
    * Contains all files identified using the -d and -f option
    *
@@ -60,52 +70,6 @@ class DocBlox_Arguments extends Zend_Console_Getopt
   public function __construct()
   {
     parent::__construct(self::$parse_options);
-  }
-
-  /**
-   * Generates the usage / help message.
-   *
-   * @return string
-   */
-  public function getUsageMessage()
-  {
-    $usage = "Usage: {$this->_progname}\n";
-    $maxLen = 20;
-    foreach ($this->_rules as $rule) {
-        $flags = array();
-        if (is_array($rule['alias'])) {
-            foreach ($rule['alias'] as $flag) {
-                $flags[] = (strlen($flag) == 1 ? '-' : '--') . $flag;
-            }
-        }
-        $linepart['name'] = implode(' [', $flags).(count($flags) > 1 ? ']' : '');
-        if (isset($rule['param']) && $rule['param'] != 'none') {
-            $linepart['name'] .= ' ';
-            $rule['paramType'] = strtoupper($rule['paramType']);
-            switch ($rule['param']) {
-                case 'optional':
-                    $linepart['name'] .= "[{$rule['paramType']}]";
-                    break;
-                case 'required':
-                    $linepart['name'] .= "{$rule['paramType']}";
-                    break;
-            }
-        }
-        if (strlen($linepart['name']) > $maxLen) {
-            $maxLen = strlen($linepart['name']);
-        }
-        $linepart['help'] = '';
-        if (isset($rule['help'])) {
-            $linepart['help'] .= $rule['help'];
-        }
-        $lines[] = $linepart;
-    }
-    foreach ($lines as $linepart) {
-        $usage .= sprintf("%s %s\n",
-        str_pad($linepart['name'], $maxLen),
-        $linepart['help']);
-    }
-    return $usage;
   }
 
   /**

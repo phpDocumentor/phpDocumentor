@@ -1,6 +1,6 @@
 0.9: Improve Theming and CLI
-* Create a single executable (docblox.php) frontend for parse and transform; refactor Argument.php to cli.php and to
-  allow it to work for all three executables.
+* Create a task to do both parse and transform
+* Update the tasks to have their long description in the class docblock.
 * restore search in new templates
 * Links do not detect | notation; they just ignore them
 * @see tags which define methods (<class>::<method>) are not converted into a link

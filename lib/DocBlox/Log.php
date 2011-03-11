@@ -20,6 +20,7 @@ class DocBlox_Log
   const NOTICE  = Zend_Log::NOTICE; // Notice: normal but significant condition
   const INFO    = Zend_Log::INFO; // Informational: informational messages
   const DEBUG   = Zend_Log::DEBUG; // Debug: debug messages
+  const QUIET   = -1; // No output
 
   const FILE_STDOUT = 'php://stdout';
 
