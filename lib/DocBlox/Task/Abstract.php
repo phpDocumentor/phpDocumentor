@@ -119,6 +119,12 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
    */
   public function getUsageDescription()
   {
+    if ($this->usage_description === null)
+    {
+      $refl = new DocBlox_Reflection_DocBlock(new ReflectionObject($this));
+      $this->usage_description = $refl->getLongDescription();
+    }
+
     return $this->usage_description;
   }
 

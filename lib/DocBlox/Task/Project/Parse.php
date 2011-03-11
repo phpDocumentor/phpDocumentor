@@ -2,6 +2,9 @@
 /**
  * Parses the given source code and populate a structure file.
  *
+ * The parse method uses the source files that you have using either the -f or -d method and generates a structure
+ * file (structure.xml) at the target location (which is the folder 'output' unless the option -t is provided).
+ *
  * @package    DocBlox
  * @subpackage Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
@@ -17,11 +20,6 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
    */
   protected function configure()
   {
-    $this->setUsageDescription(<<<DESC
-The parse method uses the source files that you have using either the -f or -d method and generates a structure
-file (structure.xml) in the target location (which is the folder 'output' unless the option -t is provided).
-DESC
-);
     $this->addOption('f|filename', '=s',
       'Comma-separated list of files to parse. The wildcards ? and * are supported'
     );

@@ -2,6 +2,8 @@
 /**
  * With this task you get an overview of the available tasks in DocBlox.
  *
+ * This task outputs a list of tasks grouped by their namespaces.
+ *
  * @package    DocBlox
  * @subpackage Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
