@@ -1,10 +1,9 @@
 0.9: Improve Theming and CLI
-* investigate whether ignore is nto handled correctly in configuration
+* Investigate whether ignore is nto handled correctly in configuration
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 * Links in the XSLT writer's output do not work with sub-directories; need to change this
 * include section should be clickable (click-through)
 * Create a task to do both parse and transform
-* Add PDF output writer using ezPDF|TCPDF|FPDF|DocBook|html2pdf (http://www.tufat.com/s_html2ps_html2pdf.htm)?
 * H1 font is too big and does not wrap
 * File properties sidebar looks all like links
 * File path is not left-truncated based on the first common directory

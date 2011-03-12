@@ -21,6 +21,8 @@
 * ADDED:    Re-implemented Search in the new templates
 * ADDED:    @throw and @throws are now clickable and redirect to the right page
 * ADDED:    Support for adding your own project title using the --title command line argument or in the configuration
+* ADDED:    PDF generation using wkhtmltopdf (http://code.google.com/p/wkhtmltopdf/); try it by adding: '--template pdf'
+            to your call to 'transform'.
 
 02/19/2011: Version 0.8: fix known issues
 
