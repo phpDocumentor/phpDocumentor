@@ -47,6 +47,9 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     $this->addOption('q|quiet', '',
       'Silences the output and logging'
     );
+    $this->addOption('title', '-s',
+      'Sets the title for this project; default is the DocBlox logo'
+    );
     $this->addOption('force', '',
       'Forces a full build of the documentation, does not increment existing documentation'
     );
@@ -149,6 +152,21 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     return DocBlox_Abstract::config()->getArrayFromPath('ignore/item');
+  }
+
+  /**
+   * Returns all ignore patterns.
+   *
+   * @return array
+   */
+  public function getTitle()
+  {
+    if (parent::getTitle() !== null)
+    {
+      return parent::getTitle();
+    }
+
+    return DocBlox_Abstract::config()->get('title');
   }
 
   /**
@@ -263,6 +281,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     $parser = new DocBlox_Parser();
+    $parser->setTitle(htmlentities($this->getTitle()));
     if ($this->getVerbose())
     {
       $parser->setLogLevel(DocBlox_Log::DEBUG);

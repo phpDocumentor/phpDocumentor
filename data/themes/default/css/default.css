@@ -43,6 +43,14 @@ th, td
   height: 70px;
 }
 
+#header h1
+{
+  display: inline;
+  margin-left: 10px;
+  background: white url('../images/top-background.png') repeat-x top left;
+  padding-top: 35px;
+}
+
 #footer
 {
   clear:both;

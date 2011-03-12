@@ -16,6 +16,9 @@
  */
 class DocBlox_Parser extends DocBlox_Abstract
 {
+  /** @var string the title to use in the header */
+  protected $title = '';
+
   /** @var string[] the glob patterns which directories/files to ignore during parsing */
   protected $ignore_patterns = array();
 
@@ -33,6 +36,28 @@ class DocBlox_Parser extends DocBlox_Abstract
 
   /** @var string target location's root path */
   protected $path            = null;
+
+  /**
+   * Sets the title for this project.
+   *
+   * @param string $title
+   *
+   * @return void
+   */
+  public function setTitle($title)
+  {
+    $this->title = $title;
+  }
+
+  /**
+   * Returns the HTML text which is found at the title's position.
+   *
+   * @return null|string
+   */
+  public function getTitle()
+  {
+    return $this->title;
+  }
 
   /**
    * Sets whether to force a full parse run of all files.
@@ -357,7 +382,7 @@ class DocBlox_Parser extends DocBlox_Abstract
 
     $dom = new DOMDocument('1.0', 'utf-8');
     $dom->formatOutput = true;
-    $dom->loadXML('<project version="'.DocBlox_Abstract::VERSION.'"></project>');
+    $dom->loadXML('<project version="'.DocBlox_Abstract::VERSION.'" title="'.addslashes($this->getTitle()).'"></project>');
 
     foreach ($files as $file)
     {
