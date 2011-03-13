@@ -27,7 +27,6 @@ class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
     $xml = new SimpleXMLElement('<include></include>');
     $xml->name         = $this->getName();
     $xml['type']       = $this->getType();
-    $xml['namespace']  = $this->getNamespace();
     $xml['line']       = $this->getLineNumber();
 
     return $xml->asXML();
