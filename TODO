@@ -1,8 +1,12 @@
 0.9: Improve Theming and CLI
-* investigate whether ignore is nto handled correctly in configuration
+* Closures generate warnings that docblocks are missing; this should be disabled
+* Default namespace is shown; even when there is no classes in it
+* Class diagram: check if all classes and interfaces are there
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 * Links in the XSLT writer's output do not work with sub-directories; need to change this
 * include section should be clickable (click-through)
+* Implements section in class properties is not clickable
+* Class short descriptions can run out of the bounding box; see: aura.autoload
 * Create a task to do both parse and transform
 * Add PDF output writer using ezPDF|TCPDF|FPDF|DocBook|html2pdf (http://www.tufat.com/s_html2ps_html2pdf.htm)?
 * H1 font is too big and does not wrap
@@ -10,11 +14,14 @@
 * File path is not left-truncated based on the first common directory
 * @param, @var and @return only support 1 variable, not separated with |; this should change and meta data should be
   generated accordingly
+* Make classes in diagram clickable
+* Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 
 0.10: Add custom documents and statistics
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
-* add Markdown support in long descriptions and @example (thanks @pmjones)
+* add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
+  * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
 
 0.11: Pre 1.0 cleanup

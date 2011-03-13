@@ -64,7 +64,15 @@
         <div id="maincontainer">
 
           <div id="header">
-            <h1><xsl:value-of select="//@title" disable-output-escaping="yes"/></h1><img src="{$root}images/top-stopper.png" />
+            <h1>
+              <xsl:if test="//@title != ''">
+                <xsl:value-of select="//@title" disable-output-escaping="yes" />
+              </xsl:if>
+              <xsl:if test="//@title = ''">
+                <img src="{$root}images/logo.png" />
+              </xsl:if>
+              <img src="{$root}images/top-stopper.png" />
+            </h1>
           </div>
 
           <xsl:call-template name="menu" />

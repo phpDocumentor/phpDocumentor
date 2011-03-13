@@ -4,12 +4,12 @@
   <xsl:template match="/project" name="menu">
     <ul id="menu">
       <li>
-        <a href="{$root}graph.html" target="content">Class diagram</a>
+        <a href="{$root}graph.html">Class diagram</a>
       </li>
       <!--<li>Packages</li>-->
       <!--<li>Files</li>-->
       <li>
-        <a href="{$root}markers.html" target="content">TODO / Markers</a>
+        <a href="{$root}markers.html">TODO / Markers</a>
       </li>
     </ul>
     <!--<h4>Charts</h4>-->
