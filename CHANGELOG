@@ -24,6 +24,7 @@
 * FIXED:    Interfaces were not shown in the class tree
 * FIXED:    Click-through on interfaces did not work
 * FIXED:    New window was opened when clicking on a link in the default theme
+* FIXED:    Closures no longer generate warnings
 
 02/19/2011: Version 0.8: fix known issues
 

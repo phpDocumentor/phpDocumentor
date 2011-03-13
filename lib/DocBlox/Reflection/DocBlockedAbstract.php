@@ -1,20 +1,31 @@
 <?php
 /**
- * @author    mvriel
- * @copyright
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Reflection
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
  * Abstract base class for all Reflection entities which have a docblock.
  *
+ * @category   DocBlox
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @package    docblox
- * @subpackage reflection
  */
 abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_Abstract
 {
+  /** @var DocBlox_Reflection_DocBlock|null */
   protected $doc_block = null;
 
+  /**
+   * Any generic information that needs to be retrieved is the docblock itself.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return void
+   */
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->doc_block = $this->findDocBlock($tokens);
@@ -23,7 +34,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   /**
    * Returns the DocBlock reflection object.
    *
-   * @return DocBlox_Reflection_Docblock
+   * @return DocBlox_Reflection_Docblock|null
    */
   public function getDocBlock()
   {
@@ -33,9 +44,10 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   /**
    * Returns the first docblock preceding the active token within 10 tokens.
    *
-   * Please note that the iterator cursor does not change due to this method
+   * Please note that the iterator cursor does not change with to this method.
    *
    * @param  DocBlox_TokenIterator $tokens
+   *
    * @return DocBlox_Reflection_DocBlock|null
    */
   protected function findDocBlock(DocBlox_TokenIterator $tokens)
@@ -56,9 +68,14 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       $this->log($e->getMessage(), Zend_Log::CRIT);
     }
 
-    if (!$result)
+    // if the object has no DocBlock _and_ is not a Closure; throw a warning
+    $type = substr(get_class($this), strrpos(get_class($this), '_') + 1);
+    if (!$result && (($type !== 'Function') && ($this->getName() !== 'Closure')))
     {
-      $this->log('No DocBlock was found for '.substr(get_class($this), strrpos(get_class($this), '_')+1).' '.$this->getName().' on line '.$this->getLineNumber(), Zend_Log::ERR);
+      $this->log(
+        'No DocBlock was found for ' . $type . ' ' . $this->getName() . ' on line ' . $this->getLineNumber(),
+        Zend_Log::ERR
+      );
     }
 
     return $result;

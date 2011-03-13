@@ -1,5 +1,4 @@
 0.9: Improve Theming and CLI
-* Closures generate warnings that docblocks are missing; this should be disabled
 * Default namespace is shown; even when there is no classes in it
 * Class diagram: check if all classes and interfaces are there
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
