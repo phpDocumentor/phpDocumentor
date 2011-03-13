@@ -21,6 +21,8 @@
 * ADDED:    Re-implemented Search in the new templates
 * ADDED:    @throw and @throws are now clickable and redirect to the right page
 * ADDED:    Support for adding your own project title using the --title command line argument or in the configuration
+* FIXED:    Interfaces were not shown in the class tree
+* FIXED:    Click-through on interfaces did not work
 
 02/19/2011: Version 0.8: fix known issues
 

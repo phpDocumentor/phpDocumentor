@@ -29,7 +29,6 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
     $xml['final']      = $this->isFinal() ? 'true' : 'false';
     $xml['abstract']   = $this->isAbstract() ? 'true' : 'false';
     $xml['line']       = $this->getLineNumber();
-    $xml->full_name    = $this->expandType($this->getName());  
 
     return parent::__toXml($xml);
   }

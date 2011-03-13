@@ -334,6 +334,7 @@ class DocBlox_Transformer extends DocBlox_Abstract
       $element->setAttribute('generated-path', $this->generateFilename($element->getAttribute('path')));
     }
 
+    // add to classes
     $qry = $xpath->query('//class[full_name]/..');
     $class_paths = array();
 
@@ -342,6 +343,18 @@ class DocBlox_Transformer extends DocBlox_Abstract
     {
       $path = $element->getAttribute('path');
       foreach ($element->getElementsByTagName('class') as $class)
+      {
+        $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
+      }
+    }
+
+    // add to interfaces
+    $qry = $xpath->query('//interface[full_name]/..');
+    /** @var DOMElement $element */
+    foreach ($qry as $element)
+    {
+      $path = $element->getAttribute('path');
+      foreach ($element->getElementsByTagName('interface') as $class)
       {
         $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
       }
