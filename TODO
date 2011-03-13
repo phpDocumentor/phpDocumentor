@@ -1,5 +1,4 @@
 0.9: Improve Theming and CLI
-* Class diagram: check if all classes and interfaces are there
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 * Links in the XSLT writer's output do not work with sub-directories; need to change this
 * include section should be clickable (click-through)

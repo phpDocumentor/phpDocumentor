@@ -125,14 +125,14 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $xml->name         = $this->getName();
     $xml['namespace']  = $this->getNamespace();
     $xml['line']       = $this->getLineNumber();
-    $xml->extends      = $this->getParentClass();
+    $xml->extends      = $this->getParentClass() ? $this->expandType($this->getParentClass()) : '';
     $xml->full_name    = $this->expandType($this->getName());
 
     $this->addDocblockToSimpleXmlElement($xml);
 
     foreach ($this->getParentInterfaces() as $interface)
     {
-      $xml->addChild('implements', $interface);
+      $xml->addChild('implements', $this->expandType($interface));
     }
 
     $dom = new DOMDocument('1.0');

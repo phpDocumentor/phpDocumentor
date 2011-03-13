@@ -48,6 +48,7 @@
             the DocBlock of another structure.
 * ADDED:    DocBlox now recognizes inline tags in long descriptions; the data is not yet included in the structure.xml
 * FIXED:    Default namespace is no longer shown when just using includes in the global namespace.
+* FIXED:    Class diagram was broken due to changes in namespace handling; fixed this now
 
 02/01/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------

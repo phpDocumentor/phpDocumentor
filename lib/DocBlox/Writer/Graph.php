@@ -36,7 +36,7 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
   {
     // generate graphviz
     $xpath = new DOMXPath($structure);
-    $qry = $xpath->query("/project/file/class");
+    $qry = $xpath->query("/project/file/class|/project/file/interface");
 
     $extend_classes = array();
     $classes = array();
@@ -55,8 +55,8 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
         $extend_classes[$extends] = array();
       }
 
-      $extend_classes[$extends][] = $element->getAttribute('namespace') . '\\' . $element->getElementsByTagName('name')->item(0)->nodeValue;
-      $classes[] = $element->getElementsByTagName('name')->item(0)->nodeValue;
+      $extend_classes[$extends][] = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
+      $classes[] = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
     }
 
     // find root nodes, (any class not found as extend)
