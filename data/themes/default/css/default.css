@@ -106,6 +106,8 @@ div.section
   border: 1px solid silver;
   -moz-border-radius: 6px;
   border-radius: 6px;
+  width: 218px;
+  word-wrap: break-word;
 }
 
 div.section h1

@@ -27,6 +27,8 @@
 * FIXED:    Closures no longer generate warnings
 * FIXED:    Incremental parsing was broken due to refactorings with the filenames
 * ADDED:    Missing docblock errors now show the file in which they occurred
+* FIXED:    path name was not truncated to the base level; the full path was shown
+* FIXED:    The namespaces tree went out of bounds with certain classnames; this has been fixed
 
 02/19/2011: Version 0.8: fix known issues
 
