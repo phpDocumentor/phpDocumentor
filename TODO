@@ -1,6 +1,4 @@
 0.9: Improve Theming and CLI
-* include section should be clickable (click-through)
-* H1 font is too big and does not wrap
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 * Links in the XSLT writer's output do not work with sub-directories; need to change this
 * Create a task to do both parse and transform
@@ -9,6 +7,7 @@
   generated accordingly
 * Make classes in diagram clickable
 * Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
+* include section should be clickable (click-through)
 * Research: create template that somehow has the frames page in the no Javascript section and have navigation fully offloaded to ajax
 
 0.10: Add custom documents and statistics
