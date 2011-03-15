@@ -18,9 +18,11 @@
  */
 class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 {
+  /** @var DocBlox_TokenIterator */
+  protected $tokens = null;
+
   protected $filename           = '';
   protected $hash               = null;
-  protected $tokens             = null;
   protected $contents           = '';
   protected $interfaces         = array();
   protected $classes            = array();
@@ -62,7 +64,10 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->setFilename($file);
     $this->name     = $this->filename;
     $this->contents = $this->convertToUtf8($file, file_get_contents($file));
-    $this->setHash(filemtime($file));
+
+    // filemtime($file) is sometimes between 0.00001 and 0.00005 seconds faster but md5 is more accurate
+    // real world tests with larger code bases should determine how much it really matters
+    $this->setHash(md5($this->contents));
   }
 
   /**
@@ -248,6 +253,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->tokens = token_get_all($this->contents);
     $this->debug(count($this->tokens).' tokens found in class '.$this->getName());
     $this->tokens = new DocBlox_TokenIterator($this->tokens);
+    $this->tokens->setFilename($this->filename);
   }
 
   public function process()

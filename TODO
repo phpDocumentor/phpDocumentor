@@ -1,7 +1,6 @@
 0.9: Improve Theming and CLI
 * Search JS in IE throws an error; or the auraphp docs generate a warning
 * File path is not left-truncated based on the first common directory
-* Error message 'No DocBlock found for' should mention file
 * Class short descriptions can run out of the bounding box; see: aura.autoload
 * Implements section in class properties is not clickable
 * include section should be clickable (click-through)

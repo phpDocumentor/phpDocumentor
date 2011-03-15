@@ -274,6 +274,7 @@ class DocBlox_Parser extends DocBlox_Abstract
       $file = new DocBlox_Reflection_File($filename, $this->doValidation());
       $file->setMarkers($this->getMarkers());
       $file->setFilename($this->getRelativeFilename($filename));
+      $file->setName($this->getRelativeFilename($filename));
 
       // if an existing structure exists; and we do not force re-generation; re-use the old definition if
       // the hash differs

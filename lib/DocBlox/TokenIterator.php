@@ -16,28 +16,54 @@
  */
 class DocBlox_TokenIterator extends DocBlox_BidiArrayIterator
 {
+  /** @var string|null The name of the file where these tokens come from; if any */
+  protected $filename = null;
+
   /**
    * Initializes the token store.
    *
-   * @param  DocBlox_Token|string[] $array contains the result from a token_get_all() function call or list of DocBlox_Tokens
+   * @param  string|DocBlox_Token[]|string[] $data String to parse or a list of DocBlox_Tokens, or the result from a
+   *                                               token_get_all() method call.
    * @see    token_get_all()
    *
    * @return void
    */
-  public function  __construct($array)
+  public function  __construct($data)
   {
     // convert to token objects; converting up front is _faster_ than ad hoc conversion
-    foreach ($array as $key => $token)
+    foreach ($data as $key => $token)
     {
       if ($token instanceof DocBlox_Token)
       {
         continue;
       }
 
-      $array[$key] = new DocBlox_Token($token);
+      $data[$key] = new DocBlox_Token($token);
     }
 
-    parent::__construct($array);
+    parent::__construct($data);
+  }
+
+  /**
+   * Returns the name of the file where these tokens come from; or null if unknown.
+   *
+   * @return null|string
+   */
+  public function getFilename()
+  {
+    return $this->filename;
+  }
+
+  /**
+   * Sets the filename where these tokens come from.
+   *
+   * @param string $filename
+   *
+   * @return void
+   */
+  public function setFilename($filename)
+  {
+    $this->filename =  $filename;
   }
 
   /**

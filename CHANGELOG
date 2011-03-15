@@ -25,6 +25,8 @@
 * FIXED:    Click-through on interfaces did not work
 * FIXED:    New window was opened when clicking on a link in the default theme
 * FIXED:    Closures no longer generate warnings
+* FIXED:    Incremental parsing was broken due to refactorings with the filenames
+* ADDED:    Missing docblock errors now show the file in which they occurred
 
 02/19/2011: Version 0.8: fix known issues
 
