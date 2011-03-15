@@ -1,15 +1,18 @@
 <?php
 /**
- * @author    mvriel
- * @copyright
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
- * Provide a short description for this class.
+ * Parses an interface definition.
  *
- * @author     mvriel
- * @package
- * @subpackage
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
 {
@@ -22,7 +25,14 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   protected $properties  = array();
   protected $methods     = array();
 
-  protected function extractClassName($tokens)
+  /**
+   * Retrieve the name of the class starting from the T_CLASS token.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return string
+   */
+  protected function extractClassName(DocBlox_TokenIterator $tokens)
   {
     // a class name can be a combination of a T_NAMESPACE and T_STRING
     $name = '';
@@ -40,13 +50,18 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     return trim($name);
   }
 
+  /**
+   * Extract and store the meta data surrounding a class / interface.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return void
+   */
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // retrieve generic information about the class
     $this->setName($this->extractClassName($tokens));
     $this->doc_block = $this->findDocBlock($tokens);
-    $this->abstract  = $this->findAbstract($tokens) ? true : false;
-    $this->final     = $this->findFinal($tokens)    ? true : false;
 
     // parse a EXTENDS section
     $extends = $tokens->gotoNextByType(T_EXTENDS, 5, array('{'));
@@ -68,7 +83,14 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $this->interfaces = $interfaces;
   }
 
-  protected function processConst($tokens)
+  /**
+   * Processes a T_CONST token found inside a class / interface definition.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return void
+   */
+  protected function processConst(DocBlox_TokenIterator $tokens)
   {
     $this->resetTimer('const');
 
@@ -81,6 +103,13 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $this->debugTimer('>> Processed class constant '.$constant->getName(), 'const');
   }
 
+  /**
+   * Processes a T_VARIABLE token found inside a class / interface definition.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return void
+   */
   protected function processVariable($tokens)
   {
     $this->resetTimer('variable');
@@ -94,6 +123,13 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $this->debugTimer('>> Processed property '.$property->getName(), 'variable');
   }
 
+  /**
+   * Processes a T_FUNCTION token found inside a class / interface definition.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return void
+   */
   protected function processFunction($tokens)
   {
     $this->resetTimer('method');
@@ -106,22 +142,40 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
   }
 
+  /**
+   * Returns the name of the superclass.
+   *
+   * @return string|null
+   */
   public function getParentClass()
   {
     return $this->extends ? $this->extendsFrom : null;
   }
 
+  /**
+   * Returns the names of the implemented interfaces.
+   *
+   * @return string[]
+   */
   public function getParentInterfaces()
   {
     return $this->interfaces;
   }
 
+  /**
+   * Convert this definition to an XML element.
+   *
+   * @param null|SimpleXMLElement $xml
+   *
+   * @return string
+   */
   public function __toXml(SimpleXMLElement $xml = null)
   {
     if ($xml === null)
     {
       $xml = new SimpleXMLElement('<interface></interface>');
     }
+
     $xml->name         = $this->getName();
     $xml['namespace']  = $this->getNamespace();
     $xml['line']       = $this->getLineNumber();

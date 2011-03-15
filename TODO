@@ -1,5 +1,5 @@
 0.9: Improve Theming and CLI
-* Implements section in class properties is not clickable
+* Implements and extends section in class properties is not clickable
 * include section should be clickable (click-through)
 * H1 font is too big and does not wrap
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
