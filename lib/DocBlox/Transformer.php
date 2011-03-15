@@ -362,11 +362,21 @@ class DocBlox_Transformer extends DocBlox_Abstract
 
     // add extra xml elements to tags
     $this->log('Adding link information and excerpts to all DocBlock tags');
-    $qry = $xpath->query('//docblock/tag');
+    $qry = $xpath->query('//docblock/tag|//extends|//implements');
 
     /** @var DOMElement $element */
     foreach ($qry as $element)
     {
+      if (in_array($element->nodeName, array('extends', 'implements')))
+      {
+        if (isset($class_paths[$element->nodeValue]))
+        {
+          $file_name = $this->generateFilename($class_paths[$element->nodeValue]);
+          $element->setAttribute('link', $file_name.'#'.$element->nodeValue);
+        }
+        continue;
+      }
+
       switch($element->getAttribute('name'))
       {
         case 'see':

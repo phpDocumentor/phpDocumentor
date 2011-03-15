@@ -29,6 +29,7 @@
 * ADDED:    Missing docblock errors now show the file in which they occurred
 * FIXED:    path name was not truncated to the base level; the full path was shown
 * FIXED:    The namespaces tree went out of bounds with certain classnames; this has been fixed
+* ADDED:    Made extends and implements sections click-through.
 
 02/19/2011: Version 0.8: fix known issues
 
