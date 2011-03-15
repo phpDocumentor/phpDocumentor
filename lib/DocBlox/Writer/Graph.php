@@ -3,7 +3,7 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Base
+ * @package    Writers
  * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
@@ -13,7 +13,7 @@
  * Checks whether graphviz is enabled and logs an error if not.
  *
  * @category   DocBlox
- * @package    Base
+ * @package    Writers
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
@@ -32,6 +32,16 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
     $this->$type_method($structure, $transformation);
   }
 
+  /**
+   * Generates a SVG Class Diagram at the given artifact location.
+   *
+   * @param DOMDocument            $structure
+   * @param DocBlox_Transformation $transformation
+   *
+   * @todo this method should be refactored into smaller components.
+   *
+   * @return void
+   */
   public function processClass(DOMDocument $structure, DocBlox_Transformation $transformation)
   {
     // generate graphviz
@@ -95,7 +105,16 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
     );
   }
 
-  protected function buildTreenode($node_list, $parent = 'stdClass', $chain = array())
+  /**
+   * Recursive method which builds the tree to use in the Class Diagram creation.
+   *
+   * @param array  $node_list
+   * @param string $parent
+   * @param array  $chain
+   *
+   * @return array
+   */
+  protected function buildTreenode(array $node_list, $parent = 'stdClass', $chain = array())
   {
     if (count($chain) > 50)
     {
@@ -119,6 +138,15 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
     return $result;
   }
 
+  /**
+   * Recursive method which builds the actual node for use in the Image_Graphviz object.
+   *
+   * @param Image_GraphViz $graph
+   * @param array          $nodes
+   * @param array|null     $parent
+   *
+   * @return void
+   */
   protected function buildGraphNode(Image_GraphViz $graph, $nodes, $parent = null)
   {
     foreach($nodes as $node => $children)

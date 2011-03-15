@@ -1,6 +1,30 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Writers
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+
+/**
+ * Search writer responsible for building the search index.
+ *
+ * @category   DocBlox
+ * @package    Writers
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
 class DocBlox_Writer_Search extends DocBlox_Writer_Abstract
 {
+  /**
+   * Creates the search index at the artifact location.
+   *
+   * @param DOMDocument            $structure
+   * @param DocBlox_Transformation $transformation
+   *
+   * @return void
+   */
   public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
   {
     $this->createXmlIndex(
@@ -9,6 +33,16 @@ class DocBlox_Writer_Search extends DocBlox_Writer_Abstract
     );
   }
 
+  /**
+   * Helper method to create the actual index.
+   *
+   * @param DOMDocument $xml
+   * @param string $target_path
+   *
+   * @todo refactor this method to be smaller and less complex.
+   *
+   * @return void
+   */
   public function createXmlIndex(DOMDocument $xml, $target_path)
   {
     $this->log('Generating the search index');

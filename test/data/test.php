@@ -1,4 +1,12 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Tests
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
 namespace foo;
 use My\Full\Classname as Another;
 
@@ -8,6 +16,13 @@ use My\Full\NSname;
 // importing a global class
 use \ArrayObject;
 
+/**
+ * Namespace test.
+ *
+ * @category   DocBlox
+ * @package    Tests
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
 class NamespaceTest
 {
   /**
@@ -138,6 +153,7 @@ class DocBlocTest
 }
 
 /**
+ * Separate test function.
  *
  * @param string[]|int[] $param
  *

@@ -1,4 +1,19 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Writers
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * FileIo writer.
+ *
+ * @category   DocBlox
+ * @package    Writers
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
 class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
 {
   /** @var DocBlox_Transformation */

@@ -1,5 +1,13 @@
 #!/usr/bin/env php
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    CLI
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 $base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
   ? dirname(__FILE__) . '/../'

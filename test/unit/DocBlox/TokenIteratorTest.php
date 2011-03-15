@@ -1,5 +1,19 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Tests
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
 
+/**
+ * TokenIterator mock class.
+ *
+ * @category   DocBlox
+ * @package    Tests
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
 class TokenIteratorMock extends DocBlox_TokenIterator
 {
   public function gotoUpByType()
@@ -15,6 +29,10 @@ class TokenIteratorMock extends DocBlox_TokenIterator
 
 /**
  * Test class for DocBlox_TokenIterator.
+ *
+ * @category   DocBlox
+ * @package    Tests
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
 {
@@ -41,6 +59,11 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
     $this->object->seek(0);
   }
 
+  /**
+   * Tests whether the token iterator is properly constructed and contains only DocBlox_Token objects.
+   *
+   * @return void
+   */
   public function testConstruct()
   {
     $this->assertGreaterThan(0, count($this->object), 'Expected DocBlox_TokenIterator to contain more than 0 items');
