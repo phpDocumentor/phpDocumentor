@@ -70,7 +70,7 @@ class DocBlox_ParserTest extends PHPUnit_Framework_TestCase
     // default is null
     $this->assertEquals(null, $this->fixture->getExistingXml());
 
-    $this->fixture->setExistingXml('<project version="1.0"></project>');
+    $this->fixture->setExistingXml('<?xml version="1.0" ?><project version="1.0"></project>');
     $this->assertInstanceOf('DOMDocument', $this->fixture->getExistingXml());
     $this->assertEquals('1.0', $this->fixture->getExistingXml()->documentElement->getAttribute('version'));
   }
