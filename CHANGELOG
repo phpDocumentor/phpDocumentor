@@ -30,6 +30,9 @@
 * FIXED:    path name was not truncated to the base level; the full path was shown
 * FIXED:    The namespaces tree went out of bounds with certain classnames; this has been fixed
 * ADDED:    Made extends and implements sections click-through.
+* FIXED:    Classes without @package were not shown in the package overview
+* FIXED:    Added ordering to classes in overview
+* ADDED:    Classes in the class diagram are now clickable and will take you to their documentation page.
 
 02/19/2011: Version 0.8: fix known issues
 

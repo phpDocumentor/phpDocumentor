@@ -28,6 +28,34 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
       return;
     }
 
+    // add to classes
+    $xpath = new DOMXPath($structure);
+    $qry = $xpath->query('//class[full_name]/..');
+    $class_paths = array();
+
+    /** @var DOMElement $element */
+    foreach ($qry as $element)
+    {
+      $path = $element->getAttribute('generated-path');
+      foreach ($element->getElementsByTagName('class') as $class)
+      {
+        $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
+      }
+    }
+
+    // add to interfaces
+    $qry = $xpath->query('//interface[full_name]/..');
+    /** @var DOMElement $element */
+    foreach ($qry as $element)
+    {
+      $path = $element->getAttribute('generated-path');
+      foreach ($element->getElementsByTagName('interface') as $class)
+      {
+        $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
+      }
+    }
+
+    $this->class_paths = $class_paths;
     $type_method = 'process'.ucfirst($transformation->getSource());
     $this->$type_method($structure, $transformation);
   }
@@ -152,7 +180,18 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
     foreach($nodes as $node => $children)
     {
       $node_array = explode('\\', $node);
-      $graph->addNode(md5($node), array('label' => end($node_array), 'shape' => 'box'));
+
+      $properties = array('label' => end($node_array), 'shape' => 'box', 'style' => 'filled', 'fillcolor' => 'white');
+      if (isset($this->class_paths[$node]))
+      {
+        $properties['URL'] = $this->class_paths[$node];
+        $properties['target'] = '_top';
+      } else
+      {
+        $properties['fontcolor'] = 'gray';
+      }
+      $graph->addNode(md5($node), $properties);
+
       if ($parent !== null)
       {
         $graph->addEdge(array(md5($node) => md5($parent)), array('arrowhead' => 'empty', 'minlen' => '2'));

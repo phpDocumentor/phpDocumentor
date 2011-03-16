@@ -5,7 +5,6 @@
 * Add PDF output writer using ezPDF|TCPDF|FPDF|DocBook|html2pdf (http://www.tufat.com/s_html2ps_html2pdf.htm)?
 * @param, @var and @return only support 1 variable, not separated with |; this should change and meta data should be
   generated accordingly
-* Make classes in diagram clickable
 * Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * include section should be clickable (click-through)
 * Research: create template that somehow has the frames page in the no Javascript section and have navigation fully offloaded to ajax
