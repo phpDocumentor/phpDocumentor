@@ -19,6 +19,14 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
     }
 
     $this->contents = trim($content);
+
+    // only if we are able to use Markdown, use it.
+    // TODO: this should become a more intelligent piece of code where the configuration contains a setting what format
+    // long descriptions are.
+    if (function_exists('Markdown'))
+    {
+      $this->contents = Markdown($this->contents);
+    }
   }
 
   /**

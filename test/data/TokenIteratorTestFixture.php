@@ -85,6 +85,11 @@ class SingleClass
   /**
    * Method Docblock for StaticPublicMethod
    *
+   * I have explicitly added a **long** description _containing_ some markup to:
+   *
+   * * demonstrate what it looks like
+   * * test the markdown conversion process
+   *
    * @param array $argument_a test argument
    * @param FooBarClass $argument_b test argument
    *

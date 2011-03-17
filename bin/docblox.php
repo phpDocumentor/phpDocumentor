@@ -25,6 +25,7 @@ if ($argc == 1)
 // bootstrap
 require_once('Zend/Loader/Autoloader.php');
 require_once('pear/GraphViz.php');
+require_once('markdown/markdown.php');
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('DocBlox_');
 

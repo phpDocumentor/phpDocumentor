@@ -163,10 +163,13 @@ abstract class DocBlox_Abstract
    * Logs a debug message post-fixed with timer information.
    *
    * The string which is sent to the debug logger looks like:
-   * $message in {time} seconds.
+   *
+   *     $message in {time} seconds.
+   *
    * Thus for readability is advised to write messages as the following examples:
-   * - 'Processed parameters' (in 4 seconds)
-   * - 'Written to log' (in 4 seconds)
+   *
+   * * 'Processed parameters' (in 4 seconds)
+   * * 'Written to log' (in 4 seconds)
    *
    * @param  string $message
    * @param  string $name
