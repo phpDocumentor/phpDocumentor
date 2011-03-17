@@ -14,7 +14,7 @@ $base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
   : '@php_dir@/DocBlox/';
 
 // set path to add lib folder, load the Zend Autoloader and include the symfony timer
-set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . 'lib' . PATH_SEPARATOR . get_include_path());
+set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . get_include_path());
 
 // if no task was given; execute the list task by default
 if ($argc == 1)

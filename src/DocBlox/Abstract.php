@@ -260,7 +260,7 @@ abstract class DocBlox_Abstract
   {
     if (self::$config === null)
     {
-      self::$config = new DocBlox_Config(dirname(__FILE__) . '/../../../data/docblox.tpl.xml');
+      self::$config = new DocBlox_Config(dirname(__FILE__) . '/../../data/docblox.tpl.xml');
     }
 
     return self::$config;

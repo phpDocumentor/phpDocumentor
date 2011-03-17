@@ -11,7 +11,7 @@
 set_include_path(
   get_include_path()
   . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../..')
-  . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../../src/lib')
+  . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../../src')
 );
 
 // include and initialize the autoloader
