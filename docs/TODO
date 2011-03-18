@@ -1,7 +1,9 @@
+Roadmap
+=======
+
 0.9: Improve Theming and CLI
-* Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
-* Links in the XSLT writer's output do not work with sub-directories; need to change this
-* Create a task to do both parse and transform
+----------------------------
+
 * Add PDF output writer using ezPDF|TCPDF|FPDF|DocBook|html2pdf (http://www.tufat.com/s_html2ps_html2pdf.htm)?
 * @param, @var and @return only support 1 variable, not separated with |; this should change and meta data should be
   generated accordingly
@@ -10,26 +12,33 @@
 * Research: create template that somehow has the frames page in the no Javascript section and have navigation fully offloaded to ajax
 
 0.10: Add custom documents and statistics
+-----------------------------------------
+
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 * add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
   * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
+* Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
 
 0.11: Pre 1.0 cleanup
+---------------------
+
 * safari does not show the svg nicely, it places it into a very small scrollbox
 
 1.1
+---------------------
+
 * Add docblox templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
 * Consider implementing disqus support
 * Add Twig output writer
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
 * Research: allow connections between multiple docblox generated files?
-
-BONUS:
 * UML Class Diagram
 
-Technical Debt:
+Technical Debt
+--------------
+
 * Add docblocks to DocBlox
 * Add documentation
 * Write unit tests
@@ -37,4 +46,4 @@ Technical Debt:
   * Be uniform with the Reflector interface and PHP's Dynamic Reflection
   * Consistently use either DOMDocument or SimpleXMLElement
 
-More items will be added to this list as the project furthers.
+**More items will be added to this list as the project furthers.**

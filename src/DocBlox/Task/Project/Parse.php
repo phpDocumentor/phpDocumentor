@@ -84,7 +84,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
    */
   public function setConfig($value)
   {
-    if (!is_readable($value))
+    if ($value && !is_readable($value))
     {
       throw new InvalidArgumentException('Config file "' . $value . '" is not readable');
     }

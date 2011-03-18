@@ -36,6 +36,7 @@
 * ADDED:    Markdown support to Long Descriptions in DocBlock
 * ADDED:    Changed directory structure to match PEAR2 standards for recognizability
 * ADDED:    Support for automatic parsing of docblox.xml or docblox.dist.xml config files in the working folder
+* ADDED:    Task 'docblox project:run': executes a parse and transform in one go
 
 02/19/2011: Version 0.8: fix known issues
 

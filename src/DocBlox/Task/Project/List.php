@@ -10,7 +10,7 @@
  */
 class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
 {
-  protected $taskname = 'project:list ';
+  protected $taskname = 'project:list';
 
   /**
    * Executes the transformation process.
