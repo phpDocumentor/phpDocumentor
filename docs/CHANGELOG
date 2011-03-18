@@ -33,6 +33,9 @@
 * FIXED:    Classes without @package were not shown in the package overview
 * FIXED:    Added ordering to classes in overview
 * ADDED:    Classes in the class diagram are now clickable and will take you to their documentation page.
+* ADDED:    Markdown support to Long Descriptions in DocBlock
+* ADDED:    Changed directory structure to match PEAR2 standards for recognizability
+* ADDED:    Support for automatic parsing of docblox.xml or docblox.dist.xml config files in the working folder
 
 02/19/2011: Version 0.8: fix known issues
 
