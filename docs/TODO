@@ -20,11 +20,7 @@ Roadmap
   * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
 * Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
-
-0.11: Pre 1.0 cleanup
----------------------
-
-* safari does not show the svg nicely, it places it into a very small scrollbox
+* Safari does not show the svg nicely, it places it into a very small scrollbox
 
 1.1
 ---
