@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="{$root}css/default.css" type="text/css" />
         <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery.cookie.js"></script>
         <script type="text/javascript" src="{$root}js/jquery.treeview.js"></script>
       </head>
       <body>
@@ -22,7 +23,9 @@
           $(document).ready(function()
           {
             $(".filetree").treeview({
-              animated: 'fast'
+              animated: "fast",
+              collapsed: true,
+              persist: "cookie"
             });
           });
 
@@ -64,7 +67,15 @@
         <div id="maincontainer">
 
           <div id="header">
-            <h1><xsl:value-of select="//@title" disable-output-escaping="yes"/></h1><img src="{$root}images/top-stopper.png" />
+            <h1>
+              <xsl:if test="//@title != ''">
+                <xsl:value-of select="//@title" disable-output-escaping="yes" />
+              </xsl:if>
+              <xsl:if test="//@title = ''">
+                <img src="{$root}images/logo.png" />
+              </xsl:if>
+              <img src="{$root}images/top-stopper.png" />
+            </h1>
           </div>
 
           <xsl:call-template name="menu" />

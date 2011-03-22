@@ -27,7 +27,7 @@
       <xsl:for-each select="docblock/tag">
         <xsl:sort select="@name" />
         <label class="property-key"><xsl:value-of select="@name" /></label>
-        <div class="property-value"><a title="{.}" href="{@link}"><xsl:value-of select="." /></a></div>
+        <div class="property-value"><xsl:value-of select="." /></div>
       </xsl:for-each>
     </div>
     </xsl:if>

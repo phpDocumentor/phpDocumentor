@@ -67,6 +67,14 @@ Documentation
 -------------
 For more detailed information you can check our online documentation at http://www.docblox-project.org/documentation
 
+Known issues
+------------
+
+1. Search does not work / is not available when accessing the documentation locally from Google Chrome.
+  Google Chrome blocks access to local files (and thus the search index) using Javascript when working with local files (file://); it is not possible for us to fix this.
+2. Remembering which navigation items are open does not work when accessing the documentation locally from Google Chrome.
+  The code responsible for remembering which items are open uses cookies to track the state. Unfortunately Google Chrome disables the use of cookies when working with local files (file://); it is not possible for us to fix this.
+
 Contact
 -------
 To come in contact is actually dead simple and can be done in a variety of ways.

@@ -1,12 +1,20 @@
 #!/usr/bin/env php
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    CLI
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 $base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
-  ? dirname(__FILE__) . '/../'
+  ? dirname(__FILE__) . '/../src/'
   : '@php_dir@/DocBlox/';
 
 // set path to add lib folder, load the Zend Autoloader and include the symfony timer
-set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . 'lib' . PATH_SEPARATOR . get_include_path());
+set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . get_include_path());
 
 // if no task was given; execute the list task by default
 if ($argc == 1)
@@ -17,6 +25,7 @@ if ($argc == 1)
 // bootstrap
 require_once('Zend/Loader/Autoloader.php');
 require_once('pear/GraphViz.php');
+require_once('markdown/markdown.php');
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('DocBlox_');
 

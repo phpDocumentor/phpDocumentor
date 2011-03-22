@@ -1,0 +1,57 @@
+Roadmap
+=======
+
+0.9: Improve Theming and CLI
+----------------------------
+
+* Add PDF output writer using ezPDF|TCPDF|FPDF|DocBook|html2pdf (http://www.tufat.com/s_html2ps_html2pdf.htm)?
+* @param, @var and @return only support 1 variable, not separated with |; this should change and meta data should be
+  generated accordingly
+* Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
+* include section should be clickable (click-through)
+* Research: create template that somehow has the frames page in the no Javascript section and have navigation fully offloaded to ajax
+
+0.10: Add custom documents and statistics
+-----------------------------------------
+
+* add possibility for README, INSTALL, TODO in markdown format
+* add possibility for custom documents in markdown format
+* add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
+  * add Markdown support in long descriptions and @example (thanks @pmjones)
+* Syntax highlight @example annotation content
+* Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
+* Safari does not show the svg nicely, it places it into a very small scrollbox
+
+1.1
+---
+
+* Add Docblock templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
+* Consider implementing disqus support
+* Add Twig output writer
+* Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
+* Research: allow connections between multiple docblox generated files?
+* UML Class Diagram
+
+The Future
+----------
+
+* Refactor XSL templates to
+  * Have a neat hierarchy in the file/content pages
+  * Clean them up
+  * Separate them further into distinct files
+  * Allow for more modularity and easier templating by just including a header or so
+* Create an XSD for the structure file
+* Improve exceptions per the PHP Coding Standards (http://groups.google.com/group/php-standards/web/php-coding-standard)
+* Refactor Static Reflection to
+  * Be uniform with the Reflector interface and PHP's Dynamic Reflection
+  * Move XML creation to the Parser
+
+Technical Debt
+--------------
+
+* Add docblocks to DocBlox
+* Add documentation
+* Write unit tests
+* Adopt PEAR standard; investigate PSR0
+
+**More items will be added to this list as the project furthers.**

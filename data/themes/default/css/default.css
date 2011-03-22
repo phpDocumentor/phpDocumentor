@@ -106,6 +106,8 @@ div.section
   border: 1px solid silver;
   -moz-border-radius: 6px;
   border-radius: 6px;
+  width: 218px;
+  word-wrap: break-word;
 }
 
 div.section h1
@@ -234,6 +236,7 @@ div.section h1
 {
   border-bottom:       1px solid #5E8CDF;
   padding-bottom:      10px;
+  font-size:           1.6em;
 }
 
 #content h2
@@ -271,6 +274,11 @@ div.section h1
 {
   margin-top:          10px;
   margin-bottom:       3px;
+}
+
+#content .method small p, #content .method small ul
+{
+  margin: 0px;
 }
 
 #content .class

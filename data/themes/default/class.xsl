@@ -12,7 +12,14 @@
     <div class="properties">
       <h1>Properties</h1>
       <label class="property-key">Extends</label>
-      <div class="property-value"><xsl:value-of select="extends" />&#160;</div>
+      <div class="property-value">
+        <xsl:if test="extends[@link = '']">
+          <xsl:value-of select="extends" />
+        </xsl:if>
+        <xsl:if test="extends[@link != '']">
+          <a href="{extends/@link}"><xsl:value-of select="extends" /></a>
+        </xsl:if>
+        &#160;</div>
       <label class="property-key">Implements</label>
       <div class="property-value">
         <xsl:for-each select="implements"><xsl:value-of select="." /><br /></xsl:for-each>&#160;

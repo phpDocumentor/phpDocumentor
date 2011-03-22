@@ -1,19 +1,19 @@
-<phpunit bootstrap="test/common/bootstrap.php" colors="true">
+<phpunit bootstrap="tests/common/bootstrap.php" colors="true">
   <testsuites>
     <testsuite name="DocBlox">
-      <directory>./test/unit/</directory>
+      <directory>./tests/unit/</directory>
     </testsuite>
   </testsuites>
   <filter>
     <whitelist>
       <directory suffix=".php">./</directory>
       <exclude>
-        <directory suffix=".php">lib/symfony</directory>
-        <directory suffix=".php">lib/Zend</directory>
-        <directory suffix=".php">lib/pear</directory>
-        <directory suffix=".php">output</directory>
-        <directory suffix=".php">log</directory>
-        <directory suffix=".php">test</directory>
+        <directory suffix=".php">src/lib/symfony</directory>
+        <directory suffix=".php">src/lib/Zend</directory>
+        <directory suffix=".php">src/lib/pear</directory>
+        <directory suffix=".php">data/output</directory>
+        <directory suffix=".php">data/log</directory>
+        <directory suffix=".php">tests</directory>
         <directory suffix=".php">bin</directory>
         <directory suffix=".php">data</directory>
       </exclude>

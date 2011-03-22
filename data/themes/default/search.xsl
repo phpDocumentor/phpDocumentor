@@ -63,7 +63,14 @@
               source: search_index,
               select: function(event, ui) {
                 // redirect to the documentation
-                parent.content.document.location = '<xsl:value-of select="$root" />'+ui.item.id;
+                if ((parent) &amp;&amp; (parent.content))
+                {
+                  parent.content.document.location = '<xsl:value-of select="$root" />'+ui.item.id;
+                }
+                else
+                {
+                  jQuery(document).location = '<xsl:value-of select="$root" />'+ui.item.id;
+                }
                 applySearchHash();
               }
             });
