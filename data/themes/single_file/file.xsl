@@ -94,6 +94,7 @@
         </div>
       </xsl:for-each>
     </xsl:if>
+    <div style="clear: both; page-break-after: always"></div>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -52,7 +52,7 @@ class DocBlox_Writer_Pdf extends DocBlox_Writer_Abstract
     // with docblox
     if (strpos($output, 'wkhtmltopdf: not found') !== false)
     {
-      exec($this->getConfig()->paths->application . '/lib/wkhtmltopdf/wkhtmltopdf-i386 ' . $options . ' '
+      exec($this->getConfig()->paths->application . '/src/wkhtmltopdf/wkhtmltopdf-i386 ' . $options . ' '
         . $transformation->getSource() . ' ' . $transformation->getArtifact() . ' 2>&1', $output, $error);
       $output = implode(PHP_EOL, $output).PHP_EOL;
     }
