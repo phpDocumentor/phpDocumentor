@@ -36,13 +36,15 @@ The Future
 ----------
 
 * Refactor XSL templates to
+  * Have a neat hierarchy in the file/content pages
   * Clean them up
   * Separate them further into distinct files
   * Allow for more modularity and easier templating by just including a header or so
+* Create an XSD for the structure file
+* Improve exceptions per the PHP Coding Standards (http://groups.google.com/group/php-standards/web/php-coding-standard)
 * Refactor Static Reflection to
   * Be uniform with the Reflector interface and PHP's Dynamic Reflection
   * Move XML creation to the Parser
-* Create an XSD for the structure file
 
 Technical Debt
 --------------
@@ -50,5 +52,6 @@ Technical Debt
 * Add docblocks to DocBlox
 * Add documentation
 * Write unit tests
+* Adopt PEAR standard; investigate PSR0
 
 **More items will be added to this list as the project furthers.**
