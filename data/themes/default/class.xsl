@@ -110,16 +110,17 @@
           <xsl:for-each select="argument">
 
             <xsl:variable name="variable_name" select="name" />
-            <xsl:variable name="variable_type" select="../docblock/tag[@name='param' and @variable=$variable_name]/@type" />
-            <xsl:if test="../docblock/tag[@name='param' and @variable=$variable_name]/@link">
-              <a href="{$root}{../docblock/tag[@name='param' and @variable=$variable_name]/@link}">
-                <xsl:value-of select="$variable_type" />
-              </a>
-            </xsl:if>
-            <xsl:if test="not(../docblock/tag[@name='param' and @variable=$variable_name]/@link)">
-              <xsl:value-of select="$variable_type" />
-            </xsl:if>
-            &#160;
+            <xsl:for-each select="../docblock/tag[@name='param' and @variable=$variable_name]/type">
+              <xsl:if test="@link">
+                <a href="{$root}{@link}">
+                  <xsl:value-of select="." />
+                </a>
+              </xsl:if>
+              <xsl:if test="not(@link)">
+                <xsl:value-of select="." />
+              </xsl:if>
+              |
+            </xsl:for-each>
             <xsl:value-of select="$variable_name" />
 
             <xsl:if test="default != ''">
@@ -160,24 +161,17 @@
         <tbody>
           <xsl:for-each select="argument">
             <xsl:variable name="variable_name" select="name" />
-            <xsl:variable name="variable_type" select="../docblock/tag[@name='param' and @variable=$variable_name]/@type" />
-            <xsl:variable name="variable_description" select="../docblock/tag[@name='param' and @variable=$variable_name]/." />
+            <xsl:variable name="variable_description" select="../docblock/tag[@name='param' and @variable=$variable_name]/@description" />
             <tr>
               <td>
                 <xsl:value-of select="$variable_name" />
               </td>
-              <td>
-                <xsl:if test="not($variable_type)">n/a</xsl:if>
-                <xsl:if test="$variable_type">
-                  <xsl:if test="../docblock/tag[@name='param' and @variable=$variable_name]/@link">
-                    <a href="{$root}{../docblock/tag[@name='param' and @variable=$variable_name]/@link}">
-                      <xsl:value-of select="$variable_type" />
-                    </a>
-                  </xsl:if>
-                  <xsl:if test="not(../docblock/tag[@name='param' and @variable=$variable_name]/@link)">
-                    <xsl:value-of select="$variable_type" />
-                  </xsl:if>
-                </xsl:if>
+              <td style="white-space: normal;">
+                <xsl:if test="not(../docblock/tag[@name='param' and @variable=$variable_name]/type)">n/a</xsl:if>
+                <xsl:for-each select="../docblock/tag[@name='param' and @variable=$variable_name]/type">
+                  <xsl:if test="@link"><a href="{$root}{@link}"><xsl:value-of select="." /></a></xsl:if>
+                  <xsl:if test="not(@link)"><xsl:value-of select="." /></xsl:if> |
+                </xsl:for-each>
               </td>
               <td>
                 <xsl:value-of select="$variable_description" disable-output-escaping="yes"/>
@@ -215,8 +209,8 @@
               </xsl:if>
             </td>
             <td>
-              <xsl:if test="not(docblock/tag[@name='return'])">n/a</xsl:if>
-              <xsl:value-of select="docblock/tag[@name='return']" />
+              <xsl:if test="not(docblock/tag[@name='return']/@description)">n/a</xsl:if>
+              <xsl:value-of select="docblock/tag[@name='return']/@description" />
             </td>
           </tr>
         </tbody>
@@ -239,7 +233,7 @@
             </td>
             <td>
                 <xsl:if test="@link and @link != ''"><a href="{$root}{@link}"><xsl:value-of select="." /></a></xsl:if>
-                <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="." /></xsl:if>
+                <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="@description" /></xsl:if>
             </td>
           </tr>
         </xsl:for-each>

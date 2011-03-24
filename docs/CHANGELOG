@@ -42,6 +42,8 @@
 * FIXED:    Navigation now remembers what you have selected
 * ADDED:    PDF generation using wkhtmltopdf (http://code.google.com/p/wkhtmltopdf/); try it by adding: '--template pdf'
             to your call to 'transform'.
+* ADDED:    Support for multiple types with an @param, @var and @return separated by the | character, i.e.: class1|class2
+* ADDED:    Support for object array notation in all types (i.e. @param, @var, @return), for example: class1[]
 
 02/19/2011: Version 0.8: fix known issues
 

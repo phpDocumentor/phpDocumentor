@@ -328,6 +328,8 @@ class DocBlox_Transformer extends DocBlox_Abstract
     // find all files and add a generated-path variable
     $this->log('Adding path information to each xml "file" tag');
     $qry = $xpath->query("/project/file[@path]");
+
+    /** @var DOMElement $element */
     foreach ($qry as $element)
     {
       $files[] = $element->getAttribute('path');
@@ -354,6 +356,8 @@ class DocBlox_Transformer extends DocBlox_Abstract
     foreach ($qry as $element)
     {
       $path = $element->getAttribute('path');
+
+      /** @var DOMElement $class */
       foreach ($element->getElementsByTagName('interface') as $class)
       {
         $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
@@ -362,51 +366,37 @@ class DocBlox_Transformer extends DocBlox_Abstract
 
     // add extra xml elements to tags
     $this->log('Adding link information and excerpts to all DocBlock tags');
-    $qry = $xpath->query('//docblock/tag|//extends|//implements');
+    $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|//extends|//implements');
 
     /** @var DOMElement $element */
     foreach ($qry as $element)
     {
-      if (in_array($element->nodeName, array('extends', 'implements')))
-      {
-        if (isset($class_paths[$element->nodeValue]))
-        {
-          $file_name = $this->generateFilename($class_paths[$element->nodeValue]);
-          $element->setAttribute('link', $file_name.'#'.$element->nodeValue);
-        }
-        continue;
-      }
+      $type = rtrim($element->nodeValue, '[]');
+      $node = ($element->nodeType == XML_ATTRIBUTE_NODE)
+        ? $element->parentNode
+        : $element;
 
-      switch($element->getAttribute('name'))
+      if (isset($class_paths[$type]))
       {
-        case 'see':
-        case 'throw':
-        case 'throws':
-          $node_value = explode('::', $element->nodeValue);
-          if (isset($class_paths[$node_value[0]]))
-          {
-            $file_name = $this->generateFilename($class_paths[$node_value[0]]);
-            $element->setAttribute('link', $file_name . '#' . $element->nodeValue);
-          }
-          break;
-      }
-
-      // if a tag has a type, add a link to the given file if it exists in the xml
-      if ($element->hasAttribute('type'))
-      {
-        // if a path was found, convert it to a filename and add it onto the element
-        if (isset($class_paths[$element->getAttribute('type')]))
-        {
-          $file_name = $this->generateFilename($class_paths[$element->getAttribute('type')]);
-          $element->setAttribute('link', $file_name);
-        }
+        $file_name = $this->generateFilename($class_paths[$type]);
+        $node->setAttribute('link', $file_name . '#' . $type);
       }
 
       // add a 15 character excerpt of the node contents, meant for the sidebar
-      $element->setAttribute(
-        'excerpt',
-        utf8_encode(substr($element->nodeValue, 0, 15) . (strlen($element->nodeValue) > 15 ? '...' : ''))
-      );
+      $node->setAttribute('excerpt', utf8_encode(substr($type, 0, 15) . (strlen($type) > 15 ? '...' : '')));
+    }
+
+
+    $qry = $xpath->query('//docblock/tag[@name="see" or @name="throw" or @name="throws"]');
+    /** @var DOMElement $element */
+    foreach ($qry as $element)
+    {
+      $node_value = explode('::', $element->nodeValue);
+      if (isset($class_paths[$node_value[0]]))
+      {
+        $file_name = $this->generateFilename($class_paths[$node_value[0]]);
+        $element->setAttribute('link', $file_name . '#' . $element->nodeValue);
+      }
     }
   }
 

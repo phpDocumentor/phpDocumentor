@@ -92,6 +92,11 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
    */
   protected function expandType($type)
   {
+    if ($type === null)
+    {
+      return null;
+    }
+
     $non_objects = array('string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
       'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback');
     $namespace = $this->getNamespace() == 'default' ? '' : $this->getNamespace().'\\';
@@ -158,31 +163,24 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       /** @var DocBlox_Reflection_Docblock_Tag $tag */
       foreach ($this->getDocBlock()->getTags() as $tag)
       {
-        $type = null;
         $description = htmlspecialchars($tag->getDescription(), ENT_QUOTES, 'UTF-8');
-        if (trim($tag->getName(), '@') == 'var')
+        if ($tag->getName() instanceof DocBlox_Reflection_DocBlock_Tag_Var)
         {
-          $elements = explode(' ', trim((string)$description));
-          $elements[0] = $this->expandType($elements[0]);
-
-          $type = $elements[0];
-          $description = implode(' ', $elements);
+          $description = $tag->getDescription();
         }
 
-        $tag_object = $xml->docblock->addChild('tag', trim($description));
-        $tag_object['name'] = trim($tag->getName(), '@');
+        $tag_object                = $xml->docblock->addChild('tag');
+        $tag_object['name']        = $tag->getName();
+        $tag_object['description'] = trim($description);
 
-        // store the type if it was set
-        if ($type !== null)
+        if (method_exists($tag, 'getTypes'))
         {
-          $tag_object['type'] = $type;
-        }
+          foreach($tag->getTypes() as $type)
+          {
+            $tag_object->addChild('type', $this->expandType($type));
+          }
 
-        if (method_exists($tag, 'getType') && ($type === null))
-        {
-          // only add namespacing to object types
-          $type = $this->expandType($tag->getType());
-          $tag_object['type'] = $type;
+          $tag_object['type'] = $this->expandType($tag->getType());
         }
 
         if (method_exists($tag, 'getVariableName'))
@@ -191,6 +189,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
           {
             // TODO: get the name from the argument list
           }
+
           $tag_object['variable'] = $tag->getVariableName();
         }
 

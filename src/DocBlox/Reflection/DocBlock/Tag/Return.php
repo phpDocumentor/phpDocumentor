@@ -18,12 +18,24 @@ class DocBlox_Reflection_DocBlock_Tag_Return extends DocBlox_Reflection_DocBlock
   {
     $this->tag     = $type;
     $this->content = $content;
-    $content   = preg_split('/\s+/', $content);
+    $content   = preg_split('/\s+/u', $content);
 
     // any output is considered a type
     $this->type = array_shift($content);
 
     $this->description = implode(' ', $content);
+  }
+
+  /**
+   * Returns the type of the variable.
+   *
+   * @return string
+   */
+  public function getTypes()
+  {
+    $types = explode('|', $this->type);
+    array_walk($types, 'trim');
+    return $types;
   }
 
   /**

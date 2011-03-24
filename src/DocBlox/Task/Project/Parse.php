@@ -207,7 +207,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     $expressions = array_unique(
-      $this->getDirectory()
+      $this->getDirectory() || !empty($files)
         ? explode(',', $this->getDirectory())
         : DocBlox_Abstract::config()->getArrayFromPath('files/directory')
     );

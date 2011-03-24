@@ -40,7 +40,19 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
   }
 
   /**
-   * Returns the type of the variable.
+   * Returns the unique types of the variable.
+   *
+   * @return string
+   */
+  public function getTypes()
+  {
+    $types = explode('|', $this->type);
+    array_walk($types, 'trim');
+    return $types;
+  }
+
+  /**
+   * Returns the type section of the variable.
    *
    * @return string
    */

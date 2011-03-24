@@ -4,8 +4,6 @@ Roadmap
 0.9: Improve Theming and CLI
 ----------------------------
 
-* @param, @var and @return only support 1 variable, not separated with |; this should change and meta data should be
-  generated accordingly
 * Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * include section should be clickable (click-through)
 * Research: create template that somehow has the frames page in the no Javascript section and have navigation fully offloaded to ajax
@@ -18,8 +16,10 @@ Roadmap
 * add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
   * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
-* Add option to disable certain types of DocBlox errors (i.e. check on file-level docblock; constant level docblock; etc)
+* Add option to disable certain types of DocBlox errors (i.e. check on file-level DocBlock; constant level DocBlock; etc)
 * Safari does not show the svg nicely, it places it into a very small scrollbox
+* Throw an error if there is a mismatch between the number of arguments in the DocBlock and actual definition
+* Throw an error if there is a mismatch between an argument type in the DocBlock and actual definition
 
 1.1
 ---
