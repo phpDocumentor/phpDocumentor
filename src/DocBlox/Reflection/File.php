@@ -21,20 +21,49 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   /** @var DocBlox_TokenIterator */
   protected $tokens = null;
 
+  /** @var string The path of the file. */
   protected $filename           = '';
+
+  /** @var string Contents of the given file. */
+  protected $contents = '';
+
+  /** @var string|null A unique (MD5) hash of this file */
   protected $hash               = null;
-  protected $contents           = '';
+
+  /** @var DocBlox_Reflection_Interface[] All interfaces contained in this file. */
   protected $interfaces         = array();
+
+  /** @var DocBlox_Reflection_Class[] All classes contained in this file. */
   protected $classes            = array();
+
+  /** @var DocBlox_Reflection_Function[] All functions contained in this file. */
   protected $functions          = array();
+
+  /** @var DocBlox_Reflection_Constant[] All global constants contained in this file. */
   protected $constants          = array();
+
+  /** @var DocBlox_Reflection_Include[] All includes and requires contained in this file. */
   protected $includes           = array();
+
+  /** @var string Variable records what the current active namespace is during parsing. */
   protected $active_namespace   = 'default';
+
+  /** @var string[] A list of all markers present in this file. */
   protected $markers            = array();
+
+  /** @var string[] A list of all marker types to search for in this file. */
   protected $marker_terms       = array('TODO', 'FIXME');
 
   /**
-   * Opens the file and retrieves it's contents.
+   * Opens the file and retrieves its contents.
+   *
+   * During construction the given file is checked whether it is readable and if the $validate argument is true a PHP
+   * Lint action is executed to check whether the there are no parse errors.
+   *
+   * By default the Lint check is disable because of the performance hit introduced by this action.
+   *
+   * If the validation checks out the file's contents are read; converted to UTF-8 and th ehas is created
+   * from those contents.
    *
    * @throws DocBlox_Reflection_Exception when the filename is incorrect or the file can not be opened
    *
@@ -43,7 +72,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
    *
    * @return void
    */
-  public function __construct($file, $validate)
+  public function __construct($file, $validate = false)
   {
     parent::__construct();
 
@@ -73,7 +102,18 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   /**
    * Converts a piece of text to UTF-8 if it isn't.
    *
-   * @param string $contents String to convert.
+   * This method tries to detect the encoding of the given string when necessary using the finfo extension (packaged
+   * with PHP 5.3 by default; available as extension before that) and then uses iconv to convert the contents from
+   * the found encoding to UTF-8.
+   *
+   * If the finfo class is not available we try to detect the encoding using the mbstring extension and if that isn't
+   * available then we try to brute-force detect the encoding using iconv.
+   *
+   * If the encoding does not register as UTF-8 we try to re-encode to UTF-8; if that fails the original content is
+   * returned and en error is logged.
+   *
+   * @param string $filename Path to the file; finfo directly reads the file instead of the contents.
+   * @param string $contents File's contents to convert.
    *
    * @return string
    */
@@ -133,8 +173,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     // convert if a source encoding is found; otherwise we throw an error and have to continue using the given data
     if (($encoding !== null) && (strtolower($encoding) != 'utf-8'))
     {
-      $contents = iconv($encoding, 'UTF-8', $contents);
-      if ($contents === false)
+      $tmp_contents = iconv($encoding, 'UTF-8', $contents);
+      if ($tmp_contents === false)
       {
         $this->log(
           'Encoding of file ' . $filename . ' from ' . $encoding . ' to UTF-8 failed, please check the notice for a '
@@ -142,13 +182,18 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
           Zend_Log::EMERG
         );
       }
+      else
+      {
+        $contents = $tmp_contents;
+      }
     }
 
     return $contents;
   }
 
   /**
-   * This is a fallback mechanism; if no finfo or mbstring extension are activated this is used.
+   * This is a fallback mechanism to detect the encoding of  a string; if no finfo or mbstring extension
+   * is present then this is used.
    *
    * WARNING: try to prevent this; it is assumed that this method is not fool-proof nor performing as well as the other
    * options.
@@ -173,7 +218,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   /**
    * Sets the file name for this file.
    *
-   * @param string $filename
+   * @param string $filename The path of this file.
    *
    * @return void
    */
@@ -183,9 +228,9 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   }
 
   /**
-   * Adds a marker to scan for.
+   * Adds a marker to scan the contents of this file for.
    *
-   * @param string $name The Marker term, i.e. FIXME or TODO
+   * @param string $name The Marker term, i.e. FIXME or TODO.
    *
    * @return void
    */
@@ -197,7 +242,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   /**
    * Sets a list of markers to search for.
    *
-   * @param string[] $markers
+   * @param string[] $markers A list of marker terms to scan for.
    *
    * @see DocBlox_Reflection_File::addMarker()
    *
@@ -205,6 +250,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
    */
   public function setMarkers(array $markers)
   {
+    $this->marker_terms = array();
+
     foreach($markers as $marker)
     {
       $this->addMarker($marker);
@@ -222,9 +269,9 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   }
 
   /**
-   * Sets the hash for this file.
+   * Sets the hash which identifies this file.
    *
-   * @param string $hash
+   * @param string $hash A piece of text (possibly MD5 hash) which identifies the contents of this file.
    *
    * @return void
    */
@@ -243,36 +290,54 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     return $this->classes;
   }
 
-  public function initializeTokens()
+  /**
+   * Extracts all tokens from this file and initializes the iterator used to walk through this file.
+   *
+   * @param string $contents The text to parse into tokens.
+   * @param string $filename The path of this file, if present.
+   *
+   * @return DocBlox_TokenIterator
+   */
+  public function initializeTokens($contents, $filename = null)
   {
-    if ($this->tokens instanceof DocBlox_TokenIterator)
+    $tokens = token_get_all($contents);
+    $this->debug(count($tokens).' tokens found in class '.$this->getName());
+
+    $tokens = new DocBlox_TokenIterator($tokens);
+    if ($filename != null)
     {
-      return;
+      $tokens->setFilename($filename);
     }
 
-    $this->tokens = token_get_all($this->contents);
-    $this->debug(count($this->tokens).' tokens found in class '.$this->getName());
-    $this->tokens = new DocBlox_TokenIterator($this->tokens);
-    $this->tokens->setFilename($this->filename);
+    return $tokens;
   }
 
+  /**
+   * Starts the parsing of this file.
+   *
+   * @return void
+   */
   public function process()
   {
-    $this->initializeTokens();
-    $this->parseTokenizer($this->tokens);
-
-    // preserve memory by unsetting the $this->tokens
-    unset($this->tokens);
+    $tokens = $this->initializeTokens($this->contents, $this->filename);
+    $this->parseTokenizer($tokens);
   }
 
+  /**
+   * Hook method where you can determine the generic properties for this file before it is scanned for structures.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return void
+   */
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     // find file docblock; standard function does not suffice as this scans backwards and we have to make sure it isn't
     // the docblock of another element
     $this->doc_block = $this->findDocBlock($tokens);
 
-    $result = array();
-    // find all markers, get the entire line
+    // find all markers, get the entire file line by line and check for marker terms.
+    $marker_data = array();
     foreach(explode("\n", $this->contents) as $line_number => $line)
     {
       preg_match_all('~//[\s]*('.implode('|', $this->marker_terms).')\:?[\s]*(.*)~', $line, $matches, PREG_SET_ORDER);
@@ -280,17 +345,31 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
       {
         $match[3] = $line_number+1;
       }
-      $result = array_merge($result, $matches);
+      $marker_data = array_merge($marker_data, $matches);
     }
+
     // store marker results and remove first entry (entire match), this results in an array with 2 entries:
     // marker name and content
-    $this->markers = $result;
+    $this->markers = $marker_data;
     foreach($this->markers as &$marker)
     {
       array_shift($marker);
     }
   }
 
+  /**
+   * Tries to find the DocBlox belonging to this file (page-level DocBlock).
+   *
+   * A page level DocBlock is a DocBlock that is at the top of a file and is not directly followed by a
+   * class definition.
+   * Page level DocBlocks MUST contain a @package tag or they are 'disqualified'.
+   *
+   * If no page level docblox is found we throw a warning to indicate to the user that this is missing.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @return DocBlox_Reflection_DocBlock|null
+   */
   public function findDocBlock(DocBlox_TokenIterator $tokens)
   {
     $result = null;
@@ -322,14 +401,25 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     return $result;
   }
 
+  /**
+   * Iterates through all tokens and when one is found we invoke the processToken method to handle the details.
+   *
+   * @param DocBlox_TokenIterator $tokens The list of tokens to scan.
+   *
+   * @see DocBlox_Reflection_Abstract::processTokens
+   * @see DocBlox_Reflection_Abstract::processToken
+   *
+   * @return void
+   */
   public function processTokens(DocBlox_TokenIterator $tokens)
   {
     $token = null;
     while ($tokens->valid())
     {
+      /** @var DocBlox_Token $token */
       $token = $token === null ? $tokens->current() : $tokens->next();
 
-      if ($token && $token->getType())
+      if (($token instanceof DocBlox_Token) && $token->getType())
       {
         $this->processToken($token, $tokens);
       }
@@ -382,6 +472,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->namespace_aliases = array_merge($this->namespace_aliases, $result);
   }
 
+  /**
+   * Changes the active namespace indicator when a namespace token is encountered to indicate that the space
+   * has changed.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processNamespace(DocBlox_TokenIterator $tokens)
   {
     // collect all namespace parts
@@ -395,6 +493,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->active_namespace = $namespace;
   }
 
+  /**
+   * Parses an interface definition and adds it to the interfaces array.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processInterface(DocBlox_TokenIterator $tokens)
   {
     $this->resetTimer('interface');
@@ -409,6 +514,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->interfaces[$interface->getName()] = $interface;
   }
 
+  /**
+   * Parses a class definition and adds it to the classes array.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processClass(DocBlox_TokenIterator $tokens)
   {
     $this->resetTimer('class');
@@ -423,6 +535,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->classes[$class->getName()] = $class;
   }
 
+  /**
+   * Parses a function definition and adds it to the functions array.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processFunction(DocBlox_TokenIterator $tokens)
   {
     $this->resetTimer('function');
@@ -437,6 +556,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->functions[$function->getName()] = $function;
   }
 
+  /**
+   * Parses a global constant definition and adds it to the constants array.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processConst(DocBlox_TokenIterator $tokens)
   {
     $this->resetTimer('constant');
@@ -451,21 +577,55 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->constants[$constant->getName()] = $constant;
   }
 
+  /**
+   * Parses a require definition and adds it to the includes array.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processRequire(DocBlox_TokenIterator $tokens)
   {
     $this->processInclude($tokens);
   }
 
+  /**
+   * Parses a require once definition and adds it to the includes array.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processRequireOnce(DocBlox_TokenIterator $tokens)
   {
     $this->processInclude($tokens);
   }
 
+  /**
+   * Parses an include once definition and adds it to the includes array.
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processIncludeOnce(DocBlox_TokenIterator $tokens)
   {
     $this->processInclude($tokens);
   }
 
+  /**
+   * Parses an include definition and adds it to the includes array.
+   *
+   * This method is also used for the include once, require and require once tokens.
+   *
+   * @see DocBlox_Reflection_File::processIncludeOnce
+   * @see DocBlox_Reflection_File::processRequireOnce
+   * @see DocBlox_Reflection_File::processRequire
+   *
+   * @param DocBlox_TokenIterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processInclude(DocBlox_TokenIterator $tokens)
   {
     $this->resetTimer('include');
@@ -480,8 +640,9 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   }
 
   /**
+   * Converts this file definition into a DocBlox compatible XML text.
    *
-   * @return bool|string
+   * @return string
    */
   public function __toXml()
   {
