@@ -6,21 +6,32 @@ Roadmap
 
 * Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * include section should be clickable (click-through)
+* Check Agavi; the @params do not have an argument name; the template probably handles this wrong
+* Revise Page level docblock searching algorythm; with the introduction of namespaces has the @package tag become
+  obsolete and it seems incomplete.
 
-0.10: Add custom documents and statistics
+1.0: Pre-1.0 release actions
+-----------------------------
+
+* Profile the application using XHProf to determine slow points and improve performance
+* Validate each @param with the argument:
+ * if the number of arguments does not compare; throw an error
+ * if an argument does not have the same type as the @param; throw an error
+ * if the @param has multiple types and the argument has a typehint and not a default; throw an error
+* Add option to disable certain types of DocBlox errors per directory / file pattern
+  ( i.e. check on file-level DocBlock; constant level DocBlock; etc)
+* Safari does not show the svg nicely, it places it into a very small scrollbox
+
+1.1: Add custom documents and statistics
 -----------------------------------------
 
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 * add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
-  * add Markdown support in long descriptions and @example (thanks @pmjones)
+ * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
-* Add option to disable certain types of DocBlox errors (i.e. check on file-level DocBlock; constant level DocBlock; etc)
-* Safari does not show the svg nicely, it places it into a very small scrollbox
-* Throw an error if there is a mismatch between the number of arguments in the DocBlock and actual definition
-* Throw an error if there is a mismatch between an argument type in the DocBlock and actual definition
 
-1.1
+1.2
 ---
 
 * Add Docblock templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
