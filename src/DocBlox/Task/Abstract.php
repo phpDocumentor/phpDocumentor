@@ -1,16 +1,29 @@
 <?php
 /**
- * Provide a short description for this class.
+ * DocBlox
  *
- * @package    DocBlox
- * @subpackage Tasks
+ * @category   DocBlox
+ * @package    Tasks
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Abstract base class for the tasks.
+ *
+ * @category   DocBlox
+ * @package    Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ *
+ * @method getHelp
+ * @method setHelp
  */
 abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
 {
-  protected $rules             = array();
+  /** @var string The description used for usage */
   protected $usage_description = null;
-  protected $taskname          = '';
+
+  /** @var string The namespace:task name for this task*/
+  protected $taskname = '';
 
   /**
    * Override constructor to temporarily wait with defining rules.
@@ -26,7 +39,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
   }
 
   /**
-   * Overridable method to display a header message on the CLI.
+   * Overrideable method to display a header message on the CLI.
    *
    * @return void
    */
@@ -63,6 +76,8 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
     // the __call and receive the benefits.
     foreach ($this->getOptions() as $value)
     {
+      $method_name = '';
+
       // loop through all aliases to check whether a real method was overridden
       foreach ($this->_rules[$value]['alias'] as $alias)
       {
@@ -75,6 +90,11 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
         }
       }
 
+      if ($method_name == '')
+      {
+        throw new Exception('Unable to find a name for the setter for argument ' . $value);
+      }
+
       // no overridden methods found; just invoke the default name to trigger the __call method
       $this->$method_name($this->getOption($value));
     }
@@ -83,10 +103,10 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
   /**
    * Adds an option rule to the application.
    *
-   * @param string[] $flags        Set of flags to support for this option.
-   * @param string $parameter_type May be nothing, or an string (s), word (w) or integer (i) prefixed with the
-   *                               availability specifier (- for optional and = for required).
-   * @param string $description    Help text
+   * @param string[]|string $flags          Set of flags to support for this option.
+   * @param string          $parameter_type May be nothing, or an string (s), word (w) or integer (i) prefixed with the
+   *                                        availability specifier (- for optional and = for required).
+   * @param string $description             Help text
    *
    * @return void
    */
@@ -136,11 +156,14 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
   public function getUsageMessage()
   {
     $prog_name = basename($this->_progname);
+
     $usage = "Usage: \n {$prog_name} {$this->taskname} [options]\n\n";
     if ($this->getUsageDescription())
     {
       echo $this->getUsageDescription()."\n\n";
     }
+
+    $lines = array();
     $maxLen = 20;
     foreach ($this->_rules as $rule)
     {
@@ -178,6 +201,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
       }
       $lines[] = $linepart;
     }
+
     foreach ($lines as $linepart)
     {
       $usage .= sprintf("%s %s\n", str_pad($linepart['name'], $maxLen), $linepart['help']);
@@ -216,7 +240,8 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
   /**
    * Prepare the settings and rules for this Task.
    *
-   * @abstract
+   * By default it is empty and it is not required for a task to implement this if there is no benefit.
+   *
    * @return void
    */
   protected function configure()
@@ -228,6 +253,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
    * Method containing the actual business rules for this Task.
    *
    * @abstract
+   *
    * @return void
    */
   abstract public function execute();

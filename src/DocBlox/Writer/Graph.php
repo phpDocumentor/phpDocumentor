@@ -18,6 +18,14 @@
  */
 class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
 {
+  /**
+   * Generates an array containing class to path references and then invokes the Source specific method.
+   *
+   * @param DOMDocument            $structure
+   * @param DocBlox_Transformation $transformation
+   *
+   * @return void
+   */
   public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
   {
     // NOTE: the -V flag sends output using STDERR and STDOUT

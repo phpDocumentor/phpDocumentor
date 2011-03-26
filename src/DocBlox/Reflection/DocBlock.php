@@ -1,13 +1,28 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Provides the basic functionality for every static reflection class.
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_DocBlock implements Reflector
 {
-  /** @var string */
+  /** @var string The opening line for this docblock. */
   protected $short_description = '';
 
-  /** @var DocBlox_Reflection_DocBlock_LongDescription */
+  /** @var DocBlox_Reflection_DocBlock_LongDescription The actual description for this docblock. */
   protected $long_description = null;
 
-  /** @var DocBlox_Reflection_DocBlock_Tags[] */
+  /** @var DocBlox_Reflection_DocBlock_Tags[] An array containing all the tags in this docblock; except inline. */
   protected $tags = array();
 
   /**
@@ -16,7 +31,7 @@ class DocBlox_Reflection_DocBlock implements Reflector
    * @throws DocBlox_Reflection_Exception
    *
    * @param string|Reflector $docblock A docblock comment (including asterisks) or reflector supporting the
-   *   getDocComment method.
+   *                                   getDocComment method.
    *
    * @return void
    */
@@ -64,7 +79,6 @@ class DocBlox_Reflection_DocBlock implements Reflector
 
     return $comment;
   }
-
 
   /**
    * Splits the DocBlock into a short description, long description and block of tags.
@@ -212,13 +226,25 @@ class DocBlox_Reflection_DocBlock implements Reflector
     return false;
   }
 
+  /**
+   * The obligatory export method for Reflector; I should find out what it does..
+   *
+   * @todo find out what this is about and fill it.
+   *
+   * @return void
+   */
   static public function export()
   {
 
   }
 
+  /**
+   * Returns the short description.
+   *
+   * @return void
+   */
   public function __toString()
   {
-
+    return $this->getShortDescription();
   }
 }

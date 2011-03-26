@@ -1,7 +1,33 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Writers
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * XSL transformation writer; generates static HTML out of the structure and XSL templates.
+ *
+ * @category   DocBlox
+ * @package    Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Writer_Xsl extends DocBlox_Writer_Abstract
 {
 
+  /**
+   * This method combines the structure.xml and the given target template and creates a static html page at
+   * the artifact location.
+   *
+   * @throws Exception
+   *
+   * @param DOMDocument $structure
+   * @param DocBlox_Transformation $transformation
+   *
+   * @return void
+   */
   public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
   {
     if (!class_exists('XSLTProcessor'))
