@@ -26,7 +26,9 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
    * DocBlox_Reflection_Abstract class. Literals are ignored.
    *
    * @see    DocBlox_Reflection_Abstract
+   *
    * @param  DocBlox_TokenIterator $tokens
+   *
    * @return int[]
    */
   public function processTokens(DocBlox_TokenIterator $tokens)
