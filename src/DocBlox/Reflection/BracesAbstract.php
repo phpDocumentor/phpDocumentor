@@ -1,4 +1,20 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Parses a method or function Argument.
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @subpackage Base
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocBlockedAbstract
 {
   /**

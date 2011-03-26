@@ -3,7 +3,7 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Reflection
+ * @package    Static_Reflection
  * @subpackage File
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
@@ -12,7 +12,7 @@
  * Reflection class for a full file.
  *
  * @category   DocBlox
- * @package    Reflection
+ * @package    Static_Reflection
  * @subpackage File
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
