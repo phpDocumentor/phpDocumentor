@@ -6,7 +6,6 @@ Roadmap
 
 * Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * include section should be clickable (click-through)
-* Research: create template that somehow has the frames page in the no Javascript section and have navigation fully offloaded to ajax
 
 0.10: Add custom documents and statistics
 -----------------------------------------
