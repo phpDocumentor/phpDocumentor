@@ -50,7 +50,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     $path = realpath($target);
     if (!file_exists($path) && !is_dir($path) && !is_writable($path))
     {
-      throw new Exception('Given target directory does not exist or is not writable');
+      throw new Exception('Given target directory (' . $target . ') does not exist or is not writable');
     }
 
     $this->target = $path;

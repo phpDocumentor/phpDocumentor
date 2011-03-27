@@ -4,6 +4,7 @@ Roadmap
 0.9: Improve Theming and CLI
 ----------------------------
 
+* Implement usage of the config files in all tasks; especially transform!
 * Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * include section should be clickable (click-through)
 * Check Agavi; the @params do not have an argument name; the template probably handles this wrong

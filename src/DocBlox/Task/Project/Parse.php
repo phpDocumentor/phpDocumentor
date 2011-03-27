@@ -28,7 +28,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
       'Comma-separated list of directories to (recursively) parse.'
     );
     $this->addOption('t|target', '-s',
-      'Path where to store the generated output (optional, defaults to "output")'
+      'Path where to store the generated output (optional, defaults to "'. DocBlox_Core_Abstract::config()->target . '")'
     );
     $this->addOption('e|extensions', '-s',
       'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml'
