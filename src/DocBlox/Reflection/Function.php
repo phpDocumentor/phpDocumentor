@@ -7,7 +7,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
   protected $arguments     = array();
   protected $type          = 'function';
 
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     $this->setName($this->findName($tokens));
 
@@ -20,7 +20,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     $this->debugTimer('>> Determined argument range token ids');
   }
 
-  public function processVariable(DocBlox_TokenIterator $tokens)
+  public function processVariable(DocBlox_Token_Iterator $tokens)
   {
     // is the variable occurs within arguments parenthesis then it is an argument
     if (($tokens->key() > $this->arguments_token_start) && ($tokens->key() < $this->arguments_token_end))
@@ -35,7 +35,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     }
   }
 
-  protected function findName(DocBlox_TokenIterator $tokens)
+  protected function findName(DocBlox_Token_Iterator $tokens)
   {
     $name = $tokens->findNextByType(T_STRING, 5, array('{', ';'));
     $this->setType($name ? 'function' : 'closure');

@@ -14,7 +14,7 @@
  * @package    Parser
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Transformer extends DocBlox_Abstract
+class DocBlox_Transformer extends DocBlox_Core_Abstract
 {
   /** @var string|null Target location where to output the artifacts */
   protected $target = null;
@@ -25,7 +25,7 @@ class DocBlox_Transformer extends DocBlox_Abstract
   /** @var string[] */
   protected $templates = array();
 
-  /** @var DocBlox_Transformation[] */
+  /** @var DocBlox_Transformer_Transformation[] */
   protected $transformations = array();
 
   /**
@@ -246,7 +246,7 @@ class DocBlox_Transformer extends DocBlox_Abstract
         );
       }
 
-      $transformation_obj = new DocBlox_Transformation(
+      $transformation_obj = new DocBlox_Transformer_Transformation(
         $this,
         $transformation['query'],
         $transformation['writer'],
@@ -265,16 +265,16 @@ class DocBlox_Transformer extends DocBlox_Abstract
     if (!is_object($transformation))
     {
       throw new InvalidArgumentException(
-        'Only transformations of type (or descended from) DocBlox_Transformation can be used in the '
+        'Only transformations of type (or descended from) DocBlox_Transformer_Transformation can be used in the '
           . 'transformation process; received: ' . gettype($transformation)
       );
     }
 
-    // if the object is not a DocBlox_Transformation; we cannot use it
-    if (!$transformation instanceof DocBlox_Transformation)
+    // if the object is not a DocBlox_Transformer_Transformation; we cannot use it
+    if (!$transformation instanceof DocBlox_Transformer_Transformation)
     {
       throw new InvalidArgumentException(
-        'Only transformations of type (or descended from) DocBlox_Transformation can be used in the '
+        'Only transformations of type (or descended from) DocBlox_Transformer_Transformation can be used in the '
           . 'transformation process; received: '.get_class($transformation)
       );
     }
@@ -285,7 +285,7 @@ class DocBlox_Transformer extends DocBlox_Abstract
   /**
    * Returns the transformation which this transformer will process.
    *
-   * @return DocBlox_Transformation[]
+   * @return DocBlox_Transformer_Transformation[]
    */
   public function getTransformations()
   {

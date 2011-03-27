@@ -14,7 +14,7 @@
  * @package    Tests
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-class TokenIteratorMock extends DocBlox_TokenIterator
+class TokenIteratorMock extends DocBlox_Token_Iterator
 {
   public function gotoUpByType()
   {
@@ -28,19 +28,19 @@ class TokenIteratorMock extends DocBlox_TokenIterator
 }
 
 /**
- * Test class for DocBlox_TokenIterator.
+ * Test class for DocBlox_Token_Iterator.
  *
  * @category   DocBlox
  * @package    Tests
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
+class DocBlox_Token_IteratorTest extends PHPUnit_Framework_TestCase
 {
   /** @var array[] tokens returned by token_get_all */
   protected $tokens = array();
 
   /**
-   * @var DocBlox_TokenIterator
+   * @var DocBlox_Token_Iterator
    */
   protected $object;
 
@@ -53,8 +53,8 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
    */
   protected function setUp()
   {
-    $this->tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../data/TokenIteratorTestFixture.php'));
-    $this->object = new DocBlox_TokenIterator($this->tokens);
+    $this->tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../../data/TokenIteratorTestFixture.php'));
+    $this->object = new DocBlox_Token_Iterator($this->tokens);
 
     $this->object->seek(0);
   }
@@ -66,18 +66,18 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
    */
   public function testConstruct()
   {
-    $this->assertGreaterThan(0, count($this->object), 'Expected DocBlox_TokenIterator to contain more than 0 items');
+    $this->assertGreaterThan(0, count($this->object), 'Expected DocBlox_Token_Iterator to contain more than 0 items');
     $this->assertEquals(
       count($this->tokens),
       count($this->object),
-      'Expected DocBlox_TokenIterator to contain the same amount of items as the output of the tokenizer'
+      'Expected DocBlox_Token_Iterator to contain the same amount of items as the output of the tokenizer'
     );
 
     foreach ($this->object as $token)
     {
       if (!($token instanceof DocBlox_Token))
       {
-        $this->fail('All tokens in the DocBlox_TokenIterator are expected to be of type DocBlox_Token, found: '
+        $this->fail('All tokens in the DocBlox_Token_Iterator are expected to be of type DocBlox_Token, found: '
           . print_r($token, true));
       }
     }
@@ -87,18 +87,18 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
       $this->object[0], $this->object[1], $this->object[2]
     );
 
-    $other_object = new DocBlox_TokenIterator($test_array);
-    $this->assertGreaterThan(0, count($other_object), 'Expected DocBlox_TokenIterator to contain more than 0 items');
+    $other_object = new DocBlox_Token_Iterator($test_array);
+    $this->assertGreaterThan(0, count($other_object), 'Expected DocBlox_Token_Iterator to contain more than 0 items');
     $this->assertEquals(
       count($test_array),
       count($other_object),
-      'Expected DocBlox_TokenIterator to contain the same amount of items as the given array of Tokens'
+      'Expected DocBlox_Token_Iterator to contain the same amount of items as the given array of Tokens'
     );
   }
 
   public function testGotoTokenByTypeInDirection()
   {
-    $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../data/TokenIteratorTestFixture.php'));
+    $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../../data/TokenIteratorTestFixture.php'));
     $mock = new TokenIteratorMock($tokens);
 
     $this->setExpectedException('InvalidArgumentException');
@@ -227,7 +227,7 @@ class DocBlox_TokenIteratorTest extends PHPUnit_Framework_TestCase
 
   public function testGetBrokenTokenIdsOfBracePair()
   {
-    $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../data/TokenIteratorTestFixture.php'));
+    $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../../data/TokenIteratorTestFixture.php'));
     $mock = new TokenIteratorMock($tokens);
 
     // because we have switched the { and } in the stub method it should immediately find a closing brace and thus

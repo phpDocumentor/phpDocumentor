@@ -34,13 +34,13 @@ class DocBlox_Reflection_Method extends DocBlox_Reflection_Function
    * Finds out whether this method is abstract, static, final and what visibility it has on top of the information
    * found using the DocBlox_Reflection_Function parent method.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @see DocBlox_Reflection_Function::processGenericInformation
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     $this->static     = $this->findStatic($tokens)   ? true : false;
     $this->abstract   = $this->findAbstract($tokens) ? true : false;

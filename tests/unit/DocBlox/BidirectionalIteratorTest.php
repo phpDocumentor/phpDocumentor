@@ -14,9 +14,9 @@
  * @package    Tests
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-class DocBlox_BidirectionalArrayIteratorTest extends PHPUnit_Framework_TestCase
+class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
 {
-  /** @var DocBlox_BidirectionalArrayIterator */
+  /** @var DocBlox_BidirectionalIterator */
   protected $fixture = null;
 
   /** @var string Expected serialized values */
@@ -29,7 +29,7 @@ class DocBlox_BidirectionalArrayIteratorTest extends PHPUnit_Framework_TestCase
    */
   protected function setUp()
   {
-    $this->fixture = new DocBlox_BidirectionalArrayIterator(array(
+    $this->fixture = new DocBlox_BidirectionalIterator(array(
       1,2,3,4,5,6,7,8,9,10
     ));
   }
@@ -194,7 +194,7 @@ class DocBlox_BidirectionalArrayIteratorTest extends PHPUnit_Framework_TestCase
    */
   public function testUnserialize()
   {
-    $f2 = new DocBlox_BidirectionalArrayIterator(array());
+    $f2 = new DocBlox_BidirectionalIterator(array());
     $f2->unserialize(self::SERIALIZED);
     $this->assertEquals($this->fixture, $f2);
   }

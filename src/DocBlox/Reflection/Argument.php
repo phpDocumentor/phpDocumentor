@@ -39,11 +39,11 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
    *
    * Find the name, type and default value for this argument.
    *
-   * @param  DocBlox_TokenIterator $tokens
+   * @param  DocBlox_Token_Iterator $tokens
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     $this->setName($tokens->current()->getContent());
     $this->type    = $this->findType($tokens);

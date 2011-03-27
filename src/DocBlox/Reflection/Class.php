@@ -28,13 +28,13 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
    * Finds out whether this method is abstract and/or final on top of the information found using the
    * DocBlox_Reflection_Interface parent method.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @see DocBlox_Reflection_Interface::processGenericInformation
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     // retrieve generic information about the class
     $this->abstract  = $this->findAbstract($tokens) ? true : false;

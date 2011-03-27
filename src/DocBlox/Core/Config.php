@@ -1,15 +1,23 @@
 <?php
 /**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Core
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
  * Configuration class for DocBlox.
  *
  * This class is responsible for registering and remembering the configuration settings.
  * During initialization several configuration parameters are added and the configurations for the templates are merged.
  *
- * @package    DocBlox
- * @subpackage Configuration
- * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @category DocBlox
+ * @package  Core
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Config extends Zend_Config_Xml
+class DocBlox_Core_Config extends Zend_Config_Xml
 {
   /**
    * @param string      $xml      File or XML text representing the configuration.
@@ -24,7 +32,7 @@ class DocBlox_Config extends Zend_Config_Xml
       $this->paths = new Zend_Config(array(), true);
     }
 
-    $this->paths->application = realpath(dirname(__FILE__) . '/../..');
+    $this->paths->application = realpath(dirname(__FILE__) . '/../../..');
     $this->paths->data        = realpath($this->paths->application . '/data');
     $this->paths->templates   = realpath($this->paths->data . '/templates');
     $this->mergeTemplateConfigurations();

@@ -1,12 +1,20 @@
 <?php
 /**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Core
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
  * This class handles the logging for DocBlox.
  *
- * @package    DocBlox
- * @subpackage Logging
+ * @category   DocBlox
+ * @package    Core
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Log
+class DocBlox_Core_Log
 {
   /** @var string Emergency: system is unstable */
   const EMERG = Zend_Log::EMERG;
@@ -64,7 +72,7 @@ class DocBlox_Log
           '{DATE}'
         ),
         array(
-          DocBlox_Abstract::config()->paths->application,
+          DocBlox_Core_Abstract::config()->paths->application,
           date('YmdHis')
         ),
         $file
@@ -109,13 +117,13 @@ class DocBlox_Log
   {
     if (!is_numeric($threshold))
     {
-      if (!defined('DocBlox_Log::' . strtoupper($threshold)))
+      if (!defined('DocBlox_Core_Log::' . strtoupper($threshold)))
       {
         throw new InvalidArgumentException(
-          'Expected one of the constants of the DocBlox_Log class, "' . $threshold . '" received'
+          'Expected one of the constants of the DocBlox_Core_Log class, "' . $threshold . '" received'
         );
       }
-      $threshold = constant('DocBlox_Log::' . strtoupper($threshold));
+      $threshold = constant('DocBlox_Core_Log::' . strtoupper($threshold));
     }
 
     $this->threshold = $threshold;

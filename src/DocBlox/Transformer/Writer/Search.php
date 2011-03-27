@@ -15,17 +15,17 @@
  * @package    Writers
  * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-class DocBlox_Writer_Search extends DocBlox_Writer_Abstract
+class DocBlox_Transformer_Writer_Search extends DocBlox_Transformer_Writer_Abstract
 {
   /**
    * Creates the search index at the artifact location.
    *
    * @param DOMDocument            $structure
-   * @param DocBlox_Transformation $transformation
+   * @param DocBlox_Transformer_Transformation $transformation
    *
    * @return void
    */
-  public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
+  public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
   {
     $this->createXmlIndex(
       $structure,

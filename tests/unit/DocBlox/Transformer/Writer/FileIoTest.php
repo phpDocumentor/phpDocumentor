@@ -2,14 +2,14 @@
 /**
 * Test class for DocBlox_Token.
 */
-class DocBlox_Writer_FileIoTest extends PHPUnit_Framework_TestCase
+class DocBlox_Transformer_Writer_FileIoTest extends PHPUnit_Framework_TestCase
 {
-  /** @var DocBlox_Writer_FileIo */
+  /** @var DocBlox_Transformer_Writer_FileIo */
   protected $fixture = null;
 
   protected function setUp()
   {
-    $this->fixture = new DocBlox_Writer_FileIo();
+    $this->fixture = new DocBlox_Transformer_Writer_FileIo();
   }
 
   public function testExecuteQueryCopy()
@@ -23,7 +23,7 @@ class DocBlox_Writer_FileIoTest extends PHPUnit_Framework_TestCase
     $tr->setTarget('/tmp');
     try
     {
-      $t = new DocBlox_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_b', 'docblox_c');
+      $t = new DocBlox_Transformer_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_b', 'docblox_c');
       $this->fixture->transform(new DOMDocument(), $t);
 
       $this->fail('When a non-existing source is provided, an exception is expected');
@@ -40,7 +40,7 @@ class DocBlox_Writer_FileIoTest extends PHPUnit_Framework_TestCase
     try
     {
       $tr->setTarget('/tmpz');
-      $t = new DocBlox_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_a', 'docblox_b');
+      $t = new DocBlox_Transformer_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_a', 'docblox_b');
       $this->fixture->transform(new DOMDocument(), $t);
 
       $this->fail('When a non-existing transformer target is provided, an exception is expected');
@@ -55,7 +55,7 @@ class DocBlox_Writer_FileIoTest extends PHPUnit_Framework_TestCase
     }
 
     $tr->setTarget('/tmp');
-    $t = new DocBlox_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_a', '/tmp/docblox_b');
+    $t = new DocBlox_Transformer_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_a', '/tmp/docblox_b');
     $this->fixture->executeQueryCopy($t);
     $this->assertFileExists('/tmp/docblox_a');
     $this->assertFileExists('/tmp/docblox_b');
@@ -75,7 +75,7 @@ class DocBlox_Writer_FileIoTest extends PHPUnit_Framework_TestCase
 
     try
     {
-      $t = new DocBlox_Transformation($tr, 'copyz', 'FileIo', '/tmp/docblox_a', 'docblox_b');
+      $t = new DocBlox_Transformer_Transformation($tr, 'copyz', 'FileIo', '/tmp/docblox_a', 'docblox_b');
       $this->fixture->transform(new DOMDocument(), $t);
 
       $this->fail('When un unknown query type is used an exception is expected');
@@ -84,7 +84,7 @@ class DocBlox_Writer_FileIoTest extends PHPUnit_Framework_TestCase
       // this is good
     }
 
-    $t = new DocBlox_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_a', 'docblox_b');
+    $t = new DocBlox_Transformer_Transformation($tr, 'copy', 'FileIo', '/tmp/docblox_a', 'docblox_b');
     $this->fixture->transform(new DOMDocument(), $t);
     $this->assertFileExists('/tmp/docblox_a');
     $this->assertFileExists('/tmp/docblox_b');

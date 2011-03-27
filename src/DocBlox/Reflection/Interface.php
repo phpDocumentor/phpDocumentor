@@ -28,11 +28,11 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Retrieve the name of the class starting from the T_CLASS token.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @return string
    */
-  protected function extractClassName(DocBlox_TokenIterator $tokens)
+  protected function extractClassName(DocBlox_Token_Iterator $tokens)
   {
     // a class name can be a combination of a T_NAMESPACE and T_STRING
     $name = '';
@@ -53,11 +53,11 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Extract and store the meta data surrounding a class / interface.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     // retrieve generic information about the class
     $this->setName($this->extractClassName($tokens));
@@ -86,11 +86,11 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Processes a T_CONST token found inside a class / interface definition.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @return void
    */
-  protected function processConst(DocBlox_TokenIterator $tokens)
+  protected function processConst(DocBlox_Token_Iterator $tokens)
   {
     $this->resetTimer('const');
 
@@ -106,7 +106,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Processes a T_VARIABLE token found inside a class / interface definition.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @return void
    */
@@ -126,7 +126,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Processes a T_FUNCTION token found inside a class / interface definition.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @return void
    */

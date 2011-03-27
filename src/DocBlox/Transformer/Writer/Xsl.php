@@ -14,7 +14,7 @@
  * @package    Writers
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Writer_Xsl extends DocBlox_Writer_Abstract
+class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
 {
 
   /**
@@ -24,11 +24,11 @@ class DocBlox_Writer_Xsl extends DocBlox_Writer_Abstract
    * @throws Exception
    *
    * @param DOMDocument $structure
-   * @param DocBlox_Transformation $transformation
+   * @param DocBlox_Transformer_Transformation $transformation
    *
    * @return void
    */
-  public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
+  public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
   {
     if (!class_exists('XSLTProcessor'))
     {
@@ -95,12 +95,12 @@ class DocBlox_Writer_Xsl extends DocBlox_Writer_Abstract
   /**
    * Sets the parameters of the XSLT processor.
    *
-   * @param DocBlox_Transformation $transformation
+   * @param DocBlox_Transformer_Transformation $transformation
    * @param XSLTProcessor $proc
    *
    * @return void
    */
-  public function setProcessorParameters(DocBlox_Transformation $transformation, XSLTProcessor &$proc)
+  public function setProcessorParameters(DocBlox_Transformer_Transformation $transformation, XSLTProcessor &$proc)
   {
     // first add the parameters are they are stored in the global configuration
     if (isset($this->getConfig()->transformations->{'xsl-variables'}))

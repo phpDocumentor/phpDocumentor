@@ -27,11 +27,11 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
    *
    * @see    DocBlox_Reflection_Abstract
    *
-   * @param  DocBlox_TokenIterator $tokens
+   * @param  DocBlox_Token_Iterator $tokens
    *
    * @return int[]
    */
-  public function processTokens(DocBlox_TokenIterator $tokens)
+  public function processTokens(DocBlox_Token_Iterator $tokens)
   {
     $level = -1;
     $start = 0;

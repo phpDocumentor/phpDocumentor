@@ -14,12 +14,12 @@
  * @package    Parser
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Transformation extends DocBlox_Abstract
+class DocBlox_Transformer_Transformation extends DocBlox_Core_Abstract
 {
   /** @var string */
   protected $query = '';
 
-  /** @var DocBlox_Writer_Abstract */
+  /** @var DocBlox_Transformer_Writer_Abstract */
   protected $writer = null;
 
   /** @var string */
@@ -105,13 +105,13 @@ class DocBlox_Transformation extends DocBlox_Abstract
    */
   public function setWriter($writer)
   {
-    $this->writer = DocBlox_Writer_Abstract::getInstanceOf($writer);
+    $this->writer = DocBlox_Transformer_Writer_Abstract::getInstanceOf($writer);
   }
 
   /**
    * Returns an instantiated writer object.
    *
-   * @return DocBlox_Writer_Abstract|null
+   * @return DocBlox_Transformer_Writer_Abstract|null
    */
   public function getWriter()
   {

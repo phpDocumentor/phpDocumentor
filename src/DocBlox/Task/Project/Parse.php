@@ -104,7 +104,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
   {
     $target = parent::getTarget();
     $target = ($target === null)
-      ? trim(DocBlox_Abstract::config()->target)
+      ? trim(DocBlox_Core_Abstract::config()->target)
       : trim($target);
 
     if (($target == '') || ($target == DIRECTORY_SEPARATOR))
@@ -137,7 +137,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
       return explode(',', parent::getExtensions());
     }
 
-    return DocBlox_Abstract::config()->getArrayFromPath('extensions/extension');
+    return DocBlox_Core_Abstract::config()->getArrayFromPath('extensions/extension');
   }
 
   /**
@@ -152,7 +152,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
       return explode(',', parent::getIgnore());
     }
 
-    return DocBlox_Abstract::config()->getArrayFromPath('ignore/item');
+    return DocBlox_Core_Abstract::config()->getArrayFromPath('ignore/item');
   }
 
   /**
@@ -167,7 +167,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
       return parent::getTitle();
     }
 
-    return DocBlox_Abstract::config()->get('title');
+    return DocBlox_Core_Abstract::config()->get('title');
   }
 
   /**
@@ -187,7 +187,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     $expressions = array_unique(
       $this->getFilename()
         ? explode(',', $this->getFilename())
-        : DocBlox_Abstract::config()->getArrayFromPath('files/file')
+        : DocBlox_Core_Abstract::config()->getArrayFromPath('files/file')
     );
 
     $files = array();
@@ -210,7 +210,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     $expressions = array_unique(
       $this->getDirectory() || !empty($files)
         ? explode(',', $this->getDirectory())
-        : DocBlox_Abstract::config()->getArrayFromPath('files/directory')
+        : DocBlox_Core_Abstract::config()->getArrayFromPath('files/directory')
     );
 
     foreach ($expressions as $directory)
@@ -258,7 +258,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
       return explode(',', parent::getMarkers());
     }
 
-    return DocBlox_Abstract::config()->getArrayFromPath('markers/item');
+    return DocBlox_Core_Abstract::config()->getArrayFromPath('markers/item');
   }
 
   /**
@@ -273,19 +273,19 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     if ($this->getConfig())
     {
       // when the configuration parameter is provided; merge that with the basic config
-      DocBlox_Abstract::config()->merge(new Zend_Config_Xml($this->getConfig()));
+      DocBlox_Core_Abstract::config()->merge(new Zend_Config_Xml($this->getConfig()));
     }
     elseif (is_readable('docblox.xml'))
     {
       // when the configuration is not provided; check for the presence of a configuration file in the current directory
       // and merge that
-      DocBlox_Abstract::config()->merge(new Zend_Config_Xml('docblox.xml'));
+      DocBlox_Core_Abstract::config()->merge(new Zend_Config_Xml('docblox.xml'));
     }
     elseif (is_readable('docblox.dist.xml'))
     {
       // when no docblox.xml is provided; check for a dist.xml file. Yes, compared to, for example, PHPUnit the xml
       // and dist is reversed; this is done on purpose so IDEs have an easier time on it.
-      DocBlox_Abstract::config()->merge(new Zend_Config_Xml('docblox.dist.xml'));
+      DocBlox_Core_Abstract::config()->merge(new Zend_Config_Xml('docblox.dist.xml'));
     }
 
     $files = $this->parseFiles();
@@ -298,11 +298,11 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     $parser->setTitle(htmlentities($this->getTitle()));
     if ($this->getVerbose())
     {
-      $parser->setLogLevel(DocBlox_Log::DEBUG);
+      $parser->setLogLevel(DocBlox_Core_Log::DEBUG);
     }
     if ($this->getQuiet())
     {
-      $parser->setLogLevel(DocBlox_Log::QUIET);
+      $parser->setLogLevel(DocBlox_Core_Log::QUIET);
     }
     $parser->setExistingXml($this->getTarget() . '/structure.xml');
     $parser->setIgnorePatterns($this->getIgnore());

@@ -3,7 +3,7 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Tokens
+ * @package    Token
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
@@ -11,10 +11,10 @@
  * Iterator class responsible for navigating through a list of Tokens.
  *
  * @category DocBlox
- * @package  Tokens
+ * @package  Token
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_TokenIterator extends DocBlox_BidirectionalArrayIterator
+class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
 {
   /** @var string|null The name of the file where these tokens come from; if any */
   protected $filename = null;

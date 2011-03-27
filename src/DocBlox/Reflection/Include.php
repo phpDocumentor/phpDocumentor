@@ -22,11 +22,11 @@ class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
   /**
    * Get the type and name for this include.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     $this->type = ucwords(strtolower(str_replace('_', ' ', substr($tokens->current()->getName(), 2))));
 

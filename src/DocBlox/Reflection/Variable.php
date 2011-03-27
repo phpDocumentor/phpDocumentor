@@ -25,13 +25,13 @@ class DocBlox_Reflection_Variable extends DocBlox_Reflection_DocBlockedAbstract
    * Finds out whether this variable has a default value and sets the name on top of the information found using the
    * DocBlox_Reflection_DocBlockedAbstract parent method.
    *
-   * @param DocBlox_TokenIterator $tokens
+   * @param DocBlox_Token_Iterator $tokens
    *
    * @see DocBlox_Reflection_DocBlockedAbstract::processGenericInformation
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     $this->setName($tokens->current()->getContent());
     $this->default = $this->findDefault($tokens);

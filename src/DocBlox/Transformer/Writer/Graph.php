@@ -16,17 +16,17 @@
  * @package    Writers
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
+class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstract
 {
   /**
    * Generates an array containing class to path references and then invokes the Source specific method.
    *
    * @param DOMDocument            $structure
-   * @param DocBlox_Transformation $transformation
+   * @param DocBlox_Transformer_Transformation $transformation
    *
    * @return void
    */
-  public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
+  public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
   {
     // NOTE: the -V flag sends output using STDERR and STDOUT
     exec('dot -V 2>&1', $output, $error);
@@ -72,13 +72,13 @@ class DocBlox_Writer_Graph extends DocBlox_Writer_Abstract
    * Generates a SVG Class Diagram at the given artifact location.
    *
    * @param DOMDocument            $structure
-   * @param DocBlox_Transformation $transformation
+   * @param DocBlox_Transformer_Transformation $transformation
    *
    * @todo this method should be refactored into smaller components.
    *
    * @return void
    */
-  public function processClass(DOMDocument $structure, DocBlox_Transformation $transformation)
+  public function processClass(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
   {
     // generate graphviz
     $xpath = new DOMXPath($structure);

@@ -4,17 +4,17 @@
  *
  * @category   DocBlox
  * @package    Parser
- * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
- * Core class responsible for parsing the given files to a strjucture.xml file.
+ * Core class responsible for parsing the given files to a structure.xml file.
  *
  * @category   DocBlox
  * @package    Parser
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Parser extends DocBlox_Abstract
+class DocBlox_Parser extends DocBlox_Core_Abstract
 {
   /** @var string the title to use in the header */
   protected $title = '';
@@ -82,7 +82,7 @@ class DocBlox_Parser extends DocBlox_Abstract
   public function isForced()
   {
     $is_version_unequal = (($this->getExistingXml())
-      && ($this->getExistingXml()->documentElement->getAttribute('version') != DocBlox_Abstract::VERSION));
+      && ($this->getExistingXml()->documentElement->getAttribute('version') != DocBlox_Core_Abstract::VERSION));
 
     if ($is_version_unequal)
     {
@@ -383,7 +383,7 @@ class DocBlox_Parser extends DocBlox_Abstract
 
     $dom = new DOMDocument('1.0', 'utf-8');
     $dom->formatOutput = true;
-    $dom->loadXML('<project version="'.DocBlox_Abstract::VERSION.'" title="'.addslashes($this->getTitle()).'"></project>');
+    $dom->loadXML('<project version="'.DocBlox_Core_Abstract::VERSION.'" title="'.addslashes($this->getTitle()).'"></project>');
 
     foreach ($files as $file)
     {

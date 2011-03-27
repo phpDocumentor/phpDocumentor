@@ -14,9 +14,9 @@
  * @package    Writers
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
+class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstract
 {
-  /** @var DocBlox_Transformation */
+  /** @var DocBlox_Transformer_Transformation */
   protected $transformation = null;
 
   /** @var DOMDocument */
@@ -28,11 +28,11 @@ class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
    * @throws InvalidArgumentException
    *
    * @param DOMDocument            $structure
-   * @param DocBlox_Transformation $transformation
+   * @param DocBlox_Transformer_Transformation $transformation
    *
    * @return void
    */
-  public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
+  public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
   {
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     $transformation->setArtifact($artifact);
@@ -60,7 +60,7 @@ class DocBlox_Writer_FileIo extends DocBlox_Writer_Abstract
    *
    * @return void
    */
-  public function executeQueryCopy(DocBlox_Transformation $transformation)
+  public function executeQueryCopy(DocBlox_Transformer_Transformation $transformation)
   {
     if (!is_readable($transformation->getSource()))
     {

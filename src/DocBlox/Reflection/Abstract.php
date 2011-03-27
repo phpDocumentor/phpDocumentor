@@ -15,7 +15,7 @@
  * @subpackage Base
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
+abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
 {
   /**
    * Stores the method name of the processing method for a token.
@@ -72,11 +72,11 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
   /**
    * Main function which reads the token iterator and parses the current token.
    *
-   * @param DocBlox_TokenIterator $tokens The iterator with tokens.
+   * @param DocBlox_Token_Iterator $tokens The iterator with tokens.
    *
    * @return void
    */
-  public function parseTokenizer(DocBlox_TokenIterator $tokens)
+  public function parseTokenizer(DocBlox_Token_Iterator $tokens)
   {
     if (!$tokens->current())
     {
@@ -106,11 +106,11 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    *
    * @abstract
    *
-   * @param DocBlox_TokenIterator $tokens The iterator with tokens.
+   * @param DocBlox_Token_Iterator $tokens The iterator with tokens.
    *
    * @return void
    */
-  abstract protected function processGenericInformation(DocBlox_TokenIterator $tokens);
+  abstract protected function processGenericInformation(DocBlox_Token_Iterator $tokens);
 
   /**
    * Scans all tokens within the scope of the current token and invokes the process* methods.
@@ -118,11 +118,11 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    * This is a base class which may be overridden in sub-classes to scan the scope of the current token
    * (i.e. the method body in case of the method)
    *
-   * @param DocBlox_TokenIterator $tokens iterator with the current position
+   * @param DocBlox_Token_Iterator $tokens iterator with the current position
    *
    * @return int[] Start and End token id
    */
-  protected function processTokens(DocBlox_TokenIterator $tokens)
+  protected function processTokens(DocBlox_Token_Iterator $tokens)
   {
     return array($tokens->key(), $tokens->key());
   }
@@ -134,11 +134,11 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    * If a method, which conforms to the standard above, does not exist the token is ignored.
    *
    * @param DocBlox_Token         $token  The specific token which needs processing.
-   * @param DocBlox_TokenIterator $tokens The iterator with tokens.
+   * @param DocBlox_Token_Iterator $tokens The iterator with tokens.
    *
    * @return void
    */
-  protected function processToken(DocBlox_Token $token, DocBlox_TokenIterator $tokens)
+  protected function processToken(DocBlox_Token $token, DocBlox_Token_Iterator $tokens)
   {
     static $token_method_exists_cache = array();
 
@@ -168,10 +168,10 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    *
    * Please note that the iterator cursor does not change due to this method
    *
-   * @param  DocBlox_TokenIterator $tokens
+   * @param  DocBlox_Token_Iterator $tokens
    * @return string|null
    */
-  protected function findType(DocBlox_TokenIterator $tokens)
+  protected function findType(DocBlox_Token_Iterator $tokens)
   {
     // first see if there is a string at most 5 characters back
     $type = $tokens->findPreviousByType(T_STRING, 5, array(',', '('));
@@ -192,10 +192,10 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    * Usually used with variables or arguments.
    * Please note that the iterator cursor does not change due to this method
    *
-   * @param  DocBlox_TokenIterator $tokens
+   * @param  DocBlox_Token_Iterator $tokens
    * @return string|null
    */
-  protected function findDefault(DocBlox_TokenIterator $tokens)
+  protected function findDefault(DocBlox_Token_Iterator $tokens)
   {
     // check if a string is found
     $default_token        = $tokens->findNextByType(T_STRING, 5, array(',', ')'));
@@ -224,10 +224,10 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    *
    * Please note that the iterator cursor does not change due to this method
    *
-   * @param  DocBlox_TokenIterator $tokens
+   * @param  DocBlox_Token_Iterator $tokens
    * @return DocBlox_Token|null
    */
-  protected function findAbstract(DocBlox_TokenIterator $tokens)
+  protected function findAbstract(DocBlox_Token_Iterator $tokens)
   {
     return $tokens->findPreviousByType(T_ABSTRACT, 5, array('}'));
   }
@@ -237,10 +237,10 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    *
    * Please note that the iterator cursor does not change due to this method
    *
-   * @param  DocBlox_TokenIterator $tokens
+   * @param  DocBlox_Token_Iterator $tokens
    * @return DocBlox_Token|null
    */
-  protected function findFinal(DocBlox_TokenIterator $tokens)
+  protected function findFinal(DocBlox_Token_Iterator $tokens)
   {
     return $tokens->findPreviousByType(T_FINAL, 5, array('}'));
   }
@@ -250,10 +250,10 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
    *
    * Please note that the iterator cursor does not change due to this method
    *
-   * @param  DocBlox_TokenIterator $tokens
+   * @param  DocBlox_Token_Iterator $tokens
    * @return DocBlox_Token|null
    */
-  protected function findStatic(DocBlox_TokenIterator $tokens)
+  protected function findStatic(DocBlox_Token_Iterator $tokens)
   {
     return $tokens->findPreviousByType(T_STATIC, 5, array('{', ';'));
   }
@@ -261,11 +261,11 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Abstract
   /**
    * Searches for visibility specifiers with the current token.
    *
-   * @param DocBlox_TokenIterator $tokens Token iterator to search in.
+   * @param DocBlox_Token_Iterator $tokens Token iterator to search in.
    *
    * @return string public|private|protected
    */
-  protected function findVisibility(DocBlox_TokenIterator $tokens)
+  protected function findVisibility(DocBlox_Token_Iterator $tokens)
   {
     $result = 'public';
     $result = $tokens->findPreviousByType(T_PRIVATE, 5, array('{', ';')) ? 'private' : $result;

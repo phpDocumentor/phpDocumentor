@@ -14,7 +14,7 @@
  * @package    Writer
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-abstract class DocBlox_Writer_Abstract extends DocBlox_Abstract
+abstract class DocBlox_Transformer_Writer_Abstract extends DocBlox_Core_Abstract
 {
   /**
    * Abstract definition of the execute method.
@@ -25,14 +25,14 @@ abstract class DocBlox_Writer_Abstract extends DocBlox_Abstract
    *
    * @return void
    */
-  abstract public function transform(DOMDocument $structure, DocBlox_Transformation $transformation);
+  abstract public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation);
 
   /**
    * Returns an instance of a writer and caches it; a single writer instance is capable of transforming multiple times.
    *
    * @param string $writer Name of thr writer to get.
    *
-   * @return DocBlox_Writer_Abstract
+   * @return DocBlox_Transformer_Writer_Abstract
    */
   static public function getInstanceOf($writer)
   {
@@ -41,7 +41,7 @@ abstract class DocBlox_Writer_Abstract extends DocBlox_Abstract
     // if there is no writer; create it
     if (!isset($writers[strtolower($writer)]))
     {
-      $writer_class = 'DocBlox_Writer_' . ucfirst($writer);
+      $writer_class = 'DocBlox_Transformer_Writer_' . ucfirst($writer);
       $writers[strtolower($writer)] = new $writer_class();
     }
 

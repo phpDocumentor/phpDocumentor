@@ -16,7 +16,7 @@
  * @package    Base
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-abstract class DocBlox_Abstract
+abstract class DocBlox_Core_Abstract
 {
   /**
    * The actual version number of DocBlox.
@@ -28,35 +28,35 @@ abstract class DocBlox_Abstract
   /**
    * The logger used to capture all messages send by the log method.
    *
-   * @see DocBlox_Abstract::log()
+   * @see DocBlox_Core_Abstract::log()
    *
-   * @var DocBlox_Log
+   * @var DocBlox_Core_Log
    */
   static protected $logger       = null;
 
   /**
    * The logger used to capture all messages send by the log method and send them to stdout.
    *
-   * @see DocBlox_Abstract::log()
+   * @see DocBlox_Core_Abstract::log()
    *
-   * @var DocBlox_Log
+   * @var DocBlox_Core_Log
    */
   static protected $stdout_logger       = null;
 
   /**
    * The logger used to capture the debug messages send by the debug method.
    *
-   * @see DocBlox_Abstract::debug()
-   * @var DocBlox_Log
+   * @see DocBlox_Core_Abstract::debug()
+   * @var DocBlox_Core_Log
    */
   static protected $debug_logger = null;
 
   /**
    * The config containing overrides for the defaults.
    *
-   * @see DocBlox_Abstract::getConfig()
+   * @see DocBlox_Core_Abstract::getConfig()
    *
-   * @var DocBlox_Config
+   * @var DocBlox_Core_Config
    */
   static protected $config       = null;
 
@@ -136,12 +136,12 @@ abstract class DocBlox_Abstract
   {
     if (!is_numeric($level))
     {
-      if (!defined('DocBlox_Log::' . strtoupper($level)))
+      if (!defined('DocBlox_Core_Log::' . strtoupper($level)))
       {
-        throw new InvalidArgumentException('Expected one of the constants of the DocBlox_Log class, "'
+        throw new InvalidArgumentException('Expected one of the constants of the DocBlox_Core_Log class, "'
           . $level . '" received');
       }
-      $level = constant('DocBlox_Log::'.strtoupper($level));
+      $level = constant('DocBlox_Core_Log::'.strtoupper($level));
     }
 
     if (self::$logger)
@@ -198,10 +198,10 @@ abstract class DocBlox_Abstract
     if (!self::$debug_logger)
     {
       $config = $this->getConfig();
-      self::$debug_logger = new DocBlox_Log($config->logging->paths->errors);
+      self::$debug_logger = new DocBlox_Core_Log($config->logging->paths->errors);
     }
 
-    self::$debug_logger->log($message, DocBlox_Log::DEBUG);
+    self::$debug_logger->log($message, DocBlox_Core_Log::DEBUG);
   }
 
   /**
@@ -216,9 +216,9 @@ abstract class DocBlox_Abstract
    * @param  string $message
    * @return void
    */
-  public function log($message, $priority = DocBlox_Log::INFO)
+  public function log($message, $priority = DocBlox_Core_Log::INFO)
   {
-    if ($priority == DocBlox_Log::DEBUG)
+    if ($priority == DocBlox_Core_Log::DEBUG)
     {
       $this->debug($message);
       return;
@@ -229,11 +229,11 @@ abstract class DocBlox_Abstract
       $config = $this->getConfig();
 
       // log to file
-      self::$logger = new DocBlox_Log($config->logging->paths->default);
+      self::$logger = new DocBlox_Core_Log($config->logging->paths->default);
       self::$logger->setThreshold($this->getLogLevel());
 
       // log to stdout
-      self::$stdout_logger = new DocBlox_Log(DocBlox_Log::FILE_STDOUT);
+      self::$stdout_logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
       self::$stdout_logger->setThreshold($this->getLogLevel());
     }
 
@@ -244,7 +244,7 @@ abstract class DocBlox_Abstract
   /**
    * Returns the configuration for DocBlox.
    *
-   * @return DocBlox_Config
+   * @return DocBlox_Core_Config
    */
   public function getConfig()
   {
@@ -254,13 +254,13 @@ abstract class DocBlox_Abstract
   /**
    * Returns the configuration for DocBlox.
    *
-   * @return DocBlox_Config
+   * @return DocBlox_Core_Config
    */
   public static function config()
   {
     if (self::$config === null)
     {
-      self::$config = new DocBlox_Config(dirname(__FILE__) . '/../../data/docblox.tpl.xml');
+      self::$config = new DocBlox_Core_Config(dirname(__FILE__) . '/../../../data/docblox.tpl.xml');
     }
 
     return self::$config;

@@ -14,17 +14,17 @@
  * @see        http://code.google.com/p/wkhtmltopdf/
  * @see        http://blog.structuralartistry.com/post/2327213260/installing-wkhtmltopdf-on-ubuntu-server
  */
-class DocBlox_Writer_Pdf extends DocBlox_Writer_Abstract
+class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
 {
   /**
    * Calls the wkhtmltopdf executable to generate a PDF.
    *
    * @param DOMDocument            $structure
-   * @param DocBlox_Transformation $transformation
+   * @param DocBlox_Transformer_Transformation $transformation
    *
    * @return void
    */
-  public function transform(DOMDocument $structure, DocBlox_Transformation $transformation)
+  public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
   {
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     $transformation->setArtifact($artifact);
@@ -59,7 +59,7 @@ class DocBlox_Writer_Pdf extends DocBlox_Writer_Abstract
 
     // log message and output
     $this->log('Generating PDF file ' . $transformation->getArtifact() . ' from ' . $transformation->getSource());
-    $this->log($output, $error == 0 ? DocBlox_Log::INFO : DocBlox_Log::CRIT);
+    $this->log($output, $error == 0 ? DocBlox_Core_Log::INFO : DocBlox_Core_Log::CRIT);
 
     // CRASH!
     if ($error != 0)

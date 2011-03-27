@@ -19,18 +19,18 @@ class DocBlox_ParserTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(false, $this->fixture->isForced());
 
     $xml = new SimpleXMLElement('<project></project>');
-    $xml->addAttribute('version', DocBlox_Abstract::VERSION);
+    $xml->addAttribute('version', DocBlox_Core_Abstract::VERSION);
 
     $this->fixture->setExistingXml($xml->asXML());
     $this->assertEquals(false, $this->fixture->isForced());
 
     // if version differs, we force a rebuild
-    $xml['version'] = DocBlox_Abstract::VERSION.'a';
+    $xml['version'] = DocBlox_Core_Abstract::VERSION.'a';
     $this->fixture->setExistingXml($xml->asXML());
     $this->assertEquals(true, $this->fixture->isForced());
 
     // switching back should undo the force
-    $xml['version'] = DocBlox_Abstract::VERSION;
+    $xml['version'] = DocBlox_Core_Abstract::VERSION;
     $this->fixture->setExistingXml($xml->asXML());
     $this->assertEquals(false, $this->fixture->isForced());
 

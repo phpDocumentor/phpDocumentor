@@ -3,7 +3,7 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
 {
   protected $value     = '';
 
-  protected function processGenericInformation(DocBlox_TokenIterator $tokens)
+  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
     $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->getContent());
     $this->setValue($this->findDefault($tokens));

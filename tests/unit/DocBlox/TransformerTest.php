@@ -52,8 +52,8 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
   {
     $this->assertSame(array('default'), $this->fixture->getTemplates());
 
-    DocBlox_Abstract::config()->templates->test = new Zend_Config(array());
-    DocBlox_Abstract::config()->templates->test2 = new Zend_Config(array());
+    DocBlox_Core_Abstract::config()->templates->test = new Zend_Config(array());
+    DocBlox_Core_Abstract::config()->templates->test2 = new Zend_Config(array());
 
     $this->fixture->setTemplates('test');
     $this->assertEquals(array('test'), $this->fixture->getTemplates());
@@ -75,7 +75,7 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
       'artifact' => 'c',
     ));
     $this->assertEquals($count + 1, count($this->fixture->getTransformations()));
-    $this->assertInstanceOf('DocBlox_Transformation', reset($this->fixture->getTransformations()));
+    $this->assertInstanceOf('DocBlox_Transformer_Transformation', reset($this->fixture->getTransformations()));
     $this->assertEquals(0, count(reset($this->fixture->getTransformations())->getParameters()));
 
     // test creation with parameters
@@ -93,7 +93,7 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(1, count($transformations[$count+1]->getParameters()));
 
     // test creation with pre-fab object
-    $transformation = new DocBlox_Transformation(
+    $transformation = new DocBlox_Transformer_Transformation(
       $this->fixture, 'd', 'Xsl', 'b', 'c'
     );
     $this->fixture->addTransformation($transformation);
@@ -153,7 +153,7 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
     }
 
     // nothing should happen when template does not contain transformations
-    DocBlox_Abstract::config()->templates->wargarbl = ''; // setting fixture
+    DocBlox_Core_Abstract::config()->templates->wargarbl = ''; // setting fixture
 
     $count = count($this->fixture->getTransformations());
     $this->assertNull(
@@ -176,7 +176,7 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
 
   public function testLoadTransformations()
   {
-    DocBlox_Abstract::config()->transformations = array();
+    DocBlox_Core_Abstract::config()->transformations = array();
 
     $this->fixture = new DocBlox_Transformer();
     $this->assertEquals(
@@ -185,7 +185,7 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
       'A transformer should not have transformations when initialized with an empty configuration'
     );
 
-    DocBlox_Abstract::config()->transformations = array(
+    DocBlox_Core_Abstract::config()->transformations = array(
       new Zend_Config_Xml(<<<XML
 <?xml version="1.0"?>
 <transformation>
@@ -212,12 +212,12 @@ XML
 
   public function testExecute()
   {
-    DocBlox_Abstract::config()->transformations = array();
+    DocBlox_Core_Abstract::config()->transformations = array();
     $this->fixture = new DocBlox_Transformer();
 
     // when nothing is added; this moch should not be invoked
     $transformation = $this->getMock(
-      'DocBlox_Transformation',
+      'DocBlox_Transformer_Transformation',
       array('execute'),
       array($this->fixture, '', 'Xsl', '', '')
     );
@@ -227,7 +227,7 @@ XML
 
     // when we add this mock; we expect it to be invoked
     $transformation = $this->getMock(
-      'DocBlox_Transformation',
+      'DocBlox_Transformer_Transformation',
       array('execute'),
       array($this->fixture, '', 'Xsl', '', '')
     );
