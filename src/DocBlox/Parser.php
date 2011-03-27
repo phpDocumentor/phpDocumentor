@@ -431,12 +431,12 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     $packages = array();
 
     $xpath = new DOMXPath($dom);
-    $qry   = $xpath->query('//class/docblock/tag[@name="package"]|//file/docblock/tag[@name="package"]');
+    $qry   = $xpath->query('/project/file/class/docblock/tag[@name="package"]|/project/file/docblock/tag[@name="package"]');
 
     // iterate through all packages
     for ($i = 0; $i < $qry->length; $i++)
     {
-      $package_name = $qry->item($i)->nodeValue;
+      $package_name = $qry->item($i)->attributes->getNamedItem('description')->nodeValue;
       if (isset($packages[$package_name]))
       {
         continue;
@@ -445,10 +445,12 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
       $packages[$package_name] = array();
 
       // find all subpackages
-      $qry2 = $xpath->query('//docblock/tag[@name="package" and .="' . $qry->item($i)->nodeValue . '"]/../tag[@name="subpackage"]');
+      $qry2 = $xpath->query(
+        '//docblock/tag[@name="package" and @description="' . $package_name . '"]/../tag[@name="subpackage"]'
+      );
       for ($i2 = 0; $i2 < $qry2->length; $i2++)
       {
-        $packages[$package_name][] = $qry2->item($i2)->nodeValue;
+        $packages[$package_name][] = $qry2->item($i2)->attributes->getNamedItem('description')->nodeValue;
       }
       $packages[$package_name] = array_unique($packages[$package_name]);
 

@@ -40,7 +40,7 @@ or directories to parse and which to ignore.
 Example:
 ./bin/parse.php -d /home/me/project
 The example above parses the /home/me/project directory for any file suffixed with .php and write a structure.xml file
-to the output directory.
+to the data/output directory.
 
 By executing this command you construct the building block for the transformation process, the meta data store a.k.a.
 structure.xml.
@@ -52,7 +52,7 @@ Transformation
 --------------
 The transformation process is responsible for creating human-readable output from the generated XML file.
 
-You can start the transformation process by running ./bin/transform.php; by default it will look in the output subfolder
+You can start the transformation process by running ./bin/transform.php; by default it will look in the data/output subfolder
 of your DocBlox installation root for the structure.xml file.
 During the transformation the structure.xml file will be interpreted and (static) XHTML files will be created in the
 same folder, additionally a search index and class diagram will be generated.
