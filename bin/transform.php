@@ -8,4 +8,4 @@
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
-passthru(dirname(__FILE__) . '/docblox.php project:transform ' . implode(' ', array_slice($argv, 1)));
+passthru('php '.dirname(__FILE__) . '/docblox.php project:transform ' . implode(' ', array_slice($argv, 1)));
