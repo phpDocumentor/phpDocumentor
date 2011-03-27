@@ -14,7 +14,7 @@
  * @package  Tokens
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_TokenIterator extends DocBlox_BidiArrayIterator
+class DocBlox_TokenIterator extends DocBlox_BidirectionalArrayIterator
 {
   /** @var string|null The name of the file where these tokens come from; if any */
   protected $filename = null;

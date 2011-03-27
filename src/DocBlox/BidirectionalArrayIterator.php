@@ -14,7 +14,7 @@
  * @package  Iterator
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_BidiArrayIterator implements Countable, ArrayAccess, Serializable, SeekableIterator
+class DocBlox_BidirectionalArrayIterator implements Countable, ArrayAccess, Serializable, SeekableIterator
 {
   /**
    * Array containing the items to store

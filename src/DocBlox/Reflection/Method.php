@@ -1,11 +1,45 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Parses the definition of a method.
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_Method extends DocBlox_Reflection_Function
 {
-  protected $abstract   = false;
-  protected $final      = false;
-  protected $static     = false;
+  /** @var bool Remembers whether this method is abstract */
+  protected $abstract = false;
+
+  /** @var bool Remembers whether this method is final */
+  protected $final = false;
+
+  /** @var bool Remembers whether this method is static */
+  protected $static = false;
+
+  /** @var string Remember the visibility of this method; may be either public, protected or private */
   protected $visibility = 'public';
 
+  /**
+   * Retrieves the generic information.
+   *
+   * Finds out whether this method is abstract, static, final and what visibility it has on top of the information
+   * found using the DocBlox_Reflection_Function parent method.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @see DocBlox_Reflection_Function::processGenericInformation
+   *
+   * @return void
+   */
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->static     = $this->findStatic($tokens)   ? true : false;
@@ -16,31 +50,59 @@ class DocBlox_Reflection_Method extends DocBlox_Reflection_Function
     parent::processGenericInformation($tokens);
   }
 
-  public function processTokens(DocBlox_TokenIterator $tokens)
-  {
-    return parent::processTokens($tokens);
-  }
-
+  /**
+   * Returns the visibility for this item.
+   *
+   * The returned value should match either of the following:
+   *
+   * * public
+   * * protected
+   * * private
+   *
+   * If a method has no visibility set in the class definition this method will return 'public'.
+   *
+   * @return string
+   */
   public function getVisibility()
   {
     return $this->visibility;
   }
 
+  /**
+   * Returns whether this method is static.
+   *
+   * @return bool
+   */
   public function isAbstract()
   {
     return $this->abstract;
   }
 
+  /**
+   * Returns whether this method is static.
+   *
+   * @return bool
+   */
   public function isStatic()
   {
     return $this->static;
   }
 
+  /**
+   * Returns whether this method is final.
+   *
+   * @return bool
+   */
   public function isFinal()
   {
     return $this->final;
   }
 
+  /**
+   * Returns the XML representation of this object or false if an error occurred.
+   *
+   * @return string|boolean
+   */
   public function __toXml()
   {
     $xml = new SimpleXMLElement('<method></method>');

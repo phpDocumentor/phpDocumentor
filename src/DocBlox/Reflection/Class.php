@@ -16,13 +16,21 @@
  */
 class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
 {
-  protected $abstract    = false;
-  protected $final       = false;
+  /** @var bool Remembers whether this class is abstract */
+  protected $abstract = false;
+
+  /** @var bool Remembers whether this class is final */
+  protected $final = false;
 
   /**
-   * Extract and store the meta data surrounding a class.
+   * Retrieves the generic information.
+   *
+   * Finds out whether this method is abstract and/or final on top of the information found using the
+   * DocBlox_Reflection_Interface parent method.
    *
    * @param DocBlox_TokenIterator $tokens
+   *
+   * @see DocBlox_Reflection_Interface::processGenericInformation
    *
    * @return void
    */
@@ -55,9 +63,20 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
     return $this->final;
   }
 
+  /**
+   * Returns the XML representation of this object or false if an error occurred.
+   *
+   * @param SimpleXMLElement $xml If not null, expands the given SimpleXML Node instead of instantiating a new one.
+   *
+   * @return string|boolean
+   */
   public function __toXml(SimpleXMLElement $xml = null)
   {
-    $xml = new SimpleXMLElement('<class></class>');
+    if ($xml === null)
+    {
+      $xml = new SimpleXMLElement('<class></class>');
+    }
+
     $xml['final']      = $this->isFinal() ? 'true' : 'false';
     $xml['abstract']   = $this->isAbstract() ? 'true' : 'false';
     $xml['line']       = $this->getLineNumber();

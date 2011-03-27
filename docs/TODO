@@ -9,6 +9,7 @@ Roadmap
 * Check Agavi; the @params do not have an argument name; the template probably handles this wrong
 * Revise Page level docblock searching algorythm; with the introduction of namespaces has the @package tag become
   obsolete and it seems incomplete.
+* test variable null vs 'null'
 
 1.0: Pre-1.0 release actions
 -----------------------------
