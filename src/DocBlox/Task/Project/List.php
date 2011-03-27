@@ -10,6 +10,7 @@
  */
 class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
 {
+  /** @var string The name of this task including namespace */
   protected $taskname = 'project:list';
 
   /**

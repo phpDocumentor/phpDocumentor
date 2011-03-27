@@ -1,10 +1,42 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Provides the basic functionality for every static reflection class.
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_Property extends DocBlox_Reflection_Variable
 {
-  protected $static      = false;
-  protected $final       = false;
-  protected $visibility  = 'public';
+  /** @var bool Remembers whether this property is static */
+  protected $static = false;
 
+  /** @var bool Remembers whether this property is final */
+  protected $final = false;
+
+  /** @var string Remember the visibility of this property; may be either public, protected or private */
+  protected $visibility = 'public';
+
+  /**
+   * Retrieves the generic information.
+   *
+   * Finds out whether this property is static, final and what visibility it has on top of the information found using
+   * the DocBlox_Reflection_Variable parent method.
+   *
+   * @param DocBlox_TokenIterator $tokens
+   *
+   * @see DocBlox_Reflection_Variable::processGenericInformation
+   *
+   * @return void
+   */
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)
   {
     $this->static     = $this->findStatic($tokens) ? true : false;
@@ -14,21 +46,51 @@ class DocBlox_Reflection_Property extends DocBlox_Reflection_Variable
     parent::processGenericInformation($tokens);
   }
 
+  /**
+   * Returns whether this property is static.
+   *
+   * @return bool
+   */
   public function isStatic()
   {
     return $this->static;
   }
 
+  /**
+   * Returns whether this property is final.
+   *
+   * @return bool
+   */
   public function isFinal()
   {
     return $this->final;
   }
 
+  /**
+   * Returns the visibility for this item.
+   *
+   * The returned value should match either of the following:
+   *
+   * * public
+   * * protected
+   * * private
+   *
+   * If a property has no visibility set in the class definition this method will return 'public'.
+   *
+   * @return string
+   */
   public function getVisibility()
   {
     return $this->visibility;
   }
 
+  /**
+   * Returns the XML representation of this object or false if an error occurred.
+   *
+   * @param SimpleXMLElement $xml If not null, expands the given SimpleXML Node instead of instantiating a new one.
+   *
+   * @return string|boolean
+   */
   public function __toXml(SimpleXMLElement $xml = null)
   {
     if ($xml === null)

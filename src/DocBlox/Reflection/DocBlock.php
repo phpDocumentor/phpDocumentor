@@ -227,24 +227,26 @@ class DocBlox_Reflection_DocBlock implements Reflector
   }
 
   /**
-   * The obligatory export method for Reflector; I should find out what it does..
+   * Builds a string representation of this object.
    *
-   * @todo find out what this is about and fill it.
+   * @todo determine the exact format as used by PHP Reflection and implement it.
    *
    * @return void
    */
   static public function export()
   {
-
+    throw new Exception('Not yet implemented');
   }
 
   /**
-   * Returns the short description.
+   * Returns the exported information (we should use the export static method BUT this throws an
+   * exception at this point).
    *
    * @return void
    */
   public function __toString()
   {
-    return $this->getShortDescription();
+    return 'Not yet implemented';
   }
+
 }

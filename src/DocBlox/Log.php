@@ -8,41 +8,43 @@
  */
 class DocBlox_Log
 {
-  /*
-   * Constants are reproduced here to make sure that the logger is independant of Zend_Log; should we ever want
-   * to switch.
-   */
-  const EMERG   = Zend_Log::EMERG; // Emergency: system is unusable
-  const ALERT   = Zend_Log::ALERT; // Alert: action must be taken immediately
-  const CRIT    = Zend_Log::CRIT; // Critical: critical conditions
-  const ERR     = Zend_Log::ERR; // Error: error conditions
-  const WARN    = Zend_Log::WARN; // Warning: warning conditions
-  const NOTICE  = Zend_Log::NOTICE; // Notice: normal but significant condition
-  const INFO    = Zend_Log::INFO; // Informational: informational messages
-  const DEBUG   = Zend_Log::DEBUG; // Debug: debug messages
-  const QUIET   = -1; // No output
+  /** @var string Emergency: system is unstable */
+  const EMERG = Zend_Log::EMERG;
 
+  /** @var string Alert: action must be taken immediately */
+  const ALERT = Zend_Log::ALERT;
+
+  /** @var string Critical: critical conditions */
+  const CRIT = Zend_Log::CRIT;
+
+  /** @var string Error: error conditions */
+  const ERR = Zend_Log::ERR;
+
+  /** @var string Warning: warning conditions */
+  const WARN = Zend_Log::WARN;
+
+  /** @var string Notice: normal but significant condition */
+  const NOTICE = Zend_Log::NOTICE;
+
+  /** @var string Informational: informational messages */
+  const INFO = Zend_Log::INFO;
+
+  /** @var string Debug: debug messages */
+  const DEBUG = Zend_Log::DEBUG;
+
+  /** @var string Quiet: disables logging */
+  const QUIET = -1;
+
+  /** @var string Allowed file locator for the instantiation of this class; output will only be sent to stdout */
   const FILE_STDOUT = 'php://stdout';
 
-  /**
-   * Only log messages that equal or exceed this.
-   *
-   * @var int
-   */
+  /** @var int Only log messages that equal or exceed this. */
   protected $threshold = self::DEBUG;
 
-  /**
-   * The name of the file/stream where the logs are written to.
-   *
-   * @var string
-   */
+  /** @var string The name of the file/stream where the logs are written to. */
   protected $filename = '';
 
-  /**
-   * The logger to use for storing information.
-   *
-   * @var Zend_Log
-   */
+  /** @var Zend_Log The logger to use for storing information. */
   protected $logger = null;
 
   /**
@@ -95,6 +97,7 @@ class DocBlox_Log
   {
     return $this->filename;
   }
+
   /**
    * Sets the logging threshold; anything more detailed than the given level will not be logged.
    *

@@ -40,6 +40,7 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
    * Find the name, type and default value for this argument.
    *
    * @param  DocBlox_TokenIterator $tokens
+   *
    * @return void
    */
   protected function processGenericInformation(DocBlox_TokenIterator $tokens)

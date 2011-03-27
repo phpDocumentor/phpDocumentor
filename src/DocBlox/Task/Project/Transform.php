@@ -14,6 +14,7 @@
  */
 class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
 {
+  /** @var string The name of this task including namespace */
   protected $taskname = 'project:transform';
 
   /**
