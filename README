@@ -27,41 +27,48 @@ DocBlox requires the following:
 
 How to use DocBlox?
 -------------------
-DocBlox takes a two step approach to generating documentation:
+
+### The easy way
+
+The easiest way to run docblox is by running the following command:
+
+    php {INSTALLATION_FOLDER}/bin/docblox.php
+
+This will automatically execute the `project:run` task which kickstarts the parsing and transformation process.
+
+### The more flexible but still easy way
+Under the hood DocBlox takes a two step approach to generating documentation:
 1. parse the source files and create a XML file (structure.xml) containing all metadata
 2. transform the XML file to human readable output (currently only static HTML is supported)
 
 Parsing
 -------
-The parsing is accomplished by executing the file parse.php in the bin directory.
-This file takes several arguments (see './bin/parse.php -h' for a full list) and with it you can select which files
-or directories to parse and which to ignore.
+The parsing is accomplished by executing the task project:parse using the docblox.php executable in the bin directory.
+This file takes several arguments (see `{INSTALLATION_FOLDER}/bin/docblox.php project:parse -h` for a full list) and with it you can select which files or directories to parse and which to ignore.
 
 Example:
-./bin/parse.php -d /home/me/project
-The example above parses the /home/me/project directory for any file suffixed with .php and write a structure.xml file
-to the data/output directory.
 
-By executing this command you construct the building block for the transformation process, the meta data store a.k.a.
-structure.xml.
+    php {INSTALLATION FOLDER}/bin/docblox project:parse -d /home/me/project
 
-Please note: if an existing structure.xml is found on the target location it will attempt to check every target file
-if it has changed. If not, it will not re-parse and thus it will reuse the existing definition. Speeding up the process.
+The example above parses the /home/me/project directory for any file suffixed with .php and write a structure.xml file to the data/output directory.
+
+By executing this command you construct the building block for the transformation process, the meta data store a.k.a. structure.xml.
+
+Please note: if an existing structure.xml is found on the target location it will attempt to check every target file if it has changed. If not, it will not re-parse and thus it will reuse the existing definition. Speeding up the process.
 
 Transformation
 --------------
 The transformation process is responsible for creating human-readable output from the generated XML file.
 
-You can start the transformation process by running ./bin/transform.php; by default it will look in the data/output subfolder
-of your DocBlox installation root for the structure.xml file.
-During the transformation the structure.xml file will be interpreted and (static) XHTML files will be created in the
-same folder, additionally a search index and class diagram will be generated.
+You can start the transformation process by running
+
+   php {INSTALLATION FOLDER}/bin/transform.php
+
+By default it will look in the output subfolder (_unless executed from the DocBlox root folder_) of your current working directory for the structure.xml file.
+During the transformation the structure.xml file will be interpreted and (static) XHTML files will be created in the same folder, additionally a search index and class diagram will be generated.
 
 That is all, now you have the API documentation of your project.
-If you want to see which options are available for transformation, see './bin/transform.php -h' for a full list.
-
-Please note: if your project has more than approx. 1000 php files that can be documented, either set the 'search'
-argument to 'None' or 'Ajax'. The default 'XmlJs' search option tends to become really slow with large projects.
+If you want to see which options are available for transformation, see `./bin/docblox.php project:transform -h` for a full list.
 
 Documentation
 -------------

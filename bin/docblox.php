@@ -19,7 +19,7 @@ set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . 
 // if no task was given; execute the list task by default
 if ($argc == 1)
 {
-  $argv[] = 'project:list';
+  $argv[] = 'project:run';
 }
 
 // bootstrap
