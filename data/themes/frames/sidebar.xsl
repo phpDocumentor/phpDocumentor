@@ -13,7 +13,7 @@
 
     <input id="search_box" />
 
-    <xsl:if test="count(/project/namespace) > 0">
+    <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
     <div class="section">
       <h1>Namespaces</h1>
       <!--<input type="checkbox" onclick="$('.treeview-docblox small').toggle(!this.checked);" checked="">Compact view<br />-->
