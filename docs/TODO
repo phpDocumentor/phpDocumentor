@@ -4,12 +4,12 @@ Roadmap
 0.9: Improve Theming and CLI
 ----------------------------
 
-* Namespace header in sidebar should only be shown if there are any namespaces.
-* Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
-* include section should be clickable (click-through)
+* Clicking in Search doesn't work in Aura; why?
 * Check Agavi; the @params do not have an argument name; the template probably handles this wrong
 * What happens when the value of a constant or the default value of an argument or variable is not a string?
 * Add an option to auto-expand the sidebar on page load
+* Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
+* include section should be clickable (click-through)
 
  1.0: Pre-1.0 release actions
 -----------------------------

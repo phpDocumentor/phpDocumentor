@@ -6,7 +6,7 @@
 
   <xsl:template match="/project">
     <div id="content">
-      <a href="classes.svg">Click here to view the full version</a><br />
+      <a href="classes_full.svg">Click here to view the full version</a><br />
       <embed src="classes.svg" width="100%" height="92%" />
     </div>
   </xsl:template>

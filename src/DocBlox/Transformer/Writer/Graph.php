@@ -80,6 +80,8 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
    */
   public function processClass(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
   {
+    $filename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+
     // generate graphviz
     $xpath = new DOMXPath($structure);
     $qry = $xpath->query("/project/file/class|/project/file/interface");
@@ -132,13 +134,24 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
       $tree['stdClass']['?'][$node] = $this->buildTreenode($extend_classes, $node);
     }
 
-    $graph = new Image_GraphViz(true, array('rankdir' => 'RL', 'splines' => true, 'concentrate' => 'true', 'ratio' => '0.9'), 'Classes');
+    $graph = new Image_GraphViz(true, array(
+      'rankdir' => 'RL',
+      'splines' => true,
+      'concentrate' => 'true',
+      'ratio' => '0.9',
+    ), 'Classes');
     $this->buildGraphNode($graph, $tree);
     $dot_file = $graph->saveParsedGraph();
-    $graph->renderDotFile(
-      $dot_file,
-      $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact()
-    );
+    $graph->renderDotFile($dot_file, $filename);
+
+    // save a full version
+    copy($filename, substr($filename, 0, -4).'_full.svg');
+
+    // replace width and height with 100% on non-full version
+    $svg = simplexml_load_file($filename);
+    $svg['width']  = '100%';
+    $svg['height'] = '100%';
+    $svg->asXML($filename);
   }
 
   /**
