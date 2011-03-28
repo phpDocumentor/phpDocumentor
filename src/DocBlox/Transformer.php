@@ -186,7 +186,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     $config = $this->getConfig();
     if (!isset($config->templates->$name))
     {
-      throw new InvalidArgumentException('Template could not be found');
+      throw new InvalidArgumentException('Template "' . $name . '" could not be found');
     }
 
     // track templates to be able to refer to them later

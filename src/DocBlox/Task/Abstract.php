@@ -49,6 +49,16 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
   }
 
   /**
+   * Hook method which is invoked right before all setters are invoked.
+   *
+   * @return void
+   */
+  protected function prePopulate()
+  {
+
+  }
+
+  /**
    * Parses the configuration options and populates the data store.
    *
    * @return void
@@ -69,6 +79,8 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
       echo $this->getUsageMessage();
       exit(0);
     }
+
+    $this->prePopulate();
 
     // the parse method does not have a hook point to invoke the setter methods; thus we iterate through the options and
     // invoke the setters. If no setter exists the __call method will handle this.

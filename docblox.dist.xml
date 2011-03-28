@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <docblox>
   <title>DocBlox</title>
-  <target>data/output</target>
+  <parser>
+    <target>data/output</target>
+  </parser>
+  <transformer>
+    <target>data/output</target>
+  </transformer>
   <files>
     <directory>.</directory>
   </files>

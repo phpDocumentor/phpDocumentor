@@ -69,7 +69,7 @@
       <ul id="packages_{$package}" class="filetree">
 
         <!-- List all classes that have a package which matches @name but no subpackage OR which have no package and $package is empty -->
-        <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package] and not(docblock/tag[@name='subpackage'])]|/project/file/interface[docblock/tag[@name='package'][.=$package] and not(docblock/tag[@name='subpackage'])]|/project/file/class[not(docblock/package) and $package='']|/project/file/interface[not(docblock/package) and $package='']">
+        <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]|/project/file/interface[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]|/project/file/class[not(docblock/package) and $package='']|/project/file/interface[not(docblock/package) and $package='']">
           <xsl:sort select="name"/>
           <li class="closed">
             <span class="file">
@@ -96,7 +96,7 @@
               </xsl:if>
             </span>
             <ul id="packages_{$package}_{$subpackage}" class="filetree">
-              <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][.=$package] and docblock/tag[@name='subpackage'][.=$subpackage]]|/project/file/class[docblock/tag[@name='package'][.=$package] and docblock/tag[@name='subpackage'][.=$subpackage]]">
+              <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]|/project/file/class[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]">
                 <xsl:sort select="name" />
                 <li class="file">
                   <span>

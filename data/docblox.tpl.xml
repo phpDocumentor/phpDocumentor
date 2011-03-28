@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <docblox>
-  <target>output</target>
-  <extensions>
-    <extension>php</extension>
-    <extension>php3</extension>
-    <extension>phtml</extension>
-  </extensions>
+  <parser>
+    <target>output</target>
+    <markers>
+      <item>TODO</item>
+      <item>FIXME</item>
+    </markers>
+    <extensions>
+      <extension>php</extension>
+      <extension>php3</extension>
+      <extension>phtml</extension>
+    </extensions>
+  </parser>
+  <transformer>
+    <target>output</target>
+  </transformer>
   <logging>
     <level>warn</level>
     <paths>
@@ -13,10 +22,6 @@
       <errors>{APP_ROOT}/data/log/{DATE}.errors.log</errors>
     </paths>
   </logging>
-  <markers>
-    <item>TODO</item>
-    <item>FIXME</item>
-  </markers>
   <transformations>
     <template name="default" />
   </transformations>

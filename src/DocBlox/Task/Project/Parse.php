@@ -9,7 +9,7 @@
  * @subpackage Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
+class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
 {
   /** @var string The name of this task including namespace */
   protected $taskname = 'project:parse';
@@ -38,9 +38,6 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     );
     $this->addOption('m|markers', '-s',
       'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")'
-    );
-    $this->addOption('c|config', '-s',
-      'Configuration filename, if none is given the defaults of the docblox.config.xml in the root of DocBlox is used'
     );
     $this->addOption('v|verbose', '',
       'Provides additional information during parsing, usually only needed for debugging purposes'
@@ -75,25 +72,6 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
   }
 
   /**
-   * Additionally checks whether the given filename is readable.
-   *
-   * @throws InvalidArgumentException
-   *
-   * @param string $value
-   *
-   * @return void
-   */
-  public function setConfig($value)
-  {
-    if ($value && !is_readable($value))
-    {
-      throw new InvalidArgumentException('Config file "' . $value . '" is not readable');
-    }
-
-    parent::setConfig($value);
-  }
-
-  /**
    * Returns the target location where to store the structure.xml.
    *
    * @throws Zend_Console_Getopt_Exception
@@ -104,12 +82,12 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
   {
     $target = parent::getTarget();
     $target = ($target === null)
-      ? trim(DocBlox_Core_Abstract::config()->target)
+      ? trim(DocBlox_Core_Abstract::config()->parser->target)
       : trim($target);
 
     if (($target == '') || ($target == DIRECTORY_SEPARATOR))
     {
-      throw new Zend_Console_Getopt_Exception('Either an empty path or root was given');
+      throw new Zend_Console_Getopt_Exception('Either an empty path or root was given: ' . $target);
     }
 
     if (!is_dir($target))
@@ -119,10 +97,12 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
 
     if (!is_writable($target))
     {
-      throw new Zend_Console_Getopt_Exception('The given path "' . $target . '" either does not exist or is not writable.');
+      throw new Zend_Console_Getopt_Exception(
+        'The given path "' . $target . '" either does not exist or is not writable.'
+      );
     }
 
-    return $target;
+    return realpath($target);
   }
 
   /**
@@ -137,7 +117,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
       return explode(',', parent::getExtensions());
     }
 
-    return DocBlox_Core_Abstract::config()->getArrayFromPath('extensions/extension');
+    return DocBlox_Core_Abstract::config()->getArrayFromPath('parser/extensions/extension');
   }
 
   /**
@@ -258,7 +238,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
       return explode(',', parent::getMarkers());
     }
 
-    return DocBlox_Core_Abstract::config()->getArrayFromPath('markers/item');
+    return DocBlox_Core_Abstract::config()->getArrayFromPath('parser/markers/item');
   }
 
   /**
@@ -270,24 +250,6 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
    */
   public function execute()
   {
-    if ($this->getConfig())
-    {
-      // when the configuration parameter is provided; merge that with the basic config
-      DocBlox_Core_Abstract::config()->merge(new Zend_Config_Xml($this->getConfig()));
-    }
-    elseif (is_readable('docblox.xml'))
-    {
-      // when the configuration is not provided; check for the presence of a configuration file in the current directory
-      // and merge that
-      DocBlox_Core_Abstract::config()->merge(new Zend_Config_Xml('docblox.xml'));
-    }
-    elseif (is_readable('docblox.dist.xml'))
-    {
-      // when no docblox.xml is provided; check for a dist.xml file. Yes, compared to, for example, PHPUnit the xml
-      // and dist is reversed; this is done on purpose so IDEs have an easier time on it.
-      DocBlox_Core_Abstract::config()->merge(new Zend_Config_Xml('docblox.dist.xml'));
-    }
-
     $files = $this->parseFiles();
     if (count($files) < 1)
     {

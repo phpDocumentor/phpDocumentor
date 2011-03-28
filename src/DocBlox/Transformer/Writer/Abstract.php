@@ -3,7 +3,7 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Writer
+ * @package    Writers
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
@@ -11,7 +11,7 @@
  * Base class for the actual transformation business logic (writers).
  *
  * @category   DocBlox
- * @package    Writer
+ * @package    Writers
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 abstract class DocBlox_Transformer_Writer_Abstract extends DocBlox_Core_Abstract
