@@ -1,4 +1,19 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Reflection class for the long description of a Docblock.
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
 {
   /** @var string */
@@ -7,6 +22,11 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
   /** @var DocBlox_Reflection_DocBlock_Tags[] */
   protected $tags = array();
 
+  /**
+   * Parses the string for inline tags and if the Markdown class is included; format the found text.
+   *
+   * @param string $content
+   */
   public function __construct($content)
   {
     if (preg_match('/\{\@(.+?)\}/', $content, $matches))
@@ -49,13 +69,26 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
     return $this->tags;
   }
 
+  /**
+   * Builds a string representation of this object.
+   *
+   * @todo determine the exact format as used by PHP Reflection and implement it.
+   *
+   * @return void
+   */
   static public function export()
   {
-
+    throw new Exception('Not yet implemented');
   }
 
+  /**
+   * Returns the exported information (we should use the export static method BUT this throws an
+   * exception at this point).
+   *
+   * @return void
+   */
   public function __toString()
   {
-    return $this->getContents();
+    return 'Not yet implemented';
   }
 }

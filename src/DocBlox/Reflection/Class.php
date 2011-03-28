@@ -4,7 +4,7 @@
  *
  * @category   DocBlox
  * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
@@ -25,7 +25,7 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
   /**
    * Retrieves the generic information.
    *
-   * Finds out whether this method is abstract and/or final on top of the information found using the
+   * Finds out whether this class is abstract and/or final on top of the information found using the
    * DocBlox_Reflection_Interface parent method.
    *
    * @param DocBlox_Token_Iterator $tokens

@@ -4,16 +4,15 @@
  *
  * @category   DocBlox
  * @package    Writers
- * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-
 
 /**
  * Search writer responsible for building the search index.
  *
  * @category   DocBlox
  * @package    Writers
- * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlox_Transformer_Writer_Search extends DocBlox_Transformer_Writer_Abstract
 {

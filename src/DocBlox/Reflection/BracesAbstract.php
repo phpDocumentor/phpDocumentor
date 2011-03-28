@@ -4,7 +4,7 @@
  *
  * @category   DocBlox
  * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**

@@ -4,7 +4,6 @@
  *
  * @category   DocBlox
  * @package    Static_Reflection
- * @subpackage File
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
@@ -13,7 +12,6 @@
  *
  * @category   DocBlox
  * @package    Static_Reflection
- * @subpackage File
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract

@@ -1,4 +1,19 @@
 <?php
+/**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ */
+
+/**
+ * Reflection class for a DocBloxk Tag declaration.
+ *
+ * @category   DocBlox
+ * @package    Static_Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ */
 class DocBlox_Reflection_DocBlock_Tag implements Reflector
 {
   /** @var string Name of the tag */
@@ -74,13 +89,26 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
     return $this->description;
   }
 
+  /**
+   * Builds a string representation of this object.
+   *
+   * @todo determine the exact format as used by PHP Reflection and implement it.
+   *
+   * @return void
+   */
   static public function export()
   {
-
+    throw new Exception('Not yet implemented');
   }
 
+  /**
+   * Returns the exported information (we should use the export static method BUT this throws an
+   * exception at this point).
+   *
+   * @return void
+   */
   public function __toString()
   {
-    return $this->getContent();
+    return 'Not yet implemented';
   }
 }

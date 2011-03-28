@@ -4,7 +4,7 @@
  *
  * @category   DocBlox
  * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2010 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
@@ -16,14 +16,26 @@
  */
 class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
 {
-  protected $extends     = false;
-  protected $extendsFrom = null;
-  protected $implements  = false;
-  protected $interfaces  = array();
+  /** @var bool Whether this interface extends another */
+  protected $extends = false;
 
-  protected $constants   = array();
-  protected $properties  = array();
-  protected $methods     = array();
+  /** @var string|null $extends Where this interface extends from. */
+  protected $extendsFrom = null;
+
+  /** @var bool Whether this interface implements another. */
+  protected $implements = false;
+
+  /** @var string[] Which interfaces this Interface implements. */
+  protected $interfaces = array();
+
+  /** @var DocBlox_Reflection_Constant Which constants are present in this interface */
+  protected $constants = array();
+
+  /** @var DocBlox_Reflection_Property Which properties are present in this interface */
+  protected $properties = array();
+
+  /** @var DocBlox_Reflection_Method Which methods are present in this interface */
+  protected $methods = array();
 
   /**
    * Retrieve the name of the class starting from the T_CLASS token.

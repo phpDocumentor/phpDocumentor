@@ -3,7 +3,7 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Reflection
+ * @package    Static_Reflection
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
@@ -11,7 +11,7 @@
  * Abstract base class for all Reflection entities which have a docblock.
  *
  * @category   DocBlox
- * @package    Reflection
+ * @package    Static_Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_Abstract
@@ -149,6 +149,13 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     return implode('|', $type);
   }
 
+  /**
+   * Adds the DocBlock XML definition to the given SimpleXMLElement.
+   *
+   * @param SimpleXMLElement $xml
+   *
+   * @return void
+   */
   protected function addDocblockToSimpleXmlElement(SimpleXMLElement $xml)
   {
     if ($this->getDocBlock())
