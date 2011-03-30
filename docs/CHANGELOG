@@ -52,6 +52,7 @@
 * ADDED:    A warning is now thrown whenever the variable name of a function argument does not match the name defined
             in the DocBlock
 * ADDED:    A warning is now thrown whenever a variable is not represented in the DocBlock
+* ADDED:    When only 1 package exists in the project it is made 'static' and the subpackages are automatically expanded
 
 02/19/2011: Version 0.8: fix known issues
 

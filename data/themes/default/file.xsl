@@ -14,11 +14,11 @@
   <xsl:template match="/project/file">
     <h1><xsl:value-of select="@path" /></h1>
     <div class="file_menu">
-      <a href="#includes">Includes</a> |
-      <a href="#functions">Functions</a> |
-      <a href="#constants">Constants</a> |
-      <a href="#classes">Classes</a> |
-      <a href="#interfaces">Interfaces</a>
+      <xsl:if test="count(include) > 0"><a href="#includes">Includes</a> |</xsl:if>
+      <xsl:if test="count(function) > 0"><a href="#functions">Functions</a> |</xsl:if>
+      <xsl:if test="count(constant) > 0"><a href="#constants">Constants</a> |</xsl:if>
+      <xsl:if test="count(class) > 0"><a href="#classes">Classes</a> |</xsl:if>
+      <xsl:if test="count(interface) > 0"><a href="#interfaces">Interfaces</a></xsl:if>
     </div>
 
     <xsl:if test="docblock/tag">

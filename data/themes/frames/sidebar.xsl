@@ -29,11 +29,21 @@
     <xsl:if test="count(/project/package) > 0">
     <div class="section">
       <h1>Packages</h1>
-      <ul id="packages-" class="filetree">
-        <xsl:apply-templates select="/project/package">
-          <xsl:sort select="@name" />
-        </xsl:apply-templates>
-      </ul>
+      <xsl:if test="count(/project/package) &lt; 2">
+        <ul id="packages-" class="deadtree">
+          <xsl:apply-templates select="/project/package">
+            <xsl:sort select="@name" />
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
+
+      <xsl:if test="count(/project/package) > 1">
+        <ul id="packages-" class="filetree">
+          <xsl:apply-templates select="/project/package">
+            <xsl:sort select="@name" />
+          </xsl:apply-templates>
+        </ul>
+      </xsl:if>
     </div>
     </xsl:if>
 
