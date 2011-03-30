@@ -206,6 +206,31 @@ class DocBlox_Reflection_DocBlock implements Reflector
   }
 
   /**
+   * Returns an array of tags matching the given name; if no tags are found ann empty array is returned.
+   *
+   * @param string $name
+   *
+   * @return DocBlox_Reflection_DocBlock_Tag[]
+   */
+  public function getTagsByName($name)
+  {
+    $result = array();
+
+    /** @var DocBlox_Reflection_DocBlock_Tag $tag */
+    foreach ($this->getTags() as $tag)
+    {
+      if ($tag->getName() != $name)
+      {
+        continue;
+      }
+
+      $result[] = $tag;
+    }
+
+    return $result;
+  }
+
+  /**
    * Checks if a tag of a certain type is present in this DocBlock.
    *
    * @param string $name

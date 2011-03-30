@@ -85,4 +85,14 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
   {
     return $this->variableName;
   }
+
+  /**
+   * Sets the variable's name.
+   *
+   * @return void
+   */
+  public function setVariableName($name)
+  {
+    $this->variableName = $name;
+  }
 }

@@ -46,6 +46,12 @@
 * ADDED:    Support for object array notation in all types (i.e. @param, @var, @return), for example: class1[]
 * FIXED:    Namespace tree was still visible, even if you had no namespaces
 * FIXED:    Changed Graph to be shown for fully on the landing page but full size when you click on the detail
+* FIXED:    Descriptions of class properties were not shown if it only consisted of the @var description text; only the
+            Short and Long description were shown
+* FIXED:    Default value for a class property was not shown
+* ADDED:    A warning is now thrown whenever the variable name of a function argument does not match the name defined
+            in the DocBlock
+* ADDED:    A warning is now thrown whenever a variable is not represented in the DocBlock
 
 02/19/2011: Version 0.8: fix known issues
 

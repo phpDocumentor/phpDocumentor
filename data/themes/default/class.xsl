@@ -28,8 +28,8 @@
         <xsl:sort select="@name" />
         <label class="property-key"><xsl:value-of select="@name" /></label>
         <div class="property-value">
-          <xsl:if test="@link and @link != ''"><a title="{.}" href="{@link}"><xsl:value-of select="." /></a></xsl:if>
-          <xsl:if test="not(@link) or @link = ''"><a title="{.}"><xsl:value-of select="." /></a></xsl:if>
+          <xsl:if test="@link and @link != ''"><a title="{.}" href="{@link}"><xsl:value-of select="@description" /></a></xsl:if>
+          <xsl:if test="not(@link) or @link = ''"><a title="{.}"><xsl:value-of select="@description" /></a></xsl:if>
             &#160;
         </div>
       </xsl:for-each>
@@ -232,7 +232,7 @@
               <xsl:value-of select="@name" />
             </td>
             <td>
-                <xsl:if test="@link and @link != ''"><a href="{$root}{@link}"><xsl:value-of select="." /></a></xsl:if>
+                <xsl:if test="@link and @link != ''"><a href="{$root}{@link}"><xsl:value-of select="@description" /></a></xsl:if>
                 <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="@description" /></xsl:if>
             </td>
           </tr>
@@ -255,12 +255,17 @@
           <xsl:if test="@final='true'">final&#160;</xsl:if>
         </span>
         <xsl:value-of select="name" />
+        <xsl:if test="default">
+          =
+          <xsl:value-of select="default" />
+        </xsl:if>
       </h3>
       <em>
         <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
+        <xsl:value-of select="docblock/tag[@name='var']/@description" disable-output-escaping="yes" />
       </em>
-      <br />
       <xsl:if test="docblock/long-description">
+        <br />
         <small>
           <xsl:value-of select="docblock/long-description" />
         </small>
@@ -276,7 +281,7 @@
     <div class="constant">
       <h3>
         <span class="nb-faded-text">
-          <xsl:value-of select="docblock/tag[@name='var']/." />&#160;
+          <xsl:value-of select="docblock/tag[@name='var']/@description" />&#160;
         </span>
         <xsl:value-of select="name" />
         <span class="nb-faded-text">
