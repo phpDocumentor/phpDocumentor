@@ -77,31 +77,34 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
       $argument->parseTokenizer($tokens);
       $this->arguments[$argument->getName()] = $argument;
 
-      /** @var DocBLox_Reflection_DocBlock_Tag $params  */
-      $params = $this->getDocBlock()->getTagsByName('param');
-      if (!isset($params[count($this->arguments)-1]))
+      if ($this->getDocBlock())
       {
-        $this->log(
-          'Argument ' . $argument->getName() . ' is missing from the function Docblock in file '
-            . $tokens->getFilename() . ' at line ' . $argument->getLineNumber(),
-          DocBlox_Core_Log::WARN
-        );
-      } else
-      {
-        $param_name = $params[count($this->arguments) - 1]->getVariableName();
-        if ($param_name != $argument->getName())
+        /** @var DocBlox_Reflection_DocBlock_Tag $params  */
+        $params = $this->getDocBlock()->getTagsByName('param');
+        if (!isset($params[count($this->arguments)-1]))
         {
-          if ($param_name == '')
+          $this->log(
+            'Argument ' . $argument->getName() . ' is missing from the function Docblock in file '
+              . $tokens->getFilename() . ' at line ' . $argument->getLineNumber(),
+            DocBlox_Core_Log::WARN
+          );
+        } else
+        {
+          $param_name = $params[count($this->arguments) - 1]->getVariableName();
+          if ($param_name != $argument->getName())
           {
-            $params[count($this->arguments) - 1]->setVariableName($argument->getName());
-          }
-          else
-          {
-            $this->log(
-              'Name of argument ' . $argument->getName() . ' does not match with function Docblock in file '
-                . $tokens->getFilename() . ' at line ' . $argument->getLineNumber(),
-              DocBlox_Core_Log::WARN
-            );
+            if ($param_name == '')
+            {
+              $params[count($this->arguments) - 1]->setVariableName($argument->getName());
+            }
+            else
+            {
+              $this->log(
+                'Name of argument ' . $argument->getName() . ' does not match with function Docblock in file '
+                  . $tokens->getFilename() . ' at line ' . $argument->getLineNumber(),
+                DocBlox_Core_Log::WARN
+              );
+            }
           }
         }
       }
