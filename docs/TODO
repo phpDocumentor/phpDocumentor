@@ -4,8 +4,6 @@ Roadmap
 0.9: Improve Theming and CLI
 ----------------------------
 
-* Check Agavi; the @params do not have an argument name; the template probably handles this wrong
-  * Short description and long description are not correctly separated; see AgaviContext class docblock
 * What happens when the value of a constant or the default value of an argument or variable is not a string?
 * Clicking in Search doesn't work in Aura _only under Chrome_; why?
 * Add an option to auto-expand the sidebar on page load
