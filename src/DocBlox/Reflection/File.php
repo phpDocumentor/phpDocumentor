@@ -289,6 +289,18 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
   }
 
   /**
+   * Returns the class object with the given name.
+   *
+   * @param string $name
+   *
+   * @return DocBlox_Reflection_Class|null
+   */
+  public function getClass($name)
+  {
+    return isset($this->classes[$name]) ? $this->classes[$name] : null;
+  }
+
+  /**
    * Extracts all tokens from this file and initializes the iterator used to walk through this file.
    *
    * @param string $contents The text to parse into tokens.

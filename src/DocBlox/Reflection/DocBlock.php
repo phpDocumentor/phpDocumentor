@@ -97,6 +97,9 @@ class DocBlox_Reflection_DocBlock implements Reflector
     }
     else
     {
+      // clears all extra horizontal whitespace from the line endings to prevent parsing issues
+      $comment = preg_replace('~(?m)\h*$~', '', $comment);
+
       /*
        * Splits the docblock into a short description, long description and tags section
        * - The short description is started from the first character until a dot is encountered followed by a whitespace OR
@@ -111,23 +114,25 @@ class DocBlox_Reflection_DocBlock implements Reflector
         \A (
           [^\n]+
           (?:
-            (?! (?<=\.) \n | \n{2} )
-            \n [^\n]+
+            (?! (?<=\.) \n | \n{2} ) # disallow the first seperator here
+            \n (?! [ \t]* @[a-zA-Z] ) # disallow second seperator
+            [^\n]+
           )*
           \.?
         )
         (?:
-          \s*
-          (?! @[a-zA-Z] )
+          \s* # first seperator (actually newlines but it\'s all whitespace)
+          (?! @[a-zA-Z] ) # disallow the rest, to make sure this one doesn\'t match if it doesn\'t exist
           (
             [^\n]+
             (?: \n+
-              (?! [ \t]* @[a-zA-Z] )
+              (?! [ \t]* @[a-zA-Z] ) # disallow second seperator (@param)
               [^\n]+
             )*
           )
         )?
-        (\s+ [\s\S]*)?/usm', $comment, $matches
+        (\s+ [\s\S]*)? # everything that follows
+        /usm', $comment, $matches
       );
       array_shift($matches);
     }

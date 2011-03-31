@@ -150,7 +150,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $method->parseTokenizer($tokens);
     $method->setNamespace($this->getNamespace());
     $method->setNamespaceAliases($this->getNamespaceAliases());
-    $this->methods[] = $method;
+    $this->methods[$method->getName()] = $method;
     $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
   }
 
@@ -172,6 +172,28 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   public function getParentInterfaces()
   {
     return $this->interfaces;
+  }
+
+  /**
+   * Returns an array of method objects.
+   *
+   * @return DocBlox_Reflection_Method[]
+   */
+  public function getMethods()
+  {
+    return $this->methods;
+  }
+
+  /**
+   * Returns the method with the given name or null if none is found.
+   *
+   * @param string $name
+   *
+   * @return DocBlox_Reflection_Method[]|null
+   */
+  public function getMethod($name)
+  {
+    return isset($this->methods[$name]) ? $this->methods[$name] : null;
   }
 
   /**
