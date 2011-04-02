@@ -1,34 +1,33 @@
 Roadmap
 =======
 
-0.9: Improve Theming and CLI
+0.9 BETA: Improve Theming and CLI
 ----------------------------
 
-* What happens when the value of a constant or the default value of an argument or variable is not a string?
-* Clicking in Search doesn't work in Aura _only under Chrome_; why?
-* Add an option to auto-expand the sidebar on page load
-* Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * include section should be clickable (click-through)
+* Clicking in Search doesn't work in Aura _only under Chrome_; why?
+* Automate PEAR packaging
 
- 1.0: Pre-1.0 release actions
+1.0: Pre-1.0 release actions
 -----------------------------
 
+* Profile the application using XHProf to determine slow points and improve performance
+* Refactor mechanism which strips information from the path; it now checks the -d but should actually check what the
+  lowest common folder is
 * Revise Page level docblock searching algorythm; with the introduction of namespaces has the @package tag become
   obsolete and it seems incomplete.
 * Validate each @param with the argument:
- * if the number of arguments does not compare; throw an error
  * if an argument does not have the same type as the @param; throw an error
  * if the @param has multiple types and the argument has a typehint and not a default; throw an error
 * Add option to disable certain types of DocBlox errors per directory / file pattern
   ( i.e. check on file-level DocBlock; constant level DocBlock; etc)
 * Safari does not show the svg nicely, it places it into a very small scrollbox
-* Profile the application using XHProf to determine slow points and improve performance
-* Refactor mechanism which strips information from the path; it now checks the -d but should actually check what the
-  lowest common folder is
 
 1.1: Add custom documents and statistics
 -----------------------------------------
 
+* Add an option to auto-expand the sidebar on page load
+* Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 * add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
