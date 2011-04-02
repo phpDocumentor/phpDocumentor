@@ -69,7 +69,7 @@
   </xsl:template>
 
   <xsl:template match="package">
-    <li class="open">
+    <li class="closed">
       <span class="folder">
         <xsl:if test="@name=''">Default</xsl:if>
         <xsl:if test="not(@name='')">

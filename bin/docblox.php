@@ -11,10 +11,10 @@
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 $base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
   ? dirname(__FILE__) . '/../src/'
-  : '@php_dir@/DocBlox/';
+  : '@php_dir@/DocBlox/src';
 
 // set path to add lib folder, load the Zend Autoloader and include the symfony timer
-set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . get_include_path());
+set_include_path($base_include_folder . PATH_SEPARATOR . $base_include_folder . PATH_SEPARATOR . get_include_path());
 
 // if no task was given; execute the list task by default
 if ($argc == 1)
