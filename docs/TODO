@@ -1,16 +1,12 @@
 Roadmap
 =======
 
-0.9 BETA: Improve Theming and CLI
-----------------------------
-
-* include section should be clickable (click-through)
-* Clicking in Search doesn't work in Aura _only under Chrome_; why?
-* Automate PEAR packaging
-
 1.0: Pre-1.0 release actions
 -----------------------------
 
+* _Add documentation_
+* include section should be clickable (click-through)
+* Clicking in Search doesn't work in Aura _only under Chrome_; why?
 * Profile the application using XHProf to determine slow points and improve performance
 * Refactor mechanism which strips information from the path; it now checks the -d but should actually check what the
   lowest common folder is

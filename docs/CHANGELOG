@@ -1,4 +1,11 @@
---/--/2011: Version 0.9: Improve Theming and CLI
+30/02/2011: Version 1.0: First stable release!
+----------------------------------------------
+
+* FIXED:    DocBlox no longer throws E_STRICT errors due to the usage of Image_Graphviz
+
+04/02/2011: Version 0.9: Improve Theming and CLI
+------------------------------------------------
+
 * ADDED:    Templating support; it is now possible to mix and match transformations and actions in a template configuration.
 * FIXED:    Added support for PEAR packages by adding a package.xml and moving directories
 * ADDED:    docblox.bat for use in windows environments (thanks to Tyrael)
