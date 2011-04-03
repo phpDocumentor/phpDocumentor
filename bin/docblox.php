@@ -60,3 +60,6 @@ catch(Exception $e)
   echo 'ERROR: '.$e->getMessage().PHP_EOL.PHP_EOL;
   echo $task->getUsageMessage();
 }
+
+// disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
+error_reporting(error_reporting() & ~E_STRICT);

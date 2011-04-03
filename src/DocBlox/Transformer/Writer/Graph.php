@@ -141,8 +141,16 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
       'ratio' => '0.9',
     ), 'Classes');
     $this->buildGraphNode($graph, $tree);
+
+
+    // disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
+    $reporting = error_reporting();
+    error_reporting(error_reporting() & ~E_STRICT);
+
+    // render graph using Image_GraphViz
     $dot_file = $graph->saveParsedGraph();
     $graph->renderDotFile($dot_file, $filename);
+    error_reporting($reporting);
 
     // save a full version
     copy($filename, substr($filename, 0, -4).'_full.svg');
