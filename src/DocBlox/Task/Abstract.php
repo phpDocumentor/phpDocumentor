@@ -45,7 +45,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
    */
   protected function outputHeader()
   {
-    echo 'DocBlox version ' . DocBlox_Core_Abstract::VERSION . PHP_EOL . PHP_EOL;
+
   }
 
   /**

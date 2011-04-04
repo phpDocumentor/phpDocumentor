@@ -39,11 +39,13 @@ if (count($task_parts) == 1)
 }
 $class_name = 'DocBlox_Task_'.ucfirst($task_parts[0]).'_'. ucfirst($task_parts[1])  ;
 
+// Output versioning information up front
+DocBlox_TextUI::outputHeader();
+
 // sorry about the shut up operator but we do this check to determine whether this works
 // and Zend_Loader throws a warning if the class does not exist.
 if (!@class_exists($class_name))
 {
-  echo 'DocBlox version ' . DocBlox_Core_Abstract::VERSION . PHP_EOL . PHP_EOL;
   echo 'ERROR: Unable to execute task: '.implode(':', $task_parts).', it is not found'.PHP_EOL.PHP_EOL;
   exit(1);
 }
