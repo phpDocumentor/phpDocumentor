@@ -42,9 +42,6 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
     $this->addOption('v|verbose', '',
       'Provides additional information during parsing, usually only needed for debugging purposes'
     );
-    $this->addOption('q|quiet', '',
-      'Silences the output and logging'
-    );
     $this->addOption('title', '-s',
       'Sets the title for this project; default is the DocBlox logo'
     );

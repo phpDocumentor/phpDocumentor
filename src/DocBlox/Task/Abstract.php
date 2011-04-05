@@ -34,18 +34,12 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
 
     // we always offer a help message
     $this->addOption('h|help', '', 'Show this help message');
+    $this->addOption('q|quiet', '', 'Silences the output and logging');
 
     $this->configure();
-  }
 
-  /**
-   * Overrideable method to display a header message on the CLI.
-   *
-   * @return void
-   */
-  protected function outputHeader()
-  {
-
+    // by default we do _not_ make this parseable to allow tasks to be nested
+    $this->_parsed = true;
   }
 
   /**
@@ -61,18 +55,18 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
   /**
    * Parses the configuration options and populates the data store.
    *
+   * @param bool $force if true; forces parsing independently of the _parsed property.
+   *
    * @return void
    */
-  public function parse()
+  public function parse($force = false)
   {
-    if ($this->_parsed === true)
+    if (($this->_parsed === true) && (!$force))
     {
       return $this;
     }
 
     parent::parse();
-
-    $this->outputHeader();
 
     if ($this->getHelp())
     {
@@ -130,6 +124,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
     }
 
     $this->addRules(array(implode('|', $flags).$parameter_type => $description));
+    $this->_parsed = true;
   }
 
   /**
@@ -154,7 +149,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
     if ($this->usage_description === null)
     {
       $refl = new DocBlox_Reflection_DocBlock(new ReflectionObject($this));
-      $this->usage_description = $refl->getLongDescription();
+      $this->usage_description = $refl->getLongDescription()->getContents();
     }
 
     return $this->usage_description;

@@ -42,9 +42,6 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
     $this->addOption('v|verbose', '',
       'Provides additional information during parsing, usually only needed for debugging purposes'
     );
-    $this->addOption('q|quiet', '',
-      'Silences the output and logging'
-    );
     $this->addOption('title', '-s',
       'Sets the title for this project; default is the DocBlox logo'
     );
@@ -54,21 +51,6 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
     $this->addOption('validate', '',
       'Validates every processed file using PHP Lint, costs a lot of performance'
     );
-  }
-
-  /**
-   * Overwrite header output to not show anything when 'Quiet' mode is on.
-   *
-   * @return void
-   */
-  protected function outputHeader()
-  {
-    if ($this->getQuiet())
-    {
-      return;
-    }
-
-    parent::outputHeader();
   }
 
   /**

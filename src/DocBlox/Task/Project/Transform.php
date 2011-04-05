@@ -36,24 +36,6 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_ConfigurableAbstract
     $this->addOption('v|verbose', '',
       'Outputs any information collected by this application, may slow down the process slightly'
     );
-    $this->addOption('q|quiet', '',
-      'Silences the output and logging'
-    );
-  }
-
-  /**
-   * Overwrite header output to not show anything when 'Quiet' mode is on.
-   *
-   * @return void
-   */
-  protected function outputHeader()
-  {
-    if ($this->getQuiet())
-    {
-      return;
-    }
-
-    parent::outputHeader();
   }
 
   /**

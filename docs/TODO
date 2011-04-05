@@ -4,6 +4,10 @@ Roadmap
 1.0: Pre-1.0 release actions
 -----------------------------
 
+* Fix bug where task descriptions output 'Not yet implemented'
+* Conversion in Long Description from Markdown to HTML should not happen in TextUI
+* Tasks system should not output multiple times the feedback
+* Run task does not process the input parameters nicely as the parameters are parsed again by the sub tasks
 * _Add documentation_
 * include section should be clickable (click-through)
 * Clicking in Search doesn't work in Aura _only under Chrome_; why?
