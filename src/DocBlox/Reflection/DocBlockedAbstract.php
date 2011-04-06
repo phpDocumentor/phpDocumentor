@@ -184,17 +184,16 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         {
           foreach($tag->getTypes() as $type)
           {
-            $type = $this->expandType($type);
+            $type = trim($this->expandType($type));
 
-            // strip & if it is by reference
-            $name = (substr($type, 0, 1) === '&')
-              ? substr($type, 1)
-              : $type;
-
+            // strip ampersands
+            $name = str_replace('&', '', $type);
             $type_object = $tag_object->addChild('type', $name);
 
-            // register whether this variable is by reference
-            $type_object['by_reference'] = (substr($type, 0, 1) === '&') ? 'true' : 'false';
+            // register whether this variable is by reference by checking the first and last character
+            $type_object['by_reference'] = ((substr($type, 0, 1) === '&') || (substr($type, -1) === '&'))
+              ? 'true'
+              : 'false';
           }
 
           $tag_object['type'] = $this->expandType($tag->getType());
