@@ -21,7 +21,7 @@
     </transformation>
     <transformation query="" writer="xsl" source="themes/zend/sidebar.xsl" artifact="sidebar.html">
       <parameters><variables><title>Sidebar</title></variables>
-        <search>ajax</search>
+        <search>none</search>
       </parameters>
     </transformation>
     <transformation query="" writer="xsl" source="themes/zend/classgraph.xsl" artifact="graph.html">
