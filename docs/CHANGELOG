@@ -2,6 +2,10 @@
 ----------------------------------------------
 
 * FIXED:    DocBlox no longer throws E_STRICT errors due to the usage of Image_Graphviz
+* FIXED:    The type information in the method/function signature had an extra | appended
+* FIXED:    Writing of parameters to XML failed with by reference arguments due to the &
+* FIXED:    Arguments with an & were not interpreted by the class detection to create links in the docs
+* FIXED:    Extra spaces in front of the first @ in a tag block would cause parsing errors
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------

@@ -4,7 +4,7 @@ Roadmap
 1.0: Pre-1.0 release actions
 -----------------------------
 
-* Fix bug where task descriptions output 'Not yet implemented'
+* DocBlox gives the INFO that the version of DocBlox has changed when doing a first time parse
 * Conversion in Long Description from Markdown to HTML should not happen in TextUI
 * Tasks system should not output multiple times the feedback
 * Run task does not process the input parameters nicely as the parameters are parsed again by the sub tasks
@@ -26,18 +26,18 @@ Roadmap
 1.1: Add custom documents and statistics
 -----------------------------------------
 
+* Add Docblock templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
 * Add an option to auto-expand the sidebar on page load
 * Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
 * add possibility for README, INSTALL, TODO in markdown format
 * add possibility for custom documents in markdown format
 * add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
- * add Markdown support in long descriptions and @example (thanks @pmjones)
+  * add Markdown support in long descriptions and @example (thanks @pmjones)
 * Syntax highlight @example annotation content
 
 1.2
 ---
 
-* Add Docblock templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
 * Consider implementing disqus support
 * Add Twig output writer
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)

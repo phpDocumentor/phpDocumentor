@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-02</date>
- <time>21:51:50</time>
+ <date>2011-04-06</date>
+ <time>14:52:47</time>
  <version>
-  <release>0.9.0</release>
-  <api>0.9.0</api>
+  <release>0.9.2</release>
+  <api>0.9.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -261,6 +261,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </dir> <!-- /src/DocBlox/Transformer -->
      <file baseinstalldir="/DocBlox" name="BidirectionalIterator.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Parser.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="TextUI.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Token.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Transformer.php" role="php" />
     </dir> <!-- /src/DocBlox -->
@@ -369,11 +370,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </dir> <!-- /tests/unit/DocBlox/Transformer -->
       <file baseinstalldir="/DocBlox" name="BidirectionalIteratorTest.php" role="php" />
       <file baseinstalldir="/DocBlox" name="ParserTest.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="TextUITest.php" role="php" />
       <file baseinstalldir="/DocBlox" name="TokenTest.php" role="php" />
       <file baseinstalldir="/DocBlox" name="TransformerTest.php" role="php" />
      </dir> <!-- /tests/unit/DocBlox -->
     </dir> <!-- /tests/unit -->
    </dir> <!-- /tests -->
+   <file baseinstalldir="/DocBlox" name="build.properties" role="data" />
+   <file baseinstalldir="/DocBlox" name="build.xml" role="data" />
    <file baseinstalldir="/DocBlox" name="docblox.dist.xml" role="php" />
    <file baseinstalldir="/DocBlox" name="LICENSE" role="php" />
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
@@ -414,14 +418,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.9.0</release>
-    <api>0.9.0</api>
+    <release>0.9.2</release>
+    <api>0.9.2</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-04-02</date>
+   <date>2011-04-06</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes

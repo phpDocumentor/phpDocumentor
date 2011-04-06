@@ -101,6 +101,27 @@
     <div style="clear: both"></div>
   </xsl:template>
 
+  <!-- Concatenate items with links with a given separator, based on: http://symphony-cms.com/download/xslt-utilities/view/22517/-->
+  <xsl:template name="implodeTypes">
+    <xsl:param name="items" />
+    <xsl:param name="separator" select="'|'" />
+
+    <xsl:for-each select="$items">
+      <xsl:if test="position() &gt; 1">
+        <xsl:value-of select="$separator" />
+      </xsl:if>
+
+      <xsl:if test="@link">
+        <a href="{$root}{@link}">
+          <xsl:value-of select="." />
+        </a>
+      </xsl:if>
+      <xsl:if test="not(@link)">
+        <xsl:value-of select="." />
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
   <xsl:template match="method|function">
     <div class="method">
       <a id="{../name}::{name}()" />
@@ -110,17 +131,11 @@
           <xsl:for-each select="argument">
 
             <xsl:variable name="variable_name" select="name" />
-            <xsl:for-each select="../docblock/tag[@name='param' and @variable=$variable_name]/type">
-              <xsl:if test="@link">
-                <a href="{$root}{@link}">
-                  <xsl:value-of select="." />
-                </a>
-              </xsl:if>
-              <xsl:if test="not(@link)">
-                <xsl:value-of select="." />
-              </xsl:if>
-              |
-            </xsl:for-each>
+
+            <xsl:call-template name="implodeTypes">
+              <xsl:with-param name="items" select="../docblock/tag[@name='param' and @variable=$variable_name]/type"/>
+            </xsl:call-template>
+            &#160;
             <xsl:value-of select="$variable_name" />
 
             <xsl:if test="default != ''">

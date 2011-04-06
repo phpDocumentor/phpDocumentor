@@ -75,8 +75,8 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
       'artifact' => 'c',
     ));
     $this->assertEquals($count + 1, count($this->fixture->getTransformations()));
-    $this->assertInstanceOf('DocBlox_Transformer_Transformation', reset($this->fixture->getTransformations()));
-    $this->assertEquals(0, count(reset($this->fixture->getTransformations())->getParameters()));
+    $this->assertInstanceOf('DocBlox_Transformer_Transformation', current($this->fixture->getTransformations()));
+    $this->assertEquals(0, count(current($this->fixture->getTransformations())->getParameters()));
 
     // test creation with parameters
     $this->fixture->addTransformation(array(
