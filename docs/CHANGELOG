@@ -6,6 +6,8 @@
 * FIXED:    Writing of parameters to XML failed with by reference arguments due to the &
 * FIXED:    Arguments with an & were not interpreted by the class detection to create links in the docs
 * FIXED:    Extra spaces in front of the first @ in a tag block would cause parsing errors
+* ADDED:    @throw and @throws are now both clickable and take you to the given class (when found)
+* CHANGED:  Landing page of Zend template to prevent crashing or long loading browsers
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------

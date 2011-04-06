@@ -27,6 +27,9 @@
     <transformation query="" writer="xsl" source="themes/zend/classgraph.xsl" artifact="graph.html">
       <parameters><variables><title>Class Diagram</title></variables></parameters>
     </transformation>
+    <transformation query="" writer="xsl" source="themes/zend/index.xsl" artifact="content.html">
+      <parameters><variables><title>Class Diagram</title></variables></parameters>
+    </transformation>
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
     <transformation query="/project/file/@path" writer="xsl" source="themes/zend/file.xsl" artifact="{$path}">
       <parameters><variables><title>File</title></variables></parameters>

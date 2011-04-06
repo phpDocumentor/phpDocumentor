@@ -4,6 +4,8 @@ Roadmap
 1.0: Pre-1.0 release actions
 -----------------------------
 
+* Large class diagram crashes browsers; move class diagram to something other than the landing page for templates
+  other than Zend (Zend has already been done)
 * DocBlox gives the INFO that the version of DocBlox has changed when doing a first time parse
 * Clicking in Search doesn't work in Aura _only under Chrome_; why?
 * _Add documentation_

@@ -13,7 +13,7 @@
       <frame name="header" src="header.html" scrolling="no" />
       <frameset cols="300, *" frameborder="no" framespacing="0" border="0">
         <frame name="sidebar" src="sidebar.html"/>
-        <frame name="content" src="graph.html"/>
+        <frame name="content" src="content.html"/>
       </frameset>
     </frameset>
   </html>

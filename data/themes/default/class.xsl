@@ -247,7 +247,9 @@
               <xsl:value-of select="@name" />
             </td>
             <td>
-                <xsl:if test="@link and @link != ''"><a href="{$root}{@link}"><xsl:value-of select="@description" /></a></xsl:if>
+                <xsl:if test="@link and @link != ''">
+                  <a href="{$root}{@link}"><xsl:value-of select="type" /><br /><small><xsl:value-of select="@description" /></small></a>
+                </xsl:if>
                 <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="@description" /></xsl:if>
             </td>
           </tr>
