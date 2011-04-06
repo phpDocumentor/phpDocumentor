@@ -154,7 +154,7 @@ class DocBlox_Reflection_DocBlock implements Reflector
   protected function parseTags($tags)
   {
     $result = array();
-    foreach(explode("\n", $tags) as $tag_line)
+    foreach(explode("\n", trim($tags)) as $tag_line)
     {
       if (trim($tag_line) === '')
       {
@@ -167,6 +167,13 @@ class DocBlox_Reflection_DocBlock implements Reflector
       }
       else
       {
+        if (count($result) == 0)
+        {
+          throw new Exception(
+            'A tag block started with text instead of an actual tag, this makes the tag block invalid: ' . $tags
+          );
+        }
+
         $result[count($result)-1] .= PHP_EOL . $tag_line;
       }
     }
