@@ -26,7 +26,6 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
   public function __construct($task_name)
   {
     // find the task which we want to use
-    $class_name = 'DocBlox_Task_Project_Parse';
     $task_parts = explode(':', $task_name);
     if (count($task_parts) == 1)
     {

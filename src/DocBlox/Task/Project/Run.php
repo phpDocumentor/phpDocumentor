@@ -65,6 +65,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
    */
   public function execute()
   {
+    var_dump($this->getDirectory());
     $task = new DocBlox_Task_Project_Parse();
     $task->setFilename($this->getFilename());
     $task->setDirectory($this->getDirectory());
