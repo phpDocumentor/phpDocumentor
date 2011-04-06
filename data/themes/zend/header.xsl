@@ -8,12 +8,6 @@
         <h1 class="logo">
           <a href="http://framework.zend.com/" title="ZF Zend Framework">ZF Zend Framework</a>
         </h1>
-
-        <p class="behind-the-site">
-          <a href="http://framework.zend.com/behind-the-site">
-            <img src="images/behind-the-site.gif" alt="Behind the Site" title="Behind the Site" border="0" />
-          </a>
-        </p>
       </div>
     </div>
   </xsl:template>

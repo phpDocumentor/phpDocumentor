@@ -287,3 +287,14 @@ div.section h1
   margin-bottom: 15px;
 }
 
+small.footer
+{
+  display: block;
+  text-align: right;
+  color: silver;
+}
+
+small.footer a
+{
+  color: gray;
+}
