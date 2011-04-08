@@ -83,10 +83,10 @@
         <xsl:if test="not(@name='')"><xsl:value-of select="@name" /></xsl:if>
       </span>
       <xsl:variable name="package" select="@name" />
-      <ul id="packages_{$package}" class=".filetree">
+      <ul id="packages_{$package}" class="filetree">
         <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]|/project/file/interface[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]">
           <li class="closed">
-            <span class="file">
+            <span class="{name()}">
               <a href="{$root}{../@generated-path}#{name}" target="content">
                 <xsl:value-of select="name" />
               </a><br />
@@ -107,7 +107,7 @@
           </span>
           <ul id="packages_{$package}_{$subpackage}" class="treeview-docblox">
             <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]|/project/file/interface[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]">
-            <li class="file">
+            <li class="{name()}">
               <span>
                 <a href="{$root}{../@generated-path}#{name}" target="content">
                   <xsl:value-of select="name" />
@@ -139,7 +139,7 @@
       <ul>
         <xsl:for-each select="/project/file/class[@namespace=$full_name]|/project/file/interface[@namespace=$full_name]">
           <li>
-            <span class="file">
+            <span class="{name()}">
               <a href="{$root}{../@generated-path}#{name}" target="content">
                 <xsl:value-of select="name" />
               </a><br />

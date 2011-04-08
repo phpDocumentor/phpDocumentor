@@ -18,7 +18,7 @@
         <frame name="menu" src="menu.html" scrolling="no" />
         <frameset cols="300, *" frameborder="no" framespacing="0" border="0">
           <frame name="sidebar" src="sidebar.html"/>
-          <frame name="content" src="graph.html"/>
+          <frame name="content" src="content.html"/>
         </frameset>
       </frameset>
       <frame src="side.html" />

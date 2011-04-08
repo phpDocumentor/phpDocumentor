@@ -31,7 +31,6 @@ html, body
 {
   background: white;
 /*height:100%;*/
-  font-size: 100.1%;
 }
 
 table
@@ -72,8 +71,13 @@ sup
 
 body
 {
-  font:             1em Arial, Helvetica, sans-serif;
+  font:      1em Arial, Helvetica, sans-serif;
   color:            #444;
+}
+
+div.section
+{
+  font-size: 0.8em;
 }
 
 a
@@ -1487,8 +1491,9 @@ div.section
 {
   margin: 10px;
   background: #F0F6F8;
-  padding: 0px 10px;
+  padding: 0px 0px;
   padding-bottom: 10px;
+  width: auto;
 }
 
 div.section h1
@@ -1501,6 +1506,6 @@ div.section h1
   line-height:      1;
   padding:          5px 10px 6px;
   text-transform:   uppercase;
-  margin:           0 -10px;
+  margin:           0 0px;
   margin-bottom:    10px;
 }

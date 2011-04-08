@@ -76,6 +76,9 @@ ul.deadtree
 }
 .filetree li, .deadtree li { padding: 3px 0 2px 16px; }
 .filetree span.folder, .filetree span.file, .deadtree span.folder, .deadtree span.file { padding: 1px 0 1px 16px; display: block; }
+.filetree span.class, .deadtree span.class, .filetree span.interface, .deadtree span.interface { padding: 1px 0 1px 18px; display: block; }
 .filetree span.folder, .deadtree span.folder { background: url(images/folder.gif) 0 0 no-repeat; }
 .filetree li.expandable span.folder { background: url(images/folder-closed.gif) 0 0 no-repeat; }
 .filetree span.file { background: url(images/file.gif) 0 0 no-repeat; }
+.filetree span.class { background: url(../images/icons/class.png) 0 0 no-repeat; }
+.filetree span.interface { background: url(../images/icons/interface.png) 0 0 no-repeat; }

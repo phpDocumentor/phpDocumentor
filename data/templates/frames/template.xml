@@ -20,6 +20,9 @@
       </parameters>
     </transformation>
     <transformation query="" writer="xsl" source="themes/frames/empty.xsl" artifact="side.html"/>
+    <transformation query="" writer="xsl" source="themes/frames/index.xsl" artifact="content.html">
+      <parameters><variables><title>Main</title></variables></parameters>
+    </transformation>
     <transformation query="" writer="xsl" source="themes/frames/menu.xsl" artifact="menu.html">
       <parameters><variables><title>Menu</title></variables></parameters>
     </transformation>

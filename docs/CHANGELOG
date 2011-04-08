@@ -8,6 +8,9 @@
 * FIXED:    Extra spaces in front of the first @ in a tag block would cause parsing errors
 * ADDED:    @throw and @throws are now both clickable and take you to the given class (when found)
 * CHANGED:  Landing page of Zend template to prevent crashing or long loading browsers
+* CHANGED:  Landing page of default and frames template now show a placeholder paqe to prevent crashing or long loading browsers
+* ADDED:    Symbols to the sidebar indicating whether a class or interface is shown
+* CHANGED:  Updated templates
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------

@@ -152,13 +152,20 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
     $graph->renderDotFile($dot_file, $filename);
     error_reporting($reporting);
 
+    // add panning and zooming extension
+    $svg = simplexml_load_file($filename);
+    $script = $svg->addChild('script');
+    $script->addAttribute('xlink:href', 'js/SVGPan.js', 'http://www.w3.org/1999/xlink');
+
+    // for the SVGPan file to work no viewBox may be defined and the id of the first <g> node must be renamed to 'viewport'
+    unset($svg['viewBox']);
+    $svg->g['id'] = 'viewport';
     // save a full version
-    copy($filename, substr($filename, 0, -4).'_full.svg');
+//    $svg->asXML(substr($filename, 0, -4) . '_full.svg');
 
     // replace width and height with 100% on non-full version
-    $svg = simplexml_load_file($filename);
-    $svg['width']  = '100%';
-    $svg['height'] = '100%';
+//    $svg['width']  = '100%';
+//    $svg['height'] = '100%';
     $svg->asXML($filename);
   }
 

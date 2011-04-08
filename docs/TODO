@@ -4,9 +4,10 @@ Roadmap
 1.0: Pre-1.0 release actions
 -----------------------------
 
-* Large class diagram crashes browsers; move class diagram to something other than the landing page for templates
-  other than Zend (Zend has already been done)
-* DocBlox gives the INFO that the version of DocBlox has changed when doing a first time parse
+* Add icons showing visibility / type to menu and method / property listings
+* Method name listing becomes badly readable when there are a lot of methods: http://t.co/txDP46U
+* Class names wrap in the Zend theme; change font and or sidebar
+* When a file has 2 packages, a CRIT should be thrown because it causes rendering issues
 * Clicking in Search doesn't work in Aura _only under Chrome_; why?
 * _Add documentation_
 * include section should be clickable (click-through)
@@ -47,6 +48,7 @@ Roadmap
 The Future
 ----------
 
+* Mobile version
 * Refactor XSL templates to
   * Have a neat hierarchy in the file/content pages
   * Clean them up
