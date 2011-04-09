@@ -19,9 +19,6 @@
 class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_Tag
 {
     /** @var string */
-    protected $type = null;
-
-    /** @var string */
     protected $link = '';
 
     /**
@@ -48,28 +45,6 @@ class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_T
         }
 
         $this->content = $content;
-    }
-
-    /**
-    * Returns the unique types of the variable.
-    *
-    * @return string
-    */
-    public function getTypes()
-    {
-        $types = explode('|', $this->type);
-        array_walk($types, 'trim');
-        return $types;
-    }
-
-    /**
-    * Returns the type section of the variable.
-    *
-    * @return string
-    */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

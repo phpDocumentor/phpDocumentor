@@ -11,6 +11,7 @@
 * CHANGED:  Landing page of default and frames template now show a placeholder paqe to prevent crashing or long loading browsers
 * ADDED:    Symbols to the sidebar indicating whether a class or interface is shown
 * CHANGED:  Updated templates
+* ADDED:    by @benmatselby: Made @link clickable, it opens the given destination
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------
