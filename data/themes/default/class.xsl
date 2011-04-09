@@ -61,12 +61,8 @@
       <h4>Methods</h4>
       <xsl:for-each select="method">
         <xsl:sort select="name" />
-        <div style="float: left; width: 150px; word-wrap: break-word;">
-          <img src="../images/icons/method.png" />&#160;
-          <a style="font-style: italic;" href="#{../name}::{name}()"><xsl:value-of select="name" /></a>
-        </div>
+        <a style="font-style: italic;" href="#{../name}::{name}()"><xsl:value-of select="name" /></a>,
       </xsl:for-each>
-      <div style="clear: left"></div>
 
       <xsl:for-each select="method">
         <xsl:sort select="name" />
