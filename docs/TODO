@@ -4,9 +4,10 @@ Roadmap
 1.0: Pre-1.0 release actions
 -----------------------------
 
+* add $this (fluent interface) and self keyword to @return recognition
+* add self as supported type
 * Add icons showing visibility / type to menu and method / property listings
 * Method name listing becomes badly readable when there are a lot of methods: http://t.co/txDP46U
-* Class names wrap in the Zend theme; change font and or sidebar
 * When a file has 2 packages, a CRIT should be thrown because it causes rendering issues
 * Clicking in Search doesn't work in Aura _only under Chrome_; why?
 * _Add documentation_

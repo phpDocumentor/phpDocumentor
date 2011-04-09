@@ -61,8 +61,12 @@
       <h4>Methods</h4>
       <xsl:for-each select="method">
         <xsl:sort select="name" />
-        <a style="font-style: italic;" href="#{../name}::{name}()"><xsl:value-of select="name" /></a>,
+        <div style="float: left; width: 150px; word-wrap: break-word;">
+          <img src="../images/icons/method.png" />&#160;
+          <a style="font-style: italic;" href="#{../name}::{name}()"><xsl:value-of select="name" /></a>
+        </div>
       </xsl:for-each>
+      <div style="clear: left"></div>
 
       <xsl:for-each select="method">
         <xsl:sort select="name" />
@@ -184,8 +188,9 @@
               <td style="white-space: normal;">
                 <xsl:if test="not(../docblock/tag[@name='param' and @variable=$variable_name]/type)">n/a</xsl:if>
                 <xsl:for-each select="../docblock/tag[@name='param' and @variable=$variable_name]/type">
+                  <xsl:if test="position() &gt; 1">|</xsl:if>
                   <xsl:if test="@link"><a href="{$root}{@link}"><xsl:value-of select="." /></a></xsl:if>
-                  <xsl:if test="not(@link)"><xsl:value-of select="." /></xsl:if> |
+                  <xsl:if test="not(@link)"><xsl:value-of select="." /></xsl:if>
                 </xsl:for-each>
               </td>
               <td>
