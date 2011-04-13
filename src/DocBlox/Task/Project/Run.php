@@ -2,11 +2,23 @@
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
  *
+ * Creates documentation from PHP source files and generates documentation from it.
+ * The simplest way to use it is:
+ *
+ *     $ docblox run -d <directory to parse> -t <output directory>
+ *
+ * This will parse every file ending with .php, .php3 and .phtml for its structure and documentation from
+ * <directory to parse> and output a HTML site containing easily readable output in <output directory>.
+ *
+ * In any case will DocBlox try to look for a docblox.dist.xml or docblox.xml file in your current working directory
+ * and use that to override the default settings if present.
+ * In the configuration file can you specify the same settings (and more) as the command line provides.
+ *
  * @package    DocBlox
  * @subpackage Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
+class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
 {
   /** @var string The name of this task including namespace */
   protected $taskname = 'project:run';
@@ -36,9 +48,6 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
     $this->addOption('m|markers', '-s',
       'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")'
     );
-    $this->addOption('c|config', '-s',
-      'Configuration filename, if none is given the defaults of the docblox.config.xml in the root of DocBlox is used'
-    );
     $this->addOption('v|verbose', '',
       'Provides additional information during parsing, usually only needed for debugging purposes'
     );
@@ -65,7 +74,6 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
    */
   public function execute()
   {
-    var_dump($this->getDirectory());
     $task = new DocBlox_Task_Project_Parse();
     $task->setFilename($this->getFilename());
     $task->setDirectory($this->getDirectory());

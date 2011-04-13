@@ -65,11 +65,13 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
     {
       return $this;
     }
+    $this->_parsed = false;
 
     parent::parse();
 
     if ($this->getHelp())
     {
+      echo DocBlox_Task_Runner::renderVersion();
       echo $this->getUsageMessage();
       exit(0);
     }
@@ -164,11 +166,12 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
   {
     $prog_name = basename($this->_progname);
 
-    $usage = "Usage: \n {$prog_name} {$this->taskname} [options]\n\n";
+    $usage = '';
     if ($this->getUsageDescription())
     {
-      echo $this->getUsageDescription()."\n\n";
+      $usage .= $this->getUsageDescription() . PHP_EOL . PHP_EOL;
     }
+    $usage .= "Usage: \n {$prog_name} {$this->taskname} [options]\n\n";
 
     $lines = array();
     $maxLen = 20;

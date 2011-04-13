@@ -165,7 +165,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         $xml->addChild('docblock');
       }
       $xml->docblock->description          = $this->getDocBlock()->getShortDescription();
-      $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getContents();
+      $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getFormattedContents();
 
       /** @var DocBlox_Reflection_Docblock_Tag $tag */
       foreach ($this->getDocBlock()->getTags() as $tag)

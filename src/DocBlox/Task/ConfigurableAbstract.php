@@ -29,7 +29,7 @@ abstract class DocBlox_Task_ConfigurableAbstract extends DocBlox_Task_Abstract
     // we always offer a configuration option
     $this->addOption(
       'c|config', '-s',
-      'Configuration filename, if none is given the defaults of the docblox.config.xml in the root of DocBlox is used'
+      'Configuration filename, if none is given the default settings are used (see [DocBlox]/data/docblox.tpl.xml)'
     );
   }
 
@@ -57,7 +57,7 @@ abstract class DocBlox_Task_ConfigurableAbstract extends DocBlox_Task_Abstract
    *
    * @return void
    */
-  public function prePopulate()
+  protected function prePopulate()
   {
     if ($this->getConfig())
     {

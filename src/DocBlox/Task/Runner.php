@@ -23,6 +23,11 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
   /** @var DocBlox_Task_Abstract */
   protected $task = null;
 
+  /**
+   * Finds and initializes the given task.
+   *
+   * @param  $task_name
+   */
   public function __construct($task_name)
   {
     // find the task which we want to use
@@ -54,8 +59,23 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
     }
   }
 
+  /**
+   * Returns the task to be ran.
+   *
+   * @return DocBlox_Task_Abstract|null
+   */
   public function getTask()
   {
     return $this->task;
+  }
+
+  /**
+   * Returns the version header.
+   *
+   * @return string
+   */
+  static public function renderVersion()
+  {
+    return 'DocBlox version ' . DocBlox_Core_Abstract::VERSION . PHP_EOL . PHP_EOL;
   }
 }

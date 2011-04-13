@@ -5,14 +5,6 @@ Roadmap
 -----------------------------
 
 * DocBlox gives the INFO that the version of DocBlox has changed when doing a first time parse
-* Conversion in Long Description from Markdown to HTML should not happen in TextUI
-* Tasks system should not output multiple times the feedback
-* Run task does not process the input parameters nicely as the parameters are parsed again by the sub tasks
-* _Add documentation_
-* include section should be clickable (click-through)
-* Clicking in Search doesn't work in Aura _only under Chrome_; why?
-* Profile the application using XHProf to determine slow points and improve performance
-* Refactor mechanism which strips information from the path; it now checks the -d but should actually check what the
 + add $this (fluent interface) and self keyword to @return recognition
 + Add icons showing visibility / type to menu and method / property listings
 + Method name listing becomes badly readable when there are a lot of methods: http://t.co/txDP46U

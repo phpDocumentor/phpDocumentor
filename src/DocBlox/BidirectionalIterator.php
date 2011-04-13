@@ -262,7 +262,7 @@ class DocBlox_BidirectionalIterator implements Countable, ArrayAccess, Serializa
    * NOTE: this function is used A LOT during the reflection process.
    * This should be as high-performance as possible and ways should be devised to not use it.
    *
-   * @param int|string $position
+   * @param int|string $key
    *
    * @return mixed
    */
