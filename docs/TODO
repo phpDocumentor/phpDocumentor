@@ -13,47 +13,57 @@ Roadmap
 * Clicking in Search doesn't work in Aura _only under Chrome_; why?
 * Profile the application using XHProf to determine slow points and improve performance
 * Refactor mechanism which strips information from the path; it now checks the -d but should actually check what the
++ add $this (fluent interface) and self keyword to @return recognition
++ Add icons showing visibility / type to menu and method / property listings
++ Method name listing becomes badly readable when there are a lot of methods: http://t.co/txDP46U
++ When a file has 2 packages, a CRIT should be thrown because it causes rendering issues
++ Clicking in Search doesn't work in Aura _only under Chrome_; why?
+* _Add documentation_
++ include section should be clickable (click-through)
++ Profile the application using XHProf to determine slow points and improve performance
++ Refactor mechanism which strips information from the path; it now checks the -d but should actually check what the
   lowest common folder is
-* Revise Page level docblock searching algorythm; with the introduction of namespaces has the @package tag become
++ Revise Page level docblock searching algorythm; with the introduction of namespaces has the @package tag become
   obsolete and it seems incomplete.
-* Validate each @param with the argument:
- * if an argument does not have the same type as the @param; throw an error
- * if the @param has multiple types and the argument has a typehint and not a default; throw an error
-* Add option to disable certain types of DocBlox errors per directory / file pattern
++ Validate each @param with the argument:
+ + if an argument does not have the same type as the @param; throw an error
+ + if the @param has multiple types and the argument has a typehint and not a default; throw an error
++ Add option to disable certain types of DocBlox errors per directory / file pattern
   ( i.e. check on file-level DocBlock; constant level DocBlock; etc)
-* Safari does not show the svg nicely, it places it into a very small scrollbox
++ Safari does not show the svg nicely, it places it into a very small scrollbox
 
 1.1: Add custom documents and statistics
 -----------------------------------------
 
-* Add Docblock templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
-* Add an option to auto-expand the sidebar on page load
-* Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
-* add possibility for README, INSTALL, TODO in markdown format
-* add possibility for custom documents in markdown format
-* add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
-  * add Markdown support in long descriptions and @example (thanks @pmjones)
-* Syntax highlight @example annotation content
++ Add Docblock templates: http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.howto.pkg.html#basics.docblocktemplate
++ Add an option to auto-expand the sidebar on page load
++ Add small class diagram in class description showing all parents (and their parents) and direct children, preferably clickable
++ add possibility for README, INSTALL, TODO in markdown format
++ add possibility for custom documents in markdown format
++ add mime-type option to long-description so that the transformation could change it into the required type: i.e. markdown = text/x-markdown
+  + add Markdown support in long descriptions and @example (thanks @pmjones)
++ Syntax highlight @example annotation content
 
 1.2
 ---
 
-* Consider implementing disqus support
-* Add Twig output writer
++ Consider implementing disqus support
++ Add Twig output writer
 * Add statistics (nr of files, classes, methods, with or without docblock. Percentage, lines per method, lines per file, configurable thresholds, etc)
-* Research: allow connections between multiple docblox generated files?
++ Research: allow connections between multiple docblox generated files?
 * UML Class Diagram
-* Do some grouping thing with the @since; it might be nice to get an overview what is added per version?
++ Do some grouping thing with the @since; it might be nice to get an overview what is added per version?
 
 The Future
 ----------
 
-* Refactor XSL templates to
-  * Have a neat hierarchy in the file/content pages
-  * Clean them up
-  * Separate them further into distinct files
-  * Allow for more modularity and easier templating by just including a header or so
-* Create an XSD for the structure file
+* Mobile version
++ Refactor XSL templates to
+  + Have a neat hierarchy in the file/content pages
+  + Clean them up
+  + Separate them further into distinct files
+  + Allow for more modularity and easier templating by just including a header or so
++ Create an XSD for the structure file
 * Improve exceptions per the PHP Coding Standards (http://groups.google.com/group/php-standards/web/php-coding-standard)
 * Refactor Static Reflection to
   * Be uniform with the Reflector interface and PHP's Dynamic Reflection

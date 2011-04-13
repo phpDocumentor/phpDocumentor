@@ -8,8 +8,9 @@
     <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
     <transformation query="" writer="xsl" source="themes/default/preprocess/object-index.xsl" artifact="$object-index" />
-    <transformation query="" writer="xsl" source="themes/default/classgraph.xsl" artifact="index.html">
-      <parameters><variables><title>DocBlox</title></variables>
+    <transformation query="" writer="xsl" source="themes/default/index.xsl" artifact="index.html">
+      <parameters>
+        <variables><title>Class Diagram</title></variables>
         <search>xmljs</search>
       </parameters>
     </transformation>

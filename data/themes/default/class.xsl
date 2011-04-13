@@ -184,8 +184,9 @@
               <td style="white-space: normal;">
                 <xsl:if test="not(../docblock/tag[@name='param' and @variable=$variable_name]/type)">n/a</xsl:if>
                 <xsl:for-each select="../docblock/tag[@name='param' and @variable=$variable_name]/type">
+                  <xsl:if test="position() &gt; 1">|</xsl:if>
                   <xsl:if test="@link"><a href="{$root}{@link}"><xsl:value-of select="." /></a></xsl:if>
-                  <xsl:if test="not(@link)"><xsl:value-of select="." /></xsl:if> |
+                  <xsl:if test="not(@link)"><xsl:value-of select="." /></xsl:if>
                 </xsl:for-each>
               </td>
               <td>
@@ -247,7 +248,14 @@
               <xsl:value-of select="@name" />
             </td>
             <td>
-                <xsl:if test="@link and @link != ''"><a href="{$root}{@link}"><xsl:value-of select="@description" /></a></xsl:if>
+                <xsl:if test="@link and @link != ''">
+                  <a href="{$root}{@link}">
+                    <xsl:if test="type">
+                      <xsl:value-of select="type" /><br />
+                    </xsl:if>
+                    <small><xsl:value-of select="@description" /></small>
+                  </a>
+                </xsl:if>
                 <xsl:if test="not(@link) or @link = ''"><xsl:value-of select="@description" /></xsl:if>
             </td>
           </tr>

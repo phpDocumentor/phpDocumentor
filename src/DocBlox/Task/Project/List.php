@@ -64,7 +64,7 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
         $refl->process();
 
         /** @var DocBlox_Reflection_Class $class */
-        $class = reset($refl->getClasses());
+        $class = current($refl->getClasses());
         echo ' :' . str_pad($task, $longest_name+2) . $class->getDocBlock()->getShortDescription() . PHP_EOL;
       }
     }

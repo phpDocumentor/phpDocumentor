@@ -92,4 +92,16 @@ class DocBlockTestFixture
      */
   }
 
+  /**
+   * This DocBlock tests whether the @link tag is correctly taken and shown.
+   *
+   * @link http://www.docblox-project.org
+   *
+   * @return void
+   */
+  static public function DocBlockWithLinkTag()
+  {
+
+  }
+
 }

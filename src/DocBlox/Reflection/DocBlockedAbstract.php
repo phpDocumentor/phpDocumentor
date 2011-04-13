@@ -209,6 +209,11 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
           $tag_object['variable'] = $tag->getVariableName();
         }
 
+        if (method_exists($tag, 'getLink'))
+        {
+          $tag_object['link'] = $tag->getLink();
+        }
+
         // custom attached member variable, see line 51
         if (isset($this->getDocBlock()->line_number))
         {

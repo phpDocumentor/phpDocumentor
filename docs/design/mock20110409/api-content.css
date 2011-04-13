@@ -1,0 +1,19 @@
+h1
+{
+  border-bottom: 1px dashed gray;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+}
+
+h2, h3
+{
+  clear: right;
+}
+
+.file-info, .constant-info, .class-info, .function-info
+{
+  float: right;
+  width: 200px;
+  word-wrap: break-word;
+}
+
