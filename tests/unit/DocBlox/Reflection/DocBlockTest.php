@@ -128,7 +128,8 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
     $method = $class->getMethod('SimpleDocBlockWithLD');
 
     $this->assertEquals('Single line docblock.', $method->getDocBlock()->getShortDescription());
-    $this->assertEquals('<p>Long description.</p>', trim($method->getDocBlock()->getLongDescription()->getContents()));
+    $this->assertEquals('Long description.', trim($method->getDocBlock()->getLongDescription()->getContents()));
+    $this->assertEquals('<p>Long description.</p>', trim($method->getDocBlock()->getLongDescription()->getFormattedContents()));
     $this->assertFalse(current($method->getDocBlock()->getTagsByName('param')));
   }
 
@@ -150,13 +151,23 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
       "This docblock is the ideal situation, short descriptions are single line and closed with a point.",
       $method->getDocBlock()->getShortDescription()
     );
+
+    $this->assertEquals(<<<LD
+The long description is separated a whiteline away and has a trailing whiteline. After which each
+tag 'group' is separated by a whiteline.
+LD
+      ,
+      trim($method->getDocBlock()->getLongDescription()->getContents())
+    );
+
     $this->assertEquals(<<<LD
 <p>The long description is separated a whiteline away and has a trailing whiteline. After which each
 tag 'group' is separated by a whiteline.</p>
 LD
       ,
-      trim($method->getDocBlock()->getLongDescription()->getContents())
+      trim($method->getDocBlock()->getLongDescription()->getFormattedContents())
     );
+
     $this->assertInstanceOf('DocBlox_Reflection_DocBlock_Tag_Param', current($method->getDocBlock()->getTagsByName('param')));
     $this->assertEquals('$object', current($method->getDocBlock()->getTagsByName('param'))->getVariableName());
     $this->assertEquals('ArrayObject', current($method->getDocBlock()->getTagsByName('param'))->getType());
