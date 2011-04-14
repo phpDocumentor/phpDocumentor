@@ -10,7 +10,7 @@
  */
 
 /**
- * This class is responsible for the execution of a task via the CLI.
+ * This class is responsible for the execution of a task.
  *
  * @category  DocBlox
  * @package   Tasks
@@ -42,21 +42,13 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
     // and Zend_Loader throws a warning if the class does not exist.
     if (!@class_exists($class_name))
     {
-      echo 'DocBlox version ' . DocBlox_Core_Abstract::VERSION . PHP_EOL . PHP_EOL;
-
       $this->log('Unable to execute task: ' . implode(':', $task_parts) . ', it is not found', DocBlox_Core_Log::CRIT);
       exit(1);
     }
 
     /** @var DocBlox_Task_Abstract $task  */
     $this->task = new $class_name();
-
     $this->task->parse(true);
-
-    if (!$this->task->getQuiet())
-    {
-      echo 'DocBlox version ' . DocBlox_Core_Abstract::VERSION . PHP_EOL . PHP_EOL;
-    }
   }
 
   /**
@@ -67,15 +59,5 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
   public function getTask()
   {
     return $this->task;
-  }
-
-  /**
-   * Returns the version header.
-   *
-   * @return string
-   */
-  static public function renderVersion()
-  {
-    return 'DocBlox version ' . DocBlox_Core_Abstract::VERSION . PHP_EOL . PHP_EOL;
   }
 }
