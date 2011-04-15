@@ -18,7 +18,7 @@ $application = new DocBlox_Core_Application();
 $application->main();
 ?>
 --EXPECTF--
-DocBlox version 0.9.4
+DocBlox version %s
 
 ERROR: The given location "data/output" is not a folder
 
