@@ -3,7 +3,7 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Base
+ * @package    Core
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
@@ -13,7 +13,7 @@
  * This class also contains the (leading) current version number.
  *
  * @category   DocBlox
- * @package    Base
+ * @package    Core
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 abstract class DocBlox_Core_Abstract

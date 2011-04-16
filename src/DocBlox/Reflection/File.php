@@ -402,16 +402,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     // TODO: add a check if a class immediately follows this docblock, if so this is not a page level docblock but a class docblock
 
-    // even with a docblock at top (which may belong to some other component) does it
-    // need to have a package tag to classify
-    if ($result && !$result->hasTag('package'))
-    {
-      $result = null;
-    }
+    $validator = new DocBlox_Core_Validator_File($this->getName(), $result);
+    $valid = $validator->isValid();
 
-    if (!$result)
-    {
-      $this->log('No Page-level DocBlock was found for '.$this->getName(), Zend_Log::ERR);
+    if (!$valid) {
+        $result = null;
     }
 
     return $result;
