@@ -15,6 +15,12 @@
 * CHANGED:  Made the Tasks use a runner so that you can easily re-use tasks in one another (as is done in the project:run task)
 * FIXED:    project:run task was broken; it crashed when you provided any arguments
 * FIXED:    Include path in docblox.php was included twice and a suffixing / was present in one of the added paths
+* FIXED:    by @benmatselby: Runner was split into a TaskRunner and ApplicationRunner
+* FIXED:    Files who were detected as unknown-8bit encoding were not parsed
+* CHANGED:  README was moved to README.md to clarify that the file uses Markdown support
+* ADDED:    Dependencies to the PEAR package generation for Zend, Markdown and Image_Graphviz
+* REMOVED:  Zend, Markdown and Image_GraphViz from the package.xml files listing
+* FIXED:    Permissions for docblox.php, parser.php and transform.php to have the execute flag
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------
