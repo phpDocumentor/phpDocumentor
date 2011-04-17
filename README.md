@@ -28,6 +28,9 @@ DocBlox requires the following:
 How to use DocBlox?
 -------------------
 
+*NOTE*: DocBlox must be installed in a path without spaces in order to generate HTML files. The libraries that
+DocBlox uses to transform XSL files do not reliably support spaces in the path.
+
 ### The easy way
 
 The easiest way to run docblox is by running the following command:
