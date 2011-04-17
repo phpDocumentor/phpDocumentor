@@ -3,8 +3,6 @@ docblox project:run
 --FILE--
 <?php
 
-$_SERVER['argv'][0] = 'docblox';
-
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
@@ -35,7 +33,7 @@ and use that to override the default settings if present.
 In the configuration file can you specify the same settings (and more) as the command line provides.
 
 Usage:
- docblox project:run [options]
+ %s project:run [options]
 
 -h [--help]                Show this help message
 -q [--quiet]               Silences the output and logging
