@@ -69,6 +69,9 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
    */
   protected $namespace_aliases = array();
 
+  /** @var string The path of the file. */
+  protected $filename = '';
+
   /**
    * Main function which reads the token iterator and parses the current token.
    *
@@ -299,6 +302,18 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
   public function getName()
   {
     return $this->name;
+  }
+
+  /**
+   * Sets the file name for this file.
+   *
+   * @param string $filename The path of this file.
+   *
+   * @return void
+   */
+  public function setFilename($filename)
+  {
+    $this->filename = $filename;
   }
 
   /**
