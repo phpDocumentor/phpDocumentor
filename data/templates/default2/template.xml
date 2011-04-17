@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <transformations>
+    <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php"/>
+    <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
+    <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/default2/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/default2/images" artifact="images"/>
+    <transformation query="" writer="Search" source="" artifact="."/>
+    <!--<transformation query="" writer="xsl" source="themes/default/preprocess/object-index.xsl" artifact="$object-index" />-->
+    <!--<transformation query="" writer="xsl" source="themes/default/index.xsl" artifact="index.html">-->
+      <!--<parameters>-->
+        <!--<variables><title>Class Diagram</title></variables>-->
+        <!--<search>xmljs</search>-->
+      <!--</parameters>-->
+    <!--</transformation>-->
+    <!--<transformation query="" writer="xsl" source="themes/default/classgraph.xsl" artifact="graph.html">-->
+      <!--<parameters><variables><title>DocBlox</title></variables>-->
+        <!--<search>xmljs</search>-->
+      <!--</parameters>-->
+    <!--</transformation>-->
+    <transformation query="/project/file/@path" writer="xsl" source="themes/default2/api-doc.xsl" artifact="{$path}">
+      <parameters><variables><title>File</title></variables>
+        <!--<search>xmljs</search>-->
+      </parameters>
+    </transformation>
+    <!--<transformation query="" writer="xsl" source="themes/default/markers.xsl" artifact="markers.html">-->
+      <!--<parameters><variables><title>Markers</title></variables>-->
+        <!--<search>xmljs</search>-->
+      <!--</parameters>-->
+    <!--</transformation>-->
+    <!--<transformation query="" writer="Graph" source="Class" artifact="classes.svg" />-->
+  </transformations>
+</template>

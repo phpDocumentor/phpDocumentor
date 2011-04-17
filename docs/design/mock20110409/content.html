@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h1>/path/to/my/file.php</h1>
+<h1 class="file">/path/to/my/file.php</h1>
 
 <h2>Description</h2>
 <dl class="file-info">
@@ -19,22 +19,25 @@
   <dt>Version</dt>
   <dd>1.0</dd>
   <dt>Constants</dt>
-  <dd>CONSTANT1</dd>
+  <dd><a class="constant" href="#">CONSTANT1</a></dd>
   <dt>Functions</dt>
-  <dd>getFunction1</dd>
+  <dd><a class="function" href="#">getFunction1</a></dd>
   <dt>Classes</dt>
-  <dd>Class1</dd>
-  <dd>Class2</dd>
+  <dd><a class="class" href="#">Class1</a></dd>
+  <dd><a class="class" href="#">Class2</a></dd>
 </dl>
 
-<p>This is the short description for this file</p>
-<p>This is the long description for this file</p>
+<p class="short-description">This is the short description for this file</p>
+<p class="long-description">This is the long description for this file</p>
 
 
 <h2>Constants</h2>
 <div>
   <h3 class="constant">Constant1</h3>
   <div class="constant">
+    <p><code>int CONSTANT1 = 'value'</code></p>
+    <p class="short-description">Short description for Constant1</p>
+    <p class="long-description">Long description for Constant1</p>
     <dl class="constant-info">
       <dt>type</dt>
       <dd>int</dd>
@@ -43,9 +46,6 @@
       <dt>see</dt>
       <dd>self::CONSTANT2</dd>
     </dl>
-    <p><code>int CONSTANT1 = 'value'</code></p>
-    <p>Short description for Constant1</p>
-    <p>Long description for Constant1</p>
   </div>
 </div>
 
@@ -53,6 +53,10 @@
 <div>
   <h3 class="function">Function1</h3>
   <div class="function">
+    <p><code>int Function1(int $name)</code></p>
+    <p class="short-description">Short description for Constant1</p>
+    <p class="long-description">Long description for Constant1</p>
+
     <dl class="function-info">
       <dt>see</dt>
       <dd>self::CONSTANT2</dd>
@@ -61,11 +65,7 @@
       <dd>int</dd>
     </dl>
 
-    <p><code>int Function1(int $name)</code></p>
-    <p>Short description for Constant1</p>
-    <p>Long description for Constant1</p>
-
-    <h4>Arguments</h4>
+    <h4 class="arguments">Arguments</h4>
     <div class="arguments">
       <h5>name</h5>
       <p>Description</p>
@@ -98,18 +98,18 @@
     <dd>Method1</dd>
   </dl>
 
-  <p>Short description</p>
-  <p>Long description</p>
+  <p class="short-description">Short description</p>
+  <p class="long-description">Long description</p>
 
   <h3 class="constant">CONSTANT1</h3>
   <div class="constant">
+    <p><code>int CONSTANT1 = 'value'</code></p>
+    <p class="short-description">Short description for Constant1</p>
+    <p class="long-description">Long description for Constant1</p>
     <dl class="constant-info">
       <dt>see</dt>
       <dd>self::CONSTANT2</dd>
     </dl>
-    <p><code>int CONSTANT1 = 'value'</code></p>
-    <p>Short description for Constant1</p>
-    <p>Long description for Constant1</p>
   </div>
 
   <h3 class="property">Property1</h3>
@@ -123,8 +123,12 @@
     </dl>
   </div>
 
-  <h3>Method1</h3>
+  <h3 class="method">Method1</h3>
   <div class="method">
+    <p><code>int Function1(int $name)</code></p>
+    <p class="short-description">Short description for Constant1</p>
+    <p class="long-description">Long description for Constant1</p>
+
     <dl class="function-info">
       <dt>see</dt>
       <dd>self::CONSTANT2</dd>
@@ -132,14 +136,11 @@
       <dt>return</dt>
       <dd>int</dd>
     </dl>
-    <p><code>int Function1(int $name)</code></p>
-    <p>Short description for Constant1</p>
-    <p>Long description for Constant1</p>
 
-    <h4>Arguments</h4>
+    <h4 class="arguments">Arguments</h4>
     <div class="arguments">
       <h5>name</h5>
-      <p>Description</p>
+      <p class="tag-description">Description</p>
       <dl>
         <dt>type</dt>
         <dd>int</dd>
@@ -156,18 +157,18 @@
 
   <h3 class="constant">CONSTANT1</h3>
   <div class="constant">
+    <p><code>int CONSTANT1 = 'value'</code></p>
+    <p class="short-description">Short description for Constant1</p>
+    <p class="long-description">Long description for Constant1</p>
     <dl class="constant-info">
       <dt>see</dt>
       <dd>self::CONSTANT2</dd>
     </dl>
-    <p><code>int CONSTANT1 = 'value'</code></p>
-    <p>Short description for Constant1</p>
-    <p>Long description for Constant1</p>
   </div>
 
   <h3 class="property">Property1</h3>
   <div class="property">
-    <p>Description</p>
+    <p class="tag-description">Description</p>
     <dl>
       <dt>type</dt>
       <dd>int</dd>
@@ -176,8 +177,12 @@
     </dl>
   </div>
 
-  <h3>Method1</h3>
+  <h3 class="method">Method1</h3>
   <div class="method">
+    <p><code>int Function1(int $name)</code></p>
+    <p class="short-description">Short description for Constant1</p>
+    <p class="long-description">Long description for Constant1</p>
+
     <dl class="function-info">
       <dt>see</dt>
       <dd>self::CONSTANT2</dd>
@@ -185,14 +190,11 @@
       <dt>return</dt>
       <dd>int</dd>
     </dl>
-    <p><code>int Function1(int $name)</code></p>
-    <p>Short description for Constant1</p>
-    <p>Long description for Constant1</p>
 
-    <h4>Arguments</h4>
+    <h4 class="arguments">Arguments</h4>
     <div class="arguments">
       <h5>name</h5>
-      <p>Description</p>
+      <p class="tag-description">Description</p>
       <dl>
         <dt>type</dt>
         <dd>int</dd>

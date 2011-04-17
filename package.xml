@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-06</date>
- <time>22:31:17</time>
+ <date>2011-04-13</date>
+ <time>22:34:55</time>
  <version>
-  <release>0.9.3</release>
-  <api>0.9.3</api>
+  <release>0.9.4</release>
+  <api>0.9.4</api>
  </version>
  <stability>
   <release>beta</release>
@@ -65,6 +65,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="jquery-ui-1.8.2.custom.min.js" role="php" />
      <file baseinstalldir="/DocBlox" name="jquery.cookie.js" role="php" />
      <file baseinstalldir="/DocBlox" name="jquery.treeview.js" role="php" />
+     <file baseinstalldir="/DocBlox" name="SVGPan.js" role="php" />
     </dir> <!-- /data/js -->
     <dir name="templates">
      <dir name="default">
@@ -140,6 +141,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="classgraph.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="search.xsl" role="php" />
@@ -154,6 +156,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="frameset.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="header.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
@@ -184,6 +187,15 @@ Please see the CHANGELOG in the root of the application for the latest changes
    </dir> <!-- /data -->
    <dir name="docs">
     <dir name="design">
+     <dir name="mock20110409">
+      <file baseinstalldir="/DocBlox" name="api-content.css" role="php" />
+      <file baseinstalldir="/DocBlox" name="content.html" role="php" />
+      <file baseinstalldir="/DocBlox" name="default.css" role="php" />
+      <file baseinstalldir="/DocBlox" name="index.html" role="php" />
+      <file baseinstalldir="/DocBlox" name="nav.html" role="php" />
+      <file baseinstalldir="/DocBlox" name="sen.full.min.css" role="php" />
+      <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
+     </dir> <!-- /docs/design/mock20110409 -->
      <file baseinstalldir="/DocBlox" name="background.png" role="php" />
      <file baseinstalldir="/DocBlox" name="design2.svg" role="php" />
      <file baseinstalldir="/DocBlox" name="drawing.svg" role="php" />
@@ -213,6 +225,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <dir name="Reflection">
       <dir name="DocBlock">
        <dir name="Tag">
+        <file baseinstalldir="/DocBlox" name="Link.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Param.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Return.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Throw.php" role="php" />
@@ -247,6 +260,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </dir> <!-- /src/DocBlox/Task/Project -->
       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
       <file baseinstalldir="/DocBlox" name="ConfigurableAbstract.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="Runner.php" role="php" />
      </dir> <!-- /src/DocBlox/Task -->
      <dir name="Token">
       <file baseinstalldir="/DocBlox" name="Iterator.php" role="php" />
@@ -264,7 +278,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </dir> <!-- /src/DocBlox/Transformer -->
      <file baseinstalldir="/DocBlox" name="BidirectionalIterator.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Parser.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="TextUI.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Token.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Transformer.php" role="php" />
     </dir> <!-- /src/DocBlox -->
@@ -361,8 +374,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/DocBlox" name="LogTest.php" role="php" />
       </dir> <!-- /tests/unit/DocBlox/Core -->
       <dir name="Reflection">
+       <dir name="Tag">
+        <file baseinstalldir="/DocBlox" name="LinkTest.php" role="php" />
+       </dir> <!-- /tests/unit/DocBlox/Reflection/Tag -->
        <file baseinstalldir="/DocBlox" name="DocBlockTest.php" role="php" />
       </dir> <!-- /tests/unit/DocBlox/Reflection -->
+      <dir name="Task">
+       <file baseinstalldir="/DocBlox" name="Runner.php" role="php" />
+      </dir> <!-- /tests/unit/DocBlox/Task -->
       <dir name="Token">
        <file baseinstalldir="/DocBlox" name="IteratorTest.php" role="php" />
       </dir> <!-- /tests/unit/DocBlox/Token -->
@@ -373,7 +392,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </dir> <!-- /tests/unit/DocBlox/Transformer -->
       <file baseinstalldir="/DocBlox" name="BidirectionalIteratorTest.php" role="php" />
       <file baseinstalldir="/DocBlox" name="ParserTest.php" role="php" />
-      <file baseinstalldir="/DocBlox" name="TextUITest.php" role="php" />
       <file baseinstalldir="/DocBlox" name="TokenTest.php" role="php" />
       <file baseinstalldir="/DocBlox" name="TransformerTest.php" role="php" />
      </dir> <!-- /tests/unit/DocBlox -->
@@ -421,14 +439,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.9.3</release>
-    <api>0.9.3</api>
+    <release>0.9.4</release>
+    <api>0.9.4</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-04-06</date>
+   <date>2011-04-13</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes

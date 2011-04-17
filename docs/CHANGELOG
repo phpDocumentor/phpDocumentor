@@ -12,6 +12,9 @@
 * ADDED:    Symbols to the sidebar indicating whether a class or interface is shown
 * CHANGED:  Updated templates
 * ADDED:    by @benmatselby: Made @link clickable, it opens the given destination
+* CHANGED:  Made the Tasks use a runner so that you can easily re-use tasks in one another (as is done in the project:run task)
+* FIXED:    project:run task was broken; it crashed when you provided any arguments
+* FIXED:    Include path in docblox.php was included twice and a suffixing / was present in one of the added paths
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------

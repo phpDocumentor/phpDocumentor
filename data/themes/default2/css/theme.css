@@ -5,12 +5,12 @@
 
 body.chrome
 {
-  background:  black url('../../../data/themes/default/images/background.png') repeat-x top left;
+  background:  black url('../images/background.png') repeat-x top left;
 }
 
 #page
 {
-  background: white url('../../../data/themes/default/images/top.png') top left no-repeat;
+  background: white url('../images/top.png') top left no-repeat;
 }
 
 #header
@@ -23,7 +23,7 @@ body.chrome
 {
   display:     inline;
   margin-left: 10px;
-  background:  white url('../../../data/themes/default/images/top-background.png') repeat-x top left;
+  background:  white url('../images/top-background.png') repeat-x top left;
   padding-top: 36px;
   border: none;
 }
