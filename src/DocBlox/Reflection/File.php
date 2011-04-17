@@ -402,7 +402,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
     // TODO: add a check if a class immediately follows this docblock, if so this is not a page level docblock but a class docblock
 
-    $validator = new DocBlox_Core_Validator_File($this->getName(), $result);
+    $validator = new DocBlox_Parser_DocBlock_Validator_File($this->getName(), $result);
     $valid = $validator->isValid();
 
     if (!$valid) {

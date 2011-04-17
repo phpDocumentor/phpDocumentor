@@ -3,7 +3,7 @@
  * File contains the DocBlox_Core_Validator_File class
  *
  * @category   DocBlox
- * @package    Core
+ * @package    Parser
  * @subpackage Validator
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>
@@ -14,13 +14,13 @@
  * This class is responsible for validating the file docbloc
  *
  * @category   DocBlox
- * @package    Core
+ * @package    Parser
  * @subpackage Validator
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Core_Validator_File extends DocBlox_Core_Abstract implements DocBlox_Core_Validator
+class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract implements DocBlox_Parser_DocBlock_Validator
 {
     /**
      * Name of the file being validated

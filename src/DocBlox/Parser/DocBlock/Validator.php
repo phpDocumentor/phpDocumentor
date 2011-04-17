@@ -3,7 +3,7 @@
  * File contains the DocBlox_Core_Validator interface
  *
  * @category   DocBlox
- * @package    Core
+ * @package    Parser
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
@@ -13,12 +13,12 @@
  * Interface for validation
  *
  * @category   DocBlox
- * @package    Core
+ * @package    Parser
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-interface DocBlox_Core_Validator
+interface DocBlox_Parser_DocBlock_Validator
 {
     /**
      * Constructor
