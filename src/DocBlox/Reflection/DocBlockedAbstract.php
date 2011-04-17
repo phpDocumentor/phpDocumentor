@@ -68,6 +68,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       $this->log($e->getMessage(), Zend_Log::CRIT);
     }
 
+    $this->validateDocBlock($this->filename, $docblock->getLineNumber(), $result);
+
     // if the object has no DocBlock _and_ is not a Closure; throw a warning
     $type = substr(get_class($this), strrpos(get_class($this), '_') + 1);
     if (!$result && (($type !== 'Function') && ($this->getName() !== 'Closure')))
@@ -223,4 +225,26 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     }
   }
 
+  /**
+   * Validate the docblock
+   *
+   * @param string                      $filename   Filename
+   * @param int                         $lineNumber The line number for the docblock
+   * @param DocBlox_Reflection_DocBlock $docblock   Docbloc
+   *
+   * @return boolean
+   */
+  protected function validateDocBlock($filename, $lineNumber, DocBlox_Reflection_DocBlock $docblock)
+  {
+    $valid = true;
+    $parts = explode('_', get_class($this));
+    $part = $parts[count($parts) - 1];
+
+    if (@class_exists('DocBlox_Parser_DocBlock_Validator_'.$part))
+    {
+      $validator = new DocBlox_Parser_DocBlock_Validator_File($filename, $lineNumber, $docblock);
+      $valid = $validator->isValid();
+    }
+    return $valid;
+  }
 }

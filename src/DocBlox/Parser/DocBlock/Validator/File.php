@@ -30,6 +30,13 @@ class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract imple
     protected $filename;
 
     /**
+     * Line number of the docblock
+     *
+     * @var int
+     */
+    protected $lineNumber;
+
+    /**
      * Docblock for the file
      *
      * @var DocBlox_Reflection_DocBlock
@@ -39,12 +46,14 @@ class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract imple
     /**
      * Constructor
      *
-     * @param string                      $filename Filename
-     * @param DocBlox_Reflection_DocBlock $docblock Docbloc
+     * @param string                      $filename   Filename
+     * @param int                         $lineNumber Line number for the docblock
+     * @param DocBlox_Reflection_DocBlock $docblock   Docbloc
      */
-    public function __construct($filename, DocBlox_Reflection_DocBlock $docblock)
+    public function __construct($filename, $lineNumber, DocBlox_Reflection_DocBlock $docblock)
     {
         $this->filename = $filename;
+        $this->lineNumber = $lineNumber;
         $this->docblock = $docblock;
     }
 
@@ -67,7 +76,9 @@ class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract imple
         if (!$this->docblock->hasTag('package'))
         {
             $valid = false;
-            $this->log('No Page-level DocBlock was found for '.$this->filename, Zend_Log::ERR);
+            $this->log(
+                'No Page-level DocBlock was found for '.$this->filename.' on line: '.$this->lineNumber, Zend_Log::ERR
+            );
         }
 
         if (count($this->docblock->getTagsByName('package')) > 1)

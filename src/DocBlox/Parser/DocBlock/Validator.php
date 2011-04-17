@@ -23,10 +23,11 @@ interface DocBlox_Parser_DocBlock_Validator
     /**
      * Constructor
      *
-     * @param string                      $filename Filename
-     * @param DocBlox_Reflection_DocBlock $docblock Docbloc
+     * @param string                      $filename   Filename
+     * @param int                         $lineNumber The line number for the docblock
+     * @param DocBlox_Reflection_DocBlock $docblock   Docbloc
      */
-    public function __construct($filename, DocBlox_Reflection_DocBlock $docblock);
+    public function __construct($filename, $lineNumber, DocBlox_Reflection_DocBlock $docblock);
 
     /**
      * Is the docbloc valid
