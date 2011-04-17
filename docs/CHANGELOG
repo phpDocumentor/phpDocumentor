@@ -21,6 +21,7 @@
 * ADDED:    Dependencies to the PEAR package generation for Zend, Markdown and Image_Graphviz
 * REMOVED:  Zend, Markdown and Image_GraphViz from the package.xml files listing
 * FIXED:    Permissions for docblox.php, parser.php and transform.php to have the execute flag
+* ADDED:    by @benmatselby: Introduced DocBlock validators where we can add a validation per structure type (method, class, file, etc)
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------
