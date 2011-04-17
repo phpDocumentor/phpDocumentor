@@ -46,11 +46,11 @@ class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract imple
     /**
      * Constructor
      *
-     * @param string                      $filename   Filename
-     * @param int                         $lineNumber Line number for the docblock
-     * @param DocBlox_Reflection_DocBlock $docblock   Docbloc
+     * @param string                           $filename   Filename
+     * @param int                              $lineNumber Line number for the docblock
+     * @param DocBlox_Reflection_DocBlock|null $docblock   Docbloc
      */
-    public function __construct($filename, $lineNumber, DocBlox_Reflection_DocBlock $docblock)
+    public function __construct($filename, $lineNumber, $docblock = null)
     {
         $this->filename = $filename;
         $this->lineNumber = $lineNumber;
@@ -58,7 +58,7 @@ class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract imple
     }
 
     /**
-     * Is the docbloc valid
+     * Is the docblock valid?
      *
      * @see DocBlox_Core_Validator::isValid()
      *

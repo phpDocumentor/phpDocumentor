@@ -68,7 +68,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
       $this->log($e->getMessage(), Zend_Log::CRIT);
     }
 
-    $this->validateDocBlock($this->filename, $docblock->getLineNumber(), $result);
+    $this->validateDocBlock($this->filename, $docblock ? $docblock->getLineNumber() : 0, $result);
 
     // if the object has no DocBlock _and_ is not a Closure; throw a warning
     $type = substr(get_class($this), strrpos(get_class($this), '_') + 1);
@@ -228,13 +228,13 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   /**
    * Validate the docblock
    *
-   * @param string                      $filename   Filename
-   * @param int                         $lineNumber The line number for the docblock
-   * @param DocBlox_Reflection_DocBlock $docblock   Docbloc
+   * @param string                           $filename   Filename
+   * @param int                              $lineNumber The line number for the docblock
+   * @param DocBlox_Reflection_DocBlock|null $docblock   Docbloc
    *
    * @return boolean
    */
-  protected function validateDocBlock($filename, $lineNumber, DocBlox_Reflection_DocBlock $docblock)
+  protected function validateDocBlock($filename, $lineNumber, $docblock)
   {
     $valid = true;
     $parts = explode('_', get_class($this));
