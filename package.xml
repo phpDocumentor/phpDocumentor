@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-13</date>
- <time>22:34:55</time>
+ <date>2011-04-17</date>
+ <time>21:26:10</time>
  <version>
-  <release>0.9.4</release>
-  <api>0.9.4</api>
+  <release>0.9.5</release>
+  <api>0.9.5</api>
  </version>
  <stability>
   <release>beta</release>
@@ -71,6 +71,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <dir name="default">
       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/templates/default -->
+     <dir name="default2">
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
+     </dir> <!-- /data/templates/default2 -->
      <dir name="frames">
       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/templates/frames -->
@@ -146,6 +149,34 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="search.xsl" role="php" />
      </dir> <!-- /data/themes/default -->
+     <dir name="default2">
+      <dir name="css">
+       <file baseinstalldir="/DocBlox" name="api-content.css" role="php" />
+       <file baseinstalldir="/DocBlox" name="default.css" role="php" />
+       <file baseinstalldir="/DocBlox" name="navigation.css" role="php" />
+       <file baseinstalldir="/DocBlox" name="sen.full.min.css" role="php" />
+       <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
+      </dir> <!-- /data/themes/default2/css -->
+      <dir name="images">
+       <file baseinstalldir="/DocBlox" name="arrow_right.gif" role="php" />
+       <file baseinstalldir="/DocBlox" name="background.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="file.gif" role="php" />
+       <file baseinstalldir="/DocBlox" name="folder.gif" role="php" />
+       <file baseinstalldir="/DocBlox" name="logo.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="menu-background.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="search.gif" role="php" />
+       <file baseinstalldir="/DocBlox" name="top-background.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="top-stopper.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="top.png" role="php" />
+      </dir> <!-- /data/themes/default2/images -->
+      <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="chrome.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="constant.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="docblock.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="function.xsl" role="php" />
+     </dir> <!-- /data/themes/default2 -->
      <dir name="frames">
       <dir name="css">
        <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
@@ -189,10 +220,15 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <dir name="design">
      <dir name="mock20110409">
       <file baseinstalldir="/DocBlox" name="api-content.css" role="php" />
+      <file baseinstalldir="/DocBlox" name="arrow_right.gif" role="php" />
       <file baseinstalldir="/DocBlox" name="content.html" role="php" />
       <file baseinstalldir="/DocBlox" name="default.css" role="php" />
+      <file baseinstalldir="/DocBlox" name="file.gif" role="php" />
+      <file baseinstalldir="/DocBlox" name="folder.gif" role="php" />
       <file baseinstalldir="/DocBlox" name="index.html" role="php" />
       <file baseinstalldir="/DocBlox" name="nav.html" role="php" />
+      <file baseinstalldir="/DocBlox" name="navigation.css" role="php" />
+      <file baseinstalldir="/DocBlox" name="search.gif" role="php" />
       <file baseinstalldir="/DocBlox" name="sen.full.min.css" role="php" />
       <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
      </dir> <!-- /docs/design/mock20110409 -->
@@ -219,9 +255,18 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <dir name="DocBlox">
      <dir name="Core">
       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="Application.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Config.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Log.php" role="php" />
      </dir> <!-- /src/DocBlox/Core -->
+     <dir name="Parser">
+      <dir name="DocBlock">
+       <dir name="Validator">
+        <file baseinstalldir="/DocBlox" name="File.php" role="php" />
+       </dir> <!-- /src/DocBlox/Parser/DocBlock/Validator -->
+       <file baseinstalldir="/DocBlox" name="Validator.php" role="php" />
+      </dir> <!-- /src/DocBlox/Parser/DocBlock -->
+     </dir> <!-- /src/DocBlox/Parser -->
      <dir name="Reflection">
       <dir name="DocBlock">
        <dir name="Tag">
@@ -281,80 +326,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="Token.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Transformer.php" role="php" />
     </dir> <!-- /src/DocBlox -->
-    <dir name="markdown">
-     <file baseinstalldir="/DocBlox" name="License.text" role="php" />
-     <file baseinstalldir="/DocBlox" name="markdown.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="PHP Markdown Extra Readme.text" role="php" />
-    </dir> <!-- /src/markdown -->
-    <dir name="pear">
-     <file baseinstalldir="/DocBlox" name="GraphViz.php" role="php" />
-    </dir> <!-- /src/pear -->
     <dir name="wkhtmltopdf">
      <file baseinstalldir="/DocBlox" name="wkhtmltopdf-i386" role="php" />
     </dir> <!-- /src/wkhtmltopdf -->
-    <dir name="Zend">
-     <dir name="Config">
-      <dir name="Writer">
-       <file baseinstalldir="/DocBlox" name="Array.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Ini.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Xml.php" role="php" />
-      </dir> <!-- /src/Zend/Config/Writer -->
-      <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
-      <file baseinstalldir="/DocBlox" name="Ini.php" role="php" />
-      <file baseinstalldir="/DocBlox" name="Writer.php" role="php" />
-      <file baseinstalldir="/DocBlox" name="Xml.php" role="php" />
-     </dir> <!-- /src/Zend/Config -->
-     <dir name="Console">
-      <dir name="Getopt">
-       <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
-      </dir> <!-- /src/Zend/Console/Getopt -->
-      <file baseinstalldir="/DocBlox" name="Getopt.php" role="php" />
-     </dir> <!-- /src/Zend/Console -->
-     <dir name="Loader">
-      <dir name="Autoloader">
-       <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Resource.php" role="php" />
-      </dir> <!-- /src/Zend/Loader/Autoloader -->
-      <dir name="PluginLoader">
-       <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
-      </dir> <!-- /src/Zend/Loader/PluginLoader -->
-      <file baseinstalldir="/DocBlox" name="Autoloader.php" role="php" />
-      <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
-      <file baseinstalldir="/DocBlox" name="PluginLoader.php" role="php" />
-     </dir> <!-- /src/Zend/Loader -->
-     <dir name="Log">
-      <dir name="Filter">
-       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Message.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Priority.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Suppress.php" role="php" />
-      </dir> <!-- /src/Zend/Log/Filter -->
-      <dir name="Formatter">
-       <file baseinstalldir="/DocBlox" name="Firebug.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Simple.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Xml.php" role="php" />
-      </dir> <!-- /src/Zend/Log/Formatter -->
-      <dir name="Writer">
-       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Db.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Mail.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Mock.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Null.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Stream.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="Syslog.php" role="php" />
-       <file baseinstalldir="/DocBlox" name="ZendMonitor.php" role="php" />
-      </dir> <!-- /src/Zend/Log/Writer -->
-      <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
-      <file baseinstalldir="/DocBlox" name="FactoryInterface.php" role="php" />
-     </dir> <!-- /src/Zend/Log -->
-     <file baseinstalldir="/DocBlox" name="Config.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="Loader.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="Log.php" role="php" />
-    </dir> <!-- /src/Zend -->
    </dir> <!-- /src -->
    <dir name="tests">
     <dir name="common">
@@ -366,6 +340,12 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="TokenIteratorTestFixture.php" role="php" />
      <file baseinstalldir="/DocBlox" name="TypesTest.php" role="php" />
     </dir> <!-- /tests/data -->
+    <dir name="ui">
+     <file baseinstalldir="/DocBlox" name="docblox-no-params.phpt" role="php" />
+     <file baseinstalldir="/DocBlox" name="docblox-no-params.phpt.orig" role="php" />
+     <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt" role="php" />
+     <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt.orig" role="php" />
+    </dir> <!-- /tests/ui -->
     <dir name="unit">
      <dir name="DocBlox">
       <dir name="Core">
@@ -403,6 +383,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/DocBlox" name="LICENSE" role="php" />
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
    <file baseinstalldir="/DocBlox" name="README" role="php" />
+   <file baseinstalldir="/DocBlox" name="README.md" role="data" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -417,6 +398,21 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <name>PEAR</name>
     <channel>pear.php.net</channel>
     <min>1.4.0</min>
+   </package>
+   <package>
+    <name>Image_GraphViz</name>
+    <channel>pear.php.net</channel>
+    <min>1.3.0</min>
+   </package>
+   <package>
+    <name>zf</name>
+    <channel>pear.zfcampus.org</channel>
+    <min>1.11.3</min>
+   </package>
+   <package>
+    <name>MarkdownExtra</name>
+    <channel>pear.michelf.com</channel>
+    <min>1.2.4</min>
    </package>
   </required>
  </dependencies>
@@ -439,14 +435,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.9.4</release>
-    <api>0.9.4</api>
+    <release>0.9.5</release>
+    <api>0.9.5</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-04-13</date>
+   <date>2011-04-17</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes

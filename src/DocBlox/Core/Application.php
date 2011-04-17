@@ -27,8 +27,8 @@ class DocBlox_Core_Application
    */
   public function main()
   {
-    require_once 'pear/GraphViz.php';
-    require_once 'markdown/markdown.php';
+    require_once 'Image/GraphViz.php';
+    require_once 'markdown.php';
 
     $runner = new DocBlox_Task_Runner(($_SERVER['argc'] == 1) ? 'project:run' : $_SERVER['argv'][1]);
     $task = $runner->getTask();

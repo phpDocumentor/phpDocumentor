@@ -17,9 +17,10 @@ function createPackager($original_file, $options = array())
       'build/*',
       'data/output/*',
       'bin/package.php',
-      'src/pear/*',    // Dependency with a PEAR package
-      'src/Zend/*',    // Dependency with a PEAR package
-      'src/markdown/*' // Dependency with a PEAR package
+      'src/Image/*',      // Dependency with a PEAR package
+      'src/Zend/*',       // Dependency with a PEAR package
+      'src/markdown/*',   // Dependency with a PEAR package
+      'src/markdown.php'  // Dependency with a PEAR package
     ),
     'exceptions'        => array(
       'bin/docblox.php'  => 'script',
@@ -61,8 +62,8 @@ DESC
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'Image_GraphViz', 'pear.php.net', '1.3.0');
-  $packagexml->addPackageDepWithChannel('required', 'Zend', 'pear.zfcampus.org', '1.11.3');
-  $packagexml->addPackageDepWithChannel('required', 'MarkdownExtra', 'pear.michelf.org', '1.2.4');
+  $packagexml->addPackageDepWithChannel('required', 'zf', 'pear.zfcampus.org', '1.11.3');
+  $packagexml->addPackageDepWithChannel('required', 'MarkdownExtra', 'pear.michelf.com', '1.2.4');
 
   $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '/usr/bin/env php', 'php_bin');
   $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '@php_bin@', 'php_bin');
