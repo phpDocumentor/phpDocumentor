@@ -16,7 +16,7 @@ set_include_path(
 
 // include and initialize the autoloader
 require_once('Zend/Loader/Autoloader.php');
-require_once('markdown/markdown.php');
+require_once('markdown.php');
 require_once('PHPUnit/Extensions/OutputTestCase.php');
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('DocBlox_');
