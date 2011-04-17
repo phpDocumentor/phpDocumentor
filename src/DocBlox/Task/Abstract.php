@@ -71,6 +71,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
 
     if ($this->getHelp())
     {
+      DocBlox_Core_Application::renderVersion();
       echo $this->getUsageMessage();
       exit(0);
     }

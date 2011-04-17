@@ -3,7 +3,6 @@ docblox project:run -f dirname(__FILE__) . '/../data/DocBlockTestFixture.php' -t
 --FILE--
 <?php
 
-$_SERVER['argv'][0] = 'docblox';
 $_SERVER['argv'][1] = 'project:run';
 $_SERVER['argv'][2] = '-f';
 $_SERVER['argv'][3] = dirname(__FILE__) . '/../data/DocBlockTestFixture.php';
