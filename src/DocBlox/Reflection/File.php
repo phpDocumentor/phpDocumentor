@@ -168,10 +168,16 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
       );
     }
 
+    // if the encoding is unknown-8bit or x-user-defined we assume it might be latin1; otherwise iconv will fail
+    if (($encoding == 'unknown-8bit') || ($encoding == 'x-user-defined'))
+    {
+      $encoding = 'latin1';
+    }
+
     // convert if a source encoding is found; otherwise we throw an error and have to continue using the given data
     if (($encoding !== null) && (strtolower($encoding) != 'utf-8'))
     {
-      $tmp_contents = iconv($encoding, 'UTF-8', $contents);
+      $tmp_contents = iconv($encoding, 'UTF-8//IGNORE', $contents);
       if ($tmp_contents === false)
       {
         $this->log(
