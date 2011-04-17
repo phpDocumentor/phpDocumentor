@@ -71,7 +71,10 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
 
     if ($this->getHelp())
     {
+<<<<<<< HEAD
+=======
       DocBlox_Core_Application::renderVersion();
+>>>>>>> benmatselby-application-runner
       echo $this->getUsageMessage();
       exit(0);
     }

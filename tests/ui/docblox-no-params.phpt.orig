@@ -2,9 +2,14 @@
 docblox project:run
 --FILE--
 <?php
+<<<<<<< HEAD
+
+$_SERVER['argv'][0] = 'docblox';
+=======
 $_SERVER['argc']    = 3;
 $_SERVER['argv'][1] = 'project:run';
 $_SERVER['argv'][2] = '--config=none';
+>>>>>>> benmatselby-application-runner
 
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 if (strpos('@php_bin@', '@php_bin') === 0) {
@@ -21,7 +26,11 @@ $application->main();
 --EXPECTF--
 DocBlox version %s
 
+<<<<<<< HEAD
+ERROR: The given location "data/output" is not a folder
+=======
 ERROR: No parsable files were found, did you specify any using the -f or -d parameter?
+>>>>>>> benmatselby-application-runner
 
 Creates documentation from PHP source files and generates documentation from it.
 The simplest way to use it is:
@@ -36,7 +45,11 @@ and use that to override the default settings if present.
 In the configuration file can you specify the same settings (and more) as the command line provides.
 
 Usage:
+<<<<<<< HEAD
+ docblox project:run [options]
+=======
  %s project:run [options]
+>>>>>>> benmatselby-application-runner
 
 -h [--help]                Show this help message
 -q [--quiet]               Silences the output and logging
@@ -51,4 +64,8 @@ Usage:
 --template [STRING]        Sets the template to use when generating the output
 --force                    Forces a full build of the documentation, does not increment existing documentation
 --validate                 Validates every processed file using PHP Lint, costs a lot of performance
+<<<<<<< HEAD
+-c [--config] [STRING]     Configuration filename, if none is given the default settings are used (see [DocBlox]/data/docblox.tpl.xml)
+=======
 -c [--config] [STRING]     Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or docblox.dist.xml from the current working directory
+>>>>>>> benmatselby-application-runner
