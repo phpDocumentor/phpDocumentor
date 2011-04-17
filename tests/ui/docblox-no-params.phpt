@@ -2,6 +2,9 @@
 docblox project:run
 --FILE--
 <?php
+$_SERVER['argc']    = 3;
+$_SERVER['argv'][1] = 'project:run';
+$_SERVER['argv'][2] = '--config=none';
 
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 if (strpos('@php_bin@', '@php_bin') === 0) {
@@ -18,7 +21,7 @@ $application->main();
 --EXPECTF--
 DocBlox version %s
 
-ERROR: The given location "data/output" is not a folder
+ERROR: No parsable files were found, did you specify any using the -f or -d parameter?
 
 Creates documentation from PHP source files and generates documentation from it.
 The simplest way to use it is:
@@ -48,4 +51,4 @@ Usage:
 --template [STRING]        Sets the template to use when generating the output
 --force                    Forces a full build of the documentation, does not increment existing documentation
 --validate                 Validates every processed file using PHP Lint, costs a lot of performance
--c [--config] [STRING]     Configuration filename, if none is given the default settings are used (see [DocBlox]/data/docblox.tpl.xml)
+-c [--config] [STRING]     Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or docblox.dist.xml from the current working directory

@@ -29,7 +29,8 @@ abstract class DocBlox_Task_ConfigurableAbstract extends DocBlox_Task_Abstract
     // we always offer a configuration option
     $this->addOption(
       'c|config', '-s',
-      'Configuration filename, if none is given the default settings are used (see [DocBlox]/data/docblox.tpl.xml)'
+      'Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or '
+        . 'docblox.dist.xml from the current working directory'
     );
   }
 
@@ -44,7 +45,7 @@ abstract class DocBlox_Task_ConfigurableAbstract extends DocBlox_Task_Abstract
    */
   public function setConfig($value)
   {
-    if ($value && !is_readable($value))
+    if ($value && !is_readable($value) && (strtolower($value) !== 'none'))
     {
       throw new InvalidArgumentException('Config file "' . $value . '" is not readable');
     }
@@ -59,6 +60,12 @@ abstract class DocBlox_Task_ConfigurableAbstract extends DocBlox_Task_Abstract
    */
   protected function prePopulate()
   {
+    // prevent the loading of configuration files by specifying 'none'.
+    if (strtolower($this->getConfig()) == 'none')
+    {
+      return;
+    }
+
     if ($this->getConfig())
     {
       // when the configuration parameter is provided; merge that with the basic config
