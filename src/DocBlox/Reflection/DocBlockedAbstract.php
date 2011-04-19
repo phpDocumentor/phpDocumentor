@@ -237,8 +237,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   protected function validateDocBlock($filename, $lineNumber, $docblock)
   {
     $valid = true;
-    $parts = explode('_', get_class($this));
-    $part = $parts[count($parts) - 1];
+    $class = get_class($this);
+    $part = substr($class, strrpos($class, '_') + 1);
 
     if (@class_exists('DocBlox_Parser_DocBlock_Validator_'.$part))
     {
