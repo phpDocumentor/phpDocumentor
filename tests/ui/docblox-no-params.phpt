@@ -4,7 +4,8 @@ docblox project:run
 <?php
 $_SERVER['argc']    = 3;
 $_SERVER['argv'][1] = 'project:run';
-$_SERVER['argv'][2] = '--config=none';
+$_SERVER['argv'][2] = '--config';
+$_SERVER['argv'][3] = 'none';
 
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 if (strpos('@php_bin@', '@php_bin') === 0) {
