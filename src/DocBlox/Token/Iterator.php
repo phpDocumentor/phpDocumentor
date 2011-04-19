@@ -91,6 +91,8 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
       throw new InvalidArgumentException('The maximum count must be a greater or equal to 0');
     }
 
+    $type = is_array($type) ? $type : array($type);
+
     // initialize basic data
     $token = null;
     $found = false;
@@ -111,7 +113,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
 
       // break away if we found our token
       $token = $this->current();
-      if ($token->getType() == $type)
+      if (in_array($token->getType(), $type))
       {
         $found = true;
         break;

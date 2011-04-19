@@ -1,5 +1,11 @@
 <?php
-namespace Test\Tests5;
+namespace
+{
+define('TEST', -1);
+define('TEST2', 1);
+}
+namespace Test\Tests5
+{
 /**
  * File docblock
  *
@@ -26,6 +32,7 @@ include('test2.php');
 include_once 'test2.php';
 
 const GLOBAL_CONST = '1';
+const GLOBAL_CONST3 = 2, GLOBAL_CONST4 = '1';
 const GLOBAL_CONST2 = '2';
 
 /**
@@ -59,8 +66,9 @@ function test_function2()
 }
 
 
-
-namespace Test;
+}
+namespace Test
+{
 
 /**
  * test.
@@ -124,4 +132,6 @@ abstract class FooBarClass extends SingleClass implements Reflector, Traversable
 class FooBarClass2 extends SingleClass
 {
   const TEST = 'test2';
+}
+
 }

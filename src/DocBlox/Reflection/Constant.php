@@ -33,9 +33,17 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
    */
   protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
-    $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->getContent());
-    $this->setValue($this->findDefault($tokens));
+    if ($tokens->current()->getContent() == 'define')
+    {
+      // find the first encapsed string and strip the opening and closing apostrophe
+      $this->setName(substr($tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 5, array(','))->getContent(), 1, -1));
+    }
+    else
+    {
+      $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->getContent());
+    }
 
+    $this->setValue($this->findDefault($tokens));
     parent::processGenericInformation($tokens);
   }
 

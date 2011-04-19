@@ -209,8 +209,13 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
     }
     if (!$default_token)
     {
-      // check for a number
+      // check for a integer
       $default_token      = $tokens->findNextByType(T_LNUMBER, 5, array(',', ')'));
+    }
+    if (!$default_token)
+    {
+      // check for a float
+      $default_token      = $tokens->findNextByType(T_DNUMBER, 5, array(',', ')'));
     }
     if (!$default_token)
     {

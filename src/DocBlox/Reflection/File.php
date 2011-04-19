@@ -574,6 +574,26 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->constants[$constant->getName()] = $constant;
   }
 
+  protected function processString(DocBlox_Token_Iterator $tokens)
+  {
+    /** @var DocBlox_Token $token  */
+    $token = $tokens->current();
+    if ($token->getContent() == 'define')
+    {
+      $this->resetTimer('constant');
+
+      $constant = new DocBlox_Reflection_Constant();
+      $constant->setFilename($this->filename);
+      $constant->setNamespace($this->active_namespace);
+      $constant->setNamespaceAliases($this->namespace_aliases);
+      $constant->parseTokenizer($tokens);
+
+      $this->debugTimer('>> Processed define: ' . $constant->getName(), 'constant');
+
+      $this->constants[$constant->getName()] = $constant;
+    }
+  }
+
   /**
    * Parses a require definition and adds it to the includes array.
    *
