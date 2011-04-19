@@ -32,10 +32,11 @@ const GLOBAL_CONST2 = '2';
  * Function docblock for SingleFunction
  *
  * @param int $argument
+ * @param Test\SingleClass $argument2 This is a test argument
  *
  * @return void
  */
-function single_function($argument = 'test')
+function single_function($argument = 'test', $argument2 = 'test2')
 {
 }
 

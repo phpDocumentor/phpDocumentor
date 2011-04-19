@@ -20,3 +20,9 @@ html, body, #page
   width:  100%;
   border: none;
 }
+
+.footer, #footer
+{
+  display: block;
+  clear: both;
+}

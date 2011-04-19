@@ -43,13 +43,28 @@
     </dd>
   </xsl:template>
 
-  <xsl:template match="docblock/tag[@name='var']|docblock/tag[@name='param']">
+  <xsl:template match="docblock/tag[@name='var']|docblock/tag[@name='param']|docblock/tag[@name='return']">
     <dt>
       <xsl:value-of select="@name" />
     </dt>
     <dd>
-      <xsl:value-of select="@description" />
+      <xsl:apply-templates select="@type" /><br />
+      <em><xsl:value-of select="@description" /></em>
     </dd>
+  </xsl:template>
+
+  <xsl:template match="docblock/tag[@name='return']/@type">
+    <xsl:if test="not(.)">n/a</xsl:if>
+    <xsl:if test=".">
+      <xsl:if test="../@link">
+        <a href="{$root}{../@link}">
+          <xsl:value-of select="." />
+        </a>
+      </xsl:if>
+      <xsl:if test="not(../@link)">
+        <xsl:value-of select="." />
+      </xsl:if>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>

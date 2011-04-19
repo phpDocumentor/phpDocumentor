@@ -20,8 +20,9 @@ h1.file
 
 h2
 {
-  color: navy;
-  padding-top: 20px;
+  color:         navy;
+  padding-top:   20px;
+  margin-bottom: 5px;
 }
 
 h2.class
@@ -29,11 +30,21 @@ h2.class
   clear: both;
 }
 
+h3
+{
+  padding-top: 20px;
+}
+
 h4
 {
   font-style: italic;
   margin-bottom: 0px;
   margin-top: 10px;
+}
+
+h5
+{
+  margin-bottom: 0.5em;
 }
 
 .file-info, .class-info
@@ -56,6 +67,12 @@ code
   background: black;
   color:      white;
   padding:    5px 10px;
+  font-weight: bold;
+}
+
+code a
+{
+  color: white;
 }
 
 p.short-description
@@ -106,25 +123,25 @@ div.arguments dt, div.constant dt, div.property dt, .function-info dt
 
 h3.constant
 {
-  background:   transparent url('../images/icons/constant.png') no-repeat 0px 10px;
+  background:   transparent url('../images/icons/constant.png') no-repeat 0px 20px;
   padding-left: 20px;
 }
 
 h3.function
 {
-  background:   transparent url('../images/icons/function.png') no-repeat 0px 10px;
+  background:   transparent url('../images/icons/function.png') no-repeat 0px 20px;
   padding-left: 20px;
 }
 
 h3.method
 {
-  background:   transparent url('../images/icons/method.png') no-repeat 0px 10px;
+  background:   transparent url('../images/icons/method.png') no-repeat 0px 20px;
   padding-left: 20px;
 }
 
 h3.property
 {
-  background:   transparent url('../images/icons/property.png') no-repeat 0px 10px;
+  background:   transparent url('../images/icons/property.png') no-repeat 0px 20px;
   padding-left: 20px;
 }
 

@@ -20,8 +20,9 @@ h1.file
 
 h2
 {
-  color: navy;
-  padding-top: 20px;
+  color:          navy;
+  padding-top:    20px;
+  margin-bottom:  5px;
 }
 
 h2.class
@@ -44,6 +45,23 @@ h4
   border-left: 1px solid #5f9ea0;
   padding-left: 7px;
   background: white;
+}
+
+dl.function-info, dl.constant-info
+{
+  width: 100%;
+  background-color: #f0f0f0;
+}
+
+dd, dt
+{
+  background: transparent;
+}
+
+dd pre
+{
+  margin:     0px;
+  background: #f9f9f9;
 }
 
 p, div dl, h4.arguments, div.arguments

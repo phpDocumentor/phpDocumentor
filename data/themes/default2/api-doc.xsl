@@ -2,6 +2,7 @@
   <xsl:output indent="yes" method="html" />
   <xsl:include href="chrome.xsl" />
   <xsl:include href="constant.xsl" />
+  <xsl:include href="function.xsl" />
   <xsl:include href="docblock.xsl" />
   <xsl:include href="file.xsl" />
 

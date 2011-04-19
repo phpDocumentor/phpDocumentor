@@ -46,9 +46,20 @@
     <xsl:apply-templates select="docblock/long-description" />
 
     <xsl:if test="count(constant) > 0">
+    <a name="constants" />
     <h2>Constants</h2>
     <div>
       <xsl:apply-templates select="constant"/>
+    </div>
+    </xsl:if>
+
+    <xsl:if test="count(function) > 0">
+    <a name="functions" />
+    <h2>Functions</h2>
+    <div>
+      <xsl:apply-templates select="function">
+        <xsl:sort select="name" />
+      </xsl:apply-templates>
     </div>
     </xsl:if>
 
