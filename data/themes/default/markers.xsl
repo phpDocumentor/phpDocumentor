@@ -40,8 +40,8 @@
           </xsl:if>
           <xsl:for-each select="../file/markers/*[name()=$marker]">
             <tr>
-                <td><xsl:value-of select="../../@path" />:<xsl:value-of select="./@description" /></td>
-                <td><xsl:value-of select="." /></td>
+                <td><xsl:value-of select="../../@path" />:<xsl:value-of select="./@line" /></td>
+                <td><xsl:value-of select="./@description" /></td>
             </tr>
           </xsl:for-each>
           </table>
