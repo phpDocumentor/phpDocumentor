@@ -4,7 +4,7 @@ html, body, #page
   width:  100%;
 }
 
-#header, #menu
+#header, #menubar
 {
   height: 1px;
 }
@@ -14,7 +14,7 @@ html, body, #page
   width: 250px;
 }
 
-#sidebar iframe, #main iframe
+#sidebar iframe, #contents iframe
 {
   height: 100%;
   width:  100%;
@@ -25,4 +25,39 @@ html, body, #page
 {
   display: block;
   clear: both;
+}
+
+ul#menu
+{
+  float:              left;
+  margin:             0px 10px;
+  -moz-border-radius: 5px;
+  border-radius:      5px;
+  background:         #f0f0f0;
+  display:            block;
+  width:              98%;
+  height:             32px;
+  line-height:        22px;
+  padding:            0px;
+  font-size:          0.8em;
+}
+
+ul#menu li
+{
+  padding:      0px 10px;
+  margin:       5px 0px;
+  border-right: 1px solid gray;
+  display:      block;
+  float:        left;
+}
+
+ul#menu li:last-of-type
+{
+  border: none;
+}
+
+ul#menu li a
+{
+  color:   black;
+  display: block;
 }

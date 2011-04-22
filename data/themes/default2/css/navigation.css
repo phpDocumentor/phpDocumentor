@@ -28,7 +28,7 @@ div.search-box input
   border: 2px solid #f6f6f9;
   border-top-color: #e0e0e0;
   border-left-color: #e0e0e0;
-  background: white url('../images/search.gif') 5px center no-repeat;
+  background: white url('search.gif') 5px center no-repeat;
   padding-left: 25px;
   padding-right: 5px;
 }
@@ -47,7 +47,7 @@ div.results a.result
   display: block;
   padding: 7px 5px;
   color: black;
-  background: transparent url('../images/arrow_right.gif') right center no-repeat;
+  background: transparent url('arrow_right.gif') right center no-repeat;
   text-decoration: none;
 }
 

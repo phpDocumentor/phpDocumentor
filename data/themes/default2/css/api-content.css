@@ -1,15 +1,16 @@
 h1, h2, h3, h4, h5, h6
 {
-  padding-top: 10px;
+  padding-top:    20px;
   border-bottom:  1px dashed gray;
   padding-bottom: 5px;
-  clear: left;
+  clear:          left;
+  margin-bottom:  5px;
 }
 
 h1
 {
+  padding-top:    10px;
   padding-bottom: 10px;
-  margin-bottom: 6px;
 }
 
 h1.file
@@ -20,9 +21,8 @@ h1.file
 
 h2
 {
-  color:         navy;
-  padding-top:   20px;
-  margin-bottom: 5px;
+  color:          navy;
+  padding-top:    30px;
 }
 
 h2.class
@@ -30,21 +30,18 @@ h2.class
   clear: both;
 }
 
-h3
-{
-  padding-top: 20px;
-}
-
 h4
 {
   font-style: italic;
-  margin-bottom: 0px;
-  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-top: 20px;
+  padding-top: 0px;
 }
 
-h5
+h4.info
 {
-  margin-bottom: 0.5em;
+  margin-top: 0px;
+  margin-left: 10px;
 }
 
 .file-info, .class-info
@@ -53,8 +50,25 @@ h5
   width: 200px;
   word-wrap: break-word;
   border-left: 1px solid #5f9ea0;
-  padding-left: 7px;
   background: white;
+  padding: 5px 0px 5px 7px;
+}
+
+dl.function-info, dl.constant-info
+{
+  width: 100%;
+  background-color: #f0f0f0;
+}
+
+dd, dt
+{
+  background: transparent;
+}
+
+dd pre
+{
+  margin:     0px;
+  background: #f9f9f9;
 }
 
 p, div dl, h4.arguments, div.arguments
@@ -64,15 +78,12 @@ p, div dl, h4.arguments, div.arguments
 
 code
 {
-  background: black;
-  color:      white;
-  padding:    5px 10px;
+  display:     block;
+  background:  black;
+  color:       white;
+  padding:     5px 10px;
   font-weight: bold;
-}
-
-code a
-{
-  color: white;
+  margin-right: 5px;
 }
 
 p.short-description
@@ -81,7 +92,7 @@ p.short-description
   font-weight: bold;
 }
 
-p.long-description
+div.long-description
 {
   font-size: 0.9em;
 }
@@ -107,6 +118,13 @@ div.arguments dt, div.constant dt, div.property dt, .function-info dt
   margin-left: -10px;
 }
 
+.file-info dd a.interface
+{
+  background: transparent url('../images/icons/interface.png') no-repeat 0px 0px;
+  padding-left: 20px;
+  margin-left: -10px;
+}
+
 .file-info dd a.function
 {
   background: transparent url('../images/icons/function.png') no-repeat 0px 0px;
@@ -114,14 +132,28 @@ div.arguments dt, div.constant dt, div.property dt, .function-info dt
   margin-left: -10px;
 }
 
-.file-info dd a.constant
+.file-info dd a.constant, .class-info dd a.constant
 {
   background:   transparent url('../images/icons/constant.png') no-repeat 0px 0px;
   padding-left: 20px;
   margin-left:  -10px;
 }
 
-h3.constant
+.class-info dd a.property
+{
+  background:   transparent url('../images/icons/property.png') no-repeat 0px 0px;
+  padding-left: 20px;
+  margin-left:  -10px;
+}
+
+.class-info dd a.method
+{
+  background:   transparent url('../images/icons/method.png') no-repeat 0px 0px;
+  padding-left: 20px;
+  margin-left:  -10px;
+}
+
+h3.constant, h4.constant
 {
   background:   transparent url('../images/icons/constant.png') no-repeat 0px 20px;
   padding-left: 20px;
@@ -133,27 +165,86 @@ h3.function
   padding-left: 20px;
 }
 
-h3.method
+h4.method
 {
-  background:   transparent url('../images/icons/method.png') no-repeat 0px 20px;
+  background:   transparent url('../images/icons/method.png') no-repeat 0px 0px;
   padding-left: 20px;
 }
 
-h3.property
+h4.property
 {
-  background:   transparent url('../images/icons/property.png') no-repeat 0px 20px;
+  background:   transparent url('../images/icons/property.png') no-repeat 0px 0px;
   padding-left: 20px;
 }
 
 h2.class
 {
-  background:   transparent url('../images/icons/class.png') no-repeat left 21px;
+  background:   transparent url('../images/icons/class.png') no-repeat left 31px;
   padding-left: 20px;
 }
 
 h2.interface
 {
-  background:   transparent url('../images/icons/interface.png') no-repeat left 21px;
+  background:   transparent url('../images/icons/interface.png') no-repeat left 31px;
   padding-left: 20px;
 }
 
+h4.constant
+{
+  background-position: 0px 0px;
+}
+
+div.api-section
+{
+  background: #fbfbfb;
+  border: 1px solid #eee;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+div.clear
+{
+  clear: left;
+}
+
+div.class
+{
+  padding-left: 20px;
+}
+
+div.constant, div.function
+{
+  padding: 5px;
+  background: #f8f8f7;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+div.method, div.class div.constant, div.property
+{
+  padding: 5px;
+  background: #f8f8f8;
+}
+
+div.class h3
+{
+  color: navy;
+}
+
+div.to-top
+{
+  float: right;
+  text-align: right;
+  width: 100px;
+  font-size: 11px;
+}
+
+div.to-top a
+{
+  color: silver;
+}
+
+div.class div.to-top a
+{
+  padding-right: 10px;
+}
