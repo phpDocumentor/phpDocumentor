@@ -37,13 +37,43 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
     {
       // find the first encapsed string and strip the opening and closing apostrophe
       $this->setName(substr($tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 5, array(','))->getContent(), 1, -1));
+
+      // skip to after the comma
+      while($tokens->current()->getContent() != ',')
+      {
+        if ($tokens->next() === false)
+        {
+          break;
+        }
+      }
+
+      // get everything until the closing brace and use that for value, take child parenthesis under consideration
+      $value = '';
+      $level = 0;
+      while (!(($tokens->current()->getContent() == ')') && ($level == -1)))
+      {
+        if ($tokens->next() === false)
+        {
+          break;
+        }
+
+        switch($tokens->current()->getContent())
+        {
+          case '(': $level++; break;
+          case ')': $level--; break;
+        }
+
+        $value .= $tokens->current()->getContent();
+      }
+
+      $this->setValue(trim(substr($value, 0, -1)));
     }
     else
     {
       $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->getContent());
+      $this->setValue($this->findDefault($tokens));
     }
 
-    $this->setValue($this->findDefault($tokens));
     parent::processGenericInformation($tokens);
   }
 

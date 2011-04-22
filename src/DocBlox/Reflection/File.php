@@ -580,23 +580,39 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     $this->constants[$constant->getName()] = $constant;
   }
 
+  /**
+   * Parses any T_STRING token to find generic keywords to process.
+   *
+   * This token is used to find any:
+   *
+   * * `define`, thus constants which are defined using the define keyword
+   * * Globals
+   *
+   * @todo implement globals support since the exact algorythm needs to be defined, see GH #68
+   *
+   * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the pointer at the token to be processed.
+   *
+   * @return void
+   */
   protected function processString(DocBlox_Token_Iterator $tokens)
   {
     /** @var DocBlox_Token $token  */
     $token = $tokens->current();
-    if ($token->getContent() == 'define')
+    switch ($token->getContent())
     {
-      $this->resetTimer('constant');
+      case 'define':
+        $this->resetTimer('constant');
 
-      $constant = new DocBlox_Reflection_Constant();
-      $constant->setFilename($this->filename);
-      $constant->setNamespace($this->active_namespace);
-      $constant->setNamespaceAliases($this->namespace_aliases);
-      $constant->parseTokenizer($tokens);
+        $constant = new DocBlox_Reflection_Constant();
+        $constant->setFilename($this->filename);
+        $constant->setNamespace($this->active_namespace);
+        $constant->setNamespaceAliases($this->namespace_aliases);
+        $constant->parseTokenizer($tokens);
 
-      $this->debugTimer('>> Processed define: ' . $constant->getName(), 'constant');
+        $this->debugTimer('>> Processed define: ' . $constant->getName(), 'constant');
 
-      $this->constants[$constant->getName()] = $constant;
+        $this->constants[$constant->getName()] = $constant;
+        break;
     }
   }
 
