@@ -553,18 +553,18 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
    */
   public function getCommonPath(array $dirlist)
   {
-    $parts = explode('/', $dirlist[0]);
+    $parts = explode(DIRECTORY_SEPARATOR, $dirlist[0]);
     $base = '';
     foreach($parts as $part)
     {
       foreach($dirlist as $dir)
       {
-        if (substr($dir, 0, strlen($base.$part.'/')) != $base.$part.'/')
+        if (substr($dir, 0, strlen($base.$part.DIRECTORY_SEPARATOR)) != $base.$part.DIRECTORY_SEPARATOR)
         {
           return $base;
         }
       }
-      $base = $base.$part.'/';
+      $base = $base.$part.DIRECTORY_SEPARATOR;
     }
   }
     
