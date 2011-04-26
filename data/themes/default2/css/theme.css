@@ -3,40 +3,50 @@
 @import url('api-content.css');
 @import url('default.css');
 
-body.chrome
-{
-  background:  black url('../../../data/themes/default/images/background.png') repeat-x top left;
-}
-
 #page
 {
-  background: white url('../../../data/themes/default/images/top.png') top left no-repeat;
+  background: white;
 }
 
 #header
 {
-  height: 62px;
-  padding: 0px;
+  height: 40px;
+  padding: 10px 10px;
 }
 
 #header h1
 {
   display:     inline;
   margin-left: 10px;
-  background:  white url('../../../data/themes/default/images/top-background.png') repeat-x top left;
-  padding-top: 36px;
+  background:  white url('../images/top-background.png') repeat-x top left;
+  padding-top: 29px;
+  padding-bottom: 0px;
   border: none;
 }
 
-#menu
+td#menubar
 {
-  height: 20px;
+  padding: 0px;
 }
 
-#page
+ul#menu
 {
-  margin:           0 auto;
-  width:            960px;
+  height: 54px;
+}
+
+ul#menu li
+{
+  padding: 1px 5px;
+  border: none;
+}
+
+#menu a
+{
+  padding: 10px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  background: #221;
 }
 
 table#overview th

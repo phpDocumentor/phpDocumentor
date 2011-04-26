@@ -1,23 +1,23 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:template match="property">
-    <a id="{../name}::{name}" />
+    <a id="{../full_name}::{name}" />
     <h4 class="property">
       <xsl:value-of select="name" />
-      <div class="to-top"><a href="#{../name}">Jump to class</a></div>
+      <div class="to-top"><a href="#{../name}">jump to class</a></div>
     </h4>
 
     <div class="property">
       <code>
-        <xsl:value-of select="docblock/tag[@name='var']/type" />
-        <xsl:value-of select="name" /><xsl:if test="default"> = '<xsl:value-of select="default" />'</xsl:if>
+        <xsl:value-of select="docblock/tag[@name='var']/type" />&#160;<span class="highlight"><xsl:value-of select="name" />
+      </span><xsl:if test="default"> = '<xsl:value-of select="default" />'</xsl:if>
       </code>
 
       <xsl:apply-templates select="docblock/description" />
       <xsl:apply-templates select="docblock/long-description" />
 
       <div class="api-section">
-        <h4 class="info">Details</h4>
+        <h4 class="info"><img src="{$root}images/arrow_right.gif" /> Details</h4>
         <dl class="property-info">
           <xsl:apply-templates select="docblock/tag[@name='var']">
             <xsl:sort select="@name" />

@@ -4,6 +4,11 @@ html, body, #page
   width:  100%;
 }
 
+#content
+{
+  margin-right: 5px;
+}
+
 #header, #menubar
 {
   height: 1px;
@@ -29,16 +34,12 @@ html, body, #page
 
 ul#menu
 {
-  float:              left;
-  margin:             0px 10px;
-  -moz-border-radius: 5px;
-  border-radius:      5px;
-  background:         #f0f0f0;
+  background:         black;
   display:            block;
-  width:              98%;
-  height:             32px;
+  height:             34px;
   line-height:        22px;
   padding:            0px;
+  margin:             0px;
   font-size:          0.8em;
 }
 
@@ -58,6 +59,22 @@ ul#menu li:last-of-type
 
 ul#menu li a
 {
-  color:   black;
+  color:   white;
   display: block;
+}
+
+ul.filetree li a
+{
+  display: block;
+}
+
+ul.filetree li a small
+{
+  display: none;
+}
+
+ul.filetree li a:hover small
+{
+  display: inline;
+  color:   gray;
 }

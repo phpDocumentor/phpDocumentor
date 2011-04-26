@@ -25,7 +25,7 @@ h2
   padding-top:    30px;
 }
 
-h2.class
+h2.class, h2.interface
 {
   clear: both;
 }
@@ -44,6 +44,26 @@ h4.info
   margin-left: 10px;
 }
 
+.file_menu
+{
+  background-color:   #f0f0f0;
+  -moz-border-radius: 5px;
+  border-radius:      5px;
+  padding:            3px;
+  margin-bottom:      5px;
+}
+
+.file_menu a
+{
+  border-right: 1px solid silver;
+  padding: 0px 10px;
+}
+
+.file_menu a:last-of-type
+{
+  border: none;
+}
+
 .file-info, .class-info
 {
   float: right;
@@ -57,7 +77,11 @@ h4.info
 dl.function-info, dl.constant-info
 {
   width: 100%;
-  background-color: #f0f0f0;
+}
+
+dl.function-info img, dl.constant-info img
+{
+  display: none;
 }
 
 dd, dt
@@ -86,6 +110,16 @@ code
   margin-right: 5px;
 }
 
+code span.highlight
+{
+  color: #97f;
+}
+
+code a
+{
+  color: silver;
+}
+
 p.short-description
 {
   margin-bottom: 5px;
@@ -94,21 +128,36 @@ p.short-description
 
 div.long-description
 {
-  font-size: 0.9em;
+  font-size: 1.0em;
+}
+
+div.long-description p
+{
+  margin-bottom: 0.5em;
+}
+
+div.long-description code
+{
+  margin-left:  20px;
+  background:   gray;
+  white-space:  pre;
 }
 
 div.arguments dd, div.arguments dt,
 div.constant dd, div.constant dt,
 div.property dd, div.property dt,
-.function-info dd, .function-info dt
+.function-info dd, .function-info dt,
+.return-info dd, .return-info dt,
+.argument-info dd, .argument-info dt
 {
   float: left;
 }
 
-div.arguments dt, div.constant dt, div.property dt, .function-info dt
+div.arguments dt, div.constant dt, div.property dt, .function-info dt, .return-info dt, .argument-info dt
 {
-  width: 100px;
+  width: 150px;
   clear: left;
+  word-wrap: break-word;
 }
 
 .file-info dd a.class
@@ -197,9 +246,17 @@ h4.constant
 div.api-section
 {
   background: #fbfbfb;
-  border: 1px solid #eee;
+  border:     1px solid #eee;
   margin-top: 5px;
-  padding: 5px;
+  padding:    5px;
+}
+
+div.api-section h4, div.api-section h5
+{
+  font-size:    1em;
+  font-style:   italic;
+  margin-top:   3px;
+  padding-top:  0px;
 }
 
 div.clear
@@ -212,18 +269,12 @@ div.class
   padding-left: 20px;
 }
 
-div.constant, div.function
+div.constant, div.function, div.method, div.property
 {
-  padding: 5px;
-  background: #f8f8f7;
+  padding:            5px;
+  background:         #f4f4f4;
   -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-
-div.method, div.class div.constant, div.property
-{
-  padding: 5px;
-  background: #f8f8f8;
+  border-radius:      5px;
 }
 
 div.class h3
@@ -233,18 +284,16 @@ div.class h3
 
 div.to-top
 {
-  float: right;
-  text-align: right;
-  width: 100px;
-  font-size: 11px;
+  float:        right;
+  text-align:   right;
+  width:        100px;
+  font-size:    11px;
+  font-variant: small-caps;
+  font-style:   normal;
 }
 
 div.to-top a
 {
-  color: silver;
-}
-
-div.class div.to-top a
-{
+  color:         silver;
   padding-right: 10px;
 }

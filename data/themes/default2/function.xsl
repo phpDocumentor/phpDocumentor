@@ -4,23 +4,23 @@
   <xsl:template match="method/name">
     <h4 class="method">
       <xsl:value-of select="." />
-      <div class="to-top"><a href="#{../../name}">Jump to class</a></div>
+      <div class="to-top"><a href="#{../../name}">jump to class</a></div>
     </h4>
   </xsl:template>
 
   <xsl:template match="function/name">
     <h3 class="function">
       <xsl:value-of select="." />
-      <div class="to-top"><a href="#top">Jump to top</a></div>
+      <div class="to-top"><a href="#top">jump to top</a></div>
     </h3>
   </xsl:template>
 
   <xsl:template match="function|method">
-    <a id="{../name}::{name}()" />
+    <a id="{../full_name}::{name}()" />
     <xsl:apply-templates select="name" />
     <div class="{name()}">
       <code>
-        <xsl:value-of select="name" />
+        <span class="highlight"><xsl:value-of select="name" /></span>
 
         <span class="nb-faded-text">(
           <xsl:for-each select="argument">
@@ -40,9 +40,9 @@
           )
         </span>
         :
-        <span class="nb-faded-text">
-          <xsl:apply-templates select="docblock/tag[@name='return']/@type"/>
-        </span>
+        <xsl:call-template name="implodeTypes">
+          <xsl:with-param name="items" select="docblock/tag[@name='return']/type" />
+        </xsl:call-template>
       </code>
 
       <xsl:apply-templates select="docblock/description" />
@@ -50,8 +50,13 @@
 
       <xsl:if test="count(argument) > 0">
         <div class="api-section">
-          <h4 class="arguments">Arguments</h4>
-          <dl class="function-info">
+          <xsl:if test="name() = 'function'">
+            <h4 class="arguments">Arguments</h4>
+          </xsl:if>
+          <xsl:if test="name() = 'method'">
+            <h5 class="arguments">Arguments</h5>
+          </xsl:if>
+          <dl class="argument-info">
             <xsl:apply-templates select="docblock/tag[@name = 'param']">
               <xsl:sort select="@name" />
             </xsl:apply-templates>
@@ -62,11 +67,14 @@
 
       <xsl:if test="docblock/tag[@name = 'return'] != '' and docblock/tag[@name = 'return']/@type != 'void'">
         <div class="api-section">
-          <h4 class="arguments">Output</h4>
-          <dl class="function-info">
-            <xsl:apply-templates select="docblock/tag[@name = 'return']">
-              <xsl:sort select="@name" />
-            </xsl:apply-templates>
+          <xsl:if test="name() = 'function'">
+            <h4 class="output">Output</h4>
+          </xsl:if>
+          <xsl:if test="name() = 'method'">
+            <h5 class="output">Output</h5>
+          </xsl:if>
+          <dl class="return-info">
+            <xsl:apply-templates select="docblock/tag[@name='return']" />
           </dl>
           <div class="clear"></div>
         </div>
@@ -74,7 +82,12 @@
 
       <xsl:if test="name() = 'method' or (docblock/tag[@name != 'param' and @name != 'return'])">
         <div class="api-section">
-          <h4 class="info">Details</h4>
+          <xsl:if test="name() = 'function'">
+            <h4 class="info"><img src="{$root}images/arrow_right.gif" /> Details</h4>
+          </xsl:if>
+          <xsl:if test="name() = 'method'">
+            <h5 class="info"><img src="{$root}images/arrow_right.gif" /> Details</h5>
+          </xsl:if>
           <dl class="function-info">
             <xsl:if test="name() = 'method'">
               <dt>visibility</dt>

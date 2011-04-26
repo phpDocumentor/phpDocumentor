@@ -62,7 +62,9 @@
 
   <xsl:template match="docblock/tag[@name='return']">
     <dt>
-      <xsl:apply-templates select="@type" />
+      <xsl:call-template name="implodeTypes">
+        <xsl:with-param name="items" select="type" />
+      </xsl:call-template>
     </dt>
     <dd>
       <em><xsl:value-of select="@description" /></em>
