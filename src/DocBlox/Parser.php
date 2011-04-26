@@ -428,10 +428,19 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
   {
     // collect all packages and store them in the XML
     $this->log('Collecting all packages');
-    $packages = array();
+    $packages = array('' => '');
+
+    // at least insert a default package
+    $node = new DOMElement('package');
+    $dom->documentElement->appendChild($node);
+    $node->setAttribute('name', '');
 
     $xpath = new DOMXPath($dom);
-    $qry   = $xpath->query('/project/file/class/docblock/tag[@name="package"]|/project/file/docblock/tag[@name="package"]');
+    $qry   = $xpath->query(
+      '/project/file/class/docblock/tag[@name="package"]'
+      . '|/project/file/interface/docblock/tag[@name="package"]'
+      . '|/project/file/docblock/tag[@name="package"]'
+    );
 
     // iterate through all packages
     for ($i = 0; $i < $qry->length; $i++)

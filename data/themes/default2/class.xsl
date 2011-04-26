@@ -2,10 +2,10 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="class|interface">
-    <a id="{name}" />
+    <a id="{full_name}" />
     <h2 class="{name()}">
       <xsl:value-of select="full_name" />
-      <div class="to-top"><a href="#top">Jump to top</a></div>
+      <div class="to-top"><a href="#top">jump to top</a></div>
     </h2>
 
     <div class="class">
@@ -18,7 +18,7 @@
           <dt>Constants</dt>
           <xsl:for-each select="constant">
             <dd>
-              <a class="constant" href="#{../name}::{name}">
+              <a class="constant" href="#{../full_name}::{name}">
                 <xsl:value-of select="name" />
               </a>
             </dd>
@@ -29,7 +29,7 @@
           <dt>Properties</dt>
           <xsl:for-each select="property">
             <dd>
-              <a class="property" href="#{../name}::{name}">
+              <a class="property" href="#{../full_name}::{name}">
                 <xsl:value-of select="name" />
               </a>
             </dd>
@@ -40,7 +40,7 @@
           <dt>Methods</dt>
           <xsl:for-each select="method">
             <dd>
-              <a class="method" href="#{../name}::{name}()">
+              <a class="method" href="#{../full_name}::{name}()">
                 <xsl:value-of select="name" />
               </a>
             </dd>

@@ -22,6 +22,11 @@
 * REMOVED:  Zend, Markdown and Image_GraphViz from the package.xml files listing
 * FIXED:    Permissions for docblox.php, parser.php and transform.php to have the execute flag
 * ADDED:    by @benmatselby: Introduced DocBlock validators where we can add a validation per structure type (method, class, file, etc)
+* FIXED:    @todo was not picked up correctly
+* ADDED:    defines are now detected and parsed as constants
+* FIXED:    Detection code relies on PHP 5.3 constants; added conditional defines for them
+* CHANGED:  Task runner was made more generic; a new application runner was introduced and performance optimizations were done
+* CHANGED:  Moved subpackages to top of content listing for a package in the left sidebar
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------

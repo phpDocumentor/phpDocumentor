@@ -24,7 +24,6 @@
                 </xsl:if>
 
               </h1>
-              <img src="{$root}images/top-stopper.png" />
             </td>
           </tr>
           <tr>
