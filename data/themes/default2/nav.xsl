@@ -56,7 +56,7 @@
       <xsl:for-each select="class">
         <li>
           <span>
-            <a href="{$root}/{../@generated-path}#{name}" target="content">
+            <a href="{$root}/{../@generated-path}#{full_name}" target="content">
               <xsl:value-of select="name" />
             </a>
           </span>
@@ -112,7 +112,7 @@
                 <xsl:sort select="name" />
                 <li>
                   <span class="{name()}">
-                    <a href="{$root}{../@generated-path}#{name}" target="content">
+                    <a href="{$root}{../@generated-path}#{full_name}" target="content">
                       <xsl:value-of select="name" />
                       <br />
                       <small>
@@ -154,7 +154,7 @@
           <xsl:sort select="name" />
           <li class="closed">
             <span class="{name()}">
-              <a href="{$root}{../@generated-path}#{name}" target="content">
+              <a href="{$root}{../@generated-path}#{full_name}" target="content">
                 <xsl:value-of select="name" />
                 <br />
                 <small>
@@ -207,7 +207,7 @@
             <xsl:sort select="name" />
             <li>
               <span class="{name()}">
-                <a href="{$root}{../@generated-path}#{name}" target="content">
+                <a href="{$root}{../@generated-path}#{full_name}" target="content">
                   <xsl:value-of select="name" />
                   <br />
                   <small>
