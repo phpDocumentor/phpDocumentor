@@ -4,6 +4,8 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="/project">
+    <xsl:call-template name="search" />
+
     <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
       <div class="section">
         <h1>Namespaces</h1>
