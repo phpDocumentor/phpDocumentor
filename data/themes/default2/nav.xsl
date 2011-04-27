@@ -58,7 +58,7 @@
       <xsl:for-each select="class">
         <li>
           <span>
-            <a href="{$root}/{../@generated-path}#{full_name}" target="content">
+            <a href="{$root}{../@generated-path}#{full_name}" target="content">
               <xsl:value-of select="name" />
             </a>
           </span>

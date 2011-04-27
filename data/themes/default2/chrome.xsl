@@ -36,6 +36,8 @@
               collapsed: true,
               persist: "cookie"
             });
+
+            $(".tabs").tabs();
           });
         </script>
       </head>
