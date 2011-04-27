@@ -15,7 +15,14 @@
           source: "<xsl:value-of select="$root" />ajax_search.php",
           minLength: 2,
           select: function(event, ui) {
-            $(location).attr('href', '<xsl:value-of select="$root" />'+ui.item.id);
+            if ((parent) &amp;&amp; (parent.content))
+            {
+              parent.content.document.location = '<xsl:value-of select="$root" />'+ui.item.id;
+            }
+            else
+            {
+              jQuery(document).location = '<xsl:value-of select="$root" />'+ui.item.id;
+            }
           }
         });
       });
