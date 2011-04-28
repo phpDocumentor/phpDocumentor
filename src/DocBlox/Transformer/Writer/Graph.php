@@ -117,6 +117,11 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
       }
     }
 
+    if (empty($root_nodes)) {
+        $this->log('No classes have been found, and therefore no class diagram is required', Zend_Log::INFO);
+        return;
+    }
+
     // traverse root nodes upwards
     $tree['stdClass'] = $this->buildTreenode($extend_classes);
     foreach ($root_nodes as $node)
