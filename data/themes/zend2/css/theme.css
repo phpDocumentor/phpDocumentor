@@ -5,10 +5,20 @@
 
 @charset"utf-8";
 
+div#content
+{
+  padding: 10px;
+}
+
 body, html
 {
   margin:  0px;
   padding: 0px;
+}
+
+.ui-widget
+{
+  font-size: 0.8em;
 }
 
 div#content
@@ -56,11 +66,6 @@ div.section h1
 #menu li a
 {
   color: white;
-}
-
-#content
-{
-  margin: 10px;
 }
 
 /* < general styles */

@@ -8,18 +8,12 @@
     <transformation query="copy" writer="FileIo" source="themes/default2/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="themes/default2/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
-    <transformation query="" writer="xsl" source="themes/default2/index.xsl" artifact="index.html">
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/default2/content.xsl" artifact="content.html">
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/default2/sidebar.xsl" artifact="nav.html">
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/default2/graph_class.xsl" artifact="graph.html">
-    </transformation>
-    <transformation query="/project/file/@path" writer="xsl" source="themes/default2/api-doc.xsl" artifact="{$path}">
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/default2/markers.xsl" artifact="markers.html">
-    </transformation>
+    <transformation query="" writer="xsl" source="themes/default2/index.xsl" artifact="index.html"/>
+    <transformation query="" writer="xsl" source="themes/default2/content.xsl" artifact="content.html"/>
+    <transformation query="" writer="xsl" source="themes/default2/sidebar.xsl" artifact="nav.html"/>
+    <transformation query="" writer="xsl" source="themes/default2/graph_class.xsl" artifact="graph.html"/>
+    <transformation query="/project/file/@path" writer="xsl" source="themes/default2/api-doc.xsl" artifact="{$path}"/>
+    <transformation query="" writer="xsl" source="themes/default2/markers.xsl" artifact="markers.html"/>
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
   </transformations>
 </template>

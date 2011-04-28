@@ -65,9 +65,9 @@
       });
     </script>
 
-    <img src="{$root}images/search.gif" id="search_box_icon" border="0" onclick="$('#search_box').focus()" style="display: none; position: absolute; top: 5px;"/>
-    <input id="search_box" style="display: none; margin: 0px 20px; height: 2em; border: 1px solid silver; border-radius: 5px; -moz-border-radius: 5px; padding-right: 20px;" />
-    <img src="{$root}images/clear_left.png" id="search_box_clear" border="0" onclick="$('#search_box').val('')" style="position: absolute; right: 3px; top: 5px; display: none; cursor: pointer"/>
+    <img src="{$root}images/search.gif" id="search_box_icon" border="0" onclick="$('#search_box').focus()"/>
+    <input id="search_box" />
+    <img src="{$root}images/clear_left.png" id="search_box_clear" border="0" onclick="$('#search_box').val('')"/>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -4,11 +4,6 @@ html, body, #page
   width:  100%;
 }
 
-#content
-{
-  margin-right: 5px;
-}
-
 #header, #menubar
 {
   height: 1px;

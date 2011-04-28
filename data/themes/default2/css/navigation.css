@@ -15,28 +15,37 @@ iframe#nav
   padding-bottom: 5px;
 }
 
-div.search-box
+img#search_box_icon
 {
-  padding:       5px 3px 0px;
-  border-bottom: 1px solid silver;
-
-  filter:         progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f0f0f0', endColorstr = '#d9d9d9'); /* for IE */
-  background:     -webkit-gradient(linear, left top, left bottom, from(#f0f0f0), to(#d9d9d9)); /* for webkit browsers */
-  background:     -moz-linear-gradient(top, #f0f0f0, #d9d9d9); /* for firefox 3.6+ */
-
+  display:    none;
+  position:   absolute;
+  margin-top: 5px;
 }
 
-div.search-box input
+img#search_box_clear
 {
-  -moz-border-radius: 12px;
-  border-radius:      12px;
-  height:             24px;
-  border:             2px solid #f6f6f9;
-  border-top-color:   #e0e0e0;
-  border-left-color:  #e0e0e0;
-  background:         white url('search.gif') 5px center no-repeat;
-  padding-left:       25px;
-  padding-right:      5px;
+  position:     absolute;
+  margin-right: 3px;
+  margin-top:   5px;
+  display:      none;
+  cursor:       pointer
+}
+
+input#search_box
+{
+  display:            none;
+  position:           absolute;
+  width:              205px;
+  margin-left:        20px;
+  border:             1px solid silver;
+  border-radius:      5px;
+  -moz-border-radius: 5px;
+  padding-right:      20px;
+}
+
+iframe#nav
+{
+  padding-top: 30px;
 }
 
 div.results
