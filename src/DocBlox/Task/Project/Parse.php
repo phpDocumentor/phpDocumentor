@@ -1,8 +1,8 @@
 <?php
 /**
- * Parses the given source code and populate a structure file.
+ * Parses the given source code and creates a structure file.
  *
- * The parse method uses the source files that you have using either the -f or -d method and generates a structure
+ * The parse task uses the source files defined either by -f or -d options and generates a structure
  * file (structure.xml) at the target location (which is the folder 'output' unless the option -t is provided).
  *
  * @package    DocBlox

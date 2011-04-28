@@ -1,12 +1,12 @@
 <?php
 /**
- * The transformation task is responsible for transforming the content in the structure file into an output format.
+ * Transforms the structure file into the specified output format
  *
  * This task will execute the transformation rules described in the given template (defaults to 'default') with the
  * given source (defaults to output/structure.xml) and writes these to the target location (defaults to 'output').
  *
- * It is possible for the user to receive additional information using the verbose option or completely silence
- * the task using the quiet option. Please take note that the quiet option also disables logging to file.
+ * It is possible for the user to receive additional information using the verbose option or stop additional
+ * information using the quiet option. Please take note that the quiet option also disables logging to file.
  *
  * @package    DocBlox
  * @subpackage Tasks
@@ -25,13 +25,13 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_ConfigurableAbstract
   protected function configure()
   {
     $this->addOption('s|source', '-s',
-      'path where the structure.xml is located (optional, defaults to "output/structure.xml")'
+      'Path where the structure.xml is located (optional, defaults to "output/structure.xml")'
     );
     $this->addOption('t|target', '-s',
       'Path where to store the generated output (optional, defaults to "output")'
     );
     $this->addOption('template', '-s',
-      'name of the template to use (optional, defaults to "default")'
+      'Name of the template to use (optional, defaults to "default")'
     );
     $this->addOption('v|verbose', '',
       'Outputs any information collected by this application, may slow down the process slightly'
