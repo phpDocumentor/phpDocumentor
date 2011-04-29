@@ -20,14 +20,14 @@
                   <xsl:value-of select="/project/@title" disable-output-escaping="yes" />
                 </xsl:if>
                 <xsl:if test="/project/@title = ''">
-                  <img src="{$root}images/logo.png" />
+                  <div class="docblox"><img src="{$root}images/logo.png" /></div>
                 </xsl:if>
-
               </h1>
+
+              <div id="menubar">
+                <xsl:call-template name="menubar" />
+              </div>
             </td>
-          </tr>
-          <tr>
-            <td colspan="2" id="menubar"><xsl:call-template name="menubar"/></td>
           </tr>
           <tr>
             <td id="sidebar">

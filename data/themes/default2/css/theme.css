@@ -10,43 +10,48 @@
 
 #header
 {
-  height: 40px;
-  padding: 10px 10px;
+  background: white url('../images/top-background.png') repeat-x top left;
+  padding: 10px 10px 0px 10px;
 }
 
 #header h1
 {
-  display:     inline;
-  margin-left: 10px;
-  background:  white url('../images/top-background.png') repeat-x top left;
-  padding-top: 29px;
+  display:        inline;
+  margin-left:    10px;
+  padding-top:    29px;
   padding-bottom: 0px;
-  border: none;
+  border:         none;
 }
 
-td#menubar
+#header div.docblox
 {
-  padding: 0px;
+  float: left;
+  background: transparent url('../images/icon48x48.png') top left no-repeat;
+  padding-left: 60px;
+  height: 50px;
 }
 
-ul#menu
+div#menubar
 {
-  height: 54px;
+  float: right;
 }
 
 ul#menu li
 {
-  padding: 1px 5px;
   border: none;
 }
 
 #menu a
 {
-  padding: 10px;
   text-transform: uppercase;
   text-decoration: none;
   font-weight: bold;
-  background: #221;
+}
+
+#menu a:hover
+{
+  background: #111;
+  color: red;
 }
 
 table#overview th
