@@ -19,7 +19,10 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
 
-require_once 'Zend/Loader/Autoloader.php';
+if (!class_exists('Zend_Loader_Autoloader'))
+{
+  require_once 'Zend/Loader/Autoloader.php';
+}
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('DocBlox_');
 

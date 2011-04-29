@@ -10,7 +10,10 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
 
-require_once 'Zend/Loader/Autoloader.php';
+if (!class_exists('Zend_Loader_Autoloader'))
+{
+  require_once 'Zend/Loader/Autoloader.php';
+}
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('DocBlox_');
 
@@ -21,7 +24,7 @@ $application->main();
 DocBlox version %s
 
 project
- :list       Defines all tasks that can be run by DocBlox
- :parse      Parses the given source code and creates a structure file.
- :run        Parse and transform the given directory (-d|-f) to the given location (-t).
  :transform  Transforms the structure file into the specified output format
+ :list       Defines all tasks that can be run by DocBlox
+ :run        Parse and transform the given directory (-d|-f) to the given location (-t).
+ :parse      Parses the given source code and creates a structure file.

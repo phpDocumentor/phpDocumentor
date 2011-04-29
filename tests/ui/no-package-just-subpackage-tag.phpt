@@ -16,7 +16,10 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
 
-require_once 'Zend/Loader/Autoloader.php';
+if (!class_exists('Zend_Loader_Autoloader'))
+{
+  require_once 'Zend/Loader/Autoloader.php';
+}
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('DocBlox_');
 
@@ -26,7 +29,7 @@ $application->main();
 --EXPECTF--
 DocBlox version %s
 
-%s ERR (3): No Page-level DocBlock was found for tests/data/NoPackageDocBlock.php on line: 2
+%s ERR (3): No Page-level DocBlock was found for %stests/data/NoPackageDocBlock.php on line: 2
 %s CRIT (2): File cannot have a @subpackage when a @package tag is not present
 Starting transformation of files (this could take a while depending upon the size of your project)
 Finished transformation in %s seconds
