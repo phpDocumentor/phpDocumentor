@@ -7,25 +7,20 @@
     <xsl:param name="root" />
 
     <script type="text/javascript">
-      $(function() {
-        $("#search_box_icon").show();
-        $("#search_box").show();
-        $("#search_box_clear").show();
-        $("#search_box").autocomplete({
-          source: "<xsl:value-of select="$root" />ajax_search.php",
-          minLength: 2,
-          select: function(event, ui) {
-            if ((parent) &amp;&amp; (parent.content))
-            {
-              parent.content.document.location = '<xsl:value-of select="$root" />'+ui.item.id;
-            }
-            else
-            {
-              jQuery(document).location = '<xsl:value-of select="$root" />'+ui.item.id;
-            }
-          }
+        $(function() {
+            $("#search_box_icon, #search_box_clear").show();
+            $("#search_box").show().autocomplete({
+                source: "<xsl:value-of select="$root"/>ajax_search.php",
+                minLength: 2,
+                select: function (event, ui) {
+                    if ((parent) &amp;&amp; (parent.content)) {
+                        parent.content.document.location = '' + ui.item.id;
+                    } else {
+                        jQuery(document).location = '' + ui.item.id;
+                    }
+                }
+            });
         });
-      });
     </script>
 
     <img src="{$root}images/search.gif" id="search_box_icon" border="0" onclick="$('#search_box').focus()" />

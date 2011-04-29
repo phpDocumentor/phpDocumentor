@@ -25,7 +25,7 @@ img#search_box_icon
 img#search_box_clear
 {
   position:     absolute;
-  margin-right: 3px;
+  margin-left:  206px;
   margin-top:   5px;
   display:      none;
   cursor:       pointer
@@ -41,6 +41,8 @@ input#search_box
   border-radius:      5px;
   -moz-border-radius: 5px;
   padding-right:      20px;
+  font-size:          1em;
+  line-height:        1em;
 }
 
 iframe#nav
