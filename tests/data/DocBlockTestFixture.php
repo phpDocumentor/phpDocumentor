@@ -104,4 +104,16 @@ class DocBlockTestFixture
 
   }
 
+  /**
+   * This tests whether a custom tag with hypen is interpreted
+   *
+   * @custom-tag This is a custom tag
+   *
+   * @return void
+   */
+  static public function DocBlockWithTagWithHyphen()
+  {
+
+  }
+
 }
