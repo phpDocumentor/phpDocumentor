@@ -4,7 +4,7 @@
   <testsuites>
     <testsuite name="DocBlox">
       <directory>./tests/unit/</directory>
-<!--      <directory suffix=".phpt">./tests/ui/</directory> -->
+      <directory suffix=".phpt">./tests/ui/</directory>
     </testsuite>
   </testsuites>
   <filter>
