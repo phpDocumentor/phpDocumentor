@@ -27,6 +27,24 @@ html, body, #page
   clear: both;
 }
 
+#accordion table
+{
+    font-size: 0.95em;
+}
+
+#accordion h3 a small
+{
+    display:        block;
+    float:          right;
+    background:     gray;
+    height:         18px;
+    line-height:    18px;
+    padding:        0px 5px;
+    border-radius:  3px;
+    color:          white;
+    font-weight:    bold;
+}
+
 ul#menu
 {
   background:         black;
