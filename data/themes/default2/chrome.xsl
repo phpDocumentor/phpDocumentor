@@ -33,7 +33,6 @@
           $(document).ready(function()
           {
             $(".filetree").treeview({
-              animated: "fast",
               collapsed: true,
               persist: "cookie"
             });
