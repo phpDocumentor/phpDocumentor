@@ -1,6 +1,6 @@
 <?php
 /**
- * With this task you get an overview of the available tasks in DocBlox.
+ * Defines all tasks that can be run by DocBlox
  *
  * This task outputs a list of tasks grouped by their namespaces.
  *
