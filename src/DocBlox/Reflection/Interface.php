@@ -7,6 +7,12 @@
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
+if (!defined('T_NS_SEPARATOR'))
+{
+  /** @var int This constant is PHP 5.3+, but is necessary for correct parsing */
+  define('T_NS_SEPARATOR', 380);
+}
+
 /**
  * Parses an interface definition.
  *

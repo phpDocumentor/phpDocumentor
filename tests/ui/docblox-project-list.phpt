@@ -1,18 +1,9 @@
 --TEST--
-docblox project:run -f dirname(__FILE__) . '/../data/DocBlockTestFixture.php' -t dirname(__FILE__) . '/../../build/' -q
+docblox project:list
 --FILE--
 <?php
-
-$_SERVER['argc']    = 9;
-$_SERVER['argv'][1] = 'project:run';
-$_SERVER['argv'][2] = '-f';
-$_SERVER['argv'][3] = dirname(__FILE__) . '/../data/DocBlockTestFixture.php';
-$_SERVER['argv'][4] = '-t';
-$_SERVER['argv'][5] = dirname(__FILE__) . '/../../build/';
-$_SERVER['argv'][6] = '-q';
-$_SERVER['argv'][7] = '--config';
-$_SERVER['argv'][8] = 'none';
-
+$_SERVER['argc']    = 2;
+$_SERVER['argv'][1] = 'project:list';
 
 // determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
 if (strpos('@php_bin@', '@php_bin') === 0) {
@@ -30,3 +21,10 @@ $application = new DocBlox_Core_Application();
 $application->main();
 ?>
 --EXPECTF--
+DocBlox version %s
+
+project
+ :transform  Transforms the structure file into the specified output format
+ :list       Defines all tasks that can be run by DocBlox
+ :run        Parse and transform the given directory (-d|-f) to the given location (-t).
+ :parse      Parses the given source code and creates a structure file.
