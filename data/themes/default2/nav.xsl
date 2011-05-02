@@ -4,68 +4,100 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="/project">
-    <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
-      <div class="section">
-        <h1>Namespaces</h1>
-        <!--<input type="checkbox" onclick="$('.treeview-docblox small').toggle(!this.checked);" checked="">Compact view<br />-->
-        <ul id="namespaces-" class="filetree">
-          <xsl:apply-templates select="/project/namespace">
-            <xsl:sort select="@name" />
-            <xsl:with-param name="parent_name" select="''" />
-          </xsl:apply-templates>
-        </ul>
-      </div>
-    </xsl:if>
-
-    <xsl:if test="count(/project/package) > 0">
-      <div class="section">
-        <h1>Packages</h1>
-
-        <xsl:if test="count(/project/package) &lt; 2">
-        <ul id="packages-" class="deadtree">
-          <xsl:apply-templates select="/project/package">
-            <xsl:sort select="@name" />
-          </xsl:apply-templates>
-        </ul>
+    <div id="accordion">
+        <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
+            <h1><a href="#">Namespaces</a></h1>
+            <div style="padding: 0px;">
+                <!--<input type="checkbox" onclick="$('.treeview-docblox small').toggle(!this.checked);" checked="">Compact view<br />-->
+                <ul id="namespaces-" class="filetree">
+                  <xsl:apply-templates select="/project/namespace">
+                    <xsl:sort select="@name" />
+                    <xsl:with-param name="parent_name" select="''" />
+                  </xsl:apply-templates>
+                </ul>
+            </div>
         </xsl:if>
 
-        <xsl:if test="count(/project/package) > 1">
-        <ul id="packages-" class="filetree">
-          <xsl:apply-templates select="/project/package">
-            <xsl:sort select="@name" />
-          </xsl:apply-templates>
-        </ul>
-        </xsl:if>
-      </div>
-    </xsl:if>
+        <xsl:if test="count(/project/package) > 0">
+            <h1><a href="#">Packages</a></h1>
+            <div style="padding: 0px;">
+                <xsl:if test="count(/project/package) &lt; 2">
+                <ul id="packages-" class="deadtree">
+                  <xsl:apply-templates select="/project/package">
+                    <xsl:sort select="@name" />
+                  </xsl:apply-templates>
+                </ul>
+                </xsl:if>
 
-    <!--<h1>Files</h1>-->
-    <!--<div id="file">-->
-    <!--<xsl:apply-templates select="file">-->
-    <!--<xsl:sort select="@path" />-->
-    <!--</xsl:apply-templates>-->
-    <!--</div>-->
+                <xsl:if test="count(/project/package) > 1">
+                <ul id="packages-" class="filetree">
+                  <xsl:apply-templates select="/project/package">
+                    <xsl:sort select="@name" />
+                  </xsl:apply-templates>
+                </ul>
+                </xsl:if>
+            </div>
+        </xsl:if>
+
+        <h1><a href="#">Files</a></h1>
+        <div>
+            <ul id="files-" class="filetree">
+            <xsl:apply-templates select="file">
+                <xsl:sort select="@path" />
+            </xsl:apply-templates>
+            </ul>
+        </div>
+    </div>
+
   </xsl:template>
 
   <xsl:template match="file">
-    <h2>
-      <xsl:value-of select="@path" />
-    </h2>
-    <xsl:variable name="file" select="@hash" />
-    <ul id="files_{$file}" class="treeview-docblox">
-      <xsl:for-each select="class">
-        <li>
-          <span>
-            <a href="{$root}{../@generated-path}#{full_name}" target="content">
-              <xsl:value-of select="name" />
+      <li class="closed">
+        <span class="file">
+            <a href="{$root}{@generated-path}" target="content">
+                <xsl:value-of select="@path" />
             </a>
-          </span>
-          <small>
-            <xsl:value-of select="docblock/description" />
-          </small>
-        </li>
-      </xsl:for-each>
-    </ul>
+        </span>
+        <xsl:variable name="file" select="@hash" />
+        <ul id="files_{$file}" class="filetree">
+          <xsl:for-each select="constant">
+            <li>
+              <span class="constant">
+                <a href="{$root}{../@generated-path}#::{name}" target="content">
+                  <xsl:value-of select="name" /><br/>
+                  <small>
+                      <xsl:value-of select="docblock/description"/>
+                  </small>
+                </a>
+              </span>
+            </li>
+          </xsl:for-each>
+          <xsl:for-each select="function">
+            <li>
+              <span class="function">
+                <a href="{$root}{../@generated-path}#::{name}()" target="content">
+                  <xsl:value-of select="name" /><br/>
+                  <small>
+                      <xsl:value-of select="docblock/description"/>
+                  </small>
+                </a>
+              </span>
+            </li>
+          </xsl:for-each>
+          <xsl:for-each select="class|interface">
+            <li>
+              <span class="{name()}">
+                <a href="{$root}{../@generated-path}#{full_name}" target="content">
+                  <xsl:value-of select="name" /><br/>
+                  <small>
+                      <xsl:value-of select="docblock/description"/>
+                  </small>
+                </a>
+              </span>
+            </li>
+          </xsl:for-each>
+        </ul>
+      </li>
   </xsl:template>
 
   <xsl:template match="package">

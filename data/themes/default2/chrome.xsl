@@ -30,15 +30,19 @@
         <script type="text/javascript" src="{$root}js/jquery.cookie.js"></script>
         <script type="text/javascript" src="{$root}js/jquery.treeview.js"></script>
         <script type="text/javascript">
-          $(document).ready(function()
-          {
-            $(".filetree").treeview({
-              collapsed: true,
-              persist: "cookie"
-            });
+            $(document).ready(function() {
+                $(".filetree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
 
-            $(".tabs").tabs();
-          });
+                $("#accordion").accordion({
+                    collapsible: true,
+                    autoHeight:  false
+                });
+
+                $(".tabs").tabs();
+            });
         </script>
       </head>
       <body>

@@ -15,6 +15,22 @@
     </h3>
   </xsl:template>
 
+    <xsl:template match="argument">
+        <xsl:variable name="name" select="name"/>
+        <dt>
+            <xsl:value-of select="$name"/>
+        </dt>
+        <dd>
+            <xsl:if test="../docblock/tag[@name='param' and @variable=$name]/type">
+                <xsl:apply-templates select="../docblock/tag[@name='param' and @variable=$name]/type"/>
+                <br/>
+            </xsl:if>
+            <em>
+                <xsl:value-of select="../docblock/tag[@name='param' and @variable=$name]/@description"/>
+            </em>
+        </dd>
+    </xsl:template>
+
   <xsl:template match="function|method">
     <a id="{../full_name}::{name}()" />
     <xsl:apply-templates select="name" />
@@ -57,9 +73,7 @@
             <h5 class="arguments">Arguments</h5>
           </xsl:if>
           <dl class="argument-info">
-            <xsl:apply-templates select="docblock/tag[@name = 'param']">
-              <xsl:sort select="@name" />
-            </xsl:apply-templates>
+            <xsl:apply-templates select="argument" />
           </dl>
           <div class="clear"></div>
         </div>

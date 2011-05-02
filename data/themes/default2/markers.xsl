@@ -5,14 +5,6 @@
   <xsl:include href="chrome.xsl" />
 
   <xsl:template match="/project">
-      <script>
-          $(function() {
-              $( "#accordion" ).accordion({
-                  collapsible: true,
-                  autoHeight:  false
-              });
-          });
-      </script>
 
       <div id="content">
 
