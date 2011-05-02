@@ -548,7 +548,7 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
    * Get the common path of all directories passed in
    *
    * @param array $dirList list of directories to check
-   * 
+   *
    * @return string
    */
   public function getCommonPath(array $dirlist)
@@ -567,5 +567,5 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
       $base = $base.$part.DIRECTORY_SEPARATOR;
     }
   }
-    
+
 }
