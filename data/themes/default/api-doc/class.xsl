@@ -10,6 +10,34 @@
 
     <div class="class">
       <dl class="class-info">
+          <xsl:if test="extends != ''">
+          <dt>Extends from</dt>
+          <dd>
+              <xsl:if test="extends[not(@link)]">
+                  <xsl:value-of select="extends"/>
+              </xsl:if>
+              <xsl:if test="extends[@link != '']">
+                  <a href="{extends/@link}">
+                      <xsl:value-of select="extends"/>
+                  </a>
+              </xsl:if>
+          </dd>
+          </xsl:if>
+          <xsl:if test="implements">
+          <dt>Implements</dt>
+          <xsl:for-each select="implements">
+              <dd>
+                  <xsl:if test="@link = ''">
+                      <xsl:value-of select="."/>
+                  </xsl:if>
+                  <xsl:if test="@link != ''">
+                      <a href="{@link}">
+                          <xsl:value-of select="."/>
+                      </a>
+                  </xsl:if>
+              </dd>
+          </xsl:for-each>
+          </xsl:if>
         <xsl:apply-templates select="docblock/tag">
           <xsl:sort select="@name" />
         </xsl:apply-templates>

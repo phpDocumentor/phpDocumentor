@@ -35,10 +35,10 @@
           <tr>
             <td id="sidebar">
               <xsl:call-template name="search" />
-              <iframe name="nav" id="nav" src="{$root}nav.html"></iframe>
+              <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0"></iframe>
             </td>
             <td id="contents">
-              <iframe name="content" id="content" src="{$root}content.html"></iframe>
+              <iframe name="content" id="content" src="{$root}content.html" frameBorder="0"></iframe>
             </td>
           </tr>
         </table>

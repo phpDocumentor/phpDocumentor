@@ -9,7 +9,7 @@
     <transformation query="copy" writer="FileIo" source="themes/zend/images" artifact="images"/>
     <transformation query="" writer="xsl" source="themes/zend/index.xsl" artifact="index.html"/>
     <transformation query="" writer="xsl" source="themes/default/content.xsl" artifact="content.html"/>
-    <transformation query="" writer="xsl" source="themes/default/sidebar.xsl" artifact="nav.html"/>
+    <transformation query="" writer="xsl" source="themes/zend/sidebar.xsl" artifact="nav.html"/>
     <transformation query="/project/file/@path" writer="xsl" source="themes/zend/api-doc.xsl" artifact="{$path}"/>
     <transformation query="" writer="xsl" source="themes/default/graph_class.xsl" artifact="graph.html" />
     <transformation query="" writer="xsl" source="themes/default/markers.xsl" artifact="markers.html" />

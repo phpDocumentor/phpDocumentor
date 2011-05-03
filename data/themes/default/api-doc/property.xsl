@@ -9,7 +9,7 @@
 
     <div class="property">
       <code>
-        <xsl:value-of select="docblock/tag[@name='var']/type" />&#160;<span class="highlight"><xsl:value-of select="name" />
+        <xsl:apply-templates select="docblock/tag[@name='var']/@type" />&#160;<span class="highlight"><xsl:value-of select="name" />
       </span><xsl:if test="default"> = '<xsl:value-of select="default" />'</xsl:if>
       </code>
 

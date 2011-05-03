@@ -20,6 +20,7 @@ img#search_box_icon
   display:    none;
   position:   absolute;
   margin-top: 5px;
+  top:        59px;
 }
 
 img#search_box_clear
@@ -28,7 +29,8 @@ img#search_box_clear
   margin-left:  206px;
   margin-top:   5px;
   display:      none;
-  cursor:       pointer
+  cursor:       pointer;
+  top:          59px;
 }
 
 input#search_box
@@ -43,9 +45,10 @@ input#search_box
   padding-right:      20px;
   font-size:          1em;
   line-height:        1em;
+  top:                59px;
 }
 
-iframe#nav
+td#sidebar
 {
   padding-top: 30px;
 }

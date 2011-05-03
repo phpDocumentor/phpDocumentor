@@ -23,7 +23,7 @@ abstract class DocBlox_Core_Abstract
    *
    * @var int
    */
-  const VERSION = '0.9.6';
+  const VERSION = '0.9.7';
 
   /**
    * The logger used to capture all messages send by the log method.
