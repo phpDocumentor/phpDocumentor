@@ -7,28 +7,12 @@
     <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
-    <transformation query="" writer="xsl" source="themes/default/preprocess/object-index.xsl" artifact="$object-index" />
-    <transformation query="" writer="xsl" source="themes/default/index.xsl" artifact="index.html">
-      <parameters>
-        <variables><title>Class Diagram</title></variables>
-        <search>xmljs</search>
-      </parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/default/classgraph.xsl" artifact="graph.html">
-      <parameters><variables><title>DocBlox</title></variables>
-        <search>xmljs</search>
-      </parameters>
-    </transformation>
-    <transformation query="/project/file/@path" writer="xsl" source="themes/default/file.xsl" artifact="{$path}">
-      <parameters><variables><title>File</title></variables>
-        <search>xmljs</search>
-      </parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/default/markers.xsl" artifact="markers.html">
-      <parameters><variables><title>Markers</title></variables>
-        <search>xmljs</search>
-      </parameters>
-    </transformation>
+    <transformation query="" writer="xsl" source="themes/default/index.xsl" artifact="index.html"/>
+    <transformation query="" writer="xsl" source="themes/default/content.xsl" artifact="content.html"/>
+    <transformation query="" writer="xsl" source="themes/default/sidebar.xsl" artifact="nav.html"/>
+    <transformation query="" writer="xsl" source="themes/default/graph_class.xsl" artifact="graph.html"/>
+    <transformation query="/project/file/@path" writer="xsl" source="themes/default/api-doc.xsl" artifact="{$path}"/>
+    <transformation query="" writer="xsl" source="themes/default/markers.xsl" artifact="markers.html"/>
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
   </transformations>
 </template>

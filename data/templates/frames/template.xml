@@ -3,9 +3,9 @@
   <transformations>
     <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
     <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
-    <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/old_ocean/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="themes/frames/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="themes/old_ocean/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
     <transformation query="" writer="xsl" source="themes/frames/frameset.xsl" artifact="index.html">
       <parameters>

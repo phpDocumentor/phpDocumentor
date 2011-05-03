@@ -7,35 +7,14 @@
     <transformation query="copy" writer="FileIo" source="themes/zend/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
     <transformation query="copy" writer="FileIo" source="themes/zend/images" artifact="images"/>
-    <transformation query="" writer="Search" source="" artifact="."/>
-    <!--<transformation query="" writer="xsl" source="themes/default/preprocess/object-index.xsl" artifact="$object-index" />-->
-    <transformation query="" writer="xsl" source="themes/zend/frameset.xsl" artifact="index.html">
-      <parameters>
-        <variables><title>Zend Framework: API Documentation</title></variables>
-        <search>none</search>
-      </parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/zend/header.xsl" artifact="header.html">
-    <parameters><variables><title>Header</title></variables>
-    </parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/zend/sidebar.xsl" artifact="sidebar.html">
-      <parameters><variables><title>Sidebar</title></variables>
-        <search>none</search>
-      </parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/zend/classgraph.xsl" artifact="graph.html">
-      <parameters><variables><title>Class Diagram</title></variables></parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/zend/index.xsl" artifact="content.html">
-      <parameters><variables><title>Main</title></variables></parameters>
-    </transformation>
+    <transformation query="" writer="xsl" source="themes/zend/index.xsl" artifact="index.html"/>
+    <transformation query="" writer="xsl" source="themes/default/content.xsl" artifact="content.html"/>
+    <transformation query="" writer="xsl" source="themes/default/sidebar.xsl" artifact="nav.html"/>
+    <transformation query="/project/file/@path" writer="xsl" source="themes/zend/api-doc.xsl" artifact="{$path}"/>
+    <transformation query="" writer="xsl" source="themes/default/graph_class.xsl" artifact="graph.html" />
+    <transformation query="" writer="xsl" source="themes/default/markers.xsl" artifact="markers.html" />
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
-    <transformation query="/project/file/@path" writer="xsl" source="themes/zend/file.xsl" artifact="{$path}">
-      <parameters><variables><title>File</title></variables></parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/frames/markers.xsl" artifact="markers.html">
-      <parameters><variables><title>Markers</title></variables></parameters>
-    </transformation>
+    <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php" />
+    <transformation query="" writer="Search" source="" artifact="." />
   </transformations>
 </template>

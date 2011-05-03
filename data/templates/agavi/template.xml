@@ -3,22 +3,11 @@
   <transformations>
     <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
     <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
-    <transformation query="copy" writer="FileIo" source="themes/default2/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="themes/agavi/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="themes/default2/images" artifact="images"/>
-    <transformation query="" writer="xsl" source="themes/agavi/index.xsl" artifact="index.html">
-      <parameters>
-        <variables><title>Agavi</title></variables>
-      </parameters>
-    </transformation>
-    <transformation query="" writer="xsl" source="themes/default2/sidebar.xsl" artifact="nav.html">
-      <parameters>
-        <variables><title>Agavi</title></variables>
-      </parameters>
-    </transformation>
-    <transformation query="/project/file/@path" writer="xsl" source="themes/agavi/api-doc.xsl" artifact="{$path}">
-      <parameters><variables><title>File</title></variables>
-      </parameters>
-    </transformation>
+    <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
+    <transformation query="" writer="xsl" source="themes/agavi/index.xsl" artifact="index.html"/>
+    <transformation query="" writer="xsl" source="themes/default/sidebar.xsl" artifact="nav.html"/>
+    <transformation query="/project/file/@path" writer="xsl" source="themes/agavi/api-doc.xsl" artifact="{$path}"/>
   </transformations>
 </template>
