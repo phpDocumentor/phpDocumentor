@@ -55,7 +55,7 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
     // echo the list of namespaces with their tasks
     foreach($results as $namespace => $tasks)
     {
-      echo $namespace . PHP_EOL;
+      echo $namespace;
       foreach ($tasks as $task => $filename)
       {
         // get the short description by reflecting the file.

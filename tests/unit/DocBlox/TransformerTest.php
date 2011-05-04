@@ -171,7 +171,7 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
   {
     // separate the directories with the DIRECTORY_SEPARATOR constant ot prevent failing tests on windows
     $filename = 'directory'.DIRECTORY_SEPARATOR.'directory2'.DIRECTORY_SEPARATOR.'file.php';
-    $this->assertEquals('directory_directory2_file.html', $this->fixture->generateFilename($filename));
+    $this->assertEquals('_directory_directory2_file.html', $this->fixture->generateFilename($filename));
   }
 
   public function testLoadTransformations()
