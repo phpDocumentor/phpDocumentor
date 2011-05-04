@@ -253,7 +253,8 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
     $parser->setForced($this->getForce());
     $parser->setMarkers($this->getMarkers());
     $parser->setValidate($this->getValidate());
-    $parser->setPath($parser->getCommonPath(explode(',', $this->getDirectory())));
+
+    $parser->setPath($parser->getCommonPath($files));
 
     // save the generate file to the path given as the 'target' option
     file_put_contents($this->getTarget() . '/structure.xml', $parser->parseFiles($files));

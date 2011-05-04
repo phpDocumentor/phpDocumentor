@@ -1,3 +1,4 @@
+
 <?php
 /**
  * DocBlox
@@ -186,6 +187,11 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         {
           foreach($tag->getTypes() as $type)
           {
+            if ($type == '')
+            {
+              continue;
+            }
+
             $type = trim($this->expandType($type));
 
             // strip ampersands

@@ -4,10 +4,10 @@
     <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php"/>
     <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
     <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
-    <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="themes/old_ocean/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="themes/old_ocean/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
-    <transformation query="" writer="xsl" source="themes/default/preprocess/object-index.xsl" artifact="$object-index" />
+    <transformation query="" writer="xsl" source="themes/old_ocean/preprocess/object-index.xsl" artifact="$object-index" />
     <transformation query="" writer="xsl" source="themes/single_file/file.xsl" artifact="index.html">
       <parameters><variables><title>File</title></variables></parameters>
     </transformation>
