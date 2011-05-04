@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-17</date>
- <time>21:26:10</time>
+ <date>2011-05-03</date>
+ <time>19:30:08</time>
  <version>
-  <release>0.9.5</release>
-  <api>0.9.5</api>
+  <release>0.9.7</release>
+  <api>0.9.7</api>
  </version>
  <stability>
   <release>beta</release>
@@ -68,15 +68,18 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="SVGPan.js" role="php" />
     </dir> <!-- /data/js -->
     <dir name="templates">
+     <dir name="agavi">
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
+     </dir> <!-- /data/templates/agavi -->
      <dir name="default">
       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/templates/default -->
-     <dir name="default2">
-      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-     </dir> <!-- /data/templates/default2 -->
      <dir name="frames">
       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/templates/frames -->
+     <dir name="old_ocean">
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
+     </dir> <!-- /data/templates/old_ocean -->
      <dir name="pdf">
       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/templates/pdf -->
@@ -85,7 +88,22 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </dir> <!-- /data/templates/zend -->
     </dir> <!-- /data/templates -->
     <dir name="themes">
+     <dir name="agavi">
+      <dir name="css">
+       <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
+      </dir> <!-- /data/themes/agavi/css -->
+      <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
+     </dir> <!-- /data/themes/agavi -->
      <dir name="default">
+      <dir name="api-doc">
+       <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="constant.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="docblock.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="function.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="property.xsl" role="php" />
+      </dir> <!-- /data/themes/default/api-doc -->
       <dir name="css">
        <dir name="black-tie">
         <dir name="images">
@@ -126,57 +144,44 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <file baseinstalldir="/DocBlox" name="treeview-red-line.gif" role="php" />
         <file baseinstalldir="/DocBlox" name="treeview-red.gif" role="php" />
        </dir> <!-- /data/themes/default/css/images -->
-       <file baseinstalldir="/DocBlox" name="default.css" role="php" />
-       <file baseinstalldir="/DocBlox" name="jquery.treeview.css" role="php" />
-      </dir> <!-- /data/themes/default/css -->
-      <dir name="images">
-       <file baseinstalldir="/DocBlox" name="background.png" role="php" />
-       <file baseinstalldir="/DocBlox" name="logo.png" role="php" />
-       <file baseinstalldir="/DocBlox" name="menu-background.png" role="php" />
-       <file baseinstalldir="/DocBlox" name="top-background.png" role="php" />
-       <file baseinstalldir="/DocBlox" name="top-stopper.png" role="php" />
-       <file baseinstalldir="/DocBlox" name="top.png" role="php" />
-      </dir> <!-- /data/themes/default/images -->
-      <dir name="preprocess">
-       <file baseinstalldir="/DocBlox" name="object-index.xsl" role="php" />
-      </dir> <!-- /data/themes/default/preprocess -->
-      <file baseinstalldir="/DocBlox" name="chrome.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="classgraph.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="search.xsl" role="php" />
-     </dir> <!-- /data/themes/default -->
-     <dir name="default2">
-      <dir name="css">
        <file baseinstalldir="/DocBlox" name="api-content.css" role="php" />
        <file baseinstalldir="/DocBlox" name="default.css" role="php" />
+       <file baseinstalldir="/DocBlox" name="jquery.treeview.css" role="php" />
        <file baseinstalldir="/DocBlox" name="navigation.css" role="php" />
        <file baseinstalldir="/DocBlox" name="sen.full.min.css" role="php" />
        <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
-      </dir> <!-- /data/themes/default2/css -->
+      </dir> <!-- /data/themes/default/css -->
       <dir name="images">
+       <file baseinstalldir="/DocBlox" name="arrow_down.gif" role="php" />
        <file baseinstalldir="/DocBlox" name="arrow_right.gif" role="php" />
        <file baseinstalldir="/DocBlox" name="background.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="clear_left.png" role="php" />
        <file baseinstalldir="/DocBlox" name="file.gif" role="php" />
        <file baseinstalldir="/DocBlox" name="folder.gif" role="php" />
+       <file baseinstalldir="/DocBlox" name="icon48x48.png" role="php" />
        <file baseinstalldir="/DocBlox" name="logo.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="logo_old.png" role="php" />
        <file baseinstalldir="/DocBlox" name="menu-background.png" role="php" />
        <file baseinstalldir="/DocBlox" name="search.gif" role="php" />
        <file baseinstalldir="/DocBlox" name="top-background.png" role="php" />
        <file baseinstalldir="/DocBlox" name="top-stopper.png" role="php" />
        <file baseinstalldir="/DocBlox" name="top.png" role="php" />
-      </dir> <!-- /data/themes/default2/images -->
+      </dir> <!-- /data/themes/default/images -->
+      <dir name="search">
+       <file baseinstalldir="/DocBlox" name="ajax.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="simple.xsl" role="php" />
+      </dir> <!-- /data/themes/default/search -->
       <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="chrome.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="constant.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="docblock.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="function.xsl" role="php" />
-     </dir> <!-- /data/themes/default2 -->
+      <file baseinstalldir="/DocBlox" name="content.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="frames_table.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="graph_class.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="menubar.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="nav.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
+     </dir> <!-- /data/themes/default -->
      <dir name="frames">
       <dir name="css">
        <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
@@ -192,6 +197,70 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
      </dir> <!-- /data/themes/frames -->
+     <dir name="old_ocean">
+      <dir name="css">
+       <dir name="black-tie">
+        <dir name="images">
+         <file baseinstalldir="/DocBlox" name="ui-anim_basic_16x16.gif" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_diagonals-thick_8_333333_40x40.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_flat_65_ffffff_40x100.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_glass_40_111111_1x400.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_glass_55_1c1c1c_1x400.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_highlight-hard_40_aaaaaa_1x100.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_highlight-hard_100_f9f9f9_1x100.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_highlight-soft_50_aaaaaa_1x100.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_inset-hard_45_cd0a0a_1x100.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-bg_inset-hard_55_ffeb80_1x100.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-icons_4ca300_256x240.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-icons_222222_256x240.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-icons_bbbbbb_256x240.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-icons_ededed_256x240.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-icons_ffcf29_256x240.png" role="php" />
+         <file baseinstalldir="/DocBlox" name="ui-icons_ffffff_256x240.png" role="php" />
+        </dir> <!-- /data/themes/old_ocean/css/black-tie/images -->
+        <file baseinstalldir="/DocBlox" name="jquery-ui-1.8.2.custom.css" role="php" />
+       </dir> <!-- /data/themes/old_ocean/css/black-tie -->
+       <dir name="images">
+        <file baseinstalldir="/DocBlox" name="ajax-loader.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="file.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="folder-closed.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="folder.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="minus.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="plus.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-black-line.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-black.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-default-line.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-default.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-famfamfam-line.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-famfamfam.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-gray-line.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-gray.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-red-line.gif" role="php" />
+        <file baseinstalldir="/DocBlox" name="treeview-red.gif" role="php" />
+       </dir> <!-- /data/themes/old_ocean/css/images -->
+       <file baseinstalldir="/DocBlox" name="default.css" role="php" />
+       <file baseinstalldir="/DocBlox" name="jquery.treeview.css" role="php" />
+      </dir> <!-- /data/themes/old_ocean/css -->
+      <dir name="images">
+       <file baseinstalldir="/DocBlox" name="background.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="logo.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="menu-background.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="top-background.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="top-stopper.png" role="php" />
+       <file baseinstalldir="/DocBlox" name="top.png" role="php" />
+      </dir> <!-- /data/themes/old_ocean/images -->
+      <dir name="preprocess">
+       <file baseinstalldir="/DocBlox" name="object-index.xsl" role="php" />
+      </dir> <!-- /data/themes/old_ocean/preprocess -->
+      <file baseinstalldir="/DocBlox" name="chrome.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="classgraph.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="search.xsl" role="php" />
+     </dir> <!-- /data/themes/old_ocean -->
      <dir name="single_file">
       <file baseinstalldir="/DocBlox" name="chrome.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
@@ -204,11 +273,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <dir name="images">
        <file baseinstalldir="/DocBlox" name="behind-the-site.gif" role="php" />
       </dir> <!-- /data/themes/zend/images -->
-      <file baseinstalldir="/DocBlox" name="classgraph.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="frameset.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="header.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="nav.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="page_header.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
      </dir> <!-- /data/themes/zend -->
@@ -337,14 +404,20 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <dir name="data">
      <file baseinstalldir="/DocBlox" name="DocBlockTestFixture.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NamespaceTest.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="NoClass.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="NoPackageDocBlock.php" role="php" />
      <file baseinstalldir="/DocBlox" name="TokenIteratorTestFixture.php" role="php" />
      <file baseinstalldir="/DocBlox" name="TypesTest.php" role="php" />
     </dir> <!-- /tests/data -->
     <dir name="ui">
+     <file baseinstalldir="/DocBlox" name="docblox-no-class-found.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-no-params.phpt" role="php" />
-     <file baseinstalldir="/DocBlox" name="docblox-no-params.phpt.orig" role="php" />
+     <file baseinstalldir="/DocBlox" name="docblox-project-list.phpt" role="php" />
+     <file baseinstalldir="/DocBlox" name="docblox-project-parse.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt" role="php" />
-     <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt.orig" role="php" />
+     <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt~" role="php" />
+     <file baseinstalldir="/DocBlox" name="docblox-project-transform.phpt" role="php" />
+     <file baseinstalldir="/DocBlox" name="no-package-just-subpackage-tag.phpt" role="php" />
     </dir> <!-- /tests/ui -->
     <dir name="unit">
      <dir name="DocBlox">
@@ -435,14 +508,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.9.5</release>
-    <api>0.9.5</api>
+    <release>0.9.7</release>
+    <api>0.9.7</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-04-17</date>
+   <date>2011-05-03</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes

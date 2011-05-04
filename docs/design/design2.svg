@@ -48,7 +48,7 @@
        x2="371.53284"
        y2="86.333809"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.3616633,0,0,1.3838384,-15.902637,232.16015)" />
+       gradientTransform="matrix(1.3616633,0,0,0.0864899,-15.902637,251.09956)" />
     <inkscape:perspective
        id="perspective3681"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
@@ -125,30 +125,28 @@
        style="fill:url(#linearGradient3596);fill-opacity:1;stroke:none"
        id="rect2816"
        width="980"
-       height="800"
+       height="50"
        x="0"
        y="252.36218" />
-    <path
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 10,272.36218 206,0 c 54,0 75.78441,40 113,40 l 641,0 c 5.54,0 10,4.46 10,10 l 0,700.00002 c 0,5.54 -4.46,10 -10,10 l -960,0 c -5.54,0 -10,-4.46 -10,-10 L 0,282.36218 c 0,-5.54 4.46,-10 10,-10 z"
-       id="rect3598"
-       sodipodi:nodetypes="ccccccccccc" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:InfraRed;-inkscape-font-specification:InfraRed"
-       x="51.737228"
-       y="313.51547"
-       id="text3601"><tspan
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#dbdee3;fill-opacity:1;stroke:none;font-family:InfraRed;-inkscape-font-specification:InfraRed"
+       x="71.737228"
+       y="291.51547"
+       id="text3601"
+       inkscape:export-filename="/home/mvriel/Dropbox/Projects/DocBlox/data/themes/default2/images/logo.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3603"
-         x="51.737228"
-         y="313.51547">DocBlox</tspan></text>
+         x="71.737228"
+         y="291.51547">DocBlox</tspan></text>
     <g
        id="g3617"
-       transform="matrix(0.66666667,0,0,0.66666667,6,98.95406)"
-       inkscape:export-filename="/home/mvriel/Dropbox/Projects/DocBlox/docs/design/icon16x16.png"
-       inkscape:export-xdpi="45"
-       inkscape:export-ydpi="45">
+       transform="translate(6.0000002,-13.999991)"
+       inkscape:export-filename="/home/mvriel/Dropbox/Projects/DocBlox/data/themes/default2/images/icon48x48.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <rect
          ry="5"
          rx="5"

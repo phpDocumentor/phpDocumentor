@@ -46,7 +46,7 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
     }
 
     // if the next item starts with a $ it must be the variable name
-    if ((strlen($content[0]) > 0) && ($content[0]{0} == '$'))
+    if ((strlen($content[0]) > 0) && ($content[0][0] == '$'))
     {
       $this->variableName = array_shift($content);
     }

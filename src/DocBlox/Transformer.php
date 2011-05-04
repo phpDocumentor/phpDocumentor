@@ -410,6 +410,6 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
   public function generateFilename($file)
   {
     $info = pathinfo(str_replace(DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')));
-    return $info['filename'].'.html';
+    return '_'.$info['filename'].'.html';
   }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package Tests
+ */
 namespace
 {
 define('TEST', -1);
@@ -37,6 +40,10 @@ const GLOBAL_CONST2 = '2';
 
 /**
  * Function docblock for SingleFunction
+ *
+ * This is a code block:
+ *
+ *     block of code
  *
  * @param int $argument
  * @param Test\SingleClass $argument2 This is a test argument
