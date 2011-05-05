@@ -54,6 +54,7 @@
             <div style="padding: 0px;">
                 <ul id="api-" class="filetree">
                 <xsl:for-each select="/project/file/*">
+                    <xsl:sort select="./name" />
                     <xsl:if test="count(./*/docblock/tag[@name='api']) > 0">
                         <li class="closed">
                             <span class="{name()}">
@@ -62,9 +63,10 @@
 
                             <ul class="filetree">
                             <xsl:for-each select="./*/docblock/tag[@name='api']">
+                                <xsl:sort select="../../name" />
                                 <li>
                                 <span class="function">
-                                    <a href="{$root}{../../../../@generated-path}#{../../../name}::{../../name}()" target="content">
+                                    <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
                                         <xsl:value-of select="../../name" />
                                     </a>
                                 </span>
@@ -76,11 +78,12 @@
                     <xsl:if test="count(./docblock/tag[@name='api']) > 0">
                         <li class="closed">
                             <span class="file">
-                                <xsl:value-of select="./../@path" />
+                                <xsl:value-of select="./name" />
                             </span>
 
                             <ul class="filetree">
                             <xsl:for-each select="./docblock/tag[@name='api']">
+                                <xsl:sort select="../name" />
                                 <li>
                                 <span class="function">
                                     <a href="{$root}{../../../@generated-path}#{../../name}::{../name}()" target="content">
