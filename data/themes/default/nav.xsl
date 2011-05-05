@@ -105,7 +105,9 @@
     <xsl:if test="(count(/project/file/class[docblock/tag[@name='package'][@description=$package]]) > 0)
     or (count(/project/file/interface[docblock/tag[@name='package'][@description=$package]]) > 0)
     or (count(/project/file[docblock/tag[@name='package'][@description=$package]]/function) > 0)
-    or ($package = '')">
+    or ($package = '' and ((count(/project/file[not(docblock/tag[@name='package'])]) > 0)
+        or (count(/project/file/class[not(docblock/tag[@name='package'])]) > 0)
+        or (count(/project/file/interface[not(docblock/tag[@name='package'])]) > 0)))">
       <li class="closed">
         <span class="folder">
           <xsl:if test="@name=''">Default</xsl:if>
