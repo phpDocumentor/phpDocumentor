@@ -47,6 +47,58 @@
             </xsl:apply-templates>
             </ul>
         </div>
+
+
+        <xsl:if test="count(/project/file/*/docblock/tag[@name='api']|/project/file/class/*/docblock/tag[@name='api']|/project/file/interface/*/docblock/tag[@name='api']) > 0">
+            <h1><a href="#">API</a></h1>
+            <div style="padding: 0px;">
+                <ul id="api-" class="filetree">
+                <xsl:for-each select="/project/file/*">
+                    <xsl:sort select="./name" />
+                    <xsl:if test="count(./*/docblock/tag[@name='api']) > 0">
+                        <li class="closed">
+                            <span class="{name()}">
+                                <xsl:value-of select="./name" />
+                            </span>
+
+                            <ul class="filetree">
+                            <xsl:for-each select="./*/docblock/tag[@name='api']">
+                                <xsl:sort select="../../name" />
+                                <li>
+                                <span class="function">
+                                    <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
+                                        <xsl:value-of select="../../name" />
+                                    </a>
+                                </span>
+                                </li>
+                            </xsl:for-each>
+                            </ul>
+                        </li>
+                    </xsl:if>
+                    <xsl:if test="count(./docblock/tag[@name='api']) > 0">
+                        <li class="closed">
+                            <span class="file">
+                                <xsl:value-of select="./name" />
+                            </span>
+
+                            <ul class="filetree">
+                            <xsl:for-each select="./docblock/tag[@name='api']">
+                                <xsl:sort select="../name" />
+                                <li>
+                                <span class="function">
+                                    <a href="{$root}{../../../@generated-path}#{../../name}::{../name}()" target="content">
+                                        <xsl:value-of select="../../name" />
+                                    </a>
+                                </span>
+                                </li>
+                            </xsl:for-each>
+                            </ul>
+                        </li>
+                    </xsl:if>
+                </xsl:for-each>
+                </ul>
+            </div>
+        </xsl:if>
     </div>
 
   </xsl:template>
