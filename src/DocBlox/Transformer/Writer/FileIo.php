@@ -37,11 +37,6 @@ class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstr
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     $transformation->setArtifact($artifact);
 
-    $source = substr($transformation->getSource(), 0, 1) != DIRECTORY_SEPARATOR
-      ? $this->getConfig()->paths->data . DIRECTORY_SEPARATOR . $transformation->getSource()
-      : $transformation->getSource();
-    $transformation->setSource($source);
-
     $method   = 'executeQuery'.ucfirst($transformation->getQuery());
     if (!method_exists($this, $method))
     {
@@ -62,9 +57,10 @@ class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstr
    */
   public function executeQueryCopy(DocBlox_Transformer_Transformation $transformation)
   {
-    if (!is_readable($transformation->getSource()))
+    $path = $transformation->getSourceAsPath();
+    if (!is_readable($path))
     {
-      throw new Exception('Unable to read the source file: ' . $transformation->getSource());
+      throw new Exception('Unable to read the source file: ' . $path);
     }
 
     if (!is_writable($transformation->getTransformer()->getTarget()))
@@ -72,14 +68,13 @@ class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstr
       throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
     }
 
-    if (is_dir($transformation->getSource()))
+    if (is_dir($path))
     {
-      $this->copyRecursive($transformation->getSource(), $transformation->getArtifact());
+      $this->copyRecursive($path, $transformation->getArtifact());
+      return;
     }
-    else
-    {
-      copy($transformation->getSource(), $transformation->getArtifact());
-    }
+
+    copy($path, $transformation->getArtifact());
   }
 
   /**

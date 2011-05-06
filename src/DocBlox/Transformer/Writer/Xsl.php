@@ -39,13 +39,8 @@ class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
 
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
-    $source = substr($transformation->getSource(), 0, 1) != DIRECTORY_SEPARATOR
-      ? $this->getConfig()->paths->data . DIRECTORY_SEPARATOR . $transformation->getSource()
-      : $transformation->getSource();
-    $transformation->setSource($source);
-
     $xsl = new DOMDocument();
-    $xsl->load($source);
+    $xsl->load($transformation->getSourceAsPath());
 
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl);
