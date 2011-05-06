@@ -49,7 +49,8 @@ class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
 
     $proc = new XSLTProcessor();
     $proc->importStyleSheet($xsl);
-    $proc->setParameter('', 'root', str_repeat('../', substr_count($transformation->getArtifact(), '/')));
+    $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
+    $proc->setParameter('', 'root',  str_repeat('../', substr_count($transformation->getArtifact(), '/')));
     $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
 
     // check parameters for variables and add them when found

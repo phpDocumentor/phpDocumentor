@@ -1,0 +1,66 @@
+@import url('sen.full.min.css');
+@import url('navigation.css');
+@import url('api-content.css');
+@import url('default.css');
+
+#page
+{
+  background: white;
+}
+
+#header
+{
+  background: white url('../images/top-background.png') repeat-x top left;
+  padding: 10px 10px 0px 10px;
+}
+
+#header h1
+{
+  display:        inline;
+  margin-left:    10px;
+  padding-top:    29px;
+  padding-bottom: 0px;
+  border:         none;
+  color:          #FFFFFF;
+}
+
+#header div.docblox
+{
+  float: left;
+  background: transparent url('../images/icon48x48.png') top left no-repeat;
+  padding-left: 60px;
+  height: 50px;
+}
+
+div#menubar
+{
+  float: right;
+}
+
+ul#menu li
+{
+  border: none;
+}
+
+#menu a
+{
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#menu a:hover
+{
+  background: #111;
+  color: red;
+}
+
+table#overview th
+{
+  text-align: left;
+}
+
+table#overview td
+{
+  border: none;
+}

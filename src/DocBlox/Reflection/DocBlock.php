@@ -161,7 +161,7 @@ class DocBlox_Reflection_DocBlock implements Reflector
         continue;
       }
 
-      if (isset($tag_line{0}) && ($tag_line{0} === '@'))
+      if (isset($tag_line[0]) && ($tag_line[0] === '@'))
       {
         $result[] = $tag_line;
       }

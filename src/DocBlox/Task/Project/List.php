@@ -1,6 +1,6 @@
 <?php
 /**
- * With this task you get an overview of the available tasks in DocBlox.
+ * Defines all tasks that can be run by DocBlox
  *
  * This task outputs a list of tasks grouped by their namespaces.
  *
@@ -55,7 +55,7 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
     // echo the list of namespaces with their tasks
     foreach($results as $namespace => $tasks)
     {
-      echo $namespace . PHP_EOL;
+      echo $namespace;
       foreach ($tasks as $task => $filename)
       {
         // get the short description by reflecting the file.

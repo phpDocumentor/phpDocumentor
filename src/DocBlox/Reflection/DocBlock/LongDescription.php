@@ -34,7 +34,7 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
       array_shift($matches);
       foreach($matches as $tag)
       {
-        $this->tags[] = Docblox_Reflection_DocBlock_Tag::createInstance('@'.$tag);
+        $this->tags[] = DocBlox_Reflection_DocBlock_Tag::createInstance('@'.$tag);
       }
     }
 

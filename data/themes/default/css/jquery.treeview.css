@@ -83,6 +83,7 @@ ul.deadtree
 
 .filetree span.class, .deadtree span.class,
 .filetree span.function, .deadtree span.function,
+.filetree span.constant, .deadtree span.constant,
 .filetree span.interface, .deadtree span.interface
 {
   padding: 1px 0 1px 18px; display: block;
@@ -94,3 +95,4 @@ ul.deadtree
 .filetree span.class { background: url(../images/icons/class.png) 0 0 no-repeat; }
 .filetree span.interface { background: url(../images/icons/interface.png) 0 0 no-repeat; }
 .filetree span.function { background: url(../images/icons/function.png) 0 0 no-repeat; }
+.filetree span.constant { background: url(../images/icons/constant.png) 0 0 no-repeat; }

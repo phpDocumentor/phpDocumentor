@@ -27,6 +27,12 @@
 * FIXED:    Detection code relies on PHP 5.3 constants; added conditional defines for them
 * CHANGED:  Task runner was made more generic; a new application runner was introduced and performance optimizations were done
 * CHANGED:  Moved subpackages to top of content listing for a package in the left sidebar
+* ADDED:    Files listing in default template
+* FIXED:    Property types did not link
+* FIXED:    Extends and implements were not shown
+* FIXED:    Several styling issues with FireFox and Internet Explorer
+* ADDED:    Functions to sidebar
+* CHANGED:  About anything and everything concerning the theme, it is more clean and feature rich than the previous
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------

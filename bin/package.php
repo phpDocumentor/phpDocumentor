@@ -16,6 +16,7 @@ function createPackager($original_file, $options = array())
     'ignore'            => array(
       'build/*',
       'data/output/*',
+      'data/log/*',
       'bin/package.php',
       'src/Image/*',      // Dependency with a PEAR package
       'src/Zend/*',       // Dependency with a PEAR package

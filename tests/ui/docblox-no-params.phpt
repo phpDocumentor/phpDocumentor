@@ -12,7 +12,10 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
 
-require_once 'Zend/Loader/Autoloader.php';
+if (!class_exists('Zend_Loader_Autoloader'))
+{
+  require_once 'Zend/Loader/Autoloader.php';
+}
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('DocBlox_');
 
@@ -24,17 +27,16 @@ DocBlox version %s
 
 ERROR: No parsable files were found, did you specify any using the -f or -d parameter?
 
-Creates documentation from PHP source files and generates documentation from it.
-The simplest way to use it is:
+DocBlox creates documentation from PHP source files. The simplest way to use it is:
 
     $ docblox run -d <directory to parse> -t <output directory>
 
-This will parse every file ending with .php, .php3 and .phtml for its structure and documentation from
-<directory to parse> and output a HTML site containing easily readable output in <output directory>.
+This will parse every file ending with .php, .php3 and .phtml in <directory to parse> and then
+output a HTML site containing easily readable documentation in <output directory>.
 
-In any case will DocBlox try to look for a docblox.dist.xml or docblox.xml file in your current working directory
-and use that to override the default settings if present.
-In the configuration file can you specify the same settings (and more) as the command line provides.
+DocBlox will try to look for a docblox.dist.xml or docblox.xml file in your current working directory
+and use that to override the default settings if present. In the configuration file can you specify the
+same settings (and more) as the command line provides.
 
 Usage:
  %s project:run [options]

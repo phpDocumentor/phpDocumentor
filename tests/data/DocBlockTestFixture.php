@@ -104,4 +104,30 @@ class DocBlockTestFixture
 
   }
 
+  /**
+   * This tests whether a custom tag with hypen is interpreted
+   *
+   * @custom-tag This is a custom tag
+   *
+   * @return void
+   */
+  static public function DocBlockWithTagWithHyphen()
+  {
+
+  }
+
+  /**
+   * This docblock will contain an inline tag to test whether it still crashes.
+   *
+   * This is a test {@link} with an inline tag.
+   *
+   * @static
+   *
+   * @return void
+   */
+  static public function DocBlockWithInlineTag()
+  {
+
+  }
+
 }
