@@ -8,6 +8,6 @@
     <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
     <transformation query="" writer="xsl" source="themes/agavi/index.xsl" artifact="index.html"/>
     <transformation query="" writer="xsl" source="themes/default/sidebar.xsl" artifact="nav.html"/>
-    <transformation query="/project/file/@path" writer="xsl" source="themes/agavi/api-doc.xsl" artifact="{$path}"/>
+    <transformation query="/project/file/@path" writer="xsl" source="themes/default/api-doc.xsl" artifact="{$path}"/>
   </transformations>
 </template>

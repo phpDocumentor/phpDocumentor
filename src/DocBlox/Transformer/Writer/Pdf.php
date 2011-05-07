@@ -29,6 +29,11 @@ class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
     $artifact = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     $transformation->setArtifact($artifact);
 
+    $source = substr($transformation->getSource(), 0, 1) != DIRECTORY_SEPARATOR
+      ? $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getSource()
+      : $transformation->getSource();
+    $transformation->setSource($source);
+
     $options = '';
     if ($transformation->getParameter('toc', 'false') == 'true')
     {
@@ -40,7 +45,7 @@ class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
     // TODO: add a parameter to provide a footer HTML
 
     // first try if there is a wkhtmltopdf in the global path, this helps windows users
-    exec('wkhtmltopdf ' . $options . ' ' . $transformation->getSourceAsPath() . ' ' . $transformation->getArtifact() . ' 2>&1', $output, $error);
+    exec('wkhtmltopdf ' . $options . ' ' . $transformation->getSource() . ' ' . $transformation->getArtifact() . ' 2>&1', $output, $error);
     $output = implode(PHP_EOL, $output);
 
     // this notice is linux specific; if it is found no global wkhtmltopdf was installed; try the one which is included
@@ -48,12 +53,12 @@ class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
     if (strpos($output, 'wkhtmltopdf: not found') !== false)
     {
       exec($this->getConfig()->paths->application . '/src/wkhtmltopdf/wkhtmltopdf-i386 ' . $options . ' '
-        . $transformation->getSourceAsPath() . ' ' . $transformation->getArtifact() . ' 2>&1', $output, $error);
+        . $transformation->getSource() . ' ' . $transformation->getArtifact() . ' 2>&1', $output, $error);
       $output = implode(PHP_EOL, $output).PHP_EOL;
     }
 
     // log message and output
-    $this->log('Generating PDF file ' . $transformation->getArtifact() . ' from ' . $transformation->getSourceAsPath());
+    $this->log('Generating PDF file ' . $transformation->getArtifact() . ' from ' . $transformation->getSource());
     $this->log($output, $error == 0 ? DocBlox_Core_Log::INFO : DocBlox_Core_Log::CRIT);
 
     // CRASH!
