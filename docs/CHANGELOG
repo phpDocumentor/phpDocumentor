@@ -33,6 +33,7 @@
 * FIXED:    Several styling issues with FireFox and Internet Explorer
 * ADDED:    Functions to sidebar
 * CHANGED:  About anything and everything concerning the theme, it is more clean and feature rich than the previous
+* ADDED:    A new API section in the sidebar showing all elements marked as public API using the @api tags
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------
