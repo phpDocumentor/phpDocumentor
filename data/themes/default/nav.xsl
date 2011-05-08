@@ -90,6 +90,10 @@
 
                     <xsl:if test="count(./docblock/tag[@name='api']) > 0">
                         <xsl:comment>File level</xsl:comment>
+                        <xsl:if test="
+                        not(((name() = 'class') and count(./*/docblock/tag[@name='api']) > 0))
+                        and
+                        not(((name() = 'interface') and count(./*/docblock/tag[@name='api']) > 0))">
                         <li class="closed">
                             <span class="{name()}">
                             <xsl:choose>
@@ -124,6 +128,7 @@
                             </xsl:choose>
                             </span>
                         </li>
+                        </xsl:if>
                     </xsl:if>
                 </xsl:for-each>
                 </ul>
