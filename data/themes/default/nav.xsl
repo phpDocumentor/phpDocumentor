@@ -5,6 +5,9 @@
 
   <xsl:template match="/project">
     <div id="accordion">
+
+        <xsl:call-template name="api"/>
+        
         <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
             <h1><a href="#">Namespaces</a></h1>
             <div style="padding: 0px;">
@@ -39,6 +42,19 @@
             </div>
         </xsl:if>
 
+        <h1><a href="#">Files</a></h1>
+        <div>
+            <ul id="files-" class="filetree">
+            <xsl:apply-templates select="file">
+                <xsl:sort select="@path" />
+            </xsl:apply-templates>
+            </ul>
+        </div>
+    </div>
+
+  </xsl:template>
+
+    <xsl:template name="api">
         <xsl:if test="count(/project/file/*/docblock/tag[@name='api']|/project/file/class/*/docblock/tag[@name='api']|/project/file/interface/*/docblock/tag[@name='api']) > 0">
             <h1><a href="#">API</a></h1>
             <div style="padding: 0px;">
@@ -178,18 +194,7 @@
                 </ul>
             </div>
         </xsl:if>
-
-        <h1><a href="#">Files</a></h1>
-        <div>
-            <ul id="files-" class="filetree">
-            <xsl:apply-templates select="file">
-                <xsl:sort select="@path" />
-            </xsl:apply-templates>
-            </ul>
-        </div>
-    </div>
-
-  </xsl:template>
+    </xsl:template>
 
   <xsl:template match="file">
       <li class="closed">
