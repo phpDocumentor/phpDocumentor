@@ -56,6 +56,8 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
     foreach($results as $namespace => $tasks)
     {
       echo $namespace;
+
+      asort($tasks, SORT_STRING);
       foreach ($tasks as $task => $filename)
       {
         // get the short description by reflecting the file.
