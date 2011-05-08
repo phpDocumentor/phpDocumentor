@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template>
+  <author>Mike van Riel</author>
+  <version>1.0</version>
+  <copyright>Mike van Riel / Naenius 2011</copyright>
   <transformations>
     <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php"/>
     <transformation query="copy" writer="FileIo" source="js" artifact="js"/>

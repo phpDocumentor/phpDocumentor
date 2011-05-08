@@ -190,8 +190,8 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
         if (file_exists($config_path) && is_readable($config_path)) {
             $path = rtrim($name, DIRECTORY_SEPARATOR);
             $template_name_part = basename($path);
-            $cache_path = rtrim($config->paths->data, '/\\') . DIRECTORY_SEPARATOR
-            . 'themes' . DIRECTORY_SEPARATOR . 'cache'
+            $cache_path = rtrim($config->paths->themes, '/\\')
+            . DIRECTORY_SEPARATOR . 'cache'
             . DIRECTORY_SEPARATOR . $template_name_part;
 
             // move the files to a cache location and then change the path
@@ -224,8 +224,8 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
 
         // if the array key is not numeric; then there is a single value instead of an array of transformations
         $transformations = (is_numeric(key($transformations)))
-                ? $transformations
-                : array($transformations);
+            ? $transformations
+            : array($transformations);
 
         foreach ($transformations as $transformation)
         {
