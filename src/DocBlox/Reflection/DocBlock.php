@@ -132,7 +132,7 @@ class DocBlox_Reflection_DocBlock implements Reflector
           )
         )?
         (\s+ [\s\S]*)? # everything that follows
-        /usm', $comment, $matches
+        /', $comment, $matches
       );
       array_shift($matches);
     }
