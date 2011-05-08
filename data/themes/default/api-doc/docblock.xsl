@@ -67,7 +67,7 @@
       </xsl:call-template>
     </dt>
     <dd>
-      <em><xsl:value-of select="@description" /></em>
+      <em><xsl:value-of select="@description" disable-output-escaping="yes" /></em>
     </dd>
   </xsl:template>
 
