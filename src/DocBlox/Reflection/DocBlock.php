@@ -115,18 +115,18 @@ class DocBlox_Reflection_DocBlock implements Reflector
           [^\n]+
           (?:
             (?! (?<=\.) \n | \n{2} ) # disallow the first seperator here
-            \n (?! [ \t]* @[a-zA-Z] ) # disallow second seperator
+            \n (?! [ \t]* @\pL ) # disallow second seperator
             [^\n]+
           )*
           \.?
         )
         (?:
           \s* # first seperator (actually newlines but it\'s all whitespace)
-          (?! @[a-zA-Z] ) # disallow the rest, to make sure this one doesn\'t match if it doesn\'t exist
+          (?! @\pL ) # disallow the rest, to make sure this one doesn\'t match if it doesn\'t exist
           (
             [^\n]+
             (?: \n+
-              (?! [ \t]* @[a-zA-Z] ) # disallow second seperator (@param)
+              (?! [ \t]* @\pL ) # disallow second seperator (@param)
               [^\n]+
             )*
           )
