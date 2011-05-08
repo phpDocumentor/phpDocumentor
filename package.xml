@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-05-03</date>
- <time>19:30:08</time>
+ <date>2011-05-08</date>
+ <time>14:34:04</time>
  <version>
-  <release>0.9.7</release>
-  <api>0.9.7</api>
+  <release>0.10.0</release>
+  <api>0.10.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -67,34 +67,24 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="jquery.treeview.js" role="php" />
      <file baseinstalldir="/DocBlox" name="SVGPan.js" role="php" />
     </dir> <!-- /data/js -->
-    <dir name="templates">
-     <dir name="agavi">
-      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-     </dir> <!-- /data/templates/agavi -->
-     <dir name="default">
-      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-     </dir> <!-- /data/templates/default -->
-     <dir name="frames">
-      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-     </dir> <!-- /data/templates/frames -->
-     <dir name="old_ocean">
-      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-     </dir> <!-- /data/templates/old_ocean -->
-     <dir name="pdf">
-      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-     </dir> <!-- /data/templates/pdf -->
-     <dir name="zend">
-      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-     </dir> <!-- /data/templates/zend -->
-    </dir> <!-- /data/templates -->
     <dir name="themes">
      <dir name="agavi">
       <dir name="css">
        <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
       </dir> <!-- /data/themes/agavi/css -->
-      <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/themes/agavi -->
+     <dir name="cache">
+      <dir name="agavi">
+       <dir name="css">
+        <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
+       </dir> <!-- /data/themes/cache/agavi/css -->
+       <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
+       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
+      </dir> <!-- /data/themes/cache/agavi -->
+     </dir> <!-- /data/themes/cache -->
      <dir name="default">
       <dir name="api-doc">
        <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
@@ -181,6 +171,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="menubar.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="nav.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/themes/default -->
      <dir name="frames">
       <dir name="css">
@@ -196,6 +187,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/themes/frames -->
      <dir name="old_ocean">
       <dir name="css">
@@ -260,11 +252,13 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="menu.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="search.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/themes/old_ocean -->
-     <dir name="single_file">
+     <dir name="pdf">
       <file baseinstalldir="/DocBlox" name="chrome.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="file.xsl" role="php" />
-     </dir> <!-- /data/themes/single_file -->
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
+     </dir> <!-- /data/themes/pdf -->
      <dir name="zend">
       <dir name="css">
        <file baseinstalldir="/DocBlox" name="manual.css" role="php" />
@@ -278,6 +272,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="nav.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="page_header.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/themes/zend -->
     </dir> <!-- /data/themes -->
     <file baseinstalldir="/DocBlox" name="ajax_search.php" role="php" />
@@ -402,6 +397,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="bootstrap.php" role="php" />
     </dir> <!-- /tests/common -->
     <dir name="data">
+     <file baseinstalldir="/DocBlox" name="ApiTagTest.php" role="php" />
      <file baseinstalldir="/DocBlox" name="DocBlockTestFixture.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NamespaceTest.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NoClass.php" role="php" />
@@ -457,6 +453,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
    <file baseinstalldir="/DocBlox" name="README" role="php" />
    <file baseinstalldir="/DocBlox" name="README.md" role="data" />
+   <file baseinstalldir="/DocBlox" name="test.html" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -508,14 +505,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.9.7</release>
-    <api>0.9.7</api>
+    <release>0.10.0</release>
+    <api>0.10.0</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-05-03</date>
+   <date>2011-05-08</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
