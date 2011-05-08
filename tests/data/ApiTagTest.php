@@ -12,7 +12,10 @@
     define('BLA2', 2);
 
     /**
+     * Constant description
+     *
      * @api
+     *
      * @var int
      */
     const BLA3 = 1;
@@ -23,7 +26,10 @@
     const BLA4 = 1;
 
     /**
+     * Function description
+     *
      * @api
+     *
      * @return void
      */
     function bla5()
@@ -40,6 +46,8 @@
     }
 
     /**
+     * Class description
+     *
      * @api
      */
     class Class1
@@ -56,7 +64,10 @@
         const BLA8 = 1;
 
         /**
+         * Property description
+         *
          * @api
+         *
          * @var string
          */
         public $bla9 = '1';
@@ -67,7 +78,10 @@
         public $bla10 = '1';
 
         /**
+         * Function description
+         *
          * @api
+         *
          * @return void
          */
         function bla11()

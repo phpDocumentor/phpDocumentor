@@ -24,6 +24,13 @@
   color:          #FFFFFF;
 }
 
+#header span
+{
+  float: left;
+  padding-left: 10px;
+  height: 50px;
+}
+
 #header div.docblox
 {
   float: left;

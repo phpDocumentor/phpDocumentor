@@ -5,7 +5,10 @@
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
       <head>
         <title>
-          <xsl:value-of select="$title" />
+            <xsl:choose>
+                <xsl:when test="$title != ''"><xsl:value-of select="$title" /></xsl:when>
+                <xsl:otherwise>DocBlox Documentation</xsl:otherwise>
+            </xsl:choose>
         </title>
         <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
         <link rel="stylesheet" href="{$root}css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
@@ -18,9 +21,8 @@
           <tr>
             <td colspan="2" id="header">
               <h1>
-
                 <xsl:if test="/project/@title != ''">
-                  <xsl:value-of select="/project/@title" disable-output-escaping="yes" />
+                  <span><xsl:value-of select="/project/@title" disable-output-escaping="yes" /></span>
                 </xsl:if>
                 <xsl:if test="/project/@title = ''">
                   <div class="docblox"><img src="{$root}images/logo.png" /></div>

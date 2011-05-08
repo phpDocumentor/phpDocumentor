@@ -51,7 +51,11 @@
                         <li class="closed">
                             <span class="{name()}">
                                 <a href="{$root}{../@generated-path}#{./full_name}" target="content">
-                                    <xsl:value-of select="./name" />
+                                    <xsl:value-of select="./full_name" />
+                                    <br/>
+                                    <small>
+                                        <xsl:value-of select="docblock/description"/>
+                                    </small>
                                 </a>
                             </span>
 
@@ -65,20 +69,36 @@
                                     <xsl:when test="name(../..) = 'method'">
                                         <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
                                         <xsl:value-of select="../../name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="../../docblock/description"/>
+                                        </small>
                                         </a>
                                     </xsl:when>
                                     <xsl:when test="name(../..) = 'constant'">
                                         <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
                                         <xsl:value-of select="../../name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="../../docblock/description"/>
+                                        </small>
                                         </a>
                                     </xsl:when>
                                     <xsl:when test="name(../..) = 'property'">
                                         <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
                                         <xsl:value-of select="../../name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="../../docblock/description"/>
+                                        </small>
                                         </a>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:value-of select="../../name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="../../docblock/description"/>
+                                        </small>
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 </span>
@@ -100,30 +120,54 @@
                                 <xsl:when test="name() = 'file'">
                                     <a href="{$root}{../@generated-path}" target="content">
                                         <xsl:value-of select="./name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="docblock/description"/>
+                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'function'">
                                     <a href="{$root}{../@generated-path}#{./full_name}::{./name}()" target="content">
                                         <xsl:value-of select="./name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="docblock/description"/>
+                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'class'">
                                     <a href="{$root}{../@generated-path}#{./full_name}" target="content">
-                                        <xsl:value-of select="./name" />
+                                        <xsl:value-of select="./full_name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="docblock/description"/>
+                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'constant'">
                                     <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
                                         <xsl:value-of select="./name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="docblock/description"/>
+                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'property'">
                                     <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
                                         <xsl:value-of select="./name" />
+                                        <br/>
+                                        <small>
+                                            <xsl:value-of select="docblock/description"/>
+                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:value-of select="./name" />
+                                    <br/>
+                                    <small>
+                                        <xsl:value-of select="docblock/description"/>
+                                    </small>
                                 </xsl:otherwise>
                             </xsl:choose>
                             </span>
