@@ -71,7 +71,7 @@
                                         <xsl:value-of select="../../name" />
                                         <br/>
                                         <small>
-                                            <xsl:value-of select="docblock/description"/>
+                                            <xsl:value-of select="../../docblock/description"/>
                                         </small>
                                         </a>
                                     </xsl:when>
@@ -80,7 +80,7 @@
                                         <xsl:value-of select="../../name" />
                                         <br/>
                                         <small>
-                                            <xsl:value-of select="docblock/description"/>
+                                            <xsl:value-of select="../../docblock/description"/>
                                         </small>
                                         </a>
                                     </xsl:when>
@@ -89,7 +89,7 @@
                                         <xsl:value-of select="../../name" />
                                         <br/>
                                         <small>
-                                            <xsl:value-of select="docblock/description"/>
+                                            <xsl:value-of select="../../docblock/description"/>
                                         </small>
                                         </a>
                                     </xsl:when>
@@ -97,7 +97,7 @@
                                         <xsl:value-of select="../../name" />
                                         <br/>
                                         <small>
-                                            <xsl:value-of select="docblock/description"/>
+                                            <xsl:value-of select="../../docblock/description"/>
                                         </small>
                                     </xsl:otherwise>
                                 </xsl:choose>
