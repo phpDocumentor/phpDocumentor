@@ -3,8 +3,7 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    DocBlox
- * @subpackage Tasks
+ * @package    Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
@@ -16,8 +15,7 @@
  * This task outputs a list of tasks grouped by their namespaces.
  *
  * @category   DocBlox
- * @package    DocBlox
- * @subpackage Tasks
+ * @package    Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
@@ -64,7 +62,7 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
 
         // echo the list of namespaces with their tasks
         foreach ($results as $namespace => $tasks) {
-            echo $namespace;
+            echo $namespace.PHP_EOL;
 
             asort($tasks, SORT_STRING);
             foreach ($tasks as $task => $filename) {
