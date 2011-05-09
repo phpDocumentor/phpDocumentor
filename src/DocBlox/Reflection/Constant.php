@@ -35,8 +35,23 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
   {
     if ($tokens->current()->getContent() == 'define')
     {
-      // find the first encapsed string and strip the opening and closing apostrophe
-      $this->setName(substr($tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 5, array(','))->getContent(), 1, -1));
+      // find the first encapsed string and strip the opening and closing
+      // apostrophe
+      $name_token = $tokens->gotoNextByType(
+          T_CONSTANT_ENCAPSED_STRING, 5, array(',')
+      );
+
+      if (!$name_token)
+      {
+          $this->log(
+              'Unable to process constant in file ' . $tokens->getFilename()
+              . ' at line ' . $tokens->current()->getLineNumber(),
+              DocBlox_Core_Log::CRIT
+          );
+          return;
+      }
+
+      $this->setName(substr($name_token->getContent(), 1, -1));
 
       // skip to after the comma
       while($tokens->current()->getContent() != ',')
@@ -106,11 +121,17 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
    */
   public function __toXml()
   {
+    if (!$this->getName())
+    {
+      $xml = new SimpleXMLElement('');
+      return $xml->asXML();
+    }
+
     $xml = new SimpleXMLElement('<constant></constant>');
     $xml->name         = $this->getName();
     $xml->value        = $this->getValue();
     $xml['namespace']  = $this->getNamespace();
-    $xml['line'] = $this->getLineNumber();
+    $xml['line']       = $this->getLineNumber();
     $this->addDocblockToSimpleXmlElement($xml);
 
     return $xml->asXML();
