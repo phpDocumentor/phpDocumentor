@@ -1,5 +1,17 @@
+06/04/2011: Version 0.11.0
+--------------------------
+
+* FIXED:    transform.php and parse.php referred to docblox.php but this is no
+            longer present in a PEAR installation
+* FIXED:    If you accidentily use a CONSTANT as name for a define instead of
+            a literal string will DocBlox throw an error and skip parsing of that
+            constant.
+* CHANGED:  Tweaked the splitting of a DocBlock to better support foreign characters
+* ADDED:    theme:list task to show which themes are natively present
+* ADDED:    theme:generate task to generate a skeleton theme/template
+
 05/08/2011: Version 0.10.0
-----------------------------------------------
+--------------------------
 
 * FIXED:    DocBlox no longer throws E_STRICT errors due to the usage of Image_Graphviz
 * FIXED:    The type information in the method/function signature had an extra | appended
