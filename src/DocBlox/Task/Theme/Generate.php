@@ -112,8 +112,8 @@ body {
     padding: 0px;
 }
 
-body {
-    font-size: 1em;
+.filetree {
+    font-size: 0.8em;
 }
 
 #db-header {
