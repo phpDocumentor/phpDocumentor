@@ -65,6 +65,9 @@ class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
         $proc->setParameter(
             '', 'search_template', $transformation->getParameter('search', 'none')
         );
+        $proc->setParameter(
+            '', 'version', DocBlox_Core_Abstract::VERSION
+        );
 
         // check parameters for variables and add them when found
         $this->setProcessorParameters($transformation, $proc);
