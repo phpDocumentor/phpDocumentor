@@ -9,6 +9,8 @@
 * CHANGED:  Tweaked the splitting of a DocBlock to better support foreign characters
 * ADDED:    theme:list task to show which themes are natively present
 * ADDED:    theme:generate task to generate a skeleton theme/template
+* ADDED:    Support for relative paths in the ignore argument; relative path is
+            counted from the project origin.
 
 05/08/2011: Version 0.10.0
 --------------------------
