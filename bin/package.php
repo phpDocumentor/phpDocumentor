@@ -15,6 +15,7 @@ function createPackager($original_file, $options = array())
     'clearcontents'     => true,
     'ignore'            => array(
       'build/*',
+      'data/themes/cache/*',
       'data/output/*',
       'data/log/*',
       'bin/package.php',
