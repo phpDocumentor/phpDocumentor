@@ -501,8 +501,10 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
         $visibilityQry .= ']';
         $accessQry .= ')]';
 
+        $qry = '('.$visibilityQry.') | ('.$accessQry.')';
+
         $xpath = new DOMXPath($dom);
-        $nodes = $xpath->query($visibilityQry);
+        $nodes = $xpath->query($qry);
 
         foreach ($nodes as $node) {
 
