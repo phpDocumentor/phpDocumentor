@@ -54,6 +54,14 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     protected $path = null;
 
     /**
+     * Array of visibility modifiers that should be adhered to when generating
+     * the documentation
+     *
+     * @var array
+     */
+    protected $visibility = array('public', 'protected', 'private');
+
+    /**
      * Sets the title for this project.
      *
      * @param string $title The intended title for this project.
@@ -244,6 +252,20 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     public function setPath($path)
     {
         $this->path = $path;
+    }
+
+    /**
+     * Set the visibility of the methods/properties that should be documented
+     *
+     * @param string $visibility Comma seperated string of visibility modifiers
+     *
+     * @return void
+     */
+    public function setVisibility($visibility)
+    {
+        if ('' != $visibility) {
+            $this->visibility = explode(',', $visibility);
+        }
     }
 
     /**
@@ -457,6 +479,42 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
         $this->buildMarkerList($dom);
 
         $xml = $dom->saveXML();
+
+        // Visibility rules
+        $this->log('--');
+        $this->log('Applying visibility rules');
+        $dom = new DOMDocument();
+        $dom->loadXML($xml);
+
+        $visibilityQry = '//*[';
+        $accessQry = '//tag[@name=\'access\' and (';
+        foreach ($this->visibility as $key => $vis) {
+            $visibilityQry .= '(@visibility!=\''.$vis.'\')';
+            $accessQry .= '@description!=\''.$vis.'\'';
+
+            if (($key + 1) < count($this->visibility)) {
+                $visibilityQry .= ' and ';
+                $accessQry .= ' and ';
+            }
+
+        }
+        $visibilityQry .= ']';
+        $accessQry .= ')]';
+
+        $xpath = new DOMXPath($dom);
+        $nodes = $xpath->query($visibilityQry);
+
+        foreach ($nodes as $node) {
+
+            if ($node->nodeName == 'tag' && $node->parentNode->parentNode->parentNode) {
+                $remove = $node->parentNode->parentNode;
+                $node->parentNode->parentNode->parentNode->removeChild($remove);
+            } else {
+                $node->parentNode->removeChild($node);
+            }
+        }
+        $xml = $dom->saveXML();
+
         $this->log('--');
         $this->log(
             'Elapsed time to parse all files: '
