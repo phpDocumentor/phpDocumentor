@@ -30,7 +30,7 @@ class DocBlox_Core_Application
     require_once 'Image/GraphViz.php';
     require_once 'markdown.php';
 
-    $runner = new DocBlox_Task_Runner(($_SERVER['argc'] == 1) ? 'project:run' : $_SERVER['argv'][1]);
+    $runner = new DocBlox_Task_Runner(($_SERVER['argc'] == 1) ? false : $_SERVER['argv'][1], 'project:run');
     $task = $runner->getTask();
 
     if (!$task->getQuiet())

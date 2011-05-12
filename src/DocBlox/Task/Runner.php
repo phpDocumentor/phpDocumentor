@@ -27,15 +27,22 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
    * Finds and initializes the given task.
    *
    * @param  $task_name
+   * @param  $default Task to fall back on if no task could be resolved
    */
-  public function __construct($task_name)
+  public function __construct($task_name, $default)
   {
-    // find the task which we want to use
-    $task_parts = explode(':', $task_name);
-    if (count($task_parts) == 1)
-    {
-      array_unshift($task_parts, 'project');
+    $task_parts = explode(':', $default);
+
+    if ($task_name && strpos($task_name, '-') === false) {
+      // find the task which we want to use
+      $task_parts = explode(':', $task_name);
+
+      if (count($task_parts) == 1)
+      {
+        array_unshift($task_parts, 'project');
+      }
     }
+
     $class_name = 'DocBlox_Task_' . ucfirst($task_parts[0]) . '_' . ucfirst($task_parts[1]);
 
     // sorry about the shut up operator but we do this check to determine whether this works
