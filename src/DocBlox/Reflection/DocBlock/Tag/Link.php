@@ -16,7 +16,7 @@
  * @author    Ben Selby <benmatselby@gmail.com>
  * @copyright Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_Tag
+class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_Tag implements DocBlox_Reflection_DocBlock_Tag_TagInterface
 {
     /** @var string */
     protected $link = '';
@@ -67,5 +67,17 @@ class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_T
     public function setLink($link)
     {
         $this->link = $link;
+    }
+
+   /**
+    * Implements DocBlox_Reflection_DocBlock_Tag_TagInterface
+    * 
+    * @param SimpleXMLElement $xml Relative root of xml document
+    */
+    public function __toXml(SimpleXMLElement $xml)
+    {
+        parent::__toXml($xml);
+
+        $xml['link'] = $this->getLink();
     }
 }

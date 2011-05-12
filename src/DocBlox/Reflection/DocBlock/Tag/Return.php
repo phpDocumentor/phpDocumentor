@@ -14,7 +14,7 @@
  * @package    Static_Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Reflection_DocBlock_Tag_Return extends DocBlox_Reflection_DocBlock_Tag
+class DocBlox_Reflection_DocBlock_Tag_Return extends DocBlox_Reflection_DocBlock_Tag_Param
 {
   /** @var string */
   protected $type = null;
