@@ -51,6 +51,9 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
     $this->addOption('validate', '',
       'Validates every processed file using PHP Lint, costs a lot of performance'
     );
+    $this->addOption('visibility', '-s',
+      'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")'
+    );
   }
 
   /**
@@ -253,6 +256,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
     $parser->setForced($this->getForce());
     $parser->setMarkers($this->getMarkers());
     $parser->setValidate($this->getValidate());
+    $parser->setVisibility($this->getVisibility());
 
     $parser->setPath($parser->getCommonPath($files));
 

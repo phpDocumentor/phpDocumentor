@@ -19,6 +19,61 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
   /** @var DocBlox_Reflection_DocBlock|null */
   protected $doc_block = null;
 
+    /**
+     * Array of visibility modifiers that should be adhered to when generating
+     * the documentation
+     *
+     * @var array
+     */
+    protected $visibility = array();
+
+    /**
+     * Set the visibility of the methods/properties that should be documented
+     *
+     * @param array $visibility Array of visibility modifiers
+     *
+     * @return void
+     */
+    public function setVisibility(array $visibility = array())
+    {
+        $this->visibility = $visibility;
+    }
+
+    /**
+     * Is the visibility correct according to visibility rules defined
+     *
+     * @param DocBlox_Reflection_DocBlockedAbstract $reflector The reflector being processed
+     *
+     * @return boolean
+     */
+    public function isVisibilityMatched(DocBlox_Reflection_DocBlockedAbstract $reflector = null)
+    {
+        $allowed = false;
+        $docBlock = $reflector->getDocBlock();
+
+        if (method_exists($reflector, 'getVisibility') && in_array($reflector->getVisibility(), $this->visibility)) {
+            $this->log(
+                'Visibility matched by modifier for ' . $reflector->getName(), Zend_Log::INFO
+            );
+            $allowed = true;
+        }
+
+        if (null != $docBlock) {
+            $tags = $docBlock->getTagsByName('access');
+
+            if (!empty($tags) && in_array($tags[0]->getContent(), $this->visibility)) {
+                $this->log(
+                    'Visibility matched by @access tag for ' . $reflector->getName(), Zend_Log::INFO
+                );
+                $allowed = true;
+            }
+        } else {
+            $allowed = true;
+        }
+
+        return $allowed;
+    }
+
   /**
    * Any generic information that needs to be retrieved is the docblock itself.
    *
