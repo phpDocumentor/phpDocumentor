@@ -62,6 +62,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     protected $marker_terms = array('TODO', 'FIXME');
 
     /**
+     * Array of visibility modifiers that should be adhered to when generating
+     * the documentation
+     *
+     * @var array
+     */
+    protected $visibility = array('public', 'protected', 'private');
+
+    /**
      * Opens the file and retrieves its contents.
      *
      * During construction the given file is checked whether it is readable and
@@ -296,6 +304,20 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     public function setHash($hash)
     {
         $this->hash = $hash;
+    }
+
+    /**
+     * Set the visibility of the methods/properties that should be documented
+     *
+     * @param array $visibility Array of visibility modifiers
+     *
+     * @return void
+     */
+    public function setVisibility(array $visibility = array())
+    {
+        if (!empty($visibility)) {
+            $this->visibility = $visibility;
+        }
     }
 
     /**
@@ -547,6 +569,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $interface = new DocBlox_Reflection_Interface();
         $interface->setNamespace($this->active_namespace);
         $interface->setNamespaceAliases($this->namespace_aliases);
+        $interface->setVisibility($this->visibility);
         $interface->parseTokenizer($tokens);
 
         $this->debugTimer(
@@ -573,6 +596,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $class->setFilename($this->filename);
         $class->setNamespace($this->active_namespace);
         $class->setNamespaceAliases($this->namespace_aliases);
+        $class->setVisibility($this->visibility);
         $class->parseTokenizer($tokens);
 
         $this->debugTimer('>> Processed class ' . $class->getName(), 'class');
@@ -598,12 +622,18 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $function->setNamespaceAliases($this->namespace_aliases);
         $function->parseTokenizer($tokens);
 
-        $this->debugTimer(
-            '>> Processed function ' . $function->getName(),
-            'function'
-        );
-
-        $this->functions[$function->getName()] = $function;
+        if ($this->isVisibilityMatched($function)) {
+            $this->functions[$function->getName()] = $function;
+            $this->debugTimer(
+                '>> Processed function ' . $function->getName(),
+                'function'
+            );
+        } else {
+            $this->debugTimer(
+                '>> Skipped function ' . $function->getName() . ' due to visibility rules',
+                'function'
+            );
+        }
     }
 
     /**

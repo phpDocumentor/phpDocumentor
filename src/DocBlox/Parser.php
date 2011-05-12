@@ -54,6 +54,14 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     protected $path = null;
 
     /**
+     * Array of visibility modifiers that should be adhered to when generating
+     * the documentation
+     *
+     * @var array
+     */
+    protected $visibility = array();
+
+    /**
      * Sets the title for this project.
      *
      * @param string $title The intended title for this project.
@@ -247,6 +255,20 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     }
 
     /**
+     * Set the visibility of the methods/properties that should be documented
+     *
+     * @param string $visibility Comma seperated string of visibility modifiers
+     *
+     * @return void
+     */
+    public function setVisibility($visibility)
+    {
+        if ('' != $visibility) {
+            $this->visibility = explode(',', $visibility);
+        }
+    }
+
+    /**
      * Returns the filename, relative to the root of the project directory.
      *
      * @param string $filename The filename to make relative.
@@ -312,6 +334,7 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
             $file->setMarkers($this->getMarkers());
             $file->setFilename($this->getRelativeFilename($filename));
             $file->setName($this->getRelativeFilename($filename));
+            $file->setVisibility($this->visibility);
 
             // if an existing structure exists; and we do not force re-generation;
             // re-use the old definition if the hash differs

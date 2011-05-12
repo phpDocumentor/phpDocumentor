@@ -136,9 +136,13 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $property->parseTokenizer($tokens);
     $property->setNamespace($this->getNamespace());
     $property->setNamespaceAliases($this->getNamespaceAliases());
-    $this->properties[] = $property;
 
-    $this->debugTimer('>> Processed property '.$property->getName(), 'variable');
+    if ($this->isVisibilityMatched($property)) {
+        $this->properties[] = $property;
+        $this->debugTimer('>> Processed property '.$property->getName(), 'variable');
+    } else {
+        $this->debugTimer('>> Skipped property '.$property->getName() . ' due to visibility rules', 'variable');
+    }
   }
 
   /**
@@ -156,8 +160,13 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $method->parseTokenizer($tokens);
     $method->setNamespace($this->getNamespace());
     $method->setNamespaceAliases($this->getNamespaceAliases());
-    $this->methods[$method->getName()] = $method;
-    $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
+
+    if ($this->isVisibilityMatched($method)) {
+        $this->methods[$method->getName()] = $method;
+        $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
+    } else {
+        $this->debugTimer('>>  Skipped method '.$method->getName() . ' due to visibility rules', 'method');
+    }
   }
 
   /**
