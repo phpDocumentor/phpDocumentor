@@ -75,7 +75,7 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
       $name = basename($_SERVER['SCRIPT_NAME'], '.php');
       echo($name . ': ' .$e->getMessage() . PHP_EOL);
       echo('Try: \'' . $name . ' --help\' for more information.' . PHP_EOL);
-      exit(0);
+      exit(22);
     }
 
     if ($this->getHelp())
