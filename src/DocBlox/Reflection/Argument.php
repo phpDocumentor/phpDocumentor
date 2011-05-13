@@ -45,7 +45,7 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
    */
   protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
-    $this->setName($tokens->current()->getContent());
+    $this->setName($tokens->current()->content);
     $this->type    = $this->findType($tokens);
     $this->default = $this->findDefault($tokens);
   }

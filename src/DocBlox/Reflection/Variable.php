@@ -33,7 +33,7 @@ class DocBlox_Reflection_Variable extends DocBlox_Reflection_DocBlockedAbstract
    */
   protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
-    $this->setName($tokens->current()->getContent());
+    $this->setName($tokens->current()->content);
     $this->default = $this->findDefault($tokens);
 
     parent::processGenericInformation($tokens);

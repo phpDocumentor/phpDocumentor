@@ -56,13 +56,13 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $name = '';
     while ($token = $tokens->next())
     {
-      if (!in_array($token->getType(), array(T_WHITESPACE, T_STRING, T_NS_SEPARATOR)))
+      if (!in_array($token->type, array(T_WHITESPACE, T_STRING, T_NS_SEPARATOR)))
       {
         $tokens->previous();
         break;
       }
 
-      $name .= $token->getContent();
+      $name .= $token->content;
     }
 
     return trim($name);
@@ -94,7 +94,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
       do
       {
         $interfaces[] = $this->extractClassName($tokens);
-      } while ($tokens->next()->getContent() == ',');
+      } while ($tokens->next()->content == ',');
     }
 
     $this->implements = ($implements) ? true : false;

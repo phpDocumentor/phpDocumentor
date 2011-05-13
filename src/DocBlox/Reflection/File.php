@@ -417,7 +417,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
         try {
             $result = $docblock
-                ? new DocBlox_Reflection_DocBlock($docblock->getContent())
+                ? new DocBlox_Reflection_DocBlock($docblock->content)
                 : null;
         }
         catch (Exception $e) {
@@ -457,7 +457,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             /** @var DocBlox_Token $token */
             $token = $token === null ? $tokens->current() : $tokens->next();
 
-            if (($token instanceof DocBlox_Token) && $token->getType()) {
+            if (($token instanceof DocBlox_Token) && $token->type) {
                 $this->processToken($token, $tokens);
             }
         }
@@ -475,14 +475,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     {
         /** @var DocBlox_Token $token */
         $aliases = array('');
-        while (($token = $tokens->next()) && ($token->getContent() != ';')) {
+        while (($token = $tokens->next()) && ($token->content != ';')) {
             // if a comma is found, go to the next alias
-            if (!$token->getType() && $token->getContent() == ',') {
+            if (!$token->type && $token->content == ',') {
                 $aliases[] = '';
                 continue;
             }
 
-            $aliases[count($aliases) - 1] .= $token->getContent();
+            $aliases[count($aliases) - 1] .= $token->content;
         }
 
         $result = array();
@@ -525,7 +525,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         // collect all namespace parts
         $namespace = array();
         while ($token = $tokens->gotoNextByType(T_STRING, 5, array(';', '{'))) {
-            $namespace[] = $token->getContent();
+            $namespace[] = $token->content;
         }
         $namespace = implode('\\', $namespace);
 
@@ -652,7 +652,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     {
         /** @var DocBlox_Token $token  */
         $token = $tokens->current();
-        switch ($token->getContent()) {
+        switch ($token->content) {
         case 'define':
             $this->resetTimer('constant');
 

@@ -17,13 +17,13 @@
 class DocBlox_Token
 {
   /** @var int|null Type of the Token; either on of the T_* constants of null in case of a literal */
-  protected $type = null;
+  public $type = null;
 
   /** @var string The full content of the token */
-  protected $content = '';
+  public $content = '';
 
   /** @var int Line number where the token resides */
-  protected $line = 0;
+  public $line_number = 0;
 
   /**
    * Instantiate a token and populate it.
@@ -41,9 +41,9 @@ class DocBlox_Token
       list($type, $content, $line) = $temp_content;
     }
 
-    $this->type    = $type;
-    $this->content = $content;
-    $this->line    = $line;
+    $this->type        = $type;
+    $this->content     = $content;
+    $this->line_number = $line;
   }
 
   /**
@@ -53,27 +53,8 @@ class DocBlox_Token
    */
   public function getName()
   {
-    return $this->getType() !== null ? token_name($this->getType()) : null;
-  }
-
-  /**
-   * Returns the contents of this token; in case of a literal, which one.
-   *
-   * @return string
-   */
-  public function getContent()
-  {
-    return $this->content;
-  }
-
-  /**
-   * Returns the type identifier for this token, matched the T_* sequence.
-   *
-   * @return int|null
-   */
-  public function getType()
-  {
-    return $this->type;
+    $type = $this->type;
+    return $type !== null ? token_name($type) : null;
   }
 
   /**
@@ -83,6 +64,6 @@ class DocBlox_Token
    */
   public function getLineNumber()
   {
-    return $this->line;
+    return $this->line_number;
   }
 }

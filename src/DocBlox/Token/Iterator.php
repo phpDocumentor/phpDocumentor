@@ -81,7 +81,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
   protected function gotoTokenByTypeInDirection($type, $direction = 'next', $max_count = 0, $stop_at = null)
   {
     // direction must be 'next' or 'previous'
-    if (!in_array($direction, array('next', 'previous')))
+    if (($direction != 'next') && ($direction != 'previous'))
     {
       throw new InvalidArgumentException('The direction must be a string containing either "next" or "previous"');
     }
@@ -113,7 +113,9 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
 
       // break away if we found our token
       $token = $this->current();
-      if (in_array($token->getType(), $type))
+      $token_type = $token->type;
+
+      if (in_array($token_type, $type))
       {
         $found = true;
         break;
@@ -125,7 +127,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
       if ($result === false || // End of Array (EoA)
         (($max_count > 0) && ($count == $max_count)) || // the max_count is reached
         (($stop_at !== null) && // when a stop is defined, stop if this token matches the condition
-          (in_array($token->getType(), $stop_at) || in_array($token->getContent(), $stop_at))))
+          (in_array($token_type, $stop_at) || in_array($token->content, $stop_at))))
       {
         break;
       }
@@ -254,14 +256,14 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
       $token = $this->current();
 
       // only respond to literals
-      if (($token->getType() !== null))
+      if (($token->type !== null))
       {
         $this->next();
         continue;
       }
 
       // if the literal is the same as our starting literal then increase the nesting level
-      if($token->getContent() == $start_literal)
+      if($token->content == $start_literal)
       {
         // if the nesting level is -1 then we found our opening brace
         if ($level == -1)
@@ -274,7 +276,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
         $this->next();
         continue;
       }
-      elseif ($token->getContent() == $end_literal)
+      elseif ($token->content == $end_literal)
       {
         if ($level == -1)
         {
