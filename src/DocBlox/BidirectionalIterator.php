@@ -14,49 +14,202 @@
  * @package  Iterator
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_BidirectionalIterator extends ArrayIterator
+class DocBlox_BidirectionalIterator implements Countable, ArrayAccess, Serializable, SeekableIterator
 {
+    protected $key   = 0;
+    protected $count = 0;
+    protected $store = array();
+    protected $current = null;
 
-    public function offsetGet($i)
+    /**
+     * Initializes the iterator and populate the pointer array.
+     *
+     * @param mixed[] $data
+     */
+    public function __construct(array $data)
     {
-        if (($i < 0) || ($i >= $this->count())) {
-            return false;
-        }
-
-        return parent::offsetGet($i);
+        $this->store = $data;
+        $this->count = count($data);
+        $this->current = $this->store[0];
     }
 
+    /**
+     * Load a serialized store and populate the pointers.
+     *
+     * @param string $serialized
+     *
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+    }
+
+    /**
+     * Serialize the store.
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+    }
+
+    /**
+     * Due to the pointers it is not allowed to remove an item from the array.
+     *
+     * @throws Exception
+     * @param int $offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        throw new Exception('This iterator does not allow items to be unset');
+    }
+
+    /**
+     * Due to the pointers it is not allowed to add an item onto the array.
+     *
+     * @throws Exception
+     * @param integer $offset
+     * @param string  $value
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (!isset($this->store[$offset]))
+        {
+            throw new Exception('This iterator does not allow new items to be added');
+        }
+
+        $this->store[$offset] = $value;
+    }
+
+    /**
+     * Returns the value from the given $offset; or null when no item could be found.
+     *
+     * @param string $offset
+     *
+     * @return mixed|null
+     */
+    public function offsetGet($offset)
+    {
+        if(!isset($this->store[$offset])) {
+            return false;
+        }
+        return $this->store[$offset];
+    }
+
+    /**
+     * Returns true if an item exists.
+     *
+     * @param integer $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return ($offset >= 0 && $offset < $this->count);
+    }
+
+    /**
+     * Returns a count of the items contained in this iterator.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Sets the array pointer to the first item and returns that item.
+     *
+     * @return mixed|null
+     */
+    public function rewind()
+    {
+        $this->current = $this->store[0];
+        $this->key = 0;
+    }
+
+    /**
+     * Returns true if the pointer is at an existing item.
+     *
+     * @return boolean
+     */
+    public function valid()
+    {
+        return (bool)($this->current !== false);
+    }
+
+    /**
+     * Returns the key of the currently active item.
+     *
+     * @return int|null
+     */
+    public function key()
+    {
+        return $this->key;
+    }
+
+    /**
+     * Shifts the pointer to the next item in the sequence and returns the newly selected item; returns
+     * false when none found.
+     *
+     * @return bool|mixed|null
+     */
     public function next()
     {
-        try {
-            parent::next();
-            return $this->current();
-        } catch (OutOfBoundsException $e) {
-            return false;
-        }
+        $key = ++$this->key;
+        $current = ($key >= $this->count)
+            ? false
+            : $this[$key];
+        $this->current = $current;
+
+        return $current;
     }
 
+    /**
+     * Shifts the pointer to the previous item in the sequence and returns the newly selected item; returns
+     * false when none found.
+     *
+     * @return bool|mixed|null
+     */
     public function previous()
     {
-        try {
-            if ($this->key() - 1 < 0) {
-                return false;
-            }
-
-            $this->seek($this->key() -1);
-            return $this->current();
-        } catch(OutOfBoundsException $e) {
-            return false;
-        }
+        $this->key--;
+        $this->current = ($this->key < 0) ? false : $this[$this->key];
+        return $this->current;
     }
 
-    public function seek($i)
+    /**
+     * Returns the currently selected item.
+     *
+     * @return mixed
+     */
+    public function current()
     {
-        try {
-            parent::seek($i);
-            return $this->current();
-        } catch(OutOfBoundsException $e) {
-            return false;
-        }
+        return $this->current;
     }
+
+    /**
+     * Moves the pointer to a specific position in the store.
+     *
+     * NOTE: this function is used A LOT during the reflection process.
+     * This should be as high-performance as possible and ways should be devised to not use it.
+     *
+     * @param int|string $key
+     *
+     * @return mixed
+     */
+    public function seek($key)
+    {
+        $this->key = $key;
+        $this->current = (($this->key < 0) || ($this->key >= $this->count))
+            ? false
+            : $this[$this->key];
+        return $this->current;
+    }
+
 }

@@ -91,7 +91,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
       throw new InvalidArgumentException('The maximum count must be a greater or equal to 0');
     }
 
-    $type = is_array($type) ? $type : array($type);
+    $type = is_scalar($type) ? array($type) : $type;
 
     // initialize basic data
     $token = null;
@@ -100,37 +100,33 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
     $index = $this->key();
 
     // if $stop_at is a single value, convert to array for ease of parsing
-    if (!is_array($stop_at) && ($stop_at !== null))
+    if (($stop_at !== null) && is_scalar($stop_at))
     {
       $stop_at = array($stop_at);
     }
 
-    // start with the next item
-    $this->$direction();
-    while ($this->valid())
+    // loop until we have reached the end
+    while (($token = $this->$direction()) !== false)
     {
       $count++;
 
-      // break away if we found our token
-      $token = $this->current();
       $token_type = $token->type;
 
+      // the direction methods (next() and previous()) return false if the end of the store is encountered
+      if ((($max_count > 0) && ($count == $max_count)) // the max_count is reached
+        || (($stop_at !== null) // when a stop is defined, stop if this token matches the condition
+            &&  (in_array($token_type, $stop_at) || in_array($token->content, $stop_at)))
+      ) {
+          break;
+      }
+
+        // break away if we found our token
       if (in_array($token_type, $type))
       {
         $found = true;
         break;
       }
 
-      $result = $this->$direction();
-
-      // the direction methods (next() and previous()) return false if the end of the store is encountered
-      if ($result === false || // End of Array (EoA)
-        (($max_count > 0) && ($count == $max_count)) || // the max_count is reached
-        (($stop_at !== null) && // when a stop is defined, stop if this token matches the condition
-          (in_array($token_type, $stop_at) || in_array($token->content, $stop_at))))
-      {
-        break;
-      }
     }
 
     // return to the last known position if none was found

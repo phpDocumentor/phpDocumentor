@@ -55,8 +55,8 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
     $this->fixture[9] = 100;
     $this->assertEquals(100, $this->fixture[9]);
 
-//    $this->setExpectedException('Exception');
-//    $this->fixture[11] = 11;
+    $this->setExpectedException('Exception');
+    $this->fixture[11] = 11;
   }
 
   /**
@@ -66,8 +66,8 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
    */
   public function testUnset()
   {
-//    $this->setExpectedException('Exception');
-//    unset($this->fixture[1]);
+    $this->setExpectedException('Exception');
+    unset($this->fixture[1]);
   }
 
   /**

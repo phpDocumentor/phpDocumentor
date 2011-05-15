@@ -19,6 +19,7 @@ function createPackager($original_file, $options = array())
       'data/output/*',
       'data/log/*',
       'bin/package.php',
+      'src/XHProf/*',     // Profiling package
       'src/Image/*',      // Dependency with a PEAR package
       'src/Zend/*',       // Dependency with a PEAR package
       'src/markdown/*',   // Dependency with a PEAR package

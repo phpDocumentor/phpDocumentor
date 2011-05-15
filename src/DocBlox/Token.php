@@ -34,8 +34,8 @@ class DocBlox_Token
    */
   public function __construct($content, $type = null, $line = 0)
   {
-    // if we are dealing with an array it probably comes directly from the token_get_all method
-    if (is_array($content))
+    // index 2 only exists in case of an array; this is faster than is_array()
+    if (isset($content[2]))
     {
       $temp_content = $content;
       list($type, $content, $line) = $temp_content;
