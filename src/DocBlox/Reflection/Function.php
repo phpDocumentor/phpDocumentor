@@ -127,7 +127,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 
         $this->setType($name ? self::TYPE_FUNCTION : self::TYPE_CLOSURE);
 
-        return $name ? $name->getContent() : 'Closure';
+        return $name ? $name->content : 'Closure';
     }
 
     /**

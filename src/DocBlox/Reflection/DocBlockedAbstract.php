@@ -1,4 +1,3 @@
-
 <?php
 /**
  * DocBlox
@@ -57,7 +56,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{', '}', ';'));
     try
     {
-      $result = $docblock ? new DocBlox_Reflection_DocBlock($docblock->getContent()) : null;
+      $result = $docblock ? new DocBlox_Reflection_DocBlock($docblock->content) : null;
       if ($result)
       {
         // attach line number to class, the DocBlox_Reflection_DocBlock does not know the number

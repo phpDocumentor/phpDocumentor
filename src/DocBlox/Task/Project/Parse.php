@@ -185,6 +185,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
 
       // get all files recursively to the files array
       $files_iterator = new RecursiveDirectoryIterator($directory);
+      $extensions = $this->getExtensions();
 
       /** @var SplFileInfo $file */
       foreach (new RecursiveIteratorIterator($files_iterator) as $file)
@@ -196,7 +197,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
         }
 
         // check if the file has the correct extension
-        if (!in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), $this->getExtensions()))
+        if (!in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), $extensions))
         {
           continue;
         }

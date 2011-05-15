@@ -18,7 +18,8 @@ class DocBlox_Core_ConfigTest extends PHPUnit_Framework_TestCase
     $this->assertTrue(isset($this->fixture->paths));
     $this->assertEquals(realpath(dirname(__FILE__) . '/../../../..'), $this->fixture->paths->application);
     $this->assertEquals(realpath($this->fixture->paths->application . '/data'), $this->fixture->paths->data);
-    $this->assertEquals(realpath($this->fixture->paths->data . '/templates'), $this->fixture->paths->templates);
+    $this->assertEquals(realpath($this->fixture->paths->data . '/themes'), $this->fixture->paths->templates);
+    $this->assertEquals(realpath($this->fixture->paths->data . '/themes'), $this->fixture->paths->themes);
 
     // test whether the templates are loaded
     $this->assertTrue(isset($this->fixture->templates));

@@ -32,11 +32,11 @@ class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
 
     if ($token = $tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 10, array(';')))
     {
-      $this->setName(trim($token->getContent(), '\'"'));
+      $this->setName(trim($token->content, '\'"'));
     }
     elseif ($token = $tokens->gotoNextByType(T_VARIABLE, 10, array(';')))
     {
-      $this->setName(trim($token->getContent(), '\'"'));
+      $this->setName(trim($token->content, '\'"'));
     }
   }
 

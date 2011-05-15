@@ -24,7 +24,10 @@ $application->main();
 DocBlox version %s
 
 project
- :transform  Transforms the structure file into the specified output format
  :list       Defines all tasks that can be run by DocBlox
- :run        Parse and transform the given directory (-d|-f) to the given location (-t).
  :parse      Parses the given source code and creates a structure file.
+ :run        Parse and transform the given directory (-d|-f) to the given location (-t).
+ :transform  Transforms the structure file into the specified output format
+theme
+ :generate   Generates a skeleton theme.
+ :list       Displays a listing of all available themes in DocBlox

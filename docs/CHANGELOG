@@ -1,5 +1,19 @@
-30/02/2011: Version 1.0: First stable release!
-----------------------------------------------
+06/04/2011: Version 0.11.0
+--------------------------
+
+* FIXED:    transform.php and parse.php referred to docblox.php but this is no
+            longer present in a PEAR installation
+* FIXED:    If you accidentily use a CONSTANT as name for a define instead of
+            a literal string will DocBlox throw an error and skip parsing of that
+            constant.
+* CHANGED:  Tweaked the splitting of a DocBlock to better support foreign characters
+* ADDED:    theme:list task to show which themes are natively present
+* ADDED:    theme:generate task to generate a skeleton theme/template
+* ADDED:    Support for relative paths in the ignore argument; relative path is
+            counted from the project origin.
+
+05/08/2011: Version 0.10.0
+--------------------------
 
 * FIXED:    DocBlox no longer throws E_STRICT errors due to the usage of Image_Graphviz
 * FIXED:    The type information in the method/function signature had an extra | appended
@@ -33,6 +47,12 @@
 * FIXED:    Several styling issues with FireFox and Internet Explorer
 * ADDED:    Functions to sidebar
 * CHANGED:  About anything and everything concerning the theme, it is more clean and feature rich than the previous
+* ADDED:    A new API section in the sidebar showing all elements marked as public API using the @api tags
+* FIXED:    description of @return was double-escaped
+* ADDED:    Templates / Themes can now be created outside the DocBlox directory structure and invoked
+            by giving an existing path (absolute or relative) to the --template argument.
+* CHANGED:  Merged templates and themes folder to become consistent with external templates and
+            because duplication was deemed unnecessary
 
 04/02/2011: Version 0.9: Improve Theming and CLI
 ------------------------------------------------
@@ -94,6 +114,7 @@
 * FIXED:    Encountered two docblock types which weren't parsed correctly; fixed by RichardJ
 
 02/19/2011: Version 0.8: fix known issues
+-----------------------------------------
 
 * ADDED:    Support for array notation of types (i.e. string[] or MyClass[])
 * ADDED:    Support for the T_USE token (namespace aliasing)

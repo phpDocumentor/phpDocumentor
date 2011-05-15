@@ -33,13 +33,28 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
    */
   protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
-    if ($tokens->current()->getContent() == 'define')
+    if ($tokens->current()->content == 'define')
     {
-      // find the first encapsed string and strip the opening and closing apostrophe
-      $this->setName(substr($tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 5, array(','))->getContent(), 1, -1));
+      // find the first encapsed string and strip the opening and closing
+      // apostrophe
+      $name_token = $tokens->gotoNextByType(
+          T_CONSTANT_ENCAPSED_STRING, 5, array(',')
+      );
+
+      if (!$name_token)
+      {
+          $this->log(
+              'Unable to process constant in file ' . $tokens->getFilename()
+              . ' at line ' . $tokens->current()->getLineNumber(),
+              DocBlox_Core_Log::CRIT
+          );
+          return;
+      }
+
+      $this->setName(substr($name_token->content, 1, -1));
 
       // skip to after the comma
-      while($tokens->current()->getContent() != ',')
+      while($tokens->current()->content != ',')
       {
         if ($tokens->next() === false)
         {
@@ -50,27 +65,27 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
       // get everything until the closing brace and use that for value, take child parenthesis under consideration
       $value = '';
       $level = 0;
-      while (!(($tokens->current()->getContent() == ')') && ($level == -1)))
+      while (!(($tokens->current()->content == ')') && ($level == -1)))
       {
         if ($tokens->next() === false)
         {
           break;
         }
 
-        switch($tokens->current()->getContent())
+        switch($tokens->current()->content)
         {
           case '(': $level++; break;
           case ')': $level--; break;
         }
 
-        $value .= $tokens->current()->getContent();
+        $value .= $tokens->current()->content;
       }
 
       $this->setValue(trim(substr($value, 0, -1)));
     }
     else
     {
-      $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->getContent());
+      $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->content);
       $this->setValue($this->findDefault($tokens));
     }
 
@@ -106,11 +121,17 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
    */
   public function __toXml()
   {
+    if (!$this->getName())
+    {
+      $xml = new SimpleXMLElement('');
+      return $xml->asXML();
+    }
+
     $xml = new SimpleXMLElement('<constant></constant>');
     $xml->name         = $this->getName();
     $xml->value        = $this->getValue();
     $xml['namespace']  = $this->getNamespace();
-    $xml['line'] = $this->getLineNumber();
+    $xml['line']       = $this->getLineNumber();
     $this->addDocblockToSimpleXmlElement($xml);
 
     return $xml->asXML();

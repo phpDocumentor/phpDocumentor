@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <phpunit bootstrap="tests/common/bootstrap.php" colors="true">
   <testsuites>
     <testsuite name="DocBlox">
@@ -7,11 +9,13 @@
   </testsuites>
   <filter>
     <whitelist>
-      <directory suffix=".php">./</directory>
+      <directory suffix=".php">.</directory>
       <exclude>
-        <directory suffix=".php">src/lib/symfony</directory>
-        <directory suffix=".php">src/lib/Zend</directory>
-        <directory suffix=".php">src/lib/pear</directory>
+        <directory suffix=".php">build</directory>
+        <directory suffix=".php">src/markdown</directory>
+        <file>src/markdown.php</file>
+        <directory suffix=".php">src/Zend</directory>
+        <directory suffix=".php">src/Image</directory>
         <directory suffix=".php">data/output</directory>
         <directory suffix=".php">data/log</directory>
         <directory suffix=".php">tests</directory>

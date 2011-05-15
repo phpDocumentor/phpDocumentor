@@ -8,7 +8,7 @@
     <transformation query="copy" writer="FileIo" source="themes/old_ocean/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
     <transformation query="" writer="xsl" source="themes/old_ocean/preprocess/object-index.xsl" artifact="$object-index" />
-    <transformation query="" writer="xsl" source="themes/single_file/file.xsl" artifact="index.html">
+    <transformation query="" writer="xsl" source="themes/pdf/file.xsl" artifact="index.html">
       <parameters><variables><title>File</title></variables></parameters>
     </transformation>
     <transformation query="" writer="pdf" source="index.html" artifact="apidocs.pdf" />

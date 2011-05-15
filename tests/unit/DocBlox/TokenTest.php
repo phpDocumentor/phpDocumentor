@@ -19,12 +19,12 @@ class DocBlox_TokenTest extends PHPUnit_Framework_TestCase
 
   public function testGetType()
   {
-    $this->assertEquals(T_STATIC, $this->fixture->getType());
+    $this->assertEquals(T_STATIC, $this->fixture->type);
   }
 
   public function testGetContent()
   {
-    $this->assertEquals('static', $this->fixture->getContent());
+    $this->assertEquals('static', $this->fixture->content);
   }
 
   public function testGetLineNumber()
