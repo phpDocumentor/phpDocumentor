@@ -474,6 +474,23 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     {
         $xpath = new DOMXPath($xml);
 
+        // get all classes that do not extend from anything or whose extend
+        // is not featured in this project; these are considered root nodes.
+        $result = $xpath->query(
+            '/project/file/class[extends=""]'.
+            '|/project/file/class[not(extends = /project/file/class/full_name)]'
+        );
+
+        var_dump($result->length);
+//        var_dump($result->item(0))
+        for($i=0;$i<$result->length;$i++)
+            var_dump($result->item($i)->childNodes->item(3)->textContent);
+//        var_dump($result->item(102)->textContent);
+//        var_dump($result->item(103)->textContent);
+//        var_dump($result->item(104)->textContent);
+//        var_dump($result->item(105)->textContent);
+        die();
+
         // get all nodes without an 'extend' or where the extend does not exist
         // in the structure
 
