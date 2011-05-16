@@ -116,4 +116,17 @@ class DocBlox_ParserTest extends PHPUnit_Framework_TestCase
     $this->fixture->getRelativeFilename(realpath(dirname(__FILE__).'/../phpunit.xml'));
   }
 
+  /**
+   * Make sure the setter can transform string to array and set correct attribute
+   *
+   * @covers DocBlox_Parser::setVisibility
+   *
+   * @return void
+   */
+  public function testSetVisibilityCorrectlySetsAttribute()
+  {
+      $this->fixture->setVisibility('public,protected,private');
+      $this->assertAttributeEquals(array('public', 'protected', 'private'), 'visibility', $this->fixture);
+  }
+
 }

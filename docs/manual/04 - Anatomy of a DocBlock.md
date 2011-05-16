@@ -46,6 +46,7 @@ The following applies:
   * *ALL*, @author, @version, @copyright
   * *Classes*, @category, @package, @subpackage
   * *Methods*, @param, @return, @throws, @throw
+  * *Property*, @var
 
 List of Inline Tags
 -------------------

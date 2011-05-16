@@ -67,7 +67,16 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
     }
     $this->_parsed = false;
 
-    parent::parse();
+    try {
+      parent::parse();
+    }
+    catch (Zend_Exception $e)
+    {
+      $name = basename($_SERVER['SCRIPT_NAME'], '.php');
+      echo($name . ': ' .$e->getMessage() . PHP_EOL);
+      echo('Try: \'' . $name . ' --help\' for more information.' . PHP_EOL);
+      exit(22);
+    }
 
     if ($this->getHelp())
     {

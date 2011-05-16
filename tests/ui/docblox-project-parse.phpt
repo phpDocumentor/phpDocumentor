@@ -45,4 +45,5 @@ Usage:
 --title [STRING]           Sets the title for this project; default is the DocBlox logo
 --force                    Forces a full build of the documentation, does not increment existing documentation
 --validate                 Validates every processed file using PHP Lint, costs a lot of performance
+--visibility [STRING]      Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")
 -c [--config] [STRING]     Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or docblox.dist.xml from the current working directory
