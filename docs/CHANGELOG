@@ -11,6 +11,11 @@
 * ADDED:    theme:generate task to generate a skeleton theme/template
 * ADDED:    Support for relative paths in the ignore argument; relative path is
             counted from the project origin.
+* FIXED:    Made several performance improvements
+* ADDED:    New option --visibility: you can limit which methods are included
+            during generation of the Docs.
+* CHANGED:  Reflection tag classes were altered to make them more easily extendable
+* CHANGED:  Errors about issues in DocBlocks have been improved
 
 05/08/2011: Version 0.10.0
 --------------------------
