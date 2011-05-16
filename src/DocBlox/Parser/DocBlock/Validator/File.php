@@ -5,20 +5,23 @@
  * @category   DocBlox
  * @package    Parser
  * @subpackage Validator
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
-
 /**
  * This class is responsible for validating the file docbloc
  *
  * @category   DocBlox
  * @package    Parser
  * @subpackage Validator
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract implements DocBlox_Parser_DocBlock_Validator
 {
@@ -68,27 +71,29 @@ class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract imple
     {
         $valid = true;
 
-        if (null == $this->docblock)
-        {
+        if (null == $this->docblock) {
             return false;
         }
 
-        if (!$this->docblock->hasTag('package'))
-        {
+        if (!$this->docblock->hasTag('package')) {
             $valid = false;
             $this->log(
                 'No Page-level DocBlock was found for '.$this->filename.' on line: '.$this->lineNumber, Zend_Log::ERR
             );
         }
 
-        if (count($this->docblock->getTagsByName('package')) > 1)
-        {
-            $this->log('File cannot have more than one @package tag', Zend_Log::CRIT);
+        if (count($this->docblock->getTagsByName('package')) > 1) {
+            $this->log(
+                'File cannot have more than one @package tag in '.$this->filename,
+                Zend_Log::CRIT
+            );
         }
 
-        if ($this->docblock->hasTag('subpackage') && !$this->docblock->hasTag('package'))
-        {
-            $this->log('File cannot have a @subpackage when a @package tag is not present', Zend_Log::CRIT);
+        if ($this->docblock->hasTag('subpackage') && !$this->docblock->hasTag('package')) {
+            $this->log(
+                'File cannot have a @subpackage when a @package tag is not present in '.$this->filename,
+                Zend_Log::CRIT
+            );
         }
 
         return $valid;
