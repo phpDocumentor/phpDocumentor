@@ -14,7 +14,7 @@
  * @package    Static_Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Reflection_DocBlock_Tag_Var extends DocBlox_Reflection_DocBlock_Tag_Param
+class DocBlox_Reflection_DocBlock_Tag_Var extends DocBlox_Reflection_DocBlock_Tag_Param implements DocBlox_Reflection_DocBlock_Tag_TagInterface
 {
   /**
    * Parses a tag and populates the member variables.
@@ -46,5 +46,17 @@ class DocBlox_Reflection_DocBlock_Tag_Var extends DocBlox_Reflection_DocBlock_Ta
     }
 
     $this->description = implode(' ', $content);
+  }
+
+  /**
+   * Implements DocBlox_Reflection_DocBlock_Tag_TagInterface
+   * 
+   * @param SimpleXMLElement $xml Relative root of xml document
+   */
+  public function __toXml(SimpleXMLElement $xml)
+  {
+    parent::__toXml($xml);
+
+    $xml['description'] = trim($this->getDescription());
   }
 }

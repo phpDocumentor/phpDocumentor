@@ -14,7 +14,7 @@
  * @package    Static_Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Reflection_DocBlock_Tag implements Reflector
+class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_DocBlock_Tag_TagInterface
 {
   /** @var string Name of the tag */
   protected $tag = '';
@@ -24,6 +24,12 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
 
   /** @var string description of the content of this tag */
   protected $description = '';
+
+  /** @var int line number of the tag */
+  protected $line_number = 0;
+
+  /** @var DocBlox_Reflection_DocBlockedAbstract docblock class */
+  protected $docblock;
 
   /**
    * Factory method responsible for instantiating the correct sub type.
@@ -39,7 +45,10 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
     {
       throw new DocBlox_Reflection_Exception('Invalid tag_line detected: '.$tag_line);
     }
-    $class_name = 'DocBlox_Reflection_DocBlock_Tag_'.ucfirst($matches[1]);
+
+    // support hypphen separated tag names
+    $tag_name = str_replace(' ', '', ucwords(str_replace('-', ' ', $matches[1])));
+    $class_name = 'DocBlox_Reflection_DocBlock_Tag_'.$tag_name;
 
     return (@class_exists($class_name))
       ? new $class_name($matches[1], isset($matches[2]) ? $matches[2] : '')
@@ -91,6 +100,38 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
   }
 
   /**
+   * Set the tag line number
+   * 
+   * @param int $number the line number of the tag
+   */
+  public function setLineNumber($number)
+  {
+    $this->line_number = (int) $number;
+  }
+
+  /**
+   * Get the line number of the tag
+   * 
+   * @return int tag line number
+   */
+  public function getLineNumber()
+  {
+    return $this->line_number;
+  }
+
+  /**
+   * Inject the docblock class
+   *
+   * This exposes some common functionality contained in the docblock abstract.
+   * 
+   * @param DocBlox_Reflection_DocBlockedAbstract $docblock DocBlock class
+   */
+  public function setDocBlock(DocBlox_Reflection_DocBlockedAbstract $docblock)
+  {
+    $this->docblock = $docblock;
+  }
+
+  /**
    * Builds a string representation of this object.
    *
    * @todo determine the exact format as used by PHP Reflection and implement it.
@@ -111,5 +152,19 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
   public function __toString()
   {
     return 'Not yet implemented';
+  }
+
+  /**
+   * Implements DocBlox_Reflection_DocBlock_Tag_TagInterface
+   * 
+   * @param SimpleXMLElement $xml Relative root of xml document
+   */
+  public function __toXml(SimpleXMLElement $xml)
+  {
+    $description = htmlspecialchars($this->getDescription(), ENT_QUOTES, 'UTF-8');
+
+    $xml['name']        = $this->getName();
+    $xml['description'] = trim($description);
+    $xml['line']        = $this->getLineNumber();
   }
 }
