@@ -86,6 +86,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
         $xml->load($path);
 
         $this->addMetaDataToStructure($xml);
+        $this->applyInheritance($xml);
 
         $this->source = $xml;
     }
@@ -424,6 +425,59 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
                 $element->setAttribute('link', $file_name . '#' . $element->nodeValue);
             }
         }
+    }
+
+    /**
+     * Apply inheritance of docblock elements to all elements.
+     *
+     * Apply the inheritance rules from root node to edge leaf; this way the
+     * inheritance cascades.
+     *
+     * Actions:
+     *
+     * 1. Get root nodes with present leafs
+     * 2. Get Extended/implemented leafs
+     * 3. If SD misses for leaf; apply SD of root
+     * 4. If LD misses for leaf; apply LD of root
+     * 5. if LD of leaf contains {@inheritdoc}; replace with LD of root
+     * 6. if @category of leaf is missing; use @category of root
+     * 7. if @package of leaf is missing; use @package of root
+     * 8. if @subcategory of leaf is missing; use @subpackage of root
+     * 9. if @version of leaf is missing; use @version of root
+     * 10. if @copyright of leaf is missing; use @copyright of root
+     * 11. if @author of leaf is missing; use @author of root
+     *
+     * 12. If root and leaf share a method with the same name:
+     * 13. If SD misses for leaf method; apply SD of root method
+     * 14. If LD misses for leaf method; apply LD of root method
+     * 15. if LD of leaf method contains {@inheritdoc}; replace with LD of root method
+     * 16. if @params of leaf method is missing; use @params of root method
+     * 17. if @return of leaf method is missing; use @return of root method
+     * 18. if @throw/throws of leaf method is missing; use @throws/throw of root method
+     * 19. if @version of leaf method is missing; use @version of root method
+     * 20. if @copyright of leaf method is missing; use @copyright of root method
+     * 21. if @author of leaf method is missing; use @author of root method
+     *
+     * 22. If root and leaf share a property with the same name:
+     * 23. If SD misses for leaf property; apply SD of root property
+     * 24. If LD misses for leaf property; apply LD of root property
+     * 25. if LD of leaf property contains {@inheritdoc}; replace with LD of root property
+     * 26. if @var of leaf property is missing; use @var of root property
+     * 27. if @version of leaf property is missing; use @version of root property
+     * 28. if @copyright of leaf property is missing; use @copyright of root property
+     * 29. if @author of leaf property is missing; use @author of root property
+     *
+     * @param DOMDocument $xml
+     * @return void
+     */
+    protected function applyInheritance(DOMDocument $xml)
+    {
+        $xpath = new DOMXPath($xml);
+
+        // get all nodes without an 'extend' or where the extend does not exist
+        // in the structure
+
+        // TODO: fix me
     }
 
     /**
