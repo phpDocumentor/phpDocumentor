@@ -598,12 +598,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $function->setNamespaceAliases($this->namespace_aliases);
         $function->parseTokenizer($tokens);
 
+        $this->functions[$function->getName()] = $function;
         $this->debugTimer(
             '>> Processed function ' . $function->getName(),
             'function'
         );
-
-        $this->functions[$function->getName()] = $function;
     }
 
     /**
