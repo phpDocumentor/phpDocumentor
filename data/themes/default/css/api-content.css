@@ -298,3 +298,18 @@ div.to-top a
   color:         silver;
   padding-right: 10px;
 }
+
+.public
+{
+  color: green !important;
+}
+
+.protected
+{
+  color: #E57825 !important;
+}
+
+.private
+{
+  color: red !important;
+}
