@@ -3,94 +3,123 @@ README
 
 What is DocBlox?
 ----------------
-DocBlox is a documentation generator, just like phpDocumentor. Though the big difference is that it was written
-with certain goals in mind:
-- Performance
-- Low memory usage
-- PHP 5.3 compatible
-- Integrates nicely with Continuous integration environments (incremental parsing)
 
-The reason I am building this application is actually because the company which I work for currently
-has a project which cannot be parsed by phpDocumentor (due to memory constraints) and I wanted to generate API docs.
+DocBlox an application that is capable of analyzing your PHP source code and
+DocBlock comments to generate a complete set of API Documentation.
 
-I could write quite bit more about this project but will stick to this text for the moment.
+Inspired by phpDocumentor and JavaDoc it continues to innovate and is up to date
+with the latest technologies and PHP language features.
 
-Please keep in mind: this is pre-release software. It has been tested against Zend Framework, Symfony, Agavi, Solar
-Framework and even larger projects but it does not yet contain the full feature set of phpDocumentor.
+Features
+--------
+
+DocBlox sports the following:
+
+* *PHP 5.3 compatible*, full support for Namespaces, Closures and more is provided.
+* *Shows any tag*, some tags add additional functionality to DocBlox (such as @link).
+* *Processing speed*, Zend Framework experienced an 80% reduction in processing time compared to phpDocumentor.
+* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
+* *Incremental parsing*, if you kept the Structure file from a previous run you get an additional performance boost of up
+  to 80% on top of the mentioned processing speed above.
+* *Easy theme building*, if you want to make a branding you only have to call 1 task and edit 3 files.
+* *Basic command-line compatibility with phpDocumentor*, Docblox is an application in its own right but the
+  basic phpDocumentor arguments, such as --directory, --file and --target, have been adopted.
+* *Two-step process*, DocBlox first generates a XML file with your application structure before creating the output.
+  If you'd like you can use that to power your own tools or formatters!
 
 Requirements
 ------------
+
 DocBlox requires the following:
-- PHP 5.2.6 or higher (probably works on 5.2.x but I am unable to test this)
-- Graphviz (optional, used for generating Class diagrams)
-- The XSL extension, http://www.php.net/manual/en/book.xsl.php
+
+* PHP 5.2.6 or higher (might work on 5.2.x as well but this is not supported)
+* The XSL extension, http://www.php.net/manual/en/book.xsl.php
+* Graphviz (optional, used for generating Class diagrams)
+* PEAR (optional, used for generating Class Diagrams or installing via PEAR)
+
+Installation
+------------
+
+There are 2 ways to install DocBlox:
+
+1. Via PEAR (recommended)
+2. Directly from source (Github)
+
+_*Please note* that it is required that the installation path of DocBlox does not
+contain spaces. This is a requirement imposed by an external library (libxml)_
+
+### PEAR (recommended)
+
+1. DocBlox is hosted on its own PEAR channel which can be discovered using the following command:
+
+        $ pear channel-discover pear.docblox-project.org
+
+2. Additionally DocBlox requires the PEAR channels for Zend Framework and the MarkdownExtra library:
+
+        $ pear channel-discover pear.zfcampus.org
+        $ pear channel-discover pear.michelf.com
+
+3. After that it is a simple matter of invoking PEAR to install the application
+   (since we are still in beta it is required to add that as stability).
+
+        $ pear install docblox/DocBlox-beta
+
+### Directly from source (Github)
+
+1. Download the latest released version from [http://www.docblox-project.org](http://www.docblox-project.org) or
+   if you feel really adventurous you can try the latest unreleased.
+2. Unzip the downloaded file to the intended destination location.
+
+All dependencies are included in the DocBlox package, so this is really it.
+You might want to create a symbolic link or batch file from a location in your PATH
+to make it easier to use but this is not required.
 
 How to use DocBlox?
 -------------------
 
-*NOTE*: DocBlox must be installed in a path without spaces in order to generate HTML files. The libraries that
-DocBlox uses to transform XSL files do not reliably support spaces in the path.
+The easiest way to run docblox is by running the following command when installed via PEAR:
 
-### The easy way
+    $ docblox.php run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
 
-The easiest way to run docblox is by running the following command:
+or when you did a manual installation:
 
-    php {INSTALLATION_FOLDER}/bin/docblox.php
+    $ php {INSTALLATION_FOLDER}/bin/docblox.php run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
 
-This will automatically execute the `project:run` task which kickstarts the parsing and transformation process.
+This command will parse the source code provided using the `-d` argument and
+output it to the folder indicated by the `-t` argument.
 
-### The more flexible but still easy way
-Under the hood DocBlox takes a two step approach to generating documentation:
-1. parse the source files and create a XML file (structure.xml) containing all metadata
-2. transform the XML file to human readable output (currently only static HTML is supported)
+DocBlox supports a whole range of options to configure the output of your documentation.
+You can execute the following command, or check our website, for a more detailed listing of available command line options.
 
-Parsing
--------
-The parsing is accomplished by executing the task project:parse using the docblox.php executable in the bin directory.
-This file takes several arguments (see `{INSTALLATION_FOLDER}/bin/docblox.php project:parse -h` for a full list) and with it you can select which files or directories to parse and which to ignore.
+    $ docblox run -h
 
-Example:
+Configuration file(s)
+---------------------
 
-    php {INSTALLATION FOLDER}/bin/docblox project:parse -d /home/me/project
-
-The example above parses the /home/me/project directory for any file suffixed with .php and write a structure.xml file to the data/output directory.
-
-By executing this command you construct the building block for the transformation process, the meta data store a.k.a. structure.xml.
-
-Please note: if an existing structure.xml is found on the target location it will attempt to check every target file if it has changed. If not, it will not re-parse and thus it will reuse the existing definition. Speeding up the process.
-
-Transformation
---------------
-The transformation process is responsible for creating human-readable output from the generated XML file.
-
-You can start the transformation process by running
-
-   php {INSTALLATION FOLDER}/bin/transform.php
-
-By default it will look in the output subfolder (_unless executed from the DocBlox root folder_) of your current working directory for the structure.xml file.
-During the transformation the structure.xml file will be interpreted and (static) XHTML files will be created in the same folder, additionally a search index and class diagram will be generated.
-
-That is all, now you have the API documentation of your project.
-If you want to see which options are available for transformation, see `./bin/docblox.php project:transform -h` for a full list.
+DocBlox also supports the use of configuration files (named docblox.xml or docblox.dist.xml by default).
+Please consult the documentation to see the format and supported options.
 
 Documentation
 -------------
-For more detailed information you can check our online documentation at http://www.docblox-project.org/documentation
+
+For more detailed information you can check our online documentation at [http://www.docblox-project.org/documentation](http://www.docblox-project.org/documentation).
 
 Known issues
 ------------
 
 1. Search does not work / is not available when accessing the documentation locally from Google Chrome.
-  Google Chrome blocks access to local files (and thus the search index) using Javascript when working with local files (file://); it is not possible for us to fix this.
-2. Remembering which navigation items are open does not work when accessing the documentation locally from Google Chrome.
-  The code responsible for remembering which items are open uses cookies to track the state. Unfortunately Google Chrome disables the use of cookies when working with local files (file://); it is not possible for us to fix this.
+   Google Chrome blocks access to local files (and thus the search index) using Javascript when working
+   with local files (file://); it is not possible for us to fix this.
+2. DocBlox must be installed in a path without spaces due to restrictions in libxml. The XSL transformation
+   will throw all kinds of odd warnings if the path contains spaces.
 
 Contact
 -------
+
 To come in contact is actually dead simple and can be done in a variety of ways.
 
-# Twitter: @DocBlox
-# IRC:     Freenode, #docblox
-# Github:  http://www.github.com/mvriel/docblox
-# Website: http://www.docblox-project.org
-# E-mail:  mike.vanriel@naenius.com
+* Twitter: [@DocBlox](http://twitter.com/docblox)
+* Website: [http://www.docblox-project.org](http://www.docblox-project.org)
+* IRC:     Freenode, #docblox
+* Github:  [http://www.github.com/mvriel/docblox](http://www.github.com/mvriel/docblox)
+* E-mail:  [mike.vanriel@naenius.com](mailto:mike.vanriel@naenius.com)
