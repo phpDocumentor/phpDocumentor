@@ -433,6 +433,16 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
      * Apply the inheritance rules from root node to edge leaf; this way the
      * inheritance cascades.
      *
+     * Note: the process below must _first_ be done on interfaces and a second
+     * pass on classes. If this is not done then not everything will be picked
+     * up because you effectively have 2 separate sets of root nodes.
+     *
+     * This does mean that an interface will populate any class in which it is
+     * implemented but will not walk further down the tree.
+     *
+     * Interfaces do not check whether they implement another interface because
+     * interfaces do not support the IMPLEMENTS keyword.
+     *
      * Actions:
      *
      * 1. Get root nodes with present leafs
@@ -467,12 +477,27 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
      * 28. if @copyright of leaf property is missing; use @copyright of root property
      * 29. if @author of leaf property is missing; use @author of root property
      *
+     * @todo move this into a pre-processor structure
+     *
      * @param DOMDocument $xml
+     *
      * @return void
      */
     protected function applyInheritance(DOMDocument $xml)
     {
         $xpath = new DOMXPath($xml);
+
+        // get all interfaces that do not extend from anything or whose extend
+        // is not featured in this project; these are considered root nodes.
+        $result = $xpath->query(
+            '/project/file/interface[extends=""]'.
+            '|/project/file/interface[not(extends = /project/file/class/full_name)]'
+        );
+
+        foreach($result as $node)
+        {
+            $this->applyInheritanceToNode(array(), $node);
+        }
 
         // get all classes that do not extend from anything or whose extend
         // is not featured in this project; these are considered root nodes.
@@ -481,10 +506,16 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
             '|/project/file/class[not(extends = /project/file/class/full_name)]'
         );
 
+        foreach ($result as $node)
+        {
+            $this->applyInheritanceToNode(array(), $node);
+        }
+
+        var_dump($xml->saveXML());
         var_dump($result->length);
 //        var_dump($result->item(0))
-        for($i=0;$i<$result->length;$i++)
-            var_dump($result->item($i)->childNodes->item(3)->textContent);
+//        for($i=0;$i<$result->length;$i++)
+//            var_dump($result->item($i)->textContent);
 //        var_dump($result->item(102)->textContent);
 //        var_dump($result->item(103)->textContent);
 //        var_dump($result->item(104)->textContent);
@@ -495,6 +526,104 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
         // in the structure
 
         // TODO: fix me
+    }
+
+    /**
+     * Checks whether the super contains any reference to the existing methods
+     * or properties.
+     *
+     * $super is not a real class, it is an aggregation of all methods and
+     * properties in the inheritance tree. This is done because a method may
+     * override another method which is not in the direct parent but several
+     * levels upwards.
+     *
+     * To deal with the situation above we flatten every found $sub into
+     * the $super. We only store the properties and methods since anything
+     * else does not override.
+     *
+     * The structure of $super is:
+     * * methods, array containing `$method_name => array` pairs
+     *   * class, name of the deepest leaf where this method is encountered
+     *   * object, DOMElement of the method declaration in the deepest leaf
+     * * properties, array containing `$property_name => array` pairs
+     *   * class, name of the deepest leaf where this property is encountered
+     *   * object, DOMElement of the property declaration in the deepest leaf
+     *
+     * @param array      $super
+     * @param DOMElement $sub
+     *
+     * @see applyInheritance() for a complete set of business rules.
+     *
+     * @return void
+     */
+    public function applyInheritanceToNode(array $super, DOMElement $sub)
+    {
+        $class_name = $sub->getElementsByTagName('full_name')->item(0)
+            ->nodeValue;
+        $methods    = $sub->getElementsByTagName('method');
+
+        /** @var DOMElement $method */
+        foreach($methods as $method)
+        {
+            // the name is always the first encountered child element with
+            // tag name 'name'
+            $method_name = $method->getElementsByTagName('name')->item(0)
+                ->nodeValue;
+            $docblocks    = $method->getElementsByTagName('docblock');
+
+            // if the super does not contain a method with this name; add it
+            // and continue.
+            if (!isset($super['methods'][$method_name])) {
+
+                // only add it if this method has a docblock; otherwise it is
+                // useless
+                if ($docblocks->length > 0) {
+                    $super['methods'][$method_name] = array(
+                      'class'  => $class_name,
+                      'object' => $method
+                    );
+                }
+
+                continue;
+            }
+
+            // if this method does not yet have a docblock; add one; even
+            // though DocBlox throws a warning about a missing DocBlock!
+            if ($docblocks->length < 1) {
+                $docblock = new DOMElement('docblock');
+                $method->appendChild($docblock);
+            } else {
+                /** @var DOMElement $docblock  */
+                $docblock = $docblocks->item(0);
+            }
+
+            /** @var DOMElement $super_method_object  */
+            $super_method_object = $super['methods'][$method_name]['object'];
+
+            /** @var DOMElement $super_docblock  */
+            $super_docblock = $super_method_object
+                ->getElementsByTagName('docblock')->item(0);
+
+            // add the short description if the super docblock has one and
+            // the sub docblock doesn't
+            if (($docblock->getElementsByTagName('description')->length < 1)
+                && $super_docblock->getElementsByTagName('description')->length > 0
+            ) {
+                $docblock->appendChild(new DOMElement($super_docblock
+                    ->getElementsByTagName('description')->item(0)->nodeValue));
+            }
+
+            // add the long description if the super docblock has one and
+            // the sub docblock doesn't
+            if (($docblock->getElementsByTagName('long-description')->length < 1)
+                && $super_docblock->getElementsByTagName('long-description')->length > 0
+            ) {
+                $docblock->appendChild(new DOMElement($super_docblock
+                    ->getElementsByTagName('long-description')->item(0)->nodeValue));
+            }
+        }
+
+//        $properties = $sub->getElementsByTagName('property');
     }
 
     /**
