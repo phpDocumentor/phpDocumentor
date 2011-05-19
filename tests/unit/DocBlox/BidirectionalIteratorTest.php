@@ -101,6 +101,19 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
   {
     $this->assertEquals(2, $this->fixture->seek(1));
     $this->assertEquals(false, $this->fixture->seek(11));
+
+    $fixture2 = new DocBlox_BidirectionalIterator(array_fill(0, 1000, 'a'));
+
+    $times = array();
+    for ($i = 0; $i < 1000; $i++)
+    {
+        $time = microtime(true);
+        $fixture2->seek(rand(0, 999));
+        $times[] = microtime(true) - $time;
+    }
+    $average = array_sum($times) / count($times);
+    $this->assertLessThan(0.0002, $average);
+
   }
 
   /**
@@ -145,6 +158,18 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(9, $this->fixture->seek(8));
     $this->assertEquals(10, $this->fixture->next());
     $this->assertEquals(false, $this->fixture->next()); // out of bounds
+
+    $fixture2 = new DocBlox_BidirectionalIterator(array_fill(0, 1000, 'a'));
+
+    $times = array();
+    for($i=0;$i < 1000; $i++)
+    {
+        $time = microtime(true);
+        $fixture2->next();
+        $times[] = microtime(true) - $time;
+    }
+    $average = array_sum($times) / count($times);
+    $this->assertLessThan(0.0002, $average);
   }
 
   /**
