@@ -7,7 +7,7 @@
     <div id="accordion">
 
         <xsl:call-template name="api"/>
-        
+
         <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
             <h1><a href="#">Namespaces</a></h1>
             <div style="padding: 0px;">
@@ -83,7 +83,7 @@
                                 <span class="{$className}">
                                 <xsl:choose>
                                     <xsl:when test="name(../..) = 'method'">
-                                        <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
+                                        <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
                                         <xsl:value-of select="../../name" />
                                         <br/>
                                         <small>
@@ -92,7 +92,7 @@
                                         </a>
                                     </xsl:when>
                                     <xsl:when test="name(../..) = 'constant'">
-                                        <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
+                                        <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
                                         <xsl:value-of select="../../name" />
                                         <br/>
                                         <small>
@@ -101,7 +101,7 @@
                                         </a>
                                     </xsl:when>
                                     <xsl:when test="name(../..) = 'property'">
-                                        <a href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
+                                        <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
                                         <xsl:value-of select="../../name" />
                                         <br/>
                                         <small>
