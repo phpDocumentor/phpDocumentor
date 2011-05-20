@@ -496,7 +496,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
 
         foreach($result as $node)
         {
-            $this->applyInheritanceToNode(array(), $node);
+            $this->applyInheritanceToNode(array(), $node, $xpath);
         }
 
         // get all classes that do not extend from anything or whose extend
@@ -506,13 +506,14 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
             '|/project/file/class[not(extends = /project/file/class/full_name)]'
         );
 
+        /** @var DOMElement $node */
         foreach ($result as $node)
         {
-            $this->applyInheritanceToNode(array(), $node);
+            $this->applyInheritanceToNode(array(), $node, $xpath);
         }
 
         var_dump($xml->saveXML());
-        var_dump($result->length);
+//        var_dump($result->length);
 //        var_dump($result->item(0))
 //        for($i=0;$i<$result->length;$i++)
 //            var_dump($result->item($i)->textContent);
@@ -551,12 +552,14 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
      *
      * @param array      $super
      * @param DOMElement $sub
+     * @param DOMXPath   $xpath
      *
      * @see applyInheritance() for a complete set of business rules.
      *
      * @return void
      */
-    public function applyInheritanceToNode(array $super, DOMElement $sub)
+    public function applyInheritanceToNode(array $super, DOMElement $sub,
+        DOMXPath $xpath)
     {
         $class_name = $sub->getElementsByTagName('full_name')->item(0)
             ->nodeValue;
@@ -606,23 +609,55 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
 
             // add the short description if the super docblock has one and
             // the sub docblock doesn't
-            if (($docblock->getElementsByTagName('description')->length < 1)
+            if ((($docblock->getElementsByTagName('description')->length < 1)
+                || (!$docblock->getElementsByTagName('description')->item(0)->nodeValue))
                 && $super_docblock->getElementsByTagName('description')->length > 0
             ) {
-                $docblock->appendChild(new DOMElement($super_docblock
-                    ->getElementsByTagName('description')->item(0)->nodeValue));
+                if ($docblock->getElementsByTagName('description')->length > 0) {
+                    $docblock->removeChild(
+                        $docblock->getElementsByTagName('description')->item(0)
+                    );
+                }
+                $docblock->appendChild(
+                    clone $super_docblock->getElementsByTagName('description')->item(0)
+                );
             }
 
             // add the long description if the super docblock has one and
             // the sub docblock doesn't
-            if (($docblock->getElementsByTagName('long-description')->length < 1)
+            if ((($docblock->getElementsByTagName('long-description')->length < 1)
+                || (!trim($docblock->getElementsByTagName('long-description')->item(0)->nodeValue)))
                 && $super_docblock->getElementsByTagName('long-description')->length > 0
             ) {
-                $docblock->appendChild(new DOMElement($super_docblock
-                    ->getElementsByTagName('long-description')->item(0)->nodeValue));
+                if ($docblock->getElementsByTagName('long-description')->length > 0) {
+                    $docblock->removeChild(
+                        $docblock->getElementsByTagName('long-description')->item(0)
+                    );
+                }
+
+                $docblock->appendChild(
+                    clone $super_docblock->getElementsByTagName('long-description')->item(0)
+                );
+            }
+
+            /** @var DOMElement $tag */
+            foreach($super_docblock->getElementsByTagName('tag') as $tag) {
+                if (in_array($tag->getAttribute('name'), array(
+                  'param', 'return', 'throw', 'throws', 'version', 'copyright', 'author'))
+                ) {
+                    // TODO: remove any existing tags but make sure to only remove all existing tags and not newly added
+
+                    // insert new ones.
+                    $docblock->appendChild(clone $tag);
+                }
             }
         }
 
+        $result = $xpath->query('/project/file/*[extends="'.$class_name.'"]');
+        foreach($result as $node)
+        {
+            $this->applyInheritanceToNode($super, $node, $xpath);
+        }
 //        $properties = $sub->getElementsByTagName('property');
     }
 
