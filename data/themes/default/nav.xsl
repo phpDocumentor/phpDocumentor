@@ -43,7 +43,7 @@
         </xsl:if>
 
         <h1><a href="#">Files</a></h1>
-        <div>
+        <div style="padding: 0px;">
             <ul id="files-" class="filetree">
             <xsl:apply-templates select="file">
                 <xsl:sort select="@path" />
