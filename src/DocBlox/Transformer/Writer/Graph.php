@@ -29,6 +29,8 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
      */
     public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
     {
+        require_once 'Image/GraphViz.php';
+        
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
         if ($error != 0) {

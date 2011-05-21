@@ -2,7 +2,7 @@
 
   <xsl:template match="property">
     <a id="{../full_name}::{name}" />
-    <h4 class="property">
+    <h4 class="property {@visibility}">
       <xsl:value-of select="name" />
       <div class="to-top"><a href="#{../full_name}">jump to class</a></div>
     </h4>
