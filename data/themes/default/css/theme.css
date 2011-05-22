@@ -8,13 +8,13 @@
   background: white;
 }
 
-#header
+#db-header
 {
   background: white url('../images/top-background.png') repeat-x top left;
   padding: 10px 10px 0px 10px;
 }
 
-#header h1
+#db-header h1
 {
   display:        inline;
   margin-left:    10px;
@@ -24,14 +24,14 @@
   color:          #FFFFFF;
 }
 
-#header span
+#db-header span
 {
   float: left;
   padding-left: 10px;
   height: 50px;
 }
 
-#header div.docblox
+#db-header div.docblox
 {
   float: left;
   background: transparent url('../images/icon48x48.png') top left no-repeat;

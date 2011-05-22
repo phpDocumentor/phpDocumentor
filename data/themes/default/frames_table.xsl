@@ -19,7 +19,7 @@
       <body class="chrome">
         <table id="page">
           <tr>
-            <td colspan="2" id="header">
+            <td colspan="2" id="db-header">
               <h1>
                 <xsl:if test="/project/@title != ''">
                   <span><xsl:value-of select="/project/@title" disable-output-escaping="yes" /></span>

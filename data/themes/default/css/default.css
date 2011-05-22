@@ -4,7 +4,7 @@ html, body, #page
   width:  100%;
 }
 
-#header, #menubar
+#db-header, #menubar
 {
   height: 1px;
 }
@@ -27,12 +27,12 @@ html, body, #page
   clear: both;
 }
 
-#accordion table
+#accordion table, #marker-accordion table
 {
     font-size: 0.95em;
 }
 
-#accordion h3 a small
+#marker-accordion h3 a small
 {
     display:        block;
     float:          right;
