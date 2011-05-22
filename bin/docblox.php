@@ -3,9 +3,12 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    CLI
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @category  DocBlox
+ * @package   CLI
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 // check whether xhprof is loaded
@@ -37,12 +40,11 @@ $application = new DocBlox_Core_Application();
 $application->main();
 
 if (false !== $profile) {
-    include_once 'src/XHProf/utils/xhprof_lib.php';
-    include_once 'src/XHProf/utils/xhprof_runs.php';
+    include_once 'XHProf/utils/xhprof_lib.php';
+    include_once 'XHProf/utils/xhprof_runs.php';
 
     $xhprof_data = xhprof_disable();
-    if ($xhprof_data !== null)
-    {
+    if ($xhprof_data !== null) {
         $xhprof_runs = new XHProfRuns_Default();
         $run_id = $xhprof_runs->save_run($xhprof_data, 'docblox');
         $profiler_url = sprintf('index.php?run=%s&source=%s', $run_id, 'docblox');

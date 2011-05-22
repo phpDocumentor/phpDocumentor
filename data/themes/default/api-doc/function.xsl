@@ -2,14 +2,14 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="method/name">
-    <h4 class="method">
+    <h4 class="method {../@visibility}">
       <xsl:value-of select="." />
       <div class="to-top"><a href="#{../../name}">jump to class</a></div>
     </h4>
   </xsl:template>
 
   <xsl:template match="function/name">
-    <h3 class="function">
+    <h3 class="function {../@visibility}">
       <xsl:value-of select="." />
       <div class="to-top"><a href="#top">jump to top</a></div>
     </h3>

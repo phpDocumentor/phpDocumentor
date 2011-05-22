@@ -76,14 +76,21 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
      */
     public function setSource($source)
     {
-        $path = realpath($source);
-        if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
-            throw new Exception('Given source (' . $source . ') does not exist or is not readable');
-        }
+        $source = trim($source);
 
-        // convert to dom document so that the writers do not need to
         $xml = new DOMDocument();
-        $xml->load($path);
+
+        if (substr($source, 0, 5) === '<?xml') {
+            $xml->loadXML($source);
+        } else {
+            $path = realpath($source);
+            if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
+                throw new Exception('Given source (' . $source . ') does not exist or is not readable');
+            }
+
+            // convert to dom document so that the writers do not need to
+            $xml->load($path);
+        }
 
         $this->source = $xml;
     }

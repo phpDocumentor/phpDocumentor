@@ -16,6 +16,8 @@
             during generation of the Docs.
 * CHANGED:  Reflection tag classes were altered to make them more easily extendable
 * CHANGED:  Errors about issues in DocBlocks have been improved
+* FIXED:    Tags were not separated if they were preceded by more than 1 whitespace character.
+* CHANGED:  Rewritten the README to match the current state of the project.
 
 05/08/2011: Version 0.10.0
 --------------------------

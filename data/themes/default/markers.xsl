@@ -5,11 +5,19 @@
   <xsl:include href="chrome.xsl" />
 
   <xsl:template match="/project">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#marker-accordion").accordion({
+                collapsible: true,
+                autoHeight:  false
+            });
+        });
+    </script>
 
       <div id="content">
 
           <h1>Markers (TODO / FIXME)</h1>
-        <div id="accordion">
+        <div id="marker-accordion">
             <xsl:for-each select="/project/file">
                 <xsl:if test="markers|.//docblock/tag[@name='todo']|.//docblock/tag[@name='fixme']">
                     <h3>

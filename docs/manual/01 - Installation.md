@@ -1,15 +1,16 @@
 Installation
 ============
 
-DocBlox can easily be installed either via PEAR or manually from Github at http://github.com/mvriel/docblox.
+DocBlox can easily be installed either via PEAR or manually from Github at [http://github.com/mvriel/docblox](http://github.com/mvriel/docblox).
 
-Independent to the chosen installation path has DocBlox several dependencies on other software packages.
-Some of these dependencies are only necessary when generating specific parts of the documentation, such as PDF or Graphs.
+Independent to the chosen installation type has DocBlox several dependencies on other software packages.
+Some of these dependencies are only necessary when generating specific parts of the documentation, such as PDFs or Graphs.
 If a dependency is only limited to a subset of features it is denoted with the dependency entry below.
 
-* PHP 5.2.6 or higher (5.3 is explicitly supported)
+* PHP 5.2.6 or higher (5.2.x might work but is not supported, 5.3 is explicitly supported)
 * XSL extension for PHP, only applicable when generating HTML via XSL (recommended)
 * PEAR, only applicable when generating Graphs (recommended)
+* Graphviz, only applicable when generating Graphs (recommended)
 * wkhtmltopdf, only applicable when generating PDFs (not enabled by default)
 
 PEAR
