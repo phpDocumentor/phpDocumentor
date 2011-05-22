@@ -36,7 +36,7 @@ class DocBlox_Transformer_Behaviour_GeneratePaths implements
      *
      * @return void
      */
-    public function setLogger(DocBlox_Core_Log $log)
+    public function setLogger(DocBlox_Core_Log $log = null)
     {
         $this->logger = $log;
     }

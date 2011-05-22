@@ -3,7 +3,7 @@
 
 * FIXED:    transform.php and parse.php referred to docblox.php but this is no
             longer present in a PEAR installation
-* FIXED:    If you accidentily use a CONSTANT as name for a define instead of
+* FIXED:    If you accidentally use a CONSTANT as name for a define instead of
             a literal string will DocBlox throw an error and skip parsing of that
             constant.
 * CHANGED:  Tweaked the splitting of a DocBlock to better support foreign characters
@@ -18,6 +18,11 @@
 * CHANGED:  Errors about issues in DocBlocks have been improved
 * FIXED:    Tags were not separated if they were preceded by more than 1 whitespace character.
 * CHANGED:  Rewritten the README to match the current state of the project.
+* ADDED:    Color coding of elements to indicate the visibility
+* ADDED:    Transformation Behaviours: ad hoc business logic that adds meta data onto
+            the structure.xml pre-transformation.
+* ADDED:    Inheritance of Interface, Class, Property and Method DocBlocks; please refer to
+            /docs/manual/04 - Anatomy of a DocBlock.md for a complete description.
 
 05/08/2011: Version 0.10.0
 --------------------------

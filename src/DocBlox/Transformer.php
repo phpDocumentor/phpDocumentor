@@ -141,8 +141,9 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     /**
      * Loads the transformation from the configuration and from the given templates and/or transformations.
      *
-     * @param string[] $templates                       Array of template names.
-     * @param Transformation[]|array[] $transformations Array of transformations or arrays representing transformations.
+     * @param string[]                 $templates       Array of template names.
+     * @param Transformation[]|array[] $transformations Array of transformations
+     *  or arrays representing transformations.
      *
      * @see self::addTransformation() for more details regarding the array structure.
      *
@@ -334,14 +335,17 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     {
         $xml = $this->getSource();
 
-        $behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
-            new DocBlox_Transformer_Behaviour_GeneratePaths(),
-            new DocBlox_Transformer_Behaviour_AddLinkInformation(),
-            new DocBlox_Transformer_Behaviour_Inherit(),
-        ));
+        if ($xml)
+        {
+            $behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
+                new DocBlox_Transformer_Behaviour_GeneratePaths(),
+                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
+                new DocBlox_Transformer_Behaviour_Inherit(),
+            ));
 
-        $behaviours->setLogger(DocBlox_Core_Abstract::$logger);
-        $xml = $behaviours->process($xml);
+            $behaviours->setLogger(DocBlox_Core_Abstract::$logger);
+            $xml = $behaviours->process($xml);
+        }
 
         foreach ($this->getTransformations() as $transformation)
         {

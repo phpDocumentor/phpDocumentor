@@ -36,7 +36,7 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
      *
      * @return void
      */
-    public function setLogger(DocBlox_Core_Log $log)
+    public function setLogger(DocBlox_Core_Log $log = null)
     {
         $this->logger = $log;
     }
@@ -88,7 +88,9 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
         }
 
         // add extra xml elements to tags
-        $this->logger->log('Adding link information and excerpts to all DocBlock tags');
+        if ($this->logger) {
+            $this->logger->log('Adding link information and excerpts to all DocBlock tags');
+        }
         $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|//extends|//implements');
 
         /** @var DOMElement $element */

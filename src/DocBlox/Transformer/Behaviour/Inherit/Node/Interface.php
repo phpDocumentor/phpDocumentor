@@ -6,7 +6,7 @@
  *
  * @category   DocBlox
  * @package    Transformation
- * @subpackage Behaviour
+ * @subpackage Behaviour.Inherit
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
@@ -14,32 +14,17 @@
  */
 
 /**
- * Collection object for a set of Behaviours.
+ * Responsible for adding inheritance behaviour to an individual interface.
  *
  * @category   DocBlox
  * @package    Transformation
- * @subpackage Behaviour
+ * @subpackage Behaviour.Inherit
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-interface DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_Inherit_Node_Interface extends
+    DocBlox_Transformer_Behaviour_Inherit_Node_Class
 {
-    /**
-     * Executes the behaviour on the given dataset,
-     *
-     * @param DOMDocument $xml
-     *
-     * @return DOMDocument
-     */
-    public function process(DOMDocument $xml);
 
-    /**
-     * Sets the logger for this behaviour or removes it when $log is null.
-     *
-     * @param DocBlox_Core_Log|null $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null);
 }
