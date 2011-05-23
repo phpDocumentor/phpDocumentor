@@ -2,173 +2,182 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Core
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Core
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
- * This class handles the logging for DocBlox.
+ * Reflection class for a full file.
  *
- * @category   DocBlox
- * @package    Core
- * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @category DocBlox
+ * @package  Core
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Core_Log
 {
-  /** @var string Emergency: system is unstable */
-  const EMERG = Zend_Log::EMERG;
+    /** @var string Emergency: system is unstable */
+    const EMERG = Zend_Log::EMERG;
 
-  /** @var string Alert: action must be taken immediately */
-  const ALERT = Zend_Log::ALERT;
+    /** @var string Alert: action must be taken immediately */
+    const ALERT = Zend_Log::ALERT;
 
-  /** @var string Critical: critical conditions */
-  const CRIT = Zend_Log::CRIT;
+    /** @var string Critical: critical conditions */
+    const CRIT = Zend_Log::CRIT;
 
-  /** @var string Error: error conditions */
-  const ERR = Zend_Log::ERR;
+    /** @var string Error: error conditions */
+    const ERR = Zend_Log::ERR;
 
-  /** @var string Warning: warning conditions */
-  const WARN = Zend_Log::WARN;
+    /** @var string Warning: warning conditions */
+    const WARN = Zend_Log::WARN;
 
-  /** @var string Notice: normal but significant condition */
-  const NOTICE = Zend_Log::NOTICE;
+    /** @var string Notice: normal but significant condition */
+    const NOTICE = Zend_Log::NOTICE;
 
-  /** @var string Informational: informational messages */
-  const INFO = Zend_Log::INFO;
+    /** @var string Informational: informational messages */
+    const INFO = Zend_Log::INFO;
 
-  /** @var string Debug: debug messages */
-  const DEBUG = Zend_Log::DEBUG;
+    /** @var string Debug: debug messages */
+    const DEBUG = Zend_Log::DEBUG;
 
-  /** @var string Quiet: disables logging */
-  const QUIET = -1;
+    /** @var string Quiet: disables logging */
+    const QUIET = -1;
 
-  /** @var string Allowed file locator for the instantiation of this class; output will only be sent to stdout */
-  const FILE_STDOUT = 'php://stdout';
+    /** @var string Output will only be sent to stdout */
+    const FILE_STDOUT = 'php://stdout';
 
-  /** @var int Only log messages that equal or exceed this. */
-  protected $threshold = self::DEBUG;
+    /** @var int Only log messages that equal or exceed this. */
+    protected $threshold = self::DEBUG;
 
-  /** @var string The name of the file/stream where the logs are written to. */
-  protected $filename = '';
+    /** @var string The name of the file/stream where the logs are written to. */
+    protected $filename = '';
 
-  /** @var Zend_Log The logger to use for storing information. */
-  protected $logger = null;
+    /** @var Zend_Log The logger to use for storing information. */
+    protected $logger = null;
 
-  /**
-   * Initialize the logger.
-   *
-   * @param string $file May also be the FILE_STDOUT constant to output to STDOUT.
-   */
-  public function __construct($file)
-  {
-    // only do the file checks if it is an actual file.
-    if ($file !== self::FILE_STDOUT)
+    /**
+     * Initialize the logger.
+     *
+     * @param string $file May also be the FILE_STDOUT constant to output to STDOUT.
+     */
+    public function __construct($file)
     {
-      // replace APP_ROOT and DATE variables
-      $file = str_replace(
-        array(
-          '{APP_ROOT}',
-          '{DATE}'
-        ),
-        array(
-          DocBlox_Core_Abstract::config()->paths->application,
-          date('YmdHis')
-        ),
-        $file
-      );
+        // only do the file checks if it is an actual file.
+        if ($file !== self::FILE_STDOUT) {
+            // replace APP_ROOT and DATE variables
+            $file = str_replace(
+                array(
+                     '{APP_ROOT}',
+                     '{DATE}'
+                ),
+                array(
+                     DocBlox_Core_Abstract::config()->paths->application,
+                     date('YmdHis')
+                ),
+                $file
+            );
 
-      // check if the given file location is writable; if not: output an error
-      if (!is_writeable(dirname($file)))
-      {
-        $this->logger = new Zend_Log(new Zend_Log_Writer_Null());
-        $this->log(
-          'The log directory does not appear to be writable; tried to log to: ' . $file . ', disabled logging to file',
-          self::ERR
-        );
+            // check if the given file location is writable; if not: output an error
+            if (!is_writeable(dirname($file))) {
+                $this->logger = new Zend_Log(new Zend_Log_Writer_Null());
+                $this->log(
+                    'The log directory does not appear to be writable; tried '
+                    . 'to log to: ' . $file . ', disabled logging to file',
+                    self::ERR
+                );
 
-        $this->filename = null;
-        return;
-      }
+                $this->filename = null;
+                return;
+            }
+        }
+
+        $this->filename = $file;
+        $this->logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
     }
 
-    $this->filename = $file;
-    $this->logger = new Zend_Log(new Zend_Log_Writer_Stream(fopen($file, 'w')));
-  }
-
-  /**
-   * Returns the name of the file/stream where the output is written to or null if it is send to the void.
-   *
-   * @return null|string
-   */
-  public function getFilename()
-  {
-    return $this->filename;
-  }
-
-  /**
-   * Sets the logging threshold; anything more detailed than the given level will not be logged.
-   *
-   * @param int $threshold
-   *
-   * @return void
-   */
-  public function setThreshold($threshold)
-  {
-    if (!is_numeric($threshold))
+    /**
+     * Returns the name of the file/stream where the output is written to or
+     * null if it is send to the void.
+     *
+     * @return null|string
+     */
+    public function getFilename()
     {
-      if (!defined('DocBlox_Core_Log::' . strtoupper($threshold)))
-      {
-        throw new InvalidArgumentException(
-          'Expected one of the constants of the DocBlox_Core_Log class, "' . $threshold . '" received'
-        );
-      }
-      $threshold = constant('DocBlox_Core_Log::' . strtoupper($threshold));
+        return $this->filename;
     }
 
-    $this->threshold = $threshold;
-  }
-
-  /**
-   * Returns the threshold for this logger.
-   *
-   * @return int
-   */
-  public function getThreshold()
-  {
-    return $this->threshold;
-  }
-
-  /**
-   * Log the given data; if it is something else than a string it will be var_dumped and then logged.
-   *
-   * @param mixed $data
-   * @param int   $level
-   *
-   * @return void
-   */
-  public function log($data, $level = self::INFO)
-  {
-    // is the log level is below the priority; just skip this
-    if ($this->getThreshold() < $level)
+    /**
+     * Sets the logging threshold; anything more detailed than the given level
+     * will not be logged.
+     *
+     * @param int $threshold The min level that will be logged.
+     *
+     * @return void
+     */
+    public function setThreshold($threshold)
     {
-      return;
+        if (!is_numeric($threshold)) {
+            if (!defined('DocBlox_Core_Log::' . strtoupper($threshold))) {
+                throw new InvalidArgumentException(
+                    'Expected one of the constants of the DocBlox_Core_Log class, '
+                    . '"' . $threshold . '" received'
+                );
+            }
+            $constant = 'DocBlox_Core_Log::' . strtoupper($threshold);
+            $threshold = constant($constant);
+        }
+
+        $this->threshold = $threshold;
     }
 
-    // if the given is not a string then we var dump the object|array to inspect it
-    if (!is_string($data))
+    /**
+     * Returns the threshold for this logger.
+     *
+     * @return int
+     */
+    public function getThreshold()
     {
-      ob_start();
-      var_dump($data);
-      $data = ob_get_clean();
+        return $this->threshold;
     }
 
-    $data = (($this->getThreshold() == Zend_Log::DEBUG)
-      ? '[' . number_format(round(memory_get_usage() / 1024 / 1024, 2), 2) . 'mb]: '
-      : '')
-      . $data;
+    /**
+     * Log the given data; if it is something else than a string it will be
+     * var_dumped and then logged.
+     *
+     * @param mixed $data  The data to log.
+     * @param int   $level The level of the message to log.
+     *
+     * @return void
+     */
+    public function log($data, $level = self::INFO)
+    {
+        // is the log level is below the priority; just skip this
+        if ($this->getThreshold() < $level) {
+            return;
+        }
 
-    $this->logger->log($data, $level);
-  }
+        // if the given is not a string then we var dump the object|array to
+        // inspect it
+        if (!is_string($data)) {
+            ob_start();
+            var_dump($data);
+            $data = ob_get_clean();
+        }
+
+        $memory = number_format(round(memory_get_usage() / 1024 / 1024, 2), 2);
+        $data = (($this->getThreshold() == Zend_Log::DEBUG)
+            ? '[' . $memory . 'mb]: '
+            : '')
+            . $data;
+
+        $this->logger->log($data, $level);
+    }
 
 }
