@@ -2,27 +2,31 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Core
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Core
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
- * Base class used for all classes which need to support logging and core functionality.
+ * Base class used for all classes which need to support logging and core
+ * functionality.
  *
  * This class also contains the (leading) current version number.
  *
- * @category   DocBlox
- * @package    Core
- * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @category DocBlox
+ * @package  Core
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 abstract class DocBlox_Core_Abstract
 {
-    /**
-     * The actual version number of DocBlox.
-     *
-     * @var int
-     */
+    /** @var string The actual version number of DocBlox. */
     const VERSION = '0.10.0';
 
     /**
@@ -42,7 +46,8 @@ abstract class DocBlox_Core_Abstract
     protected $debugger = null;
 
     /**
-     * The logger used to capture all messages send by the log method and send them to stdout.
+     * The logger used to capture all messages send by the log method and
+     * send them to stdout.
      *
      * @see DocBlox_Core_Abstract::log()
      *
@@ -62,23 +67,29 @@ abstract class DocBlox_Core_Abstract
     /**
      * The current level of logging,
      *
-     * This variable is used by i.e. the verbosity flag to enable more or less logging.
+     * This variable is used by i.e. the verbosity flag to enable more or
+     * less logging.
      *
      * @var string
      */
     static protected $log_level = null;
 
+    /**
+     * Initializes the Debugger.
+     */
     public function __construct()
     {
-        $this->setDebugger(new DocBlox_Core_Debug(
-            new DocBlox_Core_Log($this->getConfig()->logging->paths->errors)
-        ));
+        $this->setDebugger(
+            new DocBlox_Core_Debug(
+                new DocBlox_Core_Log($this->getConfig()->logging->paths->errors)
+            )
+        );
     }
 
     /**
      * Sets the debugger for this session; automatically enables debugging mode.
      *
-     * @param DocBlox_Core_Debug $debugger
+     * @param DocBlox_Core_Debug $debugger Debugger to use for this session.
      *
      * @return void
      */
@@ -90,13 +101,15 @@ abstract class DocBlox_Core_Abstract
     /**
      * Resets a timer (with the given name) to the current time.
      *
-     * @param  string $name
+     * @param string $name Name of the used timer.
+     *
+     * @todo change implementations of this method to use the debugger directly.
+     *
      * @return void
      */
     protected function resetTimer($name = 'default')
     {
-        if ($this->debugger)
-        {
+        if ($this->debugger) {
             $this->debugger->resetTimer($name);
         }
     }
@@ -106,22 +119,24 @@ abstract class DocBlox_Core_Abstract
      *
      * If debugging is not enabled this method will return -1.
      *
-     * @param  string $name
+     * @param string $name Name of the timer.
      *
      * @return float
      */
     protected function getElapsedTime($name = 'default')
     {
         return ($this->debugger)
-            ? $this->debugger->getElapsedTime($name)
-            : -1;
+                ? $this->debugger->getElapsedTime($name)
+                : -1;
     }
 
     /**
      * Returns the level of messages to log.
      *
      * If no level is set it tries to get the level from the config file.
-     * @see    Zend_Log
+     *
+     * @see Zend_Log
+     *
      * @return void
      */
     public function getLogLevel()
@@ -136,18 +151,24 @@ abstract class DocBlox_Core_Abstract
     /**
      * Sets a new level to log messages of.
      *
-     * @param  string $level Must be one of the Zend_Log LOG_* constants
-     * @see    Zend_Log
+     * @param string $level Must be one of the Zend_Log LOG_* constants.
+     *
+     * @see Zend_Log
+     *
      * @return void
      */
     public function setLogLevel($level)
     {
         if (!is_numeric($level)) {
             if (!defined('DocBlox_Core_Log::' . strtoupper($level))) {
-                throw new InvalidArgumentException('Expected one of the constants of the DocBlox_Core_Log class, "'
-                                                   . $level . '" received');
+                throw new InvalidArgumentException(
+                    'Expected one of the constants of the DocBlox_Core_Log class, "'
+                    . $level . '" received'
+                );
             }
-            $level = constant('DocBlox_Core_Log::' . strtoupper($level));
+
+            $constant = 'DocBlox_Core_Log::' . strtoupper($level);
+            $level = constant($constant);
         }
 
         if (self::$logger) {
@@ -156,6 +177,7 @@ abstract class DocBlox_Core_Abstract
         if (self::$stdout_logger) {
             self::$stdout_logger->setThreshold($level);
         }
+
         self::$log_level = $level;
     }
 
@@ -171,8 +193,9 @@ abstract class DocBlox_Core_Abstract
      * * 'Processed parameters' (in 4 seconds)
      * * 'Written to log' (in 4 seconds)
      *
-     * @param  string $message
-     * @param  string $name
+     * @param string $message Text to prepend the pre-fab text with.
+     * @param string $name    Name of the timer.
+     *
      * @return void
      */
     protected function debugTimer($message, $name = 'default')
@@ -186,12 +209,15 @@ abstract class DocBlox_Core_Abstract
      * Logs the given to a debug log.
      *
      * This method only works if the Log Level is higher than DEBUG.
-     * If anything other than a string is passed than the item is var_dumped and then stored.
+     * If anything other than a string is passed than the item is var_dumped and
+     * then stored.
      * If there is no debug logger object than this method will instantiate it.
      *
-     * @see    DocBlock_Abstract::setLogLevel()
-     * @see    Zend_Log
-     * @param  string|array|object $message
+     * @param string|array|object $message Element to log.
+     *
+     * @see DocBlock_Abstract::setLogLevel()
+     * @see Zend_Log
+     *
      * @return void
      */
     protected function debug($message)
@@ -208,9 +234,12 @@ abstract class DocBlox_Core_Abstract
      * If there is no logger object than this method will instantiate it.
      * In contrary to the debug statement this only logs strings.
      *
-     * @see    DocBlock_Abstract::setLogLevel()
-     * @see    Zend_Log
-     * @param  string $message
+     * @param string $message  Element to log.
+     * @param int    $priority Priority of the given log.
+     *
+     * @see DocBlock_Abstract::setLogLevel()
+     * @see Zend_Log
+     *
      * @return void
      */
     public function log($message, $priority = DocBlox_Core_Log::INFO)
@@ -228,7 +257,9 @@ abstract class DocBlox_Core_Abstract
             self::$logger->setThreshold($this->getLogLevel());
 
             // log to stdout
-            self::$stdout_logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
+            self::$stdout_logger = new DocBlox_Core_Log(
+                DocBlox_Core_Log::FILE_STDOUT
+            );
             self::$stdout_logger->setThreshold($this->getLogLevel());
         }
 
@@ -254,7 +285,9 @@ abstract class DocBlox_Core_Abstract
     public static function config()
     {
         if (self::$config === null) {
-            self::$config = new DocBlox_Core_Config(dirname(__FILE__) . '/../../../data/docblox.tpl.xml');
+            self::$config = new DocBlox_Core_Config(
+                dirname(__FILE__) . '/../../../data/docblox.tpl.xml'
+            );
         }
 
         return self::$config;
