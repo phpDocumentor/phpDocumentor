@@ -33,9 +33,16 @@ Requirements
 DocBlox requires the following:
 
 * PHP 5.2.6 or higher (might work on 5.2.x as well but this is not supported)
+* iconv/ext, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
 * The XSL extension, http://www.php.net/manual/en/book.xsl.php
 * Graphviz (optional, used for generating Class diagrams)
 * PEAR (optional, used for generating Class Diagrams or installing via PEAR)
+
+**Note:**
+If you do not want to install the PEAR or Graphviz dependency you are encouraged to generate your own template and make sure that it does not contain anything related to `Graph`. 
+An easier solution might be to edit `data/themes/default/template.xml` file and remove every line containing the word `Graph` but this will be undone with every upgrade of DocBlox.
+
+Please see the documentation about creating your own templates for more information.
 
 Installation
 ------------
