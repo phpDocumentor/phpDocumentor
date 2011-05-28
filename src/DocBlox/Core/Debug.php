@@ -13,7 +13,7 @@
  */
 
 /**
- * Reflection class for a full file.
+ * Debugger base class.
  *
  * @category DocBlox
  * @package  Core
