@@ -83,7 +83,7 @@ class NamespaceTest
  * This is a long description
  *
  * @category   DocBlox
- * @package    CLI
+ * @package    Tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
 class DocBlocTest

@@ -2,17 +2,24 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Static_Reflection
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
- * Provides the basic functionality for every static reflection class.
+ * Reflection class for a the property in a class.
  *
- * @category   DocBlox
- * @package    Static_Reflection
- * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @category DocBlox
+ * @package  Static_Reflection
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Reflection_Property extends DocBlox_Reflection_Variable
 {
