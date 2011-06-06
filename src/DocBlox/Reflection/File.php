@@ -331,6 +331,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     public function initializeTokens($contents, $filename = null)
     {
+        $this->debug('Started splitting the file into tokens');
         $tokens = token_get_all($contents);
         $this->debug(
             count($tokens) . ' tokens found in class ' . $this->getName()
@@ -340,6 +341,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         if ($filename != null) {
             $tokens->setFilename($filename);
         }
+        $this->debug('Imported tokens into the Iterator');
 
         return $tokens;
     }
