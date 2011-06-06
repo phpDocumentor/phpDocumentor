@@ -56,6 +56,14 @@ abstract class DocBlox_Core_Abstract
     static protected $stdout_logger = null;
 
     /**
+     * The logger used to capture debug messages send by the log method and
+     * send them to stdout.
+     *
+     * @var DocBlox_Core_Log
+     */
+    static protected $debug_logger = null;
+
+    /**
      * The config containing overrides for the defaults.
      *
      * @see DocBlox_Core_Abstract::getConfig()
@@ -76,13 +84,20 @@ abstract class DocBlox_Core_Abstract
 
     /**
      * Initializes the Debugger.
+     *
+     * @todo move the loggers to a DIC instead of statics!!!
      */
     public function __construct()
     {
+        if (self::$debug_logger === null)
+        {
+            self::$debug_logger = new DocBlox_Core_Log(
+                $this->getConfig()->logging->paths->errors
+            );
+        }
+
         $this->setDebugger(
-            new DocBlox_Core_Debug(
-                new DocBlox_Core_Log($this->getConfig()->logging->paths->errors)
-            )
+            new DocBlox_Core_Debug(self::$debug_logger)
         );
     }
 
