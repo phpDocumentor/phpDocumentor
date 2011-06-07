@@ -141,6 +141,12 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             if ($is_array) {
                 $item .= '[]';
             }
+
+            // full paths always start with a slash
+            if (isset($item[0]) && ($item[0] !== '\\'))
+            {
+                $item = '\\' . $item;
+            }
         }
 
         return implode('|', $type);
