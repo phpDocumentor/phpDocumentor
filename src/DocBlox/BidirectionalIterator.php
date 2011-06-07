@@ -30,7 +30,7 @@ class DocBlox_BidirectionalIterator implements Countable, ArrayAccess, Serializa
     {
         $this->store = $data;
         $this->count = count($data);
-        $this->current = $this->store[0];
+        $this->current = reset($this->store);
     }
 
     /**
