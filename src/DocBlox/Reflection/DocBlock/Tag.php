@@ -14,7 +14,7 @@
  * @package    Static_Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_DocBlock_Tag_TagInterface
+class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_DocBlock_Tag_Interface
 {
   /** @var string Name of the tag */
   protected $tag = '';
@@ -36,7 +36,9 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
    *
    * @throws DocBlox_Reflection_Exception if an invalid tag line was presented.
    *
-   * @return void
+   * @param string $tag_line The text for this tag, including description.
+   *
+   * @return DocBlox_Reflection_DocBlock_Tag
    */
   public static function createInstance($tag_line)
   {
@@ -101,7 +103,7 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
 
   /**
    * Set the tag line number
-   * 
+   *
    * @param int $number the line number of the tag
    */
   public function setLineNumber($number)
@@ -111,7 +113,7 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
 
   /**
    * Get the line number of the tag
-   * 
+   *
    * @return int tag line number
    */
   public function getLineNumber()
@@ -123,7 +125,7 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
    * Inject the docblock class
    *
    * This exposes some common functionality contained in the docblock abstract.
-   * 
+   *
    * @param DocBlox_Reflection_DocBlockedAbstract $docblock DocBlock class
    */
   public function setDocBlock(DocBlox_Reflection_DocBlockedAbstract $docblock)
@@ -155,8 +157,8 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
   }
 
   /**
-   * Implements DocBlox_Reflection_DocBlock_Tag_TagInterface
-   * 
+   * Implements DocBlox_Reflection_DocBlock_Tag_Interface
+   *
    * @param SimpleXMLElement $xml Relative root of xml document
    */
   public function __toXml(SimpleXMLElement $xml)

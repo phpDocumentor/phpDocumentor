@@ -161,61 +161,25 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
      */
     protected function addDocblockToSimpleXmlElement(SimpleXMLElement $xml)
     {
-        if ($this->getDocBlock()) {
-            if (!isset($xml->docblock)) {
-                $xml->addChild('docblock');
-            }
-            $xml->docblock->description          = $this->getDocBlock()->getShortDescription();
-            $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getFormattedContents();
+        if (!$this->getDocBlock()) {
+            return;
+        }
 
-            /** @var DocBlox_Reflection_Docblock_Tag $tag */
-            foreach ($this->getDocBlock()->getTags() as $tag) {
-                $description = htmlspecialchars($tag->getDescription(), ENT_QUOTES, 'UTF-8');
-                if ($tag->getName() instanceof DocBlox_Reflection_DocBlock_Tag_Var) {
-                    $description = $tag->getDescription();
-                }
+        if (!isset($xml->docblock)) {
+            $xml->addChild('docblock');
+        }
 
-                $tag_object                = $xml->docblock->addChild('tag');
-                $tag_object['name']        = $tag->getName();
-                $tag_object['description'] = trim($description);
+        $xml->docblock->description          = $this->getDocBlock()->getShortDescription();
+        $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getFormattedContents();
 
-                if (method_exists($tag, 'getTypes')) {
-                    foreach ($tag->getTypes() as $type) {
-                        if ($type == '') {
-                            continue;
-                        }
+        /** @var DocBlox_Reflection_Docblock_Tag $tag */
+        foreach ($this->getDocBlock()->getTags() as $tag) {
+            $tag_object = $xml->docblock->addChild('tag');
+            DocBlox_Parser_DocBlock_Tag_Definition::create($this->getNamespace(), $this->namespace_aliases, $tag_object, $tag);
 
-                        $type = trim($this->expandType($type));
-
-                        // strip ampersands
-                        $name = str_replace('&', '', $type);
-                        $type_object = $tag_object->addChild('type', $name);
-
-                        // register whether this variable is by reference by checking the first and last character
-                        $type_object['by_reference'] = ((substr($type, 0, 1) === '&') || (substr($type, -1) === '&'))
-                          ? 'true'
-                          : 'false';
-                    }
-
-                    $tag_object['type'] = $this->expandType($tag->getType());
-                }
-
-                if (method_exists($tag, 'getVariableName')) {
-                    if (trim($tag->getVariableName()) == '') {
-                        // TODO: get the name from the argument list
-                    }
-
-                    $tag_object['variable'] = $tag->getVariableName();
-                }
-
-                if (method_exists($tag, 'getLink')) {
-                    $tag_object['link'] = $tag->getLink();
-                }
-
-                // custom attached member variable, see line 51
-                if (isset($this->getDocBlock()->line_number)) {
-                    $tag_object['line'] = $this->getDocBlock()->line_number;
-                }
+            // custom attached member variable, see line 51
+            if (isset($this->getDocBlock()->line_number)) {
+                $tag_object['line'] = $this->getDocBlock()->line_number;
             }
         }
     }

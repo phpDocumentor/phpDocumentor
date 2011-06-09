@@ -14,11 +14,11 @@
  * @package    Static_Reflection
  * @author     Herman J. Radtke III <hermanradtke@gmail.com>
  */
-interface DocBlox_Reflection_DocBlock_Tag_TagInterface
+interface DocBlox_Reflection_DocBlock_Tag_Interface
 {
     /**
      * Represent a tag instance in xml format.
-     * 
+     *
      * @param SimpleXMLElement $xml Relative root of xml document
      */
     public function __toXml(SimpleXMLElement $xml);

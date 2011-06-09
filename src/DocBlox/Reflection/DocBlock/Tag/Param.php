@@ -14,7 +14,7 @@
  * @package    Static_Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_Tag implements DocBlox_Reflection_DocBlock_Tag_TagInterface
+class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_Tag implements DocBlox_Reflection_DocBlock_Tag_Interface
 {
   /** @var string */
   protected $type = null;
@@ -97,8 +97,8 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
   }
 
   /**
-   * Implements DocBlox_Reflection_DocBlock_Tag_TagInterface
-   * 
+   * Implements DocBlox_Reflection_DocBlock_Tag_Interface
+   *
    * @param SimpleXMLElement $xml Relative root of xml document
    */
   public function __toXml(SimpleXMLElement $xml)
