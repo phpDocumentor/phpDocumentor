@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-05-08</date>
- <time>14:34:04</time>
+ <date>2011-06-12</date>
+ <time>11:38:08</time>
  <version>
-  <release>0.10.0</release>
-  <api>0.10.0</api>
+  <release>0.11.0</release>
+  <api>0.11.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -75,16 +75,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/themes/agavi -->
-     <dir name="cache">
-      <dir name="agavi">
-       <dir name="css">
-        <file baseinstalldir="/DocBlox" name="theme.css" role="php" />
-       </dir> <!-- /data/themes/cache/agavi/css -->
-       <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
-       <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
-       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
-      </dir> <!-- /data/themes/cache/agavi -->
-     </dir> <!-- /data/themes/cache -->
      <dir name="default">
       <dir name="api-doc">
        <file baseinstalldir="/DocBlox" name="class.xsl" role="php" />
@@ -306,8 +296,10 @@ Please see the CHANGELOG in the root of the application for the latest changes
     </dir> <!-- /docs/design -->
     <dir name="manual">
      <file baseinstalldir="/DocBlox" name="01 - Installation.md" role="php" />
-     <file baseinstalldir="/DocBlox" name="02 - Configuration.md" role="php" />
-     <file baseinstalldir="/DocBlox" name="03 - Basic usage.md" role="php" />
+     <file baseinstalldir="/DocBlox" name="02 - Basic usage.md" role="php" />
+     <file baseinstalldir="/DocBlox" name="03 - Configuration.md" role="php" />
+     <file baseinstalldir="/DocBlox" name="04 - Anatomy of a DocBlock.md" role="php" />
+     <file baseinstalldir="/DocBlox" name="05 - Building your own branding.md" role="php" />
     </dir> <!-- /docs/manual -->
     <file baseinstalldir="/DocBlox" name="CHANGELOG" role="php" />
     <file baseinstalldir="/DocBlox" name="packages.mm" role="php" />
@@ -319,10 +311,18 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Application.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Config.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="Debug.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Log.php" role="php" />
      </dir> <!-- /src/DocBlox/Core -->
      <dir name="Parser">
       <dir name="DocBlock">
+       <dir name="Tag">
+        <dir name="Definition">
+         <file baseinstalldir="/DocBlox" name="Link.php" role="php" />
+         <file baseinstalldir="/DocBlox" name="Param.php" role="php" />
+        </dir> <!-- /src/DocBlox/Parser/DocBlock/Tag/Definition -->
+        <file baseinstalldir="/DocBlox" name="Definition.php" role="php" />
+       </dir> <!-- /src/DocBlox/Parser/DocBlock/Tag -->
        <dir name="Validator">
         <file baseinstalldir="/DocBlox" name="File.php" role="php" />
        </dir> <!-- /src/DocBlox/Parser/DocBlock/Validator -->
@@ -332,6 +332,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <dir name="Reflection">
       <dir name="DocBlock">
        <dir name="Tag">
+        <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Link.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Param.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Return.php" role="php" />
@@ -365,6 +366,10 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/DocBlox" name="Run.php" role="php" />
        <file baseinstalldir="/DocBlox" name="Transform.php" role="php" />
       </dir> <!-- /src/DocBlox/Task/Project -->
+      <dir name="Theme">
+       <file baseinstalldir="/DocBlox" name="Generate.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="List.php" role="php" />
+      </dir> <!-- /src/DocBlox/Task/Theme -->
       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
       <file baseinstalldir="/DocBlox" name="ConfigurableAbstract.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Runner.php" role="php" />
@@ -373,6 +378,22 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="Iterator.php" role="php" />
      </dir> <!-- /src/DocBlox/Token -->
      <dir name="Transformer">
+      <dir name="Behaviour">
+       <dir name="Inherit">
+        <dir name="Node">
+         <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
+         <file baseinstalldir="/DocBlox" name="Class.php" role="php" />
+         <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
+         <file baseinstalldir="/DocBlox" name="Method.php" role="php" />
+         <file baseinstalldir="/DocBlox" name="Property.php" role="php" />
+        </dir> <!-- /src/DocBlox/Transformer/Behaviour/Inherit/Node -->
+       </dir> <!-- /src/DocBlox/Transformer/Behaviour/Inherit -->
+       <file baseinstalldir="/DocBlox" name="AddLinkInformation.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Collection.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="GeneratePaths.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Inherit.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
+      </dir> <!-- /src/DocBlox/Transformer/Behaviour -->
       <dir name="Writer">
        <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
        <file baseinstalldir="/DocBlox" name="FileIo.php" role="php" />
@@ -399,6 +420,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <dir name="data">
      <file baseinstalldir="/DocBlox" name="ApiTagTest.php" role="php" />
      <file baseinstalldir="/DocBlox" name="DocBlockTestFixture.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="MultiplePackagesDocBlock.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NamespaceTest.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NoClass.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NoPackageDocBlock.php" role="php" />
@@ -413,6 +435,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt~" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-project-transform.phpt" role="php" />
+     <file baseinstalldir="/DocBlox" name="multiple-packages-issue-121.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="no-package-just-subpackage-tag.phpt" role="php" />
     </dir> <!-- /tests/ui -->
     <dir name="unit">
@@ -450,10 +473,10 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/DocBlox" name="build.xml" role="data" />
    <file baseinstalldir="/DocBlox" name="docblox.dist.xml" role="php" />
    <file baseinstalldir="/DocBlox" name="LICENSE" role="php" />
+   <file baseinstalldir="/DocBlox" name="phpcs" role="data" />
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
    <file baseinstalldir="/DocBlox" name="README" role="php" />
    <file baseinstalldir="/DocBlox" name="README.md" role="data" />
-   <file baseinstalldir="/DocBlox" name="test.html" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -487,32 +510,36 @@ Please see the CHANGELOG in the root of the application for the latest changes
   </required>
  </dependencies>
  <phprelease>
+<!--
   <installconditions>
    <os>
     <name>windows</name>
    </os>
   </installconditions>
+-->
   <filelist>
    <install as="docblox.bat" name="bin/docblox.bat" />
   </filelist>
  </phprelease>
+<!--
  <phprelease>
   <filelist>
    <install as="docblox" name="bin/docblox.php" />
    <ignore name="bin/docblox.bat" />
   </filelist>
  </phprelease>
+-->
  <changelog>
   <release>
    <version>
-    <release>0.10.0</release>
-    <api>0.10.0</api>
+    <release>0.11.0</release>
+    <api>0.11.0</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-05-08</date>
+   <date>2011-06-12</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
