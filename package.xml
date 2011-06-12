@@ -18,10 +18,10 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <active>yes</active>
  </lead>
  <date>2011-06-12</date>
- <time>11:38:08</time>
+ <time>22:49:51</time>
  <version>
-  <release>0.11.0</release>
-  <api>0.11.0</api>
+  <release>0.11.1</release>
+  <api>0.11.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -300,6 +300,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="03 - Configuration.md" role="php" />
      <file baseinstalldir="/DocBlox" name="04 - Anatomy of a DocBlock.md" role="php" />
      <file baseinstalldir="/DocBlox" name="05 - Building your own branding.md" role="php" />
+     <file baseinstalldir="/DocBlox" name="99 - Contributor's Guide.md" role="php" />
     </dir> <!-- /docs/manual -->
     <file baseinstalldir="/DocBlox" name="CHANGELOG" role="php" />
     <file baseinstalldir="/DocBlox" name="packages.mm" role="php" />
@@ -419,7 +420,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
     </dir> <!-- /tests/common -->
     <dir name="data">
      <file baseinstalldir="/DocBlox" name="ApiTagTest.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="DocBlockTestFixture.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="DocBlockFixture.php" role="php" />
      <file baseinstalldir="/DocBlox" name="MultiplePackagesDocBlock.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NamespaceTest.php" role="php" />
      <file baseinstalldir="/DocBlox" name="NoClass.php" role="php" />
@@ -510,30 +511,26 @@ Please see the CHANGELOG in the root of the application for the latest changes
   </required>
  </dependencies>
  <phprelease>
-<!--
   <installconditions>
    <os>
     <name>windows</name>
    </os>
   </installconditions>
--->
   <filelist>
    <install as="docblox.bat" name="bin/docblox.bat" />
   </filelist>
  </phprelease>
-<!--
  <phprelease>
   <filelist>
    <install as="docblox" name="bin/docblox.php" />
    <ignore name="bin/docblox.bat" />
   </filelist>
  </phprelease>
--->
  <changelog>
   <release>
    <version>
-    <release>0.11.0</release>
-    <api>0.11.0</api>
+    <release>0.11.1</release>
+    <api>0.11.1</api>
    </version>
    <stability>
     <release>beta</release>
