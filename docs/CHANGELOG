@@ -1,4 +1,4 @@
-06/04/2011: Version 0.11.0
+06/12/2011: Version 0.11.0
 --------------------------
 
 * FIXED:    transform.php and parse.php referred to docblox.php but this is no
@@ -23,6 +23,11 @@
             the structure.xml pre-transformation.
 * ADDED:    Inheritance of Interface, Class, Property and Method DocBlocks; please refer to
             /docs/manual/04 - Anatomy of a DocBlock.md for a complete description.
+* FIXED:    Packaging contained an error where the contents of the batch file were incorrectly generated
+* FIXED:    PHP files without PHP Content (template files) caused a notice
+* FIXED:    When DocBlocks contained a FQCN DocBlox did not link it to the right page
+* ADDED:    Tag definitions, this allows content creators to define how tags are added to the structure file
+* FIXED:    DocBlox fatalled when it encountered a folder which it did not have permission to; now it ignores it
 
 05/08/2011: Version 0.10.0
 --------------------------

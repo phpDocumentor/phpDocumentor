@@ -192,8 +192,14 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
             // get all files recursively to the files array
             $files_iterator = new RecursiveDirectoryIterator($directory);
 
+            // add the CATCH_GET_CHILD option to make sure that an unreadable directory does not halt process but
+            // skip that folder
+            $recursive_iterator = new RecursiveIteratorIterator(
+                $files_iterator, RecursiveIteratorIterator::LEAVES_ONLY, RecursiveIteratorIterator::CATCH_GET_CHILD
+            );
+
             /** @var SplFileInfo $file */
-            foreach (new RecursiveIteratorIterator($files_iterator) as $file) {
+            foreach ($recursive_iterator as $file) {
                 // skipping dots (should any be encountered)
                 if (($file->getFilename() == '.') || ($file->getFilename() == '..')) {
                     continue;
