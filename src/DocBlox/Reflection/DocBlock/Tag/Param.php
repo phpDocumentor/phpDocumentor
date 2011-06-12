@@ -29,9 +29,8 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
    *
    * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
    *
-   * @param string $tag_line Line containing the full tag
-   *
-   * @return void
+   * @param string $type    Tag identifier for this tag (should be 'return')
+   * @param string $content Contents for this tag.
    */
   public function __construct($type, $content)
   {
@@ -57,7 +56,7 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
   /**
    * Returns the unique types of the variable.
    *
-   * @return string
+   * @return string[]
    */
   public function getTypes()
   {
@@ -89,6 +88,7 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
   /**
    * Sets the variable's name.
    *
+   * @param string $name The new name for this variable.
    * @return void
    */
   public function setVariableName($name)

@@ -1,5 +1,16 @@
 <?php
 /**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Tasks
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
+
+/**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
  *
  * DocBlox creates documentation from PHP source files. The simplest way to use it is:
@@ -14,8 +25,7 @@
  * same settings (and more) as the command line provides.
  *
  * @category   DocBlox
- * @package    DocBlox
- * @subpackage Task
+ * @package    Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org

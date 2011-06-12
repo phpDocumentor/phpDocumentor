@@ -60,9 +60,8 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
   /**
    * Parses a tag and populates the member variables.
    *
-   * @param string $tag_line Line containing the full tag
-   *
-   * @return void
+   * @param string $type    Name of the tag.
+   * @param string $content The contents of the given tag.
    */
   public function __construct($type, $content)
   {

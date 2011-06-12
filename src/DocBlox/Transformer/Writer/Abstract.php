@@ -19,9 +19,8 @@ abstract class DocBlox_Transformer_Writer_Abstract extends DocBlox_Core_Abstract
   /**
    * Abstract definition of the execute method.
    *
-   * @param string $query
-   * @param string $source
-   * @param string $artifact
+   * @param DOMDocument                        $structure      Document containing the structure.
+   * @param DocBlox_Transformer_Transformation $transformation Transformation to execute.
    *
    * @return void
    */

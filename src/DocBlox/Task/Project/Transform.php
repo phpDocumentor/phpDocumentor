@@ -1,5 +1,16 @@
 <?php
 /**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Tasks
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
+
+/**
  * Transforms the structure file into the specified output format
  *
  * This task will execute the transformation rules described in the given template (defaults to 'default') with the
@@ -8,9 +19,11 @@
  * It is possible for the user to receive additional information using the verbose option or stop additional
  * information using the quiet option. Please take note that the quiet option also disables logging to file.
  *
- * @package    DocBlox
- * @subpackage Tasks
+ * @category   DocBlox
+ * @package    Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Task_Project_Transform extends DocBlox_Task_ConfigurableAbstract
 {

@@ -94,7 +94,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
      *
      * @return string
      */
-    protected function expandType($type)
+    public function expandType($type)
     {
         if ($type === null) {
             return null;

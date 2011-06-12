@@ -1,25 +1,29 @@
 <?php
 /**
- * AgaviContext provides information about the current application context,
- * such as the module and action names and the module directory.
- * It also serves as a gateway to the core pieces of the framework, allowing
- * objects with access to the context, to access other useful objects such as
- * the current controller, request, user, database manager etc.
+ * DocBlox
  *
- * @package    agavi
- * @subpackage core
+ * PHP Version 5
  *
- * @author     Sean Kerr <skerr@mojavi.org>
- * @author     Mike Vincent <mike@agavi.org>
- * @author     David Zülke <dz@bitxtender.com>
- * @copyright  Authors
- * @copyright  The Agavi Project
- *
- * @since      0.9.0
- *
- * @version    $Id: AgaviContext.class.php 4399 2010-01-11 16:41:20Z david $
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Unit_tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
-class DocBlockTestFixture
+
+/**
+ * Fixture file for different DocBlock tests.
+ *
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Unit_tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
+class DocBlox_Tests_Data_DocBlockFixture
 {
   /*
    * The class docblock has two lines of short description AND the short description ends with a space.

@@ -53,6 +53,8 @@ class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstr
    *
    * @throws Exception
    *
+   * @param DocBlox_Transformer_Transformation $transformation Transformation to use as data source.
+   *
    * @return void
    */
   public function executeQueryCopy(DocBlox_Transformer_Transformation $transformation)

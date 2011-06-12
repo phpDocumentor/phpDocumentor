@@ -2,21 +2,24 @@
 /**
  * DocBlox
  *
- * @category  DocBlox
- * @package   Tasks
- * @copyright Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @author    Ben Selby <benmatselby@gmail.com>
- * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @category   DocBlox
+ * @package    Tasks
+ * @author     Ben Selby <benmatselby@gmail.com>
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * This class is responsible for the execution of a task.
  *
- * @category  DocBlox
- * @package   Tasks
- * @copyright Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @category   DocBlox
+ * @package    Tasks
  * @author    Ben Selby <benmatselby@gmail.com>
- * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Task_Runner extends DocBlox_Core_Abstract
 {
@@ -26,8 +29,8 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
   /**
    * Finds and initializes the given task.
    *
-   * @param  $task_name
-   * @param  $default Task to fall back on if no task could be resolved
+   * @param string $task_name Name of the task to prepare for running.
+   * @param string $default   Task to fall back on if no task could be resolved.
    */
   public function __construct($task_name, $default)
   {
@@ -67,4 +70,5 @@ class DocBlox_Task_Runner extends DocBlox_Core_Abstract
   {
     return $this->task;
   }
+
 }

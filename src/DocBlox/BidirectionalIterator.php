@@ -3,28 +3,40 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Iterator
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Iterator class responsible for navigating through an array forwards and backwards.
  *
- * @category DocBlox
- * @package  Iterator
- * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @category   DocBlox
+ * @package    Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_BidirectionalIterator implements Countable, ArrayAccess, Serializable, SeekableIterator
 {
+    /** @var int Current key value */
     protected $key   = 0;
+
+    /** @var int Count of items */
     protected $count = 0;
+
+    /** @var mixed[] Contents for this iterator */
     protected $store = array();
+
+    /** @var mixed Current value */
     protected $current = null;
 
     /**
      * Initializes the iterator and populate the pointer array.
      *
-     * @param mixed[] $data
+     * @param array $data
      */
     public function __construct(array $data)
     {

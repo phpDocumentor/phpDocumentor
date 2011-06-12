@@ -350,17 +350,19 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
   }
 
   /**
-   * Sets the name of the namespace to which this belongs.
+   * Sets the list of namespace aliases in the parent file..
    *
    * @throws InvalidArgumentException
-   * @param  $namespace
+   *
+   * @param string[] $namespace_aliases List of aliases to apply.
+   *
    * @return void
    */
   public function setNamespaceAliases($namespace_aliases)
   {
     if (!is_array($namespace_aliases))
     {
-      throw new InvalidArgumentException('Expected the namespace alaises to be an array of strings');
+      throw new InvalidArgumentException('Expected the namespace aliases to be an array of strings');
     }
 
     $this->namespace_aliases = $namespace_aliases;

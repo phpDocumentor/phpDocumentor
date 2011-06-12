@@ -39,6 +39,13 @@ class DocBlox_Transformer_Behaviour_Collection implements
         $this->behaviours = $behaviours;
     }
 
+    /**
+     * Sets the logger for each behaviour.
+     *
+     * @param DocBlox_Core_Log|null $log
+     *
+     * @return void
+     */
     public function setLogger(DocBlox_Core_Log $log = null)
     {
         foreach ($this->behaviours as $behaviour) {

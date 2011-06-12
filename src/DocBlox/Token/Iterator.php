@@ -3,16 +3,21 @@
  * DocBlox
  *
  * @category   DocBlox
- * @package    Token
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Tokens
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Iterator class responsible for navigating through a list of Tokens.
  *
- * @category DocBlox
- * @package  Token
- * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @category   DocBlox
+ * @package    Tokens
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
 {
@@ -25,8 +30,6 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
    * @param  string|DocBlox_Token[]|string[] $data String to parse or a list of DocBlox_Tokens, or the result from a
    *                                               token_get_all() method call.
    * @see    token_get_all()
-   *
-   * @return void
    */
   public function  __construct($data)
   {

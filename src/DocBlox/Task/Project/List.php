@@ -9,6 +9,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
+
 /**
  * Defines all tasks that can be run by DocBlox
  *

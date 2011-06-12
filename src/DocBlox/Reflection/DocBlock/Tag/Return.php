@@ -24,9 +24,8 @@ class DocBlox_Reflection_DocBlock_Tag_Return extends DocBlox_Reflection_DocBlock
    *
    * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
    *
-   * @param string $tag_line Line containing the full tag
-   *
-   * @return void
+   * @param string $type    Tag identifier for this tag (should be 'return')
+   * @param string $content Contents for this tag.
    */
   public function __construct($type, $content)
   {

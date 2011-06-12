@@ -1,13 +1,23 @@
 <?php
 /**
+ * DocBlox
+ *
+ * @category   DocBlox
+ * @package    Tasks
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
+
+/**
  * Parses the given source code and creates a structure file.
  *
  * The parse task uses the source files defined either by -f or -d options and generates a structure
  * file (structure.xml) at the target location (which is the folder 'output' unless the option -t is provided).
  *
  * @category   DocBlox
- * @package    DocBlox
- * @subpackage Task
+ * @package    Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
