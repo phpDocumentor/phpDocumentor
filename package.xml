@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-06-12</date>
- <time>22:49:51</time>
+ <date>2011-06-13</date>
+ <time>21:44:51</time>
  <version>
-  <release>0.11.1</release>
-  <api>0.11.1</api>
+  <release>0.11.2</release>
+  <api>0.11.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -36,8 +36,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <dir name="bin">
     <file baseinstalldir="/" name="docblox.bat" role="php">
      <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
-     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
+     <tasks:replace from="@bin_dir@" to="bin_dir" type="pear-config" />
     </file>
     <file baseinstalldir="/" name="docblox.php" role="script">
      <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
@@ -452,11 +451,8 @@ Please see the CHANGELOG in the root of the application for the latest changes
        </dir> <!-- /tests/unit/DocBlox/Reflection/Tag -->
        <file baseinstalldir="/DocBlox" name="DocBlockTest.php" role="php" />
       </dir> <!-- /tests/unit/DocBlox/Reflection -->
-      <dir name="Task">
-       <file baseinstalldir="/DocBlox" name="Runner.php" role="php" />
-      </dir> <!-- /tests/unit/DocBlox/Task -->
       <dir name="Token">
-       <file baseinstalldir="/DocBlox" name="IteratorTest.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="IteratorTestDocBlox.php" role="php" />
       </dir> <!-- /tests/unit/DocBlox/Token -->
       <dir name="Transformer">
        <dir name="Writer">
@@ -529,14 +525,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.11.1</release>
-    <api>0.11.1</api>
+    <release>0.11.2</release>
+    <api>0.11.2</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-06-12</date>
+   <date>2011-06-13</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
