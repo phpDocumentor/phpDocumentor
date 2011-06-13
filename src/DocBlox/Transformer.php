@@ -2,17 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Parser
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Transformer
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Core class responsible for transforming the structure.xml file to a set of artifacts.
  *
  * @category   DocBlox
- * @package    Parser
+ * @package    Transformer
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Transformer extends DocBlox_Core_Abstract
 {

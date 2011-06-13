@@ -1,10 +1,27 @@
 <?php
 /**
- * Provide a short description for this class.
+ * DocBlox
  *
- * @package    emma
- * @subpackage
- * @author     mvriel
+ * PHP Version 5
+ *
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Behaviour
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
+
+/**
+ * Base class for adding inheritance to an element.
+ *
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Behaviour
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
 {

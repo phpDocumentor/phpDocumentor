@@ -2,18 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * Parses a method or function Argument.
+ * Base class for any structure that has a code block (thus followed by {}).
  *
  * @category   DocBlox
- * @package    Static_Reflection
- * @subpackage Base
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocBlockedAbstract
 {

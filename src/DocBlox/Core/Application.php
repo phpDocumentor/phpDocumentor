@@ -2,26 +2,31 @@
 /**
  * DocBlox
  *
- * @category  DocBlox
- * @package   Core
- * @copyright Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @author    Ben Selby <benmatselby@gmail.com>
- * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * PHP Version 5
+ *
+ * @category   DocBlox
+ * @package    Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @author     Ben Selby <benmatselby@gmail.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * This class is responsible for the application entry point from the cli
+ * This class is responsible for the application entry point from the CLI.
  *
- * @category  DocBlox
- * @package   Tasks
- * @copyright Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @author    Ben Selby <benmatselby@gmail.com>
- * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @category   DocBlox
+ * @package    Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @author     Ben Selby <benmatselby@gmail.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Core_Application
 {
   /**
-   * Main entry point into the application
+   * Main entry point into the application.
    *
    * @return void
    */

@@ -19,11 +19,12 @@
  * It is possible for the user to receive additional information using the verbose option or stop additional
  * information using the quiet option. Please take note that the quiet option also disables logging to file.
  *
- * @category   DocBlox
- * @package    Tasks
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category    DocBlox
+ * @package     Tasks
+ * @subpackage  Project
+ * @author      Mike van Riel <mike.vanriel@naenius.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://docblox-project.org
  */
 class DocBlox_Task_Project_Transform extends DocBlox_Task_ConfigurableAbstract
 {

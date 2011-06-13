@@ -16,11 +16,12 @@
  * The parse task uses the source files defined either by -f or -d options and generates a structure
  * file (structure.xml) at the target location (which is the folder 'output' unless the option -t is provided).
  *
- * @category   DocBlox
- * @package    Tasks
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category    DocBlox
+ * @package     Tasks
+ * @subpackage  Project
+ * @author      Mike van Riel <mike.vanriel@naenius.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://docblox-project.org
  */
 class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
 {

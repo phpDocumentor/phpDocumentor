@@ -13,7 +13,7 @@
  */
 
 /**
- * Reflection class for a full file.
+ * Logger used to capture any messages via any stream.
  *
  * @category DocBlox
  * @package  Core

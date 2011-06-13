@@ -2,19 +2,21 @@
 /**
  * DocBlox Link Tag Test
  *
- * @category  DocBlox
- * @package   tests
- * @author    Ben Selby <benmatselby@gmail.com>
- * @copyright Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @category   DocBlox
+ * @package    Reflection
+ * @subpackage Tests
+ * @author     Ben Selby <benmatselby@gmail.com>
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 
 /**
  * Test class for DocBlox_Reflection_DocBlock_Tag_Link
  *
- * @category  DocBlox
- * @package   tests
- * @author    Ben Selby <benmatselby@gmail.com>
- * @copyright Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @category   DocBlox
+ * @package    Reflection
+ * @subpackage Tests
+ * @author     Ben Selby <benmatselby@gmail.com>
+ * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
 class DocBlox_Reflection_DocBlock_Tag_LinkTest extends PHPUnit_Framework_TestCase
 {

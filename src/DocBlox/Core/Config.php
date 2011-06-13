@@ -2,9 +2,14 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
  * @package    Core
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
@@ -13,9 +18,11 @@
  * This class is responsible for registering and remembering the configuration settings.
  * During initialization several configuration parameters are added and the configurations for the templates are merged.
  *
- * @category DocBlox
- * @package  Core
- * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @category   DocBlox
+ * @package    Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Core_Config extends Zend_Config_Xml
 {

@@ -24,11 +24,12 @@
  * and use that to override the default settings if present. In the configuration file can you specify the
  * same settings (and more) as the command line provides.
  *
- * @category   DocBlox
- * @package    Tasks
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category    DocBlox
+ * @package     Tasks
+ * @subpackage  Project
+ * @author      Mike van Riel <mike.vanriel@naenius.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://docblox-project.org
  */
 class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
 {

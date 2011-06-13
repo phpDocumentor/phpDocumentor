@@ -17,7 +17,7 @@
  * Collection object for a set of Behaviours.
  *
  * @category   DocBlox
- * @package    Transformation
+ * @package    Transformer
  * @subpackage Behaviour
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT

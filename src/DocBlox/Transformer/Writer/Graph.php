@@ -2,10 +2,15 @@
 /**
  * DocBlox
  *
- * @category  DocBlox
- * @package   Writers
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com) Copyright (c)
+ * PHP Version 5
+ *
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
@@ -13,9 +18,12 @@
  *
  * Checks whether graphviz is enabled and logs an error if not.
  *
- * @category DocBlox
- * @package  Writers
- * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstract
 {
@@ -30,7 +38,7 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
     public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
     {
         require_once 'Image/GraphViz.php';
-        
+
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
         if ($error != 0) {

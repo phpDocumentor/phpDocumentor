@@ -15,11 +15,12 @@
 /**
  * Generates a skeleton theme.
  *
- * @category DocBlox
- * @package  Tasks
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://docblox-project.org
+ * @category    DocBlox
+ * @package     Tasks
+ * @subpackage  Theme
+ * @author      Mike van Riel <mike.vanriel@naenius.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://docblox-project.org
  */
 class DocBlox_Task_Theme_Generate extends DocBlox_Task_Abstract
 {

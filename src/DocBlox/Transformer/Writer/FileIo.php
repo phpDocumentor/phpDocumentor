@@ -2,17 +2,30 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Writers
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Transformer
+ * @subpackage Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * FileIo writer.
+ * Writer containing file system operations.
+ *
+ * The Query part of the transformation determines the action, currently supported is:
+ *
+ * * copy, copies a file or directory to the destination given in $artifact
  *
  * @category   DocBlox
- * @package    Writers
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Transformer
+ * @subpackage Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstract
 {

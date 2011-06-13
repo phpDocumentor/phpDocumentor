@@ -1,4 +1,17 @@
 <?php
+/**
+ * DocBlox
+ *
+ * PHP Version 5
+ *
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
 
 /**
  * A PDF writer which uses wkhtmltopdf to convert a single HTML file to PDF.
@@ -7,19 +20,21 @@
  * wkhtmltopdf relies on the presence of xserver (not necessarily running; in case of linux) to invoke webkit to
  * generate the PDF.
  *
- * @package    DocBlox
- * @subpackage Writer
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Writers
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- *
- * @see        http://code.google.com/p/wkhtmltopdf/
- * @see        http://blog.structuralartistry.com/post/2327213260/installing-wkhtmltopdf-on-ubuntu-server
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ * @link       http://code.google.com/p/wkhtmltopdf/
+ * @link       http://blog.structuralartistry.com/post/2327213260/installing-wkhtmltopdf-on-ubuntu-server
  */
 class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
 {
   /**
    * Calls the wkhtmltopdf executable to generate a PDF.
    *
-   * @param DOMDocument            $structure
+   * @param DOMDocument                        $structure
    * @param DocBlox_Transformer_Transformation $transformation
    *
    * @return void

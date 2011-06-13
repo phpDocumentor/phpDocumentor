@@ -15,11 +15,12 @@
  *
  * This task outputs a list of tasks grouped by their namespaces.
  *
- * @category   DocBlox
- * @package    Tasks
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category    DocBlox
+ * @package     Tasks
+ * @subpackage  Project
+ * @author      Mike van Riel <mike.vanriel@naenius.com>
+ * @license     http://www.opensource.org/licenses/mit-license.php MIT
+ * @link        http://docblox-project.org
  */
 class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
 {

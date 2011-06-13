@@ -2,9 +2,14 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 if (!defined('T_NS_SEPARATOR'))
@@ -17,8 +22,10 @@ if (!defined('T_NS_SEPARATOR'))
  * Parses an interface definition.
  *
  * @category   DocBlox
- * @package    Static_Reflection
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
 {

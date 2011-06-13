@@ -2,17 +2,26 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Writers
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Transformer
+ * @subpackage Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Search writer responsible for building the search index.
  *
  * @category   DocBlox
- * @package    Writers
+ * @package    Transformer
+ * @subpackage Writers
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Transformer_Writer_Search extends DocBlox_Transformer_Writer_Abstract
 {

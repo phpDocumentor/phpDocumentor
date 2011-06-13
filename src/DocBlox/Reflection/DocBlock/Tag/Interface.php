@@ -2,17 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * Reflection class for a DocBloxk Tag declaration.
+ * Tag interface which forces any tag to provide a __toXML method in order to fill the structure file.
  *
  * @category   DocBlox
- * @package    Static_Reflection
- * @author     Herman J. Radtke III <hermanradtke@gmail.com>
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 interface DocBlox_Reflection_DocBlock_Tag_Interface
 {
