@@ -69,8 +69,7 @@ DESC
   $packagexml->addPackageDepWithChannel('required', 'MarkdownExtra', 'pear.michelf.com', '1.2.4');
 
   $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '/usr/bin/env php', 'php_bin');
-  $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '@php_bin@', 'php_bin');
-  $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '@php_dir@', 'php_dir');
+  $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '@bin_dir@', 'bin_dir');
 
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '/usr/bin/env php', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_bin@', 'php_bin');
