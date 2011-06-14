@@ -251,12 +251,24 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
      */
     public function execute()
     {
-        $files = $this->parseFiles();
-        if (count($files) < 1) {
-            throw new Zend_Console_Getopt_Exception(
-                'No parsable files were found, did you specify any using the -f or -d parameter?'
-            );
-        }
+        $files = new DocBlox_Parser_Files();
+        $files->setAllowedExtensions($this->getExtensions());
+        $files->setIgnorePatterns($this->getIgnore());
+
+        $paths = array_unique(
+            $this->getFilename()
+                ? explode(',', $this->getFilename())
+                : DocBlox_Core_Abstract::config()->getArrayFromPath('files/file')
+        );
+        $files->addFiles($paths);
+
+        $paths = array_unique(
+            $this->getDirectory() || !empty($paths)
+                ? explode(',', $this->getDirectory())
+                : DocBlox_Core_Abstract::config()->getArrayFromPath('files/directory')
+        );
+
+        $files->addDirectories($paths);
 
         $parser = new DocBlox_Parser();
         $parser->setTitle(htmlentities($this->getTitle()));
@@ -267,15 +279,25 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
             $parser->setLogLevel(DocBlox_Core_Log::QUIET);
         }
         $parser->setExistingXml($this->getTarget() . '/structure.xml');
-        $parser->setIgnorePatterns($this->getIgnore());
         $parser->setForced($this->getForce());
         $parser->setMarkers($this->getMarkers());
         $parser->setValidate($this->getValidate());
         $parser->setVisibility($this->getVisibility());
 
-        $parser->setPath($parser->getCommonPath($files));
+        $parser->setPath($files->getProjectRoot());
 
-        // save the generate file to the path given as the 'target' option
-        file_put_contents($this->getTarget() . '/structure.xml', $parser->parseFiles($files));
+        try {
+            // save the generate file to the path given as the 'target' option
+            file_put_contents($this->getTarget() . '/structure.xml', $parser->parseFiles($files));
+        } catch (Exception $e) {
+            if ($e->getCode() === DocBlox_Parser_Exception::NO_FILES_FOUND)
+            {
+                throw new Zend_Console_Getopt_Exception(
+                    'No parsable files were found, did you specify any using the -f or -d parameter?'
+                );
+            }
+
+            throw new Zend_Console_Getopt_Exception($e->getMessage());
+        }
     }
 }

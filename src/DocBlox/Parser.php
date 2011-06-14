@@ -21,16 +21,13 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-class DocBlox_Parser extends DocBlox_Core_Abstract
+class DocBlox_Parser extends DocBlox_Core_Abstract implements DocBlox_Parser_Dispatchable
 {
+    /** @var sfEventDispatcher The event dispatcher for DocBlox */
+    protected $event_dispatcher = null;
+
     /** @var string the title to use in the header */
     protected $title = '';
-
-    /**
-     * @var string[] the glob patterns which directories/files to ignore
-     *               during parsing
-     */
-    protected $ignore_patterns = array();
 
     /**
      * @var DOMDocument|null if any structure.xml was at the target location it
@@ -60,6 +57,35 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
      * @var array
      */
     protected $visibility = array('public', 'protected', 'private');
+
+    /**
+     * Sets the event dispatcher for this class.
+     *
+     * @param mixed $dispatcher
+     *
+     * @return void
+     */
+    public function setEventDispatcher($dispatcher) {
+        $this->event_dispatcher = $dispatcher;
+    }
+
+    /**
+     * Notifies the event dispatcher of the given event ($name) and $arguments and
+     * returns the result of the notification.
+     *
+     * @param string  $name      Name of the invoked event.
+     * @param mixed[] $arguments Associative array with arguments for this event.
+     *
+     * @return mixed
+     */
+    public function notify($name, array $arguments)
+    {
+        $event = new sfEvent($this, $name, $arguments);
+        $this->event_dispatcher->notify($event);
+
+        return $event->getReturnValue();
+    }
+
 
     /**
      * Sets the title for this project.
@@ -201,48 +227,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     }
 
     /**
-     * Adds an pattern to the parsing which determines which file(s) or
-     * directory(s) to skip.
-     *
-     * @param string $pattern glob-like pattern, supports * and ?
-     *
-     * @return void
-     */
-    public function addIgnorePattern($pattern)
-    {
-        $this->convertToPregCompliant($pattern);
-        $this->ignore_patterns[] = $pattern;
-    }
-
-    /**
-     * Sets all ignore patterns at once.
-     *
-     * @param string[] $patterns list of glob like patterns.
-     *
-     * @see self::addIgnorePattern()
-     *
-     * @return void
-     */
-    public function setIgnorePatterns(array $patterns)
-    {
-        $this->ignore_patterns = array();
-
-        foreach ($patterns as $pattern) {
-            $this->addIgnorePattern($pattern);
-        }
-    }
-
-    /**
-     * Returns an array with ignore patterns.
-     *
-     * @return string[]
-     */
-    public function getIgnorePatterns()
-    {
-        return $this->ignore_patterns;
-    }
-
-    /**
      * Sets the base path of the files that will be parsed.
      *
      * @param string $path Must be an absolute path.
@@ -300,30 +284,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
      */
     function parseFile($filename)
     {
-        // check whether this file is ignored; we do this in two steps:
-        // 1. Determine whether this is a relative or absolute path, if the
-        //    string does not start with *, ?, / or \ then we assume that it is
-        //    a relative path
-        // 2. check whether the given pattern matches with the filename (or
-        //    relative filename in case of a relative comparison)
-        foreach ($this->getIgnorePatterns() as $pattern) {
-            if ((($pattern[0] !== '*')
-                && ($pattern[0] !== '?')
-                && ($pattern[0] !== '/')
-                && ($pattern[0] !== '\\')
-                && (preg_match(
-                    '/^' . $pattern . '$/',
-                    $this->getRelativeFilename($filename)
-                )))
-                || (preg_match('/^' . $pattern . '$/', $filename))
-            ) {
-                $this->log(
-                    '-- File "' . $filename . '" matches ignore pattern, skipping'
-                );
-                return false;
-            }
-        }
-
         $this->log('Starting to parse file: ' . $filename);
         $this->debug('Starting to parse file: ' . $filename);
         $this->resetTimer();
@@ -439,11 +399,11 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     /**
      * Iterates through the given files and builds the structure.xml file.
      *
-     * @param string[] $files A list of filenames to parse.
+     * @param DocBlox_Parser_Files $files A files container to parse.
      *
      * @return bool|string
      */
-    public function parseFiles(array $files)
+    public function parseFiles(DocBlox_Parser_Files $files)
     {
         $this->log('Starting to process ' . count($files) . ' files') . PHP_EOL;
         $timer = microtime(true);
@@ -455,7 +415,16 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
             . 'title="' . addslashes($this->getTitle()) . '"></project>'
         );
 
-        foreach ($files as $file) {
+        $paths = $files->getFiles();
+        if (count($paths) < 1)
+        {
+            throw new DocBlox_Parser_Exception(
+                'No files were found',
+                DocBlox_Parser_Exception::NO_FILES_FOUND
+            );
+        }
+
+        foreach ($paths as $file) {
             $xml = $this->parseFile($file);
             if ($xml === false) {
                 continue;
@@ -631,69 +600,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
         foreach ($this->getMarkers() as $marker) {
             $node = new DOMElement('marker', strtolower($marker));
             $dom->documentElement->appendChild($node);
-        }
-    }
-
-    /**
-     * Converts $string into a string that can be used with preg_match.
-     *
-     * @param string &$string Glob-like pattern with wildcards ? and *.
-     *
-     * @author Greg Beaver <cellog@php.net>
-     * @author mike van Riel <mike.vanriel@naenius.com>
-     *
-     * @see PhpDocumentor/phpDocumentor/Io.php
-     *
-     * @return void
-     */
-    function convertToPregCompliant(&$string)
-    {
-        $y = (DIRECTORY_SEPARATOR == '\\') ? '\\\\' : '\/';
-        $string = str_replace('/', DIRECTORY_SEPARATOR, $string);
-        $x = strtr(
-            $string,
-            array(
-                 '?' => '.',
-                 '*' => '.*',
-                 '.' => '\\.',
-                 '\\' => '\\\\',
-                 '/' => '\\/',
-                 '[' => '\\[',
-                 ']' => '\\]',
-                 '-' => '\\-'
-            )
-        );
-
-        if ((strpos($string, DIRECTORY_SEPARATOR) !== false)
-            && (strrpos($string, DIRECTORY_SEPARATOR) === strlen($string) - 1)
-        ) {
-            $x = "(?:.*$y$x?.*|$x.*)";
-        }
-
-        $string = $x;
-    }
-
-    /**
-     * Finds the common path of all passed paths.
-     *
-     * @param array $paths list of paths to check.
-     *
-     * @return string
-     */
-    public function getCommonPath(array $paths)
-    {
-        $base = '';
-        $parts = explode(DIRECTORY_SEPARATOR, realpath($paths[0]));
-
-        foreach ($parts as $part) {
-            $base_part = $base . $part . DIRECTORY_SEPARATOR;
-            foreach ($paths as $dir) {
-                if (substr(realpath($dir), 0, strlen($base_part)) != $base_part) {
-                    return $base;
-                }
-            }
-
-            $base = $base_part;
         }
     }
 

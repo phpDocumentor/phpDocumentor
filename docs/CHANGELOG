@@ -1,3 +1,13 @@
+07/16/2011: Version 0.12.0 - Extendability
+------------------------------------------
+
+* BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.
+            Anyone using the command line will not notice this BC break but if you use DocBlox_Parser directly this will
+            affect your application. Please check DocBlox_Task_Parse how to use this new object.
+            The change has been done to be able to control the file selection process in more detail and spot/fix bugs
+            with ignore paths and more.
+* ADDED:    EventDispatcher to coordinate logging efforts and make DocBlox extra extensible.
+
 06/12/2011: Version 0.11.0
 --------------------------
 
