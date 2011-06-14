@@ -148,11 +148,15 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         // detect encoding and transform to UTF-8
         if (class_exists('finfo')) {
             // PHP 5.3 or PECL extension
-            $flag     = defined('FILEINFO_MIME_ENCODING')
+            $flag = defined('FILEINFO_MIME_ENCODING')
                 ? FILEINFO_MIME_ENCODING
                 : FILEINFO_MIME;
-            $info     = new finfo();
-            $encoding = $info->file($filename, $flag);
+            $info = new finfo();
+
+            // phar files cannot be read by finfo::file(), so we extract the contents
+            $encoding = (substr($filename, 0, 7) != 'phar://')
+                ? $info->file($filename, $flag)
+                : $info->buffer(file_get_contents($filename), $flag);
 
             // Versions prior to PHP 5.3 do not support the
             // FILEINFO_MIME_ENCODING constant; extract the encoding from the
