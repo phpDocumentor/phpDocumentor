@@ -221,7 +221,10 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
                     continue;
                 }
 
-                $files[] = $file->getRealPath();
+                // Phar files return false on a call to getRealPath
+                $files[] = (substr($file->getPathname(), 0, 7) != 'phar://')
+                    ? $file->getRealPath()
+                    : $file->getPathname();
             }
         }
 
