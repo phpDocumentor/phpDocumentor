@@ -53,6 +53,9 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     /** @var string target location's root path */
     protected $path = null;
 
+    /** @var boolean should we ignore '@ignore's ? */
+    protected $tagIgnore;
+
     /**
      * Array of visibility modifiers that should be adhered to when generating
      * the documentation
@@ -252,6 +255,11 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     public function setPath($path)
     {
         $this->path = $path;
+    }
+
+    public function setTagIgnore($tagIgnore)
+    {
+        $this->tagIgnore = $tagIgnore;
     }
 
     /**
@@ -479,6 +487,29 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
         $this->buildMarkerList($dom);
 
         $xml = $dom->saveXML();
+
+        // Ignored blocks
+        if ($this->tagIgnore) {
+            $this->log('--');
+            $this->log('Applying ignore tag');
+
+            $dom = new DOMDocument();
+            $dom->loadXML($xml);
+
+            $ignoreQry = '//tag[@name=\'ignore\']';
+
+            $xpath = new DOMXPath($dom);
+            $nodes = $xpath->query($ignoreQry);
+
+            foreach($nodes as $node) {
+                var_dump($node->parentNode->parentNode->parentNode);
+
+                $remove = $node->parentNode->parentNode;
+                $node->parentNode->parentNode->parentNode->removeChild($remove);
+            }
+
+            $xml = $dom->saveXML();
+        }
 
         // Visibility rules
         $this->log('--');
