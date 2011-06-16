@@ -32,8 +32,14 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     /** @var string[] */
     protected $templates = array();
 
+    /** @var DocBlox_Transformer_Behaviour_Collection */
+    protected $behaviours = null;
+
     /** @var DocBlox_Transformer_Transformation[] */
     protected $transformations = array();
+
+    /** @var boolean */
+    protected $skipInternal = false;
 
     /**
      * Initialize the transformations.
@@ -41,6 +47,13 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     public function __construct()
     {
         $this->loadTransformations();
+
+        $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
+            new DocBlox_Transformer_Behaviour_GeneratePaths(),
+            new DocBlox_Transformer_Behaviour_AddLinkInformation(),
+            new DocBlox_Transformer_Behaviour_Inherit(),
+            new DocBlox_Transformer_Behaviour_Tag_Ignore(),
+        ));
     }
 
     /**
@@ -110,6 +123,16 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     public function getSource()
     {
         return $this->source;
+    }
+
+    public function setSkipInternal($val)
+    {
+        $this->skipInternal = (boolean)$val;
+    }
+
+    public function getSkipInternal()
+    {
+        return $this->skipInternal;
     }
 
     /**
@@ -344,14 +367,12 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
 
         if ($xml)
         {
-            $behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
-                new DocBlox_Transformer_Behaviour_GeneratePaths(),
-                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
-                new DocBlox_Transformer_Behaviour_Inherit(),
-            ));
+            if ($this->getSkipInternal()) {
+                $this->behaviours->addBehaviour(new DocBlox_Transformer_Behaviour_Tag_Internal());
+            }
 
-            $behaviours->setLogger(DocBlox_Core_Abstract::$logger);
-            $xml = $behaviours->process($xml);
+            $this->behaviours->setLogger(DocBlox_Core_Abstract::$logger);
+            $xml = $this->behaviours->process($xml);
         }
 
         foreach ($this->getTransformations() as $transformation)

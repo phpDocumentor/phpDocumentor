@@ -88,9 +88,10 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
             'Validates every processed file using PHP Lint, costs a lot of performance'
         );
         $this->addOption(
-            'tagignore', '',
-            'Whether to ignore DocBlocks tagged with @ignore'
+            'skipinternal', '',
+            'Whether to ignore DocBlocks tagged with @internal'
         );
+
         $this->addOption(
             'visibility', '-s',
             'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")'
@@ -120,7 +121,6 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
         $task->setForce($this->getForce());
         $task->setValidate($this->getValidate());
         $task->setVisibility($this->getVisibility());
-        $task->setTagignore($this->getTagignore());
         $task->execute();
 
         $transform = new DocBlox_Task_Project_Transform();
@@ -129,6 +129,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
         $transform->setSource($task->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml');
         $transform->setVerbose($task->getVerbose());
         $transform->setQuiet($task->getQuiet());
+        $transform->setSkipinternal($this->getSkipinternal());
         $transform->execute();
     }
 
