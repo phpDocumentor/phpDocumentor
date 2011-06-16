@@ -54,6 +54,32 @@ class DocBlox_Transformer_Behaviour_Collection implements
     }
 
     /**
+     * Adds a behaviour to a collection
+     *
+     * @param DocBlox_Transformer_Behaviour_Interface $behaviour
+     * @return void
+     */
+    public function addBehaviour(DocBlox_Transformer_Behaviour_Interface $behaviour)
+    {
+        $this->behaviours[] = $behaviour;
+    }
+
+    /**
+     * Removes a behaviour from the collection
+     *
+     * @param DocBlox_Transformer_Behaviour_Interface $behaviour
+     * @return void
+     */
+    public function removeBehaviour(DocBlox_Transformer_Behaviour_Interface $behaviour)
+    {
+        foreach ($this->behaviours as $key => $thisBehaviour) {
+            if ($behaviour == $thisBehaviour) {
+                unset($this->behaviours[$key]);
+            }
+        }
+    }
+
+    /**
      * Executes the behaviour on the given dataset,
      *
      * @param DOMDocument $xml
