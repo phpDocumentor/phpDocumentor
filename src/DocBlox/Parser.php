@@ -488,29 +488,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
 
         $xml = $dom->saveXML();
 
-        // Ignored blocks
-        if ($this->tagIgnore) {
-            $this->log('--');
-            $this->log('Applying ignore tag');
-
-            $dom = new DOMDocument();
-            $dom->loadXML($xml);
-
-            $ignoreQry = '//tag[@name=\'ignore\']';
-
-            $xpath = new DOMXPath($dom);
-            $nodes = $xpath->query($ignoreQry);
-
-            foreach($nodes as $node) {
-                var_dump($node->parentNode->parentNode->parentNode);
-
-                $remove = $node->parentNode->parentNode;
-                $node->parentNode->parentNode->parentNode->removeChild($remove);
-            }
-
-            $xml = $dom->saveXML();
-        }
-
         // Visibility rules
         $this->log('--');
         $this->log('Applying visibility rules');
