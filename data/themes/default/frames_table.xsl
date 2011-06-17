@@ -20,10 +20,10 @@
 
         <script type="text/javascript">
           jQuery(document).ready(function($) {
-            $(content).bind('load', function() { // Wait for frame to be ready
+            $('iframe').bind('load', function() { // Wait for frame to be ready
               $(window).bind('hashchange', function(e) {
                 var state = $.bbq.getState();
-
+                
                 if (!state.target) {
                   return false;
                 }
