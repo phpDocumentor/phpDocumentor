@@ -4,27 +4,28 @@
  *
  * PHP Version 5
  *
- * @category   DocBlox
- * @package    Parser
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category  DocBlox
+ * @package   Parser
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
  * Files container handling directory scanning, project root detection and ignores.
  *
- * @category   DocBlox
- * @package    Parser
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category DocBlox
+ * @package  Parser
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
 {
     /**
-     * the glob patterns which directories/files to ignore during parsing and how many files were ignored.
+     * the glob patterns which directories/files to ignore during parsing and
+     * how many files were ignored.
      *
      * Structure of this array is:
      *
@@ -52,7 +53,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     /**
      * Sets the patterns by which to detect which files to ignore.
      *
-     * @param array $patterns
+     * @param array $patterns Glob-like patterns to filter files.
      *
      * @return void
      */
@@ -60,8 +61,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     {
         $this->ignore_patterns = array();
 
-        foreach($patterns as $pattern)
-        {
+        foreach ($patterns as $pattern) {
             $this->addIgnorePattern($pattern);
         }
     }
@@ -75,8 +75,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     {
         // extract first element; second is a count
         $result = array();
-        foreach($this->ignore_patterns as $pattern)
-        {
+        foreach ($this->ignore_patterns as $pattern) {
             $result[] = $pattern[0];
         }
         return $result;
@@ -85,7 +84,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     /**
      * Adds an ignore pattern to the collection.
      *
-     * @param string $pattern
+     * @param string $pattern Glob-like pattern to filter files with.
      *
      * @return void
      */
@@ -96,10 +95,10 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     }
 
     /**
-     * Sets a list of allowed extensions; if not used php,
-     * php3 and phtml is assumed.
+     * Sets a list of allowed extensions; if not used php, php3 and phtml
+     * is assumed.
      *
-     * @param array $extensions
+     * @param array $extensions An array containing extensions to match for.
      *
      * @return void
      */
@@ -107,39 +106,69 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     {
         $this->allowed_extensions = array();
 
-        foreach($extensions as $extension)
-        {
+        foreach ($extensions as $extension) {
             $this->addAllowedExtension($extension);
         }
     }
 
+    /**
+     * Adds a file extension to the list of allowed extensions.
+     *
+     * No dot is necessary and will even prevent the extension from being
+     * picked up.
+     *
+     * @param string $extension Allowed file Extension to add (i.e. php).
+     *
+     * @return void
+     */
     public function addAllowedExtension($extension)
     {
         $this->allowed_extensions[] = $extension;
     }
 
+    /**
+     * Adds the content of a set of directories to the list of files to parse.
+     *
+     * @param array $paths The paths whose contents to add to the collection.
+     *
+     * @return void
+     */
     public function addDirectories(array $paths)
     {
-        foreach ($paths as $path)
-        {
+        foreach ($paths as $path) {
             $this->addDirectory($path);
         }
     }
 
+    /**
+     * Retrieve all files in the given directory and add them to the parsing list.
+     *
+     * @param string $path A path to a folder, may be relative, absolute or
+     *  even phar.
+     *
+     * @throws InvalidArgumentException if the given path is not a folder.
+     *
+     * @return void
+     */
     public function addDirectory($path)
     {
         // if the given is not a directory, skip it
         if (!is_dir($path)) {
-            throw new InvalidArgumentException('Expected the path to a folder but received: '.var_export($path, true));
+            throw new InvalidArgumentException(
+                'Expected the path to a folder but received: '
+                . var_export($path, true)
+            );
         }
 
         // get all files recursively to the files array
         $files_iterator = new RecursiveDirectoryIterator($path);
 
-        // add the CATCH_GET_CHILD option to make sure that an unreadable directory does not halt process but
-        // skip that folder
+        // add the CATCH_GET_CHILD option to make sure that an unreadable
+        // directory does not halt process but skip that folder
         $recursive_iterator = new RecursiveIteratorIterator(
-            $files_iterator, RecursiveIteratorIterator::LEAVES_ONLY, RecursiveIteratorIterator::CATCH_GET_CHILD
+            $files_iterator,
+            RecursiveIteratorIterator::LEAVES_ONLY,
+            RecursiveIteratorIterator::CATCH_GET_CHILD
         );
 
         /** @var SplFileInfo $file */
@@ -152,20 +181,33 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             // Phar files return false on a call to getRealPath
             $this->addFile(
                 (substr($file->getPathname(), 0, 7) != 'phar://')
-                    ? $file->getRealPath()
-                    : $file->getPathname()
+                ? $file->getRealPath()
+                : $file->getPathname()
             );
         }
     }
 
+    /**
+     * Adds a list of individual files to the collection.
+     *
+     * @param array $paths File locations, may be absolute, relative or even phar.
+     *
+     * @return void
+     */
     public function addFiles(array $paths)
     {
-        foreach($paths as $path)
-        {
+        foreach ($paths as $path) {
             $this->addFile($path);
         }
     }
 
+    /**
+     * Adds a file to the collection.
+     *
+     * @param string $path File location, may be absolute, relative or even phar.
+     *
+     * @return void
+     */
     public function addFile($path)
     {
         // if it is not a file contained in a phar; check it out with a glob
@@ -173,10 +215,13 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             // search file(s) with the given expressions
             $result = glob($path);
             foreach ($result as $file) {
-                // if the path is not a file OR it's extension does not match the given, then do not process it.
-                if (
-                    !is_file($file) || (!empty($this->allowed_extensions)
-                    && !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), $this->allowed_extensions))
+                // if the path is not a file OR it's extension does not match
+                // the given, then do not process it.
+                if (!is_file($file) || (!empty($this->allowed_extensions)
+                    && !in_array(
+                        strtolower(pathinfo($file, PATHINFO_EXTENSION)),
+                        $this->allowed_extensions
+                    ))
                 ) {
                     continue;
                 }
@@ -185,9 +230,11 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             }
         } else {
             // only process if it is a file and it matches the allowed extensions
-            if (
-                is_file($path) && (empty($this->allowed_extensions)
-                || in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), $this->allowed_extensions))
+            if (is_file($path) && (empty($this->allowed_extensions)
+                || in_array(
+                    strtolower(pathinfo($path, PATHINFO_EXTENSION)),
+                    $this->allowed_extensions
+                ))
             ) {
                 $this->files[] = $path;
             }
@@ -197,12 +244,19 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         $this->project_root = null;
     }
 
+    /**
+     * Returns a list of files that are ready to be parsed.
+     *
+     * Please note that the ignore pattern will be applied and all files are
+     * converted to absolute paths.
+     *
+     * @return string[]
+     */
     public function getFiles()
     {
         $result = array();
 
-        foreach($this->files as $filename)
-        {
+        foreach ($this->files as $filename) {
             // check whether this file is ignored; we do this in two steps:
             // 1. Determine whether this is a relative or absolute path, if the
             //    string does not start with *, ?, / or \ then we assume that it is
@@ -212,22 +266,23 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             foreach ($this->ignore_patterns as $key => $pattern) {
                 $glob = $pattern[0];
                 if ((($glob[0] !== '*')
-                     && ($glob[0] !== '?')
-                     && ($glob[0] !== '/')
-                     && ($glob[0] !== '\\')
-                     && (preg_match(
-                            '/^' . $glob . '$/',
-                            $this->getRelativeFilename($filename)
-                        )))
+                    && ($glob[0] !== '?')
+                    && ($glob[0] !== '/')
+                    && ($glob[0] !== '\\')
+                    && (preg_match(
+                        '/^' . $glob . '$/',
+                        $this->getRelativeFilename($filename)
+                    )))
                     || (preg_match('/^' . $glob . '$/', $filename))
                 ) {
 
                     // increase ignore usage with 1
                     $this->ignore_patterns[$key][1]++;
 
-                    $this->notify(
+                    $this->log(
                         'system.log',
-                        '-- File "' . $filename . '" matches ignore pattern, will be skipped'
+                        '-- File "' . $filename . '" matches ignore pattern, '
+                        . 'will be skipped'
                     );
                     continue 2;
                 }
@@ -235,13 +290,13 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             $result[] = $filename;
         }
 
-        foreach($this->ignore_patterns as $pattern)
-        {
-            if ($pattern[1] < 1)
-            {
-                $this->notify(
+        // detect if ignore patterns have been unused
+        foreach ($this->ignore_patterns as $pattern) {
+            if ($pattern[1] < 1) {
+                $this->log(
                     'system.log',
-                    'Ignore pattern "' . $pattern[0] . '" has not been used during processing'
+                    'Ignore pattern "' . $pattern[0] . '" has not been used '
+                    . 'during processing'
                 );
             }
         }
@@ -249,10 +304,15 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         return $result;
     }
 
+    /**
+     * Calculates the project root from the given files by determining their
+     * highest common path.
+     *
+     * @return string
+     */
     public function getProjectRoot()
     {
-        if ($this->project_root === null)
-        {
+        if ($this->project_root === null) {
             $base = '';
             $file = reset($this->files);
 
@@ -269,8 +329,8 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
 
                     // realpath does not work on phar files
                     $dir = (substr($dir, 0, 7) != 'phar://')
-                        ? realpath($dir)
-                        : $dir;
+                            ? realpath($dir)
+                            : $dir;
 
                     if (substr($dir, 0, strlen($base_part)) != $base_part) {
                         return $base;

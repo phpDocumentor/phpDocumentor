@@ -44,13 +44,17 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     /**
      * Initializes this object with the given data and sets the name and description.
      *
-     * @param string                          $namespace Namespace where this tag occurs.
-     * @param string[]                        $namespace_aliases aliases used for all namespaces at the location of this tag.
-     * @param SimpleXMLElement                $xml
-     * @param DocBlox_Reflection_DocBlock_Tag $tag
+     * @param string                          $namespace         Namespace where
+     *  this tag occurs.
+     * @param string[]                        $namespace_aliases Aliases used
+     *  for all namespaces at the location of this tag.
+     * @param SimpleXMLElement                $xml               XML to enhance.
+     * @param DocBlox_Reflection_DocBlock_Tag $tag               Tag object to use.
      */
-    public function __construct($namespace, $namespace_aliases, SimpleXMLElement $xml, DocBlox_Reflection_DocBlock_Tag $tag)
-    {
+    public function __construct(
+        $namespace, $namespace_aliases, SimpleXMLElement $xml,
+        DocBlox_Reflection_DocBlock_Tag $tag
+    ) {
         $this->xml = $xml;
         $this->tag = $tag;
 
@@ -68,28 +72,39 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     /**
      * Creates a new instance of this class or one of the specialized sub-classes.
      *
-     * @todo replace the switch statement with an intelligent container / plugin system.
+     * @param string                          $namespace         Namespace where
+     *  this tag occurs.
+     * @param string[]                        $namespace_aliases Aliases used
+     *  for all namespaces at the location of this tag.
+     * @param SimpleXMLElement                $xml               Root xml element
+     *  for this tag.
+     * @param DocBlox_Reflection_DocBlock_Tag $tag               The actual tag
+     *  as reflected.
      *
-     * @param string                          $namespace Namespace where this tag occurs.
-     * @param string[]                        $namespace_aliases aliases used for all namespaces at the location of this tag.
-     * @param SimpleXMLElement                $xml       root xml element for this tag.
-     * @param DocBlox_Reflection_DocBlock_Tag $tag       The actual tag as reflected.
+     * @todo replace the switch statement with an intelligent container /
+     * plugin system.
      *
      * @return DocBlox_Parser_DocBlock_Tag_Definition
      */
-    public static function create($namespace, $namespace_aliases, SimpleXMLElement $xml, DocBlox_Reflection_DocBlock_Tag $tag)
-    {
+    public static function create(
+        $namespace, $namespace_aliases, SimpleXMLElement $xml,
+        DocBlox_Reflection_DocBlock_Tag $tag
+    ) {
         switch ($tag->getName())
         {
-            case 'param':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param($namespace, $namespace_aliases, $xml, $tag);
-                break;
-            case 'link':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link($namespace, $namespace_aliases, $xml, $tag);
-                break;
-            default:
-                $def = new self($namespace, $namespace_aliases, $xml, $tag);
-                break;
+        case 'param':
+            $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        case 'link':
+            $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        default:
+            $def = new self($namespace, $namespace_aliases, $xml, $tag);
+            break;
         }
 
         $def->configure();
@@ -108,7 +123,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     /**
      * Setter for the name so it can be overridden.
      *
-     * @param string $name
+     * @param string $name Name for this definition.
      *
      * @return void
      */
@@ -120,7 +135,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     /**
      * Setter for the description so it can be overridden.
      *
-     * @param string $description
+     * @param string $description Description for this definition.
      *
      * @return void
      */
@@ -133,7 +148,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     /**
      * Sets the namespace for this tag; is used to determine type info.
      *
-     * @param string $namespace
+     * @param string $namespace Namespace name for this definition.
      *
      * @return void
      */
@@ -155,9 +170,11 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     /**
      * Adds type information to the structure.
      *
-     * @todo Move this method to a better spot with namespace and alias access (together with namespace and alias stuff).
+     * @param string[] $types Array with types in any format; will be transformed
+     *  to FQCN.
      *
-     * @param string[] $types
+     * @todo Move this method to a better spot with namespace and alias access
+     *  (together with namespace and alias stuff).
      *
      * @return void
      */
@@ -174,8 +191,10 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
             $name = str_replace('&', '', $type);
             $type_object = $this->xml->addChild('type', $name);
 
-            // register whether this variable is by reference by checking the first and last character
-            $type_object['by_reference'] = ((substr($type, 0, 1) === '&') || (substr($type, -1) === '&'))
+            // register whether this variable is by reference by checking
+            // the first and last character
+            $type_object['by_reference'] = ((substr($type, 0, 1) === '&')
+                || (substr($type, -1) === '&'))
                 ? 'true'
                 : 'false';
         }
@@ -200,7 +219,9 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
             'string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
             'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback'
         );
-        $namespace = $this->getNamespace() == 'default' ? '' : $this->getNamespace() . '\\';
+        $namespace = $this->getNamespace() == 'default'
+            ? ''
+            : $this->getNamespace() . '\\';
 
         $type = explode('|', $type);
         foreach ($type as &$item) {
@@ -213,10 +234,13 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
                 $is_array = true;
             }
 
-            if ((substr($item, 0, 1) != '\\') && (!in_array(strtolower($item), $non_objects))) {
+            if ((substr($item, 0, 1) != '\\')
+                && (!in_array(strtolower($item), $non_objects))
+            ) {
                 $type_parts = explode('\\', $item);
 
-                // if the first part is the keyword 'namespace', replace it with the current namespace
+                // if the first part is the keyword 'namespace', replace it
+                // with the current namespace
                 if ($type_parts[0] == 'namespace') {
                     $type_parts[0] = $this->getNamespace();
                     $item = implode('\\', $type_parts);
@@ -228,7 +252,8 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
 
                     $item = implode('\\', $type_parts);
                 } elseif (count($type_parts) == 1) {
-                    // prefix the item with the namespace if there is only one part and no alias
+                    // prefix the item with the namespace if there is only one
+                    // part and no alias
                     $item = $namespace . $item;
                 }
             }
@@ -250,7 +275,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     /**
      * Sets the aliases for all namespaces.
      *
-     * @param string[] $namespace_aliases
+     * @param string[] $namespace_aliases Array of aliases.
      *
      * @return void
      */

@@ -23,7 +23,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Tag_Definition_Link extends DocBlox_Parser_DocBlock_Tag_Definition
+class DocBlox_Parser_DocBlock_Tag_Definition_Link
+    extends DocBlox_Parser_DocBlock_Tag_Definition
 {
 
     /**
@@ -35,9 +36,10 @@ class DocBlox_Parser_DocBlock_Tag_Definition_Link extends DocBlox_Parser_DocBloc
      */
     protected function configure()
     {
-        if (!$this->tag instanceof DocBlox_Reflection_DocBlock_Tag_Link)
-        {
-            throw new InvalidArgumentException('Expected the tag to be for an @link');
+        if (!$this->tag instanceof DocBlox_Reflection_DocBlock_Tag_Link) {
+            throw new InvalidArgumentException(
+                'Expected the tag to be for an @link'
+            );
         }
 
         $this->xml['link'] = $this->tag->getLink();
