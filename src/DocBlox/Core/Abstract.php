@@ -89,8 +89,7 @@ abstract class DocBlox_Core_Abstract
      */
     public function __construct()
     {
-        if (self::$debug_logger === null)
-        {
+        if (self::$debug_logger === null) {
             self::$debug_logger = new DocBlox_Core_Log(
                 $this->getConfig()->logging->paths->errors
             );

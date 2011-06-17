@@ -29,7 +29,7 @@ $base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
   ? dirname(__FILE__) . '/../src'
   : '@php_dir@/DocBlox/src';
 
-// set path to add lib folder, load the Zend Autoloader and include the symfony timer
+// set path to add lib folder, load the Zend Autoloader
 set_include_path($base_include_folder . PATH_SEPARATOR . get_include_path());
 
 require_once 'Zend/Loader/Autoloader.php';
