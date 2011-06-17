@@ -21,11 +21,8 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-class DocBlox_Parser extends DocBlox_Core_Abstract implements DocBlox_Parser_Dispatchable
+class DocBlox_Parser extends DocBlox_Parser_Abstract
 {
-    /** @var sfEventDispatcher The event dispatcher for DocBlox */
-    protected $event_dispatcher = null;
-
     /** @var string the title to use in the header */
     protected $title = '';
 
@@ -57,35 +54,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract implements DocBlox_Parser_Dis
      * @var array
      */
     protected $visibility = array('public', 'protected', 'private');
-
-    /**
-     * Sets the event dispatcher for this class.
-     *
-     * @param mixed $dispatcher
-     *
-     * @return void
-     */
-    public function setEventDispatcher($dispatcher) {
-        $this->event_dispatcher = $dispatcher;
-    }
-
-    /**
-     * Notifies the event dispatcher of the given event ($name) and $arguments and
-     * returns the result of the notification.
-     *
-     * @param string  $name      Name of the invoked event.
-     * @param mixed[] $arguments Associative array with arguments for this event.
-     *
-     * @return mixed
-     */
-    public function notify($name, array $arguments)
-    {
-        $event = new sfEvent($this, $name, $arguments);
-        $this->event_dispatcher->notify($event);
-
-        return $event->getReturnValue();
-    }
-
 
     /**
      * Sets the title for this project.
@@ -286,7 +254,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract implements DocBlox_Parser_Dis
     {
         $this->log('Starting to parse file: ' . $filename);
         $this->debug('Starting to parse file: ' . $filename);
-        $this->resetTimer();
         $result = null;
 
         try {
@@ -343,7 +310,7 @@ class DocBlox_Parser extends DocBlox_Core_Abstract implements DocBlox_Parser_Dis
             '>> Memory after processing of file: '
             . number_format(memory_get_usage()) . ' bytes'
         );
-        $this->debugTimer('>> Parsed file');
+        $this->debug('>> Parsed file');
 
         return $result;
     }
@@ -405,7 +372,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract implements DocBlox_Parser_Dis
      */
     public function parseFiles(DocBlox_Parser_Files $files)
     {
-        $this->log('Starting to process ' . count($files) . ' files') . PHP_EOL;
         $timer = microtime(true);
 
         $dom = new DOMDocument('1.0', 'utf-8');
@@ -416,6 +382,9 @@ class DocBlox_Parser extends DocBlox_Core_Abstract implements DocBlox_Parser_Dis
         );
 
         $paths = $files->getFiles();
+        $this->log('Starting to process ' . count($paths) . ' files') . PHP_EOL;
+        $this->log('  Project root is:  ' . $files->getProjectRoot()) . PHP_EOL;
+        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns())) . PHP_EOL;
         if (count($paths) < 1)
         {
             throw new DocBlox_Parser_Exception(

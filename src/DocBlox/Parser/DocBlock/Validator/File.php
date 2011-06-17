@@ -2,9 +2,11 @@
 /**
  * File contains the DocBlox_Core_Validator_File class
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
  * @package    Parser
- * @subpackage Validator
+ * @subpackage DocBlock_Validators
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
@@ -16,54 +18,19 @@
  *
  * @category   DocBlox
  * @package    Parser
- * @subpackage Validator
+ * @subpackage DocBlock_Validators
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract implements DocBlox_Parser_DocBlock_Validator
+class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Parser_DocBlock_Validator_Abstract
 {
-    /**
-     * Name of the file being validated
-     *
-     * @var string
-     */
-    protected $filename;
-
-    /**
-     * Line number of the docblock
-     *
-     * @var int
-     */
-    protected $lineNumber;
-
-    /**
-     * Docblock for the file
-     *
-     * @var DocBlox_Reflection_DocBlock
-     */
-    protected $docblock;
-
-    /**
-     * Constructor
-     *
-     * @param string                           $filename   Filename
-     * @param int                              $lineNumber Line number for the docblock
-     * @param DocBlox_Reflection_DocBlock|null $docblock   Docbloc
-     */
-    public function __construct($filename, $lineNumber, $docblock = null)
-    {
-        $this->filename = $filename;
-        $this->lineNumber = $lineNumber;
-        $this->docblock = $docblock;
-    }
-
     /**
      * Is the docblock valid?
      *
-     * @see DocBlox_Core_Validator::isValid()
+     * @see DocBlox_Parser_DocBlock_Validator::isValid()
      *
      * @return boolean
      */
@@ -78,7 +45,7 @@ class DocBlox_Parser_DocBlock_Validator_File extends DocBlox_Core_Abstract imple
         if (!$this->docblock->hasTag('package')) {
             $valid = false;
             $this->log(
-                'No Page-level DocBlock was found for '.$this->filename.' on line: '.$this->lineNumber, Zend_Log::ERR
+                'No Page-level DocBlock was found for '.$this->filename.' on line: '.$this->line_number, Zend_Log::ERR
             );
         }
 

@@ -7,6 +7,7 @@
             The change has been done to be able to control the file selection process in more detail and spot/fix bugs
             with ignore paths and more.
 * ADDED:    EventDispatcher to coordinate logging efforts and make DocBlox extra extensible.
+* ADDED:    Support for parsing PHAR packages
 
 06/12/2011: Version 0.11.0
 --------------------------

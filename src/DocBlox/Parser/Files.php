@@ -21,7 +21,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
+class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
 {
     /**
      * the glob patterns which directories/files to ignore during parsing and how many files were ignored.
@@ -37,12 +37,25 @@ class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
      */
     protected $ignore_patterns = array();
 
-    protected $allowed_extensions = array();
+    /**
+     * @var string[] Array containing a list of allowed line endings;
+     *               defaults to php, php3 and phtml.
+     */
+    protected $allowed_extensions = array('php', 'php3', 'phtml');
 
+    /** @var string[] An array containing the file names which must be processed */
     protected $files = array();
 
+    /** @var string Detected root folder for this project */
     protected $project_root = null;
 
+    /**
+     * Sets the patterns by which to detect which files to ignore.
+     *
+     * @param array $patterns
+     *
+     * @return void
+     */
     public function setIgnorePatterns(array $patterns)
     {
         $this->ignore_patterns = array();
@@ -53,12 +66,43 @@ class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
         }
     }
 
+    /**
+     * Returns the ignore patterns.
+     *
+     * @return array
+     */
+    public function getIgnorePatterns()
+    {
+        // extract first element; second is a count
+        $result = array();
+        foreach($this->ignore_patterns as $pattern)
+        {
+            $result[] = $pattern[0];
+        }
+        return $result;
+    }
+
+    /**
+     * Adds an ignore pattern to the collection.
+     *
+     * @param string $pattern
+     *
+     * @return void
+     */
     public function addIgnorePattern($pattern)
     {
         $this->convertToPregCompliant($pattern);
         $this->ignore_patterns[] = array($pattern, 0);
     }
 
+    /**
+     * Sets a list of allowed extensions; if not used php,
+     * php3 and phtml is assumed.
+     *
+     * @param array $extensions
+     *
+     * @return void
+     */
     public function setAllowedExtensions(array $extensions)
     {
         $this->allowed_extensions = array();
@@ -105,7 +149,12 @@ class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
                 continue;
             }
 
-            $this->addFile($file->getRealPath());
+            // Phar files return false on a call to getRealPath
+            $this->addFile(
+                (substr($file->getPathname(), 0, 7) != 'phar://')
+                    ? $file->getRealPath()
+                    : $file->getPathname()
+            );
         }
     }
 
@@ -119,18 +168,29 @@ class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
 
     public function addFile($path)
     {
-        // search file(s) with the given expressions
-        $result = glob($path);
-        foreach ($result as $file) {
-            // if the path is not a file OR it's extension does not match the given, then do not process it.
-            if (
-                !is_file($file) || (!empty($this->allowed_extensions)
-                && !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), $this->allowed_extensions))
-            ) {
-                continue;
-            }
+        // if it is not a file contained in a phar; check it out with a glob
+        if (substr($path, 0, 7) != 'phar://') {
+            // search file(s) with the given expressions
+            $result = glob($path);
+            foreach ($result as $file) {
+                // if the path is not a file OR it's extension does not match the given, then do not process it.
+                if (
+                    !is_file($file) || (!empty($this->allowed_extensions)
+                    && !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), $this->allowed_extensions))
+                ) {
+                    continue;
+                }
 
-            $this->files[] = realpath($file);
+                $this->files[] = realpath($file);
+            }
+        } else {
+            // only process if it is a file and it matches the allowed extensions
+            if (
+                is_file($path) && (empty($this->allowed_extensions)
+                || in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), $this->allowed_extensions))
+            ) {
+                $this->files[] = $path;
+            }
         }
 
         // reset root cache
@@ -165,9 +225,10 @@ class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
                     // increase ignore usage with 1
                     $this->ignore_patterns[$key][1]++;
 
-//                    $this->log(
-//                        '-- File "' . $filename . '" matches ignore pattern, will be skipped'
-//                    );
+                    $this->notify(
+                        'system.log',
+                        '-- File "' . $filename . '" matches ignore pattern, will be skipped'
+                    );
                     continue 2;
                 }
             }
@@ -178,7 +239,10 @@ class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
         {
             if ($pattern[1] < 1)
             {
-//                $this->log('Ignore pattern "' . $pattern[0] . '" has not been used during processing');
+                $this->notify(
+                    'system.log',
+                    'Ignore pattern "' . $pattern[0] . '" has not been used during processing'
+                );
             }
         }
 
@@ -190,12 +254,25 @@ class DocBlox_Parser_Files implements DocBlox_Parser_Dispatchable
         if ($this->project_root === null)
         {
             $base = '';
-            $parts = explode(DIRECTORY_SEPARATOR, realpath(reset($this->files)));
+            $file = reset($this->files);
+
+            // realpath does not work on phar files
+            $file = (substr($file, 0, 7) != 'phar://')
+                ? realpath($file)
+                : $file;
+
+            $parts = explode(DIRECTORY_SEPARATOR, $file);
 
             foreach ($parts as $part) {
                 $base_part = $base . $part . DIRECTORY_SEPARATOR;
                 foreach ($this->files as $dir) {
-                    if (substr(realpath($dir), 0, strlen($base_part)) != $base_part) {
+
+                    // realpath does not work on phar files
+                    $dir = (substr($dir, 0, 7) != 'phar://')
+                        ? realpath($dir)
+                        : $dir;
+
+                    if (substr($dir, 0, strlen($base_part)) != $base_part) {
                         return $base;
                     }
                 }

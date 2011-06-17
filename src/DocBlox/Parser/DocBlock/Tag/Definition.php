@@ -2,6 +2,8 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
  * @package    Parser
  * @subpackage Tag_Definitions
@@ -21,7 +23,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Tag_Definition
+class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
 {
     /** @var SimpleXMLElement */
     protected $xml = null;
