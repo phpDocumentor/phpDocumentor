@@ -1,29 +1,100 @@
-    <?php
+<?php
+/**
+ * DocBlox
+ *
+ * PHP Version 5
+ *
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Unit_tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
 
+/**
+ * @api
+ * @var int
+ */
+define('BLA', 1);
+
+/**
+ * @var int
+ */
+define('BLA2', 2);
+
+/**
+ * Constant description
+ *
+ * @api
+ *
+ * @var int
+ */
+const BLA3 = 1;
+
+/**
+ * @var int
+ */
+const BLA4 = 1;
+
+/**
+ * Function description
+ *
+ * @api
+ *
+ * @return void
+ */
+function bla5()
+{
+
+}
+
+/**
+ * @return void
+ */
+function bla6()
+{
+
+}
+
+/**
+ * Fixture file for the API tests.
+ *
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Unit_tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ * @api
+ */
+class DocBlox_Tests_Data_ApiFixture
+{
     /**
      * @api
      * @var int
      */
-    define('BLA', 1);
+    const BLA7 = 1;
 
     /**
-     * @var int
+     * #var int
      */
-    define('BLA2', 2);
+    const BLA8 = 1;
 
     /**
-     * Constant description
+     * Property description
      *
      * @api
      *
-     * @var int
+     * @var string
      */
-    const BLA3 = 1;
+    public $bla9 = '1';
 
     /**
-     * @var int
+     * @var string
      */
-    const BLA4 = 1;
+    public $bla10 = '1';
 
     /**
      * Function description
@@ -32,7 +103,7 @@
      *
      * @return void
      */
-    function bla5()
+    function bla11()
     {
 
     }
@@ -40,60 +111,8 @@
     /**
      * @return void
      */
-    function bla6()
+    function bla12()
     {
 
     }
-
-    /**
-     * Class description
-     *
-     * @api
-     */
-    class Class1
-    {
-        /**
-         * @api
-         * @var int
-         */
-        const BLA7 = 1;
-
-        /**
-         * #var int
-         */
-        const BLA8 = 1;
-
-        /**
-         * Property description
-         *
-         * @api
-         *
-         * @var string
-         */
-        public $bla9 = '1';
-
-        /**
-         * @var string
-         */
-        public $bla10 = '1';
-
-        /**
-         * Function description
-         *
-         * @api
-         *
-         * @return void
-         */
-        function bla11()
-        {
-
-        }
-
-        /**
-         * @return void
-         */
-        function bla12()
-        {
-
-        }
-    }
+}

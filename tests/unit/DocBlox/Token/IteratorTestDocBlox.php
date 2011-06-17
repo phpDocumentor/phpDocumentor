@@ -2,19 +2,28 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Tests
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Tokens
+ * @subpackage Tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * TokenIterator mock class.
  *
  * @category   DocBlox
- * @package    Tests
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Tokens
+ * @subpackage Tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
-class TokenIteratorMock extends DocBlox_Token_Iterator {
+class DocBlox_Token_IteratorMock extends DocBlox_Token_Iterator {
     public function gotoUpByType() {
         $this->gotoTokenByTypeInDirection('{', 'up');
     }
@@ -28,8 +37,11 @@ class TokenIteratorMock extends DocBlox_Token_Iterator {
  * Test class for DocBlox_Token_Iterator.
  *
  * @category   DocBlox
- * @package    Tests
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Tokens
+ * @subpackage Tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Token_IteratorTest extends PHPUnit_Framework_TestCase
 {
@@ -115,7 +127,7 @@ FIXTURE;
 
     public function testGotoTokenByTypeInDirection() {
         $tokens = token_get_all($this->fixture);
-        $mock = new TokenIteratorMock($tokens);
+        $mock = new DocBlox_Token_IteratorMock($tokens);
 
         $this->setExpectedException('InvalidArgumentException');
         // expect an exception because this stub tries to use a wrong direction
@@ -241,7 +253,7 @@ FIXTURE;
 
     public function testGetBrokenTokenIdsOfBracePair() {
         $tokens = token_get_all(file_get_contents(dirname(__FILE__) . '/../../../data/TokenIteratorTestFixture.php'));
-        $mock = new TokenIteratorMock($tokens);
+        $mock = new DocBlox_Token_IteratorMock($tokens);
 
         // because we have switched the { and } in the stub method it should immediately find a closing brace and thus
         // return null,null

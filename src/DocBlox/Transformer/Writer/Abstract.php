@@ -2,26 +2,34 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Writers
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Transformer
+ * @subpackage Writers
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Base class for the actual transformation business logic (writers).
  *
  * @category   DocBlox
- * @package    Writers
+ * @package    Transformer
+ * @subpackage Writers
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 abstract class DocBlox_Transformer_Writer_Abstract extends DocBlox_Core_Abstract
 {
   /**
    * Abstract definition of the execute method.
    *
-   * @param string $query
-   * @param string $source
-   * @param string $artifact
+   * @param DOMDocument                        $structure      Document containing the structure.
+   * @param DocBlox_Transformer_Transformation $transformation Transformation to execute.
    *
    * @return void
    */

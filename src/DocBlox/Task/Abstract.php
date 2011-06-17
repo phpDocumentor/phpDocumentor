@@ -4,7 +4,10 @@
  *
  * @category   DocBlox
  * @package    Tasks
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
@@ -13,6 +16,8 @@
  * @category   DocBlox
  * @package    Tasks
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  *
  * @method getHelp
  * @method setHelp
@@ -67,7 +72,16 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
     }
     $this->_parsed = false;
 
-    parent::parse();
+    try {
+      parent::parse();
+    }
+    catch (Zend_Exception $e)
+    {
+      $name = basename($_SERVER['SCRIPT_NAME'], '.php');
+      echo($name . ': ' .$e->getMessage() . PHP_EOL);
+      echo('Try: \'' . $name . ' --help\' for more information.' . PHP_EOL);
+      exit(22);
+    }
 
     if ($this->getHelp())
     {

@@ -2,18 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Provides the basic functionality for every static reflection class.
  *
  * @category   DocBlox
- * @package    Static_Reflection
- * @subpackage Base
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
 {
@@ -146,21 +152,22 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
     static $token_method_exists_cache = array();
 
     // cache method name; I expect to find this a lot
-    $token_name = $token->getName();
-    if (!isset(self::$token_method_cache[$token_name]))
+    $token_id = $token->type;
+    if (!isset(self::$token_method_cache[$token_id]))
     {
-      self::$token_method_cache[$token_name] = 'process'.str_replace(' ', '', ucwords(strtolower(substr(str_replace('_', ' ', $token_name), 2))));
+      self::$token_method_cache[$token_id] = 'process'
+        . str_replace(' ', '', ucwords(strtolower(substr(str_replace('_', ' ', token_name($token_id)), 2))));
     }
 
     // cache the method_exists calls to speed up processing
-    $method_name = self::$token_method_cache[$token_name];
+    $method_name = self::$token_method_cache[$token_id];
     if (!isset($token_method_exists_cache[$method_name]))
     {
       $token_method_exists_cache[$method_name] = method_exists($this, $method_name);
     }
 
     // if method exists; parse the token
-    if ($token_method_exists_cache[$method_name])
+    if ($token_method_exists_cache[$method_name] === true)
     {
       $this->$method_name($tokens);
     }
@@ -186,7 +193,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
     }
 
     // if anything is found, return the content
-    return $type ? $type->getContent() : null;
+    return $type ? $type->content : null;
   }
 
   /**
@@ -224,7 +231,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
     }
 
     // remove any surrounding single or double quotes before returning the data
-    return $default_token ? trim($default_token->getContent(), '\'"') : null;
+    return $default_token ? trim($default_token->content, '\'"') : null;
   }
 
   /**
@@ -349,17 +356,19 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
   }
 
   /**
-   * Sets the name of the namespace to which this belongs.
+   * Sets the list of namespace aliases in the parent file..
    *
    * @throws InvalidArgumentException
-   * @param  $namespace
+   *
+   * @param string[] $namespace_aliases List of aliases to apply.
+   *
    * @return void
    */
   public function setNamespaceAliases($namespace_aliases)
   {
     if (!is_array($namespace_aliases))
     {
-      throw new InvalidArgumentException('Expected the namespace alaises to be an array of strings');
+      throw new InvalidArgumentException('Expected the namespace aliases to be an array of strings');
     }
 
     $this->namespace_aliases = $namespace_aliases;

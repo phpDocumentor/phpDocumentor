@@ -2,19 +2,26 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Reflection class for a @return tag in a Docblock.
  *
  * @category   DocBlox
- * @package    Static_Reflection
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
-class DocBlox_Reflection_DocBlock_Tag_Return extends DocBlox_Reflection_DocBlock_Tag
+class DocBlox_Reflection_DocBlock_Tag_Return extends DocBlox_Reflection_DocBlock_Tag_Param
 {
   /** @var string */
   protected $type = null;
@@ -24,9 +31,8 @@ class DocBlox_Reflection_DocBlock_Tag_Return extends DocBlox_Reflection_DocBlock
    *
    * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
    *
-   * @param string $tag_line Line containing the full tag
-   *
-   * @return void
+   * @param string $type    Tag identifier for this tag (should be 'return')
+   * @param string $content Contents for this tag.
    */
   public function __construct($type, $content)
   {

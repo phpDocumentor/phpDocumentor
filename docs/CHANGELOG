@@ -1,9 +1,9 @@
-06/04/2011: Version 0.11.0
+06/12/2011: Version 0.11.0
 --------------------------
 
 * FIXED:    transform.php and parse.php referred to docblox.php but this is no
             longer present in a PEAR installation
-* FIXED:    If you accidentily use a CONSTANT as name for a define instead of
+* FIXED:    If you accidentally use a CONSTANT as name for a define instead of
             a literal string will DocBlox throw an error and skip parsing of that
             constant.
 * CHANGED:  Tweaked the splitting of a DocBlock to better support foreign characters
@@ -11,6 +11,23 @@
 * ADDED:    theme:generate task to generate a skeleton theme/template
 * ADDED:    Support for relative paths in the ignore argument; relative path is
             counted from the project origin.
+* FIXED:    Made several performance improvements
+* ADDED:    New option --visibility: you can limit which methods are included
+            during generation of the Docs.
+* CHANGED:  Reflection tag classes were altered to make them more easily extendable
+* CHANGED:  Errors about issues in DocBlocks have been improved
+* FIXED:    Tags were not separated if they were preceded by more than 1 whitespace character.
+* CHANGED:  Rewritten the README to match the current state of the project.
+* ADDED:    Color coding of elements to indicate the visibility
+* ADDED:    Transformation Behaviours: ad hoc business logic that adds meta data onto
+            the structure.xml pre-transformation.
+* ADDED:    Inheritance of Interface, Class, Property and Method DocBlocks; please refer to
+            /docs/manual/04 - Anatomy of a DocBlock.md for a complete description.
+* FIXED:    Packaging contained an error where the contents of the batch file were incorrectly generated
+* FIXED:    PHP files without PHP Content (template files) caused a notice
+* FIXED:    When DocBlocks contained a FQCN DocBlox did not link it to the right page
+* ADDED:    Tag definitions, this allows content creators to define how tags are added to the structure file
+* FIXED:    DocBlox fatalled when it encountered a folder which it did not have permission to; now it ignores it
 
 05/08/2011: Version 0.10.0
 --------------------------

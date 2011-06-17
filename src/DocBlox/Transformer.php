@@ -2,17 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Parser
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Transformer
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Core class responsible for transforming the structure.xml file to a set of artifacts.
  *
  * @category   DocBlox
- * @package    Parser
+ * @package    Transformer
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Transformer extends DocBlox_Core_Abstract
 {
@@ -76,16 +83,21 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
      */
     public function setSource($source)
     {
-        $path = realpath($source);
-        if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
-            throw new Exception('Given source (' . $source . ') does not exist or is not readable');
-        }
+        $source = trim($source);
 
-        // convert to dom document so that the writers do not need to
         $xml = new DOMDocument();
-        $xml->load($path);
 
-        $this->addMetaDataToStructure($xml);
+        if (substr($source, 0, 5) === '<?xml') {
+            $xml->loadXML($source);
+        } else {
+            $path = realpath($source);
+            if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
+                throw new Exception('Given source (' . $source . ') does not exist or is not readable');
+            }
+
+            // convert to dom document so that the writers do not need to
+            $xml->load($path);
+        }
 
         $this->source = $xml;
     }
@@ -136,8 +148,9 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     /**
      * Loads the transformation from the configuration and from the given templates and/or transformations.
      *
-     * @param string[] $templates                       Array of template names.
-     * @param Transformation[]|array[] $transformations Array of transformations or arrays representing transformations.
+     * @param string[]                 $templates       Array of template names.
+     * @param Transformation[]|array[] $transformations Array of transformations
+     *  or arrays representing transformations.
      *
      * @see self::addTransformation() for more details regarding the array structure.
      *
@@ -327,102 +340,26 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
      */
     public function execute()
     {
+        $xml = $this->getSource();
+
+        if ($xml)
+        {
+            $behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
+                new DocBlox_Transformer_Behaviour_GeneratePaths(),
+                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
+                new DocBlox_Transformer_Behaviour_Inherit(),
+            ));
+
+            $behaviours->setLogger(DocBlox_Core_Abstract::$logger);
+            $xml = $behaviours->process($xml);
+        }
+
         foreach ($this->getTransformations() as $transformation)
         {
             $this->log('Applying transformation query ' . $transformation->getQuery()
                        . ' using writer ' . get_class($transformation->getWriter()));
 
-            $transformation->execute($this->getSource());
-        }
-    }
-
-    /**
-     * Adds extra information to the structure.
-     *
-     * This method enhances the Structure information with the following information:
-     * - Every file receives a 'generated-path' attribute which contains the path on the filesystem where the docs for
-     *   that file van be found.
-     * - Every @see tag, or a tag with a type receives an attribute with a direct link to that tag's type entry.
-     * - Every tag receives an excerpt containing the first 15 characters.
-     *
-     * @param DOMDocument $xml
-     *
-     * @return void
-     */
-    protected function addMetaDataToStructure(DOMDocument &$xml)
-    {
-        $xpath = new DOMXPath($xml);
-
-        // find all files and add a generated-path variable
-        $this->log('Adding path information to each xml "file" tag');
-        $qry = $xpath->query("/project/file[@path]");
-
-        /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
-            $files[] = $element->getAttribute('path');
-            $element->setAttribute('generated-path', $this->generateFilename($element->getAttribute('path')));
-        }
-
-        // add to classes
-        $qry = $xpath->query('//class[full_name]/..');
-        $class_paths = array();
-
-        /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
-            $path = $element->getAttribute('path');
-            foreach ($element->getElementsByTagName('class') as $class)
-            {
-                $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
-            }
-        }
-
-        // add to interfaces
-        $qry = $xpath->query('//interface[full_name]/..');
-        /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
-            $path = $element->getAttribute('path');
-
-            /** @var DOMElement $class */
-            foreach ($element->getElementsByTagName('interface') as $class)
-            {
-                $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
-            }
-        }
-
-        // add extra xml elements to tags
-        $this->log('Adding link information and excerpts to all DocBlock tags');
-        $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|//extends|//implements');
-
-        /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
-            $type = rtrim($element->nodeValue, '[]');
-            $node = ($element->nodeType == XML_ATTRIBUTE_NODE)
-                    ? $element->parentNode
-                    : $element;
-
-            if (isset($class_paths[$type])) {
-                $file_name = $this->generateFilename($class_paths[$type]);
-                $node->setAttribute('link', $file_name . '#' . $type);
-            }
-
-            // add a 15 character excerpt of the node contents, meant for the sidebar
-            $node->setAttribute('excerpt', utf8_encode(substr($type, 0, 15) . (strlen($type) > 15 ? '...' : '')));
-        }
-
-
-        $qry = $xpath->query('//docblock/tag[@name="see" or @name="throw" or @name="throws"]');
-        /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
-            $node_value = explode('::', $element->nodeValue);
-            if (isset($class_paths[$node_value[0]])) {
-                $file_name = $this->generateFilename($class_paths[$node_value[0]]);
-                $element->setAttribute('link', $file_name . '#' . $element->nodeValue);
-            }
+            $transformation->execute($xml);
         }
     }
 

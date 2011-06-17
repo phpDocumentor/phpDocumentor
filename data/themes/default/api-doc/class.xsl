@@ -57,7 +57,7 @@
           <dt>Properties</dt>
           <xsl:for-each select="property">
             <dd>
-              <a class="property" href="#{../full_name}::{name}" target="content">
+              <a class="property {@visibility}" href="#{../full_name}::{name}" target="content">
                 <xsl:value-of select="name" />
               </a>
             </dd>
@@ -68,7 +68,7 @@
           <dt>Methods</dt>
           <xsl:for-each select="method">
             <dd>
-              <a class="method" href="#{../full_name}::{name}()" target="content">
+              <a class="method {@visibility}" href="#{../full_name}::{name}()" target="content">
                 <xsl:value-of select="name" />
               </a>
             </dd>

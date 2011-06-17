@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * @category  DocBlox
- * @package   Static_Reflection
+ * @package   Reflection
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
@@ -16,7 +16,7 @@
  * Reflection class for a function declaration.
  *
  * @category DocBlox
- * @package  Static_Reflection
+ * @package  Reflection
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
@@ -127,7 +127,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
 
         $this->setType($name ? self::TYPE_FUNCTION : self::TYPE_CLOSURE);
 
-        return $name ? $name->getContent() : 'Closure';
+        return $name ? $name->content : 'Closure';
     }
 
     /**

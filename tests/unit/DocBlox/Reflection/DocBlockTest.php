@@ -2,17 +2,26 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Tests
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @subpackage Tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
  * Test class for DocBlox_Reflection_DocBlock.
  *
  * @category   DocBlox
- * @package    Tests
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @subpackage Tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
 {
@@ -33,7 +42,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
    */
   protected function setUp()
   {
-    $this->fixture = new DocBlox_Reflection_File(dirname(__FILE__) . '/../../../data/DocBlockTestFixture.php');
+    $this->fixture = new DocBlox_Reflection_File(dirname(__FILE__) . '/../../../data/DocBlockFixture.php');
     $ll = $this->fixture->getLogLevel();
     $this->fixture->setLogLevel(-1);
     $this->fixture->process();
@@ -48,7 +57,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
   public function testConstruct_EmptyDocBlock()
   {
     /** @var DocBlox_Reflection_Class $class  */
-    $class = $this->fixture->getClass('DocBlockTestFixture');
+    $class = $this->fixture->getClass('DocBlox_Tests_Data_DocBlockFixture');
     $this->assertInstanceOf('DocBlox_Reflection_Class', $class);
 
     /** @var DocBlox_Reflection_Method $method */
@@ -67,7 +76,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
   public function testConstruct_ReallyEmptyDocBlock()
   {
     /** @var DocBlox_Reflection_Class $class  */
-    $class = $this->fixture->getClass('DocBlockTestFixture');
+    $class = $this->fixture->getClass('DocBlox_Tests_Data_DocBlockFixture');
     $this->assertInstanceOf('DocBlox_Reflection_Class', $class);
 
     /** @var DocBlox_Reflection_Method $method */
@@ -86,7 +95,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
   public function testConstruct_SingleLineDocBlock()
   {
     /** @var DocBlox_Reflection_Class $class  */
-    $class = $this->fixture->getClass('DocBlockTestFixture');
+    $class = $this->fixture->getClass('DocBlox_Tests_Data_DocBlockFixture');
     $this->assertInstanceOf('DocBlox_Reflection_Class', $class);
 
     /** @var DocBlox_Reflection_Method $method */
@@ -105,7 +114,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
   public function testConstruct_SingleLineDocBlock2()
   {
     /** @var DocBlox_Reflection_Class $class  */
-    $class = $this->fixture->getClass('DocBlockTestFixture');
+    $class = $this->fixture->getClass('DocBlox_Tests_Data_DocBlockFixture');
     $this->assertInstanceOf('DocBlox_Reflection_Class', $class);
 
     /** @var DocBlox_Reflection_Method $method */
@@ -124,7 +133,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
   public function testConstruct_SimpleDocBlockWithLD()
   {
     /** @var DocBlox_Reflection_Class $class  */
-    $class = $this->fixture->getClass('DocBlockTestFixture');
+    $class = $this->fixture->getClass('DocBlox_Tests_Data_DocBlockFixture');
     $this->assertInstanceOf('DocBlox_Reflection_Class', $class);
 
     /** @var DocBlox_Reflection_Method $method */
@@ -144,7 +153,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
   public function testConstruct_IdealDocBlock()
   {
     /** @var DocBlox_Reflection_Class $class  */
-    $class = $this->fixture->getClass('DocBlockTestFixture');
+    $class = $this->fixture->getClass('DocBlox_Tests_Data_DocBlockFixture');
     $this->assertInstanceOf('DocBlox_Reflection_Class', $class);
 
     /** @var DocBlox_Reflection_Method $method */
@@ -184,7 +193,7 @@ LD
   public function testConstruct_DocBlockWithInvalidShortDescription()
   {
     /** @var DocBlox_Reflection_Class $class  */
-    $class = $this->fixture->getClass('DocBlockTestFixture');
+    $class = $this->fixture->getClass('DocBlox_Tests_Data_DocBlockFixture');
     $this->assertInstanceOf('DocBlox_Reflection_Class', $class);
 
     /** @var DocBlox_Reflection_Method $method */

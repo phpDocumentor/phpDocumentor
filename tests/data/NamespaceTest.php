@@ -2,9 +2,15 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Tests
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Parser
+ * @subpackage Tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 namespace foo;
@@ -20,8 +26,11 @@ use \ArrayObject;
  * Namespace test.
  *
  * @category   DocBlox
- * @package    Tests
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Parser
+ * @subpackage Tests
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class NamespaceTest
 {
@@ -83,8 +92,11 @@ class NamespaceTest
  * This is a long description
  *
  * @category   DocBlox
- * @package    CLI
+ * @package    Parser
+ * @subpackage Tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlocTest
 {

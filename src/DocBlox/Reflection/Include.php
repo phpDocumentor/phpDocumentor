@@ -2,17 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * Provides the basic functionality for every static reflection class.
+ * Parses an include definition.
  *
  * @category   DocBlox
- * @package    Static_Reflection
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
 {
@@ -32,11 +39,11 @@ class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
 
     if ($token = $tokens->gotoNextByType(T_CONSTANT_ENCAPSED_STRING, 10, array(';')))
     {
-      $this->setName(trim($token->getContent(), '\'"'));
+      $this->setName(trim($token->content, '\'"'));
     }
     elseif ($token = $tokens->gotoNextByType(T_VARIABLE, 10, array(';')))
     {
-      $this->setName(trim($token->getContent(), '\'"'));
+      $this->setName(trim($token->content, '\'"'));
     }
   }
 

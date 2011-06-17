@@ -2,9 +2,14 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 if (!defined('T_NS_SEPARATOR'))
@@ -17,8 +22,10 @@ if (!defined('T_NS_SEPARATOR'))
  * Parses an interface definition.
  *
  * @category   DocBlox
- * @package    Static_Reflection
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
 {
@@ -56,13 +63,13 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $name = '';
     while ($token = $tokens->next())
     {
-      if (!in_array($token->getType(), array(T_WHITESPACE, T_STRING, T_NS_SEPARATOR)))
+      if (!in_array($token->type, array(T_WHITESPACE, T_STRING, T_NS_SEPARATOR)))
       {
         $tokens->previous();
         break;
       }
 
-      $name .= $token->getContent();
+      $name .= $token->content;
     }
 
     return trim($name);
@@ -94,7 +101,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
       do
       {
         $interfaces[] = $this->extractClassName($tokens);
-      } while ($tokens->next()->getContent() == ',');
+      } while ($tokens->next()->content == ',');
     }
 
     $this->implements = ($implements) ? true : false;
@@ -136,8 +143,8 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $property->parseTokenizer($tokens);
     $property->setNamespace($this->getNamespace());
     $property->setNamespaceAliases($this->getNamespaceAliases());
-    $this->properties[] = $property;
 
+    $this->properties[] = $property;
     $this->debugTimer('>> Processed property '.$property->getName(), 'variable');
   }
 
@@ -156,6 +163,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     $method->parseTokenizer($tokens);
     $method->setNamespace($this->getNamespace());
     $method->setNamespaceAliases($this->getNamespaceAliases());
+
     $this->methods[$method->getName()] = $method;
     $this->debugTimer('>>  Processed method '.$method->getName(), 'method');
   }

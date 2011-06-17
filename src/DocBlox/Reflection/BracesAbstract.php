@@ -2,18 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * Parses a method or function Argument.
+ * Base class for any structure that has a code block (thus followed by {}).
  *
  * @category   DocBlox
- * @package    Static_Reflection
- * @subpackage Base
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocBlockedAbstract
 {
@@ -45,12 +51,17 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
         /** @var DocBlox_Token $token */
       $token = $token === null ? $tokens->current() : $tokens->next();
 
+      $token_type    = false;
+      $token_content = false;
+      if ($token instanceof DocBlox_Token)
+      {
+        $token_type    = $token->type;
+        $token_content = $token->content;
+      }
+
       // if we encounter a semi-colon before we have an opening brace then this is an abstract or interface function
       // which have no body; stop looking!
-      if (($token instanceof DocBlox_Token)
-        && ($token->getType() === null)
-        && ($token->getContent() === ';')
-        && ($level === -1))
+      if (($token_type === null) && ($token_content === ';') && ($level === -1))
       {
         return array($start, $end);
       }
@@ -58,14 +69,13 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
       // determine where the 'braced' section starts and end.
       // the first open brace encountered is considered the opening brace for the block and processing will
       // be 'breaked' when the closing brace is encountered
-      if ($token
-          && (!$token->getType()
-              || ($token->getType() == T_CURLY_OPEN)
-              || ($token->getType() == T_DOLLAR_OPEN_CURLY_BRACES))
-          && (($token->getContent() == '{')
-              || (($token->getContent() == '}'))))
+      if ((!$token_type
+        || ($token_type == T_CURLY_OPEN)
+        || ($token_type == T_DOLLAR_OPEN_CURLY_BRACES))
+          && (($token_content == '{')
+              || (($token_content == '}'))))
       {
-        switch ($token->getContent())
+        switch ($token_content)
         {
           case '{':
             // expect the first brace to be an opening brace
@@ -91,7 +101,7 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
         continue;
       }
 
-      if ($token && $token->getType())
+      if ($token && $token_type)
       {
         // if a token is encountered and it is not a literal, invoke the processToken method
         $this->processToken($token, $tokens);

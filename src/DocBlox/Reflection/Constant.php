@@ -2,17 +2,24 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @package    Reflection
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * Reflection class for a constant.
+ * Parses a constant definition.
  *
  * @category   DocBlox
- * @package    Static_Reflection
+ * @package    Reflection
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
 {
@@ -33,7 +40,7 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
    */
   protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
-    if ($tokens->current()->getContent() == 'define')
+    if ($tokens->current()->content == 'define')
     {
       // find the first encapsed string and strip the opening and closing
       // apostrophe
@@ -51,10 +58,10 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
           return;
       }
 
-      $this->setName(substr($name_token->getContent(), 1, -1));
+      $this->setName(substr($name_token->content, 1, -1));
 
       // skip to after the comma
-      while($tokens->current()->getContent() != ',')
+      while($tokens->current()->content != ',')
       {
         if ($tokens->next() === false)
         {
@@ -65,27 +72,27 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
       // get everything until the closing brace and use that for value, take child parenthesis under consideration
       $value = '';
       $level = 0;
-      while (!(($tokens->current()->getContent() == ')') && ($level == -1)))
+      while (!(($tokens->current()->content == ')') && ($level == -1)))
       {
         if ($tokens->next() === false)
         {
           break;
         }
 
-        switch($tokens->current()->getContent())
+        switch($tokens->current()->content)
         {
           case '(': $level++; break;
           case ')': $level--; break;
         }
 
-        $value .= $tokens->current()->getContent();
+        $value .= $tokens->current()->content;
       }
 
       $this->setValue(trim(substr($value, 0, -1)));
     }
     else
     {
-      $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->getContent());
+      $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->content);
       $this->setValue($this->findDefault($tokens));
     }
 

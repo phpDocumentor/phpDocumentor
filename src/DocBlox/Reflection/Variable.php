@@ -2,17 +2,24 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Static_Reflection
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Reflection
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
- * Parses a variable definition.
+ * Reflection class for a generic variable.
  *
- * @category   DocBlox
- * @package    Static_Reflection
- * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @category DocBlox
+ * @package  Reflection
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Reflection_Variable extends DocBlox_Reflection_DocBlockedAbstract
 {
@@ -33,7 +40,7 @@ class DocBlox_Reflection_Variable extends DocBlox_Reflection_DocBlockedAbstract
    */
   protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
   {
-    $this->setName($tokens->current()->getContent());
+    $this->setName($tokens->current()->content);
     $this->default = $this->findDefault($tokens);
 
     parent::processGenericInformation($tokens);

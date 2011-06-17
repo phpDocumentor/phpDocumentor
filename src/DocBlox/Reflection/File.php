@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * @category  DocBlox
- * @package   Static_Reflection
+ * @package   Reflection
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
@@ -21,7 +21,7 @@ if (!defined('T_NAMESPACE')) {
  * Reflection class for a full file.
  *
  * @category DocBlox
- * @package  Static_Reflection
+ * @package  Reflection
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
@@ -331,6 +331,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     public function initializeTokens($contents, $filename = null)
     {
+        $this->debug('Started splitting the file into tokens');
         $tokens = token_get_all($contents);
         $this->debug(
             count($tokens) . ' tokens found in class ' . $this->getName()
@@ -340,6 +341,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         if ($filename != null) {
             $tokens->setFilename($filename);
         }
+        $this->debug('Imported tokens into the Iterator');
 
         return $tokens;
     }
@@ -417,7 +419,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
         try {
             $result = $docblock
-                ? new DocBlox_Reflection_DocBlock($docblock->getContent())
+                ? new DocBlox_Reflection_DocBlock($docblock->content)
                 : null;
         }
         catch (Exception $e) {
@@ -457,7 +459,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             /** @var DocBlox_Token $token */
             $token = $token === null ? $tokens->current() : $tokens->next();
 
-            if (($token instanceof DocBlox_Token) && $token->getType()) {
+            if (($token instanceof DocBlox_Token) && $token->type) {
                 $this->processToken($token, $tokens);
             }
         }
@@ -475,14 +477,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     {
         /** @var DocBlox_Token $token */
         $aliases = array('');
-        while (($token = $tokens->next()) && ($token->getContent() != ';')) {
+        while (($token = $tokens->next()) && ($token->content != ';')) {
             // if a comma is found, go to the next alias
-            if (!$token->getType() && $token->getContent() == ',') {
+            if (!$token->type && $token->content == ',') {
                 $aliases[] = '';
                 continue;
             }
 
-            $aliases[count($aliases) - 1] .= $token->getContent();
+            $aliases[count($aliases) - 1] .= $token->content;
         }
 
         $result = array();
@@ -525,7 +527,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         // collect all namespace parts
         $namespace = array();
         while ($token = $tokens->gotoNextByType(T_STRING, 5, array(';', '{'))) {
-            $namespace[] = $token->getContent();
+            $namespace[] = $token->content;
         }
         $namespace = implode('\\', $namespace);
 
@@ -598,12 +600,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $function->setNamespaceAliases($this->namespace_aliases);
         $function->parseTokenizer($tokens);
 
+        $this->functions[$function->getName()] = $function;
         $this->debugTimer(
             '>> Processed function ' . $function->getName(),
             'function'
         );
-
-        $this->functions[$function->getName()] = $function;
     }
 
     /**
@@ -652,7 +653,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     {
         /** @var DocBlox_Token $token  */
         $token = $tokens->current();
-        switch ($token->getContent()) {
+        switch ($token->content) {
         case 'define':
             $this->resetTimer('constant');
 
