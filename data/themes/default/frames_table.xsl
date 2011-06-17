@@ -13,8 +13,36 @@
         <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
         <link rel="stylesheet" href="{$root}css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
         <link rel="stylesheet" href="{$root}css/theme.css" type="text/css" />
-        <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery.ba-bbq.min.js"></script>
+        <script type="text/javascript" src="{$root}js/docblox.js"></script>
+
+        <script type="text/javascript">
+          jQuery(document).ready(function($) {
+            $(content).bind('load', function() { // Wait for frame to be ready
+              $(window).bind('hashchange', function(e) {
+                var state = $.bbq.getState();
+
+                if (!state.target) {
+                  return false;
+                }
+
+                var targetFrame = window.frames[state.target];
+                var redirect = $('<a />').attr('href', targetFrame.location)[0];
+                
+                redirect.pathname = state.url;
+                redirect.hash = state.anchor;
+
+                targetFrame.location = redirect;
+              }).trigger('hashchange');
+            });
+
+            $('a[target]').each(function(i, el) {
+              Docblox.bindHistory(el);
+            });
+          });
+        </script>
       </head>
       <body class="chrome">
         <table id="page">

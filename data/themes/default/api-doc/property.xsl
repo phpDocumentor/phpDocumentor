@@ -4,7 +4,7 @@
     <a id="{../full_name}::{name}" />
     <h4 class="property">
       <xsl:value-of select="name" />
-      <div class="to-top"><a href="#{../full_name}">jump to class</a></div>
+      <div class="to-top"><a href="#{../full_name}" target="content">jump to class</a></div>
     </h4>
 
     <div class="property">
