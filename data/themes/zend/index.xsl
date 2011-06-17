@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="{$root}css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
         <link rel="stylesheet" href="{$root}css/jquery.treeview.css" type="text/css" />
         <link rel="stylesheet" href="{$root}css/theme.css" type="text/css" />
-        <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery.cookie.js"></script>
         <script type="text/javascript" src="{$root}js/jquery.treeview.js"></script>
