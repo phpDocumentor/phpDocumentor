@@ -32,13 +32,13 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
    * Finds out what the name and value is of this constant on top of the information found using the
    * DocBlox_Reflection_DocBlockedAbstract parent method.
    *
-   * @param DocBlox_Token_Iterator $tokens
+   * @param DocBlox_Reflection_TokenIterator $tokens
    *
    * @see DocBlox_Reflection_DocBlockedAbstract::processGenericInformation
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
+  protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens)
   {
     if ($tokens->current()->content == 'define')
     {

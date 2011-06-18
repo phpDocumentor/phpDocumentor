@@ -66,7 +66,9 @@ class DocBlox_Parser_Abstract
             new sfEvent($this, $name, $arguments)
         );
 
-        return $event->getReturnValue();
+        return $event
+            ? $event->getReturnValue()
+            : null;
     }
 
     /**

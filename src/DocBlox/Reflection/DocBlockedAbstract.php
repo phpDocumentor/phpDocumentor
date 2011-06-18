@@ -29,11 +29,11 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     /**
      * Any generic information that needs to be retrieved is the docblock itself.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to process
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to process
      *
      * @return void
      */
-    protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
+    protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->doc_block = $this->findDocBlock($tokens);
     }
@@ -53,11 +53,11 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
      *
      * Please note that the iterator cursor does not change with to this method.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to process
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to process
      *
      * @return DocBlox_Reflection_DocBlock|null
      */
-    protected function findDocBlock(DocBlox_Token_Iterator $tokens)
+    protected function findDocBlock(DocBlox_Reflection_TokenIterator $tokens)
     {
         $result = null;
         $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{', '}', ';'));

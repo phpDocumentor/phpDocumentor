@@ -151,13 +151,22 @@ class DocBlox_Core_Log
      * Log the given data; if it is something else than a string it will be
      * var_dumped and then logged.
      *
-     * @param mixed $data  The data to log.
-     * @param int   $level The level of the message to log.
+     * @param mixed      $data  The data to log.
+     * @param int|string $level The level of the message to log.
      *
      * @return void
      */
     public function log($data, $level = self::INFO)
     {
+        // we explicitly use the get_class method to prevent a hard dependency
+        // to the sfEvent class; this way the connection is implicit and doesn't
+        // it matter to DocBlox_Core_Log whether it is loaded or not.
+        if (is_object($data) && (get_class($data) === 'sfEvent')) {
+            // if this is an event; replace our data to cope with that
+            $level = $data['priority'];
+            $data  = $data['message'];
+        }
+
         // is the log level is below the priority; just skip this
         if ($this->getThreshold() < $level) {
             return;

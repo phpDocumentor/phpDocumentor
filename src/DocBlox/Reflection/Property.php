@@ -38,13 +38,13 @@ class DocBlox_Reflection_Property extends DocBlox_Reflection_Variable
    * Finds out whether this property is static, final and what visibility it has on top of the information found using
    * the DocBlox_Reflection_Variable parent method.
    *
-   * @param DocBlox_Token_Iterator $tokens
+   * @param DocBlox_Reflection_TokenIterator $tokens
    *
    * @see DocBlox_Reflection_Variable::processGenericInformation
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
+  protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens)
   {
     $this->static     = $this->findStatic($tokens) ? true : false;
     $this->final      = $this->findFinal($tokens)  ? true : false;

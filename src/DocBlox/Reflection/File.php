@@ -28,7 +28,7 @@ if (!defined('T_NAMESPACE')) {
  */
 class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 {
-    /** @var DocBlox_Token_Iterator */
+    /** @var DocBlox_Reflection_TokenIterator */
     protected $tokens = null;
 
     /** @var string Contents of the given file. */
@@ -331,7 +331,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * @param string $contents The text to parse into tokens.
      * @param string $filename The path of this file, if present.
      *
-     * @return DocBlox_Token_Iterator
+     * @return DocBlox_Reflection_TokenIterator
      */
     public function initializeTokens($contents, $filename = null)
     {
@@ -341,7 +341,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             count($tokens) . ' tokens found in class ' . $this->getName()
         );
 
-        $tokens = new DocBlox_Token_Iterator($tokens);
+        $tokens = new DocBlox_Reflection_TokenIterator($tokens);
         if ($filename != null) {
             $tokens->setFilename($filename);
         }
@@ -365,11 +365,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * Hook method where you can determine the generic properties for this file
      * before it is scanned for structures.
      *
-     * @param DocBlox_Token_Iterator $tokens Token array to parse.
+     * @param DocBlox_Reflection_TokenIterator $tokens Token array to parse.
      *
      * @return void
      */
-    protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
+    protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens)
     {
         // find file docblock; standard function does not suffice as this scans
         // backwards and we have to make sure it isn't the docblock of
@@ -410,11 +410,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * If no page level docblox is found we throw a warning to indicate to the
      * user that this is missing.
      *
-     * @param DocBlox_Token_Iterator $tokens Token array to parse.
+     * @param DocBlox_Reflection_TokenIterator $tokens Token array to parse.
      *
      * @return DocBlox_Reflection_DocBlock|null
      */
-    public function findDocBlock(DocBlox_Token_Iterator $tokens)
+    public function findDocBlock(DocBlox_Reflection_TokenIterator $tokens)
     {
         $result   = null;
         $docblock = $tokens->findNextByType(
@@ -449,21 +449,21 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * Iterates through all tokens and when one is found we invoke the
      * processToken method to handle the details.
      *
-     * @param DocBlox_Token_Iterator $tokens The list of tokens to scan.
+     * @param DocBlox_Reflection_TokenIterator $tokens The list of tokens to scan.
      *
      * @see DocBlox_Reflection_Abstract::processTokens
      * @see DocBlox_Reflection_Abstract::processToken
      *
      * @return void
      */
-    public function processTokens(DocBlox_Token_Iterator $tokens)
+    public function processTokens(DocBlox_Reflection_TokenIterator $tokens)
     {
         $token = null;
         while ($tokens->valid()) {
-            /** @var DocBlox_Token $token */
+            /** @var DocBlox_Reflection_Token $token */
             $token = $token === null ? $tokens->current() : $tokens->next();
 
-            if (($token instanceof DocBlox_Token) && $token->type) {
+            if (($token instanceof DocBlox_Reflection_Token) && $token->type) {
                 $this->processToken($token, $tokens);
             }
         }
@@ -472,14 +472,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Processes the T_USE token and extracts all namespace aliases.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processUse(DocBlox_Token_Iterator $tokens)
+    protected function processUse(DocBlox_Reflection_TokenIterator $tokens)
     {
-        /** @var DocBlox_Token $token */
+        /** @var DocBlox_Reflection_Token $token */
         $aliases = array('');
         while (($token = $tokens->next()) && ($token->content != ';')) {
             // if a comma is found, go to the next alias
@@ -521,12 +521,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * Changes the active namespace indicator when a namespace token is
      * encountered to indicate that the space has changed.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processNamespace(DocBlox_Token_Iterator $tokens)
+    protected function processNamespace(DocBlox_Reflection_TokenIterator $tokens)
     {
         // collect all namespace parts
         $namespace = array();
@@ -541,12 +541,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Parses an interface definition and adds it to the interfaces array.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processInterface(DocBlox_Token_Iterator $tokens)
+    protected function processInterface(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->resetTimer('interface');
 
@@ -566,12 +566,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Parses a class definition and adds it to the classes array.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processClass(DocBlox_Token_Iterator $tokens)
+    protected function processClass(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->resetTimer('class');
 
@@ -589,12 +589,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Parses a function definition and adds it to the functions array.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processFunction(DocBlox_Token_Iterator $tokens)
+    protected function processFunction(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->resetTimer('function');
 
@@ -614,12 +614,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Parses a global constant definition and adds it to the constants array.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processConst(DocBlox_Token_Iterator $tokens)
+    protected function processConst(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->resetTimer('constant');
 
@@ -645,7 +645,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * * `define`, thus constants which are defined using the define keyword
      * * Globals
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @todo implement globals support since the exact algorythm needs to be
@@ -653,9 +653,9 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      *
      * @return void
      */
-    protected function processString(DocBlox_Token_Iterator $tokens)
+    protected function processString(DocBlox_Reflection_TokenIterator $tokens)
     {
-        /** @var DocBlox_Token $token  */
+        /** @var DocBlox_Reflection_Token $token  */
         $token = $tokens->current();
         switch ($token->content) {
         case 'define':
@@ -680,12 +680,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Parses a require definition and adds it to the includes array.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processRequire(DocBlox_Token_Iterator $tokens)
+    protected function processRequire(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->processInclude($tokens);
     }
@@ -693,12 +693,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Parses a require once definition and adds it to the includes array.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processRequireOnce(DocBlox_Token_Iterator $tokens)
+    protected function processRequireOnce(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->processInclude($tokens);
     }
@@ -706,12 +706,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Parses an include once definition and adds it to the includes array.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @return void
      */
-    protected function processIncludeOnce(DocBlox_Token_Iterator $tokens)
+    protected function processIncludeOnce(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->processInclude($tokens);
     }
@@ -722,7 +722,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * This method is also used for the include once, require and require
      * once tokens.
      *
-     * @param DocBlox_Token_Iterator $tokens Tokens to interpret with the
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
      * @see DocBlox_Reflection_File::processIncludeOnce
@@ -731,7 +731,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      *
      * @return void
      */
-    protected function processInclude(DocBlox_Token_Iterator $tokens)
+    protected function processInclude(DocBlox_Reflection_TokenIterator $tokens)
     {
         $this->resetTimer('include');
 

@@ -25,7 +25,7 @@
  */
 class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
 {
-  /** @var DocBlox_BidirectionalIterator */
+  /** @var DocBlox_Reflection_TokenIteratorBase */
   protected $fixture = null;
 
   /** @var string Expected serialized values */
@@ -38,7 +38,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
    */
   protected function setUp()
   {
-    $this->fixture = new DocBlox_BidirectionalIterator(array(
+    $this->fixture = new DocBlox_Reflection_TokenIteratorBase(array(
       1,2,3,4,5,6,7,8,9,10
     ));
   }
@@ -111,7 +111,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(2, $this->fixture->seek(1));
     $this->assertEquals(false, $this->fixture->seek(11));
 
-    $fixture2 = new DocBlox_BidirectionalIterator(array_fill(0, 1000, 'a'));
+    $fixture2 = new DocBlox_Reflection_TokenIteratorBase(array_fill(0, 1000, 'a'));
 
     $times = array();
     for ($i = 0; $i < 1000; $i++)
@@ -168,7 +168,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(10, $this->fixture->next());
     $this->assertEquals(false, $this->fixture->next()); // out of bounds
 
-    $fixture2 = new DocBlox_BidirectionalIterator(array_fill(0, 1000, 'a'));
+    $fixture2 = new DocBlox_Reflection_TokenIteratorBase(array_fill(0, 1000, 'a'));
 
     $times = array();
     for($i=0;$i < 1000; $i++)
@@ -228,7 +228,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
    */
   public function testUnserialize()
   {
-//    $f2 = new DocBlox_BidirectionalIterator(array());
+//    $f2 = new DocBlox_Reflection_TokenIteratorBase(array());
 //    $f2->unserialize(self::SERIALIZED);
 //    $this->assertEquals($this->fixture, $f2);
   }

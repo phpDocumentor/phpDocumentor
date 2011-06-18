@@ -19,7 +19,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
+class DocBlox_Reflection_TokenIterator extends DocBlox_Reflection_TokenIteratorBase
 {
   /** @var string|null The name of the file where these tokens come from; if any */
   protected $filename = null;
@@ -27,7 +27,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
   /**
    * Initializes the token store.
    *
-   * @param  string|DocBlox_Token[]|string[] $data String to parse or a list of DocBlox_Tokens, or the result from a
+   * @param  string|DocBlox_Reflection_Token[]|string[] $data String to parse or a list of DocBlox_Tokens, or the result from a
    *                                               token_get_all() method call.
    * @see    token_get_all()
    */
@@ -36,12 +36,12 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
     // convert to token objects; converting up front is _faster_ than ad hoc conversion
     foreach ($data as $key => $token)
     {
-      if ($token instanceof DocBlox_Token)
+      if ($token instanceof DocBlox_Reflection_Token)
       {
         continue;
       }
 
-      $data[$key] = new DocBlox_Token($token);
+      $data[$key] = new DocBlox_Reflection_Token($token);
     }
 
     parent::__construct($data);
@@ -79,7 +79,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
    * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
    * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
    *
-   * @return bool|DocBlox_Token
+   * @return bool|DocBlox_Reflection_Token
    */
   protected function gotoTokenByTypeInDirection($type, $direction = 'next', $max_count = 0, $stop_at = null)
   {
@@ -154,7 +154,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
    * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
    * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
    *
-   * @return bool|DocBlox_Token
+   * @return bool|DocBlox_Reflection_Token
    */
   protected function findByTypeInDirection($type, $direction = 'next', $max_count = 0, $stop_at = null)
   {
@@ -181,7 +181,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
    * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
    * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
    *
-   * @return bool|DocBlox_Token
+   * @return bool|DocBlox_Reflection_Token
    */
   public function gotoNextByType($type, $max_count = 0, $stop_at = null)
   {
@@ -195,7 +195,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
    * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
    * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
    *
-   * @return bool|DocBlox_Token
+   * @return bool|DocBlox_Reflection_Token
    */
   public function gotoPreviousByType($type, $max_count = 0, $stop_at = null)
   {
@@ -209,7 +209,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
    * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
    * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
    *
-   * @return bool|DocBlox_Token
+   * @return bool|DocBlox_Reflection_Token
    */
   public function findNextByType($type, $max_count = 0, $stop_at = null)
   {
@@ -223,7 +223,7 @@ class DocBlox_Token_Iterator extends DocBlox_BidirectionalIterator
    * @param int      $max_count The maximum number of tokens to iterate, 0 is unlimited (not recommended)
    * @param string[] $stop_at   Stops searching when one of these token constants or literals is encountered
    *
-   * @return bool|DocBlox_Token
+   * @return bool|DocBlox_Reflection_Token
    */
   public function findPreviousByType($type, $max_count = 0, $stop_at = null)
   {

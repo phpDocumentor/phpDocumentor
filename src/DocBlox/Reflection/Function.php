@@ -47,13 +47,13 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
      * Finds out which name and arguments this function has on top of the information found using the
      * DocBlox_Reflection_BracesAbstract parent method.
      *
-     * @param DocBlox_Token_Iterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens
      *
      * @see DocBlox_ReflectionBracesAbstract::processGenericInformation
      *
      * @return void
      */
-    protected function processGenericInformation(DocBlox_Token_Iterator $tokens) {
+    protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens) {
         $this->setName($this->findName($tokens));
 
         $this->resetTimer();
@@ -68,11 +68,11 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     /**
      * Extracts the arguments from this function.
      *
-     * @param DocBlox_Token_Iterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens
      *
      * @return void
      */
-    public function processVariable(DocBlox_Token_Iterator $tokens) {
+    public function processVariable(DocBlox_Reflection_TokenIterator $tokens) {
         // is the variable occurs within arguments parenthesis then it is an argument
         if (($tokens->key() > $this->arguments_token_start) && ($tokens->key() < $this->arguments_token_end)) {
             $this->resetTimer('variable');
@@ -118,11 +118,11 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
      *
      * If a function has no name it is probably a Closure and will have the name Closure.
      *
-     * @param DocBlox_Token_Iterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens
      *
      * @return string
      */
-    protected function findName(DocBlox_Token_Iterator $tokens) {
+    protected function findName(DocBlox_Reflection_TokenIterator $tokens) {
         $name = $tokens->findNextByType(T_STRING, 5, array('{', ';'));
 
         $this->setType($name ? self::TYPE_FUNCTION : self::TYPE_CLOSURE);

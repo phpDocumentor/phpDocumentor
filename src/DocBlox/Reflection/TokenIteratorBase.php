@@ -19,7 +19,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_BidirectionalIterator implements Countable, ArrayAccess, Serializable, SeekableIterator
+class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Serializable, SeekableIterator
 {
     /** @var int Current key value */
     protected $key   = 0;

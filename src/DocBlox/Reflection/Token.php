@@ -14,7 +14,7 @@
  * @package  Tokens
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  */
-class DocBlox_Token
+class DocBlox_Reflection_Token
 {
   /** @var int|null Type of the Token; either on of the T_* constants of null in case of a literal */
   public $type = null;

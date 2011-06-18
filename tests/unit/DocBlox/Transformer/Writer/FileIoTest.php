@@ -1,6 +1,6 @@
 <?php
 /**
-* Test class for DocBlox_Token.
+* Test class for FileIO writer.
 */
 class DocBlox_Transformer_Writer_FileIoTest extends PHPUnit_Framework_TestCase
 {

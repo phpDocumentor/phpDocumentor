@@ -1,15 +1,15 @@
 <?php
 /**
-* Test class for DocBlox_Token.
+* Test class for DocBlox_Reflection_Token.
 */
 class DocBlox_TokenTest extends PHPUnit_Framework_TestCase
 {
-  /** @var DocBlox_Token */
+  /** @var DocBlox_Reflection_Token */
   protected $fixture = null;
 
   protected function setUp()
   {
-    $this->fixture = new DocBlox_Token(array(T_STATIC, 'static', 100));
+    $this->fixture = new DocBlox_Reflection_Token(array(T_STATIC, 'static', 100));
   }
 
   public function testGetName()

@@ -53,11 +53,11 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Retrieve the name of the class starting from the T_CLASS token.
    *
-   * @param DocBlox_Token_Iterator $tokens
+   * @param DocBlox_Reflection_TokenIterator $tokens
    *
    * @return string
    */
-  protected function extractClassName(DocBlox_Token_Iterator $tokens)
+  protected function extractClassName(DocBlox_Reflection_TokenIterator $tokens)
   {
     // a class name can be a combination of a T_NAMESPACE and T_STRING
     $name = '';
@@ -78,11 +78,11 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Extract and store the meta data surrounding a class / interface.
    *
-   * @param DocBlox_Token_Iterator $tokens
+   * @param DocBlox_Reflection_TokenIterator $tokens
    *
    * @return void
    */
-  protected function processGenericInformation(DocBlox_Token_Iterator $tokens)
+  protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens)
   {
     // retrieve generic information about the class
     $this->setName($this->extractClassName($tokens));
@@ -111,11 +111,11 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Processes a T_CONST token found inside a class / interface definition.
    *
-   * @param DocBlox_Token_Iterator $tokens
+   * @param DocBlox_Reflection_TokenIterator $tokens
    *
    * @return void
    */
-  protected function processConst(DocBlox_Token_Iterator $tokens)
+  protected function processConst(DocBlox_Reflection_TokenIterator $tokens)
   {
     $this->resetTimer('const');
 
@@ -131,7 +131,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Processes a T_VARIABLE token found inside a class / interface definition.
    *
-   * @param DocBlox_Token_Iterator $tokens
+   * @param DocBlox_Reflection_TokenIterator $tokens
    *
    * @return void
    */
@@ -151,7 +151,7 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   /**
    * Processes a T_FUNCTION token found inside a class / interface definition.
    *
-   * @param DocBlox_Token_Iterator $tokens
+   * @param DocBlox_Reflection_TokenIterator $tokens
    *
    * @return void
    */

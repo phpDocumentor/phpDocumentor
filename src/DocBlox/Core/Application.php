@@ -14,6 +14,7 @@
  */
 
 require_once 'markdown.php';
+require_once 'symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
 
 /**
  * This class is responsible for the application entry point from the CLI.
@@ -44,6 +45,12 @@ class DocBlox_Core_Application
         if (!$task->getQuiet()) {
             DocBlox_Core_Application::renderVersion();
         }
+
+        $dispatcher = new sfEventDispatcher();
+
+        $logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
+        $dispatcher->connect('system.log', array($logger, 'log'));
+        DocBlox_Parser_Abstract::$event_dispatcher = $dispatcher;
 
         try {
             $task->execute();

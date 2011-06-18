@@ -33,11 +33,11 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
    *
    * @see    DocBlox_Reflection_Abstract
    *
-   * @param  DocBlox_Token_Iterator $tokens
+   * @param  DocBlox_Reflection_TokenIterator $tokens
    *
    * @return int[]
    */
-  public function processTokens(DocBlox_Token_Iterator $tokens)
+  public function processTokens(DocBlox_Reflection_TokenIterator $tokens)
   {
     $level = -1;
     $start = 0;
@@ -48,12 +48,12 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
     $this->debug('>> Processing tokens');
     while ($tokens->valid())
     {
-        /** @var DocBlox_Token $token */
+        /** @var DocBlox_Reflection_Token $token */
       $token = $token === null ? $tokens->current() : $tokens->next();
 
       $token_type    = false;
       $token_content = false;
-      if ($token instanceof DocBlox_Token)
+      if ($token instanceof DocBlox_Reflection_Token)
       {
         $token_type    = $token->type;
         $token_content = $token->content;
