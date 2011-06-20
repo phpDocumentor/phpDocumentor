@@ -367,7 +367,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
 
         if ($xml)
         {
-            if ($this->getSkipInternal()) {
+            if (!$this->getParseprivate()) {
                 $this->behaviours->addBehaviour(new DocBlox_Transformer_Behaviour_Tag_Internal());
             }
 
