@@ -257,11 +257,6 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
         $this->path = $path;
     }
 
-    public function setTagIgnore($tagIgnore)
-    {
-        $this->tagIgnore = $tagIgnore;
-    }
-
     /**
      * Set the visibility of the methods/properties that should be documented
      *

@@ -21,7 +21,7 @@
 class DocBlox_Transformer_Behaviour_Tag_Ignore implements
     DocBlox_Transformer_Behaviour_Interface
 {
-    const tag = 'ignore';
+    const TAG = 'ignore';
 
     /** @var DocBlox_Core_Log */
     protected $logger = null;
@@ -51,7 +51,7 @@ class DocBlox_Transformer_Behaviour_Tag_Ignore implements
             $this->logger->log('Removing @ignore DocBlocks');
         }
 
-        $tag = self::tag;
+        $tag = self::TAG;
 
         $ignoreQry = '//tag[@name=\''.$tag.'\']';
 

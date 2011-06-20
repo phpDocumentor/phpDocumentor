@@ -21,7 +21,7 @@
 class DocBlox_Transformer_Behaviour_Tag_Internal implements
     DocBlox_Transformer_Behaviour_Interface
 {
-    const tag = 'internal';
+    const TAG = 'internal';
 
     /** @var DocBlox_Core_Log */
     protected $logger = null;
@@ -51,7 +51,7 @@ class DocBlox_Transformer_Behaviour_Tag_Internal implements
             $this->logger->log('Removing @internal DocBlocks');
         }
 
-        $tag = self::tag;
+        $tag = self::TAG;
 
         $ignoreQry = '//tag[@name=\''.$tag.'\']';
 
