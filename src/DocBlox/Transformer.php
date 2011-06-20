@@ -125,12 +125,12 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
         return $this->source;
     }
 
-    public function setSkipInternal($val)
+    public function setParseprivate($val)
     {
         $this->skipInternal = (boolean)$val;
     }
 
-    public function getSkipInternal()
+    public function getParseprivate()
     {
         return $this->skipInternal;
     }

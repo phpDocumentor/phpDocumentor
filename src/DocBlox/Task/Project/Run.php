@@ -88,7 +88,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
             'Validates every processed file using PHP Lint, costs a lot of performance'
         );
         $this->addOption(
-            'skipinternal', '',
+            'parseprivate', '',
             'Whether to ignore DocBlocks tagged with @internal'
         );
 
@@ -129,7 +129,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
         $transform->setSource($task->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml');
         $transform->setVerbose($task->getVerbose());
         $transform->setQuiet($task->getQuiet());
-        $transform->setSkipinternal($this->getSkipinternal());
+        $transform->setParseprivate($this->getParseprivate());
         $transform->execute();
     }
 
