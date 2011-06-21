@@ -21,7 +21,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer extends DocBlox_Core_Abstract
+class DocBlox_Transformer extends DocBlox_Transformer_Abstract
 {
     /** @var string|null Target location where to output the artifacts */
     protected $target = null;
@@ -148,9 +148,10 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     /**
      * Loads the transformation from the configuration and from the given templates and/or transformations.
      *
-     * @param string[]                 $templates       Array of template names.
-     * @param Transformation[]|array[] $transformations Array of transformations
-     *  or arrays representing transformations.
+     * @param array|string[]                                     $templates
+     *  Array of template names.
+     * @param array|DocBlox_Transformer_Transformation[]|array[] $transformations
+     *  Array of transformations or arrays representing transformations.
      *
      * @see self::addTransformation() for more details regarding the array structure.
      *
@@ -177,10 +178,10 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     }
 
     /**
-     * Loads a template by name, if an additional array with details is provided it will try to load parameters from it.
+     * Loads a template by name, if an additional array with details is
+     * provided it will try to load parameters from it.
      *
-     * @param string        $name
-     * @param string[]|null $details
+     * @param string $name
      *
      * @return void
      */
@@ -217,44 +218,33 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
                 DIRECTORY_SEPARATOR, '_',
                 rtrim($name, DIRECTORY_SEPARATOR)
             ));
-
-            $config->templates->$name = new Zend_Config_Xml($config_path);
-        }
-
-        if (!isset($config->templates->$name)) {
-            throw new InvalidArgumentException('Template "' . $name . '" could not be found');
         }
 
         // track templates to be able to refer to them later
-        $this->templates[] = $name;
+        $this->templates[$name] = new DocBlox_Transformer_Template($name, $path);
 
-        // template does not have transformations; return
-        if (!isset($config->templates->$name->transformations)) {
-            return;
-        }
-
-        $transformations = $config->templates->$name->transformations->transformation->toArray();
+//        $transformations = $config->templates->$name->transformations->transformation->toArray();
 
         // if the array key is not numeric; then there is a single value instead of an array of transformations
-        $transformations = (is_numeric(key($transformations)))
-            ? $transformations
-            : array($transformations);
+//        $transformations = (is_numeric(key($transformations)))
+//            ? $transformations
+//            : array($transformations);
 
-        foreach ($transformations as $transformation)
-        {
+//        foreach ($transformations as $transformation)
+//        {
             // if this is an externally loaded template we add the template_path
             // as parameter as this is used as extra option when determining
             // where the source of a transformation may lie.
-            if ($path !== null)
-            {
-                if (isset($transformation['parameters']))
-                {
-                    $transformation['parameters'] = array();
-                }
-                $transformation['parameters']['template_path'] = $path;
-            }
-            $this->addTransformation($transformation);
-        }
+//            if ($path !== null)
+//            {
+//                if (isset($transformation['parameters']))
+//                {
+//                    $transformation['parameters'] = array();
+//                }
+//                $transformation['parameters']['template_path'] = $path;
+//            }
+//            $this->addTransformation($transformation);
+//        }
     }
 
     /**
@@ -273,35 +263,16 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
      *   'dependencies' => array(<dependencies>)
      * )
      *
-     * @param Transformation|array $transformation
+     * @param DocBlox_Transformer_Transformation|DocBlox_Transformer_Transformation[] $transformation
      *
      * @return void
      */
     public function addTransformation($transformation)
     {
         if (is_array($transformation)) {
-            // check if all required items are present
-            if (!key_exists('query', $transformation)
-                || !key_exists('writer', $transformation)
-                || !key_exists('source', $transformation)
-                || !key_exists('artifact', $transformation)) {
-                throw new InvalidArgumentException(
-                    'Transformation array is missing elements, received: ' . var_export($transformation, true)
-                );
-            }
-
-            $transformation_obj = new DocBlox_Transformer_Transformation(
-                $this,
-                $transformation['query'],
-                $transformation['writer'],
-                $transformation['source'],
-                $transformation['artifact']
+            $transformation = DocBlox_Transformer_Transformation::createFromArray(
+                $this, $transformation
             );
-            if (isset($transformation['parameters']) && is_array($transformation['parameters'])) {
-                $transformation_obj->setParameters($transformation['parameters']);
-            }
-
-            $transformation = $transformation_obj;
         }
 
         // if it is still not an object; fail
@@ -350,7 +321,6 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
                 new DocBlox_Transformer_Behaviour_Inherit(),
             ));
 
-            $behaviours->setLogger(DocBlox_Core_Abstract::$logger);
             $xml = $behaviours->process($xml);
         }
 

@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * @category  DocBlox
- * @package   Parser
+ * @package   Transformer
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
@@ -15,15 +15,15 @@
 require_once 'symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
 
 /**
- * Layer superclass for DocBlox_Parser Component.
+ * Layer superclass for DocBlox_Transformer Component.
  *
  * @category DocBlox
- * @package  Parser
+ * @package  Transformer
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-abstract class DocBlox_Parser_Abstract
+abstract class DocBlox_Transformer_Abstract
 {
     /**
      * The event dispatcher object, may be null to not dispatch events.

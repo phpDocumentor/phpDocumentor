@@ -21,7 +21,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Transformation extends DocBlox_Core_Abstract
+class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
 {
     /** @var string */
     protected $query = '';
@@ -179,12 +179,22 @@ class DocBlox_Transformer_Transformation extends DocBlox_Core_Abstract
             return realpath($this->source);
         }
 
-        $file = rtrim($this->getConfig()->paths->data, '/\\')
-        . DIRECTORY_SEPARATOR . $this->source;
+        // TODO: replace this as it breaks the component stuff
+        // we should ditch the idea of a global set of files to fetch and have
+        // a variable / injection for the global templates folder and inject
+        // that here.
+        $file = dirname(__FILE__)
+            . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . 'data'
+            . DIRECTORY_SEPARATOR . $this->source;
 
         if (!file_exists($file))
         {
-            throw new Exception('The source path does not exist: '.$file);
+            throw new DocBlox_Transformer_Exception(
+                'The source path does not exist: ' . $file
+            );
         }
 
         return realpath($file);
@@ -260,6 +270,33 @@ class DocBlox_Transformer_Transformation extends DocBlox_Core_Abstract
     public function execute($structure_file)
     {
         $this->getWriter()->transform($structure_file, $this);
+    }
+
+    public static function createFromArray(DocBlox_Transformer $transformer, array $transformation)
+    {
+        // check if all required items are present
+        if (!key_exists('query', $transformation)
+            || !key_exists('writer', $transformation)
+            || !key_exists('source', $transformation)
+            || !key_exists('artifact', $transformation)
+        ) {
+            throw new InvalidArgumentException(
+                'Transformation array is missing elements, received: ' . var_export($transformation, true)
+            );
+        }
+
+        $transformation_obj = new DocBlox_Transformer_Transformation(
+            $transformer,
+            $transformation['query'],
+            $transformation['writer'],
+            $transformation['source'],
+            $transformation['artifact']
+        );
+        if (isset($transformation['parameters']) && is_array($transformation['parameters'])) {
+            $transformation_obj->setParameters($transformation['parameters']);
+        }
+
+        return $transformation_obj;
     }
 
 }

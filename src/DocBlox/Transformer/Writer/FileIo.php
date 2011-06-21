@@ -75,12 +75,12 @@ class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstr
     $path = $transformation->getSourceAsPath();
     if (!is_readable($path))
     {
-      throw new Exception('Unable to read the source file: ' . $path);
+      throw new DocBlox_Transformer_Exception('Unable to read the source file: ' . $path);
     }
 
     if (!is_writable($transformation->getTransformer()->getTarget()))
     {
-      throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
+      throw new DocBlox_Transformer_Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
     }
 
     $transformation->getTransformer()->copyRecursive(

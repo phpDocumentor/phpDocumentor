@@ -26,6 +26,7 @@
  */
 class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
 {
+    protected $xsl_variables = array();
 
     /**
      * This method combines the structure.xml and the given target template
@@ -43,7 +44,7 @@ class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
         DocBlox_Transformer_Transformation $transformation
     ) {
         if (!class_exists('XSLTProcessor')) {
-            throw new Exception(
+            throw new DocBlox_Transformer_Exception(
                 'The XSL writer was unable to find your XSLTProcessor; '
                 . 'please check if you have installed the PHP XSL extension'
             );
@@ -98,14 +99,9 @@ class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
         } else {
             if (substr($transformation->getArtifact(), 0, 1) == '$') {
                 // not a file, it must become a variable!
-                if (!isset($this->getConfig()->transformations->{'xsl.variables'})) {
-                    $this->getConfig()->transformations->{'xsl-variables'}
-                        = new Zend_Config(array(), true);
-                }
-
                 $variable_name = substr($transformation->getArtifact(), 1);
-                $this->getConfig()->transformations->{'xsl-variables'}
-                    ->$variable_name = $proc->transformToXml($structure);
+                $this->xsl_variables[$variable_name] =
+                    $proc->transformToXml($structure);
             } else {
                 $proc->transformToURI($structure, 'file://' . $artifact);
             }
@@ -124,27 +120,21 @@ class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
         DocBlox_Transformer_Transformation $transformation,
         XSLTProcessor $proc
     ) {
-        // first add the parameters are they are stored in the global configuration
-        if (isset($this->getConfig()->transformations->{'xsl-variables'})) {
-            $variables = $this->getConfig()->transformations->{'xsl-variables'};
-
-            /** @var Zend_Config $variable */
-            foreach ($variables as $key => $variable) {
-                // XSL does not allow both single and double quotes in a string
-                if ((strpos($variable, '"') !== false)
-                    && ((strpos($variable, "'") !== false))
-                ) {
-                    $this->log(
-                        'XSLT does not allow both double and single quotes in '
-                        . 'a variable; transforming single quotes to a character '
-                        . 'encoded version in variable: ' . $key,
-                        Zend_Log::WARN
-                    );
-                    $variable = str_replace("'", "&#39;", $variable);
-                }
-
-                $proc->setParameter('', $key, $variable);
+        foreach ($this->xsl_variables as $key => $variable) {
+            // XSL does not allow both single and double quotes in a string
+            if ((strpos($variable, '"') !== false)
+                && ((strpos($variable, "'") !== false))
+            ) {
+                $this->log(
+                    'XSLT does not allow both double and single quotes in '
+                    . 'a variable; transforming single quotes to a character '
+                    . 'encoded version in variable: ' . $key,
+                    Zend_Log::WARN
+                );
+                $variable = str_replace("'", "&#39;", $variable);
             }
+
+            $proc->setParameter('', $key, $variable);
         }
 
         // add / overwrite the parameters with those defined in the

@@ -67,7 +67,8 @@ class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
     // with docblox
     if (strpos($output, 'wkhtmltopdf: not found') !== false)
     {
-      exec($this->getConfig()->paths->application . '/src/wkhtmltopdf/wkhtmltopdf-i386 ' . $options . ' '
+        // TODO: replace the below with a decent way to find the executable
+      exec(dirname(__FILE__) . '/../../../src/wkhtmltopdf/wkhtmltopdf-i386 ' . $options . ' '
         . $transformation->getSource() . ' ' . $transformation->getArtifact() . ' 2>&1', $output, $error);
       $output = implode(PHP_EOL, $output).PHP_EOL;
     }
@@ -79,7 +80,7 @@ class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
     // CRASH!
     if ($error != 0)
     {
-      throw new Exception('Conversion to PDF failed, see output for details');
+      throw new DocBlox_Transformer_Exception('Conversion to PDF failed, see output for details');
     }
   }
 
