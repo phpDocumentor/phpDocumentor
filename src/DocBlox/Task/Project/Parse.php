@@ -199,10 +199,10 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
         $parser = new DocBlox_Parser();
         $parser->setTitle(htmlentities($this->getTitle()));
         if ($this->getVerbose()) {
-            $parser->setLogLevel(DocBlox_Core_Log::DEBUG);
+//            $parser->setLogLevel(DocBlox_Core_Log::DEBUG);
         }
         if ($this->getQuiet()) {
-            $parser->setLogLevel(DocBlox_Core_Log::QUIET);
+//            $parser->setLogLevel(DocBlox_Core_Log::QUIET);
         }
         $parser->setExistingXml($this->getTarget() . '/structure.xml');
         $parser->setForced($this->getForce());

@@ -21,7 +21,9 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-class DocBlox_Transformer_Template implements ArrayAccess, Countable, Traversable
+class DocBlox_Transformer_Template
+    extends DocBlox_Transformer_Abstract
+    implements ArrayAccess, Countable, Iterator
 {
     /** @var string Name for this template */
     protected $name = null;
@@ -48,15 +50,10 @@ class DocBlox_Transformer_Template implements ArrayAccess, Countable, Traversabl
      * @param string $path The location of the template on this server.
      * @param mixed  $data Array with settings to populate this template with.
      */
-    public function __construct($name, $path, $data = null)
+    public function __construct($name, $path)
     {
         $this->name = $name;
         $this->path = $path;
-
-        if ($data !== null)
-        {
-            $this->populate($data);
-        }
     }
 
     /**
@@ -139,26 +136,35 @@ class DocBlox_Transformer_Template implements ArrayAccess, Countable, Traversabl
     /**
      * Populates this template from an XML source.
      *
-     * @param string $xml
+     * @param DocBlox_Transformer $transformer The transformer which is parent.
+     * @param string              $xml         The XML definition for this template.
      *
      * @return void
      */
-    public function populate($xml)
+    public function populate(DocBlox_Transformer $transformer, $xml)
     {
         $xml = new SimpleXMLElement($xml);
         $this->author    = $xml->author;
         $this->version   = $xml->version;
         $this->copyright = $xml->copyright;
 
-        foreach($xml->transformations as $transformation)
+        foreach($xml->transformations->transformation as $transformation)
         {
-            $this->transformations[] = new DocBlox_Transformer_Transformation(
-                null,
-                $transformation['query'],
-                $transformation['writer'],
-                $transformation['source'],
-                $transformation['artifact']
+            $transformation_obj = new DocBlox_Transformer_Transformation(
+                $transformer,
+                (string)$transformation['query'],
+                (string)$transformation['writer'],
+                (string)$transformation['source'],
+                (string)$transformation['artifact']
             );
+
+            if (isset($transformation['parameters'])
+                && count($transformation['parameters'])
+            ) {
+                $transformation_obj->setParameters($transformation['parameters']);
+            }
+
+            $this->transformations[] = $transformation_obj;
         }
     }
 
@@ -172,8 +178,16 @@ class DocBlox_Transformer_Template implements ArrayAccess, Countable, Traversabl
      *
      * @return void
      */
-    public function offsetSet($offset, DocBlox_Transformer_Transformation $value)
+    public function offsetSet($offset, $value)
     {
+        if (!$value instanceof DocBlox_Transformer_Transformation)
+        {
+            throw new InvalidArgumentException(
+                'DocBlox_Transformer_Template may only contain items of '
+                . 'type DocBlox_Transformer_Transformation'
+            );
+        }
+
         $this->transformations[$offset] = $value;
     }
 
@@ -227,6 +241,68 @@ class DocBlox_Transformer_Template implements ArrayAccess, Countable, Traversabl
     public function count()
     {
         return count($this->transformations);
+    }
+
+    /**
+     * Rewind the Iterator to the first element
+     *
+     * @link http://php.net/manual/en/iterator.rewind.php
+     *
+     * @return void
+     */
+    public function rewind()
+    {
+        reset($this->transformations);
+    }
+
+    /**
+     * Checks if current position is valid.
+     *
+     * @link http://php.net/manual/en/iterator.valid.php
+     *
+     * @return boolean Returns true on success or false on failure.
+     */
+    public function valid()
+    {
+        return (current($this->transformations) === false)
+            ? false
+            : true;
+    }
+
+    /**
+     * Return the key of the current element.
+     *
+     * @link http://php.net/manual/en/iterator.key.php
+     *
+     * @return scalar scalar on success, integer 0 on failure.
+     */
+    public function key()
+    {
+        key($this->transformations);
+    }
+
+    /**
+     * Move forward to next element.
+     *
+     * @link http://php.net/manual/en/iterator.next.php
+     *
+     * @return void Any returned value is ignored.
+     */
+    public function next()
+    {
+        next($this->transformations);
+    }
+
+    /**
+     * Return the current element.
+     *
+     * @link http://php.net/manual/en/iterator.current.php
+     *
+     * @return DocBlox_Transformer_Transformation
+     */
+    public function current()
+    {
+        return current($this->transformations);
     }
 
 }

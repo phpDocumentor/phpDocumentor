@@ -49,8 +49,11 @@ class DocBlox_Core_Application
         $dispatcher = new sfEventDispatcher();
 
         $logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
+        $logger->setThreshold(DocBlox_Core_Log::DEBUG);
+
         $dispatcher->connect('system.log', array($logger, 'log'));
         DocBlox_Parser_Abstract::$event_dispatcher = $dispatcher;
+        DocBlox_Transformer_Abstract::$event_dispatcher = $dispatcher;
 
         try {
             $task->execute();

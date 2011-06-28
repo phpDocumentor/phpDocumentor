@@ -153,11 +153,11 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_ConfigurableAbstract
     // enable verbose mode if the flag was set
     if ($this->getVerbose())
     {
-      $transformer->setLogLevel(DocBlox_Core_Log::DEBUG);
+//      $transformer->setLogLevel(DocBlox_Core_Log::DEBUG);
     }
     if ($this->getQuiet())
     {
-      $transformer->setLogLevel(DocBlox_Core_Log::QUIET);
+//      $transformer->setLogLevel(DocBlox_Core_Log::QUIET);
     }
 
     // start the transformation process
