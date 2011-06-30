@@ -251,6 +251,14 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
 
         if ($xml)
         {
+            $this->dispatch(
+                'transformer.pre-transform',
+                array(
+                    self::$event_dispatcher,
+                    $xml
+                )
+            );
+
             $behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
                 new DocBlox_Transformer_Behaviour_GeneratePaths(),
                 new DocBlox_Transformer_Behaviour_AddLinkInformation(),

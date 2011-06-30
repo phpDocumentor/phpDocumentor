@@ -172,9 +172,21 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         $xml->docblock->description          = $this->getDocBlock()->getShortDescription();
         $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getFormattedContents();
 
+
         /** @var DocBlox_Reflection_Docblock_Tag $tag */
         foreach ($this->getDocBlock()->getTags() as $tag) {
             $tag_object = $xml->docblock->addChild('tag');
+
+            $this->dispatch(
+                'reflection.docblock.tag.pre-export',
+                array(
+                    self::$event_dispatcher,
+                    $this,
+                    $tag_object,
+                    $tag
+                )
+            );
+
             DocBlox_Parser_DocBlock_Tag_Definition::create($this->getNamespace(), $this->namespace_aliases, $tag_object, $tag);
 
             // custom attached member variable, see line 51

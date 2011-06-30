@@ -52,8 +52,9 @@ class DocBlox_Core_Application
         $logger->setThreshold(DocBlox_Core_Log::DEBUG);
 
         $dispatcher->connect('system.log', array($logger, 'log'));
-        DocBlox_Parser_Abstract::$event_dispatcher = $dispatcher;
+        DocBlox_Parser_Abstract::$event_dispatcher      = $dispatcher;
         DocBlox_Transformer_Abstract::$event_dispatcher = $dispatcher;
+        DocBlox_Reflection_Abstract::$event_dispatcher  = $dispatcher;
 
         try {
             $task->execute();

@@ -31,7 +31,7 @@
  * @license     http://www.opensource.org/licenses/mit-license.php MIT
  * @link        http://docblox-project.org
  */
-class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
+class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
 {
     /** @var string The name of this task including namespace */
     protected $taskname = 'project:run';
