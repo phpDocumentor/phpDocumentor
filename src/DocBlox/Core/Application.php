@@ -50,6 +50,13 @@ class DocBlox_Core_Application
     {
       echo 'ERROR: '.$e->getMessage().PHP_EOL.PHP_EOL;
       echo $task->getUsageMessage();
+      // exit with the exception's code or 1 if null/0
+      $exit = $e->getCode();
+      if (!$exit)
+      {
+        $exit = 1;
+      }
+      exit($exit);
     }
   }
 
