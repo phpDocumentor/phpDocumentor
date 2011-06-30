@@ -45,6 +45,7 @@
         <xsl:if test="count(constant) > 0">
           <dt>Constants</dt>
           <xsl:for-each select="constant">
+            <xsl:sort select="name" />
             <dd>
               <a class="constant" href="#{../full_name}::{name}">
                 <xsl:value-of select="name" />
@@ -56,6 +57,7 @@
         <xsl:if test="count(property) > 0">
           <dt>Properties</dt>
           <xsl:for-each select="property">
+            <xsl:sort select="name" />
             <dd>
               <a class="property {@visibility}" href="#{../full_name}::{name}">
                 <xsl:value-of select="name" />
@@ -67,6 +69,7 @@
         <xsl:if test="count(method) > 0">
           <dt>Methods</dt>
           <xsl:for-each select="method">
+            <xsl:sort select="name" />
             <dd>
               <a class="method {@visibility}" href="#{../full_name}::{name}()">
                 <xsl:value-of select="name" />
