@@ -53,6 +53,9 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     /** @var string target location's root path */
     protected $path = null;
 
+    /** @var boolean should we ignore '@ignore's ? */
+    protected $tagIgnore;
+
     /**
      * Array of visibility modifiers that should be adhered to when generating
      * the documentation
