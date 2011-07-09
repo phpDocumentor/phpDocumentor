@@ -50,8 +50,8 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_ConfigurableAbstract
     $this->addOption('v|verbose', '',
       'Outputs any information collected by this application, may slow down the process slightly'
     );
-    $this->addOption('skipinternal', '',
-      'Whether to skip DocBlocks marked with @internal tag'
+    $this->addOption('parseprivate', '',
+      'Whether to parse DocBlocks marked with @internal tag'
     );
 
   }
@@ -153,7 +153,7 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_ConfigurableAbstract
     $transformer->setTarget($this->getTarget());
     $transformer->setSource($this->getSource());
     $transformer->setTemplates($this->getTemplate());
-    $transformer->setSkipInternal($this->getSkipinternal());
+    $transformer->setParseprivate($this->getParseprivate());
 
     // enable verbose mode if the flag was set
     if ($this->getVerbose())

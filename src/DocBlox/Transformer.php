@@ -39,7 +39,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
     protected $transformations = array();
 
     /** @var boolean */
-    protected $skipInternal = false;
+    protected $parsePrivate = false;
 
     /**
      * Initialize the transformations.
@@ -127,12 +127,12 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
 
     public function setParseprivate($val)
     {
-        $this->skipInternal = (boolean)$val;
+        $this->parsePrivate = (boolean)$val;
     }
 
     public function getParseprivate()
     {
-        return $this->skipInternal;
+        return $this->parsePrivate;
     }
 
     /**

@@ -1,27 +1,28 @@
 <?php
 /**
- * @category	DocBlox
- * @package 	Transformer
- * @subpackage	Behavior
- * @author		Stepan Anchugov <kix@kixlive.ru>
- * @license	    http://www.opensource.org/licenses/mit-license.php MIT
- * @link    	http://docblox-project.org
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Behaviour
+ * @author     Stepan Anchugov <kix@kixlive.ru>
+ * @license	   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 
 /**
- * Behaviour that adds support for @internal tag
+ * Behaviour that adds support for @ignore tag
  *
- * @category DocBlox
- * @package 	Transformer
- * @subpackage	Behavior
- * @author		Stepan Anchugov <kix@kixlive.ru>
+ * @category   DocBlox
+ * @package    Transformer
+ * @subpackage Behavior
+ * @author     Stepan Anchugov <kix@kixlive.ru>
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 class DocBlox_Transformer_Behaviour_Tag_Ignore implements
     DocBlox_Transformer_Behaviour_Interface
 {
-    const TAG = 'ignore';
+    protected $tag = 'ignore';
 
     /** @var DocBlox_Core_Log */
     protected $logger = null;
@@ -39,7 +40,7 @@ class DocBlox_Transformer_Behaviour_Tag_Ignore implements
     }
 
     /**
-     * Removes DocBlocks marked with 'internal' tag from the structure
+     * Removes DocBlocks marked with 'ignore' tag from the structure
      *
      * @param DOMDocument $xml
      *
@@ -48,20 +49,22 @@ class DocBlox_Transformer_Behaviour_Tag_Ignore implements
     public function process(DOMDocument $xml)
     {
         if ($this->logger){
-            $this->logger->log('Removing @ignore DocBlocks');
+            $this->logger->log(
+                'Removing DocBlocks containing the @'.$this->tag.' tag'
+            );
         }
 
-        $tag = self::TAG;
-
-        $ignoreQry = '//tag[@name=\''.$tag.'\']';
+        $ignoreQry = '//tag[@name=\''. $this->tag . '\']';
 
         $xpath = new DOMXPath($xml);
         $nodes = $xpath->query($ignoreQry);
 
+        /** @var DOMElement $node */
         foreach($nodes as $node) {
             $remove = $node->parentNode->parentNode;
             $node->parentNode->parentNode->parentNode->removeChild($remove);
         }
+
         return $xml;
     }
 

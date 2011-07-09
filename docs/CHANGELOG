@@ -1,3 +1,16 @@
+07/15/2011: Version 0.12.0
+--------------------------
+
+* ADDED:    Support for the @internal tag (do not document this tag if the
+            `parseprivate` option is not provided). Thanks to @kix for
+            contributing this code.
+* ADDED:    Support for the @ignore tag (do not document element containing this
+            tag at all). Thanks to @kix for contributing this code.
+* FIXED:    Properties and methods in the class overview are now sorted by name.
+* ADDED:    DocBlox returns non-zero codes when failing. Thanks to @trii for
+            contributing the code.
+* ADDED:    Support for documenting the contents of phar archives
+
 06/12/2011: Version 0.11.0
 --------------------------
 

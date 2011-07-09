@@ -89,7 +89,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_ConfigurableAbstract
         );
         $this->addOption(
             'parseprivate', '',
-            'Whether to ignore DocBlocks tagged with @internal'
+            'Whether to parse DocBlocks tagged with @internal'
         );
 
         $this->addOption(
