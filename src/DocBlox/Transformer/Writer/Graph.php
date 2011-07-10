@@ -27,6 +27,8 @@
  */
 class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstract
 {
+    protected $has_namespaces = false;
+
     /**
      * Generates an array containing class to path references and then invokes the Source specific method.
      *
@@ -37,8 +39,6 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
      */
     public function transform(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
     {
-        require_once 'Image/GraphViz.php';
-
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
         if ($error != 0) {
@@ -51,6 +51,11 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
 
         // add to classes
         $xpath = new DOMXPath($structure);
+        $qry = $xpath->query('/namespace[@name]');
+        if ($qry->length > 0) {
+            $this->has_namespaces = true;
+        }
+
         $qry = $xpath->query('//class[full_name]/..');
         $class_paths = array();
 
@@ -78,90 +83,149 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
     }
 
     /**
-     * Generates a SVG Class Diagram at the given artifact location.
+     * Builds a tree of namespace subgraphs with their classes associated.
+     *
+     * @param DocBlox_GraphViz_Graph $graph
+     * @param DOMElement             $namespace_element
+     * @param DOMXPath               $xpath
+     * @param string                 $full_namespace_name
+     *
+     * @return void
+     */
+    public function buildNamespaceTree(DocBlox_GraphViz_Graph $graph,
+        DOMElement $namespace_element, DOMXPath $xpath, $full_namespace_name)
+    {
+        $namespace = $namespace_element->getAttribute('name');
+        $full_namespace_name .= '\\'.$namespace;
+        $full_namespace_name = ltrim($full_namespace_name, '\\');
+
+        $sub_graph = DocBlox_GraphViz_Graph::create('cluster_' . str_replace('\\', '_', $full_namespace_name))
+            ->setLabel($namespace)
+            ->setStyle('rounded')
+            ->setColor('gray')
+            ->setFontColor('gray')
+            ->setFontSize('11')
+            ->setRankDir('LR');
+
+        $sub_qry = $xpath->query(
+            "/project/file/interface[@namespace='$full_namespace_name']|/project/file/class[@namespace='$full_namespace_name']"
+        );
+        /** @var DOMElement $sub_element */
+        foreach ($sub_qry as $sub_element) {
+            $node = DocBlox_GraphViz_Node::create(
+                str_replace('\\', '_', $sub_element->getElementsByTagName('full_name')->item(0)->nodeValue),
+                $sub_element->getElementsByTagName('name')->item(0)->nodeValue
+            );
+            $node->setShape('box');
+            $node->setFontName('Courier New');
+            $node->setFontSize('11');
+            if ($sub_element->getAttribute('abstract') == 'true') {
+                $node->setLabel('<<I>'.$node->getName().'</I>>');
+            }
+            if (!isset($this->class_paths[$sub_element->getElementsByTagName('full_name')->item(0)->nodeValue])) {
+                echo $sub_element->getElementsByTagName('full_name')->item(0)->nodeValue.PHP_EOL;
+            } else {
+                $node->setURL($this->class_paths[$sub_element->getElementsByTagName('full_name')->item(0)->nodeValue]);
+                $node->setTarget('_parent');
+            }
+            $sub_graph->setNode($node);
+        }
+
+        $graph->addGraph($sub_graph);
+
+        foreach($namespace_element->getElementsByTagName('namespace') as $element) {
+            $this->buildNamespaceTree($sub_graph, $element, $xpath, $full_namespace_name);
+        }
+    }
+
+    /**
+     * Creates a class inheritance diagram.
      *
      * @param DOMDocument                        $structure
      * @param DocBlox_Transformer_Transformation $transformation
-     *
-     * @todo this method should be refactored into smaller components.
      *
      * @return void
      */
     public function processClass(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
     {
         $filename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        $graph = DocBlox_GraphViz_Graph::create()
+            ->setRankSep('1.0')
+            ->setCenter('true')
+            ->setRank('source')
+            ->setRankDir('RL')
+            ->setSplines('true')
+            ->setConcentrate('true');
 
-        // generate graphviz
         $xpath = new DOMXPath($structure);
-        $qry = $xpath->query("/project/file/class|/project/file/interface");
-
-        $extend_classes = array();
-        $classes = array();
+        $qry = $xpath->query("/project/namespace");
 
         /** @var DOMElement $element */
-        foreach ($qry as $element) {
-            $extends = $element->getElementsByTagName('extends')->item(0)->nodeValue;
-            if (!$extends) {
-                $extends = 'stdClass';
-            }
-
-            if (!isset($extend_classes[$extends])) {
-                $extend_classes[$extends] = array();
-            }
-
-            $extend_classes[$extends][] = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
-            $classes[] = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
+        foreach($qry as $element) {
+            $this->buildNamespaceTree($graph, $element, $xpath, '');
         }
 
-        // find root nodes, (any class not found as extend)
-        foreach ($extend_classes as $extend => $class_list) {
-            if (!in_array($extend, $classes)) {
-                // if the extend is not in the list of classes (i.e. stdClass) then we have a root node
-                $root_nodes[] = $extend;
-            }
-        }
+        // link all extended relations
+        $qry = $xpath->query('/project/file/interface[extends]|/project/file/class[extends]');
 
-        if (empty($root_nodes)) {
-            $this->log('No classes have been found, and therefore no class diagram is required', Zend_Log::INFO);
-            return;
-        }
+        /** @var DOMElement $element */
+        foreach($qry as $element) {
+            $from_name = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
+            $to_name = $element->getElementsByTagName('extends')->item(0)->nodeValue;
 
-        // traverse root nodes upwards
-        $tree['stdClass'] = $this->buildTreenode($extend_classes);
-        foreach ($root_nodes as $node) {
-            if ($node === 'stdClass') {
+            if (!$to_name) {
                 continue;
             }
 
-            if (!isset($tree['stdClass']['?'])) {
-                $tree['stdClass']['?'] = array();
+            $from = $graph->findNode(str_replace('\\', '_', $from_name));
+            $to = $graph->findNode(str_replace('\\', '_', $to_name));
+
+            if ($to === null)
+            {
+                $to = DocBlox_GraphViz_Node::create(str_replace('\\', '_', $to_name));
+                $to->setFontColor('gray');
+                $to->setLabel(addslashes($to_name));
+                $graph->setNode($to);
             }
 
-            $tree['stdClass']['?'][$node] = $this->buildTreenode($extend_classes, $node);
+            $edge = DocBlox_GraphViz_Edge::create($from, $to);
+            $edge->setArrowHead('empty');
+            $graph->link($edge);
         }
 
-        $graph = new Image_GraphViz(
-            true,
-            array(
-                'rankdir' => 'RL',
-                'splines' => true,
-                'concentrate' => 'true',
-                'ratio' => '0.9',
-            ),
-            'Classes'
-        );
-        $this->buildGraphNode($graph, $tree);
+        // link all implemented relations
+        $qry = $xpath->query('/project/file/interface[imports]|/project/file/class[implements]');
 
-        // disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
-        $reporting = error_reporting();
-        error_reporting(error_reporting() & ~E_STRICT);
+        /** @var DOMElement $element */
+        foreach($qry as $element) {
+            $from_name = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
 
-        // render graph using Image_GraphViz
-        $dot_file = $graph->saveParsedGraph();
-        $graph->renderDotFile($dot_file, $filename);
-        error_reporting($reporting);
+            foreach($element->getElementsByTagName('implements') as $implements) {
+                $to_name = $implements->nodeValue;
 
-        // add panning and zooming extension
+                if (!$to_name) {
+                    continue;
+                }
+
+                $from = $graph->findNode(str_replace('\\', '_', $from_name));
+                $to = $graph->findNode(str_replace('\\', '_', $to_name));
+
+                if ($to === null) {
+                    $to = DocBlox_GraphViz_Node::create(str_replace('\\', '_', $to_name));
+                    $to->setFontColor('gray');
+                    $to->setLabel(addslashes($to_name));
+                    $graph->setNode($to);
+                }
+
+                $edge = DocBlox_GraphViz_Edge::create($from, $to);
+                $edge->setStyle('dotted');
+                $edge->setArrowHead('empty');
+                $graph->link($edge);
+            }
+        }
+
+        $graph->export('svg', $filename);
+
         $svg = simplexml_load_file($filename);
         $script = $svg->addChild('script');
         $script->addAttribute('xlink:href', 'js/SVGPan.js', 'http://www.w3.org/1999/xlink');
@@ -169,75 +233,7 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
         // for the SVGPan file to work no viewBox may be defined and the id of the first <g> node must be renamed to 'viewport'
         unset($svg['viewBox']);
         $svg->g['id'] = 'viewport';
-        // save a full version
-        // $svg->asXML(substr($filename, 0, -4) . '_full.svg');
-
-        // replace width and height with 100% on non-full version
-        // $svg['width']  = '100%';
-        // $svg['height'] = '100%';
         $svg->asXML($filename);
     }
 
-    /**
-     * Recursive method which builds the tree to use in the Class Diagram creation.
-     *
-     * @param array  $node_list
-     * @param string $parent
-     * @param array  $chain
-     *
-     * @return array
-     */
-    protected function buildTreenode(array $node_list, $parent = 'stdClass', $chain = array())
-    {
-        if (count($chain) > 50) {
-            $path = implode(' => ', array_slice($chain, -10));
-            $this->log(
-                'Maximum nesting level reached of 50, last 10 classes in the hierarchy path: '.$path,
-                Zend_Log::WARN
-            );
-            return array();
-        }
-
-        if (!isset($node_list[$parent])) {
-            return array();
-        }
-
-        $result = array();
-        $chain[] = $parent;
-        foreach ($node_list[$parent] as $node) {
-            $result[$node] = $this->buildTreenode($node_list, $node, $chain);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Recursive method which builds the actual node for use in the Image_Graphviz object.
-     *
-     * @param Image_GraphViz $graph
-     * @param array          $nodes
-     * @param array|null     $parent
-     *
-     * @return void
-     */
-    protected function buildGraphNode(Image_GraphViz $graph, $nodes, $parent = null)
-    {
-        foreach ($nodes as $node => $children) {
-            $node_array = explode('\\', $node);
-
-            $properties = array('label' => end($node_array), 'shape' => 'box', 'style' => 'filled', 'fillcolor' => 'white');
-            if (isset($this->class_paths[$node])) {
-                $properties['URL'] = $this->class_paths[$node];
-                $properties['target'] = '_top';
-            } else {
-                $properties['fontcolor'] = 'gray';
-            }
-            $graph->addNode(md5($node), $properties);
-
-            if ($parent !== null) {
-                $graph->addEdge(array(md5($node) => md5($parent)), array('arrowhead' => 'empty', 'minlen' => '2'));
-            }
-            $this->buildGraphNode($graph, $children, $node);
-        }
-    }
 }

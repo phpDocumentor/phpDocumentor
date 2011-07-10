@@ -10,6 +10,14 @@
 * ADDED:    DocBlox returns non-zero codes when failing. Thanks to @trii for
             contributing the code.
 * ADDED:    Support for documenting the contents of phar archives
+* REMOVED:  Dependency on PEAR component Image_GraphViz
+* ADDED:    Class Inheritance Diagram now shows `implements` relations between
+            classes and interfaces.
+* REMOVED:  Class Inheritance Diagram no longer shows a stdClass super-parent
+* ADDED:    Class Inheritance Diagram now groups classes per namespace and shows
+            that namespace name to make relations clearer
+* FIXED:    Class Inheritance Diagram no longer breaks out of the frame when
+            navigating to a class' definition.
 
 06/12/2011: Version 0.11.0
 --------------------------
