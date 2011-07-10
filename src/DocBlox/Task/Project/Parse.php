@@ -271,6 +271,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
         }
         $parser->setExistingXml($this->getTarget() . '/structure.xml');
         $parser->setIgnorePatterns($this->getIgnore());
+        $parser->setExtensions($this->getExtensions());
         $parser->setForced($this->getForce());
         $parser->setMarkers($this->getMarkers());
         $parser->setValidate($this->getValidate());

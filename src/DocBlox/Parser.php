@@ -33,6 +33,12 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     protected $ignore_patterns = array();
 
     /**
+     * @var string[] the file extensions without leading dots, used to detect
+     *               whether ignore pattern refers to file or directory.
+     */
+    protected $extensions = array();
+
+    /**
      * @var DOMDocument|null if any structure.xml was at the target location it
      *                       is stored for comparison
      */
@@ -243,6 +249,43 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
     }
 
     /**
+     * Adds an extension to be parsed. Used for detecting whether an
+     * ignore pattern refers to a file or a directory.
+     *
+     * @param string $extension file extension without leading dot
+     *
+     * @return void
+     */
+    public function addExtension($extension)
+    {
+        $this->extensions[] = $extension;
+    }
+
+    /**
+     * Sets the array of extensions being parsed.
+     *
+     * @param string[] $extensions file extensions without leading dots.
+     */
+    public function setExtensions(array $extensions)
+    {
+        $this->extensions = array ();
+
+        foreach ($extensions as $extension) {
+          $this->addExtension($extension);
+        }
+    }
+
+    /**
+     * Returns an array with extensions being parsed.
+     *
+     * @return string[]
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
      * Sets the base path of the files that will be parsed.
      *
      * @param string $path Must be an absolute path.
@@ -304,7 +347,10 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
         // 1. Determine whether this is a relative or absolute path, if the
         //    string does not start with *, ?, / or \ then we assume that it is
         //    a relative path
-        // 2. check whether the given pattern matches with the filename (or
+        // 2. If the pattern is an absolute path, and does not end in one of
+        //    the extensions we are searching for, it is assumed to be a directory
+        //    and that all files and subdirectories should be ignored.
+        // 3. check whether the given pattern matches with the filename (or
         //    relative filename in case of a relative comparison)
         foreach ($this->getIgnorePatterns() as $pattern) {
             if ((($pattern[0] !== '*')
@@ -315,7 +361,9 @@ class DocBlox_Parser extends DocBlox_Core_Abstract
                     '/^' . $pattern . '$/',
                     $this->getRelativeFilename($filename)
                 )))
-                || (preg_match('/^' . $pattern . '$/', $filename))
+                || (preg_match('/\.(' . join('|',$this->getExtensions()) . ')$/', $filename)
+                    && preg_match('/^' . $pattern . '$/', $filename)
+                    || preg_match('/^' . $pattern . '/', $filename))
             ) {
                 $this->log(
                     '-- File "' . $filename . '" matches ignore pattern, skipping'
