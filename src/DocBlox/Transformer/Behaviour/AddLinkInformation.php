@@ -93,6 +93,8 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
         }
         $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|//extends|//implements');
 
+        $declared_classes = get_declared_classes();
+
         /** @var DOMElement $element */
         foreach ($qry as $element)
         {
@@ -100,6 +102,18 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
             $node = ($element->nodeType == XML_ATTRIBUTE_NODE)
                     ? $element->parentNode
                     : $element;
+
+            // if the class is already loaded and is an internal class; refer
+            // to the PHP man pages
+            if (in_array(ltrim($type, '\\'), $declared_classes)) {
+                $refl = new ReflectionClass($type);
+                if ($refl->isInternal()) {
+                    $node->setAttribute(
+                        'link',
+                        'http://php.net/manual/en/class.'.strtolower(ltrim($type, '\\')).'.php'
+                    );
+                }
+            }
 
             if (isset($class_paths[$type])) {
                 $file_name = $this->generateFilename($class_paths[$type]);

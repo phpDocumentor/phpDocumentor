@@ -18,6 +18,10 @@
             that namespace name to make relations clearer
 * FIXED:    Class Inheritance Diagram no longer breaks out of the frame when
             navigating to a class' definition.
+* FIXED:    Improved Ignore handling
+* FIXED:    Scalars are no longer prefixed with a \
+* ADDED:    Internal classes (PHP core classes + extensions) will now redirect
+            to the PHP man pages
 
 06/12/2011: Version 0.11.0
 --------------------------

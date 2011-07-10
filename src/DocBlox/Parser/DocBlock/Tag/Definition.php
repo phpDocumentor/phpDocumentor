@@ -237,7 +237,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition
             }
 
             // full paths always start with a slash
-            if (isset($item[0]) && ($item[0] !== '\\')) {
+            if (isset($item[0]) && ($item[0] !== '\\') && (!in_array(strtolower($item), $non_objects))) {
                 $item = '\\' . $item;
             }
         }
