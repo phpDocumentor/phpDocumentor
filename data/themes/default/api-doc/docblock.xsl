@@ -39,7 +39,15 @@
       <xsl:value-of select="@name" />
     </dt>
     <dd>
-      <xsl:value-of select="@description" disable-output-escaping="yes"/>
+        <xsl:if test="@link">
+            <a href="{$root}{@link}">
+                <xsl:value-of select="@description" disable-output-escaping="yes"/>
+            </a>
+        </xsl:if>
+
+        <xsl:if test="not(@link)">
+            <xsl:value-of select="@description" disable-output-escaping="yes"/>
+        </xsl:if>
     </dd>
   </xsl:template>
 
