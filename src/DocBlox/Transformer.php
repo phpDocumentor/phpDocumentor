@@ -4,22 +4,23 @@
  *
  * PHP Version 5
  *
- * @category   DocBlox
- * @package    Transformer
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category  DocBlox
+ * @package   Transformer
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
- * Core class responsible for transforming the structure.xml file to a set of artifacts.
+ * Core class responsible for transforming the structure.xml file to a set of
+ * artifacts.
  *
- * @category   DocBlox
- * @package    Transformer
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category DocBlox
+ * @package  Transformer
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Transformer extends DocBlox_Transformer_Abstract
 {
@@ -35,20 +36,38 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     /** @var string */
     protected $themes_path = '';
 
+    /** @var DocBlox_Transformer_Behaviour_Collection */
+    protected $behaviours = null;
+
+    /** @var DocBlox_Transformer_Transformation[] */
+    protected $transformations = array();
+
+    /** @var boolean */
+    protected $parsePrivate = false;
+
     /**
      * Sets the path for the themes to the DocBlox default.
      */
     public function __construct()
     {
         $this->themes_path = dirname(__FILE__) . '/../../data/themes';
+
+        $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(
+            array(
+                new DocBlox_Transformer_Behaviour_GeneratePaths(),
+                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
+                new DocBlox_Transformer_Behaviour_Inherit(),
+                new DocBlox_Transformer_Behaviour_Tag_Ignore(),
+            )
+        );
     }
 
     /**
      * Sets the target location where to output the artifacts.
      *
-     * @throws Exception if the target is not a valid writable directory.
-     *
      * @param string $target The target location where to output the artifacts.
+     *
+     * @throws Exception if the target is not a valid writable directory.
      *
      * @return void
      */
@@ -56,7 +75,10 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     {
         $path = realpath($target);
         if (!file_exists($path) && !is_dir($path) && !is_writable($path)) {
-            throw new Exception('Given target directory (' . $target . ') does not exist or is not writable');
+            throw new Exception(
+                'Given target directory (' . $target . ') does not exist or '
+                . 'is not writable'
+            );
         }
 
         $this->target = $path;
@@ -75,7 +97,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     /**
      * Sets the path where the themes are located.
      *
-     * @param string $path
+     * @param string $path Absolute path where the themes are.
      *
      * @return void
      */
@@ -97,9 +119,10 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     /**
      * Sets the location of the structure file.
      *
-     * @throws Exception if the source is not a valid readable file.
+     * @param string $source The location of the structure file as full path
+     *  (may be relative).
      *
-     * @param string $source The location of the structure file as full path (may be relative).
+     * @throws Exception if the source is not a valid readable file.
      *
      * @return void
      */
@@ -114,7 +137,10 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
         } else {
             $path = realpath($source);
             if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
-                throw new Exception('Given source (' . $source . ') does not exist or is not readable');
+                throw new Exception(
+                    'Given source (' . $source . ') does not exist or is not '
+                    . 'readable'
+                );
             }
 
             // convert to dom document so that the writers do not need to
@@ -135,9 +161,33 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     }
 
     /**
+     * Sets flag indicating whether private members and/or elements tagged
+     * as {@internal} need to be displayed.
+     *
+     * @param bool $val True if all needs to be shown, false otherwise.
+     *
+     * @return void
+     */
+    public function setParseprivate($val)
+    {
+        $this->parsePrivate = (boolean)$val;
+    }
+
+    /**
+     * Returns flag indicating whether private members and/or elements tagged
+     * as {@internal} need to be displayed.
+     *
+     * @return bool
+     */
+    public function getParseprivate()
+    {
+        return $this->parsePrivate;
+    }
+
+    /**
      * Sets one or more templates as basis for the transformations.
      *
-     * @param string|string[] $template
+     * @param string|string[] $template Name or names of the templates.
      *
      * @return void
      */
@@ -149,8 +199,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             $template = array($template);
         }
 
-        foreach ($template as $item)
-        {
+        foreach ($template as $item) {
             $this->addTemplate($item);
         }
     }
@@ -169,7 +218,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      * Loads a template by name, if an additional array with details is
      * provided it will try to load parameters from it.
      *
-     * @param string $name
+     * @param string $name Name of the template to add.
      *
      * @return void
      */
@@ -201,10 +250,13 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             $path = $cache_path;
 
             // transform all directory separators to underscores and lowercase
-            $name = strtolower(str_replace(
-                DIRECTORY_SEPARATOR, '_',
-                rtrim($name, DIRECTORY_SEPARATOR)
-            ));
+            $name = strtolower(
+                str_replace(
+                    DIRECTORY_SEPARATOR,
+                    '_',
+                    rtrim($name, DIRECTORY_SEPARATOR)
+                )
+            );
         }
 
         // if we load a default theme
@@ -229,10 +281,8 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     public function getTransformations()
     {
         $result = array();
-        foreach($this->templates as $template)
-        {
-            foreach($template as $transformation)
-            {
+        foreach ($this->templates as $template) {
+            foreach ($template as $transformation) {
                 $result[] = $transformation;
             }
         }
@@ -249,8 +299,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     {
         $xml = $this->getSource();
 
-        if ($xml)
-        {
+        if ($xml) {
             $this->dispatch(
                 'transformer.pre-transform',
                 array(
@@ -259,19 +308,20 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
                 )
             );
 
-            $behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
-                new DocBlox_Transformer_Behaviour_GeneratePaths(),
-                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
-                new DocBlox_Transformer_Behaviour_Inherit(),
-            ));
+            if (!$this->getParseprivate()) {
+                $this->behaviours->addBehaviour(
+                    new DocBlox_Transformer_Behaviour_Tag_Internal()
+                );
+            }
 
-            $xml = $behaviours->process($xml);
+            $xml = $this->behaviours->process($xml);
         }
 
-        foreach ($this->getTransformations() as $transformation)
-        {
-            $this->log('Applying transformation query ' . $transformation->getQuery()
-                       . ' using writer ' . get_class($transformation->getWriter()));
+        foreach ($this->getTransformations() as $transformation) {
+            $this->log(
+                'Applying transformation query ' . $transformation->getQuery()
+                . ' using writer ' . get_class($transformation->getWriter())
+            );
 
             $transformation->execute($xml);
         }
@@ -280,13 +330,20 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     /**
      * Converts a source file name to the name used for generating the end result.
      *
-     * @param string $file
+     * @param string $file Path of the file starting from the project root.
      *
      * @return string
      */
     public function generateFilename($file)
     {
-        $info = pathinfo(str_replace(DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')));
+        $info = pathinfo(
+            str_replace(
+                DIRECTORY_SEPARATOR,
+                '_',
+                trim($file, DIRECTORY_SEPARATOR . '.')
+            )
+        );
+
         return '_' . $info['filename'] . '.html';
     }
 
@@ -303,8 +360,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     public function copyRecursive($src, $dst)
     {
         // if $src is a normal file we can do a regular copy action
-        if (is_file($src))
-        {
+        if (is_file($src)) {
             copy($src, $dst);
             return;
         }
@@ -319,14 +375,11 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             throw new Exception('Unable to create folder "' . $dst . '"');
         }
 
-        while (false !== ($file = readdir($dir)))
-        {
+        while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {
                     $this->copyRecursive($src . '/' . $file, $dst . '/' . $file);
-                }
-                else
-                {
+                } else {
                     copy($src . '/' . $file, $dst . '/' . $file);
                 }
             }

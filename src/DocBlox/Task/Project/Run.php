@@ -88,6 +88,11 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
             'Validates every processed file using PHP Lint, costs a lot of performance'
         );
         $this->addOption(
+            'parseprivate', '',
+            'Whether to parse DocBlocks tagged with @internal'
+        );
+
+        $this->addOption(
             'visibility', '-s',
             'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")'
         );
@@ -124,6 +129,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         $transform->setSource($task->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml');
         $transform->setVerbose($task->getVerbose());
         $transform->setQuiet($task->getQuiet());
+        $transform->setParseprivate($this->getParseprivate());
         $transform->execute();
     }
 
