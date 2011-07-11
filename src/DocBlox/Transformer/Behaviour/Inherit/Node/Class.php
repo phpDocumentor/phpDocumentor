@@ -167,4 +167,61 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         }
     }
 
+    /**
+     * Override the parent's copyTags method to check whether the package names
+     * match; if not: do not copy the subpackage.
+     *
+     * Frameworks often extend classes from other frameworks; and applications
+     * extend classes of frameworks.
+     *
+     * Without this check when the framework specifies a subpackage but the
+     * extending class would not; and the packages would not match. Then a
+     * subpackage would be applied that is not applicable to this item.
+     *
+     * Additionally; this package/subpackage combination would not be present in
+     * the package index int he structure file and the classes would never be
+     * shown in the navigation.
+     *
+     * @param string[]   $tag_types      List of allowed tag types.
+     * @param DOMElement $super_docblock Super class' docblock.
+     * @param DOMElement $docblock       Sub class' docblock.
+     *
+     * @return void
+     */
+    protected function copyTags(array $tag_types, DOMElement $super_docblock,
+        DOMElement $docblock)
+    {
+        // find the name of the super's package
+        $super_package_name = null;
+        $tags = $this->getDirectElementsByTagName($super_docblock, 'tag');
+        foreach($tags as $tag) {
+            if ($tag->getAttribute('name') == 'package') {
+                $super_package_name = $tag->getAttribute('description');
+                break;
+            }
+        }
+
+        // find the name of the local's package
+        $local_package_name = null;
+        $tags = $this->getDirectElementsByTagName($docblock, 'tag');
+        foreach ($tags as $tag) {
+            if ($tag->getAttribute('name') == 'package') {
+                $local_package_name = $tag->getAttribute('description');
+                break;
+            }
+        }
+
+        // if the package names do not match; do not inherit the subpackage
+        if ($super_package_name != $local_package_name) {
+            foreach($tag_types as $key => $type) {
+                if ($type == 'subpackage') {
+                    unset($tag_types[$key]);
+                }
+            }
+        }
+
+        parent::copyTags($tag_types, $super_docblock, $docblock);
+    }
+
+
 }
