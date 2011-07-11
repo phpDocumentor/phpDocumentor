@@ -50,10 +50,11 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
 
         $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
             new DocBlox_Transformer_Behaviour_GeneratePaths(),
-            new DocBlox_Transformer_Behaviour_AddLinkInformation(),
             new DocBlox_Transformer_Behaviour_Inherit(),
             new DocBlox_Transformer_Behaviour_Tag_Ignore(),
-        ));
+            new DocBlox_Transformer_Behaviour_Tag_Return(),
+            new DocBlox_Transformer_Behaviour_AddLinkInformation(),
+                                                                         ));
     }
 
     /**

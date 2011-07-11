@@ -23,6 +23,9 @@
 * ADDED:    Internal classes (PHP core classes + extensions) will now redirect
             to the PHP man pages
 * ADDED:    Sidebar is now resizeable (javascript is required for this)
+* ADDED:    Support for $this and self as type in an @return tag; the type will
+            automatically be replaced with the class where the method is defined
+            and a new tag @fluent will be added.
 
 06/12/2011: Version 0.11.0
 --------------------------
