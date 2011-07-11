@@ -22,6 +22,7 @@
 * FIXED:    Scalars are no longer prefixed with a \
 * ADDED:    Internal classes (PHP core classes + extensions) will now redirect
             to the PHP man pages
+* ADDED:    Sidebar is now resizeable (javascript is required for this)
 
 06/12/2011: Version 0.11.0
 --------------------------
