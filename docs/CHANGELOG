@@ -26,6 +26,15 @@
 * ADDED:    Support for $this and self as type in an @return tag; the type will
             automatically be replaced with the class where the method is defined
             and a new tag @fluent will be added.
+* FIXED:    subpackage tags are no longer inherited if the super and sub class'
+            package names differ; this causes mismatches in user expectation and
+            the package index in the structure file no longer matches reality.
+            The latter causes the classes to be omitted from the package
+            section of the sidebar navigation.
+* FIXED:    when providing a class / element name to @link it will find the
+            corresponding documentation. Please note that this is not adviced;
+            please use @see to look up elements. This functionality is provided
+            as backwards compatibility for phpDocumentor.
 
 06/12/2011: Version 0.11.0
 --------------------------

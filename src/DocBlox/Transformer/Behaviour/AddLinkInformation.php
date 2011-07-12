@@ -121,18 +121,35 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
             }
 
             // add a 15 character excerpt of the node contents, meant for the sidebar
-            $node->setAttribute('excerpt', utf8_encode(substr($type, 0, 15) . (strlen($type) > 15 ? '...' : '')));
+            $node->setAttribute(
+                'excerpt',
+                utf8_encode(substr($type, 0, 15) . (strlen($type) > 15 ? '...' : ''))
+            );
         }
 
 
-        $qry = $xpath->query('//docblock/tag[@name="see" or @name="throw" or @name="throws"]');
+        // convert class names to links
+        // this action also checks the link of an @link tag it it starts with
+        // `http://`, `https://` or `www.`. if not: also convert those.
+        $qry = $xpath->query(
+            '//docblock/tag[@name="see" or @name="throw" or @name="throws"]'.
+            '|//docblock/tag[@name="link" '
+            . 'and (substring(@link,1,7) != \'http://\' '
+            . 'or substring(@link,1,4) != \'www.\''
+            . 'or substring(@link,1,7) != \'https://\')]'
+        );
         /** @var DOMElement $element */
         foreach ($qry as $element)
         {
-            $node_value = explode('::', $element->nodeValue);
+            $name = $element->getAttribute('name') == 'link'
+                ? $element->getAttribute('link')
+                : $element->nodeValue;
+
+            $node_value = explode('::', $name);
+
             if (isset($class_paths[$node_value[0]])) {
                 $file_name = $this->generateFilename($class_paths[$node_value[0]]);
-                $element->setAttribute('link', $file_name . '#' . $element->nodeValue);
+                $element->setAttribute('link', $file_name . '#' . $name);
             }
         }
 
