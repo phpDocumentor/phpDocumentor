@@ -172,7 +172,7 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
         } elseif ($desc && $super_desc) {
             // if a long description exists in both child and parent; insert the
             // parent's LD when the inline tag {@inheritdoc} is used.
-            $desc->nodeValue = str_replace(
+            $desc->nodeValue = str_ireplace(
                 '{@inheritdoc}',
                 $super_desc->nodeValue,
                 $desc->nodeValue
