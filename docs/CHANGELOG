@@ -36,7 +36,7 @@
             please use @see to look up elements. This functionality is provided
             as backwards compatibility for phpDocumentor.
 * ADDED:    The method, property and constants mentioned in the class sidebar
-            gitcan now be collapsed.
+            can now be collapsed.
 
 06/12/2011: Version 0.11.0
 --------------------------
