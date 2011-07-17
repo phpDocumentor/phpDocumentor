@@ -133,17 +133,25 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
         // `http://`, `https://` or `www.`. if not: also convert those.
         $qry = $xpath->query(
             '//docblock/tag[@name="see" or @name="throw" or @name="throws"]'.
-            '|//docblock/tag[@name="link" '
+            '|(//docblock/tag[@name="link" '
             . 'and (substring(@link,1,7) != \'http://\' '
             . 'or substring(@link,1,4) != \'www.\''
-            . 'or substring(@link,1,7) != \'https://\')]'
+            . 'or substring(@link,1,7) != \'https://\')])'
         );
         /** @var DOMElement $element */
         foreach ($qry as $element)
         {
-            $name = $element->getAttribute('name') == 'link'
-                ? $element->getAttribute('link')
-                : $element->nodeValue;
+            switch($element->getAttribute('name'))
+            {
+                case 'link': $name = $element->getAttribute('link'); break;
+                case 'see':
+                    $name = $element->getAttribute('description');
+                    if ($name[0] !== '\\') {
+                        $name = '\\' . $name;
+                    }
+                    break;
+                default:     $name = $element->nodeValue; break;
+            }
 
             $node_value = explode('::', $name);
 

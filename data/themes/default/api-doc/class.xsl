@@ -38,7 +38,7 @@
               </dd>
           </xsl:for-each>
           </xsl:if>
-        <xsl:apply-templates select="docblock/tag">
+        <xsl:apply-templates select="docblock/tag[not(@name='see')]">
           <xsl:sort select="@name" />
         </xsl:apply-templates>
 
@@ -95,6 +95,10 @@
             </dd>
           </xsl:for-each>
         </xsl:if>
+      </dl>
+
+      <dl>
+      <xsl:apply-templates select="docblock/tag[@name='see']" />
       </dl>
 
       <xsl:if test="docblock/description|docblock/long-description">
