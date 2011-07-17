@@ -43,7 +43,13 @@
         </xsl:apply-templates>
 
         <xsl:if test="count(constant) > 0">
-          <dt>Constants</dt>
+          <dt>
+              <a href="#" onclick="$(this).children('img').toggle().parents('dt').nextUntil('dt').slideToggle(); return false;">
+                <img src="{$root}images/arrow_down.gif" />
+                <img src="{$root}images/arrow_right.gif" style="display: none" />
+                Constants
+              </a>
+          </dt>
           <xsl:for-each select="constant">
             <xsl:sort select="name" />
             <dd>
@@ -55,7 +61,13 @@
         </xsl:if>
 
         <xsl:if test="count(property) > 0">
-          <dt>Properties</dt>
+          <dt>
+              <a href="#" onclick="$(this).children('img').toggle().parents('dt').nextUntil('dt').slideToggle(); return false;">
+                <img src="{$root}images/arrow_down.gif" />
+                <img src="{$root}images/arrow_right.gif" style="display: none" />
+                Properties
+              </a>
+          </dt>
           <xsl:for-each select="property">
             <xsl:sort select="name" />
             <dd>
@@ -67,7 +79,13 @@
         </xsl:if>
 
         <xsl:if test="count(method) > 0">
-          <dt>Methods</dt>
+          <dt>
+              <a href="#" onclick="$(this).children('img').toggle().parents('dt').nextUntil('dt').slideToggle(); return false;">
+                <img src="{$root}images/arrow_down.gif" />
+                <img src="{$root}images/arrow_right.gif" style="display: none" />
+                Methods
+              </a>
+          </dt>
           <xsl:for-each select="method">
             <xsl:sort select="name" />
             <dd>
