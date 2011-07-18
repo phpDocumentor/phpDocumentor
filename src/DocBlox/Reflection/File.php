@@ -769,7 +769,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
             $marker_obj = $xml->markers->addChild(
                 strtolower($marker[0]),
-                trim($marker[1])
+                htmlspecialchars(trim($marker[1]))
             );
             $marker_obj->addAttribute('line', $marker[2]);
         }
