@@ -53,6 +53,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
             new DocBlox_Transformer_Behaviour_Inherit(),
             new DocBlox_Transformer_Behaviour_Tag_Ignore(),
             new DocBlox_Transformer_Behaviour_Tag_Return(),
+            new DocBlox_Transformer_Behaviour_Tag_Param(),
             new DocBlox_Transformer_Behaviour_AddLinkInformation(),
         ));
     }

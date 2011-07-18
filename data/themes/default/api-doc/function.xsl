@@ -26,7 +26,7 @@
                 <br/>
             </xsl:if>
             <em>
-                <xsl:value-of select="../docblock/tag[@name='param' and @variable=$name]/@description"/>
+                <xsl:value-of select="../docblock/tag[@name='param' and @variable=$name]/@description" disable-output-escaping="yes"/>
             </em>
         </dd>
     </xsl:template>
