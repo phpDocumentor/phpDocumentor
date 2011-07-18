@@ -1,6 +1,11 @@
 08/07/2011: Version 0.13.0
 --------------------------
 
+* FIXED:    @see now generates a link to the appropriate section in the
+            documentation.
+* ADDED:    Class descriptions now show a list of @see links to which they refer
+            instead of showing them in the sidebar.
+
 07/17/2011: Version 0.12.0
 --------------------------
 
