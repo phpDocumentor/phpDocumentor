@@ -287,10 +287,13 @@ class DocBlox_GraphViz_Graph
         $tmpfile = tempnam(sys_get_temp_dir(), 'gvz');
         file_put_contents($tmpfile, (string)$this);
 
+        // escape the temp file for use as argument
+        $tmpfile_arg = escapeshellarg($tmpfile);
+
         // create the dot output
         $output = array();
         $code = 0;
-        exec("dot -T$type -o$filename < $tmpfile 2>&1", $output, $code);
+        exec("dot -T$type -o$filename < $tmpfile_arg 2>&1", $output, $code);
         unlink($tmpfile);
 
         if ($code != 0) {
