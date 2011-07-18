@@ -6,6 +6,15 @@
 * ADDED:    Class descriptions now show a list of @see links to which they refer
             instead of showing them in the sidebar.
 
+??/??/2011: Version 0.12.1
+--------------------------
+
+* FIXED     Default package was always shown when a file-level constant was
+            present and the file did not have a @package tag.
+* FIXED:    Graph was not generated if the tmp path contained a space
+* FIXED:    if a long description contained special characters then generation
+            failed.
+
 07/17/2011: Version 0.12.0
 --------------------------
 
