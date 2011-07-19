@@ -79,6 +79,9 @@ class DocBlox_Parser_DocBlock_Tag_Definition
     {
         switch ($tag->getName())
         {
+            case 'property-write':
+            case 'property-read':
+            case 'property':
             case 'param':
                 $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param($namespace, $namespace_aliases, $xml, $tag);
                 break;

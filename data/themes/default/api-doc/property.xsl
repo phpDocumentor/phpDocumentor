@@ -7,7 +7,11 @@
       <div class="to-top"><a href="#{../full_name}">jump to class</a></div>
     </h4>
 
-    <div class="property">
+    <xsl:variable name="extra-classes">
+      <xsl:if test="docblock/tag[@name='magic']">magic</xsl:if>
+    </xsl:variable>
+
+    <div class="property {$extra-classes}">
       <code>
         <xsl:apply-templates select="docblock/tag[@name='var']/@type" />&#160;<span class="highlight"><xsl:value-of select="name" />
       </span><xsl:if test="default"> = '<xsl:value-of select="default" />'</xsl:if>
