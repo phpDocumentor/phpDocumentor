@@ -5,6 +5,11 @@
             documentation.
 * ADDED:    Class descriptions now show a list of @see links to which they refer
             instead of showing them in the sidebar.
+* ADDED:    @property, @property-read and @property-write are now shown as 'real'
+            properties in de class listing.
+* ADDED:    @param descriptions are now parsed for Markdown syntax.
+* ADDED:    @uses now generates a link to the used element and generates a new
+            tag @used_by on the target element.
 
 ??/??/2011: Version 0.12.1
 --------------------------
