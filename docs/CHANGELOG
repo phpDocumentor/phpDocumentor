@@ -10,6 +10,7 @@
 * ADDED:    @param descriptions are now parsed for Markdown syntax.
 * ADDED:    @uses now generates a link to the used element and generates a new
             tag @used_by on the target element.
+* REMOVED:  Description excerpts in the sidebar to increase performance and usability.
 
 ??/??/2011: Version 0.12.1
 --------------------------
