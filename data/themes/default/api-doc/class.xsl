@@ -38,7 +38,7 @@
               </dd>
           </xsl:for-each>
           </xsl:if>
-        <xsl:apply-templates select="docblock/tag[not(@name='see')]">
+        <xsl:apply-templates select="docblock/tag[@name != 'see']">
           <xsl:sort select="@name" />
         </xsl:apply-templates>
 

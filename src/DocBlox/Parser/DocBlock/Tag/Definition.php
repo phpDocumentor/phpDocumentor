@@ -61,6 +61,10 @@ class DocBlox_Parser_DocBlock_Tag_Definition
         if (method_exists($this->tag, 'getTypes')) {
             $this->setTypes($this->tag->getTypes());
         }
+
+        if (method_exists($this->tag, 'getReference')) {
+            $this->setReference($this->tag->getReference());
+        }
     }
 
     /**
@@ -83,13 +87,29 @@ class DocBlox_Parser_DocBlock_Tag_Definition
             case 'property-read':
             case 'property':
             case 'param':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param($namespace, $namespace_aliases, $xml, $tag);
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
+            case 'see':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_See(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
+            case 'uses':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Uses(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
                 break;
             case 'link':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link($namespace, $namespace_aliases, $xml, $tag);
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
                 break;
             default:
-                $def = new self($namespace, $namespace_aliases, $xml, $tag);
+                $def = new self(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
                 break;
         }
 
@@ -116,6 +136,18 @@ class DocBlox_Parser_DocBlock_Tag_Definition
     public function setName($name)
     {
         $this->xml['name'] = $name;
+    }
+
+    /**
+     * Setter for the reference so it can be overridden.
+     *
+     * @param string $name
+     *
+     * @return void
+     */
+    public function setReference($name)
+    {
+        $this->xml['refers'] = $name;
     }
 
     /**

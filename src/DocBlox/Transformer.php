@@ -55,6 +55,7 @@ class DocBlox_Transformer extends DocBlox_Core_Abstract
             new DocBlox_Transformer_Behaviour_Tag_Return(),
             new DocBlox_Transformer_Behaviour_Tag_Param(),
             new DocBlox_Transformer_Behaviour_Tag_Property(),
+            new DocBlox_Transformer_Behaviour_Tag_Uses(),
             new DocBlox_Transformer_Behaviour_AddLinkInformation(),
         ));
     }

@@ -110,7 +110,8 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
                 if ($refl->isInternal()) {
                     $node->setAttribute(
                         'link',
-                        'http://php.net/manual/en/class.'.strtolower(ltrim($type, '\\')).'.php'
+                        'http://php.net/manual/en/class.'
+                        . strtolower(ltrim($type, '\\')) . '.php'
                     );
                 }
             }
@@ -127,12 +128,12 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
             );
         }
 
-
         // convert class names to links
         // this action also checks the link of an @link tag it it starts with
         // `http://`, `https://` or `www.`. if not: also convert those.
         $qry = $xpath->query(
-            '//docblock/tag[@name="see" or @name="throw" or @name="throws"]'.
+            '//docblock/tag[@name="throw" or @name="throws" or "see" '
+            . 'or "uses" or "used_by"]'.
             '|(//docblock/tag[@name="link" '
             . 'and (substring(@link,1,7) != \'http://\' '
             . 'or substring(@link,1,4) != \'www.\''
@@ -143,14 +144,20 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
         {
             switch($element->getAttribute('name'))
             {
-                case 'link': $name = $element->getAttribute('link'); break;
+                case 'link':
+                    $name = $element->getAttribute('link');
+                    break;
+                case 'uses':
+                case 'used_by':
                 case 'see':
-                    $name = $element->getAttribute('description');
+                    $name = $element->getAttribute('refers');
                     if ($name[0] !== '\\') {
                         $name = '\\' . $name;
                     }
                     break;
-                default:     $name = $element->nodeValue; break;
+                default:
+                    $name = $element->nodeValue;
+                    break;
             }
 
             $node_value = explode('::', $name);
