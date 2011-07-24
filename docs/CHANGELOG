@@ -20,6 +20,8 @@
 * FIXED:    Graph was not generated if the tmp path contained a space
 * FIXED:    if a long description contained special characters then generation
             failed.
+* FIXED:    Transformation crashed when a parent and child element were both
+            marked with @internal or @ignore.
 
 07/17/2011: Version 0.12.0
 --------------------------
