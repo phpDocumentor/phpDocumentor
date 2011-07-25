@@ -8,6 +8,11 @@
             failed.
 * FIXED:    Transformation crashed when a parent and child element were both
             marked with @internal or @ignore.
+* FIXED:    The parser crashed when the `glob` call when using the -f argument
+            fails; the file retrieval has been changed to only use glob when
+            either *, ? or [ is present in the string (as determined in the
+            glob man page); otherwise a glob is attempted. if glob fails then
+            the pattern is ignored and a message shown.
 
 07/15/2011: Version 0.12.0
 --------------------------
