@@ -35,6 +35,11 @@
     <a id="{../full_name}::{name}()" />
     <xsl:apply-templates select="name" />
     <div class="{name()}">
+        <xsl:if test="inherited_from">
+            <xsl:attribute name="class">
+                <xsl:value-of select="name()"/> inherited_from
+            </xsl:attribute>
+        </xsl:if>
       <code>
         <span class="highlight"><xsl:value-of select="name" /></span>
 

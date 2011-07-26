@@ -261,14 +261,13 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
             $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
         }
 
-        // only add if this has a docblock; otherwise it is useless
-        $docblocks = $this->getDirectElementsByTagName($this->node, 'docblock');
-        if (count($docblocks) > 0) {
-            $super[$node_name] = array(
-                'class' => $class_name,
-                'object' => $this->node
-            );
-        }
+        // store the element in the super array; we use this in the Class
+        // inheritance to add 'inherited' methods (methods not present in this
+        // class by definition but injected via a superclass)
+        $super[$node_name] = array(
+            'class' => $class_name,
+            'object' => $this->node
+        );
     }
 
 }

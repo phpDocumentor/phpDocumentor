@@ -132,8 +132,8 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
         // this action also checks the link of an @link tag it it starts with
         // `http://`, `https://` or `www.`. if not: also convert those.
         $qry = $xpath->query(
-            '//docblock/tag[@name="throw" or @name="throws" or "see" '
-            . 'or "uses" or "used_by"]'.
+            '//docblock/tag[@name="throw" or @name="throws" or @name="see" '
+            . 'or @name="uses" or @name="used_by" or @name="inherited_from"]'.
             '|(//docblock/tag[@name="link" '
             . 'and (substring(@link,1,7) != \'http://\' '
             . 'or substring(@link,1,4) != \'www.\''
@@ -150,6 +150,7 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
                 case 'uses':
                 case 'used_by':
                 case 'see':
+                case 'inherited_from':
                     $name = $element->getAttribute('refers');
                     if ($name[0] !== '\\') {
                         $name = '\\' . $name;

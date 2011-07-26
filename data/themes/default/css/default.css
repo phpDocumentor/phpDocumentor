@@ -108,3 +108,11 @@ ul.filetree li a:hover small
     filter: alpha(opacity = 20);
     opacity: 0.2;
 }
+
+.inherited_from
+{
+    /* 60% opacity; zoom is required for IE */
+    zoom: 1;
+    filter: alpha(opacity = 60);
+    opacity: 0.6;
+}
