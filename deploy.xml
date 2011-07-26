@@ -17,7 +17,7 @@
             dir="${project.basedir}" checkreturn="true"
         />
         <exec
-            command="git commit --dry-run src/DocBlox/Core/Abstract.php -m 'RELEASE: Updated version number to ${version.number}'"
+            command="git commit src/DocBlox/Core/Abstract.php -m 'RELEASE: Updated version number to ${version.number}'"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
     </target>
@@ -33,7 +33,7 @@
             command="pear package" passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
-            command="git commit --dry-run package.xml -m 'RELEASE: Updated package file to ${version.number}'"
+            command="git commit package.xml -m 'RELEASE: Updated package file to ${version.number}'"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
     </target>
@@ -56,7 +56,9 @@
     </target>
 
     <target name="create-tag" depends="get-version-number">
-        <exec command="git push origin master" passthru="true" checkreturn="true"/>
+        <exec command="git push origin release-${version.number}" passthru="true" checkreturn="true"/>
+        <exec command="git checkout master" passthru="true" checkreturn="true"/>
+        <exec command="git merge release-${version.number}" passthru="true" checkreturn="true"/>
         <exec command="git tag v${version.number} master" passthru="true" checkreturn="true"/>
         <exec command="git push origin v${version.number}" passthru="true" checkreturn="true"/>
     </target>
