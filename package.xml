@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-07-17</date>
- <time>19:49:28</time>
+ <date>2011-07-26</date>
+ <time>20:04:41</time>
  <version>
-  <release>0.12.0</release>
-  <api>0.12.0</api>
+  <release>0.12.1</release>
+  <api>0.12.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -533,14 +533,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.12.0</release>
-    <api>0.12.0</api>
+    <release>0.12.1</release>
+    <api>0.12.1</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-07-17</date>
+   <date>2011-07-26</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes

@@ -47,7 +47,7 @@
     <target name="publish-demo">
         <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
         <exec command="php bin/docblox.php" dir="${project.basedir}" passthru="true" checkreturn="true"/>
-        <exec command="scp ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="update-ci">
