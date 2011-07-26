@@ -3,15 +3,15 @@
 
     <target name="get-version-number">
         <propertyprompt propertyName="version.number" promptText="Enter the new version number"/>
+    </target>
+
+    <target name="update-version-number" depends="get-version-number">
+        <gitcheckout repository="." branchname="release-${version.number}" quiet="false"/>
         <exec
             command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/DocBlox/Core/Abstract.php"
             dir="${project.basedir}" outputProperty="version.old"
         />
         <echo>Updating DocBlox from version ${version.old} to ${version.number}</echo>
-    </target>
-
-    <target name="update-version-number" depends="get-version-number">
-        <gitcheckout repository="." branchname="release-${version.number}" quiet="false"/>
         <exec
             command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/DocBlox/Core/Abstract.php"
             dir="${project.basedir}" checkreturn="true"
