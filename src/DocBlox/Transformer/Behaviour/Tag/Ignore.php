@@ -62,7 +62,18 @@ class DocBlox_Transformer_Behaviour_Tag_Ignore implements
         /** @var DOMElement $node */
         foreach($nodes as $node) {
             $remove = $node->parentNode->parentNode;
-            $node->parentNode->parentNode->parentNode->removeChild($remove);
+
+            // sometimes the parent node of the entity-to-be-removed is already
+            // gone; for instance when a File docblock contains an @internal and
+            // the underlying class also contains an @internal.
+            // Because the File Docblock is found sooner, it is removed first.
+            // Without the following check the application would fatal since
+            // it cannot find, and then remove, this node from the parent.
+            if (!isset($remove->parentNode)) {
+                continue;
+            }
+
+            $remove->parentNode->removeChild($remove);
         }
 
         return $xml;

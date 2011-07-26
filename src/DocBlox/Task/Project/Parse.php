@@ -177,7 +177,20 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
         $files = array();
         foreach ($expressions as $expr) {
             // search file(s) with the given expressions
-            $result = glob($expr);
+            $result = strpbrk($expr, '?*[') !== false
+                ? glob($expr)
+                : array($expr);
+
+            // if the result is a boolean false then `glob` has experienced an
+            // error, we have no logger instance here yet so we echo the error.
+            // TODO: After the component refactoring should the logger be
+            // present and this statement altered
+            if ($result === false) {
+                echo 'An error occurred while processing expression "' . $expr
+                    . '", could safe mode or open base dir be in effect?';
+                continue;
+            }
+
             foreach ($result as $file) {
                 // if the path is not a file OR it's extension does not match the given, then do not process it.
                 if (!is_file($file) || !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), $this->getExtensions())) {
