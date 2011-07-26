@@ -106,7 +106,7 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
             // if the class is already loaded and is an internal class; refer
             // to the PHP man pages
             if (in_array(ltrim($type, '\\'), $declared_classes)) {
-                $refl = new ReflectionClass($type);
+                $refl = new ReflectionClass(ltrim($type, '\\'));
                 if ($refl->isInternal()) {
                     $node->setAttribute(
                         'link',

@@ -1,0 +1,65 @@
+<project name="DocBlox" default="deploy" basedir=".">
+    <property file="deploy.properties"/>
+
+    <target name="get-version-number">
+        <propertyprompt propertyName="version.number" promptText="Enter the new version number"/>
+        <exec
+            command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/DocBlox/Core/Abstract.php"
+            dir="${project.basedir}" outputProperty="version.old"
+        />
+        <echo>Updating DocBlox from version ${version.old} to ${version.number}</echo>
+    </target>
+
+    <target name="update-version-number" depends="get-version-number">
+        <gitcheckout repository="." branchname="release-${version.number}" quiet="false"/>
+        <exec
+            command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/DocBlox/Core/Abstract.php"
+            dir="${project.basedir}" checkreturn="true"
+        />
+        <exec
+            command="git commit --dry-run src/DocBlox/Core/Abstract.php -m 'RELEASE: Updated version number to ${version.number}'"
+            passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+    </target>
+
+    <target name="package" depends="get-version-number">
+        <propertyprompt propertyName="version.stability"
+                        promptText="Enter the stability of the new version (alpha, beta or stable)"/>
+        <exec
+            command="php bin/package.php ${version.number} ${version.stability} make"
+            passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+        <exec
+            command="pear package" passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+        <exec
+            command="git commit --dry-run package.xml -m 'RELEASE: Updated package file to ${version.number}'"
+            passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+    </target>
+
+    <target name="publish-pear-package" depends="get-version-number">
+        <exec command="scp ${project.basedir}/DocBlox-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
+        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . DocBlox-${version.number}.tgz'" passthru="true" checkreturn="true"/>
+        <delete file="${project.basedir}/DocBlox-${version.number}.tgz" />
+    </target>
+
+    <target name="publish-demo">
+        <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
+        <exec command="php bin/docblox.php" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+    </target>
+
+    <target name="update-ci">
+        <exec command="ssh ${server.username}@${server.ci} -t 'sudo pear upgrade -c ${server.pear}'"
+              passthru="true" checkreturn="true"/>
+    </target>
+
+    <target name="create-tag" depends="get-version-number">
+        <exec command="git push origin master" passthru="true" checkreturn="true"/>
+        <exec command="git tag v${version.number} master" passthru="true" checkreturn="true"/>
+        <exec command="git push origin v${version.number}" passthru="true" checkreturn="true"/>
+    </target>
+
+    <target name="deploy" depends="update-version-number,package,publish-pear-package,publish-demo,update-ci,create-tag" />
+</project>
