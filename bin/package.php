@@ -14,6 +14,8 @@ function createPackager($original_file, $options = array())
     'packagedirectory'  => dirname(__FILE__).'/../',
     'clearcontents'     => true,
     'ignore'            => array(
+      'deploy.properties',
+      'deploy.xml',
       'build/*',
       'data/themes/cache/*',
       'data/output/*',
