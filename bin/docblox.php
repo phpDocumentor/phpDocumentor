@@ -32,12 +32,12 @@ $base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
 // set path to add lib folder, load the Zend Autoloader and include the symfony timer
 set_include_path($base_include_folder . PATH_SEPARATOR . get_include_path());
 
-require_once dirname(__FILE__).'/../src/ZendX/Loader/StandardAutoloader.php';
+require_once $base_include_folder.'/ZendX/Loader/StandardAutoloader.php';
 $autoloader = new ZendX_Loader_StandardAutoloader(
     array(
         'prefixes' => array(
-            'Zend' => dirname(__FILE__) . '/../src/Zend',
-            'DocBlox' => dirname(__FILE__) . '/../src/DocBlox'
+            'Zend'    => $base_include_folder.'/Zend',
+            'DocBlox' => $base_include_folder.'/DocBlox'
         ),
         'fallback_autoloader' => true
     )
