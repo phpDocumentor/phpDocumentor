@@ -12,7 +12,18 @@
             tag @used_by on the target element.
 * REMOVED:  Description excerpts in the sidebar to increase performance and usability.
 
-??/??/2011: Version 0.12.1
+27/07/2011: Version 0.12.2
+--------------------------
+
+* FIXED:    Using http://pear.zfcampus.org as PEAR dependency breaks the
+            environments of users who have their own ZF version in the include
+            path. Additionally the inclusion made the download larger than
+            necessary.
+* FIXED:    Removed wkhtmltopdf binary; PDF generation is not widely used yet
+            and it only caused the download to increase with 11MB. This will
+            be reintroduced later as dependency.
+
+26/07/2011: Version 0.12.1
 --------------------------
 
 * FIXED     Default package was always shown when a file-level constant was

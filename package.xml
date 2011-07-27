@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-07-26</date>
- <time>20:04:41</time>
+ <date>2011-07-27</date>
+ <time>23:03:33</time>
  <version>
-  <release>0.12.1</release>
-  <api>0.12.1</api>
+  <release>0.12.2</release>
+  <api>0.12.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -422,9 +422,66 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="Token.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Transformer.php" role="php" />
     </dir> <!-- /src/DocBlox -->
-    <dir name="wkhtmltopdf">
-     <file baseinstalldir="/DocBlox" name="wkhtmltopdf-i386" role="php" />
-    </dir> <!-- /src/wkhtmltopdf -->
+    <dir name="Zend">
+     <dir name="Config">
+      <dir name="Writer">
+       <file baseinstalldir="/DocBlox" name="Array.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Ini.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Xml.php" role="php" />
+      </dir> <!-- /src/Zend/Config/Writer -->
+      <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="Ini.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="Writer.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="Xml.php" role="php" />
+     </dir> <!-- /src/Zend/Config -->
+     <dir name="Console">
+      <dir name="Getopt">
+       <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
+      </dir> <!-- /src/Zend/Console/Getopt -->
+      <file baseinstalldir="/DocBlox" name="Getopt.php" role="php" />
+     </dir> <!-- /src/Zend/Console -->
+     <dir name="Log">
+      <dir name="Filter">
+       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Message.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Priority.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Suppress.php" role="php" />
+      </dir> <!-- /src/Zend/Log/Filter -->
+      <dir name="Formatter">
+       <file baseinstalldir="/DocBlox" name="Firebug.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Interface.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Simple.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Xml.php" role="php" />
+      </dir> <!-- /src/Zend/Log/Formatter -->
+      <dir name="Writer">
+       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Db.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Mail.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Mock.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Null.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Stream.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Syslog.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="ZendMonitor.php" role="php" />
+      </dir> <!-- /src/Zend/Log/Writer -->
+      <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="FactoryInterface.php" role="php" />
+     </dir> <!-- /src/Zend/Log -->
+     <file baseinstalldir="/DocBlox" name="Config.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="Exception.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="Log.php" role="php" />
+    </dir> <!-- /src/Zend -->
+    <dir name="ZendX">
+     <dir name="File">
+      <file baseinstalldir="/DocBlox" name="ClassFileLocator.php" role="php" />
+     </dir> <!-- /src/ZendX/File -->
+     <dir name="Loader">
+      <file baseinstalldir="/DocBlox" name="AutoloaderFactory.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="ClassMapAutoloader.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="SplAutoloader.php" role="php" />
+      <file baseinstalldir="/DocBlox" name="StandardAutoloader.php" role="php" />
+     </dir> <!-- /src/ZendX/Loader -->
+    </dir> <!-- /src/ZendX -->
    </dir> <!-- /src -->
    <dir name="tests">
     <dir name="common">
@@ -487,6 +544,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
    <file baseinstalldir="/DocBlox" name="README" role="php" />
    <file baseinstalldir="/DocBlox" name="README.md" role="data" />
+   <file baseinstalldir="/DocBlox" name="test.html" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -501,11 +559,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <name>PEAR</name>
     <channel>pear.php.net</channel>
     <min>1.4.0</min>
-   </package>
-   <package>
-    <name>zf</name>
-    <channel>pear.zfcampus.org</channel>
-    <min>1.11.3</min>
    </package>
    <package>
     <name>MarkdownExtra</name>
@@ -533,14 +586,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.12.1</release>
-    <api>0.12.1</api>
+    <release>0.12.2</release>
+    <api>0.12.2</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-07-26</date>
+   <date>2011-07-27</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
