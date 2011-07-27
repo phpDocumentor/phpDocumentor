@@ -14,12 +14,21 @@ set_include_path(
   . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../../src')
 );
 
-// include and initialize the autoloader
-require_once('Zend/Loader/Autoloader.php');
 if(!class_exists('Markdown'))
 {
   require_once('markdown.php');
 }
 require_once('PHPUnit/Extensions/OutputTestCase.php');
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('DocBlox_');
+
+// include and initialize the autoloader
+require_once dirname(__FILE__) . '/../src/ZendX/Loader/StandardAutoloader.php';
+$autoloader = new ZendX_Loader_StandardAutoloader(
+    array(
+         'prefixes' => array(
+             'Zend' => dirname(__FILE__) . '/../src/Zend',
+             'DocBlox' => dirname(__FILE__) . '/../src/DocBlox'
+         ),
+         'fallback_autoloader' => true
+    )
+);
+$autoloader->register();
