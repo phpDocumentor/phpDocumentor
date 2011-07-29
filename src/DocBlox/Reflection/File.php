@@ -146,7 +146,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         }
 
         // detect encoding and transform to UTF-8
-        if (class_exists('finfo')) {
+        if (extension_loaded('fileinfo')) {
             // PHP 5.3 or PECL extension
             $flag = defined('FILEINFO_MIME_ENCODING')
                 ? FILEINFO_MIME_ENCODING
