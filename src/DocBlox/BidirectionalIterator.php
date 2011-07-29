@@ -174,9 +174,7 @@ class DocBlox_BidirectionalIterator implements Countable, ArrayAccess, Serializa
     public function next()
     {
         $key = ++$this->key;
-        $current = ($key >= $this->count)
-            ? false
-            : $this[$key];
+        $current = $this->offsetGet($key);
         $this->current = $current;
 
         return $current;

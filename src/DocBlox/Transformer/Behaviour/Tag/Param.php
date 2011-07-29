@@ -50,14 +50,19 @@ class DocBlox_Transformer_Behaviour_Tag_Param implements
      */
     public function process(DOMDocument $xml)
     {
-        $qry = '//tag[@name=\'param\']/@description';
+        $qry = '//tag[@name=\'param\']/@description[. != ""]';
 
         $xpath = new DOMXPath($xml);
         $nodes = $xpath->query($qry);
 
         /** @var DOMElement $node */
         foreach($nodes as $node) {
-            $node->nodeValue = Markdown($node->nodeValue);
+            // only transform using markdown if the text contains characters
+            // other than word characters, whitespaces and punctuation characters.
+            // This is because Markdown is a huge performance hit on the system
+            if (!preg_match('/^[\w|\s|\.|,|;|\:|\&|\#]+$/', $node->nodeValue)) {
+                $node->nodeValue = Markdown($node->nodeValue);
+            }
         }
 
         return $xml;

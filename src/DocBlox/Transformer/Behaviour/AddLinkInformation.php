@@ -60,72 +60,65 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
 
         $xpath = new DOMXPath($xml);
         // add to classes
-        $qry = $xpath->query('//class[full_name]/..');
+        $qry = $xpath->query('//class[full_name]|//interface[full_name]');
         $class_paths = array();
 
         /** @var DOMElement $element */
         foreach ($qry as $element)
         {
-            $path = $element->getAttribute('path');
-            foreach ($element->getElementsByTagName('class') as $class)
-            {
-                $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
-            }
-        }
-
-        // add to interfaces
-        $qry = $xpath->query('//interface[full_name]/..');
-        /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
-            $path = $element->getAttribute('path');
-
-            /** @var DOMElement $class */
-            foreach ($element->getElementsByTagName('interface') as $class)
-            {
-                $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
-            }
+            $path = $element->parentNode->getAttribute('path');
+            $class_paths[$element->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
         }
 
         // add extra xml elements to tags
         if ($this->logger) {
             $this->logger->log('Adding link information and excerpts to all DocBlock tags');
         }
-        $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|//extends|//implements');
+//        $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|/project/file/*/extends|/project/file/*/implements');
 
-        $declared_classes = get_declared_classes();
+        $qry = $xpath->query(
+            '/project/file/*/docblock/tag/type[. != ""]' .
+            '|/project/file/*/*/docblock/tag/type[. != ""]' .
+            '|/project/file/*/extends[. != ""]' .
+            '|/project/file/*/implements[. != ""]'
+        );
+
+        $declared_classes = array_flip(get_declared_classes());
+
+        // caching array to keep track whether unknown classes are PHP Internal
+        $unknown_classes  = array();
 
         /** @var DOMElement $element */
         foreach ($qry as $element)
         {
             $type = rtrim($element->nodeValue, '[]');
-            $node = ($element->nodeType == XML_ATTRIBUTE_NODE)
-                    ? $element->parentNode
-                    : $element;
+            $bare_type = ($type[0] == '\\') ? substr($type, 1) : $type;
+            $node = $element;
 
             // if the class is already loaded and is an internal class; refer
             // to the PHP man pages
-            if (in_array(ltrim($type, '\\'), $declared_classes)) {
-                $refl = new ReflectionClass(ltrim($type, '\\'));
-                if ($refl->isInternal()) {
+            if (isset($declared_classes[$bare_type])) {
+                // cache reflection calls since these can be expensive
+                if(!isset($unknown_classes[$bare_type])) {
+                    $refl = new ReflectionClass($bare_type);
+                    $unknown_classes[$bare_type] = $refl->isInternal();
+                }
+
+                // unknown_class returns true when class is a PHP internal
+                if ($unknown_classes[$bare_type]) {
                     $node->setAttribute(
                         'link',
                         'http://php.net/manual/en/class.'
-                        . strtolower(ltrim($type, '\\')) . '.php'
+                        . strtolower($bare_type) . '.php'
                     );
                 }
+                continue;
             }
 
             if (isset($class_paths[$type])) {
                 $file_name = $this->generateFilename($class_paths[$type]);
                 $node->setAttribute('link', $file_name . '#' . $type);
             }
-
-            // add a 15 character excerpt of the node contents, meant for the sidebar
-            $node->setAttribute(
-                'excerpt',
-                utf8_encode(substr($type, 0, 15) . (strlen($type) > 15 ? '...' : ''))
-            );
         }
 
         // convert class names to links

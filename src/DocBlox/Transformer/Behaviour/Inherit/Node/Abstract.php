@@ -96,15 +96,18 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
     protected function getDirectElementsByTagName(DOMElement $node, $element_name)
     {
         $result   = array();
-        $elements = $node->getElementsByTagName($element_name);
-        for($i = 0; $i < $elements->length; $i++)
-        {
-            if ($elements->item($i)->parentNode !== $node)
-            {
+        if (!$node->hasChildNodes()) {
+            return $result;
+        }
+
+        $elements = $node->childNodes;
+        for($i = 0; $i < $elements->length; $i++) {
+            $element = $elements->item($i);
+            if ($element->nodeName != $element_name) {
                 continue;
             }
 
-            $result[] = $elements->item($i);
+            $result[] = $element;
         }
 
         return $result;
