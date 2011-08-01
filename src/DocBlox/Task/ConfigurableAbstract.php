@@ -66,16 +66,17 @@ abstract class DocBlox_Task_ConfigurableAbstract extends DocBlox_Task_Abstract
      *
      * @return string
      */
-    protected function getVisibility()
+    public function getVisibility()
     {
         $visibility = parent::getVisibility();
 
         if ('' == $visibility) {
-            $visibility = DocBlox_Core_Abstract::config()->parser->visibility;
+            $visibility = DocBlox_Core_Abstract::config()->get('visibility');
         }
 
         return $visibility;
     }
+
 
   /**
    * Merge the config files before population.
