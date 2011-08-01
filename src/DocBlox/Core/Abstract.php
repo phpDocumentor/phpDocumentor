@@ -292,6 +292,25 @@ abstract class DocBlox_Core_Abstract
         return self::config();
     }
 
+
+    /**
+     * Set a custom DocBlox configuration
+     *
+     * @param DocBlox_Core_Config $config
+     */
+    public static function setConfig(DocBlox_Core_Config $config)
+    {
+        self::$config = $config;
+    }
+
+    /**
+     * Reset the configuration
+     */
+    public static function resetConfig()
+    {
+        self::$config = null;
+    }
+
     /**
      * Returns the configuration for DocBlox.
      *
