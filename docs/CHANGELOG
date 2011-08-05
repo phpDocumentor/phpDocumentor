@@ -14,6 +14,7 @@
             detected type is binary, which can hardly be true.
 * FIXED:    Files are now generated with db_ instead of an underscore because
             Github Pages won't display pages starting with a single underscore.
+* FIXED:    @param descriptions were improperly escaped
 
 27/07/2011: Version 0.12.2
 --------------------------
