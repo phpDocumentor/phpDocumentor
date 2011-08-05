@@ -64,7 +64,7 @@
       <xsl:if test="@type != ''">
         <xsl:apply-templates select="@type" /><br />
       </xsl:if>
-      <em><xsl:value-of select="@description" /></em>
+      <em><xsl:value-of select="@description" disable-output-escaping="yes" /></em>
     </dd>
   </xsl:template>
 
