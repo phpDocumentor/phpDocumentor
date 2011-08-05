@@ -58,24 +58,6 @@ abstract class DocBlox_Task_ConfigurableAbstract extends DocBlox_Task_Abstract
     parent::setConfig($value);
   }
 
-    /**
-     * Configuration override for setting the parser visibility
-     *
-     * By default it will use the command line options first, and then
-     * look at the config file if no options have been supplied
-     *
-     * @return string
-     */
-    protected function getVisibility()
-    {
-        $visibility = parent::getVisibility();
-
-        if ('' == $visibility) {
-            $visibility = DocBlox_Core_Abstract::config()->parser->visibility;
-        }
-
-        return $visibility;
-    }
 
   /**
    * Merge the config files before population.
