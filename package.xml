@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.3" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-07-27</date>
- <time>23:12:08</time>
+ <date>2011-08-05</date>
+ <time>19:25:45</time>
  <version>
-  <release>0.12.2</release>
-  <api>0.12.2</api>
+  <release>0.12.3</release>
+  <api>0.12.3</api>
  </version>
  <stability>
   <release>beta</release>
@@ -544,7 +544,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
    <file baseinstalldir="/DocBlox" name="README" role="php" />
    <file baseinstalldir="/DocBlox" name="README.md" role="data" />
-   <file baseinstalldir="/DocBlox" name="test.html" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -586,14 +585,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.12.2</release>
-    <api>0.12.2</api>
+    <release>0.12.3</release>
+    <api>0.12.3</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-07-27</date>
+   <date>2011-08-05</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
