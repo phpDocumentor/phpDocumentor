@@ -202,6 +202,18 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         );
         foreach ($result as $node)
         {
+            $child_class_name = $node->getElementsByTagName('full_name')
+                ->item(0)->nodeValue;
+
+            if (!$child_class_name)
+            {
+                throw new Exception(
+                    'A class was encountered with no FQCN. This should not ' .
+                    'happen; please contact the DocBlox developers to have them '
+                    . 'analyze this issue'
+                );
+            }
+
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
                 $node, $this->xpath
             );

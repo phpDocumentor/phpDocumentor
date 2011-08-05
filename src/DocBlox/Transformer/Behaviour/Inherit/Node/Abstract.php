@@ -252,9 +252,7 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
             $super_docblock = current($this->getDirectElementsByTagName(
                 $super_object, 'docblock'
             ));
-            $super_class    = current($this->getDirectElementsByTagName(
-                $super_object->parentNode, 'full_name'
-            ))->nodeValue;
+            $super_class    = $super[$node_name]['class'];
 
             // add an element which defines which class' element you override
             $this->node->appendChild(new DOMElement('overrides-from', $super_class));

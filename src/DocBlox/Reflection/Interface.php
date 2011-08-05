@@ -61,10 +61,14 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
   {
     // a class name can be a combination of a T_NAMESPACE and T_STRING
     $name = '';
+    $limits = array(';', '{', ',');
+
+    /** @var DocBlox_Token $token */
     while ($token = $tokens->next())
     {
-      if (!in_array($token->type, array(T_WHITESPACE, T_STRING, T_NS_SEPARATOR)))
-      {
+      if (in_array($token->content, $limits) || ((strlen(trim($name)) >= 1)
+         && ($token->type == T_WHITESPACE))
+      ) {
         $tokens->previous();
         break;
       }
