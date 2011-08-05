@@ -9,7 +9,12 @@
     </h2>
 
     <div class="class">
-      <dl class="class-info">
+        <xsl:if test="docblock/description|docblock/long-description">
+            <xsl:apply-templates select="docblock/description"/>
+            <xsl:apply-templates select="docblock/long-description"/>
+        </xsl:if>
+
+        <dl class="class-info">
           <xsl:if test="extends != ''">
           <dt>Extends from</dt>
           <dd>
@@ -38,74 +43,11 @@
               </dd>
           </xsl:for-each>
           </xsl:if>
+        <xsl:apply-templates select="docblock/tag[@name='see']"/>
         <xsl:apply-templates select="docblock/tag[@name != 'see']">
           <xsl:sort select="@name" />
         </xsl:apply-templates>
-
-        <xsl:if test="count(constant) > 0">
-          <dt>
-              <a href="#" onclick="$(this).children('img').toggle().parents('dt').nextUntil('dt').slideToggle(); return false;">
-                <img src="{$root}images/arrow_down.gif" />
-                <img src="{$root}images/arrow_right.gif" style="display: none" />
-                Constants
-              </a>
-          </dt>
-          <xsl:for-each select="constant">
-            <xsl:sort select="name" />
-            <dd>
-              <a class="constant" href="#{../full_name}::{name}">
-                <xsl:value-of select="name" />
-              </a>
-            </dd>
-          </xsl:for-each>
-        </xsl:if>
-
-        <xsl:if test="count(property) > 0">
-          <dt>
-              <a href="#" onclick="$(this).children('img').toggle().parents('dt').nextUntil('dt').slideToggle(); return false;">
-                <img src="{$root}images/arrow_down.gif" />
-                <img src="{$root}images/arrow_right.gif" style="display: none" />
-                Properties
-              </a>
-          </dt>
-          <xsl:for-each select="property">
-            <xsl:sort select="name" />
-            <dd>
-              <a class="property {@visibility}" href="#{../full_name}::{name}">
-                <xsl:value-of select="name" />
-              </a>
-            </dd>
-          </xsl:for-each>
-        </xsl:if>
-
-        <xsl:if test="count(method) > 0">
-          <dt>
-              <a href="#" onclick="$(this).children('img').toggle().parents('dt').nextUntil('dt').slideToggle(); return false;">
-                <img src="{$root}images/arrow_down.gif" />
-                <img src="{$root}images/arrow_right.gif" style="display: none" />
-                Methods
-              </a>
-          </dt>
-          <xsl:for-each select="method">
-            <xsl:sort select="name" />
-            <dd>
-              <a class="method {@visibility}" href="#{../full_name}::{name}()">
-                <xsl:value-of select="name" />
-              </a>
-            </dd>
-          </xsl:for-each>
-        </xsl:if>
       </dl>
-
-      <dl>
-      <xsl:apply-templates select="docblock/tag[@name='see']" />
-      </dl>
-
-      <xsl:if test="docblock/description|docblock/long-description">
-        <h3>Description</h3>
-        <xsl:apply-templates select="docblock/description" />
-        <xsl:apply-templates select="docblock/long-description" />
-      </xsl:if>
 
       <xsl:if test="count(constant) > 0">
         <h3>Constants</h3>

@@ -132,7 +132,45 @@ class DocBlox_Transformer_Behaviour_Inherit implements
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
                 $node, $xpath
             );
-            $super = array('classes' => array(), 'properties' => array(), 'methods' => array());
+
+            $methods = array();
+
+            // shut up operator is necessary to silence autoloaders
+            $parent_class_name = $node->getElementsByTagName('extends')
+                ->item(0)->nodeValue;
+            if (@class_exists($parent_class_name)) {
+                $refl = new ReflectionClass($parent_class_name);
+
+                /** @var ReflectionMethod $method */
+                foreach($refl->getMethods() as $method) {
+                    if ($method->isPrivate()) {
+                        continue;
+                    }
+
+                    $node_name = new DOMElement('name', $method->getName());
+                    $method_node = $xml->createElement('method');
+                    $method_node->appendChild($node_name);
+                    $method_node->setAttribute('final', $method->isFinal() ? 'true' : 'false');
+                    $method_node->setAttribute('abstract', $method->isAbstract() ? 'true' : 'false');
+                    $method_node->setAttribute('static', $method->isStatic() ? 'true' : 'false');
+                    $method_node->setAttribute(
+                        'visibility',
+                        $method->isPublic() ? 'public' : 'protected'
+                    );
+
+                    $methods[$method->getName()] = array(
+                        'class'  => $parent_class_name,
+                        'object' => $method_node
+                    );
+                }
+            }
+
+            $super = array(
+                'classes' => array(),
+                'properties' => array(),
+                'methods' => $methods
+            );
+
             $inherit->apply($super, null);
         }
 
