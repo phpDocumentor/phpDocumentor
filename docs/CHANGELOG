@@ -11,6 +11,10 @@
 * ADDED:    @uses now generates a link to the used element and generates a new
             tag @used_by on the target element.
 * REMOVED:  Description excerpts in the sidebar to increase performance and usability.
+* ADDED:    Methods from super classes are not visible in a child class
+* CHANGED:  File overview UI is changed to reduce clutter and be more visual appealing.
+* ADDED:    Allowed visibility can now be specified in the docblox.xml configuration
+            file; see docblox.tpl.xml to see where.
 
 ??/07/2011: Version 0.12.3
 --------------------------

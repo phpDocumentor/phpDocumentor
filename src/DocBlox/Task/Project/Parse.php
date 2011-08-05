@@ -168,7 +168,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
             return parent::getVisibility();
         }
 
-        return DocBlox_Core_Abstract::config()->get('visibility');
+        return DocBlox_Core_Abstract::config()->parser->visibility;
     }
 
 
