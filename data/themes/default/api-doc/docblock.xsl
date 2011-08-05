@@ -64,7 +64,7 @@
       <xsl:if test="@type != ''">
         <xsl:apply-templates select="@type" /><br />
       </xsl:if>
-      <em><xsl:value-of select="@description" /></em>
+      <em><xsl:value-of select="@description" disable-output-escaping="yes" /></em>
     </dd>
   </xsl:template>
 
@@ -102,11 +102,11 @@
     <xsl:if test="../@description">
       <xsl:if test="../@link">
         <a href="{$root}{../@link}">
-          <xsl:value-of select="../@description" />
+          <xsl:value-of select="../@description" disable-output-escaping="yes"/>
         </a>
       </xsl:if>
       <xsl:if test="not(../@link)">
-        <xsl:value-of select="../@description" />
+        <xsl:value-of select="../@description" disable-output-escaping="yes" />
       </xsl:if>
     </xsl:if>
   </xsl:template>

@@ -16,7 +16,7 @@
 * ADDED:    Allowed visibility can now be specified in the docblox.xml configuration
             file; see docblox.tpl.xml to see where.
 
-??/07/2011: Version 0.12.3
+05/08/2011: Version 0.12.3
 --------------------------
 
 * FIXED:    Invoking class_exists on finfo without the Fileinfo extension threw
@@ -28,6 +28,11 @@
 * FIXED:    Missing docblocks could cause a crash during inheritance creation
 * FIXED:    @return false now interprets false as a literal meta-'type' and
             does not add the namespace anymore.
+* FIXED:    encoding detection now also tries a different approach when the
+            detected type is binary, which can hardly be true.
+* FIXED:    Files are now generated with db_ instead of an underscore because
+            Github Pages won't display pages starting with a single underscore.
+* FIXED:    @param descriptions were improperly escaped
 
 27/07/2011: Version 0.12.2
 --------------------------
