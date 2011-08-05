@@ -3,6 +3,13 @@
 
 * FIXED:    Invoking class_exists on finfo without the Fileinfo extension threw
             a warning. Fixed by exchanging this for a call to extension_loaded.
+* FIXED:    The inheritance part of the transformation broke when a class
+            contained invalid characters. Expanded class name recognition to
+            allow illegal characters and added a security check to prevent such
+            problems in the future.
+* FIXED:    Missing docblocks could cause a crash during inheritance creation
+* FIXED:    @return false now interprets false as a literal meta-'type' and
+            does not add the namespace anymore.
 
 27/07/2011: Version 0.12.2
 --------------------------
