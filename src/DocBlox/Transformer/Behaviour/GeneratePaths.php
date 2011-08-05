@@ -80,7 +80,7 @@ class DocBlox_Transformer_Behaviour_GeneratePaths implements
     public function generateFilename($file)
     {
         $info = pathinfo(str_replace(DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')));
-        return '_' . $info['filename'] . '.html';
+        return 'db_' . $info['filename'] . '.html';
     }
 
 }
