@@ -102,7 +102,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
 
         $non_objects = array(
             'string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
-            'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback'
+            'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback',
+            'false', 'true'
         );
         $namespace = $this->getNamespace() == 'default' ? '' : $this->getNamespace().'\\';
 

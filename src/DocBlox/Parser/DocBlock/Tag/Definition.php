@@ -231,7 +231,8 @@ class DocBlox_Parser_DocBlock_Tag_Definition
 
         $non_objects = array(
             'string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
-            'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback'
+            'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback',
+            'false', 'true'
         );
         $namespace = $this->getNamespace() == 'default' ? '' : $this->getNamespace() . '\\';
 

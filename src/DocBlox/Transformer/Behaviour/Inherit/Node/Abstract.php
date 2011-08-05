@@ -247,17 +247,19 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
 
             /** @var DOMElement $super_object  */
             $super_object = $super[$node_name]['object'];
-
-            /** @var DOMElement $super_docblock  */
-            $super_docblock = current($this->getDirectElementsByTagName(
-                $super_object, 'docblock'
-            ));
-            $super_class    = $super[$node_name]['class'];
+            $super_class  = $super[$node_name]['class'];
 
             // add an element which defines which class' element you override
             $this->node->appendChild(new DOMElement('overrides-from', $super_class));
 
-            if ($super_docblock) {
+            /** @var DOMElement $super_docblock  */
+            $super_docblock = current(
+                $this->getDirectElementsByTagName($super_object, 'docblock')
+            );
+
+            // only copy the docblock info when it is present in the superclass
+            if ($super_docblock)
+            {
                 $this->copyShortDescription($super_docblock, $docblock);
                 $this->copyLongDescription($super_docblock, $docblock);
                 $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
