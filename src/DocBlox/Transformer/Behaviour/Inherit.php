@@ -114,7 +114,7 @@ class DocBlox_Transformer_Behaviour_Inherit implements
         foreach ($result as $node)
         {
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Interface(
-                $node, $xpath
+                $node, $xml
             );
             $super = array('classes' => array(), 'properties' => array(), 'methods' => array());
             $inherit->apply($super, null);
@@ -130,7 +130,7 @@ class DocBlox_Transformer_Behaviour_Inherit implements
         foreach ($result as $node)
         {
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
-                $node, $xpath
+                $node, $xml
             );
 
             $methods = array();

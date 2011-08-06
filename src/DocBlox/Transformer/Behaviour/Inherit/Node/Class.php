@@ -30,7 +30,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
     /**
      * @var DOMXPath
      */
-    protected $xpath = null;
+    protected $document = null;
 
     /** @var string[] All class tags that are inherited when none are defined */
     protected $inherited_tags = array(
@@ -47,11 +47,11 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
      * @param DOMElement $node
      * @param DOMXPath   $xpath
      */
-    public function __construct(DOMElement $node, DOMXPath $xpath)
+    public function __construct(DOMElement $node, DOMDocument $document)
     {
         parent::__construct($node);
 
-        $this->xpath = $xpath;
+        $this->document = $document;
     }
 
     /**
@@ -92,7 +92,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
      *
      * @return void
      */
-    public function apply(array &$super, $class_name)
+    public function apply(array $super, $class_name)
     {
         $class_name = current(
             $this->getDirectElementsByTagName($this->node, 'full_name')
@@ -124,19 +124,18 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             // add an element which defines which class' element you override
             $this->node->appendChild(new DOMElement('overrides-from', $super_class));
 
-            $this->copyShortDescription($super_docblock, $docblock);
-            $this->copyLongDescription($super_docblock, $docblock);
-            $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
+            if ($super_docblock)
+            {
+                $this->copyShortDescription($super_docblock, $docblock);
+                $this->copyLongDescription($super_docblock, $docblock);
+                $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
+            }
         }
 
-        // only add if this has a docblock; otherwise it is useless
-        $docblocks = $this->getDirectElementsByTagName($this->node, 'docblock');
-        if (count($docblocks) > 0) {
-            $super['classes'][$node_name] = array(
-                'class' => $class_name,
-                'object' => $this->node
-            );
-        }
+        $super['classes'][$node_name] = array(
+            'class' => $class_name,
+            'object' => $this->node
+        );
 
         /** @var DOMElement[] $method */
         $methods = $this->getDirectElementsByTagName($this->node, 'method');
@@ -158,34 +157,11 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
 
             // add an element 'inherited_from' to the method itself
             /** @var DOMElement $node */
-            $node = clone $method_collection['object'];
+//            $node = $method_collection['object']->cloneNode(true);
+            $node = new DOMElement('method');
             $this->node->appendChild($node);
-            $node->appendChild(
-                new DOMElement('inherited_from', $method_collection['class'])
-            );
-
-            // get the docblock or create a new one if it doesn't exist
-            $docblocks = $node->getElementsByTagName('docblock');
-            if ($docblocks->length == 0) {
-                $docblock = new DOMElement('docblock');
-                $node->appendChild($docblock);
-            } else {
-                $docblock = $docblocks->item(0);
-            }
-
-            // adds a new inherited_from to signify that this method is not
-            // declared in this class but inherited from a base class
-            $inherited_from_tag = new DOMElement('tag');
-            $docblock->appendChild($inherited_from_tag);
-            $inherited_from_tag->setAttribute('name', 'inherited_from');
-            $inherited_from_tag->setAttribute(
-                'refers',
-                $method_collection['class'].'::'.$method_name.'()'
-            );
-            $inherited_from_tag->setAttribute(
-                'description',
-                $method_collection['class'].'::'.$method_name.'()'
-            );
+            $node->setAttribute('inherited_from', $method_collection['class']);
+            $node->appendChild(new DOMElement('name', $method_name));
         }
 
         /** @var DOMElement[] $method */
@@ -196,7 +172,8 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         }
 
         // apply inheritance to every class or interface extending this one
-        $result = $this->xpath->query(
+        $xpath = new DOMXPath($this->document);
+        $result = $xpath->query(
             '/project/file/*[extends="' . $class_name . '"'
             . ' or implements="' . $class_name . '"]'
         );
@@ -215,7 +192,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             }
 
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
-                $node, $this->xpath
+                $node, $this->document
             );
             $inherit->apply($super, $class_name);
         }
