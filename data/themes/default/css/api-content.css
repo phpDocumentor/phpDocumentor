@@ -398,3 +398,7 @@ a.gripper img {
     margin-top: 6px;
     width: 12px;
 }
+
+div.inherited_from code span.highlight {
+    color: gray;
+}
