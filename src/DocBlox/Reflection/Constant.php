@@ -101,7 +101,7 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
               array('=')
           )->content
       );
-        
+
       $this->setValue($this->findDefault($tokens));
     }
 
