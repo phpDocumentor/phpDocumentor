@@ -92,7 +92,16 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
     }
     else
     {
-      $this->setName($tokens->gotoNextByType(T_STRING, 5, array('='))->content);
+      // Added T_NAMESPACE in case anyone uses a constant name NAMESPACE in PHP
+      // 5.2.x and tries to parse the code in 5.3.x
+      $this->setName(
+          $tokens->gotoNextByType(
+              array(T_STRING, T_NAMESPACE),
+              10,
+              array('=')
+          )->content
+      );
+        
       $this->setValue($this->findDefault($tokens));
     }
 
