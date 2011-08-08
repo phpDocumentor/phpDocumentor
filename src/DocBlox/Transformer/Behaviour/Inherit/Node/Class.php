@@ -142,10 +142,15 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         $method_names = array();
         foreach ($methods as $method) {
             $method_names[] = $method->getElementsByTagName('name')->item(0)->nodeValue;
+
+            // only process 'real' methods
+            if ($method->getAttribute('inherited_from')) {
+                continue;
+            }
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Method($method);
             $inherit->apply($super['methods'], $class_name);
         }
-
+        static $i = 0;
         // if a method present in the super classes but it is not declared
         // in this class then add it as an 'inherited_from' method.
         // explicitly do not updates the $super['methods'] array as this is mere
@@ -157,11 +162,34 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
 
             // add an element 'inherited_from' to the method itself
             /** @var DOMElement $node */
-//            $node = $method_collection['object']->cloneNode(true);
-            $node = new DOMElement('method');
+            $node = clone $method_collection['object'];
             $this->node->appendChild($node);
-            $node->setAttribute('inherited_from', $method_collection['class']);
-            $node->appendChild(new DOMElement('name', $method_name));
+            $node->appendChild(
+                new DOMElement('inherited_from', $method_collection['class'])
+            );
+
+            // get the docblock or create a new one if it doesn't exist
+            $docblocks = $node->getElementsByTagName('docblock');
+            if ($docblocks->length == 0) {
+                $docblock = new DOMElement('docblock');
+                $node->appendChild($docblock);
+            } else {
+                $docblock = $docblocks->item(0);
+            }
+
+            // adds a new inherited_from to signify that this method is not
+            // declared in this class but inherited from a base class
+            $inherited_from_tag = new DOMElement('tag');
+            $docblock->appendChild($inherited_from_tag);
+            $inherited_from_tag->setAttribute('name', 'inherited_from');
+            $inherited_from_tag->setAttribute(
+                'refers',
+                $method_collection['class'].'::'.$method_name.'()'
+            );
+            $inherited_from_tag->setAttribute(
+                'description',
+                $method_collection['class'].'::'.$method_name.'()'
+            );
         }
 
         /** @var DOMElement[] $method */
