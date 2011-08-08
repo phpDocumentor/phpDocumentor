@@ -81,8 +81,8 @@ class DocBlox_Transformer_Behaviour_Tag_License implements
         /** @var DOMElement $node */
         foreach($nodes as $node) {
 
-            $license = html_entity_decode($node->nodeValue, ENT_QUOTES, 'UTF-8');
-            
+            $license = $node->nodeValue;
+
             // FIXME: migrate to '#^' . Docblox::LINK_REGEX . '(\s+(?P<text>.+))?$#u' once that const exists
             if(preg_match('#^(?i)\b(?P<url>(?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))(\s+(?P<text>.+))?$#u', $license, $matches)) {
                 if(!isset($matches['text']) || !$matches['text']) {
@@ -90,12 +90,11 @@ class DocBlox_Transformer_Behaviour_Tag_License implements
                     $matches['text'] = $matches['url'];
                 }
                 $node->parentNode->setAttribute('link', $matches['url']);
-                // FIXME: #193
-                $node->nodeValue = htmlspecialchars($matches['text'], ENT_QUOTES, 'UTF-8');
+                $node->nodeValue = $matches['text'];
                 // bail out early
                 continue;
             }
-            
+
             // check map if any license matches
             foreach($licenseMap as $regex => $url) {
                 if(preg_match($regex, $license, $matches)) {
@@ -104,7 +103,7 @@ class DocBlox_Transformer_Behaviour_Tag_License implements
                     break;
                 }
             }
-            
+
         }
 
         return $xml;
