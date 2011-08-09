@@ -7,6 +7,8 @@
 * ADDED:    Inherited method's names are gray instead of blue so that it is
             obvious which is inherited and which is declared
 * FIXED:    E_STRICT error in code
+* FIXED:    @uses from and to a function (instead of method) caused errors
+* FIXED:    Issue with a filename causing Jenkins to have troubles
 
 08/08/2011: Version 0.13.0
 --------------------------
