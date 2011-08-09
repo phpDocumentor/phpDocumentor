@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-08-08</date>
- <time>11:32:01</time>
+ <date>2011-08-09</date>
+ <time>08:08:26</time>
  <version>
-  <release>0.13.0</release>
-  <api>0.13.0</api>
+  <release>0.13.1</release>
+  <api>0.13.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -166,7 +166,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="markers.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="menubar.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="nav.xsl" role="php" />
-      <file baseinstalldir="/DocBlox" name="nav.xsl.orig" role="php" />
       <file baseinstalldir="/DocBlox" name="sidebar.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
      </dir> <!-- /data/themes/default -->
@@ -299,7 +298,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="icon48x48.png" role="php" />
      <file baseinstalldir="/DocBlox" name="templating.txt" role="php" />
      <file baseinstalldir="/DocBlox" name="top.png" role="php" />
-     <file baseinstalldir="/DocBlox" name="zdeněk-gromnica_infrared.zip" role="php" />
+     <file baseinstalldir="/DocBlox" name="zdenek-gromnica_infrared.zip" role="php" />
     </dir> <!-- /docs/design -->
     <dir name="manual">
      <file baseinstalldir="/DocBlox" name="01 - Installation.md" role="php" />
@@ -439,7 +438,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="Parser.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Token.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Transformer.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="Transformer.php.orig" role="php" />
     </dir> <!-- /src/DocBlox -->
     <dir name="Zend">
      <dir name="Config">
@@ -569,7 +567,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
    <file baseinstalldir="/DocBlox" name="README" role="php" />
    <file baseinstalldir="/DocBlox" name="README.md" role="data" />
-   <file baseinstalldir="/DocBlox" name="start" role="data" />
+   <file baseinstalldir="/DocBlox" name="test.php" role="php" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -611,14 +609,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.13.0</release>
-    <api>0.13.0</api>
+    <release>0.13.1</release>
+    <api>0.13.1</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-08-08</date>
+   <date>2011-08-09</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
