@@ -116,10 +116,14 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
                     $referral_name = $node->parentNode->parentNode
                         ->getElementsByTagName('full_name')->item(0)->nodeValue;
                 } else {
-                    // gather the name of the class where the @uses is in
-                    $referral_class_name = $node->parentNode->parentNode
-                        ->parentNode->getElementsByTagName('full_name')->item(0)
-                        ->nodeValue;
+
+                    $referral_class_name = null;
+                    if ($node->parentNode->parentNode->nodeName == 'method') {
+                        // gather the name of the class where the @uses is in
+                        $referral_class_name = $node->parentNode->parentNode
+                            ->parentNode->getElementsByTagName('full_name')->item(0)
+                            ->nodeValue;
+                    }
 
                     // gather the name of the subelement of the class where
                     // the @uses is in
@@ -127,11 +131,16 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
                         ->getElementsByTagName('name')->item(0)->nodeValue;
 
                     // if it is a method; suffix with ()
-                    if ($node->parentNode->parentNode->nodeName == 'method') {
+                    if ($node->parentNode->parentNode->nodeName == 'method'
+                        || $node->parentNode->parentNode->nodeName == 'function'
+                    ) {
                         $referral_name .= '()';
                     }
 
-                    $referral_name = $referral_class_name . '::' . $referral_name;
+                    // only prefix class name if this is a class member
+                    if ($referral_class_name) {
+                        $referral_name = $referral_class_name . '::' . $referral_name;
+                    }
                 }
 
                 $used_by->setAttribute('description', $referral_name);
