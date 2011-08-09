@@ -72,16 +72,14 @@ class DocBlox_Transformer_Behaviour_Tag_Author implements
         foreach($nodes as $node) {
 
             // FIXME: #193
-            if(preg_match($regex, html_entity_decode($node->nodeValue, ENT_QUOTES, 'UTF-8'), $matches)) {
+            if(preg_match($regex, $node->nodeValue, $matches)) {
                 if($matches['name']) {
                     $value = $matches['name'];
                 } else {
                     $value = $matches['email']; // in case there were <> but no name... this cleans up the output a bit
                 }
-                
-                // FIXME: #193
-                $node->nodeValue = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-                
+
+                $node->nodeValue = $value;
                 $node->parentNode->setAttribute('link', 'mailto:' . $matches['email']);
             }
 

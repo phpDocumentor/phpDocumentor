@@ -35,7 +35,7 @@
                     <span class="attribute">final</span>
                 </xsl:if>
 
-                <xsl:apply-templates select="docblock/description"/>
+                <xsl:apply-templates select="docblock/description|docblock/tag[@name='var']/@description"/>
                 <xsl:if test="inherited_from">
                     <small>Inherited from:
                         <xsl:apply-templates

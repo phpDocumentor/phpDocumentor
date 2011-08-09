@@ -365,7 +365,7 @@ div.to-top a {
     padding-right: 10px;
 }
 
-div.method span.attribute {
+div.method span.attribute, div.property span.attribute {
     padding: 2px 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -397,4 +397,8 @@ a.gripper {
 a.gripper img {
     margin-top: 6px;
     width: 12px;
+}
+
+div.inherited_from code span.highlight {
+    color: gray;
 }

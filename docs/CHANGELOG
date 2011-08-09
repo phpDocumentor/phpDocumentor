@@ -1,4 +1,16 @@
-08/07/2011: Version 0.13.0
+08/09/2011: Version 0.13.1
+
+* FIXED:    Constants name NAMESPACE caused issues in the name detection
+* FIXED:    Property descriptions were not shown
+* FIXED:    property's static attribute was shown as simple label
+* FIXED:    Tag descriptions became double HTML encoded
+* ADDED:    Inherited method's names are gray instead of blue so that it is
+            obvious which is inherited and which is declared
+* FIXED:    E_STRICT error in code
+* FIXED:    @uses from and to a function (instead of method) caused errors
+* FIXED:    Issue with a filename causing Jenkins to have troubles
+
+08/08/2011: Version 0.13.0
 --------------------------
 
 * FIXED:    @see now generates a link to the appropriate section in the

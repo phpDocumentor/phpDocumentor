@@ -159,7 +159,6 @@ class DocBlox_Parser_DocBlock_Tag_Definition
      */
     public function setDescription($description)
     {
-        $description = htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
         $this->xml['description'] = trim($description);
     }
 
