@@ -21,8 +21,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Reflection_DocBlock_Tag_Property
-    extends DocBlox_Reflection_DocBlock_Tag_Param
+class DocBlox_Reflection_DocBlock_Tag_PropertyRead
+    extends DocBlox_Reflection_DocBlock_Tag_Property
     implements DocBlox_Reflection_DocBlock_Tag_Interface
 {
 
