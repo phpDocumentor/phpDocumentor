@@ -97,9 +97,22 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
                     break;
             }
 
-            // get the nodes and check if the result is unique; if not we error
-            // and continue to the next @uses
-            $referral_nodes = $xpath->query($qry);
+            // get the nodes; we are unable to work around the
+            // shut up operator as there is no pre-validation possible.
+            $referral_nodes = @$xpath->query($qry);
+
+            // if the query is wrong; output a Critical error and continue to
+            // the next @uses
+            if($referral_nodes === false) {
+                $this->logger->log(
+                    'An XPath error occurs while processing @uses, '
+                    . 'the query used was: ' . $qry, DocBlox_Core_Log::CRIT
+                );
+                continue;
+            }
+
+            // check if the result is unique; if not we error and continue
+            // to the next @uses
             if ($referral_nodes->length > 1) {
                 $this->logger->log(
                     '@uses "'.$refers.'" refers to more than 1 element',
@@ -108,11 +121,12 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
                 continue;
             }
 
+            // if there is one matching element; link them together
             if ($referral_nodes->length > 0) {
                 $referral = $referral_nodes->item(0);
                 $docblock = $referral->getElementsByTagName('docblock');
                 if ($docblock->length < 1) {
-                    $docblock = new DOMElement('docblock');
+                    $docblock = new DOMElement('docblock'); 
                     $referral->appendChild($docblock);
                 } else {
                     $docblock = $docblock->item(0);
