@@ -73,13 +73,28 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
             switch($type)
             {
                 case 'class':
-                    $qry = '/project/file/class[full_name=\'' . $refers . '\']';
+                    // escape single quotes in the class name
+                    $xpath_refers = 'concat(\''
+                        . implode('\',"\'",\'', explode('\'', $refers)).'\')';
+                    $qry = '/project/file/class[full_name=' . $xpath_refers . ']';
                     break;
                 default:
                     $class_name = $refers_array[0];
-                    $qry = '/project/file/class[full_name=\'' . $class_name
-                        . '\']/'.$type.'[name=\'' . rtrim($refers_array[1], '()')
+
+                    // escape single quotes in the class name
+                    $xpath_class_name = 'concat(\''
+                        . implode('\',"\'",\'', explode('\'', $class_name))
+                        . '\')';
+
+                    // escape single quotes in the method name
+                    $xpath_method_name = 'concat(\''
+                        . implode('\',"\'",\'', explode('\'', $refers_array[1]))
+                        . '\')';
+
+                    $qry = '/project/file/class[full_name=\'' . $xpath_class_name
+                        . '\']/'.$type.'[name=\'' . rtrim($xpath_method_name, '()')
                         .'\']';
+                    break;
             }
 
             // get the nodes and check if the result is unique; if not we error
