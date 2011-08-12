@@ -88,7 +88,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
                     $this->log(
                         'Argument ' . $argument->getName() . ' is missing from the function Docblock in file '
                                 . $tokens->getFilename() . ' at line ' . $argument->getLineNumber(),
-                        DocBlox_Core_Log::WARN
+                        DocBlox_Core_Log::NOTICE
                     );
                 } else
                 {
@@ -102,7 +102,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
                             $this->log(
                                 'Name of argument ' . $argument->getName() . ' does not match with function Docblock in file '
                                         . $tokens->getFilename() . ' at line ' . $argument->getLineNumber(),
-                                DocBlox_Core_Log::WARN
+                                DocBlox_Core_Log::NOTICE
                             );
                         }
                     }
