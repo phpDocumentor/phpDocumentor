@@ -55,7 +55,7 @@
             <img src="{$root}images/icons/{name()}.png" alt="{name()}"/>
             <xsl:if test="@visibility">
                 <img src="{$root}images/icons/visibility_{@visibility}.png" style="margin-right: 5px" alt="{@visibility}"/>
-            </xsl:if>&#160;
+            </xsl:if>
             <span class="highlight"><xsl:value-of select="name" /></span>
 
         <span class="nb-faded-text">(
@@ -76,9 +76,8 @@
           )
         </span>
         :
-        <xsl:call-template name="implodeTypes">
-          <xsl:with-param name="items" select="docblock/tag[@name='return']/type" />
-        </xsl:call-template>
+          <xsl:if test="not(docblock/tag[@name='return'])">void</xsl:if>
+          <xsl:apply-templates select="docblock/tag[@name='return']" />
       </code>
         <div class="description">
             <xsl:if test="@static='true'">

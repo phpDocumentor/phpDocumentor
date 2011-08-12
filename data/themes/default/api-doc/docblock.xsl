@@ -69,9 +69,12 @@
   </xsl:template>
 
   <xsl:template match="docblock/tag[@name='return']">
-      <xsl:call-template name="implodeTypes">
-          <xsl:with-param name="items" select="type" />
-      </xsl:call-template>
+      <xsl:if test="type = ''">void</xsl:if>
+      <xsl:if test="type != ''">
+          <xsl:call-template name="implodeTypes">
+              <xsl:with-param name="items" select="type" />
+          </xsl:call-template>
+      </xsl:if>
   </xsl:template>
 
   <xsl:template match="docblock/tag/@type">
@@ -83,7 +86,8 @@
         </a>
       </xsl:if>
       <xsl:if test="not(../@link)">
-        <xsl:value-of select="." />
+        <xsl:if test=". = ''">void</xsl:if>
+        <xsl:if test=". != ''"><xsl:value-of select="." /></xsl:if>
       </xsl:if>
     </xsl:if>
   </xsl:template>
