@@ -71,20 +71,8 @@ class DocBlox_Core_Application
      */
     public static function renderVersion()
     {
-<<<<<<< HEAD
         echo 'DocBlox version ' . DocBlox_Core_Abstract::VERSION
              . PHP_EOL
              . PHP_EOL;
-=======
-      echo 'ERROR: '.$e->getMessage().PHP_EOL.PHP_EOL;
-      echo $task->getUsageMessage();
-      // exit with the exception's code or 1 if null/0
-      $exit = $e->getCode();
-      if (!$exit)
-      {
-        $exit = 1;
-      }
-      exit($exit);
->>>>>>> a94f48d9a939157c072ee4f8e04c44cc7e6c1826
     }
 }

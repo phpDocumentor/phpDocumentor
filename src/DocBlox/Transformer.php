@@ -50,8 +50,6 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      */
     public function __construct()
     {
-        $this->loadTransformations();
-
         $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
             new DocBlox_Transformer_Behaviour_GeneratePaths(),
             new DocBlox_Transformer_Behaviour_Inherit(),
