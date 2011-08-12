@@ -174,9 +174,7 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     public function next()
     {
         $key = ++$this->key;
-        $current = ($key >= $this->count)
-            ? false
-            : $this[$key];
+        $current = $this->offsetGet($key);
         $this->current = $current;
 
         return $current;

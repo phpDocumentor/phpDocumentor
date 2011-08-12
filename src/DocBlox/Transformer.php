@@ -50,16 +50,20 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      */
     public function __construct()
     {
-        $this->themes_path = dirname(__FILE__) . '/../../data/themes';
+        $this->loadTransformations();
 
-        $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(
-            array(
-                new DocBlox_Transformer_Behaviour_GeneratePaths(),
-                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
-                new DocBlox_Transformer_Behaviour_Inherit(),
-                new DocBlox_Transformer_Behaviour_Tag_Ignore(),
-            )
-        );
+        $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
+            new DocBlox_Transformer_Behaviour_GeneratePaths(),
+            new DocBlox_Transformer_Behaviour_Inherit(),
+            new DocBlox_Transformer_Behaviour_Tag_Ignore(),
+            new DocBlox_Transformer_Behaviour_Tag_Return(),
+            new DocBlox_Transformer_Behaviour_Tag_Param(),
+            new DocBlox_Transformer_Behaviour_Tag_Property(),
+            new DocBlox_Transformer_Behaviour_Tag_Uses(),
+            new DocBlox_Transformer_Behaviour_Tag_Author(),
+            new DocBlox_Transformer_Behaviour_Tag_License(),
+            new DocBlox_Transformer_Behaviour_AddLinkInformation(),
+        ));
     }
 
     /**
@@ -336,15 +340,8 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      */
     public function generateFilename($file)
     {
-        $info = pathinfo(
-            str_replace(
-                DIRECTORY_SEPARATOR,
-                '_',
-                trim($file, DIRECTORY_SEPARATOR . '.')
-            )
-        );
-
-        return '_' . $info['filename'] . '.html';
+        $info = pathinfo(str_replace(DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')));
+        return 'db_' . $info['filename'] . '.html';
     }
 
     /**

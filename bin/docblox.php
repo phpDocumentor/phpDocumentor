@@ -32,9 +32,17 @@ $base_include_folder = (strpos('@php_dir@', '@php_dir') === 0)
 // set path to add lib folder, load the Zend Autoloader
 set_include_path($base_include_folder . PATH_SEPARATOR . get_include_path());
 
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('DocBlox_');
+require_once $base_include_folder.'/ZendX/Loader/StandardAutoloader.php';
+$autoloader = new ZendX_Loader_StandardAutoloader(
+    array(
+        'prefixes' => array(
+            'Zend'    => $base_include_folder.'/Zend',
+            'DocBlox' => $base_include_folder.'/DocBlox'
+        ),
+        'fallback_autoloader' => true
+    )
+);
+$autoloader->register();
 
 $application = new DocBlox_Core_Application();
 $application->main();

@@ -96,15 +96,18 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
     protected function getDirectElementsByTagName(DOMElement $node, $element_name)
     {
         $result   = array();
-        $elements = $node->getElementsByTagName($element_name);
-        for($i = 0; $i < $elements->length; $i++)
-        {
-            if ($elements->item($i)->parentNode !== $node)
-            {
+        if (!$node->hasChildNodes()) {
+            return $result;
+        }
+
+        $elements = $node->childNodes;
+        for($i = 0; $i < $elements->length; $i++) {
+            $element = $elements->item($i);
+            if ($element->nodeName != $element_name) {
                 continue;
             }
 
-            $result[] = $elements->item($i);
+            $result[] = $element;
         }
 
         return $result;
@@ -169,6 +172,16 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
             }
 
             $docblock->appendChild(clone $super_desc);
+        } elseif ($desc && $super_desc) {
+            // if a long description exists in both child and parent; insert the
+            // parent's LD when the inline tag {@inheritdoc} is used.
+            $desc->nodeValue = htmlspecialchars(
+                str_ireplace(
+                    '{@inheritdoc}',
+                    $super_desc->nodeValue,
+                    $desc->nodeValue
+                )
+            );
         }
     }
 
@@ -222,7 +235,7 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
      *
      * @return void
      */
-    public function apply(array &$super, $class_name)
+    public function apply(array $super, $class_name)
     {
         // the name is always the first encountered child element with
         // tag name 'name'
@@ -234,31 +247,32 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
 
             /** @var DOMElement $super_object  */
             $super_object = $super[$node_name]['object'];
-
-            /** @var DOMElement $super_docblock  */
-            $super_docblock = current($this->getDirectElementsByTagName(
-                $super_object, 'docblock'
-            ));
-            $super_class    = current($this->getDirectElementsByTagName(
-                $super_object->parentNode, 'full_name'
-            ))->nodeValue;
+            $super_class  = $super[$node_name]['class'];
 
             // add an element which defines which class' element you override
             $this->node->appendChild(new DOMElement('overrides-from', $super_class));
 
-            $this->copyShortDescription($super_docblock, $docblock);
-            $this->copyLongDescription($super_docblock, $docblock);
-            $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
+            /** @var DOMElement $super_docblock  */
+            $super_docblock = current(
+                $this->getDirectElementsByTagName($super_object, 'docblock')
+            );
+
+            // only copy the docblock info when it is present in the superclass
+            if ($super_docblock)
+            {
+                $this->copyShortDescription($super_docblock, $docblock);
+                $this->copyLongDescription($super_docblock, $docblock);
+                $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
+            }
         }
 
-        // only add if this has a docblock; otherwise it is useless
-        $docblocks = $this->getDirectElementsByTagName($this->node, 'docblock');
-        if (count($docblocks) > 0) {
-            $super[$node_name] = array(
-                'class' => $class_name,
-                'object' => $this->node
-            );
-        }
+        // store the element in the super array; we use this in the Class
+        // inheritance to add 'inherited' methods (methods not present in this
+        // class by definition but injected via a superclass)
+        $super[$node_name] = array(
+            'class' => $class_name,
+            'object' => $this->node
+        );
     }
 
 }

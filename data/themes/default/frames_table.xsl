@@ -37,7 +37,17 @@
           <tr>
             <td id="sidebar">
               <xsl:call-template name="search" />
-              <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0"></iframe>
+                <script type="text/javascript">
+                    $(function() {
+                        $("#sidebar-content").resizable({
+                            helper: "ui-resizable-helper",
+                            handles: 'e'
+                        });
+                    });
+                </script>
+                <div id="sidebar-content">
+                <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0"></iframe>
+              </div>
             </td>
             <td id="contents">
               <iframe name="content" id="content" src="{$root}content.html" frameBorder="0"></iframe>

@@ -11,6 +11,7 @@
       <extension>php3</extension>
       <extension>phtml</extension>
     </extensions>
+    <visibility></visibility>
   </parser>
   <transformer>
     <target>output</target>

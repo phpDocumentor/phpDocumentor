@@ -64,19 +64,14 @@
       <xsl:if test="@type != ''">
         <xsl:apply-templates select="@type" /><br />
       </xsl:if>
-      <em><xsl:value-of select="@description" /></em>
+      <em><xsl:value-of select="@description" disable-output-escaping="yes" /></em>
     </dd>
   </xsl:template>
 
   <xsl:template match="docblock/tag[@name='return']">
-    <dt>
       <xsl:call-template name="implodeTypes">
-        <xsl:with-param name="items" select="type" />
+          <xsl:with-param name="items" select="type" />
       </xsl:call-template>
-    </dt>
-    <dd>
-      <em><xsl:value-of select="@description" disable-output-escaping="yes" /></em>
-    </dd>
   </xsl:template>
 
   <xsl:template match="docblock/tag/@type">
@@ -89,6 +84,29 @@
       </xsl:if>
       <xsl:if test="not(../@link)">
         <xsl:value-of select="." />
+      </xsl:if>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="docblock/tag/type">
+    <xsl:if test="not(.)">n/a</xsl:if>
+    <xsl:if test=".">
+        <xsl:call-template name="implodeTypes">
+            <xsl:with-param name="items" select="."/>
+        </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="docblock/tag/@link">
+    <xsl:if test="not(../@description)">n/a</xsl:if>
+    <xsl:if test="../@description">
+      <xsl:if test="../@link">
+        <a href="{$root}{../@link}">
+          <xsl:value-of select="../@description" disable-output-escaping="yes"/>
+        </a>
+      </xsl:if>
+      <xsl:if test="not(../@link)">
+        <xsl:value-of select="../@description" disable-output-escaping="yes" />
       </xsl:if>
     </xsl:if>
   </xsl:template>

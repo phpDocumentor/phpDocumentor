@@ -67,6 +67,10 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
         if (method_exists($this->tag, 'getTypes')) {
             $this->setTypes($this->tag->getTypes());
         }
+
+        if (method_exists($this->tag, 'getReference')) {
+            $this->setReference($this->tag->getReference());
+        }
     }
 
     /**
@@ -92,19 +96,34 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     ) {
         switch ($tag->getName())
         {
-        case 'param':
-            $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        case 'link':
-            $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        default:
-            $def = new self($namespace, $namespace_aliases, $xml, $tag);
-            break;
+            case 'property-write':
+            case 'property-read':
+            case 'property':
+            case 'param':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
+            case 'see':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_See(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
+            case 'uses':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Uses(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
+            case 'link':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
+            default:
+                $def = new self(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
         }
 
         $def->configure();
@@ -133,6 +152,18 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
     }
 
     /**
+     * Setter for the reference so it can be overridden.
+     *
+     * @param string $name
+     *
+     * @return void
+     */
+    public function setReference($name)
+    {
+        $this->xml['refers'] = $name;
+    }
+
+    /**
      * Setter for the description so it can be overridden.
      *
      * @param string $description Description for this definition.
@@ -141,7 +172,6 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
      */
     public function setDescription($description)
     {
-        $description = htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
         $this->xml['description'] = trim($description);
     }
 
@@ -217,7 +247,8 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
 
         $non_objects = array(
             'string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
-            'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback'
+            'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback',
+            'false', 'true'
         );
         $namespace = $this->getNamespace() == 'default'
             ? ''
@@ -264,7 +295,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
             }
 
             // full paths always start with a slash
-            if (isset($item[0]) && ($item[0] !== '\\')) {
+            if (isset($item[0]) && ($item[0] !== '\\') && (!in_array(strtolower($item), $non_objects))) {
                 $item = '\\' . $item;
             }
         }

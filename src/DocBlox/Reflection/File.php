@@ -146,7 +146,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         }
 
         // detect encoding and transform to UTF-8
-        if (class_exists('finfo')) {
+        if (extension_loaded('fileinfo')) {
             // PHP 5.3 or PECL extension
             $flag = defined('FILEINFO_MIME_ENCODING')
                 ? FILEINFO_MIME_ENCODING
@@ -173,10 +173,19 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
                 $encoding = $encoding[1];
             }
-        } elseif (function_exists('mb_detect_encoding')) {
+        }
+
+        // if the encoding is detected as binary we try again
+        if ((($encoding === null) || (strtolower($encoding) == 'binary'))
+            && function_exists('mb_detect_encoding')
+        ) {
             // OR with mbstring
             $encoding = mb_detect_encoding($contents);
-        } elseif (function_exists('iconv')) {
+        }
+
+        // if the encoding is detected as binary we try again
+        if ((($encoding === null) || (strtolower($encoding) == 'binary'))
+            && function_exists('iconv')) {
             // OR using iconv (performance hit)
             $this->log(
                 'Neither the finfo nor the mbstring extensions are active; '
@@ -184,13 +193,19 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
                 Zend_Log::WARN
             );
             $encoding = $this->_detectEncodingFallback($contents);
-        } else {
+        }
+
+        // if the encoding has failed or is detected as binary we give up
+        if (($encoding === null) || (strtolower($encoding) == 'binary')) {
             // or not..
             $this->log(
                 'Unable to handle character encoding; finfo, mbstring and '
                 . 'iconv extensions are not enabled',
                 Zend_Log::CRIT
             );
+
+            // nothing will be returns to prevent handling
+            return '';
         }
 
         // if the encoding is unknown-8bit or x-user-defined we assume it might
@@ -769,7 +784,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
             $marker_obj = $xml->markers->addChild(
                 strtolower($marker[0]),
-                trim($marker[1])
+                htmlspecialchars(trim($marker[1]))
             );
             $marker_obj->addAttribute('line', $marker[2]);
         }

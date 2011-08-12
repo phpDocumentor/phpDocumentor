@@ -30,7 +30,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
     /**
      * @var DOMXPath
      */
-    protected $xpath = null;
+    protected $document = null;
 
     /** @var string[] All class tags that are inherited when none are defined */
     protected $inherited_tags = array(
@@ -47,11 +47,11 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
      * @param DOMElement $node
      * @param DOMXPath   $xpath
      */
-    public function __construct(DOMElement $node, DOMXPath $xpath)
+    public function __construct(DOMElement $node, DOMDocument $document)
     {
         parent::__construct($node);
 
-        $this->xpath = $xpath;
+        $this->document = $document;
     }
 
     /**
@@ -92,7 +92,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
      *
      * @return void
      */
-    public function apply(array &$super, $class_name)
+    public function apply(array $super, $class_name)
     {
         $class_name = current(
             $this->getDirectElementsByTagName($this->node, 'full_name')
@@ -124,26 +124,72 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             // add an element which defines which class' element you override
             $this->node->appendChild(new DOMElement('overrides-from', $super_class));
 
-            $this->copyShortDescription($super_docblock, $docblock);
-            $this->copyLongDescription($super_docblock, $docblock);
-            $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
+            if ($super_docblock)
+            {
+                $this->copyShortDescription($super_docblock, $docblock);
+                $this->copyLongDescription($super_docblock, $docblock);
+                $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
+            }
         }
 
-        // only add if this has a docblock; otherwise it is useless
-        $docblocks = $this->getDirectElementsByTagName($this->node, 'docblock');
-        if (count($docblocks) > 0) {
-            $super['classes'][$node_name] = array(
-                'class' => $class_name,
-                'object' => $this->node
-            );
-        }
-
+        $super['classes'][$node_name] = array(
+            'class' => $class_name,
+            'object' => $this->node
+        );
 
         /** @var DOMElement[] $method */
         $methods = $this->getDirectElementsByTagName($this->node, 'method');
+        $method_names = array();
         foreach ($methods as $method) {
+            $method_names[] = $method->getElementsByTagName('name')->item(0)->nodeValue;
+
+            // only process 'real' methods
+            if ($method->getAttribute('inherited_from')) {
+                continue;
+            }
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Method($method);
             $inherit->apply($super['methods'], $class_name);
+        }
+        static $i = 0;
+        // if a method present in the super classes but it is not declared
+        // in this class then add it as an 'inherited_from' method.
+        // explicitly do not updates the $super['methods'] array as this is mere
+        // a virtual method and not one that counts for inheritance.
+        foreach($super['methods'] as $method_name => $method_collection) {
+            if (in_array($method_name, $method_names)) {
+                continue;
+            }
+
+            // add an element 'inherited_from' to the method itself
+            /** @var DOMElement $node */
+            $node = clone $method_collection['object'];
+            $this->node->appendChild($node);
+            $node->appendChild(
+                new DOMElement('inherited_from', $method_collection['class'])
+            );
+
+            // get the docblock or create a new one if it doesn't exist
+            $docblocks = $node->getElementsByTagName('docblock');
+            if ($docblocks->length == 0) {
+                $docblock = new DOMElement('docblock');
+                $node->appendChild($docblock);
+            } else {
+                $docblock = $docblocks->item(0);
+            }
+
+            // adds a new inherited_from to signify that this method is not
+            // declared in this class but inherited from a base class
+            $inherited_from_tag = new DOMElement('tag');
+            $docblock->appendChild($inherited_from_tag);
+            $inherited_from_tag->setAttribute('name', 'inherited_from');
+            $inherited_from_tag->setAttribute(
+                'refers',
+                $method_collection['class'].'::'.$method_name.'()'
+            );
+            $inherited_from_tag->setAttribute(
+                'description',
+                $method_collection['class'].'::'.$method_name.'()'
+            );
         }
 
         /** @var DOMElement[] $method */
@@ -154,17 +200,87 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         }
 
         // apply inheritance to every class or interface extending this one
-        $result = $this->xpath->query(
+        $xpath = new DOMXPath($this->document);
+        $result = $xpath->query(
             '/project/file/*[extends="' . $class_name . '"'
             . ' or implements="' . $class_name . '"]'
         );
         foreach ($result as $node)
         {
+            $child_class_name = $node->getElementsByTagName('full_name')
+                ->item(0)->nodeValue;
+
+            if (!$child_class_name)
+            {
+                throw new Exception(
+                    'A class was encountered with no FQCN. This should not ' .
+                    'happen; please contact the DocBlox developers to have them '
+                    . 'analyze this issue'
+                );
+            }
+
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
-                $node, $this->xpath
+                $node, $this->document
             );
             $inherit->apply($super, $class_name);
         }
     }
+
+    /**
+     * Override the parent's copyTags method to check whether the package names
+     * match; if not: do not copy the subpackage.
+     *
+     * Frameworks often extend classes from other frameworks; and applications
+     * extend classes of frameworks.
+     *
+     * Without this check when the framework specifies a subpackage but the
+     * extending class would not; and the packages would not match. Then a
+     * subpackage would be applied that is not applicable to this item.
+     *
+     * Additionally; this package/subpackage combination would not be present in
+     * the package index int he structure file and the classes would never be
+     * shown in the navigation.
+     *
+     * @param string[]   $tag_types      List of allowed tag types.
+     * @param DOMElement $super_docblock Super class' docblock.
+     * @param DOMElement $docblock       Sub class' docblock.
+     *
+     * @return void
+     */
+    protected function copyTags(array $tag_types, DOMElement $super_docblock,
+        DOMElement $docblock)
+    {
+        // find the name of the super's package
+        $super_package_name = null;
+        $tags = $this->getDirectElementsByTagName($super_docblock, 'tag');
+        foreach($tags as $tag) {
+            if ($tag->getAttribute('name') == 'package') {
+                $super_package_name = $tag->getAttribute('description');
+                break;
+            }
+        }
+
+        // find the name of the local's package
+        $local_package_name = null;
+        $tags = $this->getDirectElementsByTagName($docblock, 'tag');
+        foreach ($tags as $tag) {
+            if ($tag->getAttribute('name') == 'package') {
+                $local_package_name = $tag->getAttribute('description');
+                break;
+            }
+        }
+
+        // if the package names do not match; do not inherit the subpackage
+        if ($super_package_name != $local_package_name) {
+            foreach($tag_types as $key => $type) {
+                if ($type == 'subpackage') {
+                    unset($tag_types[$key]);
+                }
+            }
+        }
+
+        parent::copyTags($tag_types, $super_docblock, $docblock);
+    }
+
 
 }

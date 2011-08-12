@@ -1,6 +1,7 @@
 .idea
-phpdoc_example
+deploy.properties
 build/*
 .buildpath
 .project
 .settings/
+*.swp

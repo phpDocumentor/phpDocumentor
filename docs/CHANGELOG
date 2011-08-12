@@ -1,12 +1,94 @@
-07/16/2011: Version 0.12.0 - Extendability
-------------------------------------------
-
+xx/10/2011: Version 0.14.1
+--------------------------
 * BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.
             Anyone using the command line will not notice this BC break but if you use DocBlox_Parser directly this will
             affect your application. Please check DocBlox_Task_Parse how to use this new object.
             The change has been done to be able to control the file selection process in more detail and spot/fix bugs
             with ignore paths and more.
 * ADDED:    EventDispatcher to coordinate logging efforts and make DocBlox extra extensible.
+
+08/09/2011: Version 0.13.1
+
+* FIXED:    Constants name NAMESPACE caused issues in the name detection
+* FIXED:    Property descriptions were not shown
+* FIXED:    property's static attribute was shown as simple label
+* FIXED:    Tag descriptions became double HTML encoded
+* ADDED:    Inherited method's names are gray instead of blue so that it is
+            obvious which is inherited and which is declared
+* FIXED:    E_STRICT error in code
+* FIXED:    @uses from and to a function (instead of method) caused errors
+* FIXED:    Issue with a filename causing Jenkins to have troubles
+
+08/08/2011: Version 0.13.0
+--------------------------
+
+* FIXED:    @see now generates a link to the appropriate section in the
+            documentation.
+* ADDED:    Class descriptions now show a list of @see links to which they refer
+            instead of showing them in the sidebar.
+* ADDED:    @property, @property-read and @property-write are now shown as 'real'
+            properties in de class listing.
+* ADDED:    @param descriptions are now parsed for Markdown syntax.
+* ADDED:    @uses now generates a link to the used element and generates a new
+            tag @used_by on the target element.
+* REMOVED:  Description excerpts in the sidebar to increase performance and usability.
+* ADDED:    Methods from super classes are now visible in a child class
+* CHANGED:  File overview UI is changed to reduce clutter and be more visual appealing.
+* ADDED:    Allowed visibility can now be specified in the docblox.xml configuration
+            file; see docblox.tpl.xml to see where.
+* ADDED:    @author and @license tags now show a link and (more) human-readable
+            text; thanks to @dzuelke
+
+05/08/2011: Version 0.12.3
+--------------------------
+
+* FIXED:    Invoking class_exists on finfo without the Fileinfo extension threw
+            a warning. Fixed by exchanging this for a call to extension_loaded.
+* FIXED:    The inheritance part of the transformation broke when a class
+            contained invalid characters. Expanded class name recognition to
+            allow illegal characters and added a security check to prevent such
+            problems in the future.
+* FIXED:    Missing docblocks could cause a crash during inheritance creation
+* FIXED:    @return false now interprets false as a literal meta-'type' and
+            does not add the namespace anymore.
+* FIXED:    encoding detection now also tries a different approach when the
+            detected type is binary, which can hardly be true.
+* FIXED:    Files are now generated with db_ instead of an underscore because
+            Github Pages won't display pages starting with a single underscore.
+* FIXED:    @param descriptions were improperly escaped
+
+27/07/2011: Version 0.12.2
+--------------------------
+
+* FIXED:    Using http://pear.zfcampus.org as PEAR dependency breaks the
+            environments of users who have their own ZF version in the include
+            path. Additionally the inclusion made the download larger than
+            necessary.
+* FIXED:    Removed wkhtmltopdf binary; PDF generation is not widely used yet
+            and it only caused the download to increase with 11MB. This will
+            be reintroduced later as dependency.
+
+26/07/2011: Version 0.12.1
+--------------------------
+
+* FIXED     Default package was always shown when a file-level constant was
+            present and the file did not have a @package tag.
+* FIXED:    Graph was not generated if the tmp path contained a space
+* FIXED:    if a long description contained special characters then generation
+            failed.
+* FIXED:    Transformation crashed when a parent and child element were both
+            marked with @internal or @ignore.
+* FIXED:    The parser crashed when the `glob` call when using the -f argument
+            fails; the file retrieval has been changed to only use glob when
+            either *, ? or [ is present in the string (as determined in the
+            glob man page); otherwise a glob is attempted. if glob fails then
+            the pattern is ignored and a message shown.
+* FIXED:    Generating documentation on PHP 5.2.x was broken; Class could not
+            be found errors was shown due to inclusion of namespace slash
+
+07/17/2011: Version 0.12.0
+--------------------------
+
 * ADDED:    Support for the @internal tag (do not document this tag if the
             `parseprivate` option is not provided). Thanks to @kix for
             contributing this code.
@@ -16,6 +98,33 @@
 * ADDED:    DocBlox returns non-zero codes when failing. Thanks to @trii for
             contributing the code.
 * ADDED:    Support for documenting the contents of phar archives
+* REMOVED:  Dependency on PEAR component Image_GraphViz
+* ADDED:    Class Inheritance Diagram now shows `implements` relations between
+            classes and interfaces.
+* REMOVED:  Class Inheritance Diagram no longer shows a stdClass super-parent
+* ADDED:    Class Inheritance Diagram now groups classes per namespace and shows
+            that namespace name to make relations clearer
+* FIXED:    Class Inheritance Diagram no longer breaks out of the frame when
+            navigating to a class' definition.
+* FIXED:    Improved Ignore handling
+* FIXED:    Scalars are no longer prefixed with a \
+* ADDED:    Internal classes (PHP core classes + extensions) will now redirect
+            to the PHP man pages
+* ADDED:    Sidebar is now resizeable (javascript is required for this)
+* ADDED:    Support for $this and self as type in an @return tag; the type will
+            automatically be replaced with the class where the method is defined
+            and a new tag @fluent will be added.
+* FIXED:    subpackage tags are no longer inherited if the super and sub class'
+            package names differ; this causes mismatches in user expectation and
+            the package index in the structure file no longer matches reality.
+            The latter causes the classes to be omitted from the package
+            section of the sidebar navigation.
+* FIXED:    when providing a class / element name to @link it will find the
+            corresponding documentation. Please note that this is not adviced;
+            please use @see to look up elements. This functionality is provided
+            as backwards compatibility for phpDocumentor.
+* ADDED:    The method, property and constants mentioned in the class sidebar
+            can now be collapsed.
 
 06/12/2011: Version 0.11.0
 --------------------------

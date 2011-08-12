@@ -155,6 +155,23 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     /**
+     * Configuration override for setting the parser visibility
+     *
+     * By default it will use the command line options first, and then
+     * look at the config file if no options have been supplied
+     *
+     * @return string
+     */
+    public function getVisibility()
+    {
+        if (parent::getVisibility() !== null) {
+            return parent::getVisibility();
+        }
+
+        return DocBlox_Core_Abstract::config()->parser->visibility;
+    }
+
+    /**
      * Returns the list of markers to scan for and summize in their separate page.
      *
      * @return string[]

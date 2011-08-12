@@ -24,15 +24,15 @@
         <xsl:if test="count(/project/package) > 0">
             <h1><a href="#">Packages</a></h1>
             <div style="padding: 0px;">
-                <xsl:if test="count(/project/package) &lt; 2">
+                <xsl:if test="count(/project/package[@name != '']) &lt; 2">
                 <ul id="packages-" class="deadtree">
-                  <xsl:apply-templates select="/project/package">
-                    <xsl:sort select="@name" />
-                  </xsl:apply-templates>
+                    <xsl:apply-templates select="/project/package">
+                        <xsl:sort select="@name"/>
+                    </xsl:apply-templates>
                 </ul>
                 </xsl:if>
 
-                <xsl:if test="count(/project/package) > 1">
+                <xsl:if test="count(/project/package[@name != '']) > 1">
                 <ul id="packages-" class="filetree">
                   <xsl:apply-templates select="/project/package">
                     <xsl:sort select="@name" />
@@ -68,10 +68,6 @@
                             <span class="{name()}">
                                 <a href="{$root}{../@generated-path}#{./full_name}" target="content">
                                     <xsl:value-of select="./full_name" />
-                                    <br/>
-                                    <small>
-                                        <xsl:value-of select="docblock/description"/>
-                                    </small>
                                 </a>
                             </span>
 
@@ -85,36 +81,20 @@
                                     <xsl:when test="name(../..) = 'method'">
                                         <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
                                         <xsl:value-of select="../../name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="../../docblock/description"/>
-                                        </small>
                                         </a>
                                     </xsl:when>
                                     <xsl:when test="name(../..) = 'constant'">
                                         <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
                                         <xsl:value-of select="../../name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="../../docblock/description"/>
-                                        </small>
                                         </a>
                                     </xsl:when>
                                     <xsl:when test="name(../..) = 'property'">
                                         <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
                                         <xsl:value-of select="../../name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="../../docblock/description"/>
-                                        </small>
                                         </a>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:value-of select="../../name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="../../docblock/description"/>
-                                        </small>
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 </span>
@@ -136,54 +116,30 @@
                                 <xsl:when test="name() = 'file'">
                                     <a href="{$root}{../@generated-path}" target="content">
                                         <xsl:value-of select="./name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="docblock/description"/>
-                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'function'">
                                     <a href="{$root}{../@generated-path}#{./full_name}::{./name}()" target="content">
                                         <xsl:value-of select="./name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="docblock/description"/>
-                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'class'">
                                     <a href="{$root}{../@generated-path}#{./full_name}" target="content">
                                         <xsl:value-of select="./full_name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="docblock/description"/>
-                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'constant'">
                                     <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
                                         <xsl:value-of select="./name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="docblock/description"/>
-                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:when test="name() = 'property'">
                                     <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
                                         <xsl:value-of select="./name" />
-                                        <br/>
-                                        <small>
-                                            <xsl:value-of select="docblock/description"/>
-                                        </small>
                                     </a>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:value-of select="./name" />
-                                    <br/>
-                                    <small>
-                                        <xsl:value-of select="docblock/description"/>
-                                    </small>
                                 </xsl:otherwise>
                             </xsl:choose>
                             </span>
@@ -210,9 +166,6 @@
               <span class="constant">
                 <a href="{$root}{../@generated-path}#::{name}" target="content">
                   <xsl:value-of select="name" /><br/>
-                  <small>
-                      <xsl:value-of select="docblock/description"/>
-                  </small>
                 </a>
               </span>
             </li>
@@ -222,9 +175,6 @@
               <span class="function">
                 <a href="{$root}{../@generated-path}#::{name}()" target="content">
                   <xsl:value-of select="name" /><br/>
-                  <small>
-                      <xsl:value-of select="docblock/description"/>
-                  </small>
                 </a>
               </span>
             </li>
@@ -234,9 +184,6 @@
               <span class="{name()}">
                 <a href="{$root}{../@generated-path}#{full_name}" target="content">
                   <xsl:value-of select="name" /><br/>
-                  <small>
-                      <xsl:value-of select="docblock/description"/>
-                  </small>
                 </a>
               </span>
             </li>
@@ -245,109 +192,115 @@
       </li>
   </xsl:template>
 
+    <xsl:template match="subpackage">
+        <xsl:variable name="package" select="../@name" />
+        <li class="closed">
+          <xsl:variable name="subpackage" select="." />
+          <span class="folder">
+            <xsl:if test="$subpackage=''">Default</xsl:if>
+            <xsl:if test="not($subpackage='')">
+              <xsl:value-of select="$subpackage" />
+            </xsl:if>
+          </span>
+          <ul id="packages_{$package}_{$subpackage}" class="filetree">
+
+            <!-- List all functions whose file has a package which matches @name but no subpackage OR which have no package and $package is empty -->
+            <xsl:for-each select="/project/file[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]/function">
+              <xsl:sort select="name" />
+              <li class="closed">
+                <span class="{name()}">
+                  <a href="{$root}{../@generated-path}#::{name}()" target="content">
+                    <xsl:value-of select="name" />
+                  </a>
+                </span>
+              </li>
+            </xsl:for-each>
+
+            <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]|/project/file/interface[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]">
+              <xsl:sort select="name" />
+              <li>
+                <span class="{name()}">
+                  <a href="{$root}{../@generated-path}#{full_name}" target="content">
+                    <xsl:value-of select="name" />
+                  </a>
+                </span>
+              </li>
+            </xsl:for-each>
+
+          </ul>
+        </li>
+    </xsl:template>
+
+  <xsl:template name="package-content">
+      <xsl:param name="package"/>
+
+      <!-- List all subpackages and their classes -->
+      <xsl:for-each select="subpackage">
+          <xsl:sort select="."/>
+          <xsl:apply-templates select="."/>
+      </xsl:for-each>
+
+      <!-- List all functions whose file has a package which matches @name but no subpackage OR which have no package and $package is empty -->
+      <xsl:for-each select="
+          /project/file[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]/function
+          |/project/file[not(docblock/tag[@name='package']) and $package='']/function">
+          <xsl:sort select="name"/>
+          <li class="closed">
+              <span class="{name()}">
+                  <a href="{$root}{../@generated-path}#::{name}()"
+                     target="content">
+                      <xsl:value-of select="name"/>
+                      <br/>
+                      <small>
+                          <xsl:value-of select="docblock/description"/>
+                      </small>
+                  </a>
+              </span>
+          </li>
+      </xsl:for-each>
+
+      <!-- List all classes that have a package which matches @name but no subpackage OR which have no package and $package is empty -->
+      <xsl:for-each select="
+            /project/file/class[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]
+            |/project/file/interface[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]
+            |/project/file/class[not(docblock/tag[@name='package']) and $package='']
+            |/project/file/interface[not(docblock/tag[@name='package']) and $package='']">
+          <xsl:sort select="name"/>
+          <li class="closed">
+              <span class="{name()}">
+                  <a href="{$root}{../@generated-path}#{full_name}"
+                     target="content">
+                      <xsl:value-of select="name"/>
+                  </a>
+              </span>
+          </li>
+      </xsl:for-each>
+  </xsl:template>
+
   <xsl:template match="package">
     <xsl:variable name="package" select="@name" />
     <xsl:if test="(count(/project/file/class[docblock/tag[@name='package'][@description=$package]]) > 0)
     or (count(/project/file/interface[docblock/tag[@name='package'][@description=$package]]) > 0)
     or (count(/project/file[docblock/tag[@name='package'][@description=$package]]/function) > 0)
-    or ($package = '' and ((count(/project/file[not(docblock/tag[@name='package'])]) > 0)
+    or ($package = '' and (
+        (count(/project/file[not(docblock/tag[@name='package'])]/function) > 0)
         or (count(/project/file/class[not(docblock/tag[@name='package'])]) > 0)
-        or (count(/project/file/interface[not(docblock/tag[@name='package'])]) > 0)))">
+        or (count(/project/file/interface[not(docblock/tag[@name='package'])]) > 0)
+        ))
+        ">
       <li class="closed">
-        <span class="folder">
-          <xsl:if test="@name=''">Default</xsl:if>
-          <xsl:if test="not(@name='')">
-            <xsl:value-of select="@name" />
-          </xsl:if>
-        </span>
-        <ul id="packages_{$package}" class="filetree">
-
-          <!-- List all subpackages and their classes -->
-          <xsl:for-each select="subpackage">
-            <xsl:sort select="." />
-            <li class="closed">
-              <xsl:variable name="subpackage" select="." />
+          <xsl:if test="count(/project/package[@name != '']) > 1">
               <span class="folder">
-                <xsl:if test="$subpackage=''">Default</xsl:if>
-                <xsl:if test="not($subpackage='')">
-                  <xsl:value-of select="$subpackage" />
-                </xsl:if>
+                  <xsl:if test="@name=''">Default</xsl:if>
+                  <xsl:if test="not(@name='')">
+                    <xsl:value-of select="@name" />
+                  </xsl:if>
               </span>
-              <ul id="packages_{$package}_{$subpackage}" class="filetree">
-
-                <!-- List all functions whose file has a package which matches @name but no subpackage OR which have no package and $package is empty -->
-                <xsl:for-each select="/project/file[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]/function">
-                  <xsl:sort select="name" />
-                  <li class="closed">
-                    <span class="{name()}">
-                      <a href="{$root}{../@generated-path}#::{name}()" target="content">
-                        <xsl:value-of select="name" />
-                        <br />
-                        <small>
-                          <xsl:value-of select="docblock/description" />
-                        </small>
-                      </a>
-                    </span>
-                  </li>
-                </xsl:for-each>
-
-                <xsl:for-each select="/project/file/class[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]|/project/file/interface[docblock/tag[@name='package'][@description=$package] and docblock/tag[@name='subpackage'][@description=$subpackage]]">
-                  <xsl:sort select="name" />
-                  <li>
-                    <span class="{name()}">
-                      <a href="{$root}{../@generated-path}#{full_name}" target="content">
-                        <xsl:value-of select="name" />
-                        <br />
-                        <small>
-                          <xsl:value-of select="docblock/description" />
-                        </small>
-                      </a>
-                    </span>
-                  </li>
-                </xsl:for-each>
-
-              </ul>
-            </li>
-          </xsl:for-each>
-
-          <!-- List all functions whose file has a package which matches @name but no subpackage OR which have no package and $package is empty -->
-          <xsl:for-each select="
-          /project/file[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]/function
-          |/project/file[not(docblock/tag[@name='package']) and $package='']/function">
-            <xsl:sort select="name" />
-            <li class="closed">
-              <span class="{name()}">
-                <a href="{$root}{../@generated-path}#::{name}()" target="content">
-                  <xsl:value-of select="name" />
-                  <br />
-                  <small>
-                    <xsl:value-of select="docblock/description" />
-                  </small>
-                </a>
-              </span>
-            </li>
-          </xsl:for-each>
-
-          <!-- List all classes that have a package which matches @name but no subpackage OR which have no package and $package is empty -->
-          <xsl:for-each select="
-            /project/file/class[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]
-            |/project/file/interface[docblock/tag[@name='package'][@description=$package] and not(docblock/tag[@name='subpackage'])]
-            |/project/file/class[not(docblock/tag[@name='package']) and $package='']
-            |/project/file/interface[not(docblock/tag[@name='package']) and $package='']">
-            <xsl:sort select="name" />
-            <li class="closed">
-              <span class="{name()}">
-                <a href="{$root}{../@generated-path}#{full_name}" target="content">
-                  <xsl:value-of select="name" />
-                  <br />
-                  <small>
-                    <xsl:value-of select="docblock/description" />
-                  </small>
-                </a>
-              </span>
-            </li>
-          </xsl:for-each>
-
+          </xsl:if>
+        <ul id="packages_{$package}" class="filetree">
+            <xsl:call-template name="package-content">
+                <xsl:with-param name="package" select="$package" />
+            </xsl:call-template>
         </ul>
       </li>
 
@@ -379,10 +332,6 @@
               <span class="{name()}">
                 <a href="{$root}{../@generated-path}#::{name}()" target="content">
                   <xsl:value-of select="name" />
-                  <br />
-                  <small>
-                    <xsl:value-of select="docblock/description" />
-                  </small>
                 </a>
               </span>
             </li>
@@ -394,10 +343,6 @@
               <span class="{name()}">
                 <a href="{$root}{../@generated-path}#{full_name}" target="content">
                   <xsl:value-of select="name" />
-                  <br />
-                  <small>
-                    <xsl:value-of select="docblock/description" />
-                  </small>
                 </a>
               </span>
             </li>
