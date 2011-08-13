@@ -6,8 +6,12 @@ xx/10/2011: Version 0.14.1
             The change has been done to be able to control the file selection process in more detail and spot/fix bugs
             with ignore paths and more.
 * ADDED:    EventDispatcher to coordinate logging efforts and make DocBlox extra extensible.
+* CHANGED:  Refactored transformer behaviour to use an abstract base class instead of an interface to support logging
+* CHANGED:  Refactored application architecture to contain components
+* ADDED:    Started work on plugins
 
 08/09/2011: Version 0.13.1
+--------------------------
 
 * FIXED:    Constants name NAMESPACE caused issues in the name detection
 * FIXED:    Property descriptions were not shown
