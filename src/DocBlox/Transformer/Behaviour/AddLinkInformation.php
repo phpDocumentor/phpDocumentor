@@ -23,24 +23,9 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_AddLinkInformation implements
-    DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_AddLinkInformation extends
+    DocBlox_Transformer_Behaviour_Abstract
 {
-    /** @var DocBlox_Core_Log */
-    protected $logger = null;
-
-    /**
-     * Sets the logger for this behaviour.
-     *
-     * @param DocBlox_Core_Log $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null)
-    {
-        $this->logger = $log;
-    }
-
     /**
      * Adds extra information to the structure.
      *
@@ -54,9 +39,7 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
      */
     public function process(DOMDocument $xml)
     {
-        if ($this->logger) {
-            $this->logger->log('Adding path information to each xml "file" tag');
-        }
+        $this->log('Adding path information to each xml "file" tag');
 
         $xpath = new DOMXPath($xml);
         // add to classes
@@ -71,9 +54,7 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation implements
         }
 
         // add extra xml elements to tags
-        if ($this->logger) {
-            $this->logger->log('Adding link information and excerpts to all DocBlock tags');
-        }
+        $this->log('Adding link information and excerpts to all DocBlock tags');
 //        $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|/project/file/*/extends|/project/file/*/implements');
 
         $qry = $xpath->query(

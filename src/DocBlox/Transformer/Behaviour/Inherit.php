@@ -24,24 +24,9 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Inherit implements
-    DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_Inherit extends
+    DocBlox_Transformer_Behaviour_Abstract
 {
-    /** @var DocBlox_Core_Log */
-    protected $logger = null;
-
-    /**
-     * Sets the logger for this behaviour.
-     *
-     * @param DocBlox_Core_Log $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null)
-    {
-        $this->logger = $log;
-    }
-
     /**
      * Apply inheritance of docblock elements to all elements.
      *
@@ -98,9 +83,7 @@ class DocBlox_Transformer_Behaviour_Inherit implements
      */
     public function process(DOMDocument $xml)
     {
-        if ($this->logger) {
-            $this->logger->log('Adding path information to each xml "file" tag');
-        }
+        $this->log('Adding path information to each xml "file" tag');
 
         $xpath = new DOMXPath($xml);
 

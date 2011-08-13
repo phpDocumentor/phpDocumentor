@@ -22,24 +22,9 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Tag_Return implements
-    DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_Tag_Return extends
+    DocBlox_Transformer_Behaviour_Abstract
 {
-    /** @var DocBlox_Core_Log */
-    protected $logger = null;
-
-    /**
-     * Sets the logger for this behaviour.
-     *
-     * @param DocBlox_Core_Log $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null)
-    {
-        $this->logger = $log;
-    }
-
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
      * terms for the name of the current class' type.
@@ -50,11 +35,7 @@ class DocBlox_Transformer_Behaviour_Tag_Return implements
      */
     public function process(DOMDocument $xml)
     {
-        if ($this->logger){
-            $this->logger->log(
-                'Transforming `self` and `$this` statements for @return tags'
-            );
-        }
+        $this->log('Transforming `self` and `$this` statements for @return tags');
 
         $ignoreQry = '//tag[@name=\'return\' and @type=\'\\self\']'
             . '|//tag[@name=\'return\' and @type=\'\\$this\']'
@@ -79,7 +60,7 @@ class DocBlox_Transformer_Behaviour_Tag_Return implements
 
             // if the method is not a method but a global function: error!
             if ($method->nodeName != 'method') {
-                $this->logger->log(
+                $this->log(
                     'Global function ' . $method_name . ' contains a reference '
                     . 'to self or $self', DocBlox_Core_Log::ERR
                 );

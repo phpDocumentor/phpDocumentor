@@ -23,8 +23,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Collection implements
-    DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_Collection extends
+    DocBlox_Transformer_Behaviour_Abstract
 {
     /** @var DocBlox_Transformer_Behaviour_Interface[] */
     protected $behaviours = array();
@@ -40,26 +40,12 @@ class DocBlox_Transformer_Behaviour_Collection implements
     }
 
     /**
-     * Sets the logger for each behaviour.
-     *
-     * @param DocBlox_Core_Log|null $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null)
-    {
-        foreach ($this->behaviours as $behaviour) {
-            $behaviour->setLogger($log);
-        }
-    }
-
-    /**
      * Adds a behaviour to a collection
      *
      * @param DocBlox_Transformer_Behaviour_Interface $behaviour
      * @return void
      */
-    public function addBehaviour(DocBlox_Transformer_Behaviour_Interface $behaviour)
+    public function addBehaviour(DocBlox_Transformer_Behaviour_Abstract $behaviour)
     {
         $this->behaviours[] = $behaviour;
     }
@@ -70,7 +56,7 @@ class DocBlox_Transformer_Behaviour_Collection implements
      * @param DocBlox_Transformer_Behaviour_Interface $behaviour
      * @return void
      */
-    public function removeBehaviour(DocBlox_Transformer_Behaviour_Interface $behaviour)
+    public function removeBehaviour(DocBlox_Transformer_Behaviour_Abstract $behaviour)
     {
         foreach ($this->behaviours as $key => $thisBehaviour) {
             if ($behaviour == $thisBehaviour) {

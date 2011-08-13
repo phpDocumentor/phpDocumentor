@@ -22,24 +22,9 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Tag_License implements
-    DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_Tag_License extends
+    DocBlox_Transformer_Behaviour_Abstract
 {
-    /** @var DocBlox_Core_Log */
-    protected $logger = null;
-
-    /**
-     * Sets the logger for this behaviour.
-     *
-     * @param DocBlox_Core_Log $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null)
-    {
-        $this->logger = $log;
-    }
-
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
      * terms for the name of the current class' type.
@@ -50,11 +35,7 @@ class DocBlox_Transformer_Behaviour_Tag_License implements
      */
     public function process(DOMDocument $xml)
     {
-        if ($this->logger){
-            $this->logger->log(
-                'Linking to email addresses in @author tags'
-            );
-        }
+        $this->log('Linking to email addresses in @author tags');
 
         // matches:
         // - foo@bar.com

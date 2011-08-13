@@ -23,7 +23,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-interface DocBlox_Transformer_Behaviour_Interface
+abstract class DocBlox_Transformer_Behaviour_Abstract
+    extends DocBlox_Transformer_Abstract
 {
     /**
      * Executes the behaviour on the given dataset,
@@ -32,14 +33,5 @@ interface DocBlox_Transformer_Behaviour_Interface
      *
      * @return DOMDocument
      */
-    public function process(DOMDocument $xml);
-
-    /**
-     * Sets the logger for this behaviour or removes it when $log is null.
-     *
-     * @param DocBlox_Core_Log|null $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null);
+    abstract public function process(DOMDocument $xml);
 }

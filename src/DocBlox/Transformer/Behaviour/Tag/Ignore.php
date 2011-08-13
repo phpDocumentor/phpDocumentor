@@ -19,25 +19,10 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Tag_Ignore implements
-    DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_Tag_Ignore extends
+    DocBlox_Transformer_Behaviour_Abstract
 {
     protected $tag = 'ignore';
-
-    /** @var DocBlox_Core_Log */
-    protected $logger = null;
-
-    /**
-     * Sets the logger for this behaviour.
-     *
-     * @param DocBlox_Core_Log $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null)
-    {
-        $this->logger = $log;
-    }
 
     /**
      * Removes DocBlocks marked with 'ignore' tag from the structure
@@ -48,11 +33,7 @@ class DocBlox_Transformer_Behaviour_Tag_Ignore implements
      */
     public function process(DOMDocument $xml)
     {
-        if ($this->logger){
-            $this->logger->log(
-                'Removing DocBlocks containing the @'.$this->tag.' tag'
-            );
-        }
+        $this->log('Removing DocBlocks containing the @'.$this->tag.' tag');
 
         $ignoreQry = '//tag[@name=\''. $this->tag . '\']';
 

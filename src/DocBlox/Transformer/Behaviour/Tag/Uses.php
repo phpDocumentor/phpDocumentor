@@ -22,24 +22,9 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Tag_Uses implements
-    DocBlox_Transformer_Behaviour_Interface
+class DocBlox_Transformer_Behaviour_Tag_Uses extends
+    DocBlox_Transformer_Behaviour_Abstract
 {
-    /** @var DocBlox_Core_Log */
-    protected $logger = null;
-
-    /**
-     * Sets the logger for this behaviour.
-     *
-     * @param DocBlox_Core_Log $log
-     *
-     * @return void
-     */
-    public function setLogger(DocBlox_Core_Log $log = null)
-    {
-        $this->logger = $log;
-    }
-
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
      * terms for the name of the current class' type.
@@ -104,7 +89,7 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
             // if the query is wrong; output a Critical error and continue to
             // the next @uses
             if($referral_nodes === false) {
-                $this->logger->log(
+                $this->log(
                     'An XPath error occurs while processing @uses, '
                     . 'the query used was: ' . $qry, DocBlox_Core_Log::CRIT
                 );
@@ -114,7 +99,7 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
             // check if the result is unique; if not we error and continue
             // to the next @uses
             if ($referral_nodes->length > 1) {
-                $this->logger->log(
+                $this->log(
                     '@uses "'.$refers.'" refers to more than 1 element',
                     DocBlox_Core_Log::ERR
                 );
@@ -126,7 +111,7 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
                 $referral = $referral_nodes->item(0);
                 $docblock = $referral->getElementsByTagName('docblock');
                 if ($docblock->length < 1) {
-                    $docblock = new DOMElement('docblock'); 
+                    $docblock = new DOMElement('docblock');
                     $referral->appendChild($docblock);
                 } else {
                     $docblock = $docblock->item(0);
