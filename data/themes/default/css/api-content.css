@@ -236,6 +236,10 @@ div.constant dt, div.property dt, .function-info dt, .return-info dt {
     word-wrap: break-word;
 }
 
+.file-info dd, .class-info dd {
+    border-bottom: 1px solid #f0f0f0;
+}
+
 .file-info dd a.class {
     background: transparent url('../images/icons/class.png') no-repeat 0px 0px;
     padding-left: 20px;

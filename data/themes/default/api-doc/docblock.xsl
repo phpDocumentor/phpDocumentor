@@ -1,6 +1,18 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <!-- Concatenate items with links with a given separator, based on: http://symphony-cms.com/download/xslt-utilities/view/22517/-->
+    <xsl:template name="ucfirst">
+        <xsl:param name="str"/>
+        <xsl:param name="strLen" select="string-length($str)"/>
+        <xsl:variable name="firstLetter" select="substring($str,1,1)"/>
+        <xsl:variable name="restString" select="substring($str,2,$strLen)"/>
+        <xsl:variable name="lower" select="'abcdefghijklmnopqrstuvwxyz'"/>
+        <xsl:variable name="upper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+        <xsl:variable name="translate"
+                      select="translate($firstLetter,$lower,$upper)"/>
+        <xsl:value-of select="concat($translate,$restString)"/>
+    </xsl:template>
+
+        <!-- Concatenate items with links with a given separator, based on: http://symphony-cms.com/download/xslt-utilities/view/22517/-->
   <xsl:template name="implodeTypes">
     <xsl:param name="items" />
     <xsl:param name="separator" select="'|'" />
@@ -36,7 +48,9 @@
 
   <xsl:template match="docblock/tag">
     <dt>
-      <xsl:value-of select="@name" />
+      <xsl:call-template name="ucfirst">
+        <xsl:with-param name="str" select="@name" />
+      </xsl:call-template>
     </dt>
     <dd>
         <xsl:if test="@link">
