@@ -1,6 +1,15 @@
 <project name="DocBlox" default="deploy" basedir=".">
     <property file="deploy.properties"/>
 
+    <target name="generate-manual">
+        <exec command="make html" dir="${project.basedir}/docs/manual" passthru="true" />
+    </target>
+
+    <target name="update-manual" depends="generate-manual">
+        <exec command="scp -r ${project.basedir}/docs/manual/.build/html/* ${server.username}@${server.docs}:${server.docs.path}"
+            passthru="true" checkreturn="true"/>
+    </target>
+
     <target name="get-version-number">
         <propertyprompt propertyName="version.number" promptText="Enter the new version number"/>
     </target>
@@ -63,5 +72,5 @@
         <exec command="git push origin v${version.number}" passthru="true" checkreturn="true"/>
     </target>
 
-    <target name="deploy" depends="update-version-number,package,publish-pear-package,publish-demo,update-ci,create-tag" />
+    <target name="deploy" depends="update-version-number,package,publish-pear-package,publish-demo,update-ci,create-tag,update-manual" />
 </project>
