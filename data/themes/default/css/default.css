@@ -9,9 +9,14 @@ html, body, #page
   height: 1px;
 }
 
+#contents {
+    margin-left: 260px;
+}
+
 #sidebar
 {
   width: 250px;
+  float: left;
 }
 
 #sidebar iframe, #contents iframe

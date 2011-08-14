@@ -15,6 +15,43 @@
         <link rel="stylesheet" href="{$root}css/theme.css" type="text/css" />
         <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery.splitter.js"></script>
+          <style>
+              .splitterMask
+              {
+                 position:absolute;
+                 top: 0;
+                 left: 0;
+                 width: 100%;
+                 height: 100%;
+                 overflow: hidden;
+                 background: transparent;
+                 z-index: 20000;
+              }
+
+              .vsplitbar {
+                width: 5px;
+                background: #aaa;
+              }
+
+              .resizable {
+                margin:  0px;
+                padding: 0px;
+              }
+          </style>
+          <script>
+              $().ready(function() {
+                  // to make the page work without JS we need to set a margin;
+                  // which distorts the splitter plugin and thus we set margin
+                  // to 0 when JS is enabled
+                  $("#contents").attr('style', 'margin: 0px;');
+
+                  $(".resizable").splitter({
+                      sizeLeft: 250
+                  });
+
+              });
+          </script>
       </head>
       <body class="chrome">
         <table id="page">
@@ -35,22 +72,16 @@
             </td>
           </tr>
           <tr>
-            <td id="sidebar">
-              <xsl:call-template name="search" />
-                <script type="text/javascript">
-                    $(function() {
-                        $("#sidebar-content").resizable({
-                            helper: "ui-resizable-helper",
-                            handles: 'e'
-                        });
-                    });
-                </script>
-                <div id="sidebar-content">
-                <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0"></iframe>
-              </div>
-            </td>
-            <td id="contents">
-              <iframe name="content" id="content" src="{$root}content.html" frameBorder="0"></iframe>
+            <td class="resizable">
+                <div id="sidebar">
+                    <xsl:call-template name="search" />
+                    <div id="sidebar-content">
+                        <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0"></iframe>
+                    </div>
+                </div>
+                <div id="contents">
+                    <iframe name="content" id="content" src="{$root}content.html" frameBorder="0"></iframe>
+                </div>
             </td>
           </tr>
         </table>
