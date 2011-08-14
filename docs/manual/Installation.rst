@@ -13,7 +13,7 @@ limited to a subset of features it is denoted with the dependency
 entry below.
 
 
--  PHP 5.2.6 or higher (5.2.x might work but is not supported, 5.3
+-  PHP 5.2.6 or higher (5.2.5 and lower might work but is not supported, 5.3
    is explicitly supported)
 -  XSL extension for PHP, only applicable when generating HTML via
    XSL (recommended)
@@ -43,13 +43,13 @@ And to install DocBlox you can use the following command:
 
 When the installation is finished you can invoke the ``docblox``
 command from any path in your system. Recommended is to read the
-chapter *Basic Usage*, which will explain how to start using
+chapter :doc:`Basic usage`, which will explain how to start using
 DocBlox.
 
 Manual Installation
 -------------------
 
-At docblox-project.org you can find the latest available release as
+At http://docblox-project.org you can find the latest available release as
 download. It is also possible to download the development version
 though this is not recommended for production environments.
 
@@ -59,15 +59,14 @@ The steps necessary for manual installation are:
 1. download your preferred installation archive from
    http://docblox-project.org
 2. unzip in your favourite location
-3. For Linux or Mac OSX: create a symlink from
-   <DOCBLOX\_PATH>/bin/docblox.php to you bin folder (usually
-   /usr/bin) named *docblox*
-4. Add <DOCBLOX\_PATH>/bin to your PATH so that you can invoke
-   docblox.bat from any location
+3. Depending upon your OS:
+
+   a. **For Linux or Mac OSX**: create a symlink from <DOCBLOX\_PATH>/bin/docblox.php
+      to your bin folder (usually /usr/bin) named ``docblox``.
+   b. **For Windows**: Add <DOCBLOX\_PATH>/bin to your PATH so that you can invoke
+      ``docblox.bat`` from any location.
 
 When the installation is finished you can invoke the ``docblox``
 command from any path in your system. Recommended is to read the
-chapter *Basic Usage*, which will explain how to start using
+chapter :doc:`Basic usage`, which will explain how to start using
 DocBlox.
-
-

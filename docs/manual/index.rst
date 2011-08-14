@@ -6,8 +6,6 @@
 Welcome to DocBlox's documentation!
 ===================================
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
@@ -17,10 +15,11 @@ Contents:
    Anatomy of a Docblock
    Building your own branding
    Contributor's Guide
+   FAQ
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
+.. Indices and tables
+.. ==================
+.. 
+.. * :ref:`genindex`
+.. * :ref:`search`
 

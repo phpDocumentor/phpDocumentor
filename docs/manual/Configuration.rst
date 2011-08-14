@@ -53,7 +53,7 @@ change with regard to the defaults.
 
 The easiest way to find out what the defaults are is to look in the
 configuration template, which is located in
-\_[DOCBLOX*FOLDER]/data/docblox.tpl.xml* or to examine the
+*[DOCBLOX FOLDER]/data/docblox.tpl.xml* or to examine the
 specifications in this document.
 
 Usually the following configuration suffices for your project:
@@ -80,7 +80,7 @@ The configuration expects you to specify for both what their output
     This way it is possible to provide a staging location where you
     indefinitely store your structure file and benefit from the
     increased speed when doing multiple runs. This is called
-    ``Incremental Processing`` or ``Incremental Parsing``.
+    **Incremental Processing** or **Incremental Parsing**.
 
 
 The transformer expects the source file to be at the target
@@ -212,33 +212,121 @@ The following fields are supported:
    included in the log files and is output to the screen. All
    priorities lower than the given are not logged. The following
    values are allowed (in order from highest to lowest priority):
--  emerg
--  alert
--  crit
--  err
--  warn
--  notice
--  info
--  debug
--  quiet
+
+   - emerg
+   - alert
+   - crit
+   - err
+   - warn
+   - notice
+   - info
+   - debug
+   - quiet
+
 -  *paths*, contains all folders to where DocBlox may log.
 -  *default*, this is the path of the default logging file, the
    name may be augmented with a {DATE} variable to provide a
-   timestamp.
+   timestamp and {APP_ROOT} to indicate the root of the DocBlox application.
 -  *errors*, messages with level *debug* are not added to the
    default log but in a separate log file whose path you can declare
    here. As with the *default* log file you can augment the path with
    the {DATE} variable.
 
+*Example*:
+
+::
+
+    <logging>
+        <level>warn</level>
+        <paths>
+            <default>{APP_ROOT}/data/log/{DATE}.log</default>
+            <errors>{APP_ROOT}/data/log/{DATE}.errors.log</errors>
+        </paths>
+    </logging>
+
 Transformations
 ~~~~~~~~~~~~~~~
 
 The transformations section controls the behaviour applied in
-transforming the intermediate format to the final human-readable
+transforming the intermediate structure format to the final human-readable
 output.
 
 The following fields are supported:
 
-\*
+- *template*, the name or path of a template to use. This element may be used
+  multiple times to combine several templates though usually you only supply one.
+  Example:
 
+  ::
 
+      <template name="default"/>
+
+  ::
+
+      <template name="/home/mvriel/Docblox Templates/myTemplate"/>
+
+- *transformation*, it is also possible to execute additional transformations
+  specifically for this project by defining your own transformations here.
+  See the chapter on :doc:`Building your own branding` for a description of the
+  transformation element and examples.
+
+*Example*:
+
+::
+
+    <transformations>
+        <template name="default" />
+    </transformations>
+
+Appendix A: basic configuration example
+---------------------------------------
+
+::
+
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <docblox>
+      <parser>
+        <target>data/output</target>
+      </parser>
+      <transformer>
+        <target>data/output</target>
+      </transformer>
+      <files>
+        <directory>.</directory>
+      </files>
+    </docblox>
+
+Appendix B: complete configuration example
+------------------------------------------
+
+::
+
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <docblox>
+        <parser>
+            <target>output</target>
+            <markers>
+                <item>TODO</item>
+                <item>FIXME</item>
+            </markers>
+            <extensions>
+                <extension>php</extension>
+                <extension>php3</extension>
+                <extension>phtml</extension>
+            </extensions>
+            <visibility></visibility>
+        </parser>
+        <transformer>
+            <target>output</target>
+        </transformer>
+        <logging>
+            <level>warn</level>
+            <paths>
+                <default>{APP_ROOT}/data/log/{DATE}.log</default>
+                <errors>{APP_ROOT}/data/log/{DATE}.errors.log</errors>
+            </paths>
+        </logging>
+        <transformations>
+            <template name="default" />
+        </transformations>
+    </docblox>

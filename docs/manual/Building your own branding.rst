@@ -1,16 +1,18 @@
 Building your own branding
 ==========================
 
-Developing your own branding consists of two steps:
+**Important:** *starting with version 0.14 will the theme template change due to
+improvements in the UI. If possible; try to postpone creating a theme until it
+is released.*
 
-
-1. Creating a theme
-2. Creating a template
+    Branding in this context means not only providing a custom look and feel
+    to the generated documentation; but also specifying what is generated
+    and with what parameters. DocBlox commonly refers to this as *templates*.
 
 Most of the time it is only necessary to replace the graphical
 layout with that of your own project. This is an easy process and
-requires little explanation on how theming and templating actually
-works. Please consult the chapter *Quick version* when the above is
+requires little explanation on how templating actually works.
+Please consult the chapter *Quick version* when the above is
 what you desire.
 
 Do you want to control every detail of how your template looks then
@@ -20,102 +22,33 @@ will provide more theory on how branding works in DocBlox.
 Quick version
 -------------
 
-As described the creation of your own branding consists of 2
-things: a theme and a template. I will describe the difference here
-in short so you know what each does:
+I will try to give a step-by-step description how to create your own branding:
 
-
-1. Theme, a theme is the visual part; this contains the template
-   used to render the looks for your documentation.
-2. Template, DocBlox supports the output of different pages; even
-   your own. The DocBlox Template determines which template files in
-   your theme will be *transformed* into HTML pages. It is even
-   possible to copy files and generate graphs using the transformation
-   rules in the DocBlox Template.
-
-I will try to give a step-by-step description how to create your
-own branding:
-
-Theme
-~~~~~
-
-
-1. Create a new folder in the ``<docblox>/data/themes`` folder with
-   the name of your intended theme. Please do *not* use spaces in this
-   path name as the XSL Writer (or actually libxsl) cannot handle
-   that.
-2. Create a new folder ``css`` in your theme's folder
-3. Create a new CSS file called ``theme.css`` in your theme's
-   ``css`` folder
-4. Add the following content to ``css/theme.css``:
+1. Create a new folder in your intended location (for example your project) with
+   the name of the intended theme. Please make sure *no* spaces are present in
+   the path as the XSL Writer (or actually libxsl) cannot handle that.
+2. invoke the following command:
 
    ::
 
-       @import url('navigation.css');
-       @import url('api-content.css');
-       @import url('default.css');
+       docblox theme:generate -t <target path> -n <template name>
 
-5. If all you need is to change some or all of the styles you can
-   just override them in the theme.css stylesheet; for most projects
-   this should work out since DocBlox has been designed to be as
-   flexible as possible when it comes to CSS styling.
+   ..
 
+     Optionally you can also provide **--author** to provide an author name and
+     **--version** to provide a version number to your theme.
 
-*If changing the CSS is not enough but you need to change the layout:*
+   The command above will generate a skeleton theme for you.
+3. Alter the theme.css in the css sub-folder to apply custom styling and/or alter
+   the index.xsl to add your own layout.
 
+   **Important:** please place your code in the tabular structure, thus your
+   head in the designated cell, your content in the designated cell and your
+   footer in the designated cell.
+   Because a 100% height scenario is desirable and due to the need for iframes
+   it is necessary to use a tabular structure instead of the box model.
 
-1. create a new file called ``index.xsl`` in your theme's folder
-   with the following skeleton code:
+   ..
 
-   ::
-
-       <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-         <xsl:output indent="yes" method="html" />
-       
-         <xsl:template match="/">
-           <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-             <head>
-               <title><xsl:value-of select="$title" /></title>
-               <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-               <link rel="stylesheet" href="{$root}css/black-tie/jquery-ui-1.8.2.custom.css" type="text/css" />
-               <link rel="stylesheet" href="{$root}css/theme.css" type="text/css" />
-               <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
-               <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
-             </head>
-             <body>
-       
-               <table id="page">
-               <tr>
-                 <td id="sidebar">
-                   <iframe name="nav" id="nav" src="{$root}nav.html" />
-                 </td>
-                 <td id="contents">
-                   <iframe name="content" id="content" src="{$root}content.html" />
-                 </td>
-               </tr>
-               </table>
-       
-             </body>
-           </html>
-         </xsl:template>
-       
-       </xsl:stylesheet>
-
-2. Change the skeleton code above to suit your design and or
-   Javascript.
-
-   **Please note:** The iframes will only match 100% of the height of
-   your browser without scrollbars if you create your design within
-   the table with id #page. If you add other elements outside of this
-   table in the body then you will have scrollbars.
-
-   *If you are able to achieve 100% height iframes with a header in all browsers: please contact me and contribute the code as I would love to dump the table.*
-
-
-Template
-~~~~~~~~
-
-Elaborate version
------------------
-
-
+     If you know a solution to change the tabular structure into box model;
+     please contact us via the methods mentioned in the README file.

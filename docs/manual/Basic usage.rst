@@ -15,7 +15,8 @@ following form:
 
 When you have installed a version directly from Github your should
 invoke the ``docblox.php`` script in the ``bin`` folder of your
-DocBlox installation.
+DocBlox installation unless you have added a symlink as described in the chapter
+:doc:`Installation`.
 
 Under Linux / MacOSX that would be:
 
@@ -27,7 +28,7 @@ And under Windows that would be:
 
 ::
 
-    $ php [DOCBLOX_FOLDER]\bin\docblox.php
+    $ [DOCBLOX_FOLDER]\bin\docblox
 
 Introduction
 ------------
@@ -35,10 +36,10 @@ Introduction
 DocBlox takes a two-step approach to generating documentation:
 
 
-1. Parse the source files and create a XML file (called
-   structure.xml) containing all meta-data
-2. Transform the XML file to human readable output (currently only
-   static HTML is supported)
+1. Parse the source files and create an intermediate structure file(called
+   structure.xml) containing all meta-data.
+2. Transform the intermediate structure file to a form of human readable output,
+   such as HTML.
 
 These steps can be executed at once or separate, depending upon
 your preference.
@@ -54,9 +55,9 @@ To generate your documentation you can use the ``run`` task:
 
 When ran without parameters (as shown above) it will try to get the
 location of the source code and the target folder from a
-configuration file (more on that in a different chapter) or exit
-with an error. You can use the help option (``-h``) to view a list
-of all possible actions.
+configuration file (which is discussed in the :doc:`Configuration` chapter) or
+exit with an error. You can use the help option (``-h`` or ``--help``) to view
+a list of all possible actions.
 
 ::
 
