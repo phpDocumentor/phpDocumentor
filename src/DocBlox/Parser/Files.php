@@ -280,9 +280,8 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
                     $this->ignore_patterns[$key][1]++;
 
                     $this->log(
-                        'system.log',
-                        '-- File "' . $filename . '" matches ignore pattern, '
-                        . 'will be skipped'
+                        'File "' . $filename . '" matches ignore pattern, '
+                        . 'will be skipped', DocBlox_Core_Log::INFO
                     );
                     continue 2;
                 }

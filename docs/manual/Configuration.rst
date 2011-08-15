@@ -82,12 +82,11 @@ The configuration expects you to specify for both what their output
     increased speed when doing multiple runs. This is called
     **Incremental Processing** or **Incremental Parsing**.
 
-
 The transformer expects the source file to be at the target
 location of the parser so you need not specify that explicitly.
 
 The files section allows you to specify where the source code for
-your project is.
+your project is and what files to ignore.
 
 ::
 
@@ -96,20 +95,38 @@ your project is.
         <file>bin/*</php>
         <directory>src</directory>
         <directory>tes??</directory>
+        <ignore>test/*</ignore>
       </files>
 
 It is allowed to use relative paths here; just remember that these
 are relative from the working directory where you execute DocBlox
 in.
 
-It is possible to specify specific files or a specific set of files
+It is possible to specify specific files or a specific set of **files**
 using the element. As with the -f parameter it supports wildcards.
 
-In addition you can also provide entire directory trees using the
+In addition you can also provide entire **directory** trees using the
 element. This also supports the use of wildcards. Please note that
 in contrary to the element that the element is recursive and will
 tell DocBlox to process all files contained in this folder and
 every subfolder.
+
+In some cases you will have to **ignore** certain files in your project; examples
+of these can be third party libraries and/or tests. In this case you can use
+the *ignore* element and provide a pattern (not a path) to ignore.
+This if you provide ``*test*`` it will ignore any file or directory containing
+the text *test* in it.
+
+The *starting point* or *base directory* for the ignore directive is the *Project
+Root*; which is the highest folder that all files share in common.
+Thus if you provide a single directory and that does not contain any parseable
+files and only on subfolder (which does contain parseable files) then the *Project Root*
+if not the given folder but the subfolder.
+
+    **Confusing?** We can imagine. This behavior will **change** slightly before version
+    1.0 of DocBlox to the following: when only one directory is provided and no
+    other files; then the given directory is the *Project Root*. In all other
+    cases the previously mentioned behaviour is still used.
 
 Reference
 ---------
@@ -277,6 +294,24 @@ The following fields are supported:
     <transformations>
         <template name="default" />
     </transformations>
+
+Files
+~~~~~
+
+Please see the previous sub-chapter :ref:`Basic configuration` for a complete
+description of the files section.
+
+*Example*:
+
+::
+
+      <files>
+        <file>test.php</php>
+        <file>bin/*</php>
+        <directory>src</directory>
+        <directory>tes??</directory>
+        <ignore>test/*</ignore>
+      </files>
 
 Appendix A: basic configuration example
 ---------------------------------------

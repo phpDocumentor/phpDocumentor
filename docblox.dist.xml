@@ -8,5 +8,6 @@
   </transformer>
   <files>
     <directory>.</directory>
+    <ignore>tests/*</ignore>
   </files>
 </docblox>

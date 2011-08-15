@@ -271,7 +271,7 @@ class Zend_Log
         } else {
             /** @see Zend_Log_Exception */
             require_once 'Zend/Log/Exception.php';
-            throw new Zend_Log_Exception('Bad log priority');
+            throw new Zend_Log_Exception('Bad log priority: '.$priority);
         }
     }
 
@@ -296,7 +296,7 @@ class Zend_Log
         if (! isset($this->_priorities[$priority])) {
             /** @see Zend_Log_Exception */
             require_once 'Zend/Log/Exception.php';
-            throw new Zend_Log_Exception('Bad log priority');
+            throw new Zend_Log_Exception('Bad log priority: '.$priority);
         }
 
         // pack into event required by filters and writers
