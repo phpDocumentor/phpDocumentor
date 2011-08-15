@@ -92,8 +92,14 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
      *
      * @return void
      */
-    public function apply(array $super, $class_name)
+    public function apply(array &$super, $class_name)
     {
+        // explicitly make a copy of the super array; every other element should
+        // have the $super as reference, except class.
+        // When $super is used by reference in this case then other classes will
+        // be polluted with methods from sibling classes.
+        $super_copy = $super;
+
         $class_name = current(
             $this->getDirectElementsByTagName($this->node, 'full_name')
         )->nodeValue;
@@ -106,11 +112,11 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         )->nodeValue;
 
         // only process if the super has a node with this name
-        if (isset($super['classes'][$parent])) {
+        if (isset($super_copy['classes'][$parent])) {
             $docblock = $this->getDocBlockElement();
 
             /** @var DOMElement $super_object  */
-            $super_object = $super['classes'][$parent]['object'];
+            $super_object = $super_copy['classes'][$parent]['object'];
 
             /** @var DOMElement $super_docblock  */
             $super_docblock = current(
@@ -132,7 +138,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             }
         }
 
-        $super['classes'][$node_name] = array(
+        $super_copy['classes'][$node_name] = array(
             'class' => $class_name,
             'object' => $this->node
         );
@@ -148,14 +154,14 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
                 continue;
             }
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Method($method);
-            $inherit->apply($super['methods'], $class_name);
+            $inherit->apply($super_copy['methods'], $class_name);
         }
         static $i = 0;
         // if a method present in the super classes but it is not declared
         // in this class then add it as an 'inherited_from' method.
         // explicitly do not updates the $super['methods'] array as this is mere
         // a virtual method and not one that counts for inheritance.
-        foreach($super['methods'] as $method_name => $method_collection) {
+        foreach($super_copy['methods'] as $method_name => $method_collection) {
             if (in_array($method_name, $method_names)) {
                 continue;
             }
@@ -196,7 +202,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         $properties = $this->getDirectElementsByTagName($this->node, 'property');
         foreach ($properties as $property) {
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Property($property);
-            $inherit->apply($super['properties'], $class_name);
+            $inherit->apply($super_copy['properties'], $class_name);
         }
 
         // apply inheritance to every class or interface extending this one
@@ -222,7 +228,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
                 $node, $this->document
             );
-            $inherit->apply($super, $class_name);
+            $inherit->apply($super_copy, $class_name);
         }
     }
 
