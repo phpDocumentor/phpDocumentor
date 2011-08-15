@@ -13,7 +13,19 @@
  */
 
 /**
- * Core class responsible for parsing the given files to a structure.xml file.
+ * Class responsible for parsing the given file or files to the intermediate
+ * structure file.
+ *
+ * This class can be used to parse one or more files to the intermediate file
+ * format for further processing.
+ *
+ * Example of use:
+ *
+ *     $files = new DocBlox_Parser_Files();
+ *     $files->addDirectories(getcwd());
+ *     $parser = new DocBlox_Parser();
+ *     $parser->setPath($files->getProjectRoot());
+ *     echo $parser->parseFiles($files);
  *
  * @category DocBlox
  * @package  Parser

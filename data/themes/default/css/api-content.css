@@ -221,6 +221,7 @@ div.long-description code {
     margin-left: 20px;
     background: gray;
     white-space: pre;
+    color: white;
 }
 
 div.constant dd, div.constant dt,
