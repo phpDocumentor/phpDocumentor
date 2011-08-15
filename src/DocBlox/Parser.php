@@ -60,6 +60,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * @param string $title The intended title for this project.
      *
+     * @api
+     *
      * @return void
      */
     public function setTitle($title)
@@ -69,6 +71,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
 
     /**
      * Returns the HTML text which is found at the title's position.
+     *
+     * @api
      *
      * @return null|string
      */
@@ -82,6 +86,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * @param bool $forced Forces a full parse.
      *
+     * @api
+     *
      * @return void
      */
     public function setForced($forced)
@@ -94,6 +100,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * To prevent incompatibilities we force a full rebuild if the version of
      * DocBlox does not equal the structure's version.
+     *
+     * @api
      *
      * @return bool
      */
@@ -121,6 +129,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * @param bool $validate when true this file will be checked.
      *
+     * @api
+     *
      * @return void
      */
     public function setValidate($validate)
@@ -130,6 +140,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
 
     /**
      * Returns whether we want to run PHPLint on every file.
+     *
+     * @api
      *
      * @return bool
      */
@@ -143,6 +155,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * @param string[] $markers A list or markers to gather.
      *
+     * @api
+     *
      * @return void
      */
     public function setMarkers(array $markers)
@@ -152,6 +166,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
 
     /**
      * Returns the list of markers.
+     *
+     * @api
      *
      * @return string[]
      */
@@ -164,6 +180,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * Imports an existing XML source to enable incremental parsing.
      *
      * @param string|null $xml XML contents if a source exists, otherwise null.
+     *
+     * @api
      *
      * @return void
      */
@@ -187,6 +205,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     /**
      * Returns the existing data structure as DOMDocument.
      *
+     * @api
+     *
      * @return DOMDocument|null
      */
     public function getExistingXml()
@@ -199,6 +219,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * @param string $path Must be an absolute path.
      *
+     * @api
+     *
      * @return void
      */
     public function setPath($path)
@@ -210,6 +232,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * Set the visibility of the methods/properties that should be documented
      *
      * @param string $visibility Comma seperated string of visibility modifiers
+     *
+     * @api
      *
      * @return void
      */
@@ -248,9 +272,11 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * @param string $filename The filename to parse.
      *
+     * @api
+     *
      * @return string|bool The XML element or false if none could be made.
      */
-    function parseFile($filename)
+    public function parseFile($filename)
     {
         $this->log('Starting to parse file: ' . $filename);
         $this->debug('Starting to parse file: ' . $filename);
@@ -367,6 +393,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * Iterates through the given files and builds the structure.xml file.
      *
      * @param DocBlox_Parser_Files $files A files container to parse.
+     *
+     * @api
      *
      * @return bool|string
      */
