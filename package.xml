@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-08-09</date>
- <time>08:08:26</time>
+ <date>2011-08-15</date>
+ <time>23:34:29</time>
  <version>
-  <release>0.13.1</release>
-  <api>0.13.1</api>
+  <release>0.13.2</release>
+  <api>0.13.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -301,12 +301,16 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="zdenek-gromnica_infrared.zip" role="php" />
     </dir> <!-- /docs/design -->
     <dir name="manual">
-     <file baseinstalldir="/DocBlox" name="01 - Installation.md" role="php" />
-     <file baseinstalldir="/DocBlox" name="02 - Basic usage.md" role="php" />
-     <file baseinstalldir="/DocBlox" name="03 - Configuration.md" role="php" />
-     <file baseinstalldir="/DocBlox" name="04 - Anatomy of a DocBlock.md" role="php" />
-     <file baseinstalldir="/DocBlox" name="05 - Building your own branding.md" role="php" />
-     <file baseinstalldir="/DocBlox" name="99 - Contributor's Guide.md" role="php" />
+     <file baseinstalldir="/DocBlox" name="Anatomy of a Docblock.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="Basic usage.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="Building your own branding.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="conf.py" role="php" />
+     <file baseinstalldir="/DocBlox" name="Configuration.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="Contributor's Guide.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="FAQ.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="index.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="Installation.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="Makefile" role="php" />
     </dir> <!-- /docs/manual -->
     <file baseinstalldir="/DocBlox" name="CHANGELOG" role="php" />
     <file baseinstalldir="/DocBlox" name="packages.mm" role="php" />
@@ -353,6 +357,8 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <file baseinstalldir="/DocBlox" name="Link.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Param.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Property.php" role="php" />
+        <file baseinstalldir="/DocBlox" name="PropertyRead.php" role="php" />
+        <file baseinstalldir="/DocBlox" name="PropertyWrite.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Return.php" role="php" />
         <file baseinstalldir="/DocBlox" name="See.php" role="php" />
         <file baseinstalldir="/DocBlox" name="Throw.php" role="php" />
@@ -567,7 +573,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
    <file baseinstalldir="/DocBlox" name="README" role="php" />
    <file baseinstalldir="/DocBlox" name="README.md" role="data" />
-   <file baseinstalldir="/DocBlox" name="test.php" role="php" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -609,14 +614,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.13.1</release>
-    <api>0.13.1</api>
+    <release>0.13.2</release>
+    <api>0.13.2</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-08-09</date>
+   <date>2011-08-15</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
