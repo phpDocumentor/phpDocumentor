@@ -137,7 +137,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             return explode(',', parent::getIgnore());
         }
 
-        return DocBlox_Core_Abstract::config()->getArrayFromPath('parser/ignore/item');
+        return DocBlox_Core_Abstract::config()->getArrayFromPath('files/ignore');
     }
 
     /**
