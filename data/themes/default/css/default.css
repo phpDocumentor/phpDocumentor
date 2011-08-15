@@ -97,12 +97,6 @@ ul.filetree li a:hover small
   color:   gray;
 }
 
-#sidebar-content
-{
-    width: 100%;
-    height: 100%;
-}
-
 .ui-resizable-helper
 {
     border-right: 40px solid silver;
@@ -112,4 +106,25 @@ ul.filetree li a:hover small
     zoom: 1;
     filter: alpha(opacity = 20);
     opacity: 0.2;
+}
+
+.splitterMask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    z-index: 20000;
+}
+
+.vsplitbar {
+    width: 5px;
+    background: #f0f0f0;
+}
+
+.resizable {
+    margin: 0px;
+    padding: 0px;
 }
