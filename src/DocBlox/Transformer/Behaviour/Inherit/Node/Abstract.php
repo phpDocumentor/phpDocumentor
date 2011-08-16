@@ -235,7 +235,7 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
      *
      * @return void
      */
-    public function apply(array $super, $class_name)
+    public function apply(array &$super, $class_name)
     {
         // the name is always the first encountered child element with
         // tag name 'name'

@@ -180,9 +180,19 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
             $from = $graph->findNode(str_replace(array('\\', '$'), '_', $from_name));
             $to = $graph->findNode(str_replace(array('\\', '$'), '_', $to_name));
 
-            if ($to === null)
-            {
-                $to = DocBlox_GraphViz_Node::create(str_replace(array('\\', '$'), '_', $to_name));
+            if ($from === null) {
+                $from = DocBlox_GraphViz_Node::create(
+                    str_replace(array('\\', '$'), '_', $from_name)
+                );
+                $from->setFontColor('gray');
+                $from->setLabel(addslashes($from_name));
+                $graph->setNode($from);
+            }
+
+            if ($to === null) {
+                $to = DocBlox_GraphViz_Node::create(
+                    str_replace(array('\\', '$'), '_', $to_name)
+                );
                 $to->setFontColor('gray');
                 $to->setLabel(addslashes($to_name));
                 $graph->setNode($to);
@@ -209,6 +219,14 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
 
                 $from = $graph->findNode(str_replace(array('\\', '$'), '_', $from_name));
                 $to = $graph->findNode(str_replace(array('\\', '$'), '_', $to_name));
+
+                if ($from === null)
+                {
+                    $from = DocBlox_GraphViz_Node::create(str_replace(array('\\', '$'), '_', $from_name));
+                    $from->setFontColor('gray');
+                    $from->setLabel(addslashes($from_name));
+                    $graph->setNode($from);
+                }
 
                 if ($to === null) {
                     $to = DocBlox_GraphViz_Node::create(str_replace(array('\\', '$'), '_', $to_name));

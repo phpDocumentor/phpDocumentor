@@ -129,7 +129,7 @@
                             <xsl:apply-templates select="docblock/tag[@name='return']/type"/>
                         </td>
                         <td>
-                            <xsl:apply-templates select="docblock/tag[@name='return']/description"/>
+                            <xsl:apply-templates select="docblock/tag[@name='return']/@description"/>
                         </td>
                     </tr>
                 </table>
