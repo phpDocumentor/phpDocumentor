@@ -29,6 +29,7 @@
         <search>xmljs</search>
       </parameters>
     </transformation>
+    <transformation query="" writer="xsl" source="themes/old_ocean/parse_markers.xsl" artifact="parse_markers.html" />
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
   </transformations>
 </template>

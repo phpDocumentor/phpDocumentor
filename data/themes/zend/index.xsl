@@ -28,6 +28,7 @@
                   <ul id="top-nav" class="top-nav">
                       <li><a href="graph.html" target="content">Class diagram</a></li>
                       <li><a href="markers.html" target="content">Todo / Fixme</a></li>
+                      <li><a href="parse_markers.html" target="content">Errors</a></li>
                   </ul>
               </div>
             </div>
