@@ -48,6 +48,7 @@
         <xsl:if test="not(@link)">
             <xsl:value-of select="@description" disable-output-escaping="yes"/>
         </xsl:if>
+        &#160;
     </dd>
   </xsl:template>
 
