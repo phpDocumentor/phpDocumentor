@@ -102,7 +102,7 @@ abstract class DocBlox_Parser_Abstract
      */
     public function log_parse($type, $message, $line) {
         $this->dispatch(
-                'fileparse.log', 
+                'parser.log', 
                 array(
                     'type' => $type,
                     'message' => $message,

@@ -155,7 +155,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
      */
     public function log_parse($type, $message, $line) {
         $this->dispatch(
-                'fileparse.log', 
+                'parser.log', 
                 array(
                     'type' => $type,
                     'message' => $message,
