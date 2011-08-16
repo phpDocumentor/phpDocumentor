@@ -1,4 +1,4 @@
-xx/10/2011: Version 0.14.1
+xx/10/2011: Version 0.14.0
 --------------------------
 * BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.
             Anyone using the command line will not notice this BC break but if you use DocBlox_Parser directly this will
@@ -9,6 +9,8 @@ xx/10/2011: Version 0.14.1
 * CHANGED:  Refactored transformer behaviour to use an abstract base class instead of an interface to support logging
 * CHANGED:  Refactored application architecture to contain components
 * ADDED:    Started work on plugins
+* CHANGED:  Moved `ignore` config section to parser
+* FIXED:    Splitter implementation
 
 08/09/2011: Version 0.13.1
 --------------------------
