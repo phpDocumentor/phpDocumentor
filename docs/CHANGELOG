@@ -1,4 +1,27 @@
+08/??/2011: Version 0.13.3
+--------------------------
+
+* FIXED:    Empty tag description could cause alignment issues
+
+08/15/2011: Version 0.13.2
+--------------------------
+
+* FIXED:    during graph generation it could occur that nodes were left empty,
+            which caused graph generation to fail: thanks to @tacker
+* FIXED:    ZendX_Autoloader contained a bug where the version determination was
+            off with 2 build numbers: thanks to @mrook
+* FIXED:    Description for @return tag was not shown
+* FIXED:    Regression issue which caused inheritance to no longer function
+* ADDED:    Documentation in the docs/manual folder and the sphinx files to
+            accompany.
+* FIXED:    Methods without return values did not show anything at the end;
+            changed that to void to make it clear.
+* FIXED:    property-read and property-write did not function correctly
+* FIXED:    if an @uses type contains a apostrophe then the Uses behaviour
+            would fatal. Example: $GLOBAL['MyGlobal']
+
 08/09/2011: Version 0.13.1
+--------------------------
 
 * FIXED:    Constants name NAMESPACE caused issues in the name detection
 * FIXED:    Property descriptions were not shown
