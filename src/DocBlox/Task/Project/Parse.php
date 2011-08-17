@@ -194,6 +194,12 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
 
         $files = array();
         foreach ($expressions as $expr) {
+            // provide a way to override the configuration settings by
+            // passing `--` as option to -f
+            if ($expr == '--') {
+                continue;
+            }
+
             // search file(s) with the given expressions
             $result = strpbrk($expr, '?*[') !== false
                 ? glob($expr)
@@ -220,14 +226,16 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_ConfigurableAbstract
         }
 
         $expressions = array_unique(
-            $this->getDirectory() || !empty($files)
+            $this->getDirectory()
             ? explode(',', $this->getDirectory())
             : DocBlox_Core_Abstract::config()->getArrayFromPath('files/directory')
         );
 
         foreach ($expressions as $directory) {
-            // if the given is not a directory, skip it
-            if (!is_dir($directory)) {
+            // if the given is not a directory, skip it and
+            // provide a way to override the configuration settings by
+            // passing `--` as option to -d
+            if (!is_dir($directory) || ($directory == '--')) {
                 continue;
             }
 
