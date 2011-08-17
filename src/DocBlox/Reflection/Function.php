@@ -85,7 +85,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
                 /** @var DocBlox_Reflection_DocBlock_Tag $params  */
                 $params = $this->getDocBlock()->getTagsByName('param');
                 if (!isset($params[count($this->arguments) - 1])) {
-                    $this->log_parse('NOTICE', 'Argument ' . $argument->getName() . ' is missing from the function Docblock',$argument->getLineNumber());
+                    $this->logParserError('NOTICE', 'Argument ' . $argument->getName() . ' is missing from the function Docblock',$argument->getLineNumber());
                 } else
                 {
                     $param_name = $params[count($this->arguments) - 1]->getVariableName();
@@ -95,7 +95,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
                         }
                         else
                         {
-                            $this->log_parse('NOTICE','Name of argument ' . $argument->getName() . ' does not match with function Docblock', $argument->getLineNumber());
+                            $this->logParserError('NOTICE','Name of argument ' . $argument->getName() . ' does not match with function Docblock', $argument->getLineNumber());
                         }
                     }
                 }

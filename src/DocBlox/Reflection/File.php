@@ -121,7 +121,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * 
      * @param sfEvent $data 
      */
-    function parse_marker($data){
+    function addParserMarker($data)
+    {
         $this->parse_markers[] = array(
             $data['type'],
             $data['message'],

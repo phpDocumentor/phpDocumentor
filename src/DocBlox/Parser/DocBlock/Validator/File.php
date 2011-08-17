@@ -45,19 +45,19 @@ class DocBlox_Parser_DocBlock_Validator_File
 
         if (!$this->docblock->hasTag('package')) {
             $valid = false;
-            $this->log_parse('ERROR', 'No Page-level DocBlock '
+            $this->logParserError('ERROR', 'No Page-level DocBlock '
                     . 'was found', $this->line_number);
         }
 
         if (count($this->docblock->getTagsByName('package')) > 1) {
-            $this->log_parse('CRITICAL', 'File cannot have more than '
+            $this->logParserError('CRITICAL', 'File cannot have more than '
                     . 'one @package tag', $this->line_number);
         }
 
         if ($this->docblock->hasTag('subpackage')
             && !$this->docblock->hasTag('package')
         ) {
-            $this->log_parse('CRITICAL', 'File cannot have a @subpackage '
+            $this->logParserError('CRITICAL', 'File cannot have a @subpackage '
                 . 'when a @package tag is not present', $this->line_number);
         }
 

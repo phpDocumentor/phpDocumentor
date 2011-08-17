@@ -100,7 +100,8 @@ abstract class DocBlox_Parser_Abstract
      *
      * @return void
      */
-    public function log_parse($type, $message, $line) {
+    public function logParserError($type, $message, $line) 
+    {
         $this->dispatch(
                 'parser.log', 
                 array(

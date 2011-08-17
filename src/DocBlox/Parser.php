@@ -298,7 +298,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         try {
             $file = new DocBlox_Reflection_File($filename, $this->doValidation());
             
-            self::$event_dispatcher->connect('parser.log', array($file, 'parse_marker'));
+            self::$event_dispatcher->connect('parser.log', array($file, 'addParserMarker'));
             $dispatched = true;
             
             $file->setMarkers($this->getMarkers());
@@ -351,7 +351,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         
         //disconnects the dispatcher here so if any error occured, it still removes the event
         if($dispatched){
-            self::$event_dispatcher->disconnect('parser.log', array($file, 'parse_marker'));
+            self::$event_dispatcher->disconnect('parser.log', array($file, 'addParserMarker'));
         }
 
         $this->debug(
