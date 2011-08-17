@@ -92,7 +92,9 @@
                 <span class="attribute">abstract</span>
             </xsl:if>
 
-            <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
+            <p class="short_description">
+                <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
+            </p>
 
             <xsl:if test="inherited_from">
                 <small>Inherited from:
