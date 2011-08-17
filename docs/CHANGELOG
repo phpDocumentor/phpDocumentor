@@ -2,6 +2,7 @@
 --------------------------
 
 * FIXED:    Empty tag description could cause alignment issues
+* FIXED:    Inline markdown code elements were transformed into blocks (#201)
 
 08/15/2011: Version 0.13.2
 --------------------------
