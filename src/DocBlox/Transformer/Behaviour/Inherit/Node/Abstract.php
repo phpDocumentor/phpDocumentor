@@ -140,6 +140,16 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
             }
 
             $docblock->appendChild(clone $super_desc);
+        } elseif ($desc && $super_desc) {
+            // if a short description exists in both child and parent; insert the
+            // parent's SD when the inline tag {@inheritdoc} is used.
+            $desc->nodeValue = htmlspecialchars(
+                str_ireplace(
+                    '{@inheritdoc}',
+                    $super_desc->nodeValue,
+                    $desc->nodeValue
+                )
+            );
         }
     }
 
@@ -159,6 +169,9 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
         $desc = current(
             $this->getDirectElementsByTagName($docblock, 'long-description')
         );
+        $short_desc = current(
+            $this->getDirectElementsByTagName($docblock, 'description')
+        );
 
         $super_desc = current(
             $this->getDirectElementsByTagName($super_docblock, 'long-description')
@@ -173,15 +186,23 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
 
             $docblock->appendChild(clone $super_desc);
         } elseif ($desc && $super_desc) {
-            // if a long description exists in both child and parent; insert the
-            // parent's LD when the inline tag {@inheritdoc} is used.
-            $desc->nodeValue = htmlspecialchars(
-                str_ireplace(
-                    '{@inheritdoc}',
-                    $super_desc->nodeValue,
-                    $desc->nodeValue
-                )
-            );
+
+            // if the short description equals {@inheritdoc}, copy the long
+            // description as well.
+            if (strtolower($short_desc->nodeValue) == '{@inheritdoc}') {
+                $desc->nodeValue = $super_desc->nodeValue
+                    . "\n" . $desc->nodeValue;
+            } else {
+                // if a long description exists in both child and parent; insert the
+                // parent's LD when the inline tag {@inheritdoc} is used.
+                $desc->nodeValue = htmlspecialchars(
+                    str_ireplace(
+                        '{@inheritdoc}',
+                        $super_desc->nodeValue,
+                        $desc->nodeValue
+                    )
+                );
+            }
         }
     }
 
@@ -260,8 +281,10 @@ abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
             // only copy the docblock info when it is present in the superclass
             if ($super_docblock)
             {
-                $this->copyShortDescription($super_docblock, $docblock);
+                // first long, then short in order for the {@inheritdoc} to
+                // function properly
                 $this->copyLongDescription($super_docblock, $docblock);
+                $this->copyShortDescription($super_docblock, $docblock);
                 $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
             }
         }

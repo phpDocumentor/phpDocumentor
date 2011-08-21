@@ -15,6 +15,9 @@ xx/10/2011: Version 0.14.0
             only 1 directory is given is set to that folder instead of the first
             sub-folder containing a parsable file.
 * ADDED:    Directories also support wildcards now
+* ADDED:    {@inheritdoc} can now also be used in the short description; when
+            used there then the long description will also act as if it has the
+            {@inheritdoc} inline tag.
 
 08/21/2011: Version 0.13.3
 --------------------------
