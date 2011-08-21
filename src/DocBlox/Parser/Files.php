@@ -153,6 +153,27 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     public function addDirectory($path)
     {
         $result = glob($path);
+        if ($result === false) {
+            throw new DocBlox_Parser_Exception(
+                '"'.$path . '" does not match an existing directory pattern'
+            );
+        }
+
+        // if the given path is the only one AND there are no registered files.
+        // then use this as project root instead of the calculated version.
+        // This will make sure than when a _single_ path is given, that the
+        // root will not inadvertently skip to a higher location because no
+        // file were found in the given location.
+        // i.e. if only path `src` us given and no PHP files reside there, but
+        // they do reside in `src/php` then with this code `src` will remain
+        // root so that ignore statements work as expected. Without this the
+        // root would be `src/php`, which is unexpected when only a single folder
+        // is provided.
+        if ((count($result) == 1) && (empty($this->files))) {
+            $this->project_root = reset($result);
+        } else {
+            $this->project_root = null;
+        }
 
         foreach($result as $result_path) {
             // if the given is not a directory, skip it
@@ -197,6 +218,12 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
      */
     public function addFiles(array $paths)
     {
+        if (!empty($paths)) {
+            // if separate files are provided then the root must always be
+            // calculated.
+            $this->project_root = null;
+        }
+
         foreach ($paths as $path) {
             $this->addFile($path);
         }
@@ -240,9 +267,6 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
                 $this->files[] = $path;
             }
         }
-
-        // reset root cache
-        $this->project_root = null;
     }
 
     /**
