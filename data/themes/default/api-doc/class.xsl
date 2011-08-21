@@ -36,6 +36,7 @@
         </h2>
 
         <div class="class">
+            <small class="package"><b>Package: </b><xsl:value-of select="@package"/></small>
             <xsl:if test="docblock/description|docblock/long-description">
                 <xsl:apply-templates select="docblock/description"/>
                 <xsl:apply-templates select="docblock/long-description"/>
@@ -85,7 +86,7 @@
                 </xsl:if>
 
                 <xsl:apply-templates select="docblock/tag[@name='see']"/>
-                <xsl:apply-templates select="docblock/tag[@name != 'see']">
+                <xsl:apply-templates select="docblock/tag[@name != 'see' and @name != 'package' and @name != 'subpackage']">
                     <xsl:sort select="@name"/>
                 </xsl:apply-templates>
             </dl>

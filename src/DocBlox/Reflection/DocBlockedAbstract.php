@@ -76,7 +76,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         // if the object has no DocBlock _and_ is not a Closure; throw a warning
         $type = substr(get_class($this), strrpos(get_class($this), '_') + 1);
         if (!$result && (($type !== 'Function') && ($this->getName() !== 'Closure'))) {
-            $this->logParserError('ERROR', 'No DocBlock was found for ' . $type 
+            $this->logParserError('ERROR', 'No DocBlock was found for ' . $type
                     . ' ' . $this->getName(), $this->getLineNumber());
         }
 
@@ -169,6 +169,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         $xml->docblock->description          = $this->getDocBlock()->getShortDescription();
         $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getFormattedContents();
 
+        $package    = '';
+        $subpackage = '';
 
         /** @var DocBlox_Reflection_Docblock_Tag $tag */
         foreach ($this->getDocBlock()->getTags() as $tag) {
@@ -190,7 +192,22 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             if (isset($this->getDocBlock()->line_number)) {
                 $tag_object['line'] = $this->getDocBlock()->line_number;
             }
+
+            if ($tag->getName() == 'package') {
+                $package = $tag->getDescription();
+            }
+
+            if ($tag->getName() == 'subpackage') {
+                $subpackage = $tag->getDescription();
+            }
         }
+
+        // create a new 'meta-package' shaped like a namespace
+        $xml['package'] = str_replace(
+            array('.', '_'),
+            '\\',
+            $package . ($subpackage ? '\\' . $subpackage : '')
+        );
     }
 
     /**

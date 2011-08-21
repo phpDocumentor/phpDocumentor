@@ -170,7 +170,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         // root would be `src/php`, which is unexpected when only a single folder
         // is provided.
         if ((count($result) == 1) && (empty($this->files))) {
-            $this->project_root = reset($result);
+            $this->project_root = realpath(reset($result));
         } else {
             $this->project_root = null;
         }

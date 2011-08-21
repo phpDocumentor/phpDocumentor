@@ -297,10 +297,10 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         $dispatched = false;
         try {
             $file = new DocBlox_Reflection_File($filename, $this->doValidation());
-            
+
             self::$event_dispatcher->connect('parser.log', array($file, 'addParserMarker'));
             $dispatched = true;
-            
+
             $file->setMarkers($this->getMarkers());
             $file->setFilename($this->getRelativeFilename($filename));
             $file->setName($this->getRelativeFilename($filename));
@@ -348,7 +348,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             );
             $result = false;
         }
-        
+
         //disconnects the dispatcher here so if any error occured, it still removes the event
         if($dispatched){
             self::$event_dispatcher->disconnect('parser.log', array($file, 'addParserMarker'));
@@ -398,16 +398,18 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * @param array[]    $namespaces     the list of namespaces to process.
      * @param DOMElement $parent_element the node to receive the children of
      *                                   the above list.
+     * @param string     $node_name      the name of the summary element.
      *
      * @return void
      */
-    protected function generateNamespaceElements($namespaces, $parent_element)
+    protected function generateNamespaceElements($namespaces, $parent_element,
+        $node_name = 'namespace')
     {
         foreach ($namespaces as $name => $sub_namespaces) {
-            $node = new DOMElement('namespace');
+            $node = new DOMElement($node_name);
             $parent_element->appendChild($node);
             $node->setAttribute('name', $name);
-            $this->generateNamespaceElements($sub_namespaces, $node);
+            $this->generateNamespaceElements($sub_namespaces, $node, $node_name);
         }
     }
 
@@ -530,51 +532,20 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      */
     protected function buildPackageTree(DOMDocument $dom)
     {
-        // collect all packages and store them in the XML
         $this->log('Collecting all packages');
-        $packages = array('' => '');
-
-        // at least insert a default package
-        $node = new DOMElement('package');
-        $dom->documentElement->appendChild($node);
-        $node->setAttribute('name', '');
-
         $xpath = new DOMXPath($dom);
-        $qry = $xpath->query(
-            '/project/file/class/docblock/tag[@name="package"]'
-            . '|/project/file/interface/docblock/tag[@name="package"]'
-            . '|/project/file/docblock/tag[@name="package"]'
-        );
-
-        // iterate through all packages
+        $packages = array();
+        $qry = $xpath->query('//@package');
         for ($i = 0; $i < $qry->length; $i++) {
-            $package_name = $qry->item($i)->attributes
-                ->getNamedItem('description')->nodeValue;
-            if (isset($packages[$package_name])) {
+            if (isset($packages[$qry->item($i)->nodeValue])) {
                 continue;
             }
 
-            $packages[$package_name] = array();
-
-            // find all subpackages
-            $qry2 = $xpath->query(
-                '//docblock/tag[@name="package" and @description="'
-                . $package_name . '"]/../tag[@name="subpackage"]'
-            );
-            for ($i2 = 0; $i2 < $qry2->length; $i2++) {
-                $packages[$package_name][] = $qry2->item($i2)->attributes
-                    ->getNamedItem('description')->nodeValue;
-            }
-            $packages[$package_name] = array_unique($packages[$package_name]);
-
-            // create package XMl and subpackages
-            $node = new DOMElement('package');
-            $dom->documentElement->appendChild($node);
-            $node->setAttribute('name', $package_name);
-            foreach ($packages[$package_name] as $subpackage) {
-                $node->appendChild(new DOMElement('subpackage', $subpackage));
-            }
+            $packages[$qry->item($i)->nodeValue] = true;
         }
+
+        $packages = $this->generateNamespaceTree(array_keys($packages));
+        $this->generateNamespaceElements($packages, $dom->documentElement, 'package');
     }
 
     /**

@@ -24,21 +24,12 @@
         <xsl:if test="count(/project/package) > 0">
             <h1><a href="#">Packages</a></h1>
             <div style="padding: 0px;">
-                <xsl:if test="count(/project/package[@name != '']) &lt; 2">
-                <ul id="packages-" class="deadtree">
+                <ul id="packages-" class="filetree">
                     <xsl:apply-templates select="/project/package">
                         <xsl:sort select="@name"/>
+                        <xsl:with-param name="parent_name" select="''"/>
                     </xsl:apply-templates>
                 </ul>
-                </xsl:if>
-
-                <xsl:if test="count(/project/package[@name != '']) > 1">
-                <ul id="packages-" class="filetree">
-                  <xsl:apply-templates select="/project/package">
-                    <xsl:sort select="@name" />
-                  </xsl:apply-templates>
-                </ul>
-                </xsl:if>
             </div>
         </xsl:if>
 
@@ -277,6 +268,7 @@
       </xsl:for-each>
   </xsl:template>
 
+<!--
   <xsl:template match="package">
     <xsl:variable name="package" select="@name" />
     <xsl:if test="(count(/project/file/class[docblock/tag[@name='package'][@description=$package]]) > 0)
@@ -304,6 +296,55 @@
         </ul>
       </li>
 
+    </xsl:if>
+  </xsl:template>
+-->
+
+  <xsl:template match="package">
+    <xsl:param name="parent_name" />
+    <xsl:variable name="full_name" select="concat($parent_name, @name)" />
+
+      <xsl:if test="((count(/project/file/class[contains(@package, $full_name)]) > 0)
+        or (count(/project/file/interface[contains(@package, $full_name)]) > 0)
+        or (count(/project/file/function[contains(@package, $full_name)]) > 0))
+      ">
+      <li class="closed">
+        <span class="folder">
+          <xsl:if test="@name=''">\</xsl:if>
+          <xsl:if test="not(@name='')">
+            <xsl:value-of select="@name" />
+          </xsl:if>
+        </span>
+        <ul>
+          <!-- process child packages -->
+          <xsl:apply-templates select="package">
+            <xsl:sort select="@name" />
+            <xsl:with-param name="parent_name" select="concat($full_name, '\')" />
+          </xsl:apply-templates>
+
+          <xsl:for-each select="/project/file/function[@package=$full_name]">
+            <xsl:sort select="name" />
+            <li>
+              <span class="{name()}">
+                <a href="{$root}{../@generated-path}#::{name}()" target="content">
+                  <xsl:value-of select="name" />
+                </a>
+              </span>
+            </li>
+          </xsl:for-each>
+
+          <xsl:for-each select="/project/file/class[@package=$full_name]|/project/file/interface[@package=$full_name]">
+            <xsl:sort select="name" />
+            <li>
+              <span class="{name()}">
+                <a href="{$root}{../@generated-path}#{full_name}" target="content">
+                  <xsl:value-of select="name" />
+                </a>
+              </span>
+            </li>
+          </xsl:for-each>
+        </ul>
+      </li>
     </xsl:if>
   </xsl:template>
 

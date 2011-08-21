@@ -422,3 +422,8 @@ a.gripper img {
 div.inherited_from code span.highlight {
     color: gray;
 }
+
+small.package {
+    margin-top: -10px;
+    display: block;
+}
