@@ -5,6 +5,7 @@
     <ul id="menu">
       <li><a href="graph.html" target="content">Class diagram</a></li>
       <li><a href="markers.html" target="content">TODO / FIXME</a></li>
+      <li><a href="parse_markers.html" target="content">ERRORS</a></li>
     </ul>
   </xsl:template>
 

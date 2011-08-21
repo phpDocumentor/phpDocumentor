@@ -11,6 +11,9 @@
       <li>
         <a href="{$root}markers.html">TODO / Markers</a>
       </li>
+      <li>
+        <a href="{$root}parse_markers.html">Errors</a>
+      </li>
     </ul>
     <!--<h4>Charts</h4>-->
   </xsl:template>
