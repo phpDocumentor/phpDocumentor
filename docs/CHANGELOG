@@ -11,6 +11,10 @@ xx/10/2011: Version 0.14.0
 * ADDED:    Started work on plugins
 * CHANGED:  Moved `ignore` config section to parser
 * FIXED:    Splitter implementation
+* ADDED:    The project root (from where relative paths are calculated) when
+            only 1 directory is given is set to that folder instead of the first
+            sub-folder containing a parsable file.
+* ADDED:    Directories also support wildcards now
 
 08/21/2011: Version 0.13.3
 --------------------------
