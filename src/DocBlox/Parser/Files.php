@@ -152,38 +152,39 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
      */
     public function addDirectory($path)
     {
-        // if the given is not a directory, skip it
-        if (!is_dir($path)) {
-            throw new InvalidArgumentException(
-                'Expected the path to a folder but received: '
-                . var_export($path, true)
-            );
-        }
+        $result = glob($path);
 
-        // get all files recursively to the files array
-        $files_iterator = new RecursiveDirectoryIterator($path);
-
-        // add the CATCH_GET_CHILD option to make sure that an unreadable
-        // directory does not halt process but skip that folder
-        $recursive_iterator = new RecursiveIteratorIterator(
-            $files_iterator,
-            RecursiveIteratorIterator::LEAVES_ONLY,
-            RecursiveIteratorIterator::CATCH_GET_CHILD
-        );
-
-        /** @var SplFileInfo $file */
-        foreach ($recursive_iterator as $file) {
-            // skipping dots (should any be encountered)
-            if (($file->getFilename() == '.') || ($file->getFilename() == '..')) {
+        foreach($result as $result_path) {
+            // if the given is not a directory, skip it
+            if (!is_dir($result_path)) {
                 continue;
             }
 
-            // Phar files return false on a call to getRealPath
-            $this->addFile(
-                (substr($file->getPathname(), 0, 7) != 'phar://')
-                ? $file->getRealPath()
-                : $file->getPathname()
+            // get all files recursively to the files array
+            $files_iterator = new RecursiveDirectoryIterator($result_path);
+
+            // add the CATCH_GET_CHILD option to make sure that an unreadable
+            // directory does not halt process but skip that folder
+            $recursive_iterator = new RecursiveIteratorIterator(
+                $files_iterator,
+                RecursiveIteratorIterator::LEAVES_ONLY,
+                RecursiveIteratorIterator::CATCH_GET_CHILD
             );
+
+            /** @var SplFileInfo $file */
+            foreach ($recursive_iterator as $file) {
+                // skipping dots (should any be encountered)
+                if (($file->getFilename() == '.') || ($file->getFilename() == '..')) {
+                    continue;
+                }
+
+                // Phar files return false on a call to getRealPath
+                $this->addFile(
+                    (substr($file->getPathname(), 0, 7) != 'phar://')
+                    ? $file->getRealPath()
+                    : $file->getPathname()
+                );
+            }
         }
     }
 
@@ -293,7 +294,6 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         foreach ($this->ignore_patterns as $pattern) {
             if ($pattern[1] < 1) {
                 $this->log(
-                    'system.log',
                     'Ignore pattern "' . $pattern[0] . '" has not been used '
                     . 'during processing'
                 );
