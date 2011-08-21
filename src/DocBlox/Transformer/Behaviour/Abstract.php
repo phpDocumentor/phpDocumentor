@@ -26,12 +26,35 @@
 abstract class DocBlox_Transformer_Behaviour_Abstract
     extends DocBlox_Transformer_Abstract
 {
+    /** @var \DocBlox_Transformer $transformer */
+    protected $transformer = null;
+
     /**
      * Executes the behaviour on the given dataset,
      *
-     * @param DOMDocument $xml
+     * @param \DOMDocument $xml
      *
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     abstract public function process(DOMDocument $xml);
+
+    /**
+     * Sets the transformer used for this behaviour.
+     *
+     * @param \DocBlox_Transformer $transformer
+     */
+    public function setTransformer($transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
+    /**
+     * Returns the transformer that hosts this behaviour.
+     *
+     * @return \DocBlox_Transformer
+     */
+    public function getTransformer()
+    {
+        return $this->transformer;
+    }
 }

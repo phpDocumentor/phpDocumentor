@@ -50,18 +50,22 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      */
     public function __construct()
     {
-        $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(array(
-            new DocBlox_Transformer_Behaviour_GeneratePaths(),
-            new DocBlox_Transformer_Behaviour_Inherit(),
-            new DocBlox_Transformer_Behaviour_Tag_Ignore(),
-            new DocBlox_Transformer_Behaviour_Tag_Return(),
-            new DocBlox_Transformer_Behaviour_Tag_Param(),
-            new DocBlox_Transformer_Behaviour_Tag_Property(),
-            new DocBlox_Transformer_Behaviour_Tag_Uses(),
-            new DocBlox_Transformer_Behaviour_Tag_Author(),
-            new DocBlox_Transformer_Behaviour_Tag_License(),
-            new DocBlox_Transformer_Behaviour_AddLinkInformation(),
-        ));
+        $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(
+            $this,
+            array(
+                new DocBlox_Transformer_Behaviour_GeneratePaths(),
+                new DocBlox_Transformer_Behaviour_Inherit(),
+                new DocBlox_Transformer_Behaviour_Tag_Ignore(),
+                new DocBlox_Transformer_Behaviour_Tag_Return(),
+                new DocBlox_Transformer_Behaviour_Tag_Param(),
+                new DocBlox_Transformer_Behaviour_Tag_Property(),
+                new DocBlox_Transformer_Behaviour_Tag_Uses(),
+                new DocBlox_Transformer_Behaviour_Tag_Author(),
+                new DocBlox_Transformer_Behaviour_Tag_License(),
+                new DocBlox_Transformer_Behaviour_Tag_Internal(),
+                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
+            )
+        );
     }
 
     /**
@@ -309,12 +313,6 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
                     $xml
                 )
             );
-
-            if (!$this->getParseprivate()) {
-                $this->behaviours->addBehaviour(
-                    new DocBlox_Transformer_Behaviour_Tag_Internal()
-                );
-            }
 
             $xml = $this->behaviours->process($xml);
         }

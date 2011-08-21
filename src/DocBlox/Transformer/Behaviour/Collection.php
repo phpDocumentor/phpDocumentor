@@ -26,23 +26,33 @@
 class DocBlox_Transformer_Behaviour_Collection extends
     DocBlox_Transformer_Behaviour_Abstract
 {
-    /** @var DocBlox_Transformer_Behaviour_Interface[] */
+    /** @var DocBlox_Transformer */
+    protected $transformer = array();
+
+    /** @var DocBlox_Transformer_Behaviour_Abstract[] */
     protected $behaviours = array();
 
     /**
      * Initializes the list of Behaviours to execute each request.
      *
-     * @param DocBlox_Transformer_Behaviour_Interface[] $behaviours
+     * @param DocBlox_Transformer                       $transformer
+     * @param DocBlox_Transformer_Behaviour_Abstract[] $behaviours
      */
-    function __construct(array $behaviours)
+    public function __construct(DocBlox_Transformer $transformer, array $behaviours)
     {
-        $this->behaviours = $behaviours;
+        $this->transformer = $transformer;
+
+        foreach($behaviours as $behaviour) {
+            $behaviour->setTransformer($transformer);
+        }
+        $this->behaviours  = $behaviours;
     }
 
     /**
      * Adds a behaviour to a collection
      *
-     * @param DocBlox_Transformer_Behaviour_Interface $behaviour
+     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour
+     *
      * @return void
      */
     public function addBehaviour(DocBlox_Transformer_Behaviour_Abstract $behaviour)
@@ -53,7 +63,8 @@ class DocBlox_Transformer_Behaviour_Collection extends
     /**
      * Removes a behaviour from the collection
      *
-     * @param DocBlox_Transformer_Behaviour_Interface $behaviour
+     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour
+     *
      * @return void
      */
     public function removeBehaviour(DocBlox_Transformer_Behaviour_Abstract $behaviour)

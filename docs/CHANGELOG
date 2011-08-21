@@ -18,6 +18,8 @@ xx/10/2011: Version 0.14.0
 * ADDED:    {@inheritdoc} can now also be used in the short description; when
             used there then the long description will also act as if it has the
             {@inheritdoc} inline tag.
+* ADDED:    Support for the inline {@internal ...}} tag; contents of this will
+            only be shown when the --parseprivate directive is enabled
 
 08/21/2011: Version 0.13.3
 --------------------------
