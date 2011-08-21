@@ -45,27 +45,20 @@ class DocBlox_Parser_DocBlock_Validator_File
 
         if (!$this->docblock->hasTag('package')) {
             $valid = false;
-            $this->log(
-                'No Page-level DocBlock was found for ' . $this->filename
-                . ' on line: ' . $this->line_number, Zend_Log::ERR
-            );
+            $this->logParserError('ERROR', 'No Page-level DocBlock '
+                    . 'was found', $this->line_number);
         }
 
         if (count($this->docblock->getTagsByName('package')) > 1) {
-            $this->log(
-                'File cannot have more than one @package tag in ' . $this->filename,
-                Zend_Log::CRIT
-            );
+            $this->logParserError('CRITICAL', 'File cannot have more than '
+                    . 'one @package tag', $this->line_number);
         }
 
         if ($this->docblock->hasTag('subpackage')
             && !$this->docblock->hasTag('package')
         ) {
-            $this->log(
-                'File cannot have a @subpackage when a @package tag is not '
-                . 'present in ' . $this->filename,
-                Zend_Log::CRIT
-            );
+            $this->logParserError('CRITICAL', 'File cannot have a @subpackage '
+                . 'when a @package tag is not present', $this->line_number);
         }
 
         return $valid;

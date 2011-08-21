@@ -113,6 +113,22 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         // it really matters
         $this->setHash(md5($this->contents));
     }
+    
+    var $parse_markers = array();
+    
+    /**
+     * Adds a parse error to the system
+     * 
+     * @param sfEvent $data 
+     */
+    function addParserMarker($data)
+    {
+        $this->parse_markers[] = array(
+            $data['type'],
+            $data['message'],
+            $data['line']
+        );
+    }
 
     /**
      * Converts a piece of text to UTF-8 if it isn't.
@@ -788,7 +804,19 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             );
             $marker_obj->addAttribute('line', $marker[2]);
         }
+        
+        foreach ($this->parse_markers as $marker) {
+            if (!isset($xml->parse_markers)) {
+                $xml->addChild('parse_markers');
+            }
 
+            $marker_obj = $xml->parse_markers->addChild(
+                strtolower($marker[0]),
+                htmlspecialchars(trim($marker[1]))
+            );
+            $marker_obj->addAttribute('line', $marker[2]);
+        }
+        
         // add namespace aliases
         foreach ($this->namespace_aliases as $alias => $namespace) {
             $alias_obj = $xml->addChild('namespace-alias', $namespace);
