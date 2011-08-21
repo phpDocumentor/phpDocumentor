@@ -3,6 +3,10 @@
 
 * FIXED:    Empty tag description could cause alignment issues
 * FIXED:    Inline markdown code elements were transformed into blocks (#201)
+* FIXED:    @throws now links to the exception, thanks to @dbu
+* FIXED:    @throw tags will be converted to @throws during the parsing; thanks to @dbu
+* FIXED:    directories that are given in the config are not used when a file is given.
+* FIXED:    The batch file for Windows installations do not work.
 
 08/15/2011: Version 0.13.2
 --------------------------

@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-08-15</date>
- <time>23:34:29</time>
+ <date>2011-08-21</date>
+ <time>15:43:55</time>
  <version>
-  <release>0.13.2</release>
-  <api>0.13.2</api>
+  <release>0.13.3</release>
+  <api>0.13.3</api>
  </version>
  <stability>
   <release>beta</release>
@@ -34,10 +34,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <contents>
   <dir baseinstalldir="/DocBlox" name="/">
    <dir name="bin">
-    <file baseinstalldir="/" name="docblox.bat" role="php">
-     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
-     <tasks:replace from="@bin_dir@" to="bin_dir" type="pear-config" />
-    </file>
+    <file baseinstalldir="/" name="docblox.bat" role="script" />
     <file baseinstalldir="/" name="docblox.php" role="script">
      <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -566,6 +563,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    </dir> <!-- /tests -->
    <file baseinstalldir="/DocBlox" name="build.properties" role="data" />
    <file baseinstalldir="/DocBlox" name="build.xml" role="data" />
+   <file baseinstalldir="/DocBlox" name="DocBlox-0.13.3.tgz" role="data" />
    <file baseinstalldir="/DocBlox" name="docblox.dist.xml" role="php" />
    <file baseinstalldir="/DocBlox" name="LICENSE" role="php" />
    <file baseinstalldir="/DocBlox" name="mem.sh" role="data" />
@@ -603,6 +601,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
   </installconditions>
   <filelist>
    <install as="docblox.bat" name="bin/docblox.bat" />
+   <install as="docblox.php" name="bin/docblox.php" />
   </filelist>
  </phprelease>
  <phprelease>
@@ -614,14 +613,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.13.2</release>
-    <api>0.13.2</api>
+    <release>0.13.3</release>
+    <api>0.13.3</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-08-15</date>
+   <date>2011-08-21</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
