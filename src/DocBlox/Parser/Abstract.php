@@ -90,7 +90,28 @@ abstract class DocBlox_Parser_Abstract
             )
         );
     }
-
+    
+    /**
+     * Dispatches a logging request.
+     *
+     * @param string $message  The message to log.
+     * @param int    $priority The logging priority, the lower,
+     *  the more important. Ranges from 1 to 7
+     *
+     * @return void
+     */
+    public function logParserError($type, $message, $line) 
+    {
+        $this->dispatch(
+                'parser.log', 
+                array(
+                    'type' => $type,
+                    'message' => $message,
+                    'line' => $line
+                )
+        );
+    }
+    
     /**
      * Dispatches a logging request to log a debug message.
      *

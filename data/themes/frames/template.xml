@@ -46,5 +46,12 @@
         </variables>
       </parameters>
     </transformation>
+    <transformation query="" writer="xsl" source="themes/frames/parse_markers.xsl" artifact="parse_markers.html">
+      <parameters>
+        <variables>
+          <title>Errors</title>
+        </variables>
+      </parameters>
+    </transformation>
   </transformations>
 </template>
