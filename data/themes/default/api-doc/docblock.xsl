@@ -62,6 +62,7 @@
         <xsl:if test="not(@link)">
             <xsl:value-of select="@description" disable-output-escaping="yes"/>
         </xsl:if>
+        &#160;
     </dd>
   </xsl:template>
 
@@ -89,6 +90,21 @@
               <xsl:with-param name="items" select="type" />
           </xsl:call-template>
       </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="docblock/tag[@name='throws']">
+      <tr>
+        <td>
+            <xsl:if test="type != ''">
+                <xsl:call-template name="implodeTypes">
+                    <xsl:with-param name="items" select="type" />
+                </xsl:call-template>
+            </xsl:if>
+        </td>
+        <td>
+            <em><xsl:value-of select="@description" disable-output-escaping="yes" /></em>
+        </td>
+    </tr>
   </xsl:template>
 
   <xsl:template match="docblock/tag/@type">

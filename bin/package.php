@@ -27,6 +27,7 @@ function createPackager($original_file, $options = array())
     ),
     'exceptions'        => array(
       'bin/docblox.php'  => 'script',
+      'bin/docblox.bat'  => 'script',
       'docblox.dist.xml' => 'php',
       'LICENSE'          => 'php',
       'phpunit.xml.dist' => 'php',
@@ -66,9 +67,6 @@ DESC
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'MarkdownExtra', 'pear.michelf.com', '1.2.4');
 
-  $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '/usr/bin/env php', 'php_bin');
-  $packagexml->addReplacement('bin/docblox.bat', 'pear-config', '@bin_dir@', 'bin_dir');
-
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '/usr/bin/env php', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_bin@', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_dir@', 'php_dir');
@@ -80,6 +78,7 @@ DESC
   $packagexml->addRelease();
   $packagexml->setOSInstallCondition('windows');
   $packagexml->addInstallAs('bin/docblox.bat', 'docblox.bat');
+  $packagexml->addInstallAs('bin/docblox.php', 'docblox.php');
 
   $packagexml->addRelease();
   $packagexml->addInstallAs('bin/docblox.php', 'docblox');

@@ -92,7 +92,9 @@
                 <span class="attribute">abstract</span>
             </xsl:if>
 
-            <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
+            <p class="short_description">
+                <xsl:value-of select="docblock/description" disable-output-escaping="yes" />
+            </p>
 
             <xsl:if test="inherited_from">
                 <small>Inherited from:
@@ -135,10 +137,23 @@
                 </table>
             </xsl:if>
 
-            <xsl:if test="docblock/tag[@name != 'param' and @name != 'return' and @name !='inherited_from']">
+            <xsl:if test="count(docblock/tag[@name = 'throws'])">
+                <strong>Throws</strong>
+                <table class="argument-info">
+                    <thead>
+                        <tr>
+                            <th>Exception</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <xsl:apply-templates select="docblock/tag[@name='throws']"/>
+                </table>
+            </xsl:if>
+
+            <xsl:if test="docblock/tag[@name != 'param' and @name != 'return' and @name !='inherited_from' and @name != 'throws']">
                 <strong>Details</strong>
                 <dl class="function-info">
-                    <xsl:apply-templates select="docblock/tag[@name != 'param' and @name != 'return' and @name !='inherited_from']">
+                    <xsl:apply-templates select="docblock/tag[@name != 'param' and @name != 'return' and @name !='inherited_from' and @name != 'throws']">
                         <xsl:sort select="@name"/>
                     </xsl:apply-templates>
                 </dl>

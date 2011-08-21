@@ -69,9 +69,21 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
   public function getFormattedContents()
   {
     $result = $this->contents;
+
+    // if the long description contains a plain HTML <code> element, surround
+    // it with a pre element. Please note that we explicitly used str_replace and
+    // not preg_replace to gain performance
+    if (strpos($result, '<code>') !== false) {
+        $result = str_replace(
+          array('<code>', "<code>\r\n", "<code>\n", "<code>\r", '</code>'),
+          array('<pre><code>', '<code>', '<code>', '<code>', '</code></pre>'),
+          $result
+        );
+    }
+
     if (function_exists('Markdown'))
     {
-      $result = Markdown($this->contents);
+      $result = Markdown($result);
     }
 
     return $result;

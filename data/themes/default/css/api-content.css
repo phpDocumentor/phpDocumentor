@@ -182,19 +182,15 @@ table.argument-info thead {
 }
 
 code {
-    display: block;
-    background: #f9f9f9;
-    color: #707079;
-    padding: 5px 10px;
-    font-weight: bold;
-    margin-right: 5px;
-    border-bottom: 1px solid #e0e0e0;
+    background:   #f9f9f9;
+    color:        #707079;
+    font-weight:  bold;
 }
 
 code span.highlight {
     color: navy;
     font-size: 1.1em;
-    font-family: helvetica;
+    font-family: helvetica sans-serif;
     padding-right: 5px;
 }
 
@@ -202,9 +198,13 @@ code a {
     color: silver;
 }
 
-p.short-description {
-    margin-bottom: 5px;
-    font-weight: bold;
+div.class code, div.function code, div.property code,
+div.method code, div.constant code
+{
+    display: block;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 5px 10px;
+    margin-right: 5px;
 }
 
 div.long-description {
@@ -218,10 +218,25 @@ div.long-description p {
 }
 
 div.long-description code {
-    margin-left: 20px;
+    display:       inline;
+    margin-left:   0px;
+    background:    gray;
+    white-space:   pre;
+    color:         white;
+    border-bottom: none;
+    padding:       3px 10px;
+}
+
+div.long-description pre code {
+    padding: 0px;
+    font-size: 0.8em;
+}
+
+div.long-description pre {
     background: gray;
-    white-space: pre;
     color: white;
+    padding: 5px 10px;
+    margin-right: 5px;
 }
 
 div.constant dd, div.constant dt,
