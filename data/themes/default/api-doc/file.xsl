@@ -25,11 +25,11 @@
     <h1 class="file"><xsl:value-of select="@path" /></h1>
 
     <div class="file_menu">
-      <xsl:if test="count(include) > 0"><a href="#includes">Includes</a>&#160;</xsl:if>
-      <xsl:if test="count(function) > 0"><a href="#functions">Functions</a>&#160;</xsl:if>
-      <xsl:if test="count(constant) > 0"><a href="#constants">Constants</a>&#160;</xsl:if>
-      <xsl:if test="count(class) > 0"><a href="#classes">Classes</a>&#160;</xsl:if>
-      <xsl:if test="count(interface) > 0"><a href="#interfaces">Interfaces</a></xsl:if>
+      <xsl:if test="count(include) > 0"><a href="#includes" target="content">Includes</a>&#160;</xsl:if>
+      <xsl:if test="count(function) > 0"><a href="#functions" target="content">Functions</a>&#160;</xsl:if>
+      <xsl:if test="count(constant) > 0"><a href="#constants" target="content">Constants</a>&#160;</xsl:if>
+      <xsl:if test="count(class) > 0"><a href="#classes" target="content">Classes</a>&#160;</xsl:if>
+      <xsl:if test="count(interface) > 0"><a href="#interfaces" target="content">Interfaces</a></xsl:if>
     </div>
 
     <dl class="file-info">
@@ -40,28 +40,28 @@
       <xsl:if test="count(constant) > 0">
       <dt>Constants</dt>
         <xsl:for-each select="constant">
-          <dd><a class="constant" href="#{../full_name}::{name}"><xsl:value-of select="name" /></a></dd>
+          <dd><a class="constant" href="#{../full_name}::{name}" target="content"><xsl:value-of select="name" /></a></dd>
         </xsl:for-each>
       </xsl:if>
 
       <xsl:if test="count(function) > 0">
       <dt>Functions</dt>
         <xsl:for-each select="function">
-          <dd><a class="function" href="#{../full_name}::{name}()"><xsl:value-of select="name" /></a></dd>
+          <dd><a class="function" href="#{../full_name}::{name}()" target="content"><xsl:value-of select="name" /></a></dd>
         </xsl:for-each>
       </xsl:if>
 
       <xsl:if test="count(class) > 0">
       <dt>Classes</dt>
         <xsl:for-each select="class">
-          <dd><a class="class" href="#{full_name}"><xsl:value-of select="name" /></a></dd>
+          <dd><a class="class" href="#{full_name}" target="content"><xsl:value-of select="name" /></a></dd>
         </xsl:for-each>
       </xsl:if>
 
       <xsl:if test="count(interface) > 0">
       <dt>Interfaces</dt>
         <xsl:for-each select="interface">
-          <dd><a class="interface" href="#{full_name}"><xsl:value-of select="name" /></a></dd>
+          <dd><a class="interface" href="#{full_name}" target="content"><xsl:value-of select="name" /></a></dd>
         </xsl:for-each>
       </xsl:if>
     </dl>

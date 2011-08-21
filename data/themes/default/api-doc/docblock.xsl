@@ -11,7 +11,7 @@
       </xsl:if>
 
       <xsl:if test="@link">
-        <a href="{$root}{@link}">
+        <a href="{$root}{@link}" target="content">
           <xsl:value-of select="." />
         </a>
       </xsl:if>
@@ -83,7 +83,7 @@
     <xsl:if test="not(.)">n/a</xsl:if>
     <xsl:if test=".">
       <xsl:if test="../@link">
-        <a href="{$root}{../@link}">
+        <a href="{$root}{../@link}" target="content">
           <xsl:value-of select="." />
         </a>
       </xsl:if>

@@ -5,7 +5,7 @@
     <a id="{full_name}" />
     <h2 class="{name()}">
       <xsl:value-of select="full_name" />
-      <div class="to-top"><a href="#top">jump to top</a></div>
+      <div class="to-top"><a href="#top" target="content">jump to top</a></div>
     </h2>
 
     <div class="class">
@@ -17,7 +17,7 @@
                   <xsl:value-of select="extends"/>
               </xsl:if>
               <xsl:if test="extends[@link != '']">
-                  <a href="{extends/@link}">
+                  <a href="{extends/@link}" target="content">
                       <xsl:value-of select="extends"/>
                   </a>
               </xsl:if>
@@ -53,7 +53,7 @@
           <xsl:for-each select="constant">
             <xsl:sort select="name" />
             <dd>
-              <a class="constant" href="#{../full_name}::{name}">
+              <a class="constant" href="#{../full_name}::{name}" target="content">
                 <xsl:value-of select="name" />
               </a>
             </dd>
@@ -71,7 +71,7 @@
           <xsl:for-each select="property">
             <xsl:sort select="name" />
             <dd>
-              <a class="property {@visibility}" href="#{../full_name}::{name}">
+              <a class="property {@visibility}" href="#{../full_name}::{name}" target="content">
                 <xsl:value-of select="name" />
               </a>
             </dd>
@@ -89,7 +89,7 @@
           <xsl:for-each select="method">
             <xsl:sort select="name" />
             <dd>
-              <a class="method {@visibility}" href="#{../full_name}::{name}()">
+              <a class="method {@visibility}" href="#{../full_name}::{name}()" target="content">
                 <xsl:value-of select="name" />
               </a>
             </dd>
