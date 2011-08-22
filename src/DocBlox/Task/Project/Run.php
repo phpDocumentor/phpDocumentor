@@ -91,10 +91,13 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
             'parseprivate', '',
             'Whether to parse DocBlocks tagged with @internal'
         );
-
         $this->addOption(
             'visibility', '-s',
             'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")'
+        );
+        $this->addOption(
+            'defaultpackagename', '-s',
+            'name to use for the default package.  If not specified, uses "default"'
         );
     }
 
@@ -121,6 +124,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         $task->setForce($this->getForce());
         $task->setValidate($this->getValidate());
         $task->setVisibility($this->getVisibility());
+        $task->setDefaultpackagename($this->getDefaultpackagename());
         $task->execute();
 
         $transform = new DocBlox_Task_Project_Transform();

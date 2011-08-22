@@ -113,13 +113,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         // it really matters
         $this->setHash(md5($this->contents));
     }
-    
+
     var $parse_markers = array();
-    
+
     /**
      * Adds a parse error to the system
-     * 
-     * @param sfEvent $data 
+     *
+     * @param sfEvent $data
      */
     function addParserMarker($data)
     {
@@ -584,6 +584,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $interface = new DocBlox_Reflection_Interface();
         $interface->setNamespace($this->active_namespace);
         $interface->setNamespaceAliases($this->namespace_aliases);
+        $interface->setDefaultPackageName($this->getDefaultPackageName());
         $interface->parseTokenizer($tokens);
 
         $this->debugTimer(
@@ -610,6 +611,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $class->setFilename($this->filename);
         $class->setNamespace($this->active_namespace);
         $class->setNamespaceAliases($this->namespace_aliases);
+        $class->setDefaultPackageName($this->getDefaultPackageName());
         $class->parseTokenizer($tokens);
 
         $this->debugTimer('>> Processed class ' . $class->getName(), 'class');
@@ -633,6 +635,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $function->setFilename($this->filename);
         $function->setNamespace($this->active_namespace);
         $function->setNamespaceAliases($this->namespace_aliases);
+        $function->setDefaultPackageName($this->getDefaultPackageName());
         $function->parseTokenizer($tokens);
 
         $this->functions[$function->getName()] = $function;
@@ -658,6 +661,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $constant->setFilename($this->filename);
         $constant->setNamespace($this->active_namespace);
         $constant->setNamespaceAliases($this->namespace_aliases);
+        $constant->setDefaultPackageName($this->getDefaultPackageName());
         $constant->parseTokenizer($tokens);
 
         $this->debugTimer(
@@ -696,6 +700,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $constant->setFilename($this->filename);
             $constant->setNamespace($this->active_namespace);
             $constant->setNamespaceAliases($this->namespace_aliases);
+            $constant->setDefaultPackageName($this->getDefaultPackageName());
             $constant->parseTokenizer($tokens);
 
             $this->debugTimer(
@@ -804,7 +809,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             );
             $marker_obj->addAttribute('line', $marker[2]);
         }
-        
+
         foreach ($this->parse_markers as $marker) {
             if (!isset($xml->parse_markers)) {
                 $xml->addChild('parse_markers');
@@ -816,7 +821,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             );
             $marker_obj->addAttribute('line', $marker[2]);
         }
-        
+
         // add namespace aliases
         foreach ($this->namespace_aliases as $alias => $namespace) {
             $alias_obj = $xml->addChild('namespace-alias', $namespace);

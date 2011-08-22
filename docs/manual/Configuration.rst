@@ -154,7 +154,8 @@ DocBlox (structure.xml).
 
 The following fields are supported:
 
-
+-  *default-package-name*, optional element which defines the name of the
+   default package. This is the name of the package when none is provided.
 -  *target*, the target location where to store the structure.xml,
    also used as source location for the transformer.
 -  *markers*, contains a listing of item's. These items identify

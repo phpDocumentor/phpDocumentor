@@ -27,6 +27,8 @@ xx/10/2011: Version 0.14.0
 * FIXED:    Additional whitespaces were removed
 * FIXED:    Parents that were not present in the current project did not show
 * FIXED:    'Inherited from' entries that were not present in the current project did not show
+* ADDED:    New option 'default-package-name' in command line and configuration
+            to set the name of the package when none is provided by an element.
 
 08/21/2011: Version 0.13.3
 --------------------------

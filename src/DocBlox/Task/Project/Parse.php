@@ -79,6 +79,10 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             'visibility', '-s',
             'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")'
         );
+        $this->addOption(
+            'defaultpackagename', '-s',
+            'name to use for the default package.  If not specified, uses "default"'
+        );
     }
 
     /**
@@ -141,9 +145,9 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     /**
-     * Returns all ignore patterns.
+     * Returns the title for this project.
      *
-     * @return array
+     * @return string
      */
     public function getTitle()
     {
@@ -152,6 +156,20 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         }
 
         return DocBlox_Core_Abstract::config()->get('title');
+    }
+
+    /**
+     * Returns the name of the default package.
+     *
+     * @return string
+     */
+    public function getDefaultpackagename()
+    {
+        if (parent::getDefaultpackagename() !== null) {
+            return parent::getDefaultpackagename();
+        }
+
+        return DocBlox_Core_Abstract::config()->parser->get('default-package-name');
     }
 
     /**
@@ -226,6 +244,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         $parser->setMarkers($this->getMarkers());
         $parser->setValidate($this->getValidate());
         $parser->setVisibility($this->getVisibility());
+        $parser->setDefaultPackageName($this->getDefaultpackagename());
 
         $parser->setPath($files->getProjectRoot());
 

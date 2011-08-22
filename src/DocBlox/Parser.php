@@ -38,6 +38,9 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     /** @var string the title to use in the header */
     protected $title = '';
 
+    /** @var string the name of the default package */
+    protected $default_package_name = 'Default';
+
     /**
      * @var DOMDocument|null if any structure.xml was at the target location it
      *                       is stored for comparison
@@ -297,6 +300,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         $dispatched = false;
         try {
             $file = new DocBlox_Reflection_File($filename, $this->doValidation());
+            $file->setDefaultPackageName($this->getDefaultPackageName());
 
             self::$event_dispatcher->connect('parser.log', array($file, 'addParserMarker'));
             $dispatched = true;
@@ -591,6 +595,28 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             $node = new DOMElement('marker', strtolower($marker));
             $dom->documentElement->appendChild($node);
         }
+    }
+
+    /**
+     * Sets the name of the defautl package.
+     *
+     * @param string $default_package_name
+     *
+     * @return void
+     */
+    public function setDefaultPackageName($default_package_name)
+    {
+        $this->default_package_name = $default_package_name;
+    }
+
+    /**
+     * Returns the name of the default package.
+     *
+     * @return string
+     */
+    public function getDefaultPackageName()
+    {
+        return $this->default_package_name;
     }
 
 }
