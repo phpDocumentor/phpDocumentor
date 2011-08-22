@@ -98,7 +98,13 @@
 
             <xsl:if test="inherited_from">
                 <small>Inherited from:
-                    <xsl:apply-templates select="docblock/tag[@name='inherited_from']/@link"/>
+                    <xsl:if test="docblock/tag[@name='inherited_from']/@link">
+                        <xsl:apply-templates select="docblock/tag[@name='inherited_from']/@link"/>
+                    </xsl:if>
+
+                    <xsl:if test="not(docblock/tag[@name='inherited_from']/@link)">
+                        <xsl:value-of select="docblock/tag[@name='inherited_from']/@description" />
+                    </xsl:if>
                 </small>
             </xsl:if>
         </div>
