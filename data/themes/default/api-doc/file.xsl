@@ -12,6 +12,15 @@
             $(this).children('img').toggle();
             return false;
         });
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').css('cursor', 'pointer');
+
+        $('div.method code span.highlight,div.function code span.highlight,div.constant code span.highlight,div.property code span.highlight').click(function() {
+            $(this).parent().nextAll('div.code-tabs').slideToggle();
+            $(this).parent().prevAll('a.gripper').children('img').toggle();
+            return false;
+        });
+
         $('div.code-tabs').hide();
         $('a.gripper').show();
         $('div.code-tabs:empty').prevAll('a.gripper').html('');
