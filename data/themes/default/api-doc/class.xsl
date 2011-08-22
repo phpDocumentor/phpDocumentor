@@ -23,8 +23,8 @@
                 <xsl:with-param name="depth" select="$depth+1"/>
             </xsl:call-template>
         </xsl:if>
-        
-        <xsl:if test="not(/project/file/*[full_name=$parent])">
+
+        <xsl:if test="$parent != '' and not(/project/file/*[full_name=$parent])">
             &lt;
             <xsl:value-of select="$parent"/>
         </xsl:if>

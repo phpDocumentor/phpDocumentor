@@ -70,18 +70,20 @@
       </div>
 
       <a name="top"/>
-      <div id="file-description">
-          <xsl:if test="docblock/description|docblock/long-description">
+      <xsl:if test="docblock/description|docblock/long-description">
+          <div id="file-description">
               <xsl:apply-templates select="docblock/description"/>
               <xsl:apply-templates select="docblock/long-description"/>
-          </xsl:if>
-      </div>
+          </div>
+      </xsl:if>
 
+      <xsl:if test="count(docblock/tag) > 0">
       <dl class="file-info">
           <xsl:apply-templates select="docblock/tag">
             <xsl:sort select="@name" />
           </xsl:apply-templates>
       </dl>
+      </xsl:if>
 
     <xsl:if test="count(constant) > 0">
     <a name="constants" />
