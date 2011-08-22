@@ -427,3 +427,8 @@ small.package {
     margin-top: -10px;
     display: block;
 }
+
+.argument-info p
+{
+    margin: 0px;
+}

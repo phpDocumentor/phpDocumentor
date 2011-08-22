@@ -47,6 +47,10 @@ class DocBlox_Transformer_Behaviour_Tag_Param extends
             // This is because Markdown is a huge performance hit on the system
             if (!preg_match('/^[\w|\s|\.|,|;|\:|\&|\#]+$/', $node->nodeValue)) {
                 $node->nodeValue = Markdown($node->nodeValue);
+            } else {
+                // markdown will always surround the element with a paragraph;
+                // we do the same here to make it consistent
+                $node->nodeValue = '<p>' . $node->nodeValue . '</p>';
             }
         }
 
