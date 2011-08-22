@@ -14,6 +14,7 @@
         });
         $('div.code-tabs').hide();
         $('a.gripper').show();
+        $('div.code-tabs:empty').prevAll('a.gripper').html('');
         $('div.file-nav').show();
       });
     </script>
