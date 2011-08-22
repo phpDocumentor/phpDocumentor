@@ -20,6 +20,13 @@ xx/10/2011: Version 0.14.0
             {@inheritdoc} inline tag.
 * ADDED:    Support for the inline {@internal ...}} tag; contents of this will
             only be shown when the --parseprivate directive is enabled
+* ADDED:    Method, property and constant names are now clickable and will expand the details section
+* ADDED:    Expanding arrow is now only visible when there are details to expand
+* FIXED:    Arguments that were converted into markdown got paragraph tags and
+            normal arguments did not; this gave alignment issues
+* FIXED:    Additional whitespaces were removed
+* FIXED:    Parents that were not present in the current project did not show
+* FIXED:    'Inherited from' entries that were not present in the current project did not show
 
 08/21/2011: Version 0.13.3
 --------------------------
