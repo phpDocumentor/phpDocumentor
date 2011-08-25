@@ -113,7 +113,9 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         $task = new DocBlox_Task_Project_Parse();
         $task->setFilename($this->getFilename());
         $task->setDirectory($this->getDirectory());
-        $task->setTarget($this->getTarget());
+        if ($this->getTarget() !== null) {
+            $task->setTarget($this->getTarget());
+        }
         $task->setExtensions($this->getExtensions());
         $task->setIgnore($this->getIgnore());
         $task->setMarkers($this->getMarkers());
@@ -128,7 +130,9 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         $task->execute();
 
         $transform = new DocBlox_Task_Project_Transform();
-        $transform->setTarget($task->getTarget());
+        if ($this->getTarget() !== null) {
+            $transform->setTarget($task->getTarget());
+        }
         $transform->setTemplate($this->getTemplate());
         $transform->setSource($task->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml');
         $transform->setVerbose($task->getVerbose());
