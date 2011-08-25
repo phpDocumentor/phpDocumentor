@@ -84,10 +84,12 @@
                 B.css(opts.origin, newPos + bar._DA)
                         .css(opts.split, splitter._DA - bar._DA - newPos).css(opts.fixed, splitter._DF);
                 // IE fires resize for us; all others pay cash
-                if (!$.browser.msie)
+                /*if (!$.browser.msie)
                     panes.trigger("resize");
+                */
+               //Disabled, made a stupid resize loop
             }
-
+            
             function dimSum(jq, dims) {
                 // Opera returns -1 for missing min/max width, turn into 0
                 var sum = 0;
@@ -200,16 +202,16 @@
                             var top = splitter.offset().top;
                             var wh = $(window).height();
                             splitter.css("height", Math.max(wh - top - splitter._hadjust, splitter._hmin) + "px");
-                            if (!$.browser.msie) splitter.trigger("resize");
+                            if (!$.browser.msie) splitter.trigger("resize.splitter");
                         }).trigger("resize");
             }
             else if (opts.resizeToWidth && !$.browser.msie)
                 $(window).bind("resize", function() {
-                    splitter.trigger("resize");
+                    splitter.trigger("resize.splitter");
                 });
 
             // Resize event handler; triggered immediately to set initial position
-            splitter.bind("resize",
+            splitter.bind("resize.splitter",
                     function(e, size) {
                         // Custom events bubble in jQuery 1.3; don't Yo Dawg
                         if (e.target != this) return;
@@ -221,7 +223,7 @@
                         // Re-divvy the adjustable dimension; maintain size of the preferred pane
                         resplit(!isNaN(size) ? size : (!(opts.sizeRight || opts.sizeBottom) ? A[0][opts.pxSplit] :
                                 splitter._DA - B[0][opts.pxSplit] - bar._DA));
-                    }).trigger("resize", [initPos]);
+                    }).trigger("resize.splitter", [initPos]);
         });
     };
 
