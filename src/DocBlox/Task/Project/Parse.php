@@ -103,6 +103,11 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             throw new Zend_Console_Getopt_Exception('Either an empty path or root was given: ' . $target);
         }
 
+        // if the folder does not exist at all, create it
+        if (!file_exists($target)) {
+            mkdir($target, 0744, true);
+        }
+
         if (!is_dir($target)) {
             throw new Zend_Console_Getopt_Exception('The given location "' . $target . '" is not a folder');
         }
@@ -233,12 +238,6 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
 
         $parser = new DocBlox_Parser();
         $parser->setTitle(htmlentities($this->getTitle()));
-        if ($this->getVerbose()) {
-//            $parser->setLogLevel(DocBlox_Core_Log::DEBUG);
-        }
-        if ($this->getQuiet()) {
-//            $parser->setLogLevel(DocBlox_Core_Log::QUIET);
-        }
         $parser->setExistingXml($this->getTarget() . '/structure.xml');
         $parser->setForced($this->getForce());
         $parser->setMarkers($this->getMarkers());

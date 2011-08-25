@@ -68,18 +68,20 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
       ? trim(DocBlox_Core_Abstract::config()->transformer->target)
       : trim($target);
 
-    if (($target == '') || ($target == DIRECTORY_SEPARATOR))
-    {
+      // if the folder does not exist at all, create it
+    if (!file_exists($target)) {
+        mkdir($target, 0744, true);
+    }
+
+    if (($target == '') || ($target == DIRECTORY_SEPARATOR)) {
       throw new Zend_Console_Getopt_Exception('Either an empty path or root was given: '.$target);
     }
 
-    if (!is_dir($target))
-    {
+    if (!is_dir($target)) {
       throw new Zend_Console_Getopt_Exception('The given location "' . $target . '" is not a folder.');
     }
 
-    if (!is_writable($target))
-    {
+    if (!is_writable($target)) {
       throw new Zend_Console_Getopt_Exception(
         'The given path "' . $target . '" either does not exist or is not writable.'
       );
@@ -155,16 +157,6 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
     $transformer->setSource($this->getSource());
     $transformer->setTemplates($this->getTemplate());
     $transformer->setParseprivate($this->getParseprivate());
-
-    // enable verbose mode if the flag was set
-    if ($this->getVerbose())
-    {
-//      $transformer->setLogLevel(DocBlox_Core_Log::DEBUG);
-    }
-    if ($this->getQuiet())
-    {
-//      $transformer->setLogLevel(DocBlox_Core_Log::QUIET);
-    }
 
     // start the transformation process
     if (!$this->getQuiet())
