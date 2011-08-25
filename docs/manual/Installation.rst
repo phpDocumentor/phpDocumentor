@@ -32,8 +32,8 @@ You can prepare your PEAR installation using the following commands:
 
 ::
 
-    $ pear channel-discover http://pear.docblox-project.org
-    $ pear channel-discover http://pear.michelf.com
+    $ pear channel-discover pear.docblox-project.org
+    $ pear channel-discover pear.michelf.com
 
 And to install DocBlox you can use the following command:
 
