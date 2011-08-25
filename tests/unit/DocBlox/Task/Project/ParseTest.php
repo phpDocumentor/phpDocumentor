@@ -5,7 +5,10 @@ class DocBlox_Task_Project_ParseTest extends PHPUnit_Framework_TestCase
     const TITLE      = 'test title';
     const VISIBILITY = 'public';
 
-    public function setup()
+    /** @var DocBlox_Task_Project_Parse */
+    protected $fixture = null;
+
+    public function setUp()
     {
         $xml             = new SimpleXMLElement('<docblox />');
         $xml->title      = self::TITLE;

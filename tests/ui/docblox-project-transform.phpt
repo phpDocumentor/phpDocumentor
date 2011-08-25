@@ -38,8 +38,9 @@ Usage:
 
 -h [--help]            Show this help message
 -q [--quiet]           Silences the output and logging
+-c [--config] [STRING] Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or docblox.dist.xml from the current working directory
 -s [--source] [STRING] Path where the structure.xml is located (optional, defaults to "output/structure.xml")
 -t [--target] [STRING] Path where to store the generated output (optional, defaults to "output")
 --template [STRING]    Name of the template to use (optional, defaults to "default")
 -v [--verbose]         Outputs any information collected by this application, may slow down the process slightly
--c [--config] [STRING] Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or docblox.dist.xml from the current working directory
+--parseprivate         Whether to parse DocBlocks marked with @internal tag

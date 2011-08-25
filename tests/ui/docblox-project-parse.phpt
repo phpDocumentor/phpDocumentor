@@ -33,17 +33,18 @@ file (structure.xml) at the target location (which is the folder 'output' unless
 Usage:
  %s project:parse [options]
 
--h [--help]                Show this help message
--q [--quiet]               Silences the output and logging
--f [--filename] STRING     Comma-separated list of files to parse. The wildcards ? and * are supported
--d [--directory] STRING    Comma-separated list of directories to (recursively) parse.
--t [--target] [STRING]     Path where to store the generated output (optional, defaults to "")
--e [--extensions] [STRING] Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml
--i [--ignore] [STRING]     Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported
--m [--markers] [STRING]    Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")
--v [--verbose]             Provides additional information during parsing, usually only needed for debugging purposes
---title [STRING]           Sets the title for this project; default is the DocBlox logo
---force                    Forces a full build of the documentation, does not increment existing documentation
---validate                 Validates every processed file using PHP Lint, costs a lot of performance
---visibility [STRING]      Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")
--c [--config] [STRING]     Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or docblox.dist.xml from the current working directory
+-h [--help]                   Show this help message
+-q [--quiet]                  Silences the output and logging
+-c [--config] [STRING]        Configuration filename OR "none", when this option is omitted DocBlox tries to load the docblox.xml or docblox.dist.xml from the current working directory
+-f [--filename] STRING        Comma-separated list of files to parse. The wildcards ? and * are supported
+-d [--directory] STRING       Comma-separated list of directories to (recursively) parse.
+-t [--target] [STRING]        Path where to store the generated output (optional, defaults to "")
+-e [--extensions] [STRING]    Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml
+-i [--ignore] [STRING]        Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported
+-m [--markers] [STRING]       Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")
+-v [--verbose]                Provides additional information during parsing, usually only needed for debugging purposes
+--title [STRING]              Sets the title for this project; default is the DocBlox logo
+--force                       Forces a full build of the documentation, does not increment existing documentation
+--validate                    Validates every processed file using PHP Lint, costs a lot of performance
+--visibility [STRING]         Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")
+--defaultpackagename [STRING] name to use for the default package.  If not specified, uses "default"

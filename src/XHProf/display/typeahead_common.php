@@ -25,7 +25,7 @@
  */
 
 
-include_once $GLOBALS['XHPROF_LIB_ROOT'].'/utils/xhprof_lib.php';
+include_once dirname(__FILE__).'/../utils/xhprof_lib.php';
 
 // param name, its type, and default value
 $params = array('q'          => array(XHPROF_STRING_PARAM, ''),

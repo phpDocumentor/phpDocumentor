@@ -42,14 +42,21 @@ class DocBlox_Core_Application
         );
         $task = $runner->getTask();
 
+        $threshold = DocBlox_Core_Log::WARN;
         if (!$task->getQuiet()) {
             DocBlox_Core_Application::renderVersion();
+        } else {
+            $threshold = DocBlox_Core_Log::QUIET;
+        }
+
+        if ($task->getVerbose()) {
+            $threshold = DocBlox_Core_Log::DEBUG;
         }
 
         $dispatcher = new sfEventDispatcher();
 
         $logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
-        $logger->setThreshold(DocBlox_Core_Log::DEBUG);
+        $logger->setThreshold($threshold);
 
         $dispatcher->connect('system.log', array($logger, 'log'));
         DocBlox_Parser_Abstract::$event_dispatcher      = $dispatcher;
@@ -59,8 +66,11 @@ class DocBlox_Core_Application
         try {
             $task->execute();
         } catch (Exception $e) {
-            echo 'ERROR: ' . $e->getMessage() . PHP_EOL . PHP_EOL;
-            echo $task->getUsageMessage();
+            if (!$task->getQuiet()) {
+                echo 'ERROR: ' . $e->getMessage() . PHP_EOL . PHP_EOL;
+                echo $task->getUsageMessage();
+            }
+            die(1);
         }
     }
 

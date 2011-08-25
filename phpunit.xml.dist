@@ -15,7 +15,9 @@
         <directory suffix=".php">src/markdown</directory>
         <file>src/markdown.php</file>
         <directory suffix=".php">src/Zend</directory>
-        <directory suffix=".php">src/Image</directory>
+        <directory suffix=".php">src/ZendX</directory>
+        <directory suffix=".php">src/XHProf</directory>
+        <directory suffix=".php">src/symfony</directory>
         <directory suffix=".php">data/output</directory>
         <directory suffix=".php">data/log</directory>
         <directory suffix=".php">tests</directory>
