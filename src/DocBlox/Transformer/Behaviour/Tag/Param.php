@@ -50,7 +50,7 @@ class DocBlox_Transformer_Behaviour_Tag_Param extends
             } else {
                 // markdown will always surround the element with a paragraph;
                 // we do the same here to make it consistent
-                $node->nodeValue = '<p>' . $node->nodeValue . '</p>';
+                $node->nodeValue = '&lt;p&gt;' . $node->nodeValue . '&lt;/p&gt;';
             }
         }
 
