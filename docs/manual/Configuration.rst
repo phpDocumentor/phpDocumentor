@@ -117,14 +117,18 @@ the *ignore* element and provide a pattern (not a path) to ignore.
 This if you provide ``*test*`` it will ignore any file or directory containing
 the text *test* in it.
 
+    *Note*: the documentation regarding ignore elements is in effect from v0.14.0
+    previous versions of DocBlox needed to have a element `ignore` in the
+    document root with child elements called `item`.
+
 The *starting point* or *base directory* for the ignore directive is the *Project
 Root*; which is the highest folder that all files share in common.
 Thus if you provide a single directory and that does not contain any parseable
 files and only on subfolder (which does contain parseable files) then the *Project Root*
 if not the given folder but the subfolder.
 
-    **Confusing?** We can imagine. This behavior will **change** slightly before version
-    1.0 of DocBlox to the following: when only one directory is provided and no
+    **Confusing?** We can imagine. This behavior is changed slightly in version
+    0.14.0 of DocBlox to the following: when only one directory is provided and no
     other files; then the given directory is the *Project Root*. In all other
     cases the previously mentioned behaviour is still used.
 
