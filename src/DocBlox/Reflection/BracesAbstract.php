@@ -66,15 +66,20 @@ abstract class DocBlox_Reflection_BracesAbstract extends DocBlox_Reflection_DocB
         return array($start, $end);
       }
 
+      if (($token_type == T_CURLY_OPEN)
+        || ($token_type == T_DOLLAR_OPEN_CURLY_BRACES)
+      ){
+        $token_content = '{';
+      }
+
       // determine where the 'braced' section starts and end.
       // the first open brace encountered is considered the opening brace for the block and processing will
       // be 'breaked' when the closing brace is encountered
       if ((!$token_type
         || ($token_type == T_CURLY_OPEN)
-        || ($token_type == T_DOLLAR_OPEN_CURLY_BRACES))
-          && (($token_content == '{')
-              || (($token_content == '}'))))
-      {
+        || ($token_type == T_DOLLAR_OPEN_CURLY_BRACES)
+        ) && (($token_content == '{') || (($token_content == '}')))
+      ) {
         switch ($token_content)
         {
           case '{':
