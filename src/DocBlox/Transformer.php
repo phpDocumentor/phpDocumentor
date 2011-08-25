@@ -354,6 +354,10 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     {
         // if $src is a normal file we can do a regular copy action
         if (is_file($src)) {
+            $directory = dirname($dst);
+            if(!is_dir($directory)){
+                mkdir($directory);
+            }
             copy($src, $dst);
             return;
         }
