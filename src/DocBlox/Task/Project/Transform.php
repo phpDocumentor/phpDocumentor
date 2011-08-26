@@ -168,6 +168,10 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
 
       /** @var DocBlox_Core_Config $doc */
       foreach($external_class_documentation as $doc) {
+          if (empty($doc)) {
+              continue;
+          }
+          
           $transformer->setExternalClassDoc(
               (string)$doc['prefix'],
               (string)$doc['uri']
