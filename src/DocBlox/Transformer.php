@@ -46,6 +46,20 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     protected $parsePrivate = false;
 
     /**
+     * Array containing prefix => URL values.
+     *
+     * What happens is that the transformer knows where to find external API
+     * docs for classes with a certain prefix.
+     *
+     * For example: having a prefix HTML_QuickForm2_ will link an unidentified
+     * class that starts with HTML_QuickForm2_ to a (defined) URL
+     * http://pear.php.net/package/HTML_QuickForm2/docs/latest/HTML_QuickForm2/${class}.html
+     *
+     * @var string
+     */
+    protected $external_class_docs = array();
+
+    /**
      * Sets the path for the themes to the DocBlox default.
      */
     public function __construct()
@@ -378,6 +392,91 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             }
         }
         closedir($dir);
+    }
+
+    /**
+     * Adds a link to external documentation.
+     *
+     * Please note that the prefix string is matched against the
+     * start of the class name and that the preceding \ for namespaces
+     * should NOT be included.
+     *
+     * You can augment the URI with the name of the found class by inserting
+     * the param {CLASS}. By default the class is inserted as-is; to insert a
+     * lowercase variant use the parameter {LOWERCASE_CLASS}
+     *
+     * @param string $prefix
+     * @param string $uri
+     */
+    public function setExternalClassDoc($prefix, $uri)
+    {
+        $this->external_class_docs[$prefix] = $uri;
+    }
+
+    /**
+     * Sets a set of prefix -> url parts.
+     *
+     * @param string[] $external_class_docs
+     */
+    public function setExternalClassDocs($external_class_docs)
+    {
+        $this->external_class_docs = $external_class_docs;
+    }
+
+    /**
+     * Returns the registered prefix -> url pairs.
+     *
+     * @return string[]
+     */
+    public function getExternalClassDocs()
+    {
+        return $this->external_class_docs;
+    }
+
+    /**
+     * Retrieves the url for a given prefix.
+     *
+     * @param string $prefix
+     * @param string $class  if provided will replace the {CLASS} param with
+     *  this string.
+     *
+     * @return string|null
+     */
+    public function getExternalClassDocumentLocation($prefix, $class = null)
+    {
+        if(!isset($this->external_class_docs[$prefix])) {
+            return null;
+        }
+
+        $result = $this->external_class_docs[$prefix];
+        if ($class !== null) {
+            $result = str_replace(
+                array('{CLASS}', '{LOWERCASE_CLASS}'),
+                array($class, strtolower($class)),
+                $result
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the url for this class if it is registered.
+     *
+     * @param string $class
+     *
+     * @return null|string
+     */
+    public function findExternalClassDocumentLocation($class)
+    {
+        $class = ltrim($class, '\\');
+        foreach(array_keys($this->external_class_docs) as $prefix) {
+            if (strpos($class, $prefix) === 0) {
+                return $this->getExternalClassDocumentLocation($prefix, $class);
+            }
+        }
+
+        return null;
     }
 
 }

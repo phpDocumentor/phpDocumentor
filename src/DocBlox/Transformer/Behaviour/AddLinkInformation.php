@@ -78,7 +78,10 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation extends
 
             // if the class is already loaded and is an internal class; refer
             // to the PHP man pages
-            if (isset($declared_classes[$bare_type])) {
+            if (isset($class_paths[$type])) {
+                $file_name = $this->generateFilename($class_paths[$type]);
+                $node->setAttribute('link', $file_name . '#' . $type);
+            } else if (isset($declared_classes[$bare_type])) {
                 // cache reflection calls since these can be expensive
                 if(!isset($unknown_classes[$bare_type])) {
                     $refl = new ReflectionClass($bare_type);
@@ -94,12 +97,17 @@ class DocBlox_Transformer_Behaviour_AddLinkInformation extends
                     );
                 }
                 continue;
+            } else {
+                // an undeclared class but not internal to PHP
+                $link = $this->transformer->findExternalClassDocumentLocation(
+                    $bare_type
+                );
+
+                if ($link !== null) {
+                    $node->setAttribute('link', $link);
+                }
             }
 
-            if (isset($class_paths[$type])) {
-                $file_name = $this->generateFilename($class_paths[$type]);
-                $node->setAttribute('link', $file_name . '#' . $type);
-            }
         }
 
         // convert class names to links

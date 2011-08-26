@@ -2,6 +2,21 @@
     <xsl:output indent="yes" method="html"/>
 
 
+    <xsl:template match="class/extends|interface/extends">
+        <xsl:if test="not(.)">n/a</xsl:if>
+        <xsl:if test=".">
+            <xsl:if test="@link">
+                <a href="{$root}{@link}"><xsl:value-of select="."/></a>
+            </xsl:if>
+            <xsl:if test="not(@link)">
+                <xsl:if test=". = ''">?</xsl:if>
+                <xsl:if test=". != ''">
+                    <xsl:value-of select="."/>
+                </xsl:if>
+            </xsl:if>
+        </xsl:if>
+    </xsl:template>
+
     <xsl:template name="class_inherit">
         <xsl:param name="class"/>
         <xsl:param name="depth"/>
@@ -26,7 +41,7 @@
 
         <xsl:if test="$parent != '' and not(/project/file/*[full_name=$parent])">
             &lt;
-            <xsl:value-of select="$parent"/>
+            <xsl:apply-templates select="$parent"/>
         </xsl:if>
 
     </xsl:template>
@@ -77,7 +92,7 @@
                             </xsl:call-template>
                         </xsl:if>
                         <xsl:if test="not(/project/file/*[full_name=$parent])">
-                            <xsl:value-of select="$parent"/>
+                            <xsl:apply-templates select="$parent"/>
                         </xsl:if>
                     </dd>
                 </xsl:if>

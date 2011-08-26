@@ -29,6 +29,8 @@ xx/10/2011: Version 0.14.0
 * FIXED:    'Inherited from' entries that were not present in the current project did not show
 * ADDED:    New option 'default-package-name' in command line and configuration
             to set the name of the package when none is provided by an element.
+* ADDED:    added external-class-documentation directive to configuration to
+            allow linking to API documentation of external classes.
 
 08/21/2011: Version 0.13.3
 --------------------------
