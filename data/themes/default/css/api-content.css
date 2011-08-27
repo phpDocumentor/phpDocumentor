@@ -103,9 +103,10 @@ p, div dl, h4.arguments, div.arguments
 
 code
 {
+  border-bottom: 1px solid #E0E0E0;
   display:     block;
-  background:  black;
-  color:       white;
+  background: #FBFBFB;
+  color: #707079;
   padding:     5px 10px;
   font-weight: bold;
   margin-right: 5px;
@@ -140,7 +141,7 @@ div.long-description p
 div.long-description code
 {
   margin-left:  20px;
-  background:   gray;
+  background:   white;
   white-space:  pre;
 }
 
@@ -246,7 +247,7 @@ h4.constant
 
 div.api-section
 {
-  background: #fbfbfb;
+  background: White;
   border:     1px solid #eee;
   margin-top: 5px;
   padding:    5px;
@@ -276,6 +277,7 @@ div.constant, div.function, div.method, div.property
   background:         #f4f4f4;
   -moz-border-radius: 5px;
   border-radius:      5px;
+  margin-right:10px;
 }
 
 div.class h3
