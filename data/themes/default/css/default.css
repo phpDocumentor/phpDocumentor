@@ -23,6 +23,8 @@ html, body, #page
 
 .footer, #footer
 {
+  margin-right: 10px;
+  text-align: right;
   display: block;
   clear: both;
 }
