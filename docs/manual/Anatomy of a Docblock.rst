@@ -147,7 +147,7 @@ however visible in the documentation.
 @api [NEW]
 ~~~~~~~~~~
 
-@author\*
+@author
 ~~~~~~~~~
 
 @category\*
@@ -186,8 +186,32 @@ however visible in the documentation.
 @magic [NEW]
 ~~~~~~~~~~~~
 
-@method\*
-~~~~~~~~~
+@method
+~~~~~~~
+Since 0.14.0.
+
+@method is a tag which can only be used in the DocBlock of a class. It is used
+to indicate whether a magic method (thus simulated by __call) is present and which
+arguments it has.
+
+Example::
+
+    /**
+     * Short class description.
+     *
+     * @method int Test1(string $argument1) Description for this method.
+     */
+     class Test{}
+
+The above will result in an additional method in your view with name ``Test1``,
+return type `int` and one argument ``$argument1`` with type ``string``.
+
+To provide compatibility with phpDoc / phpDocumentor syntax do we provide an
+alternative notation::
+
+    * @method int Test1() Test1(string $argument1) Description for this method.
+
+Using this notation is discouraged as the double definition can confuse the reader.
 
 @name\*
 ~~~~~~~

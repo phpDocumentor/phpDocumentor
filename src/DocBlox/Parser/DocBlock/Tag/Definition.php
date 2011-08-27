@@ -109,6 +109,11 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
+            case 'method':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Method(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
             case 'uses':
                 $def = new DocBlox_Parser_DocBlock_Tag_Definition_Uses(
                     $namespace, $namespace_aliases, $xml, $tag

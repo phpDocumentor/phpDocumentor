@@ -73,6 +73,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
                 new DocBlox_Transformer_Behaviour_Tag_Return(),
                 new DocBlox_Transformer_Behaviour_Tag_Param(),
                 new DocBlox_Transformer_Behaviour_Tag_Property(),
+                new DocBlox_Transformer_Behaviour_Tag_Method(),
                 new DocBlox_Transformer_Behaviour_Tag_Uses(),
                 new DocBlox_Transformer_Behaviour_Tag_Author(),
                 new DocBlox_Transformer_Behaviour_Tag_License(),

@@ -31,6 +31,7 @@ xx/10/2011: Version 0.14.0
             to set the name of the package when none is provided by an element.
 * ADDED:    added external-class-documentation directive to configuration to
             allow linking to API documentation of external classes.
+* ADDED:    Support for @method
 
 08/21/2011: Version 0.13.3
 --------------------------

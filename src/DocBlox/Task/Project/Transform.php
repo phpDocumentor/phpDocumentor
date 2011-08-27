@@ -171,7 +171,7 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
           if (empty($doc)) {
               continue;
           }
-          
+
           $transformer->setExternalClassDoc(
               (string)$doc['prefix'],
               (string)$doc['uri']
