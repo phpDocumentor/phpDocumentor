@@ -27,6 +27,7 @@ class DocBlox_Task_Project_ParseTest extends PHPUnit_Framework_TestCase
 
     public function testGetVisibility()
     {
+        $this->fixture->setVisibility(self::VISIBILITY);
         $this->assertEquals(self::VISIBILITY, $this->fixture->getVisibility());
     }
 

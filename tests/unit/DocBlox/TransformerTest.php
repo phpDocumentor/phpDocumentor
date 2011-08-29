@@ -93,6 +93,7 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
      */
     public function testAddTemplate()
     {
+        $this->fixture->setThemesPath(dirname(__FILE__).'/../../../data/themes');
         $this->fixture->addTemplate('default');
 
         $this->assertGreaterThan(
@@ -120,20 +121,6 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
                 . 'non-existent template: ' . $e->getMessage()
             );
         }
-
-        // nothing should happen when template does not contain transformations
-        DocBlox_Core_Abstract::config()->templates->wargarbl = '';
-
-        $count = count($this->fixture->getTransformations());
-        $this->assertNull(
-            $this->fixture->addTemplate('wargarbl'),
-            'No erroneous actions should happen when adding an empty template'
-        );
-        $this->assertEquals(
-            $count,
-            count($this->fixture->getTransformations()),
-            'Transformation count should be unchanged'
-        );
     }
 
     /**

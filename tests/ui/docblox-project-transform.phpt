@@ -25,7 +25,7 @@ $application->main();
 --EXPECTF--
 DocBlox version %s
 
-ERROR: The given location "%s" is not a folder.
+ERROR: The given path "%s" either does not exist or is not readable.
 
 This task will execute the transformation rules described in the given template (defaults to 'default') with the
 given source (defaults to output/structure.xml) and writes these to the target location (defaults to 'output').

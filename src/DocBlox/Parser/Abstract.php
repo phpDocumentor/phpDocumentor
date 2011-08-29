@@ -90,7 +90,7 @@ abstract class DocBlox_Parser_Abstract
             )
         );
     }
-    
+
     /**
      * Dispatches a logging request.
      *
@@ -100,10 +100,11 @@ abstract class DocBlox_Parser_Abstract
      *
      * @return void
      */
-    public function logParserError($type, $message, $line) 
+    public function logParserError($type, $message, $line)
     {
+        $this->log($message, DocBlox_Core_Log::ERR);
         $this->dispatch(
-                'parser.log', 
+                'parser.log',
                 array(
                     'type' => $type,
                     'message' => $message,
@@ -111,7 +112,7 @@ abstract class DocBlox_Parser_Abstract
                 )
         );
     }
-    
+
     /**
      * Dispatches a logging request to log a debug message.
      *

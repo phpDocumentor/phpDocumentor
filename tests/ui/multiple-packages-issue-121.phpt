@@ -29,6 +29,6 @@ $application->main();
 --EXPECTF--
 DocBlox version %s
 
-%s CRIT (2): File cannot have more than one @package tag in MultiplePackagesDocBlock.php
+%s ERR (3): File cannot have more than one @package tag
 Starting transformation of files (this could take a while depending upon the size of your project)
 Finished transformation in %s seconds

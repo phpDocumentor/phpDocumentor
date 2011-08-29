@@ -286,6 +286,13 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
                 . DIRECTORY_SEPARATOR . $name;
         }
 
+        if (!file_exists($path) || !is_readable($path)) {
+            throw new InvalidArgumentException(
+                'The given template ' . $name.' could not be found or is not '
+                . 'readable'
+            );
+        }
+
         // track templates to be able to refer to them later
         $this->templates[$name] = new DocBlox_Transformer_Template($name, $path);
         $this->templates[$name]->populate(

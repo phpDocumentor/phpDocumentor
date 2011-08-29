@@ -25,7 +25,7 @@ $application->main();
 --EXPECTF--
 DocBlox version %s
 
-ERROR: The given location "output" is not a folder
+ERROR: No parsable files were found, did you specify any using the -f or -d parameter?
 
 DocBlox creates documentation from PHP source files. The simplest way to use it is:
 
