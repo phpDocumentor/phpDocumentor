@@ -25,7 +25,7 @@ in parallel using a maximum of 2 threads. -->
       <antcall target="pdepend" />
       <antcall target="phpmd" />
       <antcall target="phpcpd" />
-      <!--      <antcall target="phpcs"/> -->
+      <antcall target="phpcs"/>
       <antcall target="docblox" />
       <antcall target="phploc" />
     </parallel>
@@ -72,7 +72,7 @@ in parallel using a maximum of 2 threads. -->
       <arg line="--report=checkstyle
               --report-file=${basedir}/build/logs/checkstyle.xml
               --standard=PEAR
-              ${source}" />
+              ${source}/src/DocBlox/* --extensions=php" />
     </exec>
   </target>
   <!-- Generate API documentation with DocBlox -->
