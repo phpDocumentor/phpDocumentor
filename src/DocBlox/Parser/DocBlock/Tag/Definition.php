@@ -94,7 +94,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
         $namespace, $namespace_aliases, SimpleXMLElement $xml,
         DocBlox_Reflection_DocBlock_Tag $tag
     ) {
-        switch ($tag->getName())
+        switch (strtolower($tag->getName()))
         {
             case 'property-write':
             case 'property-read':
@@ -121,6 +121,38 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
                 break;
             case 'link':
                 $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link(
+                    $namespace, $namespace_aliases, $xml, $tag
+                );
+                break;
+            case 'column':
+            case 'changetrackingpolicy':
+            case 'discriminatorcolumn':
+            case 'discriminatormap':
+            case 'entity':
+            case 'generatedvalue':
+            case 'haslifecyclecallbacks':
+            case 'id':
+            case 'inheritancetype':
+            case 'joincolumn':
+            case 'jointable':
+            case 'manytoone':
+            case 'manytomany':
+            case 'mappedsuperclass':
+            case 'onetoone':
+            case 'onetomany':
+            case 'orderby':
+            case 'postload':
+            case 'postpersist':
+            case 'postremove':
+            case 'postupdate':
+            case 'prepersist':
+            case 'preremove':
+            case 'preupdate':
+            case 'sequencegenerator':
+            case 'table':
+            case 'uniqueconstraint':
+            case 'version':
+                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Doctrine(
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;

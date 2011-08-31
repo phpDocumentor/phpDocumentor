@@ -156,6 +156,8 @@
                 </table>
             </xsl:if>
 
+            <xsl:call-template name="doctrine" />
+
             <xsl:if test="docblock/tag[@name != 'param' and @name != 'return' and @name !='inherited_from' and @name != 'throws']">
                 <strong>Details</strong>
                 <dl class="function-info">

@@ -32,6 +32,8 @@ xx/10/2011: Version 0.14.0
 * ADDED:    added external-class-documentation directive to configuration to
             allow linking to API documentation of external classes.
 * ADDED:    Support for @method
+* ADDED:    Doctrine annotations are now parsed; their arguments clearly shown
+            in a table and a link is provided directly to their docs.
 
 08/21/2011: Version 0.13.3
 --------------------------

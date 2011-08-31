@@ -175,6 +175,10 @@ table.argument-info {
     font-size: 1.0em;
 }
 
+table.argument-info tr.odd {
+    background-color: #f0f0f0;
+}
+
 table.argument-info thead {
     background-color: #f9f9f9;
     border-bottom: 1px dashed gray;

@@ -116,6 +116,8 @@
                 </xsl:apply-templates>
             </dl>
 
+            <xsl:call-template name="doctrine"/>
+
             <xsl:if test="count(constant) > 0">
                 <h3>Constants</h3>
                 <div>

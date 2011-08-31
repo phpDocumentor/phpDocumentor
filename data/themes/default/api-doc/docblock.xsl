@@ -33,6 +33,54 @@
     </xsl:for-each>
   </xsl:template>
 
+    <xsl:template name="doctrine">
+        <xsl:if test="count(docblock/tag[@plugin = 'doctrine']) > 0">
+            <strong>Doctrine</strong>
+            <table class="argument-info" style="font-size: 1.0em;">
+                <thead>
+                    <tr>
+                        <th>Annotation</th>
+                        <th>Field name</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <xsl:for-each select="docblock/tag[@plugin='doctrine']">
+                    <xsl:variable name="doctrine_row_class">
+                        <xsl:if test="position() mod 2 = 0">odd</xsl:if>
+                        <xsl:if test="position() mod 2 = 1">even</xsl:if>
+                    </xsl:variable>
+
+                    <xsl:if test="count(argument) = 0">
+                        <tr class="{$doctrine_row_class}">
+                            <td style="vertical-align: top; font-variant: small-caps; text-transform: lowercase; font-size: 1.3em">
+                                <xsl:apply-templates select="@link"/>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </xsl:if>
+
+                    <xsl:for-each select="argument">
+                        <tr class="{$doctrine_row_class}">
+                            <xsl:if test="position() = 1">
+                                <td rowspan="{count(../argument)}"
+                                    style="vertical-align: top; font-variant: small-caps; text-transform: lowercase; font-size: 1.3em">
+                                    <xsl:apply-templates select="../@link"/>
+                                </td>
+                            </xsl:if>
+                            <td>
+                                <xsl:value-of select="@field-name"/>
+                            </td>
+                            <td>
+                                <xsl:value-of select="."/>
+                            </td>
+                        </tr>
+                    </xsl:for-each>
+                </xsl:for-each>
+            </table>
+        </xsl:if>
+    </xsl:template>
+
 
   <xsl:template match="docblock/description">
     <p class="short-description">
@@ -65,6 +113,10 @@
         &#160;
     </dd>
   </xsl:template>
+
+    <!-- Any Doctrine related tag must not be shown in the details listing but
+     is shown as a separate table -->
+    <xsl:template match="docblock/tag[@plugin='doctrine']"/>
 
   <xsl:template match="docblock/tag[@name='var']|docblock/tag[@name='param']">
     <dt>

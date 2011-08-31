@@ -49,7 +49,7 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
    */
   public static function createInstance($tag_line)
   {
-    if (!preg_match('/^@([\w\-\_]+)(?:\s+([^\s].*)|$)?/us', $tag_line,
+    if (!preg_match('/^@([\w\-\_\\\\]+)(?:\s*([^\s].*)|$)?/us', $tag_line,
         $matches))
     {
       throw new DocBlox_Reflection_Exception('Invalid tag_line detected: '.$tag_line);
