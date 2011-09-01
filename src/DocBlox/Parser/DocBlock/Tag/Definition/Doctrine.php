@@ -78,13 +78,18 @@ class DocBlox_Parser_DocBlock_Tag_Definition_Doctrine
         // add indicator that we are talking about Doctrine Tags
         $this->xml['plugin'] = 'doctrine';
 
+        $name = $this->xml['name'];
+        if (strpos($name, '\\') !== false) {
+            $name = substr($name, strrpos($name, '\\')+1);
+        }
+
         // add a link to the documentation for this annotation
         $this->xml['link'] = 'http://www.doctrine-project.org/docs/orm/2.1/en/'
             . 'reference/annotations-reference.html#annref-'
-            . strtolower($this->xml['name']);
+            . strtolower($name);
 
         $this->xml['content'] = $this->xml['description'];
-        $this->xml['description'] = $this->xml['name'];
+        $this->xml['description'] = $name;
 
         // find the array of arguments
         $arguments = $this->findArguments((string)$this->xml['content']);

@@ -94,7 +94,24 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
         $namespace, $namespace_aliases, SimpleXMLElement $xml,
         DocBlox_Reflection_DocBlock_Tag $tag
     ) {
-        switch (strtolower($tag->getName()))
+        $tag_name = $tag->getName();
+
+        // check whether the tag name is namespaced and replace alias with full
+        // name to get the FQCN form
+        if (strpos($tag_name, '\\') !== false) {
+            $tag_name = explode('\\', $tag_name);
+            if ((count($tag_name) > 1) && isset($namespace_aliases[$tag_name[0]])) {
+                $tag_name[0] = $namespace_aliases[$tag_name[0]];
+            }
+
+            $tag_name = implode('\\', $tag_name);
+            if ($tag_name[0] != '\\') {
+                $tag_name = '\\' . $tag_name;
+            }
+        }
+        $tag_name = strtolower($tag_name);
+
+        switch ($tag_name)
         {
             case 'property-write':
             case 'property-read':
@@ -124,6 +141,34 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
+            case '\doctrine\orm\mapping\column':
+            case '\doctrine\orm\mapping\changetrackingpolicy':
+            case '\doctrine\orm\mapping\discriminatorcolumn':
+            case '\doctrine\orm\mapping\discriminatormap':
+            case '\doctrine\orm\mapping\entity':
+            case '\doctrine\orm\mapping\generatedvalue':
+            case '\doctrine\orm\mapping\haslifecyclecallbacks':
+            case '\doctrine\orm\mapping\id':
+            case '\doctrine\orm\mapping\inheritancetype':
+            case '\doctrine\orm\mapping\joincolumn':
+            case '\doctrine\orm\mapping\jointable':
+            case '\doctrine\orm\mapping\manytoone':
+            case '\doctrine\orm\mapping\manytomany':
+            case '\doctrine\orm\mapping\mappedsuperclass':
+            case '\doctrine\orm\mapping\onetoone':
+            case '\doctrine\orm\mapping\onetomany':
+            case '\doctrine\orm\mapping\orderby':
+            case '\doctrine\orm\mapping\postload':
+            case '\doctrine\orm\mapping\postpersist':
+            case '\doctrine\orm\mapping\postremove':
+            case '\doctrine\orm\mapping\postupdate':
+            case '\doctrine\orm\mapping\prepersist':
+            case '\doctrine\orm\mapping\preremove':
+            case '\doctrine\orm\mapping\preupdate':
+            case '\doctrine\orm\mapping\sequencegenerator':
+            case '\doctrine\orm\mapping\table':
+            case '\doctrine\orm\mapping\uniqueconstraint':
+            case '\doctrine\orm\mapping\version':
             case 'column':
             case 'changetrackingpolicy':
             case 'discriminatorcolumn':
