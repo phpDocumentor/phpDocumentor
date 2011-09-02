@@ -34,6 +34,8 @@ xx/10/2011: Version 0.14.0
 * ADDED:    Support for @method
 * ADDED:    Doctrine annotations are now parsed; their arguments clearly shown
             in a table and a link is provided directly to their docs.
+* FIXED:    Default namespace is no longer indicated in the class diagram as
+            this effectively is a meta-namespace.
 
 08/21/2011: Version 0.13.3
 --------------------------

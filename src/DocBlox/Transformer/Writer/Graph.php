@@ -51,7 +51,7 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
 
         // add to classes
         $xpath = new DOMXPath($structure);
-        $qry = $xpath->query('/namespace[@name]');
+        $qry = $xpath->query("/namespace[@name and @name != 'default']");
         if ($qry->length > 0) {
             $this->has_namespaces = true;
         }
@@ -100,9 +100,9 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
         $full_namespace_name = ltrim($full_namespace_name, '\\');
 
         $sub_graph = DocBlox_GraphViz_Graph::create('cluster_' . str_replace(array('\\', '$'), '_', $full_namespace_name))
-            ->setLabel($namespace)
+            ->setLabel($full_namespace_name != 'default' ? $namespace : '')
             ->setStyle('rounded')
-            ->setColor('gray')
+            ->setColor($full_namespace_name != 'default' ? 'gray' : 'none')
             ->setFontColor('gray')
             ->setFontSize('11')
             ->setRankDir('LR');
