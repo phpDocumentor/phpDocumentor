@@ -162,7 +162,11 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         // explicitly do not updates the $super['methods'] array as this is mere
         // a virtual method and not one that counts for inheritance.
         foreach($super_copy['methods'] as $method_name => $method_collection) {
-            if (in_array($method_name, $method_names)) {
+            // only copy methods that are not overridden and are not private
+            if (in_array($method_name, $method_names)
+                || ($method_collection['object']
+                        ->getAttribute('visibility') == 'private')
+            ) {
                 continue;
             }
 

@@ -6,7 +6,7 @@
 
         <div class="constant">
             <xsl:attribute name="class">
-                <xsl:value-of select="concat(name(), ' public')"/>
+                <xsl:value-of select="concat(name(), ' publicC')"/>
                 <xsl:if test="inherited_from"> inherited_from </xsl:if>
             </xsl:attribute>
 
