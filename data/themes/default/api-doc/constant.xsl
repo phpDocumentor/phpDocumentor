@@ -5,6 +5,11 @@
         <a id="{../full_name}::{name}"/>
 
         <div class="constant">
+            <xsl:attribute name="class">
+                <xsl:value-of select="concat(name(), ' public')"/>
+                <xsl:if test="inherited_from"> inherited_from </xsl:if>
+            </xsl:attribute>
+
             <a href="#" class="gripper">
                 <img src="{$root}images/icons/arrow_right.png"/>
                 <img src="{$root}images/icons/arrow_down.png"
@@ -21,6 +26,10 @@
             </code>
 
             <div class="description">
+                <xsl:if test="inherited_from">
+                    <span class="attribute">inherited</span>
+                </xsl:if>
+
                 <xsl:apply-templates select="docblock/description"/>
                 <xsl:if test="inherited_from">
                     <small>Inherited from:

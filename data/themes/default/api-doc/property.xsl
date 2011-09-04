@@ -5,9 +5,9 @@
 
         <div>
             <xsl:attribute name="class">
-                <xsl:value-of select="name()"/>
-                <xsl:if test="inherited_from">inherited_from</xsl:if>
-                <xsl:if test="docblock/tag[@name='magic']">magic</xsl:if>
+                <xsl:value-of select="concat(name(), ' ', @visibility)"/>
+                <xsl:if test="inherited_from"> inherited_from </xsl:if>
+                <xsl:if test="docblock/tag[@name='magic']"> magic </xsl:if>
             </xsl:attribute>
 
             <a href="#" class="gripper">
@@ -33,6 +33,10 @@
 
                 <xsl:if test="@final='true'">
                     <span class="attribute">final</span>
+                </xsl:if>
+
+                <xsl:if test="inherited_from">
+                    <span class="attribute">inherited</span>
                 </xsl:if>
 
                 <xsl:apply-templates select="docblock/description|docblock/tag[@name='var']/@description"/>

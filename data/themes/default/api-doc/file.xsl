@@ -5,7 +5,26 @@
 
   <xsl:template match="file">
     <script type="text/javascript" src="{$root}js/menu.js"/>
-    <script>
+    <script><![CDATA[
+
+      function filterElements()
+      {
+        inherited = !$('a#show-inherited').hasClass('deselected');
+        public    = !$('a#show-public').hasClass('deselected');
+        protected = !$('a#show-protected').hasClass('deselected');
+        private   = !$('a#show-private').hasClass('deselected');
+
+        $('div.public').each(function(index, val) {
+            $(val).toggle(public && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.protected').each(function(index, val) {
+            $(val).toggle(protected && !($(val).hasClass('inherited_from') && !inherited));
+        });
+        $('div.private').each(function(index, val) {
+            $(val).toggle(private && !($(val).hasClass('inherited_from') && !inherited));
+        });
+      }
+
       $(document).ready(function() {
         $('a.gripper').click(function() {
             $(this).nextAll('div.code-tabs').slideToggle();
@@ -25,7 +44,21 @@
         $('a.gripper').show();
         $('div.code-tabs:empty').prevAll('a.gripper').html('');
         $('div.file-nav').show();
+
+        $('a#show-public, a#show-protected, a#show-private, a#show-inherited').click(function(){
+            $(this).toggleClass('deselected');
+            if ($(this).hasClass('deselected')) {
+              $(this).fadeTo('fast', '0.4');
+            } else {
+              $(this).fadeTo('fast', '1.0');
+            }
+            filterElements();
+            return false;
+        });
+        $('a#show-protected, a#show-private').click();
+
       });
+      ]]>
     </script>
       <h1 class="file"><xsl:value-of select="@path" /></h1>
       <div class="file-nav">
@@ -77,6 +110,13 @@
               </li>
               </xsl:if>
           </ul>
+          <div style="float: right;padding-right: 20px;">
+              Show:
+              <a href="#" id="show-public"><img src="{$root}images/icons/visibility_public.png"/></a>
+              <a href="#" id="show-protected"><img src="{$root}images/icons/visibility_protected.png"/></a>
+              <a href="#" id="show-private"><img src="{$root}images/icons/visibility_private.png"/></a>
+              <a href="#" id="show-inherited"><span class="attribute">inherited</span></a>
+          </div>
       </div>
 
       <a name="top"/>

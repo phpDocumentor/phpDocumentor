@@ -389,7 +389,7 @@ div.to-top a {
     padding-right: 10px;
 }
 
-div.method span.attribute, div.property span.attribute {
+span.attribute {
     padding: 2px 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -398,6 +398,9 @@ div.method span.attribute, div.property span.attribute {
     font-variant: small-caps;
     color: white;
     font-size: 0.92em;
+}
+
+div.method span.attribute, div.property span.attribute {
     float: right;
 }
 

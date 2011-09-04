@@ -1,4 +1,4 @@
-xx/10/2011: Version 0.14.0
+09/04/2011: Version 0.14.0
 --------------------------
 * BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.
             Anyone using the command line will not notice this BC break but if you use DocBlox_Parser directly this will
@@ -36,6 +36,12 @@ xx/10/2011: Version 0.14.0
             in a table and a link is provided directly to their docs.
 * FIXED:    Default namespace is no longer indicated in the class diagram as
             this effectively is a meta-namespace.
+* ADDED:    Buttons to hide methods, properties and constants based on visibility
+            and whether they are inherited.
+* ADDED:    Additional indicators with inherited methods to make it clearer that
+            they are inherited and to add a 'icon association' between the hide
+            button and the inherited methods
+* CHANGED:  Only public methods are visible by default to promote use of API
 
 08/21/2011: Version 0.13.3
 --------------------------

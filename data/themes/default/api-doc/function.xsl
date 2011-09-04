@@ -42,7 +42,7 @@
     <a id="{../full_name}::{name}()" />
     <div>
         <xsl:attribute name="class">
-            <xsl:value-of select="name()" />
+            <xsl:value-of select="concat(name(), ' ', @visibility)" />
             <xsl:if test="inherited_from"> inherited_from </xsl:if>
         </xsl:attribute>
 
@@ -90,6 +90,10 @@
 
             <xsl:if test="@abstract='true'">
                 <span class="attribute">abstract</span>
+            </xsl:if>
+
+            <xsl:if test="inherited_from">
+                <span class="attribute">inherited</span>
             </xsl:if>
 
             <p class="short_description">
