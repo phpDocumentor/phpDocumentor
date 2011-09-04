@@ -156,7 +156,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Method($method);
             $inherit->apply($super_copy['methods'], $class_name);
         }
-        static $i = 0;
+
         // if a method present in the super classes but it is not declared
         // in this class then add it as an 'inherited_from' method.
         // explicitly do not updates the $super['methods'] array as this is mere
@@ -203,10 +203,62 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         }
 
         /** @var DOMElement[] $method */
+        $property_names = array();
         $properties = $this->getDirectElementsByTagName($this->node, 'property');
         foreach ($properties as $property) {
+            $property_names[] = $property->getElementsByTagName('name')->item(0)->nodeValue;
+
+            // only process 'real' methods
+            if ($property->getAttribute('inherited_from')) {
+                continue;
+            }
             $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Property($property);
             $inherit->apply($super_copy['properties'], $class_name);
+        }
+
+        // if a property is present in the super classes but it is not declared
+        // in this class then add it as an 'inherited_from' property.
+        // explicitly do not updates the $super['properties'] array as this is
+        // mere a virtual property and not one that counts for inheritance.
+        foreach ($super_copy['properties'] as $property_name => $property_collection) {
+            // only copy methods that are not overridden and are not private
+            if (in_array($property_name, $property_names)
+                || ($property_collection['object']
+                            ->getAttribute('visibility') == 'private')
+            ) {
+                continue;
+            }
+
+            // add an element 'inherited_from' to the method itself
+            /** @var DOMElement $node */
+            $node = clone $property_collection['object'];
+            $this->node->appendChild($node);
+            $node->appendChild(
+                new DOMElement('inherited_from', $property_collection['class'])
+            );
+
+            // get the docblock or create a new one if it doesn't exist
+            $docblocks = $node->getElementsByTagName('docblock');
+            if ($docblocks->length == 0) {
+                $docblock = new DOMElement('docblock');
+                $node->appendChild($docblock);
+            } else {
+                $docblock = $docblocks->item(0);
+            }
+
+            // adds a new inherited_from to signify that this method is not
+            // declared in this class but inherited from a base class
+            $inherited_from_tag = new DOMElement('tag');
+            $docblock->appendChild($inherited_from_tag);
+            $inherited_from_tag->setAttribute('name', 'inherited_from');
+            $inherited_from_tag->setAttribute(
+                'refers',
+                $property_collection['class'] . '::' . $property_name
+            );
+            $inherited_from_tag->setAttribute(
+                'description',
+                $property_collection['class'] . '::' . $property_name
+            );
         }
 
         // apply inheritance to every class or interface extending this one

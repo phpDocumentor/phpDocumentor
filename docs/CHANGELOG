@@ -44,6 +44,8 @@
 * CHANGED:  Only public methods are visible by default to promote use of API
 * FIXED:    Private methods were also tagged as inherited in a subclass; whilst
             you can never call a private method from a superclass in a subclass.
+* FIXED:    Properties were not shown as inherited members; they have now been
+            added.
 
 08/21/2011: Version 0.13.3
 --------------------------
