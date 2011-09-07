@@ -27,7 +27,7 @@
 abstract class DocBlox_Core_Abstract
 {
     /** @var string The actual version number of DocBlox. */
-    const VERSION = '0.14-DEV';
+    const VERSION = '0.15-DEV';
 
     /**
      * The logger used to capture all messages send by the log method.
@@ -295,7 +295,9 @@ abstract class DocBlox_Core_Abstract
     /**
      * Set a custom DocBlox configuration
      *
-     * @param DocBlox_Core_Config $config
+     * @param DocBlox_Core_Config $config Configuration file to use in the project.
+     *
+     * @return void
      */
     public static function setConfig(DocBlox_Core_Config $config)
     {
@@ -303,7 +305,9 @@ abstract class DocBlox_Core_Abstract
     }
 
     /**
-     * Reset the configuration
+     * Reset the configuration.
+     *
+     * @return void
      */
     public static function resetConfig()
     {

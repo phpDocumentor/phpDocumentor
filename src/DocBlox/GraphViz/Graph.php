@@ -1,16 +1,31 @@
 <?php
 /**
+ * DocBlox
+ *
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Core
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
+ */
+
+/**
  * Class representing a graph; this may be a main graph but also a subgraph.
  *
  * In case of a subgraph:
- * When the name of the subgraph is prefixed with _cluster_ then the contents of this graph will be grouped and a
- * border will be added. Otherwise it is used as logical container to place defaults in.
+ * When the name of the subgraph is prefixed with _cluster_ then the contents
+ * of this graph will be grouped and a border will be added. Otherwise it is
+ * used as logical container to place defaults in.
  *
  * @category  DocBlox
  * @package   GraphViz
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright Copyright (c) 2011-201 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 class DocBlox_GraphViz_Graph
 {
@@ -34,7 +49,8 @@ class DocBlox_GraphViz_Graph
     protected $edges = array();
 
     /**
-     * Factory method to instantiate a Graph so that you can use fluent coding to chain everything.
+     * Factory method to instantiate a Graph so that you can use fluent coding
+     * to chain everything.
      *
      * @param string $name        The name for this graph.
      * @param bool   $directional Whether this is a directed or undirected graph.
@@ -45,8 +61,8 @@ class DocBlox_GraphViz_Graph
     {
         $graph = new self();
         $graph
-                ->setName($name)
-                ->setType($directional ? 'digraph' : 'graph');
+            ->setName($name)
+            ->setType($directional ? 'digraph' : 'graph');
 
         return $graph;
     }
@@ -80,7 +96,8 @@ class DocBlox_GraphViz_Graph
     /**
      * Sets the type for this graph.
      *
-     * @throw InvalidArgumentException if $type is not "digraph", "graph" or "subgraph"
+     * @throw InvalidArgumentException if $type is not "digraph", "graph" or
+     *  "subgraph".
      *
      * @param string $type Must be either "digraph", "graph" or "subgraph".
      *
@@ -89,7 +106,10 @@ class DocBlox_GraphViz_Graph
     public function setType($type)
     {
         if (!in_array($type, array('digraph', 'graph', 'subgraph'))) {
-            throw new InvalidArgumentException('The type for a graph must be either "digraph", "graph" or "subgraph"');
+            throw new InvalidArgumentException(
+                'The type for a graph must be either "digraph", "graph" or '
+                . '"subgraph"'
+            );
         }
 
         $this->type = $type;
@@ -109,13 +129,15 @@ class DocBlox_GraphViz_Graph
     /**
      * Magic method to provide a getter/setter to add attributes on the Graph.
      *
-     * Using this method we make sure that we support any attribute without too much hassle.
-     * If the name for this method does not start with get or set we return null.
+     * Using this method we make sure that we support any attribute without
+     * too much hassle. If the name for this method does not start with get
+     * or set we return null.
      *
-     * Set methods return this graph (fluent interface) whilst get methods return the attribute value.
+     * Set methods return this graph (fluent interface) whilst get methods
+     * return the attribute value.
      *
-     * @param string  $name
-     * @param mixed[] $arguments
+     * @param string  $name      Name of the method including get/set
+     * @param mixed[] $arguments The arguments, should be 1: the value
      *
      * @return DocBlox_GraphViz_Attribute[]|DocBlox_GraphViz_Graph|null
      */
@@ -123,7 +145,10 @@ class DocBlox_GraphViz_Graph
     {
         $key = strtolower(substr($name, 3));
         if (strtolower(substr($name, 0, 3)) == 'set') {
-            $this->attributes[$key] = new DocBlox_GraphViz_Attribute($key, $arguments[0]);
+            $this->attributes[$key] = new DocBlox_GraphViz_Attribute(
+                $key, $arguments[0]
+            );
+
             return $this;
         }
         if (strtolower(substr($name, 0, 3)) == 'get') {
@@ -142,7 +167,8 @@ class DocBlox_GraphViz_Graph
      *
      * @see DocBlox_GraphViz_Graph::create()
      *
-     * @param DocBlox_GraphViz_Graph $graph The graph to add onto this graph as subgraph.
+     * @param DocBlox_GraphViz_Graph $graph The graph to add onto this graph as
+     *  subgraph.
      *
      * @return DocBlox_GraphViz_Graph
      */
@@ -273,7 +299,8 @@ class DocBlox_GraphViz_Graph
      *
      * @throws DocBlox_GraphViz_Exception if an error occurred in GraphViz.
      *
-     * @param string $type     The type to export to; see the link above for a list of supported types.
+     * @param string $type     The type to export to; see the link above for a
+     *  list of supported types.
      * @param string $filename The path to write to.
      *
      * @return DocBlox_GraphViz_Graph
@@ -297,7 +324,10 @@ class DocBlox_GraphViz_Graph
         unlink($tmpfile);
 
         if ($code != 0) {
-            throw new DocBlox_GraphViz_Exception('An error occurred while creating the graph; GraphViz returned: ' . implode(PHP_EOL, $output));
+            throw new DocBlox_GraphViz_Exception(
+                'An error occurred while creating the graph; GraphViz returned: '
+                . implode(PHP_EOL, $output)
+            );
         }
 
         return $this;
@@ -306,13 +336,16 @@ class DocBlox_GraphViz_Graph
     /**
      * Generates a DOT file for use with GraphViz.
      *
-     * GraphViz is not used in this method; it is safe to call it even without GraphViz installed.
+     * GraphViz is not used in this method; it is safe to call it even without
+     * GraphViz installed.
      *
      * @return string
      */
     public function __toString()
     {
-        $elements = array_merge($this->graphs, $this->attributes, $this->edges, $this->nodes);
+        $elements = array_merge(
+            $this->graphs, $this->attributes, $this->edges, $this->nodes
+        );
 
         $attributes = array();
         foreach ($elements as $value)
