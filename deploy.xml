@@ -1,6 +1,13 @@
 <project name="DocBlox" default="deploy" basedir=".">
     <property file="deploy.properties"/>
 
+    <target name="phpcs">
+        <exec command="phpcs --report=checkstyle
+              --report-file=${project.basedir}/build/logs/checkstyle.xml
+              --standard=PEAR --extensions=php
+              ${project.basedir}/src/DocBlox"/>
+    </target>
+
     <target name="generate-manual">
         <exec command="make html" dir="${project.basedir}/docs/manual" passthru="true" />
     </target>

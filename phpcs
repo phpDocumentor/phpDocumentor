@@ -1,1 +1,0 @@
-phpcs --standard=PEAR --extensions=php src/DocBlox/*
