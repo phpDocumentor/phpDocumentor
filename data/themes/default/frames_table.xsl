@@ -50,7 +50,7 @@
             </td>
           </tr>
           <tr>
-            <td class="resizable">
+            <td colspan="2" class="resizable">
                 <div id="sidebar">
                     <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0"></iframe>
                 </div>
