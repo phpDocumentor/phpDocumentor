@@ -264,8 +264,9 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
         // apply inheritance to every class or interface extending this one
         $xpath = new DOMXPath($this->document);
         $result = $xpath->query(
-            '/project/file/*[extends="' . $class_name . '"'
+            '/project/file/class[extends="' . $class_name . '"'
             . ' or implements="' . $class_name . '"]'
+            . '|/project/file/interface[extends="' . $class_name . '"]'
         );
         foreach ($result as $node)
         {
