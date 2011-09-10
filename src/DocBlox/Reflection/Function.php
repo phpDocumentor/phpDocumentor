@@ -150,6 +150,16 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     }
 
     /**
+     * Returns the arguments for this element.
+     *
+     * @return DocBlox_Reflection_Argument[]
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
+
+    /**
      * Returns the XML representation of this object or false if an error occurred.
      *
      * @return string|boolean

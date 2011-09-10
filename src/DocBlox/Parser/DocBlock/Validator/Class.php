@@ -1,6 +1,6 @@
 <?php
 /**
- * File contains the DocBlox_Core_Validator_File class
+ * File contains the DocBlox_Core_Validator_Class class
  *
  * PHP Version 5
  *
@@ -14,7 +14,7 @@
  * @link       http://docblox-project.org
  */
 /**
- * This class is responsible for validating the file docbloc
+ * This class is responsible for validating the file docblox
  *
  * @category   DocBlox
  * @package    Parser
@@ -25,9 +25,10 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Validator_File
-    extends DocBlox_Parser_DocBlock_Validator_Class
+class DocBlox_Parser_DocBlock_Validator_Class
+    extends DocBlox_Parser_DocBlock_Validator_Abstract
 {
+
     /**
      * Is the docblock valid?
      *
@@ -37,14 +38,34 @@ class DocBlox_Parser_DocBlock_Validator_File
      */
     public function isValid()
     {
-        if (!$this->docblock->hasTag('package')) {
-            $this->logParserError('ERROR', 'No Page-level DocBlock '
-                    . 'was found', $this->line_number);
+        $valid = true;
+
+        if (null == $this->docblock) {
             return false;
         }
 
-        $valid = parent::isValid();
+        if (count($this->docblock->getTagsByName('package')) > 1) {
+            $this->logParserError(
+                'CRITICAL', 'Only one @package tag is allowed', $this->line_number
+            );
+        }
+
+        if (count($this->docblock->getTagsByName('subpackage')) > 1) {
+            $this->logParserError(
+                'CRITICAL', 'Only one @subpackage tag is allowed', $this->line_number
+            );
+        }
+
+        if ($this->docblock->hasTag('subpackage')
+            && !$this->docblock->hasTag('package')
+        ) {
+            $this->logParserError(
+                'CRITICAL', 'Cannot have a @subpackage '
+                    . 'when a @package tag is not present', $this->line_number
+            );
+        }
 
         return $valid;
     }
+
 }

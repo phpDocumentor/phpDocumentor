@@ -1,32 +1,30 @@
 <?php
 /**
- * File contains the DocBlox_Core_Validator_File class
+ * File contains the DocBlox_Core_Validator_Function class
  *
  * PHP Version 5
  *
  * @category   DocBlox
  * @package    Parser
  * @subpackage DocBlock_Validators
- * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 /**
- * This class is responsible for validating the file docbloc
+ * This class is responsible for validating a function's docblock.
  *
  * @category   DocBlox
  * @package    Parser
  * @subpackage DocBlock_Validators
- * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Validator_File
-    extends DocBlox_Parser_DocBlock_Validator_Class
+class DocBlox_Parser_DocBlock_Validator_Function
+    extends DocBlox_Parser_DocBlock_Validator_Abstract
 {
     /**
      * Is the docblock valid?
@@ -37,14 +35,6 @@ class DocBlox_Parser_DocBlock_Validator_File
      */
     public function isValid()
     {
-        if (!$this->docblock->hasTag('package')) {
-            $this->logParserError('ERROR', 'No Page-level DocBlock '
-                    . 'was found', $this->line_number);
-            return false;
-        }
-
-        $valid = parent::isValid();
-
-        return $valid;
+        return true;
     }
 }

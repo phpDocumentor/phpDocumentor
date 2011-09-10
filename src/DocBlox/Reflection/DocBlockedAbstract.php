@@ -230,8 +230,10 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         $class = get_class($this);
         $part = substr($class, strrpos($class, '_') + 1);
 
-        if (@class_exists('DocBlox_Parser_DocBlock_Validator_'.$part)) {
-            $validator = new DocBlox_Parser_DocBlock_Validator_File($filename, $lineNumber, $docblock);
+        $class = 'DocBlox_Parser_DocBlock_Validator_' . $part;
+        if (@class_exists($class)) {
+            /** @var DocBlox_Parser_DocBlock_Validator_Abstract $validator  */
+            $validator = new $class($filename, $lineNumber, $docblock, $this);
             $valid = $validator->isValid();
         }
         return $valid;
