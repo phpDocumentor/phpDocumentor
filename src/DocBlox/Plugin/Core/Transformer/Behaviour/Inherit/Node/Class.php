@@ -23,8 +23,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
-    DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
+class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
+    DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
 {
 
     /**
@@ -153,7 +153,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             if ($method->getAttribute('inherited_from')) {
                 continue;
             }
-            $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Method($method);
+            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method($method);
             $inherit->apply($super_copy['methods'], $class_name);
         }
 
@@ -212,7 +212,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
             if ($property->getAttribute('inherited_from')) {
                 continue;
             }
-            $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Property($property);
+            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property($property);
             $inherit->apply($super_copy['properties'], $class_name);
         }
 
@@ -282,7 +282,7 @@ class DocBlox_Transformer_Behaviour_Inherit_Node_Class extends
                 );
             }
 
-            $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
+            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class(
                 $node, $this->document
             );
             $inherit->apply($super_copy, $class_name);

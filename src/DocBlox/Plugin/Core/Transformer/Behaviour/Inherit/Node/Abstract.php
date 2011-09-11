@@ -23,7 +23,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-abstract class DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
+abstract class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
 {
     /** @var DOMElement */
     protected $node = null;

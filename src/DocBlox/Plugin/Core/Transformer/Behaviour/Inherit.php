@@ -24,8 +24,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Inherit extends
-    DocBlox_Transformer_Behaviour_Abstract
+class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit extends
+    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
 {
     /**
      * Apply inheritance of docblock elements to all elements.
@@ -96,7 +96,7 @@ class DocBlox_Transformer_Behaviour_Inherit extends
         );
         foreach ($result as $node)
         {
-            $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Interface(
+            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Interface(
                 $node, $xml
             );
             $super = array('classes' => array(), 'properties' => array(), 'methods' => array());
@@ -112,7 +112,7 @@ class DocBlox_Transformer_Behaviour_Inherit extends
         );
         foreach ($result as $node)
         {
-            $inherit = new DocBlox_Transformer_Behaviour_Inherit_Node_Class(
+            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class(
                 $node, $xml
             );
 

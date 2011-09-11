@@ -37,6 +37,12 @@ class DocBlox_Parser_DocBlock_Validator_File
      */
     public function isValid()
     {
+        if (!$this->docblock) {
+            $this->logParserError('ERROR', 'No Page-level DocBlock '
+                    . 'was found', $this->line_number);
+            return false;
+        }
+
         if (!$this->docblock->hasTag('package')) {
             $this->logParserError('ERROR', 'No Page-level DocBlock '
                     . 'was found', $this->line_number);

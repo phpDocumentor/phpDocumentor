@@ -22,8 +22,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Tag_Return extends
-    DocBlox_Transformer_Behaviour_Abstract
+class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Return extends
+    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
 {
     /**
      * Find all return tags that contain 'self' or '$this' and replace those

@@ -23,8 +23,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Inherit_Node_Interface extends
-    DocBlox_Transformer_Behaviour_Inherit_Node_Class
+class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Interface extends
+    DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
 {
 
 }

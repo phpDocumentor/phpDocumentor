@@ -19,8 +19,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Tag_Internal extends
-    DocBlox_Transformer_Behaviour_Tag_Ignore
+class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Internal extends
+    DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Ignore
 {
     protected $tag = 'internal';
 

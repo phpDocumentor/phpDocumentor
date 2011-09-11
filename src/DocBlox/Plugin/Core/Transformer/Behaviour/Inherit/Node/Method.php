@@ -14,7 +14,7 @@
  */
 
 /**
- * Responsible for adding inheritance behaviour to an individual property.
+ * Responsible for adding inheritance behaviour to an individual method.
  *
  * @category   DocBlox
  * @package    Transformer
@@ -23,13 +23,16 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Inherit_Node_Property extends
-    DocBlox_Transformer_Behaviour_Inherit_Node_Abstract
+class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method extends
+    DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
 {
 
     /** @var string[] All class tags that are inherited when none are defined */
     protected $inherited_tags = array(
-        'var',
+        'param',
+        'return',
+        'throws',
+        'throw',
         'version',
         'copyright',
         'author'

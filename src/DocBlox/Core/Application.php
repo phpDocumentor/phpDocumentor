@@ -42,23 +42,27 @@ class DocBlox_Core_Application
         );
         $task = $runner->getTask();
 
-        $threshold = DocBlox_Core_Log::WARN;
         if (!$task->getQuiet()) {
             DocBlox_Core_Application::renderVersion();
         } else {
-            $threshold = DocBlox_Core_Log::QUIET;
+            DocBlox_Core_Abstract::config()->logging->level = 'quiet';
         }
 
         if ($task->getVerbose()) {
-            $threshold = DocBlox_Core_Log::DEBUG;
+            DocBlox_Core_Abstract::config()->logging->level = 'debug';
         }
 
         $dispatcher = new sfEventDispatcher();
 
-        $logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
-        $logger->setThreshold($threshold);
+        $plugin_manager = new DocBlox_Plugin_Manager(
+            $dispatcher,
+            DocBlox_Core_Abstract::config()
+        );
 
-        $dispatcher->connect('system.log', array($logger, 'log'));
+        $plugin_manager->register(
+            dirname(__FILE__).'/../Plugin/Core/Listener.php'
+        );
+
         DocBlox_Parser_Abstract::$event_dispatcher      = $dispatcher;
         DocBlox_Transformer_Abstract::$event_dispatcher = $dispatcher;
         DocBlox_Reflection_Abstract::$event_dispatcher  = $dispatcher;

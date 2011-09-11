@@ -19,8 +19,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Behaviour_Tag_Ignore extends
-    DocBlox_Transformer_Behaviour_Abstract
+class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Ignore extends
+    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
 {
     protected $tag = 'ignore';
 
