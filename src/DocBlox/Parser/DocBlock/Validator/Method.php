@@ -1,6 +1,6 @@
 <?php
 /**
- * File contains the DocBlox_Core_Validator_File class
+ * File contains the DocBlox_Core_Validator_Method class
  *
  * PHP Version 5
  *
@@ -14,7 +14,7 @@
  * @link       http://docblox-project.org
  */
 /**
- * This class is responsible for validating the file docbloc
+ * This class is responsible for validating the method doc block
  *
  * @category   DocBlox
  * @package    Parser
@@ -25,7 +25,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Validator_File
+class DocBlox_Parser_DocBlock_Validator_Method
     extends DocBlox_Parser_DocBlock_Validator_Abstract
 {
     /**
@@ -40,40 +40,18 @@ class DocBlox_Parser_DocBlock_Validator_File
         $valid = true;
 
         if (null == $this->_docblock) {
-            return false;
-        }
-
-        if (!$this->_docblock->hasTag('package')) {
-            $valid = false;
             $this->logParserError(
                 'ERROR',
-                'No Page-level DocBlock '
-                . 'was found', $this->_lineNumber
+                'No Method DocBlock '
+                . 'was found for ' . $this->_entityName, $this->_lineNumber
             );
-        }
-
-        if (count($this->_docblock->getTagsByName('package')) > 1) {
-            $this->logParserError(
-                'CRITICAL',
-                'File cannot have more than '
-                . 'one @package tag', $this->_lineNumber
-            );
-        }
-
-        if ($this->_docblock->hasTag('subpackage')
-            && !$this->_docblock->hasTag('package')
-        ) {
-            $this->logParserError(
-                'CRITICAL',
-                'File cannot have a @subpackage '
-                . 'when a @package tag is not present', $this->_lineNumber
-            );
+            return false;
         }
 
         if ('' === $this->_docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL',
-                'No short description for file '
+                'No short description for method '
                 . $this->_entityName, $this->_lineNumber
             );
         }

@@ -30,39 +30,40 @@ abstract class DocBlox_Parser_DocBlock_Validator_Abstract
     extends DocBlox_Parser_Abstract
 {
     /**
-     * Name of the file being validated.
+     * Name of the "entity" being validated.
      *
      * @var string
      */
-    protected $filename;
+    protected $_entityName;
 
     /**
      * Line number of the docblock
      *
      * @var int
      */
-    protected $line_number;
+    protected $_lineNumber;
 
     /**
      * Docblock for the file
      *
      * @var DocBlox_Reflection_DocBlock
      */
-    protected $docblock;
+    protected $_docblock;
 
     /**
      * Constructor
      *
-     * @param string                           $filename    Filename
-     * @param int                              $line_number Line number for
-     *  the docblock
-     * @param DocBlox_Reflection_DocBlock|null $docblock    Docblock
+     * @param string                           $name       Name of the "entity"
+     *                                                     being validated
+     * @param int                              $lineNumber Line number for
+     *                                                     the docblock
+     * @param DocBlox_Reflection_DocBlock|null $docblock   Docblock
      */
-    public function __construct($filename, $line_number, $docblock = null)
+    public function __construct($name, $lineNumber, $docblock = null)
     {
-        $this->filename    = $filename;
-        $this->line_number = $line_number;
-        $this->docblock    = $docblock;
+        $this->_entityName = $name;
+        $this->_lineNumber = $lineNumber;
+        $this->_docblock   = $docblock;
     }
 
     /**
