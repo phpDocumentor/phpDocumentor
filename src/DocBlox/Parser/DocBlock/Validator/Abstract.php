@@ -65,7 +65,8 @@ abstract class DocBlox_Parser_DocBlock_Validator_Abstract
      * @param DocBlox_Reflection_DocBlock|null $docblock   Docblock
      * @param DocBlox_Reflection_Abstract|null $source     Source Element.
      */
-    public function __construct($name, $lineNumber, $docblock = null)
+    public function __construct($name, $lineNumber, $docblock = null,
+        $source = null)
     {
         $this->_entityName = $name;
         $this->_lineNumber = $lineNumber;

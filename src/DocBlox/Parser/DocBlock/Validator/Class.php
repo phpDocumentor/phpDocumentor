@@ -55,13 +55,13 @@ class DocBlox_Parser_DocBlock_Validator_Class
 
         if (count($this->_docblock->getTagsByName('package')) > 1) {
             $this->logParserError(
-                'CRITICAL', 'Only one @package tag is allowed', $this->line_number
+                'CRITICAL', 'Only one @package tag is allowed', $this->_lineNumber
             );
         }
 
         if (count($this->_docblock->getTagsByName('subpackage')) > 1) {
             $this->logParserError(
-                'CRITICAL', 'Only one @subpackage tag is allowed', $this->line_number
+                'CRITICAL', 'Only one @subpackage tag is allowed', $this->_lineNumber
             );
         }
 
@@ -70,7 +70,7 @@ class DocBlox_Parser_DocBlock_Validator_Class
         ) {
             $this->logParserError(
                 'CRITICAL', 'Cannot have a @subpackage '
-                    . 'when a @package tag is not present', $this->line_number
+                    . 'when a @package tag is not present', $this->_lineNumber
             );
         }
 
