@@ -1,29 +1,31 @@
 <?php
 /**
- * File contains the DocBlox_Core_Validator_Function class
+ * File contains the DocBlox_Core_Validator_Property class
  *
  * PHP Version 5
  *
  * @category   DocBlox
  * @package    Parser
  * @subpackage DocBlock_Validators
+ * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 /**
- * This class is responsible for validating a function's docblock.
+ * This class is responsible for validating a properties docblock.
  *
  * @category   DocBlox
  * @package    Parser
  * @subpackage DocBlock_Validators
+ * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Validator_Function
+class DocBlox_Parser_DocBlock_Validator_Property
     extends DocBlox_Parser_DocBlock_Validator_Abstract
 {
     /**
@@ -40,7 +42,7 @@ class DocBlox_Parser_DocBlock_Validator_Function
         if (null == $this->_docblock) {
             $this->logParserError(
                 'ERROR',
-                'No DocBlock was found for function '
+                'No DocBlock was found for property '
                 . $this->_entityName, $this->_lineNumber
             );
             return false;
@@ -49,7 +51,7 @@ class DocBlox_Parser_DocBlock_Validator_Function
         if ('' === $this->_docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL',
-                'No short description for function '
+                'No short description for property '
                 . $this->_entityName, $this->_lineNumber
             );
         }
