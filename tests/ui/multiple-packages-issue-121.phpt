@@ -17,6 +17,6 @@ require_once 'tests/common/ui-include.php';
 --EXPECTF--
 DocBlox version %s
 
-%s ERR (3): File cannot have more than one @package tag
+%s ERR (3): Only one @package tag is allowed
 Starting transformation of files (this could take a while depending upon the size of your project)
 Finished transformation in %s seconds
