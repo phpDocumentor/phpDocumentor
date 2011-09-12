@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * No property docblock file
  *
  * @package    DocBlox
  * @subpackage Validator
@@ -8,8 +8,9 @@
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
+
 /**
- *
+ * No property no block class
  *
  * @package    DocBlox
  * @subpackage Validator
@@ -17,19 +18,7 @@
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-class NoShortDescription
+class NoPropertyDocBlock
 {
-    /**
-     *
-     *
-     */
-    protected $_noShortDescriptionProperty;
-
-    /**
-     *
-     */
-    public function noShortDescriptionFound()
-    {
-
-    }
+    protected $_noDocBlockProperty;
 }
