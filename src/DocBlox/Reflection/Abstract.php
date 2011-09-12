@@ -143,7 +143,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
             )
         );
     }
-    
+
     /**
      * Dispatches a logging request.
      *
@@ -153,10 +153,10 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
      *
      * @return void
      */
-    public function logParserError($type, $message, $line) 
+    public function logParserError($type, $message, $line)
     {
         $this->dispatch(
-                'parser.log', 
+                'parser.log',
                 array(
                     'type' => $type,
                     'message' => $message,
@@ -550,7 +550,17 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
     }
   }
 
-  /**
+    /**
+     * Returns the name of the file where this element comes from.
+     *
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
    * Returns an XML representation of this object.
    *
    * @abstract

@@ -71,22 +71,12 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             }
         } catch (Exception $e) {
             $this->log($e->getMessage(), Zend_Log::CRIT);
+            return $result;
         }
 
-        $this->dispatch('reflection.validate-docblock', array(
-            $this->filename,
-            $docblock ? $docblock->line_number : 0,
-            $result,
-            $this
+        $this->dispatch('reflection.post-docblock-extraction', array(
+            'docblock' => $result
         ));
-//        $this->validateDocBlock($this->filename, $docblock ? $docblock->line_number : 0, $result);
-
-        // if the object has no DocBlock _and_ is not a Closure; throw a warning
-        $type = substr(get_class($this), strrpos(get_class($this), '_') + 1);
-        if (!$result && (($type !== 'Function') && ($this->getName() !== 'Closure'))) {
-            $this->logParserError('ERROR', 'No DocBlock was found for ' . $type
-                    . ' ' . $this->getName(), $this->getLineNumber());
-        }
 
         return $result;
     }
@@ -219,30 +209,6 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         if ((string)$xml['package'] == '') {
             $xml['package'] = $this->getDefaultPackageName();
         }
-    }
-
-    /**
-     * Validate the docblock
-     *
-     * @param string                           $filename   Filename
-     * @param int                              $lineNumber The line number for the docblock
-     * @param DocBlox_Reflection_DocBlock|null $docblock   Docbloc
-     *
-     * @return boolean
-     */
-    protected function validateDocBlock($filename, $lineNumber, $docblock)
-    {
-        $valid = true;
-        $class = get_class($this);
-        $part = substr($class, strrpos($class, '_') + 1);
-
-        $class = 'DocBlox_Parser_DocBlock_Validator_' . $part;
-        if (@class_exists($class)) {
-            /** @var DocBlox_Parser_DocBlock_Validator_Abstract $validator  */
-            $validator = new $class($filename, $lineNumber, $docblock, $this);
-            $valid = $validator->isValid();
-        }
-        return $valid;
     }
 
     /**

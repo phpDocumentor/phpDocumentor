@@ -461,18 +461,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $this->log($e->getMessage(), Zend_Log::CRIT);
         }
 
-        // TODO: add a check if a class immediately follows this docblock, if so
-        // this is not a page level docblock but a class docblock
-        $valid = $this->validateDocBlock(
-            $this->filename,
-            $docblock ? $docblock->getLineNumber() : 0,
-            $result
-        );
-
-        if (!$valid) {
-            $result = null;
-        }
-
         return $result;
     }
 

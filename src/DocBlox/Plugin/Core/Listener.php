@@ -56,4 +56,57 @@ class DocBlox_Plugin_Core_Listener
 
         $data[1] = $behaviours->process($data[0]);
     }
+
+    /**
+     *
+     *
+     * @param sfEvent $data
+     *
+     * @event reflection.post-docblock-extraction
+     *
+     * @return void
+     */
+    public function validateDocBlocks(sfEvent $data)
+    {
+        /** @var DocBlox_Reflection_DocBlockedAbstract $element  */
+        $element = $data->getSubject();
+
+        /** @var DocBlox_Reflection_DocBlock $docblock  */
+        $docblock = $data['docblock'];
+
+        // get the type of element
+        $type = substr(
+            get_class($element),
+            strrpos(get_class($element), '_') + 1
+        );
+
+        // if the object has no DocBlock _and_ is not a Closure; throw a warning
+        if (!$docblock && ($type !== 'Function')
+            && ($element->getName() !== 'Closure')
+        ) {
+            $element->logParserError(
+                'ERROR', 'No DocBlock was found for ' . $type . ' '
+                . $element->getName(), $element->getLineNumber()
+            );
+        }
+
+        // no docblock so no reason to validate
+        if (!$docblock) {
+            return;
+        }
+
+        $class = 'DocBlox_Parser_DocBlock_Validator_' . $type;
+        if (@class_exists($class)) {
+
+            /** @var DocBlox_Parser_DocBlock_Validator_Abstract $validator  */
+            $validator = new $class(
+                $element->getFilename(),
+                $docblock->line_number,
+                $docblock,
+                $element
+            );
+
+            $validator->isValid();
+        }
+    }
 }
