@@ -55,7 +55,7 @@ abstract class DocBlox_Parser_DocBlock_Validator_Abstract
      *
      * @var DocBlox_Reflection_Abstract
      */
-    protected $source;
+    protected $_source;
 
     /**
      * Constructor
@@ -71,7 +71,7 @@ abstract class DocBlox_Parser_DocBlock_Validator_Abstract
         $this->_entityName = $name;
         $this->_lineNumber = $lineNumber;
         $this->_docblock   = $docblock;
-        $this->source      = $source;
+        $this->_source      = $source;
     }
 
     /**

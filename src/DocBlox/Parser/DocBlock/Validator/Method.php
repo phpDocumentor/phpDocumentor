@@ -42,8 +42,8 @@ class DocBlox_Parser_DocBlock_Validator_Method
         if (null == $this->_docblock) {
             $this->logParserError(
                 'ERROR',
-                'No Method DocBlock '
-                . 'was found for ' . $this->_entityName, $this->_lineNumber
+                'No DocBlock was found for method '
+                . $this->_entityName, $this->_lineNumber
             );
             return false;
         }

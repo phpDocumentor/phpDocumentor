@@ -8,7 +8,6 @@
  * @author     Ben Selby <benmatselby@gmail.com>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  */
-
 /**
  * No method no block class
  *

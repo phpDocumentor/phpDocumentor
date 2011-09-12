@@ -73,14 +73,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             $this->log($e->getMessage(), Zend_Log::CRIT);
         }
 
-        $this->validateDocBlock($this->name, $docblock ? $docblock->line_number : 0, $result);
-
-        // if the object has no DocBlock _and_ is not a Closure; throw a warning
-        $type = substr(get_class($this), strrpos(get_class($this), '_') + 1);
-        if (!$result && (($type !== 'Function') && ($this->getName() !== 'Closure'))) {
-            $this->logParserError('ERROR', 'No DocBlock was found for ' . $type
-                    . ' ' . $this->getName(), $this->getLineNumber());
-        }
+        $this->validateDocBlock($this->name, $this->line_start, $result);
 
         return $result;
     }
