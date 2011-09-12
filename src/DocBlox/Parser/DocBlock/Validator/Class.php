@@ -14,7 +14,7 @@
  * @link       http://docblox-project.org
  */
 /**
- * This class is responsible for validating the file docblox
+ * This class is responsible for validating the class docbloc
  *
  * @category   DocBlox
  * @package    Parser
@@ -28,7 +28,6 @@
 class DocBlox_Parser_DocBlock_Validator_Class
     extends DocBlox_Parser_DocBlock_Validator_Abstract
 {
-
     /**
      * Is the docblock valid?
      *
@@ -40,24 +39,34 @@ class DocBlox_Parser_DocBlock_Validator_Class
     {
         $valid = true;
 
-        if (null == $this->docblock) {
+        if (null == $this->_docblock) {
             return false;
         }
 
-        if (count($this->docblock->getTagsByName('package')) > 1) {
+        if (null == $this->_docblock) {
+            $this->logParserError(
+                'ERROR',
+                'No Class DocBlock '
+                . 'was found for ' . $this->_entityName, $this->_lineNumber
+            );
+            return false;
+        }
+
+
+        if (count($this->_docblock->getTagsByName('package')) > 1) {
             $this->logParserError(
                 'CRITICAL', 'Only one @package tag is allowed', $this->line_number
             );
         }
 
-        if (count($this->docblock->getTagsByName('subpackage')) > 1) {
+        if (count($this->_docblock->getTagsByName('subpackage')) > 1) {
             $this->logParserError(
                 'CRITICAL', 'Only one @subpackage tag is allowed', $this->line_number
             );
         }
 
-        if ($this->docblock->hasTag('subpackage')
-            && !$this->docblock->hasTag('package')
+        if ($this->_docblock->hasTag('subpackage')
+            && !$this->_docblock->hasTag('package')
         ) {
             $this->logParserError(
                 'CRITICAL', 'Cannot have a @subpackage '
@@ -65,7 +74,14 @@ class DocBlox_Parser_DocBlock_Validator_Class
             );
         }
 
+        if ('' === $this->_docblock->getShortDescription()) {
+            $this->logParserError(
+                'CRITICAL',
+                'No short description for class '
+                . $this->_entityName, $this->_lineNumber
+            );
+        }
+
         return $valid;
     }
-
 }
