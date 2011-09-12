@@ -232,7 +232,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
 
         if (@class_exists('DocBlox_Parser_DocBlock_Validator_'.$part)) {
             $validatorType = 'DocBlox_Parser_DocBlock_Validator_' . $part;
-            $validator = new $validatorType($name, $lineNumber, $docblock);
+            $validator = new $validatorType($name, $lineNumber, $docblock, $this);
             $valid = $validator->isValid();
         }
         return $valid;
