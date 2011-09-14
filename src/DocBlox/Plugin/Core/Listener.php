@@ -2,16 +2,13 @@
 /**
  *
  */
-class DocBlox_Plugin_Core_Listener
+class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
 {
-    protected $event_dispatcher = null;
-    protected $configuration    = null;
-    protected $logger           = null;
+    protected $logger = null;
 
     function __construct($event_dispatcher, $configuration)
     {
-        $this->event_dispatcher = $event_dispatcher;
-        $this->configuration    = $configuration;
+        parent::__construct($event_dispatcher, $configuration);
 
         $this->logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
         $this->logger->setThreshold($configuration->logging->level);
