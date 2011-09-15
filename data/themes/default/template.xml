@@ -5,8 +5,8 @@
   <copyright>Mike van Riel / Naenius 2011</copyright>
   <transformations>
     <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php"/>
-    <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
-    <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
+    <transformation query="copy" writer="FileIo" source="../data/js" artifact="js"/>
+    <transformation query="copy" writer="FileIo" source="../data/images" artifact="images"/>
     <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
     <transformation query="" writer="Search" source="" artifact="."/>
