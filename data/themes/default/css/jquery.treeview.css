@@ -73,10 +73,11 @@ ul.deadtree
   margin:     0;
   list-style: none;
 }
-.filetree li, .deadtree li { padding: 3px 0 2px 16px; }
+.filetree li, .deadtree li, .sidebar-nav-tree li { padding: 3px 0 2px 16px; }
 
 .filetree span.folder, .filetree span.file,
-.deadtree span.folder, .deadtree span.file
+.deadtree span.folder, .deadtree span.file,
+.sidebar-nav-tree span.folder, .sidebar-nav-tree span.file
 {
   padding: 1px 0 1px 16px; display: block;
 }
@@ -86,17 +87,23 @@ ul.deadtree
 .filetree span.method, .deadtree span.method,
 .filetree span.constant, .deadtree span.constant,
 .filetree span.property, .deadtree span.property,
-.filetree span.interface, .deadtree span.interface
+.filetree span.interface, .deadtree span.interface,
+.sidebar-nav-tree span.class,
+.sidebar-nav-tree span.function,
+.sidebar-nav-tree span.method,
+.sidebar-nav-tree span.constant,
+.sidebar-nav-tree span.property,
+.sidebar-nav-tree span.interface
 {
   padding: 1px 0 1px 18px; display: block;
 }
 
-.filetree span.folder, .deadtree span.folder { background: url(images/folder.gif) 0 0 no-repeat; }
-.filetree li.expandable span.folder { background: url(images/folder-closed.gif) 0 0 no-repeat; }
-.filetree span.file { background: url(images/file.gif) 0 0 no-repeat; }
-.filetree span.class { background: url(../images/icons/class.png) 0 0 no-repeat; }
-.filetree span.interface { background: url(../images/icons/interface.png) 0 0 no-repeat; }
-.filetree span.function { background: url(../images/icons/function.png) 0 0 no-repeat; }
-.filetree span.method { background: url(../images/icons/function.png) 0 0 no-repeat; }
-.filetree span.property { background: url(../images/icons/property.png) 0 0 no-repeat; }
-.filetree span.constant { background: url(../images/icons/constant.png) 0 0 no-repeat; }
+.filetree span.folder, .deadtree span.folder, .sidebar-nav-tree span.folder { background: url(images/folder.gif) 0 0 no-repeat; }
+.filetree li.expandable span.folder, .sidebar-nav-tree li.expandable span.folder { background: url(images/folder-closed.gif) 0 0 no-repeat; }
+.filetree span.file, .sidebar-nav-tree span.file { background: url(images/file.gif) 0 0 no-repeat; }
+.filetree span.class, .sidebar-nav-tree span.class { background: url(../images/icons/class.png) 0 0 no-repeat; }
+.filetree span.interface, .sidebar-nav-tree span.interface { background: url(../images/icons/interface.png) 0 0 no-repeat; }
+.filetree span.function, .sidebar-nav-tree span.function { background: url(../images/icons/function.png) 0 0 no-repeat; }
+.filetree span.method, .sidebar-nav-tree span.method { background: url(../images/icons/function.png) 0 0 no-repeat; }
+.filetree span.property, .sidebar-nav-tree span.property { background: url(../images/icons/property.png) 0 0 no-repeat; }
+.filetree span.constant, .sidebar-nav-tree span.constant { background: url(../images/icons/constant.png) 0 0 no-repeat; }

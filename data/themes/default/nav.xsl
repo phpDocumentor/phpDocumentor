@@ -4,44 +4,181 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="/project">
-    <div id="accordion">
+    <script type="text/javascript">
 
-        <xsl:call-template name="api"/>
+        $(function() {
+            $("#sidebar-nav").accordion({
+                autoHeight: false,
+                navigation: true,
+                collapsible: true
+            }).accordion("activate", false)
+              .find('a.link').click(function(ev){
+                ev.preventDefault();
+                ev.stopPropagation();
+            }).prev().prev().remove();
 
-        <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
-            <h1><a href="#">Namespaces</a></h1>
-            <div style="padding: 0px;">
-                <!--<input type="checkbox" onclick="$('.treeview-docblox small').toggle(!this.checked);" checked="">Compact view<br />-->
-                <ul id="namespaces-" class="filetree">
-                  <xsl:apply-templates select="/project/namespace">
-                    <xsl:sort select="@name" />
-                    <xsl:with-param name="parent_name" select="''" />
-                  </xsl:apply-templates>
+            $("#sidebar-nav>h3").click(function(){
+                if ($(this).attr('initialized') == 'true') return;
+
+                $(this).next().find(".sidebar-nav-tree").treeview({
+                    collapsed: true,
+                    persist: "cookie"
+                });
+                $(this).attr('initialized', true);
+            });
+        });
+
+    </script>
+
+      <style>
+        #sidebar {
+            height: 100%;
+            width: 100%;
+            background: #232325;
+            overflow: auto;
+            color: #f9f9ff
+        }
+
+        #sidebar-header {
+            height: 52px;
+            border-bottom: 1px solid #333333;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #sidebar-footer {
+            position: relative;
+            bottom: 0;
+            font-size: 0.7em;
+            color: gray;
+            padding: 15px 5px 5px;
+            border-top: 1px solid #333333;
+            margin-top: 10px;
+        }
+
+        #sidebar-footer a {
+            color: gray;
+        }
+
+        #sidebar-header h1 {
+            font-size: 1.2em;
+            padding: 0;
+            margin: 0;
+            display: inline;
+        }
+
+        #sidebar-logo {
+            float: left;
+            padding-right: 10px;
+        }
+
+        #sidebar-nav h3 > img {
+            float: right;
+            height: 22px;
+            padding-top: 6px;
+            padding-right: 7px;
+        }
+
+        #sidebar-nav h3#sidebar-files > img {
+            height: auto;
+            margin-top: 2px;
+        }
+
+        #sidebar-nav {
+          font-size: 1.1em;
+        }
+
+        .ui-accordion-header {
+            background-image: none;
+            border:  none;
+            font-size: 1.1em;
+        }
+      </style>
+
+    <div id="sidebar">
+        <div id="sidebar-header">
+            <img src="images/icon48x48.png" id="sidebar-logo" alt="Logo" />
+            <h1>DocBlox</h1>
+        </div>
+
+        <div id="sidebar-nav">
+            <h3 id="sidebar-dashboard">
+                <img class="icon" src="{$root}css/docblox/images/icons/dashboard.png" alt="Dashboard"/>
+                <a href="{$root}contents.html" class="link" target="content">Dashboard</a>
+            </h3>
+            <div style="display: none"></div>
+
+            <h3 id="sidebar-files">
+                <img src="{$root}css/docblox/images/icons/files.png" alt="Files"/>
+                <a href="#files">Files</a>
+            </h3>
+            <div style="overflow: auto;">
+                <ul class="sidebar-nav-tree">
+                    <xsl:apply-templates select="file">
+                        <xsl:sort select="@path"/>
+                    </xsl:apply-templates>
                 </ul>
             </div>
-        </xsl:if>
 
-        <xsl:if test="count(/project/package) > 0">
-            <h1><a href="#">Packages</a></h1>
-            <div style="padding: 0px;">
-                <ul id="packages-" class="filetree">
+            <xsl:if test="count(/project/package) > 0">
+            <h3 id="sidebar-packages">
+                <img src="{$root}css/docblox/images/icons/packages.png" alt="Packages"/>
+                <a href="#packages">Packages</a>
+            </h3>
+            <div style="overflow: auto;">
+                <ul class="sidebar-nav-tree">
                     <xsl:apply-templates select="/project/package">
                         <xsl:sort select="@name"/>
                         <xsl:with-param name="parent_name" select="''"/>
                     </xsl:apply-templates>
                 </ul>
             </div>
-        </xsl:if>
+            </xsl:if>
 
-        <h1><a href="#">Files</a></h1>
-        <div style="padding: 0px;">
-            <ul id="files-" class="filetree">
-            <xsl:apply-templates select="file">
-                <xsl:sort select="@path" />
-            </xsl:apply-templates>
-            </ul>
+            <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
+            <h3 id="sidebar-namespaces">
+                <img src="{$root}css/docblox/images/icons/namespaces.png" alt="Namespaces"/>
+                <a href="#namespaces">Namespaces</a>
+            </h3>
+            <div>
+                <ul class="sidebar-nav-tree">
+                    <xsl:apply-templates select="/project/namespace">
+                        <xsl:sort select="@name"/>
+                        <xsl:with-param name="parent_name" select="''"/>
+                    </xsl:apply-templates>
+                </ul>
+            </div>
+            </xsl:if>
+
+            <h3 id="sidebar-charts">
+                <img src="{$root}css/docblox/images/icons/chart.png" alt="Charts"/>
+                <a href="#charts">Charts</a>
+            </h3>
+            <div>
+                <ul>
+                    <li><a href="{$root}graph.html" target="content">Class Inheritance Diagram</a></li>
+                </ul>
+            </div>
+            <h3 id="sidebar-reports">
+                <img src="{$root}css/docblox/images/icons/reports.png" alt="Reports"/>
+                <a href="#reports">Reports</a>
+            </h3>
+            <div>
+                <ul>
+                    <li><a href="{$root}markers.html" target="content">Markers (TODO/FIXME)</a></li>
+                    <li><a href="{$root}parse_markers.html" target="content">Parsing errors</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="sidebar-footer">
+            Documentation is generated by <a href="http://docblox-project.org">
+            <img src="{$root}images/icon48x48.png" height="12" align="top" alt="Logo"/> DocBlox 0.14.0
+            </a>, images courtesy of <a href="http://glyphish.com/">Glyphish</a>
         </div>
     </div>
+
+
+    <!--<xsl:call-template name="api"/>-->
 
   </xsl:template>
 
