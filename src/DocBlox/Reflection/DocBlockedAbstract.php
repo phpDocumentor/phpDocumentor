@@ -74,7 +74,7 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             return $result;
         }
 
-        $this->dispatch('reflection.post-docblock-extraction', array(
+        $this->dispatch('reflection.docblock-extraction.post', array(
             'docblock' => $result
         ));
 
@@ -173,10 +173,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
                 $tag_object = $xml->docblock->addChild('tag');
 
                 $this->dispatch(
-                    'reflection.docblock.tag.pre-export',
+                    'reflection.docblock.tag.export',
                     array(
-                        self::$event_dispatcher,
-                        $this,
                         $tag_object,
                         $tag
                     )

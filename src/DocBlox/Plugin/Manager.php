@@ -54,7 +54,7 @@ class DocBlox_Plugin_Manager
             }
 
             /** @var DocBlox_Reflection_Tag $event */
-            foreach($method->getDocBlock()->getTagsByName('event') as $event) {
+            foreach($method->getDocBlock()->getTagsByName('docblox-event') as $event) {
                 $this->event_dispatcher->connect(
                     $event->getDescription(),
                     array($listener, $method->getName())

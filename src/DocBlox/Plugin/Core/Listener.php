@@ -18,7 +18,7 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
 
     /**
      *
-     * @event transformer.pre-transform
+     * @docblox-event transformer.transform.pre
      *
      * @param sfEvent $data
      *
@@ -59,7 +59,7 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
      *
      * @param sfEvent $data
      *
-     * @event reflection.post-docblock-extraction
+     * @docblox-event reflection.docblock-extraction.post
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
         if (!$docblock && ($type !== 'Function')
             && ($element->getName() !== 'Closure')
         ) {
-            $element->logParserError(
+            $this->logParserError(
                 'ERROR', 'No DocBlock was found for ' . $type . ' '
                 . $element->getName(), $element->getLineNumber()
             );
