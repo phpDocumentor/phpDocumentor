@@ -456,6 +456,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $result = $docblock
                 ? new DocBlox_Reflection_DocBlock($docblock->content)
                 : null;
+
+            if ($result) {
+                // attach line number to class, the DocBlox_Reflection_DocBlock does not know the number
+                $result->line_number = $docblock->line_number;
+            }
         }
         catch (Exception $e) {
             $this->log($e->getMessage(), Zend_Log::CRIT);
