@@ -47,7 +47,7 @@
     </xsl:template>
 
     <xsl:template match="class|interface">
-        <a id="{full_name}"/>
+        <a id="{full_name}" class="anchor"/>
         <h2 class="{name()}">
             <xsl:value-of select="full_name"/>
             <div class="to-top">

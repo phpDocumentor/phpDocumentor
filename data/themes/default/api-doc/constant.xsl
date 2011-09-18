@@ -2,7 +2,7 @@
     <xsl:output indent="yes" method="html"/>
 
     <xsl:template match="constant">
-        <a id="{../full_name}::{name}"/>
+        <a id="{../full_name}::{name}" class="anchor"/>
 
         <div class="constant">
             <xsl:attribute name="class">

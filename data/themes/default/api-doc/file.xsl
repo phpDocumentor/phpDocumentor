@@ -119,7 +119,7 @@
           </div>
       </div>
 
-      <a name="top"/>
+      <a name="top" class="anchor"/>
       <xsl:if test="docblock/description|docblock/long-description">
           <div id="file-description">
               <xsl:apply-templates select="docblock/description"/>
@@ -136,7 +136,7 @@
       </xsl:if>
 
     <xsl:if test="count(constant) > 0">
-    <a name="constants" />
+    <a name="constants" class="anchor" />
     <h2>Constants</h2>
     <div>
       <xsl:apply-templates select="constant"/>
@@ -144,7 +144,7 @@
     </xsl:if>
 
     <xsl:if test="count(function) > 0">
-    <a name="functions" />
+    <a name="functions" class="anchor" />
     <h2>Functions</h2>
     <div>
       <xsl:apply-templates select="function">
@@ -154,14 +154,14 @@
     </xsl:if>
 
     <xsl:if test="count(class) > 0">
-    <a name="classes" />
+    <a name="classes" class="anchor" />
     <xsl:apply-templates select="class">
       <xsl:sort select="name" />
     </xsl:apply-templates>
     </xsl:if>
 
     <xsl:if test="count(interface) > 0">
-    <a name="interfaces" />
+    <a name="interfaces" class="anchor" />
     <xsl:apply-templates select="interface">
       <xsl:sort select="name" />
     </xsl:apply-templates>

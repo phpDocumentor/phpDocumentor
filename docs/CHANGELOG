@@ -7,6 +7,11 @@ FIXED:      @uses was not parsed correctly when only one namespace part was
 FIXED:      defaults of parameters and CONSTANT values were not fully retrieved
 FIXED:      Pipe sign was missing in return type when using multiple types
 FIXED:      Project:list task was broken
+FIXED:      @version was mistakenly recognized as @Version of Doctrine
+FIXED:      Constant values are now more accurately displayed instead of quotes
+            added by default
+FIXED:      Moved anchors so click-through would no longer end up underneath the
+            header
 
 09/04/2011: Version 0.14.0
 --------------------------

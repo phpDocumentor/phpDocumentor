@@ -1,7 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="property">
-        <a id="{../full_name}::{name}"/>
+        <a id="{../full_name}::{name}" class="anchor"/>
 
         <div>
             <xsl:attribute name="class">
