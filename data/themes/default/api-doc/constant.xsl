@@ -22,7 +22,7 @@
                 <span class="highlight">
                     <xsl:value-of select="name"/>
                 </span>
-                = '<xsl:value-of select="value"/>'
+                = <xsl:value-of select="value"/>
             </code>
 
             <div class="description">
