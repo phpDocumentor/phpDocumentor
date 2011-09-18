@@ -33,11 +33,11 @@
       <body class="chrome">
         <table id="page">
           <tr>
-            <td colspan="2" id="db-header">
+            <td id="db-header">
               <h1>
                 <xsl:if test="/project/@title != ''">
                   <span><xsl:value-of select="/project/@title" disable-output-escaping="yes" /></span>
-                </xsl:if>
+                 </xsl:if>
                 <xsl:if test="/project/@title = ''">
                   <div class="docblox"><img src="{$root}images/logo.png" /></div>
                 </xsl:if>
