@@ -23,8 +23,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Tag_Definition_Method
-    extends DocBlox_Parser_DocBlock_Tag_Definition
+class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Method
+    extends DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition
 {
     /**
      * Adds an attribute called `variable` containing the name of the argument.

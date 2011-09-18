@@ -2,6 +2,8 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
  * @package    Parser
  * @subpackage Tag_Definitions
@@ -12,8 +14,7 @@
  */
 
 /**
- * Definition for the @see tag; expands the class mentioned in the refers
- * attribute.
+ * Definition for the @param tag; adds a attribute called `variable`.
  *
  * @category   DocBlox
  * @package    Parser
@@ -22,21 +23,20 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Tag_Definition_See
-    extends DocBlox_Parser_DocBlock_Tag_Definition
+class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Param
+    extends DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition
 {
-
     /**
-     * Adds a new attribute `refers` to the structure element for this tag and
-     * set the description to the element name.
+     * Adds an attribute called `variable` containing the name of the argument.
      *
      * @return void
      */
     protected function configure()
     {
-        $referral = explode('::', $this->xml['refers']);
-        $referral[0] = $this->expandType($referral[0]);
-        $this->xml['refers'] = implode('::', $referral);
-        $this->xml['description'] = implode('::', $referral);
+        if (trim($this->tag->getVariableName()) == '') {
+            // TODO: get the name from the argument list
+        }
+
+        $this->xml['variable'] = $this->tag->getVariableName();
     }
 }

@@ -164,28 +164,27 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
                 $xml->addChild('docblock');
             }
 
-            $xml->docblock->description          = $this->getDocBlock()->getShortDescription();
-            $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getFormattedContents();
-
+            $xml->docblock->description = $this->getDocBlock()
+                ->getShortDescription();
+            $xml->docblock->{'long-description'} = $this->getDocBlock()
+                ->getLongDescription()->getFormattedContents();
 
             /** @var DocBlox_Reflection_Docblock_Tag $tag */
             foreach ($this->getDocBlock()->getTags() as $tag) {
                 $tag_object = $xml->docblock->addChild('tag');
 
-                $this->dispatch(
-                    'reflection.docblock.tag.export',
-                    array(
-                        $tag_object,
-                        $tag
-                    )
-                );
-
-                DocBlox_Parser_DocBlock_Tag_Definition::create($this->getNamespace(), $this->namespace_aliases, $tag_object, $tag);
-
                 // custom attached member variable, see line 51
                 if (isset($this->getDocBlock()->line_number)) {
                     $tag_object['line'] = $this->getDocBlock()->line_number;
                 }
+
+                $this->dispatch(
+                    'reflection.docblock.tag.export',
+                    array(
+                        'object' => $tag,
+                        'xml'    => $tag_object
+                    )
+                );
 
                 if ($tag->getName() == 'package') {
                     $package = $tag->getDescription();

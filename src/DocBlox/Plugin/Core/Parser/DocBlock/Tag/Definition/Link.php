@@ -14,7 +14,7 @@
  */
 
 /**
- * Definition for the @param tag; adds a attribute called `variable`.
+ * Definition for the @link tag; adds a attribute called `link`.
  *
  * @category   DocBlox
  * @package    Parser
@@ -23,20 +23,25 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Tag_Definition_Param
-    extends DocBlox_Parser_DocBlock_Tag_Definition
+class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Link
+    extends DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition
 {
+
     /**
-     * Adds an attribute called `variable` containing the name of the argument.
+     * Adds a new attribute `link` to the structure element for this tag.
+     *
+     * @throws InvalidArgumentException if the associated tag is not of type Link.
      *
      * @return void
      */
     protected function configure()
     {
-        if (trim($this->tag->getVariableName()) == '') {
-            // TODO: get the name from the argument list
+        if (!$this->tag instanceof DocBlox_Reflection_DocBlock_Tag_Link) {
+            throw new InvalidArgumentException(
+                'Expected the tag to be for an @link'
+            );
         }
 
-        $this->xml['variable'] = $this->tag->getVariableName();
+        $this->xml['link'] = $this->tag->getLink();
     }
 }

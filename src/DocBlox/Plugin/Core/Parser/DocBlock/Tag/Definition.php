@@ -23,7 +23,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
+class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
 {
     /** @var SimpleXMLElement */
     protected $xml = null;
@@ -117,27 +117,27 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
             case 'property-read':
             case 'property':
             case 'param':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Param(
+                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Param(
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
             case 'see':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_See(
+                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_See(
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
             case 'method':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Method(
+                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Method(
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
             case 'uses':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Uses(
+                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Uses(
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
             case 'link':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Link(
+                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Link(
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
@@ -197,7 +197,7 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
             case 'table':
             case 'uniqueconstraint':
             case 'version':
-                $def = new DocBlox_Parser_DocBlock_Tag_Definition_Doctrine(
+                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Doctrine(
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;

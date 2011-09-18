@@ -2,8 +2,6 @@
 /**
  * DocBlox
  *
- * PHP Version 5
- *
  * @category   DocBlox
  * @package    Parser
  * @subpackage Tag_Definitions
@@ -14,7 +12,8 @@
  */
 
 /**
- * Definition for the @link tag; adds a attribute called `link`.
+ * Definition for the @see tag; expands the class mentioned in the refers
+ * attribute.
  *
  * @category   DocBlox
  * @package    Parser
@@ -23,25 +22,21 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Parser_DocBlock_Tag_Definition_Link
-    extends DocBlox_Parser_DocBlock_Tag_Definition
+class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_See
+    extends DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition
 {
 
     /**
-     * Adds a new attribute `link` to the structure element for this tag.
-     *
-     * @throws InvalidArgumentException if the associated tag is not of type Link.
+     * Adds a new attribute `refers` to the structure element for this tag and
+     * set the description to the element name.
      *
      * @return void
      */
     protected function configure()
     {
-        if (!$this->tag instanceof DocBlox_Reflection_DocBlock_Tag_Link) {
-            throw new InvalidArgumentException(
-                'Expected the tag to be for an @link'
-            );
-        }
-
-        $this->xml['link'] = $this->tag->getLink();
+        $referral = explode('::', $this->xml['refers']);
+        $referral[0] = $this->expandType($referral[0]);
+        $this->xml['refers'] = implode('::', $referral);
+        $this->xml['description'] = implode('::', $referral);
     }
 }

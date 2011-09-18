@@ -106,4 +106,25 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
             $validator->isValid();
         }
     }
+
+    /**
+     *
+     * @docblox-event reflection.docblock.tag.export
+     *
+     * @param sfEvent $data
+     *
+     * @return void
+     */
+    public function exportTag(sfEvent $data)
+    {
+        /** @var DocBlox_Reflection_DocBlockedAbstract $subject  */
+        $subject = $data->getSubject();
+
+        DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition::create(
+            $subject->getNamespace(),
+            $subject->getNamespaceAliases(),
+            $data['xml'],
+            $data['object']
+        );
+    }
 }
