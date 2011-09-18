@@ -138,7 +138,7 @@
                     </thead>
                     <tr>
                         <td>
-                            <xsl:apply-templates select="docblock/tag[@name='return']/type"/>
+                            <xsl:apply-templates select="docblock/tag[@name='return']"/>
                         </td>
                         <td>
                             <xsl:apply-templates select="docblock/tag[@name='return']/@description"/>
