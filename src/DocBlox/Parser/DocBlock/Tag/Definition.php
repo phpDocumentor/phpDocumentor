@@ -109,7 +109,6 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
                 $tag_name = '\\' . $tag_name;
             }
         }
-        $tag_name = strtolower($tag_name);
 
         switch ($tag_name)
         {
@@ -141,62 +140,62 @@ class DocBlox_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
                     $namespace, $namespace_aliases, $xml, $tag
                 );
                 break;
-            case '\doctrine\orm\mapping\column':
-            case '\doctrine\orm\mapping\changetrackingpolicy':
-            case '\doctrine\orm\mapping\discriminatorcolumn':
-            case '\doctrine\orm\mapping\discriminatormap':
-            case '\doctrine\orm\mapping\entity':
-            case '\doctrine\orm\mapping\generatedvalue':
-            case '\doctrine\orm\mapping\haslifecyclecallbacks':
-            case '\doctrine\orm\mapping\id':
-            case '\doctrine\orm\mapping\inheritancetype':
-            case '\doctrine\orm\mapping\joincolumn':
-            case '\doctrine\orm\mapping\jointable':
-            case '\doctrine\orm\mapping\manytoone':
-            case '\doctrine\orm\mapping\manytomany':
-            case '\doctrine\orm\mapping\mappedsuperclass':
-            case '\doctrine\orm\mapping\onetoone':
-            case '\doctrine\orm\mapping\onetomany':
-            case '\doctrine\orm\mapping\orderby':
-            case '\doctrine\orm\mapping\postload':
-            case '\doctrine\orm\mapping\postpersist':
-            case '\doctrine\orm\mapping\postremove':
-            case '\doctrine\orm\mapping\postupdate':
-            case '\doctrine\orm\mapping\prepersist':
-            case '\doctrine\orm\mapping\preremove':
-            case '\doctrine\orm\mapping\preupdate':
-            case '\doctrine\orm\mapping\sequencegenerator':
-            case '\doctrine\orm\mapping\table':
-            case '\doctrine\orm\mapping\uniqueconstraint':
-            case '\doctrine\orm\mapping\version':
-            case 'column':
-            case 'changetrackingpolicy':
-            case 'discriminatorcolumn':
-            case 'discriminatormap':
-            case 'entity':
-            case 'generatedvalue':
-            case 'haslifecyclecallbacks':
-            case 'id':
-            case 'inheritancetype':
-            case 'joincolumn':
-            case 'jointable':
-            case 'manytoone':
-            case 'manytomany':
-            case 'mappedsuperclass':
-            case 'onetoone':
-            case 'onetomany':
-            case 'orderby':
-            case 'postload':
-            case 'postpersist':
-            case 'postremove':
-            case 'postupdate':
-            case 'prepersist':
-            case 'preremove':
-            case 'preupdate':
-            case 'sequencegenerator':
-            case 'table':
-            case 'uniqueconstraint':
-            case 'version':
+            case '\Doctrine\ORM\Mapping\column':
+            case '\Doctrine\ORM\Mapping\ChangeTrackingPolicy':
+            case '\Doctrine\ORM\Mapping\DiscriminatorColumn':
+            case '\Doctrine\ORM\Mapping\DiscriminatorMap':
+            case '\Doctrine\ORM\Mapping\Entity':
+            case '\Doctrine\ORM\Mapping\GeneratedValue':
+            case '\Doctrine\ORM\Mapping\HasLifecycleCallbacks':
+            case '\Doctrine\ORM\Mapping\Id':
+            case '\Doctrine\ORM\Mapping\InheritanceType':
+            case '\Doctrine\ORM\Mapping\JoinColumn':
+            case '\Doctrine\ORM\Mapping\JoinTable':
+            case '\Doctrine\ORM\Mapping\ManyToOne':
+            case '\Doctrine\ORM\Mapping\ManyToMany':
+            case '\Doctrine\ORM\Mapping\MappedSuperclass':
+            case '\Doctrine\ORM\Mapping\OneToOne':
+            case '\Doctrine\ORM\Mapping\OneToMany':
+            case '\Doctrine\ORM\Mapping\OrderBy':
+            case '\Doctrine\ORM\Mapping\PostLoad':
+            case '\Doctrine\ORM\Mapping\PostPersist':
+            case '\Doctrine\ORM\Mapping\PostRemove':
+            case '\Doctrine\ORM\Mapping\PostUpdate':
+            case '\Doctrine\ORM\Mapping\PrePersist':
+            case '\Doctrine\ORM\Mapping\PreRemove':
+            case '\Doctrine\ORM\Mapping\PreUpdate':
+            case '\Doctrine\ORM\Mapping\SequenceGenerator':
+            case '\Doctrine\ORM\Mapping\Table':
+            case '\Doctrine\ORM\Mapping\UniqueConstraint':
+            case '\Doctrine\ORM\Mapping\Version':
+            case 'Column':
+            case 'ChangeTrackingPolicy':
+            case 'DiscriminatorColumn':
+            case 'DiscriminatorMap':
+            case 'Entity':
+            case 'GeneratedValue':
+            case 'HasLifecycleCallbacks':
+            case 'Id':
+            case 'InheritanceType':
+            case 'JoinColumn':
+            case 'JoinTable':
+            case 'ManyToOne':
+            case 'ManyToMany':
+            case 'MappedSuperclass':
+            case 'OneToOne':
+            case 'OneToMany':
+            case 'OrderBy':
+            case 'PostLoad':
+            case 'PostPersist':
+            case 'PostRemove':
+            case 'PostUpdate':
+            case 'PrePersist':
+            case 'PreRemove':
+            case 'PreUpdate':
+            case 'SequenceGenerator':
+            case 'Table':
+            case 'UniqueConstraint':
+            case 'Version':
                 $def = new DocBlox_Parser_DocBlock_Tag_Definition_Doctrine(
                     $namespace, $namespace_aliases, $xml, $tag
                 );

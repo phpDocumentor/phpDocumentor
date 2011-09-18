@@ -39,7 +39,7 @@
     </xsl:template>
 
   <xsl:template match="function|method">
-    <a id="{../full_name}::{name}()" />
+    <a id="{../full_name}::{name}()" class="anchor" />
     <div>
         <xsl:attribute name="class">
             <xsl:value-of select="concat(name(), ' ', @visibility)" />
@@ -138,7 +138,7 @@
                     </thead>
                     <tr>
                         <td>
-                            <xsl:apply-templates select="docblock/tag[@name='return']/type"/>
+                            <xsl:apply-templates select="docblock/tag[@name='return']"/>
                         </td>
                         <td>
                             <xsl:apply-templates select="docblock/tag[@name='return']/@description"/>
