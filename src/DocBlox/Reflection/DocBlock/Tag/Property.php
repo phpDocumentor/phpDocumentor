@@ -23,7 +23,6 @@
  */
 class DocBlox_Reflection_DocBlock_Tag_Property
     extends DocBlox_Reflection_DocBlock_Tag_Param
-    implements DocBlox_Reflection_DocBlock_Tag_Interface
 {
 
 }

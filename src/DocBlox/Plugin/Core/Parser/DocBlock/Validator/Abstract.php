@@ -26,7 +26,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-abstract class DocBlox_Parser_DocBlock_Validator_Abstract
+abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
     extends DocBlox_Parser_Abstract
 {
     /**

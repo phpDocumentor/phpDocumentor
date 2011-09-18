@@ -52,21 +52,6 @@ class DocBlox_Core_Application
             DocBlox_Core_Abstract::config()->logging->level = 'debug';
         }
 
-        $dispatcher = new sfEventDispatcher();
-
-        $plugin_manager = new DocBlox_Plugin_Manager(
-            $dispatcher,
-            DocBlox_Core_Abstract::config()
-        );
-
-        $plugin_manager->register(
-            dirname(__FILE__).'/../Plugin/Core/Listener.php'
-        );
-
-        DocBlox_Parser_Abstract::$event_dispatcher      = $dispatcher;
-        DocBlox_Transformer_Abstract::$event_dispatcher = $dispatcher;
-        DocBlox_Reflection_Abstract::$event_dispatcher  = $dispatcher;
-
         try {
             $task->execute();
         } catch (Exception $e) {

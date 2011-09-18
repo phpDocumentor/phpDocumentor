@@ -21,7 +21,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_Tag implements DocBlox_Reflection_DocBlock_Tag_Interface
+class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_Tag
 {
     /** @var string */
     protected $link = '';
@@ -70,17 +70,5 @@ class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_T
     public function setLink($link)
     {
         $this->link = $link;
-    }
-
-   /**
-    * Implements DocBlox_Reflection_DocBlock_Tag_Interface
-    *
-    * @param SimpleXMLElement $xml Relative root of xml document
-    */
-    public function __toXml(SimpleXMLElement $xml)
-    {
-        parent::__toXml($xml);
-
-        $xml['link'] = $this->getLink();
     }
 }

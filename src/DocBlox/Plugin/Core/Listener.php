@@ -92,10 +92,10 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
             return;
         }
 
-        $class = 'DocBlox_Parser_DocBlock_Validator_' . $type;
+        $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $type;
         if (@class_exists($class)) {
 
-            /** @var DocBlox_Parser_DocBlock_Validator_Abstract $validator  */
+            /** @var DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract $validator  */
             $validator = new $class(
                 $element->getFilename(),
                 $docblock->line_number,

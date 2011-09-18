@@ -21,7 +21,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_DocBlock_Tag_Interface
+class DocBlox_Reflection_DocBlock_Tag implements Reflector
 {
   /** @var string Name of the tag */
   protected $tag = '';
@@ -162,17 +162,4 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector, DocBlox_Reflection_D
     return 'Not yet implemented';
   }
 
-  /**
-   * Implements DocBlox_Reflection_DocBlock_Tag_Interface
-   *
-   * @param SimpleXMLElement $xml Relative root of xml document
-   */
-  public function __toXml(SimpleXMLElement $xml)
-  {
-    $description = htmlspecialchars($this->getDescription(), ENT_QUOTES, 'UTF-8');
-
-    $xml['name']        = $this->getName();
-    $xml['description'] = trim($description);
-    $xml['line']        = $this->getLineNumber();
-  }
 }

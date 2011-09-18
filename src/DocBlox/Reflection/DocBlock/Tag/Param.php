@@ -21,7 +21,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_Tag implements DocBlox_Reflection_DocBlock_Tag_Interface
+class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_Tag
 {
   /** @var string */
   protected $type = null;
@@ -101,43 +101,5 @@ class DocBlox_Reflection_DocBlock_Tag_Param extends DocBlox_Reflection_DocBlock_
   public function setVariableName($name)
   {
     $this->variableName = $name;
-  }
-
-  /**
-   * Implements DocBlox_Reflection_DocBlock_Tag_Interface
-   *
-   * @param SimpleXMLElement $xml Relative root of xml document
-   */
-  public function __toXml(SimpleXMLElement $xml)
-  {
-      parent::__toXml($xml);
-
-      foreach($this->getTypes() as $type)
-      {
-          if ($type == '')
-          {
-              continue;
-          }
-
-          $type = trim($this->docblock->expandType($type));
-
-          // strip ampersands
-          $name = str_replace('&', '', $type);
-          $type_object = $xml->addChild('type', $name);
-
-          // register whether this variable is by reference by checking the first and last character
-          $type_object['by_reference'] = ((substr($type, 0, 1) === '&') || (substr($type, -1) === '&'))
-              ? 'true'
-              : 'false';
-      }
-
-      $xml['type'] = $this->docblock->expandType($this->getType());
-
-      if (trim($this->getVariableName()) == '')
-      {
-          // TODO: get the name from the argument list
-      }
-
-      $xml['variable'] = $this->getVariableName();
   }
 }
