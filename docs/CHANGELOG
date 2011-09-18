@@ -5,6 +5,8 @@ FIXED:      Firefox layout broke with some versions
 FIXED:      @uses was not parsed correctly when only one namespace part was
             provided; the system believed the XPath query to be incorrect
 FIXED:      defaults of parameters and CONSTANT values were not fully retrieved
+FIXED:      Pipe sign was missing in return type when using multiple types
+FIXED:      Project:list task was broken
 
 09/04/2011: Version 0.14.0
 --------------------------
