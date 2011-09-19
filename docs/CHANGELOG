@@ -6,7 +6,8 @@ FIXED:      Improved argument default value finding algorythm to not skip )
             in array()
 ADDED:      @deprecated tags are now also added to the markers listing so that
             it becomes visible what to fix
-ADDED:      Parse errors page now shows a notification when there are no errors
+ADDED:      Parse errors page now shows a success notification when there are
+            no errors.
 
 09/19/2011: Version 0.14.1
 --------------------------
