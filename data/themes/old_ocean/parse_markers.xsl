@@ -14,10 +14,13 @@
         });
     </script>
 
-      
+
     <div id="content">
 
           <h1>Compilation Errors</h1>
+        <xsl:if test="count(/project/file/parse_markers) &lt; 1">
+            <div class="success_notification">No errors have been found in this project.</div>
+        </xsl:if>
         <div id="marker-accordion">
             <xsl:for-each select="/project/file">
                 <xsl:if test="parse_markers">

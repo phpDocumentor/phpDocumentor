@@ -128,3 +128,12 @@ ul.filetree li a:hover small
     margin: 0px;
     padding: 0px;
 }
+
+div.notification_success
+{
+    margin: 5px;
+    padding: 5px;
+    padding-left: 35px;
+    background: #f9f9f9 url('images/icons/ok.png') no-repeat 5px center;
+    border: 1px solid silver;
+}
