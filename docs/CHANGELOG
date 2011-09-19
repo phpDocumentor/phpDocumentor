@@ -2,6 +2,8 @@
 --------------------------
 
 FIXED:      Abstract classes had the wrong label in the class diagram
+FIXED:      Improved argument default value finding algorythm to not skip )
+            in array()
 
 09/19/2011: Version 0.14.1
 --------------------------
