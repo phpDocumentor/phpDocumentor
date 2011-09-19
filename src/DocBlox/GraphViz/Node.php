@@ -25,9 +25,8 @@ class DocBlox_GraphViz_Node {
   function __construct($name, $label = null)
   {
     $this->setName($name);
-    if ($label !== null)
-    {
-      $this->setLabel($label);
+    if ($label !== null) {
+        $this->setLabel($label);
     }
   }
 
@@ -87,11 +86,14 @@ class DocBlox_GraphViz_Node {
   function __call($name, $arguments)
   {
     $key = strtolower(substr($name, 3));
+      var_dump($key);
+      var_dump($arguments);
     if (strtolower(substr($name, 0, 3)) == 'set')
     {
       $this->attributes[$key] = new DocBlox_GraphViz_Attribute($key, $arguments[0]);
       return $this;
     }
+
     if (strtolower(substr($name, 0, 3)) == 'get')
     {
       return $this->attributes[$key];
