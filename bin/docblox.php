@@ -24,11 +24,17 @@ if (extension_loaded('xhprof')) {
     }
 }
 
-require(dirname(__FILE__).'/../src/DocBlox/bootstrap.php');
-DocBlox_Bootstrap::createInstance()->initialize();
+// determine base include folder, if @php_dir@ contains @php_dir then
+// we did not install via PEAR
+$bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
+    ? dirname(__FILE__) . '/../src'
+    : '@php_dir@/DocBlox/src';
+require($bootstrap_folder . '/DocBlox/Bootstrap.php');
+
+$autoloader = DocBlox_Bootstrap::createInstance()->registerAutoloader();
 
 $application = new DocBlox_Core_Application();
-$application->main();
+$application->main($autoloader);
 
 if (false !== $profile) {
     include_once 'XHProf/utils/xhprof_lib.php';

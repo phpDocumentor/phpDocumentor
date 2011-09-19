@@ -13,9 +13,6 @@
  * @link      http://docblox-project.org
  */
 
-require_once 'markdown.php';
-require_once 'symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
-
 /**
  * This class is responsible for the application entry point from the CLI.
  *
@@ -33,7 +30,7 @@ class DocBlox_Core_Application
      *
      * @return void
      */
-    public function main()
+    public function main($autoloader)
     {
         $runner = new DocBlox_Task_Runner(
             ($_SERVER['argc'] == 1)
@@ -51,6 +48,10 @@ class DocBlox_Core_Application
         if ($task->getVerbose()) {
             DocBlox_Core_Abstract::config()->logging->level = 'debug';
         }
+
+        // the plugins are registered here because the DocBlox_Task can load a
+        // custom configuration; which is needed by this registration
+        DocBlox_Bootstrap::createInstance()->registerPlugins($autoloader);
 
         try {
             $task->execute();

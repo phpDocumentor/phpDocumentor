@@ -13,6 +13,9 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
         $this->logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
         $this->logger->setThreshold($configuration->logging->level);
 
+        $event_dispatcher->connect(
+            'system.log.threshold', array($this->logger, 'setThreshold')
+        );
         $event_dispatcher->connect('system.log', array($this->logger, 'log'));
     }
 

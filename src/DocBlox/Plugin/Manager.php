@@ -8,10 +8,14 @@ class DocBlox_Plugin_Manager
     /** @var DocBlox_Core_Config */
     protected $configuration = null;
 
-    public function __construct($event_dispatcher, $configuration)
+    /** @var ZendX_Loader_StandardAutoloader */
+    protected $autoloader = null;
+
+    public function __construct($event_dispatcher, $configuration, $autoloader)
     {
         $this->event_dispatcher = $event_dispatcher;
         $this->configuration    = $configuration;
+        $this->autoloader       = $autoloader;
     }
 
     public function register($file)
@@ -39,8 +43,13 @@ class DocBlox_Plugin_Manager
         /** @var DocBlox_Reflection_Class $listener_definition  */
         $listener_definition = reset($classes);
 
+        // add the file's prefix and path to the autoloader
+        $prefix = substr(
+            $listener_definition, 0, strrpos($listener_definition, '_') + 1
+        );
+        $this->autoloader->registerPrefix($prefix, dirname($file));
+
         // initialize the plugin / event listener
-        include_once($file);
         $listener_name = $listener_definition->getName();
         $listener      = new $listener_name(
             $this->event_dispatcher,
