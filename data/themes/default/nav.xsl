@@ -93,6 +93,10 @@
             border:  none;
             font-size: 1.1em;
         }
+
+        .ui-accordion .ui-accordion-content {
+          padding: 0px;
+        }
       </style>
 
     <div id="sidebar">
@@ -126,6 +130,9 @@
                 <a href="#packages">Packages</a>
             </h3>
             <div style="overflow: auto;">
+                <div style="height: 30px; border-bottom: 1px solid silver; background: #f9f9f9">
+                    <input type="text" onchange="$('sidebar-nav-tree ').treeview('expand-all')"></input>
+                </div>
                 <ul class="sidebar-nav-tree">
                     <xsl:apply-templates select="/project/package">
                         <xsl:sort select="@name"/>
