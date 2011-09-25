@@ -1,6 +1,6 @@
 <?php
 /**
- * File contains the DocBlox_Core_Validator_Method class
+ * File contains the DocBlox_Core_Validator_Property class
  *
  * PHP Version 5
  *
@@ -14,7 +14,7 @@
  * @link       http://docblox-project.org
  */
 /**
- * This class is responsible for validating the method doc block
+ * This class is responsible for validating a properties docblock.
  *
  * @category   DocBlox
  * @package    Parser
@@ -25,8 +25,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
-    extends DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
+class DocBlox_Parser_DocBlock_Validator_Property
+    extends DocBlox_Parser_DocBlock_Validator_Abstract
 {
     /**
      * Is the docblock valid?
@@ -42,7 +42,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
         if (null == $this->_docblock) {
             $this->logParserError(
                 'ERROR',
-                'No DocBlock was found for method '
+                'No DocBlock was found for property '
                 . $this->_entityName, $this->_lineNumber
             );
             return false;
@@ -51,7 +51,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
         if ('' === $this->_docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL',
-                'No short description for method '
+                'No short description for property '
                 . $this->_entityName, $this->_lineNumber
             );
         }

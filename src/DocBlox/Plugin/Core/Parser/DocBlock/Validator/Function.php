@@ -35,6 +35,25 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
      */
     public function isValid()
     {
-        return true;
+        $valid = true;
+
+        if (null == $this->_docblock) {
+            $this->logParserError(
+                'ERROR',
+                'No DocBlock was found for function '
+                . $this->_entityName, $this->_lineNumber
+            );
+            return false;
+        }
+
+        if ('' === $this->_docblock->getShortDescription()) {
+            $this->logParserError(
+                'CRITICAL',
+                'No short description for function '
+                . $this->_entityName, $this->_lineNumber
+            );
+        }
+
+        return $valid;
     }
 }

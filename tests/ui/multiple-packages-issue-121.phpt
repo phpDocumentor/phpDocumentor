@@ -11,24 +11,12 @@ $_SERVER['argv'][5] = dirname(__FILE__) . '/../../build/';
 $_SERVER['argv'][6] = '--config';
 $_SERVER['argv'][7] = 'none';
 
-// determine base include folder, if @php_bin@ contains @php_bin then we do not install via PEAR
-if (strpos('@php_bin@', '@php_bin') === 0) {
-    set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
-}
+require_once 'tests/common/ui-include.php';
 
-if (!class_exists('Zend_Loader_Autoloader'))
-{
-  require_once 'Zend/Loader/Autoloader.php';
-}
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('DocBlox_');
-
-$application = new DocBlox_Core_Application();
-$application->main();
 ?>
 --EXPECTF--
 DocBlox version %s
 
-%s ERR (3): File cannot have more than one @package tag
+%s ERR (3): Only one @package tag is allowed
 Starting transformation of files (this could take a while depending upon the size of your project)
 Finished transformation in %s seconds
