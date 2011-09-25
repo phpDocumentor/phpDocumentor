@@ -115,48 +115,9 @@ class DocBlox_Bootstrap
             $autoloader
         );
 
-        $plugins = $this->getPlugins();
-
-        $this->registerPluginObjects($plugin_manager, $plugins);
+        $plugin_manager->loadFromConfiguration(DocBlox_Core_Abstract::config());
 
         $this->attachDispatcher($dispatcher);
-    }
-
-    public function getPlugins()
-    {
-        $plugins = DocBlox_Core_Abstract::config()->plugins
-                ? DocBlox_Core_Abstract::config()->plugins->plugin
-                : array();
-
-        // no plugins? then load core
-        if (count($plugins) < 1) {
-            $plugins[] = 'Core';
-        }
-
-        // Zend_Config has a quirk; if there is only one entry then it is not
-        // wrapped in an array, since we need that we re-wrap it
-        if (isset($plugins->path)) {
-            $plugins = array($plugins);
-        }
-
-        return $plugins;
-    }
-
-    protected function registerPluginObjects($manager, $plugins)
-    {
-        // add new plugins
-        foreach ($plugins as $plugin) {
-            // if it is not a string we assume it has a 'path' key containing
-            // either a path or plugin name
-            $plugin = is_string($plugin) ? $plugin : (string)$plugin->path;
-
-            // if it is only a name; surround it with the default path
-            if (preg_match('/^[_|A-Z|a-z]+$/', $plugin)) {
-                $plugin = dirname(__FILE__) . '/Plugin/' . $plugin . '/Listener.php';
-            }
-
-            $manager->register($plugin);
-        }
     }
 
     protected function attachDispatcher($event_dispatcher)

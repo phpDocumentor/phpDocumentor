@@ -23,7 +23,7 @@
  * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Method extends
-    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
+    DocBlox_Transformer_Behaviour_Abstract
 {
     /**
      * Find all return tags that contain 'self' or '$this' and replace those

@@ -29,7 +29,8 @@
  * @link       http://code.google.com/p/wkhtmltopdf/
  * @link       http://blog.structuralartistry.com/post/2327213260/installing-wkhtmltopdf-on-ubuntu-server
  */
-class DocBlox_Transformer_Writer_Pdf extends DocBlox_Transformer_Writer_Abstract
+class DocBlox_Plugin_Core_Transformer_Writer_Pdf
+    extends DocBlox_Transformer_Writer_Abstract
 {
   /**
    * Calls the wkhtmltopdf executable to generate a PDF.

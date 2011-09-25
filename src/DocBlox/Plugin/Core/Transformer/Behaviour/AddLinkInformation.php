@@ -24,7 +24,7 @@
  * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
-    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
+    DocBlox_Transformer_Behaviour_Abstract
 {
     /**
      * Adds extra information to the structure.

@@ -20,7 +20,7 @@
  * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Ignore extends
-    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
+    DocBlox_Transformer_Behaviour_Abstract
 {
     protected $tag = 'ignore';
 

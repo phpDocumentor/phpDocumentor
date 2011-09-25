@@ -24,19 +24,19 @@
  * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Transformer_Behaviour_Collection extends
-    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
+    DocBlox_Transformer_Behaviour_Abstract
 {
     /** @var DocBlox_Transformer */
     protected $transformer = array();
 
-    /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Abstract[] */
+    /** @var DocBlox_Transformer_Behaviour_Abstract[] */
     protected $behaviours = array();
 
     /**
      * Initializes the list of Behaviours to execute each request.
      *
      * @param DocBlox_Transformer                       $transformer
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Abstract[] $behaviours
+     * @param DocBlox_Transformer_Behaviour_Abstract[] $behaviours
      */
     public function __construct(DocBlox_Transformer $transformer, array $behaviours)
     {
@@ -51,12 +51,12 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Collection extends
     /**
      * Adds a behaviour to a collection
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Abstract $behaviour
+     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour
      *
      * @return void
      */
     public function addBehaviour(
-        DocBlox_Plugin_Core_Transformer_Behaviour_Abstract $behaviour)
+        DocBlox_Transformer_Behaviour_Abstract $behaviour)
     {
         $this->behaviours[] = $behaviour;
     }
@@ -64,12 +64,12 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Collection extends
     /**
      * Removes a behaviour from the collection
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Abstract $behaviour
+     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour
      *
      * @return void
      */
     public function removeBehaviour(
-        DocBlox_Plugin_Core_Transformer_Behaviour_Abstract $behaviour)
+        DocBlox_Transformer_Behaviour_Abstract $behaviour)
     {
         foreach ($this->behaviours as $key => $thisBehaviour) {
             if ($behaviour == $thisBehaviour) {

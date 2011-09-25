@@ -106,4 +106,14 @@ class DocBlox_Plugin_Abstract
         );
     }
 
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    public function getEventDispatcher()
+    {
+        return $this->event_dispatcher;
+    }
+
 }

@@ -25,7 +25,7 @@
  * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit extends
-    DocBlox_Plugin_Core_Transformer_Behaviour_Abstract
+    DocBlox_Transformer_Behaviour_Abstract
 {
     /**
      * Apply inheritance of docblock elements to all elements.

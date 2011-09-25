@@ -27,7 +27,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Transformer_Writer_FileIo extends DocBlox_Transformer_Writer_Abstract
+class DocBlox_Plugin_Core_Transformer_Writer_FileIo
+    extends DocBlox_Transformer_Writer_Abstract
 {
   /** @var DocBlox_Transformer_Transformation */
   protected $transformation = null;

@@ -2,21 +2,19 @@
 /**
  *
  */
-class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_Abstract
+class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
 {
     protected $logger = null;
 
-    function __construct($event_dispatcher, $configuration)
+    protected function configure()
     {
-        parent::__construct($event_dispatcher, $configuration);
-
         $this->logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
-        $this->logger->setThreshold($configuration->logging->level);
+        $this->logger->setThreshold($this->getConfiguration()->logging->level);
 
-        $event_dispatcher->connect(
+        $this->getEventDispatcher()->connect(
             'system.log.threshold', array($this->logger, 'setThreshold')
         );
-        $event_dispatcher->connect('system.log', array($this->logger, 'log'));
+        $this->event_dispatcher->connect('system.log', array($this->logger, 'log'));
     }
 
     /**
