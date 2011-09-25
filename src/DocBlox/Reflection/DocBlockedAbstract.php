@@ -71,16 +71,12 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             }
         } catch (Exception $e) {
             $this->log($e->getMessage(), Zend_Log::CRIT);
+            return $result;
         }
 
-        $this->validateDocBlock($this->name, $docblock ? $docblock->line_number : 0, $result);
-
-        // if the object has no DocBlock _and_ is not a Closure; throw a warning
-        $type = substr(get_class($this), strrpos(get_class($this), '_') + 1);
-        if (!$result && (($type !== 'Function') && ($this->getName() !== 'Closure'))) {
-            $this->logParserError('ERROR', 'No DocBlock was found for ' . $type
-                    . ' ' . $this->getName(), $this->getLineNumber());
-        }
+        $this->dispatch('reflection.docblock-extraction.post', array(
+            'docblock' => $result
+        ));
 
         return $result;
     }
@@ -168,30 +164,27 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
                 $xml->addChild('docblock');
             }
 
-            $xml->docblock->description          = $this->getDocBlock()->getShortDescription();
-            $xml->docblock->{'long-description'} = $this->getDocBlock()->getLongDescription()->getFormattedContents();
-
+            $xml->docblock->description = $this->getDocBlock()
+                ->getShortDescription();
+            $xml->docblock->{'long-description'} = $this->getDocBlock()
+                ->getLongDescription()->getFormattedContents();
 
             /** @var DocBlox_Reflection_Docblock_Tag $tag */
             foreach ($this->getDocBlock()->getTags() as $tag) {
                 $tag_object = $xml->docblock->addChild('tag');
 
-                $this->dispatch(
-                    'reflection.docblock.tag.pre-export',
-                    array(
-                        self::$event_dispatcher,
-                        $this,
-                        $tag_object,
-                        $tag
-                    )
-                );
-
-                DocBlox_Parser_DocBlock_Tag_Definition::create($this->getNamespace(), $this->namespace_aliases, $tag_object, $tag);
-
                 // custom attached member variable, see line 51
                 if (isset($this->getDocBlock()->line_number)) {
                     $tag_object['line'] = $this->getDocBlock()->line_number;
                 }
+
+                $this->dispatch(
+                    'reflection.docblock.tag.export',
+                    array(
+                        'object' => $tag,
+                        'xml'    => $tag_object
+                    )
+                );
 
                 if ($tag->getName() == 'package') {
                     $package = $tag->getDescription();
@@ -213,29 +206,6 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
         if ((string)$xml['package'] == '') {
             $xml['package'] = $this->getDefaultPackageName();
         }
-    }
-
-    /**
-     * Validate the docblock
-     *
-     * @param string                           $name       Name of entity to be validated
-     * @param int                              $lineNumber The line number for the docblock
-     * @param DocBlox_Reflection_DocBlock|null $docblock   Docbloc
-     *
-     * @return boolean
-     */
-    protected function validateDocBlock($name, $lineNumber, $docblock)
-    {
-        $valid = true;
-        $class = get_class($this);
-        $part = substr($class, strrpos($class, '_') + 1);
-
-        if (@class_exists('DocBlox_Parser_DocBlock_Validator_'.$part)) {
-            $validatorType = 'DocBlox_Parser_DocBlock_Validator_' . $part;
-            $validator = new $validatorType($name, $lineNumber, $docblock, $this);
-            $valid = $validator->isValid();
-        }
-        return $valid;
     }
 
     /**

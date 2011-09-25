@@ -14,6 +14,7 @@ Welcome to DocBlox's documentation!
    Configuration
    Anatomy of a Docblock
    Building your own branding
+   Plugins
    Contributor's Guide
    FAQ
 

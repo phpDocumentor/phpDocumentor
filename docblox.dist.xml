@@ -11,4 +11,9 @@
     <directory>.</directory>
     <ignore>tests/*</ignore>
   </files>
+    <plugins>
+        <plugin path="Core">
+            <option name="a">value</option>
+        </plugin>
+    </plugins>
 </docblox>

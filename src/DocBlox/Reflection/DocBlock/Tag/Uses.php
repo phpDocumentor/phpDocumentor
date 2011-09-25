@@ -23,7 +23,6 @@
  */
 class DocBlox_Reflection_DocBlock_Tag_Uses
     extends DocBlox_Reflection_DocBlock_Tag_See
-    implements DocBlox_Reflection_DocBlock_Tag_Interface
 {
 
 }

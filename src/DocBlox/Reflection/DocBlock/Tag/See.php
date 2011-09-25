@@ -23,7 +23,6 @@
  */
 class DocBlox_Reflection_DocBlock_Tag_See
     extends DocBlox_Reflection_DocBlock_Tag
-    implements DocBlox_Reflection_DocBlock_Tag_Interface
 {
     /** @var string */
     protected $refers = null;

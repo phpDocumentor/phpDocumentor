@@ -51,12 +51,28 @@ abstract class DocBlox_Transformer_Writer_Abstract
     {
         static $writers = array();
 
-        // if there is no writer; create it
-        if (!isset($writers[strtolower($writer)])) {
-            $writer_class = 'DocBlox_Transformer_Writer_' . ucfirst($writer);
-            $writers[strtolower($writer)] = new $writer_class();
+        // first attempt to find out whether it is the name of a core
+        // writer or a full writer name; the first is provided for aliases
+        // and backwards compatibility
+        if (!@class_exists($writer)) {
+            $writer_class = 'DocBlox_Plugin_Core_Transformer_Writer_'
+                . ucfirst($writer);
+        } else {
+            $writer_class = $writer;
         }
 
-        return $writers[strtolower($writer)];
+        if (!@class_exists($writer_class)) {
+            throw new DocBlox_Transformer_Exception(
+                'Unknown writer was mentioned in the transformation of a '
+                . 'template: ' . $writer_class
+            );
+        }
+
+        // if there is no writer in cache; create it
+        if (!isset($writers[strtolower($writer_class)])) {
+            $writers[strtolower($writer_class)] = new $writer_class();
+        }
+
+        return $writers[strtolower($writer_class)];
     }
 }
