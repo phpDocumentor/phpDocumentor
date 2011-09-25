@@ -23,15 +23,9 @@ class DocBlox_Plugin_Manager
 
     public function loadFromConfiguration(DocBlox_Core_Config $config)
     {
-        $plugins = DocBlox_Core_Abstract::config()->plugins
+        $plugins = isset(DocBlox_Core_Abstract::config()->plugins)
             ? DocBlox_Core_Abstract::config()->plugins->plugin
             : array();
-
-        // no plugins? then load core
-        if (count($plugins) < 1) {
-            DocBlox_Core_Abstract::config()->plugins[]
-                = new DocBlox_Core_Config('<path>Core</path>');
-        }
 
         // Zend_Config has a quirk; if there is only one entry then it is not
         // wrapped in an array, since we need that we re-wrap it
@@ -39,14 +33,21 @@ class DocBlox_Plugin_Manager
             $plugins = array($plugins);
         }
 
+        if (empty($plugins)) {
+            $plugins[] = 'Core';
+        }
+
         // add new plugins
         foreach ($plugins as $plugin_config) {
             $plugin = new DocBlox_Plugin(
                 $this->event_dispatcher, $this->configuration
             );
-            $plugin->load($plugin_config->path);
 
-            $plugins[] = $plugin;
+            $plugin->load(is_string($plugin_config)
+                ? $plugin_config
+                : $plugin_config->path);
+
+            $this->plugins[] = $plugin;
         }
     }
 
