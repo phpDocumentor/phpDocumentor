@@ -311,6 +311,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
   {
       $result = '';
       $index = $tokens->key();
+      $level = 0;
 
       /** @var DocBlox_Reflection_Token $token  */
       $token = $tokens->next();
@@ -319,12 +320,15 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
       $include = false;
 
       // while we have not reached the EOF, and we have not a literal ',',
-      // ')' or ';' continue gathering elements.
-      while($token && !(!$token->type && (($token->content == ')')
+      // ')' (not nested) or ';' continue gathering elements.
+      while($token && !(!$token->type
+          && ((($token->content == ')') && ($level == 0))
           || ($token->content == ';') || ($token->content == ',')))
       ) {
           // only include if the = has passed
           if ($include) {
+              if ($token->content == '(') $level++;
+              if ($token->content == ')') $level--;
               $result .= $token->content;
           }
 

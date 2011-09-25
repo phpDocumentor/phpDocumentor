@@ -110,6 +110,7 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
         $sub_qry = $xpath->query(
             "/project/file/interface[@namespace='$full_namespace_name']|/project/file/class[@namespace='$full_namespace_name']"
         );
+
         /** @var DOMElement $sub_element */
         foreach ($sub_qry as $sub_element) {
             $node = DocBlox_GraphViz_Node::create(
@@ -120,7 +121,7 @@ class DocBlox_Transformer_Writer_Graph extends DocBlox_Transformer_Writer_Abstra
             $node->setFontName('Courier New');
             $node->setFontSize('11');
             if ($sub_element->getAttribute('abstract') == 'true') {
-                $node->setLabel('<<I>'.$node->getName().'</I>>');
+                $node->setLabel('<<I>'. $sub_element->getElementsByTagName('name')->item(0)->nodeValue.'</I>>');
             }
             if (!isset($this->class_paths[$sub_element->getElementsByTagName('full_name')->item(0)->nodeValue])) {
                 echo $sub_element->getElementsByTagName('full_name')->item(0)->nodeValue.PHP_EOL;
