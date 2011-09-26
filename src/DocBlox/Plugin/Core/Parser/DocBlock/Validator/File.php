@@ -49,15 +49,17 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_File
             return false;
         }
 
-        $valid = parent::isValid();
-
         if ('' === $this->_docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL',
                 'No short description for file '
                 . $this->_entityName, $this->_lineNumber
             );
+
+            return false;
         }
+
+        $valid = parent::isValid();
 
         return $valid;
     }

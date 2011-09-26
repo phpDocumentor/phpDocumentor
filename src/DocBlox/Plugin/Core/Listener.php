@@ -79,8 +79,8 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
         );
 
         // if the object has no DocBlock _and_ is not a Closure; throw a warning
-        if (!$docblock && ($type !== 'Function')
-            && ($element->getName() !== 'Closure')
+        if (!$docblock && !(($type == 'Function')
+            && ($element->getName() == 'Closure'))
         ) {
             $this->logParserError(
                 'ERROR', 'No DocBlock was found for ' . $type . ' '
@@ -95,10 +95,9 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
 
         $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $type;
         if (@class_exists($class)) {
-
             /** @var DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract $validator  */
             $validator = new $class(
-                $element->getFilename(),
+                $element->getName(),
                 $docblock->line_number,
                 $docblock,
                 $element

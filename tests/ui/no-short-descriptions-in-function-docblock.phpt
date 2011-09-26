@@ -17,7 +17,6 @@ require_once 'tests/common/ui-include.php';
 --EXPECTF--
 DocBlox version %s
 
-%s
 %s ERR (3): No short description for function %s
 Starting transformation of files (this could take a while depending upon the size of your project)
 Finished transformation in %s seconds

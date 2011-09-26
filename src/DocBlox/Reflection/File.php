@@ -466,6 +466,10 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $this->log($e->getMessage(), Zend_Log::CRIT);
         }
 
+        $this->dispatch('reflection.docblock-extraction.post', array(
+            'docblock' => $result
+        ));
+
         return $result;
     }
 
