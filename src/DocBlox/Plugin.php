@@ -34,7 +34,7 @@ class DocBlox_Plugin extends DocBlox_Plugin_Abstract
         );
 
         $this->name         = $xml->name;
-        $this->version      = $xml->name;
+        $this->version      = $xml->version;
         $this->description  = $xml->description;
         $this->author       = $xml->author;
         $this->email        = $xml->email;

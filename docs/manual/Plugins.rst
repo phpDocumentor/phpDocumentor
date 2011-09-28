@@ -164,11 +164,22 @@ has the ability to override these options from the DocBlox configuration file.
 Listeners
 ---------
 
+Basic concept
+~~~~~~~~~~~~~
+
+With listeners can a plugin author extend the functionality of DocBlox without
+making changes to its core. Listeners provide an implementation of the Observer
+pattern via the sfEventDispatcher class by Fabien Potencier.
+
+From within DocBlox events are dispatched to the Event Dispatcher (which is
+available in a plugin as ``$this->getEventDispatcher()``); which in turn triggers
+any listener methods that are connected to that event.
+
 The process
 ~~~~~~~~~~~
 
-In order to understand how listeners work it is important that you know how
-DocBlox works and where which events are triggered.
+In order to understand how listeners work it is important that you know a little
+about how DocBlox works, and where which events are triggered.
 
 Below is a complete step-by-step description of the DocBlox flow with emphasize
 on the invocation of plugins.
@@ -262,7 +273,15 @@ on the invocation of plugins.
     `transformer.transform.post`_ event be triggered so that post processing is
     possible.
 
-Supported hooks
+Connecting to events
+~~~~~~~~~~~~~~~~~~~~
+
+Any event in DocBlox can be connected to using one of two methods:
+
+1. Annotations
+2. Manual
+
+Supported events
 ~~~~~~~~~~~~~~~
 
 system.log
@@ -273,7 +292,8 @@ This event is triggered any time DocBlox logs an action.
 At certain places in the code a logging event is triggered by invoking the method
 ``$this->log()`` (which is defined in the Layer Superclass of each component.).
 
-This method has **two** arguments
+This method has **two** arguments:
+
 
 system.debug
 ############

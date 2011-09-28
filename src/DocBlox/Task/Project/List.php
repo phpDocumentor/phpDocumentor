@@ -74,7 +74,10 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
             foreach ($tasks as $task => $filename) {
                 // get the short description by reflecting the file.
                 $refl = new DocBlox_Reflection_File($filename, false);
-                $refl->setLogLevel(DocBlox_Core_Log::QUIET);
+                $refl->dispatch(
+                    'system.log.threshold',
+                    array(DocBlox_Core_Log::QUIET)
+                );
                 $refl->process();
 
                 /** @var DocBlox_Reflection_Class $class */
