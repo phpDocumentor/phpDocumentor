@@ -5,42 +5,50 @@ class DocBlox_Plugin_Manager
     /** @var sfEventDispatcher */
     protected $event_dispatcher = null;
 
-    public function __construct($event_dispatcher)
+    /** @var DocBlox_Core_Config */
+    protected $configuration = null;
+
+    /** @var ZendX_Loader_StandardAutoloader */
+    protected $autoloader = null;
+
+    /** @var DocBlox_Plugin */
+    protected $plugins = array();
+
+    public function __construct($event_dispatcher, $configuration, $autoloader)
     {
         $this->event_dispatcher = $event_dispatcher;
+        $this->configuration    = $configuration;
+        $this->autoloader       = $autoloader;
     }
 
-    public function register($file)
+    public function loadFromConfiguration(DocBlox_Core_Config $config)
     {
-        if (!file_exists($file) || !is_readable($file)) {
-            throw new Exception(
-                'The plugin file "'.$file.'" must exist and be readable'
+        $plugins = isset(DocBlox_Core_Abstract::config()->plugins)
+            ? DocBlox_Core_Abstract::config()->plugins->plugin
+            : array();
+
+        // Zend_Config has a quirk; if there is only one entry then it is not
+        // wrapped in an array, since we need that we re-wrap it
+        if (isset($plugins->path)) {
+            $plugins = array($plugins);
+        }
+
+        if (empty($plugins)) {
+            $plugins[] = 'Core';
+        }
+
+        // add new plugins
+        foreach ($plugins as $plugin_config) {
+            $plugin = new DocBlox_Plugin(
+                $this->event_dispatcher, $this->configuration
             );
-        }
 
-        $reflection = new DocBlox_Reflection_File($file);
-        $classes    = $reflection->getClasses();
-        if (count($classes) > 1) {
-            throw new Exception('Plugin file should only contain one class');
-        }
+            $plugin->load(is_string($plugin_config)
+                ? $plugin_config
+                : $plugin_config->path);
 
-        /** @var DocBlox_Reflection_Class $listener_definition  */
-        $listener_definition = reset($classes);
-
-        // initialize the plugin / event listener
-        include_once($file);
-        $listener_name = $listener_definition->getName();
-        $listener      = new $listener_name($this->event_dispatcher);
-
-        // connect all events of the each method to the event_dispatcher
-        foreach($listener_definition->getMethods() as $method) {
-            /** @var DocBlox_Reflection_Tag $event */
-            foreach($method->getDocBlock()->getTagsByName('event') as $event) {
-                $this->event_dispatcher->connect(
-                    $event->getDescription(),
-                    array($listener, $method->getName())
-                );
-            }
+            $this->plugins[] = $plugin;
         }
     }
+
 }

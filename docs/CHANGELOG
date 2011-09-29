@@ -1,3 +1,35 @@
+10/02/2011: Version 0.15.0
+
+* ADDED:    Plugins; DocBlox now fully supports external enhancements. Please
+            see the docs for an expanded description.
+* ADDED:    Additional validations which check for errors in your source code.
+
+09/??/2011: Version 0.14.2
+--------------------------
+
+* FIXED:    Abstract classes had the wrong label in the class diagram
+* FIXED:    Improved argument default value finding algorythm to not skip )
+            in array()
+* ADDED:    @deprecated tags are now also added to the markers listing so that
+            it becomes visible what to fix
+* ADDED:    Parse errors page now shows a success notification when there are
+            no errors.
+
+09/19/2011: Version 0.14.1
+--------------------------
+
+FIXED:      Firefox layout broke with some versions
+FIXED:      @uses was not parsed correctly when only one namespace part was
+            provided; the system believed the XPath query to be incorrect
+FIXED:      defaults of parameters and CONSTANT values were not fully retrieved
+FIXED:      Pipe sign was missing in return type when using multiple types
+FIXED:      Project:list task was broken
+FIXED:      @version was mistakenly recognized as @Version of Doctrine
+FIXED:      Constant values are now more accurately displayed instead of quotes
+            added by default
+FIXED:      Moved anchors so click-through would no longer end up underneath the
+            header
+
 09/04/2011: Version 0.14.0
 --------------------------
 * BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.

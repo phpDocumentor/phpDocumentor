@@ -19,17 +19,17 @@
           <h1>Markers (TODO / FIXME)</h1>
         <div id="marker-accordion">
             <xsl:for-each select="/project/file">
-                <xsl:if test="markers|.//docblock/tag[@name='todo']|.//docblock/tag[@name='fixme']">
+                <xsl:if test="markers|.//docblock/tag[@name='todo']|.//docblock/tag[@name='deprecated']|.//docblock/tag[@name='fixme']">
                     <h3>
                         <a href="#">
                             <xsl:value-of select="@path"/>
-                            <small><xsl:value-of select="count(markers/*|.//docblock/tag[@name='todo']|.//docblock/tag[@name='fixme'])"/></small>
+                            <small><xsl:value-of select="count(markers/*|.//docblock/tag[@name='todo']|.//docblock/tag[@name='deprecated']|.//docblock/tag[@name='fixme'])"/></small>
                         </a>
                     </h3>
                     <div>
                         <table>
                             <tr><th>Type</th><th>Line</th><th>Description</th></tr>
-                            <xsl:for-each select="markers/*|.//docblock/tag[@name='todo']|.//docblock/tag[@name='fixme']">
+                            <xsl:for-each select="markers/*|.//docblock/tag[@name='todo']|.//docblock/tag[@name='deprecated']|.//docblock/tag[@name='fixme']">
                                 <xsl:sort select="line"/>
                                 <tr>
                                     <xsl:if test="name() = 'tag'">

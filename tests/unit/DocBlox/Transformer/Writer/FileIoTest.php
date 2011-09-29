@@ -9,7 +9,7 @@ class DocBlox_Transformer_Writer_FileIoTest extends PHPUnit_Framework_TestCase
 
   protected function setUp()
   {
-    $this->fixture = new DocBlox_Transformer_Writer_FileIo();
+    $this->fixture = new DocBlox_Plugin_Core_Transformer_Writer_FileIo();
   }
 
   public function testExecuteQueryCopy()

@@ -1,4 +1,6 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:dbx="http://docblox-project.org/xsl/functions">
     <xsl:output indent="yes" method="html"/>
 
 
@@ -47,7 +49,7 @@
     </xsl:template>
 
     <xsl:template match="class|interface">
-        <a id="{full_name}"/>
+        <a id="{full_name}" class="anchor"/>
         <h2 class="{name()}">
             <xsl:value-of select="full_name"/>
             <div class="to-top">
@@ -112,7 +114,7 @@
 
                 <xsl:apply-templates select="docblock/tag[@name='see']"/>
                 <xsl:apply-templates select="docblock/tag[@name != 'see' and @name != 'package' and @name != 'subpackage']">
-                    <xsl:sort select="@name"/>
+                    <xsl:sort select="dbx:ucfirst(@name)"/>
                 </xsl:apply-templates>
             </dl>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<phpunit bootstrap="tests/common/bootstrap.php" colors="true">
+<phpunit bootstrap="tests/common/bootstrap.php" colors="true" strict="true">
   <testsuites>
     <testsuite name="DocBlox">
       <directory>./tests/unit/</directory>

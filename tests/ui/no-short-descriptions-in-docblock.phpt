@@ -19,6 +19,7 @@ DocBlox version %s
 
 %s ERR (3): No short description for file %s
 %s ERR (3): No short description for class %s
+%s ERR (3): No short description for property %s
 %s ERR (3): No short description for method %s
 Starting transformation of files (this could take a while depending upon the size of your project)
 Finished transformation in %s seconds

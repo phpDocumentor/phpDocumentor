@@ -1,4 +1,6 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:dbx="http://docblox-project.org/xsl/functions">
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="method/name">
@@ -39,7 +41,7 @@
     </xsl:template>
 
   <xsl:template match="function|method">
-    <a id="{../full_name}::{name}()" />
+    <a id="{../full_name}::{name}()" class="anchor" />
     <div>
         <xsl:attribute name="class">
             <xsl:value-of select="concat(name(), ' ', @visibility)" />
@@ -138,7 +140,7 @@
                     </thead>
                     <tr>
                         <td>
-                            <xsl:apply-templates select="docblock/tag[@name='return']/type"/>
+                            <xsl:apply-templates select="docblock/tag[@name='return']"/>
                         </td>
                         <td>
                             <xsl:apply-templates select="docblock/tag[@name='return']/@description"/>
@@ -166,7 +168,7 @@
                 <strong>Details</strong>
                 <dl class="function-info">
                     <xsl:apply-templates select="docblock/tag[@name != 'param' and @name != 'return' and @name !='inherited_from' and @name != 'throws']">
-                        <xsl:sort select="@name"/>
+                        <xsl:sort select="dbx:ucfirst(@name)"/>
                     </xsl:apply-templates>
                 </dl>
             </xsl:if>

@@ -309,31 +309,38 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
    */
   protected function findDefault(DocBlox_Reflection_TokenIterator $tokens)
   {
-    // check if a string is found
-    $default_token        = $tokens->findNextByType(T_STRING, 5, array(',', ')'));
-    if (!$default_token)
-    {
-      // check for a constant
-      $default_token      = $tokens->findNextByType(T_CONSTANT_ENCAPSED_STRING, 5, array(',', ')'));
-    }
-    if (!$default_token)
-    {
-      // check for a integer
-      $default_token      = $tokens->findNextByType(T_LNUMBER, 5, array(',', ')'));
-    }
-    if (!$default_token)
-    {
-      // check for a float
-      $default_token      = $tokens->findNextByType(T_DNUMBER, 5, array(',', ')'));
-    }
-    if (!$default_token)
-    {
-      // check for an array definition
-      $default_token      = $tokens->findNextByType(T_ARRAY, 5, array(',', ')'));
-    }
+      $result = '';
+      $index = $tokens->key();
+      $level = 0;
 
-    // remove any surrounding single or double quotes before returning the data
-    return $default_token ? trim($default_token->content, '\'"') : null;
+      /** @var DocBlox_Reflection_Token $token  */
+      $token = $tokens->next();
+
+      // only start including the text once we have passed the =
+      $include = false;
+
+      // while we have not reached the EOF, and we have not a literal ',',
+      // ')' (not nested) or ';' continue gathering elements.
+      while($token && !(!$token->type
+          && ((($token->content == ')') && ($level == 0))
+          || ($token->content == ';') || ($token->content == ',')))
+      ) {
+          // only include if the = has passed
+          if ($include) {
+              if ($token->content == '(') $level++;
+              if ($token->content == ')') $level--;
+              $result .= $token->content;
+          }
+
+          if (($token->type === null) && ($token->content == '=')) {
+              $include = true;
+          }
+
+          $token = $tokens->next();
+      };
+
+      $tokens->seek($index);
+      return trim($result);
   }
 
   /**

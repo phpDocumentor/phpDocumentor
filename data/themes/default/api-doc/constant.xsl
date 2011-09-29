@@ -1,8 +1,10 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:dbx="http://docblox-project.org/xsl/functions">
     <xsl:output indent="yes" method="html"/>
 
     <xsl:template match="constant">
-        <a id="{../full_name}::{name}"/>
+        <a id="{../full_name}::{name}" class="anchor"/>
 
         <div class="constant">
             <xsl:attribute name="class">
@@ -22,7 +24,7 @@
                 <span class="highlight">
                     <xsl:value-of select="name"/>
                 </span>
-                = '<xsl:value-of select="value"/>'
+                = <xsl:value-of select="value"/>
             </code>
 
             <div class="description">
@@ -43,7 +45,7 @@
 
                 <dl class="constant-info">
                     <xsl:apply-templates select="docblock/tag">
-                        <xsl:sort select="@name"/>
+                        <xsl:sort select="dbx:ucfirst(@name)"/>
                     </xsl:apply-templates>
                 </dl>
             </div>

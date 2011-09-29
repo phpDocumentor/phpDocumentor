@@ -64,23 +64,6 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      */
     public function __construct()
     {
-        $this->behaviours = new DocBlox_Transformer_Behaviour_Collection(
-            $this,
-            array(
-                new DocBlox_Transformer_Behaviour_GeneratePaths(),
-                new DocBlox_Transformer_Behaviour_Inherit(),
-                new DocBlox_Transformer_Behaviour_Tag_Ignore(),
-                new DocBlox_Transformer_Behaviour_Tag_Return(),
-                new DocBlox_Transformer_Behaviour_Tag_Param(),
-                new DocBlox_Transformer_Behaviour_Tag_Property(),
-                new DocBlox_Transformer_Behaviour_Tag_Method(),
-                new DocBlox_Transformer_Behaviour_Tag_Uses(),
-                new DocBlox_Transformer_Behaviour_Tag_Author(),
-                new DocBlox_Transformer_Behaviour_Tag_License(),
-                new DocBlox_Transformer_Behaviour_Tag_Internal(),
-                new DocBlox_Transformer_Behaviour_AddLinkInformation(),
-            )
-        );
     }
 
     /**
@@ -325,28 +308,32 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      */
     public function execute()
     {
-        $xml = $this->getSource();
+        $source = $this->getSource();
 
-        if ($xml) {
-            $this->dispatch(
-                'transformer.pre-transform',
-                array(
-                    self::$event_dispatcher,
-                    $xml
-                )
+        if (!$source) {
+            throw new DocBlox_Transformer_Exception(
+                'Unable to process transformations; the source was not set '
+                . 'correctly'
             );
-
-            $xml = $this->behaviours->process($xml);
         }
+
+        // invoke pre-transform actions (i.e. enhance source file with additional
+        // meta-data)
+        $this->dispatch('transformer.transform.pre', array($source));
 
         foreach ($this->getTransformations() as $transformation) {
             $this->log(
-                'Applying transformation query ' . $transformation->getQuery()
+                'Applying transformation'
+                . ($transformation->getQuery()
+                        ? (' query "' . $transformation->getQuery() . '"') : '')
                 . ' using writer ' . get_class($transformation->getWriter())
+                . ' on '.$transformation->getArtifact()
             );
 
-            $transformation->execute($xml);
+            $transformation->execute($source);
         }
+
+        $this->dispatch('transformer.transform.post', array($source));
     }
 
     /**

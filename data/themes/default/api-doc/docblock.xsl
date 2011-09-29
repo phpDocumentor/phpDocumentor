@@ -1,4 +1,21 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:dbx="http://docblox-project.org/xsl/functions"
+        xmlns:func="http://exslt.org/functions"
+        extension-element-prefixes="func">
+
+    <!-- https://fosswiki.liip.ch/display/BLOG/How+to+define+your+own+XSLT+functions+with+EXSLT -->
+    <func:function name="dbx:ucfirst">
+        <xsl:param name="str"/>
+        <xsl:param name="strLen" select="string-length($str)"/>
+        <xsl:variable name="firstLetter" select="substring($str,1,1)"/>
+        <xsl:variable name="restString" select="substring($str,2,$strLen)"/>
+        <xsl:variable name="lower" select="'abcdefghijklmnopqrstuvwxyz'"/>
+        <xsl:variable name="upper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+        <xsl:variable name="translate"
+                      select="translate($firstLetter,$lower,$upper)"/>
+        <func:result select="concat($translate,$restString)"/>
+    </func:function>
 
     <xsl:template name="ucfirst">
         <xsl:param name="str"/>

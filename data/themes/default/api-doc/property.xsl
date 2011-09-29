@@ -1,7 +1,9 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:dbx="http://docblox-project.org/xsl/functions">
 
     <xsl:template match="property">
-        <a id="{../full_name}::{name}"/>
+        <a id="{../full_name}::{name}" class="anchor"/>
 
         <div>
             <xsl:attribute name="class">
@@ -63,11 +65,11 @@
                     <dt>Type</dt>
                     <dd>
                         <xsl:apply-templates select="docblock/tag[@name='var']/type">
-                            <xsl:sort select="@name"/>
+                            <xsl:sort select="dbx:ucfirst(@name)"/>
                         </xsl:apply-templates>
                     </dd>
                     <xsl:apply-templates select="docblock/tag[@name!='var']">
-                        <xsl:sort select="@name"/>
+                        <xsl:sort select="dbx:ucfirst(@name)"/>
                     </xsl:apply-templates>
                 </dl>
             </div>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<plugin>
+    <name>Core</name>
+    <version>1.0</version>
+    <author>Mike van Riel</author>
+    <email>mike.vanriel@naenius.com</email>
+    <description>
+        This plugin contains all PHPDoc basic behaviours and validators.
+    </description>
+    <class-prefix>DocBlox_Plugin_Core</class-prefix>
+    <listener>Listener</listener>
+    <dependencies>
+        <docblox><min-version>0.15.0</min-version></docblox>
+    </dependencies>
+    <options>
+        <option name="generate-graph">true</option>
+    </options>
+</plugin>

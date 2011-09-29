@@ -49,11 +49,14 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
             }
 
             // convert the filename to a class
-            $class_name = 'DocBlox_Task_' . str_replace(DIRECTORY_SEPARATOR, '_', $files->getSubPath())
-            . '_' . $files->getBasename('.php');
+            $class_path = str_replace(
+                DIRECTORY_SEPARATOR, '_', $files->getSubPath()
+            );
+            $class_name = 'DocBlox_Task_' . ($class_path ? $class_path. '_' : '')
+                . $files->getBasename('.php');
 
             // check if the class exists, if so: add it to the list
-            if (class_exists($class_name)) {
+            if (($class_name != 'DocBlox_Task_Runner') && class_exists($class_name)) {
                 $name = $files->getBasename('.php');
                 $longest_name = max(strlen($name), $longest_name);
                 $results[strtolower($files->getSubPath())][strtolower($name)] = $files->getRealPath();
@@ -71,7 +74,10 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
             foreach ($tasks as $task => $filename) {
                 // get the short description by reflecting the file.
                 $refl = new DocBlox_Reflection_File($filename, false);
-                $refl->setLogLevel(DocBlox_Core_Log::QUIET);
+                $refl->dispatch(
+                    'system.log.threshold',
+                    array(DocBlox_Core_Log::QUIET)
+                );
                 $refl->process();
 
                 /** @var DocBlox_Reflection_Class $class */

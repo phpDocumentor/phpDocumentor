@@ -123,6 +123,10 @@ class DocBlox_Core_Log
      */
     public function setThreshold($threshold)
     {
+        if (is_object($threshold) && (get_class($threshold) === 'sfEvent')) {
+            $threshold = $threshold[0];
+        }
+
         if (!is_numeric($threshold)) {
             if (!defined('DocBlox_Core_Log::' . strtoupper($threshold))) {
                 throw new InvalidArgumentException(

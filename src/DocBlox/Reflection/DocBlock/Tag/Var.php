@@ -21,7 +21,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Reflection_DocBlock_Tag_Var extends DocBlox_Reflection_DocBlock_Tag_Param implements DocBlox_Reflection_DocBlock_Tag_Interface
+class DocBlox_Reflection_DocBlock_Tag_Var extends DocBlox_Reflection_DocBlock_Tag_Param
 {
   /**
    * Parses a tag and populates the member variables.
@@ -37,8 +37,7 @@ class DocBlox_Reflection_DocBlock_Tag_Var extends DocBlox_Reflection_DocBlock_Ta
     $this->content = $content;
     $content = preg_split('/\s+/u', $content);
 
-    if (count($content) == 0)
-    {
+    if (count($content) == 0) {
       return;
     }
 
@@ -46,23 +45,10 @@ class DocBlox_Reflection_DocBlock_Tag_Var extends DocBlox_Reflection_DocBlock_Ta
     $this->type = array_shift($content);
 
     // if the next item starts with a $ it must be the variable name
-    if ((count($content) > 0) && (strlen($content[0]) > 0) && ($content[0][0] == '$'))
-    {
+    if ((count($content) > 0) && (strlen($content[0]) > 0) && ($content[0][0] == '$')) {
       $this->variableName = array_shift($content);
     }
 
     $this->description = implode(' ', $content);
-  }
-
-  /**
-   * Implements DocBlox_Reflection_DocBlock_Tag_Interface
-   *
-   * @param SimpleXMLElement $xml Relative root of xml document
-   */
-  public function __toXml(SimpleXMLElement $xml)
-  {
-    parent::__toXml($xml);
-
-    $xml['description'] = trim($this->getDescription());
   }
 }

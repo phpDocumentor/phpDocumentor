@@ -22,6 +22,12 @@ class NoShortDescription
 {
     /**
      *
+     *
+     */
+    protected $_noShortDescriptionProperty;
+
+    /**
+     *
      */
     public function noShortDescriptionFound()
     {
