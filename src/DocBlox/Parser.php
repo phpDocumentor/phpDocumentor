@@ -449,7 +449,13 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             );
         }
 
-        foreach ($paths as $file) {
+        $file_count = count($paths);
+        foreach ($paths as $key => $file) {
+            $this->dispatch(
+                'parser.file.pre',
+                array('file' => $file, 'progress' => array($key +1, $file_count))
+            );
+
             $xml = $this->parseFile($file);
             if ($xml === false) {
                 continue;

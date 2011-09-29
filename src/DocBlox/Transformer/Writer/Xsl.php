@@ -80,8 +80,19 @@ class DocBlox_Transformer_Writer_Xsl extends DocBlox_Transformer_Writer_Abstract
         // search result
         if ($transformation->getQuery() !== '') {
             $xpath = new DOMXPath($transformation->getTransformer()->getSource());
+
+            /** @var DOMNodeList $qry */
             $qry = $xpath->query($transformation->getQuery());
-            foreach ($qry as $element) {
+            $count = $qry->length;
+            foreach ($qry as $key => $element) {
+                $this->dispatch(
+                    'transformer.writer.xsl.pre',
+                    array(
+                         'element' => $element,
+                         'progress' => array($key+1, $count)
+                    )
+                );
+
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);
                 $filename = str_replace(
                     '{$' . $element->nodeName . '}',

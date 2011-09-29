@@ -35,7 +35,7 @@
           </td></tr>
           <tr>
             <td id="sidebar">
-              <xsl:call-template name="search" />
+              <!--<xsl:call-template name="search" />-->
               <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0" />
             </td>
             <td id="contents">

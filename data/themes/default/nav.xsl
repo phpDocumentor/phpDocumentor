@@ -1,189 +1,255 @@
 <?xml version="1.0"?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output indent="yes" method="html" />
+    <xsl:output indent="yes" method="html" />
 
-  <xsl:template match="/project">
-    <script type="text/javascript">
+    <xsl:template match="/project">
+        <script type="text/javascript">
 
-        $(function() {
-            $("#sidebar-nav").accordion({
-                autoHeight: false,
-                navigation: true,
-                collapsible: true
-            }).accordion("activate", false)
-              .find('a.link').click(function(ev){
-                ev.preventDefault();
-                ev.stopPropagation();
-            }).prev().prev().remove();
+            $(function() {
+                $("#sidebar-nav").accordion({
+                    autoHeight: false,
+                    navigation: true,
+                    collapsible: true
+                }).accordion("activate", false)
+                .find('a.link').click(function(ev){
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                }).prev().prev().remove();
 
-            $("#sidebar-nav>h3").click(function(){
-                if ($(this).attr('initialized') == 'true') return;
+                $("#sidebar-nav>h3").click(function(){
+                    if ($(this).attr('initialized') == 'true') return;
 
-                $(this).next().find(".sidebar-nav-tree").treeview({
-                    collapsed: true,
-                    persist: "cookie"
+                    $(this).next().find(".sidebar-nav-tree").treeview({
+                        collapsed: true,
+                        persist: "cookie"
+                    });
+                    $(this).attr('initialized', true);
                 });
-                $(this).attr('initialized', true);
             });
-        });
 
-    </script>
+            function tree_search(input)
+            {
+                treeview = $(input).parent().parent().next();
 
-      <style>
-        #sidebar {
-            height: 100%;
-            width: 100%;
-            background: #232325;
-            overflow: auto;
-            color: #f9f9ff
-        }
+                // Expand all items
+                treeview.find('.expandable-hitarea').click();
 
-        #sidebar-header {
-            height: 52px;
-            border-bottom: 1px solid #333333;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
+                // make all items visible again
+                treeview.find('li:hidden').show();
 
-        #sidebar-footer {
-            position: relative;
-            bottom: 0;
-            font-size: 0.7em;
-            color: gray;
-            padding: 15px 5px 5px;
-            border-top: 1px solid #333333;
-            margin-top: 10px;
-        }
+                // hide all items that do not match the given search criteria
+                if ($(input).val()) {
+                    treeview.find('li').not(':has(a:contains('+$(input).val()+'))').hide();
+                }
+            }
+        </script>
 
-        #sidebar-footer a {
-            color: gray;
-        }
+        <style>
+            #sidebar {
+                height: 100%;
+                width: 100%;
+                background: #232325;
+                overflow: auto;
+                color: #f9f9ff
+            }
 
-        #sidebar-header h1 {
-            font-size: 1.2em;
-            padding: 0;
-            margin: 0;
-            display: inline;
-        }
+            #sidebar-header {
+                height: 52px;
+                border-bottom: 1px solid #333333;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
 
-        #sidebar-logo {
-            float: left;
-            padding-right: 10px;
-        }
+            #sidebar-footer {
+                position: relative;
+                bottom: 0;
+                font-size: 0.7em;
+                color: gray;
+                padding: 15px 5px 5px;
+                border-top: 1px solid #333333;
+                margin-top: 10px;
+            }
 
-        #sidebar-nav h3 > img {
-            float: right;
-            height: 22px;
-            padding-top: 6px;
-            padding-right: 7px;
-        }
+            #sidebar-footer a {
+                color: gray;
+            }
 
-        #sidebar-nav h3#sidebar-files > img {
-            height: auto;
-            margin-top: 2px;
-        }
+            #sidebar-header h1 {
+                font-size: 1.2em;
+                padding: 0;
+                margin: 0;
+                display: inline;
+            }
 
-        #sidebar-nav {
-          font-size: 1.1em;
-        }
+            #sidebar-logo {
+                float: left;
+                padding-right: 10px;
+            }
 
-        .ui-accordion-header {
-            background-image: none;
-            border:  none;
-            font-size: 1.1em;
-        }
+            #sidebar-nav h3 > img {
+                float: right;
+                height: 22px;
+                padding-top: 6px;
+                padding-right: 7px;
+            }
 
-        .ui-accordion .ui-accordion-content {
-          padding: 0px;
-        }
-      </style>
+            #sidebar-nav h3#sidebar-files > img {
+                height: auto;
+                margin-top: 2px;
+            }
 
-    <div id="sidebar">
-        <div id="sidebar-header">
-            <img src="images/icon48x48.png" id="sidebar-logo" alt="Logo" />
-            <h1>DocBlox</h1>
-        </div>
+            #sidebar-nav {
+              font-size: 1.1em;
+            }
 
-        <div id="sidebar-nav">
-            <h3 id="sidebar-dashboard">
-                <img class="icon" src="{$root}css/docblox/images/icons/dashboard.png" alt="Dashboard"/>
-                <a href="{$root}contents.html" class="link" target="content">Dashboard</a>
-            </h3>
-            <div style="display: none"></div>
+            .ui-accordion-header {
+                background-image: none;
+                border:  none;
+                font-size: 1.1em;
+            }
 
-            <h3 id="sidebar-files">
-                <img src="{$root}css/docblox/images/icons/files.png" alt="Files"/>
-                <a href="#files">Files</a>
-            </h3>
-            <div style="overflow: auto;">
-                <ul class="sidebar-nav-tree">
-                    <xsl:apply-templates select="file">
-                        <xsl:sort select="@path"/>
-                    </xsl:apply-templates>
-                </ul>
+            .ui-accordion .sidebar-section {
+                overflow: auto;
+                border-bottom-right-radius: 10px;
+            }
+
+            .ui-accordion .ui-accordion-content {
+                padding: 0px;
+                padding-bottom: 10px;
+            }
+
+            .sidebar-section > div
+            {
+                height: 19px;
+                border-bottom: 1px solid silver;
+                background: #f9f9f9;
+                padding: 6px 3px 4px 3px;
+            }
+
+            .sidebar-section > div > div
+            {
+                padding-right: 48px;
+            }
+
+            .sidebar-section > div >  a
+            {
+                float: right;
+                margin-right: 5px;
+            }
+
+            .sidebar-section > div > div > input
+            {
+                border-radius: 3px;
+                background: white url('images/search.gif') no-repeat right top;
+            }
+
+        </style>
+
+        <div id="sidebar">
+            <div id="sidebar-header">
+                <img src="images/icon48x48.png" id="sidebar-logo" alt="Logo" />
+                <h1>DocBlox</h1>
             </div>
 
-            <xsl:if test="count(/project/package) > 0">
-            <h3 id="sidebar-packages">
-                <img src="{$root}css/docblox/images/icons/packages.png" alt="Packages"/>
-                <a href="#packages">Packages</a>
-            </h3>
-            <div style="overflow: auto;">
-                <div style="height: 30px; border-bottom: 1px solid silver; background: #f9f9f9">
-                    <input type="text" onchange="$('sidebar-nav-tree ').treeview('expand-all')"></input>
+            <div id="sidebar-nav">
+                <h3 id="sidebar-dashboard">
+                    <img class="icon" src="{$root}css/docblox/images/icons/dashboard.png" alt="Dashboard"/>
+                    <a href="{$root}contents.html" class="link" target="content">Dashboard</a>
+                </h3>
+                <div style="display: none"></div>
+
+                <h3 id="sidebar-files">
+                    <img src="{$root}css/docblox/images/icons/files.png" alt="Files"/>
+                    <a href="#files">Files</a>
+                </h3>
+                <div class="sidebar-section">
+                    <div>
+                        <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
+                            <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
+                        </a>
+                        <a href="#" onclick="$(this).parent().next().find('.expandable-hitarea').click(); return false;">
+                            <img src="images/expand_all.png" title="Expand all" alt="Expand all" />
+                        </a>
+                        <div>
+                            <input type="text" onkeyup="tree_search(this);" />
+                        </div>
+                    </div>
+
+                    <ul class="sidebar-nav-tree">
+                        <xsl:apply-templates select="file">
+                            <xsl:sort select="@path"/>
+                        </xsl:apply-templates>
+                    </ul>
                 </div>
-                <ul class="sidebar-nav-tree">
-                    <xsl:apply-templates select="/project/package">
-                        <xsl:sort select="@name"/>
-                        <xsl:with-param name="parent_name" select="''"/>
-                    </xsl:apply-templates>
-                </ul>
-            </div>
-            </xsl:if>
 
-            <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
-            <h3 id="sidebar-namespaces">
-                <img src="{$root}css/docblox/images/icons/namespaces.png" alt="Namespaces"/>
-                <a href="#namespaces">Namespaces</a>
-            </h3>
-            <div>
-                <ul class="sidebar-nav-tree">
-                    <xsl:apply-templates select="/project/namespace">
-                        <xsl:sort select="@name"/>
-                        <xsl:with-param name="parent_name" select="''"/>
-                    </xsl:apply-templates>
-                </ul>
-            </div>
-            </xsl:if>
+                <xsl:if test="count(/project/package) > 0">
+                <h3 id="sidebar-packages">
+                    <img src="{$root}css/docblox/images/icons/packages.png" alt="Packages"/>
+                    <a href="#packages">Packages</a>
+                </h3>
+                <div class="sidebar-section sidebar-tree">
+                    <div>
+                        <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
+                            <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
+                        </a>
+                        <a href="#" onclick="$(this).parent().next().find('.expandable-hitarea').click(); return false;">
+                            <img src="images/expand_all.png" title="Expand all" alt="Expand all" />
+                        </a>
+                        <div>
+                            <input type="text" onkeyup="tree_search(this);" />
+                        </div>
+                    </div>
+                    <ul class="sidebar-nav-tree">
+                        <xsl:apply-templates select="/project/package">
+                            <xsl:sort select="@name"/>
+                            <xsl:with-param name="parent_name" select="''"/>
+                        </xsl:apply-templates>
+                    </ul>
+                </div>
+                </xsl:if>
 
-            <h3 id="sidebar-charts">
-                <img src="{$root}css/docblox/images/icons/chart.png" alt="Charts"/>
-                <a href="#charts">Charts</a>
-            </h3>
-            <div>
-                <ul>
-                    <li><a href="{$root}graph.html" target="content">Class Inheritance Diagram</a></li>
-                </ul>
+                <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
+                <h3 id="sidebar-namespaces">
+                    <img src="{$root}css/docblox/images/icons/namespaces.png" alt="Namespaces"/>
+                    <a href="#namespaces">Namespaces</a>
+                </h3>
+                <div class="sidebar-section sidebar-tree">
+                    <ul class="sidebar-nav-tree">
+                        <xsl:apply-templates select="/project/namespace">
+                            <xsl:sort select="@name"/>
+                            <xsl:with-param name="parent_name" select="''"/>
+                        </xsl:apply-templates>
+                    </ul>
+                </div>
+                </xsl:if>
+
+                <h3 id="sidebar-charts">
+                    <img src="{$root}css/docblox/images/icons/chart.png" alt="Charts"/>
+                    <a href="#charts">Charts</a>
+                </h3>
+                <div class="sidebar-section">
+                    <ul style="list-style-image: url('css/docblox/images/icons/chart15x12.png');">
+                        <li><a href="{$root}graph.html" target="content">Class Inheritance Diagram</a></li>
+                    </ul>
+                </div>
+                <h3 id="sidebar-reports">
+                    <img src="{$root}css/docblox/images/icons/reports.png" alt="Reports"/>
+                    <a href="#reports">Reports</a>
+                </h3>
+                <div class="sidebar-section">
+                    <ul style="list-style-image: url('css/docblox/images/icons/reports9x12.png');">
+                        <li><a href="{$root}markers.html" target="content">Markers (TODO/FIXME)</a></li>
+                        <li><a href="{$root}parse_markers.html" target="content">Parsing errors</a></li>
+                    </ul>
+                </div>
             </div>
-            <h3 id="sidebar-reports">
-                <img src="{$root}css/docblox/images/icons/reports.png" alt="Reports"/>
-                <a href="#reports">Reports</a>
-            </h3>
-            <div>
-                <ul>
-                    <li><a href="{$root}markers.html" target="content">Markers (TODO/FIXME)</a></li>
-                    <li><a href="{$root}parse_markers.html" target="content">Parsing errors</a></li>
-                </ul>
+            <div id="sidebar-footer">
+                Documentation is generated by <a href="http://docblox-project.org">
+                <img src="{$root}images/icon48x48.png" height="12" align="top" alt="Logo"/> DocBlox 0.14.0
+                </a>, images courtesy of <a href="http://glyphish.com/">Glyphish</a>
             </div>
         </div>
-        <div id="sidebar-footer">
-            Documentation is generated by <a href="http://docblox-project.org">
-            <img src="{$root}images/icon48x48.png" height="12" align="top" alt="Logo"/> DocBlox 0.14.0
-            </a>, images courtesy of <a href="http://glyphish.com/">Glyphish</a>
-        </div>
-    </div>
-
 
     <!--<xsl:call-template name="api"/>-->
 

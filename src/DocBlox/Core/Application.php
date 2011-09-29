@@ -43,7 +43,7 @@ class DocBlox_Core_Application
         $task = $runner->getTask();
 
         $threshold = DocBlox_Core_Log::WARN;
-        if (!$task->getQuiet()) {
+        if (!$task->getQuiet() && (!$task->getProgressbar())) {
             DocBlox_Core_Application::renderVersion();
         } else {
             $threshold = DocBlox_Core_Log::QUIET;

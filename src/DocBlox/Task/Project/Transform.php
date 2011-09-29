@@ -53,7 +53,11 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
     $this->addOption('parseprivate', '',
       'Whether to parse DocBlocks marked with @internal tag'
     );
-
+    $this->addOption(
+        'p|progressbar', '',
+        'Whether to show a progress bar; will automatically quiet logging '
+        . 'to stdout'
+    );
   }
 
   /**
@@ -138,7 +142,17 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
       : DocBlox_Core_Abstract::config()->transformations->template->name;
   }
 
-  /**
+    public function echoProgress(sfEvent $event)
+    {
+        echo '.';
+        if (($event['progress'][0] % 70 == 0)
+            || ($event['progress'][0] % $event['progress'][1] == 0)
+        ) {
+            echo ' ' . $event['progress'][0] . '/' . $event['progress'][1] . PHP_EOL;
+        }
+    }
+
+    /**
    * Executes the transformation process.
    *
    * @throws Zend_Console_Getopt_Exception
@@ -150,7 +164,14 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
     // initialize timer
     $timer = microtime(true);
 
-    // initialize transformer
+    if ($this->getProgressbar()) {
+        DocBlox_Transformer_Abstract::$event_dispatcher->connect(
+            'transformer.writer.xsl.pre', array($this, 'echoProgress')
+        );
+        $this->setQuiet(true);
+    }
+
+      // initialize transformer
     $transformer = new DocBlox_Transformer();
     $transformer->setThemesPath(DocBlox_Core_Abstract::config()->paths->themes);
     $transformer->setTarget($this->getTarget());

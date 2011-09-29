@@ -83,6 +83,11 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             'defaultpackagename', '-s',
             'name to use for the default package.  If not specified, uses "default"'
         );
+        $this->addOption(
+            'p|progressbar', '',
+            'Whether to show a progress bar; will automatically quiet logging '
+            . 'to stdout'
+        );
     }
 
     /**
@@ -208,6 +213,16 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         return DocBlox_Core_Abstract::config()->getArrayFromPath('parser/markers/item');
     }
 
+    public function echoProgress(sfEvent $event)
+    {
+        echo '.';
+        if (($event['progress'][0] % 70 == 0)
+            || ($event['progress'][0] % $event['progress'][1] == 0)
+        ) {
+            echo ' ' . $event['progress'][0] . '/' . $event['progress'][1] . PHP_EOL;
+        }
+    }
+
     /**
      * Execute the parsing process.
      *
@@ -217,6 +232,13 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
      */
     public function execute()
     {
+        if ($this->getProgressbar()) {
+            DocBlox_Parser_Abstract::$event_dispatcher->connect(
+                'parser.file.pre', array($this, 'echoProgress')
+            );
+            $this->setQuiet(true);
+        }
+
         $files = new DocBlox_Parser_Files();
         $files->setAllowedExtensions($this->getExtensions());
         $files->setIgnorePatterns($this->getIgnore());
