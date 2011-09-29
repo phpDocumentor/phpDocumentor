@@ -36,3 +36,4 @@ Usage:
 --validate                    Validates every processed file using PHP Lint, costs a lot of performance
 --visibility [STRING]         Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")
 --defaultpackagename [STRING] name to use for the default package.  If not specified, uses "default"
+-p [--progressbar]            Whether to show a progress bar; will automatically quiet logging to stdout

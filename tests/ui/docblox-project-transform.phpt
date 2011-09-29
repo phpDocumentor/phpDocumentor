@@ -32,3 +32,4 @@ Usage:
 --template [STRING]    Name of the template to use (optional, defaults to "default")
 -v [--verbose]         Outputs any information collected by this application, may slow down the process slightly
 --parseprivate         Whether to parse DocBlocks marked with @internal tag
+-p [--progressbar]     Whether to show a progress bar; will automatically quiet logging to stdout
