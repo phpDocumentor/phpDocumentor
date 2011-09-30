@@ -98,7 +98,6 @@ sup {
 }
 
 body {
-    font: 1em Arial, Helvetica, sans-serif;
     color: #444;
 }
 
@@ -1324,4 +1323,9 @@ div.section h1 {
     text-transform: uppercase;
     margin: 0 0px;
     margin-bottom: 10px;
+}
+
+td#sidebar
+{
+    padding-top: 0px;
 }

@@ -4,6 +4,11 @@ html, body, #page
   width:  100%;
 }
 
+body
+{
+    font: 80% / 1.5em Arial, Helvetica, "DejaVu Sans", "Liberation sans", "Bitstream Vera Sans", sans-serif
+}
+
 #db-header, #menubar
 {
   height: 1px;
