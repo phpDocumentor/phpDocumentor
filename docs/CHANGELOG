@@ -2,17 +2,20 @@
 
 * ADDED:    Plugins; DocBlox now fully supports external enhancements. Please
             see the docs for an expanded description.
+* ADDED:    Sidebar has been renewed for improved style, ux, loading times and
+            room for additional elements.
 * ADDED:    Additional validations which check for errors in your source code.
+* ADDED:    @deprecated tags are reported
+* ADDED:    Parse errors page now shows a success notification when there are
+            no errors.
+* ADDED:    Markers page now shows a success notification when there are
+            no errors.
 * FIXED:    @uses could error when mentioning a method
 * FIXED:    Graph generation could crash if a class name contained illegal
             characters
 * FIXED:    Abstract classes had the wrong label in the class diagram
 * FIXED:    Improved argument default value finding algorythm to not skip )
             in array()
-* ADDED:    @deprecated tags are now also added to the markers listing so that
-            it becomes visible what to fix
-* ADDED:    Parse errors page now shows a success notification when there are
-            no errors.
 * FIXED:    procedural functions and constants did not receive the package from
             the File docblock.
 

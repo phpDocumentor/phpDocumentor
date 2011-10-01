@@ -239,8 +239,9 @@
                 </h3>
                 <div class="sidebar-section">
                     <ul style="list-style-image: url('css/docblox/images/icons/reports9x12.png');">
-                        <li><a href="{$root}markers.html" target="content">Markers (TODO/FIXME)</a></li>
-                        <li><a href="{$root}parse_markers.html" target="content">Parsing errors</a></li>
+                        <li><a href="{$root}report_markers.html" target="content">Markers (TODO/FIXME)</a></li>
+                        <li><a href="{$root}report_parse_markers.html" target="content">Parsing errors</a></li>
+                        <li><a href="{$root}report_deprecated.html" target="content">Deprecated elements</a></li>
                     </ul>
                 </div>
             </div>

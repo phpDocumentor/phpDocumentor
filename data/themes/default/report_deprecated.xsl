@@ -16,20 +16,25 @@
 
       <div id="content">
 
-          <h1>Markers (TODO / FIXME)</h1>
-        <div id="marker-accordion">
+          <h1>Deprecated elements</h1>
+          <xsl:if test="count(//docblock/tag[@name='deprecated']) &lt; 1">
+              <div class="success_notification">No deprecated elements have been
+                  found in this project.
+              </div>
+          </xsl:if>
+          <div id="marker-accordion">
             <xsl:for-each select="/project/file">
-                <xsl:if test="markers|.//docblock/tag[@name='todo']|.//docblock/tag[@name='deprecated']|.//docblock/tag[@name='fixme']">
+                <xsl:if test=".//docblock/tag[@name='deprecated']">
                     <h3>
                         <a href="#">
                             <xsl:value-of select="@path"/>
-                            <small><xsl:value-of select="count(markers/*|.//docblock/tag[@name='todo']|.//docblock/tag[@name='deprecated']|.//docblock/tag[@name='fixme'])"/></small>
+                            <small><xsl:value-of select="count(.//docblock/tag[@name='deprecated'])"/></small>
                         </a>
                     </h3>
                     <div>
                         <table>
                             <tr><th>Type</th><th>Line</th><th>Description</th></tr>
-                            <xsl:for-each select="markers/*|.//docblock/tag[@name='todo']|.//docblock/tag[@name='deprecated']|.//docblock/tag[@name='fixme']">
+                            <xsl:for-each select=".//docblock/tag[@name='deprecated']">
                                 <xsl:sort select="line"/>
                                 <tr>
                                     <xsl:if test="name() = 'tag'">
