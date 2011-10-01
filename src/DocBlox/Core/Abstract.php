@@ -27,7 +27,7 @@
 abstract class DocBlox_Core_Abstract
 {
     /** @var string The actual version number of DocBlox. */
-    const VERSION = '0.13.3';
+    const VERSION = '0.13.4';
 
     /**
      * The logger used to capture all messages send by the log method.
