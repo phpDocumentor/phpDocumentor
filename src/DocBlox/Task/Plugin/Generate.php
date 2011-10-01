@@ -93,7 +93,7 @@ class DocBlox_Task_Plugin_Generate extends DocBlox_Task_Abstract
             }
         }
 
-        $version    = $this->getVersion() ? $this->getVersion() : '1.0';
+        $version    = $this->getVersion() ? $this->getVersion() : '1.0.0';
         $class_part = ucfirst($this->getName());
 
         echo 'Generating directory structure'.PHP_EOL;
