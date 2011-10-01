@@ -6,10 +6,6 @@
 * FIXED:    @uses could error when mentioning a method
 * FIXED:    Graph generation could crash if a class name contained illegal
             characters
-
-09/??/2011: Version 0.14.2
---------------------------
-
 * FIXED:    Abstract classes had the wrong label in the class diagram
 * FIXED:    Improved argument default value finding algorythm to not skip )
             in array()
@@ -17,6 +13,8 @@
             it becomes visible what to fix
 * ADDED:    Parse errors page now shows a success notification when there are
             no errors.
+* FIXED:    procedural functions and constants did not receive the package from
+            the File docblock.
 
 09/19/2011: Version 0.14.1
 --------------------------

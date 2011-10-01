@@ -832,9 +832,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $this->mergeXmlToDomDocument($dom, trim($include->__toXml()));
         }
         foreach ($this->constants as $constant) {
+            $constant->setDefaultPackageName($xml['package']);
             $this->mergeXmlToDomDocument($dom, trim($constant->__toXml()));
         }
         foreach ($this->functions as $function) {
+            $function->setDefaultPackageName($xml['package']);
             $this->mergeXmlToDomDocument($dom, trim($function->__toXml()));
         }
         foreach ($this->interfaces as $interface) {
