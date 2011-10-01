@@ -6,7 +6,7 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="file">
-    <script type="text/javascript" src="{$root}js/menu.js"/>
+    <!--<script type="text/javascript" src="{$root}js/menu.js"/>-->
     <script><![CDATA[
 
       function filterElements()
@@ -45,7 +45,7 @@
         $('div.code-tabs').hide();
         $('a.gripper').show();
         $('div.code-tabs:empty').prevAll('a.gripper').html('');
-        $('div.file-nav').show();
+        $('div#file-nav').show();
 
         $('a#show-public, a#show-protected, a#show-private, a#show-inherited').click(function(){
             $(this).toggleClass('deselected');
@@ -59,65 +59,79 @@
         });
         $('a#show-protected, a#show-private').click();
 
+        $("div#file-nav").hover(function() {
+            console.debug('down');
+            $("div#file-nav-container").slideDown(400);
+        }, function() {
+            console.debug('up');
+            $("div#file-nav-container").slideUp(400);
+        });
       });
+
       ]]>
     </script>
       <h1 class="file"><xsl:value-of select="@path" /></h1>
-      <div class="file-nav">
-          <ul id="file-nav">
-              <li><a href="#top">Global</a></li>
-
-              <xsl:if test="constant">
-              <li>
-                  <a href="#constants">
-                      <img src="{$root}images/icons/constant.png" height="14" />
-                      Constants
-                  </a>
-                  <ul>
-                  <xsl:for-each select="constant">
-                      <xsl:sort select="name" />
-                      <li><a href="#::{name}"><xsl:value-of select="name"/></a></li>
-                  </xsl:for-each>
-                  </ul>
-              </li>
-              </xsl:if>
-
-              <xsl:if test="constant">
-              <li>
-                  <a href="#functions">
-                      <img src="{$root}images/icons/function.png" height="14"/>
-                      Functions
-                  </a>
-                  <ul>
-                  <xsl:for-each select="function">
-                      <xsl:sort select="name"/>
-                      <li><a href="#::{name}()"><xsl:value-of select="name"/></a></li>
-                  </xsl:for-each>
-                  </ul>
-              </li>
-              </xsl:if>
-
-              <xsl:if test="class">
-              <li>
-                  <a href="#classes">
-                      <img src="{$root}images/icons/class.png" height="14"/>
-                      Classes
-                  </a>
-                  <ul>
-                  <xsl:for-each select="class">
-                      <xsl:sort select="full_name"/>
-                      <li><a href="#{full_name}"><xsl:value-of select="full_name"/></a></li>
-                  </xsl:for-each>
-                  </ul>
-              </li>
-              </xsl:if>
-          </ul>
-          <div style="float: right;padding-right: 20px;">
+      <div id="file-nav">
+          <div id="file-nav-options">
               Show:
               <a href="#" id="show-public"><img src="{$root}images/icons/visibility_public.png"/></a>
               <a href="#" id="show-protected"><img src="{$root}images/icons/visibility_protected.png"/></a>
               <a href="#" id="show-private"><img src="{$root}images/icons/visibility_private.png"/></a>
               <a href="#" id="show-inherited"><span class="attribute">inherited</span></a>
+          </div>
+
+          <div id="file-nav-container">
+              <ul id="file-nav">
+                  <xsl:if test="constant">
+                  <li>
+                      <a href="#constants">
+                          <img src="{$root}images/icons/constant.png" height="14" />
+                          Constants
+                      </a>
+                      <ul>
+                      <xsl:for-each select="constant">
+                          <xsl:sort select="name" />
+                          <li><a href="#::{name}"><xsl:value-of select="name"/></a></li>
+                      </xsl:for-each>
+                      </ul>
+                  </li>
+                  </xsl:if>
+
+                  <xsl:if test="constant">
+                  <li>
+                      <a href="#functions">
+                          <img src="{$root}images/icons/function.png" height="14"/>
+                          Functions
+                      </a>
+                      <ul>
+                      <xsl:for-each select="function">
+                          <xsl:sort select="name"/>
+                          <li><a href="#::{name}()"><xsl:value-of select="name"/></a></li>
+                      </xsl:for-each>
+                      </ul>
+                  </li>
+                  </xsl:if>
+
+                  <xsl:if test="class">
+                  <li>
+                      <a href="#classes">
+                          <img src="{$root}images/icons/class.png" height="14"/>
+                          Classes
+                      </a>
+                      <ul>
+                      <xsl:for-each select="class">
+                          <xsl:sort select="full_name"/>
+                          <li><a href="#{full_name}"><xsl:value-of select="full_name"/></a></li>
+                      </xsl:for-each>
+                      </ul>
+                  </li>
+                  </xsl:if>
+              </ul>
+              <div style="clear: left;"></div>
+          </div>
+
+          <div id="file-nav-tab">
+              Table of Contents
           </div>
       </div>
 
