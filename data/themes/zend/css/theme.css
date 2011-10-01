@@ -7,6 +7,10 @@
 "utf-8"
 ;
 
+div#file-description {
+    padding-top: 0px;
+}
+
 div#content {
     padding: 10px;
 }
@@ -254,7 +258,7 @@ label.required {
 
 #top .top {
     margin: 0 auto;
-    width: 956px;
+    width: 973px;
     text-align: left;
 }
 
@@ -264,7 +268,7 @@ label.required {
     height: 23px;
     padding: 1px;
     background: url(http://framework.zend.com/images/logo_small.gif) left top no-repeat;
-    margin: 12px 0 0;
+    margin: 10px 0 0;
     text-indent: -3000px;
     overflow: hidden;
 }
@@ -770,7 +774,6 @@ label.required {
     line-height: 0;
     height: 7px;
     background: url(http://framework.zend.com/images/bkg_dotted-line.gif) left top repeat-x;
-    margin-bottom: 25px;
 }
 
 .content .left-side {
@@ -1133,6 +1136,7 @@ pre.error {
     margin-bottom: 5px;
     padding-bottom: 0.5em;
     clear: both;
+    margin-top: 80px;
 }
 
 .sub-page-main-header-api-documentation h1, .sub-page-main-header-api-documentation h2, .sub-page-main-header-api-documentation h3, .sub-page-main-header-api-documentation h4 {

@@ -21,8 +21,9 @@ h1.file {
     background: #f0f0f0 url('../images/icons/file-php.png') no-repeat left 2px;
     padding: 10px;
     padding-left: 34px;
-    margin: 0px;
+    margin: 0px !important;
     border-bottom: 1px solid silver;
+    top: 0px;
 }
 
 div.file-nav

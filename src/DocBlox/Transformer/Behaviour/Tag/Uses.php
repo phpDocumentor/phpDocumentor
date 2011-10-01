@@ -104,20 +104,22 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
             // if the query is wrong; output a Critical error and continue to
             // the next @uses
             if($referral_nodes === false) {
-                $this->logger->log(
-                    'An XPath error occurs while processing @uses, '
-                    . 'the query used was: ' . $qry, DocBlox_Core_Log::CRIT
-                );
+                // fixed in 0.14.0
+                //                $this->logger->log(
+//                    'An XPath error occurs while processing @uses, '
+//                    . 'the query used was: ' . $qry, DocBlox_Core_Log::CRIT
+//                );
                 continue;
             }
 
             // check if the result is unique; if not we error and continue
             // to the next @uses
             if ($referral_nodes->length > 1) {
-                $this->logger->log(
-                    '@uses "'.$refers.'" refers to more than 1 element',
-                    DocBlox_Core_Log::ERR
-                );
+                // fixed in 0.14.0
+//                $this->logger->log(
+//                    '@uses "'.$refers.'" refers to more than 1 element',
+//                    DocBlox_Core_Log::ERR
+//                );
                 continue;
             }
 
@@ -126,7 +128,7 @@ class DocBlox_Transformer_Behaviour_Tag_Uses implements
                 $referral = $referral_nodes->item(0);
                 $docblock = $referral->getElementsByTagName('docblock');
                 if ($docblock->length < 1) {
-                    $docblock = new DOMElement('docblock'); 
+                    $docblock = new DOMElement('docblock');
                     $referral->appendChild($docblock);
                 } else {
                     $docblock = $docblock->item(0);
