@@ -355,7 +355,7 @@ class DocBlox_GraphViz_Graph
         $attributes = implode(PHP_EOL, $attributes);
 
         return <<<DOT
-{$this->getType()} {$this->getName()} {
+{$this->getType()} "{$this->getName()}" {
 $attributes
 }
 DOT;

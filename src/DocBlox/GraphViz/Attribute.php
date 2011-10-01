@@ -102,7 +102,7 @@ class DocBlox_GraphViz_Attribute
 
         $value = $this->getValue();
         if (!isset($value[0]) || $value[0] != '<') {
-            $value = '"' . $value . '"';
+            $value = '"' . addslashes($value) . '"';
         }
         return $key . '=' . $value;
     }

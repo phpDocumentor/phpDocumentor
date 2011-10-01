@@ -114,8 +114,10 @@ class DocBlox_GraphViz_Node {
     }
     $attributes = implode("\n", $attributes);
 
+    $name = addslashes($this->getName());
+
     return <<<DOT
-{$this->getName()} [
+"{$name}" [
 $attributes
 ]
 DOT;

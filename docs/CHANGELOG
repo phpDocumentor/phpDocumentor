@@ -3,6 +3,9 @@
 * ADDED:    Plugins; DocBlox now fully supports external enhancements. Please
             see the docs for an expanded description.
 * ADDED:    Additional validations which check for errors in your source code.
+* FIXED:    @uses could error when mentioning a method
+* FIXED:    Graph generation could crash if a class name contained illegal
+            characters
 
 09/??/2011: Version 0.14.2
 --------------------------

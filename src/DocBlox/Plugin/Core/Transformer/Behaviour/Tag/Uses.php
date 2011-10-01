@@ -59,26 +59,33 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Uses extends
             {
                 case 'class':
                     // escape single quotes in the class name
-                    $xpath_refers = 'concat(\''
-                        . implode('\',"\'",\'', explode('\'', $refers)).'\', \'\')';
+                    $xpath_refers = 'concat(\''.str_replace(
+                        array("'", '"'),
+                        array('\', "\'", \'', '\', \'"\' , \''),
+                        $refers
+                    ) . "', '')";
+
                     $qry = '/project/file/class[full_name=' . $xpath_refers . ']';
                     break;
                 default:
                     $class_name = $refers_array[0];
 
                     // escape single quotes in the class name
-                    $xpath_class_name = 'concat(\''
-                        . implode('\',"\'",\'', explode('\'', $class_name))
-                        . '\', \'\')';
+                    $xpath_class_name = 'concat(\''.str_replace(
+                        array("'", '"'),
+                        array('\', "\'", \'', '\', \'"\' , \''),
+                        $class_name
+                    ) . "', '')";
 
                     // escape single quotes in the method name
-                    $xpath_method_name = 'concat(\''
-                        . implode('\',"\'",\'', explode('\'', $refers_array[1]))
-                        . '\', \'\')';
+                    $xpath_method_name = 'concat(\''.str_replace(
+                        array("'", '"'),
+                        array('\', "\'", \'', '\', \'"\' , \''),
+                        rtrim($refers_array[1], '()')
+                    ) . "', '')";
 
-                    $qry = '/project/file/class[full_name=\'' . $xpath_class_name
-                        . '\']/'.$type.'[name=\'' . rtrim($xpath_method_name, '()')
-                        .'\']';
+                    $qry = '/project/file/class[full_name=' . $xpath_class_name
+                        . ']/'.$type.'[name=' . $xpath_method_name .']';
                     break;
             }
 

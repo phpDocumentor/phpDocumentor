@@ -263,11 +263,25 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
 
         // apply inheritance to every class or interface extending this one
         $xpath = new DOMXPath($this->document);
-        $result = $xpath->query(
-            '/project/file/class[extends="' . $class_name . '"'
-            . ' or implements="' . $class_name . '"]'
-            . '|/project/file/interface[extends="' . $class_name . '"]'
-        );
+
+        $xpath_class_name = 'concat(\''.str_replace(
+            array("'", '"'),
+            array('\', "\'", \'', '\', \'"\' , \''),
+            $class_name
+        ) . "', '')";
+
+        $qry = '/project/file/class[extends=' . $xpath_class_name
+            . ' or implements=' . $xpath_class_name . ']'
+            . '|/project/file/interface[extends=' . $xpath_class_name . ']';
+
+        $result = @$xpath->query($qry);
+        if ($result === false) {
+            var_dump($xpath_class_name);
+            throw new DocBlox_Plugin_Core_Exception(
+                'Invalid xpath query in Class inheritance: '. $qry
+            );
+        }
+
         foreach ($result as $node)
         {
             $child_class_name = $node->getElementsByTagName('full_name')
