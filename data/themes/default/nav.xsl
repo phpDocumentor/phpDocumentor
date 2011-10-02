@@ -124,6 +124,17 @@
                     <a href="#namespaces">Namespaces</a>
                 </h3>
                 <div class="sidebar-section sidebar-tree">
+                    <div class="search-bar">
+                        <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
+                            <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
+                        </a>
+                        <a href="#" onclick="$(this).parent().next().find('.expandable-hitarea').click(); return false;">
+                            <img src="images/expand_all.png" title="Expand all" alt="Expand all" />
+                        </a>
+                        <div>
+                            <input type="text" onkeyup="tree_search(this);" />
+                        </div>
+                    </div>
                     <ul class="sidebar-nav-tree">
                         <xsl:apply-templates select="/project/namespace">
                             <xsl:sort select="@name"/>

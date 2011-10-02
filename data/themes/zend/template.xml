@@ -12,8 +12,8 @@
     <transformation query="" writer="xsl" source="themes/zend/sidebar.xsl" artifact="nav.html"/>
     <transformation query="/project/file/@path" writer="xsl" source="themes/zend/api-doc.xsl" artifact="{$path}"/>
     <transformation query="" writer="xsl" source="themes/default/graph_class.xsl" artifact="graph.html" />
-    <transformation query="" writer="xsl" source="themes/default/markers.xsl" artifact="markers.html" />
-    <transformation query="" writer="xsl" source="themes/default/parse_markers.xsl" artifact="parse_markers.html" />
+    <transformation query="" writer="xsl" source="themes/default/report_markers.xsl" artifact="markers.html" />
+    <transformation query="" writer="xsl" source="themes/default/report_parse_markers.xsl" artifact="parse_markers.html" />
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
     <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php" />
     <transformation query="" writer="Search" source="" artifact="." />

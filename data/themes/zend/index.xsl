@@ -15,11 +15,25 @@
         <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript" src="{$root}js/jquery.cookie.js"></script>
         <script type="text/javascript" src="{$root}js/jquery.treeview.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery.splitter.js"></script>
+          <script type="text/javascript">
+              $().ready(function() {
+                  // to make the page work without JS we need to set a margin-left;
+                  // this distorts the splitter plugin and thus we set margin
+                  // to 0 when JS is enabled
+                  $("#contents").attr('style', 'margin: 0px;');
+
+                  $(".resizable").splitter({
+                      sizeLeft: 250
+                  });
+
+              });
+          </script>
       </head>
       <body>
 
         <table id="page">
-          <tr><td colspan="2" height="51">
+          <tr><td height="51">
             <div id="top">
               <div class="top">
                 <h1 class="logo">
@@ -34,11 +48,13 @@
             </div>
           </td></tr>
           <tr>
-            <td id="sidebar">
-              <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0" />
-            </td>
-            <td id="contents">
-              <iframe name="content" id="content" src="{$root}content.html" frameBorder="0" />
+            <td class="resizable">
+                <div id="sidebar">
+                    <iframe name="nav" id="nav" src="{$root}nav.html" frameBorder="0"></iframe>
+                </div>
+                <div id="contents">
+                    <iframe name="content" id="content" src="{$root}content.html" frameBorder="0"></iframe>
+                </div>
             </td>
           </tr>
         </table>

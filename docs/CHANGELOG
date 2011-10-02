@@ -4,7 +4,16 @@
             see the docs for an expanded description.
 * ADDED:    Sidebar has been renewed for improved style, ux, loading times and
             room for additional elements.
-* ADDED:    Additional validations which check for errors in your source code.
+* ADDED:    Collapse all and expand all actions in the file, namespace and
+            package view
+* ADDED:    Filtering posibility; in the veiws mentioned above you can search
+            for items that you'd want.
+* ADDED:    Additional validations which check for errors in your source code,
+            including (but not limited to):
+            * No package in docblock but has @subpackage
+            * No short description
+            * No Docblocks on functions
+            * No Docblocks on classes
 * ADDED:    @deprecated tags are reported
 * ADDED:    Parse errors page now shows a success notification when there are
             no errors.
@@ -14,10 +23,12 @@
 * FIXED:    Graph generation could crash if a class name contained illegal
             characters
 * FIXED:    Abstract classes had the wrong label in the class diagram
-* FIXED:    Improved argument default value finding algorythm to not skip )
+* FIXED:    Improved argument default value finding algorithm to not skip )
             in array()
 * FIXED:    procedural functions and constants did not receive the package from
             the File docblock.
+* REMOVED:  Search has been temporarily removed to be re-evaluated; it will be
+            re-introduced in a near-future version.
 
 09/19/2011: Version 0.14.1
 --------------------------

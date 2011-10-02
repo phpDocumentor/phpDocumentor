@@ -83,7 +83,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit extends
      */
     public function process(DOMDocument $xml)
     {
-        $this->log('Adding path information to each xml "file" tag');
+        $this->log('Copying all inherited elements');
 
         $xpath = new DOMXPath($xml);
 
