@@ -25,21 +25,20 @@ h1.file {
     border-bottom: 1px solid silver;
 }
 
-div#file-nav
+#file-nav-box
 {
     position:         fixed;
     width:            100%;
     top:              39px;
     display:          none;
-    /*background-color: #f9f9f9;*/
 }
 
-ul#file-nav {
+#file-nav {
     margin:  0px;
     padding: 0px;
 }
 
-div#file-nav-options {
+#file-nav-options {
     float: right;
     border-bottom: 1px solid #e9e9e9;
     border-left: 1px solid #e9e9e9;
@@ -49,20 +48,20 @@ div#file-nav-options {
     background: #f7f7f7;
 }
 
-ul#file-nav li {
+#file-nav li {
     list-style-type: square;
 }
 
-ul#file-nav > li {
+#file-nav > li {
     float: left;
     list-style: none;
 }
 
-ul#file-nav > li > a {
+#file-nav > li > a {
     font-weight: bold;
 }
 
-ul#file-nav li a {
+#file-nav li a {
     display: block;
     padding: 0px 5px;
     text-decoration: none;
@@ -70,16 +69,16 @@ ul#file-nav li a {
     white-space: nowrap;
 }
 
-ul#file-nav li a:hover {
+#file-nav li a:hover {
     background: #f6f6f6;
 }
 
-div#file-nav-container {
+#file-nav-container {
     background: #f9f9f9;
     display: none;
 }
 
-div#file-nav-tab {
+#file-nav-tab {
     margin: 0px auto;
     width: 200px;
     text-align: center;
@@ -92,7 +91,7 @@ div#file-nav-tab {
     background: #f9f9f9;
 }
 
-div#file-description
+#file-description
 {
     padding-top: 60px;
 }

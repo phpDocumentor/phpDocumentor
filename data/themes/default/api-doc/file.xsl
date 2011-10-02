@@ -6,7 +6,6 @@
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="file">
-    <!--<script type="text/javascript" src="{$root}js/menu.js"/>-->
     <script><![CDATA[
 
       function filterElements()
@@ -45,39 +44,40 @@
         $('div.code-tabs').hide();
         $('a.gripper').show();
         $('div.code-tabs:empty').prevAll('a.gripper').html('');
-        $('div#file-nav').show();
 
-        $('a#show-public, a#show-protected, a#show-private, a#show-inherited').click(function(){
-            $(this).toggleClass('deselected');
-            if ($(this).hasClass('deselected')) {
-              $(this).fadeTo('fast', '0.4');
-            } else {
-              $(this).fadeTo('fast', '1.0');
-            }
-            filterElements();
-            return false;
-        });
+        $('#show-public, #show-protected, #show-private, #show-inherited')
+            .css('cursor', 'pointer')
+            .click(function(){
+                $(this).toggleClass('deselected');
+                if ($(this).hasClass('deselected')) {
+                  $(this).fadeTo('fast', '0.4');
+                } else {
+                  $(this).fadeTo('fast', '1.0');
+                }
+                filterElements();
+                return false;
+            });
         $('a#show-protected, a#show-private').click();
 
-        $("div#file-nav").hover(function() {
-            console.debug('down');
-            $("div#file-nav-container").slideDown(400);
+        // add the sliding behaviour to the file navigation and show it
+        // it is initially hidden for non-JS users.
+        $("#file-nav-box").show().hover(function() {
+            $("#file-nav-container").slideDown(400);
         }, function() {
-            console.debug('up');
-            $("div#file-nav-container").slideUp(400);
+            $("#file-nav-container").slideUp(400);
         });
       });
 
       ]]>
     </script>
       <h1 class="file"><xsl:value-of select="@path" /></h1>
-      <div id="file-nav">
+      <div id="file-nav-box">
           <div id="file-nav-options">
               Show:
-              <a href="#" id="show-public"><img src="{$root}images/icons/visibility_public.png"/></a>
-              <a href="#" id="show-protected"><img src="{$root}images/icons/visibility_protected.png"/></a>
-              <a href="#" id="show-private"><img src="{$root}images/icons/visibility_private.png"/></a>
-              <a href="#" id="show-inherited"><span class="attribute">inherited</span></a>
+              <img src="{$root}images/icons/visibility_public.png" id="show-public"/>
+              <img src="{$root}images/icons/visibility_protected.png" id="show-protected"/>
+              <img src="{$root}images/icons/visibility_private.png" id="show-private"/>
+              <span class="attribute" id="show-inherited">inherited</span>
           </div>
 
           <div id="file-nav-container">

@@ -12,8 +12,12 @@
                     navigation: true,
                     collapsible: true
                 }).accordion("activate", false)
-                .find('a.link').click(function(ev){
-                    ev.stopPropagation();
+                .find('a.link').unbind('click').click(function(ev){
+                    ev.cancelBubble = true; // IE
+                    if (ev.stopPropagation) {
+                        ev.stopPropagation(); // the rest
+                    }
+
                     return true;
                 }).prev().prev().remove();
 
@@ -69,7 +73,7 @@
                     <a href="#files">Files</a>
                 </h3>
                 <div class="sidebar-section">
-                    <div>
+                    <div class="search-bar">
                         <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
                             <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
                         </a>
@@ -94,7 +98,7 @@
                     <a href="#packages">Packages</a>
                 </h3>
                 <div class="sidebar-section sidebar-tree">
-                    <div>
+                    <div class="search-bar">
                         <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
                             <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
                         </a>

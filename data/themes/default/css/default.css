@@ -58,14 +58,18 @@ body
     padding-right: 10px;
 }
 
-#sidebar-nav h3 > img {
+#sidebar-nav h3 {
+    width: 100%;
+}
+
+#sidebar-nav h3 img {
     float: right;
     height: 22px;
     padding-top: 6px;
     padding-right: 7px;
 }
 
-#sidebar-nav h3#sidebar-files > img {
+#sidebar-nav h3#sidebar-files img {
     height: auto;
     margin-top: 2px;
 }
@@ -90,31 +94,31 @@ body
     padding-bottom: 10px;
 }
 
-.sidebar-section > div {
+.sidebar-section div.search-bar {
     height: 19px;
     border-bottom: 1px solid silver;
     background: #f9f9f9;
     padding: 6px 3px 4px 3px;
 }
 
-.sidebar-section > ul {
+.sidebar-section ul {
     margin: 10px 10px 0px 32px;
 }
 
-.sidebar-section > ul.sidebar-nav-tree {
+.sidebar-section ul ul, .sidebar-section ul.sidebar-nav-tree {
     margin: 0px;
 }
 
-.sidebar-section > div > div {
+.sidebar-section div.search-bar div {
     padding-right: 48px;
 }
 
-.sidebar-section > div >  a {
+.sidebar-section div.search-bar a {
     float: right;
     margin-right: 5px;
 }
 
-.sidebar-section > div > div > input {
+.sidebar-section div.search-bar div input {
     border-radius: 3px;
     background: white url('images/search.gif') no-repeat right top;
 }
