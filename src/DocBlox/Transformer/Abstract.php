@@ -12,8 +12,6 @@
  * @link      http://docblox-project.org
  */
 
-require_once 'symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
-
 /**
  * Layer superclass for DocBlox_Transformer Component.
  *
