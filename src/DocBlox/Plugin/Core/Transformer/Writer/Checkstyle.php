@@ -26,7 +26,6 @@
 class DocBlox_Plugin_Core_Transformer_Writer_Checkstyle
     extends DocBlox_Transformer_Writer_Abstract
 {
-
     /**
      * This method generates the checkstyle.xml report
      *
@@ -39,8 +38,7 @@ class DocBlox_Plugin_Core_Transformer_Writer_Checkstyle
      */
     public function transform(DOMDocument $structure,
         DocBlox_Transformer_Transformation $transformation
-    )
-    {
+    ) {
         $artifact = $transformation->getTransformer()->getTarget()
         . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
@@ -64,11 +62,25 @@ class DocBlox_Plugin_Core_Transformer_Writer_Checkstyle
                     $item->setAttribute('line', $error->getAttribute('line'));
                     $item->setAttribute('severity', $error->nodeName);
                     $item->setAttribute('message', $error->textContent);
+                    $item->setAttribute('source', 'DocBlox.DocBlox.DocBlox');
                     $file->appendChild($item);
                 }
             }
         }
 
+        $this->saveCheckstyleReport($artifact, $document);
+    }
+
+    /**
+     * Save the checkstyle report to the artifact
+     *
+     * @param string      $artifact Target name for the report
+     * @param DOMDocument $document The actual xml document being saved
+     *
+     * @return void
+     */
+    protected function saveCheckstyleReport($artifact, DOMDocument $document)
+    {
         file_put_contents($artifact, $document->saveXML());
     }
 }
