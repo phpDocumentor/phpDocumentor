@@ -2,6 +2,8 @@
 --------------------------
 
 * FIXED:    Markdown repository was down and require doesn't work without it
+* FIXED:    Sidebar attribution links now target top instead of opening in the
+            sideframe.
 
 10/02/2011: Version 0.15.0
 --------------------------
