@@ -1,4 +1,11 @@
+11/05/2011: Version 0.16.0
+--------------------------
+
+* ADDED:    Checkstyle format output of errors using the `checkstyle` theme.
+            Big thanks to @benmatselby for contributing this!
+
 10/02/2011: Version 0.15.0
+--------------------------
 
 * ADDED:    Plugins; DocBlox now fully supports external enhancements. Please
             see the docs for an expanded description.
@@ -47,6 +54,7 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 
 09/04/2011: Version 0.14.0
 --------------------------
+
 * BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.
             Anyone using the command line will not notice this BC break but if you use DocBlox_Parser directly this will
             affect your application. Please check DocBlox_Task_Parse how to use this new object.

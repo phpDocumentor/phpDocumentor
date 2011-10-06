@@ -14,10 +14,6 @@ set_include_path(
   . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../../src')
 );
 
-if(!class_exists('Markdown'))
-{
-  require_once('markdown.php');
-}
 require_once('PHPUnit/Extensions/OutputTestCase.php');
 
 // include and initialize the autoloader
