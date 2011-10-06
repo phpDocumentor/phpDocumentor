@@ -6,6 +6,8 @@
             sideframe.
 * FIXED:    Sidebar is now better re-usable, split up into different templates
             so you can inherit/import a template and add your own additions.
+* FIXED:    Showing and hiding of elements by visibility was broken due to a
+            last-minute regression.
 
 10/02/2011: Version 0.15.0
 --------------------------
