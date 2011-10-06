@@ -22,8 +22,6 @@ function createPackager($original_file, $options = array())
       'data/log/*',
       'bin/package.php',
       'src/XHProf/*',     // Profiling package
-      'src/markdown/*',   // Dependency with a PEAR package
-      'src/markdown.php'  // Dependency with a PEAR package
     ),
     'exceptions'        => array(
       'bin/docblox.php'  => 'script',
@@ -65,7 +63,6 @@ DESC
   $packagexml->setPhpDep('5.2.4');
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
-  $packagexml->addPackageDepWithChannel('required', 'MarkdownExtra', 'pear.michelf.com', '1.2.4');
 
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '/usr/bin/env php', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_bin@', 'php_bin');

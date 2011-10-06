@@ -1,4 +1,10 @@
+10/06/2011: Version 0.15.1
+--------------------------
+
+* FIXED:    Markdown repository was down and require doesn't work without it
+
 10/02/2011: Version 0.15.0
+--------------------------
 
 * ADDED:    Plugins; DocBlox now fully supports external enhancements. Please
             see the docs for an expanded description.
