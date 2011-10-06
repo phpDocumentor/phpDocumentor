@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-10-02</date>
- <time>21:46:23</time>
+ <date>2011-10-06</date>
+ <time>21:47:48</time>
  <version>
-  <release>0.15.0</release>
-  <api>0.15.0</api>
+  <release>0.15.1</release>
+  <api>0.15.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -70,6 +70,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="jquery.splitter.js" role="php" />
      <file baseinstalldir="/DocBlox" name="jquery.treeview.js" role="php" />
      <file baseinstalldir="/DocBlox" name="menu.js" role="php" />
+     <file baseinstalldir="/DocBlox" name="sidebar.js" role="php" />
      <file baseinstalldir="/DocBlox" name="SVGPan.js" role="php" />
     </dir> <!-- /data/js -->
     <dir name="themes">
@@ -513,6 +514,10 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="Plugin.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Transformer.php" role="php" />
     </dir> <!-- /src/DocBlox -->
+    <dir name="markdown">
+     <file baseinstalldir="/DocBlox" name="License.text" role="php" />
+     <file baseinstalldir="/DocBlox" name="PHP Markdown Extra Readme.text" role="php" />
+    </dir> <!-- /src/markdown -->
     <dir name="symfony">
      <dir name="components">
       <dir name="event_dispatcher">
@@ -604,6 +609,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="StandardAutoloader.php" role="php" />
      </dir> <!-- /src/ZendX/Loader -->
     </dir> <!-- /src/ZendX -->
+    <file baseinstalldir="/DocBlox" name="markdown.php" role="php" />
    </dir> <!-- /src -->
    <dir name="tests">
     <dir name="common">
@@ -701,11 +707,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <channel>pear.php.net</channel>
     <min>1.4.0</min>
    </package>
-   <package>
-    <name>MarkdownExtra</name>
-    <channel>pear.michelf.com</channel>
-    <min>1.2.4</min>
-   </package>
   </required>
  </dependencies>
  <phprelease>
@@ -728,14 +729,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.15.0</release>
-    <api>0.15.0</api>
+    <release>0.15.1</release>
+    <api>0.15.1</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-10-02</date>
+   <date>2011-10-06</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
