@@ -51,12 +51,7 @@
             <a href="#namespaces">Namespaces</a>
         </h3>
         <div class="sidebar-section sidebar-tree">
-            <ul class="sidebar-nav-tree">
-                <xsl:apply-templates select="/project/namespace">
-                    <xsl:sort select="@name"/>
-                    <xsl:with-param name="parent_name" select="''"/>
-                </xsl:apply-templates>
-            </ul>
+            <xsl:call-template name="sidebar-section-namespaces"/>
         </div>
         </xsl:if>
 
@@ -66,7 +61,7 @@
         </h3>
         <div class="sidebar-section">
             <ul style="list-style-image: url('css/docblox/images/icons/chart15x12.png');">
-                <xsl:call-template name="sidebar-section-reports"/>
+                <xsl:call-template name="sidebar-section-charts"/>
             </ul>
         </div>
 
@@ -111,6 +106,16 @@
         <ul class="sidebar-nav-tree">
             <xsl:apply-templates select="file">
                 <xsl:sort select="@path"/>
+            </xsl:apply-templates>
+        </ul>
+    </xsl:template>
+
+    <xsl:template name="sidebar-section-namespaces">
+        <xsl:call-template name="sidebar-section-tree-search"/>
+        <ul class="sidebar-nav-tree">
+            <xsl:apply-templates select="/project/namespace">
+                <xsl:sort select="@name"/>
+                <xsl:with-param name="parent_name" select="''"/>
             </xsl:apply-templates>
         </ul>
     </xsl:template>
