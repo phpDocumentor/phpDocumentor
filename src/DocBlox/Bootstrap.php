@@ -12,7 +12,7 @@
  * @link      http://docblox-project.org
  */
 
-require_once 'markdown.php';
+require_once(realpath(dirname(__FILE__)) . '/../markdown.php');
 
 /**
  * This class provides a bootstrap for all application who wish to interface
