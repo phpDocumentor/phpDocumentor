@@ -8,12 +8,12 @@
  * @package    Transformer
  * @subpackage Behaviour
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license	   http://www.opensource.org/licenses/mit-license.php MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 
 /**
- * Behaviour that adds support for the @return tag
+ * Behaviour that adds support for the @param tag
  *
  * @category   DocBlox
  * @package    Transformer
@@ -26,10 +26,10 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Param extends
     DocBlox_Transformer_Behaviour_Abstract
 {
     /**
-     * Find all return tags that contain 'self' or '$this' and replace those
-     * terms for the name of the current class' type.
+     * Find all the @param tags and if using special characters transform
+     * using markdown otherwise just add a <p> tag to be consistent
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml Xml document we are wanting to query and manipulate
      *
      * @return DOMDocument
      */
@@ -41,7 +41,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Param extends
         $nodes = $xpath->query($qry);
 
         /** @var DOMElement $node */
-        foreach($nodes as $node) {
+        foreach ($nodes as $node) {
             // only transform using markdown if the text contains characters
             // other than word characters, whitespaces and punctuation characters.
             // This is because Markdown is a huge performance hit on the system
@@ -56,5 +56,4 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Param extends
 
         return $xml;
     }
-
 }
