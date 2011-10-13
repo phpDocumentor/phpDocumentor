@@ -58,6 +58,13 @@ abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
     protected $_source;
 
     /**
+     * Array of options that may or may not be used whilst validating
+     *
+     * @var array
+     */
+    protected $_options;
+
+    /**
      * Constructor
      *
      * @param string                           $name       Name of the "entity"
@@ -72,6 +79,20 @@ abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
         $this->_lineNumber = $lineNumber;
         $this->_docblock   = $docblock;
         $this->_source      = $source;
+    }
+
+    /**
+     * Set the options that may be used whilst validating the docblocks.
+     * Can contain configuration as long as each validator knows how to
+     * interrogate it
+     *
+     * @param array $options Options that may be used during validation
+     *
+     * @return void
+     */
+    public function setOptions($options)
+    {
+        $this->_options = $options;
     }
 
     /**

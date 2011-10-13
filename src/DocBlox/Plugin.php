@@ -60,9 +60,19 @@ class DocBlox_Plugin extends DocBlox_Plugin_Abstract
             ? $xml->options
             : array($xml->options);
 
-        foreach ($options as $option) {
-            $this->options[$option['name']] = (string)$option;
+        foreach ($options->option as $option) {
+            $key = (string)$option['name'];
+            $this->options[$key] = $option;
         }
     }
 
+    /**
+     * Return the options that have been set
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 }
