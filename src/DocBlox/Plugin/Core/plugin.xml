@@ -14,6 +14,6 @@
         <docblox><min-version>0.15.0</min-version></docblox>
     </dependencies>
     <options>
-        <option name="generate-graph">true</option>
+        <option name="generate-graph">false</option>
     </options>
 </plugin>
