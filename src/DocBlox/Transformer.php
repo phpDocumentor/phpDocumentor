@@ -333,7 +333,9 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             $transformation->execute($source);
         }
 
-        $this->dispatch('transformer.transform.post', array($source));
+        $this->dispatch('transformer.transform.post', array(
+           'source' => $source
+        ));
     }
 
     /**

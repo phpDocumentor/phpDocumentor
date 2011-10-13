@@ -34,7 +34,7 @@ Plugins make use of the following components:
 * **DocBlox_Core_Config**, the configuration manager containing global settings
   but also definitions which plugins are to be loaded with which options.
 
-These components come pre-installed  and ready to use. The only thing that you
+These components come pre-installed and ready to use. The only thing that you
 need to know is that they are there and what they are used for.
 
     **Please note**: *when you want to create your own runner you will have
@@ -49,15 +49,45 @@ and a *component*.
 A component in this context means either:
 
 * `Listeners`_ (or Observer), which is an object that is able to intercept *events*
-  and perform changes on the data of DocBlox.
+  and perform changes on the data of DocBlox. Every listener must be mentioned
+  in the plugin's configuration as it must be registered.
 * `Transformation Writers`_, which can be used by Transformations to perform
   actions during the structure-to-output conversion process.
 
       An example is the *DocBlox_Plugin_Core_Transformer_Writer_Xsl*; which
       performs the actual creation of a HTML file according to a template.
 
+  Contrary to listeners must `Transformation Writers`_ **not** be registered
+  in the configuration. If the plugin is configured correctly then the auto-loader
+  will autmatically discover it.
+
 Please see the individual chapters for more details on what can be achieved
 using each component.
+
+Creating a plugin
+-----------------
+
+Creating a plugin is rather simple using the ``plugin:generate`` task of DocBlox.
+This task enables the user to generate a skeleton plugin with a basic listener.
+
+The following command can be used::
+
+    $ docblox plugin:generate -t [PATH] -n [NAME]
+
+After the execution of this command you can find a generated plugin the given
+PATH.
+
+    **Please note:** plugins can be placed anywhere, and do not need to reside
+    in the plugins folder of DocBlox.
+    You can add your custom plugin to your project repository and add a
+    relative path to the plugin in your DocBlox configuration file.
+
+After you have created your plugin you need to edit your *plugin.xml* file
+to contain the correct meta-data.
+
+Most important here is the ``class-prefix`` (see `Class prefix`_) field; this
+will tell the autoloader which classes can be found in this folder.
+Please see  the chapter on `Configuration`_ for details on the configuration file.
 
 Configuration
 -------------
@@ -88,7 +118,7 @@ An example of such a file is given here:
             </docblox>
             <plugin>
                 <name>Core</name>
-                <min-version>1.0</min-version>
+                <min-version>1.0.0</min-version>
             </plugin>
         </dependencies>
         <options>
@@ -96,7 +126,7 @@ An example of such a file is given here:
         </options>
     </plugin>
 
-As can be seen it contains meta data about the plugin itself (*name*, *author*,
+As can be seen it contains `Meta data`_ about the plugin itself (*name*, *author*,
 *email*, *description*, *website*) but also instructions for DocBlox how to
 invoke or package it (*class-prefix*, *listener*, *dependencies*, *options*).
 
@@ -112,7 +142,7 @@ name        The name of the plugin; must be unique within DocBlox
 version     The version number of this plugin; may be used in the dependencies
 author      The name of the author
 email       The e-mail address for enquiries about the plugin
-website     The website where more information may be shared
+website     The home page for this plugin
 description A descriptive text about this plugin
 =========== ==================================================================
 
@@ -138,18 +168,45 @@ Listener
 ~~~~~~~~
 
 To listen in on events from DocBlox the plugin needs to register a listener class
-using an equally named field. Multiple listeners may be registered using this
-field.
+using an equally named field. Multiple listeners may be registered by adding this
+field multiple times.
 
     Please note that the class prefix should **not** be added to the Listener,
     this is assumed from the class prefix and is done to better support
     namespaces in the future.
+
+    Currently DocBlox does not support namespaced listener classes; this will
+    be added in a future release.
 
 Dependencies
 ~~~~~~~~~~~~
 
 Here you can specify which minimal version of DocBlox is required and if
 this plugin depends on other plugins which minimal version they should have.
+
+Example:
+
+.. code-block:: xml
+
+    <dependencies>
+        <docblox>
+            <min-version>0.15.0</min-version>
+        </docblox>
+        <plugin>
+            <name>Core</name>
+            <min-version>1.0.0</min-version>
+        </plugin>
+    </dependencies>
+
+In the example above you can see that this plugin needs at least DocBlox 0.15.0
+and the Core plugin version 1.0.0.
+
+    We are working on a plugin and theme repository; if a dependent plugin cannot
+    be found this repository will be checked and any missing dependencies
+    installed as well.
+
+A ``max-version`` directive is also supported in case you want to limit
+availability.
 
 Options
 ~~~~~~~
@@ -276,13 +333,98 @@ on the invocation of plugins.
 Connecting to events
 ~~~~~~~~~~~~~~~~~~~~
 
-Any event in DocBlox can be connected to using one of two methods:
+Any event in DocBlox can be connected to a public class method using one of two
+actions:
 
 1. Annotations
 2. Manual
 
+The method which will receive the given event must always have one argument of
+type sfEvent.
+
+Example:
+
+.. code-block:: php
+
+    public function applyBehaviours(sfEvent $data)
+    {
+        ...
+    }
+
+This argument can contain parameters (accessible as array) which you can
+influence from within your method; please note that any object is passed by
+reference and any change you make will also happen in the further handling
+by DocBlox.
+
+This way you can filter or influence the process without having to change
+anything in DocBlox' core.
+Which arguments are supported per event type can be found in their respective
+chapter below.
+
+Annotations
+###########
+
+Methods in `Listeners`_ can have a special annotation `@docblox-event` in their
+DocBlock. In this annotation is mentioned which event triggers the given method.
+
+Example:
+
+.. code-block:: php
+
+    /**
+     * My first listener.
+     *
+     * @docblox-event transformer.transform.pre
+     *
+     * @param sfEvent $data
+     *
+     * @return void
+     */
+    public function applyBehaviours(sfEvent $data)
+    {
+        $xml = $data['source'];
+        ...
+    }
+
+In this example you can see how the class method **applyBehaviours** is being
+connected to the event `transformer.transform.pre`_ and how we get the
+parameter **source** from the event.
+
+    **Please note**: you can have multiple methods which consume the same event.
+    DocBlox will execute them all in order of appearance in the listener.
+
+Manual connecting
+#################
+
+Another way to connect is to manually indicate to the EventDispatcher that you
+want to link a method to an event. This is useful when you want to link an event
+to a method contained in a different object.
+
+A **configure** method is available where you can execute such actions or
+perform other initializations.
+
+Example:
+
+.. code-block:: php
+
+    protected function configure()
+    {
+        $this->logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
+
+        // connect the log method of the $this->logger object to the event
+        // system.log
+        $this->event_dispatcher->connect('system.log', array($this->logger, 'log'));
+    }
+
 Supported events
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
+
+system.log.threshold
+####################
+
+This event is triggered any time DocBlox wants to change which priority of
+messages need to logged; it is comparable to the *error_reporting* method of
+PHP.
 
 system.log
 ##########
@@ -294,9 +436,37 @@ At certain places in the code a logging event is triggered by invoking the metho
 
 This method has **two** arguments:
 
+========= ============================================================
+Name      Description
+========= ============================================================
+message   The message that needs to be logged.
+priority  The priority or urgency of the logging, ranging from 0 to 7
+          where the lowest number is the most crucial error or logging
+========= ============================================================
+
+Typical uses for this event is grabbing the logging events and sending them to
+a collector or outputting them.
 
 system.debug
 ############
+
+This event is triggered any time DocBlox logs an action.
+
+At certain places in the code a logging event is triggered by invoking the method
+``$this->log()`` (which is defined in the Layer Superclass of each component.).
+
+This method has **two** arguments:
+
+========= ============================================================
+Name      Description
+========= ============================================================
+message   The message that needs to be logged.
+priority  The priority or urgency of the logging, ranging from 0 to 7
+          where the lowest number is the most crucial error or logging
+========= ============================================================
+
+Typical uses for this event is grabbing the logging events and sending them to
+a collector or outputting them.
 
 parser.log
 ##########

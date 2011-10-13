@@ -52,7 +52,7 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             )
         );
 
-        $data[1] = $behaviours->process($data[0]);
+        $data['source'] = $behaviours->process($data['source']);
     }
 
     /**
