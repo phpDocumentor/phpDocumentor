@@ -152,7 +152,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
      */
     public function addDirectory($path)
     {
-        $result = glob($path);
+        $result = substr($path, 0, 7) !== 'phar://' ? glob($path) : array($path);
         if ($result === false) {
             throw new DocBlox_Parser_Exception(
                 '"'.$path . '" does not match an existing directory pattern'
@@ -258,8 +258,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             }
         } else {
             // only process if it is a file and it matches the allowed extensions
-            if (is_file($path) && (empty($this->allowed_extensions)
-                || in_array(
+            if (is_file($path) && (empty($this->allowed_extensions) || in_array(
                     strtolower(pathinfo($path, PATHINFO_EXTENSION)),
                     $this->allowed_extensions
                 ))
