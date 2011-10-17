@@ -6,6 +6,17 @@
 * FIXED:    phar files were broken
 * FIXED:    transform.pre event signature was incorrect
 
+10/06/2011: Version 0.15.1
+--------------------------
+
+* FIXED:    Markdown repository was down and require doesn't work without it
+* FIXED:    Sidebar attribution links now target top instead of opening in the
+            sideframe.
+* FIXED:    Sidebar is now better re-usable, split up into different templates
+            so you can inherit/import a template and add your own additions.
+* FIXED:    Showing and hiding of elements by visibility was broken due to a
+            last-minute regression.
+
 10/02/2011: Version 0.15.0
 --------------------------
 

@@ -4,177 +4,147 @@
     <xsl:output indent="yes" method="html" />
 
     <xsl:template match="/project">
-        <script type="text/javascript">
-
-            $(function() {
-                $("#sidebar-nav").accordion({
-                    autoHeight: false,
-                    navigation: true,
-                    collapsible: true
-                }).accordion("activate", false)
-                .find('a.link').unbind('click').click(function(ev){
-                    ev.cancelBubble = true; // IE
-                    if (ev.stopPropagation) {
-                        ev.stopPropagation(); // the rest
-                    }
-
-                    return true;
-                }).prev().prev().remove();
-
-                $("#sidebar-nav>h3").click(function(){
-                    if ($(this).attr('initialized') == 'true') return;
-
-                    $(this).next().find(".sidebar-nav-tree").treeview({
-                        collapsed: true,
-                        persist: "cookie"
-                    });
-                    $(this).attr('initialized', true);
-                });
-            });
-
-            function tree_search(input)
-            {
-                treeview = $(input).parent().parent().next();
-
-                // Expand all items
-                treeview.find('.expandable-hitarea').click();
-
-                // make all items visible again
-                treeview.find('li:hidden').show();
-
-                // hide all items that do not match the given search criteria
-                if ($(input).val()) {
-                    treeview.find('li').not(':has(a:contains('+$(input).val()+'))').hide();
-                }
-            }
-        </script>
+        <script type="text/javascript" src="{$root}js/sidebar.js"></script>
 
         <div id="sidebar">
             <div id="sidebar-header">
-                <xsl:if test="not($title)">
-                    <img src="images/icon48x48.png" id="sidebar-logo" alt="Logo" />
-                </xsl:if>
-                <h1>
-                    <xsl:if test="not($title)">DocBlox</xsl:if>
-                    <xsl:if test="$title"><xsl:value-of select="$title" /></xsl:if>
-                </h1>
-                <div style="clear: both"></div>
+                <xsl:call-template name="sidebar-header"/>
             </div>
 
             <div id="sidebar-nav">
-                <h3 id="sidebar-dashboard">
-                    <img class="icon" src="{$root}css/docblox/images/icons/dashboard.png" alt="Dashboard"/>
-                    <a href="{$root}content.html" class="link" target="content">Dashboard</a>
-                </h3>
-                <div style="display: none"></div>
-
-                <h3 id="sidebar-files">
-                    <img src="{$root}css/docblox/images/icons/files.png" alt="Files"/>
-                    <a href="#files">Files</a>
-                </h3>
-                <div class="sidebar-section">
-                    <div class="search-bar">
-                        <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
-                            <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
-                        </a>
-                        <a href="#" onclick="$(this).parent().next().find('.expandable-hitarea').click(); return false;">
-                            <img src="images/expand_all.png" title="Expand all" alt="Expand all" />
-                        </a>
-                        <div>
-                            <input type="text" onkeyup="tree_search(this);" />
-                        </div>
-                    </div>
-
-                    <ul class="sidebar-nav-tree">
-                        <xsl:apply-templates select="file">
-                            <xsl:sort select="@path"/>
-                        </xsl:apply-templates>
-                    </ul>
-                </div>
-
-                <xsl:if test="count(/project/package) > 0">
-                <h3 id="sidebar-packages">
-                    <img src="{$root}css/docblox/images/icons/packages.png" alt="Packages"/>
-                    <a href="#packages">Packages</a>
-                </h3>
-                <div class="sidebar-section sidebar-tree">
-                    <div class="search-bar">
-                        <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
-                            <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
-                        </a>
-                        <a href="#" onclick="$(this).parent().next().find('.expandable-hitarea').click(); return false;">
-                            <img src="images/expand_all.png" title="Expand all" alt="Expand all" />
-                        </a>
-                        <div>
-                            <input type="text" onkeyup="tree_search(this);" />
-                        </div>
-                    </div>
-                    <ul class="sidebar-nav-tree">
-                        <xsl:apply-templates select="/project/package">
-                            <xsl:sort select="@name"/>
-                            <xsl:with-param name="parent_name" select="''"/>
-                        </xsl:apply-templates>
-                    </ul>
-                </div>
-                </xsl:if>
-
-                <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
-                <h3 id="sidebar-namespaces">
-                    <img src="{$root}css/docblox/images/icons/namespaces.png" alt="Namespaces"/>
-                    <a href="#namespaces">Namespaces</a>
-                </h3>
-                <div class="sidebar-section sidebar-tree">
-                    <div class="search-bar">
-                        <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
-                            <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
-                        </a>
-                        <a href="#" onclick="$(this).parent().next().find('.expandable-hitarea').click(); return false;">
-                            <img src="images/expand_all.png" title="Expand all" alt="Expand all" />
-                        </a>
-                        <div>
-                            <input type="text" onkeyup="tree_search(this);" />
-                        </div>
-                    </div>
-                    <ul class="sidebar-nav-tree">
-                        <xsl:apply-templates select="/project/namespace">
-                            <xsl:sort select="@name"/>
-                            <xsl:with-param name="parent_name" select="''"/>
-                        </xsl:apply-templates>
-                    </ul>
-                </div>
-                </xsl:if>
-
-                <h3 id="sidebar-charts">
-                    <img src="{$root}css/docblox/images/icons/chart.png" alt="Charts"/>
-                    <a href="#charts">Charts</a>
-                </h3>
-                <div class="sidebar-section">
-                    <ul style="list-style-image: url('css/docblox/images/icons/chart15x12.png');">
-                        <li><a href="{$root}graph.html" target="content">Class Inheritance Diagram</a></li>
-                    </ul>
-                </div>
-                <h3 id="sidebar-reports">
-                    <img src="{$root}css/docblox/images/icons/reports.png" alt="Reports"/>
-                    <a href="#reports">Reports</a>
-                </h3>
-                <div class="sidebar-section">
-                    <ul style="list-style-image: url('css/docblox/images/icons/reports9x12.png');">
-                        <li><a href="{$root}report_markers.html" target="content">Markers (TODO/FIXME)</a></li>
-                        <li><a href="{$root}report_parse_markers.html" target="content">Parsing errors</a></li>
-                        <li><a href="{$root}report_deprecated.html" target="content">Deprecated elements</a></li>
-                    </ul>
-                </div>
+                <xsl:call-template name="sidebar-sections"/>
             </div>
-            <div id="sidebar-footer">
-                Documentation is generated by <a href="http://docblox-project.org">
-                <img src="{$root}images/icon48x48.png" height="12" align="top" alt="Logo"/> DocBlox <xsl:value-of select="$version" />
-                </a>, images courtesy of <a href="http://glyphish.com/">Glyphish</a>
-            </div>
+
+            <div id="sidebar-footer"><xsl:call-template name="sidebar-footer"/></div>
         </div>
 
-    <!--<xsl:call-template name="api"/>-->
-
   </xsl:template>
+
+    <xsl:template name="sidebar-sections">
+        <h3 id="sidebar-dashboard">
+            <img class="icon" src="{$root}css/docblox/images/icons/dashboard.png" alt="Dashboard"/>
+            <a href="{$root}content.html" class="link" target="content">Dashboard</a>
+        </h3>
+        <div style="display: none"></div>
+
+        <h3 id="sidebar-files">
+            <img src="{$root}css/docblox/images/icons/files.png" alt="Files"/>
+            <a href="#files">Files</a>
+        </h3>
+        <div class="sidebar-section">
+            <xsl:call-template name="sidebar-section-files"/>
+        </div>
+
+        <xsl:if test="count(/project/package) > 0">
+        <h3 id="sidebar-packages">
+            <img src="{$root}css/docblox/images/icons/packages.png" alt="Packages"/>
+            <a href="#packages">Packages</a>
+        </h3>
+        <div class="sidebar-section sidebar-tree">
+            <xsl:call-template name="sidebar-section-packages"/>
+        </div>
+        </xsl:if>
+
+        <xsl:if test="count(/project/namespace[@name != 'default']) > 0">
+        <h3 id="sidebar-namespaces">
+            <img src="{$root}css/docblox/images/icons/namespaces.png" alt="Namespaces"/>
+            <a href="#namespaces">Namespaces</a>
+        </h3>
+        <div class="sidebar-section sidebar-tree">
+            <xsl:call-template name="sidebar-section-namespaces"/>
+        </div>
+        </xsl:if>
+
+        <h3 id="sidebar-charts">
+            <img src="{$root}css/docblox/images/icons/chart.png" alt="Charts"/>
+            <a href="#charts">Charts</a>
+        </h3>
+        <div class="sidebar-section">
+            <ul style="list-style-image: url('css/docblox/images/icons/chart15x12.png');">
+                <xsl:call-template name="sidebar-section-charts"/>
+            </ul>
+        </div>
+
+        <h3 id="sidebar-reports">
+            <img src="{$root}css/docblox/images/icons/reports.png" alt="Reports"/>
+            <a href="#reports">Reports</a>
+        </h3>
+        <div class="sidebar-section">
+            <ul style="list-style-image: url('css/docblox/images/icons/reports9x12.png');">
+                <xsl:call-template name="sidebar-section-reports"/>
+            </ul>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="sidebar-header">
+        <xsl:if test="not($title)">
+            <img src="images/icon48x48.png" id="sidebar-logo" alt="Logo" />
+        </xsl:if>
+        <h1>
+            <xsl:if test="not($title)">DocBlox</xsl:if>
+            <xsl:if test="$title"><xsl:value-of select="$title" /></xsl:if>
+        </h1>
+        <div style="clear: both"></div>
+    </xsl:template>
+
+    <xsl:template name="sidebar-section-tree-search">
+        <div class="search-bar">
+            <a href="#" onclick="$(this).parent().next().find('.collapsable-hitarea').click(); return false;">
+                <img src="images/collapse_all.png" title="Collapse all" alt="Collapse all" />
+            </a>
+            <a href="#" onclick="$(this).parent().next().find('.expandable-hitarea').click(); return false;">
+                <img src="images/expand_all.png" title="Expand all" alt="Expand all" />
+            </a>
+            <div>
+                <input type="text" onkeyup="tree_search(this);" />
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="sidebar-section-files">
+        <xsl:call-template name="sidebar-section-tree-search"/>
+        <ul class="sidebar-nav-tree">
+            <xsl:apply-templates select="file">
+                <xsl:sort select="@path"/>
+            </xsl:apply-templates>
+        </ul>
+    </xsl:template>
+
+    <xsl:template name="sidebar-section-namespaces">
+        <xsl:call-template name="sidebar-section-tree-search"/>
+        <ul class="sidebar-nav-tree">
+            <xsl:apply-templates select="/project/namespace">
+                <xsl:sort select="@name"/>
+                <xsl:with-param name="parent_name" select="''"/>
+            </xsl:apply-templates>
+        </ul>
+    </xsl:template>
+
+    <xsl:template name="sidebar-section-packages">
+        <xsl:call-template name="sidebar-section-tree-search"/>
+        <ul class="sidebar-nav-tree">
+            <xsl:apply-templates select="/project/package">
+                <xsl:sort select="@name"/>
+                <xsl:with-param name="parent_name" select="''"/>
+            </xsl:apply-templates>
+        </ul>
+    </xsl:template>
+
+    <xsl:template name="sidebar-section-charts">
+        <li><a href="{$root}graph.html" target="content">Class Inheritance Diagram</a></li>
+    </xsl:template>
+
+    <xsl:template name="sidebar-section-reports">
+        <li><a href="{$root}report_markers.html" target="content">Markers (TODO/FIXME)</a></li>
+        <li><a href="{$root}report_parse_markers.html" target="content">Parsing errors</a></li>
+        <li><a href="{$root}report_deprecated.html" target="content">Deprecated elements</a></li>
+    </xsl:template>
+
+    <xsl:template name="sidebar-footer">
+        Documentation is generated by <a href="http://docblox-project.org" target="_top">
+        <img src="{$root}images/icon48x48.png" height="12" align="top" alt="Logo"/> DocBlox <xsl:value-of select="$version" />
+        </a>, images courtesy of <a href="http://glyphish.com/" target="_top">Glyphish</a>
+    </xsl:template>
 
     <xsl:template name="api">
         <xsl:if test="count(/project/file/*/docblock/tag[@name='api']|/project/file/class/*/docblock/tag[@name='api']|/project/file/interface/*/docblock/tag[@name='api']) > 0">

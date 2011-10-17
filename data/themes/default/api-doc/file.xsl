@@ -10,10 +10,10 @@
 
       function filterElements()
       {
-        inherited = !$('a#show-inherited').hasClass('deselected');
-        public    = !$('a#show-public').hasClass('deselected');
-        protected = !$('a#show-protected').hasClass('deselected');
-        private   = !$('a#show-private').hasClass('deselected');
+        inherited = !$('#show-inherited').hasClass('deselected');
+        public    = !$('#show-public').hasClass('deselected');
+        protected = !$('#show-protected').hasClass('deselected');
+        private   = !$('#show-private').hasClass('deselected');
 
         $('div.public').each(function(index, val) {
             $(val).toggle(public && !($(val).hasClass('inherited_from') && !inherited));
@@ -57,7 +57,7 @@
                 filterElements();
                 return false;
             });
-        $('a#show-protected, a#show-private').click();
+        $('#show-protected, #show-private').click();
 
         // add the sliding behaviour to the file navigation and show it
         // it is initially hidden for non-JS users.

@@ -122,7 +122,7 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
             $node->setFontName('Courier New');
             $node->setFontSize('11');
             if ($sub_element->getAttribute('abstract') == 'true') {
-                $node->setLabel('<<I>'. $sub_element->getElementsByTagName('name')->item(0)->nodeValue.'</I>>');
+                $node->setLabel('<«abstract»<br/>'. $sub_element->getElementsByTagName('name')->item(0)->nodeValue.'>');
             }
             if (!isset($this->class_paths[$sub_element->getElementsByTagName('full_name')->item(0)->nodeValue])) {
                 echo $sub_element->getElementsByTagName('full_name')->item(0)->nodeValue.PHP_EOL;
