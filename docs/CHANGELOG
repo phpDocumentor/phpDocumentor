@@ -3,6 +3,8 @@
 
 * ADDED:    Checkstyle format output of errors using the `checkstyle` theme.
             Big thanks to @benmatselby for contributing this!
+* FIXED:    phar files were broken
+* FIXED:    transform.pre event signature was incorrect
 
 10/02/2011: Version 0.15.0
 --------------------------
