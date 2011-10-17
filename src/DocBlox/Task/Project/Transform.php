@@ -184,7 +184,7 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
           ->getArrayFromPath('transformer/external-class-documentation');
 
       $external_class_documentation = (!is_numeric(current(array_keys($external_class_documentation))))
-          ? $external_class_documentation = array($external_class_documentation)
+          ? array($external_class_documentation)
           : $external_class_documentation;
 
       /** @var DocBlox_Core_Config $doc */
@@ -205,7 +205,7 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
       echo 'Starting transformation of files (this could take a while depending upon the size of your project)' . PHP_EOL;
     }
     $transformer->execute();
-    if (!$this->getQuiet())
+    if (!$this->getQuiet() || $this->getProgressbar())
     {
       echo 'Finished transformation in ' . round(microtime(true) - $timer, 2) . ' seconds' . PHP_EOL;
     }
