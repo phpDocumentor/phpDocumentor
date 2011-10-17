@@ -319,7 +319,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
 
         // invoke pre-transform actions (i.e. enhance source file with additional
         // meta-data)
-        $this->dispatch('transformer.transform.pre', array($source));
+        $this->dispatch('transformer.transform.pre', array('source' => $source));
 
         foreach ($this->getTransformations() as $transformation) {
             $this->log(
