@@ -5,6 +5,7 @@
             Big thanks to @benmatselby for contributing this!
 * FIXED:    phar files were broken
 * FIXED:    transform.pre event signature was incorrect
+* FIXED:    Search in sidebar is now case-insensitive
 
 10/06/2011: Version 0.15.1
 --------------------------
