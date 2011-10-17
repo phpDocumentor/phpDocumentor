@@ -436,7 +436,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         $dom->formatOutput = true;
         $dom->loadXML(
             '<project version="' . DocBlox_Core_Abstract::VERSION . '" '
-            . 'title="' . addslashes($this->getTitle()) . '"></project>'
+            . 'title="' . $this->getTitle() . '"></project>'
         );
 
         $paths = $files->getFiles();
