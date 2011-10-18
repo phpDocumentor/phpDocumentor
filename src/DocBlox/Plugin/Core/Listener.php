@@ -1,11 +1,38 @@
 <?php
 /**
+ * DocBlox
  *
+ * PHP Version 5
+ *
+ * @category   DocBlox
+ * @package    Plugin
+ * @subpackage Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
+
+/**
+ * Listener for the Core Plugin.
+ *
+ * @category   DocBlox
+ * @package    Plugin
+ * @subpackage Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
 {
+    /** @var DocBlox_Core_Log Logger for DocBlox*/
     protected $logger = null;
 
+    /**
+     * Configures this listener; initializes and connects the logger.
+     *
+     * @return void
+     */
     protected function configure()
     {
         $this->logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
@@ -18,10 +45,11 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
     }
 
     /**
+     * Applies all behaviours prior to transformation.
+     *
+     * @param sfEvent $data Event object containing the parameters.
      *
      * @docblox-event transformer.transform.pre
-     *
-     * @param sfEvent $data
      *
      * @return void
      */
@@ -56,9 +84,9 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
     }
 
     /**
+     * Checks all DocBlox whether they match the given rules.
      *
-     *
-     * @param sfEvent $data
+     * @param sfEvent $data Event object containing the parameters.
      *
      * @docblox-event reflection.docblock-extraction.post
      *
@@ -95,7 +123,9 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
 
         $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $type;
         if (@class_exists($class)) {
-            /** @var DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract $validator  */
+            /**
+             * @var DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract $validator
+             */
             $validator = new $class(
                 $element->getName(),
                 $docblock->line_number,
@@ -108,10 +138,11 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
     }
 
     /**
+     * Prepare the tag to be injected into the XML file.
+     *
+     * @param sfEvent $data Event object containing the parameters.
      *
      * @docblox-event reflection.docblock.tag.export
-     *
-     * @param sfEvent $data
      *
      * @return void
      */

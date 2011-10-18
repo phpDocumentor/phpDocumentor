@@ -12,7 +12,7 @@
  * @link      http://docblox-project.org
  */
 
-require_once(realpath(dirname(__FILE__)) . '/../markdown.php');
+require_once realpath(dirname(__FILE__)) . '/../markdown.php';
 
 /**
  * This class provides a bootstrap for all application who wish to interface
@@ -78,7 +78,7 @@ class DocBlox_Bootstrap
             $base_include_folder . PATH_SEPARATOR . get_include_path()
         );
 
-        require_once $base_include_folder . '/ZendX/Loader/StandardAutoloader.php';
+        include_once $base_include_folder . '/ZendX/Loader/StandardAutoloader.php';
         $autoloader = new ZendX_Loader_StandardAutoloader(
             array(
                  'prefixes' => array(
@@ -96,7 +96,8 @@ class DocBlox_Bootstrap
     /**
      * Registers the Event Dispatcher and registers all plugins.
      *
-     * @param ZendX_Loader_StandardAutoloader $autoloader
+     * @param ZendX_Loader_StandardAutoloader $autoloader the autoloader upon
+     *  which will the plugins will bind their class prefixes and folders.
      *
      * @return void
      */
@@ -105,7 +106,7 @@ class DocBlox_Bootstrap
         // initialize the event dispatcher; the include is here explicitly
         // should anyone not want this dependency and thus nto invoke this
         // method
-        require('symfony/components/event_dispatcher/lib/sfEventDispatcher.php');
+        include_once 'symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
         $dispatcher = new sfEventDispatcher();
 
         // initialize the plugin manager
@@ -120,6 +121,13 @@ class DocBlox_Bootstrap
         $this->attachDispatcher($dispatcher);
     }
 
+    /**
+     * attaches the event dispatcher to all components.
+     *
+     * @param sfEventDispatcher $event_dispatcher The event dispatcher to attach.
+     *
+     * @return void
+     */
     protected function attachDispatcher($event_dispatcher)
     {
         DocBlox_Parser_Abstract::$event_dispatcher      = $event_dispatcher;

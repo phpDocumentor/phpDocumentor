@@ -303,7 +303,10 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             $file->setDefaultPackageName($this->getDefaultPackageName());
 
             if (self::$event_dispatcher !== null) {
-                self::$event_dispatcher->connect('parser.log', array($file, 'addParserMarker'));
+                self::$event_dispatcher->connect(
+                    'parser.log',
+                    array($file, 'addParserMarker')
+                );
             }
             $dispatched = true;
 
@@ -355,9 +358,13 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             $result = false;
         }
 
-        //disconnects the dispatcher here so if any error occured, it still removes the event
-        if($dispatched && self::$event_dispatcher !== null){
-            self::$event_dispatcher->disconnect('parser.log', array($file, 'addParserMarker'));
+        //disconnects the dispatcher here so if any error occured, it still
+        // removes the event
+        if ($dispatched && self::$event_dispatcher !== null) {
+            self::$event_dispatcher->disconnect(
+                'parser.log',
+                array($file, 'addParserMarker')
+            );
         }
 
         $this->debug(
@@ -409,8 +416,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * @return void
      */
     protected function generateNamespaceElements($namespaces, $parent_element,
-        $node_name = 'namespace')
-    {
+        $node_name = 'namespace'
+    ) {
         foreach ($namespaces as $name => $sub_namespaces) {
             $node = new DOMElement($node_name);
             $parent_element->appendChild($node);
@@ -440,11 +447,13 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         );
 
         $paths = $files->getFiles();
-        $this->log('Starting to process ' . count($paths) . ' files') . PHP_EOL;
-        $this->log('  Project root is:  ' . $files->getProjectRoot()) . PHP_EOL;
-        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns())) . PHP_EOL;
-        if (count($paths) < 1)
-        {
+        $this->log('Starting to process ' . count($paths) . ' files');
+        $this->log('  Project root is:  ' . $files->getProjectRoot());
+        $this->log(
+            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns())
+        );
+
+        if (count($paths) < 1) {
             throw new DocBlox_Parser_Exception(
                 'No files were found',
                 DocBlox_Parser_Exception::NO_FILES_FOUND
@@ -510,7 +519,9 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
 
         foreach ($nodes as $node) {
 
-            if ($node->nodeName == 'tag' && $node->parentNode->parentNode->parentNode) {
+            if (($node->nodeName == 'tag')
+                && ($node->parentNode->parentNode->parentNode)
+            ) {
                 $remove = $node->parentNode->parentNode;
                 $node->parentNode->parentNode->parentNode->removeChild($remove);
             } else {
@@ -557,7 +568,9 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         }
 
         $packages = $this->generateNamespaceTree(array_keys($packages));
-        $this->generateNamespaceElements($packages, $dom->documentElement, 'package');
+        $this->generateNamespaceElements(
+            $packages, $dom->documentElement, 'package'
+        );
     }
 
     /**
@@ -608,7 +621,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     /**
      * Sets the name of the defautl package.
      *
-     * @param string $default_package_name
+     * @param string $default_package_name Name used to categorize elements
+     *  without an @package tag.
      *
      * @return void
      */
