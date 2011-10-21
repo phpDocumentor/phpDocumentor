@@ -334,6 +334,16 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     }
 
     /**
+     * Returns the file's contents.
+     *
+     * @return string
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+
+    /**
      * Returns all classes in this file.
      *
      * @return DocBlox_Reflection_Class
@@ -782,11 +792,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     }
 
     /**
-     * Converts this file definition into a DocBlox compatible XML text.
+     * Returns the contents' structure as DOMDocument.
      *
-     * @return string
+     * This is a temporary method as the XML processing should be removed from
+     * the reflection library and brought into the DocBlox parser itself.
+     *
+     * @return DOMDocument
      */
-    public function __toXml()
+    public function __toDomXml()
     {
         $xml = new SimpleXMLElement(
             '<file path="' . ltrim($this->filename, './') . '" hash="'
@@ -846,7 +859,17 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $this->mergeXmlToDomDocument($dom, trim($class->__toXml()));
         }
 
-        return trim($dom->saveXml());
+        return $dom;
+    }
+
+    /**
+     * Converts this file definition into a DocBlox compatible XML text.
+     *
+     * @return string
+     */
+    public function __toXml()
+    {
+       return trim($this->__toDomXml()->saveXml());
     }
 
 }

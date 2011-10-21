@@ -285,13 +285,15 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * Runs a file through the static reflectors, generates an XML file element
      * and returns it.
      *
-     * @param string $filename The filename to parse.
+     * @param string $filename       The filename to parse.
+     * @param bool   $include_source whether to include the source in the
+     *  generated output.
      *
      * @api
      *
      * @return string|bool The XML element or false if none could be made.
      */
-    public function parseFile($filename)
+    public function parseFile($filename, $include_source = false)
     {
         $this->log('Starting to parse file: ' . $filename);
         $this->debug('Starting to parse file: ' . $filename);
@@ -342,7 +344,21 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             // if no result has been obtained; process the file
             if ($result === null) {
                 $file->process();
-                $result = $file->__toXml();
+                $result = $file->__toDomXml();
+
+                // if we want to include the source for each file; append a new
+                // element 'source' which contains a compressed, encoded version
+                // of the source
+                if ($include_source) {
+                    $result->documentElement->appendChild(
+                        new DOMElement(
+                            'source',
+                            base64_encode(gzcompress($file->getContents()))
+                        )
+                    );
+                }
+
+                $result = $result->saveXml();
             }
         } catch (Exception $e)
         {
@@ -429,13 +445,15 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     /**
      * Iterates through the given files and builds the structure.xml file.
      *
-     * @param DocBlox_Parser_Files $files A files container to parse.
+     * @param DocBlox_Parser_Files $files          A files container to parse.
+     * @param bool                 $include_source whether to include the source
+     *  in the generated output..
      *
      * @api
      *
      * @return bool|string
      */
-    public function parseFiles(DocBlox_Parser_Files $files)
+    public function parseFiles(DocBlox_Parser_Files $files, $include_source = false)
     {
         $timer = microtime(true);
 
@@ -467,7 +485,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
                 array('file' => $file, 'progress' => array($key +1, $file_count))
             );
 
-            $xml = $this->parseFile($file);
+            $xml = $this->parseFile($file, $include_source);
             if ($xml === false) {
                 continue;
             }

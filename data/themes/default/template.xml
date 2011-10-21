@@ -6,6 +6,7 @@
   <transformations>
     <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php"/>
     <transformation query="copy" writer="FileIo" source="../data/js" artifact="js"/>
+    <transformation query="copy" writer="FileIo" source="../data/syntax_highlighter" artifact="syntax_highlighter"/>
     <transformation query="copy" writer="FileIo" source="../data/images" artifact="images"/>
     <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
     <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
@@ -18,6 +19,7 @@
     <transformation query="" writer="xsl" source="themes/default/report_markers.xsl" artifact="report_markers.html"/>
     <transformation query="" writer="xsl" source="themes/default/report_parse_markers.xsl" artifact="report_parse_markers.html"/>
     <transformation query="" writer="xsl" source="themes/default/report_deprecated.xsl" artifact="report_deprecated.html"/>
+    <transformation query="" writer="sourcecode" source="" artifact=""/>
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
   </transformations>
 </template>

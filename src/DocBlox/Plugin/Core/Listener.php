@@ -66,7 +66,7 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             $data->getSubject(),
             array(
                  new DocBlox_Plugin_Core_Transformer_Behaviour_GeneratePaths(),
-                 new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit(),
+//                 new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit(),
                  new DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Ignore(),
                  new DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Return(),
                  new DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Param(),
