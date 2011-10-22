@@ -423,7 +423,11 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     protected function getRelativeFilename($filename)
     {
         // strip path from filename
-        $result = ltrim(substr($filename, strlen($this->getProjectRoot())), '/');
+        $result = ltrim(
+            substr($filename, strlen($this->getProjectRoot())),
+            DIRECTORY_SEPARATOR
+        );
+
         if ($result === '') {
             throw new InvalidArgumentException(
                 'File is not present in the given project path: ' . $filename
