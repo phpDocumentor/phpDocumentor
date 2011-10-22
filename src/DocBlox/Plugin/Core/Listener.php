@@ -135,6 +135,52 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
 
             $validator->isValid();
         }
+
+        $configOptions = $this->plugin->getOptions();
+        $validatorOptions = array();
+
+        if (isset($configOptions['deprecated']->tag)) {
+            foreach ($configOptions['deprecated']->tag as $tag) {
+                $tagName = (string)$tag['name'];
+
+                if (isset($tag->element)) {
+                    foreach ($tag->element as $type) {
+                        $typeName = (string)$type;
+                        $validatorOptions['deprecated'][$typeName][] = $tagName;
+                    }
+                } else {
+                    $validatorOptions['deprecated']['__ALL__'][] = $tagName;
+                }
+            }
+        }
+
+        if (isset($configOptions['required']->tag)) {
+            foreach ($configOptions['required']->tag as $tag) {
+                $tagName = (string)$tag['name'];
+
+                if (isset($tag->element)) {
+                    foreach ($tag->element as $type) {
+                        $typeName = (string)$type;
+                        $validatorOptions['required'][$typeName][] = $tagName;
+                    }
+                } else {
+                    $validatorOptions['required']['__ALL__'][] = $tagName;
+                }
+            }
+        }
+
+        foreach (array('Deprecated', 'Required') as $validator) {
+            $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $validator;
+            $val = new $class(
+                $element->getName(),
+                $docblock->line_number,
+                $docblock,
+                $element
+            );
+
+            $val->setOptions($validatorOptions);
+            $val->isValid();
+        }
     }
 
     /**
