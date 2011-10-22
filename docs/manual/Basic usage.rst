@@ -76,4 +76,58 @@ Please be aware that DocBlox expects the target location to exist
 and that it is writable. If it is not, the application will exit
 and tell you so.
 
+Tasks
+-----
 
+Usage
+~~~~~
+
+DocBlox has a task oriented CLI; the first argument represents the name of the
+task to execute, or if no arguments are given but only parameters then docblox
+assumes you want to run the ``project:run`` task. This last mechanism provides
+backwards compatibility with phpDocumentor based configurations.
+
+Example::
+
+    $ docblox -d . -t output
+
+Would result in the ``project:run`` task being executed with parameter ``-d`` and
+``-t``.
+
+Another example::
+
+    $ docblox run -d . -t output
+
+would have the same effect as the previous command; if no 'namespace'
+(thus _project:_) is provided then the namespace ``project`` is assumed.
+
+Last example::
+
+   $ docblox project:run -d . -t output
+
+would have the same effect as the previous examples and is the most explicit
+form.
+
+Listing
+~~~~~~~
+
+All tasks are described below with a link to their full description. Each task
+has specific arguments. It is advised to either read the detailed sub-section
+or invoke ``docblox <task> --help``; this will provide a summary of the task
+and its arguments.
+
+============================== =================================================
+Full name                      Description
+============================== =================================================
+:doc:`Tasks/project_list`      Defines all tasks that can be run by DocBlox.
+:doc:`Tasks/project_run`       Parse and transform the given directory (-d|-f)
+                               to the given location (-t).
+:doc:`Tasks/project_parse`     Parses the given source code and creates a
+                               structure file.
+:doc:`Tasks/project_transform` Transforms the structure file into the specified
+                               output format.
+:doc:`Tasks/plugin_generate`   Generates a skeleton plugin.
+:doc:`Tasks/theme_generate`    Generates a skeleton theme.
+:doc:`Tasks/theme_list`        Displays a listing of all available themes in
+                               DocBlox.
+============================== =================================================
