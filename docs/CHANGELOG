@@ -7,6 +7,11 @@
 * FIXED:    transform.pre event signature was incorrect
 * FIXED:    Search in sidebar is now case-insensitive
 * FIXED:    When using a slash in the title it always became a double slash
+* ADDED:    new argument --sourcecode which creates highlighted source code and
+            links from the reference docs.
+* ADDED:    @benmatselby added a new feature which allows the configuration to
+            determine which tags are deprecated and which are required. With
+            this the user can indicate per element type which tags must be there.
 
 10/06/2011: Version 0.15.1
 --------------------------
