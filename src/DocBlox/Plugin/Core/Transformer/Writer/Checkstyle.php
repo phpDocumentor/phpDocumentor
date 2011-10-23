@@ -45,6 +45,7 @@ class DocBlox_Plugin_Core_Transformer_Writer_Checkstyle
         $list = $structure->getElementsByTagName('parse_markers');
 
         $document = new DOMDocument();
+        $document->formatOutput = true;
         $report = $document->createElement('checkstyle');
         $report->setAttribute('version', '1.3.0');
         $document->appendChild($report);
