@@ -121,19 +121,23 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             return;
         }
 
-        $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $type;
-        if (@class_exists($class)) {
-            /**
-             * @var DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract $validator
-             */
-            $validator = new $class(
-                $element->getName(),
-                $docblock->line_number,
-                $docblock,
-                $element
-            );
+        $validatorOptions = $this->loadConfiguration();
 
-            $validator->isValid();
+        foreach (array('Deprecated', 'Required', $type) as $validator) {
+
+            $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $validator;
+            if (@class_exists($class)) {
+
+                $val = new $class(
+                    $element->getName(),
+                    $docblock->line_number,
+                    $docblock,
+                    $element
+                );
+
+                $val->setOptions($validatorOptions);
+                $val->isValid();
+            }
         }
     }
 
@@ -157,5 +161,53 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             $data['xml'],
             $data['object']
         );
+    }
+
+    /**
+     * Load the configuration from the plugin.xml file
+     *
+     * @return array
+     */
+    protected function loadConfiguration()
+    {
+        $configOptions = $this->plugin->getOptions();
+        $validatorOptions = array();
+
+        foreach (array('deprecated', 'required') as $tag) {
+            $validatorOptions[$tag] = $this->loadConfigurationByElement($configOptions, $tag);
+        }
+
+        return $validatorOptions;
+    }
+
+    /**
+     * Load the configuration for given element (deprecated/required)
+     *
+     * @param array  $configOptions The configuration from the plugin.xml file
+     * @param string $configType    Required/Deprecated for the time being
+     *
+     * @return array
+     */
+    protected function loadConfigurationByElement($configOptions, $configType)
+    {
+        $validatorOptions = array();
+
+        if (isset($configOptions[$configType]->tag)) {
+
+            foreach ($configOptions[$configType]->tag as $tag) {
+                $tagName = (string)$tag['name'];
+
+                if (isset($tag->element)) {
+                    foreach ($tag->element as $type) {
+                        $typeName = (string)$type;
+                        $validatorOptions[$typeName][] = $tagName;
+                    }
+                } else {
+                    $validatorOptions['__ALL__'][] = $tagName;
+                }
+            }
+        }
+
+        return $validatorOptions;
     }
 }

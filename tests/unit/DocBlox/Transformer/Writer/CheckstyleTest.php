@@ -78,7 +78,11 @@ class DocBlox_Transformer_Writer_CheckstyleTest extends PHPUnit_Framework_TestCa
       </file>
       </project>',
                 '<?xml version="1.0"?>
-<checkstyle version="1.3.0"><file name="Some/File.php"><error line="22" severity="critical" message="No short description for property $property" source="DocBlox.DocBlox.DocBlox"/></file></checkstyle>
+<checkstyle version="1.3.0">
+  <file name="Some/File.php">
+    <error line="22" severity="critical" message="No short description for property $property" source="DocBlox.DocBlox.DocBlox"/>
+  </file>
+</checkstyle>
 '
             ),
 
@@ -96,7 +100,14 @@ class DocBlox_Transformer_Writer_CheckstyleTest extends PHPUnit_Framework_TestCa
                   </file>
                   </project>',
                 '<?xml version="1.0"?>
-<checkstyle version="1.3.0"><file name="Some/File.php"><error line="1" severity="error" message="Some kind of error" source="DocBlox.DocBlox.DocBlox"/><error line="2" severity="critical" message="Some kind of critical issue" source="DocBlox.DocBlox.DocBlox"/><error line="3" severity="notice" message="Some kind of notice" source="DocBlox.DocBlox.DocBlox"/><error line="4" severity="warning" message="Some kind of warning" source="DocBlox.DocBlox.DocBlox"/></file></checkstyle>
+<checkstyle version="1.3.0">
+  <file name="Some/File.php">
+    <error line="1" severity="error" message="Some kind of error" source="DocBlox.DocBlox.DocBlox"/>
+    <error line="2" severity="critical" message="Some kind of critical issue" source="DocBlox.DocBlox.DocBlox"/>
+    <error line="3" severity="notice" message="Some kind of notice" source="DocBlox.DocBlox.DocBlox"/>
+    <error line="4" severity="warning" message="Some kind of warning" source="DocBlox.DocBlox.DocBlox"/>
+  </file>
+</checkstyle>
 '
             ),
         );

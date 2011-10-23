@@ -23,7 +23,8 @@
  * @license     http://www.opensource.org/licenses/mit-license.php MIT
  * @link        http://docblox-project.org
  *
- * @method string getSourcecode()
+ * @method boolean getSourcecode() flag indicating whether the source code needs
+ *  to be parsed as well.
  */
 class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
 {
