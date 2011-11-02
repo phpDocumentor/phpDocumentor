@@ -96,10 +96,10 @@ class DocBlox_GraphViz_Graph
     /**
      * Sets the type for this graph.
      *
+     * @param string $type Must be either "digraph", "graph" or "subgraph".
+     *
      * @throw InvalidArgumentException if $type is not "digraph", "graph" or
      *  "subgraph".
-     *
-     * @param string $type Must be either "digraph", "graph" or "subgraph".
      *
      * @return DocBlox_GraphViz_Graph
      */
@@ -165,10 +165,10 @@ class DocBlox_GraphViz_Graph
      * Thus if you have 2 subgraphs with the same name that the first will be
      * overwritten by the latter.
      *
-     * @see DocBlox_GraphViz_Graph::create()
-     *
      * @param DocBlox_GraphViz_Graph $graph The graph to add onto this graph as
      *  subgraph.
+     *
+     * @see DocBlox_GraphViz_Graph::create()
      *
      * @return DocBlox_GraphViz_Graph
      */
@@ -192,6 +192,8 @@ class DocBlox_GraphViz_Graph
     }
 
     /**
+     * Returns the subgraph with a given name.
+     *
      * @param string $name Name of the requested graph.
      *
      * @return DocBlox_GraphViz_Graph
@@ -207,9 +209,9 @@ class DocBlox_GraphViz_Graph
      * Nodes can be retrieved by retrieving the property with the same name.
      * Thus 'node1' can be retrieved by invoking: $graph->node1
      *
-     * @see DocBlox_GraphViz_Node::create()
-     *
      * @param DocBlox_GraphViz_Node $node The node to set onto this Graph.
+     *
+     * @see DocBlox_GraphViz_Node::create()
      *
      * @return DocBlox_GraphViz_Graph
      */
@@ -222,18 +224,17 @@ class DocBlox_GraphViz_Graph
     /**
      * Finds a node in this graph or any of its subgraphs.
      *
-     * @param string $name
+     * @param string $name Name of the node to find.
      *
      * @return DocBlox_GraphViz_Node
      */
     public function findNode($name)
     {
-        if (isset($this->nodes[$name]))
-        {
+        if (isset($this->nodes[$name])) {
             return $this->nodes[$name];
         }
 
-        foreach($this->graphs as $graph) {
+        foreach ($this->graphs as $graph) {
             $node = $graph->findNode($name);
             if ($node) {
                 return $node;
@@ -246,8 +247,8 @@ class DocBlox_GraphViz_Graph
     /**
      * Sets a node using a custom name.
      *
-     * @param string                $name
-     * @param DocBlox_GraphViz_Node $value
+     * @param string                $name  Name of the node.
+     * @param DocBlox_GraphViz_Node $value Node to set on the given name.
      *
      * @see DocBlox_GraphViz_Graph::setNode()
      *
@@ -276,9 +277,9 @@ class DocBlox_GraphViz_Graph
     /**
      * Links two nodes to eachother and registers the Edge onto this graph.
      *
-     * @see DocBlox_GraphViz_Edge::create()
-     *
      * @param DocBlox_GraphViz_Edge $edge The link between two classes.
+     *
+     * @see DocBlox_GraphViz_Edge::create()
      *
      * @return DocBlox_GraphViz_Graph
      */
@@ -291,17 +292,17 @@ class DocBlox_GraphViz_Graph
     /**
      * Exports this graph to a generated image.
      *
-     * Thsi is the only method that actually requires GraphViz.
+     * This is the only method that actually requires GraphViz.
+     *
+     * @param string $type     The type to export to; see the link above for a
+     *  list of supported types.
+     * @param string $filename The path to write to.
      *
      * @uses GraphViz/dot
      *
      * @link http://www.graphviz.org/content/output-formats
      *
      * @throws DocBlox_GraphViz_Exception if an error occurred in GraphViz.
-     *
-     * @param string $type     The type to export to; see the link above for a
-     *  list of supported types.
-     * @param string $filename The path to write to.
      *
      * @return DocBlox_GraphViz_Graph
      */
@@ -348,8 +349,7 @@ class DocBlox_GraphViz_Graph
         );
 
         $attributes = array();
-        foreach ($elements as $value)
-        {
+        foreach ($elements as $value) {
             $attributes[] = (string)$value;
         }
         $attributes = implode(PHP_EOL, $attributes);

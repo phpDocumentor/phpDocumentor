@@ -25,21 +25,19 @@ PEAR
 ----
 
 PEAR provides the latest released version of DocBlox and is an easy
-way to set up your machine. DocBlox depends on the Markdown library which is
-also available on PEAR.
+way to set up your machine.
 
 You can prepare your PEAR installation using the following commands:
 
 ::
 
     $ pear channel-discover pear.docblox-project.org
-    $ pear channel-discover pear.michelf.com
 
 And to install DocBlox you can use the following command:
 
 ::
 
-    $ pear install DocBlox/DocBlox
+    $ pear install DocBlox/DocBlox-beta
 
 When the installation is finished you can invoke the ``docblox``
 command from any path in your system. Recommended is to read the

@@ -329,4 +329,16 @@ abstract class DocBlox_Core_Abstract
 
         return self::$config;
     }
+
+    /**
+     * Returns the version header.
+     *
+     * @return string
+     */
+    public static function renderVersion()
+    {
+        echo 'DocBlox version ' . DocBlox_Core_Abstract::VERSION
+             . PHP_EOL
+             . PHP_EOL;
+    }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <transformations>
+    <transformation query="" writer="checkstyle" source="" artifact="checkstyle.xml" />
+  </transformations>
+</template>

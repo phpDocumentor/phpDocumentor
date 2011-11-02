@@ -1,3 +1,7 @@
+jQuery.expr[':'].Contains = function(a, i, m) {
+    return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+};
+
 $(function() {
     $("#sidebar-nav").accordion({
         autoHeight: false,
@@ -36,6 +40,6 @@ function tree_search(input) {
 
     // hide all items that do not match the given search criteria
     if ($(input).val()) {
-        treeview.find('li').not(':has(a:contains(' + $(input).val() + '))').hide();
+        treeview.find('li').not(':has(a:Contains(' + $(input).val() + '))').hide();
     }
 }

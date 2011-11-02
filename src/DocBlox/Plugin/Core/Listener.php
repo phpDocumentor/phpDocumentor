@@ -1,11 +1,38 @@
 <?php
 /**
+ * DocBlox
  *
+ * PHP Version 5
+ *
+ * @category   DocBlox
+ * @package    Plugin
+ * @subpackage Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
+ */
+
+/**
+ * Listener for the Core Plugin.
+ *
+ * @category   DocBlox
+ * @package    Plugin
+ * @subpackage Core
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
 {
+    /** @var DocBlox_Core_Log Logger for DocBlox*/
     protected $logger = null;
 
+    /**
+     * Configures this listener; initializes and connects the logger.
+     *
+     * @return void
+     */
     protected function configure()
     {
         $this->logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
@@ -18,10 +45,11 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
     }
 
     /**
+     * Applies all behaviours prior to transformation.
+     *
+     * @param sfEvent $data Event object containing the parameters.
      *
      * @docblox-event transformer.transform.pre
-     *
-     * @param sfEvent $data
      *
      * @return void
      */
@@ -52,13 +80,13 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             )
         );
 
-        $data[1] = $behaviours->process($data[0]);
+        $data['source'] = $behaviours->process($data['source']);
     }
 
     /**
+     * Checks all DocBlox whether they match the given rules.
      *
-     *
-     * @param sfEvent $data
+     * @param sfEvent $data Event object containing the parameters.
      *
      * @docblox-event reflection.docblock-extraction.post
      *
@@ -93,25 +121,32 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             return;
         }
 
-        $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $type;
-        if (@class_exists($class)) {
-            /** @var DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract $validator  */
-            $validator = new $class(
-                $element->getName(),
-                $docblock->line_number,
-                $docblock,
-                $element
-            );
+        $validatorOptions = $this->loadConfiguration();
 
-            $validator->isValid();
+        foreach (array('Deprecated', 'Required', $type) as $validator) {
+
+            $class = 'DocBlox_Plugin_Core_Parser_DocBlock_Validator_' . $validator;
+            if (@class_exists($class)) {
+
+                $val = new $class(
+                    $element->getName(),
+                    $docblock->line_number,
+                    $docblock,
+                    $element
+                );
+
+                $val->setOptions($validatorOptions);
+                $val->isValid();
+            }
         }
     }
 
     /**
+     * Prepare the tag to be injected into the XML file.
+     *
+     * @param sfEvent $data Event object containing the parameters.
      *
      * @docblox-event reflection.docblock.tag.export
-     *
-     * @param sfEvent $data
      *
      * @return void
      */
@@ -126,5 +161,53 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             $data['xml'],
             $data['object']
         );
+    }
+
+    /**
+     * Load the configuration from the plugin.xml file
+     *
+     * @return array
+     */
+    protected function loadConfiguration()
+    {
+        $configOptions = $this->plugin->getOptions();
+        $validatorOptions = array();
+
+        foreach (array('deprecated', 'required') as $tag) {
+            $validatorOptions[$tag] = $this->loadConfigurationByElement($configOptions, $tag);
+        }
+
+        return $validatorOptions;
+    }
+
+    /**
+     * Load the configuration for given element (deprecated/required)
+     *
+     * @param array  $configOptions The configuration from the plugin.xml file
+     * @param string $configType    Required/Deprecated for the time being
+     *
+     * @return array
+     */
+    protected function loadConfigurationByElement($configOptions, $configType)
+    {
+        $validatorOptions = array();
+
+        if (isset($configOptions[$configType]->tag)) {
+
+            foreach ($configOptions[$configType]->tag as $tag) {
+                $tagName = (string)$tag['name'];
+
+                if (isset($tag->element)) {
+                    foreach ($tag->element as $type) {
+                        $typeName = (string)$type;
+                        $validatorOptions[$typeName][] = $tagName;
+                    }
+                } else {
+                    $validatorOptions['__ALL__'][] = $tagName;
+                }
+            }
+        }
+
+        return $validatorOptions;
     }
 }

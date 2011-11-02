@@ -100,6 +100,10 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
             'name to use for the default package.  If not specified, uses "default"'
         );
         $this->addOption(
+            'sourcecode', '',
+            'Whether to include syntax highlighted source code'
+        );
+        $this->addOption(
             'p|progressbar', '',
             'Whether to show a progress bar; will automatically quiet logging '
             . 'to stdout'
@@ -133,6 +137,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         $task->setVisibility($this->getVisibility());
         $task->setDefaultpackagename($this->getDefaultpackagename());
         $task->setProgressbar($this->getProgressbar());
+        $task->setSourcecode($this->getSourcecode());
         $task->execute();
 
         $transform = new DocBlox_Task_Project_Transform();

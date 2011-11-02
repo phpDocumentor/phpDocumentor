@@ -152,7 +152,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
      */
     public function addDirectory($path)
     {
-        $result = glob($path);
+        $result = substr($path, 0, 7) !== 'phar://' ? glob($path) : array($path);
         if ($result === false) {
             throw new DocBlox_Parser_Exception(
                 '"'.$path . '" does not match an existing directory pattern'
@@ -175,7 +175,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             $this->project_root = null;
         }
 
-        foreach($result as $result_path) {
+        foreach ($result as $result_path) {
             // if the given is not a directory, skip it
             if (!is_dir($result_path)) {
                 continue;
@@ -195,7 +195,9 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             /** @var SplFileInfo $file */
             foreach ($recursive_iterator as $file) {
                 // skipping dots (should any be encountered)
-                if (($file->getFilename() == '.') || ($file->getFilename() == '..')) {
+                if (($file->getFilename() == '.')
+                    || ($file->getFilename() == '..')
+                ) {
                     continue;
                 }
 
@@ -258,7 +260,8 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             }
         } else {
             // only process if it is a file and it matches the allowed extensions
-            if (is_file($path) && (empty($this->allowed_extensions)
+            if (is_file($path)
+                && (empty($this->allowed_extensions)
                 || in_array(
                     strtolower(pathinfo($path, PATHINFO_EXTENSION)),
                     $this->allowed_extensions
@@ -420,7 +423,11 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     protected function getRelativeFilename($filename)
     {
         // strip path from filename
-        $result = ltrim(substr($filename, strlen($this->getProjectRoot())), '/');
+        $result = ltrim(
+            substr($filename, strlen($this->getProjectRoot())),
+            DIRECTORY_SEPARATOR
+        );
+
         if ($result === '') {
             throw new InvalidArgumentException(
                 'File is not present in the given project path: ' . $filename

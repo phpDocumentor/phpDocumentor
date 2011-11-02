@@ -46,7 +46,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
      *
      * @param DocBlox_Transformer $transformer  The parent transformer.
      * @param string              $query        What information to use as datasource for the writer's source.
-     * @param string              $writer       What type of transformation to apply (XSLT, PDF, etc).
+     * @param string              $writer       What type of transformation to apply (XSLT, PDF, Checkstyle etc).
      * @param string              $source       Which template or type of source to use.
      * @param string              $artifact     What is the filename of the result (relative to the generated root)
      */

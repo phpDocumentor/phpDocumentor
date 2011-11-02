@@ -70,7 +70,12 @@
 
       ]]>
     </script>
-      <h1 class="file"><xsl:value-of select="@path" /></h1>
+      <h1 class="file">
+          <xsl:value-of select="@path" />
+          <xsl:if test="source">
+            <a href="{$root}source/{@path}.html"><img src="{$root}images/icons/view_source.png" border="0"/></a>
+          </xsl:if>
+      </h1>
       <div id="file-nav-box">
           <div id="file-nav-options">
               Show:

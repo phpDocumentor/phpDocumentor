@@ -1,3 +1,18 @@
+11/05/2011: Version 0.16.0
+--------------------------
+
+* ADDED:    Checkstyle format output of errors using the `checkstyle` theme.
+            Big thanks to @benmatselby for contributing this!
+* FIXED:    phar files were broken
+* FIXED:    transform.pre event signature was incorrect
+* FIXED:    Search in sidebar is now case-insensitive
+* FIXED:    When using a slash in the title it always became a double slash
+* ADDED:    new argument --sourcecode which creates highlighted source code and
+            links from the reference docs.
+* ADDED:    @benmatselby added a new feature which allows the configuration to
+            determine which tags are deprecated and which are required. With
+            this the user can indicate per element type which tags must be there.
+
 10/06/2011: Version 0.15.1
 --------------------------
 
@@ -59,6 +74,7 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 
 09/04/2011: Version 0.14.0
 --------------------------
+
 * BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.
             Anyone using the command line will not notice this BC break but if you use DocBlox_Parser directly this will
             affect your application. Please check DocBlox_Task_Parse how to use this new object.

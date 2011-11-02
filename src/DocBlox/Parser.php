@@ -285,13 +285,15 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * Runs a file through the static reflectors, generates an XML file element
      * and returns it.
      *
-     * @param string $filename The filename to parse.
+     * @param string $filename       The filename to parse.
+     * @param bool   $include_source whether to include the source in the
+     *  generated output.
      *
      * @api
      *
      * @return string|bool The XML element or false if none could be made.
      */
-    public function parseFile($filename)
+    public function parseFile($filename, $include_source = false)
     {
         $this->log('Starting to parse file: ' . $filename);
         $this->debug('Starting to parse file: ' . $filename);
@@ -303,7 +305,10 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             $file->setDefaultPackageName($this->getDefaultPackageName());
 
             if (self::$event_dispatcher !== null) {
-                self::$event_dispatcher->connect('parser.log', array($file, 'addParserMarker'));
+                self::$event_dispatcher->connect(
+                    'parser.log',
+                    array($file, 'addParserMarker')
+                );
             }
             $dispatched = true;
 
@@ -339,7 +344,21 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             // if no result has been obtained; process the file
             if ($result === null) {
                 $file->process();
-                $result = $file->__toXml();
+                $result = $file->__toDomXml();
+
+                // if we want to include the source for each file; append a new
+                // element 'source' which contains a compressed, encoded version
+                // of the source
+                if ($include_source) {
+                    $result->documentElement->appendChild(
+                        new DOMElement(
+                            'source',
+                            base64_encode(gzcompress($file->getContents()))
+                        )
+                    );
+                }
+
+                $result = $result->saveXml();
             }
         } catch (Exception $e)
         {
@@ -355,9 +374,13 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             $result = false;
         }
 
-        //disconnects the dispatcher here so if any error occured, it still removes the event
-        if($dispatched && self::$event_dispatcher !== null){
-            self::$event_dispatcher->disconnect('parser.log', array($file, 'addParserMarker'));
+        //disconnects the dispatcher here so if any error occured, it still
+        // removes the event
+        if ($dispatched && self::$event_dispatcher !== null) {
+            self::$event_dispatcher->disconnect(
+                'parser.log',
+                array($file, 'addParserMarker')
+            );
         }
 
         $this->debug(
@@ -409,8 +432,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      * @return void
      */
     protected function generateNamespaceElements($namespaces, $parent_element,
-        $node_name = 'namespace')
-    {
+        $node_name = 'namespace'
+    ) {
         foreach ($namespaces as $name => $sub_namespaces) {
             $node = new DOMElement($node_name);
             $parent_element->appendChild($node);
@@ -422,13 +445,15 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     /**
      * Iterates through the given files and builds the structure.xml file.
      *
-     * @param DocBlox_Parser_Files $files A files container to parse.
+     * @param DocBlox_Parser_Files $files          A files container to parse.
+     * @param bool                 $include_source whether to include the source
+     *  in the generated output..
      *
      * @api
      *
      * @return bool|string
      */
-    public function parseFiles(DocBlox_Parser_Files $files)
+    public function parseFiles(DocBlox_Parser_Files $files, $include_source = false)
     {
         $timer = microtime(true);
 
@@ -436,15 +461,17 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         $dom->formatOutput = true;
         $dom->loadXML(
             '<project version="' . DocBlox_Core_Abstract::VERSION . '" '
-            . 'title="' . addslashes($this->getTitle()) . '"></project>'
+            . 'title="' . $this->getTitle() . '"></project>'
         );
 
         $paths = $files->getFiles();
-        $this->log('Starting to process ' . count($paths) . ' files') . PHP_EOL;
-        $this->log('  Project root is:  ' . $files->getProjectRoot()) . PHP_EOL;
-        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns())) . PHP_EOL;
-        if (count($paths) < 1)
-        {
+        $this->log('Starting to process ' . count($paths) . ' files');
+        $this->log('  Project root is:  ' . $files->getProjectRoot());
+        $this->log(
+            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns())
+        );
+
+        if (count($paths) < 1) {
             throw new DocBlox_Parser_Exception(
                 'No files were found',
                 DocBlox_Parser_Exception::NO_FILES_FOUND
@@ -458,7 +485,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
                 array('file' => $file, 'progress' => array($key +1, $file_count))
             );
 
-            $xml = $this->parseFile($file);
+            $xml = $this->parseFile($file, $include_source);
             if ($xml === false) {
                 continue;
             }
@@ -510,7 +537,9 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
 
         foreach ($nodes as $node) {
 
-            if ($node->nodeName == 'tag' && $node->parentNode->parentNode->parentNode) {
+            if (($node->nodeName == 'tag')
+                && ($node->parentNode->parentNode->parentNode)
+            ) {
                 $remove = $node->parentNode->parentNode;
                 $node->parentNode->parentNode->parentNode->removeChild($remove);
             } else {
@@ -557,7 +586,9 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         }
 
         $packages = $this->generateNamespaceTree(array_keys($packages));
-        $this->generateNamespaceElements($packages, $dom->documentElement, 'package');
+        $this->generateNamespaceElements(
+            $packages, $dom->documentElement, 'package'
+        );
     }
 
     /**
@@ -608,7 +639,8 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     /**
      * Sets the name of the defautl package.
      *
-     * @param string $default_package_name
+     * @param string $default_package_name Name used to categorize elements
+     *  without an @package tag.
      *
      * @return void
      */
