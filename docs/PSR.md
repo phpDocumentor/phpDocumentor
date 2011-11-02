@@ -58,7 +58,7 @@ document are to be interpreted as described in RFC 2119.
 
 * "DocComment" is a special type of comment which starts with `/**`, ends
   with `*/` and may contain any number of lines in between. Every line should
-  start with an asterisk; which is aligned with the first asterisk of the
+  start with an asterisk, which is aligned with the first asterisk of the
   opening clause.
 
   Single line example:
@@ -78,7 +78,7 @@ document are to be interpreted as described in RFC 2119.
 * "Annotation"
 
 * "Type" is the determination of what type of data is associated with an element.
-  This is commonly used when determining the exact value of a arguments, constants,
+  This is commonly used when determining the exact values of arguments, constants,
   properties and more.
 
   See Appendix A for more detailed information about types.
@@ -87,7 +87,7 @@ document are to be interpreted as described in RFC 2119.
 4. Basic principles
 -------------------
 
-* A PHPDoc MUST always be contained in a "DocComment", the combination of these
+* A PHPDoc MUST always be contained in a "DocComment"; the combination of these
   two is called a "DocBlock".
 
 * A DocBlock MUST precede a "Structural element" or be placed at the top of a
@@ -132,7 +132,7 @@ Tags do not necessarily have to be preceded by a short description.
 
 The long description is OPTIONAL but SHOULD be included when the
 "Structural element", which this DocBlock precedes, contains more operations, or
-more complex operations, then can be described in the short description alone.
+more complex operations, than can be described in the short description alone.
 
 Any application parsing the long description SHOULD support the Markdown
 mark-up language for this field so that it is possible for the author to provide
@@ -140,8 +140,8 @@ formatting and a clear way of representing code examples.
 
 Common uses for the long description are (amongst others):
 
-* To provide more detail then the short description on what this method does to
-  the casual reader.
+* To provide more detail to the casual reader than the short description on
+  what this method does.
 * To specify of what child elements an input or output array, or object, is
   composed.
 * To provide a set of common use cases or scenarios in which the
@@ -159,10 +159,10 @@ succeeding "Structural element", in which case the term "Annotation" is
 commonly used instead of "Tag".
 
 A variation of this is where, instead of a description, a tag-signature is used;
-in most cases will the tag be in fact an annotation. The tag-signature is able
-to provide the annotation with parameters regarding to operation.
+in most cases the tag will in fact be an annotation. The tag-signature is able
+to provide the annotation with parameters regarding its operation.
 
-if a tag-signature is present then there MUST NOT be a description present in
+If a tag-signature is present then there MUST NOT be a description present in
 the same tag.
 
 Annotations will not be described in further detail in this specification as
@@ -175,9 +175,9 @@ Tag names indicate what type of information is represented by this tag or, in
 case of annotations, which behaviour must be injected into the succeeding
 "Structural element".
 
-It is supported to introduce a set of tags designed specifically for an
-individual application or subset of applications (and thus not covered by this
-specification).
+In support of annotations, it is allowable to introduce a set of tags designed
+specifically for an individual application or subset of applications (and thus
+not covered by this specification).
 
 These tags, or annotations, MUST provide a namespace by either
 * prefixing the tag name with a PHP-style namespace, or by
@@ -210,7 +210,7 @@ tag-signature MUST NOT be followed by a description or other form of meta-data.
 ### 5.4. Examples
 
 The following examples serve to illustrate the basic use of DocBlocks; it is
-adviced to read through the list of tags in chapter 7.
+advised to read through the list of tags in chapter 7.
 
 A complete example could look like the following example:
 
@@ -298,13 +298,13 @@ the top unless overridden.
 
 ### 6.1. Class
 
-In addition to the inherited information, as defined in the chapter's root, MUST
-a class inherit the following tags.
+In addition to the inherited information, as defined in the chapter's root,
+a class MUST inherit the following tags:
 
 * @package
 * @subpackage
 
-The @subpackage is MUST NOT be inherited if the @package annotation of the
+The @subpackage MUST NOT be inherited if the @package annotation of the
 super
 -
 
@@ -362,19 +362,19 @@ When the "Type" is in fact an array of "Type" then this is represented by adding
 an empty closed pair of brackets as suffix.
 For example: `@return int[]`
 
-The supported atomic types are either a *valid class name* or *keyword*:
+The supported atomic types are either a *valid class name* or *keyword*.
 
 ### Valid class name
 
-a valid class name seen from the context where this type is mentioned. Thus
- this may be either a Fully Qualified Class Name (FQCN) or if present in a
- namespace a local name.
+A valid class name seen from the context where this type is mentioned. Thus
+this may be either a Fully Qualified Class Name (FQCN) or if present in a
+namespace a local name.
 
     It is RECOMMENDED for applications to expand any local name into a FQCN
     for easier processing and comparisons.
 
- The element to which this type applies is either an instance of this class
- or an instance of a class that is a (sub-)child to the given class.
+The element to which this type applies is either an instance of this class
+or an instance of a class that is a (sub-)child to the given class.
 
     Due to the above nature it is RECOMMENDED for applications that
     collect and shape this information to show a list of child classes
@@ -383,12 +383,12 @@ a valid class name seen from the context where this type is mentioned. Thus
 
 ### Keyword
 
-a keyword defining the purpose of this type. Not every element is determined
+A keyword defining the purpose of this type. Not every element is determined
 by a class but still worth of a classification to assist the developer in
 understanding the code covered by the DocBlock.
 
     Note: most of these keywords are allowed as class names in PHP and as
-    such are hard to distinguish from real classes. As such MUST the keywords
+    such are hard to distinguish from real classes. As such the keywords MUST
     be lowercase, as most class names start with an uppercase first character,
     and you SHOULD NOT use classes with these names in your code.
 
@@ -402,10 +402,10 @@ The following keywords are recognized by this PSR:
 3.  'boolean', the element to which this type applies only has state true or false.
 4.  'float' or 'double', the element to which this type applies is continuous
     or real number.
-5.  'object', the element to which this type applies is the instance of
+5.  'object', the element to which this type applies is the instance of an
     undetermined class.
 6.  'mixed', the element to which this type applies can be of any type as
-    specified here. It is now know on compile time which type will be used.
+    specified here. It is not known on compile time which type will be used.
 7.  'array', the element to which this type applies is an array of values.
 8.  'resource', the element to which this type applies is a resource per
     the definition of PHP types.
@@ -426,8 +426,8 @@ The following keywords are recognized by this PSR:
     For example:
 
         Method C() is contained in class A. The DocBlock states
-        that its return value is of type `self`. As such does method C()
-        return an instance of class A.
+        that its return value is of type `self`. As such method C()
+        returns an instance of class A.
 
     This may lead to confusing situations when inheritance is involved.
 
@@ -441,7 +441,7 @@ The following keywords are recognized by this PSR:
     an instance of the Class where the DocBlock containing the `self` type
     is written or any of its child classes.
 
-    In the examples above MUST `self` always refer to class A or B, since
+    In the examples above `self` MUST always refer to class A or B, since
     it is defined with method C() in class A.
 
     If method C() was to be redefined in class B, including the type
