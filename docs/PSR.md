@@ -1,8 +1,9 @@
 PSR-n: PHPDoc
 =============
 
-Author:           Mike van Riel <mike.vanriel@naenius.com>
-Acknowledgements: The authors wish to thank the people who commented on
+Author:           Mike van Riel (@mvriel) <mike.vanriel@naenius.com>
+Acknowledgements: The authors wish to thank Chuck Burgess (@ashnazg),
+                  Gary Jones (@GaryJ) and all other people who commented on
                   various versions of this proposal.
 Obsoletes:        de-facto PHPDoc standard (http://www.phpdoc.org)
 
@@ -22,8 +23,12 @@ Table of Contents
     5.3.2. tag-signature
     5.4. Examples
     6. Inheritance
+    6.1. Class
+    6.2. Function / method
+    6.3. Constant / property
     7. Tags
     Appendix A. Types
+    Appendix B. Differences compared with the de-facto PHPDoc standard
 
 1. Introduction
 ---------------
@@ -52,7 +57,7 @@ document are to be interpreted as described in RFC 2119.
   * class
   * interface
   * trait
-  * function
+  * function (including methods)
   * property
   * constant
 
@@ -224,13 +229,13 @@ A complete example could look like the following example:
      * @see Markdown
      *
      * @param int        $parameter1 a parameter description.
-     * @param \Exception $parameter2 another parameter description.
+     * @param \Exception $e          another parameter description.
      *
      * @\Doctrine\Orm\Mapper\Entity()
      *
      * @return string
      */
-    function test($parameter1, $parameter2)
+    function test($parameter1, $e)
     {
     }
 
@@ -272,7 +277,7 @@ A DocBlock may also span a single line as shown in the following example.
 
 PHPDoc's also have the ability to inherit information when the succeeding
 "Structural element" has a super-element (such as a super-class or a method with
-the same name in a super-class).
+the same name in a super-class or implemented in a super-interface).
 
 Every "Structural Element" MUST inherit the following PHPDoc parts by default:
 
@@ -296,21 +301,66 @@ Inheritance takes place from the root of a class hierarchy graph to its leafs.
 This means that anything inherited in the bottom of the tree MUST 'bubble' up to
 the top unless overridden.
 
-### 6.1. Class
+### 6.1. Class or interface
 
 In addition to the inherited information, as defined in the chapter's root,
-a class MUST inherit the following tags:
+a class or interface MUST inherit the following tags:
 
 * @package
+* @version
+* @author
+* @copyright
+
+A class or interface SHOULD inherit the following deprecated tags if supplied:
+
 * @subpackage
 
 The @subpackage MUST NOT be inherited if the @package annotation of the
-super
--
+super-class (or interface) is not the same as the @package of the child class
+(or interface).
 
-### 6.2. Function / method
+Example:
 
-### 6.3. Constant / property
+    /**
+     * @package    Framework
+     * @subpackage Controllers
+     */
+    class Framework_ActionController {}
+
+    /**
+     * @package My
+     *
+    class My_ActionController {}
+
+In the example above the My_ActionController MUST not inherit the subpackage
+Controllers.
+
+### 6.2. Function or method
+
+In addition to the inherited information, as defined in the chapter's root,
+a function or method MUST inherit the following tags:
+
+* @param
+* @return
+* @throws
+* @version
+* @author
+* @copyright
+
+### 6.3. Constant or property
+
+In addition to the inherited information, as defined in the chapter's root,
+a constant or property MUST inherit the following tags:
+
+* @type
+* @version
+* @author
+* @copyright
+
+A constant or property SHOULD inherit the following deprecated tags if supplied:
+
+* @var
+
 
 7. Tags
 -------
@@ -350,17 +400,43 @@ deprecated
 Appendix A. Types
 -----------------
 
+    "Type"                   = 1*(type|array-of-type|array-of-type-expression ["|"])
+    array-of-type-expression = "(" type-expression ")[]"
+    type                     = class-name|keyword
+    array-of-type            = type "[]"
+    class-name               = 1*CHAR
+    keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
+                               |"double"|"object"|"mixed"|"array"|"resource"
+                               |"void"|"null"|"callback"|"false"|"true"|"self"
+
 When a "Type" is used the user will expect a value, or set of values, as
 detailed below.
 
 When the "Type" may consist of multiple types then these MUST be separated
-with the pipe (|) sign. Any application supporting this PSR MUST recognize this
-and split the "Type" before processing.
+with the pipe (|) sign. Any application supporting this specification MUST
+recognize this and split the "Type" before processing.
+
 For example: `@return int|null`
 
-When the "Type" is in fact an array of "Type" then this is represented by adding
-an empty closed pair of brackets as suffix.
-For example: `@return int[]`
+The value represented by "Type" can be an array. The type MUST be defined
+following the format of one of the following options:
+
+1. unspecified, no definition of the represented array is given.
+   Example: `@return array`
+
+2. specified containing a single type, the Type definition informs the reader of
+   the type of each array element. Only one type is then expected as element for
+   a given array.
+
+   Example: `@return int[]`
+
+   Please note that _mixed_ is also a single type and with this keyword it is
+   possible to indicate that each array element contains any possible type.
+
+3. specified containing multiple types, the Type definition informs the reader
+   of the type of each array element. Each element can be of any of the given
+   types.
+   Example: `@return (int|string)[]`
 
 The supported atomic types are either a *valid class name* or *keyword*.
 
@@ -396,29 +472,116 @@ understanding the code covered by the DocBlock.
     keywords but that falls beyond the scope of this specification.
 
 The following keywords are recognized by this PSR:
+
 1.  'string', the element to which this type applies is a string of
     binary characters.
-2.  'integer', the element to which this type applies is a whole number or integer.
-3.  'boolean', the element to which this type applies only has state true or false.
-4.  'float' or 'double', the element to which this type applies is continuous
-    or real number.
+
+2.  'integer' or 'int', the element to which this type applies is a whole
+    number or integer.
+
+3.  'boolean' or 'bool', the element to which this type applies only has
+    state true or false.
+
+4.  'float' or 'double', the element to which this type applies is a continuous,
+    or real, number.
+
 5.  'object', the element to which this type applies is the instance of an
     undetermined class.
+    This could be considered an alias for providing the class stdClass, as this
+    is the base class of all classes, but the intention of the type differs.
+
+    Providing stdClass will imply the intention that the related element contains
+    an actual object of class stdClass or direct descendant, whereas object
+    implies that it is completely unknown of which class the contained
+    object will be.
+
 6.  'mixed', the element to which this type applies can be of any type as
     specified here. It is not known on compile time which type will be used.
+
 7.  'array', the element to which this type applies is an array of values.
+
 8.  'resource', the element to which this type applies is a resource per
     the definition of PHP types.
-9.  'void', commonly only used with return values; means that no value is returned.
+
+9.  'void', this type is commonly only used when defining the return type of a
+    method or function.
+    The basic definition is that the element indicated with this type does not
+    contain a value and the user should not rely on any retrieved value.
+
+    For example:
+
+        /**
+         * @return void
+         */
+        function foo() {
+            echo 'Hello world';
+        }
+
+    In the example above no return statement is specified and thus is the return
+    value not determined.
+
+    Example 2:
+
+        /**
+         * @param boolean $hi when true 'Hello world' is echo-ed.
+         *
+         * @return void
+         */
+        function foo($hi) {
+            if (!$hi} {
+                return;
+            }
+            echo 'Hello world';
+        }
+
+    In this example the function contains a return statement without a given
+    value. Because there is no actual value specified does this also constitute
+    as type 'void'.
+
 10. 'null', the element to which this type applies is a NULL value or, in
     technical terms, does not exist.
+
+    A big difference compared to void is that this type is used in any situation
+    where the described element may at any given time contain an explicit NULL
+    value.
+
+    Example:
+
+        /**
+         * @return null
+         */
+        function foo() {
+            echo 'Hello world';
+            return null;
+        }
+
+    This type is commonly used in conjunction with another type to indicate that
+    it is possible that nothing is returned.
+
+    Example:
+
+        /**
+         * @param boolean $create_new when true returns a new stdClass
+         *
+         * @return stdClass|null
+         */
+        function foo($create_new) {
+            if ($create_new) {
+                return new stdClass();
+            }
+
+            return null;
+        }
+
+
 11. 'callback', the element to which this type applies is a pointer to a
-    function call. This may be an array containing a class name and method
-    name, an array containing an object and method name, closure or any other
-    definition as provided by PHP itself.
+    function call. This may be any type of callback as defined in the PHP manual
+    at http://www.php.net/xxxx.
+
 12. 'false' or 'true', the element to which this type applies will have
     the value true or false. No other value will be returned from this
     element.
+
 13. 'self', the element to which this type applies is of the same Class,
     or any of its children, as which the documented element is originally
     contained.
@@ -452,3 +615,40 @@ The following keywords are recognized by this PSR:
         collect and shape this information to show a list of child classes
         with each representation of the class. This would make it obvious
         for the user which classes are acceptable as type.
+
+Appendix B. Differences compared with the de-facto PHPDoc standard
+------------------------------------------------------------------
+
+This specification intends to improve upon the de-facto PHPDoc standard by
+expanding syntax and deprecating redundant elements.
+
+The following changes may be observed and a concise rationale is provided.
+
+### Syntax changes
+
+#### Added support for namespaces
+
+#### Added 'self' as "Type"
+
+#### Added array notation for "Type"
+
+#### Axpanded basic syntax to support Doctrine2/Symfony2 style annotations
+
+### Tag additions
+
+#### @api
+
+### Tag changes
+
+#### @package
+
+### Deprecated tags
+
+#### @category
+
+#### @link
+
+#### @subpackage
+
+#### @var
+
