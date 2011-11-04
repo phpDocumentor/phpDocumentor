@@ -35,7 +35,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_See
     protected function configure()
     {
         $referral = explode('::', $this->xml['refers']);
-        $referral[0] = $this->expandType($referral[0]);
+        $referral[0] = $this->expandType($referral[0], count($referral) > 1);
         $this->xml['refers'] = implode('::', $referral);
         $this->xml['description'] = implode('::', $referral);
     }

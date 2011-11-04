@@ -296,7 +296,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
                 continue;
             }
 
-            $type = trim($this->expandType($type));
+            $type = trim($this->expandType($type, true));
 
             // strip ampersands
             $name = str_replace('&', '', $type);
@@ -316,21 +316,27 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
     /**
      * Tries to expand a type to it's full namespaced equivalent.
      *
-     * @param string $type Type to expand into full namespaced equivalent
+     * @param string $type               Type to expand into full namespaced
+     *  equivalent.
+     * @param bool   $ignore_non_objects whether to ignore reserved words, when
+     *  false it will not expand a set of keywords.
      *
      * @return string
      */
-    protected function expandType($type)
+    protected function expandType($type, $ignore_non_objects = false)
     {
         if ($type === null) {
             return null;
         }
 
-        $non_objects = array(
-            'string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
-            'object', 'mixed', 'array', 'resource', 'void', 'null', 'callback',
-            'false', 'true'
-        );
+        $non_objects = array();
+        if (!$ignore_non_objects) {
+            $non_objects = array(
+                'string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
+                'object', 'mixed', 'array', 'resource', 'void', 'null',
+                'callback', 'false', 'true'
+            );
+        }
         $namespace = $this->getNamespace() == 'default'
             ? ''
             : $this->getNamespace() . '\\';

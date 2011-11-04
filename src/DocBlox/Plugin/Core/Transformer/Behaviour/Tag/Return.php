@@ -35,15 +35,20 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Return extends
      */
     public function process(DOMDocument $xml)
     {
-        $this->log('Transforming `self` and `$this` statements for @return tags');
 
         $ignoreQry = '//tag[@name=\'return\' and @type=\'\\self\']'
             . '|//tag[@name=\'return\' and @type=\'\\$this\']'
             . '|//tag[@name=\'return\']/type[.=\'\\self\']'
             . '|//tag[@name=\'return\']/type[.=\'\\$this\']';
 
+
         $xpath = new DOMXPath($xml);
         $nodes = $xpath->query($ignoreQry);
+
+        $this->log(
+            'Transforming `self` and `$this` statements for @return tags, found: '
+            . $nodes->length
+        );
 
         /** @var DOMElement $node */
         foreach($nodes as $node) {
