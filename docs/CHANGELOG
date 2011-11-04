@@ -12,6 +12,7 @@
 * ADDED:    @benmatselby added a new feature which allows the configuration to
             determine which tags are deprecated and which are required. With
             this the user can indicate per element type which tags must be there.
+* FIXED:    Classes with names equal to keywords would cause issues
 
 10/06/2011: Version 0.15.1
 --------------------------
