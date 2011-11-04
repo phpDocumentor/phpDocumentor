@@ -32,7 +32,7 @@
         <!-- Concatenate items with links with a given separator, based on: http://symphony-cms.com/download/xslt-utilities/view/22517/-->
   <xsl:template name="implodeTypes">
     <xsl:param name="items" />
-    <xsl:param name="separator" select="'|'" />
+    <xsl:param name="separator" select="' | '" />
 
     <xsl:for-each select="$items">
       <xsl:if test="position() &gt; 1">

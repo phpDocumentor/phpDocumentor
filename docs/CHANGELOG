@@ -13,6 +13,7 @@
             determine which tags are deprecated and which are required. With
             this the user can indicate per element type which tags must be there.
 * FIXED:    Classes with names equal to keywords would cause issues
+* FIXED:    #298: pipe separator was not shown for properties in the details section
 
 10/06/2011: Version 0.15.1
 --------------------------
