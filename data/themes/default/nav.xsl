@@ -82,7 +82,7 @@
         </xsl:if>
         <h1>
             <xsl:if test="not($title)">DocBlox</xsl:if>
-            <xsl:if test="$title"><xsl:value-of select="$title" /></xsl:if>
+            <xsl:if test="$title"><xsl:value-of select="$title" disable-output-escaping="yes" /></xsl:if>
         </h1>
         <div style="clear: both"></div>
     </xsl:template>
