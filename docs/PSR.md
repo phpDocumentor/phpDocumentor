@@ -2,48 +2,46 @@ PSR-n: PHPDoc
 =============
 
 Author:           Mike van Riel (@mvriel) <mike.vanriel@naenius.com>
+
 Acknowledgements: The authors wish to thank Chuck Burgess (@ashnazg),
                   Gary Jones (@GaryJ) and all other people who commented on
                   various versions of this proposal.
+
 Obsoletes:        de-facto PHPDoc standard (http://www.phpdoc.org)
 
-Table of Contents
------------------
+## Table of Contents
 
     1. Introduction
-    1.1. History
+      1.1. History
     2. Conventions Used in This Document
     3. Definitions
     4. Basic principles
     5. The PHPDoc format
-    5.1. short-description
-    5.2. long-description
-    5.3. tags
-    5.3.1. tag-name
-    5.3.2. tag-signature
-    5.4. Examples
+      5.1. short-description
+      5.2. long-description
+      5.3. tags
+      5.3.1. tag-name
+      5.3.2. tag-signature
+      5.4. Examples
     6. Inheritance
-    6.1. Class
-    6.2. Function / method
-    6.3. Constant / property
+      6.1. Class
+      6.2. Function / method
+      6.3. Constant / property
     7. Tags
     Appendix A. Types
     Appendix B. Differences compared with the de-facto PHPDoc standard
 
-1. Introduction
----------------
+## 1. Introduction
 
-## 1.1. History
+### 1.1. History
 
-2. Conventions Used in This Document
-------------------------------------
+## 2. Conventions Used in This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
 document are to be interpreted as described in RFC 2119.
 
-3. Definitions
---------------
+## 3. Definitions
 
 * "PHPDoc" is a section of documentation which provides information on several
   aspects of a "Structural Element".
@@ -89,8 +87,7 @@ document are to be interpreted as described in RFC 2119.
   See Appendix A for more detailed information about types.
 
 
-4. Basic principles
--------------------
+## 4. Basic principles
 
 * A PHPDoc MUST always be contained in a "DocComment"; the combination of these
   two is called a "DocBlock".
@@ -98,8 +95,7 @@ document are to be interpreted as described in RFC 2119.
 * A DocBlock MUST precede a "Structural element" or be placed at the top of a
   PHP source code file.
 
-5. The PHPDoc format
---------------------
+## 5. The PHPDoc format
 
 The PHPDoc format has the following ABNF (RFC 5234) definition:
 
@@ -272,8 +268,7 @@ A DocBlock may also span a single line as shown in the following example.
     /** @var \ArrayObject $array */
     public $array = null;
 
-6. Inheritance
---------------
+## 6. Inheritance
 
 PHPDoc's also have the ability to inherit information when the succeeding
 "Structural element" has a super-element (such as a super-class or a method with
@@ -330,7 +325,7 @@ Example:
     /**
      * @package My
      *
-    class My_ActionController {}
+    class My_ActionController extends Framework_ActionController {}
 
 In the example above the My_ActionController MUST not inherit the subpackage
 Controllers.
@@ -362,8 +357,7 @@ A constant or property SHOULD inherit the following deprecated tags if supplied:
 * @var
 
 
-7. Tags
--------
+## 7. Tags
 
 ### @api
 
@@ -375,13 +369,49 @@ deprecated
 ### @ignore
 
 ### @link
-deprecated
 
 ### @package
 
 ### @param
 
 ### @return
+
+The @return tag is used to document the return value of functions or methods.
+
+#### Syntax
+
+    @return <"Type"> [description]
+
+#### Description
+
+With the @return tag it is possible to document the type and function of a
+function or method. When provided it MUST contain a "Type" (See Appendix A) as
+to indicate what is returned; the description on the other hand is OPTIONAL yet
+RECOMMENDED in case of complicated return structures, such as associative arrays.
+
+An @return tag MAY have a multi-line description and does not need explicit
+delimiting.
+
+It is RECOMMENDED when documenting to use this tag with every function and/or
+method. Exception to this recommendation are constructors, the @return tag MAY
+be omitted here, in which case an interpreter MUST interpret this as if
+`@return self` is provided.
+
+#### Examples
+
+    /**
+     * @return integer indicates the number of items.
+     */
+    function count() {
+        ...
+    }
+
+    /**
+     * @return string|null the label's text or null if none provided.
+     */
+    function getLabel() {
+        ...
+    }
 
 ### @see
 
@@ -397,13 +427,12 @@ deprecated
 ### @var
 deprecated
 
-Appendix A. Types
------------------
+## Appendix A. Types
 
-    "Type"                   = 1*(type|array-of-type|array-of-type-expression ["|"])
+    type-expression          = 1*(array-of-type-expression|array-of-type|type ["|"])
     array-of-type-expression = "(" type-expression ")[]"
-    type                     = class-name|keyword
     array-of-type            = type "[]"
+    type                     = class-name|keyword
     class-name               = 1*CHAR
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
                                |"double"|"object"|"mixed"|"array"|"resource"
@@ -513,7 +542,7 @@ The following keywords are recognized by this PSR:
         /**
          * @return void
          */
-        function foo() {
+        function output_hello() {
             echo 'Hello world';
         }
 
@@ -527,8 +556,8 @@ The following keywords are recognized by this PSR:
          *
          * @return void
          */
-        function foo($hi) {
-            if (!$hi} {
+        function output_hello($quiet) {
+            if ($quiet} {
                 return;
             }
             echo 'Hello world';
@@ -616,8 +645,7 @@ The following keywords are recognized by this PSR:
         with each representation of the class. This would make it obvious
         for the user which classes are acceptable as type.
 
-Appendix B. Differences compared with the de-facto PHPDoc standard
-------------------------------------------------------------------
+## Appendix B. Differences compared with the de-facto PHPDoc standard
 
 This specification intends to improve upon the de-facto PHPDoc standard by
 expanding syntax and deprecating redundant elements.
@@ -632,11 +660,13 @@ The following changes may be observed and a concise rationale is provided.
 
 #### Added array notation for "Type"
 
-#### Axpanded basic syntax to support Doctrine2/Symfony2 style annotations
+#### Expanded basic syntax to support Doctrine2/Symfony2 style annotations
 
 ### Tag additions
 
 #### @api
+
+#### @type
 
 ### Tag changes
 
@@ -645,8 +675,6 @@ The following changes may be observed and a concise rationale is provided.
 ### Deprecated tags
 
 #### @category
-
-#### @link
 
 #### @subpackage
 
