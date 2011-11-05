@@ -242,14 +242,14 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
 
         $graph->export('svg', $filename);
 
-        $svg = simplexml_load_file($filename);
-        $script = $svg->addChild('script');
-        $script->addAttribute('xlink:href', 'js/SVGPan.js', 'http://www.w3.org/1999/xlink');
+//        $svg = simplexml_load_file($filename);
+//        $script = $svg->addChild('script');
+//        $script->addAttribute('xlink:href', 'js/SVGPan.js', 'http://www.w3.org/1999/xlink');
 
         // for the SVGPan file to work no viewBox may be defined and the id of the first <g> node must be renamed to 'viewport'
-        unset($svg['viewBox']);
-        $svg->g['id'] = 'viewport';
-        $svg->asXML($filename);
+//        unset($svg['viewBox']);
+//        $svg->g['id'] = 'viewport';
+//        $svg->asXML($filename);
     }
 
 }
