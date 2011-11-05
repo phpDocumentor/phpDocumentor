@@ -190,6 +190,17 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
             // adds a new inherited_from to signify that this method is not
             // declared in this class but inherited from a base class
             $inherited_from_tag = new DOMElement('tag');
+
+            $tags = $docblock->getElementsByTagName('tag');
+
+            // filter out any @todo tags; those should not be inherited
+            /** @var DOMElement tag */
+            foreach($tags as $tag) {
+                if ($tag->getAttribute('name') == 'todo') {
+                    $docblock->removeChild($tag);
+                }
+            }
+
             $docblock->appendChild($inherited_from_tag);
             $inherited_from_tag->setAttribute('name', 'inherited_from');
             $inherited_from_tag->setAttribute(

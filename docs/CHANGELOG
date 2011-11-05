@@ -18,6 +18,7 @@
 * UPDATED:  Configuration documentation
 * FIXED:    Superfluous slashes and underscores in the Graph
 * FIXED:    Class Diagram was not visible when dealing with a large class graph.
+* FIXED:    TODO items were duplicated during when attached element was inherited.
 
 10/06/2011: Version 0.15.1
 --------------------------
