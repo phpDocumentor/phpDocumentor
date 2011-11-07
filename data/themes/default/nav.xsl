@@ -27,6 +27,16 @@
         </h3>
         <div style="display: none"></div>
 
+        <xsl:if test="count(/project/file/*/docblock/tag[@name='api']|/project/file/class/*/docblock/tag[@name='api']|/project/file/interface/*/docblock/tag[@name='api']) > 0">
+        <h3 id="sidebar-api">
+            <img src="{$root}css/docblox/images/icons/book.png" alt="API" />
+            <a href="#api">API</a>
+        </h3>
+        <div class="sidebar-section">
+            <xsl:call-template name="sidebar-api"/>
+        </div>
+        </xsl:if>
+
         <h3 id="sidebar-files">
             <img src="{$root}css/docblox/images/icons/files.png" alt="Files"/>
             <a href="#files">Files</a>
@@ -146,102 +156,99 @@
         </a>, images courtesy of <a href="http://glyphish.com/" target="_top">Glyphish</a>
     </xsl:template>
 
-    <xsl:template name="api">
-        <xsl:if test="count(/project/file/*/docblock/tag[@name='api']|/project/file/class/*/docblock/tag[@name='api']|/project/file/interface/*/docblock/tag[@name='api']) > 0">
-            <h1><a href="#">API</a></h1>
-            <div style="padding: 0px;">
-                <ul id="api-" class="filetree">
-                <xsl:for-each select="/project/file/*">
-                    <xsl:sort select="./name" />
+    <xsl:template name="sidebar-api">
+        <div style="padding: 0px;">
+            <ul id="api-" class="filetree">
+            <xsl:for-each select="/project/file/*">
+                <xsl:sort select="./name" />
 
-                    <xsl:if test="count(./*/docblock/tag[@name='api']) > 0">
-                        <xsl:comment>Class|Interface level</xsl:comment>
-                        <li class="closed">
-                            <span class="{name()}">
-                                <a href="{$root}{../@generated-path}#{./full_name}" target="content">
-                                    <xsl:value-of select="./full_name" />
-                                </a>
-                            </span>
+                <xsl:if test="count(./*/docblock/tag[@name='api']) > 0">
+                    <xsl:comment>Class|Interface level</xsl:comment>
+                    <li class="closed">
+                        <span class="{name()}">
+                            <a href="{$root}{../@generated-path}#{./full_name}" target="content">
+                                <xsl:value-of select="./full_name" />
+                            </a>
+                        </span>
 
-                            <ul class="filetree">
-                            <xsl:for-each select="./*/docblock/tag[@name='api']">
-                                <xsl:sort select="../../name" />
-                                <xsl:variable name="className" select="name(../..)" />
-                                <li>
-                                <span class="{$className}">
-                                <xsl:choose>
-                                    <xsl:when test="name(../..) = 'method'">
-                                        <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
-                                        <xsl:value-of select="../../name" />
-                                        </a>
-                                    </xsl:when>
-                                    <xsl:when test="name(../..) = 'constant'">
-                                        <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
-                                        <xsl:value-of select="../../name" />
-                                        </a>
-                                    </xsl:when>
-                                    <xsl:when test="name(../..) = 'property'">
-                                        <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
-                                        <xsl:value-of select="../../name" />
-                                        </a>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="../../name" />
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                                </span>
-                                </li>
-                            </xsl:for-each>
-                            </ul>
-                        </li>
-                    </xsl:if>
-
-                    <xsl:if test="count(./docblock/tag[@name='api']) > 0">
-                        <xsl:comment>File level</xsl:comment>
-                        <xsl:if test="
-                        not(((name() = 'class') and count(./*/docblock/tag[@name='api']) > 0))
-                        and
-                        not(((name() = 'interface') and count(./*/docblock/tag[@name='api']) > 0))">
-                        <li class="closed">
-                            <span class="{name()}">
+                        <ul class="filetree">
+                        <xsl:for-each select="./*/docblock/tag[@name='api']">
+                            <xsl:sort select="../../name" />
+                            <xsl:variable name="className" select="name(../..)" />
+                            <li>
+                            <span class="{$className}">
                             <xsl:choose>
-                                <xsl:when test="name() = 'file'">
-                                    <a href="{$root}{../@generated-path}" target="content">
-                                        <xsl:value-of select="./name" />
+                                <xsl:when test="name(../..) = 'method'">
+                                    <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}()" target="content">
+                                    <xsl:value-of select="../../name" />
                                     </a>
                                 </xsl:when>
-                                <xsl:when test="name() = 'function'">
-                                    <a href="{$root}{../@generated-path}#{./full_name}::{./name}()" target="content">
-                                        <xsl:value-of select="./name" />
+                                <xsl:when test="name(../..) = 'constant'">
+                                    <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
+                                    <xsl:value-of select="../../name" />
                                     </a>
                                 </xsl:when>
-                                <xsl:when test="name() = 'class'">
-                                    <a href="{$root}{../@generated-path}#{./full_name}" target="content">
-                                        <xsl:value-of select="./full_name" />
-                                    </a>
-                                </xsl:when>
-                                <xsl:when test="name() = 'constant'">
-                                    <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
-                                        <xsl:value-of select="./name" />
-                                    </a>
-                                </xsl:when>
-                                <xsl:when test="name() = 'property'">
-                                    <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
-                                        <xsl:value-of select="./name" />
+                                <xsl:when test="name(../..) = 'property'">
+                                    <a class="{../../@visibility}" href="{$root}{../../../../@generated-path}#{../../../full_name}::{../../name}" target="content">
+                                    <xsl:value-of select="../../name" />
                                     </a>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:value-of select="./name" />
+                                    <xsl:value-of select="../../name" />
                                 </xsl:otherwise>
                             </xsl:choose>
                             </span>
-                        </li>
-                        </xsl:if>
+                            </li>
+                        </xsl:for-each>
+                        </ul>
+                    </li>
+                </xsl:if>
+
+                <xsl:if test="count(./docblock/tag[@name='api']) > 0">
+                    <xsl:comment>File level</xsl:comment>
+                    <xsl:if test="
+                    not(((name() = 'class') and count(./*/docblock/tag[@name='api']) > 0))
+                    and
+                    not(((name() = 'interface') and count(./*/docblock/tag[@name='api']) > 0))">
+                    <li class="closed">
+                        <span class="{name()}">
+                        <xsl:choose>
+                            <xsl:when test="name() = 'file'">
+                                <a href="{$root}{../@generated-path}" target="content">
+                                    <xsl:value-of select="./name" />
+                                </a>
+                            </xsl:when>
+                            <xsl:when test="name() = 'function'">
+                                <a href="{$root}{../@generated-path}#{./full_name}::{./name}()" target="content">
+                                    <xsl:value-of select="./name" />
+                                </a>
+                            </xsl:when>
+                            <xsl:when test="name() = 'class'">
+                                <a href="{$root}{../@generated-path}#{./full_name}" target="content">
+                                    <xsl:value-of select="./full_name" />
+                                </a>
+                            </xsl:when>
+                            <xsl:when test="name() = 'constant'">
+                                <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
+                                    <xsl:value-of select="./name" />
+                                </a>
+                            </xsl:when>
+                            <xsl:when test="name() = 'property'">
+                                <a href="{$root}{../@generated-path}#{./full_name}::{./name}" target="content">
+                                    <xsl:value-of select="./name" />
+                                </a>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="./name" />
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        </span>
+                    </li>
                     </xsl:if>
-                </xsl:for-each>
-                </ul>
-            </div>
-        </xsl:if>
+                </xsl:if>
+            </xsl:for-each>
+            </ul>
+        </div>
     </xsl:template>
 
   <xsl:template match="file">
