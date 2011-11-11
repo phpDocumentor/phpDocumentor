@@ -58,6 +58,52 @@ document are to be interpreted as described in RFC 2119.
   * function (including methods)
   * property
   * constant
+  * variables, both local and global scope.
+
+  It is RECOMMENDED to precede a "Structural Element" with a DocBlock with its
+  definition and not with each usage.
+
+  Example:
+
+      /** @type int This is a counter. */
+      $int = 0;
+
+      // there should be no docblock here
+      $int++;
+
+  Or:
+
+      /**
+       * This class acts as an example on where to position a DocBlock.
+       */
+      class Foo
+      {
+          /** @type string|null Should contain a description if available */
+          protected $description = null;
+
+          /**
+           * This method sets a description.
+           *
+           * @param string $description A text with a maximum of 80 characters.
+           *
+           * @return void
+           */
+          public function setDescription($description)
+          {
+              // there should be no docblock here
+              $this->description = $description;
+          }
+      }
+
+  Another example is to document the variable in a foreach explicitly; many IDEs
+  use this information to help you with auto-completion:
+
+      /** @type \Sqlite3 $sqlite */
+      foreach($connections as $sqlite) {
+          // there should be no docblock here
+          $sqlite->open('/my/database/path');
+          <...>
+      }
 
 * "DocComment" is a special type of comment which starts with `/**`, ends
   with `*/` and may contain any number of lines in between. Every line should
@@ -357,7 +403,6 @@ A constant or property SHOULD inherit the following deprecated tags if supplied:
 
 * @var
 
-
 ## 7. Tags
 
 ### @api
@@ -427,10 +472,68 @@ deprecated
 
 ### @type
 
+You may use the @type tag to document the "Type" of the following
+"Structural Elements":
+
+* Constants, both class and global
+* Properties
+* Variables, both global and local scope
+
+#### Syntax
+
+    @type <"Type"> [description]
+
+#### Description
+
+The @type tag is the successor of the @var tag and serves the purpose of defining
+which type of data is contained in a Constant, Property or Variable.
+
+Each Constant or Property *definition* MUST be preceded by a DocBlock
+containing the @type tag. Each Variable which type is ambiguous or unknown is
+SHOULD to be preceded by a DocBlock containing the @type tag. Any other
+variable MAY be preceeded with a similar DocBlock.
+
+It is NOT RECOMMENDED to use the @var alias unless it is necessary in order for
+the application, or associated tools, to function correctly.
+
+#### Examples
+
+      /** @type int This is a counter. */
+      $int = 0;
+
+      // there should be no docblock here
+      $int++;
+
+  Or:
+
+      class Foo
+      {
+          /** @type string|null Should contain a description if available */
+          protected $description = null;
+
+          public function setDescription($description)
+          {
+              // there should be no docblock here
+              $this->description = $description;
+          }
+      }
+
+  Another example is to document the variable in a foreach explicitly; many IDEs
+  use this information to help you with auto-completion:
+
+      /** @type \Sqlite3 $sqlite */
+      foreach($connections as $sqlite) {
+          // there should be no docblock here
+          $sqlite->open('/my/database/path');
+          <...>
+      }
+
 ### @uses
 
 ### @var
-deprecated
+
+Is a **deprecated** alias for `@type`, please see the documentation of this tag for
+details of its usage.
 
 ## Appendix A. Types
 
