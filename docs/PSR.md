@@ -46,7 +46,7 @@ document are to be interpreted as described in RFC 2119.
 * "PHPDoc" is a section of documentation which provides information on several
   aspects of a "Structural Element".
 
-* "Structural element" is a collection of Programming Constructs which SHOULD be
+* "Structural Element" is a collection of Programming Constructs which SHOULD be
   preceded by a DocBlock. The collection contains the following constructs:
 
   * namespace
@@ -139,7 +139,7 @@ document are to be interpreted as described in RFC 2119.
 * A PHPDoc MUST always be contained in a "DocComment"; the combination of these
   two is called a "DocBlock".
 
-* A DocBlock MUST precede a "Structural element" or be placed at the top of a
+* A DocBlock MUST precede a "Structural Element" or be placed at the top of a
   PHP source code file.
 
 ## 5. The PHPDoc Format
@@ -163,7 +163,7 @@ Examples of use are included in chapter 5.4.
 
 ### 5.1. Short Description
 
-A short description MUST contain an abstract of the "Structural element"
+A short description MUST contain an abstract of the "Structural Element"
 defining the purpose. It is recommended for short descriptions to span a single
 line or at most two but not more than that.
 
@@ -179,7 +179,7 @@ Tags do not necessarily have to be preceded by a short description.
 ### 5.2. Long Description
 
 The long description is OPTIONAL but SHOULD be included when the
-"Structural element", which this DocBlock precedes, contains more operations, or
+"Structural Element", which this DocBlock precedes, contains more operations, or
 more complex operations, than can be described in the short description alone.
 
 Any application parsing the long description SHOULD support the Markdown
@@ -193,17 +193,17 @@ Common uses for the long description are (amongst others):
 * To specify of what child elements an input or output array, or object, is
   composed.
 * To provide a set of common use cases or scenarios in which the
-  "Structural element" may be applied.
+  "Structural Element" may be applied.
 
 ### 5.3. Tags
 
 Tags provide a way for authors to supply concise meta-data regarding the
-succeeding "Structural element". They commonly consist of a name followed by
+succeeding "Structural Element". They commonly consist of a name followed by
 white-space and a description. The description MAY span multiple lines and MAY
 follow a strict format dictated by the type of tag, as indicated by its name.
 
 The meta-data supplied by tags could result in a change of behaviour of the
-succeeding "Structural element", in which case the term "Annotation" is
+succeeding "Structural Element", in which case the term "Annotation" is
 commonly used instead of "Tag".
 
 A variation of this is where, instead of a description, a tag-signature is used;
@@ -221,7 +221,7 @@ annotations may be implemented.
 
 Tag names indicate what type of information is represented by this tag or, in
 case of annotations, which behaviour must be injected into the succeeding
-"Structural element".
+"Structural Element".
 
 In support of annotations, it is allowable to introduce a set of tags designed
 specifically for an individual application or subset of applications (and thus
@@ -318,7 +318,7 @@ A DocBlock may also span a single line as shown in the following example.
 ## 6. Inheritance
 
 PHPDoc's also have the ability to inherit information when the succeeding
-"Structural element" has a super-element (such as a super-class or a method with
+"Structural Element" has a super-element (such as a super-class or a method with
 the same name in a super-class or implemented in a super-interface).
 
 Every "Structural Element" MUST inherit the following PHPDoc parts by default:
@@ -407,8 +407,69 @@ A constant or property SHOULD inherit the following deprecated tags if supplied:
 
 ### @api
 
-### @category
-deprecated
+The @api tag is used to declare "Structural Elements" as being suitable for
+consumption by third parties.
+
+#### Syntax
+
+    @api
+
+#### Description
+
+The @api tag represents those "Structural Elements" with a public visibility
+which are intended to be the public API components for a library or framework.
+Other "Structural Elements" with a public visibility serve to support the
+internal structure and are not recommended to be used by the consumer.
+
+The exact meaning of "Structural Elements" tagged with @api MAY differ per
+project. It is however RECOMMENDED that all tagged "Structural Elements" SHOULD
+NOT change after publication unless the new version is tagged as
+*Breaking Backwards Compatibility*.
+
+#### Examples
+
+    /**
+     * This method will not change until a major release.
+     *
+     * @api
+     *
+     * @return void
+     */
+     function showVersion()
+     {
+        <...>
+     }
+
+### @category [deprecated]
+
+The @category tag is used to organize groups of packages together; but is
+deprecated in favour of occupying the top-level with the @package tag.
+As such usage of this tag is NOT RECOMMENDED.
+
+#### Syntax
+
+    @category [description]
+
+#### Description
+
+The @category tag was the original de-facto Standard used to group several
+"Structural Elements" their @packages into one category. This could then be
+used to aid in the generation of API documentation.
+
+This was necessary since the @package tag as defined in the original Standard did
+not contain more then 1 hierarchy level; since this has changed this tag SHOULD
+NOT be used.
+
+Please see the documentation for `@package` for details of its usage.
+
+#### Examples
+
+    /**
+     * Page-Level DocBlock
+     *
+     * @category MyCategory
+     * @package  MyPackage
+     */
 
 ### @internal
 
@@ -417,6 +478,50 @@ deprecated
 ### @link
 
 ### @package
+
+The @package tag is used to categorize "Structural Elements" into logical
+subdivisions.
+
+#### Syntax
+
+    @package [level 1]\[level 2]\[etc]
+
+#### Description
+
+The @package tag can be used as a counterpart or supplement to Namespaces.
+Namespaces provide a functional subdivision of "Structural Elements" where the
+@package tag can provide a *logical* subdivision in which way the elements can
+be grouped with a different hierarchy.
+
+If both logical and functional subdivisions are equal it is RECOMMENDED not to
+use the @package tag to prevent maintenance overhead.
+
+Each level in the logical hierarchy MUST separated with a backslash (`\`) to
+be familiar to Namespaces. A hierarchy MAY be of endless depth but it is
+RECOMMENDED to keep the depth at less or equal than 6 levels.
+
+Please note that the @package applies to different "Structural Elements"
+depending where it is defined.
+
+1. if the @package is defined in the *file-level* DocBlock then it only applies
+   to the following elements in the applicable file:
+
+   * global functions
+   * global constants
+   * global variables
+   * requires and includes
+
+2. if the @package is defined in a *namespace-level* or *class-level* DocBlock,
+   which also applies to interfaces, then the package applies that namespace,
+   class or interface (and its contained elements).
+   This means that a function which is contained in a namespace with the
+   @package tag assumes that package.
+
+#### Examples
+
+    /**
+     * @package PSR\Documentation\API
+     */
 
 ### @param
 
@@ -443,9 +548,9 @@ method. Exceptions to this recommendation are:
 
 1. **constructors**, the @return tag MAY be omitted here, in which case an
    interpreter MUST interpret this as if `@return self` is provided.
-2. **functions/methods without a `return` value**, the @return tag MAY be omitted
-   here, in which case an interpreter MUST interpret this as if `@return void`
-   is provided.
+2. **functions and methods without a `return` value**, the @return tag MAY be
+   omitted here, in which case an interpreter MUST interpret this as if
+   `@return void` is provided.
 
 #### Examples
 
@@ -489,8 +594,8 @@ The @type tag is the successor of the @var tag and serves the purpose of definin
 which type of data is contained in a Constant, Property or Variable.
 
 Each Constant or Property *definition* MUST be preceded by a DocBlock
-containing the @type tag. Each Variable which type is ambiguous or unknown is
-SHOULD to be preceded by a DocBlock containing the @type tag. Any other
+containing the @type tag. Each Variable, where the type is ambiguous or unknown,
+SHOULD be preceded by a DocBlock containing the @type tag. Any other
 variable MAY be preceeded with a similar DocBlock.
 
 It is NOT RECOMMENDED to use the @var alias unless it is necessary in order for
@@ -530,10 +635,10 @@ the application, or associated tools, to function correctly.
 
 ### @uses
 
-### @var
+### @var [deprecated]
 
-Is a **deprecated** alias for `@type`, please see the documentation of this tag for
-details of its usage.
+Is a **deprecated** alias for `@type`, please see the documentation for `@type`
+for details of its usage.
 
 ## Appendix A. Types
 
@@ -774,7 +879,21 @@ The following changes may be observed and a concise rationale is provided.
 
 #### @api
 
+Framework and library developers needed a way for consumers to distinguish
+between public methods intended for internal use or public methods fit for
+consuming.
+
 #### @type
+
+This tag is meant to replace @var and better convey the meaning and intention:
+to tell the user which *type* of data is contained in the succeeding
+"Structural Element".
+
+Additionally constants did not have a tag which identified the type of the
+contained data. Instead of re-using @var, which is inappropriate since
+a constant is not variable, or defining a *new* tag @const, which would make
+usage of the right tag even more complex, a new tag @type was created to replace
+@var and serve as new tag for constants.
 
 ### Tag Changes
 
