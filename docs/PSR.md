@@ -9,33 +9,33 @@ Acknowledgements: The authors wish to thank Chuck Burgess (@ashnazg),
 
 Obsoletes:        de-facto PHPDoc standard (http://www.phpdoc.org)
 
-## Table of Contents
+## Table Of Contents
 
     1. Introduction
       1.1. History
-    2. Conventions Used in This Document
+    2. Conventions Used In This Document
     3. Definitions
-    4. Basic principles
-    5. The PHPDoc format
-      5.1. short-description
-      5.2. long-description
-      5.3. tags
-      5.3.1. tag-name
-      5.3.2. tag-signature
+    4. Basic Principles
+    5. The PHPDoc Format
+      5.1. Short Description
+      5.2. Long Description
+      5.3. Tags
+        5.3.1. Tag Name
+        5.3.2. Tag Signature
       5.4. Examples
     6. Inheritance
-      6.1. Class
-      6.2. Function / method
-      6.3. Constant / property
+      6.1. Class Or Interface
+      6.2. Function Or Method
+      6.3. Constant Or Property
     7. Tags
     Appendix A. Types
-    Appendix B. Differences compared with the de-facto PHPDoc standard
+    Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
 ## 1. Introduction
 
 ### 1.1. History
 
-## 2. Conventions Used in This Document
+## 2. Conventions Used In This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
@@ -66,12 +66,13 @@ document are to be interpreted as described in RFC 2119.
 
   Single line example:
 
-  /** <...> */
+      /** <...> */
 
   Multiline example:
-  /**
-   * <...>
-   */
+
+      /**
+       * <...>
+       */
 
 * "DocBlock" is a "DocComment" containing a single "PHPDoc" and represents the
   basic in-source representation.
@@ -87,7 +88,7 @@ document are to be interpreted as described in RFC 2119.
   See Appendix A for more detailed information about types.
 
 
-## 4. Basic principles
+## 4. Basic Principles
 
 * A PHPDoc MUST always be contained in a "DocComment"; the combination of these
   two is called a "DocBlock".
@@ -95,7 +96,7 @@ document are to be interpreted as described in RFC 2119.
 * A DocBlock MUST precede a "Structural element" or be placed at the top of a
   PHP source code file.
 
-## 5. The PHPDoc format
+## 5. The PHPDoc Format
 
 The PHPDoc format has the following ABNF (RFC 5234) definition:
 
@@ -107,14 +108,14 @@ The PHPDoc format has the following ABNF (RFC 5234) definition:
     inline-tag        = "{" tag "}"
     tag               = "@" tag-name [tag-details]
     tag-name          = (ALPHA / "\") *(ALPHA / DIGIT / "\" / "-" / "_")
-    tag-details       = *" " (" " tag-description / tag-signature)
+    tag-details       = *SP (SP tag-description / tag-signature)
     tag-description   = 1*CHAR
     tag-signature     = "(" *tag-argument ")"
-    tag-argument      = *" " 1*CHAR [","] *" "
+    tag-argument      = *SP 1*CHAR [","] *SP
 
 Examples of use are included in chapter 5.4.
 
-### 5.1. short-description
+### 5.1. Short Description
 
 A short description MUST contain an abstract of the "Structural element"
 defining the purpose. It is recommended for short descriptions to span a single
@@ -129,7 +130,7 @@ description until the stop of the short description is encountered.
 
 Tags do not necessarily have to be preceded by a short description.
 
-### 5.2. long-description
+### 5.2. Long Description
 
 The long description is OPTIONAL but SHOULD be included when the
 "Structural element", which this DocBlock precedes, contains more operations, or
@@ -148,7 +149,7 @@ Common uses for the long description are (amongst others):
 * To provide a set of common use cases or scenarios in which the
   "Structural element" may be applied.
 
-### 5.3. tags
+### 5.3. Tags
 
 Tags provide a way for authors to supply concise meta-data regarding the
 succeeding "Structural element". They commonly consist of a name followed by
@@ -170,7 +171,7 @@ Annotations will not be described in further detail in this specification as
 this falls beyond the scope. This specification provides a basis on top of which
 annotations may be implemented.
 
-#### 5.3.1. tag-name
+#### 5.3.1. Tag Name
 
 Tag names indicate what type of information is represented by this tag or, in
 case of annotations, which behaviour must be injected into the succeeding
@@ -196,7 +197,7 @@ Example of a tag name prefixed with a vendor name and hyphen:
 Tag names that are not prefixed with a vendor or namespace MUST be described in
 this specification (see chapter 7) and/or any official addendum.
 
-#### 5.3.2. tag-signature
+#### 5.3.2. Tag Signature
 
 Tag signatures are commonly used for annotations to supply additional meta-data
 specific to the current tag.
@@ -224,8 +225,8 @@ A complete example could look like the following example:
      *
      * @see Markdown
      *
-     * @param int        $parameter1 a parameter description.
-     * @param \Exception $e          another parameter description.
+     * @param int        $parameter1 A parameter description.
+     * @param \Exception $e          Another parameter description.
      *
      * @\Doctrine\Orm\Mapper\Entity()
      *
@@ -242,8 +243,8 @@ It is also allowed to omit the long description:
      *
      * @see Markdown
      *
-     * @param int        $parameter1 a parameter description.
-     * @param \Exception $parameter2 another parameter description.
+     * @param int        $parameter1 A parameter description.
+     * @param \Exception $parameter2 Another parameter description.
      *
      * @\Doctrine\Orm\Mapper\Entity()
      *
@@ -296,7 +297,7 @@ Inheritance takes place from the root of a class hierarchy graph to its leafs.
 This means that anything inherited in the bottom of the tree MUST 'bubble' up to
 the top unless overridden.
 
-### 6.1. Class or interface
+### 6.1. Class Or Interface
 
 In addition to the inherited information, as defined in the chapter's root,
 a class or interface MUST inherit the following tags:
@@ -330,7 +331,7 @@ Example:
 In the example above the My_ActionController MUST not inherit the subpackage
 Controllers.
 
-### 6.2. Function or method
+### 6.2. Function Or Method
 
 In addition to the inherited information, as defined in the chapter's root,
 a function or method MUST inherit the following tags:
@@ -342,7 +343,7 @@ a function or method MUST inherit the following tags:
 * @author
 * @copyright
 
-### 6.3. Constant or property
+### 6.3. Constant Or Property
 
 In addition to the inherited information, as defined in the chapter's root,
 a constant or property MUST inherit the following tags:
@@ -385,29 +386,33 @@ The @return tag is used to document the return value of functions or methods.
 #### Description
 
 With the @return tag it is possible to document the type and function of a
-function or method. When provided it MUST contain a "Type" (See Appendix A) as
+function or method. When provided it MUST contain a "Type" (See Appendix A)
 to indicate what is returned; the description on the other hand is OPTIONAL yet
 RECOMMENDED in case of complicated return structures, such as associative arrays.
 
-An @return tag MAY have a multi-line description and does not need explicit
+The @return tag MAY have a multi-line description and does not need explicit
 delimiting.
 
-It is RECOMMENDED when documenting to use this tag with every function and/or
-method. Exception to this recommendation are constructors, the @return tag MAY
-be omitted here, in which case an interpreter MUST interpret this as if
-`@return self` is provided.
+It is RECOMMENDED when documenting to use this tag with every function and
+method. Exceptions to this recommendation are:
+
+1. **constructors**, the @return tag MAY be omitted here, in which case an
+   interpreter MUST interpret this as if `@return self` is provided.
+2. **functions/methods without a `return` value**, the @return tag MAY be omitted
+   here, in which case an interpreter MUST interpret this as if `@return void`
+   is provided.
 
 #### Examples
 
     /**
-     * @return integer indicates the number of items.
+     * @return integer Indicates the number of items.
      */
     function count() {
         ...
     }
 
     /**
-     * @return string|null the label's text or null if none provided.
+     * @return string|null The label's text or null if none provided.
      */
     function getLabel() {
         ...
@@ -469,7 +474,7 @@ following the format of one of the following options:
 
 The supported atomic types are either a *valid class name* or *keyword*.
 
-### Valid class name
+### Valid Class Name
 
 A valid class name seen from the context where this type is mentioned. Thus
 this may be either a Fully Qualified Class Name (FQCN) or if present in a
@@ -590,7 +595,7 @@ The following keywords are recognized by this PSR:
     Example:
 
         /**
-         * @param boolean $create_new when true returns a new stdClass
+         * @param boolean $create_new When true returns a new stdClass.
          *
          * @return stdClass|null
          */
@@ -645,34 +650,34 @@ The following keywords are recognized by this PSR:
         with each representation of the class. This would make it obvious
         for the user which classes are acceptable as type.
 
-## Appendix B. Differences compared with the de-facto PHPDoc standard
+## Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
 This specification intends to improve upon the de-facto PHPDoc standard by
 expanding syntax and deprecating redundant elements.
 
 The following changes may be observed and a concise rationale is provided.
 
-### Syntax changes
+### Syntax Changes
 
-#### Added support for namespaces
+#### Added Support For Namespaces
 
-#### Added 'self' as "Type"
+#### Added 'self' As "Type"
 
-#### Added array notation for "Type"
+#### Added Array Notation For "Type"
 
-#### Expanded basic syntax to support Doctrine2/Symfony2 style annotations
+#### Expanded Basic Syntax To Support Doctrine2/Symfony2 Style Annotations
 
-### Tag additions
+### Tag Additions
 
 #### @api
 
 #### @type
 
-### Tag changes
+### Tag Changes
 
 #### @package
 
-### Deprecated tags
+### Deprecated Tags
 
 #### @category
 
