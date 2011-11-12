@@ -18,7 +18,7 @@ class DocBlox_Core_LogTest extends PHPUnit_Framework_TestCase
     $this->assertSame('/tmp/DocBlox_Core_Log_test', $this->fixture->getFilename());
 
     $fixture = new DocBlox_Core_Log('/DocBlox_Core_Log_test');
-    $this->assertSame('', $fixture->getFilename());
+    $this->assertSame('/DocBlox_Core_Log_test', $fixture->getFilename());
 
     // we explicitly do not check for seconds as it is not important and might go wrong when we just cross a second
     $fixture = new DocBlox_Core_Log('/tmp/DocBlox_Core_Log_{DATE}');
