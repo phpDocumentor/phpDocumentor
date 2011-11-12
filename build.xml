@@ -43,7 +43,7 @@ in parallel using a maximum of 2 threads. -->
   <!-- Generate pmd.xml -->
   <target name="phpmd">
     <exec executable="phpmd">
-      <arg line="${source}
+      <arg line="${source}/src/DocBlox
               xml
               codesize,design,naming,unusedcode
               --reportfile ${basedir}/build/logs/pmd.xml" />
@@ -54,7 +54,7 @@ in parallel using a maximum of 2 threads. -->
   <target name="phpcpd">
     <exec executable="phpcpd">
       <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml
-              ${source}" />
+              ${source}/src/DocBlox" />
     </exec>
   </target>
 
@@ -71,7 +71,7 @@ in parallel using a maximum of 2 threads. -->
     <exec executable="phpcs">
       <arg line="--report=checkstyle
               --report-file=${basedir}/build/logs/checkstyle.xml
-              --standard=PEAR --extensions=php 
+              --standard=PEAR --extensions=php
               ${source}/src/DocBlox" />
     </exec>
   </target>
