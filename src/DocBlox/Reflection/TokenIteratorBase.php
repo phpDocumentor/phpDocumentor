@@ -75,7 +75,9 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
      */
     public function offsetUnset($offset)
     {
-        throw new Exception('This iterator does not allow items to be unset');
+        throw new BadMethodCallException(
+            'This iterator does not allow items to be unset'
+        );
     }
 
     /**
@@ -91,7 +93,9 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     {
         if (!isset($this->store[$offset]))
         {
-            throw new Exception('This iterator does not allow new items to be added');
+            throw new BadMethodCallException(
+                'This iterator does not allow new items to be added'
+            );
         }
 
         $this->store[$offset] = $value;
