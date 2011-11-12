@@ -178,7 +178,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
         $times[] = microtime(true) - $time;
     }
     $average = array_sum($times) / count($times);
-    $this->assertLessThan(0.0003, $average);
+    $this->assertLessThan(0.0005, $average);
   }
 
   /**
