@@ -47,8 +47,8 @@ abstract class DocBlox_Task_Abstract extends Zend_Console_Getopt
         $this->addOption(
             'c|config', '-s',
             'Configuration filename OR "none", when this option is omitted '
-            . 'DocBlox tries to load the docblox.xml or  docblox.dist.xml '
-            .'from the current working directory'
+            . 'DocBlox tries to load the docblox.xml or docblox.dist.xml '
+            . 'from the current working directory'
         );
 
         $this->configure();
