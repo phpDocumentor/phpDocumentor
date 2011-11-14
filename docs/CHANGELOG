@@ -1,4 +1,4 @@
-11/05/2011: Version 0.16.0
+11/14/2011: Version 0.16.0
 --------------------------
 
 * ADDED:    Checkstyle format output of errors using the `checkstyle` theme.
@@ -19,6 +19,7 @@
 * FIXED:    Superfluous slashes and underscores in the Graph
 * FIXED:    Class Diagram was not visible when dealing with a large class graph.
 * FIXED:    TODO items were duplicated during when attached element was inherited.
+* FIXED:    API listing is re-introduced into the sidebar
 
 10/06/2011: Version 0.15.1
 --------------------------
