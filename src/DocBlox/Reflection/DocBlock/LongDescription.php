@@ -86,7 +86,7 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
       $result = Markdown($result);
     }
 
-    return $result;
+    return trim($result);
   }
 
   /**
