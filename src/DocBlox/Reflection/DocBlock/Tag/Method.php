@@ -43,6 +43,14 @@ class DocBlox_Reflection_DocBlock_Tag_Method
         $this->content = $content;
 
         $matches = array();
+        // 1. none or more whitespace
+        // 2. optionally a word with underscores followed by whitespace : as
+        //    type for the return value
+        // 3. then optionally a word with underscores followed by () and
+        //    whitespace : as method name as used by phpDocumentor
+        // 4. then a word with underscores, followed by ( and any character
+        //    until a ) and whitespace : as method name with signature
+        // 5. any remaining text : as description
         if (preg_match(
             '/^[\s]*(?:([\w_]+)[\s]+)?(?:[\w_]+\(\)[\s]+)?([\w_]+)\(([^\)]*)\)[\s]+(.*)/u',
             $content,
