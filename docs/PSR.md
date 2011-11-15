@@ -1,13 +1,19 @@
 PSR-n: PHPDoc
 =============
 
-Author:           Mike van Riel (@mvriel) <mike.vanriel@naenius.com>
+Author(s):
 
-Acknowledgements: The authors wish to thank Chuck Burgess (@ashnazg),
-                  Gary Jones (@GaryJ) and all other people who commented on
-                  various versions of this proposal.
+    Mike van Riel (@mvriel) <mike.vanriel@naenius.com>
 
-Obsoletes:        de-facto PHPDoc standard (http://www.phpdoc.org)
+Acknowledgements:
+
+    The authors wish to thank Chuck Burgess (@ashnazg),
+    Gary Jones (@GaryJ) and all other people who commented on
+    various versions of this proposal.
+
+Obsoletes:
+
+    de-facto PHPDoc standard (http://www.phpdoc.org)
 
 ## Table Of Contents
 
@@ -28,6 +34,29 @@ Obsoletes:        de-facto PHPDoc standard (http://www.phpdoc.org)
       6.2. Function Or Method
       6.3. Constant Or Property
     7. Tags
+      7.1.  @api
+      7.2.  @author
+      7.3.  @category [deprecated]
+      7.4.  @copyright
+      7.5.  @deprecated
+      7.6.  @example
+      7.7.  @global
+      7.8.  @internal
+      7.9.  @license
+      7.10. @link
+      7.11. @method
+      7.12. @package
+      7.13. @param
+      7.14. @property
+      7.15. @return
+      7.16. @see
+      7.17. @since
+      7.18. @subpackage [deprecated]
+      7.19. @todo
+      7.20. @throws
+      7.21. @type
+      7.22. @uses
+      7.23. @version
     Appendix A. Types
     Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
@@ -405,7 +434,7 @@ A constant or property SHOULD inherit the following deprecated tags if supplied:
 
 ## 7. Tags
 
-### @api
+### 7.1. @api
 
 The @api tag is used to declare "Structural Elements" as being suitable for
 consumption by third parties.
@@ -440,7 +469,9 @@ NOT change after publication unless the new version is tagged as
         <...>
      }
 
-### @category [deprecated]
+### 7.2. @author
+
+### 7.3. @category [deprecated]
 
 The @category tag is used to organize groups of packages together; but is
 deprecated in favour of occupying the top-level with the @package tag.
@@ -471,13 +502,164 @@ Please see the documentation for `@package` for details of its usage.
      * @package  MyPackage
      */
 
-### @internal
+### 7.4. @copyright
 
-### @ignore
+### 7.5. @deprecated
 
-### @link
+### 7.6. @example
 
-### @package
+### 7.7. @global
+
+### 7.8. @internal
+
+The @internal tag is used to denote that the associated "Structural Element" is
+an structure internal to this application or library. It may also be used inside
+a Long Description to insert a piece of text that is only applicable for
+the developers of this piece of software.
+
+#### Syntax
+
+    @internal
+
+or inline:
+
+    {@internal [description]}}
+
+*Please note the double closing brace instead of the usual single brace. This
+helps prevent parsing issues when using braces inside of the inline tag and is
+also present due to historical reasons.*
+
+#### Description
+
+The @internal tag can be used as counterpart of the @api tag, indicating that
+the associated "Structural Element" is used purely for the internal workings of
+this piece of software.
+
+When generating documentation from PHPDoc comments it is RECOMMENDED to hide the
+associated element unless the user has explicitly indicated that internal elements
+should be included.
+
+An additional use of @internal is to add internal comments or additional
+description text inline to the Long Description. This may be done, for example,
+to withhold certain business-critical or confusing information when generating
+documentation from the source code of this piece of software.
+
+#### Examples
+
+Mark the count function as being internal to this project:
+
+    /**
+     * @internal
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count() {
+        ...
+    }
+
+    /**
+     * Counts the number of Foo.
+     *
+     * {@internal Silently adds one extra Foo to compensate for lack of Foo }}
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count() {
+        ...
+    }
+
+### 7.9. @license
+
+### 7.10. @link
+
+The @link tag indicates an custom relation between the associated
+"Structural Element" and a website, which is identified by a full URL.
+
+#### Syntax
+
+    @link [url] [description]
+
+or inline
+
+   {@link [url]}
+
+#### Description
+
+The @link tag can be used to define a relation, or link, the
+"Structural Element", or part of the Long Description when used inline,
+to an URL.
+
+The URL MUST be complete and welformed as specified in RFC ?.
+
+When the @link tag is not used inline it MAY have a description appended to
+indicate the type of relation defined by this occurance.
+
+#### Examples
+
+    /**
+     * @link http://foo.bar/my/bar Documentation of Foo.
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count() {
+        ...
+    }
+
+    /**
+     * This method counts the occurances of Foo.
+     *
+     * When no more Foo ({@link http://foo.bar/my/bar}) are given this function
+     * will add one as there must always be one Foo.
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count() {
+        ...
+    }
+
+### 7.11. @method
+
+The @method allows a class to know which 'magic' methods are callable.
+
+#### Syntax
+
+    @method [return type] [name]([type] [parameter], [...]) [description]
+
+#### Description
+
+The @method tag is used in situation where a class contains the __call() magic
+method and defines some definite uses.
+
+An example of this is a child class whose parent has a __call() to have dynamic
+getters or setters for predefined properties. The child knows which getters and
+setters need to be present but relies on the parent class to use the __call()
+method to provide it. In this situation will the child class have a @method
+tag for each magic setter or getter method.
+
+The @method tag allows the author to communicate the type of the arguments and
+return value by including those types in the signature.
+
+When the intended method does not have a return value then the return type MAY
+be omitted; in which case 'void' is implied.
+
+#### Examples
+
+    class Parent {
+        public function __call() {
+            ...
+        }
+    }
+
+    /**
+     * @method string getString()
+     * @method void setInteger(integer $integer)
+     * @method setString(integer $integer)
+     */
+    class Child extends Parent {
+        ...
+    }
+
+### 7.12. @package
 
 The @package tag is used to categorize "Structural Elements" into logical
 subdivisions.
@@ -523,9 +705,11 @@ depending where it is defined.
      * @package PSR\Documentation\API
      */
 
-### @param
+### 7.13. @param
 
-### @return
+### 7.14. @property
+
+### 7.15. @return
 
 The @return tag is used to document the return value of functions or methods.
 
@@ -568,14 +752,21 @@ method. Exceptions to this recommendation are:
         ...
     }
 
-### @see
+### 7.16. @see
 
-### @subpackage
-deprecated
+### 7.17. @since
 
-### @throws
+### 7.18. @subpackage [deprecated]
 
-### @type
+### 7.19. @todo
+
+### 7.20. @throws
+
+### 7.21. @type
+
+### 7.22. @uses
+
+### 7.23. @version
 
 You may use the @type tag to document the "Type" of the following
 "Structural Elements":
@@ -633,9 +824,9 @@ the application, or associated tools, to function correctly.
           <...>
       }
 
-### @uses
+### 7.14. @uses
 
-### @var [deprecated]
+### 7.15. @var [deprecated]
 
 Is a **deprecated** alias for `@type`, please see the documentation for `@type`
 for details of its usage.
@@ -899,11 +1090,47 @@ usage of the right tag even more complex, a new tag @type was created to replace
 
 #### @package
 
+The @package tag replaces the function of the @category and @subpackage by
+allowing a layered hierarchy using the '\' operator.
+
+See the documentation on the @package tag for details.
+
+#### @ignore
+
+The @ignore tag has not been included in this specification as it is not a tag
+but an annotation specific to phpDocumentor and derived documentation
+generators.
+
+#### @link
+
+In the de-facto standard introduced by phpDocumentor @link supported the use of
+internal locators for "Structural Element". This use is actually superceded by
+the @see tag and thus removed.
+
+It is NOT RECOMMENDED to use the @link tag as indicated above.
+
+#### @method
+
+phpDocumentor had a different signature where the method name was repeated. Since
+this repetition only caused overhead it has been removed in this specification.
+
 ### Deprecated Tags
 
 #### @category
 
+The @package tag replaces the function of the @category and @subpackage by
+allowing a layered hierarchy using the '\' operator.
+
+See the documentation on the @package tag for details.
+
 #### @subpackage
+
+The @package tag replaces the function of the @category and @subpackage by
+allowing a layered hierarchy using the '\' operator.
+
+See the documentation on the @package tag for details.
 
 #### @var
 
+The @var tag is considered ambiguous and non-semantic; as such it is superceded
+by the @type tag which also allows the type of constants to be documented.
