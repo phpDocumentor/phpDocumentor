@@ -30,6 +30,9 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
 {
     protected $has_namespaces = false;
 
+    /** @var string Name of the font to use to display the node labels with */
+    protected $node_font = 'Courier';
+
     /**
      * Generates an array containing class to path references and then invokes the Source specific method.
      *
@@ -50,13 +53,10 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
           return;
         }
 
+        $this->node_font = $transformation->getParameter('font', 'Courier');
+
         // add to classes
         $xpath = new DOMXPath($structure);
-        $qry = $xpath->query("/namespace[@name and @name != 'default']");
-        if ($qry->length > 0) {
-            $this->has_namespaces = true;
-        }
-
         $qry = $xpath->query('//class[full_name]/..');
         $class_paths = array();
 
@@ -119,7 +119,7 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
                 $sub_element->getElementsByTagName('name')->item(0)->nodeValue
             );
             $node->setShape('box');
-            $node->setFontName('Courier New');
+            $node->setFontName($this->node_font);
             $node->setFontSize('11');
             if ($sub_element->getAttribute('abstract') == 'true') {
                 $node->setLabel('<«abstract»<br/>'. $sub_element->getElementsByTagName('name')->item(0)->nodeValue.'>');
