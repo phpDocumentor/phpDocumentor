@@ -174,7 +174,9 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
         $validatorOptions = array();
 
         foreach (array('deprecated', 'required') as $tag) {
-            $validatorOptions[$tag] = $this->loadConfigurationByElement($configOptions, $tag);
+            $validatorOptions[$tag] = $this->loadConfigurationByElement(
+                $configOptions, $tag
+            );
         }
 
         return $validatorOptions;

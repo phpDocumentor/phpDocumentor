@@ -39,20 +39,20 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
     {
         $valid = true;
 
-        if (null == $this->_docblock) {
+        if (null == $this->docblock) {
             $this->logParserError(
                 'ERROR',
                 'No DocBlock was found for method '
-                . $this->_entityName, $this->_lineNumber
+                . $this->entityName, $this->lineNumber
             );
             return false;
         }
 
-        if ('' === $this->_docblock->getShortDescription()) {
+        if ('' === $this->docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL',
                 'No short description for method '
-                . $this->_entityName, $this->_lineNumber
+                . $this->entityName, $this->lineNumber
             );
         }
 

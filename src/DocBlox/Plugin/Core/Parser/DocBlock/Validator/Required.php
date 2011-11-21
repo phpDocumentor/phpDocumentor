@@ -50,13 +50,15 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Required
      * </options>
      *
      * @see DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract::isValid()
+     *
+     * @return void
      */
     public function isValid()
     {
-        $docType = get_class($this->_source);
-        if (isset($this->_options['required'][$docType])) {
+        $docType = get_class($this->source);
+        if (isset($this->options['required'][$docType])) {
             $this->validateTags($docType);
-        } else if (isset($this->_options['required']['__ALL__'])) {
+        } else if (isset($this->options['required']['__ALL__'])) {
             $this->validateTags('__ALL__');
         }
     }
@@ -65,19 +67,19 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Required
      * Validate the tags based on the type of docblock being
      * parsed etc
      *
-     * @param string $key Access key to $this->_options['required']
+     * @param string $key Access key to $this->options['required']
      *
      * @return void
      */
     protected function validateTags($key)
     {
-
-        foreach ($this->_options['required'][$key] as $tag) {
-
-            if (count($this->_docblock->getTagsByName($tag)) == 0) {
+        foreach ($this->options['required'][$key] as $tag) {
+            if (count($this->docblock->getTagsByName($tag)) == 0) {
 
                 $this->logParserError(
-                    'CRITICAL', 'Not found required tag "' . $tag .'" in ' . $this->_entityName, $this->_lineNumber
+                    'CRITICAL', 'Not found required tag "' . $tag .'" in '
+                    . $this->entityName,
+                    $this->lineNumber
                 );
             }
         }

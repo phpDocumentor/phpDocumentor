@@ -112,8 +112,8 @@ class DocBlox_Plugin_Core_Transformer_Writer_Xsl
             if (substr($transformation->getArtifact(), 0, 1) == '$') {
                 // not a file, it must become a variable!
                 $variable_name = substr($transformation->getArtifact(), 1);
-                $this->xsl_variables[$variable_name] =
-                    $proc->transformToXml($structure);
+                $this->xsl_variables[$variable_name]
+                    = $proc->transformToXml($structure);
             } else {
                 $proc->transformToURI($structure, 'file://' . $artifact);
             }

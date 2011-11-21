@@ -4,22 +4,22 @@
  *
  * PHP Version 5
  *
- * @category   DocBlox
- * @package    Reflection
- * @author     Ben Selby <benmatselby@gmail.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category  DocBlox
+ * @package   Reflection
+ * @author    Ben Selby <benmatselby@gmail.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
  * Reflection class for a @link tag in a Docblock.
  *
- * @category   DocBlox
- * @package    Reflection
- * @author     Ben Selby <benmatselby@gmail.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category DocBlox
+ * @package  Reflection
+ * @author   Ben Selby <benmatselby@gmail.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_Tag
 {
@@ -29,10 +29,10 @@ class DocBlox_Reflection_DocBlock_Tag_Link extends DocBlox_Reflection_DocBlock_T
     /**
      * Parses a tag and populates the member variables.
      *
-     * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
-     *
      * @param string $type    Tag type
      * @param string $content Content of the tag
+     *
+     * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
      */
     public function __construct($type, $content)
     {

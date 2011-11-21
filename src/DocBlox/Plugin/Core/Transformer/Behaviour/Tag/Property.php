@@ -2,13 +2,14 @@
 /**
  * DocBlox
  *
- * PHP 5
+ * PHP Version 5
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license	   http://www.opensource.org/licenses/mit-license.php MIT
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 
@@ -17,8 +18,9 @@
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
@@ -29,7 +31,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Property extends
      * Find all return tags that contain 'self' or '$this' and replace those
      * terms for the name of the current class' type.
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml Structure source to apply behaviour onto.
      *
      * @return DOMDocument
      */
@@ -43,7 +45,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Property extends
         );
 
         /** @var DOMElement $node */
-        foreach($nodes as $node) {
+        foreach ($nodes as $node) {
             $class = $node->parentNode->parentNode;
 
             $property = new DOMElement('property');
@@ -53,18 +55,24 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Property extends
             $property->setAttribute('static', 'false');
             $property->setAttribute('visibility', 'public');
             $property->setAttribute('line', $node->getAttribute('line'));
-            $property->appendChild(new DOMElement('name', $node->getAttribute('variable')));
+            $property->appendChild(
+                new DOMElement('name', $node->getAttribute('variable'))
+            );
             $property->appendChild(new DOMElement('default'));
 
             $docblock = new DOMElement('docblock');
             $property->appendChild($docblock);
-            $docblock->appendChild(new DOMElement('description', $node->getAttribute('description')));
+            $docblock->appendChild(
+                new DOMElement('description', $node->getAttribute('description'))
+            );
             $docblock->appendChild(new DOMElement('long-description'));
 
             $var_tag = new DOMElement('tag');
             $docblock->appendChild($var_tag);
             $var_tag->setAttribute('name', 'var');
-            $var_tag->setAttribute('description', $node->getAttribute('description'));
+            $var_tag->setAttribute(
+                'description', $node->getAttribute('description')
+            );
             $var_tag->setAttribute('type', $node->getAttribute('type'));
             $var_tag->setAttribute('line', $node->getAttribute('line'));
 

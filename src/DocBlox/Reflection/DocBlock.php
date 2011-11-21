@@ -143,7 +143,8 @@ class DocBlox_Reflection_DocBlock implements Reflector
         )
         (?:
           \s* # first seperator (actually newlines but it\'s all whitespace)
-          (?! @\pL ) # disallow the rest, to make sure this one doesn\'t match if it doesn\'t exist
+          (?! @\pL ) # disallow the rest, to make sure this one doesn\'t match,
+          #if it doesn\'t exist
           (
             [^\n]+
             (?: \n+

@@ -1,21 +1,27 @@
 <?php
 /**
+ * DocBlox
+ *
+ * PHP Version 5
+ *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
- * @author	   Stepan Anchugov <kix@kixlive.ru>
- * @license	   http://www.opensource.org/licenses/mit-license.php MIT
+ * @subpackage Behaviours
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 
 /**
- * Behaviour that adds support for @internal tag
+ * Behaviour that adds support for @internal tag.
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Stepan Anchugov <kix@kixlive.ru>
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
@@ -24,6 +30,13 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Internal extends
 {
     protected $tag = 'internal';
 
+    /**
+     * Removes DocBlocks marked with 'internal' tag from the structure.
+     *
+     * @param DOMDocument $xml Structure source to apply behaviour onto.
+     *
+     * @return DOMDocument
+     */
     public function process(DOMDocument $xml)
     {
         if (!$this->getTransformer()->getParseprivate()) {

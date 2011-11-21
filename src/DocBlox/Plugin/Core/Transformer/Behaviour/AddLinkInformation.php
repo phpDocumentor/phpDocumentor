@@ -30,10 +30,11 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
      * Adds extra information to the structure.
      *
      * This method enhances the Structure information with the following information:
-     * - Every @see tag, or a tag with a type receives an attribute with a direct link to that tag's type entry.
+     * - Every @see tag, or a tag with a type receives an attribute with a direct
+     *   link to that tag's type entry.
      * - Every tag receives an excerpt containing the first 15 characters.
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml Document for the structure file.
      *
      * @return DOMDocument
      */
@@ -47,15 +48,15 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
         $class_paths = array();
 
         /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
+        foreach ($qry as $element) {
             $path = $element->parentNode->getAttribute('path');
-            $class_paths[$element->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
+            $class_paths[
+                $element->getElementsByTagName('full_name')->item(0)->nodeValue
+            ] = $path;
         }
 
         // add extra xml elements to tags
         $this->log('Adding link information and excerpts to all DocBlock tags');
-//        $qry = $xpath->query('//docblock/tag/@type|//docblock/tag/type|/project/file/*/extends|/project/file/*/implements');
 
         $qry = $xpath->query(
             '/project/file/*/docblock/tag/type[. != ""]' .
@@ -70,8 +71,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
         $unknown_classes  = array();
 
         /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
+        foreach ($qry as $element) {
             $type = rtrim($element->nodeValue, '[]');
             $bare_type = ($type[0] == '\\') ? substr($type, 1) : $type;
             $node = $element;
@@ -83,7 +83,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
                 $node->setAttribute('link', $file_name . '#' . $type);
             } else if (isset($declared_classes[$bare_type])) {
                 // cache reflection calls since these can be expensive
-                if(!isset($unknown_classes[$bare_type])) {
+                if (!isset($unknown_classes[$bare_type])) {
                     $refl = new ReflectionClass($bare_type);
                     $unknown_classes[$bare_type] = $refl->isInternal();
                 }
@@ -122,25 +122,23 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             . 'or substring(@link,1,7) != \'https://\')])'
         );
         /** @var DOMElement $element */
-        foreach ($qry as $element)
-        {
-            switch($element->getAttribute('name'))
-            {
-                case 'link':
-                    $name = $element->getAttribute('link');
-                    break;
-                case 'uses':
-                case 'used_by':
-                case 'see':
-                case 'inherited_from':
-                    $name = $element->getAttribute('refers');
-                    if ($name[0] !== '\\') {
-                        $name = '\\' . $name;
-                    }
-                    break;
-                default:
-                    $name = $element->nodeValue;
-                    break;
+        foreach ($qry as $element) {
+            switch($element->getAttribute('name')) {
+            case 'link':
+                $name = $element->getAttribute('link');
+                break;
+            case 'uses':
+            case 'used_by':
+            case 'see':
+            case 'inherited_from':
+                $name = $element->getAttribute('refers');
+                if ($name[0] !== '\\') {
+                    $name = '\\' . $name;
+                }
+                break;
+            default:
+                $name = $element->nodeValue;
+                break;
             }
 
             $node_value = explode('::', $name);
@@ -157,13 +155,20 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
     /**
      * Converts a source file name to the name used for generating the end result.
      *
-     * @param string $file
+     * @param string $file Base name of the source file.
      *
      * @return string
      */
     public function generateFilename($file)
     {
-        $info = pathinfo(str_replace(DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')));
+        $info = pathinfo(
+            str_replace(
+                DIRECTORY_SEPARATOR,
+                '_',
+                trim($file, DIRECTORY_SEPARATOR . '.')
+            )
+        );
+
         return 'db_' . $info['filename'] . '.html';
     }
 

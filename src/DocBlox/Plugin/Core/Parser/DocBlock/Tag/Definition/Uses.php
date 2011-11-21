@@ -2,6 +2,8 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
  * @package    Parser
  * @subpackage Tag_Definitions

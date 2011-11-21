@@ -2,13 +2,14 @@
 /**
  * DocBlox
  *
- * PHP 5
+ * PHP Version 5
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license	   http://www.opensource.org/licenses/mit-license.php MIT
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 
@@ -19,6 +20,7 @@
  * @package    Transformer
  * @subpackage Behaviour
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
@@ -29,7 +31,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Uses extends
      * Find all return tags that contain 'self' or '$this' and replace those
      * terms for the name of the current class' type.
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml Structure source to apply behaviour onto.
      *
      * @todo split method into submethods
      *
@@ -41,52 +43,50 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Uses extends
         $nodes = $xpath->query('//tag[@name=\'uses\']');
 
         /** @var DOMElement $node */
-        foreach($nodes as $node) {
+        foreach ($nodes as $node) {
             $refers = $node->getAttribute('refers');
             $refers_array = explode('::', $refers);
 
             // determine the type so we know where to put the @usedby tag on
             $type = 'class';
-            if (isset($refers_array[1]))
-            {
+            if (isset($refers_array[1])) {
                 // starts with $ = property, ends with () = method,
                 // otherwise constant
                 $type = $refers_array[1][0] == '$' ? 'property' : 'constant';
                 $type = substr($refers_array[1], -2) == '()' ? 'method' : $type;
             }
 
-            switch($type)
-            {
-                case 'class':
-                    // escape single quotes in the class name
-                    $xpath_refers = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
-                        $refers
-                    ) . "', '')";
+            switch($type) {
+            case 'class':
+                // escape single quotes in the class name
+                $xpath_refers = 'concat(\''.str_replace(
+                    array("'", '"'),
+                    array('\', "\'", \'', '\', \'"\' , \''),
+                    $refers
+                ) . "', '')";
 
-                    $qry = '/project/file/class[full_name=' . $xpath_refers . ']';
-                    break;
-                default:
-                    $class_name = $refers_array[0];
+                $qry = '/project/file/class[full_name=' . $xpath_refers . ']';
+                break;
+            default:
+                $class_name = $refers_array[0];
 
-                    // escape single quotes in the class name
-                    $xpath_class_name = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
-                        $class_name
-                    ) . "', '')";
+                // escape single quotes in the class name
+                $xpath_class_name = 'concat(\''.str_replace(
+                    array("'", '"'),
+                    array('\', "\'", \'', '\', \'"\' , \''),
+                    $class_name
+                ) . "', '')";
 
-                    // escape single quotes in the method name
-                    $xpath_method_name = 'concat(\''.str_replace(
-                        array("'", '"'),
-                        array('\', "\'", \'', '\', \'"\' , \''),
-                        rtrim($refers_array[1], '()')
-                    ) . "', '')";
+                // escape single quotes in the method name
+                $xpath_method_name = 'concat(\''.str_replace(
+                    array("'", '"'),
+                    array('\', "\'", \'', '\', \'"\' , \''),
+                    rtrim($refers_array[1], '()')
+                ) . "', '')";
 
-                    $qry = '/project/file/class[full_name=' . $xpath_class_name
-                        . ']/'.$type.'[name=' . $xpath_method_name .']';
-                    break;
+                $qry = '/project/file/class[full_name=' . $xpath_class_name
+                    . ']/'.$type.'[name=' . $xpath_method_name .']';
+                break;
             }
 
             // get the nodes; we are unable to work around the
@@ -95,7 +95,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Uses extends
 
             // if the query is wrong; output a Critical error and continue to
             // the next @uses
-            if($referral_nodes === false) {
+            if ($referral_nodes === false) {
                 $this->log(
                     'An XPath error occurs while processing @uses, '
                     . 'the query used was: ' . $qry, DocBlox_Core_Log::CRIT
@@ -160,7 +160,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Uses extends
 
                     // only prefix class name if this is a class member
                     if ($referral_class_name) {
-                        $referral_name = $referral_class_name . '::' . $referral_name;
+                        $referral_name = $referral_class_name . '::'
+                            . $referral_name;
                     }
                 }
 
