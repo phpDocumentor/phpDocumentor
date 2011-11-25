@@ -301,7 +301,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition
                 continue;
             }
 
-            $type = trim($this->expandType($type, true));
+            $type = trim($this->expandType($type));
 
             // strip ampersands
             $name = str_replace('&', '', $type);
