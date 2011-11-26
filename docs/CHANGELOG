@@ -1,3 +1,12 @@
+12/04/2011: Version 0.17.0
+--------------------------
+
+* FIXED:    Trimming long description to prevent redundant whitelines
+* FIXED:    Defaulted Font name in Graph generation from Courier New to Courier
+            to improve cross-browser compatibility
+* FIXED:    Multiple @todos in one DocBlock were incorrectly inherited
+* FIXED:    Basic types had the namespace prepended in certain cases
+
 11/14/2011: Version 0.16.0
 --------------------------
 
