@@ -38,7 +38,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Method
 
         $this->xml['method_name'] = $tag->getMethodName();
 
-        foreach($tag->getArguments() as $argument) {
+        foreach ($tag->getArguments() as $argument) {
             $argument_obj = $this->xml->addChild('argument');
             $argument_obj->addChild(
                 'name', $argument[count($argument) > 1 ? 1 : 0]

@@ -79,7 +79,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     {
         $path = realpath($target);
         if (!file_exists($path) && !is_dir($path) && !is_writable($path)) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 'Given target directory (' . $target . ') does not exist or '
                 . 'is not writable'
             );
@@ -141,7 +141,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
         } else {
             $path = realpath($source);
             if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
-                throw new Exception(
+                throw new InvalidArgumentException(
                     'Given source (' . $source . ') does not exist or is not '
                     . 'readable'
                 );

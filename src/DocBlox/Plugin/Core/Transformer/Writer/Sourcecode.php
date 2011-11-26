@@ -54,11 +54,15 @@ class DocBlox_Plugin_Core_Transformer_Writer_Sourcecode
             /** @var DOMElement $element */
             $element  = $list->item($i);
             $filename = $element->getAttribute('path');
-            $source   = gzuncompress(base64_decode(
-                $element->getElementsByTagName('source')->item(0)->nodeValue
-            ));
+            $source   = gzuncompress(
+                base64_decode(
+                    $element->getElementsByTagName('source')->item(0)->nodeValue
+                )
+            );
 
-            $root = str_repeat('../', count(explode(DIRECTORY_SEPARATOR, $filename)));
+            $root = str_repeat(
+                '../', count(explode(DIRECTORY_SEPARATOR, $filename))
+            );
             $path = $artifact . DIRECTORY_SEPARATOR . $filename;
             if (!file_exists(dirname($path))) {
                 mkdir(dirname($path), 0755, true);
@@ -67,14 +71,38 @@ class DocBlox_Plugin_Core_Transformer_Writer_Sourcecode
             file_put_contents($path.'.html', <<<HTML
 <html>
     <head>
-        <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="{$root}syntax_highlighter/scripts/shCore.js"></script>
-        <script type="text/javascript" src="{$root}syntax_highlighter/scripts/shBrushJScript.js"></script>
-        <script type="text/javascript" src="{$root}syntax_highlighter/scripts/shBrushPhp.js"></script>
-        <script type="text/javascript" src="{$root}syntax_highlighter/scripts/shBrushXml.js"></script>
-        <link href="{$root}syntax_highlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
-        <link href="{$root}syntax_highlighter/styles/shCoreEclipse.css" rel="stylesheet" type="text/css" />
-        <link href="{$root}syntax_highlighter/styles/shThemeWordpress.css" rel="stylesheet" type="text/css" />
+        <script
+            type="text/javascript"
+            src="{$root}js/jquery-1.4.2.min.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="{$root}syntax_highlighter/scripts/shCore.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="{$root}syntax_highlighter/scripts/shBrushJScript.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="{$root}syntax_highlighter/scripts/shBrushPhp.js">
+        </script>
+        <script
+            type="text/javascript"
+            src="{$root}syntax_highlighter/scripts/shBrushXml.js">
+        </script>
+        <link
+            href="{$root}syntax_highlighter/styles/shCore.css" rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="{$root}syntax_highlighter/styles/shCoreEclipse.css"
+            rel="stylesheet" type="text/css"
+        />
+        <link
+            href="{$root}syntax_highlighter/styles/shThemeWordpress.css"
+            rel="stylesheet" type="text/css"
+        />
     </head>
     <body>
         <pre class="brush: php">$source</pre>

@@ -2,13 +2,14 @@
 /**
  * DocBlox
  *
- * PHP 5
+ * PHP Version 5
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license	   http://www.opensource.org/licenses/mit-license.php MIT
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 
@@ -17,8 +18,9 @@
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
@@ -29,18 +31,16 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Return extends
      * Find all return tags that contain 'self' or '$this' and replace those
      * terms for the name of the current class' type.
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml Structure source to apply behaviour onto.
      *
      * @return DOMDocument
      */
     public function process(DOMDocument $xml)
     {
-
         $ignoreQry = '//tag[@name=\'return\' and @type=\'\\self\']'
             . '|//tag[@name=\'return\' and @type=\'\\$this\']'
             . '|//tag[@name=\'return\']/type[.=\'\\self\']'
             . '|//tag[@name=\'return\']/type[.=\'\\$this\']';
-
 
         $xpath = new DOMXPath($xml);
         $nodes = $xpath->query($ignoreQry);
@@ -51,7 +51,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Return extends
         );
 
         /** @var DOMElement $node */
-        foreach($nodes as $node) {
+        foreach ($nodes as $node) {
             // if a node with name 'type' is selected we need to reach one
             // level further.
             $docblock = ($node->nodeName == 'type')
@@ -90,7 +90,6 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Return extends
                     'This method is part of a fluent interface and will return '
                     . 'the same instance'
                 );
-
             } else {
                 $node->setAttribute('type', $type);
             }
@@ -98,7 +97,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Return extends
             // check if an excerpt is set and override that as well
             if ($node->hasAttribute('excerpt')
                 && (($node->getAttribute('excerpt') == '\\self')
-                    || ($node->getAttribute('excerpt') == '\\$this'))
+                || ($node->getAttribute('excerpt') == '\\$this'))
             ) {
                 $node->setAttribute('excerpt', $type);
             }

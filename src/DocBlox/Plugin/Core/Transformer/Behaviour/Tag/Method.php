@@ -2,13 +2,14 @@
 /**
  * DocBlox
  *
- * PHP 5
+ * PHP Version 5
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license	   http://www.opensource.org/licenses/mit-license.php MIT
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 
@@ -17,8 +18,9 @@
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
@@ -29,7 +31,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Method extends
      * Find all return tags that contain 'self' or '$this' and replace those
      * terms for the name of the current class' type.
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml Structure source to apply behaviour onto.
      *
      * @return DOMDocument
      */
@@ -41,7 +43,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Method extends
         );
 
         /** @var DOMElement $node */
-        foreach($nodes as $node) {
+        foreach ($nodes as $node) {
             $class = $node->parentNode->parentNode;
 
             $method = new DOMElement('method');
@@ -52,21 +54,31 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Method extends
             $method->setAttribute('static', 'false');
             $method->setAttribute('visibility', 'public');
             $method->setAttribute('line', $node->getAttribute('line'));
-            $method->appendChild(new DOMElement('name', $node->getAttribute('method_name')));
+            $method->appendChild(
+                new DOMElement('name', $node->getAttribute('method_name'))
+            );
 
             // fill docblock
             $docblock = new DOMElement('docblock');
             $method->appendChild($docblock);
-            $docblock->appendChild(new DOMElement('description', $node->getAttribute('description')));
+            $docblock->appendChild(
+                new DOMElement('description', $node->getAttribute('description'))
+            );
             $docblock->appendChild(new DOMElement('long-description'));
 
             // for each argument; create an @param tag and an argument element
-            foreach($node->getElementsByTagName('argument') as $argument) {
+            foreach ($node->getElementsByTagName('argument') as $argument) {
                 $param_tag = new DOMElement('tag');
                 $docblock->appendChild($param_tag);
                 $param_tag->setAttribute('name', 'param');
-                $param_tag->setAttribute('type', $argument->getElementsByTagName('type')->item(0)->nodeValue);
-                $param_tag->setAttribute('variable', $argument->getElementsByTagName('name')->item(0)->nodeValue);
+                $param_tag->setAttribute(
+                    'type',
+                    $argument->getElementsByTagName('type')->item(0)->nodeValue
+                );
+                $param_tag->setAttribute(
+                    'variable',
+                    $argument->getElementsByTagName('name')->item(0)->nodeValue
+                );
                 $param_tag->setAttribute('line', $node->getAttribute('line'));
 
                 $types = explode(
@@ -97,7 +109,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Method extends
             $return_tag->setAttribute('type', $node->getAttribute('type'));
 
             // add type sub elements to the param
-            foreach(explode('|', $node->getAttribute('type')) as $type) {
+            foreach (explode('|', $node->getAttribute('type')) as $type) {
                 $type_element = new DOMElement('type', $type);
                 $return_tag->appendChild($type_element);
             }

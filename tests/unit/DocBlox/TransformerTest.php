@@ -51,11 +51,11 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(dirname(__FILE__), $this->fixture->getTarget());
 
         // only directories are accepted, not files
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->fixture->setTarget(__FILE__);
 
         // only valid directories are accepted
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->fixture->setTarget(dirname(__FILE__) . 'a');
     }
 
@@ -73,11 +73,11 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('DOMDocument', $this->fixture->getSource());
 
         // directories are not allowed
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->fixture->setSource('/tmp');
 
         // unknown directories are not allowed
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->fixture->setSource('/tmpa');
 
         $this->markTestIncomplete(

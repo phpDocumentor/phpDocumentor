@@ -44,8 +44,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
     /**
      * Initializes this node and registers the XPath object.
      *
-     * @param DOMElement $node
-     * @param DOMXPath   $xpath
+     * @param DOMElement  $node     The class node to process.
+     * @param DOMDocument $document The containing document as context.
      */
     public function __construct(DOMElement $node, DOMDocument $document)
     {
@@ -87,8 +87,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
      *   * class, name of the deepest leaf where this property is encountered
      *   * object, DOMElement of the property declaration in the deepest leaf
      *
-     * @param array      $super
-     * @param string     $class_name Not used; required by the Abstract class
+     * @param array  &$super     Contains all inherited elements.
+     * @param string $class_name Not used; required by the Abstract class
      *
      * @return void
      */
@@ -130,8 +130,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
             // add an element which defines which class' element you override
             $this->node->appendChild(new DOMElement('overrides-from', $super_class));
 
-            if ($super_docblock)
-            {
+            if ($super_docblock) {
                 $this->copyShortDescription($super_docblock, $docblock);
                 $this->copyLongDescription($super_docblock, $docblock);
                 $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
@@ -147,13 +146,17 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
         $methods = $this->getDirectElementsByTagName($this->node, 'method');
         $method_names = array();
         foreach ($methods as $method) {
-            $method_names[] = $method->getElementsByTagName('name')->item(0)->nodeValue;
+            $method_names[] = $method->getElementsByTagName('name')
+                ->item(0)->nodeValue;
 
             // only process 'real' methods
             if ($method->getAttribute('inherited_from')) {
                 continue;
             }
-            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method($method);
+            $inherit = new
+                DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method(
+                    $method
+                );
             $inherit->apply($super_copy['methods'], $class_name);
         }
 
@@ -161,11 +164,12 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
         // in this class then add it as an 'inherited_from' method.
         // explicitly do not updates the $super['methods'] array as this is mere
         // a virtual method and not one that counts for inheritance.
-        foreach($super_copy['methods'] as $method_name => $method_collection) {
+        foreach ($super_copy['methods'] as $method_name => $method_collection) {
+            $visibility = $method_collection['object']->getAttribute('visibility');
+
             // only copy methods that are not overridden and are not private
             if (in_array($method_name, $method_names)
-                || ($method_collection['object']
-                        ->getAttribute('visibility') == 'private')
+                || ($visibility == 'private')
             ) {
                 continue;
             }
@@ -190,6 +194,25 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
             // adds a new inherited_from to signify that this method is not
             // declared in this class but inherited from a base class
             $inherited_from_tag = new DOMElement('tag');
+
+            $tags = $docblock->getElementsByTagName('tag');
+
+            // filter out any @todo tags; those should not be inherited
+            $tags_to_remove = array();
+            /** @var DOMElement tag */
+            foreach ($tags as $tag) {
+                if ($tag->getAttribute('name') == 'todo') {
+                    $tags_to_remove[] = $tag;
+                }
+            }
+
+            // do the actual deletion separate from the iteration; this is due
+            // to the behaviour of the DOMCollection which immediately removes
+            // the tag and thus skipping elements
+            foreach ($tags_to_remove as $tag) {
+                $tag->parentNode->removeChild($tag);
+            }
+
             $docblock->appendChild($inherited_from_tag);
             $inherited_from_tag->setAttribute('name', 'inherited_from');
             $inherited_from_tag->setAttribute(
@@ -206,13 +229,18 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
         $property_names = array();
         $properties = $this->getDirectElementsByTagName($this->node, 'property');
         foreach ($properties as $property) {
-            $property_names[] = $property->getElementsByTagName('name')->item(0)->nodeValue;
+            $property_names[] = $property->getElementsByTagName('name')
+                ->item(0)->nodeValue;
 
             // only process 'real' methods
             if ($property->getAttribute('inherited_from')) {
                 continue;
             }
-            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property($property);
+            $inherit = new
+                DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property(
+                    $property
+                );
+
             $inherit->apply($super_copy['properties'], $class_name);
         }
 
@@ -220,21 +248,22 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
         // in this class then add it as an 'inherited_from' property.
         // explicitly do not updates the $super['properties'] array as this is
         // mere a virtual property and not one that counts for inheritance.
-        foreach ($super_copy['properties'] as $property_name => $property_collection) {
+        foreach ($super_copy['properties'] as $property_name => $collection) {
+            $visibility = $collection['object']->getAttribute('visibility');
+
             // only copy methods that are not overridden and are not private
             if (in_array($property_name, $property_names)
-                || ($property_collection['object']
-                            ->getAttribute('visibility') == 'private')
+                || ($visibility == 'private')
             ) {
                 continue;
             }
 
             // add an element 'inherited_from' to the method itself
             /** @var DOMElement $node */
-            $node = clone $property_collection['object'];
+            $node = clone $collection['object'];
             $this->node->appendChild($node);
             $node->appendChild(
-                new DOMElement('inherited_from', $property_collection['class'])
+                new DOMElement('inherited_from', $collection['class'])
             );
 
             // get the docblock or create a new one if it doesn't exist
@@ -253,11 +282,11 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
             $inherited_from_tag->setAttribute('name', 'inherited_from');
             $inherited_from_tag->setAttribute(
                 'refers',
-                $property_collection['class'] . '::' . $property_name
+                $collection['class'] . '::' . $property_name
             );
             $inherited_from_tag->setAttribute(
                 'description',
-                $property_collection['class'] . '::' . $property_name
+                $collection['class'] . '::' . $property_name
             );
         }
 
@@ -282,13 +311,11 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
             );
         }
 
-        foreach ($result as $node)
-        {
+        foreach ($result as $node) {
             $child_class_name = $node->getElementsByTagName('full_name')
                 ->item(0)->nodeValue;
 
-            if (!$child_class_name)
-            {
+            if (!$child_class_name) {
                 throw new Exception(
                     'A class was encountered with no FQCN. This should not ' .
                     'happen; please contact the DocBlox developers to have them '
@@ -296,9 +323,10 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
                 );
             }
 
-            $inherit = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class(
-                $node, $this->document
-            );
+            $inherit
+                = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class(
+                    $node, $this->document
+                );
             $inherit->apply($super_copy, $class_name);
         }
     }
@@ -324,13 +352,13 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
      *
      * @return void
      */
-    protected function copyTags(array $tag_types, DOMElement $super_docblock,
-        DOMElement $docblock)
-    {
+    protected function copyTags(
+        array $tag_types, DOMElement $super_docblock, DOMElement $docblock
+    ) {
         // find the name of the super's package
         $super_package_name = null;
         $tags = $this->getDirectElementsByTagName($super_docblock, 'tag');
-        foreach($tags as $tag) {
+        foreach ($tags as $tag) {
             if ($tag->getAttribute('name') == 'package') {
                 $super_package_name = $tag->getAttribute('description');
                 break;
@@ -349,7 +377,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
 
         // if the package names do not match; do not inherit the subpackage
         if ($super_package_name != $local_package_name) {
-            foreach($tag_types as $key => $type) {
+            foreach ($tag_types as $key => $type) {
                 if ($type == 'subpackage') {
                     unset($tag_types[$key]);
                 }

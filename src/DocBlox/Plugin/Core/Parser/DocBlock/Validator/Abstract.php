@@ -34,35 +34,35 @@ abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
      *
      * @var string
      */
-    protected $_entityName;
+    protected $entityName;
 
     /**
      * Line number of the docblock
      *
      * @var int
      */
-    protected $_lineNumber;
+    protected $lineNumber;
 
     /**
      * Docblock for the file.
      *
      * @var DocBlox_Reflection_DocBlock
      */
-    protected $_docblock;
+    protected $docblock;
 
     /**
      * Source element of the DocBlock.
      *
      * @var DocBlox_Reflection_Abstract
      */
-    protected $_source;
+    protected $source;
 
     /**
      * Array of options that may or may not be used whilst validating
      *
      * @var array
      */
-    protected $_options;
+    protected $options;
 
     /**
      * Constructor
@@ -73,12 +73,12 @@ abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
      * @param DocBlox_Reflection_Abstract|null $source     Source Element.
      */
     public function __construct($name, $lineNumber, $docblock = null,
-        $source = null)
-    {
-        $this->_entityName = $name;
-        $this->_lineNumber = $lineNumber;
-        $this->_docblock   = $docblock;
-        $this->_source      = $source;
+        $source = null
+    ) {
+        $this->entityName = $name;
+        $this->lineNumber = $lineNumber;
+        $this->docblock   = $docblock;
+        $this->source      = $source;
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
      */
     public function setOptions($options)
     {
-        $this->_options = $options;
+        $this->options = $options;
     }
 
     /**

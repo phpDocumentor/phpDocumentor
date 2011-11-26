@@ -50,13 +50,15 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Deprecated
      * </options>
      *
      * @see DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract::isValid()
+     *
+     * @return boolean
      */
     public function isValid()
     {
-        $docType = get_class($this->_source);
-        if (isset($this->_options['deprecated'][$docType])) {
+        $docType = get_class($this->source);
+        if (isset($this->options['deprecated'][$docType])) {
             $this->validateTags($docType);
-        } else if (isset($this->_options['deprecated']['__ALL__'])) {
+        } else if (isset($this->options['deprecated']['__ALL__'])) {
             $this->validateTags('__ALL__');
         }
     }
@@ -65,17 +67,18 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Deprecated
      * Validate the tags based on the type of docblock being
      * parsed etc
      *
-     * @param string $key Access key to $this->_options['required']
+     * @param string $key Access key to $this->options['required']
      *
      * @return void
      */
     protected function validateTags($key)
     {
-        foreach ($this->_options['deprecated'][$key] as $tag) {
+        foreach ($this->options['deprecated'][$key] as $tag) {
 
-            if (count($this->_docblock->getTagsByName($tag)) > 0) {
+            if (count($this->docblock->getTagsByName($tag)) > 0) {
                 $this->logParserError(
-                    'CRITICAL', 'Found deprecated tag "' . $tag .'" in ' . $this->_entityName, $this->_lineNumber
+                    'CRITICAL', 'Found deprecated tag "' . $tag .'" in '
+                    . $this->entityName, $this->lineNumber
                 );
             }
         }

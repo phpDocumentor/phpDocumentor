@@ -30,11 +30,13 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_GeneratePaths extends
     /**
      * Adds extra information to the structure.
      *
-     * This method enhances the Structure information with the following information:
-     * - Every file receives a 'generated-path' attribute which contains the path on the filesystem where the docs for
-     *   that file van be found.
+     * This method enhances the Structure information with the following
+     * information:
      *
-     * @param DOMDocument $xml
+     * - Every file receives a 'generated-path' attribute which contains the
+     *   path on the filesystem where the docs for that file van be found.
+     *
+     * @param DOMDocument $xml Structure source to modify.
      *
      * @return DOMDocument
      */
@@ -48,7 +50,10 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_GeneratePaths extends
         /** @var DOMElement $element */
         foreach ($qry as $element) {
             $files[] = $element->getAttribute('path');
-            $element->setAttribute('generated-path', $this->generateFilename($element->getAttribute('path')));
+            $element->setAttribute(
+                'generated-path',
+                $this->generateFilename($element->getAttribute('path'))
+            );
         }
 
         return $xml;
@@ -57,13 +62,20 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_GeneratePaths extends
     /**
      * Converts a source file name to the name used for generating the end result.
      *
-     * @param string $file
+     * @param string $file Path / filename to convert.
      *
      * @return string
      */
     public function generateFilename($file)
     {
-        $info = pathinfo(str_replace(DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')));
+        $info = pathinfo(
+            str_replace(
+                DIRECTORY_SEPARATOR,
+                '_',
+                trim($file, DIRECTORY_SEPARATOR . '.')
+            )
+        );
+
         return 'db_' . $info['filename'] . '.html';
     }
 

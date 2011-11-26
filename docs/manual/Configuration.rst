@@ -138,7 +138,6 @@ Reference
 The DocBlox configuration file contains the following top level
 elements which are explained in more detail in the sub-chapters.
 
-
 -  Title, the title for this project, *may contain HTML*
 -  Parser, all settings related to the conversion of the source
    code to the intermediate structure file (structure.xml).
@@ -148,6 +147,22 @@ elements which are explained in more detail in the sub-chapters.
 -  Logging, all settings related to the generation of logs.
 -  Transformations, the default template and additional
    transformations can be specified in this section.
+-  Files, a fileset where to mention which files and folders to include and
+   which to ignore.
+
+Title
+~~~~~
+
+The title is a single element used to alter the logo / text section identifying
+for which project the documentation is generated.
+
+It is possible to use HTML in order, for example, include a logo in the text.
+
+*Example*
+
+::
+
+    <title><![CDATA[<b>My</b> Project]]></title>
 
 Parser
 ~~~~~~
@@ -161,15 +176,21 @@ The following fields are supported:
 -  *default-package-name*, optional element which defines the name of the
    default package. This is the name of the package when none is provided.
 -  *target*, the target location where to store the structure.xml,
-   also used as source location for the transformer.
--  *markers*, contains a listing of item's. These items identify
-   which keywords in comments are used to identify additional sets of
-   information. An example of this is inline comments starting with
-   the *marker* TODO or FIXME.
+   also used as source location for the transformer. This can be either a
+   relative or absolute folder.
+   Relative folders are relative to the location of the configuration file.
+-  *markers*, contains a listing of prefixes used in single line comments to
+   mark a segment of code using a single word (by default FIXME and TODO
+   are supported).
+
+   Example::
+
+       // TODO: do something
+
 -  *extensions*, contains a list of extension's which a file
    must have to be interpreted. If a file does not have the extension
-   mentioned in this list then it is not parsed. Examples: php, php3
-   or phtml.
+   mentioned in this list then it is not parsed.
+   By default these are: php, php3 and phtml.
 
 *Example*
 
@@ -223,7 +244,7 @@ The following fields are supported:
 ::
 
     <transformer>
-       <target>output</target>
+        <target>output</target>
         <external-class-documentation>
             <prefix>HTML_QuickForm2</prefix>
             <uri>http://pear.php.net/package/HTML_QuickForm2/docs/latest/HTML_QuickForm2/{CLASS}.html</uri>
@@ -357,6 +378,7 @@ Appendix B: complete configuration example
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <docblox>
+        <title>My project</title>
         <parser>
             <target>output</target>
             <markers>
@@ -383,4 +405,11 @@ Appendix B: complete configuration example
         <transformations>
             <template name="default" />
         </transformations>
+        <files>
+            <file>test.php</php>
+            <file>bin/*</php>
+            <directory>src</directory>
+            <directory>tes??</directory>
+            <ignore>test/*</ignore>
+        </files>
     </docblox>

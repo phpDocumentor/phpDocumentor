@@ -39,46 +39,47 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Class
     {
         $valid = true;
 
-        if (null == $this->_docblock) {
+        if (null == $this->docblock) {
             return false;
         }
 
-        if (null == $this->_docblock) {
+        if (null == $this->docblock) {
             $this->logParserError(
                 'ERROR',
                 'No Class DocBlock '
-                . 'was found for ' . $this->_entityName, $this->_lineNumber
+                . 'was found for ' . $this->entityName, $this->lineNumber
             );
             return false;
         }
 
 
-        if (count($this->_docblock->getTagsByName('package')) > 1) {
+        if (count($this->docblock->getTagsByName('package')) > 1) {
             $this->logParserError(
-                'CRITICAL', 'Only one @package tag is allowed', $this->_lineNumber
+                'CRITICAL', 'Only one @package tag is allowed', $this->lineNumber
             );
         }
 
-        if (count($this->_docblock->getTagsByName('subpackage')) > 1) {
+        if (count($this->docblock->getTagsByName('subpackage')) > 1) {
             $this->logParserError(
-                'CRITICAL', 'Only one @subpackage tag is allowed', $this->_lineNumber
+                'CRITICAL', 'Only one @subpackage tag is allowed', $this->lineNumber
             );
         }
 
-        if ($this->_docblock->hasTag('subpackage')
-            && !$this->_docblock->hasTag('package')
+        if ($this->docblock->hasTag('subpackage')
+            && !$this->docblock->hasTag('package')
         ) {
             $this->logParserError(
                 'CRITICAL', 'Cannot have a @subpackage '
-                    . 'when a @package tag is not present', $this->_lineNumber
+                . 'when a @package tag is not present',
+                $this->lineNumber
             );
         }
 
-        if ('' === $this->_docblock->getShortDescription()) {
+        if ('' === $this->docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL',
                 'No short description for class '
-                . $this->_entityName, $this->_lineNumber
+                . $this->entityName, $this->lineNumber
             );
         }
 

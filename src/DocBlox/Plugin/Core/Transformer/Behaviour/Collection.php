@@ -35,42 +35,47 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Collection extends
     /**
      * Initializes the list of Behaviours to execute each request.
      *
-     * @param DocBlox_Transformer                       $transformer
-     * @param DocBlox_Transformer_Behaviour_Abstract[] $behaviours
+     * @param DocBlox_Transformer                      $transformer Object that
+     *     executes the transformation and contains the meta-data.
+     * @param DocBlox_Transformer_Behaviour_Abstract[] $behaviours  List of
+     *     behaviours to process.
      */
     public function __construct(DocBlox_Transformer $transformer, array $behaviours)
     {
         $this->transformer = $transformer;
 
-        foreach($behaviours as $behaviour) {
+        foreach ($behaviours as $behaviour) {
             $behaviour->setTransformer($transformer);
         }
+
         $this->behaviours  = $behaviours;
     }
 
     /**
      * Adds a behaviour to a collection
      *
-     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour
+     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour Behaviour to add
+     *     to the collection.
      *
      * @return void
      */
     public function addBehaviour(
-        DocBlox_Transformer_Behaviour_Abstract $behaviour)
-    {
+        DocBlox_Transformer_Behaviour_Abstract $behaviour
+    ) {
         $this->behaviours[] = $behaviour;
     }
 
     /**
      * Removes a behaviour from the collection
      *
-     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour
+     * @param DocBlox_Transformer_Behaviour_Abstract $behaviour Behaviour to
+     *     remove from the collection.
      *
      * @return void
      */
     public function removeBehaviour(
-        DocBlox_Transformer_Behaviour_Abstract $behaviour)
-    {
+        DocBlox_Transformer_Behaviour_Abstract $behaviour
+    ) {
         foreach ($this->behaviours as $key => $thisBehaviour) {
             if ($behaviour == $thisBehaviour) {
                 unset($this->behaviours[$key]);
@@ -79,15 +84,15 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Collection extends
     }
 
     /**
-     * Executes the behaviour on the given dataset,
+     * Executes the behaviour on the given structure xml source,
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml Structure source to apply the behaviours on.
      *
      * @return DOMDocument
      */
     public function process(DOMDocument $xml)
     {
-        foreach($this->behaviours as $behaviour) {
+        foreach ($this->behaviours as $behaviour) {
             $xml = $behaviour->process($xml);
         }
 

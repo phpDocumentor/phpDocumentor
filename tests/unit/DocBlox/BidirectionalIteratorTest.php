@@ -64,7 +64,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
     $this->fixture[9] = 100;
     $this->assertEquals(100, $this->fixture[9]);
 
-    $this->setExpectedException('Exception');
+    $this->setExpectedException('BadMethodCallException');
     $this->fixture[11] = 11;
   }
 
@@ -75,7 +75,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
    */
   public function testUnset()
   {
-    $this->setExpectedException('Exception');
+    $this->setExpectedException('BadMethodCallException');
     unset($this->fixture[1]);
   }
 
@@ -121,7 +121,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
         $times[] = microtime(true) - $time;
     }
     $average = array_sum($times) / count($times);
-    $this->assertLessThan(0.0003, $average);
+    $this->assertLessThan(0.0005, $average);
 
   }
 
@@ -178,7 +178,7 @@ class DocBlox_BidirectionalIteratorTest extends PHPUnit_Framework_TestCase
         $times[] = microtime(true) - $time;
     }
     $average = array_sum($times) / count($times);
-    $this->assertLessThan(0.0003, $average);
+    $this->assertLessThan(0.0005, $average);
   }
 
   /**

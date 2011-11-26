@@ -64,9 +64,12 @@
                 <dl class="property-info">
                     <dt>Type</dt>
                     <dd>
-                        <xsl:apply-templates select="docblock/tag[@name='var']/type">
-                            <xsl:sort select="dbx:ucfirst(@name)"/>
-                        </xsl:apply-templates>
+                        <xsl:if test="not(docblock/tag[@name='var']/type)">n/a</xsl:if>
+                        <xsl:if test="docblock/tag[@name='var']/type">
+                            <xsl:call-template name="implodeTypes">
+                                <xsl:with-param name="items" select="docblock/tag[@name='var']/type"/>
+                            </xsl:call-template>
+                        </xsl:if>
                     </dd>
                     <xsl:apply-templates select="docblock/tag[@name!='var']">
                         <xsl:sort select="dbx:ucfirst(@name)"/>

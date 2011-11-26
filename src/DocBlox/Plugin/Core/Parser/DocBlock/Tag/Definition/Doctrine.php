@@ -2,6 +2,8 @@
 /**
  * DocBlox
  *
+ * PHP Version 5
+ *
  * @category   DocBlox
  * @package    Parser
  * @subpackage Tag_Definitions
@@ -26,7 +28,7 @@
  *     Values          ::= Array | Value {"," Value}*
  *
  *     Value           ::= PlainValue | FieldAssignment
- *     PlainValue      ::= integer | string | float | boolean | Array | Annotation
+ *     PlainValue      ::= integer|string|float|boolean|Array|Annotation
  *     FieldAssignment ::= FieldName "=" PlainValue
  *     FieldName       ::= identifier
  *     Array           ::= "{" ArrayEntry {"," ArrayEntry}* "}"
@@ -93,7 +95,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Doctrine
 
         // find the array of arguments
         $arguments = $this->findArguments((string)$this->xml['content']);
-        foreach($arguments as $argument) {
+        foreach ($arguments as $argument) {
             $arg = $this->xml->addChild('argument', $argument[1]);
             $arg['field-name'] = $argument[0];
         }

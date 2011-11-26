@@ -2,23 +2,25 @@
 /**
  * DocBlox
  *
- * PHP 5
+ * PHP Version 5
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
 
 /**
- * Behaviour that adds support for the @param tag
+ * Behaviour that adds support for the @param tags.
  *
  * @category   DocBlox
  * @package    Transformer
- * @subpackage Behaviour
+ * @subpackage Behaviours
  * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
@@ -27,9 +29,9 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Tag_Param extends
 {
     /**
      * Find all the @param tags and if using special characters transform
-     * using markdown otherwise just add a <p> tag to be consistent
+     * using markdown otherwise just add a <p> tag to be consistent.
      *
-     * @param DOMDocument $xml Xml document we are wanting to query and manipulate
+     * @param DOMDocument $xml Structure source to apply behaviour onto.
      *
      * @return DOMDocument
      */

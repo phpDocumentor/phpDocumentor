@@ -1,4 +1,13 @@
-11/05/2011: Version 0.16.0
+12/04/2011: Version 0.17.0
+--------------------------
+
+* FIXED:    Trimming long description to prevent redundant whitelines
+* FIXED:    Defaulted Font name in Graph generation from Courier New to Courier
+            to improve cross-browser compatibility
+* FIXED:    Multiple @todos in one DocBlock were incorrectly inherited
+* FIXED:    Basic types had the namespace prepended in certain cases
+
+11/14/2011: Version 0.16.0
 --------------------------
 
 * ADDED:    Checkstyle format output of errors using the `checkstyle` theme.
@@ -13,6 +22,13 @@
             determine which tags are deprecated and which are required. With
             this the user can indicate per element type which tags must be there.
 * FIXED:    Classes with names equal to keywords would cause issues
+* FIXED:    Pipe separator was not shown for properties in the details section
+* FIXED:    HTML formatting of title did not function
+* UPDATED:  Configuration documentation
+* FIXED:    Superfluous slashes and underscores in the Graph
+* FIXED:    Class Diagram was not visible when dealing with a large class graph.
+* FIXED:    TODO items were duplicated during when attached element was inherited.
+* FIXED:    API listing is re-introduced into the sidebar
 
 10/06/2011: Version 0.15.1
 --------------------------

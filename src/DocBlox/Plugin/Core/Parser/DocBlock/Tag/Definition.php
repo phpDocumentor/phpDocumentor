@@ -23,7 +23,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_Abstract
+class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition
+    extends DocBlox_Parser_Abstract
 {
     /** @var SimpleXMLElement */
     protected $xml = null;
@@ -42,14 +43,16 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
     protected $namespace_aliases = array();
 
     /**
-     * Initializes this object with the given data and sets the name and description.
+     * Initializes this object with the given data and sets the name and
+     * description.
      *
      * @param string                          $namespace         Namespace where
      *  this tag occurs.
      * @param string[]                        $namespace_aliases Aliases used
      *  for all namespaces at the location of this tag.
      * @param SimpleXMLElement                $xml               XML to enhance.
-     * @param DocBlox_Reflection_DocBlock_Tag $tag               Tag object to use.
+     * @param DocBlox_Reflection_DocBlock_Tag $tag               Tag object to
+     *     use.
      */
     public function __construct(
         $namespace, $namespace_aliases, SimpleXMLElement $xml,
@@ -100,7 +103,9 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
         // name to get the FQCN form
         if (strpos($tag_name, '\\') !== false) {
             $tag_name = explode('\\', $tag_name);
-            if ((count($tag_name) > 1) && isset($namespace_aliases[$tag_name[0]])) {
+            if ((count($tag_name) > 1)
+                && isset($namespace_aliases[$tag_name[0]])
+            ) {
                 $tag_name[0] = $namespace_aliases[$tag_name[0]];
             }
 
@@ -112,99 +117,99 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
 
         switch ($tag_name)
         {
-            case 'property-write':
-            case 'property-read':
-            case 'property':
-            case 'param':
-                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Param(
-                    $namespace, $namespace_aliases, $xml, $tag
-                );
-                break;
-            case 'see':
-                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_See(
-                    $namespace, $namespace_aliases, $xml, $tag
-                );
-                break;
-            case 'method':
-                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Method(
-                    $namespace, $namespace_aliases, $xml, $tag
-                );
-                break;
-            case 'uses':
-                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Uses(
-                    $namespace, $namespace_aliases, $xml, $tag
-                );
-                break;
-            case 'link':
-                $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Link(
-                    $namespace, $namespace_aliases, $xml, $tag
-                );
-                break;
-            case '\Doctrine\ORM\Mapping\column':
-            case '\Doctrine\ORM\Mapping\ChangeTrackingPolicy':
-            case '\Doctrine\ORM\Mapping\DiscriminatorColumn':
-            case '\Doctrine\ORM\Mapping\DiscriminatorMap':
-            case '\Doctrine\ORM\Mapping\Entity':
-            case '\Doctrine\ORM\Mapping\GeneratedValue':
-            case '\Doctrine\ORM\Mapping\HasLifecycleCallbacks':
-            case '\Doctrine\ORM\Mapping\Id':
-            case '\Doctrine\ORM\Mapping\InheritanceType':
-            case '\Doctrine\ORM\Mapping\JoinColumn':
-            case '\Doctrine\ORM\Mapping\JoinTable':
-            case '\Doctrine\ORM\Mapping\ManyToOne':
-            case '\Doctrine\ORM\Mapping\ManyToMany':
-            case '\Doctrine\ORM\Mapping\MappedSuperclass':
-            case '\Doctrine\ORM\Mapping\OneToOne':
-            case '\Doctrine\ORM\Mapping\OneToMany':
-            case '\Doctrine\ORM\Mapping\OrderBy':
-            case '\Doctrine\ORM\Mapping\PostLoad':
-            case '\Doctrine\ORM\Mapping\PostPersist':
-            case '\Doctrine\ORM\Mapping\PostRemove':
-            case '\Doctrine\ORM\Mapping\PostUpdate':
-            case '\Doctrine\ORM\Mapping\PrePersist':
-            case '\Doctrine\ORM\Mapping\PreRemove':
-            case '\Doctrine\ORM\Mapping\PreUpdate':
-            case '\Doctrine\ORM\Mapping\SequenceGenerator':
-            case '\Doctrine\ORM\Mapping\Table':
-            case '\Doctrine\ORM\Mapping\UniqueConstraint':
-            case '\Doctrine\ORM\Mapping\Version':
-            case 'Column':
-            case 'ChangeTrackingPolicy':
-            case 'DiscriminatorColumn':
-            case 'DiscriminatorMap':
-            case 'Entity':
-            case 'GeneratedValue':
-            case 'HasLifecycleCallbacks':
-            case 'Id':
-            case 'InheritanceType':
-            case 'JoinColumn':
-            case 'JoinTable':
-            case 'ManyToOne':
-            case 'ManyToMany':
-            case 'MappedSuperclass':
-            case 'OneToOne':
-            case 'OneToMany':
-            case 'OrderBy':
-            case 'PostLoad':
-            case 'PostPersist':
-            case 'PostRemove':
-            case 'PostUpdate':
-            case 'PrePersist':
-            case 'PreRemove':
-            case 'PreUpdate':
-            case 'SequenceGenerator':
-            case 'Table':
-            case 'UniqueConstraint':
-            case 'Version':
+        case 'property-write':
+        case 'property-read':
+        case 'property':
+        case 'param':
+            $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Param(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        case 'see':
+            $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_See(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        case 'method':
+            $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Method(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        case 'uses':
+            $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Uses(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        case 'link':
+            $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Link(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        case '\Doctrine\ORM\Mapping\column':
+        case '\Doctrine\ORM\Mapping\ChangeTrackingPolicy':
+        case '\Doctrine\ORM\Mapping\DiscriminatorColumn':
+        case '\Doctrine\ORM\Mapping\DiscriminatorMap':
+        case '\Doctrine\ORM\Mapping\Entity':
+        case '\Doctrine\ORM\Mapping\GeneratedValue':
+        case '\Doctrine\ORM\Mapping\HasLifecycleCallbacks':
+        case '\Doctrine\ORM\Mapping\Id':
+        case '\Doctrine\ORM\Mapping\InheritanceType':
+        case '\Doctrine\ORM\Mapping\JoinColumn':
+        case '\Doctrine\ORM\Mapping\JoinTable':
+        case '\Doctrine\ORM\Mapping\ManyToOne':
+        case '\Doctrine\ORM\Mapping\ManyToMany':
+        case '\Doctrine\ORM\Mapping\MappedSuperclass':
+        case '\Doctrine\ORM\Mapping\OneToOne':
+        case '\Doctrine\ORM\Mapping\OneToMany':
+        case '\Doctrine\ORM\Mapping\OrderBy':
+        case '\Doctrine\ORM\Mapping\PostLoad':
+        case '\Doctrine\ORM\Mapping\PostPersist':
+        case '\Doctrine\ORM\Mapping\PostRemove':
+        case '\Doctrine\ORM\Mapping\PostUpdate':
+        case '\Doctrine\ORM\Mapping\PrePersist':
+        case '\Doctrine\ORM\Mapping\PreRemove':
+        case '\Doctrine\ORM\Mapping\PreUpdate':
+        case '\Doctrine\ORM\Mapping\SequenceGenerator':
+        case '\Doctrine\ORM\Mapping\Table':
+        case '\Doctrine\ORM\Mapping\UniqueConstraint':
+        case '\Doctrine\ORM\Mapping\Version':
+        case 'Column':
+        case 'ChangeTrackingPolicy':
+        case 'DiscriminatorColumn':
+        case 'DiscriminatorMap':
+        case 'Entity':
+        case 'GeneratedValue':
+        case 'HasLifecycleCallbacks':
+        case 'Id':
+        case 'InheritanceType':
+        case 'JoinColumn':
+        case 'JoinTable':
+        case 'ManyToOne':
+        case 'ManyToMany':
+        case 'MappedSuperclass':
+        case 'OneToOne':
+        case 'OneToMany':
+        case 'OrderBy':
+        case 'PostLoad':
+        case 'PostPersist':
+        case 'PostRemove':
+        case 'PostUpdate':
+        case 'PrePersist':
+        case 'PreRemove':
+        case 'PreUpdate':
+        case 'SequenceGenerator':
+        case 'Table':
+        case 'UniqueConstraint':
+        case 'Version':
             $def = new DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition_Doctrine(
-                    $namespace, $namespace_aliases, $xml, $tag
-                );
-                break;
-            default:
-                $def = new self(
-                    $namespace, $namespace_aliases, $xml, $tag
-                );
-                break;
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
+        default:
+            $def = new self(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
         }
 
         $def->configure();
@@ -235,7 +240,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
     /**
      * Setter for the reference so it can be overridden.
      *
-     * @param string $name
+     * @param string $name Name of the element to which is referred.
      *
      * @return void
      */
@@ -296,7 +301,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
                 continue;
             }
 
-            $type = trim($this->expandType($type, true));
+            $type = trim($this->expandType($type));
 
             // strip ampersands
             $name = str_replace('&', '', $type);
@@ -305,9 +310,9 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
             // register whether this variable is by reference by checking
             // the first and last character
             $type_object['by_reference'] = ((substr($type, 0, 1) === '&')
-                || (substr($type, -1) === '&'))
-                ? 'true'
-                : 'false';
+                                            || (substr($type, -1) === '&'))
+                    ? 'true'
+                    : 'false';
         }
 
         $this->xml['type'] = $this->expandType($this->tag->getType());
@@ -338,8 +343,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
             );
         }
         $namespace = $this->getNamespace() == 'default'
-            ? ''
-            : $this->getNamespace() . '\\';
+                ? ''
+                : $this->getNamespace() . '\\';
 
         $type = explode('|', $type);
         foreach ($type as &$item) {
@@ -382,7 +387,9 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Tag_Definition extends DocBlox_Parser_
             }
 
             // full paths always start with a slash
-            if (isset($item[0]) && ($item[0] !== '\\') && (!in_array(strtolower($item), $non_objects))) {
+            if (isset($item[0]) && ($item[0] !== '\\')
+                && (!in_array(strtolower($item), $non_objects))
+            ) {
                 $item = '\\' . $item;
             }
         }
