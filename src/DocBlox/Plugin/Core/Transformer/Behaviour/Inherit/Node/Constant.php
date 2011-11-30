@@ -14,7 +14,7 @@
  */
 
 /**
- * Responsible for adding inheritance behaviour to an individual method.
+ * Responsible for adding inheritance behaviour to an individual constant.
  *
  * @category   DocBlox
  * @package    Transformer
@@ -23,18 +23,16 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method
+class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant
     extends DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
 {
-    /** @var string[] Defined which tags to inherit */
-    protected $inherited_tags = array('param', 'return', 'throw', 'throws');
 
     /**
-     * Returns the full string identifier of this method.
+     * Returns the full string identifier of this constant.
      *
      * Example:
      *
-     *     MyClass::method()
+     *     MyClass::CONSTANT
      *
      * @param string|null $parent_class_name The class name to use; if null
      *     uses the current class name.
@@ -48,6 +46,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method
             $parent_class_name = $this->class->getFQCN();
         }
 
-        return $parent_class_name . '::' . $this->getName() . '()';
+        return $parent_class_name . '::' . $this->getName();
     }
+
 }

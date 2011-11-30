@@ -6,6 +6,8 @@
             to improve cross-browser compatibility
 * FIXED:    Multiple @todos in one DocBlock were incorrectly inherited
 * FIXED:    Basic types had the namespace prepended in certain cases
+* CHANGED:  Completely refactored inheritance to make it simpler and faster
+* ADDED:    Class constants are now inherited as well
 
 11/14/2011: Version 0.16.0
 --------------------------

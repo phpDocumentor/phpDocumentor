@@ -23,369 +23,358 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  */
-class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class extends
-    DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
+class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
+    extends DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
 {
-
     /**
-     * @var DOMXPath
-     */
-    protected $document = null;
-
-    /** @var string[] All class tags that are inherited when none are defined */
-    protected $inherited_tags = array(
-        'package',
-        'subpackage',
-        'version',
-        'copyright',
-        'author'
-    );
-
-    /**
-     * Initializes this node and registers the XPath object.
+     * Determines whether the inheritance for this class has already been processed.
      *
-     * @param DOMElement  $node     The class node to process.
-     * @param DOMDocument $document The containing document as context.
+     * This is used for the algorythm that build the inheritance tree; whenever
+     * this class is instructed to start inheriting it will first check whether
+     * its parent interfaces and classes are processed.
+     *
+     * If not then those are processed first; by always processing the parents
+     * first you get a recursive algorythm where independent of your starting
+     * class you always end up with a bottom-to-top population mechanism.
+     *
+     * A positive side-effect is that no class is processed multiple times;
+     * optimizing performance.
+     *
+     * @var bool
      */
-    public function __construct(DOMElement $node, DOMDocument $document)
-    {
-        parent::__construct($node);
-
-        $this->document = $document;
-    }
+    public $is_processed = false;
 
     /**
-     * Returns the name of the given class or interface node.
+     * Returns the Fully Qualified Class Name for this class or interface.
      *
      * @return string
      */
-    protected function getNodeName()
+    function getFQCN()
     {
-        return current(
-            $this->getDirectElementsByTagName($this->node, 'full_name')
-        )->nodeValue;
+        return $this->node->getElementsByTagName('full_name')->item(0)->nodeValue;
     }
 
     /**
-     * Checks whether the super contains any reference to the existing methods
-     * or properties.
+     * Returns the name of th super class (if any)
      *
-     * $super is not a real class, it is an aggregation of all methods and
-     * properties in the inheritance tree. This is done because a method may
-     * override another method which is not in the direct parent but several
-     * levels upwards.
+     * @return string
+     */
+    function getSuperclassName()
+    {
+        $parent = $this->node->getElementsByTagName('extends');
+        return $parent->length > 0 ? $parent->item(0)->nodeValue : '';
+    }
+
+    /**
+     * Returns the names of the interfaces that are implemented by this class.
      *
-     * To deal with the situation above we flatten every found $sub into
-     * the $super. We only store the properties and methods since anything
-     * else does not override.
+     * @return string[]
+     */
+    function getInterfacesNames()
+    {
+        $result = array();
+        $interfaces = $this->node->getElementsByTagName('implements');
+
+        /** @var $interface DOMElement */
+        foreach ($interfaces as $interface) {
+            $result[] = $interface->nodeValue;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns all child methods.
      *
-     * The structure of $super is:
-     * * methods, array containing `$method_name => array` pairs
-     *   * class, name of the deepest leaf where this method is encountered
-     *   * object, DOMElement of the method declaration in the deepest leaf
-     * * properties, array containing `$property_name => array` pairs
-     *   * class, name of the deepest leaf where this property is encountered
-     *   * object, DOMElement of the property declaration in the deepest leaf
+     * @return DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method[]
+     */
+    public function getMethods()
+    {
+        $result = array();
+        $nodes = $this->getDirectElementsByTagName($this->node, 'method');
+        foreach ($nodes as $node) {
+            $node
+                = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method(
+                $node, $this->nodes, $this
+            );
+            $result[$node->getName()] = $node;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns all child properties.
      *
-     * @param array  &$super     Contains all inherited elements.
-     * @param string $class_name Not used; required by the Abstract class
+     * @return DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
+     */
+    public function getProperties()
+    {
+        $result = array();
+        $nodes = $this->getDirectElementsByTagName($this->node, 'property');
+        foreach ($nodes as $node) {
+            $node
+                = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property(
+                $node, $this->nodes, $this
+            );
+            $result[$node->getName()] = $node;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns all class constants.
+     *
+     * @return DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant
+     */
+    public function getConstants()
+    {
+        $result = array();
+        $nodes = $this->getDirectElementsByTagName($this->node, 'constant');
+        foreach ($nodes as $node) {
+            $node
+                = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant(
+                $node, $this->nodes, $this
+            );
+            $result[$node->getName()] = $node;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Inherits all methods from the given parent class.
+     *
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
      *
      * @return void
      */
-    public function apply(array &$super, $class_name)
-    {
-        // explicitly make a copy of the super array; every other element should
-        // have the $super as reference, except class.
-        // When $super is used by reference in this case then other classes will
-        // be polluted with methods from sibling classes.
-        $super_copy = $super;
+    protected function inheritMethods(
+        DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+    ) {
+        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method[] $methods */
+        $methods = $this->getMethods();
 
-        $class_name = current(
-            $this->getDirectElementsByTagName($this->node, 'full_name')
-        )->nodeValue;
-
-        // the name is always the first encountered child element with
-        // tag name 'name'
-        $node_name = $this->getNodeName();
-        $parent = current(
-            $this->getDirectElementsByTagName($this->node, 'extends')
-        )->nodeValue;
-
-        // only process if the super has a node with this name
-        if (isset($super_copy['classes'][$parent])) {
-            $docblock = $this->getDocBlockElement();
-
-            /** @var DOMElement $super_object  */
-            $super_object = $super_copy['classes'][$parent]['object'];
-
-            /** @var DOMElement $super_docblock  */
-            $super_docblock = current(
-                $this->getDirectElementsByTagName($super_object, 'docblock')
-            );
-
-            $super_class = current(
-                $this->getDirectElementsByTagName($super_object, 'full_name')
-            )->nodeValue;
-
-            // add an element which defines which class' element you override
-            $this->node->appendChild(new DOMElement('overrides-from', $super_class));
-
-            if ($super_docblock) {
-                $this->copyShortDescription($super_docblock, $docblock);
-                $this->copyLongDescription($super_docblock, $docblock);
-                $this->copyTags($this->inherited_tags, $super_docblock, $docblock);
+        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method $parent_method */
+        foreach ($parent->getMethods() as $key => $parent_method) {
+            if (isset($methods[$key])) {
+                $methods[$key]->inherit($parent_method);
+            } else {
+                $parent_method->copyTo($this);
             }
         }
+    }
 
-        $super_copy['classes'][$node_name] = array(
-            'class' => $class_name,
-            'object' => $this->node
+    /**
+     * Inherits all properties from a given base class.
+     *
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     *
+     * @return void
+     */
+    protected function inheritProperties(
+        DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+    ) {
+        $properties = $this->getProperties();
+
+        foreach ($parent->getProperties() as $key => $parent_property) {
+            if (isset($properties[$key])) {
+                $properties[$key]->inherit($parent_property);
+            } else {
+                $parent_property->copyTo($this);
+            }
+        }
+    }
+
+    /**
+     * Inherits all constants from a given base class.
+     *
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     *
+     * @return void
+     */
+    protected function inheritConstants(
+        DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+    ) {
+        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant[] $constants */
+        $constants = $this->getConstants();
+
+        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant $parent_constant */
+        foreach ($parent->getConstants() as $key => $parent_constant) {
+            if (isset($constants[$key])) {
+                $constants[$key]->inherit($parent_constant);
+            } else {
+                $parent_constant->copyTo($this);
+            }
+        }
+    }
+
+    /**
+     * Inherits the given parent as if it was an interface.
+     *
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     *
+     * @todo this method and inheritClass should be separated into different objects
+     *
+     * @return void
+     */
+    protected function inheritInterfaceObject(
+        DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+    ) {
+        // if the implemented interface has not processed yet; do so. This will
+        // cause a recurring effect which makes sure the tree is traversed
+        // bottom-to-top
+        if (!$parent->is_processed) {
+            $parent->inherit(null);
+        }
+
+        $this->inheritConstants($parent);
+        $this->inheritMethods($parent);
+    }
+
+    /**
+     * Inherits the given parent as if it was an class.
+     *
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     *
+     * @todo this method and inheritInterface should be separated into
+     *     different objects
+     *
+     * @return void
+     */
+    protected function inheritClassObject(
+        DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+    ) {
+        // if the parent class has not processed yet; do so. This will cause
+        // a recurring effect which makes sure the tree is traversed bottom-to-top
+        if (!$parent->is_processed) {
+            $parent->inherit(null);
+        }
+
+        $docblock = $this->getDocBlock();
+        $docblock->inherited_tags[] = 'package';
+        $docblock->inherited_tags[] = 'subpackage';
+        $docblock->inherit($parent->getDocBlock());
+
+        $this->inheritConstants($parent);
+        $this->inheritProperties($parent);
+        $this->inheritMethods($parent);
+    }
+
+    /**
+     * Imports a method that is obtained via reflection.
+     *
+     * @param ReflectionMethod $method
+     *
+     * @see self::reflectInternalClass for a complete description.
+     *
+     * @return DOMElement|null
+     */
+    protected function importReflectedMethod(ReflectionMethod $method)
+    {
+        if ($method->isPrivate()) {
+            return null;
+        }
+
+        $class_name = $method->getDeclaringClass()->getName();
+        $methods = $this->getMethods();
+        if (in_array($method->getName(), array_keys($methods))) {
+            $methods[$method->getName()]->getNode()->appendChild(
+                new DOMElement('overrides-from', $class_name)
+            );
+
+            return $methods[$method->getName()]->getNode();
+        }
+
+        $method_node = new DOMElement('method');
+        $this->node->appendChild($method_node);
+
+        $node_name = new DOMElement('name', $method->getName());
+        $method_node->appendChild($node_name);
+        $method_node->setAttribute(
+            'final', $method->isFinal() ? 'true' : 'false'
+        );
+        $method_node->setAttribute(
+            'abstract', $method->isAbstract() ? 'true' : 'false'
+        );
+        $method_node->setAttribute(
+            'static', $method->isStatic() ? 'true' : 'false'
+        );
+        $method_node->setAttribute(
+            'visibility', $method->isPublic() ? 'public' : 'protected'
         );
 
-        /** @var DOMElement[] $method */
-        $methods = $this->getDirectElementsByTagName($this->node, 'method');
-        $method_names = array();
-        foreach ($methods as $method) {
-            $method_names[] = $method->getElementsByTagName('name')
-                ->item(0)->nodeValue;
+        $method_obj = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method($method_node, $this->nodes, $this);
 
-            // only process 'real' methods
-            if ($method->getAttribute('inherited_from')) {
-                continue;
+        $inherited_from = new DOMElement('tag');
+        $method_obj->getDocBlock()->getNode()->appendChild($inherited_from);
+        $inherited_from->setAttribute('name', 'inherited_from');
+        $inherited_from->setAttribute(
+            'refers',
+            $method->getDeclaringClass()->getName() . '::' . $method->getName() . '()'
+        );
+        $inherited_from->setAttribute(
+            'description',
+            $method->getDeclaringClass()->getName() . '::' . $method->getName() . '()'
+        );
+
+        return $method_node;
+    }
+
+    /**
+     * Reflect an external class and inherit its children.
+     *
+     * This method is used when the parent class is not any of the files that
+     * were parsed by DocBlox but is obtainable in the path. For these files
+     * we want to import their methods so that the overview is complete.
+     *
+     * Examples of such classes are classes that are in PHP Core (i.e. Exception)
+     * or available via PECL extensions.
+     *
+     * @todo consider moving this to a separate object?
+     *
+     * @param string $parent_class_name
+     *
+     * @return void
+     */
+    protected function reflectExternalClass($parent_class_name)
+    {
+        if (@class_exists($parent_class_name)) {
+            $refl = new ReflectionClass($parent_class_name);
+
+            /** @var ReflectionMethod $method */
+            foreach ($refl->getMethods() as $method) {
+                $this->importReflectedMethod($method);
             }
-            $inherit = new
-                DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method(
-                    $method
-                );
-            $inherit->apply($super_copy['methods'], $class_name);
-        }
-
-        // if a method present in the super classes but it is not declared
-        // in this class then add it as an 'inherited_from' method.
-        // explicitly do not updates the $super['methods'] array as this is mere
-        // a virtual method and not one that counts for inheritance.
-        foreach ($super_copy['methods'] as $method_name => $method_collection) {
-            $visibility = $method_collection['object']->getAttribute('visibility');
-
-            // only copy methods that are not overridden and are not private
-            if (in_array($method_name, $method_names)
-                || ($visibility == 'private')
-            ) {
-                continue;
-            }
-
-            // add an element 'inherited_from' to the method itself
-            /** @var DOMElement $node */
-            $node = clone $method_collection['object'];
-            $this->node->appendChild($node);
-            $node->appendChild(
-                new DOMElement('inherited_from', $method_collection['class'])
-            );
-
-            // get the docblock or create a new one if it doesn't exist
-            $docblocks = $node->getElementsByTagName('docblock');
-            if ($docblocks->length == 0) {
-                $docblock = new DOMElement('docblock');
-                $node->appendChild($docblock);
-            } else {
-                $docblock = $docblocks->item(0);
-            }
-
-            // adds a new inherited_from to signify that this method is not
-            // declared in this class but inherited from a base class
-            $inherited_from_tag = new DOMElement('tag');
-
-            $tags = $docblock->getElementsByTagName('tag');
-
-            // filter out any @todo tags; those should not be inherited
-            $tags_to_remove = array();
-            /** @var DOMElement tag */
-            foreach ($tags as $tag) {
-                if ($tag->getAttribute('name') == 'todo') {
-                    $tags_to_remove[] = $tag;
-                }
-            }
-
-            // do the actual deletion separate from the iteration; this is due
-            // to the behaviour of the DOMCollection which immediately removes
-            // the tag and thus skipping elements
-            foreach ($tags_to_remove as $tag) {
-                $tag->parentNode->removeChild($tag);
-            }
-
-            $docblock->appendChild($inherited_from_tag);
-            $inherited_from_tag->setAttribute('name', 'inherited_from');
-            $inherited_from_tag->setAttribute(
-                'refers',
-                $method_collection['class'].'::'.$method_name.'()'
-            );
-            $inherited_from_tag->setAttribute(
-                'description',
-                $method_collection['class'].'::'.$method_name.'()'
-            );
-        }
-
-        /** @var DOMElement[] $method */
-        $property_names = array();
-        $properties = $this->getDirectElementsByTagName($this->node, 'property');
-        foreach ($properties as $property) {
-            $property_names[] = $property->getElementsByTagName('name')
-                ->item(0)->nodeValue;
-
-            // only process 'real' methods
-            if ($property->getAttribute('inherited_from')) {
-                continue;
-            }
-            $inherit = new
-                DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property(
-                    $property
-                );
-
-            $inherit->apply($super_copy['properties'], $class_name);
-        }
-
-        // if a property is present in the super classes but it is not declared
-        // in this class then add it as an 'inherited_from' property.
-        // explicitly do not updates the $super['properties'] array as this is
-        // mere a virtual property and not one that counts for inheritance.
-        foreach ($super_copy['properties'] as $property_name => $collection) {
-            $visibility = $collection['object']->getAttribute('visibility');
-
-            // only copy methods that are not overridden and are not private
-            if (in_array($property_name, $property_names)
-                || ($visibility == 'private')
-            ) {
-                continue;
-            }
-
-            // add an element 'inherited_from' to the method itself
-            /** @var DOMElement $node */
-            $node = clone $collection['object'];
-            $this->node->appendChild($node);
-            $node->appendChild(
-                new DOMElement('inherited_from', $collection['class'])
-            );
-
-            // get the docblock or create a new one if it doesn't exist
-            $docblocks = $node->getElementsByTagName('docblock');
-            if ($docblocks->length == 0) {
-                $docblock = new DOMElement('docblock');
-                $node->appendChild($docblock);
-            } else {
-                $docblock = $docblocks->item(0);
-            }
-
-            // adds a new inherited_from to signify that this method is not
-            // declared in this class but inherited from a base class
-            $inherited_from_tag = new DOMElement('tag');
-            $docblock->appendChild($inherited_from_tag);
-            $inherited_from_tag->setAttribute('name', 'inherited_from');
-            $inherited_from_tag->setAttribute(
-                'refers',
-                $collection['class'] . '::' . $property_name
-            );
-            $inherited_from_tag->setAttribute(
-                'description',
-                $collection['class'] . '::' . $property_name
-            );
-        }
-
-        // apply inheritance to every class or interface extending this one
-        $xpath = new DOMXPath($this->document);
-
-        $xpath_class_name = 'concat(\''.str_replace(
-            array("'", '"'),
-            array('\', "\'", \'', '\', \'"\' , \''),
-            $class_name
-        ) . "', '')";
-
-        $qry = '/project/file/class[extends=' . $xpath_class_name
-            . ' or implements=' . $xpath_class_name . ']'
-            . '|/project/file/interface[extends=' . $xpath_class_name . ']';
-
-        $result = @$xpath->query($qry);
-        if ($result === false) {
-            var_dump($xpath_class_name);
-            throw new DocBlox_Plugin_Core_Exception(
-                'Invalid xpath query in Class inheritance: '. $qry
-            );
-        }
-
-        foreach ($result as $node) {
-            $child_class_name = $node->getElementsByTagName('full_name')
-                ->item(0)->nodeValue;
-
-            if (!$child_class_name) {
-                throw new Exception(
-                    'A class was encountered with no FQCN. This should not ' .
-                    'happen; please contact the DocBlox developers to have them '
-                    . 'analyze this issue'
-                );
-            }
-
-            $inherit
-                = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class(
-                    $node, $this->document
-                );
-            $inherit->apply($super_copy, $class_name);
         }
     }
 
     /**
-     * Override the parent's copyTags method to check whether the package names
-     * match; if not: do not copy the subpackage.
+     * Traverse through each parent interface and class and inherit its children.
      *
-     * Frameworks often extend classes from other frameworks; and applications
-     * extend classes of frameworks.
-     *
-     * Without this check when the framework specifies a subpackage but the
-     * extending class would not; and the packages would not match. Then a
-     * subpackage would be applied that is not applicable to this item.
-     *
-     * Additionally; this package/subpackage combination would not be present in
-     * the package index int he structure file and the classes would never be
-     * shown in the navigation.
-     *
-     * @param string[]   $tag_types      List of allowed tag types.
-     * @param DOMElement $super_docblock Super class' docblock.
-     * @param DOMElement $docblock       Sub class' docblock.
+     * @param $parent nil; is not used in this method. Only there because it is
+     *     required by the parent class.
      *
      * @return void
      */
-    protected function copyTags(
-        array $tag_types, DOMElement $super_docblock, DOMElement $docblock
-    ) {
-        // find the name of the super's package
-        $super_package_name = null;
-        $tags = $this->getDirectElementsByTagName($super_docblock, 'tag');
-        foreach ($tags as $tag) {
-            if ($tag->getAttribute('name') == 'package') {
-                $super_package_name = $tag->getAttribute('description');
-                break;
+    public function inherit($parent)
+    {
+        foreach ($this->getInterfacesNames() as $interface) {
+            if (isset($this->nodes[$interface])) {
+                $this->inheritInterfaceObject($this->nodes[$interface]);
             }
         }
 
-        // find the name of the local's package
-        $local_package_name = null;
-        $tags = $this->getDirectElementsByTagName($docblock, 'tag');
-        foreach ($tags as $tag) {
-            if ($tag->getAttribute('name') == 'package') {
-                $local_package_name = $tag->getAttribute('description');
-                break;
+        if ($this->getSuperclassName()) {
+            if (!isset($this->nodes[$this->getSuperclassName()])) {
+                $this->reflectExternalClass($this->getSuperclassName());
+            } else {
+                $this->inheritClassObject($this->nodes[$this->getSuperclassName()]);
             }
         }
 
-        // if the package names do not match; do not inherit the subpackage
-        if ($super_package_name != $local_package_name) {
-            foreach ($tag_types as $key => $type) {
-                if ($type == 'subpackage') {
-                    unset($tag_types[$key]);
-                }
-            }
-        }
-
-        parent::copyTags($tag_types, $super_docblock, $docblock);
+        $this->is_processed = true;
     }
-
 
 }
