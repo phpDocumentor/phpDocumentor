@@ -13,7 +13,7 @@ Acknowledgements:
 
 Obsoletes:
 
-    de-facto PHPDoc standard (http://www.phpdoc.org)
+    De-facto PHPDoc Standard (http://www.phpdoc.org)
 
 ## Table Of Contents
 
@@ -52,11 +52,12 @@ Obsoletes:
       7.16. @see
       7.17. @since
       7.18. @subpackage [deprecated]
-      7.19. @todo
-      7.20. @throws
+      7.19. @throws
+      7.20. @todo
       7.21. @type
       7.22. @uses
-      7.23. @version
+      7.23. @var
+      7.24. @version
     Appendix A. Types
     Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
@@ -396,15 +397,21 @@ Example:
      * @package    Framework
      * @subpackage Controllers
      */
-    class Framework_ActionController {}
+    class Framework_ActionController
+    {
+        <...>
+    }
 
     /**
      * @package My
      *
-    class My_ActionController extends Framework_ActionController {}
+    class My_ActionController extends Framework_ActionController
+    {
+        <...>
+    }
 
 In the example above the My_ActionController MUST not inherit the subpackage
-Controllers.
+_Controllers_.
 
 ### 6.2. Function Or Method
 
@@ -434,6 +441,9 @@ A constant or property SHOULD inherit the following deprecated tags if supplied:
 
 ## 7. Tags
 
+Unless specifically mentioned in the description MAY each tag occur zero or more
+times in each "DocBlock".
+
 ### 7.1. @api
 
 The @api tag is used to declare "Structural Elements" as being suitable for
@@ -452,8 +462,8 @@ internal structure and are not recommended to be used by the consumer.
 
 The exact meaning of "Structural Elements" tagged with @api MAY differ per
 project. It is however RECOMMENDED that all tagged "Structural Elements" SHOULD
-NOT change after publication unless the new version is tagged as
-*Breaking Backwards Compatibility*.
+NOT change after publication unless the new version is tagged as breaking
+Backwards Compatibility.
 
 #### Examples
 
@@ -471,9 +481,30 @@ NOT change after publication unless the new version is tagged as
 
 ### 7.2. @author
 
+The @author tag is used to document the author of any "Structural Element".
+
+#### Syntax
+
+    @author [name] [<email address>]
+
+#### Description
+
+The @author tag can be used to indicate who has made created a
+"Structural Element" or has made significant modifications to it. This tag MAY
+also contain an e-mail address. If an e-mail address is provided it MUST follow
+the author's name and be contained in chevrons, or angle brackets, and MUST
+adhere to the syntax defined in RFC 2822.
+
+#### Examples
+
+    /**
+     * @author My Name
+     * @author My Name <my.name@example.com>
+     */
+
 ### 7.3. @category [deprecated]
 
-The @category tag is used to organize groups of packages together; but is
+The @category tag is used to organize groups of packages together but is
 deprecated in favour of occupying the top-level with the @package tag.
 As such usage of this tag is NOT RECOMMENDED.
 
@@ -483,15 +514,17 @@ As such usage of this tag is NOT RECOMMENDED.
 
 #### Description
 
-The @category tag was the original de-facto Standard used to group several
-"Structural Elements" their @packages into one category. This could then be
-used to aid in the generation of API documentation.
+The @category tag was meant in the original de-facto Standard to group several
+"Structural Elements" their @packages into one category. These categories could
+then be used to aid in the generation of API documentation.
 
 This was necessary since the @package tag as defined in the original Standard did
-not contain more then 1 hierarchy level; since this has changed this tag SHOULD
+not contain more then one hierarchy level; since this has changed this tag SHOULD
 NOT be used.
 
 Please see the documentation for `@package` for details of its usage.
+
+This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
@@ -504,6 +537,29 @@ Please see the documentation for `@package` for details of its usage.
 
 ### 7.4. @copyright
 
+The @copyright tag is used to document the copyright information of any
+"Structural element".
+
+#### Syntax
+
+    @copyright <description>
+
+#### Description
+
+The @copyright tag defines who holds the copyright over the "Structural Element".
+The copyright indicates with this tag applies to the "Structural Element" to
+which it applies and all child elements unless otherwise noted.
+
+The format of the description if governed by the coding standard of each
+individual project. It is RECOMMENDED to mention the year or years which are
+covered by this copyright and the organization involved.
+
+#### Examples
+
+    /**
+     * @copyright 1997-2005 The PHP Group
+     */
+
 ### 7.5. @deprecated
 
 ### 7.6. @example
@@ -513,9 +569,9 @@ Please see the documentation for `@package` for details of its usage.
 ### 7.8. @internal
 
 The @internal tag is used to denote that the associated "Structural Element" is
-an structure internal to this application or library. It may also be used inside
-a Long Description to insert a piece of text that is only applicable for
-the developers of this piece of software.
+a structure internal to this application or library. It may also be used inside
+a long description to insert a piece of text that is only applicable for
+the developers of this software.
 
 #### Syntax
 
@@ -525,9 +581,9 @@ or inline:
 
     {@internal [description]}}
 
-*Please note the double closing brace instead of the usual single brace. This
-helps prevent parsing issues when using braces inside of the inline tag and is
-also present due to historical reasons.*
+The inline version of this tag may, contrary to other inline tags, contain
+text but also other inline tags. To increase readability and ease parsing should
+the tag be terminated with a double closing brace, instead of a single one.
 
 #### Description
 
@@ -553,8 +609,9 @@ Mark the count function as being internal to this project:
      *
      * @return integer Indicates the number of items.
      */
-    function count() {
-        ...
+    function count()
+    {
+        <...>
     }
 
     /**
@@ -564,32 +621,33 @@ Mark the count function as being internal to this project:
      *
      * @return integer Indicates the number of items.
      */
-    function count() {
-        ...
+    function count()
+    {
+        <...>
     }
 
 ### 7.9. @license
 
 ### 7.10. @link
 
-The @link tag indicates an custom relation between the associated
-"Structural Element" and a website, which is identified by a full URL.
+The @link tag indicates a custom relation between the associated
+"Structural Element" and a website, which is identified by an absolute URI.
 
 #### Syntax
 
-    @link [url] [description]
+    @link [URI] [description]
 
 or inline
 
-   {@link [url]}
+   {@link [URI]}
 
 #### Description
 
-The @link tag can be used to define a relation, or link, the
-"Structural Element", or part of the Long Description when used inline,
-to an URL.
+The @link tag can be used to define a relation, or link, between the
+"Structural Element", or part of the long description when used inline,
+to an URI.
 
-The URL MUST be complete and welformed as specified in RFC ?.
+The URI MUST be complete and welformed as specified in RFC 2396.
 
 When the @link tag is not used inline it MAY have a description appended to
 indicate the type of relation defined by this occurance.
@@ -597,24 +655,26 @@ indicate the type of relation defined by this occurance.
 #### Examples
 
     /**
-     * @link http://foo.bar/my/bar Documentation of Foo.
+     * @link http://example.com/my/bar Documentation of Foo.
      *
      * @return integer Indicates the number of items.
      */
-    function count() {
-        ...
+    function count()
+    {
+        <...>
     }
 
     /**
-     * This method counts the occurances of Foo.
+     * This method counts the occurences of Foo.
      *
-     * When no more Foo ({@link http://foo.bar/my/bar}) are given this function
-     * will add one as there must always be one Foo.
+     * When no more Foo ({@link http://example.com/my/bar}) are given this
+     * function will add one as there must always be one Foo.
      *
      * @return integer Indicates the number of items.
      */
-    function count() {
-        ...
+    function count()
+    {
+        <...>
     }
 
 ### 7.11. @method
@@ -633,7 +693,7 @@ method and defines some definite uses.
 An example of this is a child class whose parent has a __call() to have dynamic
 getters or setters for predefined properties. The child knows which getters and
 setters need to be present but relies on the parent class to use the __call()
-method to provide it. In this situation will the child class have a @method
+method to provide it. In this situation, the child class would have a @method
 tag for each magic setter or getter method.
 
 The @method tag allows the author to communicate the type of the arguments and
@@ -644,9 +704,11 @@ be omitted; in which case 'void' is implied.
 
 #### Examples
 
-    class Parent {
-        public function __call() {
-            ...
+    class Parent
+    {
+        public function __call()
+        {
+            <...>
         }
     }
 
@@ -655,8 +717,9 @@ be omitted; in which case 'void' is implied.
      * @method void setInteger(integer $integer)
      * @method setString(integer $integer)
      */
-    class Child extends Parent {
-        ...
+    class Child extends Parent
+    {
+        <...>
     }
 
 ### 7.12. @package
@@ -666,7 +729,7 @@ subdivisions.
 
 #### Syntax
 
-    @package [level 1]\[level 2]\[etc]
+    @package [level 1]\[level 2]\[etc.]
 
 #### Description
 
@@ -680,12 +743,12 @@ use the @package tag to prevent maintenance overhead.
 
 Each level in the logical hierarchy MUST separated with a backslash (`\`) to
 be familiar to Namespaces. A hierarchy MAY be of endless depth but it is
-RECOMMENDED to keep the depth at less or equal than 6 levels.
+RECOMMENDED to keep the depth at less or equal than six levels.
 
 Please note that the @package applies to different "Structural Elements"
 depending where it is defined.
 
-1. if the @package is defined in the *file-level* DocBlock then it only applies
+1. If the @package is defined in the *file-level* DocBlock then it only applies
    to the following elements in the applicable file:
 
    * global functions
@@ -693,11 +756,13 @@ depending where it is defined.
    * global variables
    * requires and includes
 
-2. if the @package is defined in a *namespace-level* or *class-level* DocBlock,
-   which also applies to interfaces, then the package applies that namespace,
-   class or interface (and its contained elements).
+2. If the @package is defined in a *namespace-level* or *class-level* DocBlock
+   then the package applies to that namespace, class or interface and their
+   contained elements.
    This means that a function which is contained in a namespace with the
    @package tag assumes that package.
+
+This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
@@ -736,37 +801,44 @@ method. Exceptions to this recommendation are:
    omitted here, in which case an interpreter MUST interpret this as if
    `@return void` is provided.
 
+This tag MUST NOT occur more than once in a "DocBlock" and is limited to the
+"DocBlock" of a "Structural Element" or type method or function.
+
 #### Examples
 
     /**
      * @return integer Indicates the number of items.
      */
-    function count() {
-        ...
+    function count()
+    {
+        <...>
     }
 
     /**
      * @return string|null The label's text or null if none provided.
      */
-    function getLabel() {
-        ...
+    function getLabel()
+    {
+        <...>
     }
 
 ### 7.16. @see
 
 ### 7.17. @since
 
+#### Description
+
+It is NOT RECOMMENDED for this tag to occur more than once in a "DocBlock".
+
 ### 7.18. @subpackage [deprecated]
 
-### 7.19. @todo
+This tag MUST NOT occur more than once in a "DocBlock".
 
-### 7.20. @throws
+### 7.19. @throws
+
+### 7.20. @todo
 
 ### 7.21. @type
-
-### 7.22. @uses
-
-### 7.23. @version
 
 You may use the @type tag to document the "Type" of the following
 "Structural Elements":
@@ -791,6 +863,8 @@ variable MAY be preceeded with a similar DocBlock.
 
 It is NOT RECOMMENDED to use the @var alias unless it is necessary in order for
 the application, or associated tools, to function correctly.
+
+This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
@@ -824,12 +898,16 @@ the application, or associated tools, to function correctly.
           <...>
       }
 
-### 7.14. @uses
+### 7.22. @uses
 
-### 7.15. @var [deprecated]
+### 7.23. @var [deprecated]
 
 Is a **deprecated** alias for `@type`, please see the documentation for `@type`
 for details of its usage.
+
+This tag MUST NOT occur more than once in a "DocBlock".
+
+### 7.24. @version
 
 ## Appendix A. Types
 
@@ -946,7 +1024,8 @@ The following keywords are recognized by this PSR:
         /**
          * @return void
          */
-        function output_hello() {
+        function outputHello()
+        {
             echo 'Hello world';
         }
 
@@ -960,7 +1039,8 @@ The following keywords are recognized by this PSR:
          *
          * @return void
          */
-        function output_hello($quiet) {
+        function outputHello($quiet)
+        {
             if ($quiet} {
                 return;
             }
@@ -983,7 +1063,8 @@ The following keywords are recognized by this PSR:
         /**
          * @return null
          */
-        function foo() {
+        function foo()
+        {
             echo 'Hello world';
             return null;
         }
@@ -998,7 +1079,8 @@ The following keywords are recognized by this PSR:
          *
          * @return stdClass|null
          */
-        function foo($create_new) {
+        function foo($create_new)
+        {
             if ($create_new) {
                 return new stdClass();
             }
@@ -1103,11 +1185,11 @@ generators.
 
 #### @link
 
-In the de-facto standard introduced by phpDocumentor @link supported the use of
-internal locators for "Structural Element". This use is actually superceded by
-the @see tag and thus removed.
+In the de-facto standard, introduced by phpDocumentor, @link supported the use
+of internal locators for "Structural Element". This use is actually superceded
+by the @see tag and thus removed.
 
-It is NOT RECOMMENDED to use the @link tag as indicated above.
+It is NOT RECOMMENDED to use the @link tag for referencing "Structural Elements".
 
 #### @method
 
