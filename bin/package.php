@@ -67,6 +67,7 @@ DESC
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '/usr/bin/env php', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_bin@', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_dir@', 'php_dir');
+  $packagexml->addReplacement('src/DocBlox/Transformer.php', 'pear-config', '@data@', 'data_dir');
 
   $packagexml->addMaintainer('lead', 'mvriel', 'Mike van Riel', 'mike.vanriel@naenius.com');
   $packagexml->setLicense('MIT', 'http://www.opensource.org/licenses/mit-license.html');

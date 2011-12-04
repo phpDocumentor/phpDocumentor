@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template>
   <author>Mike van Riel</author>
-  <version>1.0</version>
+  <email>mike.vanriel@naenius.com</email>
+  <version>1.0.0</version>
   <copyright>Mike van Riel / Naenius 2011</copyright>
+  <description>This is the default look and feel for DocBlox</description>
   <transformations>
     <transformation query="copy" writer="FileIo" source="ajax_search.php" artifact="ajax_search.php"/>
     <transformation query="copy" writer="FileIo" source="../data/js" artifact="js"/>
