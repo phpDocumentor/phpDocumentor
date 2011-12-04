@@ -18,7 +18,7 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <active>yes</active>
  </lead>
  <date>2011-12-04</date>
- <time>15:10:51</time>
+ <time>15:11:50</time>
  <version>
   <release>0.17.0</release>
   <api>0.17.0</api>
@@ -315,6 +315,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="api-doc.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="chrome.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="content.xsl" role="php" />
+      <file baseinstalldir="/DocBlox" name="DocBlox_Theme_default-1.0.0.tgz" role="php" />
       <file baseinstalldir="/DocBlox" name="frames_table.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="graph_class.xsl" role="php" />
       <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
@@ -847,6 +848,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    </dir> <!-- /tests -->
    <file baseinstalldir="/DocBlox" name="build.properties" role="data" />
    <file baseinstalldir="/DocBlox" name="build.xml" role="data" />
+   <file baseinstalldir="/DocBlox" name="DocBlox-0.17.0.tgz" role="data" />
    <file baseinstalldir="/DocBlox" name="docblox.dist.xml" role="php" />
    <file baseinstalldir="/DocBlox" name="LICENSE" role="php" />
    <file baseinstalldir="/DocBlox" name="mem.sh" role="data" />
