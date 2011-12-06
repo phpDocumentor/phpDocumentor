@@ -474,8 +474,8 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * ADDED:    Version to parsed data (structure.xml) and enforce a full re-parse when the version number has changed
 * BC-BREAK: Packages and subpackages are now stored hierarchically at the bottom of the XML file, this used to
             be a flat list
-* ADDED:    Added support for the @subpackage in the sidebar of the default2 theme
-* FIXED:    Renamed default2 template to default template
+* ADDED:    Added support for the @subpackage in the sidebar of the default theme
+* FIXED:    Renamed default template to default template
 * ADDED:    Added search capabilities to default template (does not work in Chrome when running locally)
 
 10/29/2010: Version 0.6: Add configuration files, clean up and fixes
