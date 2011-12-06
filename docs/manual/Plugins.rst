@@ -198,8 +198,8 @@ Example:
 In the example above you can see that this plugin needs at least DocBlox 0.15.0
 and the Core plugin version 1.0.0.
 
-    We are working on a plugin and theme repository; if a dependent plugin cannot
-    be found this repository will be checked and any missing dependencies
+    We are working on a plugin and template repository; if a dependent plugin
+    cannot be found this repository will be checked and any missing dependencies
     installed as well.
 
 A ``max-version`` directive is also supported in case you want to limit

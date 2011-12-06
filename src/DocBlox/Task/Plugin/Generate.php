@@ -74,12 +74,12 @@ class DocBlox_Task_Plugin_Generate extends DocBlox_Task_Abstract
         }
 
         if ($this->getName() == '') {
-            throw new Exception('No theme name has been given');
+            throw new Exception('No plugin name has been given');
         }
 
         $path = $this->getTarget() . DIRECTORY_SEPARATOR . $this->getName();
 
-        // if the theme exists, check the force parameter and either throw an
+        // if the plugin exists, check the force parameter and either throw an
         // exception of remove the existing folder.
         if (file_exists($path)) {
             if (!$this->getForce()) {

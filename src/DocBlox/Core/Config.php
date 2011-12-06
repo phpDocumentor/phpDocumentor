@@ -44,8 +44,7 @@ class DocBlox_Core_Config extends Zend_Config_Xml
 
         $this->paths->application = realpath(dirname(__FILE__) . '/../../..');
         $this->paths->data = realpath($this->paths->application . '/data');
-        $this->paths->templates = realpath($this->paths->data . '/themes');
-        $this->paths->themes = $this->paths->templates;
+        $this->paths->templates = realpath($this->paths->data . '/templates');
         $this->mergeTemplateConfigurations();
     }
 

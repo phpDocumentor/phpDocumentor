@@ -173,7 +173,9 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
 
       // initialize transformer
     $transformer = new DocBlox_Transformer();
-    $transformer->setThemesPath(DocBlox_Core_Abstract::config()->paths->themes);
+    $transformer->setTemplatesPath(
+        DocBlox_Core_Abstract::config()->paths->templates
+    );
     $transformer->setTarget($this->getTarget());
     $transformer->setSource($this->getSource());
     $transformer->setTemplates($this->getTemplate());

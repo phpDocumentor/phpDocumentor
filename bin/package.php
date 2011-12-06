@@ -17,7 +17,7 @@ function createPackager($original_file, $options = array())
       'deploy.properties',
       'deploy.xml',
       'build/*',
-      'data/themes/cache/*',
+      'data/templates/*',
       'data/output/*',
       'data/log/*',
       'bin/package.php',

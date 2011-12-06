@@ -34,7 +34,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     protected $templates = array();
 
     /** @var string */
-    protected $themes_path = '';
+    protected $templates_path = '';
 
     /** @var DocBlox_Transformer_Behaviour_Collection */
     protected $behaviours = null;
@@ -60,7 +60,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     protected $external_class_docs = array();
 
     /**
-     * Sets the path for the themes to the DocBlox default.
+     * Sets the path for the templates to the DocBlox default.
      */
     public function __construct()
     {
@@ -99,25 +99,25 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     }
 
     /**
-     * Sets the path where the themes are located.
+     * Sets the path where the templates are located.
      *
-     * @param string $path Absolute path where the themes are.
+     * @param string $path Absolute path where the templates are.
      *
      * @return void
      */
-    public function setThemesPath($path)
+    public function setTemplatesPath($path)
     {
-        $this->themes_path = $path;
+        $this->templates_path = $path;
     }
 
     /**
-     * Returns the path where the themes are located.
+     * Returns the path where the templates are located.
      *
      * @return string
      */
-    public function getThemesPath()
+    public function getTemplatesPath()
     {
-        return $this->themes_path;
+        return $this->templates_path;
     }
 
     /**
@@ -244,7 +244,7 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
         if (file_exists($config_path) && is_readable($config_path)) {
             $path = rtrim($name, DIRECTORY_SEPARATOR);
             $template_name_part = basename($path);
-            $cache_path = rtrim($this->getThemesPath(), '/\\')
+            $cache_path = rtrim($this->getTemplatesPath(), '/\\')
             . DIRECTORY_SEPARATOR . 'cache'
             . DIRECTORY_SEPARATOR . $template_name_part;
 
@@ -263,14 +263,14 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             );
         }
 
-        // if we load a default theme
+        // if we load a default template
         if ($path === null) {
             if ('@data@' == '@'.'data@') {
-                $path = rtrim($this->getThemesPath(), '/\\')
+                $path = rtrim($this->getTemplatesPath(), '/\\')
                         . DIRECTORY_SEPARATOR . $name;
             } else {
                 $path = rtrim('@data@', '/\\') . DIRECTORY_SEPARATOR
-                    . 'DocBlox_Theme_' . $name;
+                    . 'DocBlox_Template_' . $name;
             }
         }
 

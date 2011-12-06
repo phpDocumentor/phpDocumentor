@@ -165,7 +165,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
      */
     public function getSourceAsPath()
     {
-        // externally loaded templates set this parameter so that theme
+        // externally loaded templates set this parameter so that template
         // resources may be placed in the same folder as the template.
         if ($this->getParameter('template_path') !== null)
         {

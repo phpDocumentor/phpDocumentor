@@ -127,7 +127,7 @@ Full name                      Description
 :doc:`Tasks/project_transform` Transforms the structure file into the specified
                                output format.
 :doc:`Tasks/plugin_generate`   Generates a skeleton plugin.
-:doc:`Tasks/theme_generate`    Generates a skeleton theme.
-:doc:`Tasks/theme_list`        Displays a listing of all available themes in
+:doc:`Tasks/template_generate` Generates a skeleton template.
+:doc:`Tasks/template_list`     Displays a listing of all available templates in
                                DocBlox.
 ============================== =================================================

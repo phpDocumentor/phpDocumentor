@@ -13,19 +13,19 @@
  */
 
 /**
- * Generates a skeleton theme.
+ * Generates a skeleton template.
  *
  * @category    DocBlox
  * @package     Tasks
- * @subpackage  Theme
+ * @subpackage  Template
  * @author      Mike van Riel <mike.vanriel@naenius.com>
  * @license     http://www.opensource.org/licenses/mit-license.php MIT
  * @link        http://docblox-project.org
  */
-class DocBlox_Task_Theme_Generate extends DocBlox_Task_Abstract
+class DocBlox_Task_Template_Generate extends DocBlox_Task_Abstract
 {
     /** @var string The name of this task including namespace */
-    protected $taskname = 'theme:generate';
+    protected $taskname = 'template:generate';
 
     /**
      * Configures the parameters which this accepts
@@ -35,10 +35,10 @@ class DocBlox_Task_Theme_Generate extends DocBlox_Task_Abstract
     protected function configure()
     {
         $this->addOption('t|target', '=s',
-            'Target location where to generate the new theme'
+            'Target location where to generate the new template'
         );
         $this->addOption('n|name', '=s',
-            'The name for the new theme'
+            'The name for the new template'
         );
         $this->addOption('a|author', '-s',
             'Name of the author'
@@ -48,7 +48,7 @@ class DocBlox_Task_Theme_Generate extends DocBlox_Task_Abstract
         );
         $this->addOption('force', '',
             'Forces generation of the new template, even if there is an '
-            . 'existing theme at that location'
+            . 'existing template at that location'
         );
     }
 
@@ -74,12 +74,12 @@ class DocBlox_Task_Theme_Generate extends DocBlox_Task_Abstract
         }
 
         if ($this->getName() == '') {
-            throw new Exception('No theme name has been given');
+            throw new Exception('No template name has been given');
         }
 
         $path = $this->getTarget() . DIRECTORY_SEPARATOR . $this->getName();
 
-        // if the theme exists, checkt he force parameter and either throw an
+        // if the template exists, checkt he force parameter and either throw an
         // exception of remove the existing folder.
         if (file_exists($path)) {
             if (!$this->getForce()) {
@@ -88,7 +88,7 @@ class DocBlox_Task_Theme_Generate extends DocBlox_Task_Abstract
                     . 'target location "' . $this->getTarget() . '"'
                 );
             } else {
-                echo 'Removing previous theme'.PHP_EOL;
+                echo 'Removing previous template'.PHP_EOL;
                 `rm -rf $path`;
             }
         }
@@ -102,7 +102,7 @@ class DocBlox_Task_Theme_Generate extends DocBlox_Task_Abstract
 
         echo 'Generating files' . PHP_EOL;
         file_put_contents(
-            $css_path . DIRECTORY_SEPARATOR . 'theme.css',
+            $css_path . DIRECTORY_SEPARATOR . 'template.css',
             <<<CSS
 @import url('navigation.css');
 @import url('api-content.css');
@@ -140,7 +140,7 @@ CSS
 
         <title></title>
 
-        <link rel="stylesheet" href="{\$root}css/theme.css" type="text/css" />
+        <link rel="stylesheet" href="{\$root}css/template.css" type="text/css" />
         <script type="text/javascript" src="{\$root}js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="{\$root}js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript" src="{\$root}js/jquery.cookie.js"></script>
@@ -183,18 +183,18 @@ XML
   <transformations>
     <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
     <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
-    <transformation query="copy" writer="FileIo" source="themes/default/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="themes/cache/$name/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
-    <transformation query="" writer="xsl" source="themes/cache/$name/index.xsl" artifact="index.html"/>
-    <transformation query="" writer="xsl" source="themes/default/sidebar.xsl" artifact="nav.html"/>
-    <transformation query="/project/file/@path" writer="xsl" source="themes/default/api-doc.xsl" artifact="{\$path}"/>
+    <transformation query="copy" writer="FileIo" source="templates/new_black/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="templates/cache/$name/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="templates/new_black/images" artifact="images"/>
+    <transformation query="" writer="xsl" source="templates/cache/$name/index.xsl" artifact="index.html"/>
+    <transformation query="" writer="xsl" source="templates/new_black/sidebar.xsl" artifact="nav.html"/>
+    <transformation query="/project/file/@path" writer="xsl" source="templates/new_black/api-doc.xsl" artifact="{\$path}"/>
   </transformations>
 </template>
 XML
         );
 
-        echo 'Finished generating a new theme at: ' . $path . PHP_EOL . PHP_EOL;
+        echo 'Finished generating a new template at: ' . $path . PHP_EOL . PHP_EOL;
     }
 
 }

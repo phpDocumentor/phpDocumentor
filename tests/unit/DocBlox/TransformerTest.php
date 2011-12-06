@@ -93,8 +93,8 @@ class DocBlox_TransformerTest extends PHPUnit_Framework_TestCase
      */
     public function testAddTemplate()
     {
-        $this->fixture->setThemesPath(dirname(__FILE__).'/../../../data/themes');
-        $this->fixture->addTemplate('default');
+        $this->fixture->setTemplatesPath(dirname(__FILE__).'/../../../data/templates');
+        $this->fixture->addTemplate('new_black');
 
         $this->assertGreaterThan(
             0,

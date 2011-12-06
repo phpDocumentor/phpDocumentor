@@ -13,23 +13,23 @@
  */
 
 /**
- * Displays a listing of all available themes in DocBlox
+ * Displays a listing of all available templates in DocBlox
  *
- * This task outputs a list of themes as available in DocBlox.
- * Please mind that custom themes which are situated outside DocBlox are not
+ * This task outputs a list of templates as available in DocBlox.
+ * Please mind that custom templates which are situated outside DocBlox are not
  * shown in this listing.
  *
  * @category    DocBlox
  * @package     Tasks
- * @subpackage  Theme
+ * @subpackage  Template
  * @author      Mike van Riel <mike.vanriel@naenius.com>
  * @license     http://www.opensource.org/licenses/mit-license.php MIT
  * @link        http://docblox-project.org
  */
-class DocBlox_Task_Theme_List extends DocBlox_Task_Abstract
+class DocBlox_Task_Template_List extends DocBlox_Task_Abstract
 {
     /** @var string The name of this task including namespace */
-    protected $taskname = 'theme:list';
+    protected $taskname = 'template:list';
 
     /**
      * Executes the transformation process.
@@ -44,10 +44,10 @@ class DocBlox_Task_Theme_List extends DocBlox_Task_Abstract
             return;
         }
 
-        echo 'Available themes:'.PHP_EOL;
+        echo 'Available templates:'.PHP_EOL;
 
         /** @var RecursiveDirectoryIterator $files */
-        $files = new DirectoryIterator(dirname(__FILE__).'/../../../../data/themes');
+        $files = new DirectoryIterator(dirname(__FILE__).'/../../../../data/templates');
         while ($files->valid()) {
             $name = $files->getBasename();
 

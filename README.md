@@ -21,7 +21,7 @@ DocBlox sports the following:
 * *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
 * *Incremental parsing*, if you kept the Structure file from a previous run you get an additional performance boost of up
   to 80% on top of the mentioned processing speed above.
-* *Easy theme building*, if you want to make a branding you only have to call 1 task and edit 3 files.
+* *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
 * *Basic command-line compatibility with phpDocumentor*, Docblox is an application in its own right but the
   basic phpDocumentor arguments, such as --directory, --file and --target, have been adopted.
 * *Two-step process*, DocBlox first generates a XML file with your application structure before creating the output.
@@ -39,8 +39,8 @@ DocBlox requires the following:
 * PEAR (optional, used for generating Class Diagrams or installing via PEAR)
 
 **Note:**
-If you do not want to install the PEAR or Graphviz dependency you are encouraged to generate your own template and make sure that it does not contain anything related to `Graph`. 
-An easier solution might be to edit `data/themes/default/template.xml` file and remove every line containing the word `Graph` but this will be undone with every upgrade of DocBlox.
+If you do not want to install the PEAR or Graphviz dependency you are encouraged to generate your own template and make sure that it does not contain anything related to `Graph`.
+An easier solution might be to edit `data/templates/new_black/template.xml` file and remove every line containing the word `Graph` but this will be undone with every upgrade of DocBlox.
 
 Please see the documentation about creating your own templates for more information.
 

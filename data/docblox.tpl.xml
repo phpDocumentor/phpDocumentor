@@ -25,6 +25,6 @@
     </paths>
   </logging>
   <transformations>
-    <template name="default" />
+    <template name="new_black" />
   </transformations>
 </docblox>
