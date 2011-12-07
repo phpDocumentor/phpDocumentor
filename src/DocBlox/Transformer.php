@@ -265,13 +265,8 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
 
         // if we load a default template
         if ($path === null) {
-            if ('@data@' == '@'.'data@') {
-                $path = rtrim($this->getTemplatesPath(), '/\\')
-                        . DIRECTORY_SEPARATOR . $name;
-            } else {
-                $path = rtrim('@data@', '/\\') . DIRECTORY_SEPARATOR
-                    . 'DocBlox_Template_' . $name;
-            }
+            $path = rtrim($this->getTemplatesPath(), '/\\')
+                    . DIRECTORY_SEPARATOR . $name;
         }
 
         if (!file_exists($path) || !is_readable($path)) {

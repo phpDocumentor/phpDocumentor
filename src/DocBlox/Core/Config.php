@@ -45,6 +45,11 @@ class DocBlox_Core_Config extends Zend_Config_Xml
         $this->paths->application = realpath(dirname(__FILE__) . '/../../..');
         $this->paths->data = realpath($this->paths->application . '/data');
         $this->paths->templates = realpath($this->paths->data . '/templates');
+        if (!$this->paths->templates) {
+            throw new Exception(
+                'The templates folder was not found; have you installed a template?'
+            );
+        }
         $this->mergeTemplateConfigurations();
     }
 

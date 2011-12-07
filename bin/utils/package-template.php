@@ -3,11 +3,9 @@ error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 require_once('PEAR/PackageFileManager2.php');
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
-function createPackager($template, $options = array())
+function createPackager($path, $template, $options = array())
 {
-  $settings = simplexml_load_file(
-      dirname(__FILE__).'/../data/templates/' . $template . '/template.xml'
-  );
+  $settings = simplexml_load_file($path . '/template.xml');
   $version     = (string)$settings->version;
   $author      = (string)$settings->author;
   $description = (string)$settings->description;
@@ -18,14 +16,16 @@ function createPackager($template, $options = array())
     'packagefile'       => 'package.xml',
     'filelistgenerator' => 'file',
     'simpleoutput'      => true,
-    'baseinstalldir'    => '/DocBlox/templates/'.$template,
-    'packagedirectory'  => dirname(__FILE__).'/../data/templates/' . $template,
+    'baseinstalldir'    => '/DocBlox/data/templates/' . $template,
+    'packagedirectory'  => $path,
     'clearcontents'     => true,
     'ignore'            => array(),
     'exceptions'        => array(),
     'installexceptions' => array(),
     'dir_roles'         => array(
-      '.'   => 'data',
+      '/'   => 'php', // explicitly set the role to php to allowthe templates to
+        // installed inside the DocBlox PEAR folder. This will help keep
+        // everything together
     ),
   ), $options);
 
@@ -43,7 +43,7 @@ function createPackager($template, $options = array())
   $packagexml->setPhpDep('5.2.6');
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
-//  $packagexml->addPackageDepWithChannel('required', 'DocBlox', 'pear.docblox-project.org', '0.16.0');
+  $packagexml->addPackageDepWithChannel('required', 'DocBlox', 'pear.docblox-project.org', '0.17.0');
 
   $packagexml->addMaintainer('lead', '', $author, $email);
   $packagexml->setLicense('MIT', 'http://www.opensource.org/licenses/mit-license.html');
@@ -62,16 +62,15 @@ function createPackager($template, $options = array())
 
 echo 'DocBlox PEAR template Packager v1.0'.PHP_EOL;
 
-if ($argc < 1)
+if ($argc < 2)
 {
   echo <<<HELP
 
 Usage:
-  php package.php [template] [make|nothing]
+  php package.php [path] [template] [make|nothing]
 
 Description:
   The DocBlox packager generates a package.xml file and accompanying package.
-  By specifying the version and stability you can tell the packager which version to package.
 
   A file will only be generated if the third parameter is the word 'make'; otherwise the output will be send to
   the command line.
@@ -80,9 +79,9 @@ HELP;
   exit(0);
 }
 
-$packager = createPackager($argv[1]);
+$packager = createPackager($argv[1], $argv[2]);
 $packager->generateContents();
-if (isset($argv[2]) && ($argv[2] == 'make')) {
+if (isset($argv[3]) && ($argv[3] == 'make')) {
   $packager->writePackageFile();
 } else {
   $packager->debugPackageFile();

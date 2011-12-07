@@ -17,8 +17,8 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-12-04</date>
- <time>15:17:24</time>
+ <date>2011-12-07</date>
+ <time>07:21:32</time>
  <version>
   <release>0.17.0</release>
   <api>0.17.0</api>
@@ -34,13 +34,17 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <contents>
   <dir baseinstalldir="/DocBlox" name="/">
    <dir name="bin">
+    <dir name="utils">
+     <file baseinstalldir="/DocBlox" name="mem.sh" role="php" />
+     <file baseinstalldir="/DocBlox" name="package-template.php" role="php" />
+     <file baseinstalldir="/DocBlox" name="package.php" role="php" />
+    </dir> <!-- /bin/utils -->
     <file baseinstalldir="/" name="docblox.bat" role="script" />
     <file baseinstalldir="/" name="docblox.php" role="script">
      <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
     </file>
-    <file baseinstalldir="/DocBlox" name="package-theme.php" role="php" />
     <file baseinstalldir="/DocBlox" name="parse.php" role="php" />
     <file baseinstalldir="/DocBlox" name="transform.php" role="php" />
    </dir> <!-- /bin -->
@@ -387,11 +391,11 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/DocBlox" name="Run.php" role="php" />
        <file baseinstalldir="/DocBlox" name="Transform.php" role="php" />
       </dir> <!-- /src/DocBlox/Task/Project -->
-      <dir name="Theme">
+      <dir name="Template">
        <file baseinstalldir="/DocBlox" name="Generate.php" role="php" />
        <file baseinstalldir="/DocBlox" name="Install.php" role="php" />
        <file baseinstalldir="/DocBlox" name="List.php" role="php" />
-      </dir> <!-- /src/DocBlox/Task/Theme -->
+      </dir> <!-- /src/DocBlox/Task/Template -->
       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Runner.php" role="php" />
      </dir> <!-- /src/DocBlox/Task -->
@@ -410,9 +414,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="Bootstrap.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Parser.php" role="php" />
      <file baseinstalldir="/DocBlox" name="Plugin.php" role="php" />
-     <file baseinstalldir="/DocBlox" name="Transformer.php" role="php">
-      <tasks:replace from="@data@" to="data_dir" type="pear-config" />
-     </file>
+     <file baseinstalldir="/DocBlox" name="Transformer.php" role="php" />
     </dir> <!-- /src/DocBlox -->
     <dir name="markdown">
      <file baseinstalldir="/DocBlox" name="License.text" role="php" />
@@ -536,7 +538,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/DocBlox" name="docblox-no-class-found.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-no-params.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-parse-phar.phpt" role="php" />
-     <file baseinstalldir="/DocBlox" name="docblox-project-list.broken" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-project-parse.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt" role="php" />
      <file baseinstalldir="/DocBlox" name="docblox-project-run-quiet.phpt~" role="php" />
@@ -608,14 +609,10 @@ Please see the CHANGELOG in the root of the application for the latest changes
    </dir> <!-- /tests -->
    <file baseinstalldir="/DocBlox" name="build.properties" role="data" />
    <file baseinstalldir="/DocBlox" name="build.xml" role="data" />
-   <file baseinstalldir="/DocBlox" name="DocBlox-0.17.0.tgz" role="data" />
    <file baseinstalldir="/DocBlox" name="docblox.dist.xml" role="php" />
    <file baseinstalldir="/DocBlox" name="LICENSE" role="php" />
-   <file baseinstalldir="/DocBlox" name="mem.sh" role="data" />
    <file baseinstalldir="/DocBlox" name="phpunit.xml.dist" role="php" />
-   <file baseinstalldir="/DocBlox" name="README" role="php" />
    <file baseinstalldir="/DocBlox" name="README.md" role="data" />
-   <file baseinstalldir="/DocBlox" name="test.xhtml" role="data" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -660,7 +657,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2011-12-04</date>
+   <date>2011-12-07</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes

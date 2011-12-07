@@ -11,7 +11,7 @@ function createPackager($original_file, $options = array())
     'filelistgenerator' => 'file',
     'simpleoutput'      => true,
     'baseinstalldir'    => '/DocBlox',
-    'packagedirectory'  => dirname(__FILE__).'/../',
+    'packagedirectory'  => dirname(__FILE__).'/../../',
     'clearcontents'     => true,
     'ignore'            => array(
       'deploy.properties',
@@ -63,11 +63,11 @@ DESC
   $packagexml->setPhpDep('5.2.4');
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
+  $packagexml->addPackageDepWithChannel('required', 'DocBlox_Template_new_black', 'pear.docblox-project.org', '1.0.0');
 
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '/usr/bin/env php', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_bin@', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_dir@', 'php_dir');
-  $packagexml->addReplacement('src/DocBlox/Transformer.php', 'pear-config', '@data@', 'data_dir');
 
   $packagexml->addMaintainer('lead', 'mvriel', 'Mike van Riel', 'mike.vanriel@naenius.com');
   $packagexml->setLicense('MIT', 'http://www.opensource.org/licenses/mit-license.html');
@@ -106,7 +106,7 @@ HELP;
   exit(0);
 }
 
-$packager = createPackager('../package.xml');
+$packager = createPackager('../../package.xml');
 
 $packager->setAPIVersion($argv[1]);
 $packager->setReleaseVersion($argv[1]);
