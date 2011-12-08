@@ -1,4 +1,4 @@
-12/04/2011: Version 0.17.0
+12/11/2011: Version 0.17.0
 --------------------------
 
 * FIXED:    Trimming long description to prevent redundant whitelines
@@ -8,6 +8,14 @@
 * FIXED:    Basic types had the namespace prepended in certain cases
 * CHANGED:  Completely refactored inheritance to make it simpler and faster
 * ADDED:    Class constants are now inherited as well
+* CHANGED:  Renamed everything theme-related to template; this makes it simpler
+            to work with templates
+* CHANGED:  Moved templates to external packages
+* ADDED:    New task template:install to automatically install templates
+* ADDED:    Created website templates.docblox-project.org to showcase the
+            templates and give the installation commands.
+* ADDED:    New task template:package to package templates
+* FIXED:    Zend template CSS issues.
 
 11/14/2011: Version 0.16.0
 --------------------------
