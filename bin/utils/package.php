@@ -64,6 +64,7 @@ DESC
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'DocBlox_Template_new_black', 'pear.docblox-project.org', '1.0.0');
+  $packagexml->addPackageDepWithChannel('optional', 'PEAR_PackageFileManager2', 'pear.php.net', '1.0.2');
 
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '/usr/bin/env php', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_bin@', 'php_bin');

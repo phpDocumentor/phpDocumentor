@@ -52,44 +52,14 @@
             command="git commit package.xml -m 'RELEASE: Updated package file to ${version.number}'"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
-        <exec
-            command="php bin/package-template.php default make"
-            passthru="true" dir="${project.basedir}" checkreturn="true"
-        />
-        <exec
-            command="pear package" passthru="true" dir="/data/templates/default"
-            checkreturn="true"
-        />
-        <exec
-            command="php bin/package-template.php old_ocean make"
-            passthru="true" dir="${project.basedir}" checkreturn="true"
-        />
-        <exec
-            command="pear package" passthru="true" dir="${project.basedir}/data/templates/old_ocean"
-            checkreturn="true"
-        />
-        <exec
-            command="php bin/package-template.php zend make"
-            passthru="true" dir="${project.basedir}" checkreturn="true"
-        />
-        <exec
-            command="pear package" passthru="true" dir="${project.basedir}/data/templates/zend"
-            checkreturn="true"
-        />
     </target>
 
     <target name="upload-pear-package" depends="get-version-number">
-        <!--<exec command="scp ${project.basedir}/DocBlox-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>-->
-        <exec command="scp ${project.basedir}/data/templates/default/DocBlox_template_default-*.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
-        <exec command="scp ${project.basedir}/data/templates/old_ocean/DocBlox_template_old_ocean-*.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
-        <exec command="scp ${project.basedir}/data/templates/zend/DocBlox_template_zend-*.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
+        <exec command="scp ${project.basedir}/DocBlox-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="publish-pear-package" depends="get-version-number,upload-pear-package">
         <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . DocBlox-${version.number}.tgz'" passthru="true" checkreturn="true"/>
-        <echo message="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . DocBlox_template_default-version.tgz'" />
-        <echo message="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . DocBlox_template_zend-version.tgz'" />
-        <echo message="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . DocBlox_template_old_ocean-version.tgz'" />
         <delete file="${project.basedir}/DocBlox-${version.number}.tgz" />
     </target>
 
