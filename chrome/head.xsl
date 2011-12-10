@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output indent="yes" method="html" />
+
+    <xsl:template name="chrome-head">
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <link rel="stylesheet" href="{$root}css/theme.css" type="text/css" />
+        <script type="text/javascript" src="{$root}js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="{$root}js/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="{$root}js/theme.js"></script>
+    </xsl:template>
+
+</xsl:stylesheet>

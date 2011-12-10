@@ -1,0 +1,68 @@
+@import url('sen.full.min.css');
+
+html, body, #page {
+    height: 99.9%;
+    width: 100%;
+}
+
+body {
+    /*font: 80% / 1.5em Arial, Helvetica, "DejaVu Sans", "Liberation sans", "Bitstream Vera Sans", sans-serif*/
+}
+
+#sidebar  {
+    width: 200px;
+}
+
+h2 {
+    margin-top: 25px;
+}
+
+h3 {
+    margin: 0 0 0 0.2em;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0 0 1.5em 0em;
+}
+
+#sidebar ul ul {
+    margin: 0 0 0 0.6em;
+}
+
+#sidebar iframe, #contents iframe {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+div.success_notification {
+    margin: 5px;
+    padding: 5px;
+    padding-left: 35px;
+    background: #f9f9f9 url('../images/icons/ok.png') no-repeat 5px center;
+    border: 1px solid silver;
+}
+
+#marker-accordion h3 small {
+    float: right;
+    padding: 2px 5px;
+    margin-right: 20px;
+}
+
+span.attribute {
+    padding: 2px 6px;
+    background: #F0F0F0;
+    display: inline-block;
+    border-radius: 3px;
+    margin: 0px 4px;
+    font-weight: bold;
+    color: gray;
+    border: 1px solid silver;
+    font-size: 0.9em;
+}
+
+.description small.inherited_from {
+    display: none;
+}
