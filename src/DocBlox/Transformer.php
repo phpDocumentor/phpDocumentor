@@ -245,7 +245,6 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             $path = rtrim($name, DIRECTORY_SEPARATOR);
             $template_name_part = basename($path);
             $cache_path = rtrim($this->getTemplatesPath(), '/\\')
-            . DIRECTORY_SEPARATOR . 'cache'
             . DIRECTORY_SEPARATOR . $template_name_part;
 
             // move the files to a cache location and then change the path

@@ -101,97 +101,29 @@ class DocBlox_Task_Template_Generate extends DocBlox_Task_Abstract
         mkdir($css_path);
 
         echo 'Generating files' . PHP_EOL;
-        file_put_contents(
-            $css_path . DIRECTORY_SEPARATOR . 'template.css',
-            <<<CSS
-@import url('navigation.css');
-@import url('api-content.css');
-@import url('default.css');
-
-body {
-    margin:  0px;
-    padding: 0px;
-}
-
-.filetree {
-    font-size: 0.8em;
-}
-
-#db-header {
-    height: 80px;
-}
-
-#db-footer {
-    height: 1px;
-}
-CSS
+        copy(
+            dirname(__FILE__).'/../../../../data/base_template/css/template.css',
+            $css_path . DIRECTORY_SEPARATOR . 'template.css'
         );
-
-        file_put_contents(
-            $path . DIRECTORY_SEPARATOR . 'index.xsl',
-            <<<XML
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:output indent="yes" method="html" />
-
-  <xsl:template match="/">
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-      <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-        <title></title>
-
-        <link rel="stylesheet" href="{\$root}css/template.css" type="text/css" />
-        <script type="text/javascript" src="{\$root}js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="{\$root}js/jquery-ui-1.8.2.custom.min.js"></script>
-        <script type="text/javascript" src="{\$root}js/jquery.cookie.js"></script>
-        <script type="text/javascript" src="{\$root}js/jquery.treeview.js"></script>
-      </head>
-      <body>
-        <table id="page">
-          <tr><td colspan="2" id="db-header"></td></tr>
-          <tr>
-            <td id="sidebar">
-              <iframe name="nav" id="nav" src="{\$root}nav.html" />
-            </td>
-            <td id="contents">
-              <iframe name="content" id="content" src="{\$root}content.html" />
-            </td>
-          </tr>
-          <tr><td colspan="2" id="db-footer"></td></tr>
-        </table>
-      </body>
-    </html>
-  </xsl:template>
-
-</xsl:stylesheet>
-XML
+        copy(
+            dirname(__FILE__).'/../../../../data/base_template/index.xsl',
+            $path . DIRECTORY_SEPARATOR . 'index.xsl'
         );
 
         $name    = $this->getName();
         $author  = $this->getAuthor();
         $version = $this->getVersion();
 
-        file_put_contents(
-            $path . DIRECTORY_SEPARATOR . 'template.xml',
-            <<<XML
-<?xml version="1.0" encoding="utf-8"?>
+        $template = preg_replace(
+            array('/\{\{\s*name\s*\}\}/', '/\{\{\s*version\s*\}\}/', '/\{\{\s*author\s*\}\}/'),
+            array($name, $version, $author),
+            file_get_contents(
+                dirname(__FILE__) . '/../../../../data/base_template/template.xml'
+            )
+        );
 
-<template>
-  <author>$author</author>
-  <version>$version</version>
-  <copyright />
-  <transformations>
-    <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
-    <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
-    <transformation query="copy" writer="FileIo" source="templates/new_black/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="templates/cache/$name/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="templates/new_black/images" artifact="images"/>
-    <transformation query="" writer="xsl" source="templates/cache/$name/index.xsl" artifact="index.html"/>
-    <transformation query="" writer="xsl" source="templates/new_black/sidebar.xsl" artifact="nav.html"/>
-    <transformation query="/project/file/@path" writer="xsl" source="templates/new_black/api-doc.xsl" artifact="{\$path}"/>
-  </transformations>
-</template>
-XML
+        file_put_contents(
+            $path . DIRECTORY_SEPARATOR . 'template.xml', $template
         );
 
         echo 'Finished generating a new template at: ' . $path . PHP_EOL . PHP_EOL;

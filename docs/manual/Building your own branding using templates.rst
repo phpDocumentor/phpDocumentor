@@ -1,9 +1,5 @@
-Building your own branding
-==========================
-
-    Branding in this context means not only providing a custom look and feel
-    to the generated documentation; but also specifying what is generated
-    and with what parameters. DocBlox commonly refers to this as *templates*.
+Building your own branding using templates
+==========================================
 
 Most of the time it is only necessary to replace the graphical
 layout with that of your own project. This is an easy process and
@@ -23,20 +19,19 @@ I will try to give a step-by-step description how to create your own branding:
 1. Create a new folder in your intended location (for example your project) with
    the name of the intended template. Please make sure *no* spaces are present in
    the path as the XSL Writer (or actually libxsl) cannot handle that.
-2. invoke the following command:
+2. invoke the following command::
 
-   ::
-
-       docblox template:generate -t <target path> -n <template name>
+       $ docblox template:generate -t <target path> -n <template name>
 
    ..
 
      Optionally you can also provide **--author** to provide an author name and
      **--version** to provide a version number to your template.
 
-   The command above will generate a skeleton template for you.
-3. Alter the template.css in the css sub-folder to apply custom styling and/or
-   alter the index.xsl to add your own layout.
+   The command above will generate a skeleton template for you in the intended
+   location.
+3. Alter the template.css in the css sub-folder to apply your own styling and/or
+   alter the index.xsl to accomodate for your own layout.
 
    **Important:** please place your code in the tabular structure, thus your
    head in the designated cell, your content in the designated cell and your

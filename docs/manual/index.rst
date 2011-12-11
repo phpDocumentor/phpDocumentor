@@ -13,7 +13,7 @@ Welcome to DocBlox's documentation!
    Basic usage
    Configuration
    Anatomy of a Docblock
-   Building your own branding
+   Building your own branding using templates
    Plugins
    Contributor's Guide
    FAQ

@@ -16,6 +16,14 @@
             templates and give the installation commands.
 * ADDED:    New task template:package to package templates
 * FIXED:    Zend template CSS issues.
+* ADDED:    New (base) template: 'abstract'
+* BC-BREAK: Templates opened using an absolute path will no longer be copied to
+            the 'cache' subfolder but are copied to data/templates just like any
+            other template.
+            NOTE: this action overwrites any existing template with the same
+            name.
+* CHANGED:  Updated template:generate task with new base template information
+            and to incorporate the changed necesary for above BC-BREAK.
 
 11/14/2011: Version 0.16.0
 --------------------------
