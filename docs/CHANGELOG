@@ -24,6 +24,8 @@
             name.
 * CHANGED:  Updated template:generate task with new base template information
             and to incorporate the changed necesary for above BC-BREAK.
+* FIXED:    Transformation parameters were not interpreted correctly.
+* BC-BREAK: Renamed 'default' template to 'new_black'
 
 11/14/2011: Version 0.16.0
 --------------------------
