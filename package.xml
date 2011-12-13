@@ -17,8 +17,8 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-12-07</date>
- <time>07:21:32</time>
+ <date>2011-12-13</date>
+ <time>22:03:52</time>
  <version>
   <release>0.17.0</release>
   <api>0.17.0</api>
@@ -36,7 +36,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <dir name="bin">
     <dir name="utils">
      <file baseinstalldir="/DocBlox" name="mem.sh" role="php" />
-     <file baseinstalldir="/DocBlox" name="package-template.php" role="php" />
      <file baseinstalldir="/DocBlox" name="package.php" role="php" />
     </dir> <!-- /bin/utils -->
     <file baseinstalldir="/" name="docblox.bat" role="script" />
@@ -49,6 +48,13 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <file baseinstalldir="/DocBlox" name="transform.php" role="php" />
    </dir> <!-- /bin -->
    <dir name="data">
+    <dir name="base_template">
+     <dir name="css">
+      <file baseinstalldir="/DocBlox" name="template.css" role="php" />
+     </dir> <!-- /data/base_template/css -->
+     <file baseinstalldir="/DocBlox" name="index.xsl" role="php" />
+     <file baseinstalldir="/DocBlox" name="template.xml" role="php" />
+    </dir> <!-- /data/base_template -->
     <dir name="images">
      <dir name="icons">
       <file baseinstalldir="/DocBlox" name="arrow_down.png" role="php" />
@@ -235,7 +241,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </dir> <!-- /docs/manual/Tasks -->
      <file baseinstalldir="/DocBlox" name="Anatomy of a Docblock.rst" role="php" />
      <file baseinstalldir="/DocBlox" name="Basic usage.rst" role="php" />
-     <file baseinstalldir="/DocBlox" name="Building your own branding.rst" role="php" />
+     <file baseinstalldir="/DocBlox" name="Building your own branding using templates.rst" role="php" />
      <file baseinstalldir="/DocBlox" name="conf.py" role="php" />
      <file baseinstalldir="/DocBlox" name="Configuration.rst" role="php" />
      <file baseinstalldir="/DocBlox" name="Contributor's Guide.rst" role="php" />
@@ -395,6 +401,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/DocBlox" name="Generate.php" role="php" />
        <file baseinstalldir="/DocBlox" name="Install.php" role="php" />
        <file baseinstalldir="/DocBlox" name="List.php" role="php" />
+       <file baseinstalldir="/DocBlox" name="Package.php" role="php" />
       </dir> <!-- /src/DocBlox/Task/Template -->
       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php" />
       <file baseinstalldir="/DocBlox" name="Runner.php" role="php" />
@@ -628,7 +635,19 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <channel>pear.php.net</channel>
     <min>1.4.0</min>
    </package>
+   <package>
+    <name>DocBlox_Template_new_black</name>
+    <channel>pear.docblox-project.org</channel>
+    <min>1.0.0</min>
+   </package>
   </required>
+  <optional>
+   <package>
+    <name>PEAR_PackageFileManager2</name>
+    <channel>pear.php.net</channel>
+    <min>1.0.2</min>
+   </package>
+  </optional>
  </dependencies>
  <phprelease>
   <installconditions>
@@ -657,7 +676,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2011-12-07</date>
+   <date>2011-12-13</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
