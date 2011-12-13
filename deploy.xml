@@ -42,7 +42,7 @@
         <propertyprompt propertyName="version.stability"
                         promptText="Enter the stability of the new version (alpha, beta or stable)"/>
         <exec
-            command="php bin/package.php ${version.number} ${version.stability} make"
+            command="php bin/utils/package.php ${version.number} ${version.stability} make"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
