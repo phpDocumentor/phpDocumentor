@@ -238,6 +238,39 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     }
 
     /**
+     * Recursive function to convert a SimpleXMLElement to an associative array.
+     *
+     * @param SimpleXMLElement $sxml
+     *
+     * @return (string|string[])[]
+     */
+    protected function convertSimpleXmlToArray(SimpleXMLElement $sxml)
+    {
+        $result = array();
+
+        /** @var SimpleXMLElement $value */
+        foreach ($sxml->children() as $key => $value) {
+            $result[$key] = $value->count() > 1
+                ? $this->convertSimpleXmlToArray($value)
+                : (string)$value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Imports the parameters from a SimpleXMLElement array.
+     *
+     * @param SimpleXMLElement $parameters
+     *
+     * @return void
+     */
+    public function importParameters(SimpleXMLElement $parameters)
+    {
+        $this->parameters = $this->convertSimpleXmlToArray($parameters);
+    }
+
+    /**
      * Returns all parameters for this transformation.
      *
      * @return string[]
