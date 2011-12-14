@@ -67,7 +67,7 @@ class DocBlox_Task_Template_Install extends DocBlox_Task_Abstract
         }
 
         $template = $args[1];
-        if ('@pear_installed@' == 'true') {
+        if ('@php_bin@' !== '@'.'php_bin@') {
             passthru(
                 'pear install docblox/DocBlox_Template_' . $template . ' '
                 . $this->getVersion()
@@ -84,13 +84,6 @@ class DocBlox_Task_Template_Install extends DocBlox_Task_Abstract
         $source = 'http://pear.docblox-project.org/get/DocBlox_Template_'
             . $template . '-' . $this->getVersion() . '.tar';
 
-        if (!file_exists($source)) {
-            throw new Exception(
-                'Template ' . $template . ' with version number ' . $this->getVersion()
-                . ' could not be found'
-            );
-        }
-
         $tmp = tempnam(sys_get_temp_dir(), 'DBX').'.tar';
         file_put_contents($tmp, file_get_contents($source));
         $folder = realpath(dirname(__FILE__) . '/../../../../data/templates')
@@ -98,14 +91,15 @@ class DocBlox_Task_Template_Install extends DocBlox_Task_Abstract
 
         echo 'Installing to: '.$folder.PHP_EOL;
 
-        $tmp_folder = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'DBX_TEMPLATE_INSTALL';
+        $tmp_folder = sys_get_temp_dir() . DIRECTORY_SEPARATOR
+            . 'DBX_TEMPLATE_INSTALL' . $template . '-' . $this->getVersion();
         $phar = new PharData($tmp);
         $phar->extractTo($tmp_folder, null,  true);
         unlink($tmp);
-        unlink($tmp_folder);
 
         $this->copyRecursive(
-            $tmp_folder . DIRECTORY_SEPARATOR . 'DocBlox_Template_' . $template . '-' . $this->getVersion(),
+            $tmp_folder . DIRECTORY_SEPARATOR . 'DocBlox_Template_' . $template
+            . '-' . $this->getVersion(),
             $folder
         );
 

@@ -67,7 +67,7 @@ DESC
   $packagexml->addPackageDepWithChannel('optional', 'PEAR_PackageFileManager2', 'pear.php.net', '1.0.2');
 
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '/usr/bin/env php', 'php_bin');
-  $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_bin@', 'php_bin');
+  $packagexml->addGlobalReplacement('pear-config', '@php_bin@', 'php_bin');
   $packagexml->addReplacement('bin/docblox.php', 'pear-config', '@php_dir@', 'php_dir');
 
   $packagexml->addMaintainer('lead', 'mvriel', 'Mike van Riel', 'mike.vanriel@naenius.com');
