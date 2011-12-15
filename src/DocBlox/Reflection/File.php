@@ -459,7 +459,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     {
         $result   = null;
         $docblock = $tokens->findNextByType(
-            T_DOC_COMMENT, 10, array(T_CLASS, T_NAMESPACE)
+            T_DOC_COMMENT, 10, array(T_CLASS, T_INTERFACE, T_NAMESPACE)
         );
 
         try {
@@ -468,6 +468,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
                 : null;
 
             if ($result) {
+                $tokens->next();
                 // attach line number to class, the DocBlox_Reflection_DocBlock does not know the number
                 $result->line_number = $docblock->line_number;
             }
@@ -475,6 +476,22 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         catch (Exception $e) {
             $this->log($e->getMessage(), Zend_Log::CRIT);
         }
+
+        $key = $tokens->key();
+
+        // if there is a docblock but has no @package tag or a class directly
+        // follows it, then this is not a file docblock
+        if ($result && (!$result->hasTag('package') || $tokens->findNextByType(
+            array(T_CLASS, T_INTERFACE, T_NAMESPACE), 5, array(T_DOC_COMMENT)
+            ))
+        ) {
+            return null;
+        }
+
+        // the next objects may not use this docblock so we remove it from
+        // the token listing by clearing it.
+        $tokens[$key]->type    = null;
+        $tokens[$key]->content = '';
 
         $this->dispatch('reflection.docblock-extraction.post', array(
             'docblock' => $result
