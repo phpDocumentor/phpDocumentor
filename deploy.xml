@@ -76,10 +76,12 @@
 
     <target name="create-tag" depends="get-version-number">
         <exec command="git push origin release-${version.number}" passthru="true" checkreturn="true"/>
+        <exec command="git push upstream release-${version.number}" passthru="true" checkreturn="true"/>
         <exec command="git checkout master" passthru="true" checkreturn="true"/>
         <exec command="git merge release-${version.number}" passthru="true" checkreturn="true"/>
         <exec command="git tag v${version.number} master" passthru="true" checkreturn="true"/>
         <exec command="git push origin v${version.number}" passthru="true" checkreturn="true"/>
+        <exec command="git push upstream v${version.number}" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="pre-deployment-test">
