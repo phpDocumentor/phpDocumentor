@@ -1,3 +1,10 @@
+xx/xx/2011: Version 0.17.1
+--------------------------
+
+* FIXED:    Installation task of template did not work correctly due to a bug
+* ADDED:    Added a submodule to the abstract template (new default)
+* ADDED:    Added a submodule to the new_black template (old default)
+
 12/11/2011: Version 0.17.0
 --------------------------
 
