@@ -16,93 +16,6 @@ sidebar-logo {
     margin-bottom: 0px;
 }
 
-#file-nav-tab {
-    display: none;
-}
-
-#file-nav-options {
-    text-align: right;
-}
-
-#file-nav-box {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-}
-
-#file-nav-container {
-    overflow:      auto;
-    max-height:    400px;
-    background:    #f5f5f5;
-    padding:       5px;
-    border:        1px solid silver;
-    border-radius: 3px;
-}
-
-ul#file-nav {
-    margin:     0px;
-    list-style: none;
-}
-
-ul#file-nav ul {
-    list-style: none;
-}
-
-.gripper {
-    display: none;
-}
-
-div.property, div.method, div.function, div.constant {
-    border: 1px solid silver;
-    margin-top: 10px;
-    padding: 5px;
-}
-
-div.class {
-    border-left: 1px solid #e0e0ff;
-    padding-left: 15px;
-}
-
-code.title {
-    font-size:     0.97em;
-    font-weight:   bold;
-    color:         gray;
-    background:    #F9F9F9;
-    padding:       3px;
-    display:       block;
-    border-bottom: 1px solid #F0F0F0;
-    margin-bottom: 3px;
-}
-
-span.highlight {
-    color: #504CC9;
-}
-
-code.title img {
-    padding-right: 5px;
-}
-
-#content table {
-    font-size: 0.9em;
-    border: 1px solid #f0f0f0;
-    margin: 5px;
-}
-
-#content tr {
-   border-bottom: 1px solid #f0f0f0;
-}
-
-#content th {
-    background: #f9f9f9;
-    min-width: 100px;
-    text-align: left;
-}
-
-.code-tabs code {
-    display: block;
-    padding: 10px;
-}
-
 div.sidebar-section ul span {
     background: transparent no-repeat top left;
     padding-left: 20px;
@@ -117,30 +30,6 @@ div.sidebar-section ul span.property  { background-image: url('../images/icons/p
 div.sidebar-section ul span.package   { background-image: url('../images/icons/package.png'); }
 div.sidebar-section ul span.namespace { background-image: url('../images/icons/namespace.png'); }
 div.sidebar-section ul span.file      { background-image: url('../images/icons/file.png'); }
-
-.to-top {
-    float: right;
-    margin-right: 20px;
-    font-size: 0.6em;
-}
-
-#marker-accordion h3 {
-    margin-top: 20px;
-}
-
-#marker-accordion h3 a {
-    text-decoration: none;
-    cursor: text;
-}
-
-#marker-accordion h3 small {
-    float: right;
-    cursor: text;
-    background: #F0F0F0;
-    border: 1px solid silver;
-    font-weight: normal;
-    border-radius: 3px;
-}
 
 td#db-menu {
     font-size: 0.8em;

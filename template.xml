@@ -3,15 +3,15 @@
 <template>
   <author>Mike van Riel</author>
   <email>mike.vanriel@naenius.com</email>
+  <description>This is the default theme for DocBlox</description>
   <version>1.0.0</version>
   <transformations>
     <transformation query="copy" writer="FileIo" source="js" artifact="js"/>
     <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
-    <transformation query="copy" writer="FileIo" source="themes/abstract/css" artifact="css"/>
-    <transformation query="copy" writer="FileIo" source="themes/abstract/js" artifact="js"/>
-    <transformation query="copy" writer="FileIo" source="themes/default/images" artifact="images"/>
-    <transformation query="" writer="xsl" source="themes/abstract/index.xsl" artifact="index.html"/>
-    <transformation query="" writer="xsl" source="themes/abstract/sidebar.xsl" artifact="nav.html">
+    <transformation query="copy" writer="FileIo" source="templates/abstract/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="templates/abstract/js" artifact="js"/>
+    <transformation query="" writer="xsl" source="templates/abstract/index.xsl" artifact="index.html"/>
+    <transformation query="" writer="xsl" source="templates/abstract/sidebar.xsl" artifact="nav.html">
         <parameters>
             <variables>
                 <section.dashboard.show>false</section.dashboard.show>
@@ -25,13 +25,13 @@
             </variables>
         </parameters>
     </transformation>
-    <transformation query="" writer="xsl" source="themes/abstract/report_markers.xsl" artifact="report_markers.html"/>
-    <transformation query="" writer="xsl" source="themes/abstract/report_parse_markers.xsl" artifact="report_parse_markers.html"/>
-    <transformation query="" writer="xsl" source="themes/abstract/report_deprecated.xsl" artifact="report_deprecated.html"/>
-    <transformation query="" writer="xsl" source="themes/abstract/content.xsl" artifact="content.html"/>
-    <transformation query="/project/file/@path" writer="xsl" source="themes/abstract/api-doc.xsl" artifact="{$path}"/>
+    <transformation query="" writer="xsl" source="templates/abstract/report_markers.xsl" artifact="report_markers.html"/>
+    <transformation query="" writer="xsl" source="templates/abstract/report_parse_markers.xsl" artifact="report_parse_markers.html"/>
+    <transformation query="" writer="xsl" source="templates/abstract/report_deprecated.xsl" artifact="report_deprecated.html"/>
+    <transformation query="" writer="xsl" source="templates/abstract/content.xsl" artifact="content.html"/>
+    <transformation query="/project/file/@path" writer="xsl" source="templates/abstract/api-doc.xsl" artifact="{$path}"/>
     <transformation query="" writer="sourcecode" source="" artifact=""/>
-    <transformation query="" writer="xsl" source="themes/default/graph_class.xsl" artifact="graph.html"/>
+    <transformation query="" writer="xsl" source="templates/abstract/graph_class.xsl" artifact="graph.html"/>
     <transformation query="" writer="Graph" source="Class" artifact="classes.svg" />
   </transformations>
 </template>
