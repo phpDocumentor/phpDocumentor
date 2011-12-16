@@ -95,8 +95,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
         foreach ($nodes as $node) {
             $node
                 = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method(
-                $node, $this->nodes, $this
-            );
+                    $node, $this->nodes, $this
+                );
             $result[$node->getName()] = $node;
         }
 
@@ -115,8 +115,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
         foreach ($nodes as $node) {
             $node
                 = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property(
-                $node, $this->nodes, $this
-            );
+                    $node, $this->nodes, $this
+                );
             $result[$node->getName()] = $node;
         }
 
@@ -135,8 +135,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
         foreach ($nodes as $node) {
             $node
                 = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant(
-                $node, $this->nodes, $this
-            );
+                    $node, $this->nodes, $this
+                );
             $result[$node->getName()] = $node;
         }
 
@@ -147,16 +147,23 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
      * Inherits all methods from the given parent class.
      *
      * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     *   parent object to inherit methods from.
      *
      * @return void
      */
     protected function inheritMethods(
         DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
     ) {
-        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method[] $methods */
+        /**
+         * @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method[]
+         *     $methods
+         */
         $methods = $this->getMethods();
 
-        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method $parent_method */
+        /**
+         * @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method
+         *     $parent_method
+         */
         foreach ($parent->getMethods() as $key => $parent_method) {
             if (isset($methods[$key])) {
                 $methods[$key]->inherit($parent_method);
@@ -170,6 +177,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
      * Inherits all properties from a given base class.
      *
      * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     *     parent object to inherit properties from.
      *
      * @return void
      */
@@ -190,17 +198,24 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits all constants from a given base class.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
+     *     $parent parent object to inherit constants from.
      *
      * @return void
      */
     protected function inheritConstants(
         DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
     ) {
-        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant[] $constants */
+        /**
+         * @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant[]
+         *     $constants
+         */
         $constants = $this->getConstants();
 
-        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant $parent_constant */
+        /**
+         * @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant
+         *     $parent_constant
+         */
         foreach ($parent->getConstants() as $key => $parent_constant) {
             if (isset($constants[$key])) {
                 $constants[$key]->inherit($parent_constant);
@@ -305,18 +320,23 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
             'visibility', $method->isPublic() ? 'public' : 'protected'
         );
 
-        $method_obj = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method($method_node, $this->nodes, $this);
+        $method_obj
+            = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method(
+                $method_node, $this->nodes, $this
+            );
 
         $inherited_from = new DOMElement('tag');
         $method_obj->getDocBlock()->getNode()->appendChild($inherited_from);
         $inherited_from->setAttribute('name', 'inherited_from');
         $inherited_from->setAttribute(
             'refers',
-            $method->getDeclaringClass()->getName() . '::' . $method->getName() . '()'
+            $method->getDeclaringClass()->getName() . '::'
+            . $method->getName() . '()'
         );
         $inherited_from->setAttribute(
             'description',
-            $method->getDeclaringClass()->getName() . '::' . $method->getName() . '()'
+            $method->getDeclaringClass()->getName() . '::'
+            . $method->getName() . '()'
         );
 
         return $method_node;
@@ -332,9 +352,9 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
      * Examples of such classes are classes that are in PHP Core (i.e. Exception)
      * or available via PECL extensions.
      *
-     * @todo consider moving this to a separate object?
+     * @param string $parent_class_name FQCL of the external class.
      *
-     * @param string $parent_class_name
+     * @todo consider moving this to a separate object?
      *
      * @return void
      */
@@ -353,7 +373,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Traverse through each parent interface and class and inherit its children.
      *
-     * @param $parent nil; is not used in this method. Only there because it is
+     * @param null $parent is not used in this method. Only there because it is
      *     required by the parent class.
      *
      * @return void

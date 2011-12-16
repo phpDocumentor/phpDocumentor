@@ -35,8 +35,10 @@ abstract class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
      * Load the node belonging to this object and make an associative array of
      * classes and interfaces available.
      *
-     * @param DOMElement $node
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class[] $nodes
+     * @param DOMElement                                                     $node
+     *     Node that needs to be decorated by this class.
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class[] &$nodes
+     *     Associative array containing all class/interface type nodes.
      */
     public function __construct(DOMElement $node, array &$nodes)
     {
@@ -53,8 +55,8 @@ abstract class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
      * the parent node matches the given node and thus determines whether it is
      * a direct child.
      *
-     * @param DOMElement|InheritClass $node
-     * @param string                  $element_name
+     * @param DOMElement|InheritClass $node         Node to search in.
+     * @param string                  $element_name Name of the element to find.
      *
      * @return DOMElement[]
      */

@@ -36,9 +36,11 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
      * Load the node belonging to this object, make an associative array of
      * classes and interfaces available and define the parent class.
      *
-     * @param DOMElement                                                   $node
-     * @param array                                                        $nodes
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $class
+     * @param DOMElement
+     *     $node Node to decorate.
+     * @param array &$nodes List of classes/interface elements
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
+     *     $class Class to which this property belongs.
      */
     public function __construct(
         DOMElement $node, array &$nodes,
@@ -65,7 +67,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
      * Copies this object onto the give class or interface.
      *
      * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-     *     $class_or_interface
+     *     $class_or_interface Object to copy this property onto.
      *
      * @return void
      */

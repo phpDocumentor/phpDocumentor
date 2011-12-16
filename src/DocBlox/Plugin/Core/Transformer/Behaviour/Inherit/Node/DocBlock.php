@@ -96,7 +96,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
     /**
      * Inherits the short description from the given parent DocBlock.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
+     *      $parent Node to inherit the short description from.
      *
      * @return void
      */
@@ -125,7 +126,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
     /**
      * Inherits the long description from the given parent DocBlock.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
+     *     $parent
      *
      * @return void
      */
@@ -214,8 +216,9 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Removes the `subpackage` index from the given list of tags if the `package`
      * of this class does not match its parent.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent
-     * @param string[]                                                        &$tags
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
+     *     $parent Parent Docblock to check against.
+     * @param string[] &$tags Array of inheritable tags to filter.
      *
      * @return void
      */
@@ -249,13 +252,16 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Copies tag nodes from the given $parent to this DocBlock if the name
      * occurs in the given $tags array.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent
-     * @param string[]                                                        $tags
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
+     *     $parent Parent node to inherit tags from.
+     * @param string[] $tags List of inheritable tags.
      *
      * @return void
      */
-    protected function inheritTags(DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent, array $tags)
-    {
+    protected function inheritTags(
+        DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent,
+        array $tags
+    ) {
         $this->filterSubpackageInheritance($parent, $tags);
 
         // get the names of all existing tags because we should only add
@@ -284,7 +290,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Inherits the short description, long description and tags of the given
      * $parent node.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
+     *     $parent Parent nodeblock to inherit.
      *
      * @return void
      */

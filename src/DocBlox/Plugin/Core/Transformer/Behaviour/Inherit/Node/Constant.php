@@ -41,8 +41,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant
      */
     public function getReferrerString($parent_class_name = null)
     {
-        if ($parent_class_name === null)
-        {
+        if ($parent_class_name === null) {
             $parent_class_name = $this->class->getFQCN();
         }
 

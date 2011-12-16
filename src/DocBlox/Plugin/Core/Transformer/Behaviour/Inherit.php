@@ -41,7 +41,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit extends
      * Apply the inheritance rules from root node to edge leaf; this way the
      * inheritance cascades.
      *
-     * @param DOMDocument $xml
+     * @param DOMDocument $xml XML structure to apply the behaviour on.
      *
      * @return DOMDocument
      */
@@ -58,14 +58,16 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit extends
         foreach ($result as $node) {
             $class
                 = new DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class(
-                $node, $nodes
-            );
+                    $node, $nodes
+                );
 
             $nodes[$class->getFQCN()] = $class;
         }
 
-        /** @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $node */
-        foreach($nodes as $node) {
+        /**
+         * @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $node
+         */
+        foreach ($nodes as $node) {
             // cascading is done within the $node; see the DocBlock of 'inherit'
             // to get a picture of how this works.
             $node->inherit(null);
