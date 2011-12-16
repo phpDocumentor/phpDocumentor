@@ -33,7 +33,8 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
      * information found using the DocBlox_Reflection_DocBlockedAbstract parent
      * method.
      *
-     * @param DocBlox_Reflection_TokenIterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @see DocBlox_Reflection_DocBlockedAbstract::processGenericInformation
      *
@@ -61,8 +62,7 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
             $this->setName(substr($name_token->content, 1, -1));
 
             // skip to after the comma
-            while ($tokens->current()->content != ',')
-            {
+            while ($tokens->current()->content != ',') {
                 if ($tokens->next() === false) {
                     break;
                 }
@@ -110,7 +110,7 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Stores the value contained in this constant.
      *
-     * @param string $value
+     * @param string $value String representation of the constant value.
      *
      * @return void
      */

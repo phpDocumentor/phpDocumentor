@@ -4,12 +4,12 @@
  *
  * PHP Version 5
  *
- * @category   DocBlox
- * @package    Reflection
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category  DocBlox
+ * @package   Reflection
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
@@ -36,7 +36,8 @@ abstract class DocBlox_Reflection_BracesAbstract
      *
      * Literals are ignored.
      *
-     * @param DocBlox_Reflection_TokenIterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @see DocBlox_Reflection_Abstract
      *
@@ -51,8 +52,7 @@ abstract class DocBlox_Reflection_BracesAbstract
 
         // parse class contents
         $this->debug('>> Processing tokens');
-        while ($tokens->valid())
-        {
+        while ($tokens->valid()) {
             /** @var DocBlox_Reflection_Token $token */
             $token = $token === null ? $tokens->current() : $tokens->next();
 
@@ -84,9 +84,9 @@ abstract class DocBlox_Reflection_BracesAbstract
             // for the block and processing will be 'breaked' when the closing
             // brace is encountered
             if ((!$token_type
-                 || ($token_type == T_CURLY_OPEN)
-                 || ($token_type == T_DOLLAR_OPEN_CURLY_BRACES)
-                ) && (($token_content == '{') || (($token_content == '}')))
+                || ($token_type == T_CURLY_OPEN)
+                || ($token_type == T_DOLLAR_OPEN_CURLY_BRACES))
+                && (($token_content == '{') || (($token_content == '}')))
             ) {
                 switch ($token_content) {
                 case '{':
@@ -98,7 +98,9 @@ abstract class DocBlox_Reflection_BracesAbstract
                     $level++;
                     break;
                 case '}':
-                    if ($level == -1) continue;
+                    if ($level == -1) {
+                        continue;
+                    }
                     $level--;
 
                     // reached the end; break from the while

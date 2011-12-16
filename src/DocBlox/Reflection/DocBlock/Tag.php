@@ -50,10 +50,8 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
     public static function createInstance($tag_line)
     {
         if (!preg_match(
-            '/^@([\w\-\_\\\\]+)(?:\s*([^\s].*)|$)?/us', $tag_line,
-            $matches
-            )
-        ) {
+            '/^@([\w\-\_\\\\]+)(?:\s*([^\s].*)|$)?/us', $tag_line, $matches
+        )) {
             throw new DocBlox_Reflection_Exception(
                 'Invalid tag_line detected: ' . $tag_line
             );
@@ -117,6 +115,8 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
      * Set the tag line number
      *
      * @param int $number the line number of the tag
+     *
+     * @return void
      */
     public function setLineNumber($number)
     {
@@ -139,6 +139,8 @@ class DocBlox_Reflection_DocBlock_Tag implements Reflector
      * This exposes some common functionality contained in the docblock abstract.
      *
      * @param DocBlox_Reflection_DocBlockedAbstract $docblock DocBlock class
+     *
+     * @return void
      */
     public function setDocBlock(DocBlox_Reflection_DocBlockedAbstract $docblock)
     {

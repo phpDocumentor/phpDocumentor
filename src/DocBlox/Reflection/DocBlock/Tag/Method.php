@@ -25,17 +25,19 @@ class DocBlox_Reflection_DocBlock_Tag_Method
     extends DocBlox_Reflection_DocBlock_Tag_Param
 {
 
+    /** @var string */
     protected $method_name = '';
 
+    /** @var string */
     protected $arguments = '';
 
     /**
      * Parses a tag and populates the member variables.
      *
-     * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
-     *
      * @param string $type    Tag identifier for this tag (should be 'return')
      * @param string $content Contents for this tag.
+     *
+     * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
      */
     public function __construct($type, $content)
     {
@@ -70,21 +72,48 @@ class DocBlox_Reflection_DocBlock_Tag_Method
         }
     }
 
+    /**
+     * Sets the name of this method.
+     *
+     * @param string $method_name The name of the method.
+     *
+     * @return void
+     */
     public function setMethodName($method_name)
     {
         $this->method_name = $method_name;
     }
 
+    /**
+     * Retrieves the method name.
+     *
+     * @return string
+     */
     public function getMethodName()
     {
         return $this->method_name;
     }
 
+    /**
+     * Sets the arguments for this method.
+     *
+     * @param string $arguments A comma-separated arguments line.
+     *
+     * @return void
+     */
     public function setArguments($arguments)
     {
         $this->arguments = $arguments;
     }
 
+    /**
+     * Returns an array containing each argument as array of type and name.
+     *
+     * Please note that the argument sub-array may only contain 1 element if no
+     * type was specified.
+     *
+     * @return string[]
+     */
     public function getArguments()
     {
         if (empty($this->arguments)) {

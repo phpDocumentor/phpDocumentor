@@ -4,22 +4,22 @@
  *
  * PHP Version 5
  *
- * @category   DocBlox
- * @package    Reflection
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category  DocBlox
+ * @package   Reflection
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
  * Parses a method or function Argument.
  *
- * @category   DocBlox
- * @package    Reflection
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category DocBlox
+ * @package  Reflection
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
 {
@@ -46,7 +46,8 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
      *
      * Find the name, type and default value for this argument.
      *
-     * @param  DocBlox_Reflection_TokenIterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @return void
      */

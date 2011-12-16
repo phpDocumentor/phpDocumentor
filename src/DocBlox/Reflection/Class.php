@@ -35,7 +35,8 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
      * Finds out whether this class is abstract and/or final on top of the
      * information found using the DocBlox_Reflection_Interface parent method.
      *
-     * @param DocBlox_Reflection_TokenIterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @see DocBlox_Reflection_Interface::processGenericInformation
      *

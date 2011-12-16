@@ -33,7 +33,7 @@ class DocBlox_Reflection_DocBlock_LongDescription implements Reflector
      * Parses the string for inline tags and if the Markdown class is included;
      * format the found text.
      *
-     * @param string $content
+     * @param string $content the DocBlock contents without asterisks.
      */
     public function __construct($content)
     {

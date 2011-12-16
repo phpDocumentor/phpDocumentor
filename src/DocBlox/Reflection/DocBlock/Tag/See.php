@@ -30,10 +30,10 @@ class DocBlox_Reflection_DocBlock_Tag_See
     /**
      * Parses a tag and populates the member variables.
      *
-     * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
-     *
      * @param string $type    Tag identifier for this tag (should be 'return')
      * @param string $content Contents for this tag.
+     *
+     * @throws DocBlox_Reflection_Exception if an invalid tag line was presented
      */
     public function __construct($type, $content)
     {

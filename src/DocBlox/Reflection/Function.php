@@ -44,16 +44,20 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     /**
      * Retrieves the generic information.
      *
-     * Finds out which name and arguments this function has on top of the information found using the
-     * DocBlox_Reflection_BracesAbstract parent method.
+     * Finds out which name and arguments this function has on top of the
+     * information found using the DocBlox_Reflection_BracesAbstract parent
+     * method.
      *
-     * @param DocBlox_Reflection_TokenIterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @see DocBlox_ReflectionBracesAbstract::processGenericInformation
      *
      * @return void
      */
-    protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens) {
+    protected function processGenericInformation(
+        DocBlox_Reflection_TokenIterator $tokens
+    ) {
         $this->setName($this->findName($tokens));
 
         $this->resetTimer();
@@ -68,13 +72,18 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     /**
      * Extracts the arguments from this function.
      *
-     * @param DocBlox_Reflection_TokenIterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @return void
      */
-    public function processVariable(DocBlox_Reflection_TokenIterator $tokens) {
-        // is the variable occurs within arguments parenthesis then it is an argument
-        if (($tokens->key() > $this->arguments_token_start) && ($tokens->key() < $this->arguments_token_end)) {
+    public function processVariable(DocBlox_Reflection_TokenIterator $tokens)
+    {
+        // is the variable occurs within arguments parenthesis then it is
+        // an argument
+        if (($tokens->key() > $this->arguments_token_start)
+            && ($tokens->key() < $this->arguments_token_end)
+        ) {
             $this->resetTimer('variable');
 
             $argument = new DocBlox_Reflection_Argument();
@@ -85,36 +94,51 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
                 /** @var DocBlox_Reflection_DocBlock_Tag $params  */
                 $params = $this->getDocBlock()->getTagsByName('param');
                 if (!isset($params[count($this->arguments) - 1])) {
-                    $this->logParserError('NOTICE', 'Argument ' . $argument->getName() . ' is missing from the function Docblock',$argument->getLineNumber());
-                } else
-                {
-                    $param_name = $params[count($this->arguments) - 1]->getVariableName();
+                    $this->logParserError(
+                        'NOTICE',
+                        'Argument ' . $argument->getName() . ' is missing from '
+                        . 'the function Docblock',
+                        $argument->getLineNumber()
+                    );
+                } else {
+                    $param_name = $params[count($this->arguments) - 1]
+                        ->getVariableName();
+
                     if ($param_name != $argument->getName()) {
                         if ($param_name == '') {
-                            $params[count($this->arguments) - 1]->setVariableName($argument->getName());
-                        }
-                        else
-                        {
-                            $this->logParserError('NOTICE','Name of argument ' . $argument->getName() . ' does not match with function Docblock', $argument->getLineNumber());
+                            $params[count($this->arguments) - 1]
+                                ->setVariableName($argument->getName());
+                        } else {
+                            $this->logParserError(
+                                'NOTICE',
+                                'Name of argument ' . $argument->getName()
+                                . ' does not match with function Docblock',
+                                $argument->getLineNumber()
+                            );
                         }
                     }
                 }
             }
 
-            $this->debugTimer('>> Processed argument ' . $argument->getName(), 'variable');
+            $this->debugTimer(
+                '>> Processed argument ' . $argument->getName(), 'variable'
+            );
         }
     }
 
     /**
      * Finds the name of this function starting from the T_FUNCTION token.
      *
-     * If a function has no name it is probably a Closure and will have the name Closure.
+     * If a function has no name it is probably a Closure and will have the
+     * name Closure.
      *
-     * @param DocBlox_Reflection_TokenIterator $tokens
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @return string
      */
-    protected function findName(DocBlox_Reflection_TokenIterator $tokens) {
+    protected function findName(DocBlox_Reflection_TokenIterator $tokens)
+    {
         $name = $tokens->findNextByType(T_STRING, 5, array('{', ';'));
 
         $this->setType($name ? self::TYPE_FUNCTION : self::TYPE_CLOSURE);
@@ -125,15 +149,17 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     /**
      * Sets whether this is a function or closure.
      *
-     * @param string $type
+     * @param string $type Must be either 'function' or 'closure'.
      *
      * @return void
      */
-    public function setType($type) {
+    public function setType($type)
+    {
         if (!in_array($type, array(self::TYPE_CLOSURE, self::TYPE_FUNCTION))) {
             throw new InvalidArgumentException(
-                'Expected type of function to either match "' . self::TYPE_FUNCTION . '" or "' . self::TYPE_CLOSURE
-                        . '", received: ' . $type
+                'Expected type of function to either match "'
+                . self::TYPE_FUNCTION . '" or "' . self::TYPE_CLOSURE
+                . '", received: ' . $type
             );
         }
 
@@ -145,7 +171,8 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
      *
      * @return string
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
@@ -160,11 +187,13 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     }
 
     /**
-     * Returns the XML representation of this object or false if an error occurred.
+     * Returns the XML representation of this object or false if an error
+     * occurred.
      *
      * @return string|boolean
      */
-    public function __toXml() {
+    public function __toXml()
+    {
         $xml = new SimpleXMLElement('<function></function>');
         $xml['namespace'] = $this->getNamespace();
         $xml['line'] = $this->getLineNumber();
@@ -175,8 +204,7 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->loadXML($xml->asXML());
 
-        foreach ($this->arguments as $argument)
-        {
+        foreach ($this->arguments as $argument) {
             $this->mergeXmlToDomDocument($dom, $argument->__toXml());
         }
 

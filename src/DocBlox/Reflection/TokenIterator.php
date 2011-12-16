@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * @category  DocBlox
- * @package   Tokens
+ * @package   Reflection
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
@@ -16,7 +16,7 @@
  * Iterator class responsible for navigating through a list of Tokens.
  *
  * @category DocBlox
- * @package  Tokens
+ * @package  Reflection
  * @author   Mike van Riel <mike.vanriel@naenius.com>
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org

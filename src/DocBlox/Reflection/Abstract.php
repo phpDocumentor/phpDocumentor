@@ -533,7 +533,7 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
      * Returns the namespace aliases which can be applied to the types in
      * this object.
      *
-     * @return string
+     * @return string[]
      */
     public function getNamespaceAliases()
     {

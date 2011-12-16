@@ -17,16 +17,18 @@
  *
  * This is a very common error, so @throw is aliased to be @throws
  *
- * @category  DocBlox
- * @package   Reflection
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://docblox-project.org
+ * @category DocBlox
+ * @package  Reflection
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
-class DocBlox_Reflection_DocBlock_Tag_Throw extends DocBlox_Reflection_DocBlock_Tag_Throws
+class DocBlox_Reflection_DocBlock_Tag_Throw
+    extends DocBlox_Reflection_DocBlock_Tag_Throws
 {
     /**
-     * Sets the type to @throws and lets parent parse the tag and populates the member variables.
+     * Sets the type to @throws and lets parent parse the tag and populates the
+     * member variables.
      *
      * @param string $type    Tag identifier for this tag (should be 'return')
      * @param string $content Contents for this tag.

@@ -2,24 +2,27 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Core
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Reflection
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
  * Iterator class responsible for navigating through an array forwards and backwards.
  *
- * @category   DocBlox
- * @package    Core
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category DocBlox
+ * @package  Reflection
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
-class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Serializable, SeekableIterator
+class DocBlox_Reflection_TokenIteratorBase
+    implements Countable, ArrayAccess, Serializable, SeekableIterator
 {
     /** @var int Current key value */
     protected $key   = 0;
@@ -36,7 +39,7 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     /**
      * Initializes the iterator and populate the pointer array.
      *
-     * @param array $data
+     * @param DocBlox_Reflection_Token[] $data Tokens to store.
      */
     public function __construct(array $data)
     {
@@ -48,7 +51,7 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     /**
      * Load a serialized store and populate the pointers.
      *
-     * @param string $serialized
+     * @param string $serialized String to unserialize.
      *
      * @return void
      */
@@ -68,8 +71,9 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     /**
      * Due to the pointers it is not allowed to remove an item from the array.
      *
-     * @throws Exception
-     * @param int $offset
+     * @param int $offset Offset to remove.
+     *
+     * @throws BadMethodCallException if the user invokes this method.
      *
      * @return void
      */
@@ -83,16 +87,16 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     /**
      * Due to the pointers it is not allowed to add an item onto the array.
      *
-     * @throws Exception
-     * @param integer $offset
-     * @param string  $value
+     * @param integer                  $offset Offset to overwrite.
+     * @param DocBlox_Reflection_Token $value  Token to overwrite entry with.
+     *
+     * @throws BadMethodCallException when the user tries to add an item.
      *
      * @return void
      */
     public function offsetSet($offset, $value)
     {
-        if (!isset($this->store[$offset]))
-        {
+        if (!isset($this->store[$offset])) {
             throw new BadMethodCallException(
                 'This iterator does not allow new items to be added'
             );
@@ -102,15 +106,16 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     }
 
     /**
-     * Returns the value from the given $offset; or null when no item could be found.
+     * Returns the value from the given $offset; or null when no item could be
+     * found.
      *
-     * @param string $offset
+     * @param string $offset The index to retrieve.
      *
      * @return mixed|null
      */
     public function offsetGet($offset)
     {
-        if(!isset($this->store[$offset])) {
+        if (!isset($this->store[$offset])) {
             return false;
         }
         return $this->store[$offset];
@@ -119,7 +124,7 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     /**
      * Returns true if an item exists.
      *
-     * @param integer $offset
+     * @param integer $offset the index to check.
      *
      * @return bool
      */
@@ -170,10 +175,10 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     }
 
     /**
-     * Shifts the pointer to the next item in the sequence and returns the newly selected item; returns
-     * false when none found.
+     * Shifts the pointer to the next item in the sequence and returns the
+     * newly selected item; returns false when none found.
      *
-     * @return bool|mixed|null
+     * @return false|mixed|null
      */
     public function next()
     {
@@ -185,10 +190,10 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
     }
 
     /**
-     * Shifts the pointer to the previous item in the sequence and returns the newly selected item; returns
-     * false when none found.
+     * Shifts the pointer to the previous item in the sequence and returns the
+     * newly selected item; returns false when none found.
      *
-     * @return bool|mixed|null
+     * @return false|mixed|null
      */
     public function previous()
     {
@@ -211,9 +216,10 @@ class DocBlox_Reflection_TokenIteratorBase implements Countable, ArrayAccess, Se
      * Moves the pointer to a specific position in the store.
      *
      * NOTE: this function is used A LOT during the reflection process.
-     * This should be as high-performance as possible and ways should be devised to not use it.
+     * This should be as high-performance as possible and ways should be
+     * devised to not use it.
      *
-     * @param int|string $key
+     * @param int|string $key the index to move to.
      *
      * @return mixed
      */

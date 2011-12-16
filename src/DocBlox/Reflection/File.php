@@ -79,8 +79,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      *
      * @throws DocBlox_Reflection_Exception when the filename is incorrect or
      *   the file can not be opened
-     *
-     * @return void
      */
     public function __construct($file, $validate = false)
     {
@@ -119,9 +117,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Adds a parse error to the system
      *
-     * @param sfEvent $data
+     * @param sfEvent $data The event containing the marker details.
+     *
+     * @return void
      */
-    function addParserMarker($data)
+    public function addParserMarker($data)
     {
         $this->parse_markers[] = array(
             $data['type'],
@@ -201,7 +201,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
 
         // if the encoding is detected as binary we try again
         if ((($encoding === null) || (strtolower($encoding) == 'binary'))
-            && function_exists('iconv')) {
+            && function_exists('iconv')
+        ) {
             // OR using iconv (performance hit)
             $this->log(
                 'Neither the finfo nor the mbstring extensions are active; '
@@ -410,8 +411,9 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      *
      * @return void
      */
-    protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens)
-    {
+    protected function processGenericInformation(
+        DocBlox_Reflection_TokenIterator $tokens
+    ) {
         // find file docblock; standard function does not suffice as this scans
         // backwards and we have to make sure it isn't the docblock of
         // another element
@@ -468,7 +470,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
                 : null;
 
             if ($result) {
-                // attach line number to class, the DocBlox_Reflection_DocBlock does not know the number
+                // attach line number to class, the DocBlox_Reflection_DocBlock
+                // does not know the number
                 $result->line_number = $docblock->line_number;
             }
         }
@@ -476,9 +479,10 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $this->log($e->getMessage(), Zend_Log::CRIT);
         }
 
-        $this->dispatch('reflection.docblock-extraction.post', array(
-            'docblock' => $result
-        ));
+        $this->dispatch(
+            'reflection.docblock-extraction.post',
+            array('docblock' => $result)
+        );
 
         return $result;
     }
@@ -510,8 +514,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /**
      * Processes the T_USE token and extracts all namespace aliases.
      *
-     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
-     *      pointer at the token to be processed.
+     * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with
+     *     the pointer at the token to be processed.
      *
      * @return void
      */
@@ -869,7 +873,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     public function __toXml()
     {
-       return trim($this->__toDomXml()->saveXml());
+        return trim($this->__toDomXml()->saveXml());
     }
 
 }

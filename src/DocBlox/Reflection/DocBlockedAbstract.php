@@ -21,7 +21,8 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_Abstract
+abstract class DocBlox_Reflection_DocBlockedAbstract
+    extends DocBlox_Reflection_Abstract
 {
     protected $default_package_name = 'Default';
 
@@ -35,8 +36,9 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
      *
      * @return void
      */
-    protected function processGenericInformation(DocBlox_Reflection_TokenIterator $tokens)
-    {
+    protected function processGenericInformation(
+        DocBlox_Reflection_TokenIterator $tokens
+    ) {
         $this->doc_block = $this->findDocBlock($tokens);
     }
 
@@ -62,11 +64,17 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     protected function findDocBlock(DocBlox_Reflection_TokenIterator $tokens)
     {
         $result = null;
-        $docblock = $tokens->findPreviousByType(T_DOC_COMMENT, 10, array('{', '}', ';'));
+        $docblock = $tokens->findPreviousByType(
+            T_DOC_COMMENT, 10, array('{', '}', ';')
+        );
         try {
-            $result = $docblock ? new DocBlox_Reflection_DocBlock($docblock->content) : null;
+            $result = $docblock
+                ? new DocBlox_Reflection_DocBlock($docblock->content)
+                : null;
+
             if ($result) {
-                // attach line number to class, the DocBlox_Reflection_DocBlock does not know the number
+                // attach line number to class, the DocBlox_Reflection_DocBlock
+                // does not know the number
                 $result->line_number = $docblock->line_number;
             }
         } catch (Exception $e) {
@@ -74,9 +82,10 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             return $result;
         }
 
-        $this->dispatch('reflection.docblock-extraction.post', array(
-            'docblock' => $result
-        ));
+        $this->dispatch(
+            'reflection.docblock-extraction.post',
+            array('docblock' => $result)
+        );
 
         return $result;
     }
@@ -105,7 +114,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
                 'callback', 'false', 'true'
             );
         }
-        $namespace = $this->getNamespace() == 'default' ? '' : $this->getNamespace().'\\';
+        $namespace = $this->getNamespace() == 'default'
+            ? '' : $this->getNamespace().'\\';
 
         $type = explode('|', $type);
         foreach ($type as &$item) {
@@ -118,10 +128,13 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
                 $is_array = true;
             }
 
-            if ((substr($item, 0, 1) != '\\') && (!in_array(strtolower($item), $non_objects))) {
+            if ((substr($item, 0, 1) != '\\')
+                && (!in_array(strtolower($item), $non_objects))
+            ) {
                 $type_parts = explode('\\', $item);
 
-                // if the first part is the keyword 'namespace', replace it with the current namespace
+                // if the first part is the keyword 'namespace', replace it
+                // with the current namespace
                 if ($type_parts[0] == 'namespace') {
                     $type_parts[0] = $this->getNamespace();
                     $item = implode('\\', $type_parts);
@@ -133,7 +146,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
 
                     $item = implode('\\', $type_parts);
                 } elseif (count($type_parts) == 1) {
-                    // prefix the item with the namespace if there is only one part and no alias
+                    // prefix the item with the namespace if there is only one
+                    // part and no alias
                     $item = $namespace . $item;
                 }
             }
@@ -144,8 +158,9 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
             }
 
             // full paths always start with a slash
-            if (isset($item[0]) && ($item[0] !== '\\') && (!in_array(strtolower($item), $non_objects)))
-            {
+            if (isset($item[0]) && ($item[0] !== '\\')
+                && (!in_array(strtolower($item), $non_objects))
+            ) {
                 $item = '\\' . $item;
             }
         }
@@ -218,7 +233,8 @@ abstract class DocBlox_Reflection_DocBlockedAbstract extends DocBlox_Reflection_
     /**
      * Sets the name of the Default package.
      *
-     * @param string $default_package_name
+     * @param string $default_package_name The name that needs to be adopted by
+     *     elements without package tags.
      *
      * @return void
      */
