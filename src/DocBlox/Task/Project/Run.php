@@ -2,34 +2,39 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Tasks
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Tasks
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
  *
- * DocBlox creates documentation from PHP source files. The simplest way to use it is:
+ * DocBlox creates documentation from PHP source files. The simplest way to use
+ * it is:
  *
  *     $ docblox run -d <directory to parse> -t <output directory>
  *
- * This will parse every file ending with .php, .php3 and .phtml in <directory to parse> and then
- * output a HTML site containing easily readable documentation in <output directory>.
+ * This will parse every file ending with .php, .php3 and .phtml in <directory
+ * to parse> and then output a HTML site containing easily readable documentation
+ * in <output directory>.
  *
- * DocBlox will try to look for a docblox.dist.xml or docblox.xml file in your current working directory
- * and use that to override the default settings if present. In the configuration file can you specify the
- * same settings (and more) as the command line provides.
+ * DocBlox will try to look for a docblox.dist.xml or docblox.xml file in your
+ * current working directory and use that to override the default settings if
+ * present. In the configuration file can you specify the same settings (and
+ * more) as the command line provides.
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Project
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Project
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
 {
@@ -45,7 +50,8 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
     {
         $this->addOption(
             'f|filename', '=s',
-            'Comma-separated list of files to parse. The wildcards ? and * are supported'
+            'Comma-separated list of files to parse. The wildcards ? and * are '
+            . 'supported'
         );
         $this->addOption(
             'd|directory', '=s',
@@ -53,23 +59,28 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         );
         $this->addOption(
             't|target', '-s',
-            'Path where to store the generated output (optional, defaults to "output")'
+            'Path where to store the generated output (optional, defaults to '
+            . '"output")'
         );
         $this->addOption(
             'e|extensions', '-s',
-            'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml'
+            'Optional comma-separated list of extensions to parse, defaults to '
+            . 'php, php3 and phtml'
         );
         $this->addOption(
             'i|ignore', '-s',
-            'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported'
+            'Comma-separated list of file(s) and directories that will be '
+            . 'ignored. Wildcards * and ? are supported'
         );
         $this->addOption(
             'm|markers', '-s',
-            'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")'
+            'Comma-separated list of markers/tags to filter, (optional, '
+            . 'defaults to: "TODO,FIXME")'
         );
         $this->addOption(
             'v|verbose', '',
-            'Provides additional information during parsing, usually only needed for debugging purposes'
+            'Provides additional information during parsing, usually only '
+            . 'needed for debugging purposes'
         );
         $this->addOption(
             'title', '-s',
@@ -81,11 +92,13 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         );
         $this->addOption(
             'force', '',
-            'Forces a full build of the documentation, does not increment existing documentation'
+            'Forces a full build of the documentation, does not increment '
+            . 'existing documentation'
         );
         $this->addOption(
             'validate', '',
-            'Validates every processed file using PHP Lint, costs a lot of performance'
+            'Validates every processed file using PHP Lint, costs a lot of '
+            . 'performance'
         );
         $this->addOption(
             'parseprivate', '',
@@ -93,7 +106,8 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         );
         $this->addOption(
             'visibility', '-s',
-            'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")'
+            'Specifies the parse visibility that should be displayed in the '
+            . 'documentation (comma seperated e.g. "public,protected")'
         );
         $this->addOption(
             'defaultpackagename', '-s',
@@ -145,7 +159,9 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
             $transform->setTarget($task->getTarget());
         }
         $transform->setTemplate($this->getTemplate());
-        $transform->setSource($task->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml');
+        $transform->setSource(
+            $task->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml'
+        );
         $transform->setVerbose($task->getVerbose());
         $transform->setQuiet($task->getQuiet());
         $transform->setParseprivate($this->getParseprivate());

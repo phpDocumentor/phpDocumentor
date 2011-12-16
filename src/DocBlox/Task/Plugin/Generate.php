@@ -15,12 +15,12 @@
 /**
  * Generates a skeleton plugin.
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Plugin
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Plugin
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Task_Plugin_Generate extends DocBlox_Task_Abstract
 {
@@ -34,21 +34,21 @@ class DocBlox_Task_Plugin_Generate extends DocBlox_Task_Abstract
      */
     protected function configure()
     {
-        $this->addOption('t|target', '=s',
-            'Target location where to generate the new plugin'
+        $this->addOption(
+            't|target', '=s', 'Target location where to generate the new plugin'
         );
-        $this->addOption('n|name', '=s',
-            'The name for the new plugin'
+        $this->addOption(
+            'n|name', '=s', 'The name for the new plugin'
         );
-        $this->addOption('a|author', '-s',
-            'Name of the author'
+        $this->addOption(
+            'a|author', '-s', 'Name of the author'
         );
-        $this->addOption('v|version', '-s',
-            'Version number of this plugin'
+        $this->addOption(
+            'v|version', '-s', 'Version number of this plugin'
         );
-        $this->addOption('force', '',
-            'Forces generation of the new plugin, even if there is an '
-            . 'existing plugin at that location'
+        $this->addOption(
+            'force', '', 'Forces generation of the new plugin, even if there '
+            .'is an existing plugin at that location'
         );
     }
 

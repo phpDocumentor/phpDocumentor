@@ -19,12 +19,12 @@
  * Please mind that custom templates which are situated outside DocBlox are not
  * shown in this listing.
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Template
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Template
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Task_Template_List extends DocBlox_Task_Abstract
 {
@@ -47,7 +47,9 @@ class DocBlox_Task_Template_List extends DocBlox_Task_Abstract
         echo 'Available templates:'.PHP_EOL;
 
         /** @var RecursiveDirectoryIterator $files */
-        $files = new DirectoryIterator(dirname(__FILE__).'/../../../../data/templates');
+        $files = new DirectoryIterator(
+            dirname(__FILE__).'/../../../../data/templates'
+        );
         while ($files->valid()) {
             $name = $files->getBasename();
 

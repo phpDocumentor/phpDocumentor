@@ -15,12 +15,12 @@
 /**
  * Generates a skeleton template.
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Template
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Template
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Task_Template_Generate extends DocBlox_Task_Abstract
 {
@@ -34,19 +34,24 @@ class DocBlox_Task_Template_Generate extends DocBlox_Task_Abstract
      */
     protected function configure()
     {
-        $this->addOption('t|target', '=s',
+        $this->addOption(
+            't|target', '=s',
             'Target location where to generate the new template'
         );
-        $this->addOption('n|name', '=s',
+        $this->addOption(
+            'n|name', '=s',
             'The name for the new template'
         );
-        $this->addOption('a|author', '-s',
+        $this->addOption(
+            'a|author', '-s',
             'Name of the author'
         );
-        $this->addOption('v|version', '-s',
+        $this->addOption(
+            'v|version', '-s',
             'Version number of this template'
         );
-        $this->addOption('force', '',
+        $this->addOption(
+            'force', '',
             'Forces generation of the new template, even if there is an '
             . 'existing template at that location'
         );
@@ -115,7 +120,11 @@ class DocBlox_Task_Template_Generate extends DocBlox_Task_Abstract
         $version = $this->getVersion();
 
         $template = preg_replace(
-            array('/\{\{\s*name\s*\}\}/', '/\{\{\s*version\s*\}\}/', '/\{\{\s*author\s*\}\}/'),
+            array(
+                '/\{\{\s*name\s*\}\}/',
+                '/\{\{\s*version\s*\}\}/',
+                '/\{\{\s*author\s*\}\}/'
+            ),
             array($name, $version, $author),
             file_get_contents(
                 dirname(__FILE__) . '/../../../../data/base_template/template.xml'

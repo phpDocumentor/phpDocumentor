@@ -2,12 +2,14 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Tasks
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Tasks
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
@@ -15,12 +17,12 @@
  *
  * This task outputs a list of tasks grouped by their namespaces.
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Project
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Project
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  */
 class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
 {
@@ -40,7 +42,9 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
         $longest_name = 0;
 
         /** @var RecursiveDirectoryIterator $files */
-        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(dirname(__FILE__).'/../'));
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator(dirname(__FILE__).'/../')
+        );
         while ($files->valid()) {
             // skip abstract files
             if (!$files->isFile() || ($files->getBasename() == 'Abstract.php')) {
@@ -56,10 +60,13 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
                 . $files->getBasename('.php');
 
             // check if the class exists, if so: add it to the list
-            if (($class_name != 'DocBlox_Task_Runner') && class_exists($class_name)) {
+            if (($class_name != 'DocBlox_Task_Runner')
+                && class_exists($class_name)
+            ) {
                 $name = $files->getBasename('.php');
                 $longest_name = max(strlen($name), $longest_name);
-                $results[strtolower($files->getSubPath())][strtolower($name)] = $files->getRealPath();
+                $results[strtolower($files->getSubPath())][strtolower($name)]
+                    = $files->getRealPath();
             }
 
             $files->next();
@@ -82,7 +89,8 @@ class DocBlox_Task_Project_List extends DocBlox_Task_Abstract
 
                 /** @var DocBlox_Reflection_Class $class */
                 $class = current($refl->getClasses());
-                echo ' :' . str_pad($task, $longest_name+2) . $class->getDocBlock()->getShortDescription() . PHP_EOL;
+                echo ' :' . str_pad($task, $longest_name+2)
+                     . $class->getDocBlock()->getShortDescription() . PHP_EOL;
             }
         }
         echo PHP_EOL;

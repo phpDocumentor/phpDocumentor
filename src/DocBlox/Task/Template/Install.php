@@ -24,12 +24,12 @@
  * path is not writable by the current user. Please note that if DocBlox is not
  * installed using PEAR you need to provide the version number.
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Template
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Template
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  *
  * @method string getVersion() Version of the template to install
  */

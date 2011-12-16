@@ -24,12 +24,12 @@
  *
  * This task depends on PEAR's PEAR_PackageFileManager2 package.
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Template
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Template
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  *
  * @method string getVersion() Version of the template to install
  */
@@ -61,10 +61,10 @@ class DocBlox_Task_Template_Package extends DocBlox_Task_Abstract
     public function execute()
     {
         error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
-        if (!@include('PEAR/PackageFileManager2.php')) {
+        if (!@include 'PEAR/PackageFileManager2.php') {
             throw new Exception(
                 'Unable to find the PEAR_PackageFileManager2 package, '
-                        . 'is it installed?'
+                . 'is it installed?'
             );
         }
         PEAR::setErrorHandling(PEAR_ERROR_DIE);
@@ -116,9 +116,9 @@ class DocBlox_Task_Template_Package extends DocBlox_Task_Abstract
             'exceptions' => array(),
             'installexceptions' => array(),
             'dir_roles' => array(
-                '/' => 'php', // explicitly set the role to php to allowthe templates to
-                // installed inside the DocBlox PEAR folder. This will help keep
-                // everything together
+                '/' => 'php', // explicitly set the role to php to allow the
+                // templates to be installed inside the DocBlox PEAR folder.
+                // This will help keep everything together
             ),
         );
 
@@ -133,8 +133,12 @@ class DocBlox_Task_Template_Package extends DocBlox_Task_Abstract
 
         $packagexml->setPhpDep('5.2.6');
         $packagexml->setPearinstallerDep('1.4.0');
-        $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
-        $packagexml->addPackageDepWithChannel('required', 'DocBlox', 'pear.docblox-project.org', '0.17.0');
+        $packagexml->addPackageDepWithChannel(
+            'required', 'PEAR', 'pear.php.net', '1.4.0'
+        );
+        $packagexml->addPackageDepWithChannel(
+            'required', 'DocBlox', 'pear.docblox-project.org', '0.17.0'
+        );
 
         if ($settings->dependencies->template) {
             foreach ($settings->dependencies->template as $dependency) {
@@ -142,7 +146,7 @@ class DocBlox_Task_Template_Package extends DocBlox_Task_Abstract
                 $dependency_version = (string)$dependency['version'];
                 $packagexml->addPackageDepWithChannel(
                     'required',
-                        'DocBlox_Template_'. $dependency_name,
+                    'DocBlox_Template_'. $dependency_name,
                     'pear.docblox-project.org',
                     $dependency_version
                 );
@@ -150,7 +154,9 @@ class DocBlox_Task_Template_Package extends DocBlox_Task_Abstract
         }
 
         $packagexml->addMaintainer('lead', '', $author, $email);
-        $packagexml->setLicense('MIT', 'http://www.opensource.org/licenses/mit-license.html');
+        $packagexml->setLicense(
+            'MIT', 'http://www.opensource.org/licenses/mit-license.html'
+        );
 
         // Add this as a release, and generate XML content
         $packagexml->addRelease();

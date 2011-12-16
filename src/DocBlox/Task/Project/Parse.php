@@ -2,26 +2,29 @@
 /**
  * DocBlox
  *
- * @category   DocBlox
- * @package    Tasks
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Tasks
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
  * Parses the given source code and creates a structure file.
  *
- * The parse task uses the source files defined either by -f or -d options and generates a structure
- * file (structure.xml) at the target location (which is the folder 'output' unless the option -t is provided).
+ * The parse task uses the source files defined either by -f or -d options and
+ * generates a structure file (structure.xml) at the target location (which is
+ * the folder 'output' unless the option -t is provided).
  *
- * @category    DocBlox
- * @package     Tasks
- * @subpackage  Project
- * @author      Mike van Riel <mike.vanriel@naenius.com>
- * @license     http://www.opensource.org/licenses/mit-license.php MIT
- * @link        http://docblox-project.org
+ * @category   DocBlox
+ * @package    Tasks
+ * @subpackage Project
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://docblox-project.org
  *
  * @method boolean getSourcecode() flag indicating whether the source code needs
  *  to be parsed as well.
@@ -40,7 +43,8 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     {
         $this->addOption(
             'f|filename', '=s',
-            'Comma-separated list of files to parse. The wildcards ? and * are supported'
+            'Comma-separated list of files to parse. The wildcards ? and * are '
+            .'supported'
         );
         $this->addOption(
             'd|directory', '=s',
@@ -48,23 +52,28 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         );
         $this->addOption(
             't|target', '-s',
-            'Path where to store the generated output (optional, defaults to "'. DocBlox_Core_Abstract::config()->target . '")'
+            'Path where to store the generated output (optional, defaults to "'
+            . DocBlox_Core_Abstract::config()->target . '")'
         );
         $this->addOption(
             'e|extensions', '-s',
-            'Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml'
+            'Optional comma-separated list of extensions to parse, defaults to '
+            . 'php, php3 and phtml'
         );
         $this->addOption(
             'i|ignore', '-s',
-            'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported'
+            'Comma-separated list of file(s) and directories that will be '
+            . 'ignored. Wildcards * and ? are supported'
         );
         $this->addOption(
             'm|markers', '-s',
-            'Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")'
+            'Comma-separated list of markers/tags to filter, (optional, '
+            . 'defaults to: "TODO,FIXME")'
         );
         $this->addOption(
             'v|verbose', '',
-            'Provides additional information during parsing, usually only needed for debugging purposes'
+            'Provides additional information during parsing, usually only '
+            . 'needed for debugging purposes'
         );
         $this->addOption(
             'title', '-s',
@@ -72,19 +81,23 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         );
         $this->addOption(
             'force', '',
-            'Forces a full build of the documentation, does not increment existing documentation'
+            'Forces a full build of the documentation, does not increment '
+            . 'existing documentation'
         );
         $this->addOption(
             'validate', '',
-            'Validates every processed file using PHP Lint, costs a lot of performance'
+            'Validates every processed file using PHP Lint, costs a lot of '
+            . 'performance'
         );
         $this->addOption(
             'visibility', '-s',
-            'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. "public,protected")'
+            'Specifies the parse visibility that should be displayed in the '
+            . 'documentation (comma seperated e.g. "public,protected")'
         );
         $this->addOption(
             'defaultpackagename', '-s',
-            'name to use for the default package.  If not specified, uses "default"'
+            'name to use for the default package.  If not specified, uses '
+            . '"default"'
         );
         $this->addOption(
             'sourcecode', '',
@@ -112,7 +125,9 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
           : trim($target);
 
         if (($target == '') || ($target == DIRECTORY_SEPARATOR)) {
-            throw new Zend_Console_Getopt_Exception('Either an empty path or root was given: ' . $target);
+            throw new Zend_Console_Getopt_Exception(
+                'Either an empty path or root was given: ' . $target
+            );
         }
 
         // if the folder does not exist at all, create it
@@ -121,12 +136,15 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         }
 
         if (!is_dir($target)) {
-            throw new Zend_Console_Getopt_Exception('The given location "' . $target . '" is not a folder');
+            throw new Zend_Console_Getopt_Exception(
+                'The given location "' . $target . '" is not a folder'
+            );
         }
 
         if (!is_writable($target)) {
             throw new Zend_Console_Getopt_Exception(
-                'The given path "' . $target . '" either does not exist or is not writable.'
+                'The given path "' . $target . '" either does not exist or is '
+                . 'not writable.'
             );
         }
 
@@ -144,7 +162,9 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             return explode(',', parent::getExtensions());
         }
 
-        return DocBlox_Core_Abstract::config()->getArrayFromPath('parser/extensions/extension');
+        return DocBlox_Core_Abstract::config()->getArrayFromPath(
+            'parser/extensions/extension'
+        );
     }
 
     /**
@@ -217,9 +237,25 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             return explode(',', parent::getMarkers());
         }
 
-        return DocBlox_Core_Abstract::config()->getArrayFromPath('parser/markers/item');
+        return DocBlox_Core_Abstract::config()->getArrayFromPath(
+            'parser/markers/item'
+        );
     }
 
+    /**
+     * Outputs a progress indication.
+     *
+     * The event argument contains a property 'progress' which is an array with
+     * 2 elements,
+     *
+     * 1. the current progress indicator and
+     * 2. the maximum progress value
+     *
+     * @param sfEvent $event event containing the progress current value and
+     * maximum value.
+     *
+     * @return void.
+     */
     public function echoProgress(sfEvent $event)
     {
         echo '.';
@@ -252,15 +288,15 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
 
         $paths = array_unique(
             $this->getFilename()
-                ? explode(',', $this->getFilename())
-                : DocBlox_Core_Abstract::config()->getArrayFromPath('files/file')
+            ? explode(',', $this->getFilename())
+            : DocBlox_Core_Abstract::config()->getArrayFromPath('files/file')
         );
         $files->addFiles($paths);
 
         $paths = array_unique(
             $this->getDirectory() || !empty($paths)
-                ? explode(',', $this->getDirectory())
-                : DocBlox_Core_Abstract::config()->getArrayFromPath('files/directory')
+            ? explode(',', $this->getDirectory())
+            : DocBlox_Core_Abstract::config()->getArrayFromPath('files/directory')
         );
 
         $files->addDirectories($paths);
@@ -283,10 +319,10 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
                 $parser->parseFiles($files, $this->getSourcecode())
             );
         } catch (Exception $e) {
-            if ($e->getCode() === DocBlox_Parser_Exception::NO_FILES_FOUND)
-            {
+            if ($e->getCode() === DocBlox_Parser_Exception::NO_FILES_FOUND) {
                 throw new Zend_Console_Getopt_Exception(
-                    'No parsable files were found, did you specify any using the -f or -d parameter?'
+                    'No parsable files were found, did you specify any using '
+                    . 'the -f or -d parameter?'
                 );
             }
 
