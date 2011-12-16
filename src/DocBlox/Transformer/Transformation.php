@@ -4,22 +4,22 @@
  *
  * PHP Version 5
  *
- * @category   DocBlox
- * @package    Transformer
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category  DocBlox
+ * @package   Transformer
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
  */
 
 /**
  * Class representing a single Transformation.
  *
- * @category   DocBlox
- * @package    Transformer
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @category DocBlox
+ * @package  Transformer
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
  */
 class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
 {
@@ -44,14 +44,19 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
-     * @param DocBlox_Transformer $transformer  The parent transformer.
-     * @param string              $query        What information to use as datasource for the writer's source.
-     * @param string              $writer       What type of transformation to apply (XSLT, PDF, Checkstyle etc).
-     * @param string              $source       Which template or type of source to use.
-     * @param string              $artifact     What is the filename of the result (relative to the generated root)
+     * @param DocBlox_Transformer $transformer The parent transformer.
+     * @param string              $query       What information to use as
+     *     datasource for the writer's source.
+     * @param string              $writer      What type of transformation to
+     *     apply (XSLT, PDF, Checkstyle etc).
+     * @param string              $source      Which template or type of source
+     *     to use.
+     * @param string              $artifact    What is the filename of the result
+     *     (relative to the generated root)
      */
-    public function __construct(DocBlox_Transformer $transformer, $query, $writer, $source, $artifact)
-    {
+    public function __construct(
+        DocBlox_Transformer $transformer, $query, $writer, $source, $artifact
+    ) {
         $this->setTransformer($transformer);
         $this->setQuery($query);
         $this->setWriter($writer);
@@ -62,7 +67,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Sets the transformer object responsible for maintaining the transformations.
      *
-     * @param DocBlox_Transformer $transformer
+     * @param DocBlox_Transformer $transformer Responsible transformer object.
      *
      * @return void
      */
@@ -72,7 +77,8 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     }
 
     /**
-     * Returns the transformer object which is responsible for maintaining this transformation.
+     * Returns the transformer object which is responsible for maintaining this
+     * transformation.
      *
      * @return DocBlox_Transformer
      */
@@ -84,7 +90,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Sets the query.
      *
-     * @param string $query
+     * @param string $query Free-form string with writer-specific values.
      *
      * @return void
      */
@@ -106,13 +112,15 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Sets the writer type and instantiates a writer.
      *
-     * @param string $writer
+     * @param string $writer Name of writer to instantiate.
      *
      * @return void
      */
     public function setWriter($writer)
     {
-        $this->writer = DocBlox_Transformer_Writer_Abstract::getInstanceOf($writer);
+        $this->writer = DocBlox_Transformer_Writer_Abstract::getInstanceOf(
+            $writer
+        );
     }
 
     /**
@@ -128,7 +136,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Sets the source / type which the writer will use to generate artifacts from.
      *
-     * @param string $source
+     * @param string $source Free-form string with writer-specific meaning.
      *
      * @return void
      */
@@ -167,8 +175,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     {
         // externally loaded templates set this parameter so that template
         // resources may be placed in the same folder as the template.
-        if ($this->getParameter('template_path') !== null)
-        {
+        if ($this->getParameter('template_path') !== null) {
             $path = rtrim($this->getParameter('template_path'), '/\\');
             if (file_exists($path . DIRECTORY_SEPARATOR . $this->source)) {
                 return realpath($path . DIRECTORY_SEPARATOR . $this->source);
@@ -190,8 +197,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
             . DIRECTORY_SEPARATOR . 'data'
             . DIRECTORY_SEPARATOR . $this->source;
 
-        if (!file_exists($file))
-        {
+        if (!file_exists($file)) {
             throw new DocBlox_Transformer_Exception(
                 'The source path does not exist: ' . $file
             );
@@ -203,10 +209,11 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Filename of the resulting artifact relative to the root.
      *
-     * If the query results in a set of artifacts (multiple nodes / array); then this string must contain an identifying
-     * variable as returned by the writer.
+     * If the query results in a set of artifacts (multiple nodes / array);
+     * then this string must contain an identifying variable as returned by the
+     * writer.
      *
-     * @param string $artifact
+     * @param string $artifact Name of artifact to generate; usually a filepath.
      *
      * @return void
      */
@@ -228,7 +235,8 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Sets an array of parameters (key => value).
      *
-     * @param string[] $parameters
+     * @param string[] $parameters Associative multidimensional array containing
+     *     parameters for the Writer.
      *
      * @return void
      */
@@ -240,7 +248,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Recursive function to convert a SimpleXMLElement to an associative array.
      *
-     * @param SimpleXMLElement $sxml
+     * @param SimpleXMLElement $sxml object to convert to a flat array.
      *
      * @return (string|string[])[]
      */
@@ -261,7 +269,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Imports the parameters from a SimpleXMLElement array.
      *
-     * @param SimpleXMLElement $parameters
+     * @param SimpleXMLElement $parameters Object to import
      *
      * @return void
      */
@@ -283,8 +291,8 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
     /**
      * Returns a specific parameter, or $default if none exists.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param string $name    Name of the parameter to return.
+     * @param mixed  $default Default value is parameter does not exist.
      *
      * @return string
      */
@@ -305,8 +313,35 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
         $this->getWriter()->transform($structure_file, $this);
     }
 
-    public static function createFromArray(DocBlox_Transformer $transformer, array $transformation)
-    {
+    /**
+     * Factory method to create a new transformation based on a array containing
+     * transformation parameters.
+     *
+     * The array format is:
+     *
+     * <code>
+     * array(
+     *   'query'      => 'Query string',
+     *   'writer'     => 'WriterName',
+     *   'source'     => 'source location',
+     *   'artifact'   => 'path',
+     *   'parameters' => array()
+     * )
+     * </code>
+     *
+     * The parameter array is optional.
+     *
+     * @param DocBlox_Transformer $transformer    Responsible transformer object.
+     * @param mixed[]             $transformation Transformation array, see
+     *     long description for the format.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return DocBlox_Transformer_Transformation
+     */
+    public static function createFromArray(
+        DocBlox_Transformer $transformer, array $transformation
+    ) {
         // check if all required items are present
         if (!key_exists('query', $transformation)
             || !key_exists('writer', $transformation)
@@ -314,7 +349,8 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
             || !key_exists('artifact', $transformation)
         ) {
             throw new InvalidArgumentException(
-                'Transformation array is missing elements, received: ' . var_export($transformation, true)
+                'Transformation array is missing elements, received: '
+                . var_export($transformation, true)
             );
         }
 
@@ -325,7 +361,9 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
             $transformation['source'],
             $transformation['artifact']
         );
-        if (isset($transformation['parameters']) && is_array($transformation['parameters'])) {
+        if (isset($transformation['parameters'])
+            && is_array($transformation['parameters'])
+        ) {
             $transformation_obj->setParameters($transformation['parameters']);
         }
 

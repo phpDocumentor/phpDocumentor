@@ -21,8 +21,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-class DocBlox_Transformer_Template
-    extends DocBlox_Transformer_Abstract
+class DocBlox_Transformer_Template extends DocBlox_Transformer_Abstract
     implements ArrayAccess, Countable, Iterator
 {
     /** @var string Name for this template */
@@ -48,7 +47,6 @@ class DocBlox_Transformer_Template
      *
      * @param string $name Name for this template.
      * @param string $path The location of the template on this server.
-     * @param mixed  $data Array with settings to populate this template with.
      */
     public function __construct($name, $path)
     {
@@ -70,7 +68,10 @@ class DocBlox_Transformer_Template
      * The name of the author of this template (optionally including mail
      * address).
      *
-     * @param string $author
+     * @param string $author Name of the author optionally including mail address
+     *  between angle brackets.
+     *
+     * @return void
      */
     public function setAuthor($author)
     {
@@ -90,7 +91,9 @@ class DocBlox_Transformer_Template
     /**
      * Sets the copyright string for this template.
      *
-     * @param string $copyright
+     * @param string $copyright Free-form copyright notice.
+     *
+     * @return void
      */
     public function setCopyright($copyright)
     {
@@ -118,14 +121,26 @@ class DocBlox_Transformer_Template
     }
 
     /**
-     * @param string $version
+     * Sets the version number for this template.
+     *
+     * @param string $version Semantic version number in this format: 1.0.0
+     *
+     * @return void
      */
     public function setVersion($version)
     {
+        if (!preg_match('/^\d+\.\d+\.\d+$/', $version)) {
+            throw new InvalidArgumentException(
+                'Version number is invalid; ' . $version . ' does not match '
+                . 'x.x.x (where x is a number)'
+            );
+        }
         $this->version = $version;
     }
 
     /**
+     * Returns the version number for this template.
+     *
      * @return string
      */
     public function getVersion()
@@ -148,8 +163,7 @@ class DocBlox_Transformer_Template
         $this->version   = $xml->version;
         $this->copyright = $xml->copyright;
 
-        foreach($xml->transformations->transformation as $transformation)
-        {
+        foreach ($xml->transformations->transformation as $transformation) {
             $transformation_obj = new DocBlox_Transformer_Transformation(
                 $transformer,
                 (string)$transformation['query'],
@@ -175,15 +189,14 @@ class DocBlox_Transformer_Template
      *
      * @param integer|string                     $offset The offset to place
      *  the value at.
-     * @param DocBlox_Transformer_Transformation $value The transformation to
+     * @param DocBlox_Transformer_Transformation $value  The transformation to
      *  add to this template.
      *
      * @return void
      */
     public function offsetSet($offset, $value)
     {
-        if (!$value instanceof DocBlox_Transformer_Transformation)
-        {
+        if (!$value instanceof DocBlox_Transformer_Transformation) {
             throw new InvalidArgumentException(
                 'DocBlox_Transformer_Template may only contain items of '
                 . 'type DocBlox_Transformer_Transformation'
@@ -208,7 +221,7 @@ class DocBlox_Transformer_Template
     /**
      * Offset to unset.
      *
-     * @param integer|string $offset
+     * @param integer|string $offset Index of item to unset.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
      *

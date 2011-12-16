@@ -36,8 +36,9 @@ abstract class DocBlox_Transformer_Writer_Abstract
      *
      * @return void
      */
-    abstract public function transform(DOMDocument $structure,
-        DocBlox_Transformer_Transformation $transformation);
+    abstract public function transform(
+        DOMDocument $structure, DocBlox_Transformer_Transformation $transformation
+    );
 
     /**
      * Returns an instance of a writer and caches it; a single writer

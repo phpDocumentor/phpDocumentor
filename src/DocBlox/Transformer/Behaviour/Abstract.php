@@ -32,16 +32,18 @@ abstract class DocBlox_Transformer_Behaviour_Abstract
     /**
      * Executes the behaviour on the given dataset,
      *
-     * @param \DOMDocument $xml
+     * @param DOMDocument $xml document containing the source structure.
      *
-     * @return \DOMDocument
+     * @return DOMDocument
      */
     abstract public function process(DOMDocument $xml);
 
     /**
      * Sets the transformer used for this behaviour.
      *
-     * @param \DocBlox_Transformer $transformer
+     * @param DocBlox_Transformer $transformer Transformer responsible for output.
+     *
+     * @return void
      */
     public function setTransformer($transformer)
     {
@@ -51,7 +53,7 @@ abstract class DocBlox_Transformer_Behaviour_Abstract
     /**
      * Returns the transformer that hosts this behaviour.
      *
-     * @return \DocBlox_Transformer
+     * @return DocBlox_Transformer
      */
     public function getTransformer()
     {
