@@ -15,8 +15,9 @@ DocBlox version %s
 
 ERROR: %s
 
-The parse task uses the source files defined either by -f or -d options and generates a structure
-file (structure.xml) at the target location (which is the folder 'output' unless the option -t is provided).
+The parse task uses the source files defined either by -f or -d options and
+generates a structure file (structure.xml) at the target location (which is
+the folder 'output' unless the option -t is provided).
 
 Usage:
  %s project:parse [options]

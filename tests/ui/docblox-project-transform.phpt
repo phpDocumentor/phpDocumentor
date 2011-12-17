@@ -14,11 +14,14 @@ DocBlox version %s
 
 ERROR: The given path "%s" either does not exist or is not readable.
 
-This task will execute the transformation rules described in the given template (defaults to 'default') with the
-given source (defaults to output/structure.xml) and writes these to the target location (defaults to 'output').
+This task will execute the transformation rules described in the given
+template (defaults to 'default') with the given source (defaults to
+output/structure.xml) and writes these to the target location (defaults to
+'output').
 
-It is possible for the user to receive additional information using the verbose option or stop additional
-information using the quiet option. Please take note that the quiet option also disables logging to file.
+It is possible for the user to receive additional information using the
+verbose option or stop additional information using the quiet option. Please
+take note that the quiet option also disables logging to file.
 
 Usage:
  %s project:transform [options]

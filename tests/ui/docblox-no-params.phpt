@@ -14,16 +14,19 @@ DocBlox version %s
 
 ERROR: No parsable files were found, did you specify any using the -f or -d parameter?
 
-DocBlox creates documentation from PHP source files. The simplest way to use it is:
+DocBlox creates documentation from PHP source files. The simplest way to use
+it is:
 
     $ docblox run -d <directory to parse> -t <output directory>
 
-This will parse every file ending with .php, .php3 and .phtml in <directory to parse> and then
-output a HTML site containing easily readable documentation in <output directory>.
+This will parse every file ending with .php, .php3 and .phtml in <directory
+to parse> and then output a HTML site containing easily readable documentation
+in <output directory>.
 
-DocBlox will try to look for a docblox.dist.xml or docblox.xml file in your current working directory
-and use that to override the default settings if present. In the configuration file can you specify the
-same settings (and more) as the command line provides.
+DocBlox will try to look for a docblox.dist.xml or docblox.xml file in your
+current working directory and use that to override the default settings if
+present. In the configuration file can you specify the same settings (and
+more) as the command line provides.
 
 Usage:
  %s project:run [options]
