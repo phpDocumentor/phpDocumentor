@@ -324,7 +324,7 @@ The following fields are supported:
 
 - *transformation*, it is also possible to execute additional transformations
   specifically for this project by defining your own transformations here.
-  See the chapter on :doc:`Building your own branding` for a description of the
+  See the chapter on :doc:`/For template-builders/Building your own branding using templates` for a description of the
   transformation element and examples.
 
 *Example*:
@@ -338,7 +338,7 @@ The following fields are supported:
 Files
 ~~~~~
 
-Please see the previous sub-chapter :ref:`Basic configuration` for a complete
+Please see the previous sub-chapter `Basic configuration`_ for a complete
 description of the files section.
 
 *Example*:

@@ -21,7 +21,7 @@ Github Usage & Branching
 
 Once you decide you want to contribute to DocBlox (which we really
 appreciate!) you can fork the project at
-http://github.com/mvriel/docblox.
+http://github.com/docblox/docblox.
 
 Please do *not* develop your contribution on your master branch but
 create a separate branch for each feature that you want to

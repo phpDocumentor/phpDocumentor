@@ -3,21 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to DocBlox's documentation!
-===================================
+For users
+=========
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
 
-   For users
-   For template-builders
-   For developers
-   Tasks
-
-.. Indices and tables
-.. ==================
-..
-.. * :ref:`genindex`
-.. * :ref:`search`
-
+   For users/Installation
+   For users/Basic usage
+   For users/Configuration
+   For users/Anatomy of a Docblock
+   For users/Plugins
+   For users/FAQ

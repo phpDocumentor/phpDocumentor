@@ -3,17 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to DocBlox's documentation!
-===================================
+Tasks
+=====
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
 
-   For users
-   For template-builders
-   For developers
-   Tasks
+   Tasks/plugin_generate
+   Tasks/project_list
+   Tasks/project_parse
+   Tasks/project_run
+   Tasks/project_transform
+   Tasks/theme_generate
+   Tasks/theme_list
 
 .. Indices and tables
 .. ==================

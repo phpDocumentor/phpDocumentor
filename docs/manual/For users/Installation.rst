@@ -3,7 +3,7 @@ Installation
 
 DocBlox can easily be installed either via PEAR or manually from
 Github at
-`http://github.com/mvriel/docblox <http://github.com/mvriel/docblox>`_.
+`http://github.com/docblox/docblox <http://github.com/docblox/docblox>`_.
 
 Independent to the chosen installation type has DocBlox several
 dependencies on other software packages. Some of these dependencies
