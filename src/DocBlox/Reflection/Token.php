@@ -69,7 +69,7 @@ class DocBlox_Reflection_Token
     public function getName()
     {
         if ($this->type !== null) {
-            return $this->type;
+            return token_name($this->type);
         }
 
         return null;
