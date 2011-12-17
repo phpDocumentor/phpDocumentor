@@ -61,23 +61,22 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
         $ pear channel-discover pear.docblox-project.org
 
-2. Additionally DocBlox requires the PEAR channels for Zend Framework and the MarkdownExtra library:
+2. After that it is a simple matter of invoking PEAR to install the application
 
-        $ pear channel-discover pear.zfcampus.org
-        $ pear channel-discover pear.michelf.com
-
-3. After that it is a simple matter of invoking PEAR to install the application
-   (since we are still in beta it is required to add that as stability).
-
-        $ pear install docblox/DocBlox-beta
+        $ pear install docblox/DocBlox
 
 ### Directly from source (Github)
 
 1. Download the latest released version from [http://www.docblox-project.org](http://www.docblox-project.org) or
    if you feel really adventurous you can try the latest unreleased.
 2. Unzip the downloaded file to the intended destination location.
+3. DocBlox comes without templates by default when manually installed, to install
+   the default template call the template installer and install the `new_black`
+   template.
 
-All dependencies are included in the DocBlox package, so this is really it.
+       $ php {INSTALLATION_FOLDER}/bin/docblox.php template:install new_black -v 1.0.1
+
+All other dependencies are included in the DocBlox package, so this is really it.
 You might want to create a symbolic link or batch file from a location in your PATH
 to make it easier to use but this is not required.
 
