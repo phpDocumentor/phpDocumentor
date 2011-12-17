@@ -93,10 +93,13 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
     /**
      * Builds a tree of namespace subgraphs with their classes associated.
      *
-     * @param DocBlox_GraphViz_Graph $graph
-     * @param DOMElement             $namespace_element
-     * @param DOMXPath               $xpath
-     * @param string                 $full_namespace_name
+     * @param DocBlox_GraphViz_Graph $graph               Graph to expand on.
+     * @param DOMElement             $namespace_element   Namespace index element.
+     * @param DOMXPath               $xpath               $xpath object to use
+     *     for querying.
+     * @param string                 $full_namespace_name unabbreviated version
+     *     of the current namespace, namespace index only contains an abbreviated
+     *     version and by building/passing this icnreases performance.
      *
      * @return void
      */
@@ -107,13 +110,15 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
         $full_namespace_name .= '\\' . $namespace;
         $full_namespace_name = ltrim($full_namespace_name, '\\');
 
-        $sub_graph = DocBlox_GraphViz_Graph::create('cluster_' . $full_namespace_name)
-                ->setLabel($full_namespace_name != 'default' ? $namespace : '')
-                ->setStyle('rounded')
-                ->setColor($full_namespace_name != 'default' ? 'gray' : 'none')
-                ->setFontColor('gray')
-                ->setFontSize('11')
-                ->setRankDir('LR');
+        $sub_graph = DocBlox_GraphViz_Graph::create(
+            'cluster_' . $full_namespace_name
+        )
+            ->setLabel($full_namespace_name != 'default' ? $namespace : '')
+            ->setStyle('rounded')
+            ->setColor($full_namespace_name != 'default' ? 'gray' : 'none')
+            ->setFontColor('gray')
+            ->setFontSize('11')
+            ->setRankDir('LR');
 
         $sub_qry = $xpath->query(
             "/project/file/interface[@namespace='$full_namespace_name']"
@@ -154,21 +159,27 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
         $graph->addGraph($sub_graph);
 
         foreach ($namespace_element->getElementsByTagName('namespace') as $element) {
-            $this->buildNamespaceTree($sub_graph, $element, $xpath, $full_namespace_name);
+            $this->buildNamespaceTree(
+                $sub_graph, $element, $xpath, $full_namespace_name
+            );
         }
     }
 
     /**
      * Creates a class inheritance diagram.
      *
-     * @param DOMDocument                        $structure
-     * @param DocBlox_Transformer_Transformation $transformation
+     * @param DOMDocument                        $structure      Structure
+     *     document used to gather data from.
+     * @param DocBlox_Transformer_Transformation $transformation Transformation
+     *     element containing the meta-data.
      *
      * @return void
      */
-    public function processClass(DOMDocument $structure, DocBlox_Transformer_Transformation $transformation)
-    {
-        $filename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+    public function processClass(
+        DOMDocument $structure, DocBlox_Transformer_Transformation $transformation
+    ) {
+        $filename = $transformation->getTransformer()->getTarget()
+            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
         $graph = DocBlox_GraphViz_Graph::create()
                 ->setRankSep('1.0')
                 ->setCenter('true')
@@ -186,12 +197,16 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
         }
 
         // link all extended relations
-        $qry = $xpath->query('/project/file/interface[extends]|/project/file/class[extends]');
+        $qry = $xpath->query(
+            '/project/file/interface[extends]|/project/file/class[extends]'
+        );
 
         /** @var DOMElement $element */
         foreach ($qry as $element) {
-            $from_name = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
-            $to_name = $element->getElementsByTagName('extends')->item(0)->nodeValue;
+            $from_name = $element->getElementsByTagName('full_name')->item(0)
+                ->nodeValue;
+            $to_name = $element->getElementsByTagName('extends')->item(0)
+                ->nodeValue;
 
             if (!$to_name) {
                 continue;
@@ -220,11 +235,14 @@ class DocBlox_Plugin_Core_Transformer_Writer_Graph
         }
 
         // link all implemented relations
-        $qry = $xpath->query('/project/file/interface[imports]|/project/file/class[implements]');
+        $qry = $xpath->query(
+            '/project/file/interface[imports]|/project/file/class[implements]'
+        );
 
         /** @var DOMElement $element */
         foreach ($qry as $element) {
-            $from_name = $element->getElementsByTagName('full_name')->item(0)->nodeValue;
+            $from_name = $element->getElementsByTagName('full_name')->item(0)
+                ->nodeValue;
 
             foreach ($element->getElementsByTagName('implements') as $implements) {
                 $to_name = $implements->nodeValue;

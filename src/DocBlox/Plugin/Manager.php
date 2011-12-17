@@ -1,5 +1,26 @@
 <?php
+/**
+ * DocBlox
+ *
+ * PHP Version 5
+ *
+ * @category  DocBlox
+ * @package   Plugin
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://docblox-project.org
+ */
 
+/**
+ * This class loads the plugins from the configuration and initializes them.
+ *
+ * @category DocBlox
+ * @package  Plugin
+ * @author   Mike van Riel <mike.vanriel@naenius.com>
+ * @license  http://www.opensource.org/licenses/mit-license.php MIT
+ * @link     http://docblox-project.org
+ */
 class DocBlox_Plugin_Manager
 {
     /** @var sfEventDispatcher */
@@ -14,6 +35,18 @@ class DocBlox_Plugin_Manager
     /** @var DocBlox_Plugin */
     protected $plugins = array();
 
+    /**
+     * Registers the Event Dispatcher, Confguration and Autoloader onto the
+     * Manager.
+     *
+     * @param sfEventDispatcher               $event_dispatcher Event dispatcher
+     *     that plugins can bind to and where events should be dispatched to.
+     * @param Zend_Config                     $configuration    Configuration file
+     *     which can be used to load parameters into the plugins.
+     * @param ZendX_Loader_StandardAutoloader $autoloader       Plugins can
+     *     additionally load classes; with the autoloader they can register
+     *     themselves.
+     */
     public function __construct($event_dispatcher, $configuration, $autoloader)
     {
         $this->event_dispatcher = $event_dispatcher;
@@ -21,7 +54,15 @@ class DocBlox_Plugin_Manager
         $this->autoloader       = $autoloader;
     }
 
-    public function loadFromConfiguration(DocBlox_Core_Config $config)
+    /**
+     * Loads the plugins from the configuration.
+     *
+     * If no plugins are presented in the configuration then only the 'Core'
+     * plugin will be loaded.
+     *
+     * @return void.
+     */
+    public function loadFromConfiguration()
     {
         $plugins = isset(DocBlox_Core_Abstract::config()->plugins)
             ? DocBlox_Core_Abstract::config()->plugins->plugin
@@ -43,9 +84,10 @@ class DocBlox_Plugin_Manager
                 $this->event_dispatcher, $this->configuration
             );
 
-            $plugin->load(is_string($plugin_config)
-                ? $plugin_config
-                : $plugin_config->path);
+            $plugin->load(
+                is_string($plugin_config) ? $plugin_config : $plugin_config->path,
+                $this->autoloader
+            );
 
             $this->plugins[] = $plugin;
         }

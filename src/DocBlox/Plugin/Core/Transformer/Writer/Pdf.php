@@ -16,9 +16,10 @@
 /**
  * A PDF writer which uses wkhtmltopdf to convert a single HTML file to PDF.
  *
- * It is advised to have your own version of wkhtmltopdf installed on the machine where DocBlox runs.
- * wkhtmltopdf relies on the presence of xserver (not necessarily running; in case of linux) to invoke webkit to
- * generate the PDF.
+ * It is advised to have your own version of wkhtmltopdf installed on the
+ * machine where DocBlox runs. wkhtmltopdf relies on the presence of xserver
+ * (not necessarily running; in case of linux) to invoke webkit to generate the
+ * PDF.
  *
  * @category   DocBlox
  * @package    Transformer
@@ -27,7 +28,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://docblox-project.org
  * @link       http://code.google.com/p/wkhtmltopdf/
- * @link       http://blog.structuralartistry.com/post/2327213260/installing-wkhtmltopdf-on-ubuntu-server
+ * @link       http://blog.structuralartistry.com/post/2327213260/
+ *             installing-wkhtmltopdf-on-ubuntu-server
  */
 class DocBlox_Plugin_Core_Transformer_Writer_Pdf
     extends DocBlox_Transformer_Writer_Abstract

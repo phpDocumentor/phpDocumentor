@@ -53,7 +53,8 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      *
      * For example: having a prefix HTML_QuickForm2_ will link an unidentified
      * class that starts with HTML_QuickForm2_ to a (defined) URL
-     * http://pear.php.net/package/HTML_QuickForm2/docs/latest/HTML_QuickForm2/${class}.html
+     * i.e. http://pear.php.net/package/HTML_QuickForm2/docs/
+     * latest/HTML_QuickForm2/${class}.html
      *
      * @var string
      */
@@ -332,9 +333,10 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
             $transformation->execute($source);
         }
 
-        $this->dispatch('transformer.transform.post', array(
-           'source' => $source
-        ));
+        $this->dispatch(
+            'transformer.transform.post',
+            array('source' => $source)
+        );
     }
 
     /**
@@ -346,7 +348,11 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      */
     public function generateFilename($file)
     {
-        $info = pathinfo(str_replace(DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')));
+        $info = pathinfo(
+            str_replace(
+                DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')
+            )
+        );
         return 'db_' . $info['filename'] . '.html';
     }
 
@@ -401,8 +407,10 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
      * the param {CLASS}. By default the class is inserted as-is; to insert a
      * lowercase variant use the parameter {LOWERCASE_CLASS}
      *
-     * @param string $prefix
-     * @param string $uri
+     * @param string $prefix Class prefix to match, i.e. Zend_Config_
+     * @param string $uri    URI to link to when above prefix is encountered.
+     *
+     * @return void
      */
     public function setExternalClassDoc($prefix, $uri)
     {
@@ -412,7 +420,11 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     /**
      * Sets a set of prefix -> url parts.
      *
-     * @param string[] $external_class_docs
+     * @param string[] $external_class_docs Array containing prefix => URI pairs.
+     *
+     * @see self::setExternalClassDoc() for details on this feature.
+     *
+     * @return void
      */
     public function setExternalClassDocs($external_class_docs)
     {
@@ -432,15 +444,15 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     /**
      * Retrieves the url for a given prefix.
      *
-     * @param string $prefix
-     * @param string $class  if provided will replace the {CLASS} param with
+     * @param string $prefix Class prefix to retrieve a URL for.
+     * @param string $class  If provided will replace the {CLASS} param with
      *  this string.
      *
      * @return string|null
      */
     public function getExternalClassDocumentLocation($prefix, $class = null)
     {
-        if(!isset($this->external_class_docs[$prefix])) {
+        if (!isset($this->external_class_docs[$prefix])) {
             return null;
         }
 
@@ -459,14 +471,14 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
     /**
      * Returns the url for this class if it is registered.
      *
-     * @param string $class
+     * @param string $class FQCN to retrieve documentation URL for.
      *
      * @return null|string
      */
     public function findExternalClassDocumentLocation($class)
     {
         $class = ltrim($class, '\\');
-        foreach(array_keys($this->external_class_docs) as $prefix) {
+        foreach (array_keys($this->external_class_docs) as $prefix) {
             if (strpos($class, $prefix) === 0) {
                 return $this->getExternalClassDocumentLocation($prefix, $class);
             }

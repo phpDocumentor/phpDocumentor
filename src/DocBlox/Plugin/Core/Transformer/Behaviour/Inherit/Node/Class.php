@@ -228,7 +228,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits the given parent as if it was an interface.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
+     *     $parent Parent interface to inherit from.
      *
      * @todo this method and inheritClass should be separated into different objects
      *
@@ -251,7 +252,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits the given parent as if it was an class.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
+     *     $parent Parent class to inherit from.
      *
      * @todo this method and inheritInterface should be separated into
      *     different objects
@@ -280,7 +282,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Imports a method that is obtained via reflection.
      *
-     * @param ReflectionMethod $method
+     * @param ReflectionMethod $method Method that is to be imported.
      *
      * @see self::reflectInternalClass for a complete description.
      *

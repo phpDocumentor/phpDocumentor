@@ -80,7 +80,8 @@ abstract class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
      * Derived methods will inherit properties from the parent object into
      * this one.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
+     *     $parent parent node to inherit data from.
      *
      * @return void
      */

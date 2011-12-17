@@ -42,7 +42,7 @@ class DocBlox_Plugin_Core_Transformer_Writer_Search
         $this->createXmlIndex(
             $structure,
             $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR
-                . $transformation->getArtifact()
+            . $transformation->getArtifact()
         );
     }
 

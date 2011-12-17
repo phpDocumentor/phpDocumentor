@@ -68,7 +68,9 @@ class DocBlox_Plugin_Core_Transformer_Writer_Sourcecode
                 mkdir(dirname($path), 0755, true);
             }
             $source = htmlentities($source);
-            file_put_contents($path.'.html', <<<HTML
+            file_put_contents(
+                $path.'.html',
+                <<<HTML
 <html>
     <head>
         <script

@@ -127,7 +127,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Inherits the long description from the given parent DocBlock.
      *
      * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
-     *     $parent
+     *     $parent parent docblock whose long description to inherit.
      *
      * @return void
      */
@@ -218,7 +218,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      *
      * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      *     $parent Parent Docblock to check against.
-     * @param string[] &$tags Array of inheritable tags to filter.
+     * @param string[]
+     *     &$tags Array of inheritable tags to filter.
      *
      * @return void
      */

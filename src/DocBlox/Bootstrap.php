@@ -116,7 +116,7 @@ class DocBlox_Bootstrap
             $autoloader
         );
 
-        $plugin_manager->loadFromConfiguration(DocBlox_Core_Abstract::config());
+        $plugin_manager->loadFromConfiguration();
 
         $this->attachDispatcher($dispatcher);
     }

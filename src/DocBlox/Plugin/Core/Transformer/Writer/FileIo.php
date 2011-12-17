@@ -16,7 +16,8 @@
 /**
  * Writer containing file system operations.
  *
- * The Query part of the transformation determines the action, currently supported is:
+ * The Query part of the transformation determines the action, currently
+ * supported is:
  *
  * * copy, copies a file or directory to the destination given in $artifact
  *
@@ -39,10 +40,12 @@ class DocBlox_Plugin_Core_Transformer_Writer_FileIo
     /**
      * Invokes the query method contained in this class.
      *
-     * @throws InvalidArgumentException
+     * @param DOMDocument                        $structure      Structure document
+     *     to gather data from.
+     * @param DocBlox_Transformer_Transformation $transformation Transformation
+     *     containing the meta-data for this request.
      *
-     * @param DOMDocument            $structure
-     * @param DocBlox_Transformer_Transformation $transformation
+     * @throws InvalidArgumentException if the query is not supported.
      *
      * @return void
      */
@@ -56,7 +59,8 @@ class DocBlox_Plugin_Core_Transformer_Writer_FileIo
         $method = 'executeQuery' . ucfirst($transformation->getQuery());
         if (!method_exists($this, $method)) {
             throw new InvalidArgumentException(
-                'The query ' . $method . ' is not supported by the FileIo writer'
+                'The query ' . $method . ' is not supported by the FileIo writer,' .
+                'supported operation is "copy"'
             );
         }
 

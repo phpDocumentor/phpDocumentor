@@ -37,10 +37,11 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
      * classes and interfaces available and define the parent class.
      *
      * @param DOMElement
-     *     $node Node to decorate.
-     * @param array &$nodes List of classes/interface elements
+     *     $node   Node to decorate.
+     * @param array
+     *     &$nodes List of classes/interface elements
      * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-     *     $class Class to which this property belongs.
+     *     $class  Class to which this property belongs.
      */
     public function __construct(
         DOMElement $node, array &$nodes,
@@ -119,8 +120,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
      */
     public function getReferrerString($parent_class_name = null)
     {
-        if ($parent_class_name === null)
-        {
+        if ($parent_class_name === null) {
             $parent_class_name = $this->class->getFQCN();
         }
 
@@ -130,7 +130,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
     /**
      * Inherits the properties of an element in another class.
      *
-     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property $parent
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
+     *     $parent parent property to inherit from.
      *
      * @return void
      */
