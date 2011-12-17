@@ -2,7 +2,7 @@
     <property file="build.properties"/>
 
     <target name="build"
-            depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:docblox"
+            depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:docblox,build:phpcb"
             description="Builds DocBlox and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
@@ -73,6 +73,12 @@
     <!-- Generate phpunit results and code coverage -->
     <target name="build:phpunit" description="Unit test DocBlox">
         <exec executable="phpunit" dir="${project.basedir}" checkreturn="true" passthru="true" />
+    </target>
+
+    <target name="build:phpcb">
+        <exec executable="phpcb" passthru="true">
+            <arg line="--log ${project.basedir}/build/logs --output ${project.basedir}/build/code-browser"/>
+        </exec>
     </target>
 
     <!-- Generates the manual locally -->
