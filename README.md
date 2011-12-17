@@ -74,7 +74,7 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
    the default template call the template installer and install the `new_black`
    template.
 
-       $ php {INSTALLATION_FOLDER}/bin/docblox.php template:install new_black -v 1.0.1
+        $ php {INSTALLATION_FOLDER}/bin/docblox.php template:install new_black -v 1.0.1
 
 All other dependencies are included in the DocBlox package, so this is really it.
 You might want to create a symbolic link or batch file from a location in your PATH
