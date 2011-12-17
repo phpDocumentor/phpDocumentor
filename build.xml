@@ -1,5 +1,5 @@
 <project name="DocBlox" default="build" basedir=".">
-    <property file="deploy.properties"/>
+    <property file="build.properties"/>
 
     <target name="build"
             depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:docblox"

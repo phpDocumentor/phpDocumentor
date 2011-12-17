@@ -1,5 +1,5 @@
 .idea
-deploy.properties
+build.properties
 build/*
 .buildpath
 .project
