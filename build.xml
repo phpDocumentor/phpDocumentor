@@ -1,100 +1,200 @@
 <project name="DocBlox" default="build" basedir=".">
-  <property file="build.properties" />
+    <property file="deploy.properties"/>
 
-  <target name="clean">
-    <!-- Clean up -->
-    <delete dir="${basedir}/build" />
+    <target name="build"
+            depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:docblox"
+            description="Builds DocBlox and generates all artefacts needed for Jenkins"/>
 
-    <!-- Create build directories -->
-    <mkdir dir="${basedir}/build/api" />
-    <mkdir dir="${basedir}/build/code-browser" />
-    <mkdir dir="${basedir}/build/coverage" />
-    <mkdir dir="${basedir}/build/logs" />
-    <mkdir dir="${basedir}/build/pdepend" />
-  </target>
+    <target name="deploy"
+            depends="build:phpunit,deploy:package,deploy:publish-pear-package,deploy:update-version-number,deploy:create-tag,deploy:update-ci,deploy:publish-demo,deploy:update-manual"
+            description="Builds a new version, packages and distributes it"/>
 
-  <!-- Run unit tests and generate junit.xml and clover.xml -->
-  <target name="phpunit">
-    <exec executable="phpunit" failonerror="true" />
-  </target>
+    <target name="build:clean" description="Deletes and recreates the 'build' folder for Jenkins">
+        <!-- Clean up -->
+        <delete dir="${project.basedir}/build"/>
 
-  <!-- Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks
-in parallel using a maximum of 2 threads. -->
-  <target name="parallelTasks">
-    <parallel threadCount="2">
-      <antcall target="pdepend" />
-      <antcall target="phpmd" />
-      <antcall target="phpcpd" />
-      <antcall target="phpcs"/>
-      <antcall target="docblox" />
-      <antcall target="phploc" />
-    </parallel>
-  </target>
+        <!-- Create build directories -->
+        <mkdir dir="${project.basedir}/build/api"/>
+        <mkdir dir="${project.basedir}/build/code-browser"/>
+        <mkdir dir="${project.basedir}/build/coverage"/>
+        <mkdir dir="${project.basedir}/build/logs"/>
+        <mkdir dir="${project.basedir}/build/pdepend"/>
+    </target>
 
-  <!-- Generate jdepend.xml and software metrics charts -->
-  <target name="pdepend">
-    <exec executable="pdepend">
-      <arg line="--jdepend-xml=${basedir}/build/logs/jdepend.xml
-              --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
-              --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
-              ${source}" />
-    </exec>
-  </target>
-  <!-- Generate pmd.xml -->
-  <target name="phpmd">
-    <exec executable="phpmd">
-      <arg line="${source}/src/DocBlox
-              xml
-              codesize,design,naming,unusedcode
-              --reportfile ${basedir}/build/logs/pmd.xml" />
-    </exec>
-  </target>
+    <!-- Generate checkstyle.xml -->
+    <target name="build:phpcs" description="Checks for Coding Standard violations">
+        <phpcodesniffer file="${project.basedir}/src/DocBlox" format="checkstyle" standard="PEAR">
+            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
+        </phpcodesniffer>
+    </target>
 
-  <!-- Generate pmd-cpd.xml -->
-  <target name="phpcpd">
-    <exec executable="phpcpd">
-      <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml
-              ${source}/src/DocBlox" />
-    </exec>
-  </target>
+    <!-- Generate API documentation with DocBlox -->
+    <target name="build:docblox" description="Generates API documentation">
+        <docblox destDir="${project.basedir}/build/api">
+            <fileset dir="${project.basedir}">
+                <include name="**/*.php"/>
+                <exclude name="**/tests/**.php"/>
+            </fileset>
+        </docblox>
+    </target>
 
-  <!-- Generate phploc.csv -->
-  <target name="phploc">
-    <exec executable="phploc">
-      <arg line="--log-csv ${basedir}/build/logs/phploc.csv
-              ${source}" />
-    </exec>
-  </target>
+    <!-- Generate phploc.csv -->
+    <target name="build:phploc" description="Generates LOC statistics">
+        <exec executable="phploc" passthru="true">
+            <arg value="--log-csv ${project.basedir}/build/logs/phploc.csv" />
+            <arg path="${project.basedir}" />
+        </exec>
+    </target>
 
-  <!-- Generate checkstyle.xml -->
-  <target name="phpcs">
-    <exec executable="phpcs">
-      <arg line="--report=checkstyle
-              --report-file=${basedir}/build/logs/checkstyle.xml
-              --standard=PEAR --extensions=php
-              ${source}/src/DocBlox" />
-    </exec>
-  </target>
-  <!-- Generate API documentation with DocBlox -->
-  <target name="docblox">
-    <exec executable="docblox">
-      <arg line="parse
-                 -d ${source}
-                 -t ${basedir}/build/api" />
-    </exec>
-    <exec executable="docblox">
-      <arg line="transform
-                 -s ${basedir}/build/api/structure.xml
-                 -t ${basedir}/build/api" />
-    </exec>
-  </target>
+    <!-- Generate pmd-cpd.xml -->
+    <target name="build:phpcpd" description="Search for duplicated code">
+        <phpcpd file="${project.basedir}/src/DocBlox">
+            <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
+        </phpcpd>
+    </target>
 
-  <target name="phpcb">
-    <exec executable="phpcb">
-      <arg line="--log    ${basedir}/build/logs
-              --output ${basedir}/build/code-browser" />
-    </exec>
-  </target>
+    <!-- Generate pmd.xml -->
+    <target name="build:phpmd" description="Analyze the source code for suboptimal solutions">
+        <phpmd file="${project.basedir}/src/DocBlox" rulesets="codesize,design,naming,unusedcode">
+            <formatter type="xml" outfile="${project.basedir}/build/logs/pmd.xml"/>
+        </phpmd>
+    </target>
 
-  <target name="build" depends="clean,parallelTasks,phpunit,phpcb" />
+    <!-- Generate jdepend.xml and software metrics charts -->
+    <target name="build:pdepend" description="Generate software metric information and charts">
+        <exec executable="pdepend" passthru="true">
+            <arg value="--jdepend-xml=${project.basedir}/build/logs/jdepend.xml" />
+            <arg value="--jdepend-chart=${project.basedir}/build/pdepend/dependencies.svg" />
+            <arg value="--overview-pyramid=${project.basedir}/build/pdepend/overview-pyramid.svg" />
+            <arg path="${project.basedir}"/>
+        </exec>
+    </target>
+
+    <!-- Generate phpunit results and code coverage -->
+    <target name="build:phpunit" description="Unit test DocBlox">
+        <exec executable="phpunit" dir="${project.basedir}" checkreturn="true" passthru="true" />
+    </target>
+
+    <!-- Generates the manual locally -->
+    <target name="deploy:generate-manual" description="Generates a local copy of the documentation">
+        <exec command="make html" dir="${project.basedir}/docs/manual" passthru="true" />
+    </target>
+
+    <!-- uploads the manual to the production server -->
+    <target name="deploy:update-manual"
+            depends="deploy:generate-manual"
+            description="Updates the online manual with a new version">
+        <exec command="scp -r ${project.basedir}/docs/manual/.build/html/* ${server.username}@${server.docs}:${server.docs.path}"
+            passthru="true" checkreturn="true"/>
+    </target>
+
+    <!-- Asks for the post-deployment version number -->
+    <target name="deploy:get-version-number"
+            description="Ask the user for the new version">
+        <propertyprompt propertyName="version.number" promptText="Enter the new version number"/>
+    </target>
+
+    <!-- Updates the version number in the Core/Abstract class and commits result -->
+    <target name="deploy:update-version-number"
+            depends="deploy:get-version-number"
+            description="Updates the version number in DocBlox_Core_Abstract and commit it.">
+        <gitcheckout repository="." branchname="release-${version.number}" quiet="false"/>
+        <exec
+            command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/DocBlox/Core/Abstract.php"
+            dir="${project.basedir}" outputProperty="version.old"
+        />
+        <echo>Updating DocBlox from version ${version.old} to ${version.number}</echo>
+        <exec
+            command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/DocBlox/Core/Abstract.php"
+            dir="${project.basedir}" checkreturn="true"
+        />
+        <exec
+            command="git commit src/DocBlox/Core/Abstract.php -m 'RELEASE: Updated version number to ${version.number}'"
+            passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+    </target>
+
+    <!-- Creates a PEAR package from this project -->
+    <target name="deploy:package"
+            depends="deploy:get-version-number"
+            description="Create a PEAR package">
+        <delete file="${project.basedir}/DocBlox-*.tgz"/>
+
+        <propertyprompt propertyName="version.stability"
+                        promptText="Enter the stability of the new version (alpha, beta or stable)"/>
+        <exec
+            command="php bin/utils/package.php ${version.number} ${version.stability} make"
+            passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+        <exec
+            command="pear package" passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+        <exec
+            command="git commit package.xml -m 'RELEASE: Updated package file to ${version.number}'"
+            passthru="true" dir="${project.basedir}" checkreturn="true"
+        />
+    </target>
+
+    <!-- publishes the PEAR package to the production environment -->
+    <target name="deploy:publish-pear-package"
+            depends="deploy:get-version-number"
+            description="Uploads the PEAR package to the distrivution server and update pirum">
+        <exec command="scp ${project.basedir}/DocBlox-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
+        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . DocBlox-${version.number}.tgz'" passthru="true" checkreturn="true"/>
+        <delete file="${project.basedir}/DocBlox-${version.number}.tgz" />
+    </target>
+
+    <!-- Builds a new demo and publishes it -->
+    <target name="deploy:publish-demo"
+            description="Generate a demo and upload it to the server">
+        <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
+        <exec command="php bin/docblox.php" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+    </target>
+
+    <!-- Updates the continuous integration server to the latest docblox -->
+    <target name="deploy:update-ci" description="Updates the CI server with the latest version of DocBlox">
+        <exec command="ssh ${server.username}@${server.ci} -t 'sudo pear upgrade -c ${server.pear}'"
+              passthru="true" checkreturn="true"/>
+    </target>
+
+    <!-- Creates a new tag -->
+    <target name="deploy:create-tag"
+            depends="deploy:get-version-number"
+            description="Creates a tag and pushes it to Github">
+        <exec command="git push origin release-${version.number}" passthru="true" checkreturn="true"/>
+        <exec command="git push upstream release-${version.number}" passthru="true" checkreturn="true"/>
+        <exec command="git checkout master" passthru="true" checkreturn="true"/>
+        <exec command="git merge release-${version.number}" passthru="true" checkreturn="true"/>
+        <exec command="git tag v${version.number} master" passthru="true" checkreturn="true"/>
+        <exec command="git push upstream v${version.number}" passthru="true" checkreturn="true"/>
+        <exec command="git push origin master" passthru="true" checkreturn="true"/>
+        <exec command="git push upstream master" passthru="true" checkreturn="true"/>
+    </target>
+
+    <!-- execute a test against multiple projects pre-deployment to see if they break -->
+    <target name="deploy:pre-deployment-test"
+            description="Test DocBlox against a specific number of projects; can take long">
+        <echo message="Testing Twig"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/twig -t ${project.testprojects.outputdir}/twig --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing WordPress"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/wordpress -t ${project.testprojects.outputdir}/wordpress --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing Phing"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/phing -t ${project.testprojects.outputdir}/phing --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing Agavi"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/agavi/src -t ${project.testprojects.outputdir}/agavi --force -p" dir="${project.basedir}" escape="false" passthru="true" checkreturn="true"/>
+        <echo message="Testing Symfony2"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/Symfony2 -t ${project.testprojects.outputdir}/symfony2 --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing PyroCMS"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/pyrocms -t ${project.testprojects.outputdir}/pyrocms --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing SugarCRM"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/sugarcrm -t ${project.testprojects.outputdir}/sugarcrm --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing Flow3"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/flow3/Packages -t ${project.testprojects.outputdir}/flow3 --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing Zend Framework"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/zf/library -t ${project.testprojects.outputdir}/zf --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <echo message="Testing Zend Framework2"/>
+        <exec command="php bin/docblox.php -d ${project.testprojects.basedir}/zf2/library -t ${project.testprojects.outputdir}/zf2 --force -p" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+    </target>
+
 </project>
