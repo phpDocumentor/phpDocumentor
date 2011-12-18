@@ -12,6 +12,8 @@ For users
    For users/Installation
    For users/Basic usage
    For users/Configuration
+   For users/Types
    For users/Anatomy of a Docblock
+   For users/Integrating with Continuous Integration servers
    For users/Plugins
    For users/FAQ

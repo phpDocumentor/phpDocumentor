@@ -1,9 +1,6 @@
 Plugins
 =======
 
-    *Please note*: this is an incomplete draft of the Plugin mechanism of
-    DocBlox. This is available starting with version 0.15.0.
-
 DocBlox supports Plugins with which you can expand on the normal behaviour. The
 enhancement is actually done by providing hooks into crucial parts of DocBlox'
 process.

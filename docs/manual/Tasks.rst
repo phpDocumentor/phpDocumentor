@@ -14,8 +14,9 @@ Tasks
    Tasks/project_parse
    Tasks/project_run
    Tasks/project_transform
-   Tasks/theme_generate
-   Tasks/theme_list
+   Tasks/template_generate
+   Tasks/template_install
+   Tasks/template_list
 
 .. Indices and tables
 .. ==================

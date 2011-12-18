@@ -1,9 +1,6 @@
 Anatomy of a DocBlock
 =====================
 
-Introduction
-------------
-
 In this chapter will an overview be given of the syntax used with
 DocBlocks. The precise effect of a tag including examples are
 provided in different chapters which are accessible via this
@@ -22,7 +19,8 @@ auto-completion and by DocBlox to generate API documentation.
 
 This is an example of a DocBlock as it can be encountered:
 
-::
+.. code-block:: php
+   :linenos:
 
     /**
      * This is the short description for a DocBlock.
@@ -42,6 +40,27 @@ This is an example of a DocBlock as it can be encountered:
      *
      * @param int    $example  This is an example function/method parameter description.
      * @param string $example2 This is a second example.
+     */
+
+Which elements can have a DocBlock
+----------------------------------
+
+:term:`Structural Elements` can all be preceeded by a DocBlock. The following
+elements are counted as such:
+
+    * namespace
+    * require(_once)
+    * include(_once)
+    * class
+    * interface
+    * trait
+    * function (including methods)
+    * property
+    * constant
+    * variables, both local and global scope.
+
+A more detailed description of what :term:`Structural Elements` are and how
+DocBlocks apply to them can be found in the :doc:`/Glossary`.
 
 Sections
 --------
@@ -83,188 +102,23 @@ Constants and Functions can not be overridden in and thus do not
 have this behavior.
 
 Please note that you can also augment a Long Description with its
-parent's Long Description using the {@inheritdoc} inline tag.
+parent's Long Description using the {:doc:`Tags/Inline/inheritdoc`} inline tag.
 
 Each element also inherits a specific set of tags; which ones
 depend on the type of element.
 
 The following applies:
 
-
--  *ALL*, @author, @version, @copyright
--  *Classes*, @category, @package, @subpackage
--  *Methods*, @param, @return, @throws, @throw
--  *Property*, @var
+======================== ============================================================================
+Elements                 Inherited tags
+======================== ============================================================================
+*Any*                    :doc:`Tags/author`, :doc:`Tags/version`, :doc:`Tags/copyright`
+*Classes and Interfaces* :doc:`Tags/category`, :doc:`Tags/package`, :doc:`Tags/subpackage`
+*Methods*                :doc:`Tags/param`, :doc:`Tags/return`, :doc:`Tags/throws`
+*Properties*             :doc:`Tags/var`
+======================== ============================================================================
 
 Please note that @subpackage tags are only inherited if the parent
 class has the same @package. Otherwise it is assumed that the
 parent class is part of a library which might have a different
 structure.
-
-List of Inline Tags
--------------------
-
-Please note that the behavior of tags with headers suffixed with an
-asterisk is not yet implemented.
-
-@example\*
-~~~~~~~~~~
-
-@id\*
-~~~~~
-
-@internal\*
-~~~~~~~~~~~
-
-@inheritdoc
-~~~~~~~~~~~
-
-@link\*
-~~~~~~~
-
-@source\*
-~~~~~~~~~
-
-@toc\*
-~~~~~~
-
-@tutorial\*
-~~~~~~~~~~~
-
-List of Tags
-------------
-
-Please note that the behavior of tags with headers suffixed with an
-asterisk is not yet implemented; the tag and any contents are
-however visible in the documentation.
-
-@abstract\*
-~~~~~~~~~~~
-
-@access
-~~~~~~~
-
-@api [NEW]
-~~~~~~~~~~
-
-@author
-~~~~~~~~~
-
-@category\*
-~~~~~~~~~~~
-
-@copyright
-~~~~~~~~~~
-
-@deprecated\*
-~~~~~~~~~~~~~
-
-@example\*
-~~~~~~~~~~
-
-@final\*
-~~~~~~~~
-
-@filesource\*
-~~~~~~~~~~~~~
-
-@global\*
-~~~~~~~~~
-
-@ignore
-~~~~~~~
-
-@internal
-~~~~~~~~~
-
-@license
-~~~~~~~~
-
-@link
-~~~~~
-
-@magic [NEW]
-~~~~~~~~~~~~
-
-@method
-~~~~~~~
-Since 0.14.0.
-
-@method is a tag which can only be used in the DocBlock of a class. It is used
-to indicate whether a magic method (thus simulated by __call) is present and which
-arguments it has.
-
-Example::
-
-    /**
-     * Short class description.
-     *
-     * @method int Test1(string $argument1) Description for this method.
-     */
-     class Test{}
-
-The above will result in an additional method in your view with name ``Test1``,
-return type `int` and one argument ``$argument1`` with type ``string``.
-
-To provide compatibility with phpDoc / phpDocumentor syntax do we provide an
-alternative notation::
-
-    * @method int Test1() Test1(string $argument1) Description for this method.
-
-Using this notation is discouraged as the double definition can confuse the reader.
-
-@name\*
-~~~~~~~
-
-@package
-~~~~~~~~
-
-@param
-~~~~~~
-
-@property
-~~~~~~~~~
-
-@property-read
-~~~~~~~~~~~~~~
-
-@property-write
-~~~~~~~~~~~~~~~
-
-@return
-~~~~~~~
-
-@see
-~~~~
-
-@since\*
-~~~~~~~~
-
-@static\*
-~~~~~~~~~
-
-@staticvar\*
-~~~~~~~~~~~~
-
-@subpackage
-~~~~~~~~~~~
-
-@throws / @throw
-~~~~~~~~~~~~~~~~
-
-@todo
-~~~~~
-
-@tutorial\*
-~~~~~~~~~~~
-
-@uses / @usedby\*
-~~~~~~~~~~~~~~~~~
-
-@var
-~~~~
-
-@version\*
-~~~~~~~~~~
-
-

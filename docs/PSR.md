@@ -489,9 +489,9 @@ The @author tag is used to document the author of any "Structural Element".
 
 #### Description
 
-The @author tag can be used to indicate who has made created a
-"Structural Element" or has made significant modifications to it. This tag MAY
-also contain an e-mail address. If an e-mail address is provided it MUST follow
+The @author tag can be used to indicate who has created a"Structural Element"
+or has made significant modifications to it. This tag MAY also contain an
+e-mail address. If an e-mail address is provided it MUST follow
 the author's name and be contained in chevrons, or angle brackets, and MUST
 adhere to the syntax defined in RFC 2822.
 
@@ -639,7 +639,7 @@ The @link tag indicates a custom relation between the associated
 
 or inline
 
-   {@link [URI]}
+   {@link [URI] [description]}
 
 #### Description
 
@@ -649,8 +649,8 @@ to an URI.
 
 The URI MUST be complete and welformed as specified in RFC 2396.
 
-When the @link tag is not used inline it MAY have a description appended to
-indicate the type of relation defined by this occurance.
+The @link tag MAY have a description appended to indicate the type of relation
+defined by this occurrence.
 
 #### Examples
 
@@ -702,6 +702,9 @@ return value by including those types in the signature.
 When the intended method does not have a return value then the return type MAY
 be omitted; in which case 'void' is implied.
 
+@method tags MUST NOT be used in a PHPDoc that is not associated with a
+*class* or *interface*.
+
 #### Examples
 
     class Parent
@@ -738,8 +741,8 @@ Namespaces provide a functional subdivision of "Structural Elements" where the
 @package tag can provide a *logical* subdivision in which way the elements can
 be grouped with a different hierarchy.
 
-If both logical and functional subdivisions are equal it is RECOMMENDED not to
-use the @package tag to prevent maintenance overhead.
+If, across the board, both logical and functional subdivisions are equal is
+it NOT RECOMMENDED to use the @package tag, to prevent maintenance overhead.
 
 Each level in the logical hierarchy MUST separated with a backslash (`\`) to
 be familiar to Namespaces. A hierarchy MAY be of endless depth but it is
@@ -784,7 +787,7 @@ The @return tag is used to document the return value of functions or methods.
 
 #### Description
 
-With the @return tag it is possible to document the type and function of a
+With the @return tag it is possible to document the return type and function of a
 function or method. When provided it MUST contain a "Type" (See Appendix A)
 to indicate what is returned; the description on the other hand is OPTIONAL yet
 RECOMMENDED in case of complicated return structures, such as associative arrays.
@@ -924,7 +927,7 @@ When a "Type" is used the user will expect a value, or set of values, as
 detailed below.
 
 When the "Type" may consist of multiple types then these MUST be separated
-with the pipe (|) sign. Any application supporting this specification MUST
+with the vertical bar sign (|). Any application supporting this specification MUST
 recognize this and split the "Type" before processing.
 
 For example: `@return int|null`
@@ -932,7 +935,7 @@ For example: `@return int|null`
 The value represented by "Type" can be an array. The type MUST be defined
 following the format of one of the following options:
 
-1. unspecified, no definition of the represented array is given.
+1. unspecified, no definition of the contents of the represented array is given.
    Example: `@return array`
 
 2. specified containing a single type, the Type definition informs the reader of
@@ -1012,7 +1015,8 @@ The following keywords are recognized by this PSR:
 7.  'array', the element to which this type applies is an array of values.
 
 8.  'resource', the element to which this type applies is a resource per
-    the definition of PHP types.
+    the definition of PHP at
+    http://www.php.net/manual/en/language.types.resource.php.
 
 9.  'void', this type is commonly only used when defining the return type of a
     method or function.
@@ -1091,7 +1095,7 @@ The following keywords are recognized by this PSR:
 
 11. 'callback', the element to which this type applies is a pointer to a
     function call. This may be any type of callback as defined in the PHP manual
-    at http://www.php.net/xxxx.
+    at http://php.net/manual/en/language.pseudo-types.php.
 
 12. 'false' or 'true', the element to which this type applies will have
     the value true or false. No other value will be returned from this

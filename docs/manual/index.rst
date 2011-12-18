@@ -13,7 +13,10 @@ Welcome to DocBlox's documentation!
    For users
    For template-builders
    For developers
-   Tasks
+   Glossary
+   For users/List of tags
+   For users/List of inline tags
+   /Tasks
 
 .. Indices and tables
 .. ==================

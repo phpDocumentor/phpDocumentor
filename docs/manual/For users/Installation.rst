@@ -21,6 +21,9 @@ entry below.
 -  wkhtmltopdf, only applicable when generating PDFs (not enabled
    by default)
 
+DocBlox does not install these dependencies and will generate errors if they
+are missing.
+
 PEAR
 ----
 
@@ -37,11 +40,11 @@ And to install DocBlox you can use the following command:
 
 ::
 
-    $ pear install DocBlox/DocBlox-beta
+    $ pear install DocBlox/DocBlox
 
 When the installation is finished you can invoke the ``docblox``
 command from any path in your system. Recommended is to read the
-chapter :doc:`Basic usage`, which will explain how to start using
+:doc:`Basic usage` chapter, which will explain how to start using
 DocBlox.
 
 Manual Installation
@@ -53,9 +56,7 @@ though this is not recommended for production environments.
 
 The steps necessary for manual installation are:
 
-
-1. download your preferred installation archive from
-   http://docblox-project.org
+1. download your preferred installation archive from http://docblox-project.org.
 2. unzip in your favourite location
 3. Depending upon your OS:
 
@@ -66,5 +67,5 @@ The steps necessary for manual installation are:
 
 When the installation is finished you can invoke the ``docblox``
 command from any path in your system. Recommended is to read the
-chapter :doc:`Basic usage`, which will explain how to start using
+:doc:`Basic usage` chapter, which will explain how to start using
 DocBlox.

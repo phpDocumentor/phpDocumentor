@@ -32,7 +32,7 @@ rule in your VCS it will give developers the ability to have
 settings other than the project defaults.
 
     **Note:**
-    *the file ``docblox.xml`` is used instead of ``docblox.dist.xml`` and thus does not supplement it*
+    *the file 'docblox.xml' is used instead of 'docblox.dist.xml' and thus does not supplement it*
 
 
 Another option is to use the ``-c`` or ``--configuration``

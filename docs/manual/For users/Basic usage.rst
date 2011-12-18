@@ -13,7 +13,7 @@ following form:
 
     $ docblox
 
-When you have installed a version directly from Github your should
+When you have installed a version directly from Github you should
 invoke the ``docblox.php`` script in the ``bin`` folder of your
 DocBlox installation unless you have added a symlink as described in the chapter
 :doc:`Installation`.
@@ -41,27 +41,25 @@ DocBlox takes a two-step approach to generating documentation:
 2. Transform the intermediate structure file to a form of human readable output,
    such as HTML.
 
-These steps can be executed at once or separate, depending upon
-your preference.
+These steps can be executed at once or separate, depending upon your preference.
 
 Generating documentation
 ------------------------
 
-To generate your documentation you can use the ``run`` task:
+To generate your documentation you can invoke docblox without specifying a task:
 
 ::
 
-    $ docblox run
+    $ docblox
 
-When ran without parameters (as shown above) it will try to get the
-location of the source code and the target folder from a
-configuration file (which is discussed in the :doc:`Configuration` chapter) or
-exit with an error. You can use the help option (``-h`` or ``--help``) to view
-a list of all possible actions.
+When ran without parameters (as shown above) it will try to get the location of
+the source code and the target folder from a configuration file (which is
+discussed in the :doc:`Configuration` chapter) or exit with an error. You can
+use the help option (``-h`` or ``--help``) to view a list of all possible actions.
 
 ::
 
-    $ docblox run -h
+    $ docblox -h
 
 The simplest action would be to invoke docblox to parse the given
 location (``-d`` for a directory, ``-f`` for a file) and tell it to
@@ -70,7 +68,7 @@ the following command:
 
 ::
 
-    $ docblox run -d [SOURCE_PATH] -t [TARGET_PATH]
+    $ docblox -d [SOURCE_PATH] -t [TARGET_PATH]
 
 Please be aware that DocBlox expects the target location to exist
 and that it is writable. If it is not, the application will exit
@@ -83,9 +81,9 @@ Usage
 ~~~~~
 
 DocBlox has a task oriented CLI; the first argument represents the name of the
-task to execute, or if no arguments are given but only parameters then docblox
-assumes you want to run the ``project:run`` task. This last mechanism provides
-backwards compatibility with phpDocumentor based configurations.
+task to execute, if no name is given then docblox assumes you want to run the
+``project:run`` task. This last mechanism provides backwards compatibility with
+phpDocumentor based configurations.
 
 Example::
 
@@ -116,18 +114,20 @@ has specific arguments. It is advised to either read the detailed sub-section
 or invoke ``docblox <task> --help``; this will provide a summary of the task
 and its arguments.
 
-============================== =================================================
-Full name                      Description
-============================== =================================================
-:doc:`Tasks/project_list`      Defines all tasks that can be run by DocBlox.
-:doc:`Tasks/project_run`       Parse and transform the given directory (-d|-f)
-                               to the given location (-t).
-:doc:`Tasks/project_parse`     Parses the given source code and creates a
-                               structure file.
-:doc:`Tasks/project_transform` Transforms the structure file into the specified
-                               output format.
-:doc:`Tasks/plugin_generate`   Generates a skeleton plugin.
-:doc:`Tasks/template_generate` Generates a skeleton template.
-:doc:`Tasks/template_list`     Displays a listing of all available templates in
-                               DocBlox.
-============================== =================================================
+=============================== =================================================
+Full name                       Description
+=============================== =================================================
+:doc:`/Tasks/project_list`      Lists all tasks that can be run by DocBlox.
+:doc:`/Tasks/project_run`       Parses and transform the given directory (-d|-f)
+                                to the given location (-t).
+:doc:`/Tasks/project_parse`     Parses the given source code and creates an
+                                :term:`Intermediate Structure File`.
+:doc:`/Tasks/project_transform` Transforms an existing
+                                :term:`Intermediate Structure File` into the
+                                specified output format.
+:doc:`/Tasks/plugin_generate`   Generates a skeleton plugin.
+:doc:`/Tasks/template_generate` Generates a skeleton template.
+:doc:`/Tasks/template_install`  Installs a specific template.
+:doc:`/Tasks/template_list`     Displays a listing of all available templates in
+                                DocBlox.
+=============================== =================================================
