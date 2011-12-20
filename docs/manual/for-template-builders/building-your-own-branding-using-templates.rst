@@ -14,7 +14,7 @@ provided on how branding works in DocBlox.
 Quickstart
 ----------
 
-I will try to give a step-by-step description how to create your own branding:
+I will give a step-by-step description how to create your own branding:
 
 1. Create a new folder in your intended location (for example your project) with
    the name of the intended template. Please make sure *no* spaces are present in

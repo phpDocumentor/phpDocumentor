@@ -152,7 +152,7 @@ configuration file is found.
     For example: the configuration file is located in
     */opt/docblox/plugins/mine/plugin.xml* and the class names start with
     `My_First_Plugin_`. When you have added the prefix to the configuration file
-    and you try to instantiate My_First_Plugin_Listener, then DocBlox will try
+    and you instantiate My_First_Plugin_Listener, then DocBlox will attempt
     to locate a file named *Listener.php* in the */opt/docblox/plugins/mine/*
     folder.
 

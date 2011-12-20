@@ -44,7 +44,7 @@ And to install DocBlox you can use the following command:
 
 When the installation is finished you can invoke the ``docblox``
 command from any path in your system. Recommended is to read the
-:doc:`Basic usage` chapter, which will explain how to start using
+:doc:`basic-usage` chapter, which will explain how to start using
 DocBlox.
 
 Manual Installation
@@ -67,5 +67,5 @@ The steps necessary for manual installation are:
 
 When the installation is finished you can invoke the ``docblox``
 command from any path in your system. Recommended is to read the
-:doc:`Basic usage` chapter, which will explain how to start using
+:doc:`basic-usage` chapter, which will explain how to start using
 DocBlox.

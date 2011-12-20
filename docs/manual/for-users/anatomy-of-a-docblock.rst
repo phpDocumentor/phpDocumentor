@@ -60,7 +60,7 @@ elements are counted as such:
     * variables, both local and global scope.
 
 A more detailed description of what :term:`Structural Elements` are and how
-DocBlocks apply to them can be found in the :doc:`/Glossary`.
+DocBlocks apply to them can be found in the :doc:`/glossary`.
 
 Sections
 --------
@@ -77,6 +77,8 @@ A DocBlock roughly exists of 3 sections:
 
 Short Description
 ~~~~~~~~~~~~~~~~~
+
+
 
 Long Description
 ~~~~~~~~~~~~~~~~
@@ -102,7 +104,7 @@ Constants and Functions can not be overridden in and thus do not
 have this behavior.
 
 Please note that you can also augment a Long Description with its
-parent's Long Description using the {:doc:`Tags/Inline/inheritdoc`} inline tag.
+parent's Long Description using the {:doc:`tags/inline/inheritdoc`} inline tag.
 
 Each element also inherits a specific set of tags; which ones
 depend on the type of element.
@@ -112,10 +114,10 @@ The following applies:
 ======================== ============================================================================
 Elements                 Inherited tags
 ======================== ============================================================================
-*Any*                    :doc:`Tags/author`, :doc:`Tags/version`, :doc:`Tags/copyright`
-*Classes and Interfaces* :doc:`Tags/category`, :doc:`Tags/package`, :doc:`Tags/subpackage`
-*Methods*                :doc:`Tags/param`, :doc:`Tags/return`, :doc:`Tags/throws`
-*Properties*             :doc:`Tags/var`
+*Any*                    :doc:`tags/author`, :doc:`tags/version`, :doc:`tags/copyright`
+*Classes and Interfaces* :doc:`tags/category`, :doc:`tags/package`, :doc:`tags/subpackage`
+*Methods*                :doc:`tags/param`, :doc:`tags/return`, :doc:`tags/throws`
+*Properties*             :doc:`tags/var`
 ======================== ============================================================================
 
 Please note that @subpackage tags are only inherited if the parent

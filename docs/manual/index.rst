@@ -10,13 +10,13 @@ Welcome to DocBlox's documentation!
    :maxdepth: 2
    :numbered:
 
-   For users
-   For template-builders
-   For developers
-   Glossary
-   For users/List of tags
-   For users/List of inline tags
-   /Tasks
+   for-users
+   for-template-builders
+   for-developers
+   glossary
+   for-users/list-of-tags
+   for-users/list-of-inline-tags
+   /tasks
 
 .. Indices and tables
 .. ==================

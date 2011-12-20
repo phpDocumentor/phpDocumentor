@@ -16,7 +16,7 @@ following form:
 When you have installed a version directly from Github you should
 invoke the ``docblox.php`` script in the ``bin`` folder of your
 DocBlox installation unless you have added a symlink as described in the chapter
-:doc:`Installation`.
+:doc:`installation`.
 
 Under Linux / MacOSX that would be:
 
@@ -54,7 +54,7 @@ To generate your documentation you can invoke docblox without specifying a task:
 
 When ran without parameters (as shown above) it will try to get the location of
 the source code and the target folder from a configuration file (which is
-discussed in the :doc:`Configuration` chapter) or exit with an error. You can
+discussed in the :doc:`configuration` chapter) or exit with an error. You can
 use the help option (``-h`` or ``--help``) to view a list of all possible actions.
 
 ::
@@ -117,17 +117,17 @@ and its arguments.
 =============================== =================================================
 Full name                       Description
 =============================== =================================================
-:doc:`/Tasks/project_list`      Lists all tasks that can be run by DocBlox.
-:doc:`/Tasks/project_run`       Parses and transform the given directory (-d|-f)
+:doc:`/tasks/project_list`      Lists all tasks that can be run by DocBlox.
+:doc:`/tasks/project_run`       Parses and transform the given directory (-d|-f)
                                 to the given location (-t).
-:doc:`/Tasks/project_parse`     Parses the given source code and creates an
+:doc:`/tasks/project_parse`     Parses the given source code and creates an
                                 :term:`Intermediate Structure File`.
-:doc:`/Tasks/project_transform` Transforms an existing
+:doc:`/tasks/project_transform` Transforms an existing
                                 :term:`Intermediate Structure File` into the
                                 specified output format.
-:doc:`/Tasks/plugin_generate`   Generates a skeleton plugin.
-:doc:`/Tasks/template_generate` Generates a skeleton template.
-:doc:`/Tasks/template_install`  Installs a specific template.
-:doc:`/Tasks/template_list`     Displays a listing of all available templates in
+:doc:`/tasks/plugin_generate`   Generates a skeleton plugin.
+:doc:`/tasks/template_generate` Generates a skeleton template.
+:doc:`/tasks/template_install`  Installs a specific template.
+:doc:`/tasks/template_list`     Displays a listing of all available templates in
                                 DocBlox.
 =============================== =================================================

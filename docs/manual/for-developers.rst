@@ -3,10 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-For template-builders
-=====================
+For developers
+==============
 
 .. toctree::
    :maxdepth: 2
 
-   For template-builders/Building your own branding using templates
+   for-developers/contributors-guide
+   for-developers/profiling

@@ -3,20 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Tasks
-=====
+Appendix: Tasks
+===============
 
 .. toctree::
    :maxdepth: 2
 
-   Tasks/plugin_generate
-   Tasks/project_list
-   Tasks/project_parse
-   Tasks/project_run
-   Tasks/project_transform
-   Tasks/template_generate
-   Tasks/template_install
-   Tasks/template_list
+   tasks/plugin_generate
+   tasks/project_list
+   tasks/project_parse
+   tasks/project_run
+   tasks/project_transform
+   tasks/template_generate
+   tasks/template_install
+   tasks/template_list
 
 .. Indices and tables
 .. ==================

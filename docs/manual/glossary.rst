@@ -151,5 +151,5 @@ Glossary
         This is a generic name for anything that can be returned or provided as
         identity for a value.
 
-        It is recommended to read the chapter :doc:`/For users/Types` for a
+        It is recommended to read the chapter :doc:`/for-users/types` for a
         detailed description.
