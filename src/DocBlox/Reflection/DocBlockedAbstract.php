@@ -169,68 +169,6 @@ abstract class DocBlox_Reflection_DocBlockedAbstract
     }
 
     /**
-     * Adds the DocBlock XML definition to the given SimpleXMLElement.
-     *
-     * @param SimpleXMLElement $xml SimpleXMLElement to be appended to
-     *
-     * @return void
-     */
-    protected function addDocblockToSimpleXmlElement(SimpleXMLElement $xml)
-    {
-        $package = '';
-        $subpackage = '';
-
-        if ($this->getDocBlock()) {
-            if (!isset($xml->docblock)) {
-                $xml->addChild('docblock');
-            }
-
-            $xml->docblock->description = $this->getDocBlock()
-                ->getShortDescription();
-            $xml->docblock->{'long-description'} = $this->getDocBlock()
-                ->getLongDescription()->getFormattedContents();
-
-
-            /** @var DocBlox_Reflection_Docblock_Tag $tag */
-            foreach ($this->getDocBlock()->getTags() as $tag) {
-                $tag_object = $xml->docblock->addChild('tag');
-
-                // custom attached member variable, see line 51
-                if (isset($this->getDocBlock()->line_number)) {
-                    $tag_object['line'] = $this->getDocBlock()->line_number;
-                }
-
-                $this->dispatch(
-                    'reflection.docblock.tag.export',
-                    array(
-                        'object' => $tag,
-                        'xml'    => $tag_object
-                    )
-                );
-
-                if ($tag->getName() == 'package') {
-                    $package = $tag->getDescription();
-                }
-
-                if ($tag->getName() == 'subpackage') {
-                    $subpackage = $tag->getDescription();
-                }
-            }
-        }
-
-        // create a new 'meta-package' shaped like a namespace
-        $xml['package'] = str_replace(
-            array('.', '_'),
-            '\\',
-            $package . ($subpackage ? '\\' . $subpackage : '')
-        );
-
-        if ((string)$xml['package'] == '') {
-            $xml['package'] = $this->getDefaultPackageName();
-        }
-    }
-
-    /**
      * Sets the name of the Default package.
      *
      * @param string $default_package_name The name that needs to be adopted by

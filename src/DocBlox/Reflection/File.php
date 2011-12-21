@@ -58,6 +58,9 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     /** @var string[] A list of markers contained in this file. */
     protected $markers = array();
 
+    /** @var string[] A list of errors during processing */
+    protected $parse_markers = array();
+
     /** @var string[] A list of all marker types to search for in this file. */
     protected $marker_terms = array('TODO', 'FIXME');
 
@@ -111,8 +114,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         // it really matters
         $this->setHash(md5($this->contents));
     }
-
-    var $parse_markers = array();
 
     /**
      * Adds a parse error to the system
@@ -344,6 +345,19 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         return $this->contents;
     }
 
+    public function getMarkers()
+    {
+        return $this->markers;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getParseErrors()
+    {
+        return $this->parse_markers;
+    }
+
     /**
      * Returns all classes in this file.
      *
@@ -352,6 +366,46 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     public function getClasses()
     {
         return $this->classes;
+    }
+
+    /**
+     * Returns all Interfaces in this file.
+     *
+     * @return DocBlox_Reflection_Interface
+     */
+    public function getInterfaces()
+    {
+        return $this->interfaces;
+    }
+
+    /**
+     * Returns all functions in this file.
+     *
+     * @return DocBlox_Reflection_Function
+     */
+    public function getFunctions()
+    {
+        return $this->functions;
+    }
+
+    /**
+     * Returns all constants in this file.
+     *
+     * @return DocBlox_Reflection_Constants
+     */
+    public function getConstants()
+    {
+        return $this->constants;
+    }
+
+    /**
+     * Returns all constants in this file.
+     *
+     * @return DocBlox_Reflection_Constants
+     */
+    public function getIncludes()
+    {
+        return $this->includes;
     }
 
     /**
@@ -793,87 +847,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         );
 
         $this->includes[] = $include;
-    }
-
-    /**
-     * Returns the contents' structure as DOMDocument.
-     *
-     * This is a temporary method as the XML processing should be removed from
-     * the reflection library and brought into the DocBlox parser itself.
-     *
-     * @return DOMDocument
-     */
-    public function __toDomXml()
-    {
-        $xml = new SimpleXMLElement(
-            '<file path="' . ltrim($this->filename, './') . '" hash="'
-            . $this->hash . '"></file>'
-        );
-        $this->addDocblockToSimpleXmlElement($xml);
-
-        // add markers
-        foreach ($this->markers as $marker) {
-            if (!isset($xml->markers)) {
-                $xml->addChild('markers');
-            }
-
-            $marker_obj = $xml->markers->addChild(
-                strtolower($marker[0]),
-                htmlspecialchars(trim($marker[1]))
-            );
-            $marker_obj->addAttribute('line', $marker[2]);
-        }
-
-        foreach ($this->parse_markers as $marker) {
-            if (!isset($xml->parse_markers)) {
-                $xml->addChild('parse_markers');
-            }
-
-            $marker_obj = $xml->parse_markers->addChild(
-                strtolower($marker[0]),
-                htmlspecialchars(trim($marker[1]))
-            );
-            $marker_obj->addAttribute('line', $marker[2]);
-        }
-
-        // add namespace aliases
-        foreach ($this->namespace_aliases as $alias => $namespace) {
-            $alias_obj = $xml->addChild('namespace-alias', $namespace);
-            $alias_obj->addAttribute('name', $alias);
-        }
-
-        $dom = new DOMDocument('1.0', 'utf-8');
-        $dom->loadXML(trim($xml->asXML()));
-
-        foreach ($this->includes as $include) {
-            $this->mergeXmlToDomDocument($dom, trim($include->__toXml()));
-        }
-        foreach ($this->constants as $constant) {
-            $constant->setDefaultPackageName($xml['package']);
-            $this->mergeXmlToDomDocument($dom, trim($constant->__toXml()));
-        }
-        foreach ($this->functions as $function) {
-            $function->setDefaultPackageName($xml['package']);
-            $this->mergeXmlToDomDocument($dom, trim($function->__toXml()));
-        }
-        foreach ($this->interfaces as $interface) {
-            $this->mergeXmlToDomDocument($dom, trim($interface->__toXml()));
-        }
-        foreach ($this->classes as $class) {
-            $this->mergeXmlToDomDocument($dom, trim($class->__toXml()));
-        }
-
-        return $dom;
-    }
-
-    /**
-     * Converts this file definition into a DocBlox compatible XML text.
-     *
-     * @return string
-     */
-    public function __toXml()
-    {
-        return trim($this->__toDomXml()->saveXml());
     }
 
 }

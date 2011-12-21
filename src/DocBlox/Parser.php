@@ -291,13 +291,12 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      *
      * @api
      *
-     * @return string|bool The XML element or false if none could be made.
+     * @return void
      */
     public function parseFile($filename, $include_source = false)
     {
         $this->log('Starting to parse file: ' . $filename);
         $this->debug('Starting to parse file: ' . $filename);
-        $result = null;
 
         $dispatched = false;
         try {
@@ -330,35 +329,21 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
 
                 // if an existing entry who matches the file, then re-use
                 if ($qry->length > 0) {
-                    $new_dom = new DOMDocument('1.0', 'utf-8');
-                    $new_dom->appendChild($new_dom->importNode($qry->item(0), true));
-                    $result = $new_dom->saveXML();
+                    $this->exporter->getDomDocument()->appendChild(
+                        $this->exporter->getDomDocument()->importNode(
+                            $qry->item(0), true
+                        )
+                    );
 
                     $this->log(
                         '>> File has not changed since last build, re-using the '
                         . 'old definition'
                     );
+                } else {
+                    $file->process();
+                    $this->exporter->setIncludeSource($include_source);
+                    $this->exporter->export($file);
                 }
-            }
-
-            // if no result has been obtained; process the file
-            if ($result === null) {
-                $file->process();
-                $result = $file->__toDomXml();
-
-                // if we want to include the source for each file; append a new
-                // element 'source' which contains a compressed, encoded version
-                // of the source
-                if ($include_source) {
-                    $result->documentElement->appendChild(
-                        new DOMElement(
-                            'source',
-                            base64_encode(gzcompress($file->getContents()))
-                        )
-                    );
-                }
-
-                $result = $result->saveXml();
             }
         } catch (Exception $e)
         {
@@ -371,7 +356,6 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
                 'Unable to parse file "' . $filename . '", an error was detected: '
                 . $e->getMessage()
             );
-            $result = false;
         }
 
         //disconnects the dispatcher here so if any error occured, it still
@@ -388,8 +372,6 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             . number_format(memory_get_usage()) . ' bytes'
         );
         $this->debug('>> Parsed file');
-
-        return $result;
     }
 
     /**
@@ -457,12 +439,10 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     {
         $timer = microtime(true);
 
-        $dom = new DOMDocument('1.0', 'utf-8');
-        $dom->formatOutput = true;
-        $dom->loadXML(
-            '<project version="' . DocBlox_Core_Abstract::VERSION . '" '
-            . 'title="' . $this->getTitle() . '"></project>'
+        $this->exporter = new DocBlox_Parser_Exporter_Xml(
+            $this->path, $this->getTitle()
         );
+        $this->exporter->initialize();
 
         $paths = $files->getFiles();
         $this->log('Starting to process ' . count($paths) . ' files');
@@ -485,68 +465,53 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
                 array('file' => $file, 'progress' => array($key +1, $file_count))
             );
 
-            $xml = $this->parseFile($file, $include_source);
-            if ($xml === false) {
-                continue;
-            }
-
-            $dom_file = new DOMDocument();
-            $dom_file->loadXML(trim($xml));
-
-            // merge generated XML document into the main document
-            $xpath = new DOMXPath($dom_file);
-            $qry = $xpath->query('/*');
-            for ($i = 0; $i < $qry->length; $i++) {
-                $dom->documentElement->appendChild(
-                    $dom->importNode($qry->item($i), true)
-                );
-            }
+            $this->parseFile($file, $include_source);
         }
 
-        $this->buildPackageTree($dom);
-        $this->buildNamespaceTree($dom);
-        $this->buildMarkerList($dom);
+//        $this->buildPackageTree($dom);
+//        $this->buildNamespaceTree($dom);
+//        $this->buildMarkerList($dom);
 
-        $xml = $dom->saveXML();
+//        $xml = $dom->saveXML();
 
         // Visibility rules
-        $this->log('--');
-        $this->log('Applying visibility rules');
-        $dom = new DOMDocument();
-        $dom->loadXML($xml);
+//        $this->log('--');
+//        $this->log('Applying visibility rules');
+//        $dom = new DOMDocument();
+//        $dom->loadXML($xml);
+//
+//        $visibilityQry = '//*[';
+//        $accessQry = '//tag[@name=\'access\' and (';
+//        foreach ($this->visibility as $key => $vis) {
+//            $visibilityQry .= '(@visibility!=\''.$vis.'\')';
+//            $accessQry .= '@description!=\''.$vis.'\'';
+//
+//            if (($key + 1) < count($this->visibility)) {
+//                $visibilityQry .= ' and ';
+//                $accessQry .= ' and ';
+//            }
+//
+//        }
+//        $visibilityQry .= ']';
+//        $accessQry .= ')]';
 
-        $visibilityQry = '//*[';
-        $accessQry = '//tag[@name=\'access\' and (';
-        foreach ($this->visibility as $key => $vis) {
-            $visibilityQry .= '(@visibility!=\''.$vis.'\')';
-            $accessQry .= '@description!=\''.$vis.'\'';
-
-            if (($key + 1) < count($this->visibility)) {
-                $visibilityQry .= ' and ';
-                $accessQry .= ' and ';
-            }
-
-        }
-        $visibilityQry .= ']';
-        $accessQry .= ')]';
-
-        $qry = '('.$visibilityQry.') | ('.$accessQry.')';
-
-        $xpath = new DOMXPath($dom);
-        $nodes = $xpath->query($qry);
-
-        foreach ($nodes as $node) {
-
-            if (($node->nodeName == 'tag')
-                && ($node->parentNode->parentNode->parentNode)
-            ) {
-                $remove = $node->parentNode->parentNode;
-                $node->parentNode->parentNode->parentNode->removeChild($remove);
-            } else {
-                $node->parentNode->removeChild($node);
-            }
-        }
-        $xml = $dom->saveXML();
+//        $qry = '('.$visibilityQry.') | ('.$accessQry.')';
+//
+//        $xpath = new DOMXPath($dom);
+//        $nodes = $xpath->query($qry);
+//
+//        foreach ($nodes as $node) {
+//
+//            if (($node->nodeName == 'tag')
+//                && ($node->parentNode->parentNode->parentNode)
+//            ) {
+//                $remove = $node->parentNode->parentNode;
+//                $node->parentNode->parentNode->parentNode->removeChild($remove);
+//            } else {
+//                $node->parentNode->removeChild($node);
+//            }
+//        }
+//        $xml = $dom->saveXML();
 
         $this->log('--');
         $this->log(
@@ -559,7 +524,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             . round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M'
         );
 
-        return $xml;
+        return $this->exporter->getContents();
     }
 
     /**

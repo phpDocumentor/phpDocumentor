@@ -619,15 +619,6 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
     }
 
     /**
-     * Returns an XML representation of this object.
-     *
-     * @abstract
-     *
-     * @return string
-     */
-    abstract public function __toXml();
-
-    /**
      * Default behavior of the toString method is to return the name of this
      * reflection.
      *
