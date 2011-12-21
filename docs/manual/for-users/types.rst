@@ -55,7 +55,9 @@ A keyword defining the purpose of this type. Not every element is determined
 by a class but still worth of a classification to assist the developer in
 understanding the code covered by the :term:`PHPDoc`.
 
-    Note: most of these keywords are allowed as class names in PHP and as
+.. NOTE::
+
+    Most of these keywords are allowed as class names in PHP and as
     such are hard to distinguish from real classes. As such the keywords MUST
     be lowercase, as most class names start with an uppercase first character,
     and you SHOULD NOT use classes with these names in your code.
@@ -262,4 +264,6 @@ following the format of one of the following options:
    types.
    Example: ``@return (int|string)[]``
 
-       Note: many IDEs probably do not support this notation yet.
+   .. NOTE::
+
+       many IDEs probably do not support this notation yet.

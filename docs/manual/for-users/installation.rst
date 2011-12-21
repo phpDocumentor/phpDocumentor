@@ -12,7 +12,6 @@ documentation, such as PDFs or Graphs. If a dependency is only
 limited to a subset of features it is denoted with the dependency
 entry below.
 
-
 -  PHP 5.2.6 or higher (5.2.5 and lower might work but is not supported, 5.3
    is explicitly supported)
 -  XSL extension for PHP, only applicable when generating HTML via
@@ -30,15 +29,11 @@ PEAR
 PEAR provides the latest released version of DocBlox and is an easy
 way to set up your machine.
 
-You can prepare your PEAR installation using the following commands:
-
-::
+You can prepare your PEAR installation using the following commands::
 
     $ pear channel-discover pear.docblox-project.org
 
-And to install DocBlox you can use the following command:
-
-::
+And to install DocBlox you can use the following command::
 
     $ pear install DocBlox/DocBlox
 

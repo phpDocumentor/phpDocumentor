@@ -18,9 +18,7 @@ the settings always be available.
 
 When you have added a configuration file then you do not need to
 provide its location to DocBlox; the following command suffices to
-build your documentation:
-
-::
+build your documentation::
 
     $ docblox
 
@@ -31,18 +29,20 @@ instead of the ``docblox.dist.xml`` and when added as an ignore
 rule in your VCS it will give developers the ability to have
 settings other than the project defaults.
 
-    **Note:**
-    *the file 'docblox.xml' is used instead of 'docblox.dist.xml' and thus does not supplement it*
+.. NOTE::
 
+    When present, the file 'docblox.xml' is used instead of 'docblox.dist.xml'
+    and thus does not supplement it.
 
 Another option is to use the ``-c`` or ``--configuration``
 arguments to tell DocBlox the location of your configuration file.
 This can be convenient for centralized configuration management or
 using different settings per environment.
 
-    **Note:** ``none`` is a reserved word and providing ``-c none`` as
-    option will result in any configuration file being ignored.
+.. NOTE::
 
+    ``none`` is a reserved word and providing ``-c none`` as
+    option will result in any configuration file being ignored.
 
 Basic configuration
 -------------------
@@ -56,9 +56,7 @@ configuration template, which is located in
 *[DOCBLOX FOLDER]/data/docblox.tpl.xml* or to examine the
 specifications in this document.
 
-Usually the following configuration suffices for your project:
-
-::
+Usually the following configuration suffices for your project::
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <docblox>
@@ -76,6 +74,8 @@ Usually the following configuration suffices for your project:
 *Remember when we told you about there being a parser and transformer in the previous chapter?*
 The configuration expects you to specify for both what their output
 (target) folder should be.
+
+.. NOTE::
 
     This way it is possible to provide a staging location where you
     indefinitely store your structure file and benefit from the
@@ -117,8 +117,10 @@ the *ignore* element and provide a pattern (not a path) to ignore.
 This if you provide ``*test*`` it will ignore any file or directory containing
 the text *test* in it.
 
-    *Note*: the documentation regarding ignore elements is in effect from v0.14.0
-    previous versions of DocBlox needed to have a element `ignore` in the
+.. WARNING::
+
+    the documentation regarding ignore elements is in effect starting with v0.14.0.
+    Previous versions of DocBlox needed to have a element `ignore` in the
     document root with child elements called `item`.
 
 The *starting point* or *base directory* for the ignore directive is the *Project
@@ -126,11 +128,6 @@ Root*; which is the highest folder that all files share in common.
 Thus if you provide a single directory and that does not contain any parseable
 files and only on subfolder (which does contain parseable files) then the *Project Root*
 if not the given folder but the subfolder.
-
-    **Confusing?** We can imagine. This behavior is changed slightly in version
-    0.14.0 of DocBlox to the following: when only one directory is provided and no
-    other files; then the given directory is the *Project Root*. In all other
-    cases the previously mentioned behaviour is still used.
 
 Reference
 ---------
@@ -218,6 +215,8 @@ to a human-readable set of documentation. The format of this set of
 documentation is determined by the template choice which is present
 in the ``transformations`` head section.
 
+.. NOTE::
+
     The transformer determines the location of the intermediate
     structure format (structure.xml) by retrieving the ``target``
     element in the ``parser`` section.
@@ -257,12 +256,12 @@ Logging
 The logging section contains all settings related to the logging of
 information in DocBlox.
 
+.. NOTE::
+
     DocBlox does not 'care' whether the specified logging paths exist;
     if they do not then no log files are generated.
 
-
 The following fields are supported:
-
 
 -  *level*, determines the minimum level of information that is
    supplied. Any priority equal to or higher than the given is
@@ -312,9 +311,7 @@ The following fields are supported:
 
 - *template*, the name or path of a template to use. This element may be used
   multiple times to combine several templates though usually you only supply one.
-  Example:
-
-  ::
+  Example::
 
       <template name="default"/>
 
@@ -341,7 +338,7 @@ Files
 Please see the previous sub-chapter `Basic configuration`_ for a complete
 description of the files section.
 
-*Example*:
+*Example*
 
 ::
 

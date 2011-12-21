@@ -31,9 +31,11 @@ Plugins make use of the following components:
 These components come pre-installed and ready to use. The only thing that you
 need to know is that they are there and what they are used for.
 
-    **Please note**: *when you want to create your own runner you will have
-    to pass these as dependencies to the plugin manager or use the
-    DocBlox_Bootstrap class to bootstrap the basics for you.*
+.. NOTE::
+
+    When you want to create your own runner you will have to pass these as
+    dependencies to the plugin manager or use the DocBlox_Bootstrap class to
+    bootstrap the basics for you.
 
 How does it work
 ----------------
@@ -71,10 +73,11 @@ The following command can be used::
 After the execution of this command you can find a generated plugin the given
 PATH.
 
-    **Please note:** plugins can be placed anywhere, and do not need to reside
-    in the plugins folder of DocBlox.
-    You can add your custom plugin to your project repository and add a
-    relative path to the plugin in your DocBlox configuration file.
+.. NOTE::
+
+    Plugins can be placed anywhere, and do not need to reside in the plugins
+    folder of DocBlox. You can add your custom plugin to your project repository
+    and add a relative path to the plugin in your DocBlox configuration file.
 
 After you have created your plugin you need to edit your *plugin.xml* file
 to contain the correct meta-data.
@@ -165,9 +168,10 @@ To listen in on events from DocBlox the plugin needs to register a listener clas
 using an equally named field. Multiple listeners may be registered by adding this
 field multiple times.
 
-    Please note that the class prefix should **not** be added to the Listener,
-    this is assumed from the class prefix and is done to better support
-    namespaces in the future.
+.. NOTE::
+
+    The class prefix should **not** be added to the Listener, this is assumed
+    from the class prefix and is done to better support namespaces in the future.
 
     Currently DocBlox does not support namespaced listener classes; this will
     be added in a future release.
@@ -195,9 +199,10 @@ Example:
 In the example above you can see that this plugin needs at least DocBlox 0.15.0
 and the Core plugin version 1.0.0.
 
-    We are working on a plugin and template repository; if a dependent plugin
-    cannot be found this repository will be checked and any missing dependencies
-    installed as well.
+.. NOTE::
+
+    We are working on a plugin repository; if a dependent plugin cannot be found
+    this repository will be checked and any missing dependencies installed as well.
 
 A ``max-version`` directive is also supported in case you want to limit
 availability.
@@ -339,6 +344,7 @@ type sfEvent.
 Example:
 
 .. code-block:: php
+   :linenos:
 
     public function applyBehaviours(sfEvent $data)
     {
@@ -364,6 +370,7 @@ DocBlock. In this annotation is mentioned which event triggers the given method.
 Example:
 
 .. code-block:: php
+   :linenos:
 
     /**
      * My first listener.
@@ -384,8 +391,10 @@ In this example you can see how the class method **applyBehaviours** is being
 connected to the event `transformer.transform.pre`_ and how we get the
 parameter **source** from the event.
 
-    **Please note**: you can have multiple methods which consume the same event.
-    DocBlox will execute them all in order of appearance in the listener.
+.. NOTE::
+
+    You can have multiple methods which consume the same event. DocBlox will
+    execute them all in order of appearance in the listener.
 
 Manual connecting
 #################
@@ -400,6 +409,7 @@ perform other initializations.
 Example:
 
 .. code-block:: php
+   :linenos:
 
     protected function configure()
     {

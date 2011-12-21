@@ -34,7 +34,7 @@ This is an example of a DocBlock as it can be encountered:
      * The section after the long description contains the tags; which provide
      * structured meta-data concerning the given element.
      *
-     * @author  Mike van Riel <mike.vanriel@unet.nl>
+     * @author  Mike van Riel <mike.vanriel@naenius.com>
      *
      * @since 1.0
      *
@@ -78,13 +78,53 @@ A DocBlock roughly exists of 3 sections:
 Short Description
 ~~~~~~~~~~~~~~~~~
 
+The short description is used to give an impression of the function of the
+documented element. This can be used in overviews to allow the user to skim
+the documentation in search of the required template.
 
+Short descriptions should always end in either a full stop, or 2 consecutive new
+lines. If it is not closed like this then any long description will be
+considered as part of the short description.
+
+.. NOTE::
+
+    A full stop means that the dot needs to be succeeded by a new line or other
+    type of whitespace. This way it is possible to mention a version number,
+    for example, without stopping the short description.
 
 Long Description
 ~~~~~~~~~~~~~~~~
 
+The long description contains concise information about the function of the
+documented element. It is allowed, and encouraged, to use Markdown markup to
+apply styling.
+
+The following list has examples of types of information that can be contained
+in a long description:
+
+* Explanation of algorithms
+* Code examples
+* Array specification
+* Relation to other elements
+* License information (in the case of file DocBlocks)
+
+Long descriptions can also contain inline tags. These are special annotations
+that can be substituted for a specialized type of information (such as {@link}).
+Inline tags are always surrounded by braces.
+
+A complete listing is provided in :doc:`list-of-inline-tags`.
+
 Tags
 ~~~~
+
+Tags represent meta-data with which IDEs, external tooling or even the
+application itself know how to interpret an element.
+
+DocBlox understands and uses (almost) all types supported by phpDocumentor.
+A complete listing is provided in :doc:`list-of-tags`.
+
+In addition DocBlox is able to understand, and link to, the annotations of
+Doctrine2.
 
 Inheritance
 -----------

@@ -7,9 +7,7 @@ for you.
 In this document is shown how DocBlox can be used to generate your
 documentation. It is expected that you have installed DocBlox using
 PEAR; thus whenever we ask you to run a command it would be in the
-following form:
-
-::
+following form::
 
     $ docblox
 
@@ -18,15 +16,11 @@ invoke the ``docblox.php`` script in the ``bin`` folder of your
 DocBlox installation unless you have added a symlink as described in the chapter
 :doc:`installation`.
 
-Under Linux / MacOSX that would be:
-
-::
+Under Linux / MacOSX that would be::
 
     $ [DOCBLOX_FOLDER]/bin/docblox.php
 
-And under Windows that would be:
-
-::
+And under Windows that would be::
 
     $ [DOCBLOX_FOLDER]\bin\docblox
 
@@ -46,9 +40,7 @@ These steps can be executed at once or separate, depending upon your preference.
 Generating documentation
 ------------------------
 
-To generate your documentation you can invoke docblox without specifying a task:
-
-::
+To generate your documentation you can invoke docblox without specifying a task::
 
     $ docblox
 
@@ -64,9 +56,7 @@ use the help option (``-h`` or ``--help``) to view a list of all possible action
 The simplest action would be to invoke docblox to parse the given
 location (``-d`` for a directory, ``-f`` for a file) and tell it to
 output your documentation to the given target (``-t``) folder using
-the following command:
-
-::
+the following command::
 
     $ docblox -d [SOURCE_PATH] -t [TARGET_PATH]
 
