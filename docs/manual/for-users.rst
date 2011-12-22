@@ -16,5 +16,6 @@ For users
    for-users/anatomy-of-a-docblock
    for-users/integrating-with-your-ide
    for-users/integrating-with-continuous-integration-servers
+   for-users/validating-documentation-in-your-code
    for-users/plugins
    for-users/faq
