@@ -27,7 +27,7 @@
  * @link       http://docblox-project.org
  */
 abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
-    extends DocBlox_Parser_Abstract
+    extends DocBlox_Plugin_Abstract
 {
     /**
      * Name of the "entity" being validated.

@@ -92,28 +92,6 @@ abstract class DocBlox_Parser_Abstract
     }
 
     /**
-     * Dispatches a parser error to be logged.
-     *
-     * @param string $type    The logging priority as string
-     * @param string $message The message to log.
-     * @param string $line    The line number where the error occurred..
-     *
-     * @return void
-     */
-    public function logParserError($type, $message, $line)
-    {
-        $this->log($message, DocBlox_Core_Log::ERR);
-        $this->dispatch(
-            'parser.log',
-            array(
-                'type' => $type,
-                'message' => $message,
-                'line' => $line
-            )
-        );
-    }
-
-    /**
      * Dispatches a logging request to log a debug message.
      *
      * @param string $message The message to log.
