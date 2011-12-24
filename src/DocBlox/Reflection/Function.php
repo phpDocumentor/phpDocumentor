@@ -90,36 +90,6 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
             $argument->parseTokenizer($tokens);
             $this->arguments[$argument->getName()] = $argument;
 
-            if ($this->getDocBlock()) {
-                /** @var DocBlox_Reflection_DocBlock_Tag $params  */
-                $params = $this->getDocBlock()->getTagsByName('param');
-                if (!isset($params[count($this->arguments) - 1])) {
-                    $this->logParserError(
-                        'NOTICE',
-                        'Argument ' . $argument->getName() . ' is missing from '
-                        . 'the function Docblock',
-                        $argument->getLineNumber()
-                    );
-                } else {
-                    $param_name = $params[count($this->arguments) - 1]
-                        ->getVariableName();
-
-                    if ($param_name != $argument->getName()) {
-                        if ($param_name == '') {
-                            $params[count($this->arguments) - 1]
-                                ->setVariableName($argument->getName());
-                        } else {
-                            $this->logParserError(
-                                'NOTICE',
-                                'Name of argument ' . $argument->getName()
-                                . ' does not match with function Docblock',
-                                $argument->getLineNumber()
-                            );
-                        }
-                    }
-                }
-            }
-
             $this->debugTimer(
                 '>> Processed argument ' . $argument->getName(), 'variable'
             );

@@ -1,10 +1,24 @@
-24/11/2011: Version 0.17.2
+01/08/2012: Version 0.18.0
+--------------------------
+
+* ADDED:    Documentation was expanded
+* FIXED:    All files match the PEAR coding standard
+* CHANGED:  Refactored Reflection to be more independent; moved
+            reflection.docblock-extraction.post event to the point where all
+            tokens have been processed.
+* ADDED:    if there is a @param tag but no corresponding argument; an error
+            is thrown.
+* CHANGED:  Deprecated ant build file and moved everything into one phing file.
+* CHANGED:  Improved file-level docblock recognition to match that of
+            phpDocumentor for backward compatibility.
+
+12/24/2011: Version 0.17.2
 --------------------------
 
 * FIXED:    Error with invalid markers names; when using special characters
             the XMl writing would fail due to an invalid element name.
 
-15/11/2011: Version 0.17.1
+12/15/2011: Version 0.17.1
 --------------------------
 
 * FIXED:    Installation task of template did not work correctly due to a bug

@@ -82,11 +82,6 @@ abstract class DocBlox_Reflection_DocBlockedAbstract
             return $result;
         }
 
-        $this->dispatch(
-            'reflection.docblock-extraction.post',
-            array('docblock' => $result)
-        );
-
         return $result;
     }
 
@@ -252,4 +247,21 @@ abstract class DocBlox_Reflection_DocBlockedAbstract
     {
         return $this->default_package_name;
     }
+
+    /**
+     * Override method to add a validation point for the docblock where it
+     * has access to all processed tokens.
+     *
+     * @param DocBlox_Reflection_TokenIterator $tokens
+     */
+    public function parseTokenizer(DocBlox_Reflection_TokenIterator $tokens)
+    {
+        parent::parseTokenizer($tokens);
+
+        $this->dispatch(
+            'reflection.docblock-extraction.post',
+            array('docblock' => $this->getDocBlock())
+        );
+    }
+
 }
