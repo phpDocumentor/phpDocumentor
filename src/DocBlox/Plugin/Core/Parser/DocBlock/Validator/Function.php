@@ -35,15 +35,18 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
      */
     public function isValid()
     {
-        $valid = true;
-
         if (!$this->hasDocBlock()) return false;
         $this->hasShortDescription();
         $this->validateArguments();
 
-        return $valid;
+        return true;
     }
 
+    /**
+     * Validates whether this element has a docblock.
+     *
+     * @return bool
+     */
     protected function hasDocBlock()
     {
         if (null !== $this->docblock) {
@@ -63,10 +66,15 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         return false;
     }
 
+    /**
+     * Validates whether this function has a short description.
+     *
+     * @return bool
+     */
     public function hasShortDescription()
     {
         if ('' !== trim($this->docblock->getShortDescription())) {
-            return;
+            return true;
         }
 
         $type = $this instanceof DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
@@ -78,8 +86,15 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
             'No short description for ' . $type . ' ' . $this->entityName . '()',
             $this->lineNumber
         );
+
+        return false;
     }
 
+    /**
+     * Validates all arguments whether they align nicely with the docblocks.
+     *
+     * @return void
+     */
     protected function validateArguments()
     {
         /** @var DocBlox_Reflection_Function $source  */
@@ -91,8 +106,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
             if (!$this->isArgumentInDocBlock($key, $argument, $params))
                 continue;
 
-            if (!$this->doesArgumentNameMatchParam($params[$key], $argument))
-                continue;
+            $this->doesArgumentNameMatchParam($params[$key], $argument);
+            $this->doesArgumentTypehintMatchParam($params[$key], $argument);
         }
 
         foreach($params as $param) {
@@ -110,6 +125,20 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
     }
 
+    /**
+     * Validates whether the name of the argument is the same as that of the
+     * @param tag.
+     *
+     * If the @param tag does not contain a name then this method will set it
+     * based on the argument.
+     *
+     * @param DocBlox_Reflection_DocBlock_Tag_Param $param    @param to validate
+     *     with.
+     * @param DocBlox_Reflection_Argument           $argument Argument to validate
+     *     against.
+     *
+     * @return bool whether an issue occurred
+     */
     protected function doesArgumentNameMatchParam(
         DocBlox_Reflection_DocBlock_Tag_Param $param,
         DocBlox_Reflection_Argument $argument
@@ -125,7 +154,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'NOTICE',
+            'ERROR',
             'Name of argument ' . $argument->getName() . 'does not match with '
             . 'the DocBlock\'s name '
             . $param_name .' of ' . $this->entityName . '()',
@@ -135,20 +164,62 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         return false;
     }
 
+    /**
+     * Validates whether an argument is mentioned in the docblock.
+     *
+     * @param integer                         $index    The position in the
+     *     argument listing.
+     * @param DocBlox_Reflection_Argument     $argument The argument itself.
+     * @param DocBlox_Reflection_DocBlock_Tag $params   The list of @param tags
+     *     to validate against.
+     *
+     * @return bool whether an issue occurred.
+     */
     protected function isArgumentInDocBlock(
         $index, DocBlox_Reflection_Argument $argument, $params
     ) {
-        /** @var DocBlox_Reflection_DocBlock_Tag $params  */
         if (isset($params[$index])) {
             return true;
         }
 
         $this->logParserError(
-            'NOTICE',
+            'ERROR',
             'Argument ' . $argument->getName() . ' is missing from '
             . 'the Docblock of ' . $this->entityName . '()',
             $argument->getLineNumber()
         );
+        return false;
+    }
+
+    /**
+     * Checks the typehint of the argument versus the @param tag.
+     *
+     * If the argument has no typehint we do not check anything. When multiple
+     * type are given then the typehint needs to be one of them.
+     *
+     * @param DocBlox_Reflection_DocBlock_Tag_Param $param
+     * @param DocBlox_Reflection_Argument           $argument
+     *
+     * @return bool whether an issue occurred
+     */
+    protected function doesArgumentTypehintMatchParam(
+        DocBlox_Reflection_DocBlock_Tag_Param $param,
+        DocBlox_Reflection_Argument $argument
+    ) {
+        if (!$argument->getType()
+            || in_array($argument->getType(), $param->getTypes())
+        ) {
+            return true;
+        }
+
+        $this->logParserError(
+            'ERROR',
+            'The type hint of the argument is incorrect for the type '
+            . 'definition of the @param tag with argument '
+            . $argument->getName() . ' in ' . $this->entityName . '()',
+            $argument->getLineNumber()
+        );
+
         return false;
     }
 }
