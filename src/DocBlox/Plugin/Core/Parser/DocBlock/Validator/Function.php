@@ -39,6 +39,12 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         $this->hasShortDescription();
         $this->validateArguments();
 
+        if ($this->docblock->hasTag('return')) {
+            $this->isDefaultIdeType(
+                current($this->docblock->getTagsByName('return'))
+            );
+        }
+
         return true;
     }
 
@@ -112,6 +118,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
 
         foreach($params as $param) {
             $param_name = $param->getVariableName();
+            $this->isDefaultIdeType($param);
+
             if (isset($arguments[$param_name])) {
                 continue;
             }
@@ -221,5 +229,28 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         );
 
         return false;
+    }
+
+    /**
+     * Checks whether the type of the given tag is not 'type'; which would
+     * indicate a non-changed IDE value.
+     *
+     * @param DocBlox_Reflection_DocBlock_Tag_Param|DocBlox_Reflection_DocBlock_Tag_Return $param
+     *
+     * @return bool whether an issue occurred
+     */
+    protected function isDefaultIdeType($param)
+    {
+        if ($param->getType() != 'type') {
+            return true;
+        }
+
+        $this->logParserError(
+            'NOTICE',
+            'The type for the @' . $param->getName() . ' in '
+            . $this->entityName . '() is "type"; isn\'t this an IDE default?',
+            $param->getLineNumber()
+        );
+
     }
 }
