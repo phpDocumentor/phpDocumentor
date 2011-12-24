@@ -129,6 +129,7 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             if (@class_exists($class)) {
 
                 $val = new $class(
+                    $this->plugin,
                     $element->getName(),
                     $docblock->line_number,
                     $docblock,

@@ -109,6 +109,26 @@ class DocBlox_Plugin extends DocBlox_Plugin_Abstract
             $key = (string)$option['name'];
             $this->options[$key] = $option;
         }
+
+        $this->translate = new Zend_Translate_Adapter_Array(array(
+            'locale' => 'en',
+            'content' => $path . DIRECTORY_SEPARATOR . 'Messages'
+                . DIRECTORY_SEPARATOR . 'en.php'
+        ));
+
+        /** @var DirectoryIterator[] $files  */
+        $files = new DirectoryIterator($path . DIRECTORY_SEPARATOR . 'Messages');
+        foreach($files as $file) {
+            $base_name = $file->getBasename('.php');
+            if (!$file->isFile() || ($base_name == 'en')) {
+                continue;
+            }
+
+            $this->translate->addTranslation(array(
+                'locale' => $base_name,
+                'content' => $file->getPath()
+            ));
+        }
     }
 
     /**

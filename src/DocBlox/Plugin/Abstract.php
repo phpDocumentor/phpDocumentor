@@ -30,17 +30,23 @@ class DocBlox_Plugin_Abstract
     /** @var Zend_Config_Xml Configuration object for plugins */
     protected $configuration = null;
 
+    /** @var Zend_Translate_Adapter_Array Translation object */
+    protected $translate = null;
+
     /**
      * Initialize this object with an Event Dispatcher and Configuration object.
      *
-     * @param sfEventDispatcher $event_dispatcher Dispatcher used to handle events.
-     * @param Zend_Config_Xml   $configuration    Configuration object for
-     *  this object.
+     * @param sfEventDispatcher            $event_dispatcher Dispatcher used to
+     *     handle events.
+     * @param Zend_Config_Xml              $configuration    Configuration object
+     *     for this object.
+     * @param Zend_Translate_Adapter_Array $translator       Translator object.
      */
-    public function __construct($event_dispatcher, $configuration)
+    public function __construct($event_dispatcher, $configuration, $translator = null)
     {
         $this->event_dispatcher = $event_dispatcher;
         $this->configuration    = $configuration;
+        $this->translate        = $translator;
     }
 
     /**
@@ -105,14 +111,16 @@ class DocBlox_Plugin_Abstract
     /**
      * Dispatches a parser error to be logged.
      *
-     * @param string $type    The logging priority as string
-     * @param string $message The message to log.
-     * @param string $line    The line number where the error occurred..
+     * @param string   $type      The logging priority as string
+     * @param string   $message   The message to log.
+     * @param string   $line      The line number where the error occurred..
+     * @param string[] $variables an array with message substitution variables.
      *
      * @return void
      */
-    public function logParserError($type, $message, $line)
+    public function logParserError($type, $message, $line, $variables = array())
     {
+        $message = $this->_($message, $variables);
         $this->log($message, DocBlox_Core_Log::ERR);
         $this->dispatch(
             'parser.log',
@@ -140,6 +148,26 @@ class DocBlox_Plugin_Abstract
     }
 
     /**
+     * Translates the ID or message in the given language.
+     *
+     * Translation messages may contain any formatting as used by the php
+     * vsprintf function.
+     *
+     * @param string $message   ID or message to translate.
+     * @param array  $variables Variables to use for substitution.
+     *
+     * @return string
+     */
+    public function _($message, $variables = array())
+    {
+        if (!$this->translate) {
+            return vsprintf($message, $variables);
+        }
+
+        return vsprintf($this->translate->translate($message), $variables);
+    }
+
+    /**
      * Returns the configuration for this object.
      *
      * @return Zend_Config_Xml
@@ -157,6 +185,16 @@ class DocBlox_Plugin_Abstract
     public function getEventDispatcher()
     {
         return $this->event_dispatcher;
+    }
+
+    /**
+     * Returns the translation component.
+     *
+     * @return Zend_Translate_Adapter_Array|null
+     */
+    public function getTranslator()
+    {
+        return $this->translate;
     }
 
 }
