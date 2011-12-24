@@ -459,7 +459,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     {
         $result   = null;
         $docblock = $tokens->findNextByType(
-            T_DOC_COMMENT, 10, array(T_CLASS, T_NAMESPACE)
+            T_DOC_COMMENT, 10, array(T_CLASS, T_INTERFACE, T_NAMESPACE)
         );
 
         try {
@@ -468,6 +468,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
                 : null;
 
             if ($result) {
+                $tokens->next();
                 // attach line number to class, the DocBlox_Reflection_DocBlock does not know the number
                 $result->line_number = $docblock->line_number;
             }
@@ -475,6 +476,22 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         catch (Exception $e) {
             $this->log($e->getMessage(), Zend_Log::CRIT);
         }
+
+        $key = $tokens->key();
+
+        // if there is a docblock but has no @package tag or a class directly
+        // follows it, then this is not a file docblock
+        if ($result && (!$result->hasTag('package') || $tokens->findNextByType(
+            array(T_CLASS, T_INTERFACE, T_NAMESPACE), 5, array(T_DOC_COMMENT)
+            ))
+        ) {
+            return null;
+        }
+
+        // the next objects may not use this docblock so we remove it from
+        // the token listing by clearing it.
+        $tokens[$key]->type    = null;
+        $tokens[$key]->content = '';
 
         $this->dispatch('reflection.docblock-extraction.post', array(
             'docblock' => $result
@@ -814,7 +831,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             }
 
             $marker_obj = $xml->markers->addChild(
-                strtolower($marker[0]),
+                strtolower($this->filterXmlElementName($marker[0])),
                 htmlspecialchars(trim($marker[1]))
             );
             $marker_obj->addAttribute('line', $marker[2]);
@@ -826,7 +843,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             }
 
             $marker_obj = $xml->parse_markers->addChild(
-                strtolower($marker[0]),
+                strtolower($this->filterXmlElementName($marker[0])),
                 htmlspecialchars(trim($marker[1]))
             );
             $marker_obj->addAttribute('line', $marker[2]);
@@ -860,6 +877,59 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         }
 
         return $dom;
+    }
+
+    /**
+     * Filters any unwanted characters from the element names.
+     *
+     * XML element names may
+     *
+     * * only start with a letter, ':' or '_'
+     * * only contain letters, digits, '_', '-', ':', '.'.
+     * * may not start with the letters XML (case-insensitive)
+     *
+     * Should an element name come up empty after filtering then this method
+     * will return the string 'unknown'.
+     *
+     * @param $name The element name to filter.
+     *
+     * @return string
+     */
+    public function filterXmlElementName($name)
+    {
+        $split = str_split($name);
+        foreach ($split as $key => $char) {
+            // if this is the first key (even after removing elements) only
+            // allow a smaller subset.
+            if ($key == 0 || !isset($split[$key - 1])) {
+                if (($char < 'a' || $char > 'z') && ($char < 'A' || $char > 'Z')
+                        && $char != '_' && $char != ':'
+                ) {
+                    unset($split[$key]);
+                }
+                continue;
+            }
+
+            if (($char < 'a' || $char > 'z') && ($char < 'A' || $char > 'Z')
+                    && $char < '0' && $char > '9' && $char != '.' && $char != '-'
+                    && $char != '_' && $char != ':'
+            ) {
+                unset($split[$key]);
+            }
+        }
+        $result = implode('', $split);
+
+        // strip xml prefix; this is reserved
+        if (strtolower(substr($result, 0, 3)) == 'xml') {
+            $result = substr($result, 3);
+        }
+
+        // if nothing remains (which should not happen); return 'unknown'.
+        if (!$result) {
+            $result = 'unknown';
+        }
+
+        return $result;
     }
 
     /**
