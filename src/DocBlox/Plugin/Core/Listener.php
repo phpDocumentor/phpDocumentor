@@ -116,8 +116,8 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             );
         }
 
-        // no docblock so no reason to validate
-        if (!$docblock) {
+        // no docblock, or docblock should be ignored, so no reason to validate
+        if (!$docblock || $docblock->hasTag('ignore')) {
             return;
         }
 
