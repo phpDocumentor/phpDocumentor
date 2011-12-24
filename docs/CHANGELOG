@@ -1,3 +1,9 @@
+24/11/2011: Version 0.17.2
+--------------------------
+
+* FIXED:    Error with invalid markers names; when using special characters
+            the XMl writing would fail due to an invalid element name.
+
 15/11/2011: Version 0.17.1
 --------------------------
 
