@@ -55,18 +55,17 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
      */
     protected function hasDocBlock()
     {
-        if (null !== $this->docblock) {
+        if ($this->docblock) {
             return true;
         }
 
-        $type = $this instanceof DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
-            ? 'method'
-            : 'function';
-
         $this->logParserError(
             'ERROR',
-            'No DocBlock was found for ' . $type . ' ' . $this->entityName . '()',
-            $this->lineNumber
+            $this instanceof DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
+                ? 50010
+                : 50009,
+            $this->lineNumber,
+            array($this->entityName . '()')
         );
 
         return false;
@@ -83,14 +82,13 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
             return true;
         }
 
-        $type = $this instanceof DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
-            ? 'method'
-            : 'function';
-
         $this->logParserError(
-            'CRITICAL',
-            'No short description for ' . $type . ' ' . $this->entityName . '()',
-            $this->lineNumber
+            'ERROR',
+            $this instanceof DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
+                ? 50012
+                : 50011,
+            $this->lineNumber,
+            array($this->entityName . '()')
         );
 
         return false;
@@ -125,10 +123,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
             }
 
             $this->logParserError(
-                'NOTICE',
-                'Parameter ' . $param_name .' could not be found in '
-                . $this->entityName . '()',
-                $param->getLineNumber()
+                'NOTICE', 50013, $param->getLineNumber(),
+                array($param_name, $this->entityName . '()')
             );
         }
     }
@@ -162,11 +158,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'ERROR',
-            'Name of argument ' . $argument->getName() . 'does not match with '
-            . 'the DocBlock\'s name '
-            . $param_name .' of ' . $this->entityName . '()',
-            $argument->getLineNumber()
+            'ERROR', 50014, $argument->getLineNumber(),
+            array($argument->getName(), $param_name, $this->entityName . '()')
         );
 
         return false;
@@ -191,10 +184,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'ERROR',
-            'Argument ' . $argument->getName() . ' is missing from '
-            . 'the Docblock of ' . $this->entityName . '()',
-            $argument->getLineNumber()
+            'ERROR', 50015, $argument->getLineNumber(),
+            array($argument->getName(), $this->entityName . '()')
         );
         return false;
     }
@@ -221,11 +212,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'ERROR',
-            'The type hint of the argument is incorrect for the type '
-            . 'definition of the @param tag with argument '
-            . $argument->getName() . ' in ' . $this->entityName . '()',
-            $argument->getLineNumber()
+            'ERROR', 50016, $argument->getLineNumber(),
+            array($argument->getName(), $this->entityName . '()')
         );
 
         return false;
@@ -246,11 +234,8 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'NOTICE',
-            'The type for the @' . $param->getName() . ' in '
-            . $this->entityName . '() is "type"; isn\'t this an IDE default?',
-            $param->getLineNumber()
+            'NOTICE', 50017, $param->getLineNumber(),
+            array('@' . $param->getName(), $this->entityName . '()')
         );
-
     }
 }

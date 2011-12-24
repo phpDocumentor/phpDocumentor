@@ -74,13 +74,12 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Deprecated
     protected function validateTags($key)
     {
         foreach ($this->options['deprecated'][$key] as $tag) {
-
-            if (count($this->docblock->getTagsByName($tag)) > 0) {
-                $this->logParserError(
-                    'CRITICAL', 'Found deprecated tag "' . $tag .'" in '
-                    . $this->entityName, $this->lineNumber
-                );
+            if (count($this->docblock->getTagsByName($tag)) < 1) {
+                continue;
             }
+            $this->logParserError(
+                'CRITICAL', 50006, $this->lineNumber, array($tag, $this->entityName)
+            );
         }
     }
 }

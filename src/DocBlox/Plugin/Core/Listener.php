@@ -106,18 +106,8 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
             strrpos(get_class($element), '_') + 1
         );
 
-        // if the object has no DocBlock _and_ is not a Closure; throw a warning
-        if (!$docblock && !(($type == 'Function')
-            && ($element->getName() == 'Closure'))
-        ) {
-            $this->logParserError(
-                'ERROR', 'No DocBlock was found for ' . $type . ' '
-                . $element->getName(), $element->getLineNumber()
-            );
-        }
-
         // no docblock, or docblock should be ignored, so no reason to validate
-        if (!$docblock || $docblock->hasTag('ignore')) {
+        if ($docblock && $docblock->hasTag('ignore')) {
             return;
         }
 
@@ -131,7 +121,6 @@ class DocBlox_Plugin_Core_Listener extends DocBlox_Plugin_ListenerAbstract
                 $val = new $class(
                     $this->plugin,
                     $element->getName(),
-                    $docblock->line_number,
                     $docblock,
                     $element
                 );

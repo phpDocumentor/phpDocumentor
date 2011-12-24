@@ -70,15 +70,14 @@ abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
      * @param DocBlox_Plugin                   $plugin     Plugin to which this
      *     validator belongs.
      * @param string                           $name       Name of the "entity"
-     * @param int                              $lineNumber Line number for
      * @param DocBlox_Reflection_DocBlock|null $docblock   Docblock
      * @param DocBlox_Reflection_Abstract|null $source     Source Element.
      */
-    public function __construct($plugin, $name, $lineNumber, $docblock = null,
+    public function __construct($plugin, $name, $docblock = null,
         $source = null
     ) {
         $this->entityName = $name;
-        $this->lineNumber = $lineNumber;
+        $this->lineNumber = $docblock ? $docblock->line_number : 0;
         $this->docblock   = $docblock;
         $this->source      = $source;
         parent::__construct(

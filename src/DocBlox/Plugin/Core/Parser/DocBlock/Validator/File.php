@@ -37,37 +37,21 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_File
      */
     public function isValid()
     {
-        if (!$this->docblock) {
+        $filename = $this->source->getFilename();
+        if (!$this->docblock || !$this->docblock->hasTag('package')) {
             $this->logParserError(
-                'ERROR', 'No Page-level DocBlock was found',
-                $this->lineNumber
+                'ERROR', 50007, $this->lineNumber, array($filename)
             );
-
-            return false;
-        }
-
-        if (!$this->docblock->hasTag('package')) {
-            $this->logParserError(
-                'ERROR', 'No Page-level DocBlock was found in file '
-                . $this->source->getFilename(),
-                $this->lineNumber
-            );
-
             return false;
         }
 
         if ('' === $this->docblock->getShortDescription()) {
             $this->logParserError(
-                'CRITICAL',
-                'No short description for file '
-                . $this->entityName, $this->lineNumber
+                'CRITICAL', 50008, $this->lineNumber, array($this->entityName)
             );
-
             return false;
         }
 
-        $valid = parent::isValid();
-
-        return $valid;
+        return parent::isValid();
     }
 }

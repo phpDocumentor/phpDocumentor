@@ -39,20 +39,16 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Property
     {
         $valid = true;
 
-        if (null == $this->docblock) {
+        if (!$this->docblock) {
             $this->logParserError(
-                'ERROR',
-                'No DocBlock was found for property '
-                . $this->entityName, $this->lineNumber
+                'ERROR', 50018, $this->lineNumber, array($this->entityName)
             );
             return false;
         }
 
         if ('' === $this->docblock->getShortDescription()) {
             $this->logParserError(
-                'CRITICAL',
-                'No short description for property '
-                . $this->entityName, $this->lineNumber
+                'CRITICAL', 50019, $this->lineNumber, array($this->entityName)
             );
         }
 
