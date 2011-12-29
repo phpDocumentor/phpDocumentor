@@ -11,6 +11,7 @@
 * CHANGED:  Deprecated ant build file and moved everything into one phing file.
 * CHANGED:  Improved file-level docblock recognition to match that of
             phpDocumentor for backward compatibility.
+* ADDED:    ignore-tags command-line argument to filter out specific tags
 
 12/24/2011: Version 0.17.2
 --------------------------
