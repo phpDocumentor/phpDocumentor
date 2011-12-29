@@ -59,6 +59,9 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     /** @var string[] which markers (i.e. TODO or FIXME) to collect */
     protected $markers = array('TODO', 'FIXME');
 
+    /** @var string[] which tags to ignore */
+    protected $ignored_tags = array();
+
     /** @var string target location's root path */
     protected $path = null;
 
@@ -189,6 +192,32 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     public function getMarkers()
     {
         return $this->markers;
+    }
+
+    /**
+     * Sets a list of tags to ignore.
+     *
+     * @param string[] $ignored_tags A list of tags to ignore.
+     *
+     * @api
+     *
+     * @return void
+     */
+    public function setIgnoredTags(array $ignored_tags)
+    {
+        $this->ignored_tags = $ignored_tags;
+    }
+
+    /**
+     * Returns the list of ignored tags.
+     *
+     * @api
+     *
+     * @return string[]
+     */
+    public function getIgnoredTags()
+    {
+        return $this->ignored_tags;
     }
 
     /**
@@ -345,6 +374,20 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             if ($result === null) {
                 $file->process();
                 $result = $file->__toDomXml();
+
+                // filter all undesired tags
+                if (count($this->getIgnoredTags()) > 0) {
+                    $query = '//tag[@name=\''
+                        . implode('\']|//tag[@name=\'', $this->getIgnoredTags())
+                        .'\']';
+                    $xpath = new DOMXPath($result);
+                    $qry = $xpath->query($query);
+
+                    /** @var DOMElement $item */
+                    for($i = 0; $i < $qry->length; $i++) {
+                        $qry->item($i)->parentNode->removeChild($qry->item($i));
+                    }
+                }
 
                 // if we want to include the source for each file; append a new
                 // element 'source' which contains a compressed, encoded version

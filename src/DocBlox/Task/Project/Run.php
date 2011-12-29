@@ -73,6 +73,11 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
             . 'ignored. Wildcards * and ? are supported'
         );
         $this->addOption(
+            'ignore-tags', '-s',
+            'Comma-separated list of tags that will be ignored, defaults to none. '
+            . '@package, @subpackage and @ignore may not be ignored.'
+        );
+        $this->addOption(
             'm|markers', '-s',
             'Comma-separated list of markers/tags to filter, (optional, '
             . 'defaults to: "TODO,FIXME")'
@@ -141,6 +146,9 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         }
         $task->setExtensions($this->getExtensions());
         $task->setIgnore($this->getIgnore());
+        $setter = 'setIgnore-tags';
+        $getter = 'getIgnore-tags';
+        $task->$setter($this->$getter());
         $task->setMarkers($this->getMarkers());
         $task->setConfig($this->getConfig());
         $task->setVerbose($this->getVerbose());

@@ -66,6 +66,11 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             . 'ignored. Wildcards * and ? are supported'
         );
         $this->addOption(
+            'ignore-tags', '-s',
+            'Comma-separated list of tags that will be ignored, defaults to none. '
+            . '@package, @subpackage and @ignore may not be ignored.'
+        );
+        $this->addOption(
             'm|markers', '-s',
             'Comma-separated list of markers/tags to filter, (optional, '
             . 'defaults to: "TODO,FIXME")'
@@ -243,6 +248,23 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     /**
+     * Returns the list of tags to ignore.
+     *
+     * @return string[]
+     */
+    public function getIgnoreTags()
+    {
+        $method = 'getIgnore-tags';
+        if (parent::$method()) {
+            return explode(',', parent::$method());
+        }
+
+        return DocBlox_Core_Abstract::config()->getArrayFromPath(
+            'parser/tags/ignore'
+        );
+    }
+
+    /**
      * Outputs a progress indication.
      *
      * The event argument contains a property 'progress' which is an array with
@@ -306,6 +328,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         $parser->setExistingXml($this->getTarget() . '/structure.xml');
         $parser->setForced($this->getForce());
         $parser->setMarkers($this->getMarkers());
+        $parser->setIgnoredTags($this->getIgnoreTags());
         $parser->setValidate($this->getValidate());
         $parser->setVisibility($this->getVisibility());
         $parser->setDefaultPackageName($this->getDefaultpackagename());
