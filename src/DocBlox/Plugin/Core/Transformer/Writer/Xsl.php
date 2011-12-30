@@ -72,6 +72,10 @@ class DocBlox_Plugin_Core_Transformer_Writer_Xsl
         $proc->setParameter(
             '', 'version', DocBlox_Core_Abstract::VERSION
         );
+        $proc->setParameter(
+            '', 'generated_datetime', date('r')
+        );
+
 
         // check parameters for variables and add them when found
         $this->setProcessorParameters($transformation, $proc);
