@@ -5,6 +5,6 @@ Appendix: List of inline tags
    :maxdepth: 1
 
    tags/inline/example
-   tags/internal
+   tags/inline/internal
    tags/inline/inheritdoc
-   tags/link
+   tags/inline/link

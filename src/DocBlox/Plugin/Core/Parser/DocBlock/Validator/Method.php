@@ -26,36 +26,7 @@
  * @link       http://docblox-project.org
  */
 class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Method
-    extends DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
+    extends DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
 {
-    /**
-     * Is the docblock valid?
-     *
-     * @see DocBlox_Parser_DocBlock_Validator::isValid()
-     *
-     * @return boolean
-     */
-    public function isValid()
-    {
-        $valid = true;
 
-        if (null == $this->docblock) {
-            $this->logParserError(
-                'ERROR',
-                'No DocBlock was found for method '
-                . $this->entityName, $this->lineNumber
-            );
-            return false;
-        }
-
-        if ('' === $this->docblock->getShortDescription()) {
-            $this->logParserError(
-                'CRITICAL',
-                'No short description for method '
-                . $this->entityName, $this->lineNumber
-            );
-        }
-
-        return $valid;
-    }
 }

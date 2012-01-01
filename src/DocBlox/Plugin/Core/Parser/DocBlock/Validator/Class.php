@@ -40,46 +40,29 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Class
         $valid = true;
 
         if (null == $this->docblock) {
-            return false;
-        }
-
-        if (null == $this->docblock) {
             $this->logParserError(
-                'ERROR',
-                'No Class DocBlock '
-                . 'was found for ' . $this->entityName, $this->lineNumber
+                'ERROR', 50000, $this->lineNumber, array($this->entityName)
             );
             return false;
         }
-
 
         if (count($this->docblock->getTagsByName('package')) > 1) {
-            $this->logParserError(
-                'CRITICAL', 'Only one @package tag is allowed', $this->lineNumber
-            );
+            $this->logParserError('CRITICAL', 50001, $this->lineNumber);
         }
 
         if (count($this->docblock->getTagsByName('subpackage')) > 1) {
-            $this->logParserError(
-                'CRITICAL', 'Only one @subpackage tag is allowed', $this->lineNumber
-            );
+            $this->logParserError('CRITICAL', 50002, $this->lineNumber);
         }
 
         if ($this->docblock->hasTag('subpackage')
             && !$this->docblock->hasTag('package')
         ) {
-            $this->logParserError(
-                'CRITICAL', 'Cannot have a @subpackage '
-                . 'when a @package tag is not present',
-                $this->lineNumber
-            );
+            $this->logParserError('CRITICAL', 50004, $this->lineNumber);
         }
 
         if ('' === $this->docblock->getShortDescription()) {
             $this->logParserError(
-                'CRITICAL',
-                'No short description for class '
-                . $this->entityName, $this->lineNumber
+                'CRITICAL', 50005, $this->lineNumber, array($this->entityName)
             );
         }
 

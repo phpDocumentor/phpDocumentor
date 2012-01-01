@@ -21,7 +21,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
+abstract class DocBlox_Reflection_Abstract
 {
     /**
      * Stores the method name of the processing method for a token.
@@ -147,28 +147,6 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
     }
 
     /**
-     * Dispatches a logging request.
-     *
-     * @param int    $type    The logging priority, the lower,
-     *  the more important. Ranges from 1 to 7
-     * @param string $message The message to log.
-     * @param int    $line    Line number where error occurs.
-     *
-     * @return void
-     */
-    public function logParserError($type, $message, $line)
-    {
-        $this->dispatch(
-            'parser.log',
-            array(
-                 'type' => $type,
-                 'message' => $message,
-                 'line' => $line
-            )
-        );
-    }
-
-    /**
      * Dispatches a logging request to log a debug message.
      *
      * @param string $message The message to log.
@@ -210,8 +188,6 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
         $this->debug(
             '== Determined token index range to be ' . $start . ' => ' . $end
         );
-
-        $this->debugTimer('>> Processed all tokens');
     }
 
     /**

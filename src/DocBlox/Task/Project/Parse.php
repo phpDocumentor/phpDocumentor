@@ -66,6 +66,20 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             . 'ignored. Wildcards * and ? are supported'
         );
         $this->addOption(
+            'ignore-tags', '-s',
+            'Comma-separated list of tags that will be ignored, defaults to none. '
+            . '@package, @subpackage and @ignore may not be ignored.'
+        );
+        $this->addOption(
+            'hidden', '-s',
+            'set to on to descend into hidden directories '
+            .'(directories starting with \'.\'), default is on'
+        );
+        $this->addOption(
+            'ignore-symlinks', '-s',
+            'Ignore symlinks to other files or directories, default is on'
+        );
+        $this->addOption(
             'm|markers', '-s',
             'Comma-separated list of markers/tags to filter, (optional, '
             . 'defaults to: "TODO,FIXME")'
@@ -182,6 +196,21 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     /**
+     * Returns whether hidden files should be ignored.
+     *
+     * @return bool
+     */
+    public function getHidden()
+    {
+        if (parent::getHidden() !== null) {
+            return (bool)(parent::getHidden() !== 'off');
+        }
+
+        return (bool)(DocBlox_Core_Abstract::config()->files->{'ignore-hidden'}
+            !== 'off');
+    }
+
+    /**
      * Returns the title for this project.
      *
      * @return string
@@ -243,6 +272,39 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     /**
+     * Returns the list of tags to ignore.
+     *
+     * @return string[]
+     */
+    public function getIgnoreTags()
+    {
+        $method = 'getIgnore-tags';
+        if (parent::$method()) {
+            return explode(',', parent::$method());
+        }
+
+        return DocBlox_Core_Abstract::config()->getArrayFromPath(
+            'parser/tags/ignore'
+        );
+    }
+
+    /**
+     * Returns whether to ignore symlinks or not.
+     *
+     * @return bool
+     */
+    public function getIgnoreSymlinks()
+    {
+        $method = 'getIgnore-symlinks';
+        if (parent::$method()) {
+            return (bool)(parent::$method() !== 'off');
+        }
+
+        return (bool)(DocBlox_Core_Abstract::config()->files->{'ignore-symlinks'}
+            !== 'off');
+    }
+
+    /**
      * Outputs a progress indication.
      *
      * The event argument contains a property 'progress' which is an array with
@@ -285,6 +347,8 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         $files = new DocBlox_Parser_Files();
         $files->setAllowedExtensions($this->getExtensions());
         $files->setIgnorePatterns($this->getIgnore());
+        $files->setIgnoreHidden(!$this->getHidden());
+        $files->setFollowSymlinks(!$this->getIgnoreSymlinks());
 
         $paths = array_unique(
             $this->getFilename()
@@ -306,6 +370,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         $parser->setExistingXml($this->getTarget() . '/structure.xml');
         $parser->setForced($this->getForce());
         $parser->setMarkers($this->getMarkers());
+        $parser->setIgnoredTags($this->getIgnoreTags());
         $parser->setValidate($this->getValidate());
         $parser->setVisibility($this->getVisibility());
         $parser->setDefaultPackageName($this->getDefaultpackagename());

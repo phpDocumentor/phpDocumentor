@@ -37,7 +37,8 @@ abstract class DocBlox_Plugin_ListenerAbstract extends DocBlox_Plugin_Abstract
         $this->plugin = $plugin;
 
         parent::__construct(
-            $plugin->getEventDispatcher(), $plugin->getConfiguration()
+            $plugin->getEventDispatcher(), $plugin->getConfiguration(),
+            $plugin->getTranslator()
         );
 
         $this->configure();

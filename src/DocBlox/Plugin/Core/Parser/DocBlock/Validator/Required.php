@@ -75,11 +75,9 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Required
     {
         foreach ($this->options['required'][$key] as $tag) {
             if (count($this->docblock->getTagsByName($tag)) == 0) {
-
                 $this->logParserError(
-                    'CRITICAL', 'Not found required tag "' . $tag .'" in '
-                    . $this->entityName,
-                    $this->lineNumber
+                    'CRITICAL', 50020, $this->lineNumber,
+                    array($tag, $this->entityName)
                 );
             }
         }

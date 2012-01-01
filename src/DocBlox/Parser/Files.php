@@ -23,6 +23,12 @@
  */
 class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
 {
+    /** @var bool Whether to follow symlinks*/
+    protected $follow_symlinks = false;
+
+    /** @var bool Whether to ignore hidden files and folders */
+    protected $ignore_hidden = false;
+
     /**
      * the glob patterns which directories/files to ignore during parsing and
      * how many files were ignored.
@@ -176,27 +182,34 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         }
 
         foreach ($result as $result_path) {
-            // if the given is not a directory, skip it
+            // if the given is not a directory or is hidden and must be ignored,
+            // skip it
             if (!is_dir($result_path)) {
                 continue;
             }
 
-            // get all files recursively to the files array
-            $files_iterator = new RecursiveDirectoryIterator($result_path);
-
             // add the CATCH_GET_CHILD option to make sure that an unreadable
             // directory does not halt process but skip that folder
             $recursive_iterator = new RecursiveIteratorIterator(
-                $files_iterator,
+                new RecursiveDirectoryIterator($result_path,
+                    $this->getFollowSymlinks()
+                        ? RecursiveDirectoryIterator::FOLLOW_SYMLINKS : 0
+                ),
                 RecursiveIteratorIterator::LEAVES_ONLY,
                 RecursiveIteratorIterator::CATCH_GET_CHILD
             );
 
             /** @var SplFileInfo $file */
             foreach ($recursive_iterator as $file) {
-                // skipping dots (should any be encountered)
+                $is_hidden = ((substr($file->getPath(), 0, 1) == '.')
+                    || (strpos($file->getPath(), DIRECTORY_SEPARATOR.'.')
+                        !== false));
+
+                // skipping dots (should any be encountered) or skipping
+                // files starting with a dot if IgnoreHidden is true
                 if (($file->getFilename() == '.')
                     || ($file->getFilename() == '..')
+                    || ($this->getIgnoreHidden() && $is_hidden)
                 ) {
                     continue;
                 }
@@ -240,6 +253,14 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
      */
     public function addFile($path)
     {
+        $is_hidden = ((substr($path, 0, 1) == '.')
+            || (strpos($path, DIRECTORY_SEPARATOR . '.') !== false));
+
+        // ignore hidden files if option is set
+        if ($this->getIgnoreHidden() && $is_hidden) {
+            return;
+        }
+
         // if it is not a file contained in a phar; check it out with a glob
         if (substr($path, 0, 7) != 'phar://') {
             // search file(s) with the given expressions
@@ -435,6 +456,62 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         }
 
         return $result;
+    }
+
+    /**
+     * Sets whether to ignore hidden files and folders.
+     *
+     * @param boolean $ignore_hidden if true skips hidden files and folders.
+     *
+     * @return void
+     */
+    public function setIgnoreHidden($ignore_hidden)
+    {
+        $this->ignore_hidden = $ignore_hidden;
+    }
+
+    /**
+     * Returns whether files and folders that are hidden are ignored.
+     *
+     * @return boolean
+     */
+    public function getIgnoreHidden()
+    {
+        return $this->ignore_hidden;
+    }
+
+    /**
+     * Sets whether to follow symlinks.
+     *
+     * PHP version 5.2.11 is at least required since the
+     * RecursiveDirectoryIterator does not support the FOLLOW_SYMLINKS
+     * constant before that version.
+     *
+     * @param boolean $follow_symlinks
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public function setFollowSymlinks($follow_symlinks)
+    {
+        if ($follow_symlinks && version_compare(PHP_VERSION, '5.2.11', '<')) {
+            throw new InvalidArgumentException(
+                'To follow symlinks you need at least PHP version 5.2.11'
+            );
+        }
+
+        $this->follow_symlinks = $follow_symlinks;
+    }
+
+    /**
+     * Returns whether to follow symlinks.
+     *
+     * @return boolean
+     */
+    public function getFollowSymlinks()
+    {
+        return $this->follow_symlinks;
     }
 
 }

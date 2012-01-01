@@ -60,13 +60,11 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     ) {
         $this->setName($this->findName($tokens));
 
-        $this->resetTimer();
         parent::processGenericInformation($tokens);
 
         list($start_index, $end_index) = $tokens->getTokenIdsOfParenthesisPair();
         $this->arguments_token_start = $start_index;
         $this->arguments_token_end = $end_index;
-        $this->debugTimer('>> Determined argument range token ids');
     }
 
     /**
@@ -84,45 +82,9 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
         if (($tokens->key() > $this->arguments_token_start)
             && ($tokens->key() < $this->arguments_token_end)
         ) {
-            $this->resetTimer('variable');
-
             $argument = new DocBlox_Reflection_Argument();
             $argument->parseTokenizer($tokens);
             $this->arguments[$argument->getName()] = $argument;
-
-            if ($this->getDocBlock()) {
-                /** @var DocBlox_Reflection_DocBlock_Tag $params  */
-                $params = $this->getDocBlock()->getTagsByName('param');
-                if (!isset($params[count($this->arguments) - 1])) {
-                    $this->logParserError(
-                        'NOTICE',
-                        'Argument ' . $argument->getName() . ' is missing from '
-                        . 'the function Docblock',
-                        $argument->getLineNumber()
-                    );
-                } else {
-                    $param_name = $params[count($this->arguments) - 1]
-                        ->getVariableName();
-
-                    if ($param_name != $argument->getName()) {
-                        if ($param_name == '') {
-                            $params[count($this->arguments) - 1]
-                                ->setVariableName($argument->getName());
-                        } else {
-                            $this->logParserError(
-                                'NOTICE',
-                                'Name of argument ' . $argument->getName()
-                                . ' does not match with function Docblock',
-                                $argument->getLineNumber()
-                            );
-                        }
-                    }
-                }
-            }
-
-            $this->debugTimer(
-                '>> Processed argument ' . $argument->getName(), 'variable'
-            );
         }
     }
 

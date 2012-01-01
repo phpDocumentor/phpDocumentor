@@ -30,6 +30,9 @@ Usage:
 -t [--target] [STRING]        Path where to store the generated output (optional, defaults to "")
 -e [--extensions] [STRING]    Optional comma-separated list of extensions to parse, defaults to php, php3 and phtml
 -i [--ignore] [STRING]        Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported
+--ignore-tags [STRING]        Comma-separated list of tags that will be ignored, defaults to none. @package, @subpackage and @ignore may not be ignored.
+--hidden [STRING]             set to on to descend into hidden directories (directories starting with '.'), default is on
+--ignore-symlinks [STRING]    Ignore symlinks to other files or directories, default is on
 -m [--markers] [STRING]       Comma-separated list of markers/tags to filter, (optional, defaults to: "TODO,FIXME")
 -v [--verbose]                Provides additional information during parsing, usually only needed for debugging purposes
 --title [STRING]              Sets the title for this project; default is the DocBlox logo
