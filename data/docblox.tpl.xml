@@ -14,6 +14,9 @@
     </extensions>
     <visibility></visibility>
   </parser>
+  <files>
+    <ignore-hidden>on</ignore-hidden>
+  </files>
   <transformer>
     <target>output</target>
   </transformer>

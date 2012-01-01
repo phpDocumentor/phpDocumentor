@@ -19,6 +19,6 @@ return array(
         . 'of the @param tag with argument %s in %s',
     50017 => 'The type for the %s tag in %s is "type"; isn\'t this an IDE default?',
     50018 => 'No DocBlock was found for property %s',
-    50019 => 'No short description for method %s',
+    50019 => 'No short description for property %s',
     50020 => 'Not found required tag "%s" in %s',
 );

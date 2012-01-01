@@ -71,6 +71,11 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             . '@package, @subpackage and @ignore may not be ignored.'
         );
         $this->addOption(
+            'hidden', '-s',
+            'set equal to on (-dh on) to descend into hidden directories '
+            .'(directories starting with \'.\'), default is on'
+        );
+        $this->addOption(
             'm|markers', '-s',
             'Comma-separated list of markers/tags to filter, (optional, '
             . 'defaults to: "TODO,FIXME")'
@@ -184,6 +189,21 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         }
 
         return DocBlox_Core_Abstract::config()->getArrayFromPath('files/ignore');
+    }
+
+    /**
+     * Returns whether hidden files should be ignored.
+     *
+     * @return bool
+     */
+    public function getHidden()
+    {
+        if (parent::getHidden() !== null) {
+            return (bool)(parent::getHidden() !== 'off');
+        }
+
+        return (bool)(DocBlox_Core_Abstract::config()->files->{'ignore-hidden'}
+            !== 'off');
     }
 
     /**
@@ -307,6 +327,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         $files = new DocBlox_Parser_Files();
         $files->setAllowedExtensions($this->getExtensions());
         $files->setIgnorePatterns($this->getIgnore());
+        $files->setIgnoreHidden(!$this->getHidden());
 
         $paths = array_unique(
             $this->getFilename()

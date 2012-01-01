@@ -23,6 +23,9 @@
  */
 class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
 {
+    /** @var bool Whether to ignore hidden files and folders */
+    protected $ignore_hidden = false;
+
     /**
      * the glob patterns which directories/files to ignore during parsing and
      * how many files were ignored.
@@ -176,7 +179,8 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         }
 
         foreach ($result as $result_path) {
-            // if the given is not a directory, skip it
+            // if the given is not a directory or is hidden and must be ignored,
+            // skip it
             if (!is_dir($result_path)) {
                 continue;
             }
@@ -194,9 +198,15 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
 
             /** @var SplFileInfo $file */
             foreach ($recursive_iterator as $file) {
-                // skipping dots (should any be encountered)
+                $is_hidden = ((substr($file->getPath(), 0, 1) == '.')
+                    || (strpos($file->getPath(), DIRECTORY_SEPARATOR.'.')
+                            !== false));
+
+                // skipping dots (should any be encountered) or skipping
+                // files starting with a dot if IgnoreHidden is true
                 if (($file->getFilename() == '.')
                     || ($file->getFilename() == '..')
+                    || ($this->getIgnoreHidden() && $is_hidden)
                 ) {
                     continue;
                 }
@@ -240,6 +250,14 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
      */
     public function addFile($path)
     {
+        $is_hidden = ((substr($path, 0, 1) == '.')
+            || (strpos($path, DIRECTORY_SEPARATOR . '.') !== false));
+
+        // ignore hidden files if option is set
+        if ($this->getIgnoreHidden() && $is_hidden) {
+            return;
+        }
+
         // if it is not a file contained in a phar; check it out with a glob
         if (substr($path, 0, 7) != 'phar://') {
             // search file(s) with the given expressions
@@ -435,6 +453,28 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
         }
 
         return $result;
+    }
+
+    /**
+     * Sets whether to ignore hidden files and folders.
+     *
+     * @param boolean $ignore_hidden if true skips hidden files and folders.
+     *
+     * @return void
+     */
+    public function setIgnoreHidden($ignore_hidden)
+    {
+        $this->ignore_hidden = $ignore_hidden;
+    }
+
+    /**
+     * Returns whether files and folders that are hidden are ignored.
+     *
+     * @return boolean
+     */
+    public function getIgnoreHidden()
+    {
+        return $this->ignore_hidden;
     }
 
 }

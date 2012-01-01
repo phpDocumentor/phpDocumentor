@@ -16,9 +16,9 @@ require_once 'tests/common/ui-include.php';
 --EXPECTF--
 DocBlox version %s
 
-%s ERR (3): No DocBlock was found for Function test2
-%s ERR (3): No DocBlock was found for File phar://%s/test.phar/folder/test.php
-%s ERR (3): No DocBlock was found for Function test
-%s ERR (3): No DocBlock was found for File phar://%s/test.phar/test.php
+%s ERR (3): No DocBlock was found for function test2()
+%s ERR (3): No page-level DocBlock was found in file phar://%s/test.phar/folder/test.php
+%s ERR (3): No DocBlock was found for function test()
+%s ERR (3): No page-level DocBlock was found in file phar://%s/test.phar/test.php
 Starting transformation of files (this could take a while depending upon the size of your project)
 Finished transformation in %s seconds

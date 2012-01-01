@@ -78,6 +78,11 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
             . '@package, @subpackage and @ignore may not be ignored.'
         );
         $this->addOption(
+            'hidden', '-s',
+            'set equal to on (-dh on) to descend into hidden directories '
+            . '(directories starting with \'.\'), default is on'
+        );
+        $this->addOption(
             'm|markers', '-s',
             'Comma-separated list of markers/tags to filter, (optional, '
             . 'defaults to: "TODO,FIXME")'
@@ -149,6 +154,7 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         $setter = 'setIgnore-tags';
         $getter = 'getIgnore-tags';
         $task->$setter($this->$getter());
+        $task->setHidden($this->getHidden());
         $task->setMarkers($this->getMarkers());
         $task->setConfig($this->getConfig());
         $task->setVerbose($this->getVerbose());
