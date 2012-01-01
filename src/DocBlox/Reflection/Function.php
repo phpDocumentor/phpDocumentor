@@ -60,13 +60,11 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
     ) {
         $this->setName($this->findName($tokens));
 
-        $this->resetTimer();
         parent::processGenericInformation($tokens);
 
         list($start_index, $end_index) = $tokens->getTokenIdsOfParenthesisPair();
         $this->arguments_token_start = $start_index;
         $this->arguments_token_end = $end_index;
-        $this->debugTimer('>> Determined argument range token ids');
     }
 
     /**
@@ -84,15 +82,9 @@ class DocBlox_Reflection_Function extends DocBlox_Reflection_BracesAbstract
         if (($tokens->key() > $this->arguments_token_start)
             && ($tokens->key() < $this->arguments_token_end)
         ) {
-            $this->resetTimer('variable');
-
             $argument = new DocBlox_Reflection_Argument();
             $argument->parseTokenizer($tokens);
             $this->arguments[$argument->getName()] = $argument;
-
-            $this->debugTimer(
-                '>> Processed argument ' . $argument->getName(), 'variable'
-            );
         }
     }
 

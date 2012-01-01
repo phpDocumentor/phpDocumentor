@@ -21,7 +21,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
+abstract class DocBlox_Reflection_Abstract
 {
     /**
      * Stores the method name of the processing method for a token.
@@ -188,8 +188,6 @@ abstract class DocBlox_Reflection_Abstract extends DocBlox_Core_Abstract
         $this->debug(
             '== Determined token index range to be ' . $start . ' => ' . $end
         );
-
-        $this->debugTimer('>> Processed all tokens');
     }
 
     /**

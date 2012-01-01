@@ -130,18 +130,12 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
      */
     protected function processConst(DocBlox_Reflection_TokenIterator $tokens)
     {
-        $this->resetTimer('const');
-
         $constant = new DocBlox_Reflection_Constant();
         $constant->parseTokenizer($tokens);
         $constant->setNamespace($this->getNamespace());
         $constant->setNamespaceAliases($this->getNamespaceAliases());
         $constant->setDefaultPackageName($this->getDefaultPackageName());
         $this->constants[] = $constant;
-
-        $this->debugTimer(
-            '>> Processed class constant ' . $constant->getName(), 'const'
-        );
     }
 
     /**
@@ -154,18 +148,12 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
      */
     protected function processVariable($tokens)
     {
-        $this->resetTimer('variable');
-
         $property = new DocBlox_Reflection_Property();
         $property->parseTokenizer($tokens);
         $property->setNamespace($this->getNamespace());
         $property->setNamespaceAliases($this->getNamespaceAliases());
         $property->setDefaultPackageName($this->getDefaultPackageName());
         $this->properties[] = $property;
-
-        $this->debugTimer(
-            '>> Processed property ' . $property->getName(), 'variable'
-        );
     }
 
     /**
@@ -178,18 +166,12 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
      */
     protected function processFunction($tokens)
     {
-        $this->resetTimer('method');
-
         $method = new DocBlox_Reflection_Method();
         $method->parseTokenizer($tokens);
         $method->setNamespace($this->getNamespace());
         $method->setNamespaceAliases($this->getNamespaceAliases());
         $method->setDefaultPackageName($this->getDefaultPackageName());
         $this->methods[$method->getName()] = $method;
-
-        $this->debugTimer(
-            '>>  Processed method ' . $method->getName(), 'method'
-        );
     }
 
     /**

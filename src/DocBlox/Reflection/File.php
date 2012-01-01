@@ -82,8 +82,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     public function __construct($file, $validate = false)
     {
-        parent::__construct();
-
         if (!is_string($file) || (!is_readable($file))) {
             throw new DocBlox_Reflection_Exception(
                 'The given file should be a string, should exist on the '
@@ -585,19 +583,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     protected function processInterface(DocBlox_Reflection_TokenIterator $tokens)
     {
-        $this->resetTimer('interface');
-
         $interface = new DocBlox_Reflection_Interface();
         $interface->setNamespace($this->active_namespace);
         $interface->setNamespaceAliases($this->namespace_aliases);
         $interface->setDefaultPackageName($this->getDefaultPackageName());
         $interface->parseTokenizer($tokens);
-
-        $this->debugTimer(
-            '>> Processed interface ' . $interface->getName(),
-            'interface'
-        );
-
         $this->interfaces[$interface->getName()] = $interface;
     }
 
@@ -611,17 +601,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     protected function processClass(DocBlox_Reflection_TokenIterator $tokens)
     {
-        $this->resetTimer('class');
-
         $class = new DocBlox_Reflection_Class();
         $class->setFilename($this->filename);
         $class->setNamespace($this->active_namespace);
         $class->setNamespaceAliases($this->namespace_aliases);
         $class->setDefaultPackageName($this->getDefaultPackageName());
         $class->parseTokenizer($tokens);
-
-        $this->debugTimer('>> Processed class ' . $class->getName(), 'class');
-
         $this->classes[$class->getName()] = $class;
     }
 
@@ -635,20 +620,13 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     protected function processFunction(DocBlox_Reflection_TokenIterator $tokens)
     {
-        $this->resetTimer('function');
-
         $function = new DocBlox_Reflection_Function();
         $function->setFilename($this->filename);
         $function->setNamespace($this->active_namespace);
         $function->setNamespaceAliases($this->namespace_aliases);
         $function->setDefaultPackageName($this->getDefaultPackageName());
         $function->parseTokenizer($tokens);
-
         $this->functions[$function->getName()] = $function;
-        $this->debugTimer(
-            '>> Processed function ' . $function->getName(),
-            'function'
-        );
     }
 
     /**
@@ -661,20 +639,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     protected function processConst(DocBlox_Reflection_TokenIterator $tokens)
     {
-        $this->resetTimer('constant');
-
         $constant = new DocBlox_Reflection_Constant();
         $constant->setFilename($this->filename);
         $constant->setNamespace($this->active_namespace);
         $constant->setNamespaceAliases($this->namespace_aliases);
         $constant->setDefaultPackageName($this->getDefaultPackageName());
         $constant->parseTokenizer($tokens);
-
-        $this->debugTimer(
-            '>> Processed constant ' . $constant->getName(),
-            'constant'
-        );
-
         $this->constants[$constant->getName()] = $constant;
     }
 
@@ -689,9 +659,6 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      * @param DocBlox_Reflection_TokenIterator $tokens Tokens to interpret with the
      *      pointer at the token to be processed.
      *
-     * @todo implement globals support since the exact algorythm needs to be
-     *      defined, see GH #68
-     *
      * @return void
      */
     protected function processString(DocBlox_Reflection_TokenIterator $tokens)
@@ -700,20 +667,12 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $token = $tokens->current();
         switch ($token->content) {
         case 'define':
-            $this->resetTimer('constant');
-
             $constant = new DocBlox_Reflection_Constant();
             $constant->setFilename($this->filename);
             $constant->setNamespace($this->active_namespace);
             $constant->setNamespaceAliases($this->namespace_aliases);
             $constant->setDefaultPackageName($this->getDefaultPackageName());
             $constant->parseTokenizer($tokens);
-
-            $this->debugTimer(
-                '>> Processed define: ' . $constant->getName(),
-                'constant'
-            );
-
             $this->constants[$constant->getName()] = $constant;
             break;
         }
@@ -775,18 +734,10 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     protected function processInclude(DocBlox_Reflection_TokenIterator $tokens)
     {
-        $this->resetTimer('include');
-
         $include = new DocBlox_Reflection_Include();
         $include->setFilename($this->filename);
         $include->setNamespace($this->active_namespace);
         $include->parseTokenizer($tokens);
-
-        $this->debugTimer(
-            '>> Processed constant ' . $include->getName(),
-            'include'
-        );
-
         $this->includes[] = $include;
     }
 
