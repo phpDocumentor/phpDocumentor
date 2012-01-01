@@ -72,8 +72,12 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         );
         $this->addOption(
             'hidden', '-s',
-            'set equal to on (-dh on) to descend into hidden directories '
+            'set to on to descend into hidden directories '
             .'(directories starting with \'.\'), default is on'
+        );
+        $this->addOption(
+            'ignore-symlinks', '-s',
+            'Ignore symlinks to other files or directories, default is on'
         );
         $this->addOption(
             'm|markers', '-s',
@@ -285,6 +289,22 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
     }
 
     /**
+     * Returns whether to ignore symlinks or not.
+     *
+     * @return bool
+     */
+    public function getIgnoreSymlinks()
+    {
+        $method = 'getIgnore-symlinks';
+        if (parent::$method()) {
+            return (bool)(parent::$method() !== 'off');
+        }
+
+        return (bool)(DocBlox_Core_Abstract::config()->files->{'ignore-symlinks'}
+            !== 'off');
+    }
+
+    /**
      * Outputs a progress indication.
      *
      * The event argument contains a property 'progress' which is an array with
@@ -328,6 +348,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         $files->setAllowedExtensions($this->getExtensions());
         $files->setIgnorePatterns($this->getIgnore());
         $files->setIgnoreHidden(!$this->getHidden());
+        $files->setFollowSymlinks(!$this->getIgnoreSymlinks());
 
         $paths = array_unique(
             $this->getFilename()

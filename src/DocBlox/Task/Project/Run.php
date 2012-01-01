@@ -83,6 +83,10 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
             . '(directories starting with \'.\'), default is on'
         );
         $this->addOption(
+            'ignore-symlinks', '-s',
+            'Ignore symlinks to other files or directories, default is on'
+        );
+        $this->addOption(
             'm|markers', '-s',
             'Comma-separated list of markers/tags to filter, (optional, '
             . 'defaults to: "TODO,FIXME")'
@@ -153,6 +157,9 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
         $task->setIgnore($this->getIgnore());
         $setter = 'setIgnore-tags';
         $getter = 'getIgnore-tags';
+        $task->$setter($this->$getter());
+        $setter = 'setIgnore-symlink';
+        $getter = 'getIgnore-symlink';
         $task->$setter($this->$getter());
         $task->setHidden($this->getHidden());
         $task->setMarkers($this->getMarkers());

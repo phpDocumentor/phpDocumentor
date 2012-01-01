@@ -23,6 +23,9 @@
  */
 class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
 {
+    /** @var bool Whether to follow symlinks*/
+    protected $follow_symlinks = false;
+
     /** @var bool Whether to ignore hidden files and folders */
     protected $ignore_hidden = false;
 
@@ -185,13 +188,13 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
                 continue;
             }
 
-            // get all files recursively to the files array
-            $files_iterator = new RecursiveDirectoryIterator($result_path);
-
             // add the CATCH_GET_CHILD option to make sure that an unreadable
             // directory does not halt process but skip that folder
             $recursive_iterator = new RecursiveIteratorIterator(
-                $files_iterator,
+                new RecursiveDirectoryIterator($result_path,
+                    $this->getFollowSymlinks()
+                        ? RecursiveDirectoryIterator::FOLLOW_SYMLINKS : 0
+                ),
                 RecursiveIteratorIterator::LEAVES_ONLY,
                 RecursiveIteratorIterator::CATCH_GET_CHILD
             );
@@ -200,7 +203,7 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
             foreach ($recursive_iterator as $file) {
                 $is_hidden = ((substr($file->getPath(), 0, 1) == '.')
                     || (strpos($file->getPath(), DIRECTORY_SEPARATOR.'.')
-                            !== false));
+                        !== false));
 
                 // skipping dots (should any be encountered) or skipping
                 // files starting with a dot if IgnoreHidden is true
@@ -475,6 +478,40 @@ class DocBlox_Parser_Files extends DocBlox_Parser_Abstract
     public function getIgnoreHidden()
     {
         return $this->ignore_hidden;
+    }
+
+    /**
+     * Sets whether to follow symlinks.
+     *
+     * PHP version 5.2.11 is at least required since the
+     * RecursiveDirectoryIterator does not support the FOLLOW_SYMLINKS
+     * constant before that version.
+     *
+     * @param boolean $follow_symlinks
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public function setFollowSymlinks($follow_symlinks)
+    {
+        if ($follow_symlinks && version_compare(PHP_VERSION, '5.2.11', '<')) {
+            throw new InvalidArgumentException(
+                'To follow symlinks you need at least PHP version 5.2.11'
+            );
+        }
+
+        $this->follow_symlinks = $follow_symlinks;
+    }
+
+    /**
+     * Returns whether to follow symlinks.
+     *
+     * @return boolean
+     */
+    public function getFollowSymlinks()
+    {
+        return $this->follow_symlinks;
     }
 
 }
