@@ -111,32 +111,4 @@ class DocBlox_Reflection_Method extends DocBlox_Reflection_Function
     {
         return $this->final;
     }
-
-    /**
-     * Returns the XML representation of this object or false if an error occurred.
-     *
-     * @return string|boolean
-     */
-    public function __toXml()
-    {
-        $xml = new SimpleXMLElement('<method></method>');
-        $xml->name = $this->getName();
-        $xml['final'] = $this->isFinal() ? 'true' : 'false';
-        $xml['abstract'] = $this->isAbstract() ? 'true' : 'false';
-        $xml['static'] = $this->isStatic() ? 'true' : 'false';
-        $xml['visibility'] = $this->getVisibility();
-        $xml['line'] = $this->getLineNumber();
-
-        $this->addDocblockToSimpleXmlElement($xml);
-
-        $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadXML($xml->asXML());
-
-        // import methods into class xml
-        foreach ($this->arguments as $argument) {
-            $this->mergeXmlToDomDocument($dom, $argument->__toXml());
-        }
-
-        return trim($dom->saveXML());
-    }
 }

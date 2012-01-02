@@ -71,25 +71,4 @@ class DocBlox_Reflection_Class extends DocBlox_Reflection_Interface
     {
         return $this->final;
     }
-
-    /**
-     * Returns the XML representation of this object or false if an error occurred.
-     *
-     * @param SimpleXMLElement $xml If not null, expands the given SimpleXML
-     *     Node instead of instantiating a new one.
-     *
-     * @return string|boolean
-     */
-    public function __toXml(SimpleXMLElement $xml = null)
-    {
-        if ($xml === null) {
-            $xml = new SimpleXMLElement('<class></class>');
-        }
-
-        $xml['final'] = $this->isFinal() ? 'true' : 'false';
-        $xml['abstract'] = $this->isAbstract() ? 'true' : 'false';
-        $xml['line'] = $this->getLineNumber();
-
-        return parent::__toXml($xml);
-    }
 }

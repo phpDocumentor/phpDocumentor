@@ -65,26 +65,4 @@ class DocBlox_Reflection_Variable extends DocBlox_Reflection_DocBlockedAbstract
         return $this->default;
     }
 
-    /**
-     * Returns the XML representation of this object or false if an error occurred.
-     *
-     * @param SimpleXMLElement $xml If not null, expands the given SimpleXML
-     *     Node instead of instantiating a new one.
-     *
-     * @return string|boolean
-     */
-    public function __toXml(SimpleXMLElement $xml = null)
-    {
-        if ($xml === null) {
-            $xml = new SimpleXMLElement('<variable></variable>');
-        }
-
-        $xml->name = $this->getName();
-        $xml->default = $this->getDefault();
-        $xml['line'] = $this->getLineNumber();
-
-        $this->addDocblockToSimpleXmlElement($xml);
-
-        return $xml->asXML();
-    }
 }

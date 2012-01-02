@@ -128,27 +128,4 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
     {
         return $this->value;
     }
-
-    /**
-     * Returns the XML representation of this object or false if an error occurred.
-     *
-     * @return string|boolean
-     */
-    public function __toXml()
-    {
-        if (!$this->getName()) {
-            $xml = new SimpleXMLElement('');
-            return $xml->asXML();
-        }
-
-        $xml = new SimpleXMLElement('<constant></constant>');
-        $xml->name = $this->getName();
-        $xml->value = $this->getValue();
-        $xml['namespace'] = $this->getNamespace();
-        $xml['line'] = $this->getLineNumber();
-        $this->addDocblockToSimpleXmlElement($xml);
-
-        return $xml->asXML();
-    }
-
 }

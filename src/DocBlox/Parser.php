@@ -73,6 +73,9 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
      */
     protected $visibility = array('public', 'protected', 'private');
 
+    /** @var DocBlox_Parser_Exporter_Abstract */
+    protected $exporter = null;
+
     /**
      * Sets the title for this project.
      *
@@ -289,6 +292,16 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     }
 
     /**
+     * Returns which elements' are allowed to be returned by visibility.
+     *
+     * @return string[]
+     */
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+
+    /**
      * Returns the filename, relative to the root of the project directory.
      *
      * @param string $filename The filename to make relative.
@@ -369,47 +382,20 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
                         . 'old definition'
                     );
                 } else {
+                    $this->log('Exporting file: ' . $filename);
+
                     $file->process();
                     $this->exporter->setIncludeSource($include_source);
                     $this->exporter->export($file);
                 }
-            }
+            } else {
+                $this->log('Exporting file: ' . $filename);
 
-            // if no result has been obtained; process the file
-            if ($result === null) {
                 $file->process();
-                $result = $file->__toDomXml();
-
-                // filter all undesired tags
-                if (count($this->getIgnoredTags()) > 0) {
-                    $query = '//tag[@name=\''
-                        . implode('\']|//tag[@name=\'', $this->getIgnoredTags())
-                        .'\']';
-                    $xpath = new DOMXPath($result);
-                    $qry = $xpath->query($query);
-
-                    /** @var DOMElement $item */
-                    for($i = 0; $i < $qry->length; $i++) {
-                        $qry->item($i)->parentNode->removeChild($qry->item($i));
-                    }
-                }
-
-                // if we want to include the source for each file; append a new
-                // element 'source' which contains a compressed, encoded version
-                // of the source
-                if ($include_source) {
-                    $result->documentElement->appendChild(
-                        new DOMElement(
-                            'source',
-                            base64_encode(gzcompress($file->getContents()))
-                        )
-                    );
-                }
-
-                $result = $result->saveXml();
+                $this->exporter->setIncludeSource($include_source);
+                $this->exporter->export($file);
             }
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $this->log(
                 '>>  Unable to parse file, an error was detected: '
                 . $e->getMessage(),
@@ -438,56 +424,6 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     }
 
     /**
-     * Generates a hierarchical array of namespaces with their singular name
-     * from a single level list of namespaces with their full name.
-     *
-     * @param array $namespaces the list of namespaces as retrieved from the xml.
-     *
-     * @return array
-     */
-    protected function generateNamespaceTree($namespaces)
-    {
-        sort($namespaces);
-
-        $result = array();
-        foreach ($namespaces as $namespace) {
-            $namespace_list = explode('\\', $namespace);
-
-            $node = &$result;
-            foreach ($namespace_list as $singular) {
-                if (!isset($node[$singular])) {
-                    $node[$singular] = array();
-                }
-
-                $node = &$node[$singular];
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Recursive method to create a hierarchical set of nodes in the dom.
-     *
-     * @param array[]    $namespaces     the list of namespaces to process.
-     * @param DOMElement $parent_element the node to receive the children of
-     *                                   the above list.
-     * @param string     $node_name      the name of the summary element.
-     *
-     * @return void
-     */
-    protected function generateNamespaceElements($namespaces, $parent_element,
-        $node_name = 'namespace'
-    ) {
-        foreach ($namespaces as $name => $sub_namespaces) {
-            $node = new DOMElement($node_name);
-            $parent_element->appendChild($node);
-            $node->setAttribute('name', $name);
-            $this->generateNamespaceElements($sub_namespaces, $node, $node_name);
-        }
-    }
-
-    /**
      * Iterates through the given files and builds the structure.xml file.
      *
      * @param DocBlox_Parser_Files $files          A files container to parse.
@@ -502,9 +438,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     {
         $timer = microtime(true);
 
-        $this->exporter = new DocBlox_Parser_Exporter_Xml(
-            $this->path, $this->getTitle()
-        );
+        $this->exporter = new DocBlox_Parser_Exporter_Xml($this);
         $this->exporter->initialize();
 
         $paths = $files->getFiles();
@@ -531,50 +465,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
             $this->parseFile($file, $include_source);
         }
 
-//        $this->buildPackageTree($dom);
-//        $this->buildNamespaceTree($dom);
-//        $this->buildMarkerList($dom);
-
-//        $xml = $dom->saveXML();
-
-        // Visibility rules
-//        $this->log('--');
-//        $this->log('Applying visibility rules');
-//        $dom = new DOMDocument();
-//        $dom->loadXML($xml);
-//
-//        $visibilityQry = '//*[';
-//        $accessQry = '//tag[@name=\'access\' and (';
-//        foreach ($this->visibility as $key => $vis) {
-//            $visibilityQry .= '(@visibility!=\''.$vis.'\')';
-//            $accessQry .= '@description!=\''.$vis.'\'';
-//
-//            if (($key + 1) < count($this->visibility)) {
-//                $visibilityQry .= ' and ';
-//                $accessQry .= ' and ';
-//            }
-//
-//        }
-//        $visibilityQry .= ']';
-//        $accessQry .= ')]';
-
-//        $qry = '('.$visibilityQry.') | ('.$accessQry.')';
-//
-//        $xpath = new DOMXPath($dom);
-//        $nodes = $xpath->query($qry);
-//
-//        foreach ($nodes as $node) {
-//
-//            if (($node->nodeName == 'tag')
-//                && ($node->parentNode->parentNode->parentNode)
-//            ) {
-//                $remove = $node->parentNode->parentNode;
-//                $node->parentNode->parentNode->parentNode->removeChild($remove);
-//            } else {
-//                $node->parentNode->removeChild($node);
-//            }
-//        }
-//        $xml = $dom->saveXML();
+        $this->exporter->finalize();
 
         $this->log('--');
         $this->log(
@@ -588,80 +479,6 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
         );
 
         return $this->exporter->getContents();
-    }
-
-    /**
-     * Collects all packages and subpackages, and adds a new section in the
-     * DOM to provide an overview.
-     *
-     * @param DOMDocument $dom Packages are extracted and a summary inserted
-     *                         in this object.
-     *
-     * @return void
-     */
-    protected function buildPackageTree(DOMDocument $dom)
-    {
-        $this->log('Collecting all packages');
-        $xpath = new DOMXPath($dom);
-        $packages = array();
-        $qry = $xpath->query('//@package');
-        for ($i = 0; $i < $qry->length; $i++) {
-            if (isset($packages[$qry->item($i)->nodeValue])) {
-                continue;
-            }
-
-            $packages[$qry->item($i)->nodeValue] = true;
-        }
-
-        $packages = $this->generateNamespaceTree(array_keys($packages));
-        $this->generateNamespaceElements(
-            $packages, $dom->documentElement, 'package'
-        );
-    }
-
-    /**
-     * Collects all namespaces and sub-namespaces, and adds a new section in
-     * the DOM to provide an overview.
-     *
-     * @param DOMDocument $dom Namespaces are extracted and a summary inserted
-     *                         in this object.
-     *
-     * @return void
-     */
-    protected function buildNamespaceTree(DOMDocument $dom)
-    {
-        $this->log('Collecting all namespaces');
-        $xpath = new DOMXPath($dom);
-        $namespaces = array();
-        $qry = $xpath->query('//@namespace');
-        for ($i = 0; $i < $qry->length; $i++) {
-            if (isset($namespaces[$qry->item($i)->nodeValue])) {
-                continue;
-            }
-
-            $namespaces[$qry->item($i)->nodeValue] = true;
-        }
-
-        $namespaces = $this->generateNamespaceTree(array_keys($namespaces));
-        $this->generateNamespaceElements($namespaces, $dom->documentElement);
-    }
-
-    /**
-     * Retrieves a list of all marker types and adds them to the XML for
-     * easy referencing.
-     *
-     * @param DOMDocument $dom Markers are extracted and a summary inserted in
-     *                         this object.
-     *
-     * @return void
-     */
-    protected function buildMarkerList(DOMDocument $dom)
-    {
-        $this->log('Collecting all marker types');
-        foreach ($this->getMarkers() as $marker) {
-            $node = new DOMElement('marker', strtolower($marker));
-            $dom->documentElement->appendChild($node);
-        }
     }
 
     /**

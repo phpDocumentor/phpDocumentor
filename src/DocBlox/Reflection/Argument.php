@@ -80,22 +80,6 @@ class DocBlox_Reflection_Argument extends DocBlox_Reflection_Abstract
     }
 
     /**
-     * Returns the XML representation of this object or false if an error occurred.
-     *
-     * @return string|boolean
-     */
-    public function __toXml()
-    {
-        $xml = new SimpleXMLElement('<argument></argument>');
-        $xml['line'] = $this->getLineNumber();
-        $xml->name = $this->getName();
-        $xml->default = $this->getDefault();
-        $xml->type = $this->getType();
-
-        return $xml->asXML();
-    }
-
-    /**
      * Returns the name of this argument.
      *
      * @return string

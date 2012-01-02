@@ -74,21 +74,6 @@ class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
     }
 
     /**
-     * Generates a DocBlox compatible XML output for this object.
-     *
-     * @return string
-     */
-    public function __toXml()
-    {
-        $xml = new SimpleXMLElement('<include></include>');
-        $xml->name = $this->getName();
-        $xml['type'] = $this->getType();
-        $xml['line'] = $this->getLineNumber();
-
-        return $xml->asXML();
-    }
-
-    /**
      * Returns the name for this object.
      *
      * @return string

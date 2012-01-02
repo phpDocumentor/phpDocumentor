@@ -195,6 +195,26 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     }
 
     /**
+     * Returns an array of constant objects.
+     *
+     * @return DocBlox_Reflection_Constant[]
+     */
+    public function getConstants()
+    {
+        return $this->constants;
+    }
+
+    /**
+     * Returns an array of property objects.
+     *
+     * @return DocBlox_Reflection_Property[]
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    /**
      * Returns an array of method objects.
      *
      * @return DocBlox_Reflection_Method[]
@@ -214,54 +234,6 @@ class DocBlox_Reflection_Interface extends DocBlox_Reflection_BracesAbstract
     public function getMethod($name)
     {
         return isset($this->methods[$name]) ? $this->methods[$name] : null;
-    }
-
-    /**
-     * Convert this definition to an XML element.
-     *
-     * if the $xml parameter is provided with a SimpleXMLElement than that
-     * will be filled instead that a new one is created.
-     * This is used by the DocBlox_Reflection_Class class as this inherits
-     * almost al behaviour from this class.
-     *
-     * @param SimpleXMLElement|null $xml Existing element to extend.
-     *
-     * @return string
-     */
-    public function __toXml(SimpleXMLElement $xml = null)
-    {
-        if ($xml === null) {
-            $xml = new SimpleXMLElement('<interface></interface>');
-        }
-
-        $xml->name = $this->getName();
-        $xml['namespace'] = $this->getNamespace();
-        $xml['line'] = $this->getLineNumber();
-        $xml->extends = $this->getParentClass()
-            ? $this->expandType($this->getParentClass(), true)
-            : '';
-        $xml->full_name = $this->expandType($this->getName(), true);
-
-        $this->addDocblockToSimpleXmlElement($xml);
-
-        foreach ($this->getParentInterfaces() as $interface) {
-            $xml->addChild('implements', $this->expandType($interface, true));
-        }
-
-        $dom = new DOMDocument('1.0');
-        $dom->loadXML($xml->asXML());
-
-        foreach ($this->constants as $constant) {
-            $this->mergeXmlToDomDocument($dom, $constant->__toXml());
-        }
-        foreach ($this->properties as $property) {
-            $this->mergeXmlToDomDocument($dom, $property->__toXml());
-        }
-        foreach ($this->methods as $method) {
-            $this->mergeXmlToDomDocument($dom, $method->__toXml());
-        }
-
-        return trim($dom->saveXML());
     }
 
 }
