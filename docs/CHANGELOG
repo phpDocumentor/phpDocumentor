@@ -12,6 +12,10 @@
 * CHANGED:  Improved file-level docblock recognition to match that of
             phpDocumentor for backward compatibility.
 * ADDED:    ignore-tags command-line argument to filter out specific tags
+* FIXED:    Inheritance was not applied correctly when files were not in
+            subsequent order
+* CHANGED:  Moved XML building out of the Reflection classes; first step in
+            custom formatters
 
 12/24/2011: Version 0.17.2
 --------------------------
