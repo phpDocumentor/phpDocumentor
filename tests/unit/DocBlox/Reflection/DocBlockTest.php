@@ -43,10 +43,7 @@ class DocBlox_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
   protected function setUp()
   {
     $this->fixture = new DocBlox_Reflection_File(dirname(__FILE__) . '/../../../data/DocBlockFixture.php');
-    $ll = $this->fixture->getLogLevel();
-    $this->fixture->setLogLevel(-1);
     $this->fixture->process();
-    $this->fixture->setLogLevel($ll);
   }
 
   /**
