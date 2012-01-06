@@ -21,6 +21,10 @@
 * FIXED:    Arrays with multiple elements were cut-off for property defaults
 * FIXED:    When using the `declare` command as first in the file then the
             file-level docblock is not recognized
+* ADDED:    Now it is possible to provide a target file with the parsing action.
+            Instead of always generating to structure.xml you can provide anything
+            as long as it is suffixed with .xml; in addition to only providing a
+            folder.
 
 12/24/2011: Version 0.17.2
 --------------------------

@@ -45,7 +45,7 @@ class DocBlox_Task_Project_Transform extends DocBlox_Task_Abstract
     {
         $this->addOption(
             's|source', '-s',
-            'Path where the structure.xml is located (optional, defaults to '
+            'Path where the XML source file is located (optional, defaults to '
             . '"output/structure.xml")'
         );
         $this->addOption(

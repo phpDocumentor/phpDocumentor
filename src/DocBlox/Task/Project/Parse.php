@@ -144,25 +144,34 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
             );
         }
 
-        // if the folder does not exist at all, create it
-        if (!file_exists($target)) {
-            mkdir($target, 0744, true);
+        // if the target does not end with .xml, assume it is a folder
+        if (substr($target, -4) != '.xml') {
+            // if the folder does not exist at all, create it
+            if (!file_exists($target)) {
+                mkdir($target, 0744, true);
+            }
+
+            if (!is_dir($target)) {
+                throw new Zend_Console_Getopt_Exception(
+                    'The given location "' . $target . '" is not a folder'
+                );
+            }
+
+            $path = realpath($target);
+            $target = $path . DIRECTORY_SEPARATOR . 'structure.xml';
+        } else {
+            $path = realpath(dirname($target));
+            $target = $path . DIRECTORY_SEPARATOR . basename($target);
         }
 
-        if (!is_dir($target)) {
-            throw new Zend_Console_Getopt_Exception(
-                'The given location "' . $target . '" is not a folder'
-            );
-        }
-
-        if (!is_writable($target)) {
+        if (!is_writable($path)) {
             throw new Zend_Console_Getopt_Exception(
                 'The given path "' . $target . '" either does not exist or is '
                 . 'not writable.'
             );
         }
 
-        return realpath($target);
+        return $target;
     }
 
     /**
@@ -367,7 +376,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
 
         $parser = new DocBlox_Parser();
         $parser->setTitle(htmlentities($this->getTitle()));
-        $parser->setExistingXml($this->getTarget() . '/structure.xml');
+        $parser->setExistingXml($this->getTarget());
         $parser->setForced($this->getForce());
         $parser->setMarkers($this->getMarkers());
         $parser->setIgnoredTags($this->getIgnoreTags());
@@ -380,7 +389,7 @@ class DocBlox_Task_Project_Parse extends DocBlox_Task_Abstract
         try {
             // save the generate file to the path given as the 'target' option
             file_put_contents(
-                $this->getTarget() . '/structure.xml',
+                $this->getTarget(),
                 $parser->parseFiles($files, $this->getSourcecode())
             );
         } catch (Exception $e) {

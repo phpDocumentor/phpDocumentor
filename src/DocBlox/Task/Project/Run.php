@@ -177,12 +177,10 @@ class DocBlox_Task_Project_Run extends DocBlox_Task_Abstract
 
         $transform = new DocBlox_Task_Project_Transform();
         if ($this->getTarget() !== null) {
-            $transform->setTarget($task->getTarget());
+            $transform->setTarget(dirname($task->getTarget()));
         }
         $transform->setTemplate($this->getTemplate());
-        $transform->setSource(
-            $task->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml'
-        );
+        $transform->setSource($task->getTarget());
         $transform->setVerbose($task->getVerbose());
         $transform->setQuiet($task->getQuiet());
         $transform->setParseprivate($this->getParseprivate());
