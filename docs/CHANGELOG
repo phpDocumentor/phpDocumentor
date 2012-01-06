@@ -19,6 +19,8 @@
 * ADDED:    New 'default' parameter 'generated_datetime' in the Xsl writer.
             Allows theme authors to output generated dates.
 * FIXED:    Arrays with multiple elements were cut-off for property defaults
+* FIXED:    When using the `declare` command as first in the file then the
+            file-level docblock is not recognized
 
 12/24/2011: Version 0.17.2
 --------------------------

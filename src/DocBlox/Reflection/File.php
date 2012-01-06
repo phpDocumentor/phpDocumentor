@@ -513,7 +513,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
     {
         $result   = null;
         $docblock = $tokens->findNextByType(
-            T_DOC_COMMENT, 10, array(T_CLASS, T_NAMESPACE)
+            T_DOC_COMMENT, 30, array(T_CLASS, T_NAMESPACE)
         );
 
         try {
@@ -522,6 +522,11 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
                 : null;
 
             if ($result) {
+                // not a file docblock
+                if (!$result->getTagsByName('package')) {
+                    return null;
+                }
+
                 // attach line number to class, the DocBlox_Reflection_DocBlock
                 // does not know the number
                 $result->line_number = $docblock->line_number;
