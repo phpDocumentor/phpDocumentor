@@ -68,6 +68,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit extends
          * @var DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $node
          */
         foreach ($nodes as $node) {
+            $node->setNodes($nodes);
+
             // cascading is done within the $node; see the DocBlock of 'inherit'
             // to get a picture of how this works.
             $node->inherit(null);

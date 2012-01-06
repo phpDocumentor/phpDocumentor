@@ -51,7 +51,7 @@ class DocBlox_Parser_Exporter_Xml_Constant
             return;
         }
 
-        if ($child) {
+        if (!$child) {
             $child = new DOMElement('constant');
             $parent->appendChild($child);
         }

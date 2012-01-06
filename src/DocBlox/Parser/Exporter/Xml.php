@@ -238,6 +238,16 @@ class DocBlox_Parser_Exporter_Xml extends DocBlox_Parser_Exporter_Abstract
     }
 
     /**
+     * Returns the DOMDocument for this exporter.
+     *
+     * @return DOMDocument
+     */
+    public function getDomDocument()
+    {
+        return $this->xml;
+    }
+
+    /**
      * Returns the XML contents of this export.
      *
      * @return string

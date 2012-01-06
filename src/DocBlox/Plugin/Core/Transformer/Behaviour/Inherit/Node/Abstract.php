@@ -47,6 +47,17 @@ abstract class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
     }
 
     /**
+     * Sets the nodes.
+     *
+     * @param DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class[] &$nodes
+     *     Associative array containing all class/interface type nodes.
+     */
+    public function setNodes(&$nodes)
+    {
+        $this->nodes = $nodes;
+    }
+
+    /**
      * Returns the elements with the given tag name that can be found
      * as direct children of $node.
      *
