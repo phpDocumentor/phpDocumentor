@@ -16,6 +16,9 @@
             subsequent order
 * CHANGED:  Moved XML building out of the Reflection classes; first step in
             custom formatters
+* ADDED:    New 'default' parameter 'generated_datetime' in the Xsl writer.
+            Allows theme authors to output generated dates.
+* FIXED:    Arrays with multiple elements were cut-off for property defaults
 
 12/24/2011: Version 0.17.2
 --------------------------

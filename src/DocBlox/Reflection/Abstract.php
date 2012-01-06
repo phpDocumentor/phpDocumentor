@@ -327,7 +327,7 @@ abstract class DocBlox_Reflection_Abstract
            && !(!$token->type
                 && ((($token->content == ')') && ($level == 0))
                     || ($token->content == ';')
-                    || ($token->content == ',')
+                    || (($token->content == ',') && ($level == 0))
                 )
             )
         ) {
