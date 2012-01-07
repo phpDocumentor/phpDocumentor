@@ -6,7 +6,7 @@
             description="Builds DocBlox and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
-            depends="build:phpunit,deploy:package,deploy:publish-pear-package,deploy:update-version-number,deploy:create-tag,deploy:update-ci,deploy:publish-demo,deploy:update-manual"
+            depends="build:phpunit,deploy:update-version-number,deploy:package,deploy:publish-pear-package,deploy:update-ci,deploy:publish-demo,deploy:update-manual"
             description="Builds a new version, packages and distributes it"/>
 
     <target name="build:clean" description="Deletes and recreates the 'build' folder for Jenkins">
@@ -97,14 +97,16 @@
     <!-- Asks for the post-deployment version number -->
     <target name="deploy:get-version-number"
             description="Ask the user for the new version">
-        <propertyprompt propertyName="version.number" promptText="Enter the new version number"/>
+        <propertyprompt propertyName="version.number.minor" promptText="Enter the minor version number (i.e. 0.18)" />
+        <propertyprompt propertyName="version.number.release" promptText="Enter the new release number (i.e. 1)" />
+        <property name="version.number" value="${version.number.minor}.${version.number.release}" />
     </target>
 
     <!-- Updates the version number in the Core/Abstract class and commits result -->
     <target name="deploy:update-version-number"
             depends="deploy:get-version-number"
             description="Updates the version number in DocBlox_Core_Abstract and commit it.">
-        <gitcheckout repository="." branchname="release-${version.number}" quiet="false"/>
+        <gitcheckout repository="." branchname="release-${version.number.minor}" quiet="false"/>
         <exec
             command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/DocBlox/Core/Abstract.php"
             dir="${project.basedir}" outputProperty="version.old"
@@ -168,10 +170,11 @@
     <target name="deploy:create-tag"
             depends="deploy:get-version-number"
             description="Creates a tag and pushes it to Github">
-        <exec command="git push origin release-${version.number}" passthru="true" checkreturn="true"/>
-        <exec command="git push upstream release-${version.number}" passthru="true" checkreturn="true"/>
-        <exec command="git checkout master" passthru="true" checkreturn="true"/>
-        <exec command="git merge release-${version.number}" passthru="true" checkreturn="true"/>
+        <gitcheckout repository="." branchname="release-${version.number.minor}" quiet="false"/>
+        <exec command="git push origin release-${version.number.minor}" passthru="true" checkreturn="true"/>
+        <exec command="git push upstream release-${version.number.minor}" passthru="true" checkreturn="true"/>
+        <gitcheckout repository="." branchname="master" quiet="false"/>
+        <exec command="git merge release-${version.number.minor}" passthru="true" checkreturn="true"/>
         <exec command="git tag v${version.number} master" passthru="true" checkreturn="true"/>
         <exec command="git push upstream v${version.number}" passthru="true" checkreturn="true"/>
         <exec command="git push origin master" passthru="true" checkreturn="true"/>
