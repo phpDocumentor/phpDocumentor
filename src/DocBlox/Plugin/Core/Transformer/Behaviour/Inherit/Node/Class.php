@@ -266,6 +266,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
         // if the parent class has not processed yet; do so. This will cause
         // a recurring effect which makes sure the tree is traversed bottom-to-top
         if (!$parent->is_processed) {
+            $parent->setNodes($this->nodes);
             $parent->inherit(null);
         }
 
