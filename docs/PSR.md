@@ -562,6 +562,39 @@ covered by this copyright and the organization involved.
 
 ### 7.5. @deprecated
 
+#### @deprecated
+
+The @deprecated tag is used to indicate which 'Structural elements' are
+deprecated and are to be removed in a future version.
+
+#### Syntax
+
+    @deprecated [<version>] [<description>]
+
+#### Description
+
+The @deprecated tag declares that the associated 'Structural elements' will
+be removed in a future version as it has become obsolete or its usage is otherwise
+not recommended.
+
+This tag MAY also contain a version number up till which it is guaranteed to be
+included in the software. Starting with the given version will the function be
+removed or may be removed without further notice.
+
+If is RECOMMENDED (but not required) to provide an additional description stating
+why the associated element is deprecated.
+If it is superceded by another method it is RECOMMENDED to add a @see tag in the
+same 'PHPDoc' pointing to the new element.
+
+#### Examples
+
+    /**
+     * @deprecated
+     * @deprecated 1.0.0
+     * @deprecated No longer used by internal code and not recommended.
+     * @deprecated 1.0.0 No longer used by internal code and not recommended.
+     */
+
 ### 7.6. @example
 
 ### 7.7. @global
@@ -627,6 +660,35 @@ Mark the count function as being internal to this project:
     }
 
 ### 7.9. @license
+
+The @license tag is used to indicate which license is applicable for the associated
+'Structural Elements'.
+
+#### Syntax
+
+    @license [<url>] [name]
+
+#### Description
+
+The @license tag provides the user with the name and URL of the license that is
+applicable to 'Structural Elements' and any of their child elements.
+
+It is NOT RECOMMENDED to apply @license tags to any 'PHPDoc' other than
+file-level PHPDocs as this may cause confusion which license applies at which
+time.
+
+Whenever multiple licenses apply MUST there be one @license tag per applicable
+license.
+
+#### Examples
+
+.. code-block:: php
+   :linenos:
+
+    /**
+     * @license GPL
+     * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+     */
 
 ### 7.10. @link
 

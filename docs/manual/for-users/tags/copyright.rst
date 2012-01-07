@@ -7,7 +7,7 @@ The @copyright tag is used to document the copyright information for
 Syntax
 ------
 
-    @copyright <description>
+    @copyright [description]
 
 Description
 -----------
