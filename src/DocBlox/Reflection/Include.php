@@ -21,7 +21,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://docblox-project.org
  */
-class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
+class DocBlox_Reflection_Include extends DocBlox_Reflection_DocBlockedAbstract
 {
     /**
      * @var string Which type of include is this? Include, Include Once,
@@ -40,6 +40,8 @@ class DocBlox_Reflection_Include extends DocBlox_Reflection_Abstract
     protected function processGenericInformation(
         DocBlox_Reflection_TokenIterator $tokens
     ) {
+        parent::processGenericInformation($tokens);
+
         $this->type = ucwords(
             strtolower(
                 str_replace('_', ' ', substr($tokens->current()->getName(), 2))

@@ -33,5 +33,8 @@ class DocBlox_Parser_Exporter_Xml_Include
         $child->setAttribute('type', $include->getType());
 
         $child->appendChild(new DOMElement('name', $include->getName()));
+
+        $object = new DocBlox_Parser_Exporter_Xml_DocBlock();
+        $object->export($child, $include);
     }
 }

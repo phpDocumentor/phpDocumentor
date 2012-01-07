@@ -25,6 +25,11 @@
             Instead of always generating to structure.xml you can provide anything
             as long as it is suffixed with .xml; in addition to only providing a
             folder.
+* FIXED:    Constants that were defined using a 'define' construct didn't
+            recognize their DocBlock.
+* ADDED:    DocBlocks preceding a require(_once) or include(_once) are now parsed
+            and added to the structure file. They are not yet visible in the
+            template.
 
 12/24/2011: Version 0.17.2
 --------------------------
