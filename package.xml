@@ -17,11 +17,11 @@ DocBlox is build to be PHP 5.3 compatible, fast, having a low memory consumption
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2011-12-24</date>
- <time>10:58:20</time>
+ <date>2012-01-07</date>
+ <time>20:31:51</time>
  <version>
-  <release>0.17.2</release>
-  <api>0.17.2</api>
+  <release>0.18.0</release>
+  <api>0.18.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -530,7 +530,155 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </file>
     </dir> <!-- /docs/design -->
     <dir name="manual">
-     <dir name="Tasks">
+     <dir name="for-developers">
+      <file baseinstalldir="/DocBlox" name="contributors-guide.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="profiling.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /docs/manual/for-developers -->
+     <dir name="for-template-builders">
+      <file baseinstalldir="/DocBlox" name="building-your-own-branding-using-templates.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /docs/manual/for-template-builders -->
+     <dir name="for-users">
+      <dir name="tags">
+       <dir name="inline">
+        <file baseinstalldir="/DocBlox" name="example.rst" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="inheritdoc.rst" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="internal.rst" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="link.rst" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /docs/manual/for-users/tags/inline -->
+       <file baseinstalldir="/DocBlox" name="api.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="author.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="category.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="copyright.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="deprecated.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="example.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="filesource.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="global.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ignore.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="internal.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="license.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="link.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="method.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="package.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="param.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="property-read.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="property-write.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="property.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="return.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="see.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="since.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="subpackage.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="throws.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="todo.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uses.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="var.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="version.rst" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /docs/manual/for-users/tags -->
+      <file baseinstalldir="/DocBlox" name="anatomy-of-a-docblock.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="basic-usage.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="configuration.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="faq.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="installation.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="integrating-with-continuous-integration-servers.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="integrating-with-your-ide.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="list-of-inline-tags.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="list-of-tags.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="plugins.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="types.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="validating-documentation-in-your-code.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /docs/manual/for-users -->
+     <dir name="tasks">
       <file baseinstalldir="/DocBlox" name="plugin_generate.rst" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
@@ -546,44 +694,38 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/DocBlox" name="project_transform.rst" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
-      <file baseinstalldir="/DocBlox" name="theme_generate.rst" role="php">
+      <file baseinstalldir="/DocBlox" name="template_generate.rst" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
-      <file baseinstalldir="/DocBlox" name="theme_list.rst" role="php">
+      <file baseinstalldir="/DocBlox" name="template_install.rst" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
-     </dir> <!-- /docs/manual/Tasks -->
-     <file baseinstalldir="/DocBlox" name="Anatomy of a Docblock.rst" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
-     <file baseinstalldir="/DocBlox" name="Basic usage.rst" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
-     <file baseinstalldir="/DocBlox" name="Building your own branding using templates.rst" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
+      <file baseinstalldir="/DocBlox" name="template_list.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /docs/manual/tasks -->
      <file baseinstalldir="/DocBlox" name="conf.py" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
-     <file baseinstalldir="/DocBlox" name="Configuration.rst" role="php">
+     <file baseinstalldir="/DocBlox" name="for-developers.rst" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
-     <file baseinstalldir="/DocBlox" name="Contributor's Guide.rst" role="php">
+     <file baseinstalldir="/DocBlox" name="for-template-builders.rst" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
-     <file baseinstalldir="/DocBlox" name="FAQ.rst" role="php">
+     <file baseinstalldir="/DocBlox" name="for-users.rst" role="php">
+      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+     </file>
+     <file baseinstalldir="/DocBlox" name="glossary.rst" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/DocBlox" name="index.rst" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
-     <file baseinstalldir="/DocBlox" name="Installation.rst" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
      <file baseinstalldir="/DocBlox" name="Makefile" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
-     <file baseinstalldir="/DocBlox" name="Plugins.rst" role="php">
+     <file baseinstalldir="/DocBlox" name="tasks.rst" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
     </dir> <!-- /docs/manual -->
@@ -631,6 +773,52 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </file>
      </dir> <!-- /src/DocBlox/GraphViz -->
      <dir name="Parser">
+      <dir name="Exporter">
+       <dir name="Xml">
+        <file baseinstalldir="/DocBlox" name="Argument.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Class.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Constant.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="DocBlock.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="DocBlockTag.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="File.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Function.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Include.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Interface.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Method.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Property.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/DocBlox" name="Variable.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /src/DocBlox/Parser/Exporter/Xml -->
+       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="Xml.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /src/DocBlox/Parser/Exporter -->
       <file baseinstalldir="/DocBlox" name="Abstract.php" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
@@ -643,6 +831,11 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </dir> <!-- /src/DocBlox/Parser -->
      <dir name="Plugin">
       <dir name="Core">
+       <dir name="Messages">
+        <file baseinstalldir="/DocBlox" name="en.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /src/DocBlox/Plugin/Core/Messages -->
        <dir name="Parser">
         <dir name="DocBlock">
          <dir name="Tag">
@@ -1092,6 +1285,1458 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
      </dir> <!-- /src/Zend/Console -->
+     <dir name="Locale">
+      <dir name="Data">
+       <file baseinstalldir="/DocBlox" name="aa.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="aa_DJ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="aa_ER.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="aa_ER_SAAHO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="aa_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="af.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="af_NA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="af_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ak.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ak_GH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="am.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="am_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_AE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_BH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_DZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_EG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_IQ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_JO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_KW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_LB.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_LY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_MA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_OM.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_QA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_SA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_SD.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_SY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_TN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ar_YE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="as.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="as_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="az.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="az_AZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="az_Cyrl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="az_Cyrl_AZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="az_Latn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="az_Latn_AZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="be.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="be_BY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bg.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bg_BG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bn_BD.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bn_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bo_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bo_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bs.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="bs_BA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="byn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="byn_ER.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ca.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ca_ES.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="cch.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="cch_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="characters.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="cop.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="cs.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="cs_CZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="cy.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="cy_GB.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="da.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="da_DK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="de.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="de_AT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="de_BE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="de_CH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="de_DE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="de_LI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="de_LU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="dv.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="dv_MV.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="dz.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="dz_BT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ee.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ee_GH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ee_TG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="el.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="el_CY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="el_GR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="el_POLYTON.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_AS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_AU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_BE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_BW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_BZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_CA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_Dsrt.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_Dsrt_US.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_GB.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_GU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_HK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_IE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_JM.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_MH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_MP.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_MT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_NA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_NZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_PH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_PK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_SG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_Shaw.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_TT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_UM.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_US.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_US_POSIX.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_VI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="en_ZW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="eo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_AR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_BO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_CL.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_CO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_CR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_DO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_EC.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_ES.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_GT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_HN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_MX.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_NI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_PA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_PE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_PR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_PY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_SV.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_US.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_UY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="es_VE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="et.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="et_EE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="eu.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="eu_ES.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fa.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fa_AF.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fa_IR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fi.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fil.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fil_PH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fi_FI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fo_FO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr_BE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr_CA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr_CH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr_FR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr_LU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr_MC.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fr_SN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fur.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="fur_IT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ga.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gaa.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gaa_GH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ga_IE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gez.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gez_ER.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gez_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gl_ES.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gsw.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gsw_CH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gu.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gu_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gv.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="gv_GB.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="haw.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="haw_US.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_Arab.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_Arab_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_Arab_SD.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_GH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_Latn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_Latn_GH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_Latn_NE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_Latn_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_NE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ha_SD.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="he.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="he_IL.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hi.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hi_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hr.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hr_HR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hu.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hu_HU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hy.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hy_AM.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="hy_AM_REVISED.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ia.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="id.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="id_ID.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ig.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ig_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ii.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ii_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="in.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="is.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="is_IS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="it.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="it_CH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="it_IT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="iu.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="iw.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ja.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ja_JP.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ka.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kaj.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kaj_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kam.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kam_KE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ka_GE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kcg.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kcg_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kfo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kfo_CI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kk.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kk_Cyrl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kk_Cyrl_KZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kk_KZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kl_GL.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="km.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="km_KH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kn_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ko.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kok.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kok_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ko_KR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kpe.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kpe_GN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kpe_LR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_Arab.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_Arab_IQ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_Arab_IR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_Arab_SY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_IQ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_IR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_Latn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_Latn_TR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_SY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ku_TR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kw.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="kw_GB.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ky.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ky_KG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="likelySubtags.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ln.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ln_CD.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ln_CG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="lo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="lo_LA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="lt.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="lt_LT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="lv.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="lv_LV.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="metazoneInfo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mk.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mk_MK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ml.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ml_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mn_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mn_Cyrl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mn_Cyrl_MN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mn_MN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mn_Mong.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mn_Mong_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mr.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mr_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ms.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ms_BN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ms_MY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mt.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="mt_MT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="my.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="my_MM.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nb.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nb_NO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nds.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nds_DE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ne.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ne_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ne_NP.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nl_BE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nl_NL.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nn_NO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="no.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nr.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nr_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nso.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="nso_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="numberingSystems.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ny.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ny_MW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="oc.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="oc_FR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="om.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="om_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="om_KE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="or.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="or_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pa.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pa_Arab.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pa_Arab_PK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pa_Guru.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pa_Guru_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pa_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pa_PK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pl_PL.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="postalCodeData.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ps.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ps_AF.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pt.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pt_BR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="pt_PT.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ro.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="root.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ro_MD.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ro_RO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ru.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ru_RU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ru_UA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="rw.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="rw_RW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sa.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sa_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="se.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="se_FI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="se_NO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sh.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sh_BA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sh_CS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sh_YU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="si.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sid.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sid_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="si_LK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sk.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sk_SK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sl_SI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="so.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="so_DJ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="so_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="so_KE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="so_SO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sq.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sq_AL.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_BA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_CS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Cyrl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Cyrl_BA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Cyrl_CS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Cyrl_ME.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Cyrl_RS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Cyrl_YU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Latn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Latn_BA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Latn_CS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Latn_ME.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Latn_RS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_Latn_YU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_ME.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_RS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sr_YU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ss.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ss_SZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ss_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="st.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="st_LS.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="st_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="supplementalData.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sv.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sv_FI.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sv_SE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sw.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sw_KE.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="sw_TZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="syr.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="syr_SY.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ta.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ta_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="te.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="telephoneCodeData.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="te_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tg.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tg_Cyrl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tg_Cyrl_TJ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tg_TJ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="th.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="th_TH.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ti.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tig.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tig_ER.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ti_ER.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ti_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tn_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="to.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="to_TO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tr.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="Translation.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="trv.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="trv_TW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tr_TR.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ts.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ts_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tt.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="tt_RU.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ug.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ug_Arab.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ug_Arab_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ug_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uk.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uk_UA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ur.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ur_IN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ur_PK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_AF.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_Arab.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_Arab_AF.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_Cyrl.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_Cyrl_UZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_Latn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_Latn_UZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="uz_UZ.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ve.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="ve_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="vi.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="vi_VN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="wal.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="wal_ET.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="wo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="wo_Latn.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="wo_Latn_SN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="wo_SN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="xh.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="xh_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="yo.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="yo_NG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hans.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hans_CN.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hans_HK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hans_MO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hans_SG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hant.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hant_HK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hant_MO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_Hant_TW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_HK.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_MO.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_SG.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zh_TW.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zu.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="zu_ZA.xml" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /src/Zend/Locale/Data -->
+      <dir name="Math">
+       <file baseinstalldir="/DocBlox" name="Exception.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/DocBlox" name="PhpMath.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /src/Zend/Locale/Math -->
+      <file baseinstalldir="/DocBlox" name="Data.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="Exception.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="Format.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="Math.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /src/Zend/Locale -->
      <dir name="Log">
       <dir name="Filter">
        <file baseinstalldir="/DocBlox" name="Abstract.php" role="php">
@@ -1157,10 +2802,29 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
      </dir> <!-- /src/Zend/Log -->
+     <dir name="Translate">
+      <dir name="Adapter">
+       <file baseinstalldir="/DocBlox" name="Array.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /src/Zend/Translate/Adapter -->
+      <file baseinstalldir="/DocBlox" name="Adapter.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="Exception.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/DocBlox" name="Plural.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /src/Zend/Translate -->
      <file baseinstalldir="/DocBlox" name="Config.php" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/DocBlox" name="Exception.php" role="php">
+      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+     </file>
+     <file baseinstalldir="/DocBlox" name="Locale.php" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/DocBlox" name="Log.php" role="php">
@@ -1382,12 +3046,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </dir> <!-- /tests/unit/DocBlox -->
     </dir> <!-- /tests/unit -->
    </dir> <!-- /tests -->
-   <file baseinstalldir="/DocBlox" name="build.properties" role="data">
-    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-   </file>
-   <file baseinstalldir="/DocBlox" name="build.xml" role="data">
-    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-   </file>
    <file baseinstalldir="/DocBlox" name="docblox.dist.xml" role="php">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
@@ -1449,14 +3107,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>0.17.2</release>
-    <api>0.17.2</api>
+    <release>0.18.0</release>
+    <api>0.18.0</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2011-12-24</date>
+   <date>2012-01-07</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
