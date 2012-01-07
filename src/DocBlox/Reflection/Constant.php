@@ -43,6 +43,8 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
     protected function processGenericInformation(
         DocBlox_Reflection_TokenIterator $tokens
     ) {
+        parent::processGenericInformation($tokens);
+
         if ($tokens->current()->content == 'define') {
             // find the first encapsed string and strip the opening and closing
             // apostrophe
@@ -103,8 +105,6 @@ class DocBlox_Reflection_Constant extends DocBlox_Reflection_DocBlockedAbstract
 
             $this->setValue($this->findDefault($tokens));
         }
-
-        parent::processGenericInformation($tokens);
     }
 
     /**
