@@ -234,7 +234,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'NOTICE', 50017, $param->getLineNumber(),
+            'NOTICE', 50017, $this->lineNumber,
             array('@' . $param->getName(), $this->entityName . '()')
         );
     }
