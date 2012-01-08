@@ -39,6 +39,7 @@ class DocBlox_Parser_Exporter_Xml_Function
         $child->appendChild(new DOMElement('type', $function->getType()));
 
         $object = new DocBlox_Parser_Exporter_Xml_DocBlock();
+        $function->setDefaultPackageName($parent->getAttribute('package'));
         $object->export($child, $function);
 
         foreach ($function->getArguments() as $argument) {
