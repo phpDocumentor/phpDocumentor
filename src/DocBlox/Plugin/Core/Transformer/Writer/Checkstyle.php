@@ -43,6 +43,7 @@ class DocBlox_Plugin_Core_Transformer_Writer_Checkstyle
         . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
         $list = $structure->getElementsByTagName('parse_markers');
+        $sourcePath = $structure->getElementsByTagName('source_path')->item(0)->textContent . '/';
 
         $document = new DOMDocument();
         $document->formatOutput = true;
@@ -53,7 +54,7 @@ class DocBlox_Plugin_Core_Transformer_Writer_Checkstyle
         foreach ($list as $node) {
 
             $file = $document->createElement('file');
-            $file->setAttribute('name', $node->parentNode->getAttribute('path'));
+            $file->setAttribute('name', $sourcePath . $node->parentNode->getAttribute('path'));
             $report->appendChild($file);
 
             foreach ($node->childNodes as $error) {

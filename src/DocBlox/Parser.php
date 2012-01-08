@@ -103,6 +103,16 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
     }
 
     /**
+     * Get the path of the source code
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
      * Sets whether to force a full parse run of all files.
      *
      * @param bool $forced Forces a full parse.
