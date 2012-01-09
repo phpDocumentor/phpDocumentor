@@ -74,10 +74,13 @@ class DocBlox_Parser_Exporter_Xml_DocBlock
     protected function addLongDescription(
         DOMElement $child, DocBlox_Reflection_DocBlock $docblock
     ) {
-        $child->appendChild(
-            new DOMElement('long-description', $docblock->getLongDescription()
-                    ->getFormattedContents())
+        $node = $child->ownerDocument->createCDATASection(
+            $docblock->getLongDescription()->getFormattedContents()
         );
+
+        $element = new DOMElement('long-description');
+        $child->appendChild($element);
+        $element->appendChild($node);
     }
 
     protected function addTags(
