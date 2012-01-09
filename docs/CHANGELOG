@@ -7,6 +7,9 @@
             of filtering
 * ADDED:    New replacement variable {UNPREFIXED_CLASS} for the external class
             documentation feature to get the class part without the given prefix.
+* CHANGED:  Order of precedence for determining what URL to link to for a type;
+            External Class documentation precedes DocBlox docs which precede
+            the PHP.net manual. This goes from most explicit to most implicit.
 
 01/08/2012: Version 0.18.0
 --------------------------
