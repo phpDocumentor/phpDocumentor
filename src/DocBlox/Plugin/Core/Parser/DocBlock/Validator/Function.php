@@ -123,7 +123,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
             }
 
             $this->logParserError(
-                'NOTICE', 50013, $param->getLineNumber(),
+                'NOTICE', 50013, $this->lineNumber,
                 array($param_name, $this->entityName . '()')
             );
         }
@@ -158,7 +158,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'ERROR', 50014, $argument->getLineNumber(),
+            'ERROR', 50014, $this->lineNumber,
             array($argument->getName(), $param_name, $this->entityName . '()')
         );
 
@@ -184,7 +184,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'ERROR', 50015, $argument->getLineNumber(),
+            'ERROR', 50015, $this->lineNumber,
             array($argument->getName(), $this->entityName . '()')
         );
         return false;
@@ -212,7 +212,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'ERROR', 50016, $argument->getLineNumber(),
+            'ERROR', 50016, $this->lineNumber,
             array($argument->getName(), $this->entityName . '()')
         );
 
@@ -234,7 +234,7 @@ class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Function
         }
 
         $this->logParserError(
-            'NOTICE', 50017, $param->getLineNumber(),
+            'NOTICE', 50017, $this->lineNumber,
             array('@' . $param->getName(), $this->entityName . '()')
         );
     }
