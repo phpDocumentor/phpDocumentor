@@ -125,7 +125,8 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
         $this->parse_markers[] = array(
             $data['type'],
             $data['message'],
-            $data['line']
+            $data['line'],
+            $data['code']
         );
     }
 

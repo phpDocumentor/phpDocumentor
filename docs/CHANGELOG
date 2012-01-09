@@ -1,3 +1,11 @@
+01/??/2012: Version 0.18.1
+--------------------------
+
+* FIXED:    PHP 5.2.x incompatibility
+* FIXED:    Error in line numbers with error codes
+* ADDED:    Error codes are added in the structure.xml for parse errors to ease
+            of filtering
+
 01/08/2012: Version 0.18.0
 --------------------------
 

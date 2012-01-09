@@ -61,6 +61,7 @@ class DocBlox_Parser_Exporter_Xml_File
                 );
                 $parse_errors->appendChild($marker_obj);
                 $marker_obj->setAttribute('line', $error[2]);
+                $marker_obj->setAttribute('code', $error[3]);
             }
         }
 
