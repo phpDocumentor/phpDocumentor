@@ -5,6 +5,8 @@
 * FIXED:    Error in line numbers with error codes
 * ADDED:    Error codes are added in the structure.xml for parse errors to ease
             of filtering
+* ADDED:    New replacement variable {UNPREFIXED_CLASS} for the external class
+            documentation feature to get the class part without the given prefix.
 
 01/08/2012: Version 0.18.0
 --------------------------
