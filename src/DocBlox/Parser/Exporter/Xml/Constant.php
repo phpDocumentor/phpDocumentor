@@ -59,8 +59,13 @@ class DocBlox_Parser_Exporter_Xml_Constant
         $child->setAttribute('namespace', $constant->getNamespace());
         $child->setAttribute('line', $constant->getLineNumber());
 
+
         $child->appendChild(new DOMElement('name', $constant->getName()));
-        $child->appendChild(new DOMElement('value', $constant->getValue()));
+        $value = new DOMElement('value');
+        $child->appendChild($value);
+        $value->appendChild(
+            $child->ownerDocument->createCDATASection($constant->getValue())
+        );
 
         $object = new DocBlox_Parser_Exporter_Xml_DocBlock();
         $object->export($child, $constant);

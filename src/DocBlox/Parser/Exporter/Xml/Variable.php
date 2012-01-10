@@ -34,8 +34,13 @@ class DocBlox_Parser_Exporter_Xml_Variable
 
         $child->setAttribute('line', $variable->getLineNumber());
 
+
         $child->appendChild(new DOMElement('name', $variable->getName()));
-        $child->appendChild(new DOMElement('default', $variable->getDefault()));
+        $default = new DOMElement('default');
+        $child->appendChild($default);
+        $default->appendChild(
+            $child->ownerDocument->createCDATASection($variable->getDefault())
+        );
 
         $object = new DocBlox_Parser_Exporter_Xml_DocBlock();
         $object->export($child, $variable);

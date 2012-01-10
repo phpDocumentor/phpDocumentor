@@ -64,11 +64,12 @@ class DocBlox_Parser_Exporter_Xml_DocBlock
     protected function addDescription(
         DOMElement $child, DocBlox_Reflection_DocBlock $docblock
     ) {
-        $child->appendChild(
-            new DOMElement(
-                'description', htmlentities($docblock->getShortDescription())
-            )
+        $node = $child->ownerDocument->createCDATASection(
+            $docblock->getShortDescription()
         );
+        $description = new DOMElement('description');
+        $child->appendChild($description);
+        $description->appendChild($node);
     }
 
     protected function addLongDescription(

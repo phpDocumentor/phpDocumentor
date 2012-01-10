@@ -10,8 +10,8 @@
 * CHANGED:  Order of precedence for determining what URL to link to for a type;
             External Class documentation precedes DocBlox docs which precede
             the PHP.net manual. This goes from most explicit to most implicit.
-* FIXED:    Long descriptions containing XML characters caused issues; altered
-            DocBlox to put those in a CDATA section.
+* FIXED:    Long texts containing XML characters caused issues; altered
+            DocBlox to put those in a CDATA sections.
 
 01/08/2012: Version 0.18.0
 --------------------------
