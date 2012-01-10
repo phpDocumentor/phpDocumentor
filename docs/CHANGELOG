@@ -12,6 +12,8 @@
             the PHP.net manual. This goes from most explicit to most implicit.
 * FIXED:    Long texts containing XML characters caused issues; altered
             DocBlox to put those in a CDATA sections.
+* FIXED:    @deprecated was duplicated during inheritance and thus shown multiple
+            times in the reports.
 
 01/08/2012: Version 0.18.0
 --------------------------
