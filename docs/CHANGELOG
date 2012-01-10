@@ -1,4 +1,4 @@
-01/??/2012: Version 0.18.1
+01/10/2012: Version 0.18.1
 --------------------------
 
 * FIXED:    PHP 5.2.x incompatibility
@@ -14,6 +14,7 @@
             DocBlox to put those in a CDATA sections.
 * FIXED:    @deprecated was duplicated during inheritance and thus shown multiple
             times in the reports.
+* FIXED:    Incremental processing failed due to erroneous importing of nodes.
 
 01/08/2012: Version 0.18.0
 --------------------------

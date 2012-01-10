@@ -77,7 +77,8 @@ abstract class DocBlox_Plugin_Core_Parser_DocBlock_Validator_Abstract
         $source = null
     ) {
         $this->entityName = $name;
-        $this->lineNumber = $docblock ? $docblock->line_number : 0;
+        $this->lineNumber = $docblock
+            ? $docblock->line_number : $source->getLineNumber();
         $this->docblock   = $docblock;
         $this->source      = $source;
         parent::__construct(
