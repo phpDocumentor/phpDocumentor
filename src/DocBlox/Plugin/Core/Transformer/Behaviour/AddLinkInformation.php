@@ -43,17 +43,8 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
         $this->log('Adding path information to each xml "file" tag');
 
         $xpath = new DOMXPath($xml);
-        // add to classes
-        $qry = $xpath->query('//class[full_name]|//interface[full_name]');
-        $class_paths = array();
 
-        /** @var DOMElement $element */
-        foreach ($qry as $element) {
-            $path = $element->parentNode->getAttribute('path');
-            $class_paths[
-                $element->getElementsByTagName('full_name')->item(0)->nodeValue
-            ] = $path;
-        }
+        $class_paths = $this->collectClassPaths($xpath);
 
         // add extra xml elements to tags
         $this->log('Adding link information and excerpts to all DocBlock tags');
@@ -85,7 +76,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
                 ->findExternalClassDocumentLocation($bare_type)) !== null
             ) {
                 $node->setAttribute('link', $link);
-            }else if (isset($class_paths[$type])) {
+            } else if (isset($class_paths[$type])) {
                 $file_name = $this->generateFilename($class_paths[$type]);
                 $node->setAttribute('link', $file_name . '#' . $type);
             } else if (isset($declared_classes[$bare_type])) {
@@ -146,7 +137,72 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             }
         }
 
+        $this->processInlineLinkTags($xpath);
+
         return $xml;
+    }
+
+    /**
+     * Collects an array of classes with their filesystem paths to use when
+     * generating anchors.
+     *
+     * Returns an associative array where the key consists of the FQCN and the
+     * value of the path that is mentioned with the 'file' element.
+     *
+     * @param DOMXPath $xpath The XPath object to query against.
+     *
+     * @return string[]
+     */
+    protected function collectClassPaths(DOMXPath $xpath)
+    {
+        $qry = $xpath->query('//class[full_name]|//interface[full_name]');
+        $class_paths = array();
+
+        /** @var DOMElement $element */
+        foreach ($qry as $element) {
+            $path = $element->parentNode->getAttribute('path');
+            $class_paths[
+                $element->getElementsByTagName('full_name')->item(0)->nodeValue
+            ] = $path;
+        }
+
+        return $class_paths;
+    }
+
+    /**
+     * Scans the document for any sign of an inline link tag and replaces it
+     * with it's contents.
+     *
+     * This method recognizes two types of inline link tags and handles
+     * them differently:
+     *
+     * * With description: {@link [url] [description]}, this shows the description
+     *   as body of the anchor.
+     * * Without description: {@link [url]}, this shows the url as body of the
+     *   anchor.
+     *
+     * @param DOMXPath $xpath
+     *
+     * @return void
+     */
+    protected function processInlineLinkTags(DOMXPath $xpath)
+    {
+        $this->log('Adding link information to inline @link tags');
+
+        $qry = $xpath->query('//long-description[contains(., "{@link ")]');
+
+        // variables are used to clarify function and improve readability
+        $without_description_pattern = '/\{@link\s+([^\s]+)\s*\}/';
+        $with_description_pattern    = '/\{@link\s+([^\s]+)\s+([^\}]+)\}/';
+
+        /** @var DOMElement $element */
+        foreach ($qry as $element) {
+            $element->nodeValue = preg_replace(
+                array($without_description_pattern, $with_description_pattern),
+                array('<a href="$1">$1</a>', '<a href="$1">$2</a>'),
+                $element->nodeValue
+            );
+        }
     }
 
     /**
