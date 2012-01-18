@@ -76,9 +76,16 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             $bare_type = ($type[0] == '\\') ? substr($type, 1) : $type;
             $node = $element;
 
-            // if the class is already loaded and is an internal class; refer
-            // to the PHP man pages
-            if (isset($class_paths[$type])) {
+            // First query the external class document links; this will override
+            //     any other type; the user defined it this way with a reason
+            // Then try to generate a link based on whether the class was parsed
+            //     in the project.
+            // Last, check whether PHP knows it and link to the PHP manual if so
+            if (($link = $this->transformer
+                ->findExternalClassDocumentLocation($bare_type)) !== null
+            ) {
+                $node->setAttribute('link', $link);
+            }else if (isset($class_paths[$type])) {
                 $file_name = $this->generateFilename($class_paths[$type]);
                 $node->setAttribute('link', $file_name . '#' . $type);
             } else if (isset($declared_classes[$bare_type])) {
@@ -97,17 +104,7 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
                     );
                 }
                 continue;
-            } else {
-                // an undeclared class but not internal to PHP
-                $link = $this->transformer->findExternalClassDocumentLocation(
-                    $bare_type
-                );
-
-                if ($link !== null) {
-                    $node->setAttribute('link', $link);
-                }
             }
-
         }
 
         // convert class names to links

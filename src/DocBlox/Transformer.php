@@ -459,8 +459,8 @@ class DocBlox_Transformer extends DocBlox_Transformer_Abstract
         $result = $this->external_class_docs[$prefix];
         if ($class !== null) {
             $result = str_replace(
-                array('{CLASS}', '{LOWERCASE_CLASS}'),
-                array($class, strtolower($class)),
+                array('{CLASS}', '{LOWERCASE_CLASS}', '{UNPREFIXED_CLASS}'),
+                array($class, strtolower($class), substr($class, strlen($prefix))),
                 $result
             );
         }

@@ -102,8 +102,10 @@ class DocBlox_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
             $inherited->getReferrerString($this->class->getFQCN())
         );
 
-        // should not duplicate @todo; it only belongs to the original instance
+        // should not duplicate @todo or @deprecated; it only belongs
+        // to the original instance
         $inherited->getDocBlock()->filterTags('todo');
+        $inherited->getDocBlock()->filterTags('deprecated');
     }
 
     /**

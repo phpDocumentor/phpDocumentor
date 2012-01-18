@@ -258,7 +258,7 @@ class DocBlox_Transformer_Transformation extends DocBlox_Transformer_Abstract
 
         /** @var SimpleXMLElement $value */
         foreach ($sxml->children() as $key => $value) {
-            $result[$key] = $value->count() > 1
+            $result[$key] = count($value->children()) > 1
                 ? $this->convertSimpleXmlToArray($value)
                 : (string)$value;
         }

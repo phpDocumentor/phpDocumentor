@@ -52,9 +52,14 @@ class DocBlox_Parser_Exporter_Xml_Argument
             $parent->appendChild($child);
         }
 
+
         $child->setAttribute('line', $argument->getLineNumber());
         $child->appendChild(new DOMElement('name', $argument->getName()));
-        $child->appendChild(new DOMElement('default', $argument->getDefault()));
+        $default = new DOMElement('default');
+        $child->appendChild($default);
+        $default->appendChild(
+            $child->ownerDocument->createCDATASection($argument->getDefault())
+        );
         $child->appendChild(new DOMElement('type', $argument->getType()));
     }
 }

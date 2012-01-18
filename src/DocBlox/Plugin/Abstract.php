@@ -118,16 +118,17 @@ class DocBlox_Plugin_Abstract
      *
      * @return void
      */
-    public function logParserError($type, $message, $line, $variables = array())
+    public function logParserError($type, $code, $line, $variables = array())
     {
-        $message = $this->_($message, $variables);
+        $message = $this->_($code, $variables);
         $this->log($message, DocBlox_Core_Log::ERR);
         $this->dispatch(
             'parser.log',
             array(
-                 'type' => $type,
+                 'type'    => $type,
+                 'code'    => $code,
                  'message' => $message,
-                 'line' => $line
+                 'line'    => $line
             )
         );
     }

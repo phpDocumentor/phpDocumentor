@@ -371,7 +371,7 @@ class DocBlox_Parser extends DocBlox_Parser_Abstract
 
                 // if an existing entry who matches the file, then re-use
                 if ($qry->length > 0) {
-                    $this->exporter->getDomDocument()->appendChild(
+                    $this->exporter->getDomDocument()->documentElement->appendChild(
                         $this->exporter->getDomDocument()->importNode(
                             $qry->item(0), true
                         )
