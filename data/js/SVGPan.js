@@ -1,5 +1,5 @@
 /**
- *  SVGPan library 1.2 - DocBlox1
+ *  SVGPan library 1.2 - phpDocumentor1
  * ====================
  *
  * Given an unique existing element with id "viewport", including the
@@ -15,7 +15,7 @@
  *
  * Releases:
  *
- * 1.2 - DocBlox1, Fri Apr 08 19:19:00 CET 2011, Mike van Riel
+ * 1.2 - phpDocumentor1, Fri Apr 08 19:19:00 CET 2011, Mike van Riel
  *            Increased zoom speed with 20%
  *            Disabled element moving functionality
  *

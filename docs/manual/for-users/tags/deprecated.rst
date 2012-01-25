@@ -25,7 +25,7 @@ why the associated element is deprecated.
 If it is superceded by another method it is RECOMMENDED to add a @see tag in the
 same :term:`PHPDoc` pointing to the new element.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements` tagged with the @deprecated tag will be listed in the

@@ -25,10 +25,10 @@ Please see the documentation for :doc:`package` for details of its usage.
 
 This tag MUST NOT occur more than once in a :term:`DocBlock`.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
-The @category tag has no significant effect in DocBlox. It will be shown with
+The @category tag has no significant effect in phpDocumentor. It will be shown with
 the description information of associated :term:`Structural Elements` and is
 inherited by classes and interfaces.
 

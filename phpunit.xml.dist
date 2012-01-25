@@ -2,7 +2,7 @@
 
 <phpunit bootstrap="tests/common/bootstrap.php" colors="true" strict="true">
   <testsuites>
-    <testsuite name="DocBlox">
+    <testsuite name="phpDocumentor">
       <directory>./tests/unit/</directory>
       <directory suffix=".phpt">./tests/ui/</directory>
     </testsuite>
@@ -28,7 +28,7 @@
   </filter>
   <logging>
     <log type="coverage-html"
-      title="DocBlox"
+      title="phpDocumentor"
       target="build/coverage"
       charset="UTF-8"
       yui="true"

@@ -9,7 +9,7 @@ what you desire.
 
 Do you want to control every detail of how your template looks then
 it is recommended to read on; later in this document will more theory be
-provided on how branding works in DocBlox.
+provided on how branding works in phpDocumentor.
 
 Quickstart
 ----------
@@ -21,7 +21,7 @@ I will give a step-by-step description how to create your own branding:
    the path as the XSL Writer (or actually libxsl) cannot handle that.
 2. invoke the following command::
 
-       $ docblox template:generate -t <target path> -n <template name>
+       $ phpdoc template:generate -t <target path> -n <template name>
 
    ..
 
@@ -50,7 +50,7 @@ In many applications branding usually means that you create a complete template
 from scratch. This gives you full freedom but you need to update your template for
 every new release of the application that you are building your template for.
 
-With DocBlox this is different. Instead of building a template from scratch you
+With phpDocumentor this is different. Instead of building a template from scratch you
 can 'extend' an existing template and alter those bits that are undesirable.
 This provides the power needed to make a template that requires less maintenance
 and benefits from any new features introduced in later versions.
@@ -139,7 +139,7 @@ what is done. Each writer is discussed more in-depth in later chapters.
 Meta-data
 ~~~~~~~~~
 
-A template definition can contain any amount of meta-data but DocBlox uses the
+A template definition can contain any amount of meta-data but phpDocumentor uses the
 following for its internal workings:
 
 * description [REQUIRED], provides a description of the contents or looks of
@@ -193,7 +193,7 @@ Transformations are composed of 5 elements:
   attribute.
 
       If a path is indicated by this attribute then the root for relative paths
-      is always [docblox]/data.
+      is always [phpdoc]/data.
 
 * **artifact**, the target path where to write the artifact to. This is usually
   a filename but could also be a folder. Some writers (such as Sourcecode) do
@@ -237,9 +237,9 @@ Tips
 2. Start with copying the js folder from /data. This folder contains a jQuery
    library that is ready to use.
    Similarly, consider copying the image folder from /data. This folder contains
-   some clipart used throughout the DocBlox templates.
+   some clipart used throughout the phpDocumentor templates.
 
-3. If you want your template to support the --sourcecode argument of DocBlox
+3. If you want your template to support the --sourcecode argument of phpDocumentor
    then you need to include the Sourcecode writer.
 
 Building a template
@@ -248,7 +248,7 @@ Building a template
 Introduction
 ~~~~~~~~~~~~
 
-DocBlox uses the **abstract** template as basis for its own templates. This
+phpDocumentor uses the **abstract** template as basis for its own templates. This
 template can easily be customized and contains a multitude of hooks and
 xsl:templates to adapt. This without affecting or duplicating large parts of the
 rest of the template.
@@ -257,7 +257,7 @@ As such it is advised to use the basis of this template and use CSS to restyle
 it to your liking.
 
 Should something prove hard to do, please submit a pull request to the
-http://github.com/docblox/template.abstract repository with a generic solution
+http://github.com/phpdocumentor/template.abstract repository with a generic solution
 or mail your request.
 
     Please note that the Abstract template intentionally does not use the

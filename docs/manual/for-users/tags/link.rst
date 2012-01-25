@@ -27,7 +27,7 @@ The URI MUST be complete and well-formed as specified in
 The @link tag MAY have a description appended to indicate the type of relation
 defined by this occurrence.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements`, or inline text in a long description, tagged with

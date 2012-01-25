@@ -1,5 +1,5 @@
 --TEST--
-docblox project:run -f tests/data/NoShortDescription.php -t build
+phpdoc project:run -f tests/data/NoShortDescription.php -t build
 --FILE--
 <?php
 $_SERVER['argc']    = 8;
@@ -15,7 +15,7 @@ require_once 'tests/common/ui-include.php';
 
 ?>
 --EXPECTF--
-DocBlox version %s
+phpDocumentor version %s
 
 %s ERR (3): No short description for property %s
 %s ERR (3): No short description for method %s

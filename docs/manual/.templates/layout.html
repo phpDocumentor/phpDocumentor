@@ -1,6 +1,5 @@
 {%- block doctype -%}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 {%- endblock %}
 {%- set reldelim1 = reldelim1 is not defined and ' &raquo;' or reldelim1 %}
 {%- set reldelim2 = reldelim2 is not defined and ' |' or reldelim2 %}
@@ -19,7 +18,7 @@
         {%- if not loop.first %}{{ reldelim2 }}{% endif %}</li>
         {%- endfor %}
         {%- block rootrellink %}
-        <li><a href="http://www.docblox-project.org">Homepage</a> {{ reldelim1 }}</li>
+        <li><a href="http://www.phpdoc.org">Homepage</a> {{ reldelim1 }}</li>
         <li><a href="{{ pathto(master_doc) }}">Documentation</a>{{
             reldelim1 }}
         </li>
@@ -105,9 +104,10 @@
 {%- endif %}{% endif %}
 {%- endmacro %}
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {{ metatags }}
     {%- if not embedded and docstitle %}
     {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
@@ -116,107 +116,135 @@
     {%- endif %}
     <title>{{ title|striptags }}{{ titlesuffix }}</title>
 
-    <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}"
-          type="text/css"/>
-    <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}"
-    type="text/css"/>
-    <link rel="stylesheet"
-    href="{{ pathto('_static/configurationblock.css', 1) }}"
-    type="text/css"/>
+    <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ pathto('_static/configurationblock.css', 1) }}" type="text/css"/>
 
-    <link rel="Shortcut Icon" href="http://www.docblox-project.org/wp-content/themes/elements-of-seo/images/favicon.ico" type="image/x-icon" />
-<link rel='stylesheet' id='toc_css-css'  href='http://www.docblox-project.org/wp-content/plugins/seo-friendly-table-of-contents/style.css?ver=3.2.1' type='text/css' media='all' />
-<script type='text/javascript' src='http://www.docblox-project.org/wp-includes/js/l10n.js?ver=20101110'></script>
-<script type='text/javascript' src='http://www.docblox-project.org/wp-includes/js/jquery/jquery.js?ver=1.6.1'></script>
-<script type='text/javascript' src='http://www.docblox-project.org/wp-content/plugins/google-analyticator/external-tracking.min.js?ver=6.1.2'></script>
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.docblox-project.org/xmlrpc.php?rsd" />
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.docblox-project.org/wp-includes/wlwmanifest.xml" />
-<link rel='index' title='DocBlox' href='http://www.docblox-project.org/' />
-<meta name="generator" content="WordPress 3.2.1" />
-<link rel="stylesheet" href="http://www.docblox-project.org/wp-content/plugins/sub-page-summary/sub-page-summary.css" type="text/css" />
-<style type="text/css" media="screen">
-    <!-- @import url(http://www.docblox-project.org/wp-content/themes/elements-of-seo/style.css); -->
+    <link rel="Shortcut Icon" href="http://www.phpdoc.org/wp-content/themes/elements-of-seo/images/favicon.ico" type="image/x-icon" />
 
-    dl.docutils dd
+    <script type="text/javascript" src="http://docblox.chronos/bundles/phpdocumentorresource/js/jquery-1.3.2.min.js'"></script>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="http://docblox.chronos/bundles/phpdocumentorresource/css/1140.ie.css" type="text/css" media="screen" />
+    <![endif]-->
+    <link rel="stylesheet" href="http://docblox.chronos/bundles/phpdocumentorresource/css/template.css" type="text/css" media="screen" />
+
+  <script type="text/javascript">
+    function equalize()
     {
-        margin-left: 18px;
+      $('.row.content').each(function (key, data) {
+        highest = 0;
+        $(data).find('.border').each(function (key2, contents) {
+          if ($(contents).height() > highest) highest = $(contents).height();
+        });
+        $(data).find('.border').height(highest);
+      });
     }
 
-    body {
-        font: 12px/18px Verdana, Arial, Helvetica, sans-serif;
-    }
-    div.related {
-        background: inherit;
-        color: inherit;
+    $(document).ready(function() {
+      $('.slidedeck').slidedeck();
+    });
+
+    $(window).load(function() {
+      equalize();
+    });
+
+    function useCasesScrollUp()
+    {
+      sliderTop = $('#use-cases ul.cases').position().top - $('#use-cases ul.cases').parent().position().top;
+      if (sliderTop + 36 <= 0) {
+        if (sliderTop + 72 > 0) {
+          $('#use-cases .arrow.left').hide();
+        } else {
+          $('#use-cases .arrow.left').show();
+        }
+
+        $('#use-cases .arrow.right').show();
+        $('#use-cases ul.cases').animate({'top':sliderTop + 36 }, 'fast');
+      }
+      return false;
     }
 
-    div.related a {
-        color: inherit;
+    function useCasesScrollDown()
+    {
+      sliderTop = $('#use-cases ul.cases').position().top - $('#use-cases ul.cases').parent().position().top;
+      if ($('#use-cases ul.cases').height() > Math.abs(sliderTop) + 36) {
+        if ($('#use-cases ul.cases').height() < Math.abs(sliderTop) + 72) {
+          $('#use-cases .arrow.right').hide();
+        } else {
+          $('#use-cases .arrow.right').show();
+        }
+
+        $('#use-cases .arrow.left').show();
+        $('#use-cases ul.cases').animate({'top':sliderTop - 36 }, 'fast');
+      }
+      return false;
+    }
+  </script>
+  <style>
+      .container
+      {
+          padding-top: 31px;
+      }
+
+      div.highlight-python pre
+      {
+          padding: 5px;
+      }
+      a:visited, div.body h1, div.body h2, div.sphinxsidebar a, div.sphinxsidebar a:visited
+      {
+          color: #4F814B;
+      }
+
+      p, .row p, pre, ul, ol
+      {
+          margin-bottom: 0.7em;
+      }
+
+      #head ul
+      {
+          margin-bottom: 0em;
+      }
+
+    div.document
+    {
+        background: transparent;
     }
 
-    div.sphinxsidebar a {
-        color: #069DD5;
+    div.sphinxsidebar h4, div.sphinxsidebar h3, div.sphinxsidebar p, div.sphinxsidebar ul
+    {
+        color: #333;
     }
 
-    div.sphinxsidebarwrapper, #content div.sphinxsidebarwrapper h3,  #content h1  {
-        margin-top: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-    }
+      div.body h1, div.body h2
+      {
+          background: transparent;
+          margin: 20px 0;
+          padding-bottom: 10px;
+      }
 
-    div.document, div.body h1 {
-        background: inherit;
-    }
+      div.body
+      {
+          font-size: 1.2em;
+      }
 
-    #content h2 {
-        background: inherit;
-        font-size: 160%;
-    }
+      div#footer th
+      {
+          background-color: transparent;
+      }
 
-    pre, span.pre {
-        background-color: black;
-        color: white;
-        font-size: 1.1em;
-        padding: 1px 5px;
-    }
-    pre {
-        padding:  10px;
-    }
+      div.related a
+      {
+          color: inherit;
+      }
 
-    div.sphinxsidebar h4, div.sphinxsidebar h3 a, div.sphinxsidebar ul {
-        color: inherit;
-    }
-
-    .toctree-wrapper ul {
-        list-style: decimal;
-        margin-bottom: 4px;
-    }
-
-    .toctree-wrapper li {
-        margin-left: 18px;
-    }
-
-    .section ul {
-        list-style: circle;
-        margin-bottom: 4px;
-    }
-
-    .section li {
-        margin-left: 18px;
-    }
-
-    blockquote {
-        padding:  10px;
-        background: #f9f9f9;
-        color: gray;
-        border: 1px solid #f0f0f0;
-    }
-
-    #content blockquote p {
-        color: gray;
-    }
-</style>
-
+      div.related
+      {
+          background: transparent;
+          color: #333;
+          border-bottom: 1px solid #f0f0f0;
+      }
+  </style>
 
     {%- if not embedded %}
     <script type="text/javascript">
@@ -274,40 +302,44 @@
     {%- block extrahead %} {% endblock %}
 </head>
 <body>
-<div id="wrap">
 
-    <div id="stripe"></div>
+    <div class="container">
+      <div id="head" class="row">
+        <div class="sixcol">
+          <div class="title border">
+            <a href="http://docblox.chronos">
+              <img src="http://phpdoc.org/images/logo-trans.png" alt="Logo" title="phpDocumentor 2" style="float: left;"/>
+              <span style="color: gray;">&gt; Documentation Generator</span></a>
+          </div>
+        </div>
+        <div class="sixcol last">
+          <div class="border">
+            <ul>
+              <li><a href="http://docblox.chronos/about">About</a></li>
+              <li><a href="http://docblox.chronos/contact">Contact</a></li>
+              <li><a href="http://docblox.chronos/templates">Templates</a></li>
+              <li><a href="{{ pathto('index.html') }}">Documentation</a></li>
+              <li><a href="http://docblox.chronos/demo">Demo</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-    <div id="nav">
-        <ul>
-            <li><a href="http://www.docblox-project.org">Home</a></li>
-            <li class="page_item page-item-9"><a
-                    href="http://www.docblox-project.org/features/"
-                    title="Features">Features</a></li>
-            <li class="page_item page-item-6"><a
-                    href="http://docs.docblox-project.org/"
-                    title="Documentation">Documentation</a></li>
-            <li class="page_item page-item-2"><a
-                    href="http://www.docblox-project.org/about/"
-                    title="About">About</a></li>
-        </ul>
-    </div>
+      <div class="bordered-row-container">
+        <div class="twelvecol">
+           <div class="border padded">
 
-    <div id="masthead">
-        <h1><a href="http://www.docblox-project.org">DocBlox</a></h1>
-
-        <h3>PHP 5.3 compatible API Documentation generator aimed at projects of
-            all
-            sizes and Continuous Integration</h3>
-    </div>
-
-    <div id="banner2" onclick="location.href='http://www.docblox-project.org';"
-         style="cursor: pointer;"></div>
-
-    <div id="content">
         {%- block header %}{% endblock %}
 
         {%- block relbar1 %}{{ relbar() }}{% endblock %}
+
+          </div>
+        </div>
+      </div>
+
+      <div class="bordered-row-container">
+        <div class="twelvecol">
+           <div class="border padded">
 
         {%- block sidebar1 %} {# possible location for sidebar #} {% endblock %}
 
@@ -330,8 +362,22 @@
             <div class="clearer"></div>
         </div>
 
-        {%- block footer %}
-        <div class="footer">
+          </div>
+        </div>
+      </div>
+
+  <div class="row" id="footer">
+    <div class="twelvecol">
+      <div class="border padded">
+
+        <table class="contact">
+          <tr><th>IRC</th><td>#phpdoc at Freenode</td></tr>
+          <tr><th>Twitter</th><td><a href="http://twitter.com/phpdocumentor">@phpdocumentor</a></td></tr>
+          <tr><th>Mailing list</th><td></td></tr>
+        </table>
+
+        <p>
+            This template is based on the <a href="http://cssgrid.net/">1140px grid system</a>.<br/>
             {%- if hasdoc('copyright') %}
             {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a
                 href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
@@ -348,29 +394,12 @@
                 href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version
             }}.{% endtrans %}
             {%- endif %}
-        </div>
-        {%- endblock %}
 
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
-
-<!-- The main column ends  -->
-
-</div>
-<!-- end wrap -->
-
-
-<!-- begin footer -->
-
-<div style="clear:both;"></div>
-<div style="clear:both;"></div>
-
-
-<div id="footer">
-    <p>Elements of SEO is Powered by WordPress | <a
-            href="http://www.alibiproductions.com/html/website-development.html">Accessible
-        Website Development</a> - Alibi Productions</p>
-</div>
-
 
 </body>
 </html>

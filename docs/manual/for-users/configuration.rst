@@ -1,7 +1,7 @@
 Configuration
 =============
 
-DocBlox is meant as a highly configurable and extensible
+phpDocumentor is meant as a highly configurable and extensible
 application. As such there are a lot of things that can be
 configured by the user.
 
@@ -12,30 +12,30 @@ Location
 --------
 
 The easiest solution would be to place the configuration file in
-the root of your project with the name: ``docblox.dist.xml``. This
+the root of your project with the name: ``phpdoc.dist.xml``. This
 file can be committed to a Revision Control System and thus will
 the settings always be available.
 
 When you have added a configuration file then you do not need to
-provide its location to DocBlox; the following command suffices to
+provide its location to phpDocumentor; the following command suffices to
 build your documentation::
 
-    $ docblox
+    $ phpdoc
 
 An additional benefit is that it is possible for each developer to
-place a file called ``docblox.xml`` in their project, in addition
-to the ``docblox.dist.xml``. This configuration file will be used
-instead of the ``docblox.dist.xml`` and when added as an ignore
+place a file called ``phpdoc.xml`` in their project, in addition
+to the ``phpdoc.dist.xml``. This configuration file will be used
+instead of the ``phpdoc.dist.xml`` and when added as an ignore
 rule in your VCS it will give developers the ability to have
 settings other than the project defaults.
 
 .. NOTE::
 
-    When present, the file 'docblox.xml' is used instead of 'docblox.dist.xml'
+    When present, the file 'phpdoc.xml' is used instead of 'phpdoc.dist.xml'
     and thus does not supplement it.
 
 Another option is to use the ``-c`` or ``--configuration``
-arguments to tell DocBlox the location of your configuration file.
+arguments to tell phpDocumentor the location of your configuration file.
 This can be convenient for centralized configuration management or
 using different settings per environment.
 
@@ -47,19 +47,19 @@ using different settings per environment.
 Basic configuration
 -------------------
 
-DocBlox follows the *convention over configuration* style and as
+phpDocumentor follows the *convention over configuration* style and as
 such it is only necessary to specify the options which you want to
 change with regard to the defaults.
 
 The easiest way to find out what the defaults are is to look in the
 configuration template, which is located in
-*[DOCBLOX FOLDER]/data/docblox.tpl.xml* or to examine the
+*[PHPDOC FOLDER]/data/phpdoc.tpl.xml* or to examine the
 specifications in this document.
 
 Usually the following configuration suffices for your project::
 
     <?xml version="1.0" encoding="UTF-8" ?>
-    <docblox>
+    <phpdoc>
       <parser>
         <target>data/output</target>
       </parser>
@@ -69,7 +69,7 @@ Usually the following configuration suffices for your project::
       <files>
         <directory>.</directory>
       </files>
-    </docblox>
+    </phpdoc>
 
 *Remember when we told you about there being a parser and transformer in the previous chapter?*
 The configuration expects you to specify for both what their output
@@ -99,7 +99,7 @@ your project is and what files to ignore.
       </files>
 
 It is allowed to use relative paths here; just remember that these
-are relative from the working directory where you execute DocBlox
+are relative from the working directory where you execute phpDocumentor
 in.
 
 It is possible to specify specific files or a specific set of **files**
@@ -108,7 +108,7 @@ using the element. As with the -f parameter it supports wildcards.
 In addition you can also provide entire **directory** trees using the
 element. This also supports the use of wildcards. Please note that
 in contrary to the element that the element is recursive and will
-tell DocBlox to process all files contained in this folder and
+tell phpDocumentor to process all files contained in this folder and
 every subfolder.
 
 In some cases you will have to **ignore** certain files in your project; examples
@@ -120,7 +120,7 @@ the text *test* in it.
 .. WARNING::
 
     the documentation regarding ignore elements is in effect starting with v0.14.0.
-    Previous versions of DocBlox needed to have a element `ignore` in the
+    Previous versions of phpDocumentor needed to have a element `ignore` in the
     document root with child elements called `item`.
 
 The *starting point* or *base directory* for the ignore directive is the *Project
@@ -132,7 +132,7 @@ if not the given folder but the subfolder.
 Reference
 ---------
 
-The DocBlox configuration file contains the following top level
+The phpDocumentor configuration file contains the following top level
 elements which are explained in more detail in the sub-chapters.
 
 -  Title, the title for this project, *may contain HTML*
@@ -166,7 +166,7 @@ Parser
 
 The parser section contains all settings related to the conversion
 of your project's source to the intermediate structure format of
-DocBlox (structure.xml).
+phpDocumentor (structure.xml).
 
 The following fields are supported:
 
@@ -228,7 +228,7 @@ The following fields are supported:
 - *target*, the target location where to store the generated
   documentation files.
 - *external-class-documentation* (*v0.14.0*), with this element you can link the
-  documentation generated by DocBlox to the URL of a library based on the
+  documentation generated by phpDocumentor to the URL of a library based on the
   prefix of the class. This element may be used multiple times and each time
   has a ``prefix`` and ``uri`` element which specify which class to link where.
   The `uri` element supports 2 substitution variables: {CLASS} and
@@ -254,11 +254,11 @@ Logging
 ~~~~~~~
 
 The logging section contains all settings related to the logging of
-information in DocBlox.
+information in phpDocumentor.
 
 .. NOTE::
 
-    DocBlox does not 'care' whether the specified logging paths exist;
+    phpDocumentor does not 'care' whether the specified logging paths exist;
     if they do not then no log files are generated.
 
 The following fields are supported:
@@ -279,10 +279,10 @@ The following fields are supported:
    - debug
    - quiet
 
--  *paths*, contains all folders to where DocBlox may log.
+-  *paths*, contains all folders to where phpDocumentor may log.
 -  *default*, this is the path of the default logging file, the
    name may be augmented with a {DATE} variable to provide a
-   timestamp and {APP_ROOT} to indicate the root of the DocBlox application.
+   timestamp and {APP_ROOT} to indicate the root of the phpDocumentor application.
 -  *errors*, messages with level *debug* are not added to the
    default log but in a separate log file whose path you can declare
    here. As with the *default* log file you can augment the path with
@@ -317,7 +317,7 @@ The following fields are supported:
 
   ::
 
-      <template name="/home/mvriel/Docblox Templates/myTemplate"/>
+      <template name="/home/mvriel/phpDocumentor Templates/myTemplate"/>
 
 - *transformation*, it is also possible to execute additional transformations
   specifically for this project by defining your own transformations here.
@@ -356,7 +356,7 @@ Appendix A: basic configuration example
 ::
 
     <?xml version="1.0" encoding="UTF-8" ?>
-    <docblox>
+    <phpdoc>
       <parser>
         <target>data/output</target>
       </parser>
@@ -366,7 +366,7 @@ Appendix A: basic configuration example
       <files>
         <directory>.</directory>
       </files>
-    </docblox>
+    </phpdoc>
 
 Appendix B: complete configuration example
 ------------------------------------------
@@ -374,7 +374,7 @@ Appendix B: complete configuration example
 ::
 
     <?xml version="1.0" encoding="UTF-8" ?>
-    <docblox>
+    <phpdoc>
         <title>My project</title>
         <parser>
             <target>output</target>
@@ -409,4 +409,4 @@ Appendix B: complete configuration example
             <directory>tes??</directory>
             <ignore>test/*</ignore>
         </files>
-    </docblox>
+    </phpdoc>

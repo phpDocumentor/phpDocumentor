@@ -1,11 +1,11 @@
 Plugins
 =======
 
-DocBlox supports Plugins with which you can expand on the normal behaviour. The
-enhancement is actually done by providing hooks into crucial parts of DocBlox'
+phpDocumentor supports Plugins with which you can expand on the normal behaviour. The
+enhancement is actually done by providing hooks into crucial parts of phpDocumentor'
 process.
 
-The following things are possible with plugins (and are done by DocBlox itself):
+The following things are possible with plugins (and are done by phpDocumentor itself):
 
 * Additional validators with which to check your source code
 * Defining (or redefining) the way tags are interpreted
@@ -25,7 +25,7 @@ Plugins make use of the following components:
 * **ZendX_StandardAutoloader**, autoloader for all classes in a plugin
 * **sfEventDispatcher**, manager that collects dispatched events and distributes
   them to the plugins.
-* **DocBlox_Core_Config**, the configuration manager containing global settings
+* **phpDocumentor_Core_Config**, the configuration manager containing global settings
   but also definitions which plugins are to be loaded with which options.
 
 These components come pre-installed and ready to use. The only thing that you
@@ -34,7 +34,7 @@ need to know is that they are there and what they are used for.
 .. NOTE::
 
     When you want to create your own runner you will have to pass these as
-    dependencies to the plugin manager or use the DocBlox_Bootstrap class to
+    dependencies to the plugin manager or use the phpDocumentor_Bootstrap class to
     bootstrap the basics for you.
 
 How does it work
@@ -45,12 +45,12 @@ and a *component*.
 A component in this context means either:
 
 * `Listeners`_ (or Observer), which is an object that is able to intercept *events*
-  and perform changes on the data of DocBlox. Every listener must be mentioned
+  and perform changes on the data of phpDocumentor. Every listener must be mentioned
   in the plugin's configuration as it must be registered.
 * `Transformation Writers`_, which can be used by Transformations to perform
   actions during the structure-to-output conversion process.
 
-      An example is the *DocBlox_Plugin_Core_Transformer_Writer_Xsl*; which
+      An example is the *phpDocumentor_Plugin_Core_Transformer_Writer_Xsl*; which
       performs the actual creation of a HTML file according to a template.
 
   Contrary to listeners must `Transformation Writers`_ **not** be registered
@@ -63,12 +63,12 @@ using each component.
 Creating a plugin
 -----------------
 
-Creating a plugin is rather simple using the ``plugin:generate`` task of DocBlox.
+Creating a plugin is rather simple using the ``plugin:generate`` task of phpDocumentor.
 This task enables the user to generate a skeleton plugin with a basic listener.
 
 The following command can be used::
 
-    $ docblox plugin:generate -t [PATH] -n [NAME]
+    $ phpdoc plugin:generate -t [PATH] -n [NAME]
 
 After the execution of this command you can find a generated plugin the given
 PATH.
@@ -76,8 +76,8 @@ PATH.
 .. NOTE::
 
     Plugins can be placed anywhere, and do not need to reside in the plugins
-    folder of DocBlox. You can add your custom plugin to your project repository
-    and add a relative path to the plugin in your DocBlox configuration file.
+    folder of phpDocumentor. You can add your custom plugin to your project repository
+    and add a relative path to the plugin in your phpDocumentor configuration file.
 
 After you have created your plugin you need to edit your *plugin.xml* file
 to contain the correct meta-data.
@@ -107,12 +107,12 @@ An example of such a file is given here:
         <description>
             This plugin contains all PHPDoc basic behaviours and validators.
         </description>
-        <class-prefix>DocBlox_Plugin_Core</class-prefix>
+        <class-prefix>phpDocumentor_Plugin_Core</class-prefix>
         <listener>Listener</listener>
         <dependencies>
-            <docblox>
-                <min-version>0.15.0</min-version>
-            </docblox>
+            <phpdoc>
+                <min-version>2.0.0</min-version>
+            </phpdoc>
             <plugin>
                 <name>Core</name>
                 <min-version>1.0.0</min-version>
@@ -124,7 +124,7 @@ An example of such a file is given here:
     </plugin>
 
 As can be seen it contains `Meta data`_ about the plugin itself (*name*, *author*,
-*email*, *description*, *website*) but also instructions for DocBlox how to
+*email*, *description*, *website*) but also instructions for phpDocumentor how to
 invoke or package it (*class-prefix*, *listener*, *dependencies*, *options*).
 
 Meta data
@@ -135,7 +135,7 @@ The following fields may be provided as meta data in the root of the plugin
 =========== ==================================================================
 Field       Description
 =========== ==================================================================
-name        The name of the plugin; must be unique within DocBlox
+name        The name of the plugin; must be unique within phpDocumentor
 version     The version number of this plugin; may be used in the dependencies
 author      The name of the author
 email       The e-mail address for enquiries about the plugin
@@ -146,25 +146,25 @@ description A descriptive text about this plugin
 Class prefix
 ~~~~~~~~~~~~
 
-DocBlox provide autoloading facilities for its plugins but also believes a
+phpDocumentor provide autoloading facilities for its plugins but also believes a
 plugin should be free to be named in whatever way they like.
 To accomplish this a field named *class-prefix* may be added to indicate what
 the prefix is for the classes that are to be located in the folder where the
 configuration file is found.
 
     For example: the configuration file is located in
-    */opt/docblox/plugins/mine/plugin.xml* and the class names start with
+    */opt/phpdoc/plugins/mine/plugin.xml* and the class names start with
     `My_First_Plugin_`. When you have added the prefix to the configuration file
-    and you instantiate My_First_Plugin_Listener, then DocBlox will attempt
-    to locate a file named *Listener.php* in the */opt/docblox/plugins/mine/*
+    and you instantiate My_First_Plugin_Listener, then phpDocumentor will attempt
+    to locate a file named *Listener.php* in the */opt/phpdoc/plugins/mine/*
     folder.
 
-When no class_prefix is given then `DocBlox_Plugin_<ucfirst(name)>` is assumed.
+When no class_prefix is given then `phpDocumentor_Plugin_<ucfirst(name)>` is assumed.
 
 Listener
 ~~~~~~~~
 
-To listen in on events from DocBlox the plugin needs to register a listener class
+To listen in on events from phpDocumentor the plugin needs to register a listener class
 using an equally named field. Multiple listeners may be registered by adding this
 field multiple times.
 
@@ -173,13 +173,13 @@ field multiple times.
     The class prefix should **not** be added to the Listener, this is assumed
     from the class prefix and is done to better support namespaces in the future.
 
-    Currently DocBlox does not support namespaced listener classes; this will
+    Currently phpDocumentor does not support namespaced listener classes; this will
     be added in a future release.
 
 Dependencies
 ~~~~~~~~~~~~
 
-Here you can specify which minimal version of DocBlox is required and if
+Here you can specify which minimal version of phpDocumentor is required and if
 this plugin depends on other plugins which minimal version they should have.
 
 Example:
@@ -187,16 +187,16 @@ Example:
 .. code-block:: xml
 
     <dependencies>
-        <docblox>
-            <min-version>0.15.0</min-version>
-        </docblox>
+        <phpdoc>
+            <min-version>2.0.0</min-version>
+        </phpdoc>
         <plugin>
             <name>Core</name>
             <min-version>1.0.0</min-version>
         </plugin>
     </dependencies>
 
-In the example above you can see that this plugin needs at least DocBlox 0.15.0
+In the example above you can see that this plugin needs at least phpDocumentor 0.15.0
 and the Core plugin version 1.0.0.
 
 .. NOTE::
@@ -211,9 +211,9 @@ Options
 ~~~~~~~
 
 Here you can provide a set of *default* options for your plugin; the user
-has the ability to override these options from the DocBlox configuration file.
+has the ability to override these options from the phpDocumentor configuration file.
 
-    Example: the DocBlox core plugin has an option to switch off Graph
+    Example: the phpDocumentor core plugin has an option to switch off Graph
     generation; the default here can be set to make graphs but the user could
     again disable that.
 
@@ -223,11 +223,11 @@ Listeners
 Basic concept
 ~~~~~~~~~~~~~
 
-With listeners can a plugin author extend the functionality of DocBlox without
+With listeners can a plugin author extend the functionality of phpDocumentor without
 making changes to its core. Listeners provide an implementation of the Observer
 pattern via the sfEventDispatcher class by Fabien Potencier.
 
-From within DocBlox events are dispatched to the Event Dispatcher (which is
+From within phpDocumentor events are dispatched to the Event Dispatcher (which is
 available in a plugin as ``$this->getEventDispatcher()``); which in turn triggers
 any listener methods that are connected to that event.
 
@@ -235,9 +235,9 @@ The process
 ~~~~~~~~~~~
 
 In order to understand how listeners work it is important that you know a little
-about how DocBlox works, and where which events are triggered.
+about how phpDocumentor works, and where which events are triggered.
 
-Below is a complete step-by-step description of the DocBlox flow with emphasize
+Below is a complete step-by-step description of the phpDocumentor flow with emphasize
 on the invocation of plugins.
 
 .. uml::
@@ -274,7 +274,7 @@ on the invocation of plugins.
     "11b. Execute 'transform'" --> "16. Return to 'run'"
 
 1. The user calls on the CLI commandtool to **run** the generation process
-2. DocBlox invokes the Bootstrapper; which initializes the autoloader,
+2. phpDocumentor invokes the Bootstrapper; which initializes the autoloader,
    configuration, Event Dispatcher and Plugin Manager
 3. The Plugin Manager scans the configuration and instantiates any found plugin
    definition.
@@ -294,7 +294,7 @@ on the invocation of plugins.
 6. The **parse** task creates a File collection, which collects all files that
    are to be parsed (or ignored) from the given arguments and configuration.
 7. The **parse** task then sends the File collection to an instance of the
-   DocBlox_Parser class and starts the parsing process.
+   phpDocumentor_Parser class and starts the parsing process.
 8. A File is taken from the collection and is processed by the Static
    Reflection component
 
@@ -309,7 +309,7 @@ on the invocation of plugins.
        the docblock definition.
 
 9. After a file is processed it's contents are written to the parser output format,
-   by default this is the Intermediate XML Structure of DocBlox itself
+   by default this is the Intermediate XML Structure of phpDocumentor itself
 
        Each encountered tag in this process will trigger a
        `reflection.docblock.tag.export`_ event where the final contents can be
@@ -317,7 +317,7 @@ on the invocation of plugins.
 
 10. Steps 8 and 9 will repeat until all files have been processed.
 11. The **run** task will take back control and initiate the **transform** task
-12. The **transform** task instantiates an object of class DocBlox_Transformer
+12. The **transform** task instantiates an object of class phpDocumentor_Transformer
     and start the transformation from temporary structure to the intended
     output format, such as HTML.
 13. Right before the actual transformation will the `transformer.transform.pre`_
@@ -332,7 +332,7 @@ on the invocation of plugins.
 Connecting to events
 ~~~~~~~~~~~~~~~~~~~~
 
-Any event in DocBlox can be connected to a public class method using one of two
+Any event in phpDocumentor can be connected to a public class method using one of two
 actions:
 
 1. Annotations
@@ -354,17 +354,17 @@ Example:
 This argument can contain parameters (accessible as array) which you can
 influence from within your method; please note that any object is passed by
 reference and any change you make will also happen in the further handling
-by DocBlox.
+by phpDocumentor.
 
 This way you can filter or influence the process without having to change
-anything in DocBlox' core.
+anything in phpDocumentor' core.
 Which arguments are supported per event type can be found in their respective
 chapter below.
 
 Annotations
 ###########
 
-Methods in `Listeners`_ can have a special annotation `@docblox-event` in their
+Methods in `Listeners`_ can have a special annotation `@phpdoc-event` in their
 DocBlock. In this annotation is mentioned which event triggers the given method.
 
 Example:
@@ -375,7 +375,7 @@ Example:
     /**
      * My first listener.
      *
-     * @docblox-event transformer.transform.pre
+     * @phpdoc-event transformer.transform.pre
      *
      * @param sfEvent $data
      *
@@ -393,7 +393,7 @@ parameter **source** from the event.
 
 .. NOTE::
 
-    You can have multiple methods which consume the same event. DocBlox will
+    You can have multiple methods which consume the same event. phpDocumentor will
     execute them all in order of appearance in the listener.
 
 Manual connecting
@@ -413,7 +413,7 @@ Example:
 
     protected function configure()
     {
-        $this->logger = new DocBlox_Core_Log(DocBlox_Core_Log::FILE_STDOUT);
+        $this->logger = new phpDocumentor_Core_Log(phpDocumentor_Core_Log::FILE_STDOUT);
 
         // connect the log method of the $this->logger object to the event
         // system.log
@@ -426,14 +426,14 @@ Supported events
 system.log.threshold
 ####################
 
-This event is triggered any time DocBlox wants to change which priority of
+This event is triggered any time phpDocumentor wants to change which priority of
 messages need to logged; it is comparable to the *error_reporting* method of
 PHP.
 
 system.log
 ##########
 
-This event is triggered any time DocBlox logs an action.
+This event is triggered any time phpDocumentor logs an action.
 
 At certain places in the code a logging event is triggered by invoking the method
 ``$this->log()`` (which is defined in the Layer Superclass of each component.).
@@ -454,7 +454,7 @@ a collector or outputting them.
 system.debug
 ############
 
-This event is triggered any time DocBlox logs an action.
+This event is triggered any time phpDocumentor logs an action.
 
 At certain places in the code a logging event is triggered by invoking the method
 ``$this->log()`` (which is defined in the Layer Superclass of each component.).

@@ -1,16 +1,16 @@
 <?php
 /**
- * DocBlox
+ * phpDocumentor
  *
  * PHP Version 5
  *
- * @category   DocBlox
+ * @category   phpDocumentor
  * @package    Parser
  * @subpackage Tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @link       http://phpdoc.org
  */
 
 namespace foo;
@@ -25,12 +25,12 @@ use \ArrayObject;
 /**
  * Namespace test.
  *
- * @category   DocBlox
+ * @category   phpDocumentor
  * @package    Parser
  * @subpackage Tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @link       http://phpdoc.org
  */
 class NamespaceTest
 {
@@ -86,17 +86,16 @@ class NamespaceTest
 }
 
 /**
- * Contains the test data for the
- * docblox parser.
+ * Contains the test data for the phpDocumentor parser.
  *
  * This is a long description
  *
- * @category   DocBlox
+ * @category   phpDocumentor
  * @package    Parser
  * @subpackage Tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @link       http://phpdoc.org
  */
 class DocBlocTest
 {
@@ -110,7 +109,8 @@ class DocBlocTest
    * we want to see if it works.
    *
    * We include a long description as well
-   * that spans multiple lines. {@link http://www.github.com/mvriel/docblox}
+   * that spans multiple lines.
+   * {@link http://www.github.com/phpdocumentor/phpdocumentor2}
    *
    * @return void
    */

@@ -13,10 +13,10 @@
 * ADDED:    New replacement variable {UNPREFIXED_CLASS} for the external class
             documentation feature to get the class part without the given prefix.
 * CHANGED:  Order of precedence for determining what URL to link to for a type;
-            External Class documentation precedes DocBlox docs which precede
+            External Class documentation precedes phpDocumentor docs which precede
             the PHP.net manual. This goes from most explicit to most implicit.
 * FIXED:    Long texts containing XML characters caused issues; altered
-            DocBlox to put those in a CDATA sections.
+            phpDocumentor to put those in a CDATA sections.
 * FIXED:    @deprecated was duplicated during inheritance and thus shown multiple
             times in the reports.
 * FIXED:    Incremental processing failed due to erroneous importing of nodes.
@@ -81,7 +81,7 @@
             to work with templates
 * CHANGED:  Moved templates to external packages
 * ADDED:    New task template:install to automatically install templates
-* ADDED:    Created website templates.docblox-project.org to showcase the
+* ADDED:    Created website templates.phpdoc.org to showcase the
             templates and give the installation commands.
 * ADDED:    New task template:package to package templates
 * FIXED:    Zend template CSS issues.
@@ -133,7 +133,7 @@
 10/02/2011: Version 0.15.0
 --------------------------
 
-* ADDED:    Plugins; DocBlox now fully supports external enhancements. Please
+* ADDED:    Plugins; phpDocumentor now fully supports external enhancements. Please
             see the docs for an expanded description.
 * ADDED:    Sidebar has been renewed for improved style, ux, loading times and
             room for additional elements.
@@ -181,12 +181,12 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 09/04/2011: Version 0.14.0
 --------------------------
 
-* BC-BREAK: DocBlox_Parser::parseFiles() now accepts a DocBlox_Parser_Files instance instead of an array of file names.
-            Anyone using the command line will not notice this BC break but if you use DocBlox_Parser directly this will
-            affect your application. Please check DocBlox_Task_Parse how to use this new object.
+* BC-BREAK: phpDocumentor_Parser::parseFiles() now accepts a phpDocumentor_Parser_Files instance instead of an array of file names.
+            Anyone using the command line will not notice this BC break but if you use phpDocumentor_Parser directly this will
+            affect your application. Please check phpDocumentor_Task_Parse how to use this new object.
             The change has been done to be able to control the file selection process in more detail and spot/fix bugs
             with ignore paths and more.
-* ADDED:    EventDispatcher to coordinate logging efforts and make DocBlox extra extensible.
+* ADDED:    EventDispatcher to coordinate logging efforts and make phpDocumentor extra extensible.
 * CHANGED:  Refactored transformer behaviour to use an abstract base class instead of an interface to support logging
 * CHANGED:  Refactored application architecture to contain components
 * ADDED:    Started work on plugins
@@ -283,8 +283,8 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * REMOVED:  Description excerpts in the sidebar to increase performance and usability.
 * ADDED:    Methods from super classes are now visible in a child class
 * CHANGED:  File overview UI is changed to reduce clutter and be more visual appealing.
-* ADDED:    Allowed visibility can now be specified in the docblox.xml configuration
-            file; see docblox.tpl.xml to see where.
+* ADDED:    Allowed visibility can now be specified in the phpdoc.xml configuration
+            file; see phpdoc.tpl.xml to see where.
 * ADDED:    @author and @license tags now show a link and (more) human-readable
             text; thanks to @dzuelke
 
@@ -344,7 +344,7 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * ADDED:    Support for the @ignore tag (do not document element containing this
             tag at all). Thanks to @kix for contributing this code.
 * FIXED:    Properties and methods in the class overview are now sorted by name.
-* ADDED:    DocBlox returns non-zero codes when failing. Thanks to @trii for
+* ADDED:    phpDocumentor returns non-zero codes when failing. Thanks to @trii for
             contributing the code.
 * ADDED:    Support for documenting the contents of phar archives
 * REMOVED:  Dependency on PEAR component Image_GraphViz
@@ -378,10 +378,10 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 06/12/2011: Version 0.11.0
 --------------------------
 
-* FIXED:    transform.php and parse.php referred to docblox.php but this is no
+* FIXED:    transform.php and parse.php referred to phpdoc.php but this is no
             longer present in a PEAR installation
 * FIXED:    If you accidentally use a CONSTANT as name for a define instead of
-            a literal string will DocBlox throw an error and skip parsing of that
+            a literal string will phpDocumentor throw an error and skip parsing of that
             constant.
 * CHANGED:  Tweaked the splitting of a DocBlock to better support foreign characters
 * ADDED:    theme:list task to show which themes are natively present
@@ -402,14 +402,14 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
             /docs/manual/04 - Anatomy of a DocBlock.md for a complete description.
 * FIXED:    Packaging contained an error where the contents of the batch file were incorrectly generated
 * FIXED:    PHP files without PHP Content (template files) caused a notice
-* FIXED:    When DocBlocks contained a FQCN DocBlox did not link it to the right page
+* FIXED:    When DocBlocks contained a FQCN phpDocumentor did not link it to the right page
 * ADDED:    Tag definitions, this allows content creators to define how tags are added to the structure file
-* FIXED:    DocBlox fatalled when it encountered a folder which it did not have permission to; now it ignores it
+* FIXED:    phpDocumentor fatalled when it encountered a folder which it did not have permission to; now it ignores it
 
 05/08/2011: Version 0.10.0
 --------------------------
 
-* FIXED:    DocBlox no longer throws E_STRICT errors due to the usage of Image_Graphviz
+* FIXED:    phpDocumentor no longer throws E_STRICT errors due to the usage of Image_Graphviz
 * FIXED:    The type information in the method/function signature had an extra | appended
 * FIXED:    Writing of parameters to XML failed with by reference arguments due to the &
 * FIXED:    Arguments with an & were not interpreted by the class detection to create links in the docs
@@ -422,13 +422,13 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * ADDED:    by @benmatselby: Made @link clickable, it opens the given destination
 * CHANGED:  Made the Tasks use a runner so that you can easily re-use tasks in one another (as is done in the project:run task)
 * FIXED:    project:run task was broken; it crashed when you provided any arguments
-* FIXED:    Include path in docblox.php was included twice and a suffixing / was present in one of the added paths
+* FIXED:    Include path in phpdoc.php was included twice and a suffixing / was present in one of the added paths
 * FIXED:    by @benmatselby: Runner was split into a TaskRunner and ApplicationRunner
 * FIXED:    Files who were detected as unknown-8bit encoding were not parsed
 * CHANGED:  README was moved to README.md to clarify that the file uses Markdown support
 * ADDED:    Dependencies to the PEAR package generation for Zend, Markdown and Image_Graphviz
 * REMOVED:  Zend, Markdown and Image_GraphViz from the package.xml files listing
-* FIXED:    Permissions for docblox.php, parser.php and transform.php to have the execute flag
+* FIXED:    Permissions for phpdoc.php, parser.php and transform.php to have the execute flag
 * ADDED:    by @benmatselby: Introduced DocBlock validators where we can add a validation per structure type (method, class, file, etc)
 * FIXED:    @todo was not picked up correctly
 * ADDED:    defines are now detected and parsed as constants
@@ -443,7 +443,7 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * CHANGED:  About anything and everything concerning the theme, it is more clean and feature rich than the previous
 * ADDED:    A new API section in the sidebar showing all elements marked as public API using the @api tags
 * FIXED:    description of @return was double-escaped
-* ADDED:    Templates / Themes can now be created outside the DocBlox directory structure and invoked
+* ADDED:    Templates / Themes can now be created outside the phpDocumentor directory structure and invoked
             by giving an existing path (absolute or relative) to the --template argument.
 * CHANGED:  Merged templates and themes folder to become consistent with external templates and
             because duplication was deemed unnecessary
@@ -453,18 +453,18 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 
 * ADDED:    Templating support; it is now possible to mix and match transformations and actions in a template configuration.
 * FIXED:    Added support for PEAR packages by adding a package.xml and moving directories
-* ADDED:    docblox.bat for use in windows environments (thanks to Tyrael)
-* FIXED:    Invoking docblox from an arbitrary location (to aid int he PEAR package)
-* ADDED:    Redesigned DocBlox template
+* ADDED:    phpdoc.bat for use in windows environments (thanks to Tyrael)
+* FIXED:    Invoking phpDocumentor from an arbitrary location (to aid in the PEAR package)
+* ADDED:    Redesigned phpDocumentor template
 * ADDED:    New template 'frames' for frame display
 * ADDED:    New template 'Zend' for Zend Framework
-* FIXED:    Changed DocBlox to support frames based templates
+* FIXED:    Changed phpDocumentor to support frames based templates
 * FIXED:    Added links for types in the signature of a method
 * FIXED:    Made changes in the generic styling to increase uniformity
 * FIXED:    Github issue 24: FILEINFO_MIME_ENCODING is not supported on PHP 5.2.x
 * FIXED:    Github issue 23: detection whether log file can be written always detected false
-* ADDED:    Move the configuration code from DocBlox_Abstract to DocBlox_Config
-* ADDED:    Moved the logging code from DocBlox_Abstract to DocBlox_Log
+* ADDED:    Move the configuration code from phpDocumentor_Abstract to phpDocumentor_Config
+* ADDED:    Moved the logging code from phpDocumentor_Abstract to phpDocumentor_Log
 * ADDED:    Quiet mode to transform and parse
 * ADDED:    New tasks system (inspired by Symfony 1.x)
 * ADDED:    Transformed parse and transform into tasks
@@ -487,8 +487,8 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * ADDED:    Classes in the class diagram are now clickable and will take you to their documentation page.
 * ADDED:    Markdown support to Long Descriptions in DocBlock
 * ADDED:    Changed directory structure to match PEAR2 standards for recognizability
-* ADDED:    Support for automatic parsing of docblox.xml or docblox.dist.xml config files in the working folder
-* ADDED:    Task 'docblox project:run': executes a parse and transform in one go
+* ADDED:    Support for automatic parsing of phpdoc.xml or phpdoc.dist.xml config files in the working folder
+* ADDED:    Task 'phpdoc project:run': executes a parse and transform in one go
 * FIXED:    Default namespace is no longer shown when just using includes in the global namespace.
 * FIXED:    Class diagram was broken due to changes in namespace handling; fixed this now
 * FIXED:    Navigation now remembers what you have selected
@@ -515,10 +515,10 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * FIXED:    PHP 5.2.6 compatibility was restored; changed in the previous versions broke this
 * FIXED:    Improved file character encoding methods; using forward compatibility (uses finfo when available)
 * FIXED:    renamed config.xml to doctrine.config.xml to help Jenkins config
-* ADDED:    transformer now also checks the version of DocBlox vs. the structure.xml; if  it differs you need to
+* ADDED:    transformer now also checks the version of phpDocumentor vs. the structure.xml; if  it differs you need to
             regenerate your structure.xml
-* FIXED:    DocBlox no longer tries to find the log directory in the working directory but in the DocBlox root
-* ADDED:    Replaced Zend_Reflector_DocBlock with a new DocBlox_Reflector_DocBlock set of classes, this fixes
+* FIXED:    phpDocumentor no longer tries to find the log directory in the working directory but in the phpDocumentor root
+* ADDED:    Replaced Zend_Reflector_DocBlock with a new phpDocumentor_Reflector_DocBlock set of classes, this fixes
             among others the following issues:
             - Multi-line short descriptions were not possible
             - Short descriptions now end if a closing dot is encountered (dot not in a word)
@@ -528,7 +528,7 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
             the next structure. Now the code recognizes bodyless methods and skips trying to find a body.
 * FIXED:    Structures without DocBlocks would use the DocBlock within 10 tokens; sometimes incorrectly using
             the DocBlock of another structure.
-* ADDED:    DocBlox now recognizes inline tags in long descriptions; the data is not yet included in the structure.xml
+* ADDED:    phpDocumentor now recognizes inline tags in long descriptions; the data is not yet included in the structure.xml
 
 02/01/2011: Version 0.7: Enhance docblock support, add new template and improve theming
 ---------------------
@@ -536,7 +536,7 @@ FIXED:      Moved anchors so click-through would no longer end up underneath the
 * FIXED:    Generated paths where set absolute to the file system preventing the running of generated output in a webserver
 * FIXED:    Namespaces where not included in the extend and implement xml nodes
 * FIXED:    Class hierarchy chart entered an endless recursion if a class extended another class with the same name in a different namespace
-* FIXED:    Closures break the parser, DocBlox_Reflection_Function::findName assumes to find one but closures do not have a name. Closures receive the name 'Closure'
+* FIXED:    Closures break the parser, phpDocumentor_Reflection_Function::findName assumes to find one but closures do not have a name. Closures receive the name 'Closure'
 * ADDED:    Line numbers to all objects in the xml output
 * ADDED:    Add links to other classes with the @param and @return annotation information
 * FIXED:    Namespace support was not converting local class notation to a full_name class notation (including namespaces)

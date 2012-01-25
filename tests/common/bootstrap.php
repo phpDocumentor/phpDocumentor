@@ -1,8 +1,8 @@
 <?php
 /**
- * DocBlox
+ * phpDocumentor
  *
- * @category   DocBlox
+ * @category   phpDocumentor
  * @package    Tests
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
@@ -17,5 +17,5 @@ set_include_path(
 require_once('PHPUnit/Extensions/OutputTestCase.php');
 
 // include and initialize the autoloader
-require_once dirname(__FILE__) . '/../../src/DocBlox/Bootstrap.php';
-DocBlox_Bootstrap::createInstance()->registerAutoloader();
+require_once dirname(__FILE__) . '/../../src/phpDocumentor/Bootstrap.php';
+phpDocumentor_Bootstrap::createInstance()->registerAutoloader();

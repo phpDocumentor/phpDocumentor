@@ -1,15 +1,15 @@
 <?php
 /**
- * DocBlox
+ * phpDocumentor
  *
  * PHP Version 5
  *
- * @category  DocBlox
+ * @category  phpDocumentor
  * @package   Search
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://docblox-project.org
+ * @link      http://phpdoc.org
  */
 
 // get search term

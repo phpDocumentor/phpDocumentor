@@ -268,7 +268,7 @@ is OPTIONAL):
 
 Example of a tag name prefixed with a vendor name and hyphen:
 
-    @docblox-event transformer.transform.pre
+    @phpdoc-event transformer.transform.pre
 
 Tag names that are not prefixed with a vendor or namespace MUST be described in
 this specification (see chapter 7) and/or any official addendum.

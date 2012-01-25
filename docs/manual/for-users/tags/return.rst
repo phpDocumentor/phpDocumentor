@@ -30,14 +30,14 @@ method. Exceptions to this recommendation are:
 This tag MUST NOT occur more than once in a :term:`PHPDoc` and is limited to
 :term:`Structural Elements` of type method or function.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements` of type method or function, that are tagged with the
 @return tag, will have an additional section *Returns* in their content description
 that shows the return :term:`Type` and description.
 
-If the return :term:`Type` is a class that is documented by DocBlox, then a link
+If the return :term:`Type` is a class that is documented by phpDocumentor, then a link
 to that class' documentation is provided.
 
 Examples

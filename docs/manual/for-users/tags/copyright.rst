@@ -20,7 +20,7 @@ The format of the description if governed by the coding standard of each
 individual project. It is RECOMMENDED to mention the year or years which are
 covered by this copyright and the organization involved.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements` tagged with the @copyright tag will show a *Copyright*

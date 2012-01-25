@@ -1,29 +1,29 @@
 <?php
 /**
- * DocBlox
+ * phpDocumentor
  *
  * PHP Version 5
  *
- * @category   DocBlox
+ * @category   phpDocumentor
  * @package    Transformer
  * @subpackage Unit_tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @link       http://phpdoc.org
  */
 
 /**
  * Fixture file for different DocBlock tests.
  *
- * @category   DocBlox
+ * @category   phpDocumentor
  * @package    Transformer
  * @subpackage Unit_tests
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://docblox-project.org
+ * @link       http://phpdoc.org
  */
-class DocBlox_Tests_Data_DocBlockFixture
+class phpDocumentor_Tests_Data_DocBlockFixture
 {
   /*
    * The class docblock has two lines of short description AND the short description ends with a space.
@@ -99,7 +99,7 @@ class DocBlox_Tests_Data_DocBlockFixture
   /**
    * This DocBlock tests whether the @link tag is correctly taken and shown.
    *
-   * @link http://www.docblox-project.org
+   * @link http://www.phpdoc.org
    *
    * @return void
    */

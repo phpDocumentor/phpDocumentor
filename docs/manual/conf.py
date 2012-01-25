@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# DocBlox documentation build configuration file, created by
+# phpDocumentor documentation build configuration file, created by
 # sphinx-quickstart on Sun Aug 14 10:15:39 2011.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -42,7 +42,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'DocBlox'
+project = u'phpDocumentor'
 copyright = u'2011, Mike van Riel'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -166,7 +166,7 @@ html_static_path = ['.static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'DocBloxdoc'
+htmlhelp_basename = 'phpDocumentordoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -180,7 +180,7 @@ htmlhelp_basename = 'DocBloxdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'DocBlox.tex', u'DocBlox Documentation',
+  ('index', 'phpDocumentor.tex', u'phpDocumentor Documentation',
    u'Mike van Riel', 'manual'),
 ]
 
@@ -213,7 +213,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'docblox', u'DocBlox Documentation',
+    ('index', 'phpDocumentor', u'phpDocumentor Documentation',
      [u'Mike van Riel'], 1)
 ]
 
@@ -221,7 +221,7 @@ man_pages = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'DocBlox'
+epub_title = u'phpDocumentor'
 epub_author = u'Mike van Riel'
 epub_publisher = u'Mike van Riel'
 epub_copyright = u'2011, Mike van Riel'

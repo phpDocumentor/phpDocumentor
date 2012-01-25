@@ -1,0 +1,376 @@
+{%- block doctype -%}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{%- endblock %}
+{%- set reldelim1 = reldelim1 is not defined and ' &raquo;' or reldelim1 %}
+{%- set reldelim2 = reldelim2 is not defined and ' |' or reldelim2 %}
+{%- set url_root = pathto('', 1) %}
+{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
+
+{%- macro relbar() %}
+<div class="related">
+    <h3>{{ _('Navigation') }}</h3>
+    <ul>
+        {%- for rellink in rellinks %}
+        <li class="right"
+        {% if loop.first %}style="margin-right: 10px"{% endif %}>
+        <a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags }}"
+        {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>
+        {%- if not loop.first %}{{ reldelim2 }}{% endif %}</li>
+        {%- endfor %}
+        {%- block rootrellink %}
+        <li><a href="http://www.phpdoc.org">Homepage</a> {{ reldelim1 }}</li>
+        <li><a href="{{ pathto(master_doc) }}">Documentation</a>{{
+            reldelim1 }}
+        </li>
+        {%- endblock %}
+        {%- for parent in parents %}
+        <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U")
+            }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}
+        </li>
+        {%- endfor %}
+        {%- block relbaritems %} {% endblock %}
+    </ul>
+</div>
+{%- endmacro %}
+
+{%- macro sidebar() %}
+{%- if not embedded %}{% if not theme_nosidebar|tobool %}
+<div class="sphinxsidebar">
+    <div class="sphinxsidebarwrapper">
+        {%- block sidebarlogo %}
+        {%- if logo %}
+        <p class="logo"><a href="{{ pathto(master_doc) }}">
+            <img class="logo" src="{{ pathto('_static/' + logo, 1) }}"
+                 alt="Logo"/>
+        </a></p>
+        {%- endif %}
+        {%- endblock %}
+        {%- block sidebartoc %}
+        {%- if display_toc %}
+        <h3><a href="{{ pathto(master_doc) }}">{{ _('Table Of Contents') }}</a>
+        </h3>
+        {{ toc }}
+        {%- endif %}
+        {%- endblock %}
+        {%- block sidebarrel %}
+        {%- if prev %}
+        <h4>{{ _('Previous topic') }}</h4>
+
+        <p class="topless"><a href="{{ prev.link|e }}"
+                              title="{{ _('previous chapter') }}">{{ prev.title
+            }}</a></p>
+        {%- endif %}
+        {%- if next %}
+        <h4>{{ _('Next topic') }}</h4>
+
+        <p class="topless"><a href="{{ next.link|e }}"
+                              title="{{ _('next chapter') }}">{{ next.title
+            }}</a></p>
+        {%- endif %}
+        {%- endblock %}
+        {%- block sidebarsourcelink %}
+        {%- if show_source and has_source and sourcename %}
+        <h3>{{ _('This Page') }}</h3>
+        <ul class="this-page-menu">
+            <li><a href="{{ pathto('_sources/' + sourcename, true)|e }}"
+                   rel="nofollow">{{ _('Show Source') }}</a></li>
+        </ul>
+        {%- endif %}
+        {%- endblock %}
+        {%- if customsidebar %}
+        {% include customsidebar %}
+        {%- endif %}
+        {%- block sidebarsearch %}
+        {%- if pagename != "search" %}
+        <div id="searchbox" style="display: none">
+            <h3>{{ _('Quick search') }}</h3>
+
+            <form class="search" action="{{ pathto('search') }}" method="get">
+                <input type="text" name="q" size="18"/>
+                <input type="submit" value="{{ _('Go') }}"/>
+                <input type="hidden" name="check_keywords" value="yes"/>
+                <input type="hidden" name="area" value="default"/>
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                {{ _('Enter search terms or a module, class or function name.')
+                }}
+            </p>
+        </div>
+        <script type="text/javascript">$('#searchbox').show(0);</script>
+        {%- endif %}
+        {%- endblock %}
+    </div>
+</div>
+{%- endif %}{% endif %}
+{%- endmacro %}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {{ metatags }}
+    {%- if not embedded and docstitle %}
+    {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+    {%- else %}
+    {%- set titlesuffix = "" %}
+    {%- endif %}
+    <title>{{ title|striptags }}{{ titlesuffix }}</title>
+
+    <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}"
+          type="text/css"/>
+    <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}"
+    type="text/css"/>
+    <link rel="stylesheet"
+    href="{{ pathto('_static/configurationblock.css', 1) }}"
+    type="text/css"/>
+
+    <link rel="Shortcut Icon" href="http://www.phpdoc.org/wp-content/themes/elements-of-seo/images/favicon.ico" type="image/x-icon" />
+<link rel='stylesheet' id='toc_css-css'  href='http://www.phpdoc.org/wp-content/plugins/seo-friendly-table-of-contents/style.css?ver=3.2.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://www.phpdoc.org/wp-includes/js/l10n.js?ver=20101110'></script>
+<script type='text/javascript' src='http://www.phpdoc.org/wp-includes/js/jquery/jquery.js?ver=1.6.1'></script>
+<script type='text/javascript' src='http://www.phpdoc.org/wp-content/plugins/google-analyticator/external-tracking.min.js?ver=6.1.2'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.phpdoc.org/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.phpdoc.org/wp-includes/wlwmanifest.xml" />
+<link rel='index' title='phpDocumentor' href='http://www.phpdoc.org/' />
+<meta name="generator" content="WordPress 3.2.1" />
+<link rel="stylesheet" href="http://www.phpdoc.org/wp-content/plugins/sub-page-summary/sub-page-summary.css" type="text/css" />
+<style type="text/css" media="screen">
+    <!-- @import url(http://www.phpdoc.org/wp-content/themes/elements-of-seo/style.css); -->
+
+    dl.docutils dd
+    {
+        margin-left: 18px;
+    }
+
+    body {
+        font: 12px/18px Verdana, Arial, Helvetica, sans-serif;
+    }
+    div.related {
+        background: inherit;
+        color: inherit;
+    }
+
+    div.related a {
+        color: inherit;
+    }
+
+    div.sphinxsidebar a {
+        color: #069DD5;
+    }
+
+    div.sphinxsidebarwrapper, #content div.sphinxsidebarwrapper h3,  #content h1  {
+        margin-top: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    div.document, div.body h1 {
+        background: inherit;
+    }
+
+    #content h2 {
+        background: inherit;
+        font-size: 160%;
+    }
+
+    pre, span.pre {
+        background-color: black;
+        color: white;
+        font-size: 1.1em;
+        padding: 1px 5px;
+    }
+    pre {
+        padding:  10px;
+    }
+
+    div.sphinxsidebar h4, div.sphinxsidebar h3 a, div.sphinxsidebar ul {
+        color: inherit;
+    }
+
+    .toctree-wrapper ul {
+        list-style: decimal;
+        margin-bottom: 4px;
+    }
+
+    .toctree-wrapper li {
+        margin-left: 18px;
+    }
+
+    .section ul {
+        list-style: circle;
+        margin-bottom: 4px;
+    }
+
+    .section li {
+        margin-left: 18px;
+    }
+
+    blockquote {
+        padding:  10px;
+        background: #f9f9f9;
+        color: gray;
+        border: 1px solid #f0f0f0;
+    }
+
+    #content blockquote p {
+        color: gray;
+    }
+</style>
+
+
+    {%- if not embedded %}
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '{{ url_root }}',
+            VERSION:     '{{ release|e }}',
+            COLLAPSE_MODINDEX: false,
+            FILE_SUFFIX: '{{ file_suffix }}',
+            HAS_SOURCE:  {{ has_source | lower }}
+        };
+    </script>
+    {%- for scriptfile in script_files %}
+    <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
+    <script type="text/javascript"
+            src="{{ pathto('_static/configurationblock.js', 1) }}"></script>
+    {%- endfor %}
+    {%- if use_opensearch %}
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}"
+          href="{{ pathto('_static/opensearch.xml', 1) }}"/>
+    {%- endif %}
+    {%- if favicon %}
+    <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
+    {%- endif %}
+    {%- endif %}
+    {%- block linktags %}
+    {%- if hasdoc('about') %}
+    <link rel="author" title="{{ _('About these documents') }}"
+          href="{{ pathto('about') }}"/>
+    {%- endif %}
+    {%- if hasdoc('genindex') %}
+    <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}"/>
+    {%- endif %}
+    {%- if hasdoc('search') %}
+    <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}"/>
+    {%- endif %}
+    {%- if hasdoc('copyright') %}
+    <link rel="copyright" title="{{ _('Copyright') }}"
+          href="{{ pathto('copyright') }}"/>
+    {%- endif %}
+    <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}"/>
+    {%- if parents %}
+    <link rel="up" title="{{ parents[-1].title|striptags }}"
+          href="{{ parents[-1].link|e }}"/>
+    {%- endif %}
+    {%- if next %}
+    <link rel="next" title="{{ next.title|striptags }}"
+          href="{{ next.link|e }}"/>
+    {%- endif %}
+    {%- if prev %}
+    <link rel="prev" title="{{ prev.title|striptags }}"
+          href="{{ prev.link|e }}"/>
+    {%- endif %}
+    {%- endblock %}
+    {%- block extrahead %} {% endblock %}
+</head>
+<body>
+<div id="wrap">
+
+    <div id="stripe"></div>
+
+    <div id="nav">
+        <ul>
+            <li><a href="http://www.phpdoc.org">Home</a></li>
+            <li class="page_item page-item-9"><a
+                    href="http://www.phpdoc.org/features/"
+                    title="Features">Features</a></li>
+            <li class="page_item page-item-6"><a
+                    href="http://docs.phpdoc.org/"
+                    title="Documentation">Documentation</a></li>
+            <li class="page_item page-item-2"><a
+                    href="http://www.phpdoc.org/about/"
+                    title="About">About</a></li>
+        </ul>
+    </div>
+
+    <div id="masthead">
+        <h1><a href="http://www.phpdoc.org">phpDocumentor</a></h1>
+
+        <h3>PHP 5.3 compatible API Documentation generator aimed at projects of
+            all
+            sizes and Continuous Integration</h3>
+    </div>
+
+    <div id="banner2" onclick="location.href='http://www.phpdoc.org';"
+         style="cursor: pointer;"></div>
+
+    <div id="content">
+        {%- block header %}{% endblock %}
+
+        {%- block relbar1 %}{{ relbar() }}{% endblock %}
+
+        {%- block sidebar1 %} {# possible location for sidebar #} {% endblock %}
+
+        <div class="document">
+            {%- block document %}
+            <div class="documentwrapper">
+                {%- if not embedded %}{% if not theme_nosidebar|tobool %}
+                <div class="bodywrapper">
+                    {%- endif %}{% endif %}
+                    <div class="body">
+                        {% block body %} {% endblock %}
+                    </div>
+                    {%- if not embedded %}{% if not theme_nosidebar|tobool %}
+                </div>
+                {%- endif %}{% endif %}
+            </div>
+            {%- endblock %}
+
+            {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
+            <div class="clearer"></div>
+        </div>
+
+        {%- block footer %}
+        <div class="footer">
+            {%- if hasdoc('copyright') %}
+            {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a
+                href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
+            {%- else %}
+            {% trans copyright=copyright|e %}&copy; Copyright {{ copyright }}.{%
+            endtrans %}
+            {%- endif %}
+            {%- if last_updated %}
+            {% trans last_updated=last_updated|e %}Last updated on {{
+            last_updated }}.{% endtrans %}
+            {%- endif %}
+            {%- if show_sphinx %}
+            {% trans sphinx_version=sphinx_version|e %}Created using <a
+                href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version
+            }}.{% endtrans %}
+            {%- endif %}
+        </div>
+        {%- endblock %}
+
+</div>
+
+<!-- The main column ends  -->
+
+</div>
+<!-- end wrap -->
+
+
+<!-- begin footer -->
+
+<div style="clear:both;"></div>
+<div style="clear:both;"></div>
+
+
+<div id="footer">
+    <p>Elements of SEO is Powered by WordPress | <a
+            href="http://www.alibiproductions.com/html/website-development.html">Accessible
+        Website Development</a> - Alibi Productions</p>
+</div>
+
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 /**
  * No method docblock file
  *
- * @package    DocBlox
+ * @package    phpDocumentor
  * @subpackage Validator
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>
@@ -11,7 +11,7 @@
 /**
  * No method no block class
  *
- * @package    DocBlox
+ * @package    phpDocumentor
  * @subpackage Validator
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  * @author     Ben Selby <benmatselby@gmail.com>

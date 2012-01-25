@@ -24,7 +24,7 @@ Each level in the logical hierarchy MUST separated with a backslash (``\``) to
 be familiar to Namespaces. A hierarchy MAY be of endless depth but it is
 RECOMMENDED to keep the depth at less or equal than six levels.
 
-    Note: DocBlox also allows the underscore (``_``) and dot (``.``) as
+    Note: phpDocumentor also allows the underscore (``_``) and dot (``.``) as
     separator for compatibility with existing projects. Despite this the
     backslash is RECOMMENDED as separator.
 
@@ -47,7 +47,7 @@ depending where it is defined.
 
 This tag MUST NOT occur more than once in a :term:`PHPDoc`.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements` tagged with the @package tag are grouped and
