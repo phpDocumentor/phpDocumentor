@@ -60,10 +60,10 @@ DESC
   $packagexml->setChannel('pear.phpdoc.org');
   $packagexml->setNotes('Please see the CHANGELOG in the root of the application for the latest changes');
 
-  $packagexml->setPhpDep('5.2.4');
+  $packagexml->setPhpDep('5.2.6');
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
-  $packagexml->addPackageDepWithChannel('required', 'phpDocumentor_Template_new_black', 'pear.phpdoc.org', '1.0.0');
+  $packagexml->addPackageDepWithChannel('required', 'phpDocumentor_Template_new_black', 'pear.phpdoc.org', '1.0.3');
   $packagexml->addPackageDepWithChannel('optional', 'PEAR_PackageFileManager2', 'pear.php.net', '1.0.2');
 
   $packagexml->addReplacement('bin/phpdoc.php', 'pear-config', '/usr/bin/env php', 'php_bin');

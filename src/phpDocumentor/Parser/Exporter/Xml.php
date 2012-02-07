@@ -199,6 +199,12 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
             $node = new DOMElement($node_name);
             $parent_element->appendChild($node);
             $node->setAttribute('name', $name);
+            $node->setAttribute(
+                'full_name',
+                $parent_element->nodeName == $node_name
+                    ? $parent_element->getAttribute('full_name').'\\'.$name
+                    : $name
+            );
             $this->generateNamespaceElements($sub_namespaces, $node, $node_name);
         }
     }
