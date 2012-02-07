@@ -203,6 +203,10 @@ class DocBlox_Parser_Exporter_Xml extends DocBlox_Parser_Exporter_Abstract
         }
     }
 
+    /**
+     * @param DOMDocument $dom
+     * @param string      $visibility
+     */
     protected function filterVisibility($dom, $visibility)
     {
         $visibilityQry = '//*[';
@@ -225,11 +229,20 @@ class DocBlox_Parser_Exporter_Xml extends DocBlox_Parser_Exporter_Abstract
         $xpath = new DOMXPath($dom);
         $nodes = $xpath->query($qry);
 
+        /** @var DOMElement $node */
         foreach ($nodes as $node) {
             if (($node->nodeName == 'tag')
                 && ($node->parentNode->parentNode->parentNode)
             ) {
                 $remove = $node->parentNode->parentNode;
+
+                // if a parent was removed before this child we get warnings
+                // that we cannot detect before hand. So we check for a nodeName
+                // and if thar returns null then the node has been deleted in
+                // the mean time.
+                if (@$node->nodeName === null) {
+                    continue;
+                }
                 $node->parentNode->parentNode->parentNode->removeChild($remove);
             } else {
                 $node->parentNode->removeChild($node);
