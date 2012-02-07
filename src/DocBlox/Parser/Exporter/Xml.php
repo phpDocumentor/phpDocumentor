@@ -63,6 +63,7 @@ class DocBlox_Parser_Exporter_Xml extends DocBlox_Parser_Exporter_Abstract
         $this->buildNamespaceTree($this->xml);
         $this->buildMarkerList($this->xml);
         $this->filterVisibility($this->xml, $this->parser->getVisibility());
+        $this->buildProjectInformation($this->xml);
     }
 
     /**
@@ -235,6 +236,21 @@ class DocBlox_Parser_Exporter_Xml extends DocBlox_Parser_Exporter_Abstract
                 $node->parentNode->removeChild($node);
             }
         }
+    }
+
+    /**
+     * Save projected related information to the xml file
+     *
+     * @param DomDocument $dom The xml we are working with before the save
+     *
+     * @return void
+     */
+    protected function buildProjectInformation($dom)
+    {
+        $this->log('Saving all of the project information the xml file needs to store');
+
+        $node = new DOMElement('source_path', $this->parser->getPath());
+        $dom->documentElement->appendChild($node);
     }
 
     /**

@@ -5,75 +5,75 @@
 */
 class DocBlox_ParserTest extends PHPUnit_Framework_TestCase
 {
-  /** @var DocBlox_Parser */
-  protected $fixture = null;
+    /** @var DocBlox_Parser */
+    protected $fixture = null;
 
-  protected function setUp()
-  {
-    $this->fixture = new DocBlox_Parser();
-  }
+    protected function setUp()
+    {
+        $this->fixture = new DocBlox_Parser();
+    }
 
-  public function testForced()
-  {
-    // defaults to false
-    $this->assertEquals(false, $this->fixture->isForced());
+    public function testForced()
+    {
+        // defaults to false
+        $this->assertEquals(false, $this->fixture->isForced());
 
-    $xml = new SimpleXMLElement('<project></project>');
-    $xml->addAttribute('version', DocBlox_Core_Abstract::VERSION);
+        $xml = new SimpleXMLElement('<project></project>');
+        $xml->addAttribute('version', DocBlox_Core_Abstract::VERSION);
 
-    $this->fixture->setExistingXml($xml->asXML());
-    $this->assertEquals(false, $this->fixture->isForced());
+        $this->fixture->setExistingXml($xml->asXML());
+        $this->assertEquals(false, $this->fixture->isForced());
 
-    // if version differs, we force a rebuild
-    $xml['version'] = DocBlox_Core_Abstract::VERSION.'a';
-    $this->fixture->setExistingXml($xml->asXML());
-    $this->assertEquals(true, $this->fixture->isForced());
+        // if version differs, we force a rebuild
+        $xml['version'] = DocBlox_Core_Abstract::VERSION.'a';
+        $this->fixture->setExistingXml($xml->asXML());
+        $this->assertEquals(true, $this->fixture->isForced());
 
-    // switching back should undo the force
-    $xml['version'] = DocBlox_Core_Abstract::VERSION;
-    $this->fixture->setExistingXml($xml->asXML());
-    $this->assertEquals(false, $this->fixture->isForced());
+        // switching back should undo the force
+        $xml['version'] = DocBlox_Core_Abstract::VERSION;
+        $this->fixture->setExistingXml($xml->asXML());
+        $this->assertEquals(false, $this->fixture->isForced());
 
-    // manually setting forced should result in a force
-    $this->fixture->setForced(true);
-    $this->assertEquals(true, $this->fixture->isForced());
+        // manually setting forced should result in a force
+        $this->fixture->setForced(true);
+        $this->assertEquals(true, $this->fixture->isForced());
 
-    $this->fixture->setForced(false);
-    $this->assertEquals(false, $this->fixture->isForced());
-  }
+        $this->fixture->setForced(false);
+        $this->assertEquals(false, $this->fixture->isForced());
+    }
 
-  public function testValidate()
-  {
-    // defaults to false
-    $this->assertEquals(false, $this->fixture->doValidation());
+    public function testValidate()
+    {
+        // defaults to false
+        $this->assertEquals(false, $this->fixture->doValidation());
 
-    $this->fixture->setValidate(true);
-    $this->assertEquals(true, $this->fixture->doValidation());
+        $this->fixture->setValidate(true);
+        $this->assertEquals(true, $this->fixture->doValidation());
 
-    $this->fixture->setValidate(false);
-    $this->assertEquals(false, $this->fixture->doValidation());
-  }
+        $this->fixture->setValidate(false);
+        $this->assertEquals(false, $this->fixture->doValidation());
+    }
 
-  public function testMarkers()
-  {
-    $fixture_data = array('FIXME', 'TODO', 'DOIT');
+    public function testMarkers()
+    {
+        $fixture_data = array('FIXME', 'TODO', 'DOIT');
 
-    // default is TODO and FIXME
-    $this->assertEquals(array('TODO', 'FIXME'), $this->fixture->getMarkers());
+        // default is TODO and FIXME
+        $this->assertEquals(array('TODO', 'FIXME'), $this->fixture->getMarkers());
 
-    $this->fixture->setMarkers($fixture_data);
-    $this->assertEquals($fixture_data, $this->fixture->getMarkers());
-  }
+        $this->fixture->setMarkers($fixture_data);
+        $this->assertEquals($fixture_data, $this->fixture->getMarkers());
+    }
 
-  public function testExistingXml()
-  {
-    // default is null
-    $this->assertEquals(null, $this->fixture->getExistingXml());
+    public function testExistingXml()
+    {
+        // default is null
+        $this->assertEquals(null, $this->fixture->getExistingXml());
 
-    $this->fixture->setExistingXml('<?xml version="1.0" ?><project version="1.0"></project>');
-    $this->assertInstanceOf('DOMDocument', $this->fixture->getExistingXml());
-    $this->assertEquals('1.0', $this->fixture->getExistingXml()->documentElement->getAttribute('version'));
-  }
+        $this->fixture->setExistingXml('<?xml version="1.0" ?><project version="1.0"></project>');
+        $this->assertInstanceOf('DOMDocument', $this->fixture->getExistingXml());
+        $this->assertEquals('1.0', $this->fixture->getExistingXml()->documentElement->getAttribute('version'));
+    }
 
 // TODO: move this to a unit test for DocBlox_Parser_Files
 //  public function testIgnorePatterns()
@@ -103,31 +103,47 @@ class DocBlox_ParserTest extends PHPUnit_Framework_TestCase
 //    $this->assertEquals(array($result_data, $result_data2), $this->fixture->getIgnorePatterns());
 //  }
 
-  public function testPathHandling()
-  {
-    // default is only stripping the opening slash
-    $this->assertEquals(ltrim(__FILE__, '/'), $this->fixture->getRelativeFilename(__FILE__));
+    public function testPathHandling()
+    {
+        // default is only stripping the opening slash
+        $this->assertEquals(ltrim(__FILE__, '/'), $this->fixture->getRelativeFilename(__FILE__));
 
-    // after setting the current directory as root folder; should strip all but filename
-    $this->fixture->setPath(dirname(__FILE__));
-    $this->assertEquals(basename(__FILE__), $this->fixture->getRelativeFilename(__FILE__));
+        // after setting the current directory as root folder; should strip all but filename
+        $this->fixture->setPath(dirname(__FILE__));
+        $this->assertEquals(basename(__FILE__), $this->fixture->getRelativeFilename(__FILE__));
 
-    // when providing a file in a lower directory it cannot parse and thus it is invalid
-    $this->setExpectedException('InvalidArgumentException');
-    $this->fixture->getRelativeFilename(realpath(dirname(__FILE__).'/../phpunit.xml'));
-  }
+        // when providing a file in a lower directory it cannot parse and thus it is invalid
+        $this->setExpectedException('InvalidArgumentException');
+        $this->fixture->getRelativeFilename(realpath(dirname(__FILE__).'/../phpunit.xml'));
+    }
 
-  /**
-   * Make sure the setter can transform string to array and set correct attribute
-   *
-   * @covers DocBlox_Parser::setVisibility
-   *
-   * @return void
-   */
-  public function testSetVisibilityCorrectlySetsAttribute()
-  {
-      $this->fixture->setVisibility('public,protected,private');
-      $this->assertAttributeEquals(array('public', 'protected', 'private'), 'visibility', $this->fixture);
-  }
+    /**
+     * Make sure the setter can transform string to array and set correct attribute
+     *
+     * @covers DocBlox_Parser::setVisibility
+     *
+     * @return void
+     */
+    public function testSetVisibilityCorrectlySetsAttribute()
+    {
+        $this->fixture->setVisibility('public,protected,private');
+        $this->assertAttributeEquals(array('public', 'protected', 'private'), 'visibility', $this->fixture);
+    }
 
+    /**
+     * Test getter for $path on DocBlox_Parser
+     *
+     * @covers DocBlox_Parser::getPath
+     *
+     * @return void
+     */
+    public function testGetPathCanReturnCorrectPath()
+    {
+        $path = '/some/path/';
+        $this->fixture->setPath($path);
+
+        $actual = $this->fixture->getPath();
+
+        $this->assertEquals($path, $actual);
+    }
 }

@@ -76,10 +76,11 @@ class DocBlox_Transformer_Writer_CheckstyleTest extends PHPUnit_Framework_TestCa
           <critical line="22">No short description for property $property</critical>
         </parse_markers>
       </file>
+      <source_path>/path/to/files</source_path>
       </project>',
                 '<?xml version="1.0"?>
 <checkstyle version="1.3.0">
-  <file name="Some/File.php">
+  <file name="/path/to/files/Some/File.php">
     <error line="22" severity="critical" message="No short description for property $property" source="DocBlox.DocBlox.DocBlox"/>
   </file>
 </checkstyle>
@@ -98,10 +99,11 @@ class DocBlox_Transformer_Writer_CheckstyleTest extends PHPUnit_Framework_TestCa
                       <warning line="4">Some kind of warning</warning>
                     </parse_markers>
                   </file>
+                  <source_path>/path/to/files</source_path>
                   </project>',
                 '<?xml version="1.0"?>
 <checkstyle version="1.3.0">
-  <file name="Some/File.php">
+  <file name="/path/to/files/Some/File.php">
     <error line="1" severity="error" message="Some kind of error" source="DocBlox.DocBlox.DocBlox"/>
     <error line="2" severity="critical" message="Some kind of critical issue" source="DocBlox.DocBlox.DocBlox"/>
     <error line="3" severity="notice" message="Some kind of notice" source="DocBlox.DocBlox.DocBlox"/>
