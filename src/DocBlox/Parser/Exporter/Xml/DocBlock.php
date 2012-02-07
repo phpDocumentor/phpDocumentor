@@ -46,6 +46,7 @@ class DocBlox_Parser_Exporter_Xml_DocBlock
     ) {
         $docblock = $element->getDocBlock();
         if (!$docblock) {
+            $parent->setAttribute('package', $element->getDefaultPackageName());
             return;
         }
 
