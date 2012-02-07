@@ -85,7 +85,7 @@ How to use DocBlox?
 
 The easiest way to run docblox is by running the following command when installed via PEAR:
 
-    $ docblox.php run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
+    $ docblox run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
 
 or when you did a manual installation:
 
