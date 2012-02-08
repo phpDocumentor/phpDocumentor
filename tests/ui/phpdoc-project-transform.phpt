@@ -15,7 +15,7 @@ phpDocumentor version %s
 ERROR: The given path "%s" either does not exist or is not readable.
 
 This task will execute the transformation rules described in the given
-template (defaults to 'default') with the given source (defaults to
+template (defaults to 'new_black') with the given source (defaults to
 output/structure.xml) and writes these to the target location (defaults to
 'output').
 
@@ -31,7 +31,7 @@ Usage:
 -c [--config] [STRING] Configuration filename OR "none", when this option is omitted phpDocumentor tries to load the phpdoc.xml or phpdoc.dist.xml from the current working directory
 -s [--source] [STRING] Path where the XML source file is located (optional, defaults to "output/structure.xml")
 -t [--target] [STRING] Path where to store the generated output (optional, defaults to "output")
---template [STRING]    Name of the template to use (optional, defaults to "default")
+--template [STRING]    Name of the template to use (optional, defaults to "new_black")
 -v [--verbose]         Outputs any information collected by this application, may slow down the process slightly
 --parseprivate         Whether to parse DocBlocks marked with @internal tag
 -p [--progressbar]     Whether to show a progress bar; will automatically quiet logging to stdout

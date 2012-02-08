@@ -2,6 +2,9 @@
 --------------------------
 
 * ADDED:    Support for the {@link} tag
+* FIXED:    Elements did not receive a package when they did not have a DocBlock
+            and were thus missing in the package view.
+* FIXED:    Errors when using @access: Node no longer exists
 
 01/10/2012: Version 0.18.1
 --------------------------
