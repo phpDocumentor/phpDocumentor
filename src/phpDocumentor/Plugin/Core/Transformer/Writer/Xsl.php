@@ -110,6 +110,10 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
                     'Processing the file: ' . $element->nodeValue
                     . ' as ' . $filename
                 );
+
+                if (!file_exists(dirname($filename))) {
+                    mkdir(dirname($filename), 0755, true);
+                }
                 $proc->transformToURI($structure, 'file://' . $filename);
             }
         } else {
@@ -119,6 +123,9 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
                 $this->xsl_variables[$variable_name]
                     = $proc->transformToXml($structure);
             } else {
+                if (!file_exists(dirname($artifact))) {
+                    mkdir(dirname($artifact), 0755, true);
+                }
                 $proc->transformToURI($structure, 'file://' . $artifact);
             }
         }
