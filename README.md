@@ -40,7 +40,7 @@ phpDocumentor requires the following:
 
 **Note:**
 If you do not want to install the PEAR or Graphviz dependency you are encouraged to generate your own template and make sure that it does not contain anything related to `Graph`.
-An easier solution might be to edit `data/templates/new_black/template.xml` file and remove every line containing the word `Graph` but this will be undone with every upgrade of phpDocumentor.
+An easier solution might be to edit `data/templates/responsive/template.xml` file and remove every line containing the word `Graph` but this will be undone with every upgrade of phpDocumentor.
 
 Please see the documentation about creating your own templates for more information.
 
@@ -71,10 +71,10 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
    if you feel really adventurous you can try the latest unreleased.
 2. Unzip the downloaded file to the intended destination location.
 3. phpDocumentor comes without templates by default when manually installed, to install
-   the default template call the template installer and install the `new_black`
+   the default template call the template installer and install the `responsive`
    template.
 
-        $ php {INSTALLATION_FOLDER}/bin/phpdoc.php template:install new_black -v 1.0.1
+        $ php {INSTALLATION_FOLDER}/bin/phpdoc.php template:install responsive -v 1.0.0
 
 All other dependencies are included in the phpDocumentor package, so this is really it.
 You might want to create a symbolic link or batch file from a location in your PATH

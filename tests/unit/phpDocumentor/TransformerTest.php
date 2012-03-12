@@ -94,7 +94,7 @@ class phpDocumentor_TransformerTest extends PHPUnit_Framework_TestCase
     public function testAddTemplate()
     {
         $this->fixture->setTemplatesPath(dirname(__FILE__).'/../../../data/templates');
-        $this->fixture->addTemplate('new_black');
+        $this->fixture->addTemplate('responsive');
 
         $this->assertGreaterThan(
             0,

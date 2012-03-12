@@ -3029,9 +3029,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <min>1.4.0</min>
    </package>
    <package>
-    <name>phpDocumentor_Template_new_black</name>
+    <name>phpDocumentor_Template_responsive</name>
     <channel>pear.phpdoc.org</channel>
-    <min>1.0.3</min>
+    <min>1.0.0</min>
    </package>
   </required>
   <optional>

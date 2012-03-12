@@ -63,7 +63,7 @@ DESC
   $packagexml->setPhpDep('5.2.6');
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
-  $packagexml->addPackageDepWithChannel('required', 'phpDocumentor_Template_new_black', 'pear.phpdoc.org', '1.0.3');
+  $packagexml->addPackageDepWithChannel('required', 'phpDocumentor_Template_responsive', 'pear.phpdoc.org', '1.0.3');
   $packagexml->addPackageDepWithChannel('optional', 'PEAR_PackageFileManager2', 'pear.php.net', '1.0.2');
 
   $packagexml->addReplacement('bin/phpdoc.php', 'pear-config', '/usr/bin/env php', 'php_bin');

@@ -29,6 +29,6 @@
     </paths>
   </logging>
   <transformations>
-    <template name="new_black" />
+    <template name="responsive" />
   </transformations>
 </phpdoc>

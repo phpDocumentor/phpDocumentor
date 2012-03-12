@@ -16,7 +16,7 @@
  * Transforms the structure file into the specified output format
  *
  * This task will execute the transformation rules described in the given
- * template (defaults to 'new_black') with the given source (defaults to
+ * template (defaults to 'responsive') with the given source (defaults to
  * output/structure.xml) and writes these to the target location (defaults to
  * 'output').
  *
@@ -55,7 +55,7 @@ class phpDocumentor_Task_Project_Transform extends phpDocumentor_Task_Abstract
         );
         $this->addOption(
             'template', '-s',
-            'Name of the template to use (optional, defaults to "new_black")'
+            'Name of the template to use (optional, defaults to "responsive")'
         );
         $this->addOption(
             'v|verbose', '',
