@@ -89,6 +89,17 @@ class phpDocumentor_GraphViz_Attribute
     }
 
     /**
+     * Returns whether the value contains HTML.
+     *
+     * @return bool
+     */
+    public function isValueInHtml()
+    {
+        $value = $this->getValue();
+        return (bool)(isset($value[0]) && ($value[0] == '<'));
+    }
+
+    /**
      * Returns the attribute definition as is requested by GraphViz.
      *
      * @return string
@@ -101,7 +112,7 @@ class phpDocumentor_GraphViz_Attribute
         }
 
         $value = $this->getValue();
-        if (!isset($value[0]) || $value[0] != '<') {
+        if (!$this->isValueInHtml()) {
             $value = '"' . addslashes($value) . '"';
         }
         return $key . '=' . $value;
