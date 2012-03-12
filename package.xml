@@ -18,7 +18,7 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <active>yes</active>
  </lead>
  <date>2012-03-12</date>
- <time>22:43:00</time>
+ <time>23:06:27</time>
  <version>
   <release>2.0.0a1</release>
   <api>2.0.0a1</api>
@@ -3032,7 +3032,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <package>
     <name>phpDocumentor_Template_responsive</name>
     <channel>pear.phpdoc.org</channel>
-    <min>1.0.3</min>
+    <min>1.0.0</min>
    </package>
   </required>
   <optional>
