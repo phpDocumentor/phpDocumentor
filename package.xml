@@ -17,15 +17,15 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2012-02-13</date>
- <time>19:23:35</time>
+ <date>2012-03-12</date>
+ <time>22:43:00</time>
  <version>
   <release>2.0.0a1</release>
   <api>2.0.0a1</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>alpha</release>
+  <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
@@ -2900,6 +2900,16 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </file>
     </dir> <!-- /tests/ui -->
     <dir name="unit">
+     <dir name="DocBlox">
+      <dir name="GraphViz">
+       <file baseinstalldir="/phpDocumentor" name="AttributeTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="NodeTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /tests/unit/DocBlox/GraphViz -->
+     </dir> <!-- /tests/unit/DocBlox -->
      <dir name="phpDocumentor">
       <dir name="Core">
        <file baseinstalldir="/phpDocumentor" name="AbstractTest.php" role="php">
@@ -3004,15 +3014,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/phpDocumentor" name="README.md" role="data">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
-   <file baseinstalldir="/phpDocumentor" name="structure-phpdoc.xml" role="data">
-    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-   </file>
-   <file baseinstalldir="/phpDocumentor" name="structure-sf2.xml" role="data">
-    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-   </file>
-   <file baseinstalldir="/phpDocumentor" name="test.php" role="php">
-    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-   </file>
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -3031,7 +3032,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <package>
     <name>phpDocumentor_Template_responsive</name>
     <channel>pear.phpdoc.org</channel>
-    <min>1.0.0</min>
+    <min>1.0.3</min>
    </package>
   </required>
   <optional>
@@ -3066,10 +3067,10 @@ Please see the CHANGELOG in the root of the application for the latest changes
     <api>2.0.0a1</api>
    </version>
    <stability>
-    <release>stable</release>
-    <api>stable</api>
+    <release>alpha</release>
+    <api>alpha</api>
    </stability>
-   <date>2012-02-13</date>
+   <date>2012-03-12</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
