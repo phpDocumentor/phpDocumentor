@@ -19,14 +19,14 @@ Glossary
              */
 
     Intermediate Structure File
-        DocBlox generates an intermediate XML file between parsing your source
+        phpDocumentor generates an intermediate XML file between parsing your source
         code and generating the HTML output. This structure file
         (called *structure.xml*) contains the raw analyzed data of your project.
 
-        This same file is also used by DocBlox to do incremental parsing of your
+        This same file is also used by phpDocumentor to do incremental parsing of your
         project by comparing the contents of this file with the content on disk.
 
-        It is thus recommended to keep your structure file and allow DocBlox to
+        It is thus recommended to keep your structure file and allow phpDocumentor to
         re-use the contained information.
 
     PHPDoc

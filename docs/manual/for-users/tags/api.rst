@@ -22,7 +22,7 @@ project. It is however RECOMMENDED that all tagged :term:`Structural Elements` S
 NOT change after publication unless the new version is tagged as breaking
 Backwards Compatibility.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements` tagged with the @api tag will be shown in a separate

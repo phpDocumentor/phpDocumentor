@@ -163,7 +163,6 @@ document are to be interpreted as described in RFC 2119.
 
   See Appendix A for more detailed information about types.
 
-
 ## 4. Basic Principles
 
 * A PHPDoc MUST always be contained in a "DocComment"; the combination of these
@@ -268,7 +267,7 @@ is OPTIONAL):
 
 Example of a tag name prefixed with a vendor name and hyphen:
 
-    @docblox-event transformer.transform.pre
+    @phpdoc-event transformer.transform.pre
 
 Tag names that are not prefixed with a vendor or namespace MUST be described in
 this specification (see chapter 7) and/or any official addendum.
@@ -561,8 +560,6 @@ covered by this copyright and the organization involved.
      */
 
 ### 7.5. @deprecated
-
-#### @deprecated
 
 The @deprecated tag is used to indicate which 'Structural elements' are
 deprecated and are to be removed in a future version.

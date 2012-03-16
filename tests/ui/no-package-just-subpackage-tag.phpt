@@ -1,5 +1,5 @@
 --TEST--
-docblox project:run -f tests/data/NoPackageDocBlock.php -t build
+phpdoc project:run -f tests/data/NoPackageDocBlock.php -t build
 --FILE--
 <?php
 $_SERVER['argc']    = 8;
@@ -14,7 +14,7 @@ $_SERVER['argv'][7] = 'none';
 require_once 'tests/common/ui-include.php';
 ?>
 --EXPECTF--
-DocBlox version %s
+phpDocumentor version %s
 
 %s ERR (3): Cannot have a @subpackage when a @package tag is not present
 %s ERR (3): No page-level DocBlock was found in file NoPackageDocBlock.php

@@ -22,7 +22,7 @@ time.
 Whenever multiple licenses apply MUST there be one @license tag per applicable
 license.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements` tagged with the @license tag will show a link to the
@@ -36,7 +36,7 @@ license forms:
 * FreeBSD
 * MIT
 
-DocBlox supports several permutations of the names above and it is RECOMMENDED
+phpDocumentor supports several permutations of the names above and it is RECOMMENDED
 to try out the form that you desire.
 
 Examples

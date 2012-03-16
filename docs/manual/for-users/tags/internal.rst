@@ -34,7 +34,7 @@ documentation from the source code of this piece of software.
     It is NOT RECOMMENDED to store passwords or security sensitive information
     in your :term:`DocBlock`. Not even with this tag.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements`, or parts of the long description when the tag is

@@ -1,6 +1,6 @@
 <?php
 include('NamespaceTest.php');
-include('../../src/DocBlox/Token.php');
+include('../../src/phpDocumentor/Token.php');
 
 class TypesTest
 {

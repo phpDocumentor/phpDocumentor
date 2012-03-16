@@ -4,7 +4,7 @@ Contributor's Guidelines
 Introduction
 ------------
 
-DocBlox aims to be a high quality Documentation Generation
+phpDocumentor aims to be a high quality Documentation Generation
 Application (DGA) but at the same time wants to give contributors
 freedom when submitting fixes or improvements.
 
@@ -19,9 +19,9 @@ guidelines in part or wholly.
 Github Usage & Branching
 ------------------------
 
-Once you decide you want to contribute to DocBlox (which we really
+Once you decide you want to contribute to phpDocumentor (which we really
 appreciate!) you can fork the project at
-http://github.com/docblox/docblox.
+http://github.com/phpdocumentor/phpdocumentor2.
 
 Please do *not* develop your contribution on your master branch but
 create a separate branch for each feature that you want to
@@ -42,7 +42,7 @@ Coding Standards
 PEAR Coding Standards
 ~~~~~~~~~~~~~~~~~~~~~
 
-DocBlox uses the coding standards as defined by PEAR, which can be
+phpDocumentor uses the coding standards as defined by PEAR, which can be
 found at http://pear.php.net/codingstandards.
 
 It is adviced to check your code using \_PHP*CodeSniffer*; it
@@ -56,14 +56,14 @@ Amendments
 @category, @packages and @subpackages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-DocBlox tries to standardize the way it uses the @package and
+phpDocumentor tries to standardize the way it uses the @package and
 @subpackage to create a consistent and maintainable API
 Documentation. This will also reduce confusion in the naming of the
 File-level packages and Class level packages.
 
 **@category**
 
-The category is always ``DocBlox``; including capital D and B.
+The category is always ``phpDocumentor``; including capital D and B.
 
 **@package**
 
@@ -100,7 +100,7 @@ The following is requested when creating a subpackage:
 Unit testing
 ------------
 
-DocBlox aims to be have at least 90% Code Coverage using unit tests
+phpDocumentor aims to be have at least 90% Code Coverage using unit tests
 using PHPUnit. It is appreciated to include unit tests in your pull
 requests as they also help understand what the contributed code
 exactly does.

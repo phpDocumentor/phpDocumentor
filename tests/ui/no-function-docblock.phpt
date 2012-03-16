@@ -1,5 +1,5 @@
 --TEST--
-docblox project:run -f tests/data/NoFunctionDocBlock.php -t build
+phpdoc project:run -f tests/data/NoFunctionDocBlock.php -t build
 --FILE--
 <?php
 $_SERVER['argc']    = 8;
@@ -15,7 +15,7 @@ require_once 'tests/common/ui-include.php';
 
 ?>
 --EXPECTF--
-DocBlox version %s
+phpDocumentor version %s
 
 %s ERR (3): No DocBlock was found for function %s
 %s ERR (3): No page-level DocBlock was found in file %s

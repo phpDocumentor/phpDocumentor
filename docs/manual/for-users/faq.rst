@@ -8,7 +8,7 @@ I get the following error: preg_match(): Compilation failed: support for \P, \p,
     \P, \p, and \X has not been compiled at offset XX. What does that mean?.
 
 \P, \p and \X are Unicode character selectors of preg_match, like \w but then
-on steroids. To ensure multi-lingual support DocBlox converts all source files
+on steroids. To ensure multi-lingual support phpDocumentor converts all source files
 into UTF-8. preg_match() uses the PCRE library, which is (almost) always
 bundled with your PHP version.
 

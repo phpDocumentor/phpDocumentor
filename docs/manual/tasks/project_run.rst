@@ -9,15 +9,15 @@ Usage
 
 ::
 
-    $ docblox -d|-f <PATH> -t <PATH> [parameters]
+    $ phpdoc -d|-f <PATH> -t <PATH> [parameters]
 
 ::
 
-    $ docblox run -d|-f <PATH> -t <PATH> [parameters]
+    $ phpdoc run -d|-f <PATH> -t <PATH> [parameters]
 
 ::
 
-    $ docblox project:run -d|-f <PATH> -t <PATH> [parameters]
+    $ phpdoc project:run -d|-f <PATH> -t <PATH> [parameters]
 
 Parameters
 ----------
@@ -25,7 +25,7 @@ Parameters
 **-d**
     Provide a comma-separated list of source folders to parse.
 
-    This parameter can be used to tell DocBlox which folders need to be
+    This parameter can be used to tell phpDocumentor which folders need to be
     interpreted. This may be a single relative or absolute path; or a list of
     paths separated by commas.
     When providing a relative path please keep in mind that the path is relative
@@ -33,7 +33,7 @@ Parameters
 
     Wildcards * and ? are supported by this parameter but please keep in mind to
     surround the parameter value with double quotes or your operating system
-    might try to interpret them instead of DocBlox doing so.
+    might try to interpret them instead of phpDocumentor doing so.
 
     This parameter may be used in conjunction with the ``-f`` parameter.
 

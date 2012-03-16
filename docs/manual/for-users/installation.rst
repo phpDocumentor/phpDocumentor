@@ -1,11 +1,11 @@
 Installation
 ============
 
-DocBlox can easily be installed either via PEAR or manually from
+phpDocumentor can easily be installed either via PEAR or manually from
 Github at
-`http://github.com/docblox/docblox <http://github.com/docblox/docblox>`_.
+`http://github.com/phpdocumentor/phpdocumentor2 <http://github.com/phpdocumentor/phpdocumentor2>`_.
 
-Independent to the chosen installation type has DocBlox several
+Independent to the chosen installation type has phpDocumentor several
 dependencies on other software packages. Some of these dependencies
 are only necessary when generating specific parts of the
 documentation, such as PDFs or Graphs. If a dependency is only
@@ -20,47 +20,47 @@ entry below.
 -  wkhtmltopdf, only applicable when generating PDFs (not enabled
    by default)
 
-DocBlox does not install these dependencies and will generate errors if they
+phpDocumentor does not install these dependencies and will generate errors if they
 are missing.
 
 PEAR
 ----
 
-PEAR provides the latest released version of DocBlox and is an easy
+PEAR provides the latest released version of phpDocumentor and is an easy
 way to set up your machine.
 
 You can prepare your PEAR installation using the following commands::
 
-    $ pear channel-discover pear.docblox-project.org
+    $ pear channel-discover pear.phpdoc.org
 
-And to install DocBlox you can use the following command::
+And to install phpDocumentor you can use the following command::
 
-    $ pear install DocBlox/DocBlox
+    $ pear install phpDocumentor/phpDocumentor
 
-When the installation is finished you can invoke the ``docblox``
+When the installation is finished you can invoke the ``phpdoc``
 command from any path in your system. Recommended is to read the
 :doc:`basic-usage` chapter, which will explain how to start using
-DocBlox.
+phpDocumentor.
 
 Manual Installation
 -------------------
 
-At http://docblox-project.org you can find the latest available release as
+At http://phpdoc.org you can find the latest available release as
 download. It is also possible to download the development version
 though this is not recommended for production environments.
 
 The steps necessary for manual installation are:
 
-1. download your preferred installation archive from http://docblox-project.org.
+1. download your preferred installation archive from http://phpdoc.org.
 2. unzip in your favourite location
 3. Depending upon your OS:
 
-   a. **For Linux or Mac OSX**: create a symlink from <DOCBLOX\_PATH>/bin/docblox.php
-      to your bin folder (usually /usr/bin) named ``docblox``.
-   b. **For Windows**: Add <DOCBLOX\_PATH>/bin to your PATH so that you can invoke
-      ``docblox.bat`` from any location.
+   a. **For Linux or Mac OSX**: create a symlink from <PHPDOC\_PATH>/bin/phpdoc.php
+      to your bin folder (usually /usr/bin) named ``phpdoc``.
+   b. **For Windows**: Add <PHPDOC\_PATH>/bin to your PATH so that you can invoke
+      ``phpdoc.bat`` from any location.
 
-When the installation is finished you can invoke the ``docblox``
+When the installation is finished you can invoke the ``phpdoc``
 command from any path in your system. Recommended is to read the
 :doc:`basic-usage` chapter, which will explain how to start using
-DocBlox.
+phpDocumentor.

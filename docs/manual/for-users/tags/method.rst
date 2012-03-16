@@ -29,7 +29,7 @@ be omitted; in which case 'void' is implied.
 @method tags MUST NOT be used in a :term:`PHPDoc` that is not associated with
 a *class* or *interface*.
 
-Effects in DocBlox
+Effects in phpDocumentor
 ------------------
 
 :term:`Structural Elements` of type *class* or *interface* tagged with the

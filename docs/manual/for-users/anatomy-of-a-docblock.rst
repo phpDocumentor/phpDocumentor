@@ -15,7 +15,7 @@ information about an element in your code.
 The information provided in this type of comment can be used by
 developers to gain understanding of the function of a given
 element; but it is also used by IDEs to provide (among others)
-auto-completion and by DocBlox to generate API documentation.
+auto-completion and by phpDocumentor to generate API documentation.
 
 This is an example of a DocBlock as it can be encountered:
 
@@ -120,10 +120,10 @@ Tags
 Tags represent meta-data with which IDEs, external tooling or even the
 application itself know how to interpret an element.
 
-DocBlox understands and uses (almost) all types supported by phpDocumentor.
+phpDocumentor understands and uses (almost) all types supported by phpDocumentor.
 A complete listing is provided in :doc:`list-of-tags`.
 
-In addition DocBlox is able to understand, and link to, the annotations of
+In addition phpDocumentor is able to understand, and link to, the annotations of
 Doctrine2.
 
 Inheritance

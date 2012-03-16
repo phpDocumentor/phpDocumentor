@@ -1,7 +1,7 @@
 @filesource
 ===========
 
-The @deprecated tag is used to tell DocBlox to include the source of the current
+The @deprecated tag is used to tell phpDocumentor to include the source of the current
 file in the parsing results.
 
 Syntax
@@ -12,11 +12,11 @@ Syntax
 Description
 -----------
 
-The @filesource tag tells DocBlox to include the current file in the parsing
+The @filesource tag tells phpDocumentor to include the current file in the parsing
 output. As this only applies to the source code of the entire file MUST this
 tag be used in the file-level :term:`PHPDoc`. Any other location will be ignored.
 
-When this tag is included will DocBlox compress the file contents and encode them
+When this tag is included will phpDocumentor compress the file contents and encode them
 using Base64 so that it can be handled by the transformer. Any template that
 is able to show the source code can then read the ``source`` sub-element in the
 :term:`Intermediate Structure Format` his ``file`` element.
