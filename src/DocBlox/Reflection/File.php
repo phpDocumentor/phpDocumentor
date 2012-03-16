@@ -512,10 +512,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
      */
     public function findDocBlock(DocBlox_Reflection_TokenIterator $tokens)
     {
-        $result   = null;
-        $docblock = $tokens->findNextByType(
-            T_DOC_COMMENT, 30, array(T_CLASS, T_NAMESPACE)
-        );
+        $result = null;
+        $index = $tokens->key();
+
+        $stopTokens = array(T_CLASS, T_NAMESPACE, T_INCLUDE, T_REQUIRE,
+            T_INCLUDE_ONCE, T_REQUIRE_ONCE, T_INTERFACE, T_FUNCTION,
+            T_VARIABLE, T_CONST);
+
+        $docblock = $tokens->gotoNextByType(T_DOC_COMMENT, 30, $stopTokens);
 
         try {
             $result = $docblock
@@ -523,8 +527,14 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
                 : null;
 
             if ($result) {
-                // not a file docblock
-                if (!$result->getTagsByName('package')) {
+                // The first docblock is a file docblock if it has a
+                // package tag, or if the next thing is also a docblock.
+                if (!$result->getTagsByName('package')
+                    && !($nextDocblock = $tokens->gotoNextByType(
+                        T_DOC_COMMENT, 30, $stopTokens
+                    ))
+                ) {
+                    $tokens->seek($index);
                     return null;
                 }
 
@@ -537,6 +547,7 @@ class DocBlox_Reflection_File extends DocBlox_Reflection_DocBlockedAbstract
             $this->log($e->getMessage(), Zend_Log::CRIT);
         }
 
+        $tokens->seek($index);
         return $result;
     }
 
