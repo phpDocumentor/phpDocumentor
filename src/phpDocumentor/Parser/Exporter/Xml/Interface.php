@@ -50,7 +50,7 @@ class phpDocumentor_Parser_Exporter_Xml_Interface
         foreach ($interface->getParentInterfaces() as $parent_interface) {
             $child->appendChild(
                 new DOMElement(
-                    'extends', $interface->expandType($parent_interface, true)
+                    'implements', $interface->expandType($parent_interface, true)
                 )
             );
         }
