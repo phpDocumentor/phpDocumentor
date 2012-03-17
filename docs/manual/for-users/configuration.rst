@@ -313,7 +313,7 @@ The following fields are supported:
   multiple times to combine several templates though usually you only supply one.
   Example::
 
-      <template name="default"/>
+      <template name="responsive"/>
 
   ::
 
@@ -329,7 +329,7 @@ The following fields are supported:
 ::
 
     <transformations>
-        <template name="default" />
+        <template name="responsive" />
     </transformations>
 
 Files
@@ -400,7 +400,7 @@ Appendix B: complete configuration example
             </paths>
         </logging>
         <transformations>
-            <template name="default" />
+            <template name="responsive" />
         </transformations>
         <files>
             <file>test.php</file>
