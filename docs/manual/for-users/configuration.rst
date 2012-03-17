@@ -91,8 +91,8 @@ your project is and what files to ignore.
 ::
 
       <files>
-        <file>test.php</php>
-        <file>bin/*</php>
+        <file>test.php</file>
+        <file>bin/*</file>
         <directory>src</directory>
         <directory>tes??</directory>
         <ignore>test/*</ignore>
@@ -343,8 +343,8 @@ description of the files section.
 ::
 
       <files>
-        <file>test.php</php>
-        <file>bin/*</php>
+        <file>test.php</file>
+        <file>bin/*</file>
         <directory>src</directory>
         <directory>tes??</directory>
         <ignore>test/*</ignore>
@@ -403,8 +403,8 @@ Appendix B: complete configuration example
             <template name="default" />
         </transformations>
         <files>
-            <file>test.php</php>
-            <file>bin/*</php>
+            <file>test.php</file>
+            <file>bin/*</file>
             <directory>src</directory>
             <directory>tes??</directory>
             <ignore>test/*</ignore>
