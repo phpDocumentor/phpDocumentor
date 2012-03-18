@@ -40,7 +40,7 @@ Parameters
 **--sourcecode**
     *Starting with 0.16.0*, Stores the sourcecode of each file with the structure.
 
-    When this parameter is provided will the parser add a compressed,
+    When this parameter is provided the parser will add a compressed,
     base64-encoded version of the parsed file's source as child element of the
     `<file>` element.
     This information can then be picked up by the transformer to generate a
