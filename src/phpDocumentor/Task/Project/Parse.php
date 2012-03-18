@@ -367,7 +367,7 @@ class phpDocumentor_Task_Project_Parse extends phpDocumentor_Task_Abstract
         $files->addFiles($paths);
 
         $paths = array_unique(
-            $this->getDirectory() || !empty($paths)
+            $this->getDirectory()
             ? explode(',', $this->getDirectory())
             : phpDocumentor_Core_Abstract::config()->getArrayFromPath('files/directory')
         );
