@@ -80,7 +80,7 @@ class phpDocumentor_Reflection_DocBlock implements Reflector
     {
         $comment = trim(
             preg_replace(
-                '#[ \t]*(?:\/\*\*|\*\/|\*)?[ ]{0,1}(.*)?#', '$1', $comment
+                '#[ \t]*(?:\/\*\*|\*\/|\*)?[ \t]{0,1}(.*)?#', '$1', $comment
             )
         );
 
