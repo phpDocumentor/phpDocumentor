@@ -380,6 +380,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
                             : $dir;
 
                     if (substr($dir, 0, strlen($base_part)) != $base_part) {
+                        $this->project_root = $base;
                         return $base;
                     }
                 }
