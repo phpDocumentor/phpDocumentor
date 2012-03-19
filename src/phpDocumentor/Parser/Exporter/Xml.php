@@ -62,6 +62,7 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
         $this->buildPackageTree($this->xml);
         $this->buildNamespaceTree($this->xml);
         $this->buildMarkerList($this->xml);
+        $this->buildDeprecationList($this->xml);
         $this->filterVisibility($this->xml, $this->parser->getVisibility());
     }
 
@@ -147,10 +148,60 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
     protected function buildMarkerList(DOMDocument $dom)
     {
         $this->log('Collecting all marker types');
+
         foreach ($this->parser->getMarkers() as $marker) {
-            $node = new DOMElement('marker', strtolower($marker));
+
+            $marker = strtolower($marker);
+            $nodes = $this->getNodeListForTagBasedQuery($dom, $marker);
+
+            $node = new DOMElement('marker', $marker);
             $dom->documentElement->appendChild($node);
+            $node->setAttribute('count', $nodes->length);
         }
+    }
+
+    /**
+     * Adds a node to the xml for deprecations and the count value
+     *
+     * @param DOMDocument $dom Markers are extracted and a summary inserted in
+     *                         this object.
+     *
+     * @return void
+     */
+    protected function buildDeprecationList(DOMDocument $dom)
+    {
+        $this->log('Counting all deprecations');
+
+        $nodes = $this->getNodeListForTagBasedQuery($dom, 'deprecated');
+
+        $node = new DOMElement('deprecated');
+        $dom->documentElement->appendChild($node);
+        $node->setAttribute('count', $nodes->length);
+    }
+
+    /**
+     * Build a tag based query string and return result
+     *
+     * @param DOMDocument $dom    Markers are extracted and a summary inserted in
+     *                            this object.
+     * @param string      $marker The marker we are searching for throughout xml
+     *
+     * @return DOMNodeList
+     */
+    protected function getNodeListForTagBasedQuery($dom ,$marker)
+    {
+        $xpath = new DOMXPath($dom);
+
+        $query = '/project/file/markers/'.$marker.'|';
+        $query .= '/project/file/docblock/tag[@name="'.$marker.'"]|';
+        $query .= '/project/file/class/docblock/tag[@name="'.$marker.'"]|';
+        $query .= '/project/file/class/*/docblock/tag[@name="'.$marker.'"]|';
+        $query .= '/project/file/interface/docblock/tag[@name="'.$marker.'"]|';
+        $query .= '/project/file/interface/*/docblock/tag[@name="'.$marker.'"]|';
+        $query .= '/project/file/function/docblock/tag[@name="'.$marker.'"]';
+
+        $nodes = $xpath->query($query);
+        return $nodes;
     }
 
     /**
@@ -210,8 +261,13 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
     }
 
     /**
-     * @param DOMDocument $dom
-     * @param string      $visibility
+     * Filter the function visibility based on options used
+     *
+     * @param DOMDocument $dom        Markers are extracted and a summary inserted in
+     *                                this object.
+     * @param string      $visibility The visibility we want to filter on
+     *
+     * @return void
      */
     protected function filterVisibility($dom, $visibility)
     {
