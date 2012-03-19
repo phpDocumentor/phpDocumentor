@@ -1,27 +1,27 @@
 <?php
 /**
- * DocBlox
+ * phpDocumentor
  *
  * PHP Version 5
  *
- * @package   DocBlox\Parser\Tests
+ * @package   phpDocumentor\Parser\Tests
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://docblox-project.org
+ * @link      http://phpDocumentor-project.org
  */
 
 /**
  * Test for the the class representing a GraphViz node.
  *
- * @package DocBlox\Graphviz\Tests
+ * @package phpDocumentor\Graphviz\Tests
  * @author  Mike van Riel <mike.vanriel@naenius.com>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://docblox-project.org
+ * @link    http://phpDocumentor-project.org
  */
-class DocBlox_GraphViz_NodeTest extends PHPUnit_Framework_TestCase
+class phpDocumentor_GraphViz_NodeTest extends PHPUnit_Framework_TestCase
 {
-    /** @var DocBlox_GraphViz_Node */
+    /** @var phpDocumentor_GraphViz_Node */
     protected $fixture = null;
 
     /**
@@ -31,7 +31,7 @@ class DocBlox_GraphViz_NodeTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->fixture = new DocBlox_GraphViz_Node('name', 'label');
+        $this->fixture = new phpDocumentor_GraphViz_Node('name', 'label');
     }
 
     public function testCreate()
