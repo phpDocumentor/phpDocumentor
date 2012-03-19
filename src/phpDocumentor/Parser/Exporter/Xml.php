@@ -198,7 +198,8 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
         $query .= '/project/file/class/*/docblock/tag[@name="'.$marker.'"]|';
         $query .= '/project/file/interface/docblock/tag[@name="'.$marker.'"]|';
         $query .= '/project/file/interface/*/docblock/tag[@name="'.$marker.'"]|';
-        $query .= '/project/file/function/docblock/tag[@name="'.$marker.'"]';
+        $query .= '/project/file/function/docblock/tag[@name="'.$marker.'"]|';
+        $query .= '/project/file/constant/docblock/tag[@name="'.$marker.'"]';
 
         $nodes = $xpath->query($query);
         return $nodes;
