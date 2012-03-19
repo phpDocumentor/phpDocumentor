@@ -7,3 +7,4 @@
            issues from unexpected whitespace.
 * FIXED:   #398, Interfaces were not inherited correctly
 * CHANGED: Several documentation improvements
+* FIXED:   #379, alternative formats for @method were not recognized

@@ -54,8 +54,8 @@ class phpDocumentor_Reflection_DocBlock_Tag_Method
         //    until a ) and whitespace : as method name with signature
         // 5. any remaining text : as description
         if (preg_match(
-            '/^[\s]*(?:([\w_]+)[\s]+)?(?:[\w_]+\(\)[\s]+)?([\w_]+)\(([^\)]*)\)'
-            .'[\s]+(.*)/u',
+            '/^[\s]*(?:([\w_\\\\]+)[\s]+)?(?:[\w_]+\(\)[\s]+)?([\w_\\\\]+)\(([^\)]*)\)'
+            .'[\s]*(.*)/u',
             $content,
             $matches
         )) {
@@ -66,6 +66,10 @@ class phpDocumentor_Reflection_DocBlock_Tag_Method
                 $this->arguments,
                 $this->description
             ) = $matches;
+            if (!$this->type)
+            {
+                $this->type = 'void';
+            }
         } else {
             echo date('c') . ' ERR (3): @method contained invalid contents: '
                 . $this->content . PHP_EOL;
