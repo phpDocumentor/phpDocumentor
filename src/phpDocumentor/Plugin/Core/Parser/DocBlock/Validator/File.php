@@ -38,7 +38,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_File
     public function isValid()
     {
         $filename = $this->source->getFilename();
-        if (!$this->docblock || !$this->docblock->hasTag('package')) {
+        if (!$this->docblock) {
             $this->logParserError(
                 'ERROR', 50007, $this->lineNumber, array($filename)
             );
