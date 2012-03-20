@@ -54,7 +54,7 @@ class phpDocumentor_Reflection_DocBlock_Tag_Method
         //    until a ) and whitespace : as method name with signature
         // 5. any remaining text : as description
         if (preg_match(
-            '/^[\s]*(?:([\w_\\\\]+)[\s]+)?(?:[\w_]+\(\)[\s]+)?([\w_\\\\]+)\(([^\)]*)\)'
+            '/^[\s]*(?:([\w\|_\\\\]+)[\s]+)?(?:[\w_]+\(\)[\s]+)?([\w\|_\\\\]+)\(([^\)]*)\)'
             .'[\s]*(.*)/u',
             $content,
             $matches

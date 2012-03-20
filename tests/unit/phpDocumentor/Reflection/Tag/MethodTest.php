@@ -97,6 +97,14 @@ class phpDocumentor_Reflection_DocBlock_Tag_MethodTest extends PHPUnit_Framework
                 true, 'foo', 'int', true, ''
             ),
             array(
+                'null|int foo(int $a, int $b)',
+                true, 'foo', 'null|int', true, ''
+            ),
+            array(
+                'int foo(null|int $a, int $b)',
+                true, 'foo', 'int', true, ''
+            ),
+            array(
                 '\Exception foo() foo(Exception $a, Exception $b)',
                 true, 'foo', '\Exception', true, ''
             ),
