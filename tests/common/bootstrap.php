@@ -12,6 +12,7 @@ set_include_path(
   get_include_path()
   . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../..')
   . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../../src')
+  . PATH_SEPARATOR . realpath(dirname(__FILE__) . '/../../lib/pear-core')
 );
 
 require_once('PHPUnit/Extensions/OutputTestCase.php');
