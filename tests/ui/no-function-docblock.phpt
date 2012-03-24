@@ -1,5 +1,5 @@
 --TEST--
-phpdoc project:run -f tests/data/NoFunctionDocBlock.php -t build
+phpdoc project:run -f tests/data/NoFunctionDocBlock.php -t build --template stub
 --FILE--
 <?php
 $_SERVER['argc']    = 8;
@@ -10,6 +10,8 @@ $_SERVER['argv'][4] = '-t';
 $_SERVER['argv'][5] = dirname(__FILE__) . '/../../build/';
 $_SERVER['argv'][6] = '--config';
 $_SERVER['argv'][7] = 'none';
+$_SERVER['argv'][8] = '--template';
+$_SERVER['argv'][9] = 'stub';
 
 require_once 'tests/common/ui-include.php';
 
