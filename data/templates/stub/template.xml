@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <author>Mike van Riel</author>
+  <email>mike.vanriel@naenius.com</email>
+  <version>1.0.0</version>
+  <copyright>Mike van Riel 2012</copyright>
+  <description><![CDATA[
+      This is the 'base' look and feel for phpDocumentor, strictly for unit tests.
+  ]]></description>
+  <transformations>
+        <transformation query="" writer="xsl" source="templates/stub/index.xsl" artifact="index.html"/>
+  </transformations>
+</template>
