@@ -265,19 +265,21 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
         if (substr($path, 0, 7) != 'phar://') {
             // search file(s) with the given expressions
             $result = glob($path);
-            foreach ($result as $file) {
-                // if the path is not a file OR it's extension does not match
-                // the given, then do not process it.
-                if (!is_file($file) || (!empty($this->allowed_extensions)
-                    && !in_array(
-                        strtolower(pathinfo($file, PATHINFO_EXTENSION)),
-                        $this->allowed_extensions
-                    ))
-                ) {
-                    continue;
-                }
+            if (!empty($result)) {
+                foreach ($result as $file) {
+                    // if the path is not a file OR it's extension does not match
+                    // the given, then do not process it.
+                    if (!is_file($file) || (!empty($this->allowed_extensions)
+                        && !in_array(
+                            strtolower(pathinfo($file, PATHINFO_EXTENSION)),
+                            $this->allowed_extensions
+                        ))
+                    ) {
+                        continue;
+                    }
 
-                $this->files[] = realpath($file);
+                    $this->files[] = realpath($file);
+                }
             }
         } else {
             // only process if it is a file and it matches the allowed extensions

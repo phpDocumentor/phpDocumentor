@@ -59,6 +59,12 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
 
         $proc = new XSLTProcessor();
         $proc->importStyleSheet($xsl);
+        if (empty($structure->documentElement)) {
+            throw new phpDocumentor_Transformer_Exception(
+                'Specified DOMDocument lacks documentElement, cannot transform'
+            );
+        }
+
         $proc->setParameter(
             '', 'title', $structure->documentElement->getAttribute('title')
         );

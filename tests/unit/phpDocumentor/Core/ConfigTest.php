@@ -33,7 +33,7 @@ class phpDocumentor_Core_ConfigTest extends PHPUnit_Framework_TestCase
 
     // test whether the templates are loaded
     $this->assertTrue(isset($this->fixture->templates));
-    $this->assertTrue(isset($this->fixture->templates->responsive));
+    $this->assertTrue(isset($this->fixture->templates->stub));
   }
 
 }
