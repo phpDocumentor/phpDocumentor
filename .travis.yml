@@ -6,4 +6,5 @@ script: phpunit --coverage-text
 before_script: 
  - pyrus install -f http://download.pear.php.net/package/PEAR-1.9.4.tgz
  - git clone https://github.com/phpDocumentor/template.responsive.git lib/template.responsive
+ - pyrus channel-discover pear.phpdoc.org
  - pyrus install -f lib/template.responsive/package.xml
