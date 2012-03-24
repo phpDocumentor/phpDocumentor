@@ -3,4 +3,4 @@ php:
   - 5.3
   - 5.4
 script: phpunit --coverage-text
-before_script: git clone git://github.com/pear/pear-core.git lib
+before_script: git clone git://github.com/pear/pear-core.git lib/pear-core
