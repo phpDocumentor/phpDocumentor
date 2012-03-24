@@ -4,4 +4,4 @@ php:
   - 5.4
 script: phpunit --coverage-text
 before_script: 
- - pyrus install http://download.pear.php.net/package/PEAR-1.9.4.tgz
+ - pyrus install -fa http://download.pear.php.net/package/PEAR-1.9.4.tgz
