@@ -66,7 +66,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
         }
 
         $proc->setParameter(
-             '', 'title', $structure->documentElement->getAttribute('title')
+            '', 'title', $structure->documentElement->getAttribute('title')
         );
         $proc->setParameter(
             '', 'root',
