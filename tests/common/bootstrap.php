@@ -15,7 +15,6 @@ set_include_path(
 );
 
 require_once('PHPUnit/Extensions/OutputTestCase.php');
-require_once('PEAR/RunTest.php');
 
 // include and initialize the autoloader
 require_once dirname(__FILE__) . '/../../src/phpDocumentor/Bootstrap.php';
