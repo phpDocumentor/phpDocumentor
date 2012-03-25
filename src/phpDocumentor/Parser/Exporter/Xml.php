@@ -96,7 +96,7 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
         $packages = array();
         $qry = $xpath->query('//@package');
         for ($i = 0; $i < $qry->length; $i++) {
-            if (!isset($packages[$qry->item($i)->nodeValue])) {
+            if (isset($packages[$qry->item($i)->nodeValue])) {
                 continue;
             }
 
