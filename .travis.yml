@@ -3,7 +3,9 @@ php:
   - 5.3
   - 5.4
 
-script: phpunit --coverage-text
+script:
+ - phpunit --coverage-text
+ - pyrus package
 
 before_script: 
  - pyrus install -f http://download.pear.php.net/package/PEAR-1.9.4.tgz
