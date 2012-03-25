@@ -342,18 +342,30 @@ class phpDocumentor_Transformer extends phpDocumentor_Transformer_Abstract
     /**
      * Converts a source file name to the name used for generating the end result.
      *
-     * @param string $file Path of the file starting from the project root.
+     * This method strips down the given $name using the following rules:
+     *
+     * * if the $name is postfixed with .php then that is removed
+     * * any occurance of \ or DIRECTORY_SEPARATOR is replaced with .
+     * * any dots that the name starts or ends with is removed
+     * * the result is postfixed with .html
+     *
+     * @param string $name Name to convert.
      *
      * @return string
      */
-    public function generateFilename($file)
+    public function generateFilename($name)
     {
-        $info = pathinfo(
+        if (substr($name, -4) == '.php') {
+            $name = substr($name, 0, -4);
+        }
+
+        return trim(
             str_replace(
-                DIRECTORY_SEPARATOR, '_', trim($file, DIRECTORY_SEPARATOR . '.')
-            )
-        );
-        return 'db_' . $info['filename'] . '.html';
+                array(DIRECTORY_SEPARATOR, '\\'),
+                '.',
+                trim($name, DIRECTORY_SEPARATOR . '.')
+            ), '.'
+        ) . '.html';
     }
 
     /**
