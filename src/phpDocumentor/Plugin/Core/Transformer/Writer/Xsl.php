@@ -105,11 +105,19 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
                 );
 
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);
+                $file_name = $transformation->getTransformer()->generateFilename(
+                    $element->nodeValue
+                );
+
+                // provide backward compatibility with the other templates
+                if (!trim($transformation->getArtifact(), '\\/'))
+                {
+                    $file_name = 'db_'.$file_name;
+                }
+
                 $filename = str_replace(
                     '{$' . $element->nodeName . '}',
-                    $transformation->getTransformer()->generateFilename(
-                        $element->nodeValue
-                    ),
+                    $file_name,
                     $artifact
                 );
                 $this->log(
