@@ -3,10 +3,14 @@ php:
   - 5.3
   - 5.4
 
-script: phpunit --coverage-text
+script:
+ - phpunit --coverage-text
+ - pyrus package
 
 before_script: 
  - pyrus install -f http://download.pear.php.net/package/PEAR-1.9.4.tgz
+ - pyrus install -f -p pyrus/Pyrus_Developer
+ - pyrus install -f pear2.php.net/PEAR2_Exception
  - git clone https://github.com/phpDocumentor/template.responsive.git lib/template.responsive
  - pyrus channel-discover pear.phpdoc.org
  - pyrus install -f lib/template.responsive/package.xml

@@ -2900,7 +2900,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </file>
     </dir> <!-- /tests/ui -->
     <dir name="unit">
-     <dir name="DocBlox">
+     <dir name="phpDocumentor">
       <dir name="GraphViz">
        <file baseinstalldir="/phpDocumentor" name="AttributeTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />

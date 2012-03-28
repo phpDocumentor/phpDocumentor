@@ -136,7 +136,7 @@ class phpDocumentor_TransformerTest extends PHPUnit_Framework_TestCase
         $filename = 'directory' . DIRECTORY_SEPARATOR . 'directory2'
             . DIRECTORY_SEPARATOR . 'file.php';
         $this->assertEquals(
-            'db_directory_directory2_file.html',
+            'directory.directory2.file.html',
             $this->fixture->generateFilename($filename)
         );
     }
