@@ -117,12 +117,6 @@ the *ignore* element and provide a pattern (not a path) to ignore.
 This if you provide ``*test*`` it will ignore any file or directory containing
 the text *test* in it.
 
-.. WARNING::
-
-    the documentation regarding ignore elements is in effect starting with v0.14.0.
-    Previous versions of phpDocumentor needed to have a element `ignore` in the
-    document root with child elements called `item`.
-
 The *starting point* or *base directory* for the ignore directive is the *Project
 Root*; which is the highest folder that all files share in common.
 Thus if you provide a single directory and that does not contain any parseable
