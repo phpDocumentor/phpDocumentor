@@ -140,6 +140,11 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
                 $namespace, $namespace_aliases, $xml, $tag
             );
             break;
+        case 'covers':
+            $def = new phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Covers(
+                $namespace, $namespace_aliases, $xml, $tag
+            );
+            break;
         case 'link':
             $def = new phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Link(
                 $namespace, $namespace_aliases, $xml, $tag

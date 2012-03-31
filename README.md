@@ -108,7 +108,7 @@ Please consult the documentation to see the format and supported options.
 Documentation
 -------------
 
-For more detailed information you can check our online documentation at [http://docs.phpdoc.org](http://docs.phpdoc.org).
+For more detailed information you can check our online documentation at [http://phpdoc.org/docs/](http://phpdoc.org/docs/).
 
 Known issues
 ------------

@@ -10,3 +10,4 @@
 * FIXED:   #379, alternative formats for @method were not recognized
 * FIXED:   GH #379: OR (|) operator was not supported for @method annotation;
            added support
+* ADDED:   Support for PHPUnit's @covers annotation thanks to @ClockWerx

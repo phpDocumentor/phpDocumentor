@@ -13,7 +13,7 @@
  */
 
 /**
- * Reflection class for a @uses tag in a Docblock.
+ * Reflection class for a @covers tag in a Docblock.
  *
  * @category phpDocumentor
  * @package  Reflection
@@ -21,7 +21,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Reflection_DocBlock_Tag_Uses
+class phpDocumentor_Reflection_DocBlock_Tag_Covers
     extends phpDocumentor_Reflection_DocBlock_Tag_See
 {
 

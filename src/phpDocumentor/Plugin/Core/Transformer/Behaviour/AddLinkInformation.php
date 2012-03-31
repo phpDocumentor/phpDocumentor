@@ -104,7 +104,8 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
         // `http://`, `https://` or `www.`. if not: also convert those.
         $qry = $xpath->query(
             '//docblock/tag[@name="throw" or @name="throws" or @name="see" '
-            . 'or @name="uses" or @name="used_by" or @name="inherited_from"]'.
+            . 'or @name="uses" or @name="used_by" or @name="inherited_from" '
+            . 'or @name="covers" or @name="covered_by"]'.
             '|(//docblock/tag[@name="link" '
             . 'and (substring(@link,1,7) != \'http://\' '
             . 'or substring(@link,1,4) != \'www.\''
@@ -118,6 +119,8 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
                 break;
             case 'uses':
             case 'used_by':
+            case 'covers':
+            case 'covered_by':
             case 'see':
             case 'inherited_from':
                 $name = $element->getAttribute('refers');
