@@ -109,16 +109,8 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
                     $element->nodeValue
                 );
 
-                // provide backward compatibility with the other templates
-                if (!trim($transformation->getArtifact(), '\\/'))
-                {
-                    $file_name = 'db_'.$file_name;
-                }
-
                 $filename = str_replace(
-                    '{$' . $element->nodeName . '}',
-                    $file_name,
-                    $artifact
+                    '{$' . $element->nodeName . '}', $file_name, $artifact
                 );
                 $this->log(
                     'Processing the file: ' . $element->nodeValue

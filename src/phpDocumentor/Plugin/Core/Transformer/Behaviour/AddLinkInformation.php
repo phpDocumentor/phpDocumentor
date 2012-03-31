@@ -77,7 +77,8 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             ) {
                 $node->setAttribute('link', $link);
             } else if (isset($class_paths[$type])) {
-                $file_name = $this->generateFilename($class_paths[$type]);
+                $file_name = $this->getTransformer()
+                    ->generateFilename($class_paths[$type]);
                 $node->setAttribute('link', $file_name . '#' . $type);
             } else if (isset($declared_classes[$bare_type])) {
                 // cache reflection calls since these can be expensive
@@ -132,7 +133,8 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             $node_value = explode('::', $name);
 
             if (isset($class_paths[$node_value[0]])) {
-                $file_name = $this->generateFilename($class_paths[$node_value[0]]);
+                $file_name = $this->getTransformer()
+                    ->generateFilename($class_paths[$node_value[0]]);
                 $element->setAttribute('link', $file_name . '#' . $name);
             }
         }
@@ -204,25 +206,4 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             );
         }
     }
-
-    /**
-     * Converts a source file name to the name used for generating the end result.
-     *
-     * @param string $file Base name of the source file.
-     *
-     * @return string
-     */
-    public function generateFilename($file)
-    {
-        $info = pathinfo(
-            str_replace(
-                DIRECTORY_SEPARATOR,
-                '_',
-                trim($file, DIRECTORY_SEPARATOR . '.')
-            )
-        );
-
-        return 'db_' . $info['filename'] . '.html';
-    }
-
 }

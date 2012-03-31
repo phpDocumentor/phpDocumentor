@@ -52,31 +52,12 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_GeneratePaths extends
             $files[] = $element->getAttribute('path');
             $element->setAttribute(
                 'generated-path',
-                $this->generateFilename($element->getAttribute('path'))
+                $this->getTransformer()
+                    ->generateFilename($element->getAttribute('path'))
             );
         }
 
         return $xml;
-    }
-
-    /**
-     * Converts a source file name to the name used for generating the end result.
-     *
-     * @param string $file Path / filename to convert.
-     *
-     * @return string
-     */
-    public function generateFilename($file)
-    {
-        $info = pathinfo(
-            str_replace(
-                DIRECTORY_SEPARATOR,
-                '_',
-                trim($file, DIRECTORY_SEPARATOR . '.')
-            )
-        );
-
-        return 'db_' . $info['filename'] . '.html';
     }
 
 }
