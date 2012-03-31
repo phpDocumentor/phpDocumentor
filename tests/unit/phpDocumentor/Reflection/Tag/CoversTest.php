@@ -22,7 +22,7 @@ class phpDocumentor_Reflection_DocBlock_Tag_CoversTest extends PHPUnit_Framework
 {
     /**
      * Test that the phpDocumentor_Reflection_DocBlock_Tag_Covers can create a link
-     * for the @covers doc block
+     * for the covers doc block
      *
      * @param string $type
      * @param string $content
