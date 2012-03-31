@@ -13,7 +13,7 @@
  */
 
 /**
- * Reflection class for a @see tag in a Docblock.
+ * Reflection class for a @uses tag in a Docblock.
  *
  * @category phpDocumentor
  * @package  Reflection
