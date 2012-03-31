@@ -73,6 +73,7 @@ class phpDocumentor_Plugin_Core_Listener extends phpDocumentor_Plugin_ListenerAb
                  new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Property(),
                  new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Method(),
                  new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Uses(),
+                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Covers(),
                  new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Author(),
                  new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_License(),
                  new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Internal(),
