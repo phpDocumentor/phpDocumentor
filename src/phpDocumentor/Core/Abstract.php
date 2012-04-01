@@ -27,7 +27,7 @@
 abstract class phpDocumentor_Core_Abstract
 {
     /** @var string The actual version number of phpDocumentor. */
-    const VERSION = '2.0.0-alpha2';
+    const VERSION = '2.0.0a2';
 
     /**
      * The logger used to capture all messages send by the log method.
