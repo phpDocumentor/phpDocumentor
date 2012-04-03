@@ -124,7 +124,10 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             case 'see':
             case 'inherited_from':
                 $name = $element->getAttribute('refers');
-                if ($name[0] !== '\\') {
+                if (empty($name)) {
+                    $name = $element->nodeValue;
+                }
+                else if ($name[0] !== '\\') {
                     $name = '\\' . $name;
                 }
                 break;
