@@ -338,7 +338,10 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
     public function parseFile($filename, $include_source = false)
     {
         $this->log('Starting to parse file: ' . $filename);
-        $this->debug('Starting to parse file: ' . $filename);
+        $this->log(
+            'Starting to parse file: ' . $filename,
+            phpDocumentor_Core_Log::DEBUG
+        );
 
         $dispatched = false;
         try {
@@ -401,9 +404,9 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
                 . $e->getMessage(),
                 Zend_Log::ALERT
             );
-            $this->debug(
+            $this->log(
                 'Unable to parse file "' . $filename . '", an error was detected: '
-                . $e->getMessage()
+                . $e->getMessage(), phpDocumentor_Core_Log::DEBUG
             );
         }
 
@@ -416,11 +419,12 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
             );
         }
 
-        $this->debug(
+        $this->log(
             '>> Memory after processing of file: '
-            . number_format(memory_get_usage()) . ' bytes'
+            . number_format(memory_get_usage()) . ' bytes',
+            phpDocumentor_Core_Log::DEBUG
         );
-        $this->debug('>> Parsed file');
+        $this->log('>> Parsed file', phpDocumentor_Core_Log::DEBUG);
     }
 
     /**

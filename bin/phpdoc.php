@@ -3,19 +3,31 @@
 /**
  * phpDocumentor
  *
+ * PHP Version 5
+ *
  * @category  phpDocumentor
- * @package   CLI
+ * @package   Core
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-// check whether xhprof is loaded
+require_once __DIR__.'/../cilex.phar';
+require_once __DIR__.'/../src/phpDocumentor/Application.php';
+
+$app = new \phpDocumentor\Application();
+$app->command(new \phpDocumentor\Command\Project\Run());
+$app->command(new \phpDocumentor\Command\Project\Transform());
+$app->command(new \phpDocumentor\Command\Project\Parse());
+$app->run();
+
+/*// check whether xhprof is loaded
 $profile = false;
 if (extension_loaded('xhprof')) {
 
-    // check whether one of the arguments is --profile; this will enable the profiler
+    // check whether one of the arguments is --profile; this will enable the
+    // profiler
     $profile = array_search('--profile', $argv);
     if (false !== $profile) {
         unset($_SERVER['argv'][$profile]);
@@ -74,5 +86,6 @@ if (false !== $profile) {
     }
 }
 
-// disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
-error_reporting(error_reporting() & ~E_STRICT);
+// disable E_STRICT reporting on the end to prevent PEAR from throwing Strict
+// warnings.
+error_reporting(error_reporting() & ~E_STRICT);*/

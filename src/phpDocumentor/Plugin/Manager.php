@@ -23,16 +23,16 @@
  */
 class phpDocumentor_Plugin_Manager
 {
-    /** @var sfEventDispatcher */
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcher */
     protected $event_dispatcher = null;
 
-    /** @var phpDocumentor_Core_Config */
+    /** @var SimpleXmlElement */
     protected $configuration = null;
 
-    /** @var ZendX_Loader_StandardAutoloader */
+    /** @var \Symfony\Component\ClassLoader\UniversalClassLoader */
     protected $autoloader = null;
 
-    /** @var phpDocumentor_Plugin */
+    /** @var \phpDocumentor_Plugin[] */
     protected $plugins = array();
 
     /**
@@ -64,8 +64,8 @@ class phpDocumentor_Plugin_Manager
      */
     public function loadFromConfiguration()
     {
-        $plugins = isset(phpDocumentor_Core_Abstract::config()->plugins)
-            ? phpDocumentor_Core_Abstract::config()->plugins->plugin
+        $plugins = isset($this->configuration->plugins)
+            ? $this->configuration->plugins->plugin
             : array();
 
         // Zend_Config has a quirk; if there is only one entry then it is not
@@ -80,7 +80,7 @@ class phpDocumentor_Plugin_Manager
 
         // add new plugins
         foreach ($plugins as $plugin_config) {
-            $plugin = new phpDocumentor_Plugin(
+            $plugin = new \phpDocumentor_Plugin(
                 $this->event_dispatcher, $this->configuration
             );
 

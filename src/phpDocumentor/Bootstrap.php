@@ -12,7 +12,7 @@
  * @link      http://phpdoc.org
  */
 
-require_once realpath(dirname(__FILE__)) . '/../markdown.php';
+require_once realpath(dirname(__FILE__)) . '/../../vendor/markdown/markdown.php';
 
 /**
  * This class provides a bootstrap for all application who wish to interface
@@ -71,7 +71,7 @@ class phpDocumentor_Bootstrap
      */
     public function registerAutoloader()
     {
-        $base_include_folder = dirname(__FILE__) . '/../../src';
+        $base_include_folder = dirname(__FILE__) . '/../../vendor';
 
         // set path to add lib folder, load the Zend Autoloader
         set_include_path(
@@ -82,8 +82,9 @@ class phpDocumentor_Bootstrap
         $autoloader = new ZendX_Loader_StandardAutoloader(
             array(
                  'prefixes' => array(
-                     'Zend'    => $base_include_folder . '/Zend',
-                     'phpDocumentor' => $base_include_folder . '/phpDocumentor'
+                     'Zend'          => $base_include_folder . '/Zend',
+                     'phpDocumentor' => $base_include_folder
+                         . '/../src/phpDocumentor'
                  ),
                  'fallback_autoloader' => true
             )

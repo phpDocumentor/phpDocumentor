@@ -22,9 +22,14 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Abstract
+class phpDocumentor_Parser_Exporter_Xml
+    extends phpDocumentor_Parser_Exporter_Abstract
 {
-    /** @var DOMDocument $xml Document containing the collected data */
+    /**
+     * Document containing the collected data
+     *
+     * @var DOMDocument $xml
+     */
     protected $xml = null;
 
     /**
@@ -39,10 +44,17 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
         $document_element = new DOMElement('project');
         $this->xml->appendChild($document_element);
 
-        $document_element->setAttribute('version', phpDocumentor_Core_Abstract::VERSION);
+        $document_element->setAttribute(
+            'version', phpDocumentor_Core_Abstract::VERSION
+        );
         $document_element->setAttribute('title', $this->parser->getTitle());
     }
 
+    /**
+     * Actions to execute after processing all files.
+     *
+     * @return void
+     */
     public function finalize()
     {
         // filter all undesired tags

@@ -13,7 +13,7 @@
  */
 
 /**
- *
+ * Exports the given reflected file to a DOMElement.
  *
  * @category phpDocumentor
  * @package  Parser\Exporter\Xml
@@ -23,6 +23,16 @@
  */
 class phpDocumentor_Parser_Exporter_Xml_Function
 {
+    /**
+     * Export this function definition to the given parent DOMElement.
+     *
+     * @param DOMElement                        $parent   Element to augment.
+     * @param phpDocumentor_Reflection_Function $function Element to export.
+     * @param DOMElement                        $child    if supplied this element
+     *     will be augmented instead of freshly added.
+     *
+     * @return void
+     */
     public function export(
         DOMElement $parent, phpDocumentor_Reflection_Function $function,
         DOMElement $child = null

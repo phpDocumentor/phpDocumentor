@@ -24,13 +24,25 @@
  */
 class phpDocumentor_GraphViz_Edge
 {
-    /** @var phpDocumentor_GraphViz_Node Node from where to link */
+    /**
+     * Node from where to link.
+     *
+     * @var phpDocumentor_GraphViz_Node
+     */
     protected $from = null;
 
-    /** @var phpDocumentor_GraphViz_Node Node where to to link */
+    /**
+     * Node where to to link.
+     *
+     * @var phpDocumentor_GraphViz_Node
+     */
     protected $to = null;
 
-    /** @var phpDocumentor_GraphViz_Attribute List of attributes for this edge */
+    /**
+     * List of attributes for this edge.
+     *
+     * @var phpDocumentor_GraphViz_Attribute
+     */
     protected $attributes = array();
 
     /**

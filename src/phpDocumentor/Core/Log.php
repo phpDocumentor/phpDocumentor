@@ -53,13 +53,25 @@ class phpDocumentor_Core_Log
     /** @var string Output will only be sent to stdout */
     const FILE_STDOUT = 'php://stdout';
 
-    /** @var int Only log messages that equal or exceed this. */
+    /**
+     * Only log messages that equal or exceed this.
+     *
+     * @var int
+     */
     protected $threshold = self::DEBUG;
 
-    /** @var string The name of the file/stream where the logs are written to. */
+    /**
+     * The name of the file/stream where the logs are written to.
+     *
+     * @var string
+     */
     protected $filename = '';
 
-    /** @var Zend_Log The logger to use for storing information. */
+    /**
+     * The logger to use for storing information.
+     *
+     * @var Zend_Log
+     */
     protected $logger = null;
 
     /**

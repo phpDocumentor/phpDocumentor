@@ -17,11 +17,11 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <email>mike.vanriel@naenius.com</email>
   <active>yes</active>
  </lead>
- <date>2012-03-12</date>
- <time>23:06:27</time>
+ <date>2012-04-01</date>
+ <time>10:49:53</time>
  <version>
-  <release>2.0.0a1</release>
-  <api>2.0.0a1</api>
+  <release>2.0.0a2</release>
+  <api>2.0.0a2</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -797,6 +797,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <dir name="DocBlock">
          <dir name="Tag">
           <dir name="Definition">
+           <file baseinstalldir="/phpDocumentor" name="Covers.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
            <file baseinstalldir="/phpDocumentor" name="Doctrine.php" role="php">
             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
            </file>
@@ -874,6 +877,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          </dir> <!-- /src/phpDocumentor/Plugin/Core/Transformer/Behaviour/Inherit -->
          <dir name="Tag">
           <file baseinstalldir="/phpDocumentor" name="Author.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Covers.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
           <file baseinstalldir="/phpDocumentor" name="Ignore.php" role="php">
@@ -964,6 +970,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <dir name="Reflection">
       <dir name="DocBlock">
        <dir name="Tag">
+        <file baseinstalldir="/phpDocumentor" name="Covers.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="Link.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
@@ -2839,6 +2848,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
      <file baseinstalldir="/phpDocumentor" name="NoPackageDocBlock.php" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
+     <file baseinstalldir="/phpDocumentor" name="NoPackageFileDocBlock.php" role="php">
+      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+     </file>
      <file baseinstalldir="/phpDocumentor" name="NoPropertyDocBlock.php" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
@@ -2901,16 +2913,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
     </dir> <!-- /tests/ui -->
     <dir name="unit">
      <dir name="phpDocumentor">
-      <dir name="GraphViz">
-       <file baseinstalldir="/phpDocumentor" name="AttributeTest.php" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="NodeTest.php" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-      </dir> <!-- /tests/unit/DocBlox/GraphViz -->
-     </dir> <!-- /tests/unit/DocBlox -->
-     <dir name="phpDocumentor">
       <dir name="Core">
        <file baseinstalldir="/phpDocumentor" name="AbstractTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -2922,7 +2924,20 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
       </dir> <!-- /tests/unit/phpDocumentor/Core -->
+      <dir name="GraphViz">
+       <file baseinstalldir="/phpDocumentor" name="AttributeTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="NodeTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /tests/unit/phpDocumentor/GraphViz -->
       <dir name="Parser">
+       <dir name="Exporter">
+        <file baseinstalldir="/phpDocumentor" name="XmlTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /tests/unit/phpDocumentor/Parser/Exporter -->
        <file baseinstalldir="/phpDocumentor" name="AbstractTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -2957,11 +2972,29 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </dir> <!-- /tests/unit/phpDocumentor/Plugin -->
       <dir name="Reflection">
        <dir name="Tag">
+        <file baseinstalldir="/phpDocumentor" name="CoversTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="LinkTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="MethodTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="SeeTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="UsesTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="VarTest.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
        </dir> <!-- /tests/unit/phpDocumentor/Reflection/Tag -->
        <file baseinstalldir="/phpDocumentor" name="DocBlockTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="FileTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
       </dir> <!-- /tests/unit/phpDocumentor/Reflection -->
@@ -3063,14 +3096,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.0.0a1</release>
-    <api>2.0.0a1</api>
+    <release>2.0.0a2</release>
+    <api>2.0.0a2</api>
    </version>
    <stability>
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2012-03-12</date>
+   <date>2012-04-01</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes

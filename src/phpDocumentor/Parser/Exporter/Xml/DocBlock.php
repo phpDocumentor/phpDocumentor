@@ -62,38 +62,78 @@ class phpDocumentor_Parser_Exporter_Xml_DocBlock
         $this->setParentsPackage($parent, $docblock, $element);
     }
 
+    /**
+     * Adds a description CDATA section to the DocBlock.
+     *
+     * @param DOMElement                        $parent  The parent element
+     *     to augment.
+     * @param phpDocumentor_Reflection_DocBlock $element The data source.
+     *
+     * @return void
+     */
     protected function addDescription(
-        DOMElement $child, phpDocumentor_Reflection_DocBlock $docblock
+        DOMElement $parent, phpDocumentor_Reflection_DocBlock $element
     ) {
-        $node = $child->ownerDocument->createCDATASection(
-            $docblock->getShortDescription()
+        $node = $parent->ownerDocument->createCDATASection(
+            $element->getShortDescription()
         );
         $description = new DOMElement('description');
-        $child->appendChild($description);
+        $parent->appendChild($description);
         $description->appendChild($node);
     }
 
+    /**
+     * Adds a CDATA section to the DocBlock for the long description.
+     *
+     * @param DOMElement                        $parent  The parent element
+     *     to augment.
+     * @param phpDocumentor_Reflection_DocBlock $element The data source.
+     *
+     * @return void
+     */
     protected function addLongDescription(
-        DOMElement $child, phpDocumentor_Reflection_DocBlock $docblock
+        DOMElement $parent, phpDocumentor_Reflection_DocBlock $element
     ) {
-        $node = $child->ownerDocument->createCDATASection(
-            $docblock->getLongDescription()->getFormattedContents()
+        $node = $parent->ownerDocument->createCDATASection(
+            $element->getLongDescription()->getFormattedContents()
         );
 
         $element = new DOMElement('long-description');
-        $child->appendChild($element);
+        $parent->appendChild($element);
         $element->appendChild($node);
     }
 
+    /**
+     * Adds the tags to the DocBlock.
+     *
+     * @param DOMElement                                  $parent  The parent
+     *     element to augment.
+     * @param phpDocumentor_Reflection_DocBlock_Tags[]    $tags    The tags to add.
+     * @param phpDocumentor_Reflection_DocBlockedAbstract $element The data source.
+     *
+     * @return void
+     */
     protected function addTags(
-        DOMElement $child, $tags, phpDocumentor_Reflection_DocBlockedAbstract $element
+        DOMElement $parent, array $tags,
+        phpDocumentor_Reflection_DocBlockedAbstract $element
     ) {
         foreach ($tags as $tag) {
             $object = new phpDocumentor_Parser_Exporter_Xml_DocBlockTag();
-            $object->export($child, $tag, $element);
+            $object->export($parent, $tag, $element);
         }
     }
 
+    /**
+     * Sets the package name of the parent DocBlock.
+     *
+     * @param DOMElement                                  $parent   The parent
+     *     element to augment.
+     * @param phpDocumentor_Reflection_DocBlock           $docblock The docblock
+     *     to set as parent.
+     * @param phpDocumentor_Reflection_DocBlockedAbstract $element  The data source.
+     *
+     * @return void
+     */
     protected function setParentsPackage(
         DOMElement $parent, phpDocumentor_Reflection_DocBlock $docblock,
         phpDocumentor_Reflection_DocBlockedAbstract $element

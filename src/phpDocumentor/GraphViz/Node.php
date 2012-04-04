@@ -24,11 +24,18 @@
  */
 class phpDocumentor_GraphViz_Node
 {
-
-    /** @var string Name for this node */
+    /**
+     * Name for this node.
+     *
+     * @var string
+     */
     protected $name = '';
 
-    /** @var phpDocumentor_GraphViz_Attribute[] List of attributes for this node */
+    /**
+     * List of attributes for this node.
+     *
+     * @var phpDocumentor_GraphViz_Attribute[]
+     */
     protected $attributes = array();
 
     /**

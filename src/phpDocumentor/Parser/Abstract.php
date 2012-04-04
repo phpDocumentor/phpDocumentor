@@ -12,7 +12,7 @@
  * @link      http://phpdoc.org
  */
 
-require_once 'symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
+require_once __DIR__.'/../../../vendor/symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
 
 /**
  * Layer superclass for phpDocumentor_Parser Component.

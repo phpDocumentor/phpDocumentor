@@ -30,22 +30,46 @@
 class phpDocumentor_GraphViz_Graph
 {
 
-    /** @var string Name of this graph */
+    /**
+     * Name of this graph.
+     *
+     * @var string
+     */
     protected $name = 'G';
 
-    /** @var string Type of this graph; may be digraph, graph or subgraph */
+    /**
+     * Type of this graph; may be digraph, graph or subgraph.
+     *
+     * @var string
+     */
     protected $type = 'digraph';
 
-    /** @var phpDocumentor_GraphViz_Attribute[] A list of attributes for this Graph */
+    /**
+     * A list of attributes for this Graph.
+     *
+     * @var phpDocumentor_GraphViz_Attribute[]
+     */
     protected $attributes = array();
 
-    /** @var phpDocumentor_GraphViz_Graph[] A list of subgraphs for this Graph */
+    /**
+     * A list of subgraphs for this Graph.
+     *
+     * @var phpDocumentor_GraphViz_Graph[]
+     */
     protected $graphs = array();
 
-    /** @var phpDocumentor_GraphViz_Node[] A list of nodes for this Graph */
+    /**
+     * A list of nodes for this Graph.
+     *
+     * @var phpDocumentor_GraphViz_Node[]
+     */
     protected $nodes = array();
 
-    /** @var phpDocumentor_GraphViz_Edge[] A list of edges / arrows for this Graph */
+    /**
+     * A list of edges / arrows for this Graph.
+     *
+     * @var phpDocumentor_GraphViz_Edge[]
+     */
     protected $edges = array();
 
     /**

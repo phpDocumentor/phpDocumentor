@@ -23,6 +23,18 @@
  */
 class phpDocumentor_Parser_Exporter_Xml_DocBlockTag
 {
+    /**
+     * Export this tag to the given DocBlock.
+     *
+     * @param DOMElement                                  $parent  Element to
+     *     augment.
+     * @param phpDocumentor_Reflection_DocBlock_Tag       $tag     The tag to
+     *     export.
+     * @param phpDocumentor_Reflection_DocBlockedAbstract $element Element to
+     *     log from.
+     *
+     * @return void
+     */
     public function export(
         DOMElement $parent, phpDocumentor_Reflection_DocBlock_Tag $tag,
         phpDocumentor_Reflection_DocBlockedAbstract $element

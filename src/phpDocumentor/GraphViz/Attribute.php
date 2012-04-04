@@ -24,10 +24,18 @@
  */
 class phpDocumentor_GraphViz_Attribute
 {
-    /** @var string The name of this attribute */
+    /**
+     * The name of this attribute.
+     *
+     * @var string
+     */
     protected $key = '';
 
-    /** @var string The value of this attribute*/
+    /**
+     * The value of this attribute.
+     *
+     * @var string
+     */
     protected $value = '';
 
     /**

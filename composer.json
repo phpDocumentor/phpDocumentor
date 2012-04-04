@@ -1,0 +1,17 @@
+{
+    "name": "phpdocumentor/phpdocumentor",
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {"phpDocumentor": "src/"}
+    },
+    "repositories": [
+        {"type": "pear", "url": "http://packages.zendframework.com"}
+    ],
+    "require":{
+        "monolog/monolog":          "1.0.*",
+        "symfony/event-dispatcher": "2.*",
+        "dflydev/markdown":         "1.0.*",
+        "pear-zf2/Zend_Locale":     "*",
+        "pear-zf2/Zend_Translator": "*"
+    }
+}
