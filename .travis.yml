@@ -14,6 +14,5 @@ before_script:
  - git clone https://github.com/phpDocumentor/template.responsive.git lib/template.responsive
  - pyrus channel-discover pear.phpdoc.org
  - pyrus install -f lib/template.responsive/package.xml
- - pyrus install -f lib/template.responsive/package.xml
  - wget http://getcomposer.org/composer.phar
  - php composer.phar install
