@@ -64,8 +64,7 @@ HELP
             ->addOption(
                 'extensions', 'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Path where to store the generated output',
-                array('php','php3','phtml')
+                'Path where to store the generated output'
             )
             ->addOption(
                 'ignore', 'i',
@@ -195,6 +194,9 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        var_dump($this->getOption($input, 'target', 'parser/target'));
+        var_dump($this->getOption($input, 'extensions', 'parser/extensions', array('php', 'php3', 'phtml')));
+        return;
         if ($input->getOption('progressbar')) {
             \phpDocumentor_Parser_Abstract::$event_dispatcher->connect(
                 'parser.file.pre', array($this, 'echoProgress')
@@ -202,10 +204,14 @@ HELP
 //            $this->setQuiet(true);
         }
 
-        $target = $this->getTarget($input->getOption('target'));
+        $target = $this->getTarget(
+            $this->getOption($input, 'target', 'parser/target')
+        );
 
         $files = new \phpDocumentor_Parser_Files();
-        $files->setAllowedExtensions($input->getOption('extensions'));
+        $files->setAllowedExtensions(
+            $this->getOption($input, 'extensions', 'parser/extensions/extension')
+        );
         $files->setIgnorePatterns($input->getOption('ignore'));
         $files->setIgnoreHidden(!$input->getOption('hidden'));
         $files->setFollowSymlinks(!$input->getOption('ignore-symlinks'));

@@ -59,7 +59,7 @@ class Application extends \Cilex\Application
         $this->register(
             new \Cilex\Provider\ConfigServiceProvider(),
             array(
-                'config.path' => 'phpdoc.dist.xml'
+                'config.path' => 'data/phpdoc.tpl.xml'
             )
         );
 

@@ -25,5 +25,28 @@ class Command extends \Cilex\Command\Command
         $default = null
     ) {
         $value = $input->getOption($name);
+
+        // find value in config
+        if (($value === null || is_array($value) && empty($value))
+            && $config_path !== null
+        ) {
+            $node = $this->getService('config');
+            foreach (explode('/', $config_path) as $node_name) {
+                var_dump($node->$node_name);
+                $node = $node->$node_name;
+            }
+            $value = is_array($node) || $node instanceof \SimpleXMLElement
+                ? (array)$node : (string)$node;
+            var_dump($value);
+        }
+
+        // use default if value is still null
+        if ($value === null || is_array($value) && empty($value)) {
+            return (is_array($value) && $default === null)
+                ? array()
+                : $default;
+        }
+
+        return $value;
     }
 }
