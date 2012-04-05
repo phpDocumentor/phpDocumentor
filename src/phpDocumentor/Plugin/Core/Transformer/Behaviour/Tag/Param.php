@@ -48,7 +48,8 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Param extends
             // other than word characters, whitespaces and punctuation characters.
             // This is because Markdown is a huge performance hit on the system
             if (!preg_match('/^[\w|\s|\.|,|;|\:|\&|\#]+$/', $node->nodeValue)) {
-                $node->nodeValue = Markdown($node->nodeValue);
+                $md = new \dflydev\markdown\MarkdownExtraParser();
+                $node->nodeValue =  $md->transformMarkdown($node->nodeValue);
             } else {
                 // markdown will always surround the element with a paragraph;
                 // we do the same here to make it consistent

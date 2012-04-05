@@ -20,9 +20,6 @@
  * @version    $Id: Suppress.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
-/** Zend_Log_Filter_Interface */
-require_once 'Zend/Log/Filter/Interface.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log
@@ -65,7 +62,7 @@ class Zend_Log_Filter_Suppress extends Zend_Log_Filter_Abstract
 
     /**
      * Create a new instance of Zend_Log_Filter_Suppress
-     * 
+     *
      * @param  array|Zend_Config $config
      * @return Zend_Log_Filter_Suppress
      * @throws Zend_Log_Exception

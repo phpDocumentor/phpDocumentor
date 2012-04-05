@@ -138,7 +138,7 @@ class phpDocumentor_Reflection_DocBlockTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals('Single line docblock.', $method->getDocBlock()->getShortDescription());
     $this->assertEquals('Long description.', trim($method->getDocBlock()->getLongDescription()->getContents()));
-    $this->assertEquals('<p>Long description.</p>', trim($method->getDocBlock()->getLongDescription()->getFormattedContents()));
+    $this->assertEquals('Long description.', trim($method->getDocBlock()->getLongDescription()->getFormattedContents()));
     $this->assertFalse(current($method->getDocBlock()->getTagsByName('param')));
   }
 
@@ -170,8 +170,8 @@ LD
     );
 
     $this->assertEquals(<<<LD
-<p>The long description is separated a whiteline away and has a trailing whiteline. After which each
-tag 'group' is separated by a whiteline.</p>
+The long description is separated a whiteline away and has a trailing whiteline. After which each
+tag 'group' is separated by a whiteline.
 LD
       ,
       trim($method->getDocBlock()->getLongDescription()->getFormattedContents())

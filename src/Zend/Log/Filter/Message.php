@@ -20,9 +20,6 @@
  * @version    $Id: Message.php 20982 2010-02-08 15:51:36Z matthew $
  */
 
-/** Zend_Log_Filter_Abstract */
-require_once 'Zend/Log/Filter/Abstract.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log
@@ -55,12 +52,12 @@ class Zend_Log_Filter_Message extends Zend_Log_Filter_Abstract
 
     /**
      * Create a new instance of Zend_Log_Filter_Message
-     * 
+     *
      * @param  array|Zend_Config $config
      * @return Zend_Log_Filter_Message
      * @throws Zend_Log_Exception
      */
-    static public function factory($config) 
+    static public function factory($config)
     {
         $config = self::_parseConfig($config);
         $config = array_merge(array(

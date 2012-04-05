@@ -21,11 +21,6 @@
  */
 
 /**
- * include needed classes
- */
-require_once 'Zend/Locale/Data.php';
-
-/**
  * @category   Zend
  * @package    Zend_Locale
  * @subpackage Format

@@ -60,7 +60,7 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
      *
      * @param string                               $file       Path to the
      *  configuration file.
-     * @param ZendX_Loader_StandardAutoloader|null $autoloader Autoloader object
+     * @param \Composer\Autoload\ClassLoader|null $autoloader Autoloader object
      *  to add the prefix/path combination to.
      *
      * @return void
@@ -89,7 +89,7 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
               . str_replace(' ', '', ucwords((string)$this->name));
 
         if ($autoloader) {
-            $autoloader->registerPrefix($this->class_prefix, $path);
+            $autoloader->addClassMap(array($this->class_prefix => $path));
         }
 
         $listeners = !is_array($xml->listener)

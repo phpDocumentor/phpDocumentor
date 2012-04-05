@@ -19,14 +19,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
-/** Zend_Locale */
-require_once 'Zend/Locale.php';
-
-/** Zend_Translate_Adapter */
-require_once 'Zend/Translate/Adapter.php';
-
-
 /**
  * @category   Zend
  * @package    Zend_Translate

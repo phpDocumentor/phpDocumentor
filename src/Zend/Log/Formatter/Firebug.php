@@ -20,9 +20,6 @@
  * @version    $Id: Firebug.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
-/** Zend_Log_Formatter_Interface */
-require_once 'Zend/Log/Formatter/Interface.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log

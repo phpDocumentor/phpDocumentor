@@ -20,12 +20,6 @@
  * @version    $Id$
  */
 
-/** @see Zend_Log_Filter_Interface */
-require_once 'Zend/Log/Filter/Interface.php';
-
-/** @see Zend_Log_FactoryInterface */
-require_once 'Zend/Log/FactoryInterface.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log
@@ -34,12 +28,12 @@ require_once 'Zend/Log/FactoryInterface.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-abstract class Zend_Log_Filter_Abstract 
+abstract class Zend_Log_Filter_Abstract
     implements Zend_Log_Filter_Interface, Zend_Log_FactoryInterface
 {
     /**
      * Validate and optionally convert the config to array
-     * 
+     *
      * @param  array|Zend_Config $config Zend_Config or Array
      * @return array
      * @throws Zend_Log_Exception

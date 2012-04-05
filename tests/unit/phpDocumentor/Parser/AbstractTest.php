@@ -75,7 +75,11 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
         $event = $this->getMock(
             'sfEvent',
             array('getReturnValue'),
-            array($this->fixture, 'system.log', array('message' => 'body'))
+            array(
+                $this->fixture,
+                'system.log',
+                array('priority' => Zend_Log::ERR, 'message' => 'body')
+            )
         );
 
         // the event dispatcher's notify method will be invoken and return the
@@ -92,7 +96,10 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         // test without setting the dispatcher
-        $result = $this->fixture->dispatch('system.log', array('message' => 'body'));
+        $result = $this->fixture->dispatch(
+            'system.log',
+            array('priority' => Zend_Log::ERR, 'message' => 'body')
+        );
         $this->assertSame(
             null, $result,
             'Expected result to be null when no dispatcher is set'
@@ -102,7 +109,10 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
         phpDocumentor_Parser_Abstract::$event_dispatcher = $event_dispatcher;
 
         // test with the dispatcher
-        $result = $this->fixture->dispatch('system.log', array('message' => 'body'));
+        $result = $this->fixture->dispatch(
+            'system.log',
+            array('priority' => Zend_Log::ERR, 'message' => 'body')
+        );
         $this->assertSame(
             true, $result,
             'Expected result to be true when the dispatcher mock object is set'
@@ -112,7 +122,10 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
         // throw exception
         $this->setExpectedException('phpDocumentor_Parser_Exception');
         phpDocumentor_Parser_Abstract::$event_dispatcher = true;
-        $this->fixture->dispatch('system.log', array('message' => 'body'));
+        $this->fixture->dispatch(
+            'system.log',
+            array('priority' => Zend_Log::ERR, 'message' => 'body')
+        );
     }
 
     /**

@@ -20,9 +20,6 @@
  * @version    $Id: Syslog.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
-/** Zend_Log_Writer_Abstract */
-require_once 'Zend/Log/Writer/Abstract.php';
-
 /**
  * Writes log messages to syslog
  *
@@ -95,10 +92,10 @@ class Zend_Log_Writer_Syslog extends Zend_Log_Writer_Abstract
         }
         $this->_initializeSyslog();
     }
-    
+
     /**
      * Create a new instance of Zend_Log_Writer_Syslog
-     * 
+     *
      * @param  array|Zend_Config $config
      * @return Zend_Log_Writer_Syslog
      * @throws Zend_Log_Exception

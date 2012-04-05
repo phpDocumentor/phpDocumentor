@@ -20,9 +20,6 @@
  * @version    $Id: Abstract.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
-/** Zend_Log_Filter_Priority */
-require_once 'Zend/Log/Filter/Priority.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log
@@ -106,7 +103,7 @@ abstract class Zend_Log_Writer_Abstract implements Zend_Log_FactoryInterface
 
     /**
      * Validate and optionally convert the config to array
-     * 
+     *
      * @param  array|Zend_Config $config Zend_Config or Array
      * @return array
      * @throws Zend_Log_Exception

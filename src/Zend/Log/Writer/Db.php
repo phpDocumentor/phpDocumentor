@@ -20,9 +20,6 @@
  * @version    $Id: Db.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
-/** Zend_Log_Writer_Abstract */
-require_once 'Zend/Log/Writer/Abstract.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log
@@ -68,7 +65,7 @@ class Zend_Log_Writer_Db extends Zend_Log_Writer_Abstract
 
     /**
      * Create a new instance of Zend_Log_Writer_Db
-     * 
+     *
      * @param  array|Zend_Config $config
      * @return Zend_Log_Writer_Db
      * @throws Zend_Log_Exception
@@ -77,15 +74,15 @@ class Zend_Log_Writer_Db extends Zend_Log_Writer_Abstract
     {
         $config = self::_parseConfig($config);
         $config = array_merge(array(
-            'db'        => null, 
-            'table'     => null, 
+            'db'        => null,
+            'table'     => null,
             'columnMap' => null,
         ), $config);
-        
+
         if (isset($config['columnmap'])) {
             $config['columnMap'] = $config['columnmap'];
         }
-        
+
         return new self(
             $config['db'],
             $config['table'],

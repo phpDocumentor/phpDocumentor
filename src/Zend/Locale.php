@@ -322,12 +322,10 @@ class Zend_Locale
     {
         if (($locale === 'auto') or ($locale === 'root') or ($locale === 'default') or
             ($locale === 'environment') or ($locale === 'browser')) {
-            require_once 'Zend/Locale/Exception.php';
             throw new Zend_Locale_Exception('Only full qualified locales can be used as default!');
         }
 
         if (($quality < 0.1) or ($quality > 100)) {
-            require_once 'Zend/Locale/Exception.php';
             throw new Zend_Locale_Exception("Quality must be between 0.1 and 100");
         }
 
@@ -343,7 +341,6 @@ class Zend_Locale
             if (isset(self::$_localeData[$elocale[0]]) === true) {
                 self::$_default = array($elocale[0] => $quality);
             } else {
-                require_once 'Zend/Locale/Exception.php';
                 throw new Zend_Locale_Exception("Unknown locale '" . (string) $locale . "' can not be set as default!");
             }
         }
@@ -365,8 +362,6 @@ class Zend_Locale
         if (self::$_environment !== null) {
             return self::$_environment;
         }
-
-        require_once 'Zend/Locale/Data/Translation.php';
 
         $language      = setlocale(LC_ALL, 0);
         $languages     = explode(';', $language);
@@ -589,7 +584,6 @@ class Zend_Locale
      */
     public static function getTranslationList($path = null, $locale = null, $value = null)
     {
-        require_once 'Zend/Locale/Data.php';
         $locale = self::findLocale($locale);
         $result = Zend_Locale_Data::getList($locale, $path, $value);
         if (empty($result) === true) {
@@ -663,7 +657,6 @@ class Zend_Locale
      */
     public static function getTranslation($value = null, $path = null, $locale = null)
     {
-        require_once 'Zend/Locale/Data.php';
         $locale = self::findLocale($locale);
         $result = Zend_Locale_Data::getContent($locale, $path, $value);
         if (empty($result) === true && '0' !== $result) {
@@ -738,7 +731,6 @@ class Zend_Locale
      */
     public static function getQuestion($locale = null)
     {
-        require_once 'Zend/Locale/Data.php';
         $locale            = self::findLocale($locale);
         $quest             = Zend_Locale_Data::getList($locale, 'question');
         $yes               = explode(':', $quest['yes']);
@@ -863,7 +855,6 @@ class Zend_Locale
     public static function findLocale($locale = null)
     {
         if ($locale === null) {
-            require_once 'Zend/Registry.php';
             if (Zend_Registry::isRegistered('Zend_Locale')) {
                 $locale = Zend_Registry::get('Zend_Locale');
             }
@@ -878,7 +869,6 @@ class Zend_Locale
                 $locale = Zend_Locale::getLocaleToTerritory($locale);
 
                 if (empty($locale)) {
-                    require_once 'Zend/Locale/Exception.php';
                     throw new Zend_Locale_Exception("The locale '$locale' is no known locale");
                 }
             } else {
@@ -930,7 +920,6 @@ class Zend_Locale
      */
     public static function getCache()
     {
-        require_once 'Zend/Locale/Data.php';
         return Zend_Locale_Data::getCache();
     }
 
@@ -942,7 +931,6 @@ class Zend_Locale
      */
     public static function setCache(Zend_Cache_Core $cache)
     {
-        require_once 'Zend/Locale/Data.php';
         Zend_Locale_Data::setCache($cache);
     }
 
@@ -953,7 +941,6 @@ class Zend_Locale
      */
     public static function hasCache()
     {
-        require_once 'Zend/Locale/Data.php';
         return Zend_Locale_Data::hasCache();
     }
 
@@ -964,7 +951,6 @@ class Zend_Locale
      */
     public static function removeCache()
     {
-        require_once 'Zend/Locale/Data.php';
         Zend_Locale_Data::removeCache();
     }
 
@@ -976,7 +962,6 @@ class Zend_Locale
      */
     public static function clearCache($tag = null)
     {
-        require_once 'Zend/Locale/Data.php';
         Zend_Locale_Data::clearCache($tag);
     }
 
@@ -988,7 +973,6 @@ class Zend_Locale
      */
     public static function disableCache($flag)
     {
-        require_once 'Zend/Locale/Data.php';
         Zend_Locale_Data::disableCache($flag);
     }
 
@@ -1041,7 +1025,6 @@ class Zend_Locale
 
         // This can only happen when someone extends Zend_Locale and erases the default
         if ($locale === null) {
-            require_once 'Zend/Locale/Exception.php';
             throw new Zend_Locale_Exception('Autodetection of Locale has been failed!');
         }
 

@@ -20,9 +20,6 @@
  * @version    $Id$
  */
 
-/** Zend_Log_Writer_Abstract */
-require_once 'Zend/Log/Writer/Abstract.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log
@@ -51,7 +48,7 @@ class Zend_Log_Writer_ZendMonitor extends Zend_Log_Writer_Abstract
 
     /**
      * Create a new instance of Zend_Log_Writer_ZendMonitor
-     * 
+     *
      * @param  array|Zend_Config $config
      * @return Zend_Log_Writer_Syslog
      * @throws Zend_Log_Exception
@@ -64,10 +61,10 @@ class Zend_Log_Writer_ZendMonitor extends Zend_Log_Writer_Abstract
     /**
      * Is logging to this writer enabled?
      *
-     * If the Zend Monitor extension is not enabled, this log writer will 
-     * fail silently. You can query this method to determine if the log 
+     * If the Zend Monitor extension is not enabled, this log writer will
+     * fail silently. You can query this method to determine if the log
      * writer is enabled.
-     * 
+     *
      * @return bool
      */
     public function isEnabled()

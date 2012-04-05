@@ -20,11 +20,6 @@
  */
 
 /**
- * @see Zend_Config
- */
-require_once 'Zend/Config.php';
-
-/**
  * XML Adapter for Zend_Config
  *
  * @category  Zend

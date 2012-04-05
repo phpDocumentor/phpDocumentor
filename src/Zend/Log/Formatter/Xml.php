@@ -20,9 +20,6 @@
  * @version    $Id: Xml.php 20104 2010-01-06 21:26:01Z matthew $
  */
 
-/** Zend_Log_Formatter_Interface */
-require_once 'Zend/Log/Formatter/Interface.php';
-
 /**
  * @category   Zend
  * @package    Zend_Log

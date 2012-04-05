@@ -21,16 +21,6 @@
  */
 
 /**
- * @see Zend_Locale
- */
-require_once 'Zend/Locale.php';
-
-/**
- * @see Zend_Translate_Plural
- */
-require_once 'Zend/Translate/Plural.php';
-
-/**
  * Basic adapter class for each translation source adapter
  *
  * @category   Zend
@@ -212,7 +202,7 @@ abstract class Zend_Translate_Adapter {
         } else if (!is_array($options)) {
             $options = array('content' => $options);
         }
-        
+
         if (!isset($options['content']) || empty($options['content'])) {
             require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception("Required option 'content' is missing");

@@ -12,8 +12,6 @@
  * @link      http://phpdoc.org
  */
 
-require_once realpath(dirname(__FILE__)) . '/../markdown.php';
-
 /**
  * This class provides a bootstrap for all application who wish to interface
  * with phpDocumentor.
@@ -67,30 +65,11 @@ class phpDocumentor_Bootstrap
      * The autoloader is also used by the plugin system to make sure that
      * everything in a plugin can be autoloaded.
      *
-     * @return ZendX_Loader_StandardAutoloader
+     * @return \Composer\Autoload\ClassLoader
      */
     public function registerAutoloader()
     {
-        $base_include_folder = dirname(__FILE__) . '/../../src';
-
-        // set path to add lib folder, load the Zend Autoloader
-        set_include_path(
-            $base_include_folder . PATH_SEPARATOR . get_include_path()
-        );
-
-        include_once $base_include_folder . '/ZendX/Loader/StandardAutoloader.php';
-        $autoloader = new ZendX_Loader_StandardAutoloader(
-            array(
-                 'prefixes' => array(
-                     'Zend'    => $base_include_folder . '/Zend',
-                     'phpDocumentor' => $base_include_folder . '/phpDocumentor'
-                 ),
-                 'fallback_autoloader' => true
-            )
-        );
-        $autoloader->register();
-
-        return $autoloader;
+        return include_once __DIR__ . '/../../vendor/.composer/autoload.php';
     }
 
     /**
@@ -106,7 +85,6 @@ class phpDocumentor_Bootstrap
         // initialize the event dispatcher; the include is here explicitly
         // should anyone not want this dependency and thus nto invoke this
         // method
-        include_once 'symfony/components/event_dispatcher/lib/sfEventDispatcher.php';
         $dispatcher = new sfEventDispatcher();
 
         // initialize the plugin manager

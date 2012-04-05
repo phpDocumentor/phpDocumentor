@@ -1,0 +1,25 @@
+{
+    "hash": "2d16b9f11235a04f810f21fd6e3ee558",
+    "packages": [
+        {
+            "package": "dflydev/markdown",
+            "version": "dev-master",
+            "source-reference": "91c6649f89472f6ab60a107a80acc72baacf585c",
+            "alias": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "monolog/monolog",
+            "version": "1.0.2"
+        },
+        {
+            "package": "pear-symfony/EventDispatcher",
+            "version": "1.0.0"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "source-reference": "07e1d0174f3a0ec36bbe04b3850270df7a86271d"
+        }
+    ],
+    "aliases": []
+}

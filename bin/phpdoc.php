@@ -32,8 +32,6 @@ $bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
 
 require($bootstrap_folder . '/phpDocumentor/Bootstrap.php');
 
-$autoloader = phpDocumentor_Bootstrap::createInstance()->registerAutoloader();
-
 $task_name = ($_SERVER['argc'] == 1) ? false : $_SERVER['argv'][1];
 $runner    = new phpDocumentor_Task_Runner($task_name, 'project:run');
 $task      = $runner->getTask();
@@ -49,7 +47,7 @@ if ($task->getVerbose()) {
 
 // the plugins are registered here because the phpDocumentor_Task can load a
 // custom configuration; which is needed by this registration
-phpDocumentor_Bootstrap::createInstance()->registerPlugins($autoloader);
+phpDocumentor_Bootstrap::createInstance()->registerPlugins(null);
 
 try {
     $task->execute();

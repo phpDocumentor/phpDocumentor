@@ -21,11 +21,6 @@
  */
 
 /**
- * include needed classes
- */
-require_once 'Zend/Locale.php';
-
-/**
  * Locale data reader, handles the CLDR
  *
  * @category   Zend

@@ -82,8 +82,9 @@ class phpDocumentor_Reflection_DocBlock_LongDescription implements Reflector
             );
         }
 
-        if (function_exists('Markdown')) {
-            $result = Markdown($result);
+        if (class_exists('\dflydev\markdown\MarkdownExtraParser()')) {
+            $md = new \dflydev\markdown\MarkdownExtraParser();
+            $result = $md->transformMarkdown($result);
         }
 
         return trim($result);

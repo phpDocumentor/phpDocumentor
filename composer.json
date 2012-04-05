@@ -1,0 +1,28 @@
+{
+    "name":"phpdocumentor/phpdocumentor",
+    "license":"MIT",
+    "autoload":{
+        "psr-0":{
+            "phpDocumentor":"src/",
+            "Zend":"src/"
+        },
+        "classmap":["vendor/pear-symfony"]
+    },
+    "repositories":[
+        {
+            "type":"pear",
+            "url":"http://packages.zendframework.com"
+        }
+    ],
+    "repositories":[
+        {
+            "type":"pear",
+            "url":"http://pear.symfony-project.com/"
+        }
+    ],
+    "require":{
+        "monolog/monolog":"1.0.*",
+        "dflydev/markdown":"1.0.*",
+        "pear-symfony/EventDispatcher": "1.*"
+    }
+}
