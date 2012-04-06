@@ -1,28 +1,22 @@
 {
-    "name":"phpdocumentor/phpdocumentor",
-    "license":"MIT",
-    "autoload":{
+    "name": "phpdocumentor/phpdocumentor",
+    "license": "MIT",
+    "autoload": {
         "psr-0":{
-            "phpDocumentor":"src/",
-            "Zend":"src/"
+            "phpDocumentor": "src/",
+            "Zend": "src/"
         },
-        "classmap":["vendor/pear-symfony"]
+        "classmap": ["vendor/pear-symfony", "src/phpDocumentor"]
     },
     "repositories":[
-        {
-            "type":"pear",
-            "url":"http://packages.zendframework.com"
-        }
+        { "type":"pear", "url":"http://packages.zendframework.com"},
+        { "type":"pear", "url":"http://pear.symfony-project.com/" },
+        { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" }
     ],
-    "repositories":[
-        {
-            "type":"pear",
-            "url":"http://pear.symfony-project.com/"
-        }
-    ],
-    "require":{
-        "monolog/monolog":"1.0.*",
-        "dflydev/markdown":"1.0.*",
-        "pear-symfony/EventDispatcher": "1.*"
+    "require": {
+        "monolog/monolog": "1.0.*",
+        "dflydev/markdown": "1.0.*",
+        "pear-symfony/EventDispatcher": "1.*",
+        "phpdocumentor/graphviz": "1.*"
     }
 }

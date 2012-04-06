@@ -1,5 +1,5 @@
 {
-    "hash": "2d16b9f11235a04f810f21fd6e3ee558",
+    "hash": "d16c8a16179e3512f5a7bc7294b80f66",
     "packages": [
         {
             "package": "dflydev/markdown",
@@ -14,6 +14,10 @@
         {
             "package": "pear-symfony/EventDispatcher",
             "version": "1.0.0"
+        },
+        {
+            "package": "phpdocumentor/graphviz",
+            "version": "1.0.0-beta3"
         },
         {
             "package": "symfony/event-dispatcher",

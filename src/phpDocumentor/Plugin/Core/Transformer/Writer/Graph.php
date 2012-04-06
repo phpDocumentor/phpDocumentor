@@ -93,7 +93,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
     /**
      * Builds a tree of namespace subgraphs with their classes associated.
      *
-     * @param phpDocumentor_GraphViz_Graph $graph               Graph to expand on.
+     * @param \phpDocumentor\GraphViz\Graph $graph               Graph to expand on.
      * @param DOMElement             $namespace_element   Namespace index element.
      * @param DOMXPath               $xpath               $xpath object to use
      *     for querying.
@@ -103,14 +103,14 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
      *
      * @return void
      */
-    public function buildNamespaceTree(phpDocumentor_GraphViz_Graph $graph,
+    public function buildNamespaceTree(\phpDocumentor\GraphViz\Graph $graph,
         DOMElement $namespace_element, DOMXPath $xpath, $full_namespace_name
     ) {
         $namespace = $namespace_element->getAttribute('name');
         $full_namespace_name .= '\\' . $namespace;
         $full_namespace_name = ltrim($full_namespace_name, '\\');
 
-        $sub_graph = phpDocumentor_GraphViz_Graph::create(
+        $sub_graph = \phpDocumentor\GraphViz\Graph::create(
             'cluster_' . $full_namespace_name
         )
             ->setLabel($full_namespace_name != 'default' ? $namespace : '')
@@ -127,7 +127,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
 
         /** @var DOMElement $sub_element */
         foreach ($sub_qry as $sub_element) {
-            $node = phpDocumentor_GraphViz_Node::create(
+            $node = \phpDocumentor\GraphViz\Node::create(
                 $sub_element->getElementsByTagName('full_name')->item(0)->nodeValue,
                 $sub_element->getElementsByTagName('name')->item(0)->nodeValue
             );
@@ -180,7 +180,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
     ) {
         $filename = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-        $graph = phpDocumentor_GraphViz_Graph::create()
+        $graph = \phpDocumentor\GraphViz\Graph::create()
                 ->setRankSep('1.0')
                 ->setCenter('true')
                 ->setRank('source')
@@ -216,20 +216,20 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
             $to = $graph->findNode($to_name);
 
             if ($from === null) {
-                $from = phpDocumentor_GraphViz_Node::create($from_name);
+                $from = \phpDocumentor\GraphViz\Node::create($from_name);
                 $from->setFontColor('gray');
                 $from->setLabel($from_name);
                 $graph->setNode($from);
             }
 
             if ($to === null) {
-                $to = phpDocumentor_GraphViz_Node::create($to_name);
+                $to = \phpDocumentor\GraphViz\Node::create($to_name);
                 $to->setFontColor('gray');
                 $to->setLabel($to_name);
                 $graph->setNode($to);
             }
 
-            $edge = phpDocumentor_GraphViz_Edge::create($from, $to);
+            $edge = \phpDocumentor\GraphViz\Edge::create($from, $to);
             $edge->setArrowHead('empty');
             $graph->link($edge);
         }
@@ -255,20 +255,20 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
                 $to = $graph->findNode($to_name);
 
                 if ($from === null) {
-                    $from = phpDocumentor_GraphViz_Node::create($from_name);
+                    $from = \phpDocumentor\GraphViz\Node::create($from_name);
                     $from->setFontColor('gray');
                     $from->setLabel(addslashes($from_name));
                     $graph->setNode($from);
                 }
 
                 if ($to === null) {
-                    $to = phpDocumentor_GraphViz_Node::create($to_name);
+                    $to = \phpDocumentor\GraphViz\Node::create($to_name);
                     $to->setFontColor('gray');
                     $to->setLabel(addslashes($to_name));
                     $graph->setNode($to);
                 }
 
-                $edge = phpDocumentor_GraphViz_Edge::create($from, $to);
+                $edge = \phpDocumentor\GraphViz\Edge::create($from, $to);
                 $edge->setStyle('dotted');
                 $edge->setArrowHead('empty');
                 $graph->link($edge);
