@@ -1,5 +1,5 @@
 {
-    "hash": "b1369d0889114cfbb4ae75917a9c46dc",
+    "hash": "b8b5737f1847b8e43c0e4b1a1db15725",
     "packages": [
         {
             "package": "dflydev/markdown",
@@ -22,6 +22,14 @@
         {
             "package": "phpdocumentor/reflection-docblock",
             "version": "1.0.0-beta3"
+        },
+        {
+            "package": "phpdocumentor/template-installer",
+            "version": "1.0.1-beta3"
+        },
+        {
+            "package": "phpdocumentor/template.responsive",
+            "version": "1.0.1"
         },
         {
             "package": "symfony/event-dispatcher",

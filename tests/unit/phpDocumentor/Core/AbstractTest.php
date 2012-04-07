@@ -25,8 +25,8 @@ class phpDocumentor_Core_AbstractTest extends PHPUnit_Framework_TestCase
 
     // loading of the template configs
     $this->assertTrue(isset($config->templates));
-    $this->assertTrue(isset($config->templates->stub));
-    $this->assertTrue(isset($config->templates->stub->transformations));
+    $this->assertTrue(isset($config->templates->responsive));
+    $this->assertTrue(isset($config->templates->responsive->transformations));
   }
 
   public function testConfig()

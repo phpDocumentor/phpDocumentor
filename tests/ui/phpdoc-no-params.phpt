@@ -6,8 +6,6 @@ $_SERVER['argc']    = 3;
 $_SERVER['argv'][1] = 'project:run';
 $_SERVER['argv'][2] = '--config';
 $_SERVER['argv'][3] = 'none';
-$_SERVER['argv'][4] = '--template';
-$_SERVER['argv'][5] = 'stub';
 
 require_once 'tests/common/ui-include.php';
 ?>
