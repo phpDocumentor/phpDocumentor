@@ -508,7 +508,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
      *
      * @param phpDocumentor_Reflection_TokenIterator $tokens Token array to parse.
      *
-     * @return phpDocumentor_Reflection_DocBlock|null
+     * @return \phpDocumentor\Reflection\DocBlock|null
      */
     public function findDocBlock(phpDocumentor_Reflection_TokenIterator $tokens)
     {
@@ -523,7 +523,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
 
         try {
             $result = $docblock
-                ? new phpDocumentor_Reflection_DocBlock($docblock->content)
+                ? new \phpDocumentor\Reflection\DocBlock($docblock->content)
                 : null;
 
             if ($result) {
@@ -538,7 +538,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
                     return null;
                 }
 
-                // attach line number to class, the phpDocumentor_Reflection_DocBlock
+                // attach line number to class, the \phpDocumentor\Reflection\DocBlock
                 // does not know the number
                 $result->line_number = $docblock->line_number;
             }

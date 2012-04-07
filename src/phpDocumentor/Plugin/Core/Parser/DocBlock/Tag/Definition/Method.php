@@ -33,7 +33,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Method
      */
     protected function configure()
     {
-        /** @var phpDocumentor_Reflection_DocBlock_Tag_Method $tag */
+        /** @var \phpDocumentor\Reflection\DocBlock\Tag\MethodTag $tag */
         $tag = $this->tag;
 
         $this->xml['method_name'] = $tag->getMethodName();

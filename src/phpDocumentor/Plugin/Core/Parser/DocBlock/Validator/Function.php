@@ -136,7 +136,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Function
      * If the @param tag does not contain a name then this method will set it
      * based on the argument.
      *
-     * @param phpDocumentor_Reflection_DocBlock_Tag_Param $param    @param to validate
+     * @param \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param    @param to validate
      *     with.
      * @param phpDocumentor_Reflection_Argument           $argument Argument to validate
      *     against.
@@ -144,7 +144,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Function
      * @return bool whether an issue occurred
      */
     protected function doesArgumentNameMatchParam(
-        phpDocumentor_Reflection_DocBlock_Tag_Param $param,
+        \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param,
         phpDocumentor_Reflection_Argument $argument
     ) {
         $param_name = $param->getVariableName();
@@ -171,13 +171,13 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Function
      * @param integer                         $index    The position in the
      *     argument listing.
      * @param phpDocumentor_Reflection_Argument     $argument The argument itself.
-     * @param phpDocumentor_Reflection_DocBlock_Tag $params   The list of @param tags
+     * @param \phpDocumentor\Reflection\DocBlock\Tag[] $params   The list of @param tags
      *     to validate against.
      *
      * @return bool whether an issue occurred.
      */
     protected function isArgumentInDocBlock(
-        $index, phpDocumentor_Reflection_Argument $argument, $params
+        $index, phpDocumentor_Reflection_Argument $argument, array $params
     ) {
         if (isset($params[$index])) {
             return true;
@@ -196,13 +196,13 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Function
      * If the argument has no typehint we do not check anything. When multiple
      * type are given then the typehint needs to be one of them.
      *
-     * @param phpDocumentor_Reflection_DocBlock_Tag_Param $param
+     * @param \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param
      * @param phpDocumentor_Reflection_Argument           $argument
      *
      * @return bool whether an issue occurred
      */
     protected function doesArgumentTypehintMatchParam(
-        phpDocumentor_Reflection_DocBlock_Tag_Param $param,
+        \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param,
         phpDocumentor_Reflection_Argument $argument
     ) {
         if (!$argument->getType()
@@ -223,7 +223,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Function
      * Checks whether the type of the given tag is not 'type'; which would
      * indicate a non-changed IDE value.
      *
-     * @param phpDocumentor_Reflection_DocBlock_Tag_Param|phpDocumentor_Reflection_DocBlock_Tag_Return $param
+     * @param \phpDocumentor\Reflection\DocBlock\Tag\ParamTag|\phpDocumentor\Reflection\DocBlock\Tag\ReturnTag $param
      *
      * @return bool whether an issue occurred
      */

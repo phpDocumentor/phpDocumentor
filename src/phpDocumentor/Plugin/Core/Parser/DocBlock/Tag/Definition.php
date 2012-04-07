@@ -29,7 +29,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
     /** @var SimpleXMLElement */
     protected $xml = null;
 
-    /** @var phpDocumentor_Reflection_DocBlock_Tag */
+    /** @var \phpDocumentor\Reflection\DocBlock\Tag */
     protected $tag = null;
 
     /**
@@ -51,12 +51,12 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
      * @param string[]                        $namespace_aliases Aliases used
      *  for all namespaces at the location of this tag.
      * @param SimpleXMLElement                $xml               XML to enhance.
-     * @param phpDocumentor_Reflection_DocBlock_Tag $tag               Tag object to
+     * @param \phpDocumentor\Reflection\DocBlock\Tag $tag               Tag object to
      *     use.
      */
     public function __construct(
         $namespace, $namespace_aliases, SimpleXMLElement $xml,
-        phpDocumentor_Reflection_DocBlock_Tag $tag
+        \phpDocumentor\Reflection\DocBlock\Tag $tag
     ) {
         $this->xml = $xml;
         $this->tag = $tag;
@@ -85,7 +85,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
      *  for all namespaces at the location of this tag.
      * @param SimpleXMLElement                $xml               Root xml element
      *  for this tag.
-     * @param phpDocumentor_Reflection_DocBlock_Tag $tag               The actual tag
+     * @param \phpDocumentor\Reflection\DocBlock\Tag $tag               The actual tag
      *  as reflected.
      *
      * @todo replace the switch statement with an intelligent container /
@@ -95,7 +95,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
      */
     public static function create(
         $namespace, $namespace_aliases, SimpleXMLElement $xml,
-        phpDocumentor_Reflection_DocBlock_Tag $tag
+        \phpDocumentor\Reflection\DocBlock\Tag $tag
     ) {
         $tag_name = $tag->getName();
 

@@ -1,5 +1,5 @@
 {
-    "hash": "d16c8a16179e3512f5a7bc7294b80f66",
+    "hash": "b1369d0889114cfbb4ae75917a9c46dc",
     "packages": [
         {
             "package": "dflydev/markdown",
@@ -17,6 +17,10 @@
         },
         {
             "package": "phpdocumentor/graphviz",
+            "version": "1.0.0-beta3"
+        },
+        {
+            "package": "phpdocumentor/reflection-docblock",
             "version": "1.0.0-beta3"
         },
         {

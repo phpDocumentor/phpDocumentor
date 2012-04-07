@@ -24,7 +24,7 @@
 class phpDocumentor_Parser_Exporter_Xml_DocBlockTag
 {
     public function export(
-        DOMElement $parent, phpDocumentor_Reflection_DocBlock_Tag $tag,
+        DOMElement $parent, \phpDocumentor\Reflection\DocBlock\Tag $tag,
         phpDocumentor_Reflection_DocBlockedAbstract $element
     ) {
         $child = new DOMElement('tag');

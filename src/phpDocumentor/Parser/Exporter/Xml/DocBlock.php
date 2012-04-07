@@ -63,7 +63,7 @@ class phpDocumentor_Parser_Exporter_Xml_DocBlock
     }
 
     protected function addDescription(
-        DOMElement $child, phpDocumentor_Reflection_DocBlock $docblock
+        DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
         $node = $child->ownerDocument->createCDATASection(
             $docblock->getShortDescription()
@@ -74,7 +74,7 @@ class phpDocumentor_Parser_Exporter_Xml_DocBlock
     }
 
     protected function addLongDescription(
-        DOMElement $child, phpDocumentor_Reflection_DocBlock $docblock
+        DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
         $node = $child->ownerDocument->createCDATASection(
             $docblock->getLongDescription()->getFormattedContents()
@@ -95,13 +95,13 @@ class phpDocumentor_Parser_Exporter_Xml_DocBlock
     }
 
     protected function setParentsPackage(
-        DOMElement $parent, phpDocumentor_Reflection_DocBlock $docblock,
+        DOMElement $parent, \phpDocumentor\Reflection\DocBlock $docblock,
         phpDocumentor_Reflection_DocBlockedAbstract $element
     ) {
-        /** @var phpDocumentor_Reflection_DocBlock_Tag $package */
+        /** @var \phpDocumentor\Reflection\DocBlock\Tag $package */
         $package = current($docblock->getTagsByName('package'));
 
-        /** @var phpDocumentor_Reflection_DocBlock_Tag $subpackage */
+        /** @var \phpDocumentor\Reflection\DocBlock\Tag $subpackage */
         $subpackage = current($docblock->getTagsByName('subpackage'));
 
         $package_name = '';

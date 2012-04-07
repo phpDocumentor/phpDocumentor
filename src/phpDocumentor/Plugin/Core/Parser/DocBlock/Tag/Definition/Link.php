@@ -36,7 +36,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Link
      */
     protected function configure()
     {
-        if (!$this->tag instanceof phpDocumentor_Reflection_DocBlock_Tag_Link) {
+        if (!$this->tag instanceof \phpDocumentor\Reflection\DocBlock\Tag\LinkTag) {
             throw new InvalidArgumentException(
                 'Expected the tag to be for an @link'
             );

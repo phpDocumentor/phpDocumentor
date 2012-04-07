@@ -26,7 +26,7 @@ abstract class phpDocumentor_Reflection_DocBlockedAbstract
 {
     protected $default_package_name = 'Default';
 
-    /** @var phpDocumentor_Reflection_DocBlock|null */
+    /** @var \phpDocumentor\Reflection\DocBlock|null */
     protected $doc_block = null;
 
     /**
@@ -45,7 +45,7 @@ abstract class phpDocumentor_Reflection_DocBlockedAbstract
     /**
      * Returns the DocBlock reflection object.
      *
-     * @return phpDocumentor_Reflection_Docblock|null
+     * @return \phpDocumentor\Reflection\DocBlock|null
      */
     public function getDocBlock()
     {
@@ -59,7 +59,7 @@ abstract class phpDocumentor_Reflection_DocBlockedAbstract
      *
      * @param phpDocumentor_Reflection_TokenIterator $tokens Tokens to process
      *
-     * @return phpDocumentor_Reflection_DocBlock|null
+     * @return \phpDocumentor\Reflection\DocBlock|null
      */
     protected function findDocBlock(phpDocumentor_Reflection_TokenIterator $tokens)
     {
@@ -69,11 +69,11 @@ abstract class phpDocumentor_Reflection_DocBlockedAbstract
         );
         try {
             $result = $docblock
-                ? new phpDocumentor_Reflection_DocBlock($docblock->content)
+                ? new \phpDocumentor\Reflection\DocBlock($docblock->content)
                 : null;
 
             if ($result) {
-                // attach line number to class, the phpDocumentor_Reflection_DocBlock
+                // attach line number to class, the \phpDocumentor\Reflection\DocBlock
                 // does not know the number
                 $result->line_number = $docblock->line_number;
             }

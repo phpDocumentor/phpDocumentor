@@ -85,9 +85,11 @@ abstract class phpDocumentor_Plugin_ListenerAbstract extends phpDocumentor_Plugi
                 continue;
             }
 
-            $docblock = new phpDocumentor_Reflection_DocBlock($method->getDocComment());
+            $docblock = new \phpDocumentor\Reflection\DocBlock(
+                $method->getDocComment()
+            );
 
-            /** @var phpDocumentor_Reflection_Tag $event */
+            /** @var \phpDocumentor\Reflection\DocBlock\Tag $event */
             foreach ($docblock->getTagsByName('phpdoc-event') as $event) {
                 $this->event_dispatcher->connect(
                     $event->getDescription(),

@@ -207,7 +207,9 @@ abstract class phpDocumentor_Task_Abstract extends Zend_Console_Getopt
     public function getUsageDescription()
     {
         if ($this->usage_description === null) {
-            $refl = new phpDocumentor_Reflection_DocBlock(new ReflectionObject($this));
+            $refl = new \phpDocumentor\Reflection\DocBlock(
+                new ReflectionObject($this)
+            );
             $this->usage_description = $refl->getLongDescription()->getContents();
         }
 

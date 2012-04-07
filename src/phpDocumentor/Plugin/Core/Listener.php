@@ -98,7 +98,7 @@ class phpDocumentor_Plugin_Core_Listener extends phpDocumentor_Plugin_ListenerAb
         /** @var phpDocumentor_Reflection_DocBlockedAbstract $element  */
         $element = $data->getSubject();
 
-        /** @var phpDocumentor_Reflection_DocBlock $docblock  */
+        /** @var \phpDocumentor\Reflection\DocBlock $docblock  */
         $docblock = $data['docblock'];
 
         // get the type of element

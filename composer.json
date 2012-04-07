@@ -11,12 +11,14 @@
     "repositories":[
         { "type":"pear", "url":"http://packages.zendframework.com"},
         { "type":"pear", "url":"http://pear.symfony-project.com/" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" }
+        { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" },
+        { "type":"git", "url":"http://github.com/phpDocumentor/Reflection-DocBlock" }
     ],
     "require": {
         "monolog/monolog": "1.0.*",
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",
-        "phpdocumentor/graphviz": "1.*"
+        "phpdocumentor/graphviz": "1.*",
+        "phpdocumentor/reflection-docblock": "1.*"
     }
 }
