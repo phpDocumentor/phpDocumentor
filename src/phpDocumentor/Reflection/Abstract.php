@@ -287,16 +287,30 @@ abstract class phpDocumentor_Reflection_Abstract
      */
     protected function findType(phpDocumentor_Reflection_TokenIterator $tokens)
     {
-        // first see if there is a string at most 5 characters back
-        $type = $tokens->findPreviousByType(T_STRING, 5, array(',', '('));
+        $type = '';
+
+        // find all strings and namespace tokens until a , or ( is encountered
+        // this will get a FQCN if there is one
+        $key = $tokens->key();
+        while (
+            $tmp = $tokens->gotoPreviousByType(
+                array(T_STRING, T_NS_SEPARATOR), 5, array(',', '(')
+            )
+        ) {
+            $type = $tmp->content.$type;
+        }
+        $tokens->seek($key);
 
         // if none found, check if there is an array at most 5 places back
         if (!$type) {
             $type = $tokens->findPreviousByType(T_ARRAY, 5, array(',', '('));
+            if ($type) {
+                $type = $type->content;
+            }
         }
 
         // if anything is found, return the content
-        return $type ? $type->content : null;
+        return $type ? $type : null;
     }
 
     /**
