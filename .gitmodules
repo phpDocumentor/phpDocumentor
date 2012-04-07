@@ -1,6 +1,0 @@
-[submodule "data/templates/abstract"]
-	path = data/templates/abstract
-	url = git://github.com/docblox/template.abstract.git
-[submodule "data/templates/new_black"]
-	path = data/templates/new_black
-	url = git://github.com/docblox/template.new_black.git
