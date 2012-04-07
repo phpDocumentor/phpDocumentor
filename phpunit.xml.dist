@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <phpunit bootstrap="tests/common/bootstrap.php" colors="true" strict="true">
-  <testsuites>
-    <testsuite name="phpDocumentor">
-      <directory>./tests/unit/</directory>
-      <directory suffix=".phpt">./tests/ui/</directory>
-    </testsuite>
-  </testsuites>
-  <filter>
-    <whitelist>
-      <directory suffix=".php">.</directory>
-      <exclude>
-        <directory suffix=".php">build</directory>
-        <directory suffix=".php">src/markdown</directory>
-        <file>src/markdown.php</file>
-        <directory suffix=".php">src/Zend</directory>
-        <directory suffix=".php">src/ZendX</directory>
-        <directory suffix=".php">src/XHProf</directory>
-        <directory suffix=".php">src/symfony</directory>
-        <directory suffix=".php">data/output</directory>
-        <directory suffix=".php">data/log</directory>
-        <directory suffix=".php">tests</directory>
-        <directory suffix=".php">bin</directory>
-        <directory suffix=".php">data</directory>
-      </exclude>
-    </whitelist>
-  </filter>
-  <logging>
-    <log type="coverage-html"
-      title="phpDocumentor"
-      target="build/coverage"
-      charset="UTF-8"
-      yui="true"
-      highlight="false"
-      lowUpperBound="35"
-      highLowerBound="70" />
-    <log type="coverage-clover" target="build/logs/clover.xml" />
-    <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
-  </logging>
+    <testsuites>
+        <testsuite name="phpDocumentor">
+            <directory>./tests/unit/</directory>
+            <directory suffix=".phpt">./tests/ui/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">.</directory>
+            <exclude>
+                <directory suffix=".php">build</directory>
+                <directory suffix=".php">data</directory>
+                <directory suffix=".php">tests</directory>
+                <directory suffix=".php">bin</directory>
+                <directory suffix=".php">vendor</directory>
+                <directory suffix=".php">src/Zend</directory>
+                <directory suffix=".php">src/XHProf</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html"
+            title="phpDocumentor"
+            target="build/coverage"
+            charset="UTF-8"
+            yui="true"
+            highlight="false"
+            lowUpperBound="35"
+            highLowerBound="70" />
+        <log type="coverage-clover" target="build/logs/clover.xml" />
+        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
+    </logging>
 </phpunit>
