@@ -21,7 +21,7 @@ individual project. It is RECOMMENDED to mention the year or years which are
 covered by this copyright and the organization involved.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` tagged with the @copyright tag will show a *Copyright*
 header in their description containing the contents of this tag.

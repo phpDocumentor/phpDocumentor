@@ -35,7 +35,7 @@ documentation from the source code of this piece of software.
     in your :term:`DocBlock`. Not even with this tag.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements`, or parts of the long description when the tag is
 used inline, tagged with the @internal tag will be filtered out when creating

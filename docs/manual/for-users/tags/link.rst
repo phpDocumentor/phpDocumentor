@@ -28,7 +28,7 @@ The @link tag MAY have a description appended to indicate the type of relation
 defined by this occurrence.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements`, or inline text in a long description, tagged with
 the @link tag will show a link in their description. If a description is

@@ -23,7 +23,7 @@ NOT change after publication unless the new version is tagged as breaking
 Backwards Compatibility.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` tagged with the @api tag will be shown in a separate
 sidebar section and the individual entry of will be marked as being an API element.

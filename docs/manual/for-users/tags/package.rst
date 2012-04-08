@@ -48,7 +48,7 @@ depending where it is defined.
 This tag MUST NOT occur more than once in a :term:`PHPDoc`.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` tagged with the @package tag are grouped and
 organized in their own sidebar section.

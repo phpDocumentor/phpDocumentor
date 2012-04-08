@@ -31,7 +31,7 @@ This tag MUST NOT occur more than once in a :term:`PHPDoc` and is limited to
 :term:`Structural Elements` of type method or function.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` of type method or function, that are tagged with the
 @return tag, will have an additional section *Returns* in their content description

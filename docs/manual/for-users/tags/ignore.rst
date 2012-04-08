@@ -20,7 +20,7 @@ It is RECOMMENDED (but not required) to provide an additional description statin
 why the associated element is to be ignored.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` tagged with the @ignore tag will be not be processed.
 

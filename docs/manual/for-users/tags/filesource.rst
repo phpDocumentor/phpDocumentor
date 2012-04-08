@@ -1,8 +1,8 @@
 @filesource
 ===========
 
-The @deprecated tag is used to tell phpDocumentor to include the source of the current
-file in the parsing results.
+The @filesource tag is used to tell phpDocumentor to include the source of the
+current file in the parsing results.
 
 Syntax
 ------

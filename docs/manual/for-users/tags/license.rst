@@ -23,7 +23,7 @@ Whenever multiple licenses apply MUST there be one @license tag per applicable
 license.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` tagged with the @license tag will show a link to the
 given license in case an URL is provided or the name contains one of the following

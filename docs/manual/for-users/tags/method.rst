@@ -6,7 +6,7 @@ The @method allows a class to know which 'magic' methods are callable.
 Syntax
 ------
 
-    @method [return type] [name]([type] [parameter], [...]) [description]
+    @method [return type] [name]([type] [parameter], [...]) [<description>]
 
 Description
 -----------
@@ -30,7 +30,7 @@ be omitted; in which case 'void' is implied.
 a *class* or *interface*.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` of type *class* or *interface* tagged with the
 @method tag will show an extra method in their method listing matching the

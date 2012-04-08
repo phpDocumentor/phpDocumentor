@@ -19,7 +19,7 @@ adhere to the syntax defined in section 3.4.1 of
 `RFC5322 <http://www.ietf.org/rfc/rfc5322.txt>`_.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` tagged with the @author tag will show an *Author*
 header in their description containing the contents of this tag.

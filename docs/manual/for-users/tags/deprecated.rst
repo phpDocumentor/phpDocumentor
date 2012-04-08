@@ -26,7 +26,7 @@ If it is superceded by another method it is RECOMMENDED to add a @see tag in the
 same :term:`PHPDoc` pointing to the new element.
 
 Effects in phpDocumentor
-------------------
+------------------------
 
 :term:`Structural Elements` tagged with the @deprecated tag will be listed in the
 *Deprecated elements* report and their name will be shown as strike through.
