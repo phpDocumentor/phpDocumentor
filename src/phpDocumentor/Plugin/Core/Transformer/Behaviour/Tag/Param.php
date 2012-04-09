@@ -27,6 +27,9 @@
 class phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Param extends
     phpDocumentor_Transformer_Behaviour_Abstract
 {
+    /** @var string Make element name overrideable. */
+    protected $element_name = 'param';
+
     /**
      * Find all the @param tags and if using special characters transform
      * using markdown otherwise just add a <p> tag to be consistent.
@@ -37,7 +40,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Param extends
      */
     public function process(DOMDocument $xml)
     {
-        $qry = '//tag[@name=\'param\']/@description[. != ""]';
+        $qry = '//tag[@name=\''.$this->element_name.'\']/@description[. != ""]';
 
         $xpath = new DOMXPath($xml);
         $nodes = $xpath->query($qry);
