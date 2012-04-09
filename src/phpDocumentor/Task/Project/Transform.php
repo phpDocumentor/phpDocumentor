@@ -161,9 +161,28 @@ class phpDocumentor_Task_Project_Transform extends phpDocumentor_Task_Abstract
      */
     public function getTemplate()
     {
-        return parent::getTemplate()
-            ? parent::getTemplate()
-            : phpDocumentor_Core_Abstract::config()->transformations->template->name;
+        if (parent::getTemplate()) {
+            return parent::getTemplate();
+        }
+
+        $templates = phpDocumentor_Core_Abstract::config()
+            ->transformations->template;
+
+        // if only one item is in the configuration
+        if (count($templates) <= 1) {
+            return $templates->name;
+        }
+
+        // if multiple items are in the configuration
+        $result = array();
+        foreach ($templates as $template) {
+            if (!$template instanceof Zend_Config) {
+                continue;
+            }
+
+            $result[] = $template->name;
+        }
+        return $result;
     }
 
     /**
