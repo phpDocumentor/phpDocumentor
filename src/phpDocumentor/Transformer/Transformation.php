@@ -182,20 +182,16 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
             }
         }
 
-        if (file_exists($this->source)) {
-            return realpath($this->source);
+        // check whether the file exists in the phpDocumentor project directory
+        if (file_exists(__DIR__.'/../../../'.$this->source)) {
+            return realpath(__DIR__ . '/../../../' .$this->source);
         }
 
         // TODO: replace this as it breaks the component stuff
         // we should ditch the idea of a global set of files to fetch and have
         // a variable / injection for the global templates folder and inject
         // that here.
-        $file = dirname(__FILE__)
-            . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . 'data'
-            . DIRECTORY_SEPARATOR . $this->source;
+        $file = __DIR__.'/../../../data/'.$this->source;
 
         if (!file_exists($file)) {
             throw new phpDocumentor_Transformer_Exception(
