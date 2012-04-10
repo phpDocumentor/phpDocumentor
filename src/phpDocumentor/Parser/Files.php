@@ -23,6 +23,9 @@
  */
 class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
 {
+    /** @var \Symfony\Component\Finder\Finder */
+    protected $finder = null;
+
     /** @var bool Whether to follow symlinks*/
     protected $follow_symlinks = false;
 
@@ -57,6 +60,15 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
     protected $project_root = null;
 
     /**
+     * Initializes the finding component.
+     */
+    public function __construct()
+    {
+        $this->finder = new \Symfony\Component\Finder\Finder();
+        $this->finder->files();
+    }
+
+    /**
      * Sets the patterns by which to detect which files to ignore.
      *
      * @param array $patterns Glob-like patterns to filter files.
@@ -79,12 +91,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function getIgnorePatterns()
     {
-        // extract first element; second is a count
-        $result = array();
-        foreach ($this->ignore_patterns as $pattern) {
-            $result[] = $pattern[0];
-        }
-        return $result;
+        return $this->ignore_patterns;
     }
 
     /**
@@ -96,8 +103,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function addIgnorePattern($pattern)
     {
-        $this->convertToPregCompliant($pattern);
-        $this->ignore_patterns[] = array($pattern, 0);
+        $this->ignore_patterns[] = $pattern;
     }
 
     /**
@@ -158,70 +164,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function addDirectory($path)
     {
-        $result = substr($path, 0, 7) !== 'phar://' ? glob($path) : array($path);
-        if ($result === false) {
-            throw new phpDocumentor_Parser_Exception(
-                '"'.$path . '" does not match an existing directory pattern'
-            );
-        }
-
-        // if the given path is the only one AND there are no registered files.
-        // then use this as project root instead of the calculated version.
-        // This will make sure than when a _single_ path is given, that the
-        // root will not inadvertently skip to a higher location because no
-        // file were found in the given location.
-        // i.e. if only path `src` us given and no PHP files reside there, but
-        // they do reside in `src/php` then with this code `src` will remain
-        // root so that ignore statements work as expected. Without this the
-        // root would be `src/php`, which is unexpected when only a single folder
-        // is provided.
-        if ((count($result) == 1) && (empty($this->files))) {
-            $this->project_root = realpath(reset($result));
-        } else {
-            $this->project_root = null;
-        }
-
-        foreach ($result as $result_path) {
-            // if the given is not a directory or is hidden and must be ignored,
-            // skip it
-            if (!is_dir($result_path)) {
-                continue;
-            }
-
-            // add the CATCH_GET_CHILD option to make sure that an unreadable
-            // directory does not halt process but skip that folder
-            $recursive_iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($result_path,
-                    $this->getFollowSymlinks()
-                        ? RecursiveDirectoryIterator::FOLLOW_SYMLINKS : 0
-                ),
-                RecursiveIteratorIterator::LEAVES_ONLY,
-                RecursiveIteratorIterator::CATCH_GET_CHILD
-            );
-
-            /** @var SplFileInfo $file */
-            foreach ($recursive_iterator as $file) {
-                $is_hidden = ((substr($file->getPath(), 0, 1) == '.')
-                    || (strpos($file->getPath(), DIRECTORY_SEPARATOR.'.')
-                        !== false));
-
-                // skipping dots (should any be encountered) or skipping
-                // files starting with a dot if IgnoreHidden is true
-                if (($file->getFilename() == '.')
-                    || ($file->getFilename() == '..')
-                    || ($this->getIgnoreHidden() && $is_hidden)
-                ) {
-                    continue;
-                }
-
-                // Phar files return false on a call to getRealPath
-                $this->addFile(
-                    (substr($file->getPathname(), 0, 7) != 'phar://')
-                    ? $file->getRealPath()
-                    : $file->getPathname()
-                );
-            }
-        }
+        $this->finder->in($path);
     }
 
     /**
@@ -253,52 +196,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function addFile($path)
     {
-        $is_hidden = ((substr($path, 0, 1) == '.')
-            || (strpos($path, DIRECTORY_SEPARATOR . '.') !== false));
-
-        // ignore hidden files if option is set
-        if ($this->getIgnoreHidden() && $is_hidden) {
-            return;
-        }
-
-        // if it is not a file contained in a phar; check it out with a glob
-        if (substr($path, 0, 7) != 'phar://') {
-            // search file(s) with the given expressions
-            $result = glob($path);
-            if (empty($result)) {
-                $this->log(
-                    $path . ' caused an error while performing a glob call; '
-                    .'is this path accessible?'
-                );
-                return;
-            }
-
-            foreach ($result as $file) {
-                // if the path is not a file OR it's extension does not match
-                // the given, then do not process it.
-                if (!is_file($file) || (!empty($this->allowed_extensions)
-                    && !in_array(
-                        strtolower(pathinfo($file, PATHINFO_EXTENSION)),
-                        $this->allowed_extensions
-                    ))
-                ) {
-                    continue;
-                }
-
-                $this->files[] = realpath($file);
-            }
-        } else {
-            // only process if it is a file and it matches the allowed extensions
-            if (is_file($path)
-                && (empty($this->allowed_extensions)
-                || in_array(
-                    strtolower(pathinfo($path, PATHINFO_EXTENSION)),
-                    $this->allowed_extensions
-                ))
-            ) {
-                $this->files[] = $path;
-            }
-        }
+        $this->finder->append($path);
     }
 
     /**
@@ -313,47 +211,39 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
     {
         $result = array();
 
-        foreach ($this->files as $filename) {
-            // check whether this file is ignored; we do this in two steps:
-            // 1. Determine whether this is a relative or absolute path, if the
-            //    string does not start with *, ?, / or \ then we assume that it is
-            //    a relative path
-            // 2. check whether the given pattern matches with the filename (or
-            //    relative filename in case of a relative comparison)
-            foreach ($this->ignore_patterns as $key => $pattern) {
-                $glob = $pattern[0];
-                if ((($glob[0] !== '*')
-                    && ($glob[0] !== '?')
-                    && ($glob[0] !== '/')
-                    && ($glob[0] !== '\\')
-                    && (preg_match(
-                        '/^' . $glob . '$/',
-                        $this->getRelativeFilename($filename)
-                    )))
-                    || (preg_match('/^' . $glob . '$/', $filename))
-                ) {
-
-                    // increase ignore usage with 1
-                    $this->ignore_patterns[$key][1]++;
-
-                    $this->log(
-                        'File "' . $filename . '" matches ignore pattern, '
-                        . 'will be skipped', phpDocumentor_Core_Log::INFO
-                    );
-                    continue 2;
-                }
-            }
-            $result[] = $filename;
+        if ($this->follow_symlinks) {
+            $this->finder->followLinks();
         }
 
-        // detect if ignore patterns have been unused
-        foreach ($this->ignore_patterns as $pattern) {
-            if ($pattern[1] < 1) {
-                $this->log(
-                    'Ignore pattern "' . $pattern[0] . '" has not been used '
-                    . 'during processing'
-                );
+        $patterns = $this->getIgnorePatterns();
+        if (empty($patterns)) {
+            $patterns = '';
+        } else {
+            foreach ($patterns as &$pattern) {
+                $this->convertToPregCompliant($pattern);
             }
+            $patterns = '/('.implode('|', $patterns).')$/';
+        }
+
+        // restrict names to those ending in the given extensions
+        $this->finder
+            ->name('/\.('.implode('|', $this->allowed_extensions).')$/')
+            ->ignoreDotFiles($this->getIgnoreHidden())
+            ->filter(
+                function(SplFileInfo $file) use ($patterns) {
+                    if (!$patterns) {
+                        return true;
+                    }
+
+                    // apply ignore list on path instead of file, finder
+                    // can't do that by default
+                    return !preg_match($patterns, $file->getPathname());
+                }
+            );
+
+        /** @var SplFileInfo $file */
+        foreach ($this->finder as $file) {
+            $result[] = $file->getRealPath();
         }
 
         return $result;
@@ -504,12 +394,6 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function setFollowSymlinks($follow_symlinks)
     {
-        if ($follow_symlinks && version_compare(PHP_VERSION, '5.2.11', '<')) {
-            throw new InvalidArgumentException(
-                'To follow symlinks you need at least PHP version 5.2.11'
-            );
-        }
-
         $this->follow_symlinks = $follow_symlinks;
     }
 

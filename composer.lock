@@ -1,5 +1,5 @@
 {
-    "hash": "78fd0c1269c7efc623b922d8ababe765",
+    "hash": "1202f566431284df63867a62baeb7e97",
     "packages": [
         {
             "package": "dflydev/markdown",
@@ -35,6 +35,12 @@
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
             "source-reference": "07e1d0174f3a0ec36bbe04b3850270df7a86271d"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "57ec7198a70e6c40e450ba66cc2f8ecab98746c8",
+            "alias": "2.1.9999999.9999999-dev"
         }
     ],
     "aliases": []

@@ -59,16 +59,26 @@ class phpDocumentor_Parser_FilesTest extends PHPUnit_Framework_TestCase
 
         // load the unit test folder
         $fixture->addDirectory(dirname(__FILE__) . '/../../');
+        $files = $fixture->getFiles();
+        $count = count($files);
 
         // do a few checks to see if it has caught some cases
+        $this->assertGreaterThan(1, $count);
         $this->assertContains(
-            realpath(dirname(__FILE__) . '/../ParserTest.php'),
-            $fixture->getFiles()
+            dirname(__FILE__) . '/../../phpDocumentor/ParserTest.php',
+            $files
         );
         $this->assertContains(
-            realpath(dirname(__FILE__) . '/../Parser/FilesTest.php'),
-            $fixture->getFiles()
+            dirname(__FILE__) . '/../../phpDocumentor/Parser/FilesTest.php',
+            $files
         );
+
+        // should exclude 1 less
+        $fixture->addIgnorePattern('*r/ParserTest.php');
+        $this->assertCount($count -1, $fixture->getFiles());
+
+        $fixture->addIgnorePattern('*/phpDocumentor/*');
+        $this->assertEmpty($fixture->getFiles());
     }
 
 }

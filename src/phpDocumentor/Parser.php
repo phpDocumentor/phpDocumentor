@@ -313,7 +313,9 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
     public function getRelativeFilename($filename)
     {
         // strip path from filename
-        $result = ltrim(substr($filename, strlen($this->path)), '/');
+        $result = ltrim(
+            substr($filename, strlen($this->path)), DIRECTORY_SEPARATOR
+        );
         if ($result === '') {
             throw new InvalidArgumentException(
                 'File is not present in the given project path: ' . $filename
