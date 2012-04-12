@@ -1,6 +1,12 @@
 {
-    "hash": "78fd0c1269c7efc623b922d8ababe765",
+    "hash": "450663ae7cf0e25349cbdee551376ea2",
     "packages": [
+        {
+            "package": "cilex/cilex",
+            "version": "dev-master",
+            "source-reference": "f621c9f11820fcb4c3c11bc9f318db2cb7cf725f",
+            "alias": "1.0.9999999.9999999-dev"
+        },
         {
             "package": "dflydev/markdown",
             "version": "dev-master",
@@ -32,9 +38,38 @@
             "version": "1.0.1"
         },
         {
+            "package": "pimple/pimple",
+            "version": "dev-master",
+            "source-reference": "4e5fc6a6d58a7d9ad1d1974726edc360d28b70ab"
+        },
+        {
+            "package": "symfony/class-loader",
+            "version": "dev-master",
+            "source-reference": "cd1550a4a6c0794b6b109af2db43fde6e18ee363",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "source-reference": "8e3c42aa976f18a9bfcb0694553e5f99def3309c",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
             "source-reference": "07e1d0174f3a0ec36bbe04b3850270df7a86271d"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "57ec7198a70e6c40e450ba66cc2f8ecab98746c8",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/process",
+            "version": "dev-master",
+            "source-reference": "2e4da8c8076744bafed97451bb1574c96cda0e68",
+            "alias": "2.1.9999999.9999999-dev"
         }
     ],
     "aliases": []

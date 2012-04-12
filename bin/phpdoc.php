@@ -11,6 +11,11 @@
  * @link      http://phpdoc.org
  */
 
+require_once __DIR__.'/../src/phpDocumentor/Application.php';
+$app = new phpDocumentor\Application();
+$app->run();
+return;
+
 // check whether xhprof is loaded
 $profile = false;
 if (extension_loaded('xhprof')) {

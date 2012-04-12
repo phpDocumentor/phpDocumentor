@@ -14,7 +14,8 @@
         { "type":"git", "url":"http://github.com/phpDocumentor/TemplateInstaller" },
         { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" },
         { "type":"git", "url":"http://github.com/phpDocumentor/ReflectionDocBlock" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" }
+        { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" },
+        { "type":"git", "url":"http://github.com/Cilex/Cilex" }
     ],
     "require": {
         "php": ">=5.3.2",
@@ -23,7 +24,8 @@
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",
         "phpdocumentor/graphviz": "1.*",
-        "phpdocumentor/reflection-docblock": "1.*"
+        "phpdocumentor/reflection-docblock": "1.*",
+        "cilex/cilex": "1.*"
     },
     "recommend": {
         "phpdocumentor/template-installer": "1.*",
