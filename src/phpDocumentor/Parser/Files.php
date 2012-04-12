@@ -164,6 +164,10 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function addDirectory($path)
     {
+        if (!empty($paths)) {
+            $this->project_root = null;
+        }
+
         $this->finder->in($path);
     }
 
@@ -176,12 +180,6 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function addFiles(array $paths)
     {
-        if (!empty($paths)) {
-            // if separate files are provided then the root must always be
-            // calculated.
-            $this->project_root = null;
-        }
-
         foreach ($paths as $path) {
             $this->addFile($path);
         }
@@ -196,7 +194,11 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function addFile($path)
     {
-        $this->finder->append($path);
+        if (!empty($paths)) {
+            $this->project_root = null;
+        }
+
+        $this->files += glob($path);
     }
 
     /**
@@ -209,8 +211,6 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function getFiles()
     {
-        $result = array();
-
         if ($this->follow_symlinks) {
             $this->finder->followLinks();
         }
@@ -241,12 +241,19 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
                 }
             );
 
-        /** @var SplFileInfo $file */
-        foreach ($this->finder as $file) {
-            $result[] = $file->getRealPath();
+        try {
+            /** @var SplFileInfo $file */
+            foreach ($this->finder as $file) {
+                $this->files[] = $file->getRealPath();
+            }
+        } catch(\LogicException $e)
+        {
+            // if a logic exception is thrown then no folders were included
+            // for phpDocumentor this is not an issue since we accept separate
+            // files as well
         }
 
-        return $result;
+        return $this->files;
     }
 
     /**
