@@ -75,9 +75,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
         $proc->setParameter(
             '', 'search_template', $transformation->getParameter('search', 'none')
         );
-        $proc->setParameter(
-            '', 'version', phpDocumentor_Core_Abstract::VERSION
-        );
+        $proc->setParameter('', 'version', \phpDocumentor\Application::VERSION);
         $proc->setParameter(
             '', 'generated_datetime', date('r')
         );

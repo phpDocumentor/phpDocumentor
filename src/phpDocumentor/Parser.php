@@ -130,7 +130,7 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
     {
         $is_version_unequal = (($this->getExistingXml())
            && ($this->getExistingXml()->documentElement->getAttribute('version')
-               != phpDocumentor_Core_Abstract::VERSION));
+               != \phpDocumentor\Application::VERSION));
 
         if ($is_version_unequal) {
             $this->log(

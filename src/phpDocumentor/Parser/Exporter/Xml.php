@@ -39,7 +39,7 @@ class phpDocumentor_Parser_Exporter_Xml extends phpDocumentor_Parser_Exporter_Ab
         $document_element = new DOMElement('project');
         $this->xml->appendChild($document_element);
 
-        $document_element->setAttribute('version', phpDocumentor_Core_Abstract::VERSION);
+        $document_element->setAttribute('version', \phpDocumentor\Application::VERSION);
         $document_element->setAttribute('title', $this->parser->getTitle());
     }
 

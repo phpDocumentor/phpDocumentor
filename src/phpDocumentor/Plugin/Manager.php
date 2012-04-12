@@ -26,7 +26,7 @@ class phpDocumentor_Plugin_Manager
     /** @var sfEventDispatcher */
     protected $event_dispatcher = null;
 
-    /** @var phpDocumentor_Core_Config */
+    /** @var SimpleXMLElement */
     protected $configuration = null;
 
     /** @var ZendX_Loader_StandardAutoloader */
@@ -64,8 +64,8 @@ class phpDocumentor_Plugin_Manager
      */
     public function loadFromConfiguration()
     {
-        $plugins = isset(phpDocumentor_Core_Abstract::config()->plugins)
-            ? phpDocumentor_Core_Abstract::config()->plugins->plugin
+        $plugins = isset($this->configuration->plugins)
+            ? $this->configuration->plugins->plugin
             : array();
 
         // Zend_Config has a quirk; if there is only one entry then it is not
