@@ -66,9 +66,4 @@ class phpDocumentor_Core_AbstractTest extends PHPUnit_Framework_TestCase
     $this->markTestIncomplete();
   }
 
-  public function testDebug()
-  {
-    $this->markTestIncomplete();
-  }
-
 }

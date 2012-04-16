@@ -23,6 +23,16 @@
  */
 class phpDocumentor_Parser_Exporter_Xml_Interface
 {
+    /**
+     * Export this interface definition to the given parent DOMElement.
+     *
+     * @param DOMElement                         $parent    Element to augment.
+     * @param phpDocumentor_Reflection_Interface $interface Element to log export.
+     * @param DOMElement                         $child     if supplied this element
+     *     will be augmented instead of freshly added.
+     *
+     * @return void
+     */
     public function export(
         DOMElement $parent, phpDocumentor_Reflection_Interface $interface,
         DOMElement $child = null
@@ -42,9 +52,10 @@ class phpDocumentor_Parser_Exporter_Xml_Interface
             )
         );
         $child->appendChild(
-            new DOMElement('extends', $interface->getParentClass()
-                    ? $interface->expandType($interface->getParentClass(), true)
-                    : '')
+            new DOMElement(
+                'extends', $interface->getParentClass()
+                ? $interface->expandType($interface->getParentClass(), true) : ''
+            )
         );
 
         foreach ($interface->getParentInterfaces() as $parent_interface) {

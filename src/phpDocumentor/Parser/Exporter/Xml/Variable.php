@@ -23,6 +23,16 @@
  */
 class phpDocumentor_Parser_Exporter_Xml_Variable
 {
+    /**
+     * Export this variable definition to the given parent DOMElement.
+     *
+     * @param DOMElement                        $parent   Element to augment.
+     * @param phpDocumentor_Reflection_Variable $variable Element to log from.
+     * @param DOMElement                        $child    if supplied this element
+     *     will be augmented instead of freshly added.
+     *
+     * @return void
+     */
     public function export(
         DOMElement $parent, phpDocumentor_Reflection_Variable $variable,
         DOMElement $child = null

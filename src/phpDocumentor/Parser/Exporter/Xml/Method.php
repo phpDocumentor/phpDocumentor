@@ -13,7 +13,7 @@
  */
 
 /**
- *
+ * Exports a method definition to the given DOMElement.
  *
  * @category phpDocumentor
  * @package  Parser\Exporter\Xml
@@ -23,6 +23,14 @@
  */
 class phpDocumentor_Parser_Exporter_Xml_Method
 {
+    /**
+     * Export the given reflected method definition to the provided parent element.
+     *
+     * @param DOMElement                      $parent Element to augment.
+     * @param phpDocumentor_Reflection_Method $method Element to export.
+     *
+     * @return void
+     */
     public function export(
         DOMElement $parent, phpDocumentor_Reflection_Method $method
     ) {

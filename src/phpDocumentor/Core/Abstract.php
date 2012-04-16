@@ -39,13 +39,6 @@ abstract class phpDocumentor_Core_Abstract
     static protected $logger = null;
 
     /**
-     * The debugger used to time events and write to the debugging log.
-     *
-     * @var phpDocumentor_Core_Debug
-     */
-    protected $debugger = null;
-
-    /**
      * The logger used to capture all messages send by the log method and
      * send them to stdout.
      *
@@ -83,9 +76,7 @@ abstract class phpDocumentor_Core_Abstract
     static protected $log_level = null;
 
     /**
-     * Initializes the Debugger.
-     *
-     * @todo move the loggers to a DIC instead of statics!!!
+     * Initializes the Debug logger.
      */
     public function __construct()
     {
@@ -94,54 +85,6 @@ abstract class phpDocumentor_Core_Abstract
                 $this->getConfig()->logging->paths->errors
             );
         }
-
-        $this->setDebugger(
-            new phpDocumentor_Core_Debug(self::$debug_logger)
-        );
-    }
-
-    /**
-     * Sets the debugger for this session; automatically enables debugging mode.
-     *
-     * @param phpDocumentor_Core_Debug $debugger Debugger to use for this session.
-     *
-     * @return void
-     */
-    public function setDebugger($debugger)
-    {
-        $this->debugger = $debugger;
-    }
-
-    /**
-     * Resets a timer (with the given name) to the current time.
-     *
-     * @param string $name Name of the used timer.
-     *
-     * @todo change implementations of this method to use the debugger directly.
-     *
-     * @return void
-     */
-    protected function resetTimer($name = 'default')
-    {
-        if ($this->debugger) {
-            $this->debugger->resetTimer($name);
-        }
-    }
-
-    /**
-     * Returns the time that has elapsed since the last reset of the timer.
-     *
-     * If debugging is not enabled this method will return -1.
-     *
-     * @param string $name Name of the timer.
-     *
-     * @return float
-     */
-    protected function getElapsedTime($name = 'default')
-    {
-        return ($this->debugger)
-                ? $this->debugger->getElapsedTime($name)
-                : -1;
     }
 
     /**
@@ -151,7 +94,7 @@ abstract class phpDocumentor_Core_Abstract
      *
      * @see Zend_Log
      *
-     * @return void
+     * @return int
      */
     public function getLogLevel()
     {
@@ -196,52 +139,6 @@ abstract class phpDocumentor_Core_Abstract
     }
 
     /**
-     * Logs a debug message post-fixed with timer information.
-     *
-     * The string which is sent to the debug logger looks like:
-     *
-     *     $message in {time} seconds.
-     *
-     * Thus for readability is advised to write messages as the following examples:
-     *
-     * * 'Processed parameters' (in 4 seconds)
-     * * 'Written to log' (in 4 seconds)
-     *
-     * @param string $message Text to prepend the pre-fab text with.
-     * @param string $name    Name of the timer.
-     *
-     * @return void
-     */
-    protected function debugTimer($message, $name = 'default')
-    {
-        if ($this->debugger) {
-            $this->debugger->logWithTimeElapsed($message, $name);
-        }
-    }
-
-    /**
-     * Logs the given to a debug log.
-     *
-     * This method only works if the Log Level is higher than DEBUG.
-     * If anything other than a string is passed than the item is var_dumped and
-     * then stored.
-     * If there is no debug logger object than this method will instantiate it.
-     *
-     * @param string|array|object $message Element to log.
-     *
-     * @see DocBlock_Abstract::setLogLevel()
-     * @see Zend_Log
-     *
-     * @return void
-     */
-    protected function debug($message)
-    {
-        if ($this->debugger) {
-            $this->debugger->log($message);
-        }
-    }
-
-    /**
      * Logs the message to the log with the given priority.
      *
      * This method only works if the Log Level is higher than the given priority.
@@ -259,7 +156,7 @@ abstract class phpDocumentor_Core_Abstract
     public function log($message, $priority = phpDocumentor_Core_Log::INFO)
     {
         if ($priority == phpDocumentor_Core_Log::DEBUG) {
-            $this->debug($message);
+            self::$debug_logger->log($message, phpDocumentor_Core_Log::DEBUG);
             return;
         }
 
@@ -267,7 +164,9 @@ abstract class phpDocumentor_Core_Abstract
             $config = $this->getConfig();
 
             // log to file
-            self::$logger = new phpDocumentor_Core_Log($config->logging->paths->default);
+            self::$logger = new phpDocumentor_Core_Log(
+                $config->logging->paths->default
+            );
             self::$logger->setThreshold($this->getLogLevel());
 
             // log to stdout

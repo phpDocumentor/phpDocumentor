@@ -23,6 +23,14 @@
  */
 class phpDocumentor_Parser_Exporter_Xml_Include
 {
+    /**
+     * Export the given include definition to the provided parent element.
+     *
+     * @param DOMElement                       $parent  Element to augment.
+     * @param phpDocumentor_Reflection_Include $include Element to export.
+     *
+     * @return void
+     */
     public function export(
         DOMElement $parent, phpDocumentor_Reflection_Include $include
     ) {
