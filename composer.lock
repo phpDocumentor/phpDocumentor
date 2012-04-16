@@ -1,11 +1,10 @@
 {
-    "hash": "450663ae7cf0e25349cbdee551376ea2",
+    "hash": "0bf5195fe3beeb8bf17e30911dc34721",
     "packages": [
         {
             "package": "cilex/cilex",
             "version": "dev-master",
-            "source-reference": "f621c9f11820fcb4c3c11bc9f318db2cb7cf725f",
-            "alias": "1.0.9999999.9999999-dev"
+            "source-reference": "2d109dde30e1e5cf394250c3b7d789b12cfaa899"
         },
         {
             "package": "dflydev/markdown",
@@ -31,7 +30,8 @@
         },
         {
             "package": "phpdocumentor/template-installer",
-            "version": "1.0.1-beta3"
+            "version": "dev-master",
+            "source-reference": "02eddb71fe6733745f64e5a9e0c56cca3e88be15"
         },
         {
             "package": "phpdocumentor/template.responsive",
@@ -55,11 +55,6 @@
             "alias": "2.1.9999999.9999999-dev"
         },
         {
-            "package": "symfony/event-dispatcher",
-            "version": "dev-master",
-            "source-reference": "07e1d0174f3a0ec36bbe04b3850270df7a86271d"
-        },
-        {
             "package": "symfony/finder",
             "version": "dev-master",
             "source-reference": "57ec7198a70e6c40e450ba66cc2f8ecab98746c8",
@@ -72,5 +67,6 @@
             "alias": "2.1.9999999.9999999-dev"
         }
     ],
+    "packages-dev": null,
     "aliases": []
 }

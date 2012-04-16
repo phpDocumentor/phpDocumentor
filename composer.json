@@ -25,10 +25,8 @@
         "pear-symfony/EventDispatcher": "1.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/reflection-docblock": "1.*",
-        "cilex/cilex": "1.*"
-    },
-    "recommend": {
-        "phpdocumentor/template-installer": "1.*",
+        "cilex/cilex": "dev-master",
+        "phpdocumentor/template-installer": "dev-master",
         "phpdocumentor/template.responsive": "1.*"
     }
 }
