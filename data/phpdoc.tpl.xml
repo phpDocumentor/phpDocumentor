@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<phpdoc>
+<phpdocumentor>
   <parser>
     <default-package-name>Default</default-package-name>
     <target>output</target>
@@ -31,4 +31,4 @@
   <transformations>
     <template name="responsive" />
   </transformations>
-</phpdoc>
+</phpdocumentor>
