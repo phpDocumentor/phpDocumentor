@@ -42,9 +42,10 @@ class phpDocumentor_Core_Config extends Zend_Config_Xml
             $this->paths = new Zend_Config(array(), true);
         }
 
-        $this->paths->application = realpath(dirname(__FILE__) . '/../../..');
+        $this->paths->application = realpath('.');
         $this->paths->data = realpath($this->paths->application . '/data');
         $this->paths->templates = realpath($this->paths->data . '/templates');
+var_dump($this->paths);
         if (!$this->paths->templates) {
             throw new Exception(
                 'The templates folder was not found; have you installed a template?'

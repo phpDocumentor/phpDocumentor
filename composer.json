@@ -21,6 +21,7 @@
         "ext-xsl": "*",
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",
+        "symfony/finder": "2.0.12",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/reflection-docblock": "1.*"
     },
