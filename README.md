@@ -32,7 +32,7 @@ Requirements
 
 phpDocumentor requires the following:
 
-* PHP 5.2.6 or higher (might work on 5.2.x as well but this is not supported)
+* PHP 5.3.2 or higher
 * iconv/ext, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
 * The XSL extension, http://www.php.net/manual/en/book.xsl.php
 * Graphviz (optional, used for generating Class diagrams)
