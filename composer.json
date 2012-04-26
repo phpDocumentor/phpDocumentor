@@ -25,7 +25,7 @@
         "phpdocumentor/reflection-docblock": "1.*"
     },
     "recommend": {
-        "phpdocumentor/template-installer": "1.*",
+        "phpdocumentor/template-installer": "*",
         "phpdocumentor/template.responsive": "1.*"
     }
 }
