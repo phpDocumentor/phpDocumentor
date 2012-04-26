@@ -63,7 +63,7 @@ File-level packages and Class level packages.
 
 **@category**
 
-The category is always ``phpDocumentor``; including capital D and B.
+The category is always ``phpDocumentor``; including capital D.
 
 **@package**
 
