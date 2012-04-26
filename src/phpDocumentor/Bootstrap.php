@@ -69,7 +69,7 @@ class phpDocumentor_Bootstrap
      */
     public function registerAutoloader()
     {
-        return include_once __DIR__ . '/../../vendor/.composer/autoload.php';
+        return include_once __DIR__ . '/../../vendor/autoload.php';
     }
 
     /**
