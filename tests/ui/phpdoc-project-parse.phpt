@@ -2,14 +2,10 @@
 phpdoc project:parse
 --FILE--
 <?php
-$_SERVER['argc']    = 2;
-$_SERVER['argv'][1] = 'project:parse';
-$_SERVER['argv'][2] = '--config';
-$_SERVER['argv'][3] = 'none';
-
 require_once 'tests/common/ui-include.php';
-
 ?>
+--ARGS--
+project:parse --config=none
 --EXPECTF--
 phpDocumentor version %s
 
