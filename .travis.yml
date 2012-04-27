@@ -12,4 +12,5 @@ before_script:
  - pyrus install -f -p pyrus/Pyrus_Developer
  - pyrus install -f pear2.php.net/PEAR2_Exception
  - wget http://getcomposer.org/composer.phar
+ - php -r "var_dump(filter_var('http://pear.symfony-project.com/', FILTER_VALIDATE_URL));"
  - php composer.phar install
