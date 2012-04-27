@@ -2,13 +2,10 @@
 phpdoc project:transform
 --FILE--
 <?php
-$_SERVER['argc']    = 3;
-$_SERVER['argv'][1] = 'project:transform';
-$_SERVER['argv'][2] = '--config';
-$_SERVER['argv'][3] = 'none';
-
 require_once 'tests/common/ui-include.php';
 ?>
+--ARGS--
+project:transform --config=none
 --EXPECTF--
 phpDocumentor version %s
 
