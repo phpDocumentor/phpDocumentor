@@ -89,7 +89,7 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
               . str_replace(' ', '', ucwords((string)$this->name));
 
         if ($autoloader) {
-            $autoloader->addClassMap(array($this->class_prefix => $path));
+            $autoloader->add($this->class_prefix, $path);
         }
 
         $listeners = !is_array($xml->listener)
