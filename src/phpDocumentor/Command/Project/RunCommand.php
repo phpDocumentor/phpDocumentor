@@ -37,7 +37,7 @@ use \Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class Run extends \Cilex\Command\Command
+class RunCommand extends \Cilex\Command\Command
 {
     /**
      * Initializes this command and sets the name, description, options and

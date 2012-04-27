@@ -63,9 +63,9 @@ class Application extends \Cilex\Application
             $manager->loadFromConfiguration();
             return $manager;
         });
+
+        $this->command(new \phpDocumentor\Command\Project\ParseCommand());
+        $this->command(new \phpDocumentor\Command\Project\RunCommand());
+        $this->command(new \phpDocumentor\Command\Project\TransformCommand());
     }
-
-    /** placeholder for MonologServiceProvider */
-    public function error(){}
-
 }

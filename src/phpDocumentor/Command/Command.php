@@ -30,14 +30,15 @@ class Command extends \Cilex\Command\Command
         if (($value === null || is_array($value) && empty($value))
             && $config_path !== null
         ) {
+            /** @var \SimpleXMLElement $node  */
             $node = $this->getService('config');
             foreach (explode('/', $config_path) as $node_name) {
-                var_dump($node->$node_name);
                 $node = $node->$node_name;
             }
-            $value = is_array($node) || $node instanceof \SimpleXMLElement
-                ? (array)$node : (string)$node;
-            var_dump($value);
+
+            // small quirk: if there is more than 1 node (thus an array with
+            // more than 1 result) than nodeType is null
+            $value = $node->nodeType === null ? (array)$node : (string)$node;
         }
 
         // use default if value is still null
