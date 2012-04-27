@@ -22,9 +22,7 @@
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",
         "phpdocumentor/graphviz": "1.*",
-        "phpdocumentor/reflection-docblock": "1.*"
-    },
-    "recommend": {
+        "phpdocumentor/reflection-docblock": "1.*",
         "phpdocumentor/template-installer": "*",
         "phpdocumentor/template.responsive": "1.*"
     }

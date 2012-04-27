@@ -1,5 +1,5 @@
 {
-    "hash": "b4beb5d684361bbf2ec38cc20ae06f12",
+    "hash": "b59749225c706b1ecb2336515736b661",
     "packages": [
         {
             "package": "dflydev/markdown",
@@ -18,6 +18,15 @@
         {
             "package": "phpdocumentor/reflection-docblock",
             "version": "1.0.0-beta3"
+        },
+        {
+            "package": "phpdocumentor/template-installer",
+            "version": "dev-master",
+            "source-reference": "02eddb71fe6733745f64e5a9e0c56cca3e88be15"
+        },
+        {
+            "package": "phpdocumentor/template.responsive",
+            "version": "1.0.1"
         }
     ],
     "packages-dev": null,
