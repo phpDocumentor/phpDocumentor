@@ -12,11 +12,6 @@
  * @link      http://phpdoc.org
  */
 
-if (!defined('T_NS_SEPARATOR')) {
-    /** @var int This constant is PHP 5.3+, but is necessary for correct parsing */
-    define('T_NS_SEPARATOR', 380);
-}
-
 /**
  * Parses an interface definition.
  *

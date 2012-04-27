@@ -64,7 +64,7 @@ tags but use namespaces to identify the type of code.
 
 The following format is used:
 
-.. code-block::
+.. code-block:: php
 
     \phpDocumentor\[Component]\[optional Subcomponent]
 

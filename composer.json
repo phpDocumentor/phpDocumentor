@@ -17,7 +17,7 @@
         { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" }
     ],
     "require": {
-        "php": ">=5.3.2",
+        "php": ">=5.3.3",
         "ext-xsl": "*",
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",

@@ -1,15 +1,11 @@
 {
-    "hash": "78fd0c1269c7efc623b922d8ababe765",
+    "hash": "b4beb5d684361bbf2ec38cc20ae06f12",
     "packages": [
         {
             "package": "dflydev/markdown",
             "version": "dev-master",
             "source-reference": "91c6649f89472f6ab60a107a80acc72baacf585c",
             "alias": "1.0.9999999.9999999-dev"
-        },
-        {
-            "package": "monolog/monolog",
-            "version": "1.0.2"
         },
         {
             "package": "pear-symfony/EventDispatcher",
@@ -22,22 +18,8 @@
         {
             "package": "phpdocumentor/reflection-docblock",
             "version": "1.0.0-beta3"
-        },
-        {
-            "package": "phpdocumentor/template-installer",
-            "version": "dev-master",
-            "source-reference": "02eddb71fe6733745f64e5a9e0c56cca3e88be15",
-            "alias": "1.0.9999999.9999999-dev"
-        },
-        {
-            "package": "phpdocumentor/template.responsive",
-            "version": "1.0.1"
-        },
-        {
-            "package": "symfony/event-dispatcher",
-            "version": "dev-master",
-            "source-reference": "07e1d0174f3a0ec36bbe04b3850270df7a86271d"
         }
     ],
+    "packages-dev": null,
     "aliases": []
 }

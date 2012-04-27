@@ -1,6 +1,6 @@
 language: php
 php:
-  - 5.3.2
+  - 5.3.3
   - 5.3
   - 5.4
 
@@ -12,5 +12,4 @@ before_script:
  - pyrus install -f -p pyrus/Pyrus_Developer
  - pyrus install -f pear2.php.net/PEAR2_Exception
  - wget http://getcomposer.org/composer.phar
- - php -r "var_dump(filter_var('http://pear.symfony-project.com/', FILTER_VALIDATE_URL));"
  - php composer.phar install
