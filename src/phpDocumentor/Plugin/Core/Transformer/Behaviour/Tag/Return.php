@@ -67,7 +67,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Return extends
             if ($method->nodeName != 'method') {
                 $this->log(
                     'Global function ' . $method_name . ' contains a reference '
-                    . 'to self or $self', phpDocumentor_Core_Log::ERR
+                    . 'to self or $self', phpDocumentor_Plugin_Core_Log::ERR
                 );
                 continue;
             }

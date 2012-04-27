@@ -21,7 +21,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Core_Log
+class phpDocumentor_Plugin_Core_Log
 {
     /** @var string Emergency: system is unstable */
     const EMERG = Zend_Log::EMERG;
@@ -128,14 +128,17 @@ class phpDocumentor_Core_Log
         }
 
         if (!is_numeric($threshold)) {
-            if (!defined('phpDocumentor_Core_Log::' . strtoupper($threshold))) {
+            $constant_name = 'phpDocumentor_Plugin_Core_Log::'
+                .strtoupper($threshold);
+
+            if (!defined($constant_name)) {
                 throw new InvalidArgumentException(
-                    'Expected one of the constants of the phpDocumentor_Core_Log class, '
+                    'Expected one of the constants of the '
+                    .'phpDocumentor_Plugin_Core_Log class, '
                     . '"' . $threshold . '" received'
                 );
             }
-            $constant = 'phpDocumentor_Core_Log::' . strtoupper($threshold);
-            $threshold = constant($constant);
+            $threshold = constant($constant_name);
         }
 
         $this->threshold = $threshold;
@@ -164,7 +167,7 @@ class phpDocumentor_Core_Log
     {
         // we explicitly use the get_class method to prevent a hard dependency
         // to the sfEvent class; this way the connection is implicit and doesn't
-        // it matter to phpDocumentor_Core_Log whether it is loaded or not.
+        // it matter to phpDocumentor_Plugin_Core_Log whether it is loaded or not.
         if (is_object($data) && (get_class($data) === 'sfEvent')) {
             // if this is an event; replace our data to cope with that
             $level = $data['priority'];
