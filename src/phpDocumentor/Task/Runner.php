@@ -23,7 +23,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Task_Runner extends phpDocumentor_Core_Abstract
+class phpDocumentor_Task_Runner extends phpDocumentor_Parser_Abstract
 {
     /** @var phpDocumentor_Task_Abstract */
     protected $task = null;
