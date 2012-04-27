@@ -3,5 +3,5 @@
 
 require_once __DIR__.'/vendor/autoload.php';
 
-$compiler = new phpDocumentor_Compiler();
+$compiler = new phpDocumentor\Compiler();
 $compiler->compile();

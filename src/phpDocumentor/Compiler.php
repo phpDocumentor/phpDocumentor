@@ -1,30 +1,31 @@
 <?php
+
 /**
-* phpDocumentor
-*
-* PHP Version 5
-*
-* @category phpDocumentor
-* @package Core
-* @author Mike van Riel <mike.vanriel@naenius.com>
-* @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
-* @license http://www.opensource.org/licenses/mit-license.php MIT
-* @link http://phpdoc.org
-*/
+ * phpDocumentor
+ *
+ * PHP Version 5
+ *
+ * @author Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link http://phpdoc.org
+ */
+
+namespace phpDocumentor;
 
 use Symfony\Component\Finder\Finder;
 
 /**
  * The Compiler class compiles the phpDocumentor utility.
  *
- * @category phpDocumentor
- * @package core 
+ * It is heavy inspired by https://github.com/fabpot/Goutte/blob/master/src/Goutte/Compiler.php
+ *
  * @author  Fabien Potencier <fabien@symfony.com>
  * @author  Gordon Franke <info@nevalon.de>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link http://phpdoc.org
  */
-class phpDocumentor_Compiler
+class Compiler
 {
   public function compile($pharFile = 'phpDocumentor.phar')
   {
@@ -77,8 +78,6 @@ class phpDocumentor_Compiler
  *
  * PHP Version 5
  *
- * @category phpDocumentor
- * @package Core
  * @author Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license http://www.opensource.org/licenses/mit-license.php MIT
