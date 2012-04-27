@@ -25,7 +25,9 @@
         },
         {
             "package": "phpdocumentor/template-installer",
-            "version": "1.0.1-beta3"
+            "version": "dev-master",
+            "source-reference": "02eddb71fe6733745f64e5a9e0c56cca3e88be15",
+            "alias": "1.0.9999999.9999999-dev"
         },
         {
             "package": "phpdocumentor/template.responsive",

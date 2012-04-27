@@ -19,14 +19,13 @@
     "require": {
         "php": ">=5.3.2",
         "ext-xsl": "*",
-        "monolog/monolog": "1.0.*",
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/reflection-docblock": "1.*"
     },
     "recommend": {
-        "phpdocumentor/template-installer": "1.*",
+        "phpdocumentor/template-installer": "*",
         "phpdocumentor/template.responsive": "1.*"
     }
 }

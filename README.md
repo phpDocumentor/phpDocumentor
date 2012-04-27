@@ -32,7 +32,7 @@ Requirements
 
 phpDocumentor requires the following:
 
-* PHP 5.2.6 or higher (might work on 5.2.x as well but this is not supported)
+* PHP 5.3.2 or higher
 * iconv/ext, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
 * The XSL extension, http://www.php.net/manual/en/book.xsl.php
 * Graphviz (optional, used for generating Class diagrams)
@@ -67,8 +67,8 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 ### Directly from source (Github)
 
-1. Download the latest released version from [http://www.phpdoc.org](http://www.phpdoc.org) or
-   if you feel really adventurous you can try the latest unreleased.
+1. Download the latest released version from [Github](https://github.com/phpDocumentor/phpDocumentor2/tags) or
+   if you feel really adventurous you can try the latest [unreleased](https://github.com/phpDocumentor/phpDocumentor2/tarball/develop).
 2. Unzip the downloaded file to the intended destination location.
 3. phpDocumentor comes without templates by default when manually installed, to install
    the default template call the template installer and install the `responsive`
