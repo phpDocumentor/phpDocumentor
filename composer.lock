@@ -13,10 +13,6 @@
             "alias": "1.0.9999999.9999999-dev"
         },
         {
-            "package": "monolog/monolog",
-            "version": "1.0.2"
-        },
-        {
             "package": "pear-symfony/EventDispatcher",
             "version": "1.0.0"
         },

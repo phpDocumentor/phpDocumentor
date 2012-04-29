@@ -135,7 +135,7 @@ class phpDocumentor_Transformer extends phpDocumentor_Transformer_Abstract
     {
         $source = trim($source);
 
-        $xml = new DOMDocument();
+        $xml = new DOMDocument("1.0", "UTF-8");
 
         if (substr($source, 0, 5) === '<?xml') {
             $xml->loadXML($source);

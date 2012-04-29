@@ -11,7 +11,7 @@ Syntax
 Description
 -----------
 
-With the @param tag it is possible to document an the type and function of a
+With the @param tag it is possible to document the type and function of a
 single argument of a function or method. When provided it MUST contain a
 :term:`Type` to indicate what is expected; the description on the other hand is
 OPTIONAL yet RECOMMENDED in case of complicated structures, such as associative
@@ -46,7 +46,7 @@ a link to that class' documentation is provided.
    tag; as such it will provide error information in the following scenarios:
 
    * An @param is provided but no argument was found matching the @param.
-   * The name of the @param does not match the name of argument at the same.
+   * The name of the @param does not match the name of argument at the same
      position.
    * A mismatch between the type hint, if present, and the type declaration was
      detected.

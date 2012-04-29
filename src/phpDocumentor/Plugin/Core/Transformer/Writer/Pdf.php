@@ -99,7 +99,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Pdf
         );
         $this->log(
             $output,
-            $error == 0 ? phpDocumentor_Core_Log::INFO : phpDocumentor_Core_Log::CRIT
+            $error == 0 ? phpDocumentor_Plugin_Core_Log::INFO : phpDocumentor_Plugin_Core_Log::CRIT
         );
 
         // CRASH!

@@ -83,7 +83,7 @@ class phpDocumentor_Task_Project_List extends phpDocumentor_Task_Abstract
                 $refl = new phpDocumentor_Reflection_File($filename, false);
                 $refl->dispatch(
                     'system.log.threshold',
-                    array(phpDocumentor_Core_Log::QUIET)
+                    array(phpDocumentor_Plugin_Core_Log::QUIET)
                 );
                 $refl->process();
 

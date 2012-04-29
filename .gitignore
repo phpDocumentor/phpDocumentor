@@ -6,3 +6,5 @@ build/*
 .settings/
 *.swp
 vendor/*
+composer.phar
+data/templates/*

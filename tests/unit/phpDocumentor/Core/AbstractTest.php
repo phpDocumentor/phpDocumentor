@@ -35,35 +35,4 @@ class phpDocumentor_Core_AbstractTest extends PHPUnit_Framework_TestCase
 
   }
 
-  public function testGetLogLevel()
-  {
-    // test uninitialized
-    $this->assertEquals(
-      constant('phpDocumentor_Core_Log::' . strtoupper($this->fixture->getConfig()->logging->level)),
-      $this->fixture->getLogLevel()
-    );
-
-    $this->fixture->setLogLevel(phpDocumentor_Core_Log::ALERT);
-    $this->assertEquals(phpDocumentor_Core_Log::ALERT, $this->fixture->getLogLevel());
-    $this->fixture->setLogLevel(phpDocumentor_Core_Log::CRIT);
-    $this->assertEquals(phpDocumentor_Core_Log::CRIT, $this->fixture->getLogLevel());
-  }
-
-  public function testSetLogLevel()
-  {
-    $this->fixture->setLogLevel(phpDocumentor_Core_Log::ALERT);
-    $this->assertEquals(phpDocumentor_Core_Log::ALERT, $this->fixture->getLogLevel());
-
-    $this->fixture->setLogLevel('crit');
-    $this->assertEquals(phpDocumentor_Core_Log::CRIT, $this->fixture->getLogLevel());
-
-    $this->setExpectedException('InvalidArgumentException');
-    $this->fixture->setLogLevel('crit2');
-  }
-
-  public function testLog()
-  {
-    $this->markTestIncomplete();
-  }
-
 }

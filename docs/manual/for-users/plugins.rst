@@ -1,11 +1,12 @@
 Plugins
 =======
 
-phpDocumentor supports Plugins with which you can expand on the normal behaviour. The
-enhancement is actually done by providing hooks into crucial parts of phpDocumentor'
-process.
+phpDocumentor supports Plugins with which you can expand on the normal behaviour.
+The enhancement is actually done by providing hooks into crucial parts of
+phpDocumentor's process.
 
-The following things are possible with plugins (and are done by phpDocumentor itself):
+The following things are possible with plugins (and are done by
+phpDocumentor itself):
 
 * Additional validators with which to check your source code
 * Defining (or redefining) the way tags are interpreted
@@ -22,7 +23,7 @@ Dependencies
 
 Plugins make use of the following components:
 
-* **ZendX_StandardAutoloader**, autoloader for all classes in a plugin
+* **Composer's autoloader**, autoloader for all classes in a plugin
 * **sfEventDispatcher**, manager that collects dispatched events and distributes
   them to the plugins.
 * **phpDocumentor_Core_Config**, the configuration manager containing global settings
@@ -34,8 +35,8 @@ need to know is that they are there and what they are used for.
 .. NOTE::
 
     When you want to create your own runner you will have to pass these as
-    dependencies to the plugin manager or use the phpDocumentor_Bootstrap class to
-    bootstrap the basics for you.
+    dependencies to the plugin manager or use the phpDocumentor_Bootstrap class
+    to bootstrap the basics for you.
 
 How does it work
 ----------------
@@ -44,18 +45,18 @@ The minimal setup for a plugin is a `Configuration`_ XML file (called *plugin.xm
 and a *component*.
 A component in this context means either:
 
-* `Listeners`_ (or Observer), which is an object that is able to intercept *events*
-  and perform changes on the data of phpDocumentor. Every listener must be mentioned
-  in the plugin's configuration as it must be registered.
+* `Listeners`_ (or Observers), which is an object that is able to intercept
+  *events* and perform changes on the data of phpDocumentor. Every listener must
+  be mentioned in the plugin's configuration as it must be registered.
 * `Transformation Writers`_, which can be used by Transformations to perform
   actions during the structure-to-output conversion process.
 
       An example is the *phpDocumentor_Plugin_Core_Transformer_Writer_Xsl*; which
       performs the actual creation of a HTML file according to a template.
 
-  Contrary to listeners must `Transformation Writers`_ **not** be registered
+  Contrary to listeners the `Transformation Writers`_ are **not** registered
   in the configuration. If the plugin is configured correctly then the auto-loader
-  will autmatically discover it.
+  will automatically discover it.
 
 Please see the individual chapters for more details on what can be achieved
 using each component.
@@ -73,11 +74,12 @@ The following command can be used::
 After the execution of this command you can find a generated plugin the given
 PATH.
 
-.. NOTE::
+.. note::
 
     Plugins can be placed anywhere, and do not need to reside in the plugins
     folder of phpDocumentor. You can add your custom plugin to your project repository
-    and add a relative path to the plugin in your phpDocumentor configuration file.
+    and add a relative path to the root of your plugin in your phpDocumentor
+    configuration file.
 
 After you have created your plugin you need to edit your *plugin.xml* file
 to contain the correct meta-data.
@@ -103,21 +105,12 @@ An example of such a file is given here:
         <version>1.0</version>
         <author>Mike van Riel</author>
         <email>mike.vanriel@naenius.com</email>
-        <website>http://www.docbloc-project.org</website>
+        <website>http://www.phpdoc.org</website>
         <description>
             This plugin contains all PHPDoc basic behaviours and validators.
         </description>
         <class-prefix>phpDocumentor_Plugin_Core</class-prefix>
         <listener>Listener</listener>
-        <dependencies>
-            <phpdoc>
-                <min-version>2.0.0</min-version>
-            </phpdoc>
-            <plugin>
-                <name>Core</name>
-                <min-version>1.0.0</min-version>
-            </plugin>
-        </dependencies>
         <options>
             <option name="Option1">value</name>
         </options>
@@ -125,7 +118,7 @@ An example of such a file is given here:
 
 As can be seen it contains `Meta data`_ about the plugin itself (*name*, *author*,
 *email*, *description*, *website*) but also instructions for phpDocumentor how to
-invoke or package it (*class-prefix*, *listener*, *dependencies*, *options*).
+invoke or package it (*class-prefix*, *listener*, *options*).
 
 Meta data
 ~~~~~~~~~
@@ -146,66 +139,53 @@ description A descriptive text about this plugin
 Class prefix
 ~~~~~~~~~~~~
 
-phpDocumentor provide autoloading facilities for its plugins but also believes a
-plugin should be free to be named in whatever way they like.
-To accomplish this a field named *class-prefix* may be added to indicate what
-the prefix is for the classes that are to be located in the folder where the
-configuration file is found.
+phpDocumentor uses the
+(Composer autoloading)[http://getcomposer.org/doc/01-basic-usage.md#autoloading]
+facilities for plugins.
 
-    For example: the configuration file is located in
-    */opt/phpdoc/plugins/mine/plugin.xml* and the class names start with
-    `My_First_Plugin_`. When you have added the prefix to the configuration file
-    and you instantiate My_First_Plugin_Listener, then phpDocumentor will attempt
-    to locate a file named *Listener.php* in the */opt/phpdoc/plugins/mine/*
-    folder.
+To map your namespace or class prefix to the plugin's base folder there is a
+field named *class-prefix* that should be added to indicate what the ClassMap
+or namespace prefix is for the plugin's classes.
+
+For example::
+
+    The configuration file is located in */opt/phpdoc/plugins/mine/plugin.xml*
+    and the class names start with `My_First_Plugin_`. When you have added the
+    prefix to the configuration file and you instantiate My_First_Plugin_Listener,
+    then phpDocumentor will attempt to locate a file named *Listener.php* in the
+    */opt/phpdoc/plugins/mine/My/First_Plugin* folder.
+
+.. attention::
+
+    The directory structure is based on
+    PSR-0 (https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md).
+    This means that if you do not use a namespace that underscores are interpreted
+    as directory separators.
+
+    Example:
+
+        You have a class *My_First_Plugin_Listener* that is to be autoloaded, then
+        the file's path is: ``[plugin.xml folder]/My/First/Plugin/Listener.php``.
+
+    Example2:
+
+        Your class is called *\My\Plugin\Custom_Listener* (thus with the namespace
+        `\my\Plugin` then the file's path is:
+        ``[plugin.xml folder]/My/Plugin/Listener.php``.
 
 When no class_prefix is given then `phpDocumentor_Plugin_<ucfirst(name)>` is assumed.
 
 Listener
 ~~~~~~~~
 
-To listen in on events from phpDocumentor the plugin needs to register a listener class
-using an equally named field. Multiple listeners may be registered by adding this
-field multiple times.
+To listen in on events from phpDocumentor the plugin needs to register a listener
+class using an equally named field. Multiple listeners may be registered by adding
+this field multiple times.
 
-.. NOTE::
+.. note::
 
-    The class prefix should **not** be added to the Listener, this is assumed
-    from the class prefix and is done to better support namespaces in the future.
-
-    Currently phpDocumentor does not support namespaced listener classes; this will
-    be added in a future release.
-
-Dependencies
-~~~~~~~~~~~~
-
-Here you can specify which minimal version of phpDocumentor is required and if
-this plugin depends on other plugins which minimal version they should have.
-
-Example:
-
-.. code-block:: xml
-
-    <dependencies>
-        <phpdoc>
-            <min-version>2.0.0</min-version>
-        </phpdoc>
-        <plugin>
-            <name>Core</name>
-            <min-version>1.0.0</min-version>
-        </plugin>
-    </dependencies>
-
-In the example above you can see that this plugin needs at least phpDocumentor 0.15.0
-and the Core plugin version 1.0.0.
-
-.. NOTE::
-
-    We are working on a plugin repository; if a dependent plugin cannot be found
-    this repository will be checked and any missing dependencies installed as well.
-
-A ``max-version`` directive is also supported in case you want to limit
-availability.
+    The class prefix (if provided) should **not** be added to the Listener for
+    brevity.
 
 Options
 ~~~~~~~

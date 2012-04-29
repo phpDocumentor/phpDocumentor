@@ -338,7 +338,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
 
                     $this->log(
                         'File "' . $filename . '" matches ignore pattern, '
-                        . 'will be skipped', phpDocumentor_Core_Log::INFO
+                        . 'will be skipped', phpDocumentor_Plugin_Core_Log::INFO
                     );
                     continue 2;
                 }

@@ -21,11 +21,11 @@ Github Usage & Branching
 
 Once you decide you want to contribute to phpDocumentor (which we really
 appreciate!) you can fork the project at
-http://github.com/phpdocumentor/phpdocumentor2.
+http://github.com/phpDocumentor/phpDocumentor2.
 
 Please do *not* develop your contribution on your master branch but
-create a separate branch for each feature that you want to
-contribute.
+create a separate feature branch from the ``develop`` branch for each feature
+that you  want to contribute.
 
 Not doing so means that if you decide to work on two separate
 features and place a pull request for one of them, that the changes
@@ -33,8 +33,8 @@ of the other issue that you are working on is also submitted. Even
 if it is not completely finished.
 
 To get more information about the usage of Git, please refer to the
-ProGit online book written by Scott Chacon and/or this help page of
-Github: @PAGE@
+(ProGit online book)[http://progit.org/book/] written by Scott Chacon
+and/or (this help page of Github)[http://learn.github.com/p/intro.html].
 
 Coding Standards
 ----------------
@@ -53,49 +53,25 @@ provides an example of usage.
 Amendments
 ~~~~~~~~~~
 
-@category, @packages and @subpackages
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@category, @packages and @subpackages and namespaces
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-phpDocumentor tries to standardize the way it uses the @package and
-@subpackage to create a consistent and maintainable API
-Documentation. This will also reduce confusion in the naming of the
-File-level packages and Class level packages.
+Starting with phpDocumentor 2.0.2a3 we have switched to PHP 5.3 as minimal
+required version. This enables us to use namespaces for our packages.
 
-**@category**
+As such all new code should not feature the @category, @package or @subpackage
+tags but use namespaces to identify the type of code.
 
-The category is always ``phpDocumentor``; including capital D and B.
+The following format is used:
 
-**@package**
+.. code-block:: php
 
-The package represents the component in which this class or file is
-placed. A list of components is added as present at time of
-writing.
+    \phpDocumentor\[Component]\[optional Subcomponent]
 
-
--  Core
--  Parser
--  Transformer
--  Reflection
--  Tasks
--  GraphViz
-
-**@subpackage**
-
-There are no subpackages pre-defined and using one is not required.
-When a class or file belongs to a specific subset of functionality
-within a package (i,e, Writers, Behaviours, etc.) it is however
-encouraged to do so.
-
-The following is requested when creating a subpackage:
-
-
--  Start a subpackage with a capital letter
--  Try to use single word subpackages (i.e. Writers, Behaviours,
-   etc)
--  Use singular for a concept (i.e. Parser) and plural for a
-   collection and its basics (i.e. Writers)
--  If you must use multiple words to describe a single package,
-   separate them with an underscore (i.e. Unit\_tests)
+It is discouraged to go deeper than 3 levels but not prohibited.
+Please refer to
+(PSR-0)[https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md]
+for a reference on the names for namespaces.
 
 Unit testing
 ------------
@@ -104,5 +80,3 @@ phpDocumentor aims to be have at least 90% Code Coverage using unit tests
 using PHPUnit. It is appreciated to include unit tests in your pull
 requests as they also help understand what the contributed code
 exactly does.
-
-

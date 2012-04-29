@@ -30,33 +30,6 @@ abstract class phpDocumentor_Core_Abstract
     const VERSION = '2.0.0a2';
 
     /**
-     * The logger used to capture all messages send by the log method.
-     *
-     * @see phpDocumentor_Core_Abstract::log()
-     *
-     * @var phpDocumentor_Core_Log
-     */
-    static protected $logger = null;
-
-    /**
-     * The logger used to capture all messages send by the log method and
-     * send them to stdout.
-     *
-     * @see phpDocumentor_Core_Abstract::log()
-     *
-     * @var phpDocumentor_Core_Log
-     */
-    static protected $stdout_logger = null;
-
-    /**
-     * The logger used to capture debug messages send by the log method and
-     * send them to stdout.
-     *
-     * @var phpDocumentor_Core_Log
-     */
-    static protected $debug_logger = null;
-
-    /**
      * The config containing overrides for the defaults.
      *
      * @see phpDocumentor_Core_Abstract::getConfig()
@@ -64,121 +37,6 @@ abstract class phpDocumentor_Core_Abstract
      * @var phpDocumentor_Core_Config
      */
     static protected $config = null;
-
-    /**
-     * The current level of logging,
-     *
-     * This variable is used by i.e. the verbosity flag to enable more or
-     * less logging.
-     *
-     * @var string
-     */
-    static protected $log_level = null;
-
-    /**
-     * Initializes the Debug logger.
-     */
-    public function __construct()
-    {
-        if (self::$debug_logger === null) {
-            self::$debug_logger = new phpDocumentor_Core_Log(
-                $this->getConfig()->logging->paths->errors
-            );
-        }
-    }
-
-    /**
-     * Returns the level of messages to log.
-     *
-     * If no level is set it tries to get the level from the config file.
-     *
-     * @see Zend_Log
-     *
-     * @return int
-     */
-    public function getLogLevel()
-    {
-        if (self::$log_level === null) {
-            $this->setLogLevel($this->getConfig()->logging->level);
-        }
-
-        return self::$log_level;
-    }
-
-    /**
-     * Sets a new level to log messages of.
-     *
-     * @param string $level Must be one of the Zend_Log LOG_* constants.
-     *
-     * @see Zend_Log
-     *
-     * @return void
-     */
-    public function setLogLevel($level)
-    {
-        if (!is_numeric($level)) {
-            if (!defined('phpDocumentor_Core_Log::' . strtoupper($level))) {
-                throw new InvalidArgumentException(
-                    'Expected one of the constants of the phpDocumentor_Core_Log class, "'
-                    . $level . '" received'
-                );
-            }
-
-            $constant = 'phpDocumentor_Core_Log::' . strtoupper($level);
-            $level = constant($constant);
-        }
-
-        if (self::$logger) {
-            self::$logger->setThreshold($level);
-        }
-        if (self::$stdout_logger) {
-            self::$stdout_logger->setThreshold($level);
-        }
-
-        self::$log_level = $level;
-    }
-
-    /**
-     * Logs the message to the log with the given priority.
-     *
-     * This method only works if the Log Level is higher than the given priority.
-     * If there is no logger object than this method will instantiate it.
-     * In contrary to the debug statement this only logs strings.
-     *
-     * @param string $message  Element to log.
-     * @param int    $priority Priority of the given log.
-     *
-     * @see DocBlock_Abstract::setLogLevel()
-     * @see Zend_Log
-     *
-     * @return void
-     */
-    public function log($message, $priority = phpDocumentor_Core_Log::INFO)
-    {
-        if ($priority == phpDocumentor_Core_Log::DEBUG) {
-            self::$debug_logger->log($message, phpDocumentor_Core_Log::DEBUG);
-            return;
-        }
-
-        if (!self::$logger || !self::$stdout_logger) {
-            $config = $this->getConfig();
-
-            // log to file
-            self::$logger = new phpDocumentor_Core_Log(
-                $config->logging->paths->default
-            );
-            self::$logger->setThreshold($this->getLogLevel());
-
-            // log to stdout
-            self::$stdout_logger = new phpDocumentor_Core_Log(
-                phpDocumentor_Core_Log::FILE_STDOUT
-            );
-            self::$stdout_logger->setThreshold($this->getLogLevel());
-        }
-
-        self::$logger->log($message, $priority);
-        self::$stdout_logger->log($message, $priority);
-    }
 
     /**
      * Returns the configuration for phpDocumentor.
@@ -189,7 +47,6 @@ abstract class phpDocumentor_Core_Abstract
     {
         return self::config();
     }
-
 
     /**
      * Set a custom phpDocumentor configuration

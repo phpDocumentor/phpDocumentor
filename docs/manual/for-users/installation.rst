@@ -12,8 +12,7 @@ documentation, such as PDFs or Graphs. If a dependency is only
 limited to a subset of features it is denoted with the dependency
 entry below.
 
--  PHP 5.2.6 or higher (5.2.5 and lower might work but is not supported, 5.3
-   is explicitly supported)
+-  PHP 5.3.3
 -  XSL extension for PHP, only applicable when generating HTML via
    XSL (recommended)
 -  Graphviz, only applicable when generating Graphs (recommended)
