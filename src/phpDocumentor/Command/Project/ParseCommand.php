@@ -11,7 +11,6 @@
  */
 namespace phpDocumentor\Command\Project;
 
-use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
@@ -38,7 +37,8 @@ class ParseCommand extends \phpDocumentor\Command\Command
     protected function configure()
     {
         $this->setName('project:parse')
-            ->setDescription('')
+            ->setAliases(array('parse'))
+            ->setDescription('Creates a structure file from your source code')
             ->setHelp(
 <<<HELP
 The parse task uses the source files defined either by -f or -d options and
@@ -268,5 +268,7 @@ HELP
 
             throw new \Exception($e->getMessage());
         }
+
+        return 0;
     }
 }

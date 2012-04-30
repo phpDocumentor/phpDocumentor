@@ -11,10 +11,10 @@
  */
 namespace phpDocumentor\Command\Project;
 
-use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
+use \Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -48,6 +48,7 @@ class RunCommand extends \Cilex\Command\Command
     protected function configure()
     {
         $this->setName('project:run')
+            ->setAliases(array('run'))
             ->setDescription(
                 'Parses and transforms the given files to a specified location'
             )
@@ -67,6 +68,107 @@ current working directory and use that to override the default settings if
 present. In the configuration file can you specify the same settings (and
 more) as the command line provides.
 HELP
+            )
+            ->addOption(
+                'target', 't',
+                InputOption::VALUE_REQUIRED,
+                'Path where to store the generated output'
+            )
+            ->addOption(
+                'filename', 'f',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of files to parse. The wildcards ? and * '
+                .'are supported'
+            )
+            ->addOption(
+                'directory', 'd',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of directories to (recursively) parse'
+            )
+            ->addOption(
+                'extensions', 'e',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Path where to store the generated output'
+            )
+            ->addOption(
+                'ignore', 'i',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of file(s) and directories that will be '
+                . 'ignored. Wildcards * and ? are supported'
+            )
+            ->addOption(
+                'ignore-tags', null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of tags that will be ignored, defaults to '
+                .'none. package, subpackage and ignore may not be ignored.'
+            )
+            ->addOption(
+                'hidden', null,
+                InputOption::VALUE_NONE,
+                'set to on to descend into hidden directories '
+                . '(directories starting with \'.\'), default is on'
+            )
+            ->addOption(
+                'ignore-symlinks', null,
+                InputOption::VALUE_NONE,
+                'Ignore symlinks to other files or directories, default is on'
+            )
+            ->addOption(
+                'markers', 'm',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of markers/tags to filter',
+                array('TODO', 'FIXME')
+            )
+            ->addOption(
+                'title', null,
+                InputOption::VALUE_OPTIONAL,
+                'Sets the title for this project; default is the phpDocumentor '
+                .'logo'
+            )
+            ->addOption(
+                'force', null,
+                InputOption::VALUE_NONE,
+                'Forces a full build of the documentation, does not increment '
+                .'existing documentation'
+            )
+            ->addOption(
+                'validate', null,
+                InputOption::VALUE_NONE,
+                'Validates every processed file using PHP Lint, costs a lot of '
+                .'performance'
+            )
+            ->addOption(
+                'visibility', null,
+                InputOption::VALUE_OPTIONAL,
+                'Specifies the parse visibility that should be displayed in the '
+                .'documentation (comma seperated e.g. "public,protected")'
+            )
+            ->addOption(
+                'defaultpackagename', null,
+                InputOption::VALUE_OPTIONAL,
+                'Name to use for the default package.',
+                'Default'
+            )
+            ->addOption(
+                'sourcecode', null,
+                InputOption::VALUE_NONE,
+                'Whether to include syntax highlighted source code'
+            )
+            ->addOption(
+                'progressbar', 'p',
+                InputOption::VALUE_NONE,
+                'Whether to show a progress bar; will automatically quiet logging '
+                .'to stdout'
+            )
+            ->addOption(
+                'template', null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Name of the template to use (optional)',
+                array('responsive')
+            )
+            ->addOption(
+                'parseprivate', null, InputOption::VALUE_NONE,
+                'Whether to parse DocBlocks marked with @internal tag'
             );
     }
 
@@ -80,6 +182,57 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $parse_command     = $this->getApplication()->find('project:parse');
+        $transform_command = $this->getApplication()->find('project:transform');
 
+        $parse_input = new ArrayInput(
+            array(
+                'command' => 'project:parse',
+                '--target' => $input->getOption('target'),
+                '--filename' => $input->getOption('filename'),
+                '--directory' => $input->getOption('directory'),
+                '--extensions' => $input->getOption('extensions'),
+                '--ignore' => $input->getOption('ignore'),
+                '--ignore-tags' => $input->getOption('ignore-tags'),
+                '--hidden' => $input->getOption('hidden'),
+                '--ignore-symlinks' => $input->getOption('ignore-symlinks'),
+                '--markers' => $input->getOption('markers'),
+                '--title' => $input->getOption('title'),
+                '--force' => $input->getOption('force'),
+                '--validate' => $input->getOption('validate'),
+                '--visibility' => $input->getOption('visibility'),
+                '--defaultpackagename' => $input->getOption('defaultpackagename'),
+                '--sourcecode' => $input->getOption('sourcecode'),
+                '--progressbar' => $input->getOption('progressbar')
+            ), $this->getDefinition()
+        );
+
+        $return_code = $parse_command->run($parse_input, $output);
+        if ($return_code !== 0) {
+            var_dump($return_code);
+            return $return_code;
+        }
+
+        $target = $input->getOption('target');
+        if (!is_dir($target)) {
+            $target = dirname($target);
+        }
+
+        $transform_input = new ArrayInput(
+            array(
+                'command' => 'project:transform',
+                '--source' => $input->getOption('target'),
+                '--target' => $target,
+                '--template' => $input->getOption('template'),
+                '--parseprivate' => $input->getOption('parseprivate'),
+                '--progressbar' => $input->getOption('progressbar')
+            )
+        );
+        $return_code = $transform_command->run($transform_input, $output);
+        if ($return_code !== 0) {
+            return $return_code;
+        }
+
+        return 0;
     }
 }
