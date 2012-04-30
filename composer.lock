@@ -1,10 +1,10 @@
 {
-    "hash": "0bf5195fe3beeb8bf17e30911dc34721",
+    "hash": "54d75a7d492658cb728a947277ef333b",
     "packages": [
         {
             "package": "cilex/cilex",
             "version": "dev-master",
-            "source-reference": "2d109dde30e1e5cf394250c3b7d789b12cfaa899"
+            "source-reference": "fe1101e604d5077607d79e0d983db95a829e703e"
         },
         {
             "package": "dflydev/markdown",
@@ -15,6 +15,10 @@
         {
             "package": "pear-symfony/EventDispatcher",
             "version": "1.0.0"
+        },
+        {
+            "package": "pear-zf2/Zend_Config",
+            "version": "2.0.0beta3"
         },
         {
             "package": "phpdocumentor/graphviz",
@@ -31,35 +35,35 @@
         },
         {
             "package": "phpdocumentor/template.responsive",
-            "version": "1.0.1"
+            "version": "1.0.2"
         },
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "4e5fc6a6d58a7d9ad1d1974726edc360d28b70ab"
+            "source-reference": "2c7b104e6a5ca9207bd713892979882f1d310abc"
         },
         {
             "package": "symfony/class-loader",
             "version": "dev-master",
-            "source-reference": "cd1550a4a6c0794b6b109af2db43fde6e18ee363",
+            "source-reference": "839c92ad39ddb79a5ed66a3736342b93fad5736a",
             "alias": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "8e3c42aa976f18a9bfcb0694553e5f99def3309c",
+            "source-reference": "eaad4427b10ff39402bce0ae4f8cd1faf2b6532a",
             "alias": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "57ec7198a70e6c40e450ba66cc2f8ecab98746c8",
+            "source-reference": "78b2e33951821b6d423718f57788f1894dcb935a",
             "alias": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "2e4da8c8076744bafed97451bb1574c96cda0e68",
+            "source-reference": "718655f4bc664d693b33f3e6e8a895e454208021",
             "alias": "2.1.9999999.9999999-dev"
         }
     ],

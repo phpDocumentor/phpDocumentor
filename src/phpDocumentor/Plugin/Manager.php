@@ -29,7 +29,7 @@ class phpDocumentor_Plugin_Manager
     /** @var SimpleXMLElement */
     protected $configuration = null;
 
-    /** @var ZendX_Loader_StandardAutoloader */
+    /** @var \Composer\Autoload\ClassLoader */
     protected $autoloader = null;
 
     /** @var phpDocumentor_Plugin */
@@ -43,7 +43,7 @@ class phpDocumentor_Plugin_Manager
      *     that plugins can bind to and where events should be dispatched to.
      * @param Zend_Config                     $configuration    Configuration file
      *     which can be used to load parameters into the plugins.
-     * @param ZendX_Loader_StandardAutoloader $autoloader       Plugins can
+     * @param \Composer\Autoload\ClassLoader  $autoloader       Plugins can
      *     additionally load classes; with the autoloader they can register
      *     themselves.
      */

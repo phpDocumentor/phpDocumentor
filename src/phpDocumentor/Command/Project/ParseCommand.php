@@ -206,13 +206,13 @@ HELP
 
         $files = new \phpDocumentor_Parser_Files();
         $files->setAllowedExtensions(
-            $this->getOption(
+            (array)$this->getOption(
                 $input, 'extensions', 'parser/extensions/extension',
                 array('php', 'php3', 'phtml')
             )
         );
         $files->setIgnorePatterns(
-            $this->getOption($input, 'ignore', 'files/ignore')
+            (array)$this->getOption($input, 'ignore', 'files/ignore', array())
         );
         $files->setIgnoreHidden(
             $this->getOption(
@@ -224,31 +224,31 @@ HELP
                 $input, 'ignore-symlinks', 'files/ignore-symlinks', 'off'
             ) == 'on'
         );
-return true;
-//        $paths = array_unique(
-//            $this->getFilename()
-//            ? explode(',', $this->getFilename())
-//            : phpDocumentor_Core_Abstract::config()->getArrayFromPath('files/file')
-//        );
-        $files->addFiles($input->getOption('filename'));
+        $files->addFiles(
+            (array)$this->getOption($input, 'filename', 'files/file', array())
+        );
 
-//        $paths = array_unique(
-//            $this->getDirectory()
-//            ? explode(',', $this->getDirectory())
-//            : phpDocumentor_Core_Abstract::config()->getArrayFromPath('files/directory')
-//        );
-
-        $files->addDirectories($input->getOption('directory'));
+        $files->addDirectories(
+            (array)$this->getOption($input, 'directory', 'files/directory', array())
+        );
 
         $parser = new \phpDocumentor_Parser();
-        $parser->setTitle(htmlentities($input->getOption('title')));
+        $parser->setTitle(htmlentities((string)$this->getOption($input, 'title', 'title')));
         $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
-        $parser->setMarkers($input->getOption('markers'));
+        $parser->setMarkers(
+            (array)$this->getOption($input, 'markers', 'parser/markers/item')
+        );
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
-        $parser->setVisibility($input->getOption('visibility'));
-        $parser->setDefaultPackageName($input->getOption('defaultpackagename'));
+        $parser->setVisibility(
+            (string)$this->getOption($input, 'visibility', 'parser/visibility')
+        );
+        $parser->setDefaultPackageName(
+            $this->getOption(
+                $input, 'defaultpackagename', 'parser/default-package-name'
+            )
+        );
 
         $parser->setPath($files->getProjectRoot());
 
