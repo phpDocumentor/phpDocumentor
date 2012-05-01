@@ -120,7 +120,8 @@ class GenerateCommand extends \Cilex\Command\Command
 
     protected function getVersion(InputInterface $input)
     {
-        return $input->getOption('version') ? $input->getOption('version') : '1.0.0';
+        return $input->getOption('given-version')
+            ? $input->getOption('given-version') : '1.0.0';
     }
 
     protected function getDestinationLocation($target, $name)
