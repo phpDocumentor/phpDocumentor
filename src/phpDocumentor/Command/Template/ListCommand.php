@@ -56,11 +56,22 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Available templates:');
+        foreach ($this->getTemplateNames() as $template_name) {
+            $output->writeln('* '.$template_name);
+        }
+        $output->writeln('');
 
+        return 0;
+    }
+
+    protected function getTemplateNames()
+    {
         /** @var \RecursiveDirectoryIterator $files */
         $files = new \DirectoryIterator(
-            dirname(__FILE__).'/../../../../data/templates'
+            dirname(__FILE__) . '/../../../../data/templates'
         );
+
+        $template_names = array();
         while ($files->valid()) {
             $name = $files->getBasename();
 
@@ -70,12 +81,9 @@ HELP
                 continue;
             }
 
-            $output->writeln('* '.$name);
+            $template_names[] = $name;
             $files->next();
         }
-        $output->writeln('');
-
-        return 0;
+        return $template_names;
     }
-
 }
