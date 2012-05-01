@@ -52,6 +52,7 @@ class Application extends \Cilex\Application
         $this->command(new \phpDocumentor\Command\Project\TransformCommand());
         $this->command(new \phpDocumentor\Command\Plugin\GenerateCommand());
         $this->command(new \phpDocumentor\Command\Template\GenerateCommand());
+        $this->command(new \phpDocumentor\Command\Template\ListCommand());
     }
 
     protected function addAutoloader()
