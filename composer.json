@@ -11,7 +11,6 @@
     "repositories":[
         { "type":"pear", "url":"http://packages.zendframework.com"},
         { "type":"pear", "url":"http://pear.symfony-project.com/" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/TemplateInstaller" },
         { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" },
         { "type":"git", "url":"http://github.com/phpDocumentor/ReflectionDocBlock" },
         { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" }
@@ -23,7 +22,6 @@
         "pear-symfony/EventDispatcher": "1.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/reflection-docblock": "1.*",
-        "phpdocumentor/template-installer": "*",
         "phpdocumentor/template.responsive": "1.*"
     }
 }
