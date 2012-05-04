@@ -69,7 +69,7 @@ class phpDocumentor_Task_Template_Install extends phpDocumentor_Task_Abstract
         $template = $args[1];
         if ('@php_bin@' !== '@'.'php_bin@') {
             passthru(
-                'pear install phpdocumentor/phpDocumentor_Template_' . $template . ' '
+                'pear install phpdoc/phpDocumentor_Template_' . $template . ' '
                 . $this->getVersion()
             );
             return;
