@@ -1,5 +1,5 @@
 {
-    "hash": "b59749225c706b1ecb2336515736b661",
+    "hash": "a7ca8cf30c2d889f3f17e7ae81f18aa1",
     "packages": [
         {
             "package": "dflydev/markdown",
@@ -22,11 +22,15 @@
         {
             "package": "phpdocumentor/template-installer",
             "version": "dev-master",
-            "source-reference": "02eddb71fe6733745f64e5a9e0c56cca3e88be15"
+            "source-reference": "4a669d4b452a151307df784cbf6c20ec830b8f42"
         },
         {
-            "package": "phpdocumentor/template.responsive",
-            "version": "1.0.1"
+            "package": "phpdocumentor/template-new-black",
+            "version": "1.0.0"
+        },
+        {
+            "package": "phpdocumentor/template-responsive",
+            "version": "1.0.4"
         }
     ],
     "packages-dev": null,
