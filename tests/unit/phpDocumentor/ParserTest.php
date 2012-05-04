@@ -75,7 +75,7 @@ class phpDocumentor_ParserTest extends PHPUnit_Framework_TestCase
     $this->assertEquals('1.0', $this->fixture->getExistingXml()->documentElement->getAttribute('version'));
   }
 
-// TODO: move this to a unit test for phpDocumentor_Parser_Files
+// TODO: move this to a unit test for \phpDocumentor\FileSet
 //  public function testIgnorePatterns()
 //  {
 //    $fixture_data = '*/test/*';

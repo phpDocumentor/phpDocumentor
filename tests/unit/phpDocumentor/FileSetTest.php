@@ -4,18 +4,24 @@
  *
  * PHP Version 5
  *
- * @category   phpDocumentor
- * @package    Parser
- * @subpackage Tests
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
-class phpDocumentor_Parser_FilesTest extends PHPUnit_Framework_TestCase
+namespace phpDocumentor;
+
+/**
+ * Test case for FileSet class.
+ *
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
+ */
+class FileSetTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var phpDocumentor_Parser_Files */
+    /** @var FileSet */
     protected $fixture = null;
 
     /**
@@ -25,7 +31,7 @@ class phpDocumentor_Parser_FilesTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->fixture = new phpDocumentor_Parser_Files();
+        $this->fixture = new FileSet();
     }
 
     /**
@@ -36,7 +42,7 @@ class phpDocumentor_Parser_FilesTest extends PHPUnit_Framework_TestCase
     public function testAddDirectory()
     {
         // instantiate a new instance because we want to be sure it is clean
-        $fixture = new phpDocumentor_Parser_Files();
+        $fixture = new FileSet();
 
         // read the phar test fixture
         $fixture->addDirectory(
@@ -55,7 +61,7 @@ class phpDocumentor_Parser_FilesTest extends PHPUnit_Framework_TestCase
         );
 
         // instantiate a new instance because we want to be sure it is clean
-        $fixture = new phpDocumentor_Parser_Files();
+        $fixture = new FileSet();
 
         // load the unit test folder
         $fixture->addDirectory(dirname(__FILE__) . '/../../');

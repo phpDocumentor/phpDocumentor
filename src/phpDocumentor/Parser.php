@@ -21,7 +21,7 @@
  *
  * Example of use:
  *
- *     $files = new phpDocumentor_Parser_Files();
+ *     $files = new FileSet();
  *     $files->addDirectories(getcwd());
  *     $parser = new phpDocumentor_Parser();
  *     $parser->setPath($files->getProjectRoot());
@@ -428,7 +428,7 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
     /**
      * Iterates through the given files and builds the structure.xml file.
      *
-     * @param phpDocumentor_Parser_Files $files          A files container to parse.
+     * @param FileSet $files          A files container to parse.
      * @param bool                 $include_source whether to include the source
      *  in the generated output..
      *
@@ -436,7 +436,7 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
      *
      * @return bool|string
      */
-    public function parseFiles(phpDocumentor_Parser_Files $files, $include_source = false)
+    public function parseFiles(\phpDocumentor\FileSet $files, $include_source = false)
     {
         $timer = microtime(true);
 

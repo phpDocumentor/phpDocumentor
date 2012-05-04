@@ -4,24 +4,22 @@
  *
  * PHP Version 5
  *
- * @category  phpDocumentor
- * @package   Parser
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
+namespace phpDocumentor;
+
 /**
  * Files container handling directory scanning, project root detection and ignores.
  *
- * @category phpDocumentor
- * @package  Parser
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
  */
-class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
+class FileSet extends \phpDocumentor_Parser_Abstract
 {
     /** @var \Symfony\Component\Finder\Finder */
     protected $finder = null;
@@ -55,6 +53,9 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
 
     /** @var string[] An array containing the file names which must be processed */
     protected $files = array();
+
+    /** @var string[] All manually added files */
+    protected $absolute_files = array();
 
     /** @var string Detected root folder for this project */
     protected $project_root = null;
@@ -158,8 +159,6 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      * @param string $path A path to a folder, may be relative, absolute or
      *  even phar.
      *
-     * @throws InvalidArgumentException if the given path is not a folder.
-     *
      * @return void
      */
     public function addDirectory($path)
@@ -198,7 +197,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
             $this->project_root = null;
         }
 
-        $this->files += glob($path);
+        $this->absolute_files += glob($path);
     }
 
     /**
@@ -211,6 +210,8 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      */
     public function getFiles()
     {
+        $this->files = $this->absolute_files;
+
         if ($this->follow_symlinks) {
             $this->finder->followLinks();
         }
@@ -230,7 +231,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
             ->name('/\.('.implode('|', $this->allowed_extensions).')$/')
             ->ignoreDotFiles($this->getIgnoreHidden())
             ->filter(
-                function(SplFileInfo $file) use ($patterns) {
+                function(\SplFileInfo $file) use ($patterns) {
                     if (!$patterns) {
                         return true;
                     }
@@ -242,9 +243,13 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
             );
 
         try {
-            /** @var SplFileInfo $file */
+            /** @var \SplFileInfo $file */
             foreach ($this->finder as $file) {
-                $this->files[] = $file->getRealPath();
+                $full_path = $file->getRealPath();
+
+                // if realpath is false then we are dealing with phar or
+                // another stream; in which case we want the normal path
+                $this->files[] = $full_path ? $full_path : (string)$file;
             }
         } catch(\LogicException $e)
         {
@@ -343,7 +348,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      *
      * @param string $filename The filename to make relative.
      *
-     * @throws InvalidArgumentException if file is not in the project root.
+     * @throws \InvalidArgumentException if file is not in the project root.
      *
      * @return string
      */
@@ -356,7 +361,7 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
         );
 
         if ($result === '') {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'File is not present in the given project path: ' . $filename
             );
         }
@@ -394,8 +399,6 @@ class phpDocumentor_Parser_Files extends phpDocumentor_Parser_Abstract
      * constant before that version.
      *
      * @param boolean $follow_symlinks
-     *
-     * @throws InvalidArgumentException
      *
      * @return void
      */

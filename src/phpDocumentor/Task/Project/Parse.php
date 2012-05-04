@@ -353,7 +353,7 @@ class phpDocumentor_Task_Project_Parse extends phpDocumentor_Task_Abstract
             $this->setQuiet(true);
         }
 
-        $files = new phpDocumentor_Parser_Files();
+        $files = new \phpDocumentor\FileSet();
         $files->setAllowedExtensions($this->getExtensions());
         $files->setIgnorePatterns($this->getIgnore());
         $files->setIgnoreHidden(!$this->getHidden());
