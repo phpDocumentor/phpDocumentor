@@ -13,7 +13,8 @@
         { "type":"pear", "url":"http://pear.symfony-project.com/" },
         { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" },
         { "type":"git", "url":"http://github.com/phpDocumentor/ReflectionDocBlock" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" }
+        { "type":"git", "url":"http://github.com/phpDocumentor/template-responsive" },
+        { "type":"git", "url":"http://github.com/phpDocumentor/template-new-black" }
     ],
     "require": {
         "php": ">=5.3.3",
@@ -22,6 +23,7 @@
         "pear-symfony/EventDispatcher": "1.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/reflection-docblock": "1.*",
-        "phpdocumentor/template.responsive": "1.*"
+        "phpdocumentor/template-responsive": "1.*",
+        "phpdocumentor/template-new-black": "1.*"
     }
 }
