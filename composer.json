@@ -15,6 +15,7 @@
         { "type":"git", "url":"http://github.com/phpDocumentor/ReflectionDocBlock" },
         { "type":"git", "url":"http://github.com/phpDocumentor/UnifiedAssetInstaller" },
         { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" },
+        { "type":"git", "url":"http://github.com/phpDocumentor/template.abstract" },
         { "type":"git", "url":"http://github.com/phpDocumentor/template.new_black" }
     ],
     "require": {
