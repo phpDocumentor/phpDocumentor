@@ -13,7 +13,7 @@
         { "type":"pear", "url":"http://pear.symfony-project.com/" },
         { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" },
         { "type":"git", "url":"http://github.com/phpDocumentor/ReflectionDocBlock" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/TemplateInstaller" },
+        { "type":"git", "url":"http://github.com/phpDocumentor/UnifiedAssetInstaller" },
         { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" },
         { "type":"git", "url":"http://github.com/phpDocumentor/template.new_black" }
     ],
