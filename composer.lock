@@ -1,5 +1,5 @@
 {
-    "hash": "a7ca8cf30c2d889f3f17e7ae81f18aa1",
+    "hash": "84066f95aa53f8a60c78315231c9e7d0",
     "packages": [
         {
             "package": "dflydev/markdown",
@@ -20,19 +20,23 @@
             "version": "1.0.0-beta3"
         },
         {
-            "package": "phpdocumentor/template-installer",
-            "version": "dev-master",
-            "source-reference": "4a669d4b452a151307df784cbf6c20ec830b8f42"
-        },
-        {
             "package": "phpdocumentor/template-new-black",
-            "version": "1.0.0"
+            "version": "dev-master",
+            "source-reference": "880b6d3e4f0ce22088e992fb48103d146b0107f9"
         },
         {
             "package": "phpdocumentor/template-responsive",
-            "version": "1.0.4"
+            "version": "dev-master",
+            "source-reference": "e839dd4f2cc081bc89bcf9a2555245754c539467"
+        },
+        {
+            "package": "phpdocumentor/unified-asset-installer",
+            "version": "dev-master",
+            "source-reference": "60a383da1c861212542d267fa0a748d107565d9f"
         }
     ],
     "packages-dev": null,
-    "aliases": []
+    "aliases": [
+
+    ]
 }
