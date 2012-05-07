@@ -68,6 +68,7 @@ class phpDocumentor_Parser_Exporter_Xml_Constant
         );
 
         $object = new phpDocumentor_Parser_Exporter_Xml_DocBlock();
+        $constant->setDefaultPackageName($parent->getAttribute('package'));
         $object->export($child, $constant);
     }
 }

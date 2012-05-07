@@ -51,22 +51,18 @@ abstract class phpDocumentor_Transformer_Writer_Abstract
     static public function getInstanceOf($writer)
     {
         static $writers = array();
+        $writer_class = 'phpDocumentor_Plugin_Core_Transformer_Writer_'
+            . ucfirst($writer);
 
-        // first attempt to find out whether it is the name of a core
-        // writer or a full writer name; the first is provided for aliases
-        // and backwards compatibility
-        if (!@class_exists($writer)) {
-            $writer_class = 'phpDocumentor_Plugin_Core_Transformer_Writer_'
-                . ucfirst($writer);
-        } else {
+        if (!self::isValidWriterClassname($writer_class)) {
             $writer_class = $writer;
-        }
 
-        if (!@class_exists($writer_class)) {
-            throw new phpDocumentor_Transformer_Exception(
-                'Unknown writer was mentioned in the transformation of a '
-                . 'template: ' . $writer_class
-            );
+            if (!self::isValidWriterClassname($writer_class)) {
+                throw new phpDocumentor_Transformer_Exception(
+                    'Unknown writer was mentioned in the transformation of a '
+                    . 'template: ' . $writer_class
+                );
+            }
         }
 
         // if there is no writer in cache; create it
@@ -75,5 +71,20 @@ abstract class phpDocumentor_Transformer_Writer_Abstract
         }
 
         return $writers[strtolower($writer_class)];
+    }
+
+    /**
+     * Checks whether the given classname is valid for use as writer.
+     *
+     * @param string $class_name Class name of the writer to check.
+     *
+     * @return bool
+     */
+    private static function isValidWriterClassname($class_name)
+    {
+        return class_exists($class_name)
+            && is_subclass_of(
+                $class_name, 'phpDocumentor_Transformer_Writer_Abstract'
+            );
     }
 }

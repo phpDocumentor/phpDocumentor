@@ -265,6 +265,21 @@ is OPTIONAL):
 
     @\Doctrine\Orm\Mapping\Entity()
 
+> *Note*: The PHPDoc Standard DOES NOT make assumptions on the meaning of a tag
+> unless specified in this document or subsequent additions or extensions.
+>
+> This means that you CAN use namespace aliases as long as a prefixing namespace
+> element is provided. Thus the following is legal as well:
+>
+>     @Mapping\Entity()
+>
+> Your own library or application may check for namespace aliases and make a
+> FQCN from this; this has no impact on this standard.
+
+> *Important*: Individual Documentation Generation Applications (DGAs) MAY
+> interpret namespaces that are registered with that application and apply
+> custom behaviour.
+
 Example of a tag name prefixed with a vendor name and hyphen:
 
     @phpdoc-event transformer.transform.pre
