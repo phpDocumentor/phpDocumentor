@@ -1,5 +1,8 @@
 {
     "name": "phpdocumentor/phpdocumentor",
+    "description": "Documentation Generator for PHP",
+    "keywords": ["documentation", "api", "dga", "application", "phpdoc"],
+    "homepage": "http://www.phpdoc.org",
     "license": "MIT",
     "autoload": {
         "psr-0":{
