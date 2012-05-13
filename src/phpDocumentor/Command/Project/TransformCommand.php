@@ -32,7 +32,7 @@ use \Symfony\Component\Console\Output\OutputInterface;
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class TransformCommand extends \Cilex\Command\Command
+class TransformCommand extends ParseCommand
 {
     /**
      * Initializes this command and sets the name, description, options and
@@ -66,7 +66,7 @@ TEXT
             'output/structure.xml'
         );
         $this->addOption(
-            'target', 't', InputOption::VALUE_REQUIRED,
+            'target', 't', InputOption::VALUE_OPTIONAL,
             'Path where to store the generated output (optional)',
             'output'
         );
@@ -115,7 +115,13 @@ TEXT
             \phpDocumentor_Core_Abstract::config()->paths->templates
         );
         $transformer->setTarget($input->getOption('target'));
-        $transformer->setSource($source);
+
+        $transformer->setSource(
+            $this->getTarget(
+                $this->getOption($input, 'source', 'parser/target')
+            )
+        );
+
         $transformer->setTemplates($input->getOption('template'));
         $transformer->setParseprivate($input->getOption('parseprivate'));
 

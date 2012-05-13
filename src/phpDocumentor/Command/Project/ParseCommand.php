@@ -47,7 +47,7 @@ HELP
             )
             ->addOption(
                 'target', 't',
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_OPTIONAL,
                 'Path where to store the generated output'
             )
             ->addOption(
