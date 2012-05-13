@@ -4,14 +4,14 @@
         {
             "package": "dflydev/markdown",
             "version": "dev-master",
-            "source-reference": "91c6649f89472f6ab60a107a80acc72baacf585c"
+            "source-reference": "91c6649f89472f6ab60a107a80acc72baacf585c",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
         },
         {
             "package": "dflydev/markdown",
             "version": "dev-master",
-            "source-reference": "91c6649f89472f6ab60a107a80acc72baacf585c",
-            "alias-pretty-version": "1.0.x-dev",
-            "alias-version": "1.0.9999999.9999999-dev"
+            "source-reference": "91c6649f89472f6ab60a107a80acc72baacf585c"
         },
         {
             "package": "pear-symfony/EventDispatcher",
@@ -35,7 +35,7 @@
         },
         {
             "package": "phpdocumentor/template-responsive",
-            "version": "1.0.1"
+            "version": "1.0.5"
         },
         {
             "package": "phpdocumentor/unified-asset-installer",

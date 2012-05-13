@@ -17,7 +17,6 @@ function createPackager($original_file, $options = array())
       'build.properties',
       'build.xml',
       'build/*',
-      'data/templates/*',
       'data/output/*',
       'data/log/*',
       'bin/package.php',
@@ -63,7 +62,6 @@ DESC
   $packagexml->setPhpDep('5.2.6');
   $packagexml->setPearinstallerDep('1.4.0');
   $packagexml->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.0');
-  $packagexml->addPackageDepWithChannel('required', 'phpDocumentor_Template_responsive', 'pear.phpdoc.org', '1.0.0');
   $packagexml->addPackageDepWithChannel('optional', 'PEAR_PackageFileManager2', 'pear.php.net', '1.0.2');
 
   $packagexml->addReplacement('bin/phpdoc.php', 'pear-config', '/usr/bin/env php', 'php_bin');
