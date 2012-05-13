@@ -22,7 +22,7 @@
         "pear-symfony/EventDispatcher": "1.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/reflection-docblock": "1.*",
-        "phpdocumentor/template-responsive": "dev-master",
-        "phpdocumentor/template-new-black": "dev-master"
+        "phpdocumentor/template-responsive": "1.*",
+        "phpdocumentor/template-new-black": "1.*"
     }
 }
