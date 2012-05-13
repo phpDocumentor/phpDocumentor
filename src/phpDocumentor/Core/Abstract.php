@@ -27,7 +27,7 @@
 abstract class phpDocumentor_Core_Abstract
 {
     /** @var string The actual version number of phpDocumentor. */
-    const VERSION = '2.0.0a2';
+    const VERSION = '2.0.0a3';
 
     /**
      * The config containing overrides for the defaults.
