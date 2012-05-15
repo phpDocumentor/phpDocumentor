@@ -10,5 +10,5 @@
  * @link      http://phpdoc.org
  */
 
-require_once dirname(__FILE__) . '/../../src/phpDocumentor/Bootstrap.php';
-$autoloader = phpDocumentor_Bootstrap::createInstance()->initialize();
+require_once __DIR__ . '/../../src/phpDocumentor/Bootstrap.php';
+phpDocumentor_Bootstrap::createInstance()->initialize();
