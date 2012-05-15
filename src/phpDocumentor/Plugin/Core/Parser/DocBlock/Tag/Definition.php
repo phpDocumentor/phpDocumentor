@@ -386,16 +386,16 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
                 }
             }
 
-            // re-add the array notation markers
-            if ($is_array) {
-                $item .= '[]';
-            }
-
             // full paths always start with a slash
             if (isset($item[0]) && ($item[0] !== '\\')
                 && (!in_array(strtolower($item), $non_objects))
             ) {
                 $item = '\\' . $item;
+            }
+
+            // re-add the array notation markers
+            if ($is_array) {
+                $item .= '[]';
             }
         }
 
