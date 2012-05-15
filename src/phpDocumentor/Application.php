@@ -14,7 +14,7 @@ namespace phpDocumentor;
 
 use \Symfony\Component\Console\Input\InputInterface;
 
-include_once __DIR__ . '/../../vendor/.composer/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 /**
  * Application class for phpDocumentor.
@@ -59,7 +59,7 @@ class Application extends \Cilex\Application
     protected function addAutoloader()
     {
         $this['autoloader'] = include __DIR__
-            . '/../../vendor/.composer/autoload.php';
+            . '/../../vendor/autoload.php';
     }
 
     protected function addLogging()
