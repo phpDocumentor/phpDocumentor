@@ -26,43 +26,43 @@ PEAR::setErrorHandling(PEAR_ERROR_DIE);
  */
 function createPackager($original_file, $options = array())
 {
-  // merge the options with these defaults.
-  $options = array_merge(array(
-    'packagefile'       => 'package.xml',
-    'filelistgenerator' => 'file',
-    'simpleoutput'      => true,
-    'baseinstalldir'    => '/phpDocumentor',
-    'packagedirectory'  => dirname(__FILE__).'/../../',
-    'clearcontents'     => true,
-    'ignore'            => array(
-      'build.properties',
-      'build.xml',
-      'build/*',
-      'data/output/*',
-      'data/log/*',
-      'bin/package.php',
-      'src/XHProf/*',     // Profiling package
-    ),
-    'exceptions'        => array(
-      'bin/phpdoc.php'  => 'script',
-      'bin/phpdoc.bat'  => 'script',
-      'phpdoc.dist.xml' => 'php',
-      'LICENSE'          => 'php',
-      'phpunit.xml.dist' => 'php',
-      'README'           => 'php',
-    ),
-    'installexceptions' => array(
-      'bin/phpdoc.php' => '/',
-      'bin/phpdoc.bat' => '/'
-    ),
-    'dir_roles'         => array(
-      'bin'   => 'php',
-      'docs'  => 'php',
-      'data'  => 'php',
-      'tests' => 'php',
-      'src'   => 'php',
-    ),
-  ), $options);
+    // merge the options with these defaults.
+    $options = array_merge(array(
+        'packagefile'       => 'package.xml',
+        'filelistgenerator' => 'file',
+        'simpleoutput'      => true,
+        'baseinstalldir'    => '/phpDocumentor',
+        'packagedirectory'  => dirname(__FILE__).'/../../',
+        'clearcontents'     => true,
+        'ignore'            => array(
+            'build.properties',
+            'build.xml',
+            'build/*',
+            'data/output/*',
+            'data/log/*',
+            'bin/package.php',
+            'src/XHProf/*',     // Profiling package
+        ),
+        'exceptions'        => array(
+            'bin/phpdoc.php'  => 'script',
+            'bin/phpdoc.bat'  => 'script',
+            'phpdoc.dist.xml' => 'php',
+            'LICENSE'          => 'php',
+            'phpunit.xml.dist' => 'php',
+            'README'           => 'php',
+        ),
+        'installexceptions' => array(
+            'bin/phpdoc.php' => '/',
+            'bin/phpdoc.bat' => '/'
+        ),
+        'dir_roles'         => array(
+            'bin'   => 'php',
+            'docs'  => 'php',
+            'data'  => 'php',
+            'tests' => 'php',
+            'src'   => 'php',
+        ),
+    ), $options);
 
     $packagexml = PEAR_PackageFileManager2::importOptions($original_file, $options);
     $packagexml->setPackageType('php');
