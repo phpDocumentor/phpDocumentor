@@ -27,7 +27,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
  */
 class Application extends \Cilex\Application
 {
-    const VERSION = '2.0.0a3';
+    const VERSION = '2.0.0a4';
 
     /**
      * Initializes all components used by phpDocumentor.

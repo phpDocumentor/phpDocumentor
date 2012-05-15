@@ -105,7 +105,7 @@
     <!-- Updates the version number in the Core/Abstract class and commits result -->
     <target name="deploy:update-version-number"
             depends="deploy:get-version-number"
-            description="Updates the version number in phpDocumentor_Core_Abstract and commit it.">
+            description="Updates the version number in \phpDocumentor\Application and commit it.">
         <gitcheckout repository="." branchname="develop" quiet="false"/>
         <exec
             command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Core/Abstract.php"
@@ -113,7 +113,7 @@
         />
         <echo>Updating phpDocumentor from version ${version.old} to ${version.number}</echo>
         <exec
-            command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/phpDocumentor/Core/Abstract.php"
+            command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/phpDocumentor/Application.php"
             dir="${project.basedir}" checkreturn="true"
         />
         <exec

@@ -30,19 +30,10 @@ class Command extends \Cilex\Command\Command
         if (($value === null || is_array($value) && empty($value))
             && $config_path !== null
         ) {
-            /** @var \Zend\Config\Config $node  */
-            $node = $this->getService('config');
-            foreach (explode('/', $config_path) as $node_name) {
-                $node = $node->get($node_name);
-            }
-
-            if ($node === null) {
+            $value = $this->getConfigValueFromPath($config_path);
+            if ($value === null) {
                 return $default;
             }
-
-            $value = $node instanceof \Zend\Config\Config
-                ? $node->toArray()
-                : (string)$node;
         }
 
         // use default if value is still null
@@ -53,5 +44,30 @@ class Command extends \Cilex\Command\Command
         }
 
         return $value;
+    }
+
+    /**
+     * Returns a value by traversing the configuration tree as if it was a file
+     * path.
+     *
+     * @param string $path Path to the config value separated by '/'.
+     *
+     * @return \Zend\Config\Config
+     */
+    protected function getConfigValueFromPath($path)
+    {
+        /** @var \Zend\Config\Config $node  */
+        $node = $this->getService('config');
+        foreach (explode('/', $path) as $node_name) {
+            $node = $node->get($node_name);
+        }
+
+        if ($node === null) {
+            return null;
+        }
+
+        return $node instanceof \Zend\Config\Config
+            ? $node->toArray()
+            : (string)$node;
     }
 }

@@ -90,7 +90,7 @@ class phpDocumentor_Plugin_Core_Log
                      '{DATE}'
                 ),
                 array(
-                     phpDocumentor_Core_Abstract::config()->paths->application,
+                     __DIR__ . '/../../../..',
                      date('YmdHis')
                 ),
                 $file

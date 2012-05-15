@@ -26,7 +26,7 @@ Plugins make use of the following components:
 * **Composer's autoloader**, autoloader for all classes in a plugin
 * **sfEventDispatcher**, manager that collects dispatched events and distributes
   them to the plugins.
-* **phpDocumentor_Core_Config**, the configuration manager containing global settings
+* **\Zend\Config\Config**, the configuration manager containing global settings
   but also definitions which plugins are to be loaded with which options.
 
 These components come pre-installed and ready to use. The only thing that you

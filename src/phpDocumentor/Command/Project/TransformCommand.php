@@ -93,7 +93,7 @@ TEXT
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
-     * @return void
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -112,7 +112,7 @@ TEXT
         // initialize transformer
         $transformer = new \phpDocumentor_Transformer();
         $transformer->setTemplatesPath(
-            \phpDocumentor_Core_Abstract::config()->paths->templates
+            __DIR__.'/../../../../data/templates'
         );
         $transformer->setTarget($input->getOption('target'));
 
@@ -126,8 +126,9 @@ TEXT
         $transformer->setParseprivate($input->getOption('parseprivate'));
 
         // add links to external docs
-        $external_class_documentation = \phpDocumentor_Core_Abstract::config()
-            ->getArrayFromPath('transformer/external-class-documentation');
+        $external_class_documentation = $this->getConfigValueFromPath(
+            'transformer/external-class-documentation'
+        );
 
         $external_class_documentation = (!is_numeric(
             current(array_keys($external_class_documentation))
@@ -135,7 +136,6 @@ TEXT
             ? array($external_class_documentation)
             : $external_class_documentation;
 
-        /** @var \phpDocumentor_Core_Config $doc */
         foreach ($external_class_documentation as $doc) {
             if (empty($doc)) {
                 continue;
