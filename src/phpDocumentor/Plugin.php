@@ -113,7 +113,7 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
             $this->options[$key] = $option;
         }
 
-        $this->translate = new Zend_Translate_Adapter_Array(array(
+        $this->translate = new \Zend\Translator\Adapter\ArrayAdapter(array(
             'locale' => 'en',
             'content' => $path . DIRECTORY_SEPARATOR . 'Messages'
                 . DIRECTORY_SEPARATOR . 'en.php'
