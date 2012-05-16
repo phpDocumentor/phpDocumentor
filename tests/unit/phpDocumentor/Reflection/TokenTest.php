@@ -2,7 +2,7 @@
 /**
 * Test class for phpDocumentor_Reflection_Token.
 */
-class phpDocumentor_TokenTest extends PHPUnit_Framework_TestCase
+class phpDocumentor_Reflection_TokenTest extends PHPUnit_Framework_TestCase
 {
   /** @var phpDocumentor_Reflection_Token */
   protected $fixture = null;
