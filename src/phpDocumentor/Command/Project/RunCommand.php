@@ -37,7 +37,7 @@ use \Symfony\Component\Console\Input\ArrayInput;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class RunCommand extends \Cilex\Command\Command
+class RunCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
     /**
      * Initializes this command and sets the name, description, options and
@@ -170,6 +170,8 @@ HELP
                 'parseprivate', null, InputOption::VALUE_NONE,
                 'Whether to parse DocBlocks marked with @internal tag'
             );
+
+        parent::configure();
     }
 
     /**
@@ -182,6 +184,8 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        parent::execute($input, $output);
+
         $parse_command     = $this->getApplication()->find('project:parse');
         $transform_command = $this->getApplication()->find('project:transform');
 

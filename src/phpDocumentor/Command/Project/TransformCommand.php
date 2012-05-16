@@ -32,7 +32,7 @@ use \Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class TransformCommand extends ParseCommand
+class TransformCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
     /**
      * Initializes this command and sets the name, description, options and
@@ -82,6 +82,8 @@ TEXT
             'Whether to show a progress bar; will automatically quiet logging '
             . 'to stdout'
         );
+
+        parent::configure();
     }
 
     /**
@@ -94,13 +96,16 @@ TEXT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // invoke parent to load custom config
+        parent::execute($input, $output);
+
         /** @var \Symfony\Component\Console\Helper\ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
             $this->connectOutputToLogging($output);
         }
 
-        $output->write('Initializing transformer .. ');
+        $output->write('Initializing transformer ..');
 
         // initialize transformer
         $transformer = new \phpDocumentor_Transformer();
@@ -140,12 +145,12 @@ TEXT
             );
         }
 
-        $output->writeln('OK');
-        $output->write('Processing behaviours .. ');
+        $output->writeln(' OK');
+        $output->write('Processing behaviours ..');
         $this->getService('event_dispatcher')->connect(
             'transformer.transform.pre',
             function() use ($output) {
-                $output->writeln('OK');
+                $output->writeln(' OK');
                 $output->writeln('Executing transformations');
             }
         );
@@ -164,8 +169,7 @@ TEXT
     }
 
     /**
-     * Adds the transformer.transformation.post event to the list of events
-     * that advance the progressbar.
+     * Adds the transformer.transformation.post event to advance the progressbar.
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *

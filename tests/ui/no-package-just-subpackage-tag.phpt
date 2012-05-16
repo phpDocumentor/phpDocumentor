@@ -7,9 +7,11 @@ require_once 'tests/common/ui-include.php';
 --ARGS--
 project:run -f tests/data/NoPackageDocBlock.php -t build --config=none
 --EXPECTF--
-phpDocumentor version %s
-
-%s ERR (3): Cannot have a @subpackage when a @package tag is not present
-%s
-Starting transformation of files (this could take a while depending upon the size of your project)
-Finished transformation in %s seconds
+Initializing parser and collecting files .. OK
+Parsing files
+  Cannot have a @subpackage when a @package tag is not present
+  Cannot have a @subpackage when a @package tag is not present
+Storing structure.xml in "%sbuild/structure.xml" .. OK
+Initializing transformer .. OK
+Processing behaviours .. OK
+Executing transformations

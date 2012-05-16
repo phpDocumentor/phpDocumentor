@@ -7,11 +7,13 @@ require_once 'tests/common/ui-include.php';
 --ARGS--
 project:run -f tests/data/NoShortDescription.php -t build --config=none
 --EXPECTF--
-phpDocumentor version %s
-
-%s ERR (3): No short description for property %s
-%s ERR (3): No short description for method %s
-%s ERR (3): No short description for class %s
-%s ERR (3): No short description for file %s
-Starting transformation of files (this could take a while depending upon the size of your project)
-Finished transformation in %s seconds
+Initializing parser and collecting files .. OK
+Parsing files
+  No short description for property %s
+  No short description for method %s
+  No short description for class %s
+  No short description for file %s
+Storing structure.xml in "%sbuild/structure.xml" .. OK
+Initializing transformer .. OK
+Processing behaviours .. OK
+Executing transformations

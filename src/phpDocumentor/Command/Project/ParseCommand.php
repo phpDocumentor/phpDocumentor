@@ -26,7 +26,7 @@ use \Symfony\Component\Console\Output\OutputInterface;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class ParseCommand extends \phpDocumentor\Command\Command
+class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
     /**
      * Initializes this command and sets the name, description, options and
@@ -136,6 +136,8 @@ HELP
                 'Whether to show a progress bar; will automatically quiet logging '
                 .'to stdout'
             );
+
+        parent::configure();
     }
 
     /**
@@ -194,6 +196,9 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // invoke parent to load custom config
+        parent::execute($input, $output);
+
         /** @var \Symfony\Component\Console\Helper\ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
@@ -287,81 +292,19 @@ HELP
     }
 
     /**
-     * Connect the logging events to the output object of Symfony Console.
+     * Adds the parser.file.pre event to the advance the progressbar.
      *
-     * @param OutputInterface $output
+     * @param \Symfony\Component\Console\Input\InputInterface $input
      *
-     * @return void
+     * @return \Symfony\Component\Console\Helper\HelperInterface|null
      */
-    protected function connectOutputToLogging(OutputInterface $output)
-    {
-        /** @var \sfEventDispatcher $event_dispatcher  */
-        $event_dispatcher = $this->getService('event_dispatcher');
-        $command = $this;
-
-        $event_dispatcher->connect(
-            'system.log',
-            function(\sfEvent $event) use ($command, $output) {
-                $command->logEvent($output, $event);
-            }
-        );
-
-        $event_dispatcher->connect(
-            'system.debug',
-            function(\sfEvent $event) use ($command, $output) {
-                $command->logEvent($output, $event);
-            }
-        );
-    }
-
-    /**
-     * Logs an event with the output.
-     *
-     * This method will also colorize the message based on priority and withhold
-     * certain logging in case of verbosity or not.
-     *
-     * @param OutputInterface $output
-     * @param \sfEvent $event
-     *
-     * @return void.
-     */
-    public function logEvent(OutputInterface $output, \sfEvent $event)
-    {
-        if (!isset($event['priority'])) {
-            $event['priority'] = 8;
-        }
-
-        $threshold = 5;
-        if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
-            $threshold = 8;
-        }
-
-        if ($event['priority'] <= $threshold) {
-            $message = $event['message'];
-            switch ($event['priority'])
-            {
-            case 4:
-                $message = '<comment>' . $message . '</comment>';
-                break;
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                $message = '<error>' . $message . '</error>';
-                break;
-            }
-            $output->writeln('  ' . $message);
-        }
-    }
-
-
     protected function getProgressBar(InputInterface $input)
     {
-        if (!$input->getOption('progressbar')) {
+        $progress = parent::getProgressBar($input);
+        if (!$progress) {
             return null;
         }
 
-        $progress = $this->getHelperSet()->get('progress');
         $this->getService('event_dispatcher')->connect(
             'parser.file.pre',
             function() use ($progress) {

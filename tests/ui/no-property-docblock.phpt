@@ -7,8 +7,10 @@ require_once 'tests/common/ui-include.php';
 --ARGS--
 project:run -f tests/data/NoPropertyDocBlock.php -t build --config=none
 --EXPECTF--
-phpDocumentor version %s
-
-%s ERR (3): No DocBlock was found for property %s
-Starting transformation of files (this could take a while depending upon the size of your project)
-Finished transformation in %s seconds
+Initializing parser and collecting files .. OK
+Parsing files
+  No DocBlock was found for property %s
+Storing structure.xml in "%sbuild/structure.xml" .. OK
+Initializing transformer .. OK
+Processing behaviours .. OK
+Executing transformations
