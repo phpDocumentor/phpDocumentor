@@ -43,7 +43,7 @@ class phpDocumentor_Reflection_TokenIteratorMock extends phpDocumentor_Reflectio
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Token_IteratorTest extends PHPUnit_Framework_TestCase
+class phpDocumentor_Reflection_TokenIteratorTest extends PHPUnit_Framework_TestCase
 {
     /** @var array[] tokens returned by token_get_all */
     protected $tokens = array();
