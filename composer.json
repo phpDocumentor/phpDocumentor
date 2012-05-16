@@ -21,6 +21,8 @@
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",
         "pear-zf2/Zend_Config": "2.*",
+        "pear-zf2/Zend_Locale": "2.*",
+        "pear-zf2/Zend_Translator": "2.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/reflection-docblock": "1.*",
         "phpdocumentor/template-responsive": "1.*",
