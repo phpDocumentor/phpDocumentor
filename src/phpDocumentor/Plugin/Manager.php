@@ -41,7 +41,7 @@ class phpDocumentor_Plugin_Manager
      *
      * @param sfEventDispatcher               $event_dispatcher Event dispatcher
      *     that plugins can bind to and where events should be dispatched to.
-     * @param Zend_Config                     $configuration    Configuration file
+     * @param \Zend\Config\Config             $configuration    Configuration file
      *     which can be used to load parameters into the plugins.
      * @param \Composer\Autoload\ClassLoader  $autoloader       Plugins can
      *     additionally load classes; with the autoloader they can register
@@ -68,8 +68,8 @@ class phpDocumentor_Plugin_Manager
             ? $this->configuration->plugins->plugin
             : array();
 
-        // Zend_Config has a quirk; if there is only one entry then it is not
-        // wrapped in an array, since we need that we re-wrap it
+        // \Zend\Config\Config has a quirk; if there is only one entry then it
+        // is not wrapped in an array, since we need that we re-wrap it
         if (isset($plugins->path)) {
             $plugins = array($plugins);
         }

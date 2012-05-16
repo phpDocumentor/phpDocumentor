@@ -27,7 +27,7 @@ class phpDocumentor_Plugin_Abstract
     /** @var sfEventDispatcher Dispatcher used to send events back and forth */
     protected $event_dispatcher = null;
 
-    /** @var Zend_Config_Xml Configuration object for plugins */
+    /** @var \Zend\Config\Config Configuration object for plugins */
     protected $configuration = null;
 
     /** @var Zend_Translate_Adapter_Array Translation object */
@@ -38,7 +38,7 @@ class phpDocumentor_Plugin_Abstract
      *
      * @param sfEventDispatcher            $event_dispatcher Dispatcher used to
      *     handle events.
-     * @param Zend_Config_Xml              $configuration    Configuration object
+     * @param \Zend\Config\Config          $configuration    Configuration object
      *     for this object.
      * @param Zend_Translate_Adapter_Array $translator       Translator object.
      */
@@ -171,7 +171,7 @@ class phpDocumentor_Plugin_Abstract
     /**
      * Returns the configuration for this object.
      *
-     * @return Zend_Config_Xml
+     * @return \Zend\Config\Config
      */
     public function getConfiguration()
     {

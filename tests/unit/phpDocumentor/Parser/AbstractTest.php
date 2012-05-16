@@ -78,7 +78,10 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
             array(
                 $this->fixture,
                 'system.log',
-                array('priority' => Zend_Log::ERR, 'message' => 'body')
+                array(
+                    'priority' => \phpDocumentor\Plugin\Core\Log::ERR,
+                    'message' => 'body'
+                )
             )
         );
 
@@ -98,7 +101,10 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
         // test without setting the dispatcher
         $result = $this->fixture->dispatch(
             'system.log',
-            array('priority' => Zend_Log::ERR, 'message' => 'body')
+            array(
+                'priority' => \phpDocumentor\Plugin\Core\Log::ERR,
+                'message' => 'body'
+            )
         );
         $this->assertSame(
             null, $result,
@@ -111,7 +117,10 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
         // test with the dispatcher
         $result = $this->fixture->dispatch(
             'system.log',
-            array('priority' => Zend_Log::ERR, 'message' => 'body')
+            array(
+                'priority' => \phpDocumentor\Plugin\Core\Log::ERR,
+                'message' => 'body'
+            )
         );
         $this->assertSame(
             true, $result,
@@ -124,7 +133,10 @@ class phpDocumentor_Parser_AbstractTest extends PHPUnit_Framework_TestCase
         phpDocumentor_Parser_Abstract::$event_dispatcher = true;
         $this->fixture->dispatch(
             'system.log',
-            array('priority' => Zend_Log::ERR, 'message' => 'body')
+            array(
+                'priority' => \phpDocumentor\Plugin\Core\Log::ERR,
+                'message' => 'body'
+            )
         );
     }
 

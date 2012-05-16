@@ -202,7 +202,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
             $this->log(
                 'Neither the finfo nor the mbstring extensions are active; '
                 . 'special character handling may not give the best results',
-                Zend_Log::WARN
+                \phpDocumentor\Plugin\Core\Log::WARN
             );
             $encoding = $this->_detectEncodingFallback($contents);
         }
@@ -213,7 +213,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
             $this->log(
                 'Unable to handle character encoding; finfo, mbstring and '
                 . 'iconv extensions are not enabled',
-                Zend_Log::CRIT
+                \phpDocumentor\Plugin\Core\Log::CRIT
             );
 
             // nothing will be returns to prevent handling
@@ -235,7 +235,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
                     'Encoding of file ' . $filename . ' from ' . $encoding
                     . ' to UTF-8 failed, please check the notice for a '
                     . 'detailed error message',
-                    Zend_Log::EMERG
+                    \phpDocumentor\Plugin\Core\Log::EMERG
                 );
             } else {
                 $contents = $tmp_contents;

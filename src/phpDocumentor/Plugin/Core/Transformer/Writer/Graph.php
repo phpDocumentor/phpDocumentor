@@ -51,7 +51,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
             $this->log(
                 'Unable to find the `dot` command of the GraphViz package. '
                 .'Is GraphViz correctly installed and present in your path?',
-                Zend_Log::ERR
+                \phpDocumentor\Plugin\Core\Log::ERR
             );
             return;
         }
