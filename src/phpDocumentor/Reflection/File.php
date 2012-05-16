@@ -535,7 +535,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
             $docblock->line_number = $docblock_token->line_number;
         }
         catch (Exception $e) {
-            $this->log($e->getMessage(), phpDocumentor_Plugin_Core_Log::CRIT);
+            $this->log($e->getMessage(), \phpDocumentor\Plugin\Core\Log::CRIT);
         }
 
         $tokens->seek($index);

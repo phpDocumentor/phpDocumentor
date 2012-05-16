@@ -340,7 +340,7 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
         $this->log('Starting to parse file: ' . $filename);
         $this->log(
             'Starting to parse file: ' . $filename,
-            phpDocumentor_Plugin_Core_Log::DEBUG
+            \phpDocumentor\Plugin\Core\Log::DEBUG
         );
 
         $dispatched = false;
@@ -401,11 +401,11 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
         } catch (Exception $e) {
             $this->log(
                 '>>  Unable to parse file, an error was detected: '
-                . $e->getMessage(), phpDocumentor_Plugin_Core_Log::ALERT
+                . $e->getMessage(), \phpDocumentor\Plugin\Core\Log::ALERT
             );
             $this->log(
                 'Unable to parse file "' . $filename . '", an error was detected: '
-                . $e->getMessage(), phpDocumentor_Plugin_Core_Log::DEBUG
+                . $e->getMessage(), \phpDocumentor\Plugin\Core\Log::DEBUG
             );
         }
 
@@ -421,9 +421,9 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
         $this->log(
             '>> Memory after processing of file: '
             . number_format(memory_get_usage()) . ' bytes',
-            phpDocumentor_Plugin_Core_Log::DEBUG
+            \phpDocumentor\Plugin\Core\Log::DEBUG
         );
-        $this->log('>> Parsed file', phpDocumentor_Plugin_Core_Log::DEBUG);
+        $this->log('>> Parsed file', \phpDocumentor\Plugin\Core\Log::DEBUG);
     }
 
     /**

@@ -28,9 +28,9 @@ use \Symfony\Component\Console\Output\OutputInterface;
  * verbose option or stop additional information using the quiet option. Please
  * take note that the quiet option also disables logging to file.
  *
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
  */
 class TransformCommand extends ParseCommand
 {
@@ -62,19 +62,16 @@ TEXT
 
         $this->addOption(
             'source', 's', InputOption::VALUE_OPTIONAL,
-            'Path where the XML source file is located (optional)',
-            'output/structure.xml'
+            'Path where the XML source file is located (optional)'
         );
         $this->addOption(
             'target', 't', InputOption::VALUE_OPTIONAL,
-            'Path where to store the generated output (optional)',
-            'output'
+            'Path where to store the generated output (optional)'
         );
         $this->addOption(
             'template', null,
             InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-            'Name of the template to use (optional)',
-            array('responsive')
+            'Name of the template to use (optional)'
         );
         $this->addOption(
             'parseprivate', null, InputOption::VALUE_NONE,
@@ -97,44 +94,40 @@ TEXT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('progressbar')) {
-            \phpDocumentor_Transformer_Abstract::$event_dispatcher->connect(
-                'transformer.writer.xsl.pre', array($this, 'echoProgress')
-            );
-            $output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
+        /** @var \Symfony\Component\Console\Helper\ProgressHelper $progress  */
+        $progress = $this->getProgressBar($input);
+        if (!$progress) {
+            $this->connectOutputToLogging($output);
         }
 
-        $source = $input->getOption('source');
-        if (file_exists($source) and is_dir($source)) {
-            $source .= DIRECTORY_SEPARATOR . 'structure.xml';
-        }
+        $output->write('Initializing transformer .. ');
 
         // initialize transformer
         $transformer = new \phpDocumentor_Transformer();
         $transformer->setTemplatesPath(
             __DIR__.'/../../../../data/templates'
         );
-        $transformer->setTarget($input->getOption('target'));
-
-        $transformer->setSource(
-            $this->getTarget(
-                $this->getOption($input, 'source', 'parser/target')
-            )
+        $transformer->setTarget(
+            $this->getOption($input, 'target', 'transformer/target')
         );
 
-        $transformer->setTemplates($input->getOption('template'));
+        $source = $this->getOption($input, 'source', 'parser/target');
+        if (file_exists($source) and is_dir($source)) {
+            $source .= DIRECTORY_SEPARATOR . 'structure.xml';
+        }
+        $transformer->setSource($source);
+
+        $transformer->setTemplates(
+            (array)$this->getOption(
+                $input, 'template', 'transformations/template', array('responsive')
+            )
+        );
         $transformer->setParseprivate($input->getOption('parseprivate'));
 
         // add links to external docs
-        $external_class_documentation = $this->getConfigValueFromPath(
+        $external_class_documentation = (array)$this->getConfigValueFromPath(
             'transformer/external-class-documentation'
         );
-
-        $external_class_documentation = (!is_numeric(
-            current(array_keys($external_class_documentation))
-        ))
-            ? array($external_class_documentation)
-            : $external_class_documentation;
 
         foreach ($external_class_documentation as $doc) {
             if (empty($doc)) {
@@ -147,8 +140,51 @@ TEXT
             );
         }
 
+        $output->writeln('OK');
+        $output->write('Processing behaviours .. ');
+        $this->getService('event_dispatcher')->connect(
+            'transformer.transform.pre',
+            function() use ($output) {
+                $output->writeln('OK');
+                $output->writeln('Executing transformations');
+            }
+        );
+
+        if ($progress) {
+            $progress->start($output, count($transformer->getTransformations()));
+        }
+
         $transformer->execute();
 
+        if ($progress) {
+            $progress->finish();
+        }
+
         return 0;
+    }
+
+    /**
+     * Adds the transformer.transformation.post event to the list of events
+     * that advance the progressbar.
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return \Symfony\Component\Console\Helper\HelperInterface|null
+     */
+    protected function getProgressBar(InputInterface $input)
+    {
+        $progress = parent::getProgressBar($input);
+        if (!$progress) {
+            return null;
+        }
+
+        $this->getService('event_dispatcher')->connect(
+            'transformer.transformation.post',
+            function() use ($progress) {
+                $progress->advance();
+            }
+        );
+
+        return $progress;
     }
 }

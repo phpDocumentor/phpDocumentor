@@ -322,6 +322,10 @@ class phpDocumentor_Transformer extends phpDocumentor_Transformer_Abstract
         $this->dispatch('transformer.transform.pre', array('source' => $source));
 
         foreach ($this->getTransformations() as $transformation) {
+            $this->dispatch(
+                'transformer.transformation.pre', array('source' => $source)
+            );
+
             $this->log(
                 'Applying transformation'
                 . ($transformation->getQuery()
@@ -331,6 +335,10 @@ class phpDocumentor_Transformer extends phpDocumentor_Transformer_Abstract
             );
 
             $transformation->execute($source);
+
+            $this->dispatch(
+                'transformer.transformation.post', array('source' => $source)
+            );
         }
 
         $this->dispatch(

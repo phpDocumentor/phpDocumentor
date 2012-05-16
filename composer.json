@@ -6,8 +6,7 @@
     "license": "MIT",
     "autoload": {
         "psr-0":{
-            "phpDocumentor": "src/",
-            "Zend": "src/"
+            "": "src/"
         },
         "classmap": ["vendor/pear-symfony", "src/phpDocumentor"]
     },

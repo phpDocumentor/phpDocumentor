@@ -190,16 +190,17 @@ HELP
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
-     * @return void
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('progressbar')) {
-            \phpDocumentor_Parser_Abstract::$event_dispatcher->connect(
-                'parser.file.pre', array($this, 'echoProgress')
-            );
+        /** @var \Symfony\Component\Console\Helper\ProgressHelper $progress  */
+        $progress = $this->getProgressBar($input);
+        if (!$progress) {
+            $this->connectOutputToLogging($output);
         }
 
+        $output->write('Initializing parser and collecting files .. ');
         $target = $this->getTarget(
             $this->getOption($input, 'target', 'parser/target')
         );
@@ -233,7 +234,9 @@ HELP
         );
 
         $parser = new \phpDocumentor_Parser();
-        $parser->setTitle(htmlentities((string)$this->getOption($input, 'title', 'title')));
+        $parser->setTitle(
+            htmlentities((string)$this->getOption($input, 'title', 'title'))
+        );
         $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
         $parser->setMarkers(
@@ -252,12 +255,15 @@ HELP
 
         $parser->setPath($files->getProjectRoot());
 
+        if ($progress) {
+            $progress->start($output, count($files->getFiles()));
+        }
+
         try {
             // save the generate file to the path given as the 'target' option
-            file_put_contents(
-                $target,
-                $parser->parseFiles($files, $input->getOption('sourcecode'))
-            );
+            $output->writeln('OK');
+            $output->writeln('Parsing files');
+            $result = $parser->parseFiles($files, $input->getOption('sourcecode'));
         } catch (\Exception $e) {
             if ($e->getCode() === \phpDocumentor_Parser_Exception::NO_FILES_FOUND) {
                 throw new \Exception(
@@ -269,6 +275,100 @@ HELP
             throw new \Exception($e->getMessage());
         }
 
+        if ($progress) {
+            $progress->finish();
+        }
+
+        $output->write('Storing structure.xml in "'.$target.'" .. ');
+        file_put_contents($target, $result);
+        $output->writeln('OK');
+
         return 0;
+    }
+
+    /**
+     * Connect the logging events to the output object of Symfony Console.
+     *
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
+    protected function connectOutputToLogging(OutputInterface $output)
+    {
+        /** @var \sfEventDispatcher $event_dispatcher  */
+        $event_dispatcher = $this->getService('event_dispatcher');
+        $command = $this;
+
+        $event_dispatcher->connect(
+            'system.log',
+            function(\sfEvent $event) use ($command, $output) {
+                $command->logEvent($output, $event);
+            }
+        );
+
+        $event_dispatcher->connect(
+            'system.debug',
+            function(\sfEvent $event) use ($command, $output) {
+                $command->logEvent($output, $event);
+            }
+        );
+    }
+
+    /**
+     * Logs an event with the output.
+     *
+     * This method will also colorize the message based on priority and withhold
+     * certain logging in case of verbosity or not.
+     *
+     * @param OutputInterface $output
+     * @param \sfEvent $event
+     *
+     * @return void.
+     */
+    public function logEvent(OutputInterface $output, \sfEvent $event)
+    {
+        if (!isset($event['priority'])) {
+            $event['priority'] = 8;
+        }
+
+        $threshold = 5;
+        if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
+            $threshold = 8;
+        }
+
+        if ($event['priority'] <= $threshold) {
+            $message = $event['message'];
+            switch ($event['priority'])
+            {
+            case 4:
+                $message = '<comment>' . $message . '</comment>';
+                break;
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                $message = '<error>' . $message . '</error>';
+                break;
+            }
+            $output->writeln('  ' . $message);
+        }
+    }
+
+
+    protected function getProgressBar(InputInterface $input)
+    {
+        if (!$input->getOption('progressbar')) {
+            return null;
+        }
+
+        $progress = $this->getHelperSet()->get('progress');
+        $this->getService('event_dispatcher')->connect(
+            'parser.file.pre',
+            function() use ($progress) {
+                $progress->advance();
+            }
+        );
+
+        return $progress;
     }
 }

@@ -42,6 +42,9 @@ class Application extends \Cilex\Application
         $this->addEventDispatcher();
         $this->loadPlugins();
 
+        $this['console']->getHelperSet()->set(
+            new \Symfony\Component\Console\Helper\ProgressHelper()
+        );
         $this->addCommandsForProjectNamespace();
     }
 

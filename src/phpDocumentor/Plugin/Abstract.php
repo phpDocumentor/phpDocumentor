@@ -121,7 +121,7 @@ class phpDocumentor_Plugin_Abstract
     public function logParserError($type, $code, $line, $variables = array())
     {
         $message = $this->_($code, $variables);
-        $this->log($message, phpDocumentor_Plugin_Core_Log::ERR);
+        $this->log($message, \phpDocumentor\Plugin\Core\Log::ERR);
         $this->dispatch(
             'parser.log',
             array(
