@@ -10,18 +10,18 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\Fileset;
 
 /**
- * Test case for FileSet class.
+ * Test case for Collection class.
  *
  * @author  Mike van Riel <mike.vanriel@naenius.com>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class FileSetTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var FileSet */
+    /** @var Collection */
     protected $fixture = null;
 
     /**
@@ -31,7 +31,7 @@ class FileSetTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->fixture = new FileSet();
+        $this->fixture = new Collection();
     }
 
     /**
@@ -42,7 +42,7 @@ class FileSetTest extends \PHPUnit_Framework_TestCase
     public function testAddDirectory()
     {
         // instantiate a new instance because we want to be sure it is clean
-        $fixture = new FileSet();
+        $fixture = new Collection();
 
         // read the phar test fixture
         $fixture->addDirectory(
@@ -57,34 +57,40 @@ class FileSetTest extends \PHPUnit_Framework_TestCase
                  'phar://' . dirname(__FILE__)
                     . '/../../../data/test.phar/test.php',
             ),
-            $fixture->getFiles()
+            $fixture->getFilenames()
         );
 
         // instantiate a new instance because we want to be sure it is clean
-        $fixture = new FileSet();
+        $fixture = new Collection();
 
         // load the unit test folder
         $fixture->addDirectory(dirname(__FILE__) . '/../../');
-        $files = $fixture->getFiles();
+        $files = $fixture->getFilenames();
         $count = count($files);
 
         // do a few checks to see if it has caught some cases
         $this->assertGreaterThan(1, $count);
         $this->assertContains(
-            dirname(__FILE__) . '/../../phpDocumentor/ParserTest.php',
+            realpath(dirname(__FILE__) . '/../../phpDocumentor/ParserTest.php'),
             $files
         );
         $this->assertContains(
-            dirname(__FILE__) . '/../../phpDocumentor/Parser/FilesTest.php',
+            realpath(
+                dirname(__FILE__) . '/../../phpDocumentor/File/CollectionTest.php'
+            ),
             $files
         );
 
         // should exclude 1 less
-        $fixture->addIgnorePattern('*r/ParserTest.php');
-        $this->assertCount($count -1, $fixture->getFiles());
+        $fixture = new Collection();
+        $fixture->getIgnorePatterns()->append('*r/ParserTest.php');
+        $fixture->addDirectory(dirname(__FILE__) . '/../../');
+        $this->assertCount($count -1, $fixture->getFilenames());
 
-        $fixture->addIgnorePattern('*/phpDocumentor/*');
-        $this->assertEmpty($fixture->getFiles());
+        $fixture = new Collection();
+        $fixture->getIgnorePatterns()->append('*/phpDocumentor/*');
+        $fixture->addDirectory(dirname(__FILE__) . '/../../');
+        $this->assertEmpty($fixture->getFilenames());
     }
 
 }

@@ -199,7 +199,7 @@ HELP
         // invoke parent to load custom config
         parent::execute($input, $output);
 
-        /** @var \Symfony\Component\Console\Helper\ProgressHelper $progress  */
+        /** @var \phpDocumentor\Console\Helper\ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
             $this->connectOutputToLogging($output);
@@ -208,34 +208,6 @@ HELP
         $output->write('Initializing parser and collecting files .. ');
         $target = $this->getTarget(
             $this->getOption($input, 'target', 'parser/target')
-        );
-
-        $files = new \phpDocumentor_Parser_Files();
-        $files->setAllowedExtensions(
-            (array)$this->getOption(
-                $input, 'extensions', 'parser/extensions/extension',
-                array('php', 'php3', 'phtml')
-            )
-        );
-        $files->setIgnorePatterns(
-            (array)$this->getOption($input, 'ignore', 'files/ignore', array())
-        );
-        $files->setIgnoreHidden(
-            $this->getOption(
-                $input, 'hidden', 'files/ignore-hidden', 'off'
-            ) == 'on'
-        );
-        $files->setFollowSymlinks(
-            $this->getOption(
-                $input, 'ignore-symlinks', 'files/ignore-symlinks', 'off'
-            ) == 'on'
-        );
-        $files->addFiles(
-            (array)$this->getOption($input, 'filename', 'files/file', array())
-        );
-
-        $files->addDirectories(
-            (array)$this->getOption($input, 'directory', 'files/directory', array())
         );
 
         $parser = new \phpDocumentor_Parser();
@@ -258,10 +230,11 @@ HELP
             )
         );
 
+        $files = $this->getFileCollection($input);
         $parser->setPath($files->getProjectRoot());
 
         if ($progress) {
-            $progress->start($output, count($files->getFiles()));
+            $progress->start($output, $files->count());
         }
 
         try {
@@ -289,6 +262,46 @@ HELP
         $output->writeln('OK');
 
         return 0;
+    }
+
+    /**
+     * Returns the collection of files based on the input and configuration.
+     *
+     * @param InputInterface $input
+     *
+     * @return \phpDocumentor\File\Collection
+     */
+    protected function getFileCollection($input)
+    {
+        $files = new \phpDocumentor\Fileset\Collection();
+        $files->setAllowedExtensions(
+            (array)$this->getOption(
+                $input, 'extensions', 'parser/extensions/extension',
+                array('php', 'php3', 'phtml')
+            )
+        );
+        $files->setIgnorePatterns(
+            (array)$this->getOption($input, 'ignore', 'files/ignore', array())
+        );
+        $files->setIgnoreHidden(
+            $this->getOption(
+                $input, 'hidden', 'files/ignore-hidden', 'off'
+            ) == 'on'
+        );
+        $files->setFollowSymlinks(
+            $this->getOption(
+                $input, 'ignore-symlinks', 'files/ignore-symlinks', 'off'
+            ) == 'on'
+        );
+        $files->addFiles(
+            (array)$this->getOption($input, 'filename', 'files/file', array())
+        );
+
+        $files->addDirectories(
+            (array)$this->getOption($input, 'directory', 'files/directory', array())
+        );
+
+        return $files;
     }
 
     /**

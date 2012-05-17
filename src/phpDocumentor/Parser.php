@@ -21,8 +21,8 @@
  *
  * Example of use:
  *
- *     $files = new FileSet();
- *     $files->addDirectories(getcwd());
+ *     $files = new \phpDocumentor\File\Collection();
+ *     $ files->addDirectories(getcwd());
  *     $parser = new phpDocumentor_Parser();
  *     $parser->setPath($files->getProjectRoot());
  *     echo $parser->parseFiles($files);
@@ -402,7 +402,7 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
             }
         } catch (Exception $e) {
             $this->log(
-                '>>  Unable to parse file, an error was detected: '
+                '  Unable to parse file "' . $filename . '", an error was detected: '
                 . $e->getMessage(), \phpDocumentor\Plugin\Core\Log::ALERT
             );
             $this->log(
@@ -431,26 +431,30 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
     /**
      * Iterates through the given files and builds the structure.xml file.
      *
-     * @param FileSet $files          A files container to parse.
-     * @param bool                 $include_source whether to include the source
-     *  in the generated output..
+     * @param \phpDocumentor\Fileset\Collection $files          A files container
+     *     to parse.
+     * @param bool                           $include_source whether to include
+     *     the source in the generated output..
      *
      * @api
      *
      * @return bool|string
      */
-    public function parseFiles(\phpDocumentor\FileSet $files, $include_source = false)
-    {
+    public function parseFiles(
+        \phpDocumentor\Fileset\Collection $files, $include_source = false
+    ) {
         $timer = microtime(true);
 
         $this->exporter = new phpDocumentor_Parser_Exporter_Xml($this);
         $this->exporter->initialize();
 
-        $paths = $files->getFiles();
+        $paths = $files->getFilenames();
         $this->log('Starting to process ' . count($paths) . ' files');
         $this->log('  Project root is:  ' . $files->getProjectRoot());
         $this->log(
-            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns())
+            '  Ignore paths are: ' . implode(
+                ', ', $files->getIgnorePatterns()->getArrayCopy()
+            )
         );
 
         if (count($paths) < 1) {
