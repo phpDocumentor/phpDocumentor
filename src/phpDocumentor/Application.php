@@ -43,9 +43,26 @@ class Application extends \Cilex\Application
         $this->loadPlugins();
 
         $this['console']->getHelperSet()->set(
-            new \Symfony\Component\Console\Helper\ProgressHelper()
+            new \phpDocumentor\Console\Helper\ProgressHelper()
         );
         $this->addCommandsForProjectNamespace();
+    }
+
+    /**
+     * Run the application and if no command is provided, use project:run.
+     *
+     * @param bool $interactive Whether to run in interactive mode.
+     *
+     * @return void
+     */
+    public function run($interactive = false)
+    {
+        $app = $this['console'];
+        if ($interactive) {
+            $app = new \Symfony\Component\Console\Shell($app);
+        }
+
+        $app->run(new \phpDocumentor\Console\Input\ArgvInput());
     }
 
     protected function addCommandsForProjectNamespace()
@@ -140,18 +157,5 @@ class Application extends \Cilex\Application
             }
         );
         $this['plugin_manager']->loadFromConfiguration();
-    }
-
-    /**
-     * Override method to change default command from list to project:run.
-     *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     *
-     * @return string
-     */
-    protected function getCommandName(InputInterface $input)
-    {
-        $name = $input->getFirstArgument('command');
-        return $name ? $name : 'project:run';
     }
 }
