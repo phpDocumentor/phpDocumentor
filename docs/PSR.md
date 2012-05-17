@@ -95,45 +95,51 @@ document are to be interpreted as described in RFC 2119.
 
   Example:
 
-      /** @type int This is a counter. */
-      $int = 0;
+  ```php
+  /** @type int This is a counter. */
+  $int = 0;
 
-      // there should be no docblock here
-      $int++;
+  // there should be no docblock here
+  $int++;
+  ```
 
   Or:
 
-      /**
-       * This class acts as an example on where to position a DocBlock.
-       */
-      class Foo
-      {
-          /** @type string|null Should contain a description if available */
-          protected $description = null;
+  ```php
+  /**
+   * This class acts as an example on where to position a DocBlock.
+   */
+  class Foo
+  {
+      /** @type string|null Should contain a description if available */
+      protected $description = null;
 
-          /**
-           * This method sets a description.
-           *
-           * @param string $description A text with a maximum of 80 characters.
-           *
-           * @return void
-           */
-          public function setDescription($description)
-          {
-              // there should be no docblock here
-              $this->description = $description;
-          }
+      /**
+       * This method sets a description.
+       *
+       * @param string $description A text with a maximum of 80 characters.
+       *
+       * @return void
+       */
+      public function setDescription($description)
+      {
+          // there should be no docblock here
+          $this->description = $description;
       }
+  }
+  ```
 
   Another example is to document the variable in a foreach explicitly; many IDEs
   use this information to help you with auto-completion:
 
-      /** @type \Sqlite3 $sqlite */
-      foreach($connections as $sqlite) {
-          // there should be no docblock here
-          $sqlite->open('/my/database/path');
-          <...>
-      }
+  ```php
+  /** @type \Sqlite3 $sqlite */
+  foreach($connections as $sqlite) {
+      // there should be no docblock here
+      $sqlite->open('/my/database/path');
+      <...>
+  }
+  ```
 
 * "DocComment" is a special type of comment which starts with `/**`, ends
   with `*/` and may contain any number of lines in between. Every line should
@@ -142,13 +148,17 @@ document are to be interpreted as described in RFC 2119.
 
   Single line example:
 
-      /** <...> */
+  ```php
+  /** <...> */
+  ```
 
   Multiline example:
 
-      /**
-       * <...>
-       */
+  ```php
+  /**
+   * <...>
+   */
+  ```
 
 * "DocBlock" is a "DocComment" containing a single "PHPDoc" and represents the
   basic in-source representation.
@@ -306,58 +316,66 @@ advised to read through the list of tags in chapter 7.
 
 A complete example could look like the following example:
 
-    /**
-     * This is a short description.
-     *
-     * This is a long description. It may span multiple lines
-     * or contain 'code' examples using the _Markdown_ markup
-     * language.
-     *
-     * @see Markdown
-     *
-     * @param int        $parameter1 A parameter description.
-     * @param \Exception $e          Another parameter description.
-     *
-     * @\Doctrine\Orm\Mapper\Entity()
-     *
-     * @return string
-     */
-    function test($parameter1, $e)
-    {
-    }
+```php
+/**
+ * This is a short description.
+ *
+ * This is a long description. It may span multiple lines
+ * or contain 'code' examples using the _Markdown_ markup
+ * language.
+ *
+ * @see Markdown
+ *
+ * @param int        $parameter1 A parameter description.
+ * @param \Exception $e          Another parameter description.
+ *
+ * @\Doctrine\Orm\Mapper\Entity()
+ *
+ * @return string
+ */
+function test($parameter1, $e)
+{
+}
+```
 
 It is also allowed to omit the long description:
 
-    /**
-     * This is a short description.
-     *
-     * @see Markdown
-     *
-     * @param int        $parameter1 A parameter description.
-     * @param \Exception $parameter2 Another parameter description.
-     *
-     * @\Doctrine\Orm\Mapper\Entity()
-     *
-     * @return string
-     */
-    function test($parameter1, $parameter2)
-    {
-    }
+```php
+/**
+ * This is a short description.
+ *
+ * @see Markdown
+ *
+ * @param int        $parameter1 A parameter description.
+ * @param \Exception $parameter2 Another parameter description.
+ *
+ * @\Doctrine\Orm\Mapper\Entity()
+ *
+ * @return string
+ */
+function test($parameter1, $parameter2)
+{
+}
+```
 
 Or even omit the tags section as well (though in the following example is not
 encouraged as you are missing information on the parameters and return value):
 
-    /**
-     * This is a short description.
-     */
-    function test($parameter1, $parameter2)
-    {
-    }
+```php
+/**
+ * This is a short description.
+ */
+function test($parameter1, $parameter2)
+{
+}
+```
 
 A DocBlock may also span a single line as shown in the following example.
 
-    /** @var \ArrayObject $array */
-    public $array = null;
+```php
+/** @var \ArrayObject $array */
+public $array = null;
+```
 
 ## 6. Inheritance
 
@@ -367,12 +385,12 @@ the same name in a super-class or implemented in a super-interface).
 
 Every "Structural Element" MUST inherit the following PHPDoc parts by default:
 
-* Short description
-* Long description
-* A specific subset of tags
-  * @version
-  * @author
-  * @copyright
+* [Short description](#51-short-description)
+* [Long description](#52-long-description)
+* A specific subset of [tags](#53-tags)
+  * [@version](#724-version)
+  * [@author](#72-author)
+  * [@copyright](#74-copyright)
 
 Each specific "Structural Element" MUST also inherit a specialized subset as
 defined in the sub-chapters.
@@ -387,19 +405,28 @@ Inheritance takes place from the root of a class hierarchy graph to its leafs.
 This means that anything inherited in the bottom of the tree MUST 'bubble' up to
 the top unless overridden.
 
+    Note: a special circumstance here would be when the Long Description must be
+    overridden but the Short Description should stay intact. It would be difficult
+    for a reader to distinguish which is overridden.
+
+    In this case MUST the writer use the {@inheritdoc} inline tag as
+    Short Description and override the Long Description with the intended text.
+
+    Without the {@inheritdoc} inline tag MUST the reader interpret any text
+    as if the Short Description would be overridden and MAY long description
+    appear overridden if the block of text contains a Short Description ending
+    as defined in the ABNF.
+
 ### 6.1. Class Or Interface
 
-In addition to the inherited information, as defined in the chapter's root,
-a class or interface MUST inherit the following tags:
+In addition to the inherited descriptions and tags as defined in this chapter's
+root MUST a class or interface inherit the following tags:
 
-* @package
-* @version
-* @author
-* @copyright
+* [@package](#712-package)
 
 A class or interface SHOULD inherit the following deprecated tags if supplied:
 
-* @subpackage
+* [@subpackage](#718-subpackage)
 
 The @subpackage MUST NOT be inherited if the @package annotation of the
 super-class (or interface) is not the same as the @package of the child class
@@ -407,51 +434,47 @@ super-class (or interface) is not the same as the @package of the child class
 
 Example:
 
-    /**
-     * @package    Framework
-     * @subpackage Controllers
-     */
-    class Framework_ActionController
-    {
-        <...>
-    }
+```php
+/**
+ * @package    Framework
+ * @subpackage Controllers
+ */
+class Framework_ActionController
+{
+    <...>
+}
 
-    /**
-     * @package My
-     *
-    class My_ActionController extends Framework_ActionController
-    {
-        <...>
-    }
+/**
+ * @package My
+ *
+class My_ActionController extends Framework_ActionController
+{
+    <...>
+}
+```
 
 In the example above the My_ActionController MUST not inherit the subpackage
 _Controllers_.
 
 ### 6.2. Function Or Method
 
-In addition to the inherited information, as defined in the chapter's root,
-a function or method MUST inherit the following tags:
+In addition to the inherited descriptions and tags as defined in this chapter's
+root MUST a class or interface inherit the following tags:
 
-* @param
-* @return
-* @throws
-* @version
-* @author
-* @copyright
+* [@param](#713-param)
+* [@return](#715-return)
+* [@throws](#719-throws)
 
 ### 6.3. Constant Or Property
 
-In addition to the inherited information, as defined in the chapter's root,
-a constant or property MUST inherit the following tags:
+In addition to the inherited descriptions and tags as defined in this chapter's
+root MUST a class or interface inherit the following tags:
 
-* @type
-* @version
-* @author
-* @copyright
+* [@type](#721-type)
 
 A constant or property SHOULD inherit the following deprecated tags if supplied:
 
-* @var
+* [@var](#723-var)
 
 ## 7. Tags
 
@@ -481,17 +504,19 @@ Backwards Compatibility.
 
 #### Examples
 
-    /**
-     * This method will not change until a major release.
-     *
-     * @api
-     *
-     * @return void
-     */
-     function showVersion()
-     {
-        <...>
-     }
+```php
+/**
+ * This method will not change until a major release.
+ *
+ * @api
+ *
+ * @return void
+ */
+ function showVersion()
+ {
+    <...>
+ }
+```
 
 ### 7.2. @author
 
@@ -511,10 +536,12 @@ adhere to the syntax defined in RFC 2822.
 
 #### Examples
 
-    /**
-     * @author My Name
-     * @author My Name <my.name@example.com>
-     */
+```php
+/**
+ * @author My Name
+ * @author My Name <my.name@example.com>
+ */
+```
 
 ### 7.3. @category [deprecated]
 
@@ -542,12 +569,14 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
-    /**
-     * Page-Level DocBlock
-     *
-     * @category MyCategory
-     * @package  MyPackage
-     */
+```php
+/**
+ * Page-Level DocBlock
+ *
+ * @category MyCategory
+ * @package  MyPackage
+ */
+```
 
 ### 7.4. @copyright
 
@@ -570,9 +599,11 @@ covered by this copyright and the organization involved.
 
 #### Examples
 
-    /**
-     * @copyright 1997-2005 The PHP Group
-     */
+```php
+/**
+ * @copyright 1997-2005 The PHP Group
+ */
+```
 
 ### 7.5. @deprecated
 
@@ -600,12 +631,14 @@ same 'PHPDoc' pointing to the new element.
 
 #### Examples
 
-    /**
-     * @deprecated
-     * @deprecated 1.0.0
-     * @deprecated No longer used by internal code and not recommended.
-     * @deprecated 1.0.0 No longer used by internal code and not recommended.
-     */
+```php
+/**
+ * @deprecated
+ * @deprecated 1.0.0
+ * @deprecated No longer used by internal code and not recommended.
+ * @deprecated 1.0.0 No longer used by internal code and not recommended.
+ */
+```
 
 ### 7.6. @example
 
@@ -649,27 +682,31 @@ documentation from the source code of this piece of software.
 
 Mark the count function as being internal to this project:
 
-    /**
-     * @internal
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * @internal
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
-    /**
-     * Counts the number of Foo.
-     *
-     * {@internal Silently adds one extra Foo to compensate for lack of Foo }}
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * Counts the number of Foo.
+ *
+ * {@internal Silently adds one extra Foo to compensate for lack of Foo }}
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.9. @license
 
@@ -692,12 +729,18 @@ time.
 Whenever multiple licenses apply MUST there be one @license tag per applicable
 license.
 
+Instead of providing a URL MAY an identifier as identified in the
+[SPDX Open Source License Registry](http://www.spdx.org/licenses/) be provided
+and SHOULD this be interpreted as if having the URL mentioned in the registry.
+
 #### Examples
 
-    /**
-     * @license GPL
-     * @license http://opensource.org/licenses/gpl-license.php GNU Public License
-     */
+```php
+/**
+ * @license MIT
+ * @license http://www.spdx.org/licenses/MIT MIT License
+ */
+```
 
 ### 7.10. @link
 
@@ -725,28 +768,32 @@ defined by this occurrence.
 
 #### Examples
 
-    /**
-     * @link http://example.com/my/bar Documentation of Foo.
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * @link http://example.com/my/bar Documentation of Foo.
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
-    /**
-     * This method counts the occurences of Foo.
-     *
-     * When no more Foo ({@link http://example.com/my/bar}) are given this
-     * function will add one as there must always be one Foo.
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * This method counts the occurences of Foo.
+ *
+ * When no more Foo ({@link http://example.com/my/bar}) are given this
+ * function will add one as there must always be one Foo.
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.11. @method
 
@@ -778,23 +825,25 @@ be omitted; in which case 'void' is implied.
 
 #### Examples
 
-    class Parent
-    {
-        public function __call()
-        {
-            <...>
-        }
-    }
-
-    /**
-     * @method string getString()
-     * @method void setInteger(integer $integer)
-     * @method setString(integer $integer)
-     */
-    class Child extends Parent
+```php
+class Parent
+{
+    public function __call()
     {
         <...>
     }
+}
+
+/**
+ * @method string getString()
+ * @method void setInteger(integer $integer)
+ * @method setString(integer $integer)
+ */
+class Child extends Parent
+{
+    <...>
+}
+```
 
 ### 7.12. @package
 
@@ -840,9 +889,11 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
-    /**
-     * @package PSR\Documentation\API
-     */
+```php
+/**
+ * @package PSR\Documentation\API
+ */
+```
 
 ### 7.13. @param
 
@@ -880,21 +931,25 @@ This tag MUST NOT occur more than once in a "DocBlock" and is limited to the
 
 #### Examples
 
-    /**
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
-    /**
-     * @return string|null The label's text or null if none provided.
-     */
-    function getLabel()
-    {
-        <...>
-    }
+```php
+/**
+ * @return string|null The label's text or null if none provided.
+ */
+function getLabel()
+{
+    <...>
+}
+```
 
 ### 7.16. @see
 
@@ -942,35 +997,41 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
-      /** @type int This is a counter. */
-      $int = 0;
+```php
+/** @type int This is a counter. */
+$int = 0;
 
+// there should be no docblock here
+$int++;
+```
+
+Or:
+
+```php
+class Foo
+{
+  /** @type string|null Should contain a description if available */
+  protected $description = null;
+
+  public function setDescription($description)
+  {
       // there should be no docblock here
-      $int++;
+      $this->description = $description;
+  }
+}
+```
 
-  Or:
+Another example is to document the variable in a foreach explicitly; many IDEs
+use this information to help you with auto-completion:
 
-      class Foo
-      {
-          /** @type string|null Should contain a description if available */
-          protected $description = null;
-
-          public function setDescription($description)
-          {
-              // there should be no docblock here
-              $this->description = $description;
-          }
-      }
-
-  Another example is to document the variable in a foreach explicitly; many IDEs
-  use this information to help you with auto-completion:
-
-      /** @type \Sqlite3 $sqlite */
-      foreach($connections as $sqlite) {
-          // there should be no docblock here
-          $sqlite->open('/my/database/path');
-          <...>
-      }
+```php
+/** @type \Sqlite3 $sqlite */
+foreach($connections as $sqlite) {
+    // there should be no docblock here
+    $sqlite->open('/my/database/path');
+    <...>
+}
+```
 
 ### 7.22. @uses
 
@@ -985,6 +1046,8 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 ## Appendix A. Types
 
+### ABNF
+
     type-expression          = 1*(array-of-type-expression|array-of-type|type ["|"])
     array-of-type-expression = "(" type-expression ")[]"
     array-of-type            = type "[]"
@@ -993,6 +1056,8 @@ This tag MUST NOT occur more than once in a "DocBlock".
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
                                |"double"|"object"|"mixed"|"array"|"resource"
                                |"void"|"null"|"callback"|"false"|"true"|"self"
+
+### Additional details
 
 When a "Type" is used the user will expect a value, or set of values, as
 detailed below.
