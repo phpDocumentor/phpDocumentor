@@ -1,17 +1,17 @@
 {
-    "hash": "5a58deea1ad525be89c843a35a9f58e9",
+    "hash": "3431511e13600ca9b381fa3a2b18ed42",
     "packages": [
+        {
+            "package": "cilex/cilex",
+            "version": "dev-master",
+            "source-reference": "fe1101e604d5077607d79e0d983db95a829e703e"
+        },
         {
             "package": "cilex/cilex",
             "version": "dev-master",
             "source-reference": "fe1101e604d5077607d79e0d983db95a829e703e",
             "alias-pretty-version": "1.0.x-dev",
             "alias-version": "1.0.9999999.9999999-dev"
-        },
-        {
-            "package": "cilex/cilex",
-            "version": "dev-master",
-            "source-reference": "fe1101e604d5077607d79e0d983db95a829e703e"
         },
         {
             "package": "dflydev/markdown",
@@ -42,6 +42,10 @@
             "version": "2.0.0beta3"
         },
         {
+            "package": "phpdocumentor/fileset",
+            "version": "1.0.0-beta1"
+        },
+        {
             "package": "phpdocumentor/graphviz",
             "version": "1.0.0-beta3"
         },
@@ -68,14 +72,14 @@
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "v1.0.0",
-            "alias-pretty-version": "1.0.x-dev",
-            "alias-version": "1.0.9999999.9999999-dev"
+            "source-reference": "v1.0.0"
         },
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "v1.0.0"
+            "source-reference": "v1.0.0",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
         },
         {
             "package": "symfony/class-loader",
@@ -132,6 +136,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cilex/cilex": 20
+        "phpdocumentor/fileset": 10
     }
 }
