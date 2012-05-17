@@ -95,4 +95,14 @@ abstract class phpDocumentor_Parser_Exporter_Abstract extends phpDocumentor_Pars
     {
         $this->include_source = $include_source;
     }
+
+    /**
+     * Returns whether to include the source code in the resulting files.
+     *
+     * @return boolean
+     */
+    public function getIncludeSource()
+    {
+        return $this->include_source;
+    }
 }

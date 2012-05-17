@@ -52,7 +52,6 @@ class phpDocumentor_Parser_Exporter_Xml_Argument
             $parent->appendChild($child);
         }
 
-
         $child->setAttribute('line', $argument->getLineNumber());
         $child->appendChild(new DOMElement('name', $argument->getName()));
         $default = new DOMElement('default');
