@@ -56,7 +56,7 @@ class phpDocumentor_Reflection_Constant extends phpDocumentor_Reflection_DocBloc
                 $this->log(
                     'Unable to process constant in file ' . $tokens->getFilename()
                     . ' at line ' . $tokens->current()->getLineNumber(),
-                    phpDocumentor_Core_Log::CRIT
+                    \phpDocumentor\Plugin\Core\Log::CRIT
                 );
                 return;
             }

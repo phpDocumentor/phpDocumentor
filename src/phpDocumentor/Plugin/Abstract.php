@@ -27,23 +27,25 @@ class phpDocumentor_Plugin_Abstract
     /** @var sfEventDispatcher Dispatcher used to send events back and forth */
     protected $event_dispatcher = null;
 
-    /** @var Zend_Config_Xml Configuration object for plugins */
+    /** @var \Zend\Config\Config Configuration object for plugins */
     protected $configuration = null;
 
-    /** @var Zend_Translate_Adapter_Array Translation object */
+    /** @var \Zend\Translator\Adapter\ArrayAdapter Translation object */
     protected $translate = null;
 
     /**
      * Initialize this object with an Event Dispatcher and Configuration object.
      *
-     * @param sfEventDispatcher            $event_dispatcher Dispatcher used to
-     *     handle events.
-     * @param Zend_Config_Xml              $configuration    Configuration object
-     *     for this object.
-     * @param Zend_Translate_Adapter_Array $translator       Translator object.
+     * @param sfEventDispatcher                     $event_dispatcher
+     *     Dispatcher used to handle events.
+     * @param \Zend\Config\Config                   $configuration
+     *     Configuration object for this object.
+     * @param \Zend\Translator\Adapter\ArrayAdapter $translator
+     *     Translator object.
      */
-    public function __construct($event_dispatcher, $configuration, $translator = null)
-    {
+    public function __construct(
+        $event_dispatcher, $configuration, $translator = null
+    ) {
         $this->event_dispatcher = $event_dispatcher;
         $this->configuration    = $configuration;
         $this->translate        = $translator;
@@ -121,7 +123,7 @@ class phpDocumentor_Plugin_Abstract
     public function logParserError($type, $code, $line, $variables = array())
     {
         $message = $this->_($code, $variables);
-        $this->log($message, phpDocumentor_Core_Log::ERR);
+        $this->log($message, \phpDocumentor\Plugin\Core\Log::ERR);
         $this->dispatch(
             'parser.log',
             array(
@@ -171,7 +173,7 @@ class phpDocumentor_Plugin_Abstract
     /**
      * Returns the configuration for this object.
      *
-     * @return Zend_Config_Xml
+     * @return \Zend\Config\Config
      */
     public function getConfiguration()
     {
@@ -191,7 +193,7 @@ class phpDocumentor_Plugin_Abstract
     /**
      * Returns the translation component.
      *
-     * @return Zend_Translate_Adapter_Array|null
+     * @return \Zend\Translator\Adapter\ArrayAdapter|null
      */
     public function getTranslator()
     {

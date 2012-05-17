@@ -26,10 +26,10 @@ class phpDocumentor_Plugin_Manager
     /** @var sfEventDispatcher */
     protected $event_dispatcher = null;
 
-    /** @var phpDocumentor_Core_Config */
+    /** @var SimpleXMLElement */
     protected $configuration = null;
 
-    /** @var ZendX_Loader_StandardAutoloader */
+    /** @var \Composer\Autoload\ClassLoader */
     protected $autoloader = null;
 
     /** @var phpDocumentor_Plugin */
@@ -41,9 +41,9 @@ class phpDocumentor_Plugin_Manager
      *
      * @param sfEventDispatcher               $event_dispatcher Event dispatcher
      *     that plugins can bind to and where events should be dispatched to.
-     * @param Zend_Config                     $configuration    Configuration file
+     * @param \Zend\Config\Config             $configuration    Configuration file
      *     which can be used to load parameters into the plugins.
-     * @param ZendX_Loader_StandardAutoloader $autoloader       Plugins can
+     * @param \Composer\Autoload\ClassLoader  $autoloader       Plugins can
      *     additionally load classes; with the autoloader they can register
      *     themselves.
      */
@@ -64,12 +64,12 @@ class phpDocumentor_Plugin_Manager
      */
     public function loadFromConfiguration()
     {
-        $plugins = isset(phpDocumentor_Core_Abstract::config()->plugins)
-            ? phpDocumentor_Core_Abstract::config()->plugins->plugin
+        $plugins = isset($this->configuration->plugins)
+            ? $this->configuration->plugins->plugin
             : array();
 
-        // Zend_Config has a quirk; if there is only one entry then it is not
-        // wrapped in an array, since we need that we re-wrap it
+        // \Zend\Config\Config has a quirk; if there is only one entry then it
+        // is not wrapped in an array, since we need that we re-wrap it
         if (isset($plugins->path)) {
             $plugins = array($plugins);
         }

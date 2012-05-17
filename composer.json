@@ -1,33 +1,32 @@
 {
     "name": "phpdocumentor/phpdocumentor",
+    "description": "Documentation Generator for PHP",
+    "keywords": ["documentation", "api", "dga", "application", "phpdoc"],
+    "homepage": "http://www.phpdoc.org",
     "license": "MIT",
     "autoload": {
         "psr-0":{
-            "phpDocumentor": "src/",
-            "Zend": "src/"
+            "": "src/"
         },
         "classmap": ["vendor/pear-symfony", "src/phpDocumentor"]
     },
     "repositories":[
         { "type":"pear", "url":"http://packages.zendframework.com"},
-        { "type":"pear", "url":"http://pear.symfony-project.com/" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/TemplateInstaller" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/GraphViz" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/ReflectionDocBlock" },
-        { "type":"git", "url":"http://github.com/phpDocumentor/template.responsive" }
+        { "type":"pear", "url":"http://pear.symfony-project.com/" }
     ],
     "require": {
-        "php": ">=5.3.2",
+        "php": ">=5.3.3",
         "ext-xsl": "*",
         "symfony/finder": "2.*",
         "monolog/monolog": "1.0.*",
         "dflydev/markdown": "1.0.*",
         "pear-symfony/EventDispatcher": "1.*",
+        "pear-zf2/Zend_Config": "2.*",
+        "pear-zf2/Zend_Locale": "2.*",
+        "pear-zf2/Zend_Translator": "2.*",
         "phpdocumentor/graphviz": "1.*",
-        "phpdocumentor/reflection-docblock": "1.*"
-    },
-    "recommend": {
-        "phpdocumentor/template-installer": "1.*",
-        "phpdocumentor/template.responsive": "1.*"
+        "phpdocumentor/reflection-docblock": "1.*",
+        "phpdocumentor/template-responsive": "1.*",
+        "phpdocumentor/template-new-black": "1.*"
     }
 }

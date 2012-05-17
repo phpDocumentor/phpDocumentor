@@ -12,11 +12,6 @@
  * @link      http://phpdoc.org
  */
 
-if (!defined('T_NAMESPACE')) {
-    /** @var int This constant is PHP 5.3+, but is necessary for correct parsing */
-    define('T_NAMESPACE', 377);
-}
-
 /**
  * Reflection class for a full file.
  *
@@ -207,7 +202,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
             $this->log(
                 'Neither the finfo nor the mbstring extensions are active; '
                 . 'special character handling may not give the best results',
-                Zend_Log::WARN
+                \phpDocumentor\Plugin\Core\Log::WARN
             );
             $encoding = $this->_detectEncodingFallback($contents);
         }
@@ -218,7 +213,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
             $this->log(
                 'Unable to handle character encoding; finfo, mbstring and '
                 . 'iconv extensions are not enabled',
-                Zend_Log::CRIT
+                \phpDocumentor\Plugin\Core\Log::CRIT
             );
 
             // nothing will be returns to prevent handling
@@ -240,7 +235,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
                     'Encoding of file ' . $filename . ' from ' . $encoding
                     . ' to UTF-8 failed, please check the notice for a '
                     . 'detailed error message',
-                    Zend_Log::EMERG
+                    \phpDocumentor\Plugin\Core\Log::EMERG
                 );
             } else {
                 $contents = $tmp_contents;
@@ -390,7 +385,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
     /**
      * Returns all constants in this file.
      *
-     * @return phpDocumentor_Reflection_Constants
+     * @return phpDocumentor_Reflection_Constant[]
      */
     public function getConstants()
     {
@@ -398,9 +393,9 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
     }
 
     /**
-     * Returns all constants in this file.
+     * Returns all include statements in this file.
      *
-     * @return phpDocumentor_Reflection_Constants
+     * @return phpDocumentor_Reflection_Include[]
      */
     public function getIncludes()
     {
@@ -512,43 +507,79 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
      */
     public function findDocBlock(phpDocumentor_Reflection_TokenIterator $tokens)
     {
-        $result = null;
         $index = $tokens->key();
 
-        $stopTokens = array(T_CLASS, T_NAMESPACE, T_INCLUDE, T_REQUIRE,
-            T_INCLUDE_ONCE, T_REQUIRE_ONCE, T_INTERFACE, T_FUNCTION,
-            T_VARIABLE, T_CONST);
-
-        $docblock = $tokens->gotoNextByType(T_DOC_COMMENT, 30, $stopTokens);
+        $docblock_token = $this->findNextDelimitedDocComment($tokens);
+        if (!$docblock_token) {
+            return null;
+        }
 
         try {
-            $result = $docblock
-                ? new \phpDocumentor\Reflection\DocBlock($docblock->content)
-                : null;
+            $docblock = new \phpDocumentor\Reflection\DocBlock(
+                $docblock_token->content
+            );
 
-            if ($result) {
-                // The first docblock is a file docblock if it has a
-                // package tag, or if the next thing is also a docblock.
-                if (!$result->getTagsByName('package')
-                    && !($nextDocblock = $tokens->gotoNextByType(
-                        T_DOC_COMMENT, 30, $stopTokens
-                    ))
-                ) {
-                    $tokens->seek($index);
-                    return null;
-                }
-
-                // attach line number to class, the \phpDocumentor\Reflection\DocBlock
-                // does not know the number
-                $result->line_number = $docblock->line_number;
+            // store docblock index; we need to clear it if it is a page DocBlock
+            $docblock_index = $tokens->key();
+            if (!$this->isFilelevelDocBlock($tokens, $docblock)) {
+                $tokens->seek($index);
+                return null;
             }
+
+            // clear DocBlock because otherwise the next Structural Element will
+            // consider this its DocBlock.
+            $tokens[$docblock_index] = new phpDocumentor_Reflection_Token('');
+
+            // attach line number to class, the \phpDocumentor\Reflection\DocBlock
+            // does not know the number
+            $docblock->line_number = $docblock_token->line_number;
         }
         catch (Exception $e) {
-            $this->log($e->getMessage(), Zend_Log::CRIT);
+            $this->log($e->getMessage(), \phpDocumentor\Plugin\Core\Log::CRIT);
         }
 
         $tokens->seek($index);
-        return $result;
+        return $docblock;
+    }
+
+    /**
+     * Checks whether the given DocBlock is a file level DocBlock in the context
+     * of the given tokenset.
+     *
+     * A file level DocBlock must comply with either of the following two rules:
+     * 1. It precedes another DocBlock
+     * 2. It has a @package tag and does not directly precede a class definition
+     *
+     * @param phpDocumentor_Reflection_TokenIterator $tokens
+     * @param \phpDocumentor\Reflection\DocBlock     $docblock
+     *
+     * @return bool
+     */
+    protected function isFilelevelDocBlock($tokens, $docblock)
+    {
+        return $this->findNextDelimitedDocComment($tokens)
+            || ($docblock->getTagsByName('package')
+                && !$tokens->findNextByType(T_CLASS, 5, array(T_DOC_COMMENT)));
+    }
+
+    /**
+     * Returns the next DocComment before another structural element is
+     * encountered.
+     *
+     * @param phpDocumentor_Reflection_TokenIterator $tokens
+     *
+     * @return phpDocumentor_Reflection_Token|null
+     */
+    protected function findNextDelimitedDocComment($tokens)
+    {
+        return $tokens->gotoNextByType(
+            T_DOC_COMMENT,
+            30,
+            array(
+                T_CLASS, T_INCLUDE, T_REQUIRE, T_INCLUDE_ONCE,
+                T_REQUIRE_ONCE, T_INTERFACE, T_FUNCTION, T_VARIABLE, T_CONST
+            )
+        );
     }
 
     /**

@@ -6,7 +6,7 @@
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
-            depends="build:phpunit,deploy:update-version-number,deploy:package,deploy:publish-pear-package,deploy:update-ci,deploy:publish-demo,deploy:update-manual"
+            depends="build:phpunit,deploy:update-version-number,deploy:package,deploy:publish-pear-package,deploy:publish-demo,deploy:update-manual"
             description="Builds a new version, packages and distributes it"/>
 
     <target name="build:clean" description="Deletes and recreates the 'build' folder for Jenkins">
@@ -105,15 +105,15 @@
     <!-- Updates the version number in the Core/Abstract class and commits result -->
     <target name="deploy:update-version-number"
             depends="deploy:get-version-number"
-            description="Updates the version number in phpDocumentor_Core_Abstract and commit it.">
-        <gitcheckout repository="." branchname="release-${version.number.minor}" quiet="false"/>
+            description="Updates the version number in \phpDocumentor\Application and commit it.">
+        <gitcheckout repository="." branchname="develop" quiet="false"/>
         <exec
             command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Core/Abstract.php"
             dir="${project.basedir}" outputProperty="version.old"
         />
         <echo>Updating phpDocumentor from version ${version.old} to ${version.number}</echo>
         <exec
-            command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/phpDocumentor/Core/Abstract.php"
+            command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/phpDocumentor/Application.php"
             dir="${project.basedir}" checkreturn="true"
         />
         <exec

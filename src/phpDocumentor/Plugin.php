@@ -58,24 +58,27 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
      *
      * If the autoloader is provided then the class' prefix is added to it.
      *
-     * @param string                               $file       Path to the
+     * @param string                               $path       Path to the
      *  configuration file.
      * @param \Composer\Autoload\ClassLoader|null $autoloader Autoloader object
      *  to add the prefix/path combination to.
      *
      * @return void
      */
-    public function load($file, $autoloader = null)
+    public function load($path, $autoloader = null)
     {
-        $path = $file;
         if (preg_match('/^[a-zA-Z0-9\_]+$/', $path)) {
             $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Plugin'
                 . DIRECTORY_SEPARATOR . $path;
         }
 
-        $xml = simplexml_load_file(
-            rtrim($path, '/\\') . DIRECTORY_SEPARATOR . 'plugin.xml'
-        );
+        $filename = rtrim($path, '/\\') . DIRECTORY_SEPARATOR . 'plugin.xml';
+        if (!file_exists($filename)) {
+            throw new InvalidArgumentException(
+                'No plugin configuration could be found at ' . $filename
+            );
+        }
+        $xml = simplexml_load_file($filename);
 
         $this->name         = $xml->name;
         $this->version      = $xml->version;
@@ -89,7 +92,7 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
               . str_replace(' ', '', ucwords((string)$this->name));
 
         if ($autoloader) {
-            $autoloader->addClassMap(array($this->class_prefix => $path));
+            $autoloader->add($this->class_prefix, $path);
         }
 
         $listeners = !is_array($xml->listener)
@@ -110,7 +113,7 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
             $this->options[$key] = $option;
         }
 
-        $this->translate = new Zend_Translate_Adapter_Array(array(
+        $this->translate = new \Zend\Translator\Adapter\ArrayAdapter(array(
             'locale' => 'en',
             'content' => $path . DIRECTORY_SEPARATOR . 'Messages'
                 . DIRECTORY_SEPARATOR . 'en.php'
@@ -118,15 +121,15 @@ class phpDocumentor_Plugin extends phpDocumentor_Plugin_Abstract
 
         /** @var DirectoryIterator[] $files  */
         $files = new DirectoryIterator($path . DIRECTORY_SEPARATOR . 'Messages');
-        foreach($files as $file) {
-            $base_name = $file->getBasename('.php');
-            if (!$file->isFile() || ($base_name == 'en')) {
+        foreach($files as $path) {
+            $base_name = $path->getBasename('.php');
+            if (!$path->isFile() || ($base_name == 'en')) {
                 continue;
             }
 
             $this->translate->addTranslation(array(
                 'locale' => $base_name,
-                'content' => $file->getPath()
+                'content' => $path->getPath()
             ));
         }
     }

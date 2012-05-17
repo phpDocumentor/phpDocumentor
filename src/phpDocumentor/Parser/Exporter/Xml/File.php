@@ -13,7 +13,7 @@
  */
 
 /**
- *
+ * Exports the collected reflection information of a file to the given DOMElement.
  *
  * @category phpDocumentor
  * @package  Parser\Exporter\Xml
@@ -23,9 +23,24 @@
  */
 class phpDocumentor_Parser_Exporter_Xml_File
 {
+    /**
+     * Whether to include the source of the file in the export.
+     *
+     * @var bool
+     */
     public $include_source = false;
 
-    public function export(DOMElement $parent, phpDocumentor_Reflection_File $file) {
+    /**
+     * Export the given file to the provided parent element.
+     *
+     * @param DOMElement                    $parent Element to augment.
+     * @param phpDocumentor_Reflection_File $file   Element to export.
+     *
+     * @return void
+     */
+    public function export(
+        DOMElement $parent, phpDocumentor_Reflection_File $file
+    ) {
         $child = new DOMElement('file');
         $parent->appendChild($child);
 

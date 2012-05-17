@@ -61,7 +61,7 @@ class phpDocumentor_Parser_Exported_XmlTest extends PHPUnit_Framework_TestCase
 
         $expected = new DOMDocument('1.0', 'utf-8');
         $expected->loadXML(
-            '<project version="'.phpDocumentor_Core_Abstract::VERSION
+            '<project version="'. \phpDocumentor\Application::VERSION
             .'" title=""><deprecated count="'.$count.'"/></project>'
         );
         $expected->formatOutput = true;
@@ -112,7 +112,7 @@ class phpDocumentor_Parser_Exported_XmlTest extends PHPUnit_Framework_TestCase
 
         $expected = new DOMDocument('1.0', 'utf-8');
         $expected->loadXML(
-            '<project version="'.phpDocumentor_Core_Abstract::VERSION
+            '<project version="'. \phpDocumentor\Application::VERSION
             .'" title=""><marker count="'.$count.'">todo</marker><marker count="'
             .$count.'">fixme</marker></project>'
         );

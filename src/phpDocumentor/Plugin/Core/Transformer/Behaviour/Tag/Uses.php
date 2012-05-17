@@ -98,7 +98,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Uses extends
             if ($referral_nodes === false) {
                 $this->log(
                     'An XPath error occurs while processing @uses, '
-                    . 'the query used was: ' . $qry, phpDocumentor_Core_Log::CRIT
+                    . 'the query used was: ' . $qry, \phpDocumentor\Plugin\Core\Log::CRIT
                 );
                 continue;
             }
@@ -108,7 +108,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Uses extends
             if ($referral_nodes->length > 1) {
                 $this->log(
                     '@uses "'.$refers.'" refers to more than 1 element',
-                    phpDocumentor_Core_Log::ERR
+                    \phpDocumentor\Plugin\Core\Log::ERR
                 );
                 continue;
             }

@@ -38,7 +38,7 @@ Effects in phpDocumentor
 ------------------------
 
 :term:`Structural Elements`, or inline text in a long description, tagged with
-the @link tag will show a link in their description. If a description is
+the @see tag will show a link in their description. If a description is
 provided with the tag then this will be used as link text instead of the URL itself.
 
 Examples

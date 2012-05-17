@@ -75,9 +75,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
         $proc->setParameter(
             '', 'search_template', $transformation->getParameter('search', 'none')
         );
-        $proc->setParameter(
-            '', 'version', phpDocumentor_Core_Abstract::VERSION
-        );
+        $proc->setParameter('', 'version', \phpDocumentor\Application::VERSION);
         $proc->setParameter(
             '', 'generated_datetime', date('r')
         );
@@ -158,7 +156,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
                     'XSLT does not allow both double and single quotes in '
                     . 'a variable; transforming single quotes to a character '
                     . 'encoded version in variable: ' . $key,
-                    Zend_Log::WARN
+                    \phpDocumentor\Plugin\Core\Log::WARN
                 );
                 $variable = str_replace("'", "&#39;", $variable);
             }

@@ -25,25 +25,6 @@
  */
 class phpDocumentor_Plugin_Core_Listener extends phpDocumentor_Plugin_ListenerAbstract
 {
-    /** @var phpDocumentor_Core_Log Logger for phpDocumentor*/
-    protected $logger = null;
-
-    /**
-     * Configures this listener; initializes and connects the logger.
-     *
-     * @return void
-     */
-    protected function configure()
-    {
-        $this->logger = new phpDocumentor_Core_Log(phpDocumentor_Core_Log::FILE_STDOUT);
-        $this->logger->setThreshold($this->getConfiguration()->logging->level);
-
-        $this->getEventDispatcher()->connect(
-            'system.log.threshold', array($this->logger, 'setThreshold')
-        );
-        $this->event_dispatcher->connect('system.log', array($this->logger, 'log'));
-    }
-
     /**
      * Applies all behaviours prior to transformation.
      *

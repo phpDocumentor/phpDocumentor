@@ -19,18 +19,18 @@ class phpDocumentor_ParserTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(false, $this->fixture->isForced());
 
     $xml = new SimpleXMLElement('<project></project>');
-    $xml->addAttribute('version', phpDocumentor_Core_Abstract::VERSION);
+    $xml->addAttribute('version', \phpDocumentor\Application::VERSION);
 
     $this->fixture->setExistingXml($xml->asXML());
     $this->assertEquals(false, $this->fixture->isForced());
 
     // if version differs, we force a rebuild
-    $xml['version'] = phpDocumentor_Core_Abstract::VERSION.'a';
+    $xml['version'] = \phpDocumentor\Application::VERSION.'a';
     $this->fixture->setExistingXml($xml->asXML());
     $this->assertEquals(true, $this->fixture->isForced());
 
     // switching back should undo the force
-    $xml['version'] = phpDocumentor_Core_Abstract::VERSION;
+    $xml['version'] = \phpDocumentor\Application::VERSION;
     $this->fixture->setExistingXml($xml->asXML());
     $this->assertEquals(false, $this->fixture->isForced());
 

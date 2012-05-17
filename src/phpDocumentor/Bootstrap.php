@@ -12,6 +12,8 @@
  * @link      http://phpdoc.org
  */
 
+require_once __DIR__.'/Application.php';
+
 /**
  * This class provides a bootstrap for all application who wish to interface
  * with phpDocumentor.
@@ -48,68 +50,10 @@ class phpDocumentor_Bootstrap
      * The methods called can also be implemented separately, for example when
      * you want to use your own autoloader.
      *
-     * @return void
+     * @return \phpDocumentor\Application()
      */
     public function initialize()
     {
-        $autoloader = $this->registerAutoloader();
-        $this->registerPlugins($autoloader);
-    }
-
-    /**
-     * Registers and returns the autoloader for phpDocumentor.
-     *
-     * phpDocumentor uses the ZF2 autoloader to register the common paths and start
-     * a PSR-0 fallback.
-     *
-     * The autoloader is also used by the plugin system to make sure that
-     * everything in a plugin can be autoloaded.
-     *
-     * @return \Composer\Autoload\ClassLoader
-     */
-    public function registerAutoloader()
-    {
-        return include_once __DIR__ . '/../../vendor/.composer/autoload.php';
-    }
-
-    /**
-     * Registers the Event Dispatcher and registers all plugins.
-     *
-     * @param ZendX_Loader_StandardAutoloader $autoloader the autoloader upon
-     *  which will the plugins will bind their class prefixes and folders.
-     *
-     * @return void
-     */
-    public function registerPlugins($autoloader)
-    {
-        // initialize the event dispatcher; the include is here explicitly
-        // should anyone not want this dependency and thus nto invoke this
-        // method
-        $dispatcher = new sfEventDispatcher();
-
-        // initialize the plugin manager
-        $plugin_manager = new phpDocumentor_Plugin_Manager(
-            $dispatcher,
-            phpDocumentor_Core_Abstract::config(),
-            $autoloader
-        );
-
-        $plugin_manager->loadFromConfiguration();
-
-        $this->attachDispatcher($dispatcher);
-    }
-
-    /**
-     * attaches the event dispatcher to all components.
-     *
-     * @param sfEventDispatcher $event_dispatcher The event dispatcher to attach.
-     *
-     * @return void
-     */
-    protected function attachDispatcher($event_dispatcher)
-    {
-        phpDocumentor_Parser_Abstract::$event_dispatcher      = $event_dispatcher;
-        phpDocumentor_Transformer_Abstract::$event_dispatcher = $event_dispatcher;
-        phpDocumentor_Reflection_Abstract::$event_dispatcher  = $event_dispatcher;
+        return new \phpDocumentor\Application();
     }
 }

@@ -12,13 +12,10 @@ documentation, such as PDFs or Graphs. If a dependency is only
 limited to a subset of features it is denoted with the dependency
 entry below.
 
--  PHP 5.2.6 or higher (5.2.5 and lower might work but is not supported, 5.3
-   is explicitly supported)
+-  PHP 5.3.3
 -  XSL extension for PHP, only applicable when generating HTML via
    XSL (recommended)
 -  Graphviz, only applicable when generating Graphs (recommended)
--  wkhtmltopdf, only applicable when generating PDFs (not enabled
-   by default)
 
 phpDocumentor does not install these dependencies and will generate errors if they
 are missing.
@@ -45,15 +42,19 @@ phpDocumentor.
 Manual Installation
 -------------------
 
-At http://phpdoc.org you can find the latest available release as
-download. It is also possible to download the development version
-though this is not recommended for production environments.
+At https://github.com/phpDocumentor/phpDocumentor2/tags you can find the latest
+available release as download. It is also possible to download the `development
+version <https://github.com/phpDocumentor/phpDocumentor2/downloads>`_ though
+this is not recommended for production environments.
 
 The steps necessary for manual installation are:
 
-1. download your preferred installation archive from http://phpdoc.org.
-2. unzip in your favourite location
-3. Depending upon your OS:
+1. Download your preferred installation archive from
+   https://github.com/phpDocumentor/phpDocumentor2/tags.
+2. Unzip in your favourite location
+3. Follow the Installation and Usage instructions at
+   http://getcomposer.org/doc/00-intro.md#installation
+4. Set up your binaries to use phpDocumentor from any location:
 
    a. **For Linux or Mac OSX**: create a symlink from <PHPDOC\_PATH>/bin/phpdoc.php
       to your bin folder (usually /usr/bin) named ``phpdoc``.

@@ -130,7 +130,7 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
     {
         $is_version_unequal = (($this->getExistingXml())
            && ($this->getExistingXml()->documentElement->getAttribute('version')
-               != phpDocumentor_Core_Abstract::VERSION));
+               != \phpDocumentor\Application::VERSION));
 
         if ($is_version_unequal) {
             $this->log(
@@ -340,7 +340,10 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
     public function parseFile($filename, $include_source = false)
     {
         $this->log('Starting to parse file: ' . $filename);
-        $this->debug('Starting to parse file: ' . $filename);
+        $this->log(
+            'Starting to parse file: ' . $filename,
+            \phpDocumentor\Plugin\Core\Log::DEBUG
+        );
 
         $dispatched = false;
         try {
@@ -400,12 +403,11 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
         } catch (Exception $e) {
             $this->log(
                 '>>  Unable to parse file, an error was detected: '
-                . $e->getMessage(),
-                Zend_Log::ALERT
+                . $e->getMessage(), \phpDocumentor\Plugin\Core\Log::ALERT
             );
-            $this->debug(
+            $this->log(
                 'Unable to parse file "' . $filename . '", an error was detected: '
-                . $e->getMessage()
+                . $e->getMessage(), \phpDocumentor\Plugin\Core\Log::DEBUG
             );
         }
 
@@ -418,11 +420,12 @@ class phpDocumentor_Parser extends phpDocumentor_Parser_Abstract
             );
         }
 
-        $this->debug(
+        $this->log(
             '>> Memory after processing of file: '
-            . number_format(memory_get_usage()) . ' bytes'
+            . number_format(memory_get_usage()) . ' bytes',
+            \phpDocumentor\Plugin\Core\Log::DEBUG
         );
-        $this->debug('>> Parsed file');
+        $this->log('>> Parsed file', \phpDocumentor\Plugin\Core\Log::DEBUG);
     }
 
     /**

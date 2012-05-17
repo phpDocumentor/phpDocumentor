@@ -135,7 +135,7 @@ class phpDocumentor_Transformer extends phpDocumentor_Transformer_Abstract
     {
         $source = trim($source);
 
-        $xml = new DOMDocument();
+        $xml = new DOMDocument("1.0", "UTF-8");
 
         if (substr($source, 0, 5) === '<?xml') {
             $xml->loadXML($source);
@@ -322,6 +322,10 @@ class phpDocumentor_Transformer extends phpDocumentor_Transformer_Abstract
         $this->dispatch('transformer.transform.pre', array('source' => $source));
 
         foreach ($this->getTransformations() as $transformation) {
+            $this->dispatch(
+                'transformer.transformation.pre', array('source' => $source)
+            );
+
             $this->log(
                 'Applying transformation'
                 . ($transformation->getQuery()
@@ -331,6 +335,10 @@ class phpDocumentor_Transformer extends phpDocumentor_Transformer_Abstract
             );
 
             $transformation->execute($source);
+
+            $this->dispatch(
+                'transformer.transformation.post', array('source' => $source)
+            );
         }
 
         $this->dispatch(

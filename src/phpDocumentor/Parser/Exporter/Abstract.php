@@ -24,10 +24,19 @@
  */
 abstract class phpDocumentor_Parser_Exporter_Abstract extends phpDocumentor_Parser_Abstract
 {
-    /** @var \phpDocumentor_Parser */
+    /**
+     * Parser object containing all properties used during the parsing process
+     * and provided to influence export process.
+     *
+     * @var \phpDocumentor_Parser
+     */
     protected $parser = null;
 
-    /** @var bool Whether to include the file's source in the export */
+    /**
+     * Whether to include the file's source in the export.
+     *
+     * @var bool
+     */
     protected $include_source = false;
 
     /**

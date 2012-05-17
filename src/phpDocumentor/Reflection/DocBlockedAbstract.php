@@ -78,7 +78,7 @@ abstract class phpDocumentor_Reflection_DocBlockedAbstract
                 $result->line_number = $docblock->line_number;
             }
         } catch (Exception $e) {
-            $this->log($e->getMessage(), Zend_Log::CRIT);
+            $this->log($e->getMessage(), \phpDocumentor\Plugin\Core\Log::CRIT);
             return $result;
         }
 
