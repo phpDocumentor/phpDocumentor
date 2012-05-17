@@ -18,7 +18,6 @@ Obsoletes:
 ## Table Of Contents
 
     1. Introduction
-      1.1. History
     2. Conventions Used In This Document
     3. Definitions
     4. Basic Principles
@@ -63,18 +62,38 @@ Obsoletes:
 
 ## 1. Introduction
 
-### 1.1. History
+The main purpose of this PSR is to provide a complete and formal definition of
+the PHPDoc standard. This PSR deviates from its predecessor, the de-facto PHPDoc
+Standard associated with [phpDocumentor 1.x](http://www.phpdoc.org), to provide
+support for newer features in the PHP language and to address some of the
+shortcomings of its predecessor.
+
+This document SHALL NOT:
+
+* Describe a standard for implementing annotations via PHPDoc. Although it does
+  offer versatility which makes it possible to create a subsequent PSR based on
+  current practices. See [chapter 5.3](#53-tags) for more information on this
+  topic.
+* Describe best practices or recommendations for Coding Standards on the
+  application of the PHPDoc standard. This document is limited to a formal
+  specification of syntax and intention.
 
 ## 2. Conventions Used In This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in RFC 2119.
+document are to be interpreted as described in
+[RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
 ## 3. Definitions
 
 * "PHPDoc" is a section of documentation which provides information on several
   aspects of a "Structural Element".
+
+  > It is important to note that the PHPDoc and the DocBlock are two separate
+  > entities. The DocBlock is the combination of a DocComment, which is a type
+  > of comment, and a PHPDoc entity. It is the PHPDoc entity that describes the
+  > Short Description, Long Description and Tags.
 
 * "Structural Element" is a collection of Programming Constructs which SHOULD be
   preceded by a DocBlock. The collection contains the following constructs:
@@ -129,8 +148,12 @@ document are to be interpreted as described in RFC 2119.
   }
   ```
 
-  Another example is to document the variable in a foreach explicitly; many IDEs
-  use this information to help you with auto-completion:
+  An example of use that falls beyond the scope of this Standard is to document
+  the variable in a foreach explicitly; many IDEs use this information to help
+  you with auto-completion.
+
+  This Standard does not cover this specific instance as a foreach is not
+  considered to be a "Structural Element" but a Control Flow structure.
 
   ```php
   /** @type \Sqlite3 $sqlite */
@@ -142,9 +165,9 @@ document are to be interpreted as described in RFC 2119.
   ```
 
 * "DocComment" is a special type of comment which starts with `/**`, ends
-  with `*/` and may contain any number of lines in between. Every line should
-  start with an asterisk, which is aligned with the first asterisk of the
-  opening clause.
+  with `*/` and may contain any number of lines in between.
+  In case a DocComment spans multiple lines should every line start with an
+  asterisk that is aligned with the first asterisk of the opening clause.
 
   Single line example:
 
@@ -163,9 +186,8 @@ document are to be interpreted as described in RFC 2119.
 * "DocBlock" is a "DocComment" containing a single "PHPDoc" and represents the
   basic in-source representation.
 
-* "Tag"
-
-* "Annotation"
+* "Tag" is a single piece of meta information regarding a "Structural Element"
+  or a component thereof.
 
 * "Type" is the determination of what type of data is associated with an element.
   This is commonly used when determining the exact values of arguments, constants,
@@ -178,12 +200,15 @@ document are to be interpreted as described in RFC 2119.
 * A PHPDoc MUST always be contained in a "DocComment"; the combination of these
   two is called a "DocBlock".
 
-* A DocBlock MUST precede a "Structural Element" or be placed at the top of a
-  PHP source code file.
+* A DocBlock MUST precede a "Structural Element"
+
+  > An exception to this principle is the File-level DocBlock which must be
+  > placed at the top of a PHP source code file.
 
 ## 5. The PHPDoc Format
 
-The PHPDoc format has the following ABNF (RFC 5234) definition:
+The PHPDoc format has the following [ABNF](http://www.ietf.org/rfc/rfc5234.txt)
+definition:
 
     PHPDoc            = [short-description] [long-description] [tags]
     short-description = *CHAR ("." 1*CRLF / 2*CRLF)
@@ -641,6 +666,79 @@ same 'PHPDoc' pointing to the new element.
 ```
 
 ### 7.6. @example
+
+The @example tag is used to link to an external source code file which contains
+an example of use for the current "Structural element". An inline variant exists
+with which code from an example file can be shown inline with the Long
+Description.
+
+#### Syntax
+
+    @example [URI] [<description>]
+
+or inline:
+
+    {@example [URI] [:<start>..<end>]}
+
+#### Description
+
+The example tag refers to a file containing example code demonstrating the
+purpose and use of the current "Structural element". Multiple example tags may
+be used per "Structural element" in case several scenarios are described.
+
+The URI provided with the example tag is resolved according to the following
+rules:
+
+1. If a URI is proceeded by a scheme or root folder specifier such as `phar://`,
+   `http://`, `/` or `C:\` then it is considered to be an absolute path.
+2. If the URI is deemed relative and a location for the example files has been
+   provided then the path relative to the given location is resolved.
+3. If the previous path was not readable or the user has not provided a path
+   than the application should try to search for a folder examples in the
+   same folder as the source file featuring the example tag. If found then an
+   attempt to resolve the path by combining the relative path given in the
+   example tag and the found folder should be made.
+4. If the application was unable to resolve a path given the previous rules than
+   it should check if a readable folder 'examples' is found in the root folder
+   of the project containing the "Structural Element" his source file.
+
+   > The root folder of a project is the highest folder common to all files
+   > that are being processed by a consuming application.
+
+If a consumer intends to display the contents of the example file then it is
+RECOMMENDED to use a syntax highlighting solution to improve user experience.
+
+The rules as described above apply to both the inline as the normal tags. The
+inline tag has 2 additional parameters with which to limit which lines of code
+are shown in the Long Description. Due to this consuming applications MUST
+show the example code in case an inline example tag is used.
+
+The start and end argument may be omitted but the ellipsis should remain in
+case either is used to give a clear visual indication. The same rules as
+specified with the [substr](http://nl.php.net/manual/en/function.substr.php)
+function of PHP are in effect with regards to the start and end limit.
+
+> A consuming application MAY choose to support the limit format as used in the
+> previous standard but it is deprecated per this PSR.
+> The previous syntax was: {@example [URI] [<start>] [<end>]} and did not support
+> the same rules as the substr function.
+
+#### Examples
+
+```php
+/**
+ * Counts the number of items.
+ * {@example http://example.com/foo-inline.https:2..8}
+ *
+ * @example http://example.com/foo.phps
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.7. @global
 
