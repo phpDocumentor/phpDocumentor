@@ -405,17 +405,17 @@ Inheritance takes place from the root of a class hierarchy graph to its leafs.
 This means that anything inherited in the bottom of the tree MUST 'bubble' up to
 the top unless overridden.
 
-    Note: a special circumstance here would be when the Long Description must be
-    overridden but the Short Description should stay intact. It would be difficult
-    for a reader to distinguish which is overridden.
-
-    In this case MUST the writer use the {@inheritdoc} inline tag as
-    Short Description and override the Long Description with the intended text.
-
-    Without the {@inheritdoc} inline tag MUST the reader interpret any text
-    as if the Short Description would be overridden and MAY long description
-    appear overridden if the block of text contains a Short Description ending
-    as defined in the ABNF.
+> Note: a special circumstance here would be when the Long Description must be
+> overridden but the Short Description should stay intact. It would be difficult
+> for a reader to distinguish which is overridden.
+>
+> In this case MUST the writer use the {@inheritdoc} inline tag as
+> Short Description and override the Long Description with the intended text.
+>
+> Without the {@inheritdoc} inline tag MUST the reader interpret any text
+> as if the Short Description would be overridden and MAY long description
+> appear overridden if the block of text contains a Short Description ending
+> as defined in the ABNF.
 
 ### 6.1. Class Or Interface
 
@@ -1096,16 +1096,16 @@ A valid class name seen from the context where this type is mentioned. Thus
 this may be either a Fully Qualified Class Name (FQCN) or if present in a
 namespace a local name.
 
-    It is RECOMMENDED for applications to expand any local name into a FQCN
-    for easier processing and comparisons.
+> It is RECOMMENDED for applications to expand any local name into a FQCN
+> for easier processing and comparisons.
 
 The element to which this type applies is either an instance of this class
 or an instance of a class that is a (sub-)child to the given class.
 
-    Due to the above nature it is RECOMMENDED for applications that
-    collect and shape this information to show a list of child classes
-    with each representation of the class. This would make it obvious
-    for the user which classes are acceptable as type.
+> Due to the above nature it is RECOMMENDED for applications that
+> collect and shape this information to show a list of child classes
+> with each representation of the class. This would make it obvious
+> for the user which classes are acceptable as type.
 
 ### Keyword
 
@@ -1113,13 +1113,13 @@ A keyword defining the purpose of this type. Not every element is determined
 by a class but still worth of a classification to assist the developer in
 understanding the code covered by the DocBlock.
 
-    Note: most of these keywords are allowed as class names in PHP and as
-    such are hard to distinguish from real classes. As such the keywords MUST
-    be lowercase, as most class names start with an uppercase first character,
-    and you SHOULD NOT use classes with these names in your code.
+> Note: most of these keywords are allowed as class names in PHP and as
+> such are hard to distinguish from real classes. As such the keywords MUST
+> be lowercase, as most class names start with an uppercase first character,
+> and you SHOULD NOT use classes with these names in your code.
 
-    There are more reasons to not name classes with the names of these
-    keywords but that falls beyond the scope of this specification.
+> There are more reasons to not name classes with the names of these
+> keywords but that falls beyond the scope of this specification.
 
 The following keywords are recognized by this PSR:
 
@@ -1161,31 +1161,35 @@ The following keywords are recognized by this PSR:
 
     For example:
 
-        /**
-         * @return void
-         */
-        function outputHello()
-        {
-            echo 'Hello world';
-        }
+    ```php
+    /**
+     * @return void
+     */
+    function outputHello()
+    {
+        echo 'Hello world';
+    }
+    ***
 
     In the example above no return statement is specified and thus is the return
     value not determined.
 
     Example 2:
 
-        /**
-         * @param boolean $hi when true 'Hello world' is echo-ed.
-         *
-         * @return void
-         */
-        function outputHello($quiet)
-        {
-            if ($quiet} {
-                return;
-            }
-            echo 'Hello world';
+    ```php
+    /**
+     * @param boolean $hi when true 'Hello world' is echo-ed.
+     *
+     * @return void
+     */
+    function outputHello($quiet)
+    {
+        if ($quiet} {
+            return;
         }
+        echo 'Hello world';
+    }
+    ```
 
     In this example the function contains a return statement without a given
     value. Because there is no actual value specified does this also constitute
@@ -1200,33 +1204,37 @@ The following keywords are recognized by this PSR:
 
     Example:
 
-        /**
-         * @return null
-         */
-        function foo()
-        {
-            echo 'Hello world';
-            return null;
-        }
+    ```php
+    /**
+     * @return null
+     */
+    function foo()
+    {
+        echo 'Hello world';
+        return null;
+    }
+    ```
 
     This type is commonly used in conjunction with another type to indicate that
     it is possible that nothing is returned.
 
     Example:
 
-        /**
-         * @param boolean $create_new When true returns a new stdClass.
-         *
-         * @return stdClass|null
-         */
-        function foo($create_new)
-        {
-            if ($create_new) {
-                return new stdClass();
-            }
-
-            return null;
+    ```
+    /**
+     * @param boolean $create_new When true returns a new stdClass.
+     *
+     * @return stdClass|null
+     */
+    function foo($create_new)
+    {
+        if ($create_new) {
+            return new stdClass();
         }
+
+        return null;
+    }
+    ```
 
 
 11. 'callback', the element to which this type applies is a pointer to a
@@ -1266,10 +1274,10 @@ The following keywords are recognized by this PSR:
     definition in the DocBlock, then `self` would refer to class B or any
     of its children.
 
-        Due to the above nature it is RECOMMENDED for applications that
-        collect and shape this information to show a list of child classes
-        with each representation of the class. This would make it obvious
-        for the user which classes are acceptable as type.
+    > Due to the above nature it is RECOMMENDED for applications that
+    > collect and shape this information to show a list of child classes
+    > with each representation of the class. This would make it obvious
+    > for the user which classes are acceptable as type.
 
 ## Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
