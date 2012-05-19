@@ -191,7 +191,7 @@ class phpDocumentor_Reflection_File extends phpDocumentor_Reflection_DocBlockedA
             && function_exists('mb_detect_encoding')
         ) {
             // OR with mbstring
-            $encoding = mb_detect_encoding($contents);
+            $encoding = mb_detect_encoding($contents,'UTF-8,ISO-8859-1');
         }
 
         // if the encoding is detected as binary we try again
