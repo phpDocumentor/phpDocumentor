@@ -21,3 +21,22 @@ setup.
 The easiest fix is to upgrade your PCRE library to the latest version or
 follow the instructions in the following blog post:
 http://chrisjean.com/2009/01/31/unicode-support-on-centos-52-with-php-and-pcre/
+
+I get a segfault during transformation when using Zend Server CE 5.0
+--------------------------------------------------------------------
+
+Some versions of Zend Server CE 5.0 have an incorrectly build version of the
+libxslt library. You can identify whether this is the case for you using the
+following commands and checking if the output matches:
+
+    $ php -i | grep libxslt
+    libxslt Version => 1.1.24 libxslt compiled against libxml Version => 2.7.3 libexslt Version => 1.1.23
+    $ php -i | grep libxml
+    libxml Version => 2.6.32 libxml libxml2 Version => 2.6.32 libxslt compiled against libxml Version => 2.7.3
+
+As can be seen in this command and response is that the libxslt library is built
+against a newer version of the library than is available on the platform.
+
+The only solution to resolve this situation is to update your libxml library to
+at least the version as specified in the libxslt line, to update your Zend
+Server to the latest version and/or contact Zend Support for a solution.
