@@ -1,3 +1,8 @@
+??/??/2012: Version 2.0.0a4
+---------------------------
+
+* FIXED:    #284, Windows gives errno 22 (I/O error: Invalid argument)
+
 13/05/2012: Version 2.0.0a3
 ---------------------------
 

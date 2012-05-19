@@ -120,7 +120,9 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
                 if (!file_exists(dirname($filename))) {
                     mkdir(dirname($filename), 0755, true);
                 }
-                $proc->transformToURI($structure, 'file://' . $filename);
+                $proc->transformToURI(
+                    $structure, $this->getXsltUriFromFilename($filename)
+                );
             }
         } else {
             if (substr($transformation->getArtifact(), 0, 1) == '$') {
@@ -132,9 +134,30 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
                 if (!file_exists(dirname($artifact))) {
                     mkdir(dirname($artifact), 0755, true);
                 }
-                $proc->transformToURI($structure, 'file://' . $artifact);
+                $proc->transformToURI(
+                    $structure, $this->getXsltUriFromFilename($artifact)
+                );
             }
         }
+    }
+
+    /**
+     * Takes the filename and converts it into a correct URI for XSLTProcessor.
+     *
+     * @param string $filename
+     *
+     * @return string
+     */
+    protected function getXsltUriFromFilename($filename)
+    {
+        // Windows requires an additional / after the scheme.
+        // If not provided then errno 22 (I/O Error: Invalid Argument) will be
+        // raised. Thanks to @FnTmLV for finding the cause.
+        // See issue #284 for more information
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $filename = '/' . $filename;
+        }
+        return 'file://' . $filename;
     }
 
     /**
