@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
+
 /**
  * Behaviour that adds generated path information on the File elements.
  *
@@ -23,8 +25,8 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
-    phpDocumentor_Transformer_Behaviour_Abstract
+class AddLinkInformation
+    extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 {
     /**
      * Adds extra information to the structure.
@@ -34,15 +36,15 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
      *   link to that tag's type entry.
      * - Every tag receives an excerpt containing the first 15 characters.
      *
-     * @param DOMDocument $xml Document for the structure file.
+     * @param \DOMDocument $xml Document for the structure file.
      *
-     * @return DOMDocument
+     * @return \DOMDocument
      */
-    public function process(DOMDocument $xml)
+    public function process(\DOMDocument $xml)
     {
         $this->log('Adding path information to each xml "file" tag');
 
-        $xpath = new DOMXPath($xml);
+        $xpath = new \DOMXPath($xml);
 
         $class_paths = $this->collectClassPaths($xpath);
 
@@ -61,7 +63,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
         // caching array to keep track whether unknown classes are PHP Internal
         $unknown_classes  = array();
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $type = rtrim($element->nodeValue, '[]');
             $bare_type = ($type[0] == '\\') ? substr($type, 1) : $type;
@@ -83,7 +85,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             } else if (isset($declared_classes[$bare_type])) {
                 // cache reflection calls since these can be expensive
                 if (!isset($unknown_classes[$bare_type])) {
-                    $refl = new ReflectionClass($bare_type);
+                    $refl = new \ReflectionClass($bare_type);
                     $unknown_classes[$bare_type] = $refl->isInternal();
                 }
 
@@ -111,7 +113,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
             . 'or substring(@link,1,4) != \'www.\''
             . 'or substring(@link,1,7) != \'https://\')])'
         );
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             switch($element->getAttribute('name')) {
             case 'link':
@@ -157,16 +159,16 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
      * Returns an associative array where the key consists of the FQCN and the
      * value of the path that is mentioned with the 'file' element.
      *
-     * @param DOMXPath $xpath The XPath object to query against.
+     * @param \DOMXPath $xpath The XPath object to query against.
      *
      * @return string[]
      */
-    protected function collectClassPaths(DOMXPath $xpath)
+    protected function collectClassPaths(\DOMXPath $xpath)
     {
         $qry = $xpath->query('//class[full_name]|//interface[full_name]');
         $class_paths = array();
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $path = $element->parentNode->getAttribute('path');
             $class_paths[
@@ -189,11 +191,11 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
      * * Without description: {@link [url]}, this shows the url as body of the
      *   anchor.
      *
-     * @param DOMXPath $xpath
+     * @param \DOMXPath $xpath
      *
      * @return void
      */
-    protected function processInlineLinkTags(DOMXPath $xpath)
+    protected function processInlineLinkTags(\DOMXPath $xpath)
     {
         $this->log('Adding link information to inline @link tags');
 
@@ -203,7 +205,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation extends
         $without_description_pattern = '/\{@link\s+([^\s]+)\s*\}/';
         $with_description_pattern    = '/\{@link\s+([^\s]+)\s+([^\}]+)\}/';
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $element->nodeValue = preg_replace(
                 array($without_description_pattern, $with_description_pattern),

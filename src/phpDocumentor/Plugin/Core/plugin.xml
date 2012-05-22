@@ -8,8 +8,7 @@
     <description>
         This plugin contains all PHPDoc basic behaviours and validators.
     </description>
-    <class-prefix>phpDocumentor_Plugin_Core</class-prefix>
-    <listener>Listener</listener>
+    <listener>\phpDocumentor\Plugin\Core\Listener</listener>
     <dependencies>
         <phpdoc><min-version>2.0.0</min-version></phpdoc>
     </dependencies>

@@ -12,6 +12,8 @@
  * @link      http://phpdoc.org
  */
 
+namespace phpDocumentor\Transformer;
+
 /**
  * Class representing a single Transformation.
  *
@@ -21,12 +23,12 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer_Abstract
+class Transformation extends TransformerAbstract
 {
     /** @var string */
     protected $query = '';
 
-    /** @var phpDocumentor_Transformer_Writer_Abstract */
+    /** @var Writer\WriterAbstract */
     protected $writer = null;
 
     /** @var string */
@@ -38,24 +40,23 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
     /** @var string[] */
     protected $parameters = array();
 
-    /** @var phpDocumentor_Transformer */
+    /** @var Transformer */
     protected $transformer = null;
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
-     * @param phpDocumentor_Transformer $transformer The parent transformer.
-     * @param string              $query       What information to use as
-     *     datasource for the writer's source.
-     * @param string              $writer      What type of transformation to
-     *     apply (XSLT, PDF, Checkstyle etc).
-     * @param string              $source      Which template or type of source
-     *     to use.
-     * @param string              $artifact    What is the filename of the result
+     * @param Transformer $transformer The parent transformer.
+     * @param string      $query       What information to use as datasource for
+     *     the writer's source.
+     * @param string      $writer      What type of transformation to apply
+     *     (XSLT, PDF, Checkstyle etc).
+     * @param string      $source      Which template or type of source to use.
+     * @param string      $artifact    What is the filename of the result
      *     (relative to the generated root)
      */
     public function __construct(
-        phpDocumentor_Transformer $transformer, $query, $writer, $source, $artifact
+        Transformer $transformer, $query, $writer, $source, $artifact
     ) {
         $this->setTransformer($transformer);
         $this->setQuery($query);
@@ -67,11 +68,11 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
     /**
      * Sets the transformer object responsible for maintaining the transformations.
      *
-     * @param phpDocumentor_Transformer $transformer Responsible transformer object.
+     * @param Transformer $transformer Responsible transformer object.
      *
      * @return void
      */
-    public function setTransformer(phpDocumentor_Transformer $transformer)
+    public function setTransformer(Transformer $transformer)
     {
         $this->transformer = $transformer;
     }
@@ -80,7 +81,7 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
      * Returns the transformer object which is responsible for maintaining this
      * transformation.
      *
-     * @return phpDocumentor_Transformer
+     * @return Transformer
      */
     public function getTransformer()
     {
@@ -118,15 +119,13 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
      */
     public function setWriter($writer)
     {
-        $this->writer = phpDocumentor_Transformer_Writer_Abstract::getInstanceOf(
-            $writer
-        );
+        $this->writer = Writer\WriterAbstract::getInstanceOf($writer);
     }
 
     /**
      * Returns an instantiated writer object.
      *
-     * @return phpDocumentor_Transformer_Writer_Abstract|null
+     * @return Writer\WriterAbstract|null
      */
     public function getWriter()
     {
@@ -194,9 +193,7 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
         $file = __DIR__.'/../../../data/'.$this->source;
 
         if (!file_exists($file)) {
-            throw new phpDocumentor_Transformer_Exception(
-                'The source path does not exist: ' . $file
-            );
+            throw new Exception('The source path does not exist: ' . $file);
         }
 
         return realpath($file);
@@ -244,15 +241,15 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
     /**
      * Recursive function to convert a SimpleXMLElement to an associative array.
      *
-     * @param SimpleXMLElement $sxml object to convert to a flat array.
+     * @param \SimpleXMLElement $sxml object to convert to a flat array.
      *
      * @return (string|string[])[]
      */
-    protected function convertSimpleXmlToArray(SimpleXMLElement $sxml)
+    protected function convertSimpleXmlToArray(\SimpleXMLElement $sxml)
     {
         $result = array();
 
-        /** @var SimpleXMLElement $value */
+        /** @var \SimpleXMLElement $value */
         foreach ($sxml->children() as $key => $value) {
             $result[$key] = count($value->children()) > 1
                 ? $this->convertSimpleXmlToArray($value)
@@ -265,11 +262,11 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
     /**
      * Imports the parameters from a SimpleXMLElement array.
      *
-     * @param SimpleXMLElement $parameters Object to import
+     * @param \SimpleXMLElement $parameters Object to import
      *
      * @return void
      */
-    public function importParameters(SimpleXMLElement $parameters)
+    public function importParameters(\SimpleXMLElement $parameters)
     {
         $this->parameters = $this->convertSimpleXmlToArray($parameters);
     }
@@ -327,30 +324,30 @@ class phpDocumentor_Transformer_Transformation extends phpDocumentor_Transformer
      *
      * The parameter array is optional.
      *
-     * @param phpDocumentor_Transformer $transformer    Responsible transformer object.
-     * @param mixed[]             $transformation Transformation array, see
-     *     long description for the format.
+     * @param Transformer $transformer    Responsible transformer object.
+     * @param mixed[]     $transformation Transformation array, see long
+     *     description for the format.
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
-     * @return phpDocumentor_Transformer_Transformation
+     * @return Transformation
      */
     public static function createFromArray(
-        phpDocumentor_Transformer $transformer, array $transformation
+        Transformer $transformer, array $transformation
     ) {
         // check if all required items are present
-        if (!key_exists('query', $transformation)
-            || !key_exists('writer', $transformation)
-            || !key_exists('source', $transformation)
-            || !key_exists('artifact', $transformation)
+        if (!array_key_exists('query', $transformation)
+            || !array_key_exists('writer', $transformation)
+            || !array_key_exists('source', $transformation)
+            || !array_key_exists('artifact', $transformation)
         ) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Transformation array is missing elements, received: '
                 . var_export($transformation, true)
             );
         }
 
-        $transformation_obj = new phpDocumentor_Transformer_Transformation(
+        $transformation_obj = new Transformation(
             $transformer,
             $transformation['query'],
             $transformation['writer'],

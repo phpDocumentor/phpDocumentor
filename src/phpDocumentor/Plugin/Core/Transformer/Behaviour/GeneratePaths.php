@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
+
 /**
  * Behaviour that adds generated path information on the File elements.
  *
@@ -23,8 +25,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_GeneratePaths extends
-    phpDocumentor_Transformer_Behaviour_Abstract
+class GeneratePaths extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 {
 
     /**
@@ -36,24 +37,25 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_GeneratePaths extends
      * - Every file receives a 'generated-path' attribute which contains the
      *   path on the filesystem where the docs for that file van be found.
      *
-     * @param DOMDocument $xml Structure source to modify.
+     * @param \DOMDocument $xml Structure source to modify.
      *
-     * @return DOMDocument
+     * @return \DOMDocument
      */
-    public function process(DOMDocument $xml)
+    public function process(\DOMDocument $xml)
     {
         $this->log('Adding path information to each xml "file" tag');
 
-        $xpath = new DOMXPath($xml);
+        $xpath = new \DOMXPath($xml);
         $qry = $xpath->query("/project/file[@path]");
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $files[] = $element->getAttribute('path');
             $element->setAttribute(
                 'generated-path',
-                $this->getTransformer()
-                    ->generateFilename($element->getAttribute('path'))
+                $this->getTransformer()->generateFilename(
+                    $element->getAttribute('path')
+                )
             );
         }
 

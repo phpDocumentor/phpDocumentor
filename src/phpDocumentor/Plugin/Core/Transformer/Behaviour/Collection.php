@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
+
 /**
  * Collection object for a set of Behaviours.
  *
@@ -23,25 +25,26 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_Collection extends
-    phpDocumentor_Transformer_Behaviour_Abstract
+class Collection
+    extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 {
-    /** @var phpDocumentor_Transformer */
-    protected $transformer = array();
+    /** @var \phpDocumentor\Transformer\Transformer */
+    protected $transformer = null;
 
-    /** @var phpDocumentor_Transformer_Behaviour_Abstract[] */
+    /** @var \phpDocumentor\Transformer\Behaviour\BehaviourAbstract[] */
     protected $behaviours = array();
 
     /**
      * Initializes the list of Behaviours to execute each request.
      *
-     * @param phpDocumentor_Transformer                      $transformer Object that
-     *     executes the transformation and contains the meta-data.
-     * @param phpDocumentor_Transformer_Behaviour_Abstract[] $behaviours  List of
+     * @param \phpDocumentor\Transformer\Transformer          $transformer Object
+     *     that executes the transformation and contains the meta-data.
+     * @param \phpDocumentor\Transformer\Behaviour\BehaviourAbstract[] $behaviours  List of
      *     behaviours to process.
      */
-    public function __construct(phpDocumentor_Transformer $transformer, array $behaviours)
-    {
+    public function __construct(
+        \phpDocumentor\Transformer\Transformer $transformer, array $behaviours
+    ) {
         $this->transformer = $transformer;
 
         foreach ($behaviours as $behaviour) {
@@ -54,13 +57,13 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Collection extends
     /**
      * Adds a behaviour to a collection
      *
-     * @param phpDocumentor_Transformer_Behaviour_Abstract $behaviour Behaviour to add
+     * @param \phpDocumentor\Transformer\Behaviour\BehaviourAbstract $behaviour Behaviour to add
      *     to the collection.
      *
      * @return void
      */
     public function addBehaviour(
-        phpDocumentor_Transformer_Behaviour_Abstract $behaviour
+        \phpDocumentor\Transformer\Behaviour\BehaviourAbstract $behaviour
     ) {
         $this->behaviours[] = $behaviour;
     }
@@ -68,13 +71,13 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Collection extends
     /**
      * Removes a behaviour from the collection
      *
-     * @param phpDocumentor_Transformer_Behaviour_Abstract $behaviour Behaviour to
-     *     remove from the collection.
+     * @param \phpDocumentor\Transformer\Behaviour\BehaviourAbstract $behaviour
+     *     Behaviour to remove from the collection.
      *
      * @return void
      */
     public function removeBehaviour(
-        phpDocumentor_Transformer_Behaviour_Abstract $behaviour
+        \phpDocumentor\Transformer\Behaviour\BehaviourAbstract $behaviour
     ) {
         foreach ($this->behaviours as $key => $thisBehaviour) {
             if ($behaviour == $thisBehaviour) {
@@ -86,11 +89,11 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Collection extends
     /**
      * Executes the behaviour on the given structure xml source,
      *
-     * @param DOMDocument $xml Structure source to apply the behaviours on.
+     * @param \DOMDocument $xml Structure source to apply the behaviours on.
      *
-     * @return DOMDocument
+     * @return \DOMDocument
      */
-    public function process(DOMDocument $xml)
+    public function process(\DOMDocument $xml)
     {
         foreach ($this->behaviours as $behaviour) {
             $xml = $behaviour->process($xml);

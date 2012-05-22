@@ -12,6 +12,9 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
+namespace phpDocumentor\Plugin\Core;
+
+use phpDocumentor\Plugin\ListenerAbstract;
 
 /**
  * Listener for the Core Plugin.
@@ -23,43 +26,43 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Listener extends phpDocumentor_Plugin_ListenerAbstract
+class Listener extends ListenerAbstract
 {
     /**
      * Applies all behaviours prior to transformation.
      *
-     * @param sfEvent $data Event object containing the parameters.
+     * @param \sfEvent $data Event object containing the parameters.
      *
      * @phpdoc-event transformer.transform.pre
      *
      * @return void
      */
-    public function applyBehaviours(sfEvent $data)
+    public function applyBehaviours(\sfEvent $data)
     {
-        if (!$data->getSubject() instanceof phpDocumentor_Transformer) {
-            throw new phpDocumentor_Plugin_Core_Exception(
+        if (!$data->getSubject() instanceof \phpDocumentor\Transformer\Transformer) {
+            throw new Exception(
                 'Unable to apply behaviours, the invoking object is not a '
-                . 'phpDocumentor_Transformer'
+                . '\phpDocumentor\Transformer\Transformer'
             );
         }
 
-        $behaviours = new phpDocumentor_Plugin_Core_Transformer_Behaviour_Collection(
+        $behaviours = new Transformer\Behaviour\Collection(
             $data->getSubject(),
             array(
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_GeneratePaths(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Ignore(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Return(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Param(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Var(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Property(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Method(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Uses(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Covers(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Author(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_License(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_Tag_Internal(),
-                 new phpDocumentor_Plugin_Core_Transformer_Behaviour_AddLinkInformation(),
+                 new Transformer\Behaviour\GeneratePaths(),
+                 new Transformer\Behaviour\Inherit(),
+                 new Transformer\Behaviour\Tag\IgnoreTag(),
+                 new Transformer\Behaviour\Tag\ReturnTag(),
+                 new Transformer\Behaviour\Tag\ParamTag(),
+                 new Transformer\Behaviour\Tag\VarTag(),
+                 new Transformer\Behaviour\Tag\PropertyTag(),
+                 new Transformer\Behaviour\Tag\MethodTag(),
+                 new Transformer\Behaviour\Tag\UsesTag(),
+                 new Transformer\Behaviour\Tag\CoversTag(),
+                 new Transformer\Behaviour\Tag\AuthorTag(),
+                 new Transformer\Behaviour\Tag\LicenseTag(),
+                 new Transformer\Behaviour\Tag\InternalTag(),
+                 new Transformer\Behaviour\AddLinkInformation(),
             )
         );
 
@@ -69,15 +72,15 @@ class phpDocumentor_Plugin_Core_Listener extends phpDocumentor_Plugin_ListenerAb
     /**
      * Checks all phpDocumentor whether they match the given rules.
      *
-     * @param sfEvent $data Event object containing the parameters.
+     * @param \sfEvent $data Event object containing the parameters.
      *
      * @phpdoc-event reflection.docblock-extraction.post
      *
      * @return void
      */
-    public function validateDocBlocks(sfEvent $data)
+    public function validateDocBlocks(\sfEvent $data)
     {
-        /** @var phpDocumentor_Reflection_DocBlockedAbstract $element  */
+        /** @var \phpDocumentor\Reflection\DocBlockedAbstract $element  */
         $element = $data->getSubject();
 
         /** @var \phpDocumentor\Reflection\DocBlock $docblock  */
@@ -98,9 +101,11 @@ class phpDocumentor_Plugin_Core_Listener extends phpDocumentor_Plugin_ListenerAb
 
         foreach (array('Deprecated', 'Required', $type) as $validator) {
 
-            $class = 'phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_' . $validator;
-            if (@class_exists($class)) {
+            $class = 'phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Validator\\'
+                . $validator.'Validator';
+            if (class_exists($class)) {
 
+                /** @var Parser\DocBlock\Tag\Validator\ValidatorAbstract $val */
                 $val = new $class(
                     $this->plugin,
                     $element->getName(),
@@ -117,18 +122,18 @@ class phpDocumentor_Plugin_Core_Listener extends phpDocumentor_Plugin_ListenerAb
     /**
      * Prepare the tag to be injected into the XML file.
      *
-     * @param sfEvent $data Event object containing the parameters.
+     * @param \sfEvent $data Event object containing the parameters.
      *
      * @phpdoc-event reflection.docblock.tag.export
      *
      * @return void
      */
-    public function exportTag(sfEvent $data)
+    public function exportTag(\sfEvent $data)
     {
-        /** @var phpDocumentor_Reflection_DocBlockedAbstract $subject  */
+        /** @var \phpDocumentor\Reflection\DocBlockedAbstract $subject  */
         $subject = $data->getSubject();
 
-        phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition::create(
+        Parser\DocBlock\Tag\Definition\Definition::create(
             $subject->getNamespace(),
             $subject->getNamespaceAliases(),
             $data['xml'],

@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit\Node;
+
 /**
  * Responsible for adding inheritance behaviour to an individual property.
  *
@@ -23,29 +25,24 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
-    extends phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
+class PropertyNode extends NodeAbstract
 {
     /** @var string[] Defined which tags to inherit */
     protected $inherited_tags = array('var');
 
-    /** @var phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class */
+    /** @var ClassNode */
     protected $class = null;
 
     /**
      * Load the node belonging to this object, make an associative array of
      * classes and interfaces available and define the parent class.
      *
-     * @param DOMElement
-     *     $node   Node to decorate.
-     * @param array
-     *     &$nodes List of classes/interface elements
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-     *     $class  Class to which this property belongs.
+     * @param \DOMElement $node   Node to decorate.
+     * @param array       &$nodes List of classes/interface elements
+     * @param ClassNode   $class  Class to which this property belongs.
      */
     public function __construct(
-        DOMElement $node, array &$nodes,
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $class
+        \DOMElement $node, array &$nodes, ClassNode $class
     ) {
         parent::__construct($node, $nodes);
 
@@ -67,18 +64,17 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
     /**
      * Copies this object onto the give class or interface.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-     *     $class_or_interface Object to copy this property onto.
+     * @param ClassNode $class_or_interface Object to copy this property onto.
      *
      * @return void
      */
-    function copyTo(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-        $class_or_interface
-    ) {
+    function copyTo(ClassNode $class_or_interface)
+    {
         // self returns this specific class and not the class of the current
         // object; thus we use get_class to retrieve it.
         $class = get_class($this);
+
+        /** @var PropertyNode $inherited */
         $inherited = new $class(
             clone $this->getNode(), $this->nodes, $class_or_interface
         );
@@ -86,11 +82,11 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
         $class_or_interface->getNode()->appendChild($inherited->getNode());
 
         $inherited->getNode()->appendChild(
-            new DOMElement('inherited_from', $this->class->getFQCN())
+            new \DOMElement('inherited_from', $this->class->getFQCN())
         );
 
         // store the origin of this element
-        $inherited_from = new DOMElement('tag');
+        $inherited_from = new \DOMElement('tag');
         $inherited->getDocBlock()->getNode()->appendChild($inherited_from);
         $inherited_from->setAttribute('name', 'inherited_from');
         $inherited_from->setAttribute(
@@ -132,8 +128,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
     /**
      * Inherits the properties of an element in another class.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
-     *     $parent parent property to inherit from.
+     * @param PropertyNode $parent parent property to inherit from.
      *
      * @return void
      */
@@ -147,7 +142,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
         $docblock->inherit($parent->getDocBlock());
 
         $this->getNode()->appendChild(
-            new DOMElement('override_from', $this->class->getFQCN())
+            new \DOMElement('override_from', $this->class->getFQCN())
         );
     }
 

@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * Checkstyle transformation writer test suite
  *
@@ -23,14 +25,13 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Transformer_Writer_CheckstyleTest extends PHPUnit_Framework_TestCase
+class CheckstyleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test that the phpDocumentor_Transformer_Writer_Checkstyle writer can identify
-     * parse_markers in the structure.xml file and then build a checkstyle.xml
-     * checkstyle report
+     * Test that the Checkstyle writer can identify parse_markers in the
+     * structure.xml file and then build a checkstyle.xml checkstyle report
      *
-     * @covers phpDocumentor_Plugin_Core_Transformer_Writer_Checkstyle::transform
+     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle::transform
      *
      * @param string $structure The xml in structure.xml
      * @param string $expected  The expected XML in checkstyle.xml
@@ -39,19 +40,22 @@ class phpDocumentor_Transformer_Writer_CheckstyleTest extends PHPUnit_Framework_
      *
      * @return void
      */
-    public function testTransformCanIdentifyParseMarkersAndCreateCheckstyleReport($structure, $expected)
-    {
-        $tr = new phpDocumentor_Transformer();
+    public function testTransformCanIdentifyParseMarkersAndCreateCheckstyleReport(
+        $structure, $expected
+    ) {
+        $tr = new \phpDocumentor\Transformer\Transformer();
         $tr->setTarget('/tmp');
-        $t = new phpDocumentor_Transformer_Transformation($tr, '', 'Checkstyle', '', '/checkstyle.xml');
+        $t = new \phpDocumentor\Transformer\Transformation(
+            $tr, '', 'Checkstyle', '', '/checkstyle.xml'
+        );
 
-        $expectedDom = new DOMDocument();
+        $expectedDom = new \DOMDocument();
         $expectedDom->loadXML($expected);
 
-        $document = new DOMDocument();
+        $document = new \DOMDocument();
         $document->loadXML($structure);
 
-        $writer = new phpDocumentor_Plugin_Core_Transformer_Writer_Checkstyle();
+        $writer = new Checkstyle();
         $writer->transform($document, $t);
 
         $this->assertFileExists('/tmp/checkstyle.xml');

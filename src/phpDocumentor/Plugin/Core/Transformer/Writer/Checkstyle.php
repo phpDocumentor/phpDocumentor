@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * Checkstyle transformation writer; generates checkstyle report
  *
@@ -23,28 +25,27 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Writer_Checkstyle
-    extends phpDocumentor_Transformer_Writer_Abstract
+class Checkstyle extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     /**
      * This method generates the checkstyle.xml report
      *
-     * @param DOMDocument                        $structure      XML source.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation.
+     * @param \DOMDocument                              $structure      XML source.
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return void
      */
-    public function transform(DOMDocument $structure,
-        phpDocumentor_Transformer_Transformation $transformation
+    public function transform(\DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         $artifact = $transformation->getTransformer()->getTarget()
         . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
         $list = $structure->getElementsByTagName('parse_markers');
 
-        $document = new DOMDocument();
+        $document = new \DOMDocument();
         $document->formatOutput = true;
         $report = $document->createElement('checkstyle');
         $report->setAttribute('version', '1.3.0');
@@ -76,11 +77,11 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Checkstyle
      * Save the checkstyle report to the artifact
      *
      * @param string      $artifact Target name for the report
-     * @param DOMDocument $document The actual xml document being saved
+     * @param \DOMDocument $document The actual xml document being saved
      *
      * @return void
      */
-    protected function saveCheckstyleReport($artifact, DOMDocument $document)
+    protected function saveCheckstyleReport($artifact, \DOMDocument $document)
     {
         file_put_contents($artifact, $document->saveXML());
     }

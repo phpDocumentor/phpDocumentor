@@ -1,17 +1,36 @@
 <?php
-class phpDocumentor_Parser_Exporter_Xml_TestAbstract
-    extends PHPUnit_Framework_TestCase
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5
+ *
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://phpdoc.org
+ */
+
+namespace phpDocumentor\Parser\Exporter\Xml;
+
+/**
+ * Abstract class for the XML Exporter unit tests.
+ *
+ * @author     Mike van Riel <mike.vanriel@naenius.com>
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT
+ * @link       http://phpdoc.org
+ */
+class TestAbstract extends \PHPUnit_Framework_TestCase
 {
     /**
      * Creates a DOMElement to serve as child element.
      *
-     * @param DOMDocument $doc
+     * @param \DOMDocument $doc
      *
-     * @return DOMElement
+     * @return \DOMElement
      */
     protected function createChildXmlNode($doc)
     {
-        $child = new DOMElement('child');
+        $child = new \DOMElement('child');
         $doc->appendChild($child);
         return $child;
     }
@@ -19,13 +38,13 @@ class phpDocumentor_Parser_Exporter_Xml_TestAbstract
     /**
      * Creates a DOMElement to serve as parent container.
      *
-     * @param DOMDocument $doc
+     * @param \DOMDocument $doc
      *
-     * @return DOMElement
+     * @return \DOMElement
      */
     protected function createParentXmlNode($doc)
     {
-        $parent = new DOMElement('parent');
+        $parent = new \DOMElement('parent');
         $doc->appendChild($parent);
         return $parent;
     }
@@ -37,11 +56,11 @@ class phpDocumentor_Parser_Exporter_Xml_TestAbstract
      *
      * @param string $type
      *
-     * @return phpDocumentor_Parser_Exporter_Abstract
+     * @return \phpDocumentor\Parser\Exporter\ExporterAbstract
      */
     protected function createFixture($type)
     {
-        $class = 'phpDocumentor_Parser_Exporter_Xml_' . $type;
-        return new $class($this->getMock('phpDocumentor_Parser'));
+        $class = '\phpDocumentor\Parser\Exporter\Xml\\' . $type.'Exporter';
+        return new $class($this->getMock('\phpDocumentor\Parser'));
     }
 }

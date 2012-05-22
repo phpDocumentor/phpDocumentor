@@ -12,6 +12,8 @@
  * @link      http://phpdoc.org
  */
 
+namespace phpDocumentor\Transformer;
+
 /**
  * Provides the basic exception for the parser package.
  *
@@ -21,6 +23,6 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Transformer_Exception extends Exception
+class Exception extends \Exception
 {
 }

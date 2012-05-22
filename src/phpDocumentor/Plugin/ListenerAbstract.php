@@ -12,6 +12,8 @@
  * @link      http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin;
+
 /**
  * Base class for plugin event listeners.
  *
@@ -21,16 +23,16 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-abstract class phpDocumentor_Plugin_ListenerAbstract extends phpDocumentor_Plugin_Abstract
+abstract class ListenerAbstract extends PluginAbstract
 {
+    /** @var PluginAbstract */
     protected $plugin = null;
 
     /**
      * Registers the event dispatcher and configuration, calls the configure
      * method and connects the hooks of this listener to the event dispatcher.
      *
-     * @param phpDocumentor_Plugin_Abstract $plugin Plugin object to register this
-     *     listener on.
+     * @param PluginAbstract $plugin Plugin object to register this listener on.
      */
     public function __construct($plugin)
     {
@@ -53,7 +55,7 @@ abstract class phpDocumentor_Plugin_ListenerAbstract extends phpDocumentor_Plugi
      * This method can be used to manually hook events to the dispatcher based
      * instead of using the @phpdoc-event tag.
      *
-     * @see phpDocumentor_Plugin_Core_Listener::configure() for an example of use.
+     * @see \phpDocumentor\Plugin\Core\Listener::configure() for an example of use.
      *
      * @return void
      */
@@ -76,10 +78,10 @@ abstract class phpDocumentor_Plugin_ListenerAbstract extends phpDocumentor_Plugi
      */
     protected function connectHooksToDispatcher()
     {
-        $refl = new ReflectionObject($this);
+        $refl = new \ReflectionObject($this);
 
         // connect all events of the each method to the event_dispatcher
-        /** @var ReflectionMethod $method */
+        /** @var \ReflectionMethod $method */
         foreach ($refl->getMethods() as $method) {
             if (!$method->getDocComment()) {
                 continue;

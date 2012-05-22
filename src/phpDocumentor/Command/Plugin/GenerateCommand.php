@@ -162,7 +162,7 @@ class GenerateCommand extends \Cilex\Command\Command
     <author>{$author}</author>
     <email></email>
     <description>Please enter a description here</description>
-    <class-prefix>phpDocumentor_Plugin_{$class_part}</class-prefix>
+    <class-prefix>\phpDocumentor\Plugin\{$class_part}</class-prefix>
     <listener>Listener</listener>
     <dependencies>
         <phpdoc><min-version>2.0.0</min-version></phpdoc>
@@ -181,7 +181,9 @@ XML
         file_put_contents(
             $path . DIRECTORY_SEPARATOR . 'Exception.php',
 <<<PHP
-class phpDocumentor_Plugin_{$class_part}_Exception extends Exception
+namespace phpDocumentor\Plugin_{$class_part};
+
+class Exception extends \Exception
 {
 }
 PHP
@@ -195,7 +197,9 @@ PHP
         file_put_contents(
             $path . DIRECTORY_SEPARATOR . 'Listener.php',
 <<<PHP
-class phpDocumentor_Plugin_{$class_part}_Listener extends phpDocumentor_Plugin_ListenerAbstract
+namespace phpDocumentor\Plugin\{$class_part};
+
+class Listener extends \phpDocumentor\Plugin\ListenerAbstract
 {
 }
 PHP

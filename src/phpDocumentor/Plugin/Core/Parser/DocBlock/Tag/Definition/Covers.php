@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
+
 /**
  * Definition for the @covers tag; expands the class mentioned in the refers
  * attribute.
@@ -24,8 +26,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Covers
-    extends phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_See
+class Covers extends See
 {
 
 }

@@ -13,4 +13,4 @@
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
 require_once __DIR__ . '/../../src/phpDocumentor/Bootstrap.php';
-phpDocumentor_Bootstrap::createInstance()->initialize();
+\phpDocumentor\Bootstrap::createInstance()->initialize();

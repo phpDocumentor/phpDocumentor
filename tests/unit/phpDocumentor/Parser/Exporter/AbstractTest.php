@@ -10,17 +10,18 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Parser\Exporter;
+
 /**
- * Mock for the Layer superclass in the phpDocumentor_Parser Component.
+ * Mock for the Layer superclass in the \phpDocumentor\Parser\Exporter Component.
  *
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Parser_Exporter_AbstractMock
-    extends phpDocumentor_Parser_Exporter_Abstract
+class ExporterAbstractMock extends ExporterAbstract
 {
-    public function export(phpDocumentor_Reflection_File $file)
+    public function export(\phpDocumentor_Reflection_File $file)
     {
     }
 
@@ -36,10 +37,9 @@ class phpDocumentor_Parser_Exporter_AbstractMock
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Parser_Exporter_AbstractTest
-    extends PHPUnit_Framework_TestCase
+class ExporterAbstractTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var phpDocumentor_Parser_Exporter_AbstractMock */
+    /** @var ExporterAbstractMock */
     protected $fixture = null;
 
     /**
@@ -49,8 +49,8 @@ class phpDocumentor_Parser_Exporter_AbstractTest
      */
     protected function setUp()
     {
-        $parser = $this->getMock('phpDocumentor_Parser');
-        $this->fixture = new \phpDocumentor_Parser_Exporter_AbstractMock($parser);
+        $parser = $this->getMock('\phpDocumentor\Parser\Parser');
+        $this->fixture = new ExporterAbstractMock($parser);
     }
 
     public function testIncludeSource()

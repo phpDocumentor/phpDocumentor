@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit\Node;
+
 /**
  * Responsible for adding inheritance behaviour to an individual class.
  *
@@ -23,8 +25,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-    extends phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
+class ClassNode extends NodeAbstract
 {
     /**
      * Determines whether the inheritance for this class has already been processed.
@@ -75,7 +76,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
         $result = array();
         $interfaces = $this->node->getElementsByTagName('implements');
 
-        /** @var $interface DOMElement */
+        /** @var $interface \DOMElement */
         foreach ($interfaces as $interface) {
             $result[] = $interface->nodeValue;
         }
@@ -86,17 +87,14 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Returns all child methods.
      *
-     * @return phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method[]
+     * @return MethodNode[]
      */
     public function getMethods()
     {
         $result = array();
         $nodes = $this->getDirectElementsByTagName($this->node, 'method');
         foreach ($nodes as $node) {
-            $node
-                = new phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method(
-                    $node, $this->nodes, $this
-                );
+            $node = new MethodNode($node, $this->nodes, $this);
             $result[$node->getName()] = $node;
         }
 
@@ -106,17 +104,14 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Returns all child properties.
      *
-     * @return phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
+     * @return PropertyNode[]
      */
     public function getProperties()
     {
         $result = array();
         $nodes = $this->getDirectElementsByTagName($this->node, 'property');
         foreach ($nodes as $node) {
-            $node
-                = new phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property(
-                    $node, $this->nodes, $this
-                );
+            $node = new PropertyNode($node, $this->nodes, $this);
             $result[$node->getName()] = $node;
         }
 
@@ -126,17 +121,14 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Returns all class constants.
      *
-     * @return phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant
+     * @return ConstantNode[]
      */
     public function getConstants()
     {
         $result = array();
         $nodes = $this->getDirectElementsByTagName($this->node, 'constant');
         foreach ($nodes as $node) {
-            $node
-                = new phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant(
-                    $node, $this->nodes, $this
-                );
+            $node = new ConstantNode($node, $this->nodes, $this);
             $result[$node->getName()] = $node;
         }
 
@@ -146,24 +138,16 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits all methods from the given parent class.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
-     *   parent object to inherit methods from.
+     * @param ClassNode $parent parent object to inherit methods from.
      *
      * @return void
      */
-    protected function inheritMethods(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
-    ) {
-        /**
-         * @var phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method[]
-         *     $methods
-         */
+    protected function inheritMethods(ClassNode $parent)
+    {
+        /** @var MethodNode[] $methods */
         $methods = $this->getMethods();
 
-        /**
-         * @var phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method
-         *     $parent_method
-         */
+        /** @var MethodNode $parent_method */
         foreach ($parent->getMethods() as $key => $parent_method) {
             if (isset($methods[$key])) {
                 $methods[$key]->inherit($parent_method);
@@ -176,14 +160,12 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits all properties from a given base class.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
-     *     parent object to inherit properties from.
+     * @param ClassNode $parent parent object to inherit properties from.
      *
      * @return void
      */
-    protected function inheritProperties(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
-    ) {
+    protected function inheritProperties(ClassNode $parent)
+    {
         $properties = $this->getProperties();
 
         foreach ($parent->getProperties() as $key => $parent_property) {
@@ -198,24 +180,16 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits all constants from a given base class.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-     *     $parent parent object to inherit constants from.
+     * @param ClassNode $parent parent object to inherit constants from.
      *
      * @return void
      */
-    protected function inheritConstants(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
-    ) {
-        /**
-         * @var phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant[]
-         *     $constants
-         */
+    protected function inheritConstants(ClassNode $parent)
+    {
+        /** @var ConstantNode[] $constants */
         $constants = $this->getConstants();
 
-        /**
-         * @var phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant
-         *     $parent_constant
-         */
+        /** @var ConstantNode $parent_constant */
         foreach ($parent->getConstants() as $key => $parent_constant) {
             if (isset($constants[$key])) {
                 $constants[$key]->inherit($parent_constant);
@@ -228,16 +202,14 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits the given parent as if it was an interface.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-     *     $parent Parent interface to inherit from.
+     * @param ClassNode $parent Parent interface to inherit from.
      *
      * @todo this method and inheritClass should be separated into different objects
      *
      * @return void
      */
-    protected function inheritInterfaceObject(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
-    ) {
+    protected function inheritInterfaceObject(ClassNode $parent)
+    {
         // if the implemented interface has not processed yet; do so. This will
         // cause a recurring effect which makes sure the tree is traversed
         // bottom-to-top
@@ -252,17 +224,15 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Inherits the given parent as if it was an class.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
-     *     $parent Parent class to inherit from.
+     * @param ClassNode $parent Parent class to inherit from.
      *
      * @todo this method and inheritInterface should be separated into
      *     different objects
      *
      * @return void
      */
-    protected function inheritClassObject(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $parent
-    ) {
+    protected function inheritClassObject(ClassNode $parent)
+    {
         // if the parent class has not processed yet; do so. This will cause
         // a recurring effect which makes sure the tree is traversed bottom-to-top
         if (!$parent->is_processed) {
@@ -283,13 +253,13 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     /**
      * Imports a method that is obtained via reflection.
      *
-     * @param ReflectionMethod $method Method that is to be imported.
+     * @param \ReflectionMethod $method Method that is to be imported.
      *
      * @see self::reflectInternalClass for a complete description.
      *
-     * @return DOMElement|null
+     * @return \DOMElement|null
      */
-    protected function importReflectedMethod(ReflectionMethod $method)
+    protected function importReflectedMethod(\ReflectionMethod $method)
     {
         if ($method->isPrivate()) {
             return null;
@@ -299,16 +269,16 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
         $methods = $this->getMethods();
         if (in_array($method->getName(), array_keys($methods))) {
             $methods[$method->getName()]->getNode()->appendChild(
-                new DOMElement('overrides-from', $class_name)
+                new \DOMElement('overrides-from', $class_name)
             );
 
             return $methods[$method->getName()]->getNode();
         }
 
-        $method_node = new DOMElement('method');
+        $method_node = new \DOMElement('method');
         $this->node->appendChild($method_node);
 
-        $node_name = new DOMElement('name', $method->getName());
+        $node_name = new \DOMElement('name', $method->getName());
         $method_node->appendChild($node_name);
         $method_node->setAttribute(
             'final', $method->isFinal() ? 'true' : 'false'
@@ -323,12 +293,9 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
             'visibility', $method->isPublic() ? 'public' : 'protected'
         );
 
-        $method_obj
-            = new phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Method(
-                $method_node, $this->nodes, $this
-            );
+        $method_obj = new MethodNode($method_node, $this->nodes, $this);
 
-        $inherited_from = new DOMElement('tag');
+        $inherited_from = new \DOMElement('tag');
         $method_obj->getDocBlock()->getNode()->appendChild($inherited_from);
         $inherited_from->setAttribute('name', 'inherited_from');
         $inherited_from->setAttribute(
@@ -364,9 +331,9 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class
     protected function reflectExternalClass($parent_class_name)
     {
         if (@class_exists($parent_class_name)) {
-            $refl = new ReflectionClass($parent_class_name);
+            $refl = new \ReflectionClass($parent_class_name);
 
-            /** @var ReflectionMethod $method */
+            /** @var \ReflectionMethod $method */
             foreach ($refl->getMethods() as $method) {
                 $this->importReflectedMethod($method);
             }

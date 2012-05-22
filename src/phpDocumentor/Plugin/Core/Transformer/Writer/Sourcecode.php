@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * Sourcecode transformation writer; generates syntax highlighted source files
  * in a destination's subfolder.
@@ -24,22 +26,21 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Writer_Sourcecode
-    extends phpDocumentor_Transformer_Writer_Abstract
+class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     /**
      * This method writes every source code entry in the structure file
      * to a highlighted file.
      *
-     * @param DOMDocument                        $structure      XML source.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation.
+     * @param \DOMDocument                        $structure      XML source.
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return void
      */
-    public function transform(DOMDocument $structure,
-        phpDocumentor_Transformer_Transformation $transformation
+    public function transform(\DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR
@@ -47,11 +48,11 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Sourcecode
                 ? $transformation->getArtifact()
                 : 'source');
 
-        $xpath = new DOMXPath($structure);
+        $xpath = new \DOMXPath($structure);
         $list = $xpath->query("/project/file[source]");
 
         for ($i=0; $i < $list->length; $i++) {
-            /** @var DOMElement $element */
+            /** @var \DOMElement $element */
             $element  = $list->item($i);
             $filename = $element->getAttribute('path');
             $source   = gzuncompress(

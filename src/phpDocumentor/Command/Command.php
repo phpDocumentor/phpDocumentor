@@ -67,25 +67,25 @@ class Command extends \Cilex\Command\Command
     public function logEvent(OutputInterface $output, \sfEvent $event)
     {
         if (!isset($event['priority'])) {
-            $event['priority'] = 8;
+            $event['priority'] = \phpDocumentor\Plugin\Core\Log::INFO;
         }
 
-        $threshold = 5;
+        $threshold = \phpDocumentor\Plugin\Core\Log::ERR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
-            $threshold = 8;
+            $threshold = \phpDocumentor\Plugin\Core\Log::DEBUG;
         }
 
         if ($event['priority'] <= $threshold) {
             $message = $event['message'];
             switch ($event['priority'])
             {
-            case 4:
+            case \phpDocumentor\Plugin\Core\Log::WARN:
                 $message = '<comment>' . $message . '</comment>';
                 break;
-            case 0:
-            case 1:
-            case 2:
-            case 3:
+            case \phpDocumentor\Plugin\Core\Log::EMERG:
+            case \phpDocumentor\Plugin\Core\Log::ALERT:
+            case \phpDocumentor\Plugin\Core\Log::CRIT:
+            case \phpDocumentor\Plugin\Core\Log::ERR:
                 $message = '<error>' . $message . '</error>';
                 break;
             }

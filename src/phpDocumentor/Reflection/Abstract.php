@@ -99,8 +99,8 @@ abstract class phpDocumentor_Reflection_Abstract
      * @param string   $name      Name of the event to dispatch.
      * @param string[] $arguments Arguments for this event.
      *
-     * @throws phpDocumentor_Parser_Exception if there is a dispatcher but it is not
-     *  of type sfEventDispatcher
+     * @throws phpDocumentor_Reflection_Exception if there is a dispatcher but
+     *  it is not of type sfEventDispatcher
      *
      * @return mixed|null
      */
@@ -111,7 +111,7 @@ abstract class phpDocumentor_Reflection_Abstract
         }
 
         if (!self::$event_dispatcher instanceof sfEventDispatcher) {
-            throw new phpDocumentor_Parser_Exception(
+            throw new phpDocumentor_Reflection_Exception(
                 'Expected the event dispatcher to be an instance of '
                 . 'sfEventDispatcher'
             );

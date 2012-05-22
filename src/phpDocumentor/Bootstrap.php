@@ -12,6 +12,8 @@
  * @link      http://phpdoc.org
  */
 
+namespace phpDocumentor;
+
 require_once __DIR__.'/Application.php';
 
 /**
@@ -27,16 +29,16 @@ require_once __DIR__.'/Application.php';
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Bootstrap
+class Bootstrap
 {
     /**
      * Helper static function to get an instance of this class.
      *
      * Usually used to do a one-line initialization, such as:
      *
-     *     phpDocumentor_Bootstrap::createInstance()->initialize();
+     *     \phpDocumentor\Bootstrap::createInstance()->initialize();
      *
-     * @return phpDocumentor_Bootstrap
+     * @return Bootstrap
      */
     public static function createInstance()
     {

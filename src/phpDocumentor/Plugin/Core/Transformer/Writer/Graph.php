@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * Class diagram generator.
  *
@@ -25,8 +27,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
-    extends phpDocumentor_Transformer_Writer_Abstract
+class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     /** @var string Name of the font to use to display the node labels with */
     protected $node_font = 'Courier';
@@ -35,15 +36,16 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
      * Generates an array containing class to path references and then invokes
      * the Source specific method.
      *
-     * @param DOMDocument                        $structure      Structure source
+     * @param \DOMDocument                        $structure      Structure source
      *     use as basis for the transformation.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
      *     that supplies the meta-data for this writer.
      *
      * @return void
      */
     public function transform(
-        DOMDocument $structure, phpDocumentor_Transformer_Transformation $transformation
+        \DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
@@ -59,11 +61,11 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
         $this->node_font = $transformation->getParameter('font', 'Courier');
 
         // add to classes
-        $xpath = new DOMXPath($structure);
+        $xpath = new \DOMXPath($structure);
         $qry = $xpath->query('//class[full_name]/..');
         $class_paths = array();
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $path = $element->getAttribute('generated-path');
             foreach ($element->getElementsByTagName('class') as $class) {
@@ -75,7 +77,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
 
         // add to interfaces
         $qry = $xpath->query('//interface[full_name]/..');
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $path = $element->getAttribute('generated-path');
             foreach ($element->getElementsByTagName('interface') as $class) {
@@ -94,8 +96,8 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
      * Builds a tree of namespace subgraphs with their classes associated.
      *
      * @param \phpDocumentor\GraphViz\Graph $graph               Graph to expand on.
-     * @param DOMElement             $namespace_element   Namespace index element.
-     * @param DOMXPath               $xpath               $xpath object to use
+     * @param \DOMElement             $namespace_element   Namespace index element.
+     * @param \DOMXPath               $xpath               $xpath object to use
      *     for querying.
      * @param string                 $full_namespace_name unabbreviated version
      *     of the current namespace, namespace index only contains an abbreviated
@@ -104,7 +106,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
      * @return void
      */
     public function buildNamespaceTree(\phpDocumentor\GraphViz\Graph $graph,
-        DOMElement $namespace_element, DOMXPath $xpath, $full_namespace_name
+        \DOMElement $namespace_element, \DOMXPath $xpath, $full_namespace_name
     ) {
         $namespace = $namespace_element->getAttribute('name');
         $full_namespace_name .= '\\' . $namespace;
@@ -125,7 +127,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
             ."|/project/file/class[@namespace='$full_namespace_name']"
         );
 
-        /** @var DOMElement $sub_element */
+        /** @var \DOMElement $sub_element */
         foreach ($sub_qry as $sub_element) {
             $node = \phpDocumentor\GraphViz\Node::create(
                 $sub_element->getElementsByTagName('full_name')->item(0)->nodeValue,
@@ -168,15 +170,16 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
     /**
      * Creates a class inheritance diagram.
      *
-     * @param DOMDocument                        $structure      Structure
+     * @param \DOMDocument                        $structure      Structure
      *     document used to gather data from.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
      *     element containing the meta-data.
      *
      * @return void
      */
     public function processClass(
-        DOMDocument $structure, phpDocumentor_Transformer_Transformation $transformation
+        \DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         $filename = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -188,10 +191,10 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
                 ->setSplines('true')
                 ->setConcentrate('true');
 
-        $xpath = new DOMXPath($structure);
+        $xpath = new \DOMXPath($structure);
         $qry = $xpath->query("/project/namespace");
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $this->buildNamespaceTree($graph, $element, $xpath, '');
         }
@@ -201,7 +204,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
             '/project/file/interface[extends]|/project/file/class[extends]'
         );
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $from_name = $element->getElementsByTagName('full_name')->item(0)
                 ->nodeValue;
@@ -239,7 +242,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Graph
             '/project/file/interface[imports]|/project/file/class[implements]'
         );
 
-        /** @var DOMElement $element */
+        /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $from_name = $element->getElementsByTagName('full_name')->item(0)
                 ->nodeValue;

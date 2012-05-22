@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * Search writer responsible for building the search index.
  *
@@ -23,21 +25,21 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Writer_Search
-    extends phpDocumentor_Transformer_Writer_Abstract
+class Search extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     /**
      * Creates the search index at the artifact location.
      *
-     * @param DOMDocument                        $structure      Structure source
+     * @param \DOMDocument                        $structure      Structure source
      *     use as basis for the transformation.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
      *     that supplies the meta-data for this writer.
      *
      * @return void
      */
     public function transform(
-        DOMDocument $structure, phpDocumentor_Transformer_Transformation $transformation
+        \DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         $this->createXmlIndex(
             $structure,
@@ -49,7 +51,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Search
     /**
      * Helper method to create the actual index.
      *
-     * @param DOMDocument $xml         Structure source use as basis for
+     * @param \DOMDocument $xml         Structure source use as basis for
      *     the transformation.
      * @param string      $target_path The path where to generate the index.
      *
@@ -57,11 +59,11 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Search
      *
      * @return void
      */
-    public function createXmlIndex(DOMDocument $xml, $target_path)
+    public function createXmlIndex(\DOMDocument $xml, $target_path)
     {
         $this->log('Generating the search index');
 
-        $output = new SimpleXMLElement('<nodes></nodes>');
+        $output = new \SimpleXMLElement('<nodes></nodes>');
         $xml = simplexml_import_dom($xml);
 
         foreach ($xml->file as $file) {

@@ -140,8 +140,8 @@ class Application extends \Cilex\Application
     protected function linkEventDispatcherToSuperclasses()
     {
         \phpDocumentor_Reflection_Abstract::$event_dispatcher = $this['event_dispatcher'];
-        \phpDocumentor_Parser_Abstract::$event_dispatcher = $this['event_dispatcher'];
-        \phpDocumentor_Transformer_Abstract::$event_dispatcher = $this['event_dispatcher'];
+        \phpDocumentor\Parser\ParserAbstract::$event_dispatcher = $this['event_dispatcher'];
+        \phpDocumentor\Transformer\TransformerAbstract::$event_dispatcher = $this['event_dispatcher'];
     }
 
 
@@ -150,7 +150,7 @@ class Application extends \Cilex\Application
         $app = $this;
         $this['plugin_manager'] = $this->share(
             function () use ($app) {
-                $manager = new \phpDocumentor_Plugin_Manager(
+                $manager = new \phpDocumentor\Plugin\Manager(
                     $app['event_dispatcher'], $app['config'], $app['autoloader']
                 );
                 return $manager;

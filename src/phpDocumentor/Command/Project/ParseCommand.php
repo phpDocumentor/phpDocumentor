@@ -210,7 +210,7 @@ HELP
             $this->getOption($input, 'target', 'parser/target')
         );
 
-        $parser = new \phpDocumentor_Parser();
+        $parser = new \phpDocumentor\Parser\Parser();
         $parser->setTitle(
             htmlentities((string)$this->getOption($input, 'title', 'title'))
         );
@@ -243,7 +243,7 @@ HELP
             $output->writeln('Parsing files');
             $result = $parser->parseFiles($files, $input->getOption('sourcecode'));
         } catch (\Exception $e) {
-            if ($e->getCode() === \phpDocumentor_Parser_Exception::NO_FILES_FOUND) {
+            if ($e->getCode() === \phpDocumentor\Parser\Exception::NO_FILES_FOUND) {
                 throw new \Exception(
                     'No parsable files were found, did you specify any using '
                     . 'the -f or -d parameter?'

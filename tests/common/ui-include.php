@@ -11,5 +11,4 @@
  */
 
 require_once __DIR__ . '/../../src/phpDocumentor/Bootstrap.php';
-phpDocumentor_Bootstrap::createInstance()->initialize()->run();
-var_dump('test');
+\phpDocumentor\Bootstrap::createInstance()->initialize()->run();

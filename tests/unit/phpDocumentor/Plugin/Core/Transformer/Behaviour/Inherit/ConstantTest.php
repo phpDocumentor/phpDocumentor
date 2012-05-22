@@ -12,25 +12,25 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit\Node;
 
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_ConstantTest
-    extends PHPUnit_Framework_TestCase
+class ConstantNodeTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetReferrerString()
     {
-        $dom = new DOMDocument();
-        $node = new DOMElement('constant');
+        $dom = new \DOMDocument();
+        $node = new \DOMElement('constant');
         $dom->appendChild($node);
-        $node->appendChild(new DOMElement('name', 'CONST'));
+        $node->appendChild(new \DOMElement('name', 'CONST'));
 
         $parent = $this->getMock(
-            'phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class',
+            '\phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit\Node\ClassNode',
             array('getFQCN'), array(), '', false
         );
         $array = array();
 
         $parent->expects($this->once())->method('getFQCN')->will($this->returnValue('MyParent'));
-        $fixture = new phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant(
+        $fixture = new \phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit\Node\ConstantNode(
             $node, $array, $parent
         );
 

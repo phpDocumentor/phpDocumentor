@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
+
 /**
  * Definition for all Doctrine tags to explode them into subcomponents so they
  * can be better processed in the transformation.
@@ -58,8 +60,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Doctrine
-    extends phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
+class Doctrine extends Definition
 {
 
     /**

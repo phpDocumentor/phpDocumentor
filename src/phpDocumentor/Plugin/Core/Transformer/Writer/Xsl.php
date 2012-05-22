@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL
  * templates.
@@ -24,8 +26,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
-    extends phpDocumentor_Transformer_Writer_Abstract
+class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     protected $xsl_variables = array();
 
@@ -33,19 +34,19 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
      * This method combines the structure.xml and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param DOMDocument                        $structure      XML source.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation.
+     * @param \DOMDocument                        $structure      XML source.
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return void
      */
     public function transform(
-        DOMDocument $structure,
-        phpDocumentor_Transformer_Transformation $transformation
+        \DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         if (!class_exists('XSLTProcessor')) {
-            throw new phpDocumentor_Transformer_Exception(
+            throw new \phpDocumentor\Plugin\Core\Exception(
                 'The XSL writer was unable to find your XSLTProcessor; '
                 . 'please check if you have installed the PHP XSL extension'
             );
@@ -54,13 +55,13 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
         $artifact = $transformation->getTransformer()->getTarget()
         . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
-        $xsl = new DOMDocument();
+        $xsl = new \DOMDocument();
         $xsl->load($transformation->getSourceAsPath());
 
-        $proc = new XSLTProcessor();
+        $proc = new \XSLTProcessor();
         $proc->importStyleSheet($xsl);
         if (empty($structure->documentElement)) {
-            throw new phpDocumentor_Transformer_Exception(
+            throw new \phpDocumentor\Plugin\Core\Exception(
                 'Specified DOMDocument lacks documentElement, cannot transform'
             );
         }
@@ -88,9 +89,9 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
         // location by replacing ($<var>} with the sluggified node-value of the
         // search result
         if ($transformation->getQuery() !== '') {
-            $xpath = new DOMXPath($transformation->getTransformer()->getSource());
+            $xpath = new \DOMXPath($transformation->getTransformer()->getSource());
 
-            /** @var DOMNodeList $qry */
+            /** @var \DOMNodeList $qry */
             $qry = $xpath->query($transformation->getQuery());
             $count = $qry->length;
             foreach ($qry as $key => $element) {
@@ -161,14 +162,14 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
     /**
      * Sets the parameters of the XSLT processor.
      *
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation.
-     * @param XSLTProcessor                      $proc           XSLTProcessor.
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
+     * @param \XSLTProcessor                      $proc           XSLTProcessor.
      *
      * @return void
      */
     public function setProcessorParameters(
-        phpDocumentor_Transformer_Transformation $transformation,
-        XSLTProcessor $proc
+        \phpDocumentor\Transformer\Transformation $transformation,
+        \XSLTProcessor $proc
     ) {
         foreach ($this->xsl_variables as $key => $variable) {
             // XSL does not allow both single and double quotes in a string
@@ -191,7 +192,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Xsl
         // transformation entry
         $parameters = $transformation->getParameters();
         if (isset($parameters['variables'])) {
-            /** @var DOMElement $variable */
+            /** @var \DOMElement $variable */
             foreach ($parameters['variables'] as $key => $value) {
                 $proc->setParameter('', $key, $value);
             }

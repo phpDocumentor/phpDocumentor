@@ -12,6 +12,8 @@
  * @link      http://phpdoc.org
  */
 
+namespace phpDocumentor\Parser;
+
 /**
  * Provides the basic exception for the parser package.
  *
@@ -21,7 +23,7 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Parser_Exception extends Exception
+class Exception extends \Exception
 {
     const NO_FILES_FOUND = 2;
 }

@@ -12,6 +12,8 @@
  * @link      http://phpdoc.org
  */
 
+namespace phpDocumentor\Transformer;
+
 /**
  * Model representing a loaded template.
  *
@@ -21,8 +23,8 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstract
-    implements ArrayAccess, Countable, Iterator
+class Template extends TransformerAbstract
+    implements \ArrayAccess, \Countable, \Iterator
 {
     /** @var string Name for this template */
     protected $name = null;
@@ -39,7 +41,7 @@ class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstr
     /** @var string */
     protected $path = '';
 
-    /** @var phpDocumentor_Transformer_Transformation */
+    /** @var Transformation */
     protected $transformations = array();
 
     /**
@@ -125,12 +127,13 @@ class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstr
      *
      * @param string $version Semantic version number in this format: 1.0.0
      *
+     * @throws \InvalidArgumentException if the version number is invalid
      * @return void
      */
     public function setVersion($version)
     {
         if (!preg_match('/^\d+\.\d+\.\d+$/', $version)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Version number is invalid; ' . $version . ' does not match '
                 . 'x.x.x (where x is a number)'
             );
@@ -151,20 +154,20 @@ class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstr
     /**
      * Populates this template from an XML source.
      *
-     * @param phpDocumentor_Transformer $transformer The transformer which is parent.
-     * @param string              $xml         The XML definition for this template.
+     * @param Transformer $transformer The transformer which is parent.
+     * @param string      $xml         The XML definition for this template.
      *
      * @return void
      */
-    public function populate(phpDocumentor_Transformer $transformer, $xml)
+    public function populate(Transformer $transformer, $xml)
     {
-        $xml = new SimpleXMLElement($xml);
+        $xml = new \SimpleXMLElement($xml);
         $this->author    = $xml->author;
         $this->version   = $xml->version;
         $this->copyright = $xml->copyright;
 
         foreach ($xml->transformations->transformation as $transformation) {
-            $transformation_obj = new phpDocumentor_Transformer_Transformation(
+            $transformation_obj = new Transformation(
                 $transformer,
                 (string)$transformation['query'],
                 (string)$transformation['writer'],
@@ -187,19 +190,18 @@ class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstr
     /**
      * Sets a transformation at the given offset.
      *
-     * @param integer|string                     $offset The offset to place
-     *  the value at.
-     * @param phpDocumentor_Transformer_Transformation $value  The transformation to
-     *  add to this template.
+     * @param integer|string $offset The offset to place the value at.
+     * @param Transformation $value  The transformation to add to this template.
      *
+     * @throws \InvalidArgumentException if an invalid item was received
      * @return void
      */
     public function offsetSet($offset, $value)
     {
-        if (!$value instanceof phpDocumentor_Transformer_Transformation) {
-            throw new InvalidArgumentException(
-                'phpDocumentor_Transformer_Template may only contain items of '
-                . 'type phpDocumentor_Transformer_Transformation'
+        if (!$value instanceof Transformation) {
+            throw new \InvalidArgumentException(
+                '\phpDocumentor\Transformer\Template may only contain items of '
+                . 'type \phpDocumentor\Transformer\Transformation'
             );
         }
 
@@ -211,7 +213,7 @@ class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstr
      *
      * @param integer|string $offset The offset to retrieve from.
      *
-     * @return phpDocumentor_Transformer_Transformation
+     * @return Transformation
      */
     function offsetGet($offset)
     {
@@ -289,7 +291,7 @@ class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstr
      *
      * @link http://php.net/manual/en/iterator.key.php
      *
-     * @return scalar scalar on success, integer 0 on failure.
+     * @return int|string scalar on success, integer 0 on failure.
      */
     public function key()
     {
@@ -313,7 +315,7 @@ class phpDocumentor_Transformer_Template extends phpDocumentor_Transformer_Abstr
      *
      * @link http://php.net/manual/en/iterator.current.php
      *
-     * @return phpDocumentor_Transformer_Transformation
+     * @return Transformation
      */
     public function current()
     {

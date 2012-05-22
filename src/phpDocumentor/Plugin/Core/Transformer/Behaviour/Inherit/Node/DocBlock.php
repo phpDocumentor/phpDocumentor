@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit\Node;
+
 /**
  * Wrapper class around a DOMElement containing a DocBlock definition.
  *
@@ -26,8 +28,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
-    extends phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Abstract
+class DocBlockNode extends NodeAbstract
 {
     public $inherited_tags = array('author', 'copyright', 'version');
 
@@ -36,7 +37,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      *
      * To get the value append`->nodeValue` to the result of this method.
      *
-     * @return DOMElement|false
+     * @return \DOMElement|bool
      */
     public function getShortDescription()
     {
@@ -50,7 +51,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      *
      * To get the value append`->nodeValue` to the result of this method.
      *
-     * @return DOMElement|false
+     * @return \DOMElement|bool
      */
     public function getLongDescription()
     {
@@ -63,7 +64,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Determines whether the short description should be inherited from the
      * given parent description.
      *
-     * @param DOMElement|false $super_desc The short description found in the
+     * @param \DOMElement|bool $super_desc The short description found in the
      *     parent DocBlock.
      *
      * @return bool
@@ -80,7 +81,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Determines whether the long description should be inherited from the
      * given parent description.
      *
-     * @param DOMElement|false $super_desc The long description found in the
+     * @param \DOMElement|bool $super_desc The long description found in the
      *     parent DocBlock.
      *
      * @return bool
@@ -96,14 +97,12 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
     /**
      * Inherits the short description from the given parent DocBlock.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
-     *      $parent Node to inherit the short description from.
+     * @param DocBlockNode $parent Node to inherit the short description from.
      *
      * @return void
      */
-    protected function inheritShortDescription(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent
-    ) {
+    protected function inheritShortDescription(DocBlockNode $parent)
+    {
         $desc = $this->getShortDescription();
         $super_desc = $parent->getShortDescription();
 
@@ -126,14 +125,13 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
     /**
      * Inherits the long description from the given parent DocBlock.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
-     *     $parent parent docblock whose long description to inherit.
+     * @param DocBlockNode $parent parent docblock whose long description to
+     *     inherit.
      *
      * @return void
      */
-    protected function inheritLongDescription(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent
-    ) {
+    protected function inheritLongDescription(DocBlockNode $parent)
+    {
         $short_desc = $this->getShortDescription();
         $desc       = $this->getLongDescription();
         $super_desc = $parent->getLongDescription();
@@ -164,7 +162,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
     /**
      * Returns all DOMElements representing tags.
      *
-     * @return DOMElement[]
+     * @return \DOMElement[]
      */
     public function getTags()
     {
@@ -216,24 +214,21 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Removes the `subpackage` index from the given list of tags if the `package`
      * of this class does not match its parent.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
-     *     $parent Parent Docblock to check against.
-     * @param string[]
-     *     &$tags Array of inheritable tags to filter.
+     * @param DocBlockNode $parent Parent Docblock to check against.
+     * @param string[]     &$tags  Array of inheritable tags to filter.
      *
      * @return void
      */
     protected function filterSubpackageInheritance(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent,
-        array &$tags
+        DocBlockNode $parent, array &$tags
     ) {
         // find the name of the super's package
-        /** @var DOMElement $super_package  */
+        /** @var \DOMElement $super_package  */
         $super_package = current($parent->getTagsByName('package'));
         $super_package_name = $super_package
                 ? $super_package->getAttribute('description') : null;
 
-        /** @var DOMElement $local_package  */
+        /** @var \DOMElement $local_package  */
         $local_package = current($this->getTagsByName('package'));
         $local_package_name = $local_package
                 ? $local_package->getAttribute('description') : null;
@@ -253,16 +248,13 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Copies tag nodes from the given $parent to this DocBlock if the name
      * occurs in the given $tags array.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
-     *     $parent Parent node to inherit tags from.
-     * @param string[] $tags List of inheritable tags.
+     * @param DocBlockNode $parent Parent node to inherit tags from.
+     * @param string[]     $tags   List of inheritable tags.
      *
      * @return void
      */
-    protected function inheritTags(
-        phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock $parent,
-        array $tags
-    ) {
+    protected function inheritTags(DocBlockNode $parent, array $tags)
+    {
         $this->filterSubpackageInheritance($parent, $tags);
 
         // get the names of all existing tags because we should only add
@@ -273,7 +265,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
         }
         $existing_tag_names = array_unique($existing_tag_names);
 
-        /** @var DOMElement $tag */
+        /** @var \DOMElement $tag */
         foreach ($parent->getTags() as $tag) {
             $tag_name = $tag->getAttribute('name');
 
@@ -291,8 +283,7 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
      * Inherits the short description, long description and tags of the given
      * $parent node.
      *
-     * @param phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_DocBlock
-     *     $parent Parent nodeblock to inherit.
+     * @param DocBlockNode $parent Parent nodeblock to inherit.
      *
      * @return void
      */

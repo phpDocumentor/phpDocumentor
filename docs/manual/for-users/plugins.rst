@@ -35,7 +35,7 @@ need to know is that they are there and what they are used for.
 .. NOTE::
 
     When you want to create your own runner you will have to pass these as
-    dependencies to the plugin manager or use the phpDocumentor_Bootstrap class
+    dependencies to the plugin manager or use the \phpDocumentor\Bootstrap class
     to bootstrap the basics for you.
 
 How does it work
@@ -51,7 +51,7 @@ A component in this context means either:
 * `Transformation Writers`_, which can be used by Transformations to perform
   actions during the structure-to-output conversion process.
 
-      An example is the *phpDocumentor_Plugin_Core_Transformer_Writer_Xsl*; which
+      An example is the *\phpDocumentor\Plugin\Core\Transformer\Writer\Xsl*; which
       performs the actual creation of a HTML file according to a template.
 
   Contrary to listeners the `Transformation Writers`_ are **not** registered
@@ -109,7 +109,7 @@ An example of such a file is given here:
         <description>
             This plugin contains all PHPDoc basic behaviours and validators.
         </description>
-        <class-prefix>phpDocumentor_Plugin_Core</class-prefix>
+        <class-prefix>\phpDocumentor\Plugin\Core</class-prefix>
         <listener>Listener</listener>
         <options>
             <option name="Option1">value</name>
@@ -173,7 +173,7 @@ For example::
         `\my\Plugin` then the file's path is:
         ``[plugin.xml folder]/My/Plugin/Listener.php``.
 
-When no class_prefix is given then `phpDocumentor_Plugin_<ucfirst(name)>` is assumed.
+When no class_prefix is given then `\phpDocumentor\Plugin\<ucfirst(name)>` is assumed.
 
 Listener
 ~~~~~~~~
@@ -274,7 +274,7 @@ on the invocation of plugins.
 6. The **parse** task creates a File collection, which collects all files that
    are to be parsed (or ignored) from the given arguments and configuration.
 7. The **parse** task then sends the File collection to an instance of the
-   phpDocumentor_Parser class and starts the parsing process.
+   \phpDocumentor\Parser\Parser class and starts the parsing process.
 8. A File is taken from the collection and is processed by the Static
    Reflection component
 
@@ -297,7 +297,7 @@ on the invocation of plugins.
 
 10. Steps 8 and 9 will repeat until all files have been processed.
 11. The **run** task will take back control and initiate the **transform** task
-12. The **transform** task instantiates an object of class phpDocumentor_Transformer
+12. The **transform** task instantiates an object of class \phpDocumentor\Transformer\Transformer
     and start the transformation from temporary structure to the intended
     output format, such as HTML.
 13. Right before the actual transformation will the `transformer.transform.pre`_

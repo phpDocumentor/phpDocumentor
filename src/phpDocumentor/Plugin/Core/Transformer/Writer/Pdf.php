@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * A PDF writer which uses wkhtmltopdf to convert a single HTML file to PDF.
  *
@@ -31,21 +33,21 @@
  * @link       http://blog.structuralartistry.com/post/2327213260/
  *             installing-wkhtmltopdf-on-ubuntu-server
  */
-class phpDocumentor_Plugin_Core_Transformer_Writer_Pdf
-    extends phpDocumentor_Transformer_Writer_Abstract
+class Pdf extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     /**
      * Calls the wkhtmltopdf executable to generate a PDF.
      *
-     * @param DOMDocument                        $structure      Structure source
+     * @param \DOMDocument                        $structure      Structure source
      *     use as basis for the transformation.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
      *     that supplies the meta-data for this writer.
      *
      * @return void
      */
     public function transform(
-        DOMDocument $structure, phpDocumentor_Transformer_Transformation $transformation
+        \DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -104,7 +106,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_Pdf
 
         // CRASH!
         if ($error != 0) {
-            throw new phpDocumentor_Transformer_Exception(
+            throw new \phpDocumentor\Plugin\Core\Exception(
                 'Conversion to PDF failed, see output for details'
             );
         }

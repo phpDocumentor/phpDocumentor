@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Required Test
+ * \phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\RequiredValidator Test
  *
  * @category   phpDocumentor
  * @package    Reflection
@@ -8,8 +8,10 @@
  * @author     Ben Selby <benmatselby@gmail.com>
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
+
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
 /**
- * Test class for phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Required
+ * Test class for \phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\RequiredValidator
  *
  * @category   phpDocumentor
  * @package    Reflection
@@ -17,7 +19,7 @@
  * @author     Ben Selby <benmatselby@gmail.com>
  * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
  */
-class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_RequiredTest extends PHPUnit_Framework_TestCase
+class RequiredValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test that isValid can interpret the configuration options and log parse
@@ -30,20 +32,22 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_RequiredTest extends P
      * @param string $logCount    PHPUnit expects assertion string
      * @param string $expectedLog The line we expect to be logged
      *
-     * @covers phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Required::isValid
-     * @covers phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Required::validateTags
+     * @covers RequiredValidator::isValid
+     * @covers RequiredValidator::validateTags
      * @dataProvider provideDataForIsValid
      *
      * @return void
      */
-    public function testIsValidCanLogErrorsDependingOnConfigurationOptions($docblock, $options, $entity, $lineNumber, $tagCount, $logCount, $expectedLog)
-    {
-        $docblock = new phpDocumentor_Reflection_DocBlock(
+    public function testIsValidCanLogErrorsDependingOnConfigurationOptions(
+        $docblock, $options, $entity, $lineNumber, $tagCount, $logCount,
+        $expectedLog
+    ) {
+        $docblock = new \phpDocumentor\Reflection\DocBlock(
             $docblock
         );
 
         $val = $this->getMock(
-            'phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Required',
+            '\phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\RequiredValidator',
             array('logParserError', 'debug'),
             array($entity, $lineNumber, $docblock)
         );
@@ -51,7 +55,10 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_RequiredTest extends P
         if ($logCount != 'never') {
             $val->expects($this->$logCount())
                 ->method('logParserError')
-                ->with($this->equalTo('CRITICAL'), $this->equalTo($expectedLog), $this->equalTo($lineNumber));
+                ->with(
+                    $this->equalTo('CRITICAL'), $this->equalTo($expectedLog),
+                    $this->equalTo($lineNumber)
+                );
         } else {
             $val->expects($this->$logCount())
                 ->method('logParserError');
@@ -120,7 +127,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_RequiredTest extends P
                   */',
                 array(
                     'required' => array(
-                        'phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Required' => array('access')
+                        '\phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\RequiredValidator' => array('access')
                     )
                 ),
                 'File.php',
@@ -139,7 +146,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_RequiredTest extends P
                   */',
                 array(
                     'required' => array(
-                        'phpDocumentor_Plugin_Core_Parser_DocBlock_Validator_Required' => array('access')
+                        '\phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\RequiredValidator' => array('access')
                     )
                 ),
                 'File.php',

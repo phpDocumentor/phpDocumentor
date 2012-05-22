@@ -2,14 +2,17 @@
 /**
  * Test class for FileIO writer.
  */
-class phpDocumentor_Transformer_Writer_FileIoTest extends PHPUnit_Framework_TestCase
+
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
+class FileIoTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \phpDocumentor_Plugin_Core_Transformer_Writer_FileIo */
+    /** @var FileIo */
     protected $fixture = null;
 
     protected function setUp()
     {
-        $this->fixture = new phpDocumentor_Plugin_Core_Transformer_Writer_FileIo();
+        $this->fixture = new FileIo();
     }
 
     public function testExecuteQueryCopy()
@@ -19,24 +22,24 @@ class phpDocumentor_Transformer_Writer_FileIoTest extends PHPUnit_Framework_Test
         $this->assertFileExists('/tmp/phpdoc_a');
         $this->assertFileNotExists('/tmp/phpdoc_b');
 
-        $tr = new phpDocumentor_Transformer();
+        $tr = new \phpDocumentor\Transformer\Transformer();
         $tr->setTarget('/tmp');
         try
         {
-            $t = new phpDocumentor_Transformer_Transformation(
+            $t = new \phpDocumentor\Transformer\Transformation(
                 $tr, 'copy', 'FileIo', '/tmp/phpdoc_b', 'phpdoc_c'
             );
-            $this->fixture->transform(new DOMDocument(), $t);
+            $this->fixture->transform(new \DOMDocument(), $t);
 
             $this->fail(
                 'When a non-existing source is provided, an exception is expected'
             );
         }
-        catch (PHPUnit_Framework_AssertionFailedError $e)
+        catch (\PHPUnit_Framework_AssertionFailedError $e)
         {
             throw $e;
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             // this is good
         }
@@ -44,21 +47,21 @@ class phpDocumentor_Transformer_Writer_FileIoTest extends PHPUnit_Framework_Test
         try
         {
             $tr->setTarget('/tmpz');
-            $t = new phpDocumentor_Transformer_Transformation(
+            $t = new \phpDocumentor\Transformer\Transformation(
                 $tr, 'copy', 'FileIo', '/tmp/phpdoc_a', 'phpdoc_b'
             );
-            $this->fixture->transform(new DOMDocument(), $t);
+            $this->fixture->transform(new \DOMDocument(), $t);
 
             $this->fail(
                 'When a non-existing transformer target is provided, '
                 . 'an exception is expected'
             );
         }
-        catch (PHPUnit_Framework_AssertionFailedError $e)
+        catch (\PHPUnit_Framework_AssertionFailedError $e)
         {
             throw $e;
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             // this is good
         }
@@ -69,7 +72,7 @@ class phpDocumentor_Transformer_Writer_FileIoTest extends PHPUnit_Framework_Test
         );
 
 //        $tr->setTarget('/tmp');
-//        $t = new phpDocumentor_Transformer_Transformation(
+//        $t = new \phpDocumentor\Transformer\Transformation(
 //            $tr, 'copy', 'FileIo', '/tmp/phpdoc_a', '/tmp/phpdoc_b'
 //        );
 //        $this->fixture->executeQueryCopy($t);
@@ -86,17 +89,17 @@ class phpDocumentor_Transformer_Writer_FileIoTest extends PHPUnit_Framework_Test
         $this->assertFileExists('/tmp/phpdoc_a');
         $this->assertFileNotExists('/tmp/phpdoc_b');
 
-        $tr = new phpDocumentor_Transformer();
+        $tr = new \phpDocumentor\Transformer\Transformer();
         $tr->setTarget('/tmp');
 
         try
         {
-            $t = new phpDocumentor_Transformer_Transformation($tr, 'copyz', 'FileIo', '/tmp/phpdoc_a', 'phpdoc_b');
-            $this->fixture->transform(new DOMDocument(), $t);
+            $t = new \phpDocumentor\Transformer\Transformation($tr, 'copyz', 'FileIo', '/tmp/phpdoc_a', 'phpdoc_b');
+            $this->fixture->transform(new \DOMDocument(), $t);
 
             $this->fail('When un unknown query type is used an exception is expected');
         }
-        catch (InvalidArgumentException $e)
+        catch (\InvalidArgumentException $e)
         {
             // this is good
         }
@@ -105,7 +108,7 @@ class phpDocumentor_Transformer_Writer_FileIoTest extends PHPUnit_Framework_Test
             'Absolute files are no longer supported using the FileIo writer, '
             .'the test code should be adapted'
         );
-//       $t = new phpDocumentor_Transformer_Transformation($tr, 'copy', 'FileIo', '/tmp/phpdoc_a', 'phpdoc_b');
+//       $t = new \phpDocumentor\Transformer\Transformation($tr, 'copy', 'FileIo', '/tmp/phpdoc_a', 'phpdoc_b');
 //        $this->fixture->transform(new DOMDocument(), $t);
 //        $this->assertFileExists('/tmp/phpdoc_a');
 //        $this->assertFileExists('/tmp/phpdoc_b');

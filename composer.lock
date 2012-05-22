@@ -72,19 +72,14 @@
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "v1.0.0",
-            "alias-pretty-version": "1.0.x-dev",
-            "alias-version": "1.0.9999999.9999999-dev"
+            "source-reference": "v1.0.0"
         },
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "v1.0.0"
-        },
-        {
-            "package": "symfony/class-loader",
-            "version": "dev-master",
-            "source-reference": "c57e62c886899f8d88264efad23c857eb198dc09"
+            "source-reference": "v1.0.0",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
         },
         {
             "package": "symfony/class-loader",
@@ -94,35 +89,33 @@
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
-            "package": "symfony/console",
+            "package": "symfony/class-loader",
             "version": "dev-master",
-            "source-reference": "0e67dc701ff55d2a1899a1e638a13a4be96d19b9"
+            "source-reference": "c57e62c886899f8d88264efad23c857eb198dc09"
         },
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "0e67dc701ff55d2a1899a1e638a13a4be96d19b9",
+            "source-reference": "1edd7b739561e87bde81ff1c2ce08bd89e92277e",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "source-reference": "1edd7b739561e87bde81ff1c2ce08bd89e92277e"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "a2cef64d5072b284b671ee8e06b8ebc38c2969e1",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "a464fd63f0b1bf0feef1ea1dd9642728c2c2060a",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/finder",
-            "version": "dev-master",
-            "source-reference": "a464fd63f0b1bf0feef1ea1dd9642728c2c2060a"
-        },
-        {
-            "package": "symfony/finder",
-            "version": "dev-master",
-            "source-reference": "360dc8c000efe2cf003deecd6777ea5d364fe23d",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "a2cef64d5072b284b671ee8e06b8ebc38c2969e1"
         },
         {
             "package": "symfony/process",

@@ -10,6 +10,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Parser\Exporter\Xml;
+
 /**
  * Test for the XML Exporter's Argument exporter class.
  *
@@ -17,8 +19,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Parser_Exporter_Xml_FunctionTest
-    extends PHPUnit_Framework_TestCase
+class FunctionExporterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tests whether the export method returns the correct XML representation.

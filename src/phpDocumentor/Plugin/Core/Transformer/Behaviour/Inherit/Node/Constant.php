@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit\Node;
+
 /**
  * Responsible for adding inheritance behaviour to an individual constant.
  *
@@ -23,8 +25,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Constant
-    extends phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Property
+class ConstantNode extends PropertyNode
 {
 
     /**

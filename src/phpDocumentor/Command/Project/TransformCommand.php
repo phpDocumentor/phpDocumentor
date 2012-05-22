@@ -99,7 +99,7 @@ TEXT
         // invoke parent to load custom config
         parent::execute($input, $output);
 
-        /** @var \Symfony\Component\Console\Helper\ProgressHelper $progress  */
+        /** @var \phpDocumentor\Console\Helper\ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
             $this->connectOutputToLogging($output);
@@ -108,7 +108,7 @@ TEXT
         $output->write('Initializing transformer ..');
 
         // initialize transformer
-        $transformer = new \phpDocumentor_Transformer();
+        $transformer = new \phpDocumentor\Transformer\Transformer();
         $transformer->setTemplatesPath(
             __DIR__.'/../../../../data/templates'
         );

@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
+
 /**
  * Definition for the @link tag; adds a attribute called `link`.
  *
@@ -23,8 +25,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Link
-    extends phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
+class Link extends Definition
 {
 
     /**
@@ -37,7 +38,7 @@ class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Link
     protected function configure()
     {
         if (!$this->tag instanceof \phpDocumentor\Reflection\DocBlock\Tag\LinkTag) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Expected the tag to be for an @link'
             );
         }

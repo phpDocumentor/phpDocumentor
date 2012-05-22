@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
+
 /**
  * Definition for the @param tag; adds a attribute called `variable`.
  *
@@ -23,8 +25,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition_Method
-    extends phpDocumentor_Plugin_Core_Parser_DocBlock_Tag_Definition
+class Method extends Definition
 {
     /**
      * Adds an attribute called `variable` containing the name of the argument.

@@ -40,7 +40,7 @@ class phpDocumentor_Reflection_FileTest extends PHPUnit_Framework_TestCase
         );
         $file->process();
 
-        /** @var phpDocumentor_Reflection_DocBlock $docBlock */
+        /** @var \phpDocumentor\Reflection\DocBlock $docBlock */
         $docBlock = $file->getDocBlock();
 
         $this->assertNotNull($docBlock);

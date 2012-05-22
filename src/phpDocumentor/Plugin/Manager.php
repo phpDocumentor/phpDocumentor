@@ -11,6 +11,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+namespace phpDocumentor\Plugin;
 
 /**
  * This class loads the plugins from the configuration and initializes them.
@@ -21,29 +22,29 @@
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class phpDocumentor_Plugin_Manager
+class Manager
 {
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $event_dispatcher = null;
 
-    /** @var SimpleXMLElement */
+    /** @var \SimpleXMLElement */
     protected $configuration = null;
 
-    /** @var \Composer\Autoload\ClassLoader */
+    /** @var \Composer\Autoload\ClassLoader*/
     protected $autoloader = null;
 
-    /** @var phpDocumentor_Plugin */
+    /** @var \phpDocumentor\Plugin\Plugin */
     protected $plugins = array();
 
     /**
      * Registers the Event Dispatcher, Confguration and Autoloader onto the
      * Manager.
      *
-     * @param sfEventDispatcher               $event_dispatcher Event dispatcher
+     * @param \sfEventDispatcher     $event_dispatcher Event dispatcher
      *     that plugins can bind to and where events should be dispatched to.
-     * @param \Zend\Config\Config             $configuration    Configuration file
+     * @param \Zend\Config\Config    $configuration    Configuration file
      *     which can be used to load parameters into the plugins.
-     * @param \Composer\Autoload\ClassLoader  $autoloader       Plugins can
+     * @param \Composer\ClassLoader  $autoloader       Plugins can
      *     additionally load classes; with the autoloader they can register
      *     themselves.
      */
@@ -80,7 +81,7 @@ class phpDocumentor_Plugin_Manager
 
         // add new plugins
         foreach ($plugins as $plugin_config) {
-            $plugin = new phpDocumentor_Plugin(
+            $plugin = new \phpDocumentor\Plugin\Plugin(
                 $this->event_dispatcher, $this->configuration
             );
 

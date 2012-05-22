@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
 /**
  * Writer containing file system operations.
  *
@@ -28,29 +30,28 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Writer_FileIo
-    extends phpDocumentor_Transformer_Writer_Abstract
+class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
-    /** @var phpDocumentor_Transformer_Transformation */
+    /** @var \phpDocumentor\Transformer\Transformation */
     protected $transformation = null;
 
-    /** @var DOMDocument */
+    /** @var \DOMDocument */
     protected $structure = null;
 
     /**
      * Invokes the query method contained in this class.
      *
-     * @param DOMDocument                        $structure      Structure document
+     * @param \DOMDocument                        $structure      Structure document
      *     to gather data from.
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
      *     containing the meta-data for this request.
      *
-     * @throws InvalidArgumentException if the query is not supported.
+     * @throws \InvalidArgumentException if the query is not supported.
      *
      * @return void
      */
-    public function transform(DOMDocument $structure,
-        phpDocumentor_Transformer_Transformation $transformation
+    public function transform(\DOMDocument $structure,
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -58,7 +59,7 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_FileIo
 
         $method = 'executeQuery' . ucfirst($transformation->getQuery());
         if (!method_exists($this, $method)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'The query ' . $method . ' is not supported by the FileIo writer,' .
                 'supported operation is "copy"'
             );
@@ -70,25 +71,25 @@ class phpDocumentor_Plugin_Core_Transformer_Writer_FileIo
     /**
      * Copies files or folders to the Artifact location.
      *
-     * @param phpDocumentor_Transformer_Transformation $transformation Transformation
+     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
      *     to use as data source.
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return void
      */
     public function executeQueryCopy(
-        phpDocumentor_Transformer_Transformation $transformation
+        \phpDocumentor\Transformer\Transformation $transformation
     ) {
         $path = $transformation->getSourceAsPath();
         if (!is_readable($path)) {
-            throw new phpDocumentor_Transformer_Exception(
+            throw new \phpDocumentor\Transformer\Exception(
                 'Unable to read the source file: ' . $path
             );
         }
 
         if (!is_writable($transformation->getTransformer()->getTarget())) {
-            throw new phpDocumentor_Transformer_Exception(
+            throw new \phpDocumentor\Transformer\Exception(
                 'Unable to write to: ' . dirname($transformation->getArtifact())
             );
         }

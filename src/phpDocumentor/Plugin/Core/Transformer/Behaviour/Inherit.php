@@ -13,6 +13,8 @@
  * @link       http://phpdoc.org
  */
 
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
+
 /**
  * Behaviour that runs through all elements and inherit base information
  * when necessary.
@@ -32,8 +34,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit extends
-    phpDocumentor_Transformer_Behaviour_Abstract
+class Inherit extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 {
     /**
      * Apply inheritance of docblock elements to all elements.
@@ -41,32 +42,27 @@ class phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit extends
      * Apply the inheritance rules from root node to edge leaf; this way the
      * inheritance cascades.
      *
-     * @param DOMDocument $xml XML structure to apply the behaviour on.
+     * @param \DOMDocument $xml XML structure to apply the behaviour on.
      *
-     * @return DOMDocument
+     * @return \DOMDocument
      */
-    public function process(DOMDocument $xml)
+    public function process(\DOMDocument $xml)
     {
         $this->log('Copying all inherited elements');
 
-        $xpath = new DOMXPath($xml);
+        $xpath = new \DOMXPath($xml);
 
         /** @var DOMElement[] $result */
         $result = $xpath->query('/project/file/interface|/project/file/class');
 
         $nodes = array();
         foreach ($result as $node) {
-            $class
-                = new phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class(
-                    $node, $nodes
-                );
+            $class = new Inherit\Node\ClassNode($node, $nodes);
 
             $nodes[$class->getFQCN()] = $class;
         }
 
-        /**
-         * @var phpDocumentor_Plugin_Core_Transformer_Behaviour_Inherit_Node_Class $node
-         */
+        /** @var Inherit\Node\ClassNode $node */
         foreach ($nodes as $node) {
             $node->setNodes($nodes);
 
