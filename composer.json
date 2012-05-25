@@ -23,6 +23,7 @@
         "pear-zf2/Zend_Config": "2.*",
         "pear-zf2/Zend_Locale": "2.*",
         "pear-zf2/Zend_Translator": "2.*",
+        "pear-zf2/Zend_Stdlib": "2.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/fileset": "1.0.0-beta1",
         "phpdocumentor/reflection-docblock": "1.*",
