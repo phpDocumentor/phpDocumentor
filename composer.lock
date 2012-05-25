@@ -1,5 +1,5 @@
 {
-    "hash": "3431511e13600ca9b381fa3a2b18ed42",
+    "hash": "6d785a8a0a08b036fccbe3fd784eef0f",
     "packages": [
         {
             "package": "cilex/cilex",
@@ -31,15 +31,19 @@
         },
         {
             "package": "pear-zf2/Zend_Config",
-            "version": "2.0.0beta3"
+            "version": "2.0.0beta4"
         },
         {
             "package": "pear-zf2/Zend_Locale",
-            "version": "2.0.0beta3"
+            "version": "2.0.0beta4"
+        },
+        {
+            "package": "pear-zf2/Zend_Stdlib",
+            "version": "2.0.0beta4"
         },
         {
             "package": "pear-zf2/Zend_Translator",
-            "version": "2.0.0beta3"
+            "version": "2.0.0beta4"
         },
         {
             "package": "phpdocumentor/fileset",
@@ -84,14 +88,14 @@
         {
             "package": "symfony/class-loader",
             "version": "dev-master",
-            "source-reference": "c57e62c886899f8d88264efad23c857eb198dc09",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "c57e62c886899f8d88264efad23c857eb198dc09"
         },
         {
             "package": "symfony/class-loader",
             "version": "dev-master",
-            "source-reference": "c57e62c886899f8d88264efad23c857eb198dc09"
+            "source-reference": "c57e62c886899f8d88264efad23c857eb198dc09",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/console",
