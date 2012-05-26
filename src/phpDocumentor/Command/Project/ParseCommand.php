@@ -160,7 +160,11 @@ HELP
         if (substr($target, -4) != '.xml') {
             // if the folder does not exist at all, create it
             if (!file_exists($target)) {
-                mkdir($target, 0744, true);
+                if (!@mkdir($target, 0755, true)) {
+                    throw new \InvalidArgumentException(
+                        'The path "' . $target . '" could not be created'
+                    );
+                }
             }
 
             if (!is_dir($target)) {
