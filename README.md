@@ -63,7 +63,7 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 2. After that it is a simple matter of invoking PEAR to install the application
 
-        $ pear install phpdoc/phpDocumentor
+        $ pear install phpdoc/phpDocumentor-alpha
 
 How to use phpDocumentor?
 -------------------
