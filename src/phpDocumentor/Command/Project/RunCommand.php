@@ -88,7 +88,8 @@ HELP
             ->addOption(
                 'extensions', 'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Path where to store the generated output'
+                'Comma-separated list of extensions to parse, defaults to '
+                . 'php, php3 and phtml'
             )
             ->addOption(
                 'ignore', 'i',
