@@ -6,7 +6,7 @@
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
-            depends="build:phpunit,deploy:update-version-number,deploy:package,deploy:publish-pear-package,deploy:publish-demo,deploy:update-manual"
+            depends="build:phpunit,deploy:package,deploy:publish-pear-package,deploy:publish-demo,deploy:update-manual"
             description="Builds a new version, packages and distributes it"/>
 
     <target name="build:clean" description="Deletes and recreates the 'build' folder for Jenkins">
@@ -97,28 +97,10 @@
     <!-- Asks for the post-deployment version number -->
     <target name="deploy:get-version-number"
             description="Ask the user for the new version">
-        <propertyprompt propertyName="version.number.minor" promptText="Enter the minor version number (i.e. 0.18)" />
-        <propertyprompt propertyName="version.number.release" promptText="Enter the new release number (i.e. 1)" />
-        <property name="version.number" value="${version.number.minor}.${version.number.release}" />
-    </target>
-
-    <!-- Updates the version number in the Core/Abstract class and commits result -->
-    <target name="deploy:update-version-number"
-            depends="deploy:get-version-number"
-            description="Updates the version number in \phpDocumentor\Application and commit it.">
         <gitcheckout repository="." branchname="develop" quiet="false"/>
         <exec
-            command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Core/Abstract.php"
-            dir="${project.basedir}" outputProperty="version.old"
-        />
-        <echo>Updating phpDocumentor from version ${version.old} to ${version.number}</echo>
-        <exec
-            command="perl -p -i -e s/'${version.old}'/'${version.number}'/ src/phpDocumentor/Application.php"
-            dir="${project.basedir}" checkreturn="true"
-        />
-        <exec
-            command="git commit src/phpDocumentor/Core/Abstract.php -m 'RELEASE: Updated version number to ${version.number}'"
-            passthru="true" dir="${project.basedir}" checkreturn="true"
+            command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Application.php"
+            dir="${project.basedir}" outputProperty="version.number"
         />
     </target>
 
@@ -146,7 +128,7 @@
     <!-- publishes the PEAR package to the production environment -->
     <target name="deploy:publish-pear-package"
             depends="deploy:get-version-number"
-            description="Uploads the PEAR package to the distrivution server and update pirum">
+            description="Uploads the PEAR package to the distribution server and update pirum">
         <exec command="scp ${project.basedir}/phpDocumentor-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
         <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
         <delete file="${project.basedir}/phpDocumentor-${version.number}.tgz" />
@@ -156,7 +138,7 @@
     <target name="deploy:publish-demo"
             description="Generate a demo and upload it to the server">
         <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
-        <exec command="php bin/phpdoc.php" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="php bin/phpdoc.php -t data/output" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
     </target>
 

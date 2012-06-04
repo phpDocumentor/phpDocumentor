@@ -40,7 +40,7 @@ function createPackager($original_file, $options = array())
             'build/*',
             'data/output/*',
             'data/log/*',
-            'bin/package.php',
+            'bin/utils/*',
             'src/XHProf/*',     // Profiling package
         ),
         'exceptions'        => array(
