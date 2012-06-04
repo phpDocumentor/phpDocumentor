@@ -52,6 +52,27 @@ class Installer
     }
 
     /**
+     * Downloads a zip archive of the develop branch on Github into the current
+     * working directory.
+     *
+     * Note: this is intended for testing purposes. It is strongly discouraged
+     * to use this for production purposes.
+     *
+     * @link https://github.com/phpDocumentor/phpDocumentor2/zipball/develop
+     *
+     * @return void
+     */
+    public function downloadDevelopmentPhpDocumentorArchive()
+    {
+        file_put_contents(
+            'phpDocumentor-latest.zip',
+            file_get_contents(
+                'https://github.com/phpDocumentor/phpDocumentor2/zipball/develop'
+            )
+        );
+    }
+
+    /**
      * Extracts the downloaded package into the current directory.
      *
      * This method also deletes the archive unless an error occurred.
@@ -309,7 +330,12 @@ try
     $installer->log('phpDocumentor installer for manual installations');
 
     $installer->log('> Downloading application from Github');
-    $installer->downloadLatestPhpDocumentorArchive();
+
+    if ($argv[1] == 'dev') {
+        $installer->downloadDevelopmentPhpDocumentorArchive();
+    } else {
+        $installer->downloadLatestPhpDocumentorArchive();
+    }
 
     $installer->log('> Extracting application');
     $installer->extractPhpDocumentorToCurrentDirectory();

@@ -254,4 +254,8 @@ abstract class BaseReflector
         return 'array(' . implode(', ', $items) . ')';
     }
 
+    public function getNamespaceAliases()
+    {
+        return array();
+    }
 }

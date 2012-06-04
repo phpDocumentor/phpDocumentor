@@ -1,5 +1,5 @@
 {
-    "hash": "c2ad9964724c4fed7475f7c7d2e40ec9",
+    "hash": "8e44bacfff02e072fe9f9ee9c5c07592",
     "packages": [
         {
             "package": "cilex/cilex",
@@ -15,13 +15,13 @@
         {
             "package": "dflydev/markdown",
             "version": "dev-master",
-            "alias-pretty-version": "1.0.x-dev",
-            "alias-version": "1.0.9999999.9999999-dev"
+            "source-reference": "b0a6ee857b53228c07b9b631aea5c7a690c33da2"
         },
         {
             "package": "dflydev/markdown",
             "version": "dev-master",
-            "source-reference": "b0a6ee857b53228c07b9b631aea5c7a690c33da2"
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
         },
         {
             "package": "nikic/php-parser",
@@ -34,7 +34,8 @@
         },
         {
             "package": "phpdocumentor/fileset",
-            "version": "1.0.0-beta1"
+            "version": "dev-master",
+            "source-reference": "3f32230a2d69e85a50896efbfe61c16498d33f86"
         },
         {
             "package": "phpdocumentor/graphviz",
@@ -74,16 +75,10 @@
         {
             "package": "symfony/class-loader",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/class-loader",
-            "version": "dev-master",
             "source-reference": "dd3f2ad5204df88b8938430e39a25c9a7f53f079"
         },
         {
-            "package": "symfony/console",
+            "package": "symfony/class-loader",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -92,6 +87,12 @@
             "package": "symfony/console",
             "version": "dev-master",
             "source-reference": "22be75777fe18315637abe092de5aa5c7f4ed3cd"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/finder",
@@ -107,13 +108,13 @@
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "f4f101fc7c1adb8b157058dcc1715f28f1d53208"
         },
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "f4f101fc7c1adb8b157058dcc1715f28f1d53208"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "zendframework/zend-config",
@@ -139,6 +140,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "nikic/php-parser": 20,
-        "phpdocumentor/fileset": 10
+        "phpdocumentor/fileset": 20
     }
 }

@@ -26,7 +26,7 @@
         "zendframework/zend-locale": "2.*",
         "zendframework/zend-translator": "2.*",
         "phpdocumentor/graphviz": "1.*",
-        "phpdocumentor/fileset": "1.0.0-beta1",
+        "phpdocumentor/fileset": "dev-master",
         "phpdocumentor/reflection-docblock": "1.*",
         "phpdocumentor/template-responsive": "1.*",
         "phpdocumentor/template-new-black": "1.*"

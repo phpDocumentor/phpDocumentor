@@ -131,7 +131,7 @@ class Listener extends ListenerAbstract
      */
     public function exportTag(\sfEvent $data)
     {
-        /** @var \phpDocumentor\Reflection\DocBlockedAbstract $subject  */
+        /** @var \phpDocumentor\Reflection\BaseReflector $subject  */
         $subject = $data->getSubject();
 
         Parser\DocBlock\Tag\Definition\Definition::create(
