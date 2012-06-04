@@ -11,7 +11,7 @@
         "classmap": ["vendor/pear-symfony", "src/phpDocumentor"]
     },
     "repositories":[
-        { "type":"pear", "url":"http://packages.zendframework.com"},
+        { "type":"composer", "url":"http://packages.zendframework.com"},
         { "type":"pear", "url":"http://pear.symfony-project.com/" }
     ],
     "require": {
@@ -21,10 +21,10 @@
         "dflydev/markdown": "1.0.*",
         "nikic/php-parser": "dev-master",
         "pear-symfony/EventDispatcher": "1.*",
-        "pear-zf2/Zend_Config": "2.*",
-        "pear-zf2/Zend_Locale": "2.*",
-        "pear-zf2/Zend_Translator": "2.*",
-        "pear-zf2/Zend_Stdlib": "2.*",
+        "zendframework/zend-stdlib": "2.*",
+        "zendframework/zend-config": "2.*",
+        "zendframework/zend-locale": "2.*",
+        "zendframework/zend-translator": "2.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/fileset": "1.0.0-beta1",
         "phpdocumentor/reflection-docblock": "1.*",
