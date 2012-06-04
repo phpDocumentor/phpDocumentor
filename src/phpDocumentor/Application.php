@@ -139,11 +139,11 @@ class Application extends \Cilex\Application
      */
     protected function linkEventDispatcherToSuperclasses()
     {
-        \phpDocumentor_Reflection_Abstract::$event_dispatcher = $this['event_dispatcher'];
-        \phpDocumentor\Parser\ParserAbstract::$event_dispatcher = $this['event_dispatcher'];
-        \phpDocumentor\Transformer\TransformerAbstract::$event_dispatcher = $this['event_dispatcher'];
+        \phpDocumentor\Reflection\BaseReflector::$event_dispatcher
+            = \phpDocumentor\Parser\ParserAbstract::$event_dispatcher
+                = \phpDocumentor\Transformer\TransformerAbstract::$event_dispatcher
+                    = $this['event_dispatcher'];
     }
-
 
     protected function loadPlugins()
     {

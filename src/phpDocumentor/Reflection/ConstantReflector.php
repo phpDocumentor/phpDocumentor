@@ -9,16 +9,28 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Reflection;
 
 /**
- * An exception specifically originating from the Reflection component.
+ * Provides Static Reflection for file-level constants.
  *
  * @author  Mike van Riel <mike.vanriel@naenius.com>
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class Exception extends \Exception
+class ConstantReflector extends BaseReflector
 {
+    /** @var \PHPParser_Node_Const */
+    protected $node;
 
+    /**
+     * Returns the value contained in this Constant.
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->getRepresentationOfValue($this->node->value);
+    }
 }

@@ -9,16 +9,11 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Reflection;
 
-/**
- * An exception specifically originating from the Reflection component.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
- */
-class Exception extends \Exception
+class TraitReflector extends ClassReflector
 {
-
+    /** @var \PHPParser_Node_Stmt_Trait */
+    protected $node;
 }

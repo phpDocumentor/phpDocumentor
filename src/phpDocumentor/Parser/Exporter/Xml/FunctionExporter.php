@@ -29,14 +29,14 @@ class FunctionExporter
      * Export this function definition to the given parent DOMElement.
      *
      * @param \DOMElement                        $parent   Element to augment.
-     * @param \phpDocumentor_Reflection_Function $function Element to export.
+     * @param \phpDocumentor\Reflection\FunctionReflector $function Element to export.
      * @param \DOMElement                        $child    if supplied this element
      *     will be augmented instead of freshly added.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Function $function,
+        \DOMElement $parent, $function,
         \DOMElement $child = null
     ) {
         if (!$child) {
@@ -44,11 +44,22 @@ class FunctionExporter
             $parent->appendChild($child);
         }
 
-        $child->setAttribute('namespace', $function->getNamespace());
+        $child->setAttribute(
+            'namespace',
+            $function->getNamespace()
+            ? $function->getNamespace()
+            : $parent->getAttribute('namespace')
+        );
         $child->setAttribute('line', $function->getLineNumber());
 
-        $child->appendChild(new \DOMElement('name', $function->getName()));
-        $child->appendChild(new \DOMElement('type', $function->getType()));
+        $short_name = method_exists($function, 'getShortName')
+            ? $function->getShortName() : $function->getName();
+
+        $child->appendChild(new \DOMElement('name', $short_name));
+        $child->appendChild(
+            new \DOMElement('full_name', $function->getName())
+        );
+//        $child->appendChild(new \DOMElement('type', $function->getType()));
 
         $object = new DocBlockExporter();
         $function->setDefaultPackageName($parent->getAttribute('package'));

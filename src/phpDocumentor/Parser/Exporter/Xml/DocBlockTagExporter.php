@@ -32,14 +32,13 @@ class DocBlockTag
      *     augment.
      * @param \phpDocumentor\Reflection\DocBlock\Tag       $tag     The tag to
      *     export.
-     * @param \phpDocumentor_Reflection_DocBlockedAbstract $element Element to
+     * @param \phpDocumentor\Reflection\BaseReflector $element Element to
      *     log from.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor\Reflection\DocBlock\Tag $tag,
-        \phpDocumentor_Reflection_DocBlockedAbstract $element
+        \DOMElement $parent, $tag, $element
     ) {
         $child = new \DOMElement('tag');
         $parent->appendChild($child);

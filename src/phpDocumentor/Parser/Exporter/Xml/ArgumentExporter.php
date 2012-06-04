@@ -40,14 +40,14 @@ class ArgumentExporter
      *
      * @param \DOMElement                        $parent   The parent element to
      *     augment.
-     * @param \phpDocumentor_Reflection_Argument $argument The data source.
+     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument The data source.
      * @param \DOMElement                        $child    Optional: child
      *     element to use instead of creating a new one on the $parent.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Argument $argument,
+        \DOMElement $parent, $argument,
         \DOMElement $child = null
     ) {
         if (!$child) {

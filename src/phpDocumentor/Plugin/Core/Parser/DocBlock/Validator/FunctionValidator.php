@@ -100,7 +100,7 @@ class FunctionValidator extends ValidatorAbstract
      */
     protected function validateArguments()
     {
-        /** @var \phpDocumentor_Reflection_Function $source  */
+        /** @var \phpDocumentor\Reflection\FunctionReflector $source  */
         $source = $this->source;
         $params = $this->docblock->getTagsByName('param');
         $arguments = $source->getArguments();
@@ -138,14 +138,14 @@ class FunctionValidator extends ValidatorAbstract
      *
      * @param \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param    param to
      *     validate with.
-     * @param \phpDocumentor_Reflection_Argument              $argument Argument
+     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument Argument
      *     to validate against.
      *
      * @return bool whether an issue occurred
      */
     protected function doesArgumentNameMatchParam(
         \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param,
-        \phpDocumentor_Reflection_Argument $argument
+        \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument
     ) {
         $param_name = $param->getVariableName();
         if ($param_name == $argument->getName()) {
@@ -170,7 +170,7 @@ class FunctionValidator extends ValidatorAbstract
      *
      * @param integer                                  $index    The position in
      *     the argument listing.
-     * @param \phpDocumentor_Reflection_Argument       $argument The argument
+     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument The argument
      *     itself.
      * @param \phpDocumentor\Reflection\DocBlock\Tag[] $params   The list of
      *     param tags to validate against.
@@ -178,7 +178,9 @@ class FunctionValidator extends ValidatorAbstract
      * @return bool whether an issue occurred.
      */
     protected function isArgumentInDocBlock(
-        $index, \phpDocumentor_Reflection_Argument $argument, array $params
+        $index,
+        \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument,
+        array $params
     ) {
         if (isset($params[$index])) {
             return true;
@@ -198,13 +200,13 @@ class FunctionValidator extends ValidatorAbstract
      * type are given then the typehint needs to be one of them.
      *
      * @param \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param
-     * @param \phpDocumentor_Reflection_Argument              $argument
+     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument
      *
      * @return bool whether an issue occurred
      */
     protected function doesArgumentTypehintMatchParam(
         \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param,
-        \phpDocumentor_Reflection_Argument $argument
+        \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument
     ) {
         if (!$argument->getType()
             || in_array($argument->getType(), $param->getTypes())

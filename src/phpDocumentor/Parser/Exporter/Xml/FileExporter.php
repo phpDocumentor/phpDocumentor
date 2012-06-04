@@ -36,12 +36,12 @@ class FileExporter
      * Export the given file to the provided parent element.
      *
      * @param \DOMElement                    $parent Element to augment.
-     * @param \phpDocumentor_Reflection_File $file   Element to export.
+     * @param \phpDocumentor\Reflection\FileReflector $file   Element to export.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_File $file
+        \DOMElement $parent, $file
     ) {
         $child = new \DOMElement('file');
         $parent->appendChild($child);
@@ -51,6 +51,48 @@ class FileExporter
 
         $object = new DocBlockExporter();
         $object->export($child, $file);
+
+        // add namespace aliases
+        foreach ($file->getNamespaceAliases() as $alias => $namespace) {
+            $alias_obj = new \DOMElement('namespace-alias', $namespace);
+            $child->appendChild($alias_obj);
+            $alias_obj->setAttribute('name', $alias);
+        }
+
+        /** @var \phpDocumentor\Reflection\IncludeReflector $include */
+        foreach ($file->getIncludes() as $include) {
+            $include->setDefaultPackageName($file->getDefaultPackageName());
+            $object = new IncludeExporter();
+            $object->export($child, $include);
+        }
+
+        /** @var \phpDocumentor\Reflection\ConstantReflector $constant */
+        foreach ($file->getConstants() as $constant) {
+            $constant->setDefaultPackageName($file->getDefaultPackageName());
+            $object = new ConstantExporter();
+            $object->export($child, $constant);
+        }
+
+        /** @var \phpDocumentor\Reflection\FunctionReflector $function */
+        foreach ($file->getFunctions() as $function) {
+            $function->setDefaultPackageName($file->getDefaultPackageName());
+            $object = new FunctionExporter();
+            $object->export($child, $function);
+        }
+
+        /** @var \phpDocumentor\Reflection\InterfaceReflector $interface */
+        foreach ($file->getInterfaces() as $interface) {
+            $interface->setDefaultPackageName($file->getDefaultPackageName());
+            $object = new InterfaceExporter();
+            $object->export($child, $interface);
+        }
+
+        /** @var \phpDocumentor\Reflection\ClassReflector $class */
+        foreach ($file->getClasses() as $class) {
+            $class->setDefaultPackageName($file->getDefaultPackageName());
+            $object = new ClassExporter();
+            $object->export($child, $class);
+        }
 
         // add markers
         if (count($file->getMarkers()) > 0) {
@@ -80,47 +122,6 @@ class FileExporter
                 $marker_obj->setAttribute('line', $error[2]);
                 $marker_obj->setAttribute('code', $error[3]);
             }
-        }
-
-        // add namespace aliases
-        foreach ($file->getNamespaceAliases() as $alias => $namespace) {
-            $alias_obj = new \DOMElement('namespace-alias', $namespace);
-            $child->appendChild($alias_obj);
-            $alias_obj->setAttribute('name', $alias);
-        }
-
-        /** @var \phpDocumentor_Reflection_Include $include */
-        foreach ($file->getIncludes() as $include) {
-            $object = new IncludeExporter();
-            $object->export($child, $include);
-        }
-
-        /** @var \phpDocumentor_Reflection_Constant $constant */
-        foreach ($file->getConstants() as $constant) {
-            $constant->setDefaultPackageName($file->getDefaultPackageName());
-            $object = new ConstantExporter();
-            $object->export($child, $constant);
-        }
-
-        /** @var \phpDocumentor_Reflection_Function $function */
-        foreach ($file->getFunctions() as $function) {
-            $function->setDefaultPackageName($file->getDefaultPackageName());
-            $object = new FunctionExporter();
-            $object->export($child, $function);
-        }
-
-        /** @var \phpDocumentor_Reflection_Interface $interface */
-        foreach ($file->getInterfaces() as $interface) {
-            $interface->setDefaultPackageName($file->getDefaultPackageName());
-            $object = new InterfaceExporter();
-            $object->export($child, $interface);
-        }
-
-        /** @var \phpDocumentor_Reflection_Class $class */
-        foreach ($file->getClasses() as $class) {
-            $class->setDefaultPackageName($file->getDefaultPackageName());
-            $object = new ClassExporter();
-            $object->export($child, $class);
         }
 
         // if we want to include the source for each file; append a new

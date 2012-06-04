@@ -56,7 +56,7 @@ abstract class ValidatorAbstract extends PluginAbstract
     /**
      * Source element of the DocBlock.
      *
-     * @var \phpDocumentor_Reflection_Abstract
+     * @var \phpDocumentor\Reflection\BaseReflector
      */
     protected $source;
 
@@ -74,7 +74,7 @@ abstract class ValidatorAbstract extends PluginAbstract
      *     validator belongs.
      * @param string                                  $name       Name of the "entity"
      * @param \phpDocumentor\Reflection\DocBlock|null $docblock   Docblock
-     * @param \phpDocumentor_Reflection_Abstract|null  $source     Source Element.
+     * @param \phpDocumentor\Reflection\BaseReflector|null  $source     Source Element.
      */
     public function __construct($plugin, $name, $docblock = null,
         $source = null

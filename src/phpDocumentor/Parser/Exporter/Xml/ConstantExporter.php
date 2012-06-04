@@ -39,14 +39,14 @@ class ConstantExporter
      * $parent argument is ignored in this case.
      *
      * @param \DOMElement                  $parent   The parent element to augment.
-     * @param \phpDocumentor_Reflection_Constant $constant The data source.
+     * @param \phpDocumentor\Reflection\ConstantReflector $constant The data source.
      * @param \DOMElement                  $child    Optional: child element to use
      *     instead of creating a new one on the $parent.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Constant $constant,
+        \DOMElement $parent, $constant,
         \DOMElement $child = null
     ) {
         if (!$constant->getName()) {
@@ -58,11 +58,22 @@ class ConstantExporter
             $parent->appendChild($child);
         }
 
-        $child->setAttribute('namespace', $constant->getNamespace());
+        $child->setAttribute(
+            'namespace',
+            $constant->getNamespace()
+            ? $constant->getNamespace()
+            : $parent->getAttribute('namespace')
+        );
         $child->setAttribute('line', $constant->getLineNumber());
 
+        $short_name = method_exists($constant, 'getShortName')
+            ? $constant->getShortName() : $constant->getName();
 
-        $child->appendChild(new \DOMElement('name', $constant->getName()));
+        $child->appendChild(new \DOMElement('name', $short_name));
+        $child->appendChild(
+            new \DOMElement('full_name', $constant->getName())
+        );
+
         $value = new \DOMElement('value');
         $child->appendChild($value);
 

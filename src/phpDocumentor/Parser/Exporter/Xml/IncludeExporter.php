@@ -29,12 +29,12 @@ class IncludeExporter
      * Export the given include definition to the provided parent element.
      *
      * @param \DOMElement                       $parent  Element to augment.
-     * @param \phpDocumentor_Reflection_Include $include Element to export.
+     * @param \phpDocumentor\Reflection\IncludeReflector $include Element to export.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Include $include
+        \DOMElement $parent, $include
     ) {
         $child = new \DOMElement('include');
         $parent->appendChild($child);

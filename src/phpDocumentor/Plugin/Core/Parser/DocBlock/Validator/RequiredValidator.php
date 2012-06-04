@@ -42,12 +42,12 @@ class RequiredValidator extends ValidatorAbstract
      *   </option>
      *   <option name="required">
      *     <tag name="package">
-     *       <element>phpDocumentor_Reflection_File</element>
-     *       <element>phpDocumentor_Reflection_Class</element>
+     *       <element>phpDocumentor\Reflection\FileReflector</element>
+     *       <element>phpDocumentor\Reflection\ClassReflector</element>
      *     </tag>
      *     <tag name="subpackage">
-     *       <element>phpDocumentor_Reflection_File</element>
-     *       <element>phpDocumentor_Reflection_Class</element>
+     *       <element>phpDocumentor\Reflection\FileReflector</element>
+     *       <element>phpDocumentor\Reflection\ClassReflector</element>
      *     </tag>
      *   </option>
      * </options>

@@ -37,14 +37,14 @@ class ClassExporter
      *
      * @param \DOMElement                     $parent The parent element to
      *     augment.
-     * @param \phpDocumentor_Reflection_Class $class  The data source.
+     * @param \phpDocumentor\Reflection\ClassReflection $class  The data source.
      * @param \DOMElement                     $child  Optional: child element to
      *     use instead of creating a new one on the $parent.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Class $class,
+        \DOMElement $parent, $class,
         \DOMElement $child = null
     ) {
         if (!$child) {

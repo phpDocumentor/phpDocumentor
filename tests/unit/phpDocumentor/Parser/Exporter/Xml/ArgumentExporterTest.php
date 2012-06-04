@@ -51,7 +51,7 @@ OUTPUT;
     protected function createArgumentMock()
     {
         $argument = $this->getMock(
-            '\phpDocumentor_Reflection_Argument',
+            '\phpDocumentor\Reflection\FunctionReflector\ArgumentReflector',
             array('getLineNumber', 'getName', 'getDefault', 'getType')
         );
         $argument->expects($this->once())->method('getLineNumber')

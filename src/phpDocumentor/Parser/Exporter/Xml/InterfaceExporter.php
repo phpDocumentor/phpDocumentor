@@ -29,14 +29,14 @@ class InterfaceExporter
      * Export this interface definition to the given parent DOMElement.
      *
      * @param \DOMElement                         $parent    Element to augment.
-     * @param \phpDocumentor_Reflection_Interface $interface Element to log export.
+     * @param \phpDocumentor\Reflection\InterfaceReflector $interface Element to log export.
      * @param \DOMElement                         $child     if supplied this element
      *     will be augmented instead of freshly added.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Interface $interface,
+        \DOMElement $parent, $interface,
         \DOMElement $child = null
     ) {
         if ($child === null) {
@@ -47,24 +47,24 @@ class InterfaceExporter
         $child->setAttribute('namespace', $interface->getNamespace());
         $child->setAttribute('line', $interface->getLineNumber());
 
-        $child->appendChild(new \DOMElement('name', $interface->getName()));
+        $short_name = method_exists($interface, 'getShortName')
+            ? $interface->getShortName() : $interface->getName();
+
+        $child->appendChild(new \DOMElement('name', $short_name));
         $child->appendChild(
-            new \DOMElement(
-                'full_name', $interface->expandType($interface->getName(), true)
-            )
+            new \DOMElement('full_name', $interface->getName())
         );
         $child->appendChild(
-            new \DOMElement(
-                'extends', $interface->getParentClass()
-                ? $interface->expandType($interface->getParentClass(), true) : ''
-            )
+            new \DOMElement('extends', $interface->getParentClass())
         );
 
-        foreach ($interface->getParentInterfaces() as $parent_interface) {
+        $interfaces = method_exists($interface, 'getInterfaces')
+            ? $interface->getInterfaces()
+            : $interface->getParentInterfaces();
+
+        foreach ($interfaces as $parent_interface) {
             $child->appendChild(
-                new \DOMElement(
-                    'implements', $interface->expandType($parent_interface, true)
-                )
+                new \DOMElement('implements', $parent_interface)
             );
         }
 
@@ -73,16 +73,19 @@ class InterfaceExporter
 
         foreach ($interface->getConstants() as $constant) {
             $object = new ConstantExporter();
+            $constant->setDefaultPackageName($interface->getDefaultPackageName());
             $object->export($child, $constant);
         }
 
         foreach ($interface->getProperties() as $property) {
             $object = new PropertyExporter();
+            $property->setDefaultPackageName($interface->getDefaultPackageName());
             $object->export($child, $property);
         }
 
         foreach ($interface->getMethods() as $method) {
             $object = new MethodExporter();
+            $method->setDefaultPackageName($interface->getDefaultPackageName());
             $object->export($child, $method);
         }
     }

@@ -21,7 +21,7 @@ namespace phpDocumentor\Parser\Exporter;
  */
 class ExporterAbstractMock extends ExporterAbstract
 {
-    public function export(\phpDocumentor_Reflection_File $file)
+    public function export($file)
     {
     }
 

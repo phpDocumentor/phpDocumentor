@@ -73,11 +73,11 @@ class Xml extends ExporterAbstract
     /**
      * Renders the reflected file to a structure file.
      *
-     * @param \phpDocumentor_Reflection_File $file File to export.
+     * @param \phpDocumentor\Reflection\FileReflector $file File to export.
      *
      * @return void
      */
-    public function export(\phpDocumentor_Reflection_File $file)
+    public function export($file)
     {
         $object = new FileExporter();
         $object->include_source = $this->include_source;

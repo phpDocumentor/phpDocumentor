@@ -80,7 +80,7 @@ class Listener extends ListenerAbstract
      */
     public function validateDocBlocks(\sfEvent $data)
     {
-        /** @var \phpDocumentor\Reflection\DocBlockedAbstract $element  */
+        /** @var \phpDocumentor\Reflection\BaseReflector $element  */
         $element = $data->getSubject();
 
         /** @var \phpDocumentor\Reflection\DocBlock $docblock  */
@@ -89,7 +89,8 @@ class Listener extends ListenerAbstract
         // get the type of element
         $type = substr(
             get_class($element),
-            strrpos(get_class($element), '_') + 1
+            strrpos(get_class($element), '\\') + 1,
+            -9 // Reflector
         );
 
         // no docblock, or docblock should be ignored, so no reason to validate
@@ -103,8 +104,8 @@ class Listener extends ListenerAbstract
 
             $class = 'phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Validator\\'
                 . $validator.'Validator';
-            if (class_exists($class)) {
 
+            if (class_exists($class)) {
                 /** @var Parser\DocBlock\Tag\Validator\ValidatorAbstract $val */
                 $val = new $class(
                     $this->plugin,

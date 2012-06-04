@@ -39,12 +39,12 @@ class DocBlockExporter
      *
      * @param \DOMElement                            $parent   The parent element
      *     to augment.
-     * @param \phpDocumentor_Reflection_DocBlockedAbstract $element The data source.
+     * @param \phpDocumentor\Reflection\BaseReflector $element The data source.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_DocBlockedAbstract $element
+        \DOMElement $parent, $element
     ) {
         $docblock = $element->getDocBlock();
         if (!$docblock) {
@@ -88,8 +88,7 @@ class DocBlockExporter
     }
 
     protected function addTags(
-        \DOMElement $child, $tags,
-        \phpDocumentor_Reflection_DocBlockedAbstract $element
+        \DOMElement $child, $tags, $element
     ) {
         foreach ($tags as $tag) {
             $object = new DocBlockTag();
@@ -99,7 +98,7 @@ class DocBlockExporter
 
     protected function setParentsPackage(
         \DOMElement $parent, \phpDocumentor\Reflection\DocBlock $docblock,
-        \phpDocumentor_Reflection_DocBlockedAbstract $element
+        $element
     ) {
         /** @var \phpDocumentor\Reflection\DocBlock\Tag $package */
         $package = current($docblock->getTagsByName('package'));

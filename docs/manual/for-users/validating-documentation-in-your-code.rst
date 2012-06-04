@@ -166,10 +166,10 @@ Example:
                 <option name="deprecated">
                     <tag name="access" />
                     <tag name="return">
-                        <element>phpDocumentor_Reflection_File</element>
-                        <element>phpDocumentor_Reflection_Class</element>
-                        <element>phpDocumentor_Reflection_Interface</element>
-                        <element>phpDocumentor_Reflection_Property</element>
+                        <element>phpDocumentor\Reflection\FileReflector</element>
+                        <element>phpDocumentor\Reflection\ClassReflector</element>
+                        <element>phpDocumentor\Reflection\InterfaceReflector</element>
+                        <element>phpDocumentor\Reflection\Class\PropertyReflector</element>
                     </tag>
                 </option>
             </plugin>
@@ -181,15 +181,15 @@ Line 7 through 12 show another example where phpDocumentor only shows an error w
 specific elements. The names shown are the class names of the Reflection
 component and can be one of the following elements:
 
-* phpDocumentor_Reflection_File
-* phpDocumentor_Reflection_Class
-* phpDocumentor_Reflection_Interface
-* phpDocumentor_Reflection_Constant
-* phpDocumentor_Reflection_Property
-* phpDocumentor_Reflection_Variable
-* phpDocumentor_Reflection_Function
-* phpDocumentor_Reflection_Method
-* phpDocumentor_Reflection_Include
+* phpDocumentor\Reflection\FileReflector
+* phpDocumentor\Reflection\ClassReflector
+* phpDocumentor\Reflection\InterfaceReflector
+* phpDocumentor\Reflection\ConstantReflector
+* phpDocumentor\Reflection\Class\PropertyReflector
+* phpDocumentor\Reflection\VariableReflector
+* phpDocumentor\Reflection\FunctionReflector
+* phpDocumentor\Reflection\Class\MethodReflector
+* phpDocumentor\Reflection\IncludeReflector
 
 Requiring tags
 --------------
@@ -205,15 +205,15 @@ You can specify which tags to require by adding these as options to the 'Core'
 plugin. phpDocumentor only shows an error with specific elements. The names shown are the
 class names of the Reflection component and can be one of the following elements:
 
-* phpDocumentor_Reflection_File
-* phpDocumentor_Reflection_Class
-* phpDocumentor_Reflection_Interface
-* phpDocumentor_Reflection_Constant
-* phpDocumentor_Reflection_Property
-* phpDocumentor_Reflection_Variable
-* phpDocumentor_Reflection_Function
-* phpDocumentor_Reflection_Method
-* phpDocumentor_Reflection_Include
+* phpDocumentor\Reflection\FileReflector
+* phpDocumentor\Reflection\ClassReflector
+* phpDocumentor\Reflection\InterfaceReflector
+* phpDocumentor\Reflection\ConstantReflector
+* phpDocumentor\Reflection\Class\PropertyReflector
+* phpDocumentor\Reflection\VariableReflector
+* phpDocumentor\Reflection\FunctionReflector
+* phpDocumentor\Reflection\Class\MethodReflector
+* phpDocumentor\Reflection\IncludeReflector
 
 Example:
 
@@ -226,8 +226,8 @@ Example:
             <plugin path="Core">
                 <option name="required">
                     <tag name="return">
-                        <element>phpDocumentor_Reflection_Method</element>
-                        <element>phpDocumentor_Reflection_Function</element>
+                        <element>phpDocumentor\Reflection\Class\MethodReflector</element>
+                        <element>phpDocumentor\Reflection\FunctionReflector</element>
                     </tag>
                 </option>
             </plugin>

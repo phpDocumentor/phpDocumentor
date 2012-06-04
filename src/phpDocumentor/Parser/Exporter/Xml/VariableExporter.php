@@ -29,14 +29,14 @@ class VariableExporter
      * Export this variable definition to the given parent DOMElement.
      *
      * @param \DOMElement                        $parent   Element to augment.
-     * @param \phpDocumentor_Reflection_Variable $variable Element to log from.
+     * @param \phpDocumentor\Reflection\ClassReflector\PropertyReflector $variable Element to log from.
      * @param \DOMElement                        $child    if supplied this
      *     element will be augmented instead of freshly added.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Variable $variable,
+        \DOMElement $parent, $variable,
         \DOMElement $child = null
     ) {
         if (!$child) {
@@ -46,6 +46,12 @@ class VariableExporter
 
         $child->setAttribute('line', $variable->getLineNumber());
 
+        $child->setAttribute(
+            'namespace',
+            $variable->getNamespace()
+            ? $variable->getNamespace()
+            : $parent->getAttribute('namespace')
+        );
 
         $child->appendChild(new \DOMElement('name', $variable->getName()));
         $default = new \DOMElement('default');

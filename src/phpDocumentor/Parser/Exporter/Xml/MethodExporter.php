@@ -29,12 +29,12 @@ class MethodExporter
      * Export the given reflected method definition to the provided parent element.
      *
      * @param \DOMElement                      $parent Element to augment.
-     * @param \phpDocumentor_Reflection_Method $method Element to export.
+     * @param \phpDocumentor\Reflection\ClassReflector\MethodReflector $method Element to export.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, \phpDocumentor_Reflection_Method $method
+        \DOMElement $parent, $method
     ) {
         $child = new \DOMElement('method');
         $parent->appendChild($child);
@@ -45,6 +45,6 @@ class MethodExporter
         $child->setAttribute('visibility', $method->getVisibility());
 
         $object = new FunctionExporter();
-        $object->export($child, $method, $child);
+        $object->export($parent, $method, $child);
     }
 }

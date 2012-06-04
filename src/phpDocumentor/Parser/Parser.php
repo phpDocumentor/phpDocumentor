@@ -349,7 +349,7 @@ class Parser extends ParserAbstract
 
         $dispatched = false;
         try {
-            $file = new \phpDocumentor_Reflection_File($filename, $this->doValidation());
+            $file = new \phpDocumentor\Reflection\FileReflector($filename, $this->doValidation());
             $file->setDefaultPackageName($this->getDefaultPackageName());
 
             if (self::$event_dispatcher !== null) {
@@ -362,7 +362,6 @@ class Parser extends ParserAbstract
 
             $file->setMarkers($this->getMarkers());
             $file->setFilename($this->getRelativeFilename($filename));
-            $file->setName($this->getRelativeFilename($filename));
 
             // if an existing structure exists; and we do not force re-generation;
             // re-use the old definition if the hash differs
@@ -372,7 +371,7 @@ class Parser extends ParserAbstract
                 // try to find the file with it's hash
                 /** @var \DOMNodeList $qry */
                 $qry = $xpath->query(
-                    '/project/file[@path=\'' . ltrim($file->getName(), './')
+                    '/project/file[@path=\'' . ltrim($file->getFilename(), './')
                     . '\' and @hash=\'' . $file->getHash() . '\']'
                 );
 

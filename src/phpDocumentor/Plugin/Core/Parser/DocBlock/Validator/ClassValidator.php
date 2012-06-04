@@ -42,7 +42,7 @@ class ClassValidator extends ValidatorAbstract
     {
         $valid = true;
 
-        if (null == $this->docblock) {
+        if (null === $this->docblock) {
             $this->logParserError(
                 'ERROR', 50000, $this->lineNumber, array($this->entityName)
             );

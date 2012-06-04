@@ -66,11 +66,11 @@ abstract class ExporterAbstract extends Parser\ParserAbstract
     /**
      * Renders the reflected file to a structure file.
      *
-     * @param \phpDocumentor_Reflection_File $file File to export.
+     * @param \phpDocumentor\Reflection\FileReflector $file File to export.
      *
      * @return void
      */
-    abstract public function export(\phpDocumentor_Reflection_File $file);
+    abstract public function export($file);
 
     /**
      * Finalizes this exporter; performs cleaning operations.
