@@ -329,11 +329,11 @@ try
 {
     $installer->log('phpDocumentor installer for manual installations');
 
-    $installer->log('> Downloading application from Github');
-
     if ($argv[1] == 'dev') {
+        $installer->log('> Downloading development application from Github');
         $installer->downloadDevelopmentPhpDocumentorArchive();
     } else {
+        $installer->log('> Downloading application from Github');
         $installer->downloadLatestPhpDocumentorArchive();
     }
 
