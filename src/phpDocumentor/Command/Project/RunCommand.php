@@ -218,7 +218,7 @@ HELP
         }
 
         $target = $input->getOption('target');
-        if (!is_dir($target)) {
+        if (!is_null($target) && !is_dir($target)) {
             $target = dirname($target);
         }
 
