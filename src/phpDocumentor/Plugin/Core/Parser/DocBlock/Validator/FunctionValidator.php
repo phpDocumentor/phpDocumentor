@@ -14,7 +14,7 @@
  * @link       http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Validator;
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
 
 /**
  * This class is responsible for validating a function's docblock.

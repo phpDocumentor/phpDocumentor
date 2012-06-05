@@ -14,7 +14,7 @@
  * @link       http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Validator;
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
 
 use \phpDocumentor\Plugin\PluginAbstract;
 
