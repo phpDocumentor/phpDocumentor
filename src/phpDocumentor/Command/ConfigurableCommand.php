@@ -68,11 +68,13 @@ class ConfigurableCommand extends Command
      *     no option is provided.
      * @param mixed|null                                      $default
      *     Default value used if there is no configuration option or path set
+     * @param bool                                            $comma_separated
+     *     Could the value be a comma separated string requiring splitting
      *
      * @return string
      */
     public function getOption(InputInterface $input, $name, $config_path = null,
-        $default = null
+        $default = null, $comma_separated = false
     ) {
         $value = $input->getOption($name);
 
@@ -91,6 +93,12 @@ class ConfigurableCommand extends Command
             return (is_array($value) && $default === null)
                 ? array()
                 : $default;
+        }
+
+        // split comma separated values
+        if ($comma_separated && (!is_array($value) || count($value) == 1)) {
+            $value = (array) $value;
+            $value = explode(',', $value[0]);
         }
 
         return $value;
