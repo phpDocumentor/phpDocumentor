@@ -102,11 +102,11 @@ class Listener extends ListenerAbstract
 
         foreach (array('Deprecated', 'Required', $type) as $validator) {
 
-            $class = 'phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Validator\\'
+            $class = 'phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\\'
                 . $validator.'Validator';
 
             if (class_exists($class)) {
-                /** @var Parser\DocBlock\Tag\Validator\ValidatorAbstract $val */
+                /** @var Parser\DocBlock\Validator\ValidatorAbstract $val */
                 $val = new $class(
                     $this->plugin,
                     $element->getName(),

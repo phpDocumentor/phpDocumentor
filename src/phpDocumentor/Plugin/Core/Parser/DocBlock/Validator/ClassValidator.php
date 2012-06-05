@@ -1,7 +1,7 @@
 <?php
 /**
  * File contains the
- * \phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Validator\ClassValidator class.
+ * \phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\ClassValidator class.
  *
  * PHP Version 5
  *
@@ -15,7 +15,7 @@
  * @link       http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Validator;
+namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
 
 /**
  * This class is responsible for validating the class docbloc
