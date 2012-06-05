@@ -222,7 +222,7 @@ HELP
         $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
         $parser->setMarkers(
-            (array)$this->getOption($input, 'markers', 'parser/markers/item')
+            $this->getOption($input, 'markers', 'parser/markers/item', null, true)
         );
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
@@ -280,13 +280,13 @@ HELP
     {
         $files = new \phpDocumentor\Fileset\Collection();
         $files->setAllowedExtensions(
-            (array)$this->getOption(
+            $this->getOption(
                 $input, 'extensions', 'parser/extensions/extension',
-                array('php', 'php3', 'phtml')
+                array('php', 'php3', 'phtml'), true
             )
         );
         $files->setIgnorePatterns(
-            (array)$this->getOption($input, 'ignore', 'files/ignore', array())
+            $this->getOption($input, 'ignore', 'files/ignore', array(), true)
         );
         $files->setIgnoreHidden(
             $this->getOption(
@@ -299,11 +299,11 @@ HELP
             ) == 'on'
         );
         $files->addFiles(
-            (array)$this->getOption($input, 'filename', 'files/file', array())
+            $this->getOption($input, 'filename', 'files/file', array(), true)
         );
 
         $files->addDirectories(
-            (array)$this->getOption($input, 'directory', 'files/directory', array())
+            $this->getOption($input, 'directory', 'files/directory', array(), true)
         );
 
         return $files;
