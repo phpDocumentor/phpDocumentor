@@ -106,4 +106,27 @@ class PropertyReflector extends BaseReflector
     {
         return $this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL;
     }
+
+    /**
+     * Returns the parsed DocBlock.
+     *
+     * @return \phpDocumentor\Reflection\DocBlock|null
+     */
+    public function getDocBlock()
+    {
+        $doc_block = null;
+        if ((string)$this->property->getDocComment()) {
+            $doc_block = new \phpDocumentor\Reflection\DocBlock(
+                (string)$this->property->getDocComment()
+            );
+            $doc_block->line_number = $this->property->getLine();
+        }
+
+        $this->dispatch(
+            'reflection.docblock-extraction.post',
+            array('docblock' => $doc_block)
+        );
+
+        return $doc_block;
+    }
 }
