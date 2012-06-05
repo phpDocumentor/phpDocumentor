@@ -46,6 +46,13 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
     protected $current_namespace = '';
 
     /**
+     * The event dispatcher object, may be null to not dispatch events.
+     *
+     * @var \sfEventDispatcher|null
+     */
+    public static $event_dispatcher = null;
+
+    /**
      * Opens the file and retrieves its contents.
      *
      * During construction the given file is checked whether it is readable and
@@ -134,12 +141,46 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
 
     public function beforeTraverse(array $nodes)
     {
-        $comments = $nodes[0]->getAttribute('comments');
-        if (!empty($comments) && count($comments) > 1) {
-            $this->doc_block = new \phpDocumentor\Reflection\DocBlock(
-                (string) $comments[0]
-            );
-        }        
+        $node = null;
+        foreach ($nodes as $n) {
+            if (!$n instanceof \PHPParser_Node_Stmt_InlineHTML) {
+                $node = $n;
+                break;
+            }
+        }
+
+        if ($node) {
+            $comments = $node->getAttribute('comments');
+            // remove non-DocBlock comments
+            $comments = array_filter((array)$comments, function($comment) {
+                return $comment instanceof \PHPParser_Comment_Doc;
+            });
+
+            if (!empty($comments)) {
+                $docblock = new \phpDocumentor\Reflection\DocBlock(
+                    (string) $comments[0]
+                );
+
+                // the first DocBlock in a file documents the file if it precedes
+                // another DocBlock or it contains a @package tag and doesn't
+                // precede a class declaration
+                if (count($comments) > 1
+                    || !$node instanceof \PHPParser_Node_Stmt_Class
+                        && $docblock->hasTag('package')
+                ) {
+                    $docblock->line_number = 0;
+                    $this->doc_block = $docblock;
+
+                }
+            }
+        }
+
+        $this->dispatch(
+            'reflection.docblock-extraction.post',
+            array('docblock' => $this->doc_block)
+        );
+
+        return null;
     }
 
     public function enterNode(\PHPParser_Node $node)
@@ -195,6 +236,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         }
     }
 
+    public function getName()
+    {
+        return $this->filename;
+    }
+
     public function getFilename()
     {
         return $this->filename;
@@ -208,6 +254,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
     public function getDocBlock()
     {
         return $this->doc_block;
+    }
+
+    public function getLineNumber()
+    {
+        return 0;
     }
 
     public function getDefaultPackageName()
@@ -312,6 +363,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         return $this->parse_markers;
     }
 
+    public function getNamespace()
+    {
+        return $this->current_namespace;
+    }
+
     public function getNamespaceAliases()
     {
         return $this->namespace_aliases;
@@ -332,8 +388,40 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         $this->filename = $filename;
     }
 
-    public function dispatch($name, $args)
+    /**
+     * Dispatches an event to the Event Dispatcher.
+     *
+     * This method tries to dispatch an event; if no Event Dispatcher has been
+     * set than this method will explicitly not fail and return null.
+     *
+     * By not failing we make the Event Dispatcher optional and is it easier
+     * for people to re-use this component in their own application.
+     *
+     * @param string   $name      Name of the event to dispatch.
+     * @param string[] $arguments Arguments for this event.
+     *
+     * @throws \phpDocumentor\Reflection\Exception if there is a dispatcher but
+     *  it is not of type sfEventDispatcher
+     *
+     * @return mixed|null
+     */
+    public function dispatch($name, $arguments)
     {
-        return null;
+        if (!self::$event_dispatcher) {
+            return null;
+        }
+
+        if (!self::$event_dispatcher instanceof \sfEventDispatcher) {
+            throw new \phpDocumentor\Reflection\Exception(
+                'Expected the event dispatcher to be an instance of '
+                . 'sfEventDispatcher'
+            );
+        }
+
+        $event = self::$event_dispatcher->notify(
+            new \sfEvent($this, $name, $arguments)
+        );
+
+        return $event ? $event->getReturnValue() : null;
     }
 }
