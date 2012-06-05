@@ -132,6 +132,16 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         return $this->interfaces;
     }
 
+    public function beforeTraverse(array $nodes)
+    {
+        $comments = $nodes[0]->getAttribute('comments');
+        if (!empty($comments) && count($comments) > 1) {
+            $this->doc_block = new \phpDocumentor\Reflection\DocBlock(
+                (string) $comments[0]
+            );
+        }        
+    }
+
     public function enterNode(\PHPParser_Node $node)
     {
         switch(get_class($node)) {
@@ -320,5 +330,10 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
     public function setFilename($filename)
     {
         $this->filename = $filename;
+    }
+
+    public function dispatch($name, $args)
+    {
+        return null;
     }
 }
