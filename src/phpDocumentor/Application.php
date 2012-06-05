@@ -27,7 +27,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
  */
 class Application extends \Cilex\Application
 {
-    const VERSION = '2.0.0a4';
+    const VERSION = '2.0.0a5';
 
     /**
      * Initializes all components used by phpDocumentor.
@@ -109,13 +109,12 @@ class Application extends \Cilex\Application
                 $user_config_file = (file_exists('phpdoc.xml'))
                     ? 'phpdoc.xml'
                     : 'phpdoc.dist.xml';
+                $config_files = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
+                if (is_readable($user_config_file)) {
+                    $config_files[] = $user_config_file;
+                }
 
-                return \Zend\Config\Factory::fromFiles(
-                    array(
-                        __DIR__.'/../../data/phpdoc.tpl.xml',
-                        $user_config_file
-                    ), true
-                );
+                return \Zend\Config\Factory::fromFiles($config_files, true);
             }
         );
     }
