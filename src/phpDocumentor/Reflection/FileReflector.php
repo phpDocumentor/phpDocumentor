@@ -134,6 +134,8 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
 
     public function enterNode(\PHPParser_Node $node)
     {
+        $prettyPrinter = new \PHPParser_PrettyPrinter_Zend;
+
         switch(get_class($node)) {
             case 'PHPParser_Node_Stmt_Use':
                 /** @var \PHPParser_Node_Stmt_UseUse $use */
@@ -168,9 +170,10 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
                     && $node->name == 'define'
                 ) {
                     $constant = new \PHPParser_Node_Const(
-                        $node->args[0]->value->value, $node->args[1]->value
+                        $prettyPrinter->prettyPrintExpr($node->args[0]->value),
+                        $node->args[1]->value,
+                        $node->getAttributes()
                     );
-                    $constant->setLine($node->getLine());
                     $constant->namespacedName = new \PHPParser_Node_Name(
                         $this->current_namespace.'\\'.$constant->name
                     );
