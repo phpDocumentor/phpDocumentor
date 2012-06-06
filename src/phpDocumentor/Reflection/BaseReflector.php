@@ -35,6 +35,13 @@ abstract class BaseReflector
     public static $event_dispatcher = null;
 
     /**
+     * PHP AST pretty printer used to get representations of values.
+     *
+     * @var \PHPParser_PrettyPrinterAbstract
+     */
+    protected static $prettyPrinter = null;
+
+    /**
      * Dispatches an event to the Event Dispatcher.
      *
      * This method tries to dispatch an event; if no Event Dispatcher has been
@@ -241,17 +248,11 @@ abstract class BaseReflector
             return '';
         }
 
-        if (!$value instanceof \PHPParser_Node_Expr_Array) {
-            return var_export($value->value, true);
+        if (!self::$prettyPrinter) {
+            self::$prettyPrinter = new \PHPParser_PrettyPrinter_Zend;
         }
 
-        $items = array();
-        foreach ($value->items as $item) {
-            $items[] = $this->getRepresentationOfValue($item->key) . ' => '
-                . $this->getRepresentationOfValue($item->value);
-        }
-
-        return 'array(' . implode(', ', $items) . ')';
+        return self::$prettyPrinter->prettyPrintExpr($value);
     }
 
     public function getNamespaceAliases()
