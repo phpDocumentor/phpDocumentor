@@ -170,7 +170,9 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
                     $constant = new \PHPParser_Node_Const(
                         $node->args[0]->value->value, $node->args[1]->value
                     );
-                    $constant->setLine($node->getLine());
+                    foreach ($node->getAttributes() as $k => $v) {
+                        $constant->setAttribute($k, $v);
+                    }
                     $constant->namespacedName = new \PHPParser_Node_Name(
                         $this->current_namespace.'\\'.$constant->name
                     );
