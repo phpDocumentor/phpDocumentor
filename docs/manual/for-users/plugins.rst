@@ -140,40 +140,40 @@ Class prefix
 ~~~~~~~~~~~~
 
 phpDocumentor uses the
-(Composer autoloading)[http://getcomposer.org/doc/01-basic-usage.md#autoloading]
+`Composer autoloading <http://getcomposer.org/doc/01-basic-usage.md#autoloading>`_
 facilities for plugins.
 
 To map your namespace or class prefix to the plugin's base folder there is a
 field named *class-prefix* that should be added to indicate what the ClassMap
 or namespace prefix is for the plugin's classes.
 
-For example::
+For example:
 
     The configuration file is located in */opt/phpdoc/plugins/mine/plugin.xml*
-    and the class names start with `My_First_Plugin_`. When you have added the
-    prefix to the configuration file and you instantiate My_First_Plugin_Listener,
+    and the class names start with ``My_First_Plugin_``. When you have added the
+    prefix to the configuration file and you instantiate ``My_First_Plugin_Listener``,
     then phpDocumentor will attempt to locate a file named *Listener.php* in the
     */opt/phpdoc/plugins/mine/My/First_Plugin* folder.
 
 .. attention::
 
     The directory structure is based on
-    PSR-0 (https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md).
+    `PSR-0 <https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md>`_.
     This means that if you do not use a namespace that underscores are interpreted
     as directory separators.
 
     Example:
 
-        You have a class *My_First_Plugin_Listener* that is to be autoloaded, then
+        You have a class ``My_First_Plugin_Listener`` that is to be autoloaded, then
         the file's path is: ``[plugin.xml folder]/My/First/Plugin/Listener.php``.
 
     Example2:
 
-        Your class is called *\My\Plugin\Custom_Listener* (thus with the namespace
-        `\my\Plugin` then the file's path is:
+        Your class is called ``\My\Plugin\Custom_Listener`` (thus with the
+        namespace ``\My\Plugin`` then the file's path is:
         ``[plugin.xml folder]/My/Plugin/Listener.php``.
 
-When no class_prefix is given then `\phpDocumentor\Plugin\<ucfirst(name)>` is assumed.
+When no class_prefix is given then ``\phpDocumentor\Plugin\<ucfirst(name)>`` is assumed.
 
 Listener
 ~~~~~~~~
