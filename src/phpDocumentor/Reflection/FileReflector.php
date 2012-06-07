@@ -142,9 +142,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
     public function beforeTraverse(array $nodes)
     {
         $node = null;
-        foreach ($nodes as $n) {
+        $key = 0;
+        foreach ($nodes as $k => $n) {
             if (!$n instanceof \PHPParser_Node_Stmt_InlineHTML) {
                 $node = $n;
+                $key = $k;
                 break;
             }
         }
@@ -171,8 +173,15 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
                     $docblock->line_number = 0;
                     $this->doc_block = $docblock;
 
+                    // remove the file level DocBlock from the node's comments
+                    $comments = array_slice($comments, 1);
                 }
             }
+
+            // always update the comments attribute so that standard comments
+            // do not stop DocBlock from being attached to an element
+            $node->setAttribute('comments', $comments);
+            $nodes[$key] = $node;
         }
 
         $this->dispatch(
@@ -180,7 +189,7 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
             array('docblock' => $this->doc_block)
         );
 
-        return null;
+        return $nodes;
     }
 
     public function enterNode(\PHPParser_Node $node)
