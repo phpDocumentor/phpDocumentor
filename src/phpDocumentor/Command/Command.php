@@ -34,6 +34,13 @@ class Command extends \Cilex\Command\Command
      */
     protected function connectOutputToLogging(OutputInterface $output)
     {
+        static $already_connected = false;
+
+        // ignore any second or later invocations of this method
+        if ($already_connected) {
+            return;
+        }
+
         /** @var \sfEventDispatcher $event_dispatcher  */
         $event_dispatcher = $this->getService('event_dispatcher');
         $command = $this;
@@ -51,6 +58,7 @@ class Command extends \Cilex\Command\Command
                 $command->logEvent($output, $event);
             }
         );
+        $already_connected = true;
     }
 
     /**

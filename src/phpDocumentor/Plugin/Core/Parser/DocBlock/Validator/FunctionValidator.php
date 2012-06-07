@@ -212,6 +212,10 @@ class FunctionValidator extends ValidatorAbstract
             || in_array($argument->getType(), $param->getTypes())
         ) {
             return true;
+        } else if ($argument->getType() == 'array'
+            && substr($param->getType(), -2) == '[]'
+        ) {
+            return true;
         }
 
         $this->logParserError(

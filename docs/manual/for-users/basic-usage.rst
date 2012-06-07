@@ -11,16 +11,14 @@ You can use the ``phpdoc`` command to generate your documentation
 for you.
 
 In this document is shown how phpDocumentor can be used to generate your
-documentation. It is expected that you have installed phpDocumentor using
-PEAR; thus whenever we ask you to run a command it would be in the
-following form::
+documentation. It is expected that the phpdoc command is available; thus
+whenever we ask you to run a command it would be in the following form::
 
     $ phpdoc
 
-When you have installed a version directly from Github you should
-invoke the ``phpdoc.php`` script in the ``bin`` folder of your
-phpDocumentor installation unless you have added a symlink as described in the chapter
-:doc:`installation`.
+When you have installed a version via the installer you should invoke the
+``phpdoc.php`` script in the ``bin`` folder of your phpDocumentor installation
+unless you have added a symlink as described in the chapter :doc:`installation`.
 
 Under Linux / MacOSX that would be::
 
@@ -28,16 +26,15 @@ Under Linux / MacOSX that would be::
 
 And under Windows that would be::
 
-    $ [PHPDOC_FOLDER]\bin\phpdoc
+    $ [PHPDOC_FOLDER]\bin\phpdoc.bat
 
 Introduction
 ------------
 
 phpDocumentor takes a two-step approach to generating documentation:
 
-
-1. Parse the source files and create an intermediate structure file(called
-   structure.xml) containing all meta-data.
+1. Parse the source files and create an intermediate structure file (called
+   structure.xml) containing all meta-data of your source code.
 2. Transform the intermediate structure file to a form of human readable output,
    such as HTML.
 
@@ -47,14 +44,14 @@ Generating documentation
 ------------------------
 
 To generate your documentation you can invoke phpDocumentor without specifying
-a task::
+a command::
 
     $ phpdoc
 
 When ran without parameters (as shown above) it will try to get the location of
 the source code and the target folder from a configuration file (which is
 discussed in the :doc:`configuration` chapter) or exit with an error. You can
-use the help option (``-h`` or ``--help``) to view a list of all possible actions.
+use the help option (``-h`` or ``--help``) to view a list of all possible options.
 
 ::
 
@@ -67,26 +64,26 @@ the following command::
 
     $ phpdoc -d [SOURCE_PATH] -t [TARGET_PATH]
 
-Please be aware that phpDocumentor expects the target location to exist
-and that it is writable. If it is not, the application will exit
+Please be aware that phpDocumentor expects the target location either exists
+or can be created with the current user. If it is not, the application will exit
 and tell you so.
 
-Tasks
------
+Commands
+--------
 
 Usage
 ~~~~~
 
-phpDocumentor has a task oriented CLI; the first argument represents the name of the
-task to execute, if no name is given then phpDocumentor assumes you want to run the
-``project:run`` task. This last mechanism provides backwards compatibility with
-phpDocumentor based configurations.
+phpDocumentor has a command oriented CLI; the first argument represents the name
+of the command to execute, if no name is given then phpDocumentor assumes you want
+to run the ``project:run`` command. This last mechanism provides backwards
+compatibility with phpDocumentor 1.x.
 
 Example::
 
     $ phpdoc -d . -t output
 
-Would result in the ``project:run`` task being executed with parameter ``-d`` and
+Would result in the ``project:run`` command being executed with parameter ``-d`` and
 ``-t``.
 
 Another example::
@@ -106,15 +103,15 @@ form.
 Listing
 ~~~~~~~
 
-All tasks are described below with a link to their full description. Each task
-has specific arguments. It is advised to either read the detailed sub-section
-or invoke ``phpdoc <task> --help``; this will provide a summary of the task
-and its arguments.
+All commands are described below with a link to their full description. Each
+command has specific arguments. It is advised to either read the detailed
+sub-section or invoke ``phpdoc <command> --help``; this will provide a summary of
+the command and its arguments.
 
 =============================== =================================================
 Full name                       Description
 =============================== =================================================
-:doc:`/tasks/project_list`      Lists all tasks that can be run by phpDocumentor.
+:doc:`/tasks/project_list`      Lists all commands that can be run by phpDocumentor.
 :doc:`/tasks/project_run`       Parses and transform the given directory (-d|-f)
                                 to the given location (-t).
 :doc:`/tasks/project_parse`     Parses the given source code and creates an
@@ -124,7 +121,6 @@ Full name                       Description
                                 specified output format.
 :doc:`/tasks/plugin_generate`   Generates a skeleton plugin.
 :doc:`/tasks/template_generate` Generates a skeleton template.
-:doc:`/tasks/template_install`  Installs a specific template.
 :doc:`/tasks/template_list`     Displays a listing of all available templates in
                                 phpDocumentor.
 =============================== =================================================
