@@ -9,7 +9,6 @@ project:run -f tests/data/NoPackageDocBlock.php -t build --config=none
 --EXPECTF--
 Initializing parser and collecting files .. OK
 Parsing files
-  Missing @package tag in file NoPackageDocBlock.php
   Cannot have a @subpackage when a @package tag is not present
   Cannot have a @subpackage when a @package tag is not present
 Storing structure.xml in "%sbuild/structure.xml" .. OK

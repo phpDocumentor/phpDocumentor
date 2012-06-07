@@ -50,13 +50,6 @@ class FileValidator extends ClassValidator
 
         $valid = true;
 
-        if (!$this->docblock->hasTag('package')) {
-            $this->logParserError(
-                'CRITICAL', 50021, $this->lineNumber, array($this->entityName)
-            );
-            $valid = false;
-        }
-
         if ('' === $this->docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL', 50008, $this->lineNumber, array($this->entityName)

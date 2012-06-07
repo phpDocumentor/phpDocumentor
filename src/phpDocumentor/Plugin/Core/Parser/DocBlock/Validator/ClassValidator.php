@@ -67,7 +67,7 @@ class ClassValidator extends ValidatorAbstract
         }
 
         if ('' === $this->docblock->getShortDescription()
-            && $this instanceof ClassValidator
+            && substr(get_class($this), -15) == '\ClassValidator'
         ) {
             $this->logParserError(
                 'CRITICAL', 50005, $this->lineNumber, array($this->entityName)
