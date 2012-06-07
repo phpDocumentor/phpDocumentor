@@ -55,6 +55,19 @@ class ClassExporter
         $child->setAttribute('final', $class->isFinal() ? 'true' : 'false');
         $child->setAttribute('abstract', $class->isAbstract() ? 'true' : 'false');
 
+        $child->appendChild(
+            new \DOMElement('extends', $class->getParentClass())
+        );
+
+        $interfaces = method_exists($class, 'getInterfaces')
+            ? $class->getInterfaces()
+            : $class->getParentInterfaces();
+        foreach ($interfaces as $interface) {
+            $child->appendChild(
+                new \DOMElement('implements', $interface)
+            );
+        }
+
         $object = new InterfaceExporter();
         $object->export($child, $class, $child);
     }

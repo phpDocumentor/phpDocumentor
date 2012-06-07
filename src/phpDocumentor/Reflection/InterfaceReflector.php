@@ -14,7 +14,7 @@ namespace phpDocumentor\Reflection;
 
 class InterfaceReflector extends BaseReflector
 {
-    /** @var \PHPParser_Node_Stmt_Class */
+    /** @var \PHPParser_Node_Stmt */
     protected $node;
     protected $constants = array();
     protected $properties = array();
@@ -46,20 +46,14 @@ class InterfaceReflector extends BaseReflector
         }
     }
 
-    public function getParentClass()
-    {
-        return $this->node->extends ? (string)$this->node->extends : '';
-    }
-
-    /**
-     * BC Break: used to be getParentInterfaces
-     */
-    public function getInterfaces()
+    public function getParentInterfaces()
     {
         $names = array();
-        if ($this->node->implements) {
+        if ($this->node instanceof \PHPParser_Node_Stmt_Interface
+            && $this->node->extends
+        ) {
             /** @var \PHPParser_Node_Name */
-            foreach ($this->node->implements as $node) {
+            foreach ($this->node->extends as $node) {
                 $names[] = (string)$node;
             }
         }

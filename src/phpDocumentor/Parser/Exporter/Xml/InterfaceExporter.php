@@ -54,17 +54,10 @@ class InterfaceExporter
         $child->appendChild(
             new \DOMElement('full_name', $interface->getName())
         );
-        $child->appendChild(
-            new \DOMElement('extends', $interface->getParentClass())
-        );
 
-        $interfaces = method_exists($interface, 'getInterfaces')
-            ? $interface->getInterfaces()
-            : $interface->getParentInterfaces();
-
-        foreach ($interfaces as $parent_interface) {
+        foreach ($interface->getParentInterfaces() as $parent_interface) {
             $child->appendChild(
-                new \DOMElement('implements', $parent_interface)
+                new \DOMElement('extends', $parent_interface)
             );
         }
 
