@@ -152,11 +152,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         }
 
         if ($node) {
-            $comments = $node->getAttribute('comments');
+            $comments = (array) $node->getAttribute('comments');
             // remove non-DocBlock comments
-            $comments = array_filter((array)$comments, function($comment) {
+            $comments = array_values(array_filter($comments, function($comment) {
                 return $comment instanceof \PHPParser_Comment_Doc;
-            });
+            }));
 
             if (!empty($comments)) {
                 $docblock = new \phpDocumentor\Reflection\DocBlock(
