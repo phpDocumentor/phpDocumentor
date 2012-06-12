@@ -169,13 +169,19 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
                 if ($node->name instanceof \PHPParser_Node_Name
                     && $node->name == 'define'
                 ) {
-                    $constant = new \PHPParser_Node_Const(
+                    $name = trim(
                         $prettyPrinter->prettyPrintExpr($node->args[0]->value),
+                        '\''
+                    );
+                    $constant = new \PHPParser_Node_Const(
+                        $name,
                         $node->args[1]->value,
                         $node->getAttributes()
                     );
                     $constant->namespacedName = new \PHPParser_Node_Name(
-                        $this->current_namespace.'\\'.$constant->name
+                        ($this->current_namespace
+                            ? $this->current_namespace.'\\' : '')
+                        .$name
                     );
 
                     $reflector = new ConstantReflector($constant);
