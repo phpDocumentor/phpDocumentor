@@ -78,4 +78,24 @@ class ClassReflector extends InterfaceReflector
     {
         return $this->traits;
     }
+
+    public function getParentClass()
+    {
+        return $this->node->extends ? (string)$this->node->extends : '';
+    }
+
+    /**
+     * BC Break: used to be getParentInterfaces
+     */
+    public function getInterfaces()
+    {
+        $names = array();
+        if ($this->node->implements) {
+            /** @var \PHPParser_Node_Name */
+            foreach ($this->node->implements as $node) {
+                $names[] = (string)$node;
+            }
+        }
+        return $names;
+    }
 }
