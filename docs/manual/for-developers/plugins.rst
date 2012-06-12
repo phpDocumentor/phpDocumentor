@@ -1,6 +1,12 @@
 Plugins
 =======
 
+.. warning::
+
+   phpDocumentor is creating a concept called ``Extensions`` that are intended
+   to succeed this functionality. Once release will this functionality become
+   deprecated and no longer expanded with new functionality.
+
 phpDocumentor supports Plugins with which you can expand on the normal behaviour.
 The enhancement is actually done by providing hooks into crucial parts of
 phpDocumentor's process.
