@@ -133,6 +133,9 @@ TEXT
         $external_class_documentation = (array)$this->getConfigValueFromPath(
             'transformer/external-class-documentation'
         );
+        if (!isset($external_class_documentation[0])) {
+            $external_class_documentation = array($external_class_documentation);
+        }
 
         foreach ($external_class_documentation as $doc) {
             if (empty($doc)) {
