@@ -75,16 +75,40 @@ class DocBlockExporter
         $description->appendChild($node);
     }
 
+    /**
+     * Adds the DocBlock's long description to the $child element,
+     *
+     * This method also removes all binary characters to prevent issues in the
+     * XML.
+     *
+     * @param \DOMElement $child
+     * @param \phpDocumentor\Reflection\DocBlock $docblock
+     *
+     * @return void
+     */
     protected function addLongDescription(
         \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
+        $contents = $docblock->getLongDescription()->getFormattedContents();
         $node = $child->ownerDocument->createCDATASection(
-            $docblock->getLongDescription()->getFormattedContents()
+            $this->stripBinaryCharacters($contents)
         );
 
         $element = new \DOMElement('long-description');
         $child->appendChild($element);
         $element->appendChild($node);
+    }
+
+    /**
+     * Strips the binary characters of the given string.
+     *
+     * @param string $contents The contents to strip
+     *
+     * @return string
+     */
+    protected function stripBinaryCharacters($contents)
+    {
+        return preg_replace("/[^\x9\xA\xD\x20-\x7F]/", '', $contents);
     }
 
     protected function addTags(
