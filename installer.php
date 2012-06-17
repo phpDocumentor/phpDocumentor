@@ -307,7 +307,8 @@ class Installer
     protected function recursiveRmdir($directory)
     {
         $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory),
+            new \RecursiveDirectoryIterator(
+                $directory, \FilesystemIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::CHILD_FIRST
         );
 
@@ -329,14 +330,14 @@ try
 {
     $installer->log('phpDocumentor installer for manual installations');
 
-    if ($argv[1] == 'dev') {
+    if (isset($argv[1]) && $argv[1] == 'dev') {
         $installer->log('> Downloading development application from Github');
         $installer->downloadDevelopmentPhpDocumentorArchive();
     } else {
         $installer->log('> Downloading application from Github');
         $installer->downloadLatestPhpDocumentorArchive();
     }
-
+    
     $installer->log('> Extracting application');
     $installer->extractPhpDocumentorToCurrentDirectory();
 
