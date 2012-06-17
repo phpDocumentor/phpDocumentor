@@ -23,11 +23,11 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <email />
   <active>yes</active>
  </lead>
- <date>2012-06-05</date>
- <time>05:53:17</time>
+ <date>2012-06-17</date>
+ <time>21:11:02</time>
  <version>
-  <release>2.0.0a5</release>
-  <api>2.0.0a5</api>
+  <release>2.0.0a6</release>
+  <api>2.0.0a6</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -1063,7 +1063,16 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/phpDocumentor" name="contributors-guide.rst" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
+      <file baseinstalldir="/phpDocumentor" name="extensions.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="plugins.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
       <file baseinstalldir="/phpDocumentor" name="profiling.rst" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="transformation.rst" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
      </dir> <!-- /docs/manual/for-developers -->
@@ -1195,9 +1204,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="list-of-tags.rst" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="plugins.rst" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="types.rst" role="php">
@@ -1600,6 +1606,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="InterfaceReflector.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="Lexer.php" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="TraitReflector.php" role="php">
@@ -4392,6 +4401,12 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/phpDocumentor" name="README.md" role="data">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
+   <file baseinstalldir="/phpDocumentor" name="structure.xml" role="data">
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+   </file>
+   <file baseinstalldir="/phpDocumentor" name="test.php" role="php">
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+   </file>
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -4436,14 +4451,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.0.0a5</release>
-    <api>2.0.0a5</api>
+    <release>2.0.0a6</release>
+    <api>2.0.0a6</api>
    </version>
    <stability>
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2012-06-05</date>
+   <date>2012-06-17</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
