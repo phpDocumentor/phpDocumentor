@@ -15,13 +15,13 @@ namespace phpDocumentor\Reflection;
 /**
  * Reflection class for a full file.
  *
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
  */
 class FileReflector extends \PHPParser_NodeVisitorAbstract
 {
-    protected $hash = array('a' => 1, 'b' => 2);
+    protected $hash;
     protected $contents = 1;
     protected $includes = array();
     protected $constants = array();
@@ -96,7 +96,7 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
     public function process()
     {
         $traverser = new Traverser();
-        $traverser->visitor = $this;
+        $traverser->addVisitor($this);
         $traverser->traverse($this->contents);
 
         $this->scanForMarkers();
