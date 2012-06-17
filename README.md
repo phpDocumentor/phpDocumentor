@@ -50,7 +50,7 @@ Installation
 There are 2 ways to install phpDocumentor:
 
 1. Via PEAR (recommended)
-2. Directly from source (Github)
+2. Manual installation using the installer.
 
 _*Please note* that it is required that the installation path of phpDocumentor does not
 contain spaces. This is a requirement imposed by an external library (libxml)_
@@ -65,16 +65,31 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
         $ pear install phpdoc/phpDocumentor-alpha
 
+### Manual Installation
+
+1. Download the php installer from:
+
+        https://raw.github.com/phpDocumentor/phpDocumentor2/develop/installer.php
+
+   to the intended location. We will refer to this as `<PHPDOC_PATH>`.
+
+2. Run the installer:
+
+       `php installer.php`
+
+3. Set up your binaries to use phpDocumentor from any location:
+
+   - __For Linux or Mac OSX__: create a symlink from `<PHPDOC_PATH>/bin/phpdoc.php`
+      to your bin folder (usually /usr/bin) named `phpdoc`.
+   - __For Windows__: Add `<PHPDOC_PATH>/bin` to your PATH so that you can invoke
+      `phpdoc.bat` from any location.
+
 How to use phpDocumentor?
 -------------------
 
-The easiest way to run phpDocumentor is by running the following command when installed via PEAR:
+The easiest way to run phpDocumentor is by running the following command:
 
     $ phpdoc run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
-
-or when you did a manual installation:
-
-    $ php {INSTALLATION_FOLDER}/bin/phpdoc.php run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
 
 This command will parse the source code provided using the `-d` argument and
 output it to the folder indicated by the `-t` argument.

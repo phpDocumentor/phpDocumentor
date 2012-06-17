@@ -32,7 +32,7 @@ The steps for a manual installation are:
 
 1. Download the installer from
    https://raw.github.com/phpDocumentor/phpDocumentor2/develop/installer.php
-   to the intended location.
+   to the intended location. We will refer to the intended location as <PHPDOC\_PATH>.
 2. Run the installer::
 
        php installer.php
