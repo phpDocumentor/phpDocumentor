@@ -87,13 +87,9 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 How to use phpDocumentor?
 -------------------
 
-The easiest way to run phpDocumentor is by running the following command when installed via PEAR:
+The easiest way to run phpDocumentor is by running the following command:
 
     $ phpdoc run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
-
-or when you did a manual installation:
-
-    $ php {INSTALLATION_FOLDER}/bin/phpdoc.php run -d <SOURCE_DIRECTORY> -t <TARGET_DIRECTORY>
 
 This command will parse the source code provided using the `-d` argument and
 output it to the folder indicated by the `-t` argument.
