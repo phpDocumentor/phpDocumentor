@@ -70,17 +70,18 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 1. Download the php installer from:
 
         https://raw.github.com/phpDocumentor/phpDocumentor2/develop/installer.php
-        to the intended location.
 
-2. Run the installer::
+   to the intended location. We will refer to this as `<PHPDOC_PATH>`.
 
-       php installer.php
+2. Run the installer:
+
+       `php installer.php`
 
 3. Set up your binaries to use phpDocumentor from any location:
 
-   a. __For Linux or Mac OSX__: create a symlink from <PHPDOC\_PATH>/bin/phpdoc.php
+   - __For Linux or Mac OSX__: create a symlink from `<PHPDOC_PATH>/bin/phpdoc.php`
       to your bin folder (usually /usr/bin) named `phpdoc`.
-   b. __For Windows__: Add <PHPDOC\_PATH>/bin to your PATH so that you can invoke
+   - __For Windows__: Add `<PHPDOC_PATH>/bin` to your PATH so that you can invoke
       `phpdoc.bat` from any location.
 
 How to use phpDocumentor?
