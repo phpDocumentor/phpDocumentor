@@ -351,7 +351,8 @@ try
              )
         );
 
-        unset($argv[1]);
+        // remove the second item in the array and reindex the keys
+        array_splice($argv, 1, 1);
 
         // Though we said system wide, some extensions need a little coaxing.
         libxml_set_streams_context($r_default_context);
