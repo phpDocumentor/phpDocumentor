@@ -48,13 +48,16 @@ class FileValidator extends ClassValidator
             return false;
         }
 
+        $valid = true;
+
         if ('' === $this->docblock->getShortDescription()) {
             $this->logParserError(
                 'CRITICAL', 50008, $this->lineNumber, array($this->entityName)
             );
-            return false;
+            $valid = false;
         }
 
-        return parent::isValid();
+        $valid = parent::isValid() && $valid;
+        return $valid;
     }
 }
