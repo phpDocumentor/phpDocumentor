@@ -44,7 +44,7 @@ class Installer
     public function downloadLatestPhpDocumentorArchive()
     {
         file_put_contents(
-            'phpDocumentor-latest.zip',
+            sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpDocumentor-latest.zip',
             file_get_contents(
                 'https://github.com/phpDocumentor/phpDocumentor2/zipball/master'
             )
@@ -65,7 +65,7 @@ class Installer
     public function downloadDevelopmentPhpDocumentorArchive()
     {
         file_put_contents(
-            'phpDocumentor-latest.zip',
+            sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpDocumentor-latest.zip',
             file_get_contents(
                 'https://github.com/phpDocumentor/phpDocumentor2/zipball/develop'
             )
@@ -86,18 +86,30 @@ class Installer
     public function extractPhpDocumentorToCurrentDirectory()
     {
         $zip = new \ZipArchive;
-        if ($zip->open('phpDocumentor-latest.zip') === true) {
+        if ($zip->open(sys_get_temp_dir().'/phpDocumentor-latest.zip') === true) {
             $root_dir = $zip->statIndex(0);
-            $zip->extractTo('.');
+            if ($root_dir === false) {
+                throw new \Exception(
+                    'Zip file '. sys_get_temp_dir() . DIRECTORY_SEPARATOR
+                    . 'phpDocumentor-latest.zip could not properly be extracted'
+                );
+            }
+            $zip->extractTo(sys_get_temp_dir());
 
             // zipfile contains an unwanted root folder; copy all files one
             // level lower and delete unwanted root folder.
-            $this->recursiveCopy($root_dir['name'], '.');
-            $this->recursiveRmdir($root_dir['name']);
+            $this->recursiveCopy(
+                sys_get_temp_dir().DIRECTORY_SEPARATOR.$root_dir['name'], '.'
+            );
+            $this->recursiveRmdir(
+                sys_get_temp_dir().DIRECTORY_SEPARATOR.$root_dir['name']
+            );
             $zip->close();
 
             // delete package
-            unlink('phpDocumentor-latest.zip');
+            unlink(
+                sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpDocumentor-latest.zip'
+            );
         } else {
             throw new \RuntimeException(
                 'Unable to extract phpDocumentor\'s source code'
@@ -330,6 +342,21 @@ try
 {
     $installer->log('phpDocumentor installer for manual installations');
 
+    // An IP was provided thus we set up proxying
+    if (isset($argv[1]) && ($argv[1] != 'dev')) {
+        // All HTTP requests are passed through the local NTLM proxy server.
+        $r_default_context = stream_context_get_default(
+            array(
+                'http' => array('proxy' => $argv[1], 'request_fulluri' => true)
+             )
+        );
+
+        unset($argv[1]);
+
+        // Though we said system wide, some extensions need a little coaxing.
+        libxml_set_streams_context($r_default_context);
+    }
+
     if (isset($argv[1]) && $argv[1] == 'dev') {
         $installer->log('> Downloading development application from Github');
         $installer->downloadDevelopmentPhpDocumentorArchive();
@@ -337,7 +364,7 @@ try
         $installer->log('> Downloading application from Github');
         $installer->downloadLatestPhpDocumentorArchive();
     }
-    
+
     $installer->log('> Extracting application');
     $installer->extractPhpDocumentorToCurrentDirectory();
 
