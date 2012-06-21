@@ -19,7 +19,7 @@ namespace phpDocumentor\Reflection;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class FileReflector extends \PHPParser_NodeVisitorAbstract
+class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
 {
     protected $hash;
     protected $contents = 1;
@@ -132,6 +132,59 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         return $this->interfaces;
     }
 
+    public function beforeTraverse(array $nodes)
+    {
+        $node = null;
+        $key = 0;
+        foreach ($nodes as $k => $n) {
+            if (!$n instanceof \PHPParser_Node_Stmt_InlineHTML) {
+                $node = $n;
+                $key = $k;
+                break;
+            }
+        }
+
+        if ($node) {
+            $comments = (array) $node->getAttribute('comments');
+            // remove non-DocBlock comments
+            $comments = array_values(array_filter($comments, function($comment) {
+                return $comment instanceof \PHPParser_Comment_Doc;
+            }));
+
+            if (!empty($comments)) {
+                $docblock = new \phpDocumentor\Reflection\DocBlock(
+                    (string) $comments[0]
+                );
+
+                // the first DocBlock in a file documents the file if it precedes
+                // another DocBlock or it contains a @package tag and doesn't
+                // precede a class declaration
+                if (count($comments) > 1
+                    || !$node instanceof \PHPParser_Node_Stmt_Class
+                        && $docblock->hasTag('package')
+                ) {
+                    $docblock->line_number = 0;
+                    $this->doc_block = $docblock;
+
+                    // remove the file level DocBlock from the node's comments
+                    $comments = array_slice($comments, 1);
+                }
+            }
+
+            // always update the comments attribute so that standard comments
+            // do not stop DocBlock from being attached to an element
+            $node->setAttribute('comments', $comments);
+            $nodes[$key] = $node;
+        }
+
+        $this->dispatch(
+            'reflection.docblock-extraction.post',
+            array('docblock' => $this->doc_block)
+        );
+
+        return $nodes;
+    }
+
     public function enterNode(\PHPParser_Node $node)
     {
         $prettyPrinter = new \PHPParser_PrettyPrinter_Zend;
@@ -194,6 +247,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         }
     }
 
+    public function getName()
+    {
+        return $this->filename;
+    }
+
     public function getFilename()
     {
         return $this->filename;
@@ -207,6 +265,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
     public function getDocBlock()
     {
         return $this->doc_block;
+    }
+
+    public function getLineNumber()
+    {
+        return 0;
     }
 
     public function getDefaultPackageName()
@@ -311,6 +374,11 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
         return $this->parse_markers;
     }
 
+    public function getNamespace()
+    {
+        return $this->current_namespace;
+    }
+
     public function getNamespaceAliases()
     {
         return $this->namespace_aliases;
@@ -330,4 +398,7 @@ class FileReflector extends \PHPParser_NodeVisitorAbstract
     {
         $this->filename = $filename;
     }
+
+    public function leaveNode(\PHPParser_Node $node) { }
+    public function afterTraverse(array $nodes)      { }
 }

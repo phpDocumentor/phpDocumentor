@@ -21,4 +21,5 @@ return array(
     50018 => 'No DocBlock was found for property %s',
     50019 => 'No short description for property %s',
     50020 => 'Not found required tag "%s" in %s',
+    50021 => 'Missing @package tag in file %s',
 );
