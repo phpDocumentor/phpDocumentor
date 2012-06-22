@@ -89,9 +89,8 @@ class DocBlockExporter
     protected function addLongDescription(
         \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
-        $contents = $docblock->getLongDescription()->getFormattedContents();
         $node = $child->ownerDocument->createCDATASection(
-            $this->stripBinaryCharacters($contents)
+            $docblock->getLongDescription()->getFormattedContents()
         );
 
         $element = new \DOMElement('long-description');
