@@ -113,13 +113,14 @@ abstract class BaseReflector extends ReflectionAbstract
     public function getNamespace()
     {
         if (!$this->node->namespacedName) {
-            return '';
+            return 'global';
         }
 
         $parts = $this->node->namespacedName->parts;
         array_pop($parts);
 
-        return implode('\\', $parts);
+        $namespace = implode('\\', $parts);
+        return $namespace ? $namespace : 'global';
     }
 
     /**

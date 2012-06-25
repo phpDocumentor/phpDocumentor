@@ -223,6 +223,8 @@ class Xml extends ExporterAbstract
 
         $result = array();
         foreach ($namespaces as $namespace) {
+            if ($namespace == '') $namespace = 'global';
+
             $namespace_list = explode('\\', $namespace);
 
             $node = &$result;
