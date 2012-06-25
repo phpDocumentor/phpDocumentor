@@ -33,7 +33,7 @@ class ClassReflector extends InterfaceReflector
      * @param \PHPParser_Node_Stmt_Class $node A Class node as returned by the
      *     PHP-Parser component.
      */
-    public function __construct(\PHPParser_Node_Stmt_Class $node)
+    public function __construct(\PHPParser_Node_Stmt $node)
     {
         parent::__construct($node);
 
