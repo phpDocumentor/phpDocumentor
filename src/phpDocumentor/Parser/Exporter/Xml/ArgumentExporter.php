@@ -66,10 +66,8 @@ class ArgumentExporter
         $default->appendChild(
             $dom_document->createCDATASection($argument->getDefault())
         );
-        $child->appendChild(
-            new \DOMElement(
-                'type', $argument->getType() ? '\\'.$argument->getType() : ''
-            )
-        );
+
+        $type = $argument->getType();
+        $child->appendChild(new \DOMElement('type',  $type ? '\\'.$type : ''));
     }
 }
