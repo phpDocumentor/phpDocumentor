@@ -56,12 +56,16 @@ abstract class BaseReflector extends ReflectionAbstract
     {
         $doc_block = null;
         if ((string)$this->node->getDocComment()) {
-            $doc_block = new \phpDocumentor\Reflection\DocBlock(
-                (string)$this->node->getDocComment(),
-                $this->getNamespace(),
-                $this->getNamespaceAliases()
-            );
-            $doc_block->line_number = $this->node->getLine();
+            try {
+                $doc_block = new \phpDocumentor\Reflection\DocBlock(
+                    (string)$this->node->getDocComment(),
+                    $this->getNamespace(),
+                    $this->getNamespaceAliases()
+                );
+                $doc_block->line_number = $this->node->getLine();
+            } catch (\Exception $e) {
+                $this->log($e->getMessage(), 2);
+            }
         }
 
         $this->dispatch(
