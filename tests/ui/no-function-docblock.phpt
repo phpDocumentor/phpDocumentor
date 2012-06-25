@@ -9,8 +9,8 @@ project:run -f tests/data/NoFunctionDocBlock.php -t build --config=none
 --EXPECTF--
 Initializing parser and collecting files .. OK
 Parsing files
-  No DocBlock was found for function %s
   No page-level DocBlock was found in file %s
+  No DocBlock was found for function %s
 Storing structure.xml in "%sbuild/structure.xml" .. OK
 Initializing transformer .. OK
 Processing behaviours .. OK

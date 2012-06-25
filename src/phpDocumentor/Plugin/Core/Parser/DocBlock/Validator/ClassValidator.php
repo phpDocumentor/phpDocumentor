@@ -51,22 +51,28 @@ class ClassValidator extends ValidatorAbstract
 
         if (count($this->docblock->getTagsByName('package')) > 1) {
             $this->logParserError('CRITICAL', 50001, $this->lineNumber);
+            $valid = false;
         }
 
         if (count($this->docblock->getTagsByName('subpackage')) > 1) {
             $this->logParserError('CRITICAL', 50002, $this->lineNumber);
+            $valid = false;
         }
 
         if ($this->docblock->hasTag('subpackage')
             && !$this->docblock->hasTag('package')
         ) {
             $this->logParserError('CRITICAL', 50004, $this->lineNumber);
+            $valid = false;
         }
 
-        if ('' === $this->docblock->getShortDescription()) {
+        if ('' === $this->docblock->getShortDescription()
+            && substr(get_class($this), -15) == '\ClassValidator'
+        ) {
             $this->logParserError(
                 'CRITICAL', 50005, $this->lineNumber, array($this->entityName)
             );
+            $valid = false;
         }
 
         return $valid;
