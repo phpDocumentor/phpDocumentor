@@ -46,13 +46,14 @@ OUTPUT;
     /**
      * Creates an argument mock object containing the to-be-asserted values.
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
     protected function createArgumentMock()
     {
         $argument = $this->getMock(
             '\phpDocumentor\Reflection\FunctionReflector\ArgumentReflector',
-            array('getLineNumber', 'getName', 'getDefault', 'getType')
+            array('getLineNumber', 'getName', 'getDefault', 'getType'),
+            array(), '', false
         );
         $argument->expects($this->once())->method('getLineNumber')
             ->will($this->returnValue(1));

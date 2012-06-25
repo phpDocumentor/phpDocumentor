@@ -55,11 +55,11 @@ class Traverser
      * With visitors it is possible to extend the traversal process and
      * modify the found tokens.
      *
-     * @param \PHPParser_NodeVisitorAbstract $visitor
+     * @param \PHPParser_NodeVisitor $visitor
      *
      * @return void
      */
-    public function addVisitor(\PHPParser_NodeVisitorAbstract $visitor)
+    public function addVisitor(\PHPParser_NodeVisitor $visitor)
     {
         $this->visitors[] = $visitor;
     }
