@@ -136,7 +136,9 @@ abstract class BaseReflector
         $doc_block = null;
         if ((string)$this->node->getDocComment()) {
             $doc_block = new \phpDocumentor\Reflection\DocBlock(
-                (string)$this->node->getDocComment()
+                (string)$this->node->getDocComment(),
+                $this->getNamespace(),
+                $this->getNamespaceAliases()
             );
             $doc_block->line_number = $this->node->getLine();
         }
