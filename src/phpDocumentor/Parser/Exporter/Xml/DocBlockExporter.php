@@ -90,30 +90,15 @@ class DocBlockExporter
         \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
         $contents = $docblock->getLongDescription()->getFormattedContents();
-        $node = $child->ownerDocument->createCDATASection(
-            $this->stripBinaryCharacters($contents)
-        );
+        $node = $child->ownerDocument->createCDATASection($contents);
 
         $element = new \DOMElement('long-description');
         $child->appendChild($element);
         $element->appendChild($node);
     }
 
-    /**
-     * Strips the binary characters of the given string.
-     *
-     * @param string $contents The contents to strip
-     *
-     * @return string
-     */
-    protected function stripBinaryCharacters($contents)
+    protected function addTags(\DOMElement $child, $tags, $element)
     {
-        return preg_replace("/[^\x9\xA\xD\x20-\x7F]/", '', $contents);
-    }
-
-    protected function addTags(
-        \DOMElement $child, $tags, $element
-    ) {
         foreach ($tags as $tag) {
             $object = new DocBlockTag();
             $object->export($child, $tag, $element);

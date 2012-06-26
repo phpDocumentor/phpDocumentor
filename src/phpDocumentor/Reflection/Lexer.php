@@ -18,9 +18,12 @@ namespace phpDocumentor\Reflection;
  * phpDocumentor has a custom Lexer for PHP-Parser because it needs
  * unmodified value for Scalar variables instead of an interpreted version.
  *
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * If the interpreted version was to be used then the XML interpretation would
+ * fail because of special characters.
+ *
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
  */
 class Lexer extends \PHPParser_Lexer
 {

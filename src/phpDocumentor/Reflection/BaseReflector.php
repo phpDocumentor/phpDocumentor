@@ -177,7 +177,7 @@ abstract class BaseReflector extends ReflectionAbstract
         }
 
         if (!self::$prettyPrinter) {
-            self::$prettyPrinter = new \PHPParser_PrettyPrinter_Zend;
+            self::$prettyPrinter = new PrettyPrinter();
         }
 
         return self::$prettyPrinter->prettyPrintExpr($value);
