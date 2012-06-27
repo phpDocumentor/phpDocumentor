@@ -163,7 +163,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
                     || !$node instanceof \PHPParser_Node_Stmt_Class
                         && $docblock->hasTag('package')
                 ) {
-                    $docblock->line_number = 0;
+                    $docblock->line_number = $comments[0]->getLine();
                     $this->doc_block = $docblock;
 
                     // remove the file level DocBlock from the node's comments

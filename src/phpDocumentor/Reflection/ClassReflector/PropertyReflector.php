@@ -115,14 +115,14 @@ class PropertyReflector extends BaseReflector
     public function getDocBlock()
     {
         $doc_block = null;
-        if ((string)$this->property->getDocComment()) {
+        if ($comment = $this->property->getDocComment()) {
             try {
                 $doc_block = new \phpDocumentor\Reflection\DocBlock(
-                    (string)$this->property->getDocComment(),
+                    (string)$comment,
                     $this->getNamespace(),
                     $this->getNamespaceAliases()
                 );
-                $doc_block->line_number = $this->node->getLine();
+                $doc_block->line_number = $comment->getLine();
             } catch (\Exception $e) {
                 $this->log($e->getMessage(), 2);
             }
