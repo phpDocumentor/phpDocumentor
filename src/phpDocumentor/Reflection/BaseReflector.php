@@ -55,14 +55,14 @@ abstract class BaseReflector extends ReflectionAbstract
     public function getDocBlock()
     {
         $doc_block = null;
-        if ((string)$this->node->getDocComment()) {
+        if ($comment = $this->node->getDocComment()) {
             try {
                 $doc_block = new \phpDocumentor\Reflection\DocBlock(
-                    (string)$this->node->getDocComment(),
+                    (string)$comment,
                     $this->getNamespace(),
                     $this->getNamespaceAliases()
                 );
-                $doc_block->line_number = $this->node->getLine();
+                $doc_block->line_number = $comment->getLine();
             } catch (\Exception $e) {
                 $this->log($e->getMessage(), 2);
             }
