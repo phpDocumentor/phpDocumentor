@@ -182,7 +182,7 @@ class Installer
 
         if ($error_code != 0) {
             throw new \Exception(
-                'Unable to install dependencies; Composer returned: '
+                'Unable to install composer itself; Composer returned: '
                 .implode(PHP_EOL, $output)
             );
         }
