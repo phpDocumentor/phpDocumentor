@@ -23,7 +23,7 @@ namespace phpDocumentor\Parser\Exporter\Xml;
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class DocBlockTag
+class DocBlockTagExporter
 {
     /**
      * Export this tag to the given DocBlock.

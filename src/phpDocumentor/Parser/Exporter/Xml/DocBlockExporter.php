@@ -100,7 +100,7 @@ class DocBlockExporter
     protected function addTags(\DOMElement $child, $tags, $element)
     {
         foreach ($tags as $tag) {
-            $object = new DocBlockTag();
+            $object = new DocBlockTagExporter();
             $object->export($child, $tag, $element);
         }
     }

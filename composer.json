@@ -7,8 +7,7 @@
     "autoload": {
         "psr-0":{
             "phpDocumentor": "src/"
-        },
-        "classmap": ["src/phpDocumentor"]
+        }
     },
     "repositories":[
         { "type":"composer", "url":"http://packages.zendframework.com"},
@@ -27,7 +26,7 @@
         "zendframework/zend-translator": "2.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/fileset": "dev-master",
-        "phpdocumentor/reflection-docblock": "1.*",
+        "phpdocumentor/reflection-docblock": "dev-master",
         "phpdocumentor/template-responsive": "1.*",
         "phpdocumentor/template-new-black": "1.*"
     }
