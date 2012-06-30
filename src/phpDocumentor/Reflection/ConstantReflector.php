@@ -21,8 +21,23 @@ namespace phpDocumentor\Reflection;
  */
 class ConstantReflector extends BaseReflector
 {
+    /** @var \PHPParser_Node_Stmt_Const */
+    protected $constant;
+
     /** @var \PHPParser_Node_Const */
     protected $node;
+
+    /**
+     * Registers the Constant Statement and Node with this reflector.
+     *
+     * @param \PHPParser_Node_Stmt_Const $stmt
+     * @param \PHPParser_Node_Const      $node
+     */
+    public function __construct($stmt, $node)
+    {
+        $this->constant = $stmt;
+        parent::__construct($node);
+    }
 
     /**
      * Returns the value contained in this Constant.
@@ -32,5 +47,35 @@ class ConstantReflector extends BaseReflector
     public function getValue()
     {
         return $this->getRepresentationOfValue($this->node->value);
+    }
+
+    /**
+     * Returns the parsed DocBlock.
+     *
+     * @return \phpDocumentor\Reflection\DocBlock|null
+     */
+    public function getDocBlock()
+    {
+        $doc_block = null;
+        $comment = $this->constant->getDocComment();
+        if ($comment) {
+            try {
+                $doc_block = new \phpDocumentor\Reflection\DocBlock(
+                    (string)$comment,
+                    $this->getNamespace(),
+                    $this->getNamespaceAliases()
+                );
+                $doc_block->line_number = $comment->getLine();
+            } catch (\Exception $e) {
+                $this->log($e->getMessage(), 2);
+            }
+        }
+
+        $this->dispatch(
+            'reflection.docblock-extraction.post',
+            array('docblock' => $doc_block)
+        );
+
+        return $doc_block;
     }
 }

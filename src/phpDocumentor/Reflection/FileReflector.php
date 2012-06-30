@@ -214,7 +214,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
                 break;
             case 'PHPParser_Node_Stmt_Const':
                 foreach ($node->consts as $constant) {
-                    $reflector = new ConstantReflector($constant);
+                    $reflector = new ConstantReflector($node, $constant);
                     $this->constants[$reflector->getName()] = $reflector;
                 }
                 break;
@@ -237,7 +237,10 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
                         .$name
                     );
 
-                    $reflector = new ConstantReflector($constant);
+                    // we use $constant here both times since this is a
+                    // FuncCall, which combines properties that are otherwise
+                    // split over 2 objects
+                    $reflector = new ConstantReflector($constant, $constant);
                     $this->constants[$reflector->getName()] = $reflector;
                 }
                 break;

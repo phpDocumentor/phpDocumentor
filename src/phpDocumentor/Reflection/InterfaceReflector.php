@@ -26,22 +26,29 @@ class InterfaceReflector extends BaseReflector
 
         foreach ($this->node->stmts as $stmt) {
             switch(get_class($stmt)) {
-                case 'PHPParser_Node_Stmt_Property':
-                    foreach ($stmt->props as $property) {
-                        $reflector = new ClassReflector\PropertyReflector($stmt, $property);
-                        $this->properties[$reflector->getName()] = $reflector;
-                    }
-                    break;
-                case 'PHPParser_Node_Stmt_ClassMethod':
-                    $reflector = new ClassReflector\MethodReflector($stmt);
-                    $this->methods[$reflector->getName()] = $reflector;
-                    break;
-                case 'PHPParser_Node_Stmt_ClassConst':
-                    foreach ($stmt->consts as $constant) {
-                        $reflector = new ClassReflector\ConstantReflector($constant);
-                        $this->constants[$reflector->getName()] = $reflector;
-                    }
-                    break;
+            case 'PHPParser_Node_Stmt_Property':
+                foreach ($stmt->props as $property) {
+                    $reflector = new ClassReflector\PropertyReflector(
+                        $stmt, $property
+                    );
+                    $reflector->setNamespace($this->getNamespace());
+                    $this->properties[$reflector->getName()] = $reflector;
+                }
+                break;
+            case 'PHPParser_Node_Stmt_ClassMethod':
+                $reflector = new ClassReflector\MethodReflector($stmt);
+                $reflector->setNamespace($this->getNamespace());
+                $this->methods[$reflector->getName()] = $reflector;
+                break;
+            case 'PHPParser_Node_Stmt_ClassConst':
+                foreach ($stmt->consts as $constant) {
+                    $reflector = new ClassReflector\ConstantReflector(
+                        $stmt, $constant
+                    );
+                    $reflector->setNamespace($this->getNamespace());
+                    $this->constants[$reflector->getName()] = $reflector;
+                }
+                break;
             }
         }
     }

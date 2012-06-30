@@ -28,6 +28,13 @@ abstract class BaseReflector extends ReflectionAbstract
     protected $default_package_name = '';
 
     /**
+     * Contains name of the namespace in which this element exists.
+     *
+     * @var string|null
+     */
+    protected $namespace = 'global';
+
+    /**
      * PHP AST pretty printer used to get representations of values.
      *
      * @var \PHPParser_PrettyPrinterAbstract
@@ -45,6 +52,27 @@ abstract class BaseReflector extends ReflectionAbstract
     public function __construct(\PHPParser_NodeAbstract $node)
     {
         $this->node = $node;
+    }
+
+    /**
+     * Sets the name for the namespace.
+     *
+     * @param string $namespace
+     *
+     * @throws \InvalidArgumentException if something other than a string is
+     *     passed.
+     *
+     * @return void
+     */
+    public function setNamespace($namespace)
+    {
+        if (!is_string($namespace)) {
+            throw new \InvalidArgumentException(
+                'Expected a string for the namespace'
+            );
+        }
+
+        $this->namespace = $namespace;
     }
 
     /**
@@ -105,15 +133,15 @@ abstract class BaseReflector extends ReflectionAbstract
     /**
      * Returns the namespace name for this object.
      *
-     * If this object does not have a namespace then an empty string is
-     * returned.
+     * If this object does not have a namespace then the word 'global' is
+     * returned to indicate a global namespace.
      *
      * @return string
      */
     public function getNamespace()
     {
         if (!$this->node->namespacedName) {
-            return 'global';
+            return $this->namespace;
         }
 
         $parts = $this->node->namespacedName->parts;
@@ -121,6 +149,19 @@ abstract class BaseReflector extends ReflectionAbstract
 
         $namespace = implode('\\', $parts);
         return $namespace ? $namespace : 'global';
+    }
+
+    /**
+     * Returns a listing of namespace aliases where the key represents the alias
+     * and the value the Fully Qualified Namespace Name.
+     *
+     * @todo implement it.
+     *
+     * @return string[]
+     */
+    public function getNamespaceAliases()
+    {
+        return array();
     }
 
     /**
@@ -183,8 +224,4 @@ abstract class BaseReflector extends ReflectionAbstract
         return self::$prettyPrinter->prettyPrintExpr($value);
     }
 
-    public function getNamespaceAliases()
-    {
-        return array();
-    }
 }
