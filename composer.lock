@@ -44,7 +44,7 @@
         {
             "package": "phpdocumentor/reflection-docblock",
             "version": "dev-master",
-            "source-reference": "731e797dd8e2b15f1be8e46e7c33dc931cad3a1b"
+            "source-reference": "cee3c0bc21d102762a81432d23f4bff9d5ef8658"
         },
         {
             "package": "phpdocumentor/template-abstract",

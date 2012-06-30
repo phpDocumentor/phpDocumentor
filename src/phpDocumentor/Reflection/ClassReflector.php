@@ -27,24 +27,18 @@ class ClassReflector extends InterfaceReflector
     /** @var string[] */
     protected $traits = array();
 
-    /**
-     * Interprets the PHP-Parser statement and constructs a class reflection.
-     *
-     * @param \PHPParser_Node_Stmt_Class $node A Class node as returned by the
-     *     PHP-Parser component.
-     */
-    public function __construct(\PHPParser_Node_Stmt $node)
+    public function parseSubElements()
     {
-        parent::__construct($node);
-
         /** @var \PHPParser_Node_Stmt_TraitUse $stmt  */
-        foreach ($node->stmts as $stmt) {
+        foreach ($this->node->stmts as $stmt) {
             if ($stmt instanceof \PHPParser_Node_Stmt_TraitUse) {
                 foreach ($stmt->traits as $trait) {
                     $this->traits[] = (string)$trait;
                 }
             }
         }
+
+        parent::parseSubElements();
     }
 
     /**

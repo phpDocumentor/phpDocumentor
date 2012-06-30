@@ -14,30 +14,31 @@ namespace phpDocumentor\Reflection;
 
 class InterfaceReflector extends BaseReflector
 {
-    /** @var \PHPParser_Node_Stmt */
+    /** @var \PHPParser_Node_Stmt_Interface|\PHPParser_Node_Stmt_Class */
     protected $node;
+
     protected $constants = array();
     protected $properties = array();
     protected $methods = array();
 
-    public function __construct(\PHPParser_Node_Stmt $node)
+    public function parseSubElements()
     {
-        parent::__construct($node);
-
         foreach ($this->node->stmts as $stmt) {
-            switch(get_class($stmt)) {
+            switch (get_class($stmt)) {
             case 'PHPParser_Node_Stmt_Property':
                 foreach ($stmt->props as $property) {
                     $reflector = new ClassReflector\PropertyReflector(
                         $stmt, $property
                     );
                     $reflector->setNamespace($this->getNamespace());
+                    $reflector->setNamespaceAliases($this->namespace_aliases);
                     $this->properties[$reflector->getName()] = $reflector;
                 }
                 break;
             case 'PHPParser_Node_Stmt_ClassMethod':
                 $reflector = new ClassReflector\MethodReflector($stmt);
                 $reflector->setNamespace($this->getNamespace());
+                $reflector->setNamespaceAliases($this->namespace_aliases);
                 $this->methods[$reflector->getName()] = $reflector;
                 break;
             case 'PHPParser_Node_Stmt_ClassConst':
@@ -46,6 +47,7 @@ class InterfaceReflector extends BaseReflector
                         $stmt, $constant
                     );
                     $reflector->setNamespace($this->getNamespace());
+                    $reflector->setNamespaceAliases($this->namespace_aliases);
                     $this->constants[$reflector->getName()] = $reflector;
                 }
                 break;

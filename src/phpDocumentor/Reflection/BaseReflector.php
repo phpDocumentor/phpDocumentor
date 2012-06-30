@@ -25,6 +25,14 @@ abstract class BaseReflector extends ReflectionAbstract
     /** @var \PHPParser_Node_Stmt */
     protected $node;
 
+    /**
+     * The package name that is passed on by the parent Reflector.
+     *
+     * May be overwritten and should be passed on to children supporting
+     * packages.
+     *
+     * @var string
+     */
     protected $default_package_name = '';
 
     /**
@@ -33,6 +41,16 @@ abstract class BaseReflector extends ReflectionAbstract
      * @var string|null
      */
     protected $namespace = 'global';
+
+    /**
+     * List of namespace aliases.
+     *
+     * The key of each entry represents the alias name and the value the
+     * Fully Qualified Namespace Name (FQNN) that it refers to.
+     *
+     * @var string[]
+     */
+    protected $namespace_aliases = array();
 
     /**
      * PHP AST pretty printer used to get representations of values.
@@ -155,13 +173,39 @@ abstract class BaseReflector extends ReflectionAbstract
      * Returns a listing of namespace aliases where the key represents the alias
      * and the value the Fully Qualified Namespace Name.
      *
-     * @todo implement it.
-     *
      * @return string[]
      */
     public function getNamespaceAliases()
     {
-        return array();
+        return $this->namespace_aliases;
+    }
+
+    /**
+     * Sets a listing of namespace aliases.
+     *
+     * The keys represents the alias name and the value the
+     * Fully Qualified Namespace Name (FQNN).
+     *
+     * @param string[] $aliases
+     *
+     * @return void
+     */
+    public function setNamespaceAliases(array $aliases)
+    {
+        $this->namespace_aliases = $aliases;
+    }
+
+    /**
+     * Sets the Fully Qualified Namespace Name (FQNN) for an alias.
+     *
+     * @param string $alias
+     * @param string $fqnn
+     *
+     * @return void
+     */
+    public function setNamespaceAlias($alias, $fqnn)
+    {
+        $this->namespace_aliases[$alias] = $fqnn;
     }
 
     /**
