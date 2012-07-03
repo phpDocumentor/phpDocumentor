@@ -29,5 +29,11 @@
         "phpdocumentor/reflection-docblock": "1.0.0-beta7",
         "phpdocumentor/template-responsive": "1.*",
         "phpdocumentor/template-new-black": "1.*"
+    },
+    "require-dev": {
+        "behat/behat":">=2.4@stable"
+    },
+    "config": {
+        "bin-dir":"bin/"
     }
 }

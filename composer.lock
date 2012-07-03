@@ -1,16 +1,16 @@
 {
-    "hash": "e0cd3125f27d4467553ae1c4932d9537",
+    "hash": "9ba13d00b4d0640f20473d0fafee53ae",
     "packages": [
+        {
+            "package": "cilex/cilex",
+            "version": "dev-master",
+            "source-reference": "c9db6dcf69ea9bc11e6bd2f25459075cafc5a305"
+        },
         {
             "package": "cilex/cilex",
             "version": "dev-master",
             "alias-pretty-version": "1.0.x-dev",
             "alias-version": "1.0.9999999.9999999-dev"
-        },
-        {
-            "package": "cilex/cilex",
-            "version": "dev-master",
-            "source-reference": "c9db6dcf69ea9bc11e6bd2f25459075cafc5a305"
         },
         {
             "package": "dflydev/markdown",
@@ -63,18 +63,13 @@
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "d2cfa2f02f50abef65c238747c753a5f6786f6be"
-        },
-        {
-            "package": "pimple/pimple",
-            "version": "dev-master",
             "alias-pretty-version": "1.0.x-dev",
             "alias-version": "1.0.9999999.9999999-dev"
         },
         {
-            "package": "symfony/class-loader",
+            "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "5828147fbcd233b2d64b3e766ad8252577401694"
+            "source-reference": "d2cfa2f02f50abef65c238747c753a5f6786f6be"
         },
         {
             "package": "symfony/class-loader",
@@ -83,15 +78,26 @@
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
-            "package": "symfony/console",
+            "package": "symfony/class-loader",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/class-loader",
+            "version": "dev-master",
+            "source-reference": "0942a7b483df2616407acf721216d97f95d190ad"
         },
         {
             "package": "symfony/console",
             "version": "dev-master",
             "source-reference": "808bf42b4b74c12e6c6a6a9750688035f1c49f9c"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/finder",
@@ -107,13 +113,19 @@
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/process",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/process",
+            "version": "dev-master",
+            "source-reference": "abbb6c9a4fcbd070af4e6296753d449dcd4723aa"
         },
         {
             "package": "zendframework/zend-config",
@@ -132,7 +144,83 @@
             "version": "2.0.0-beta4"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+        {
+            "package": "behat/behat",
+            "version": "v2.4.2"
+        },
+        {
+            "package": "behat/gherkin",
+            "version": "v2.2.2"
+        },
+        {
+            "package": "symfony/class-loader",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/config",
+            "version": "dev-master",
+            "source-reference": "a261cb1571e1f3921a632541299a9f39753a62a7"
+        },
+        {
+            "package": "symfony/config",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/dependency-injection",
+            "version": "dev-master",
+            "source-reference": "5ec72a390e4c8a737316f6dc2547f3d368d8bb9b"
+        },
+        {
+            "package": "symfony/dependency-injection",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA1"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/process",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/translation",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA1"
+        },
+        {
+            "package": "symfony/translation",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/yaml",
+            "version": "dev-master",
+            "source-reference": "fa301d6bd6d2538b48fbf668879d6e052ed9caad"
+        },
+        {
+            "package": "symfony/yaml",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        }
+    ],
     "aliases": [
 
     ],
@@ -140,6 +228,7 @@
     "stability-flags": {
         "nikic/php-parser": 20,
         "phpdocumentor/fileset": 10,
-        "phpdocumentor/reflection-docblock": 10
+        "phpdocumentor/reflection-docblock": 10,
+        "behat/behat": 0
     }
 }
