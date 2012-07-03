@@ -5,6 +5,9 @@ build/*
 .project
 .settings/
 *.swp
+
 vendor/*
-composer.phar
 data/templates/*
+
+composer.phar
+composer.lock
