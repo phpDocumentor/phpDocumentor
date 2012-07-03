@@ -68,6 +68,6 @@ class ArgumentExporter
         );
 
         $type = $argument->getType();
-        $child->appendChild(new \DOMElement('type',  $type ? '\\'.$type : ''));
+        $child->appendChild(new \DOMElement('type',  $type ? $type : ''));
     }
 }

@@ -60,7 +60,7 @@ OUTPUT;
         $argument->expects($this->once())->method('getName')
             ->will($this->returnValue('name'));
         $argument->expects($this->once())->method('getType')
-            ->will($this->returnValue('\string'));
+            ->will($this->returnValue('string'));
         $argument->expects($this->once())->method('getDefault')
             ->will($this->returnValue('default'));
 
