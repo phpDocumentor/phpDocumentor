@@ -29,7 +29,7 @@
             "source-reference": "4972124468f223c8508950569367ec3f0a208a61"
         },
         {
-            "package": "pear-symfony/EventDispatcher",
+            "package": "pear-pear.symfony-project.com/EventDispatcher",
             "version": "1.0.0"
         },
         {
