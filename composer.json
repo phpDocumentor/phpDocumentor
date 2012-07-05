@@ -19,7 +19,7 @@
         "cilex/cilex": "1.*",
         "dflydev/markdown": "1.0.*",
         "nikic/php-parser": "dev-master",
-        "pear-symfony/EventDispatcher": "1.*",
+        "pear-pear.symfony-project.com/EventDispatcher": "1.*",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-config": "2.*",
         "zendframework/zend-locale": "2.*",
