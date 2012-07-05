@@ -1,16 +1,16 @@
 {
-    "hash": "9ba13d00b4d0640f20473d0fafee53ae",
+    "hash": "cee59c2505b096a6119b569441018913",
     "packages": [
-        {
-            "package": "cilex/cilex",
-            "version": "dev-master",
-            "source-reference": "c9db6dcf69ea9bc11e6bd2f25459075cafc5a305"
-        },
         {
             "package": "cilex/cilex",
             "version": "dev-master",
             "alias-pretty-version": "1.0.x-dev",
             "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "cilex/cilex",
+            "version": "dev-master",
+            "source-reference": "c9db6dcf69ea9bc11e6bd2f25459075cafc5a305"
         },
         {
             "package": "dflydev/markdown",
@@ -80,13 +80,19 @@
         {
             "package": "symfony/class-loader",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "5d8ded640026208fbed5b35762df4def64868381"
         },
         {
             "package": "symfony/class-loader",
             "version": "dev-master",
-            "source-reference": "0942a7b483df2616407acf721216d97f95d190ad"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/console",
@@ -94,7 +100,7 @@
             "source-reference": "808bf42b4b74c12e6c6a6a9750688035f1c49f9c"
         },
         {
-            "package": "symfony/console",
+            "package": "symfony/finder",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -105,27 +111,21 @@
             "source-reference": "4d6a965beae234bd0fa7f61681bd8a54df60f042"
         },
         {
-            "package": "symfony/finder",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/process",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/process",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
             "package": "symfony/process",
             "version": "dev-master",
             "source-reference": "abbb6c9a4fcbd070af4e6296753d449dcd4723aa"
+        },
+        {
+            "package": "symfony/process",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
         },
         {
             "package": "zendframework/zend-config",
@@ -173,7 +173,13 @@
         {
             "package": "symfony/dependency-injection",
             "version": "dev-master",
-            "source-reference": "5ec72a390e4c8a737316f6dc2547f3d368d8bb9b"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/dependency-injection",
+            "version": "dev-master",
+            "source-reference": "d120ca9c0347e408f5ccc8a7de7e71b575afc8e9"
         },
         {
             "package": "symfony/dependency-injection",
@@ -184,16 +190,16 @@
         {
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "v2.1.0-BETA1"
         },
         {
-            "package": "symfony/process",
+            "package": "symfony/translation",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -204,7 +210,7 @@
             "source-reference": "v2.1.0-BETA1"
         },
         {
-            "package": "symfony/translation",
+            "package": "symfony/yaml",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -212,13 +218,13 @@
         {
             "package": "symfony/yaml",
             "version": "dev-master",
-            "source-reference": "fa301d6bd6d2538b48fbf668879d6e052ed9caad"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/yaml",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "aeba5f4c420d04996b2fd46b0ca35dbd4ed2bab5"
         }
     ],
     "aliases": [
