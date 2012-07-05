@@ -11,6 +11,14 @@
 
 /**
  *
+ */
+function noShortDescriptionFunction()
+{
+
+}
+
+/**
+ *
  *
  * @package    phpDocumentor
  * @subpackage Validator
