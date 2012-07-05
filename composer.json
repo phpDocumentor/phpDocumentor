@@ -11,7 +11,7 @@
     },
     "repositories":[
         { "type":"composer", "url":"http://packages.zendframework.com"},
-        { "type":"pear", "url":"http://pear.symfony-project.com/" }
+        { "type":"pear", "url":"http://pear.symfony-project.com/"}
     ],
     "require": {
         "php": ">=5.3.3",
@@ -19,7 +19,7 @@
         "cilex/cilex": "1.*",
         "dflydev/markdown": "1.0.*",
         "nikic/php-parser": "dev-master",
-        "pear-symfony/EventDispatcher": "1.0.0",
+        "pear-symfony/EventDispatcher": "1.*",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-config": "2.*",
         "zendframework/zend-locale": "2.*",
