@@ -323,11 +323,17 @@ class Transformer extends TransformerAbstract
 
         // invoke pre-transform actions (i.e. enhance source file with additional
         // meta-data)
-        $this->dispatch('transformer.transform.pre', array('source' => $source));
+        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+            'transformer.transform.pre',
+            \phpDocumentor\Transformer\Events\PreTransformEvent
+            ::createInstance($this)->setSource($source)
+        );
 
         foreach ($this->getTransformations() as $transformation) {
-            $this->dispatch(
-                'transformer.transformation.pre', array('source' => $source)
+            \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+                'transformer.transformation.pre',
+                \phpDocumentor\Transformer\Events\PreTransformationEvent
+                ::createInstance($this)->setSource($source)
             );
 
             $this->log(
@@ -340,14 +346,17 @@ class Transformer extends TransformerAbstract
 
             $transformation->execute($source);
 
-            $this->dispatch(
-                'transformer.transformation.post', array('source' => $source)
+            \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+                'transformer.transformation.post',
+                \phpDocumentor\Transformer\Events\PostTransformationEvent
+                ::createInstance($this)->setSource($source)
             );
         }
 
-        $this->dispatch(
+        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
             'transformer.transform.post',
-            array('source' => $source)
+            \phpDocumentor\Transformer\Events\PostTransformEvent
+            ::createInstance($this)->setSource($source)
         );
     }
 

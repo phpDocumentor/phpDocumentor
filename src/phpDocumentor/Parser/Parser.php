@@ -352,8 +352,9 @@ class Parser extends ParserAbstract
             $file = new \phpDocumentor\Reflection\FileReflector($filename, $this->doValidation());
             $file->setDefaultPackageName($this->getDefaultPackageName());
 
-            if (self::$event_dispatcher !== null) {
-                self::$event_dispatcher->connect(
+            if (class_exists('phpDocumentor\Plugin\EventDispatcher')) {
+                \phpDocumentor\Plugin\EventDispatcher::getInstance()
+                ->addListener(
                     'parser.log',
                     array($file, 'addParserMarker')
                 );
@@ -414,8 +415,8 @@ class Parser extends ParserAbstract
 
         //disconnects the dispatcher here so if any error occured, it still
         // removes the event
-        if ($dispatched && self::$event_dispatcher !== null) {
-            self::$event_dispatcher->disconnect(
+        if ($dispatched && class_exists('phpDocumentor\Plugin\EventDispatcher')) {
+            \phpDocumentor\Plugin\EventDispatcher::getInstance()->removeListener(
                 'parser.log',
                 array($file, 'addParserMarker')
             );
@@ -466,9 +467,10 @@ class Parser extends ParserAbstract
 
         $file_count = count($paths);
         foreach ($paths as $key => $file) {
-            $this->dispatch(
+            \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
                 'parser.file.pre',
-                array('file' => $file, 'progress' => array($key +1, $file_count))
+                \phpDocumentor\Parser\Events\PreFileEvent::createInstance($this)
+                ->setFile($file)->setProgress(array($key + 1, $file_count))
             );
 
             $this->parseFile($file, $include_source);

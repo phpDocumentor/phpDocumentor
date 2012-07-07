@@ -71,9 +71,10 @@ class ConstantReflector extends BaseReflector
             }
         }
 
-        $this->dispatch(
+        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
             'reflection.docblock-extraction.post',
-            array('docblock' => $doc_block)
+            \phpDocumentor\Reflection\Events\PostDocBlockExtractionEvent
+            ::createInstance($this)->setDocblock($doc_block)
         );
 
         return $doc_block;

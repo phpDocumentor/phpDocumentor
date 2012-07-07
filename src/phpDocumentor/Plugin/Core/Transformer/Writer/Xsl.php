@@ -95,12 +95,11 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
             $qry = $xpath->query($transformation->getQuery());
             $count = $qry->length;
             foreach ($qry as $key => $element) {
-                $this->dispatch(
+                \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
                     'transformer.writer.xsl.pre',
-                    array(
-                         'element' => $element,
-                         'progress' => array($key+1, $count)
-                    )
+                    \phpDocumentor\Transformer\Events\PreXslWriterEvent
+                    ::createInstance($this)->setElement($element)
+                    ->setProgress(array($key+1, $count))
                 );
 
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);

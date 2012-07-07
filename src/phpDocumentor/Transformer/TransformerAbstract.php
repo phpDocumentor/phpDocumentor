@@ -25,52 +25,6 @@ namespace phpDocumentor\Transformer;
 abstract class TransformerAbstract
 {
     /**
-     * The event dispatcher object, may be null to not dispatch events.
-     *
-     * @var \sfEventDispatcher|null
-     */
-    public static $event_dispatcher = null;
-
-    /**
-     * Dispatches an event to the Event Dispatcher.
-     *
-     * This method tries to dispatch an event; if no Event Dispatcher has been
-     * set than this method will explicitly not fail and return null.
-     *
-     * By not failing we make the Event Dispatcher optional and is it easier
-     * for people to re-use this component in their own application.
-     *
-     * @param string   $name      Name of the event to dispatch.
-     * @param string[] $arguments Arguments for this event.
-     *
-     * @throws Exception if there is a dispatcher but
-     *   it is not of type sfEventDispatcher
-     *
-     * @return mixed|null
-     */
-    public function dispatch($name, $arguments)
-    {
-        if (!self::$event_dispatcher) {
-            return null;
-        }
-
-        if (!self::$event_dispatcher instanceof \sfEventDispatcher) {
-            throw new Exception(
-                'Expected the event dispatcher to be an instance of '
-                . 'sfEventDispatcher'
-            );
-        }
-
-        $event = self::$event_dispatcher->notify(
-            new \sfEvent($this, $name, $arguments)
-        );
-
-        return $event
-            ? $event->getReturnValue()
-            : null;
-    }
-
-    /**
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.
@@ -81,12 +35,10 @@ abstract class TransformerAbstract
      */
     public function log($message, $priority = 6)
     {
-        $this->dispatch(
+        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
             'system.log',
-            array(
-                'message'  => $message,
-                'priority' => $priority
-            )
+            \phpDocumentor\Events\LogEvent::createInstance($this)
+            ->setMessage($message)->setPriority($priority)
         );
     }
 
@@ -99,9 +51,10 @@ abstract class TransformerAbstract
      */
     public function debug($message)
     {
-        $this->dispatch(
+        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
             'system.debug',
-            array('message'  => $message)
+            \phpDocumentor\Events\DebugEvent::createInstance($this)
+            ->setMessage($message)
         );
     }
 }

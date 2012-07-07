@@ -123,25 +123,9 @@ class Application extends \Cilex\Application
     {
         $this['event_dispatcher'] = $this->share(
             function () {
-                return new \sfEventDispatcher();
+                return Plugin\EventDispatcher::getInstance();
             }
         );
-        $this->linkEventDispatcherToSuperclasses();
-    }
-
-    /**
-     * Temporary method to link the event dispatcher to all subelements.
-     *
-     * @todo A different way should be devised for the Event Dispatcher to be passed.
-     *
-     * @return void
-     */
-    protected function linkEventDispatcherToSuperclasses()
-    {
-        \phpDocumentor\Reflection\ReflectionAbstract::$event_dispatcher
-            = \phpDocumentor\Parser\ParserAbstract::$event_dispatcher
-                = \phpDocumentor\Transformer\TransformerAbstract::$event_dispatcher
-                    = $this['event_dispatcher'];
     }
 
     protected function loadPlugins()

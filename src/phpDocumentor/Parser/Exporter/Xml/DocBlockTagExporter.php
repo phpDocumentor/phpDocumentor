@@ -45,12 +45,13 @@ class DocBlockTagExporter
 
         $child->setAttribute('line', $parent->getAttribute('line'));
 
-        $element->dispatch(
-            'reflection.docblock.tag.export',
-            array(
-                'object' => $tag,
-                'xml' => simplexml_import_dom($child)
-            )
-        );
+        if (class_exists('phpDocumentor\Plugin\EventDispatcher')) {
+            \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+                'reflection.docblock.tag.export',
+                \phpDocumentor\Reflection\Events\ExportDocBlockTagEvent
+                ::createInstance($this)->setObject($tag)
+                    ->setXml(simplexml_import_dom($child))
+            );
+        }
     }
 }

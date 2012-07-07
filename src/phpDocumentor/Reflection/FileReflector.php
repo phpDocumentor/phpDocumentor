@@ -181,9 +181,10 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
             $nodes[$key] = $node;
         }
 
-        $this->dispatch(
+        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
             'reflection.docblock-extraction.post',
-            array('docblock' => $this->doc_block)
+            \phpDocumentor\Reflection\Events\PostDocBlockExtractionEvent
+            ::createInstance($this)->setDocblock($this->doc_block)
         );
 
         return $nodes;

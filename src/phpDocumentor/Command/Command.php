@@ -41,20 +41,22 @@ class Command extends \Cilex\Command\Command
             return;
         }
 
-        /** @var \sfEventDispatcher $event_dispatcher  */
+        /** @var \phpDocumentor\Plugin\EventDispatcher $event_dispatcher  */
         $event_dispatcher = $this->getService('event_dispatcher');
+
+        /** @var Command $command  */
         $command = $this;
 
         $event_dispatcher->connect(
             'system.log',
-            function(\sfEvent $event) use ($command, $output) {
+            function(\phpDocumentor\Events\LogEvent $event) use ($command, $output) {
                 $command->logEvent($output, $event);
             }
         );
 
         $event_dispatcher->connect(
             'system.debug',
-            function(\sfEvent $event) use ($command, $output) {
+            function(\phpDocumentor\Events\DebugEvent $event) use ($command, $output) {
                 $command->logEvent($output, $event);
             }
         );
@@ -72,20 +74,16 @@ class Command extends \Cilex\Command\Command
      *
      * @return void.
      */
-    public function logEvent(OutputInterface $output, \sfEvent $event)
+    public function logEvent(OutputInterface $output, \phpDocumentor\Events\LogEvent $event)
     {
-        if (!isset($event['priority'])) {
-            $event['priority'] = \phpDocumentor\Plugin\Core\Log::INFO;
-        }
-
         $threshold = \phpDocumentor\Plugin\Core\Log::ERR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
             $threshold = \phpDocumentor\Plugin\Core\Log::DEBUG;
         }
 
-        if ($event['priority'] <= $threshold) {
-            $message = $event['message'];
-            switch ($event['priority'])
+        if ($event->getPriority() <= $threshold) {
+            $message = $event->getMessage();
+            switch ($event->getPriority())
             {
             case \phpDocumentor\Plugin\Core\Log::WARN:
                 $message = '<comment>' . $message . '</comment>';

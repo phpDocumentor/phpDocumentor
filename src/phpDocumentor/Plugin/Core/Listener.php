@@ -31,13 +31,14 @@ class Listener extends ListenerAbstract
     /**
      * Applies all behaviours prior to transformation.
      *
-     * @param \sfEvent $data Event object containing the parameters.
+     * @param \phpDocumentor\Transformer\Events\PreTransformationEvent $data
+     *     Event object containing the parameters.
      *
      * @phpdoc-event transformer.transform.pre
      *
      * @return void
      */
-    public function applyBehaviours(\sfEvent $data)
+    public function applyBehaviours($data)
     {
         if (!$data->getSubject() instanceof \phpDocumentor\Transformer\Transformer) {
             throw new Exception(
@@ -66,25 +67,26 @@ class Listener extends ListenerAbstract
             )
         );
 
-        $data['source'] = $behaviours->process($data['source']);
+        $data->setSource($behaviours->process($data->getSource()));
     }
 
     /**
      * Checks all phpDocumentor whether they match the given rules.
      *
-     * @param \sfEvent $data Event object containing the parameters.
+     * @param \phpDocumentor\Reflection\Events\PostDocBlockExtractionEvent $data
+     *     Event object containing the parameters.
      *
      * @phpdoc-event reflection.docblock-extraction.post
      *
      * @return void
      */
-    public function validateDocBlocks(\sfEvent $data)
+    public function validateDocBlocks($data)
     {
         /** @var \phpDocumentor\Reflection\BaseReflector $element  */
         $element = $data->getSubject();
 
         /** @var \phpDocumentor\Reflection\DocBlock $docblock  */
-        $docblock = $data['docblock'];
+        $docblock = $data->getDocblock();
 
         // get the type of element
         $type = substr(
@@ -102,6 +104,7 @@ class Listener extends ListenerAbstract
 
         foreach (array('Deprecated', 'Required', $type) as $validator) {
 
+            // todo: move to a factory or builder class
             $class = 'phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\\'
                 . $validator.'Validator';
 
@@ -123,13 +126,14 @@ class Listener extends ListenerAbstract
     /**
      * Prepare the tag to be injected into the XML file.
      *
-     * @param \sfEvent $data Event object containing the parameters.
+     * @param \phpDocumentor\Reflection\Events\ExportDocBlockTagEvent $data
+     *     Event object containing the parameters.
      *
      * @phpdoc-event reflection.docblock.tag.export
      *
      * @return void
      */
-    public function exportTag(\sfEvent $data)
+    public function exportTag($data)
     {
         /** @var \phpDocumentor\Reflection\BaseReflector $subject  */
         $subject = $data->getSubject();
@@ -137,8 +141,8 @@ class Listener extends ListenerAbstract
         Parser\DocBlock\Tag\Definition\Definition::create(
             $subject->getNamespace(),
             $subject->getNamespaceAliases(),
-            $data['xml'],
-            $data['object']
+            $data->getXml(),
+            $data->getObject()
         );
     }
 
