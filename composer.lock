@@ -1,5 +1,5 @@
 {
-    "hash": "28ce5cccc7918f9592eb51037cfd9ac0",
+    "hash": "6f32107c7bf255b97532f9e4ba12b8ce",
     "packages": [
         {
             "package": "cilex/cilex",
@@ -49,15 +49,19 @@
         },
         {
             "package": "phpdocumentor/template-abstract",
-            "version": "1.0.0"
+            "version": "1.0.1"
         },
         {
             "package": "phpdocumentor/template-new-black",
-            "version": "1.0.1"
+            "version": "1.0.2"
         },
         {
             "package": "phpdocumentor/template-responsive",
             "version": "1.0.5"
+        },
+        {
+            "package": "phpdocumentor/template-zend",
+            "version": "1.0.1"
         },
         {
             "package": "phpdocumentor/unified-asset-installer",
@@ -150,64 +154,7 @@
             "version": "2.0.0-beta4"
         }
     ],
-    "packages-dev": [
-        {
-            "package": "behat/behat",
-            "version": "v2.4.2"
-        },
-        {
-            "package": "behat/gherkin",
-            "version": "v2.2.2"
-        },
-        {
-            "package": "symfony/config",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/config",
-            "version": "dev-master",
-            "source-reference": "a261cb1571e1f3921a632541299a9f39753a62a7",
-            "commit-date": "1341329671"
-        },
-        {
-            "package": "symfony/dependency-injection",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/dependency-injection",
-            "version": "dev-master",
-            "source-reference": "d120ca9c0347e408f5ccc8a7de7e71b575afc8e9",
-            "commit-date": "1341415346"
-        },
-        {
-            "package": "symfony/translation",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/translation",
-            "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1",
-            "commit-date": "1337632035"
-        },
-        {
-            "package": "symfony/yaml",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/yaml",
-            "version": "dev-master",
-            "source-reference": "aeba5f4c420d04996b2fd46b0ca35dbd4ed2bab5",
-            "commit-date": "1341419344"
-        }
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
