@@ -70,6 +70,17 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @When /^I run phpDocumentor with:$/
+     */
+    public function iRunPhpDocumentorWith(PyStringNode $arg1)
+    {
+        $file = tempnam(sys_get_temp_dir(), 'pdb');
+        file_put_contents($file, $arg1);
+        $this->iRun("php bin/phpdoc.php -f $file -t build --config=none --force");
+        unlink($file);
+    }
+
+    /**
      * @When /^I run phpDocumentor against the file "([^"]*)" using option "([^"]*)"$/
      */
     public function iRunPhpDocumentorAgainstTheFileUsingOption($arg1, $arg2)
@@ -124,6 +135,25 @@ class FeatureContext extends BehatContext
         $found = false;
         foreach (explode("\n", $this->output) as $line) {
             if (trim($line) == $string) {
+                $found = true;
+            }
+        }
+
+        if ($found) {
+            throw new \Exception(
+                "Actual output is:\n" . $this->output
+            );
+        }
+    }
+
+    /**
+     * @Then /^I should not get a log entry containing "([^"]*)"$/
+     */
+    public function iShouldNotGetALogEntryContaining($string)
+    {
+        $found = false;
+        foreach (explode("\n", $this->output) as $line) {
+            if (strpos(trim($line), $string) !== false) {
                 $found = true;
             }
         }

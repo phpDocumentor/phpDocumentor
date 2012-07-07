@@ -38,7 +38,10 @@ class FunctionValidator extends ValidatorAbstract
      */
     public function isValid()
     {
-        if (!$this->hasDocBlock()) return false;
+        if (!$this->hasDocBlock())
+        {
+            return false;
+        }
         $this->hasShortDescription();
         $this->validateArguments();
 
