@@ -14,12 +14,6 @@ Feature: Validate whether the File-level DocBlock is valid
     Then I should get a log entry "Cannot have a @subpackage when a @package tag is not present"
 
   Scenario: Show an error when no File-level DocBlock is present but a Class
-            DocBlock is as first
-    Given I am in the phpDocumentor root directory
-    When I run phpDocumentor against the file "tests/data/file-level/NoPackagePrecedesClass.php"
-    Then I should get a log entry "No page-level DocBlock was found in file NoPackagePrecedesClass.php"
-
-  Scenario: Show an error when no File-level DocBlock is present but a Class
             DocBlock is first
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor against the file "tests/data/file-level/NoPackagePrecedesClass.php"
