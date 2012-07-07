@@ -23,6 +23,7 @@
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-config": "2.*",
         "zendframework/zend-locale": "2.*",
+        "zendframework/zend-servicemanager": "2.*",
         "zendframework/zend-translator": "2.*",
         "phpdocumentor/graphviz": "1.*",
         "phpdocumentor/fileset": "1.0.0-beta2",
