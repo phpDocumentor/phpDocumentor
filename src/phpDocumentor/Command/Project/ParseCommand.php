@@ -217,7 +217,7 @@ HELP
 
         $parser = new \phpDocumentor\Parser\Parser();
         $parser->setTitle(
-            htmlentities((string)$this->getOption($input, 'title', 'title'))
+            (string)$this->getOption($input, 'title', 'title')
         );
         $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
