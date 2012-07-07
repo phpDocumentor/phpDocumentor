@@ -1,5 +1,5 @@
 {
-    "hash": "7df468aa2c2f0de502d001abaa156b09",
+    "hash": "c95506d44ee5de42ce4d93ab45675411",
     "packages": [
         {
             "package": "cilex/cilex",
@@ -32,7 +32,7 @@
             "commit-date": "1339172377"
         },
         {
-            "package": "pear-symfony/EventDispatcher",
+            "package": "pear-pear.symfony-project.com/EventDispatcher",
             "version": "1.0.0"
         },
         {
@@ -94,6 +94,18 @@
             "commit-date": "1340543161"
         },
         {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-BETA1",
+            "commit-date": "1338018513"
+        },
+        {
             "package": "symfony/finder",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
@@ -119,7 +131,7 @@
         },
         {
             "package": "zendframework/zend-config",
-            "version": "2.0.0-beta4"
+            "version": "2.0.0-beta5"
         },
         {
             "package": "zendframework/zend-locale",
@@ -127,7 +139,7 @@
         },
         {
             "package": "zendframework/zend-stdlib",
-            "version": "2.0.0-beta4"
+            "version": "2.0.0-beta5"
         },
         {
             "package": "zendframework/zend-translator",
@@ -168,18 +180,6 @@
             "commit-date": "1341415346"
         },
         {
-            "package": "symfony/event-dispatcher",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/event-dispatcher",
-            "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1",
-            "commit-date": "1338018513"
-        },
-        {
             "package": "symfony/translation",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
@@ -207,7 +207,7 @@
     "aliases": [
 
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "nikic/php-parser": 20,
         "phpdocumentor/fileset": 10,
