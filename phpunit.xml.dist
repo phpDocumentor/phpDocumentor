@@ -8,16 +8,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">.</directory>
-            <exclude>
-                <file>installer.php</file>
-                <directory suffix=".php">build</directory>
-                <directory suffix=".php">data</directory>
-                <directory suffix=".php">tests</directory>
-                <directory suffix=".php">bin</directory>
-                <directory suffix=".php">vendor</directory>
-                <directory suffix=".php">src/XHProf</directory>
-            </exclude>
+            <directory suffix=".php">src/phpDocumentor</directory>
         </whitelist>
     </filter>
     <logging>
