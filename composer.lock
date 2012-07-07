@@ -1,5 +1,5 @@
 {
-    "hash": "c95506d44ee5de42ce4d93ab45675411",
+    "hash": "28ce5cccc7918f9592eb51037cfd9ac0",
     "packages": [
         {
             "package": "cilex/cilex",
@@ -136,6 +136,10 @@
         {
             "package": "zendframework/zend-locale",
             "version": "2.0.0-beta4"
+        },
+        {
+            "package": "zendframework/zend-servicemanager",
+            "version": "2.0.0-beta5"
         },
         {
             "package": "zendframework/zend-stdlib",
