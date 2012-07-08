@@ -1,5 +1,5 @@
 {
-    "hash": "3b5dd9fba1c50afc20f50ed640b1343e",
+    "hash": "a49eeb965193f55751cf2f2d59dfd8c6",
     "packages": [
         {
             "package": "cilex/cilex",
@@ -42,6 +42,10 @@
         {
             "package": "phpdocumentor/graphviz",
             "version": "1.0.0-beta3"
+        },
+        {
+            "package": "phpdocumentor/plugin-twig",
+            "version": "1.0.0"
         },
         {
             "package": "phpdocumentor/reflection-docblock",
