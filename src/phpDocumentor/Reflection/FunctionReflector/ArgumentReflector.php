@@ -39,7 +39,8 @@ class ArgumentReflector extends BaseReflector
      */
     public function getType()
     {
-        return (string)$this->node->type;
+        $type = (string)$this->node->type;
+        return $type ? '\\'.$type : '';
     }
 
     public function getName()
