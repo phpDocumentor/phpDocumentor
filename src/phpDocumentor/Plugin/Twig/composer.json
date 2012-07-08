@@ -1,0 +1,16 @@
+{
+    "name":          "phpdocumentor/plugin-twig",
+    "type":          "phpdocumentor-plugin",
+    "description":   "Plugin for phpDocumentor2 that adds support for creating templates using Twig as templating engine",
+    "keywords":      ["documentation", "plugin", "twig", "phpdoc", "phpDocumentor"],
+    "homepage":      "http://www.phpdoc.org",
+    "license":       "MIT",
+    "autoload": {
+        "psr-0":     { "phpDocumentor": "src/" }
+    },
+    "require": {
+        "php":       ">=5.3.3",
+        "twig/twig": ">=1.8,<2.0-dev"
+    },
+    "minimum-stability": "dev"
+}
