@@ -22,13 +22,13 @@ use \phpDocumentor\Transformer\Transformation;
  * multiple templates in one transformation.
  *
  * The Query attribute supports XPath queries and will use each individual
- * result as the 'data' global variable in the Twig template.
+ * result as the 'ast_node' global variable in the Twig template.
  *
  * Example:
  *
  *   Suppose a Query `/project/file/class` is given then this writer will be
  *   invoked as many times as there are classes in the project and will the
- *   'data' global variable in twig be filled with an individual class entry.
+ *   'ast_node' global variable in twig be filled with an individual class entry.
  *
  * When using the Query attribute in the transformation it is important to
  * use a variable in the Artefact attribute as well (otherwise the same result
@@ -46,7 +46,7 @@ use \phpDocumentor\Transformer\Transformation;
  *     This example transformation would use this writer to transform the
  *     index.twig template file in the twig template folder into index.html at
  *     the destination location.
- *     Since no Query is provided will the 'data' global variable contain the
+ *     Since no Query is provided will the 'ast_node' global variable contain the
  *     document root of the Abstract Syntax Tree, which is '/project'.
  *
  * A complex example transformation line could be:
@@ -63,7 +63,7 @@ use \phpDocumentor\Transformer\Transformation;
  *     class.twig template file in the twig template folder into a file with
  *     the 'full_name' childnode for each individual class or interface inside
  *     the Abstract Syntax Tree.
- *     Since a Query *is* provided will the 'data' global variable contain a
+ *     Since a Query *is* provided will the 'ast_node' global variable contain a
  *     specific instance of a class or interface applicable to the current
  *     iteration.
  *

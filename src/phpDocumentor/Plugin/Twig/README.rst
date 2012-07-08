@@ -3,6 +3,11 @@ phpDocumentor Twig Plugin
 
 .. important:: this document is still a work in progress
 
+.. important::
+
+   This plugin is still experimental. No templates have been created yet with it
+   thus it is possible it needs some tweaks for optimal usability.
+
 Installation
 ------------
 
@@ -111,7 +116,19 @@ currently being processed.
 Writing your own templates
 --------------------------
 
-.. note:: To be written
+.. note:: To be expanded upon
+
+Every template receives a global Twig variable called ``ast_node``. This global
+Twig variable represents the either the document-root of the Abstract Syntax
+Tree (which is project) or a childnode if a Query has been used.
+
+.. hint::
+
+   if you were to do a query on ``/project/file/class`` then ``ast_node`` would
+   be a single instance of /project/file/class.
+
+Since the Abstract Syntax Tree (and its nodes) are presented as SimpleXMLElement
+objects you can query them as normal objects from Twig.
 
 Extensions
 ----------

@@ -18,6 +18,10 @@ use \phpDocumentor\Transformer\Transformation;
  * Basic extension adding phpDocumentor specific functionality for Twig
  * templates.
  *
+ * Global variables:
+ *
+ * - *ast_node*, the current $data element
+ *
  * Functions:
  *
  * - *path(string)*, converts the given relative path to be based of the projects
@@ -111,6 +115,18 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     {
         return array(
             'path' => new \Twig_Function_Method($this, 'convertToRootPath'),
+        );
+    }
+
+    /**
+     * Returns an array of global variables to inject into a Twig template.
+     *
+     * @return mixed
+     */
+    public function getGlobals()
+    {
+        return array(
+            'ast_node' => $this->data
         );
     }
 
