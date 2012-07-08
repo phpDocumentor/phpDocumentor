@@ -113,8 +113,63 @@ Writing your own templates
 
 .. note:: To be written
 
-Using your own Twig extensions
-------------------------------
+Extensions
+----------
+
+Using third-party extensions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+phpDocumentor allows you to add your own extensions so that they can be used.
+
+Every extension needs to be available for autoloading (so it is common to
+create a Plugin in this case and include them using the Composer 'require'
+section).
+
+Once available you can define a parameter 'twig-extension' in your template
+header of with each individual transformation.
+
+.. note::
+
+   Extensions defined with a transformation override the ones defined in your
+   template.
+
+Example globally defined extension::
+
+  <?xml version="1.0" encoding="utf-8"?>
+  <template>
+      <parameters>
+          <twig-extension>
+              \phpDocumentor\Plugin\MyPlugin\Twig\Extension
+          </twig-extension>
+      </parameters>
+      <transformations>
+          <transformation
+              writer="\phpDocumentor\Plugin\Twig\Transformer\Writer\Twig"
+              source="templates/sami/index.twig"
+              artifact="index.html"/>
+      </transformations>
+  </template>
+
+Example extension defined with an individual transformation::
+
+  <?xml version="1.0" encoding="utf-8"?>
+  <template>
+      <transformations>
+          <transformation
+              writer="\phpDocumentor\Plugin\Twig\Transformer\Writer\Twig"
+              source="templates/sami/index.twig"
+              artifact="index.html"
+          >
+              <parameters>
+                  <twig-extension>
+                      \phpDocumentor\Plugin\MyPlugin\Twig\Extension
+                  </twig-extension>
+              </parameters>
+          </transformation>
+      </transformations>
+  </template>
+
+Writing your own extensions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note:: To be written
-
