@@ -41,6 +41,10 @@ class ConfigurableCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config_file = $input->getOption('config');
+        if ($config_file && $config_file !== 'none') {
+            $config_file = realpath($config_file);
+        }
+
         if ($config_file) {
             $this->container['config'] = $this->container->share(
                 function () use ($config_file) {

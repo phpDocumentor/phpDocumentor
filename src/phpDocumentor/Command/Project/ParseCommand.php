@@ -298,13 +298,22 @@ HELP
                 $input, 'ignore-symlinks', 'files/ignore-symlinks', 'off'
             ) == 'on'
         );
-        $files->addFiles(
-            $this->getOption($input, 'filename', 'files/file', array(), true)
-        );
 
-        $files->addDirectories(
-            $this->getOption($input, 'directory', 'files/directory', array(), true)
+        $added_files = $this->getOption(
+            $input, 'filename', 'files/file', array(), true
         );
+        foreach ($added_files as &$file) {
+            $file = realpath($file);
+        }
+        $files->addFiles($added_files);
+
+        $added_directories = $this->getOption(
+            $input, 'directory', 'files/directory', array(), true
+        );
+        foreach ($added_directories as &$dir) {
+            $dir = realpath($dir);
+        }
+        $files->addDirectories($added_directories);
 
         return $files;
     }
