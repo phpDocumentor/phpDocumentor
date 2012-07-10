@@ -157,6 +157,11 @@ HELP
             );
         }
 
+        // convert target to absolute path to satisfy phar packaging
+        if (!$this->isAbsolute($target)) {
+            $target = getcwd().DIRECTORY_SEPARATOR.$target;
+        }
+
         // if the target does not end with .xml, assume it is a folder
         if (substr($target, -4) != '.xml') {
             // if the folder does not exist at all, create it
