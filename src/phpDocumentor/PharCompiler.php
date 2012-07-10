@@ -53,7 +53,7 @@ class PharCompiler
 
         echo '>> Finished creating phar archive' . PHP_EOL;
 
-        // $phar->compressFiles(\Phar::GZ);
+//        $phar->compressFiles(\Phar::GZ);
 
         unset($phar);
     }
@@ -114,7 +114,25 @@ class PharCompiler
         $finder = new Finder();
         $iterator = $finder->files()
             ->in(array('bin', 'data', 'src', 'vendor'))
-            ->exclude(array('data/output'));
+            ->notName('*.rst')
+            ->notName('*.md')
+            ->exclude(
+                array(
+                    'output',
+                    'behat',
+                    'cilex/cilex/tests',
+                    'dflydev/markdown/tests',
+                    'nikic/php-parser/doc',
+                    'nikic/php-parser/test',
+                    'nikic/php-parser/test_old',
+                    'phpdocumentor/fileset/tests',
+                    'phpdocumentor/graphviz/tests',
+                    'phpdocumentor/plugin-twig/tests',
+                    'phpdocumentor/reflection-docblock/tests',
+                    'pimple/pimple/tests',
+                    'twig/twig/test',
+                )
+            );
 
         return array_merge($files, iterator_to_array($iterator));
     }
