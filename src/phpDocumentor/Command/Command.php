@@ -2,7 +2,7 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2012 Mike van Riel / Naenius. (http://www.naenius.com)
@@ -14,6 +14,16 @@ namespace phpDocumentor\Command;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Base command for phpDocumentor commands.
+ *
+ * Includes additional methods to forward the output to the logging events
+ * of phpDocumentor.
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ */
 class Command extends \Cilex\Command\Command
 {
     /**
@@ -43,6 +53,16 @@ class Command extends \Cilex\Command\Command
         return ($path[0] == '/') || ($path[0] == '~');
     }
 
+    /**
+     * Returns the Progress bar helper.
+     *
+     * With this helper it is possible to display a progress bar and make it
+     * fill.
+     *
+     * @param InputInterface $input
+     *
+     * @return \phpDocumentor\Console\Helper\ProgressHelper
+     */
     protected function getProgressBar(InputInterface $input)
     {
         if (!$input->getOption('progressbar')) {
