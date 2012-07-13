@@ -31,6 +31,26 @@ Feature: Validate whether a Function's DocBlock is valid
     """
     Then I should get a log entry "The type hint of the argument is incorrect for the type definition of the @param tag with argument $b in \My\Space\a()"
 
+  Scenario: Do not show an error when an argument typehint matches an internal type.
+    Given I am in the phpDocumentor root directory
+    When I run phpDocumentor with:
+    """
+    <?php
+    /** @param array $b */
+    function a(array $b) {}
+    """
+    Then I should not get a log entry "The type hint of the argument is incorrect for the type definition of the @param tag with argument $b in \a()"
+
+  Scenario: Do not show an error when a @param tag matches an internal type and the typehint mentions nothing.
+    Given I am in the phpDocumentor root directory
+    When I run phpDocumentor with:
+    """
+    <?php
+    /** @param string $b */
+    function a($b) {}
+    """
+    Then I should not get a log entry "The type hint of the argument is incorrect for the type definition of the @param tag with argument $b in \a()"
+
   Scenario: Do not show an error when an argument typehint is a FQCN but the
             Typehint must be expanded
     Given I am in the phpDocumentor root directory
