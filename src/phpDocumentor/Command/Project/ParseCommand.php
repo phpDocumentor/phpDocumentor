@@ -2,10 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -142,12 +142,18 @@ HELP
     }
 
     /**
-    * Returns the target location where to store the structure.xml.
-    *
-    * @throws \InvalidArgumentException
-    *
-    * @return string
-    */
+     * Returns the target location where to store the structure.xml.
+     *
+     * @param string $target
+     *
+     * @throws \InvalidArgumentException if an empty path or root was provided
+     * @throws \InvalidArgumentException if the target location could not be
+     *     created
+     * @throws \InvalidArgumentException if the target location is not a folder
+     * @throws \InvalidArgumentException if the target location is not writable
+     *
+     * @return string
+     */
     public function getTarget($target)
     {
         $target = trim($target);
@@ -155,6 +161,11 @@ HELP
             throw new \InvalidArgumentException(
                 'Either an empty path or root was given: ' . $target
             );
+        }
+
+        // convert target to absolute path to satisfy phar packaging
+        if (!$this->isAbsolute($target)) {
+            $target = getcwd().DIRECTORY_SEPARATOR.$target;
         }
 
         // if the target does not end with .xml, assume it is a folder
@@ -194,8 +205,8 @@ HELP
     /**
      * Executes the business logic involved with this command.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      *
      * @return int
      */
@@ -217,7 +228,7 @@ HELP
 
         $parser = new \phpDocumentor\Parser\Parser();
         $parser->setTitle(
-            htmlentities((string)$this->getOption($input, 'title', 'title'))
+            (string)$this->getOption($input, 'title', 'title')
         );
         $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
@@ -298,13 +309,22 @@ HELP
                 $input, 'ignore-symlinks', 'files/ignore-symlinks', 'off'
             ) == 'on'
         );
-        $files->addFiles(
-            $this->getOption($input, 'filename', 'files/file', array(), true)
-        );
 
-        $files->addDirectories(
-            $this->getOption($input, 'directory', 'files/directory', array(), true)
+        $added_files = $this->getOption(
+            $input, 'filename', 'files/file', array(), true
         );
+        foreach ($added_files as &$file) {
+            $file = realpath($file);
+        }
+        $files->addFiles($added_files);
+
+        $added_directories = $this->getOption(
+            $input, 'directory', 'files/directory', array(), true
+        );
+        foreach ($added_directories as &$dir) {
+            $dir = realpath($dir);
+        }
+        $files->addDirectories($added_directories);
 
         return $files;
     }
@@ -312,7 +332,7 @@ HELP
     /**
      * Adds the parser.file.pre event to the advance the progressbar.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
      *
      * @return \Symfony\Component\Console\Helper\HelperInterface|null
      */

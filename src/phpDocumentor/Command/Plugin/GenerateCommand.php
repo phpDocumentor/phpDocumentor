@@ -2,7 +2,7 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
@@ -96,6 +96,15 @@ class GenerateCommand extends \Cilex\Command\Command
         return 0;
     }
 
+    /**
+     * Validates whether the given plugin name is not empty.
+     *
+     * @param string $name
+     *
+     * @throws \InvalidArgumentException if no name is provided
+     *
+     * @return void
+     */
     protected function validateNameOption($name)
     {
         if ($name == '') {
@@ -103,6 +112,16 @@ class GenerateCommand extends \Cilex\Command\Command
         }
     }
 
+    /**
+     * Validates whether the given target location exists and is writable.
+     *
+     * @param string $target
+     *
+     * @throws \InvalidArgumentException if the location does not exist
+     * @throws \InvalidArgumentException is the location is not writable
+     *
+     * @return void
+     */
     protected function validateTargetOption($target)
     {
         if (!file_exists($target) || !is_dir($target)) {
@@ -118,17 +137,43 @@ class GenerateCommand extends \Cilex\Command\Command
         }
     }
 
+    /**
+     * Reads the version number from the input and returns it.
+     *
+     * @param InputInterface $input
+     *
+     * @return string
+     */
     protected function getVersion(InputInterface $input)
     {
         return $input->getOption('given-version')
             ? $input->getOption('given-version') : '1.0.0';
     }
 
+    /**
+     * Retrieves the destination location name.
+     *
+     * @param string $target The target base location
+     * @param string $name   The plugin's name
+     *
+     * @return string
+     */
     protected function getDestinationLocation($target, $name)
     {
         return $target . DIRECTORY_SEPARATOR . $name;
     }
 
+    /**
+     * Pre-generates the destination location path.
+     *
+     * @param string $path             The location for the plugin
+     * @param bool   $remove_if_exists Forcibly removes the previous plugin
+     *
+     * @throws \Exception if the folder already exists and $remove_if_exists is
+     *     false.
+     *
+     * @return void
+     */
     protected function prepareLocation($path, $remove_if_exists = false)
     {
         if (file_exists($path)) {
@@ -146,6 +191,16 @@ class GenerateCommand extends \Cilex\Command\Command
         mkdir($path);
     }
 
+    /**
+     * Generate a default configuration file.
+     *
+     * @param string $path    Where to generate the config file.
+     * @param string $name    The name of the plugin.
+     * @param string $version The version number for the plugin.
+     * @param string $author  The author's name.
+     *
+     * @return void
+     */
     protected function generateConfigurationFile(
         $path, $name, $version, $author
     ) {
@@ -174,6 +229,18 @@ XML
         );
     }
 
+    /**
+     * Generates base exception for this plugin.
+     *
+     * It is recommended for plugins to not rely on phpDocumentor's Exceptions
+     * but provide their own. This task will aid by pre-generating own for
+     * the author.
+     *
+     * @param string $path Location for the exception class.
+     * @param string $name Plugin name to use in the namespace.
+     *
+     * @return void
+     */
     protected function generateBaseException($path, $name)
     {
         $class_part = ucfirst($name);
@@ -190,6 +257,14 @@ PHP
         );
     }
 
+    /**
+     * Generate a default listener for this plugin.
+     *
+     * @param string $path The destination location for the listener.
+     * @param string $name The name of the plugin to use in the namespace.
+     *
+     * @return void
+     */
     protected function generateListenerFile($path, $name)
     {
         $class_part = ucfirst($name);

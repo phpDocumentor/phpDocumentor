@@ -175,6 +175,12 @@ class Template extends TransformerAbstract
                 (string)$transformation['artifact']
             );
 
+            // import generic parameters of the template
+            if (isset($xml->parameters) && count($xml->parameters)
+            ) {
+                $transformation_obj->importParameters($xml->parameters);
+            }
+
             if (isset($transformation->parameters)
                 && count($transformation->parameters)
             ) {

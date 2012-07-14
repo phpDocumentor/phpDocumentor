@@ -45,7 +45,10 @@ class Application extends \Cilex\Application
         $this['console']->getHelperSet()->set(
             new \phpDocumentor\Console\Helper\ProgressHelper()
         );
+
         $this->addCommandsForProjectNamespace();
+        $this->addCommandsForTemplateNamespace();
+        $this->addCommandsForTemplateNamespace();
     }
 
     /**
@@ -65,29 +68,64 @@ class Application extends \Cilex\Application
         $app->run(new \phpDocumentor\Console\Input\ArgvInput());
     }
 
+    /**
+     * Adds the command to phpDocumentor that belong to the Project namespace.
+     *
+     * @return void
+     */
     protected function addCommandsForProjectNamespace()
     {
         $this->command(new \phpDocumentor\Command\Project\ParseCommand());
         $this->command(new \phpDocumentor\Command\Project\RunCommand());
         $this->command(new \phpDocumentor\Command\Project\TransformCommand());
+    }
+
+    /**
+     * Adds the command to phpDocumentor that belong to the plugin namespace.
+     *
+     * @return void
+     */
+    protected function addCommandsForPluginNamespace()
+    {
         $this->command(new \phpDocumentor\Command\Plugin\GenerateCommand());
+    }
+
+    /**
+     * Adds the command to phpDocumentor that belong to the Template namespace.
+     *
+     * @return void
+     */
+    protected function addCommandsForTemplateNamespace()
+    {
         $this->command(new \phpDocumentor\Command\Template\GenerateCommand());
         $this->command(new \phpDocumentor\Command\Template\ListCommand());
         $this->command(new \phpDocumentor\Command\Template\PackageCommand());
     }
 
+    /**
+     * Instantiates the autoloader and adds it to phpDocumentor's container.
+     *
+     * @return void
+     */
     protected function addAutoloader()
     {
-        $this['autoloader'] = include __DIR__
-            . '/../../vendor/autoload.php';
+        $this['autoloader'] = include __DIR__ . '/../../vendor/autoload.php';
     }
 
+    /**
+     * Adds a logging provider to the container of phpDocumentor.
+     *
+     * @return void
+     */
     protected function addLogging()
     {
-        $this->register(new \Cilex\Provider\MonologServiceProvider(), array(
-            'monolog.name'    => 'phpDocumentor',
-            'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
-        ));
+        $this->register(
+            new \Cilex\Provider\MonologServiceProvider(),
+            array(
+                'monolog.name'    => 'phpDocumentor',
+                'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
+            )
+        );
     }
 
     /**
@@ -119,6 +157,11 @@ class Application extends \Cilex\Application
         );
     }
 
+    /**
+     * Adds the event dispatcher to phpDocumentor's container.
+     *
+     * @return void
+     */
     protected function addEventDispatcher()
     {
         $this['event_dispatcher'] = $this->share(
@@ -128,6 +171,16 @@ class Application extends \Cilex\Application
         );
     }
 
+    /**
+     * Load the plugins.
+     *
+     * phpDocumentor instantiates the plugin manager given the Event Dispatcher,
+     * Configuration and autoloader.
+     * Using this manager it will read the configuration and load the required
+     * plugins.
+     *
+     * @return void
+     */
     protected function loadPlugins()
     {
         $app = $this;

@@ -2,7 +2,7 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2012 Mike van Riel / Naenius. (http://www.naenius.com)
@@ -15,6 +15,16 @@ use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Output\OutputInterface;
 use \Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Base class for commands that may make use of the configuration.
+ *
+ * Provides helper methods and a default argument to work with the configuration
+ * files.
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ */
 class ConfigurableCommand extends Command
 {
     /**
@@ -33,14 +43,18 @@ class ConfigurableCommand extends Command
     /**
      * Overwrite execute to override the default config file.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      *
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config_file = $input->getOption('config');
+        if ($config_file && $config_file !== 'none') {
+            $config_file = realpath($config_file);
+        }
+
         if ($config_file) {
             $this->container['config'] = $this->container->share(
                 function () use ($config_file) {
@@ -59,17 +73,16 @@ class ConfigurableCommand extends Command
      * Returns the value of an option from the command-line parameters,
      * configuration or given default.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     *     Input interface to query for information
-     * @param string                                          $name
-     *     Name of the option to retrieve from argv
-     * @param string|null                                     $config_path
-     *     Path to the config element(s) containing the value to be used when
-     *     no option is provided.
-     * @param mixed|null                                      $default
-     *     Default value used if there is no configuration option or path set
-     * @param bool                                            $comma_separated
-     *     Could the value be a comma separated string requiring splitting
+     * @param InputInterface $input           Input interface to query for
+     *     information
+     * @param string         $name            Name of the option to retrieve
+     *     from argv
+     * @param string|null    $config_path     Path to the config element(s)
+     *     containing the value to be used when no option is provided.
+     * @param mixed|null     $default         Default value used if there is no
+     *     configuration option or path set
+     * @param bool           $comma_separated Could the value be a comma
+     *     separated string requiring splitting
      *
      * @return string
      */

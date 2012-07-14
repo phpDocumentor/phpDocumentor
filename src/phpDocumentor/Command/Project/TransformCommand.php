@@ -112,15 +112,18 @@ TEXT
         $transformer->setTemplatesPath(
             __DIR__.'/../../../../data/templates'
         );
-        $transformer->setTarget(
-            $this->getOption($input, 'target', 'transformer/target')
-        );
+
+        $target = $this->getOption($input, 'target', 'transformer/target');
+        if (!$this->isAbsolute($target)) {
+            $target = getcwd().DIRECTORY_SEPARATOR.$target;
+        }
+        $transformer->setTarget($target);
 
         $source = $this->getOption($input, 'source', 'parser/target');
         if (file_exists($source) and is_dir($source)) {
             $source .= DIRECTORY_SEPARATOR . 'structure.xml';
         }
-        $transformer->setSource($source);
+        $transformer->setSource(realpath($source));
 
         $transformer->setTemplates(
             (array)$this->getOption(

@@ -177,13 +177,13 @@ class Transformation extends TransformerAbstract
         if ($this->getParameter('template_path') !== null) {
             $path = rtrim($this->getParameter('template_path'), '/\\');
             if (file_exists($path . DIRECTORY_SEPARATOR . $this->source)) {
-                return realpath($path . DIRECTORY_SEPARATOR . $this->source);
+                return $path . DIRECTORY_SEPARATOR . $this->source;
             }
         }
 
         // check whether the file exists in the phpDocumentor project directory
         if (file_exists(__DIR__.'/../../../'.$this->source)) {
-            return realpath(__DIR__ . '/../../../' .$this->source);
+            return __DIR__ . '/../../../' .$this->source;
         }
 
         // TODO: replace this as it breaks the component stuff
@@ -196,7 +196,7 @@ class Transformation extends TransformerAbstract
             throw new Exception('The source path does not exist: ' . $file);
         }
 
-        return realpath($file);
+        return $file;
     }
 
     /**
