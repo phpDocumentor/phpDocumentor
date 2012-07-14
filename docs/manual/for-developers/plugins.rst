@@ -30,7 +30,7 @@ Dependencies
 Plugins make use of the following components:
 
 * **Composer's autoloader**, autoloader for all classes in a plugin
-* **sfEventDispatcher**, manager that collects dispatched events and distributes
+* **EventDispatcher**, manager that collects dispatched events and distributes
   them to the plugins.
 * **\Zend\Config\Config**, the configuration manager containing global settings
   but also definitions which plugins are to be loaded with which options.
@@ -210,8 +210,8 @@ Basic concept
 ~~~~~~~~~~~~~
 
 With listeners can a plugin author extend the functionality of phpDocumentor without
-making changes to its core. Listeners provide an implementation of the Observer
-pattern via the sfEventDispatcher class by Fabien Potencier.
+making changes to its core. Listeners provide an implementation of the Event
+Dispatcher via phpDocumentor's EventDispatcher class.
 
 From within phpDocumentor events are dispatched to the Event Dispatcher (which is
 available in a plugin as ``$this->getEventDispatcher()``); which in turn triggers
@@ -403,7 +403,7 @@ Example:
 
         // connect the log method of the $this->logger object to the event
         // system.log
-        $this->event_dispatcher->connect('system.log', array($this->logger, 'log'));
+        $this->event_dispatcher->addListener('system.log', array($this->logger, 'log'));
     }
 
 Supported events

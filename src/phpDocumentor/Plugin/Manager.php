@@ -2,12 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Plugin
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,15 +14,13 @@ namespace phpDocumentor\Plugin;
 /**
  * This class loads the plugins from the configuration and initializes them.
  *
- * @category phpDocumentor
- * @package  Plugin
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
  */
 class Manager
 {
-    /** @var \sfEventDispatcher */
+    /** @var EventDispatcher */
     protected $event_dispatcher = null;
 
     /** @var \SimpleXMLElement */
@@ -40,7 +36,7 @@ class Manager
      * Registers the Event Dispatcher, Confguration and Autoloader onto the
      * Manager.
      *
-     * @param \sfEventDispatcher     $event_dispatcher Event dispatcher
+     * @param EventDispatcher        $event_dispatcher Event dispatcher
      *     that plugins can bind to and where events should be dispatched to.
      * @param \Zend\Config\Config    $configuration    Configuration file
      *     which can be used to load parameters into the plugins.

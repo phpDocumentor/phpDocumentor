@@ -2,12 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Plugin
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -17,11 +15,9 @@ namespace phpDocumentor\Plugin;
 /**
  * Base class for plugin event listeners.
  *
- * @category phpDocumentor
- * @package  Plugin
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
  */
 abstract class ListenerAbstract extends PluginAbstract
 {
@@ -93,7 +89,7 @@ abstract class ListenerAbstract extends PluginAbstract
 
             /** @var \phpDocumentor\Reflection\DocBlock\Tag $event */
             foreach ($docblock->getTagsByName('phpdoc-event') as $event) {
-                $this->event_dispatcher->connect(
+                $this->event_dispatcher->addListener(
                     $event->getDescription(),
                     array($this, $method->getName())
                 );

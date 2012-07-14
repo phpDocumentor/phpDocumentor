@@ -1,15 +1,33 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
 namespace phpDocumentor\Parser\Events;
 
+/**
+ * Event thrown before the parsing of an individual file.
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ */
 class PreFileEvent extends \phpDocumentor\Plugin\Event
 {
     /** @var string */
     protected $file;
 
-    /** @var int[] */
-    protected $progress = array(0,0);
-
     /**
+     *
+     * Sets the name of the file that is about to be processed.
+     *
      * @param string $file
      */
     public function setFile($file)
@@ -19,27 +37,12 @@ class PreFileEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Returns the name of the file that is about to be processed.
+     *
      * @return string
      */
     public function getFile()
     {
         return $this->file;
-    }
-
-    /**
-     * @param int[] $progress
-     */
-    public function setProgress($progress)
-    {
-        $this->progress = $progress;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getProgress()
-    {
-        return $this->progress;
     }
 }

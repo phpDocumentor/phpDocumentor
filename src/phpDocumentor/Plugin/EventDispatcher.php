@@ -1,12 +1,41 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
 namespace phpDocumentor\Plugin;
 
 use Symfony\Component\EventDispatcher as Symfony;
 
+/**
+ * Event Dispatching class.
+ *
+ * This class provides a bridge to the Symfony2 EventDispatcher.
+ * At current this is provided by inheritance but future iterations should
+ * solve this by making it an adapter pattern.
+ *
+ * The class is implemented as (mockable) Singleton as this was the best
+ * solution to make the functionality available in every class of the project.
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ */
 class EventDispatcher extends Symfony\EventDispatcher
 {
+    /** @var EventDispatcher[] Keep track of an array of instances. */
     static protected $instances = array();
 
+    /**
+     * Override constructor to make this singleton.
+     */
     protected function __construct()
     {
     }
@@ -27,27 +56,58 @@ class EventDispatcher extends Symfony\EventDispatcher
         return self::$instances[$name];
     }
 
+    /**
+     * Sets a names instance of the Event Dispatcher.
+     *
+     * @param string          $name
+     * @param EventDispatcher $instance
+     *
+     * @return void
+     */
     public static function setInstance($name, self $instance)
     {
         self::$instances[$name] = $instance;
     }
 
-    public function dispatch($eventName, \Symfony\Component\EventDispatcher\Event $event = null)
+    /**
+     * Dispatches an event.
+     *
+     * Please note that the typehint of this method indicates a Symfony Event
+     * and this DocBlock a phpDocumentor event. This is because of inheritance
+     * and that the dispatch signature must remain intact.
+     *
+     * @param string $eventName
+     * @param Event $event
+     *
+     * @return Event
+     */
+    public function dispatch($eventName, Symfony\Event $event = null)
     {
         return parent::dispatch($eventName, $event);
     }
 
+    /**
+     * Adds a callable that will listen on the named event.
+     *
+     * @param string $eventName
+     * @param callable $listener
+     * @param int $priority
+     *
+     * @return void
+     */
     public function addListener($eventName, $listener, $priority = 0)
     {
         parent::addListener($eventName, $listener, $priority);
     }
 
     /**
-     * @param $eventName
-     * @param $listener
+     * Alias of addListener() provided for backwards-compatiblity.
+     *
+     * @param string           $eventName
+     * @param ListenerAbstract $listener
      *
      * @deprecated provided for BC compatibility; use addListener instead.
-     *     Will be removed in 2.0.0
+     *     Will be removed in 2.0.0 Beta or RC
      */
     public function connect($eventName, $listener)
     {

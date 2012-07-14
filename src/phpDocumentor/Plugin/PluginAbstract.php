@@ -2,12 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Plugin
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -18,11 +16,9 @@ namespace phpDocumentor\Plugin;
  * Layer superclass for the Plugin Component; contains all event
  * dispatching code.
  *
- * @category phpDocumentor
- * @package  Plugin
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * @author  Mike van Riel <mike.vanriel@naenius.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @link    http://phpdoc.org
  */
 class PluginAbstract
 {
@@ -38,7 +34,7 @@ class PluginAbstract
     /**
      * Initialize this object with an Event Dispatcher and Configuration object.
      *
-     * @param sfEventDispatcher                     $event_dispatcher
+     * @param EventDispatcher                       $event_dispatcher
      *     Dispatcher used to handle events.
      * @param \Zend\Config\Config                   $configuration
      *     Configuration object for this object.
@@ -66,7 +62,7 @@ class PluginAbstract
      * @param Event  $event Arguments for this event.
      *
      * @throws \phpDocumentor\Plugin\Exception if there is a dispatcher but it
-     *  is not of type sfEventDispatcher
+     *  is not of type EventDispatcher
      *
      * @return void
      */

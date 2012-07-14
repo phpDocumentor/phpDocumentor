@@ -49,7 +49,7 @@ class DocBlockTagExporter
             \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
                 'reflection.docblock.tag.export',
                 \phpDocumentor\Reflection\Events\ExportDocBlockTagEvent
-                ::createInstance($this)->setObject($tag)
+                ::createInstance($element)->setObject($tag)
                     ->setXml(simplexml_import_dom($child))
             );
         }

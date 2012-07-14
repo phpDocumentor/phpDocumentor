@@ -470,7 +470,7 @@ class Parser extends ParserAbstract
             \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
                 'parser.file.pre',
                 \phpDocumentor\Parser\Events\PreFileEvent::createInstance($this)
-                ->setFile($file)->setProgress(array($key + 1, $file_count))
+                ->setFile($file)
             );
 
             $this->parseFile($file, $include_source);

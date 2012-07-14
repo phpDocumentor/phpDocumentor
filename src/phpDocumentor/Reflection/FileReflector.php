@@ -337,18 +337,18 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
     /**
      * Adds a parse error to the system
      *
-     * @param string[] $data An array (or object approachable as array such as
-     * \sfEvent) that contains the type, message, line and code element.
+     * @param \phpDocumentor\Parser\Events\LogEvent $data Contains the type,
+     *     message, line and code element.
      *
      * @return void
      */
     public function addParserMarker($data)
     {
         $this->parse_markers[] = array(
-            $data['type'],
-            $data['message'],
-            $data['line'],
-            $data['code']
+            $data->getType(),
+            $data->getMessage(),
+            $data->getLine(),
+            $data->getCode()
         );
     }
 

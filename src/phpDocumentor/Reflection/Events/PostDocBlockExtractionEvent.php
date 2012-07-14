@@ -12,6 +12,7 @@ class PostDocBlockExtractionEvent extends \phpDocumentor\Plugin\Event
     public function setDocblock($docblock)
     {
         $this->docblock = $docblock;
+        return $this;
     }
 
     /**

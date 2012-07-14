@@ -1,6 +1,25 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 namespace phpDocumentor\Parser\Events;
 
+/**
+ * Event for capturing events during the parsing of a file.
+ *
+ * These events represent errors and warning found during processing of the file.
+ *
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ */
 class LogEvent extends \phpDocumentor\Plugin\Event
 {
     /** @var string */
@@ -10,7 +29,15 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     protected $code, $line;
 
     /**
+     * Sets the numeric code for this event.
+     *
+     * Each parsing event should have a numeric code that does not overlap with
+     * other errors. These codes and their messages are commonly found in the
+     * Messages folder of your installed plugin.
+     *
      * @param int $code
+     *
+     * @return LogEvent
      */
     public function setCode($code)
     {
@@ -19,6 +46,10 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Returns the numeric code associated with this event.
+     *
+     * @see setCode for a complete description.
+     *
      * @return int
      */
     public function getCode()
@@ -27,7 +58,11 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Sets the line number where the event occurred.
+     *
      * @param int $line
+     *
+     * @return LogEvent
      */
     public function setLine($line)
     {
@@ -36,6 +71,8 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Returns the line number for this event.
+     *
      * @return int
      */
     public function getLine()
@@ -44,7 +81,13 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Sets the message text for this event.
+     *
      * @param string $message
+     *
+     * @see setCode() for more informetion regarding event codes and messages.
+     *
+     * @return LogEvent
      */
     public function setMessage($message)
     {
@@ -53,6 +96,8 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Returns the message text associated with this event.
+     *
      * @return string
      */
     public function getMessage()
@@ -61,7 +106,13 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Sets the type of event.
+     *
      * @param string $type
+     *
+     * @todo find out which types are supported and expand this DocBlock.
+     *
+     * @return LogEvent
      */
     public function setType($type)
     {
@@ -70,6 +121,8 @@ class LogEvent extends \phpDocumentor\Plugin\Event
     }
 
     /**
+     * Returns the type for this event.
+     *
      * @return string
      */
     public function getType()

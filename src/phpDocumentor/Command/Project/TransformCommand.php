@@ -153,7 +153,7 @@ TEXT
 
         $output->writeln(' OK');
         $output->write('Processing behaviours ..');
-        $this->getService('event_dispatcher')->connect(
+        $this->getService('event_dispatcher')->addListener(
             'transformer.transform.pre',
             function() use ($output) {
                 $output->writeln(' OK');
@@ -188,7 +188,7 @@ TEXT
             return null;
         }
 
-        $this->getService('event_dispatcher')->connect(
+        $this->getService('event_dispatcher')->addListener(
             'transformer.transformation.post',
             function() use ($progress) {
                 $progress->advance();
