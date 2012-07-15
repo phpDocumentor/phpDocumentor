@@ -43,6 +43,16 @@ class ConfigurableCommand extends Command
     /**
      * Overwrite execute to override the default config file.
      *
+     * If an alternative configuration file is provided we override the 'config'
+     * element in the Dependency Injection Container with a new instance. This
+     * new instance uses the phpdoc.tpl.xml as base configuration and applies
+     * the given configuration on top of it.
+     *
+     * Also, upon providing a custom configuration file, is the current working
+     * directory set to the directory containing the configuration file so that
+     * all relative paths for directory and file selections (and more) is based
+     * on that location.
+     *
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
@@ -53,6 +63,13 @@ class ConfigurableCommand extends Command
         $config_file = $input->getOption('config');
         if ($config_file && $config_file !== 'none') {
             $config_file = realpath($config_file);
+
+            // all relative paths mentioned in the configuration file should
+            // be relative to the configuration file.
+            // This means that if we provide an alternate configuration file
+            // that we need to go to that directory first so that paths can be
+            // calculated from there.
+            chdir(dirname($config_file));
         }
 
         if ($config_file) {
