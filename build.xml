@@ -97,7 +97,6 @@
     <!-- Asks for the post-deployment version number -->
     <target name="deploy:get-version-number"
             description="Ask the user for the new version">
-        <gitcheckout repository="." branchname="develop" quiet="false"/>
         <exec
             command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Application.php"
             dir="${project.basedir}" outputProperty="version.number"
@@ -120,7 +119,6 @@
             command="pear package" passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
-            command="git commit package.xml -m 'RELEASE: Updated package file to ${version.number}'"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
     </target>
