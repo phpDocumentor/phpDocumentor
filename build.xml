@@ -110,7 +110,8 @@
         <delete file="${project.basedir}/phpDocumentor-*.tgz"/>
 
         <propertyprompt propertyName="version.stability"
-                        promptText="Enter the stability of the new version (alpha, beta or stable)"/>
+                        promptText="Enter the stability of the new version (alpha, beta or stable)"
+                        useExistingValue="true"/>
         <exec
             command="php bin/utils/package.php ${version.number} ${version.stability} make"
             passthru="true" dir="${project.basedir}" checkreturn="true"
