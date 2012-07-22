@@ -96,8 +96,8 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
     public function process()
     {
         // with big fluent interfaces it can happen that PHP-Parser's Traverser
-        // exceeds the 100 recursions limit; we set it to 2000 to be sure.
-        ini_set('xdebug.max_nesting_level', 2000);
+        // exceeds the 100 recursions limit; we set it to 5000 to be sure.
+        ini_set('xdebug.max_nesting_level', 5000);
 
         $traverser = new Traverser();
         $traverser->addVisitor($this);
