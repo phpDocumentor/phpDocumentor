@@ -156,7 +156,7 @@ class ConfigurableCommand extends Command
 
         return $node instanceof \Zend\Config\Config
             ? $node->toArray()
-            : (string)$node;
+            : trim((string)$node);
     }
 
 }

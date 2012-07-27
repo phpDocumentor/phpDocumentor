@@ -127,7 +127,8 @@ TEXT
 
         $transformer->setTemplates(
             (array)$this->getOption(
-                $input, 'template', 'transformations/template', array('responsive')
+                $input, 'template', 'transformations/template/name',
+                array('responsive')
             )
         );
         $transformer->setParseprivate($input->getOption('parseprivate'));

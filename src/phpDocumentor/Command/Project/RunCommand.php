@@ -186,8 +186,7 @@ HELP
             ->addOption(
                 'template', null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Name of the template to use (optional)',
-                array('responsive')
+                'Name of the template to use (optional)'
             )
             ->addOption(
                 'parseprivate', null, InputOption::VALUE_NONE,
