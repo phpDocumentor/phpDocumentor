@@ -119,9 +119,6 @@
         <exec
             command="pear package" passthru="true" dir="${project.basedir}" checkreturn="true"
         />
-        <exec
-            passthru="true" dir="${project.basedir}" checkreturn="true"
-        />
     </target>
 
     <!-- publishes the PEAR package to the production environment -->

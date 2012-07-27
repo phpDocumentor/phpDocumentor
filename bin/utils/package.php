@@ -42,6 +42,7 @@ function createPackager($original_file, $options = array())
             'data/log/*',
             'bin/utils/*',
             'src/XHProf/*',     // Profiling package
+            'vendor/twig/twig/ext/*'
         ),
         'exceptions'        => array(
             'bin/phpdoc.php'  => 'script',
