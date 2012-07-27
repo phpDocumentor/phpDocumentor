@@ -348,7 +348,7 @@ class Definition extends ParserAbstract
             $non_objects = array(
                 'string', 'int', 'integer', 'bool', 'boolean', 'float', 'double',
                 'object', 'mixed', 'array', 'resource', 'void', 'null',
-                'callback', 'false', 'true'
+                'callback', 'false', 'true', 'self', '$this', 'callable'
             );
         }
         $namespace = $this->getNamespace() == 'default'

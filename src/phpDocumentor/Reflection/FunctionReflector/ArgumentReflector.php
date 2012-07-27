@@ -42,7 +42,9 @@ class ArgumentReflector extends BaseReflector
         $type = (string)$this->node->type;
 
         // in case of the callable of array keyword; do not prefix with a \
-        if ($type == 'callable' || $type == 'array') {
+        if ($type == 'callable' || $type == 'array'
+            || $type == 'self' || $type == '$this'
+        ) {
             return $type;
         }
 
