@@ -310,19 +310,31 @@ HELP
             ) == 'on'
         );
 
-        $added_files = $this->getOption(
+        $file_options = $this->getOption(
             $input, 'filename', 'files/file', array(), true
         );
-        foreach ($added_files as &$file) {
-            $file = realpath($file);
+        $added_files = array();
+        foreach ($file_options as $glob) {
+            foreach (glob($glob) as $file) {
+                $file = realpath($file);
+                if (!empty($file)) {
+                    $added_files[] = $file;
+                }
+            }
         }
         $files->addFiles($added_files);
 
-        $added_directories = $this->getOption(
+        $directory_options = $this->getOption(
             $input, 'directory', 'files/directory', array(), true
         );
-        foreach ($added_directories as &$dir) {
-            $dir = realpath($dir);
+        $added_directories = array();
+        foreach ($directory_options as $glob) {
+            foreach (glob($glob, GLOB_ONLYDIR) as $dir) {
+                $dir = realpath($dir);
+                if (!empty($dir)) {
+                    $added_directories[] = $dir;
+                }
+            }
         }
         $files->addDirectories($added_directories);
 
