@@ -315,10 +315,15 @@ HELP
         );
         $added_files = array();
         foreach ($file_options as $glob) {
-            foreach (glob($glob) as $file) {
-                $file = realpath($file);
-                if (!empty($file)) {
-                    $added_files[] = $file;
+            $matches = glob($glob);
+            if (is_array($matches)) {
+                foreach ($matches as $file) {
+                    if (!empty($file)) {
+                        $file = realpath($file);
+                        if (!empty($file)) {
+                            $added_files[] = $file;
+                        }
+                    }
                 }
             }
         }
@@ -329,10 +334,15 @@ HELP
         );
         $added_directories = array();
         foreach ($directory_options as $glob) {
-            foreach (glob($glob, GLOB_ONLYDIR) as $dir) {
-                $dir = realpath($dir);
-                if (!empty($dir)) {
-                    $added_directories[] = $dir;
+            $matches = glob($glob, GLOB_ONLYDIR);
+            if (is_array($matches)) {
+                foreach ($matches as $dir) {
+                    if (!empty($dir)) {
+                        $dir = realpath($dir);
+                        if (!empty($dir)) {
+                            $added_directories[] = $dir;
+                        }
+                    }
                 }
             }
         }
