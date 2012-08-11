@@ -301,6 +301,28 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * Verifies whether the AST contains a file-level DocBlock with a non-empty
+     * short description.
+     *
+     * @Then /^my AST should have a file level DocBlock with short description$/
+     *
+     * @throws \Exception if the condition is not fulfilled
+     *
+     * @return void
+     */
+    public function myAstShouldHaveAFileLevelDocBlockWithShortDescription()
+    {
+        /** @var \SimpleXMLElement $structure  */
+        $structure = simplexml_load_file('build/structure.xml');
+        if (!$structure->xpath('/project/file/docblock[description != ""]')) {
+            throw new \Exception(
+                "File-level DocBlock not found in structure file:\n"
+                . $structure->asXML()
+            );
+        }
+    }
+
+    /**
      * Verifies whether the AST contains the given number of class definitions.
      *
      * @param int $class_count

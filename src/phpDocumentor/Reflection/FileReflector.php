@@ -150,22 +150,32 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
 
         if ($node) {
             $comments = (array) $node->getAttribute('comments');
+
             // remove non-DocBlock comments
-            $comments = array_values(array_filter($comments, function($comment) {
-                return $comment instanceof \PHPParser_Comment_Doc;
-            }));
+            $comments = array_values(
+                array_filter(
+                    $comments,
+                    function($comment) {
+                        return $comment instanceof \PHPParser_Comment_Doc;
+                    }
+                )
+            );
 
             if (!empty($comments)) {
                 $docblock = new \phpDocumentor\Reflection\DocBlock(
                     (string) $comments[0]
                 );
 
-                // the first DocBlock in a file documents the file if it precedes
-                // another DocBlock or it contains a @package tag and doesn't
-                // precede a class declaration
+                // the first DocBlock in a file documents the file if
+                // * it precedes another DocBlock or
+                // * it contains a @package tag and doesn't precede a class
+                //   declaration or
+                // * it precedes a non-documentable element (thus no include,
+                //   require, class, function, define, const)
                 if (count($comments) > 1
-                    || !$node instanceof \PHPParser_Node_Stmt_Class
-                        && $docblock->hasTag('package')
+                    || (!$node instanceof \PHPParser_Node_Stmt_Class
+                    && $docblock->hasTag('package'))
+                    || !$this->isNodeDocumentable($node)
                 ) {
                     $docblock->line_number = $comments[0]->getLine();
                     $this->doc_block = $docblock;
@@ -188,6 +198,43 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
         );
 
         return $nodes;
+    }
+
+    /**
+     * Checks whether the given node is recogized by phpDocumentor as a
+     * documentable element.
+     *
+     * The following elements are recognized:
+     *
+     * - Trait
+     * - Class
+     * - Interface
+     * - Class constant
+     * - Class method
+     * - Property
+     * - Include/Require
+     * - Constant, both const and define
+     * - Function
+     *
+     * @param \PHPParser_Node $node
+     *
+     * @return bool
+     */
+    protected function isNodeDocumentable(\PHPParser_Node $node)
+    {
+        return ($node instanceof \PHPParser_Node_Stmt_Class)
+            || ($node instanceof \PHPParser_Node_Stmt_Interface)
+            || ($node instanceof \PHPParser_Node_Stmt_ClassConst)
+            || ($node instanceof \PHPParser_Node_Stmt_ClassMethod)
+            || ($node instanceof \PHPParser_Node_Stmt_Const)
+            || ($node instanceof \PHPParser_Node_Stmt_Function)
+            || ($node instanceof \PHPParser_Node_Stmt_Property)
+            || ($node instanceof \PHPParser_Node_Stmt_PropertyProperty)
+            || ($node instanceof \PHPParser_Node_Stmt_Trait)
+            || ($node instanceof \PHPParser_Node_Expr_Include)
+            || ($node instanceof \PHPParser_Node_Expr_FuncCall
+            && ($node->name instanceof \PHPParser_Node_Name)
+            && $node->name == 'define');
     }
 
     public function enterNode(\PHPParser_Node $node)
