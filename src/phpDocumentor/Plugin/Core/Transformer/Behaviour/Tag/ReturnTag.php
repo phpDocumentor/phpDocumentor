@@ -38,10 +38,10 @@ class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
      */
     public function process(\DOMDocument $xml)
     {
-        $ignoreQry = '//tag[@name=\'return\' and @type=\'\\self\']'
-            . '|//tag[@name=\'return\' and @type=\'\\$this\']'
-            . '|//tag[@name=\'return\']/type[.=\'\\self\']'
-            . '|//tag[@name=\'return\']/type[.=\'\\$this\']';
+        $ignoreQry = '//tag[@name=\'return\' and @type=\'self\']'
+            . '|//tag[@name=\'return\' and @type=\'$this\']'
+            . '|//tag[@name=\'return\']/type[.=\'self\']'
+            . '|//tag[@name=\'return\']/type[.=\'$this\']';
 
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query($ignoreQry);
@@ -98,8 +98,8 @@ class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
             // check if an excerpt is set and override that as well
             if ($node->hasAttribute('excerpt')
-                && (($node->getAttribute('excerpt') == '\\self')
-                || ($node->getAttribute('excerpt') == '\\$this'))
+                && (($node->getAttribute('excerpt') == 'self')
+                || ($node->getAttribute('excerpt') == '$this'))
             ) {
                 $node->setAttribute('excerpt', $type);
             }
