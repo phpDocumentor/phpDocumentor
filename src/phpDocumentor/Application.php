@@ -38,6 +38,7 @@ class Application extends \Cilex\Application
 
         $this->addAutoloader();
         $this->addLogging();
+        $this->setTimezone();
         $this->addConfiguration();
         $this->addEventDispatcher();
         $this->loadPlugins();
@@ -126,6 +127,25 @@ class Application extends \Cilex\Application
                 'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
             )
         );
+    }
+    
+    /**
+     * If the timezone is not set anywhere, set it to UTC.
+     * 
+     * This is done to prevent any warnings being outputted in relation to using
+     * date/time functions. What is checked is php.ini, and if the PHP version
+     * is prior to 5.4, the TZ environment variable.
+     * 
+     * @return void 
+     */
+    public function setTimezone()
+    {
+        if (false === ini_get('date.timezone')
+            || (version_compare(phpversion(), '5.4.0', '<')
+            && false === getenv('TZ'))
+        ) {
+            date_default_timezone_set('UTC');
+        }
     }
 
     /**
