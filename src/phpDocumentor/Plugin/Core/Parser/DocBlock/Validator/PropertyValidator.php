@@ -50,6 +50,11 @@ class PropertyValidator extends ValidatorAbstract
         }
 
         if ('' === $this->docblock->getShortDescription()) {
+            foreach($this->docblock->getTagsByName('var') as $varTag) {
+                if ('' !== $varTag->getDescription()) {
+                    return true;
+                }
+            }
             $this->logParserError(
                 'CRITICAL', 50019, $this->lineNumber, array($this->entityName)
             );
