@@ -51,7 +51,7 @@ class PropertyValidator extends ValidatorAbstract
 
         if ('' === $this->docblock->getShortDescription()) {
             foreach($this->docblock->getTagsByName('var') as $varTag) {
-                if ('' !== $varTag->getContent()) {
+                if ('' !== $varTag->getDescription()) {
                     return true;
                 }
             }
