@@ -27,7 +27,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
  */
 class Application extends \Cilex\Application
 {
-    const VERSION = '2.0.0a8';
+    const VERSION = '2.0.0a9';
 
     /**
      * Initializes all components used by phpDocumentor.
@@ -128,15 +128,15 @@ class Application extends \Cilex\Application
             )
         );
     }
-    
+
     /**
      * If the timezone is not set anywhere, set it to UTC.
-     * 
+     *
      * This is done to prevent any warnings being outputted in relation to using
      * date/time functions. What is checked is php.ini, and if the PHP version
      * is prior to 5.4, the TZ environment variable.
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function setTimezone()
     {

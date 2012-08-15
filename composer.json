@@ -33,7 +33,9 @@
 
         "phpdocumentor/template-responsive": "1.*",
         "phpdocumentor/template-new-black": "1.*",
-        "phpdocumentor/template-zend": "1.*"
+        "phpdocumentor/template-zend": "1.*",
+        "phpdocumentor/template-old-ocean": "1.*",
+        "phpdocumentor/template-checkstyle": "1.*"
     },
     "minimum-stability": "dev",
     "require-dev": {
