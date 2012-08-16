@@ -98,7 +98,7 @@
     <target name="deploy:get-version-number"
             description="Ask the user for the new version">
         <exec
-            command="grep -Po &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Application.php"
+            command="grep -Pom1 &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Application.php"
             dir="${project.basedir}" outputProperty="version.number"
         />
     </target>
