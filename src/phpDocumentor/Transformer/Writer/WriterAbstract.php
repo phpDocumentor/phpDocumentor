@@ -52,7 +52,7 @@ abstract class WriterAbstract extends \phpDocumentor\Transformer\TransformerAbst
     static public function getInstanceOf($writer)
     {
         static $writers = array();
-        $writer_class = '\phpDocumentor\Plugin\Core\Transformer\Writer\\'
+        $writer_class = 'phpDocumentor\Plugin\Core\Transformer\Writer\\'
             . ucfirst($writer);
 
         if (!self::isValidWriterClassname($writer_class)) {
