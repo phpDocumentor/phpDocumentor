@@ -9,7 +9,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-namespace phpDocumentor\Parser\Events;
+namespace phpDocumentor\Parser\Event;
 
 /**
  * Event for capturing events during the parsing of a file.
@@ -20,7 +20,7 @@ namespace phpDocumentor\Parser\Events;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class LogEvent extends \phpDocumentor\Plugin\Event
+class LogEvent extends \phpDocumentor\Event\EventAbstract
 {
     /** @var string */
     protected $message, $type;

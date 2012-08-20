@@ -35,9 +35,9 @@ abstract class TransformerAbstract
      */
     public function log($message, $priority = 6)
     {
-        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
             'system.log',
-            \phpDocumentor\Events\LogEvent::createInstance($this)
+            \phpDocumentor\Event\LogEvent::createInstance($this)
             ->setMessage($message)->setPriority($priority)
         );
     }
@@ -51,9 +51,9 @@ abstract class TransformerAbstract
      */
     public function debug($message)
     {
-        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
             'system.debug',
-            \phpDocumentor\Events\DebugEvent::createInstance($this)
+            \phpDocumentor\Event\DebugEvent::createInstance($this)
             ->setMessage($message)
         );
     }

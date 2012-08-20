@@ -114,9 +114,9 @@ abstract class BaseReflector extends ReflectionAbstract
             }
         }
 
-        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
             'reflection.docblock-extraction.post',
-            \phpDocumentor\Reflection\Events\PostDocBlockExtractionEvent
+            \phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent
             ::createInstance($this)->setDocblock($doc_block)
         );
 

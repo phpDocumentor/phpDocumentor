@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Events;
+namespace phpDocumentor\Transformer\Event;
 
 /**
  * Event launched during the Xsl Transformation of an individual output file.
@@ -22,7 +22,7 @@ namespace phpDocumentor\Transformer\Events;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PreXslWriterEvent extends \phpDocumentor\Plugin\Event
+class PreXslWriterEvent extends \phpDocumentor\Event\EventAbstract
 {
     /** @var \DOMElement */
     protected $element;

@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin;
+namespace phpDocumentor\Event;
 
 use Symfony\Component\EventDispatcher as Symfony;
 
@@ -28,9 +28,9 @@ use Symfony\Component\EventDispatcher as Symfony;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class EventDispatcher extends Symfony\EventDispatcher
+class Dispatcher extends Symfony\EventDispatcher
 {
-    /** @var EventDispatcher[] Keep track of an array of instances. */
+    /** @var Dispatcher[] Keep track of an array of instances. */
     static protected $instances = array();
 
     /**
@@ -45,7 +45,7 @@ class EventDispatcher extends Symfony\EventDispatcher
      *
      * @param string $name
      *
-     * @return EventDispatcher
+     * @return Dispatcher
      */
     public static function getInstance($name = 'default')
     {
@@ -59,8 +59,8 @@ class EventDispatcher extends Symfony\EventDispatcher
     /**
      * Sets a names instance of the Event Dispatcher.
      *
-     * @param string          $name
-     * @param EventDispatcher $instance
+     * @param string     $name
+     * @param Dispatcher $instance
      *
      * @return void
      */
@@ -77,9 +77,9 @@ class EventDispatcher extends Symfony\EventDispatcher
      * and that the dispatch signature must remain intact.
      *
      * @param string $eventName
-     * @param Event $event
+     * @param EventAbstract $event
      *
-     * @return Event
+     * @return EventAbstract
      */
     public function dispatch($eventName, Symfony\Event $event = null)
     {
@@ -89,9 +89,9 @@ class EventDispatcher extends Symfony\EventDispatcher
     /**
      * Adds a callable that will listen on the named event.
      *
-     * @param string $eventName
+     * @param string   $eventName
      * @param callable $listener
-     * @param int $priority
+     * @param int      $priority
      *
      * @return void
      */
@@ -103,11 +103,13 @@ class EventDispatcher extends Symfony\EventDispatcher
     /**
      * Alias of addListener() provided for backwards-compatiblity.
      *
-     * @param string           $eventName
-     * @param ListenerAbstract $listener
+     * @param string                                 $eventName
+     * @param \phpDocumentor\Plugin\ListenerAbstract $listener
      *
      * @deprecated provided for BC compatibility; use addListener instead.
      *     Will be removed in 2.0.0 Beta or RC
+     *
+     * @return void
      */
     public function connect($eventName, $listener)
     {

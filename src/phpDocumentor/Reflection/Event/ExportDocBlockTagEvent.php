@@ -1,7 +1,7 @@
 <?php
-namespace phpDocumentor\Reflection\Events;
+namespace phpDocumentor\Reflection\Event;
 
-class ExportDocBlockTagEvent extends \phpDocumentor\Plugin\Event
+class ExportDocBlockTagEvent extends \phpDocumentor\Event\EventAbstract
 {
     /** @var \SimpleXmlElement */
     protected $xml = null;

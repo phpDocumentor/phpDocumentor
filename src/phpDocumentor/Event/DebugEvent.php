@@ -10,7 +10,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-namespace phpDocumentor\Events;
+namespace phpDocumentor\Event;
 
 /**
  * Event representing some debugging information for phpDocumentor.
@@ -22,7 +22,7 @@ namespace phpDocumentor\Events;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class DebugEvent extends \phpDocumentor\Plugin\Event
+class DebugEvent extends \phpDocumentor\Event\EventAbstract
 {
     /** @var string Message to display with the debugging event */
     protected $message;

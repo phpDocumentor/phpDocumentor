@@ -31,7 +31,7 @@ class Listener extends ListenerAbstract
     /**
      * Applies all behaviours prior to transformation.
      *
-     * @param \phpDocumentor\Transformer\Events\PreTransformationEvent $data
+     * @param \phpDocumentor\Transformer\Event\PreTransformationEvent $data
      *     Event object containing the parameters.
      *
      * @phpdoc-event transformer.transform.pre
@@ -73,7 +73,7 @@ class Listener extends ListenerAbstract
     /**
      * Checks all phpDocumentor whether they match the given rules.
      *
-     * @param \phpDocumentor\Reflection\Events\PostDocBlockExtractionEvent $data
+     * @param \phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent $data
      *     Event object containing the parameters.
      *
      * @phpdoc-event reflection.docblock-extraction.post
@@ -126,7 +126,7 @@ class Listener extends ListenerAbstract
     /**
      * Prepare the tag to be injected into the XML file.
      *
-     * @param \phpDocumentor\Reflection\Events\ExportDocBlockTagEvent $data
+     * @param \phpDocumentor\Reflection\Event\ExportDocBlockTagEvent $data
      *     Event object containing the parameters.
      *
      * @phpdoc-event reflection.docblock.tag.export

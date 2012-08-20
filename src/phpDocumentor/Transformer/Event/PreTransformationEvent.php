@@ -10,39 +10,40 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Parser\Events;
+namespace phpDocumentor\Transformer\Event;
 
 /**
- * Event thrown before the parsing of an individual file.
+ * Event happening prior to each individual transformation.
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PreFileEvent extends \phpDocumentor\Plugin\Event
+class PreTransformationEvent extends \phpDocumentor\Event\EventAbstract
 {
-    /** @var string */
-    protected $file;
+    /** @var \DOMDocument */
+    protected $source;
 
     /**
+     * Sets the Abstract Syntax Tree as DOMDocument.
      *
-     * Sets the name of the file that is about to be processed.
+     * @param \DOMDocument $source
      *
-     * @param string $file
+     * @return PreTransformationEvent
      */
-    public function setFile($file)
+    public function setSource($source)
     {
-        $this->file = $file;
+        $this->source = $source;
         return $this;
     }
 
     /**
-     * Returns the name of the file that is about to be processed.
+     * Returns the Abstract Syntax Tree as DOMDocument.
      *
-     * @return string
+     * @return \DOMDocument
      */
-    public function getFile()
+    public function getSource()
     {
-        return $this->file;
+        return $this->source;
     }
 }

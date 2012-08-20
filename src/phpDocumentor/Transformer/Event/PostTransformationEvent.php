@@ -10,16 +10,16 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Events;
+namespace phpDocumentor\Transformer\Event;
 
 /**
- * Event happen right after all transformations have completed.
+ * Event that happens after each individual transformation.
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PostTransformEvent extends PreTransformEvent
+class PostTransformationEvent extends PreTransformationEvent
 {
 
 }

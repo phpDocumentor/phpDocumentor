@@ -22,7 +22,10 @@ namespace phpDocumentor\Plugin;
  */
 class PluginAbstract
 {
-    /** @var EventDispatcher Dispatcher used to send events back and forth */
+    /**
+     * @var \phpDocumentor\Event\Dispatcher Dispatcher used to send events back
+     *     and forth
+     */
     protected $event_dispatcher = null;
 
     /** @var \Zend\Config\Config Configuration object for plugins */
@@ -34,7 +37,7 @@ class PluginAbstract
     /**
      * Initialize this object with an Event Dispatcher and Configuration object.
      *
-     * @param EventDispatcher                       $event_dispatcher
+     * @param \phpDocumentor\Event\Dispatcher       $event_dispatcher
      *     Dispatcher used to handle events.
      * @param \Zend\Config\Config                   $configuration
      *     Configuration object for this object.
@@ -58,8 +61,9 @@ class PluginAbstract
      * By not failing we make the Event Dispatcher optional and is it easier
      * for people to re-use this component in their own application.
      *
-     * @param string $name  Name of the event to dispatch.
-     * @param Event  $event Arguments for this event.
+     * @param string                             $name  Name of the event to
+     *     dispatch.
+     * @param \phpDocumentor\Event\EventAbstract $event Arguments for this event.
      *
      * @throws \phpDocumentor\Plugin\Exception if there is a dispatcher but it
      *  is not of type EventDispatcher
@@ -72,10 +76,10 @@ class PluginAbstract
             return null;
         }
 
-        if (!$this->event_dispatcher instanceof EventDispatcher) {
+        if (!$this->event_dispatcher instanceof \phpDocumentor\Event\Dispatcher) {
             throw new Exception(
                 'Expected the event dispatcher to be an instance of '
-                . 'phpDocumentor\Plugin\EventDispatcher'
+                . 'phpDocumentor\Event\Dispatcher'
             );
         }
 
@@ -94,7 +98,7 @@ class PluginAbstract
     public function log($message, $priority = 6)
     {
         $this->dispatch(
-            'system.log', \phpDocumentor\Events\LogEvent::createInstance($this)
+            'system.log', \phpDocumentor\Event\LogEvent::createInstance($this)
             ->setMessage($message)->setPriority($priority)
         );
     }
@@ -114,7 +118,7 @@ class PluginAbstract
         $message = $this->_($code, $variables);
         $this->log($message, \phpDocumentor\Plugin\Core\Log::ERR);
         $this->dispatch(
-            'parser.log', \phpDocumentor\Parser\Events\LogEvent
+            'parser.log', \phpDocumentor\Parser\Event\LogEvent
             ::createInstance($this)->setMessage($message)->setType($type)
             ->setCode($code)->setLine($line)
         );
@@ -130,7 +134,7 @@ class PluginAbstract
     public function debug($message)
     {
         $this->dispatch(
-            'system.debug', \phpDocumentor\Events\DebugEvent
+            'system.debug', \phpDocumentor\Event\DebugEvent
             ::createInstance($this)->setMessage($message)
         );
     }
@@ -168,7 +172,7 @@ class PluginAbstract
     /**
      * Returns the event dispatcher.
      *
-     * @return EventDispatcher
+     * @return \phpDocumentor\Event\Dispatcher
      */
     public function getEventDispatcher()
     {

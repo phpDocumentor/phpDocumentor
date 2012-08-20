@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin;
+namespace phpDocumentor\Event;
 
 /**
  * Abstract class representing the base elements of a phpDocumentor event.
@@ -19,7 +19,7 @@ namespace phpDocumentor\Plugin;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-abstract class Event extends \Symfony\Component\EventDispatcher\Event
+abstract class EventAbstract extends \Symfony\Component\EventDispatcher\Event
     implements \ArrayAccess
 {
     /** @var object Represents an object that is the subject of this event */
@@ -52,7 +52,7 @@ abstract class Event extends \Symfony\Component\EventDispatcher\Event
      *
      * @param object $subject
      *
-     * @return Event
+     * @return EventAbstract
      */
     public static function createInstance($subject)
     {
@@ -113,6 +113,7 @@ abstract class Event extends \Symfony\Component\EventDispatcher\Event
      * deprecated.
      *
      * @param string $offset
+     * @param string $value
      *
      * @throws \Exception because method is explicitly not implemented.
      *

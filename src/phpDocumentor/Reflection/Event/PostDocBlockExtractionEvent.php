@@ -1,7 +1,7 @@
 <?php
-namespace phpDocumentor\Reflection\Events;
+namespace phpDocumentor\Reflection\Event;
 
-class PostDocBlockExtractionEvent extends \phpDocumentor\Plugin\Event
+class PostDocBlockExtractionEvent extends \phpDocumentor\Event\EventAbstract
 {
     /** @var \phpDocumentor\Reflection\DocBlock */
     protected $docblock;

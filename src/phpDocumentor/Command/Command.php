@@ -88,7 +88,7 @@ class Command extends \Cilex\Command\Command
             return;
         }
 
-        /** @var \phpDocumentor\Plugin\EventDispatcher $event_dispatcher  */
+        /** @var \phpDocumentor\Event\Dispatcher $event_dispatcher  */
         $event_dispatcher = $this->getService('event_dispatcher');
 
         /** @var Command $command  */
@@ -96,21 +96,21 @@ class Command extends \Cilex\Command\Command
 
         $event_dispatcher->addListener(
             'parser.file.pre',
-            function(\phpDocumentor\Parser\Events\PreFileEvent $event) use ($output) {
+            function(\phpDocumentor\Parser\Event\PreFileEvent $event) use ($output) {
                 $output->writeln('Parsing <info>'.$event->getFile().'</info>');
             }
         );
 
         $event_dispatcher->addListener(
             'system.log',
-            function(\phpDocumentor\Events\LogEvent $event) use ($command, $output) {
+            function(\phpDocumentor\Event\LogEvent $event) use ($command, $output) {
                 $command->logEvent($output, $event);
             }
         );
 
         $event_dispatcher->addListener(
             'system.debug',
-            function(\phpDocumentor\Events\DebugEvent $event) use ($command, $output) {
+            function(\phpDocumentor\Event\DebugEvent $event) use ($command, $output) {
                 $command->logEvent($output, $event);
             }
         );
@@ -129,7 +129,7 @@ class Command extends \Cilex\Command\Command
      * @return void.
      */
     public function logEvent(
-        OutputInterface $output, \phpDocumentor\Events\LogEvent $event
+        OutputInterface $output, \phpDocumentor\Event\LogEvent $event
     ) {
         $threshold = \phpDocumentor\Plugin\Core\Log::ERR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {

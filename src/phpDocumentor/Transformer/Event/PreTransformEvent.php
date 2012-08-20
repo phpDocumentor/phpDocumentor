@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Events;
+namespace phpDocumentor\Transformer\Event;
 
 /**
  * Event that happens prior to the execution of all transformations.
@@ -19,7 +19,7 @@ namespace phpDocumentor\Transformer\Events;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PreTransformEvent extends \phpDocumentor\Plugin\Event
+class PreTransformEvent extends \phpDocumentor\Event\EventAbstract
 {
     /** @var \DOMDocument */
     protected $source;

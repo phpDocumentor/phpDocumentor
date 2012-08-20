@@ -191,9 +191,9 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
             $nodes[$key] = $node;
         }
 
-        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
             'reflection.docblock-extraction.post',
-            \phpDocumentor\Reflection\Events\PostDocBlockExtractionEvent
+            \phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent
             ::createInstance($this)->setDocblock($this->doc_block)
         );
 
@@ -384,7 +384,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
     /**
      * Adds a parse error to the system
      *
-     * @param \phpDocumentor\Parser\Events\LogEvent $data Contains the type,
+     * @param \phpDocumentor\Parser\Event\LogEvent $data Contains the type,
      *     message, line and code element.
      *
      * @return void

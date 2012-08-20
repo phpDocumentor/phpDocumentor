@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Events;
+namespace phpDocumentor\Event;
 
 /**
  * Logging event for phpDocumentor where information is output to the log or

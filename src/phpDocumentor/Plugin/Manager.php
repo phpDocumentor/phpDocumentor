@@ -20,7 +20,7 @@ namespace phpDocumentor\Plugin;
  */
 class Manager
 {
-    /** @var EventDispatcher */
+    /** @var \phpDocumentor\Event\Dispatcher */
     protected $event_dispatcher = null;
 
     /** @var \SimpleXMLElement */
@@ -36,11 +36,11 @@ class Manager
      * Registers the Event Dispatcher, Confguration and Autoloader onto the
      * Manager.
      *
-     * @param EventDispatcher        $event_dispatcher Event dispatcher
+     * @param \phpDocumentor\Event\Dispatcher $event_dispatcher Event dispatcher
      *     that plugins can bind to and where events should be dispatched to.
-     * @param \Zend\Config\Config    $configuration    Configuration file
-     *     which can be used to load parameters into the plugins.
-     * @param \Composer\ClassLoader  $autoloader       Plugins can
+     * @param \Zend\Config\Config             $configuration    Configuration
+     *    file which can be used to load parameters into the plugins.
+     * @param \Composer\ClassLoader           $autoloader       Plugins can
      *     additionally load classes; with the autoloader they can register
      *     themselves.
      */
