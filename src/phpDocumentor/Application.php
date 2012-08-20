@@ -186,7 +186,7 @@ class Application extends \Cilex\Application
     {
         $this['event_dispatcher'] = $this->share(
             function () {
-                return Plugin\EventDispatcher::getInstance();
+                return Event\Dispatcher::getInstance();
             }
         );
     }
