@@ -313,16 +313,25 @@ HELP
         $added_files = $this->getOption(
             $input, 'filename', 'files/file', array(), true
         );
-        foreach ($added_files as &$file) {
-            $file = realpath($file);
+        foreach ($added_files as $key => &$file) {
+            // Zend_Config may return array(array()); which will fail here
+            if (!is_string($file)) {
+                unset($added_files[$key]);
+            } else {
+                $file = realpath($file);
+            }
         }
         $files->addFiles($added_files);
 
         $added_directories = $this->getOption(
             $input, 'directory', 'files/directory', array(), true
         );
-        foreach ($added_directories as &$dir) {
-            $dir = realpath($dir);
+        foreach ($added_directories as $key => &$dir) {
+            if (!is_string($dir)) {
+                unset($added_directories[$key]);
+            } else {
+                $dir = realpath($dir);
+            }
         }
         $files->addDirectories($added_directories);
 

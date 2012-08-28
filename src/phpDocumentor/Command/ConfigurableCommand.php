@@ -126,7 +126,11 @@ class ConfigurableCommand extends Command
         }
 
         // split comma separated values
-        if ($comma_separated && (!is_array($value) || count($value) == 1)) {
+        if ($comma_separated
+            && (!is_array($value)
+                || (count($value) == 1) && is_string(current($value))
+            )
+        ) {
             $value = (array) $value;
             $value = explode(',', $value[0]);
         }
