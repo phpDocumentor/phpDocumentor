@@ -315,6 +315,10 @@ HELP
         );
         $added_files = array();
         foreach ($file_options as $glob) {
+            if (!is_string($glob)) {
+                continue;
+            }
+
             $matches = glob($glob);
             if (is_array($matches)) {
                 foreach ($matches as $file) {
@@ -334,6 +338,10 @@ HELP
         );
         $added_directories = array();
         foreach ($directory_options as $glob) {
+            if (!is_string($glob)) {
+                continue;
+            }
+
             $matches = glob($glob, GLOB_ONLYDIR);
             if (is_array($matches)) {
                 foreach ($matches as $dir) {
