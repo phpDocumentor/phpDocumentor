@@ -310,27 +310,40 @@ HELP
             ) == 'on'
         );
 
-        $added_files = $this->getOption(
+        $file_options = $this->getOption(
             $input, 'filename', 'files/file', array(), true
         );
-        foreach ($added_files as $key => &$file) {
-            // Zend_Config may return array(array()); which will fail here
-            if (!is_string($file)) {
-                unset($added_files[$key]);
-            } else {
-                $file = realpath($file);
+        $added_files = array();
+        foreach ($file_options as $glob) {
+            $matches = glob($glob);
+            if (is_array($matches)) {
+                foreach ($matches as $file) {
+                    if (!empty($file)) {
+                        $file = realpath($file);
+                        if (!empty($file)) {
+                            $added_files[] = $file;
+                        }
+                    }
+                }
             }
         }
         $files->addFiles($added_files);
 
-        $added_directories = $this->getOption(
+        $directory_options = $this->getOption(
             $input, 'directory', 'files/directory', array(), true
         );
-        foreach ($added_directories as $key => &$dir) {
-            if (!is_string($dir)) {
-                unset($added_directories[$key]);
-            } else {
-                $dir = realpath($dir);
+        $added_directories = array();
+        foreach ($directory_options as $glob) {
+            $matches = glob($glob, GLOB_ONLYDIR);
+            if (is_array($matches)) {
+                foreach ($matches as $dir) {
+                    if (!empty($dir)) {
+                        $dir = realpath($dir);
+                        if (!empty($dir)) {
+                            $added_directories[] = $dir;
+                        }
+                    }
+                }
             }
         }
         $files->addDirectories($added_directories);
