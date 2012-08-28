@@ -2,31 +2,26 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviour
  * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright  2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
+namespace phpDocumentor\Transformer\Behaviour;
 
 /**
  * Collection object for a set of Behaviours.
  *
  * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviour
  * @author     Mike van Riel <mike.vanriel@naenius.com>
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class Collection
-    extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class Collection extends BehaviourAbstract
 {
     /** @var \phpDocumentor\Transformer\Transformer */
     protected $transformer = null;
@@ -37,13 +32,14 @@ class Collection
     /**
      * Initializes the list of Behaviours to execute each request.
      *
-     * @param \phpDocumentor\Transformer\Transformer          $transformer Object
-     *     that executes the transformation and contains the meta-data.
-     * @param \phpDocumentor\Transformer\Behaviour\BehaviourAbstract[] $behaviours  List of
+     * @param \phpDocumentor\Transformer\Transformer $transformer Object that
+     *     executes the transformation and contains the meta-data.
+     * @param BehaviourAbstract[]                    $behaviours  List of
      *     behaviours to process.
      */
     public function __construct(
-        \phpDocumentor\Transformer\Transformer $transformer, array $behaviours
+        \phpDocumentor\Transformer\Transformer $transformer,
+        array $behaviours = array()
     ) {
         $this->transformer = $transformer;
 

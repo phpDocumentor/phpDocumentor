@@ -47,7 +47,7 @@ class Listener extends ListenerAbstract
             );
         }
 
-        $behaviours = new Transformer\Behaviour\Collection(
+        $behaviours = new \phpDocumentor\Transformer\Behaviour\Collection(
             $data->getSubject(),
             array(
                  new Transformer\Behaviour\GeneratePaths(),
