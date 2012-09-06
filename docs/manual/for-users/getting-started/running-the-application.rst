@@ -1,12 +1,6 @@
 Running the application
 =======================
 
-.. warning::
-
-   If you intend on using the phar distributed version, please read the following
-   for some common phar issues:
-   http://silex.sensiolabs.org/doc/usage.html#pitfalls.
-
 You can use the ``phpdoc`` command to generate your documentation
 for you.
 

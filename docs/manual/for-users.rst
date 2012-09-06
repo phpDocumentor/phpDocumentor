@@ -3,7 +3,6 @@ For users
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
 
    for-users/introduction
    for-users/installation

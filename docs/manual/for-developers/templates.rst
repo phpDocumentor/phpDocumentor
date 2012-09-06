@@ -1,6 +1,11 @@
 Templates
 =========
 
+.. important::
+
+   This document is a design for an upcoming refactoring. It does not reflect
+   the current state of affairs.
+
 This document describes the technical details for the use of Templates; where a
 Template represents a collection of transformations which, when executed,
 produce a meaningful representation of the User's source code.

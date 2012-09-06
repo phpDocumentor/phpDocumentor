@@ -265,7 +265,6 @@ div.warning
 p.admonition-title
 {
     display: block;
-    font-family: Forum, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 1.2em;
 }
 
@@ -317,4 +316,62 @@ div.viewcode-block:target
     background-color: #f4debf;
     border-top:       1px solid #ac9;
     border-bottom:    1px solid #ac9;
+}
+
+.contents
+{
+    font-size: 100%;
+}
+
+div.highlight-python pre
+{
+    padding: 5px;
+}
+
+a:visited, div.body h1, div.body h2, div.sphinxsidebar a, div.sphinxsidebar a:visited
+{
+    color: #4F814B;
+}
+
+p, .row p, pre, ul, ol
+{
+    margin-bottom: 0.7em;
+}
+
+#head ul
+{
+    margin-bottom: 0em;
+}
+
+div.document
+{
+    background: transparent;
+}
+
+div.sphinxsidebar h4, div.sphinxsidebar h3, div.sphinxsidebar p, div.sphinxsidebar ul
+{
+    color: #333;
+}
+
+div.body h1, div.body h2
+{
+    background:     transparent;
+    margin:         20px 0;
+    padding-bottom: 10px;
+}
+
+div#footer th
+{
+    background-color: transparent;
+}
+
+div.related a
+{
+    color: inherit;
+}
+
+div.related
+{
+    background: transparent;
+    color:      #333;
 }

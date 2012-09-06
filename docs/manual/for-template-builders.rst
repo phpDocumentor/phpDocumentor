@@ -8,7 +8,6 @@ For template-builders
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
 
    for-template-builders/introduction
    for-template-builders/getting-started

@@ -10,3 +10,8 @@ Installation
    installation/upgrading
    installation/ide-integration
    installation/troubleshooting
+
+.. toctree::
+   :hidden:
+
+   installation/requirements

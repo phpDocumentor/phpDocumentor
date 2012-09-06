@@ -8,7 +8,6 @@ For developers
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
 
    for-developers/introduction
    for-developers/architecture

@@ -11,21 +11,26 @@
     <h3>{{ _('Navigation') }}</h3>
     <ul>
         {%- for rellink in rellinks %}
-        <li class="right"
-        {% if loop.first %}style="margin-right: 10px"{% endif %}>
-        <a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags }}"
-        {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>
-        {%- if not loop.first %}{{ reldelim2 }}{% endif %}</li>
+        <li class="right" style="margin-right: 10px; margin-top: 6px;">
+            <a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags }}" {{ accesskey(rellink[2]) }}>
+                {{ rellink[3] }}
+            </a>
+            {%- if not loop.first %}{{ reldelim2 }}{% endif %}
+        </li>
         {%- endfor %}
         {%- block rootrellink %}
-        <li><a href="http://www.phpdoc.org">Homepage</a> {{ reldelim1 }}</li>
-        <li><a href="{{ pathto(master_doc) }}">Documentation</a>{{
-            reldelim1 }}
+        <li>
+            <a href="http://www.phpdoc.org">Homepage</a> {{ reldelim1 }}
+        </li>
+        <li>
+            <a href="{{ pathto(master_doc) }}">Documentation</a> {{ reldelim1 }}
         </li>
         {%- endblock %}
         {%- for parent in parents %}
-        <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U")
-            }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}
+        <li>
+            <a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>
+                {{ parent.title }}
+            </a> {{ reldelim1 }}
         </li>
         {%- endfor %}
         {%- block relbaritems %} {% endblock %}
@@ -35,8 +40,6 @@
 
 {%- macro sidebar() %}
 {%- if not embedded %}{% if not theme_nosidebar|tobool %}
-<div class="sphinxsidebar">
-    <div class="sphinxsidebarwrapper">
         {%- block sidebarlogo %}
         {%- if logo %}
         <p class="logo"><a href="{{ pathto(master_doc) }}">
@@ -68,22 +71,13 @@
             }}</a></p>
         {%- endif %}
         {%- endblock %}
-        {%- block sidebarsourcelink %}
-        {%- if show_source and has_source and sourcename %}
-        <h3>{{ _('This Page') }}</h3>
-        <ul class="this-page-menu">
-            <li><a href="{{ pathto('_sources/' + sourcename, true)|e }}"
-                   rel="nofollow">{{ _('Show Source') }}</a></li>
-        </ul>
-        {%- endif %}
-        {%- endblock %}
         {%- if customsidebar %}
         {% include customsidebar %}
         {%- endif %}
         {%- block sidebarsearch %}
         {%- if pagename != "search" %}
         <div id="searchbox" style="display: none">
-            <h3>{{ _('Quick search') }}</h3>
+            <h3>{{ _('Search') }}</h3>
 
             <form class="search" action="{{ pathto('search') }}" method="get">
                 <input type="text" name="q" size="18"/>
@@ -91,16 +85,10 @@
                 <input type="hidden" name="check_keywords" value="yes"/>
                 <input type="hidden" name="area" value="default"/>
             </form>
-            <p class="searchtip" style="font-size: 90%">
-                {{ _('Enter search terms or a module, class or function name.')
-                }}
-            </p>
         </div>
         <script type="text/javascript">$('#searchbox').show(0);</script>
         {%- endif %}
         {%- endblock %}
-    </div>
-</div>
 {%- endif %}{% endif %}
 {%- endmacro %}
 
@@ -118,19 +106,32 @@
 
     <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css"/>
     <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css"/>
-    <link rel="stylesheet" href="{{ pathto('_static/configurationblock.css', 1) }}" type="text/css"/>
+    <!--<link rel="stylesheet" href="{{ pathto('_static/configurationblock.css', 1) }}" type="text/css"/>-->
 
     <link href="http://demo.phpdoc.org/Responsive/css/template.css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="/bundles/phpdocumentorresource/css/template.css" type="text/css" media="screen" />
+    <style>
+        h1 {
+            font-family: serif;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+        h2:first-of-type {
+            margin-top: 25px;
+        }
+        h2 {
+            font-family: serif;
+            color: #333;
+            border: none;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+
     <script src="http://demo.phpdoc.org/Responsive/js/jquery-1.7.1.min.js" type="text/javascript"></script>
     <script src="http://demo.phpdoc.org/Responsive/js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
     <script src="http://demo.phpdoc.org/Responsive/js/bootstrap.js" type="text/javascript"></script>
-    <script src="http://demo.phpdoc.org/Responsive/js/template.js" type="text/javascript"></script>
     <script src="http://demo.phpdoc.org/Responsive/js/prettify/prettify.min.js" type="text/javascript"></script>
-    <link rel="shortcut icon" href="http://demo.phpdoc.org/Responsive/img/favicon.ico">
-    <link rel="apple-touch-icon" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-114x114.png">
     <script type="text/javascript">
 
         function equalHeight(group) {
@@ -148,120 +149,40 @@
             $('.row').each(function(){
                 equalHeight(jQuery(this).find('.well'));
             });
+
+            // remove the classes added by Sphinx; the container class is
+            // used in Twitter bootstrap and this collides
+            $('.container .container').removeClass('container');
         });
     </script>
 
-  <style>
-      body, p
-      {
-          font-size: 100%;
-      }
-
-      div.highlight-python pre
-      {
-          padding: 5px;
-      }
-      a:visited, div.body h1, div.body h2, div.sphinxsidebar a, div.sphinxsidebar a:visited
-      {
-          color: #4F814B;
-      }
-
-      p, .row p, pre, ul, ol
-      {
-          margin-bottom: 0.7em;
-      }
-
-      #head ul
-      {
-          margin-bottom: 0em;
-      }
-
-    div.document
-    {
-        background: transparent;
-    }
-
-    div.sphinxsidebar h4, div.sphinxsidebar h3, div.sphinxsidebar p, div.sphinxsidebar ul
-    {
-        color: #333;
-    }
-
-      div.body h1, div.body h2
-      {
-          background: transparent;
-          margin: 20px 0;
-          padding-bottom: 10px;
-      }
-
-      div#footer th
-      {
-          background-color: transparent;
-      }
-
-      div.related a
-      {
-          color: inherit;
-      }
-
-      div.related
-      {
-          background: transparent;
-          color: #333;
-      }
-  </style>
-
-    {%- if not embedded %}
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:    '{{ url_root }}',
-            VERSION:     '{{ release|e }}',
-            COLLAPSE_MODINDEX: false,
-            FILE_SUFFIX: '{{ file_suffix }}',
-            HAS_SOURCE:  {{ has_source | lower }}
-        };
-    </script>
-    {%- for scriptfile in script_files %}
-    <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
-    <script type="text/javascript"
-            src="{{ pathto('_static/configurationblock.js', 1) }}"></script>
-    {%- endfor %}
-    {%- if use_opensearch %}
-    <link rel="search" type="application/opensearchdescription+xml"
-          title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}"
-          href="{{ pathto('_static/opensearch.xml', 1) }}"/>
-    {%- endif %}
-    {%- if favicon %}
-    <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
-    {%- endif %}
-    {%- endif %}
+    <link rel="shortcut icon" href="http://demo.phpdoc.org/Responsive/img/favicon.ico">
+    <link rel="apple-touch-icon" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-114x114.png">
     {%- block linktags %}
-    {%- if hasdoc('about') %}
-    <link rel="author" title="{{ _('About these documents') }}"
-          href="{{ pathto('about') }}"/>
-    {%- endif %}
-    {%- if hasdoc('genindex') %}
-    <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}"/>
-    {%- endif %}
-    {%- if hasdoc('search') %}
-    <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}"/>
-    {%- endif %}
-    {%- if hasdoc('copyright') %}
-    <link rel="copyright" title="{{ _('Copyright') }}"
-          href="{{ pathto('copyright') }}"/>
-    {%- endif %}
-    <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}"/>
-    {%- if parents %}
-    <link rel="up" title="{{ parents[-1].title|striptags }}"
-          href="{{ parents[-1].link|e }}"/>
-    {%- endif %}
-    {%- if next %}
-    <link rel="next" title="{{ next.title|striptags }}"
-          href="{{ next.link|e }}"/>
-    {%- endif %}
-    {%- if prev %}
-    <link rel="prev" title="{{ prev.title|striptags }}"
-          href="{{ prev.link|e }}"/>
-    {%- endif %}
+        {%- if hasdoc('about') %}
+        <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}"/>
+        {%- endif %}
+        {%- if hasdoc('genindex') %}
+        <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}"/>
+        {%- endif %}
+        {%- if hasdoc('search') %}
+        <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}"/>
+        {%- endif %}
+        {%- if hasdoc('copyright') %}
+        <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}"/>
+        {%- endif %}
+        <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}"/>
+        {%- if parents %}
+        <link rel="up" title="{{ parents[-1].title|striptags }}" href="{{ parents[-1].link|e }}"/>
+        {%- endif %}
+        {%- if next %}
+        <link rel="next" title="{{ next.title|striptags }}" href="{{ next.link|e }}"/>
+        {%- endif %}
+        {%- if prev %}
+        <link rel="prev" title="{{ prev.title|striptags }}" href="{{ prev.link|e }}"/>
+        {%- endif %}
     {%- endblock %}
     {%- block extrahead %} {% endblock %}
 </head>
@@ -308,66 +229,36 @@
         </div>
     </noscript>
 
-
     <div class="row">
-        <div class="span12">
+        <div class="span3">
+            {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
+        </div>
+        <div class="span9 contents">
             <div class="breadcrumb">
             {%- block header %}{% endblock %}
             {%- block relbar1 %}{{ relbar() }}{% endblock %}
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <!--<div class="span4">-->
-            <!--{%- block sidebar1 %} {# possible location for sidebar #} {% endblock %}-->
-        <!--<div>-->
-        <div class="span12">
+            {% if pagename != 'index' %}
             <div class="well">
-                <div class="document">
-                    {%- block document %}
-                    <div class="documentwrapper">
-                        {%- if not embedded %}{% if not theme_nosidebar|tobool %}
-                        <div class="bodywrapper">
-                            {%- endif %}{% endif %}
-                            <div class="body">
-                                {% block body %} {% endblock %}
-                            </div>
-                            {%- if not embedded %}{% if not theme_nosidebar|tobool %}
-                        </div>
-                        {%- endif %}{% endif %}
-                    </div>
-                    {%- endblock %}
+            {% endif %}
 
-                    {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
-                    <div class="clearer"></div>
-                </div>
+            {% block body %} {% endblock %}
+
+            {% if pagename != 'index' %}
             </div>
+            {% endif %}
         </div>
     </div>
 
   <div class="row">
-    <div class="span12">
+    <footer class="span12">
         <p>
-            {%- if hasdoc('copyright') %}
-            {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a
-                href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
-            {%- else %}
-            {% trans copyright=copyright|e %}&copy; Copyright {{ copyright }}.{%
-            endtrans %}
-            {%- endif %}
-            {%- if last_updated %}
-            {% trans last_updated=last_updated|e %}Last updated on {{
-            last_updated }}.{% endtrans %}
-            {%- endif %}
-            {%- if show_sphinx %}
             {% trans sphinx_version=sphinx_version|e %}Created using <a
                 href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version
             }}.{% endtrans %}
-            {%- endif %}
-
         </p>
-    </div>
+    </footer>
   </div>
 </div>
 
