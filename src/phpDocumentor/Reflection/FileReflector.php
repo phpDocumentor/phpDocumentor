@@ -174,6 +174,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
                 //   require, class, function, define, const)
                 if (count($comments) > 1
                     || (!$node instanceof \PHPParser_Node_Stmt_Class
+                    && !$node instanceof \PHPParser_Node_Stmt_Interface
                     && $docblock->hasTag('package'))
                     || !$this->isNodeDocumentable($node)
                 ) {
