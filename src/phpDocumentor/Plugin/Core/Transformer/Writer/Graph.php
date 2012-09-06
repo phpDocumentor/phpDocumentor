@@ -208,35 +208,36 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
         foreach ($qry as $element) {
             $from_name = $element->getElementsByTagName('full_name')->item(0)
                 ->nodeValue;
-            $to_name = $element->getElementsByTagName('extends')->item(0)
-                ->nodeValue;
 
-            if (!$to_name) {
-                continue;
+            foreach ($element->getElementsByTagName('extends') as $extends) {
+                $to_name = $extends->nodeValue;
+
+                if (!$to_name) {
+                    continue;
+                }
+
+                $from = $graph->findNode($from_name);
+                $to = $graph->findNode($to_name);
+
+                if ($from === null) {
+                    $from = \phpDocumentor\GraphViz\Node::create($from_name);
+                    $from->setFontColor('gray');
+                    $from->setLabel($from_name);
+                    $graph->setNode($from);
+                }
+
+                if ($to === null) {
+                    $to = \phpDocumentor\GraphViz\Node::create($to_name);
+                    $to->setFontColor('gray');
+                    $to->setLabel($to_name);
+                    $graph->setNode($to);
+                }
+
+                $edge = \phpDocumentor\GraphViz\Edge::create($from, $to);
+                $edge->setArrowHead('empty');
+                $graph->link($edge);
             }
-
-            $from = $graph->findNode($from_name);
-            $to = $graph->findNode($to_name);
-
-            if ($from === null) {
-                $from = \phpDocumentor\GraphViz\Node::create($from_name);
-                $from->setFontColor('gray');
-                $from->setLabel($from_name);
-                $graph->setNode($from);
-            }
-
-            if ($to === null) {
-                $to = \phpDocumentor\GraphViz\Node::create($to_name);
-                $to->setFontColor('gray');
-                $to->setLabel($to_name);
-                $graph->setNode($to);
-            }
-
-            $edge = \phpDocumentor\GraphViz\Edge::create($from, $to);
-            $edge->setArrowHead('empty');
-            $graph->link($edge);
         }
-
         // link all implemented relations
         $qry = $xpath->query(
             '/project/file/interface[imports]|/project/file/class[implements]'

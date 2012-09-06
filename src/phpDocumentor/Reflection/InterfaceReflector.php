@@ -63,7 +63,7 @@ class InterfaceReflector extends BaseReflector
         ) {
             /** @var \PHPParser_Node_Name */
             foreach ($this->node->extends as $node) {
-                $names[] = (string)$node;
+                $names[] = '\\'.(string)$node;
             }
         }
         return $names;

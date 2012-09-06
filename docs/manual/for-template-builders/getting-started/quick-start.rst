@@ -8,7 +8,7 @@ I will give a step-by-step description how to create your own branding:
    the path as the XSL Writer (or actually libxsl) cannot handle that.
 2. invoke the following command::
 
-       $ phpdoc template:generate -t <target path> -n <template name>
+       $ phpdoc template:generate -t <target path> --name <template name>
 
    ..
 
