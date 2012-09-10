@@ -14,11 +14,10 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "ext-xsl": "*",
-        "cilex/cilex": "1.*",
+        "cilex/cilex": "dev-master",
         "dflydev/markdown": "1.0.*",
         "nikic/php-parser": "dev-master",
-        "symfony/event-dispatcher": "2.1.*",
+        "symfony/event-dispatcher": "2.1.*@stable",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-config": "2.*",
         "zendframework/zend-locale": "2.*",
@@ -37,10 +36,13 @@
         "phpdocumentor/template-old-ocean": "1.*",
         "phpdocumentor/template-checkstyle": "1.*"
     },
-    "minimum-stability": "dev",
+    "suggests": {
+        "ext-xsl": "to use the XSL based templates"
+    },
     "require-dev": {
         "behat/behat":">=2.4@stable"
     },
+    "minimum-stability": "dev",
     "config": {
         "bin-dir":"bin/"
     }
