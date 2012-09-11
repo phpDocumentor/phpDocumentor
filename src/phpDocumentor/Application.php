@@ -114,7 +114,11 @@ class Application extends \Cilex\Application
      */
     protected function addAutoloader()
     {
-        $this['autoloader'] = include __DIR__ . '/../../vendor/autoload.php';
+        if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
+            $this['autoloader'] =  __DIR__ . '/../../vendor/autoload.php';
+        } else if (file_exists(__DIR__ . '/../../../../../vendor/autoload.php')) {
+            $this['autoloader'] =  __DIR__ . '/../../../../../vendor/autoload.php';
+        }
     }
 
     /**
