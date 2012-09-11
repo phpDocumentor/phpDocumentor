@@ -14,7 +14,11 @@ namespace phpDocumentor;
 
 use \Symfony\Component\Console\Input\InputInterface;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+if (file_exists('/../../vendor/autoload.php')) {
+    require_once __DIR__ . '/../../vendor/autoload.php';
+} else if (file_exists('/../../../../../vendor/autoload.php')) {
+    require_once '/../../../../../vendor/autoload.php';
+}
 
 /**
  * Application class for phpDocumentor.
