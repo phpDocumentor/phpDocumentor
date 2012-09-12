@@ -65,6 +65,25 @@ examination of the different components is in the next chapters.
 Transformations
 ---------------
 
+A transformation enables you to generate an artefact. An artefact represents
+one or more files on your file system that have meaning for a user; examples
+can be: HTML files, PDFs, search indexes, graphs, etc.
+
+Each transformation may have the following information:
+
+* **Writer**, the abbreviated name for the class responsible for reading the
+  AST and generating the artefact, see `Writers`_
+* **Artefact**, The destination location for the generated file(s) relative to the
+  target directory
+* **Source**, an optional argument providing the Writer with a source file. The
+  meaning of this parameter may differ per Writer.
+  Example: the XSL writer uses this item to determine which template to use
+* **Query**, an optional argument which allows transformations to restrict the
+  scope of a Writer. Example: the XSL writer may be given a xpath expression
+  if only a piece of the AST is needed for a template.
+* **Parameters**, an optional associative array containing additional settings that
+  may influence the operation of a writer.
+
 Writers
 ~~~~~~~
 
