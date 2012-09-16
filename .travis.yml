@@ -1,5 +1,6 @@
 language: php
 php:
+  - 5.3.3
   - 5.3
   - 5.4
 
@@ -7,10 +8,5 @@ script:
  - phpunit --coverage-text
 
 before_script:
- - sudo apt-get update
- - sudo apt-get install graphviz
- - pyrus install -f http://download.pear.php.net/package/PEAR-1.9.4.tgz
- - pyrus install -f -p pyrus/Pyrus_Developer
- - pyrus install -f pear2.php.net/PEAR2_Exception
- - wget http://getcomposer.org/composer.phar
- - php composer.phar install
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq graphviz
