@@ -7,7 +7,7 @@ Feature: Generate an AST (Structure file)
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor against no files or directories
     Then the exit code should be non-zero
-    And I should get an exception "No parsable files were found, did you specify any using the -f or -d parameter?"
+    And I should get an exception containing "No parsable files were found"
 
   Scenario: Generate a AST from an empty file
     Given I am in the phpDocumentor root directory
