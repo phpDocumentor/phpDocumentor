@@ -1,23 +1,20 @@
 <?php
 /**
- * \phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\DeprecatedValidator Test
+ * phpDocumentor
  *
- * @category   phpDocumentor
- * @package    Reflection
- * @subpackage Tests
- * @author     Ben Selby <benmatselby@gmail.com>
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * PHP Version 5.3
+ *
+ * @author    Ben Selby <benmatselby@gmail.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
+
 /**
- * Test class for \phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\DeprecatedValidator
- *
- * @category   phpDocumentor
- * @package    Reflection
- * @subpackage Tests
- * @author     Ben Selby <benmatselby@gmail.com>
- * @copyright  Copyright (c) 2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
+ * Test class for
+ *    phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\DeprecatedValidator.
  */
 class DeprecatedValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,6 +22,7 @@ class DeprecatedValidatorTest extends \PHPUnit_Framework_TestCase
      * Test that isValid can interpret the configuration options and log parse
      * errors as required
      *
+     * @param string $docblock    DocBlock contents.
      * @param array  $options     Options from the plugin.xml file
      * @param string $entity      The entity we are validating
      * @param int    $lineNumber  The line number of the entity
@@ -32,8 +30,9 @@ class DeprecatedValidatorTest extends \PHPUnit_Framework_TestCase
      * @param string $logCount    PHPUnit expects assertion string
      * @param string $expectedLog The line we expect to be logged
      *
-     * @covers DeprecatedValidator::isValid
-     * @covers DeprecatedValidator::validateTags
+     * @covers phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\DeprecatedValidator::isValid
+     * @covers phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\DeprecatedValidator::validateTags
+     *
      * @dataProvider provideDataForIsValid
      *
      * @return void
@@ -47,7 +46,8 @@ class DeprecatedValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $val = $this->getMock(
-            '\phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\DeprecateValidator',
+            'phpDocumentor\Plugin\Core\Parser\DocBlock\Validator'
+            . '\DeprecateValidator',
             array('logParserError', 'debug'),
             array($entity, $lineNumber, $docblock)
         );

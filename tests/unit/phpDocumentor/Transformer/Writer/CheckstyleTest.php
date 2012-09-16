@@ -1,29 +1,19 @@
 <?php
 /**
- * Checkstyle Transformer Test File
+ * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Tests
- * @author     Ben Selby <benmatselby@gmail.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @author    Ben Selby <benmatselby@gmail.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 /**
  * Checkstyle transformation writer test suite
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Tests
- * @author     Ben Selby <benmatselby@gmail.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
 class CheckstyleTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,7 +21,7 @@ class CheckstyleTest extends \PHPUnit_Framework_TestCase
      * Test that the Checkstyle writer can identify parse_markers in the
      * structure.xml file and then build a checkstyle.xml checkstyle report
      *
-     * @covers \phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle::transform
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle::transform
      *
      * @param string $structure The xml in structure.xml
      * @param string $expected  The expected XML in checkstyle.xml
@@ -64,7 +54,8 @@ class CheckstyleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider for testTransformCanIdentifyParseMarkersAndCreateCheckstyleReport
+     * Data provider for
+     *     testTransformCanIdentifyParseMarkersAndCreateCheckstyleReport.
      *
      * @return array
      */

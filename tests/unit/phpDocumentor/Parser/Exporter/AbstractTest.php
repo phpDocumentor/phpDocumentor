@@ -2,22 +2,18 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Exporter;
 
 /**
  * Mock for the Layer superclass in the \phpDocumentor\Parser\Exporter Component.
- *
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
 class ExporterAbstractMock extends ExporterAbstract
 {
@@ -32,10 +28,6 @@ class ExporterAbstractMock extends ExporterAbstract
 
 /**
  * Test for the Parser Exporter base class.
- *
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
 class ExporterAbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,6 +45,14 @@ class ExporterAbstractTest extends \PHPUnit_Framework_TestCase
         $this->fixture = new ExporterAbstractMock($parser);
     }
 
+    /**
+     * Tests whether the include source option functions correctly.
+     *
+     * @covers phpDocumentor\Parser\Exporter\ExporterAbstract::getIncludeSource
+     * @covers phpDocumentor\Parser\Exporter\ExporterAbstract::setIncludeSource
+     *
+     * @return void
+     */
     public function testIncludeSource()
     {
         $this->assertFalse($this->fixture->getIncludeSource());
