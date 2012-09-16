@@ -1,14 +1,14 @@
 <?php
-
-/*
- * This file is part of the Symfony package.
+/**
+ * phpDocumentor
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * PHP Version 5.3
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
-
 namespace phpDocumentor\Console\Helper;
 
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,7 +23,8 @@ class ProgressHelper extends Helper
 {
     const FORMAT_QUIET         = ' %percent%%';
     const FORMAT_NORMAL        = ' %current%/%max% [%bar%] %percent%%';
-    const FORMAT_VERBOSE       = ' %current%/%max% [%bar%] %percent%% Elapsed: %elapsed%';
+    const FORMAT_VERBOSE
+        = ' %current%/%max% [%bar%] %percent%% Elapsed: %elapsed%';
     const FORMAT_QUIET_NOMAX   = ' %current%';
     const FORMAT_NORMAL_NOMAX  = ' %current% [%bar%]';
     const FORMAT_VERBOSE_NOMAX = ' %current% [%bar%] Elapsed: %elapsed%';
@@ -41,7 +42,7 @@ class ProgressHelper extends Helper
     );
 
     /**
-     * @var array
+     * @var (string|int)[]
      */
     private $defaultOptions = array(
         'barWidth'     => 28,
@@ -133,6 +134,8 @@ class ProgressHelper extends Helper
      * @param OutputInterface $output  An Output instance
      * @param integer         $max     Maximum steps
      * @param array           $options Options for progress helper
+     *
+     * @return void
      */
     public function start(OutputInterface $output, $max = null, array $options = array())
     {
@@ -142,27 +145,27 @@ class ProgressHelper extends Helper
         $this->output    = $output;
 
         switch ($output->getVerbosity()) {
-            case OutputInterface::VERBOSITY_QUIET:
-                $this->options['format'] = self::FORMAT_QUIET_NOMAX;
-                if ($this->max > 0) {
-                    $this->options['format'] = self::FORMAT_QUIET;
-                }
-                break;
-            case OutputInterface::VERBOSITY_VERBOSE:
-                $this->options['format'] = self::FORMAT_VERBOSE_NOMAX;
-                if ($this->max > 0) {
-                    $this->options['format'] = self::FORMAT_VERBOSE;
-                }
-                break;
-            default:
-                if ($this->max > 0) {
-                    $this->options['format'] = self::FORMAT_NORMAL;
-                }
-                break;
+        case OutputInterface::VERBOSITY_QUIET:
+            $this->options['format'] = self::FORMAT_QUIET_NOMAX;
+            if ($this->max > 0) {
+                $this->options['format'] = self::FORMAT_QUIET;
+            }
+            break;
+        case OutputInterface::VERBOSITY_VERBOSE:
+            $this->options['format'] = self::FORMAT_VERBOSE_NOMAX;
+            if ($this->max > 0) {
+                $this->options['format'] = self::FORMAT_VERBOSE;
+            }
+            break;
+        default:
+            if ($this->max > 0) {
+                $this->options['format'] = self::FORMAT_NORMAL;
+            }
+            break;
         }
 
         $this->options = array_merge($this->defaultOptions, $options);
-        $this->inititalize();
+        $this->initialize();
     }
 
     /**
@@ -170,6 +173,8 @@ class ProgressHelper extends Helper
      *
      * @param integer $step   Number of steps to advance
      * @param Boolean $redraw Whether to redraw or not
+     *
+     * @return void
      */
     public function advance($step = 1, $redraw = false)
     {
@@ -186,6 +191,8 @@ class ProgressHelper extends Helper
      * Outputs the current progress string.
      *
      * @param Boolean $finish Forces the end result
+     *
+     * @return void
      */
     public function display($finish = false)
     {
@@ -198,6 +205,8 @@ class ProgressHelper extends Helper
 
     /**
      * Finish the progress output
+     *
+     * @return void
      */
     public function finish()
     {
@@ -214,8 +223,10 @@ class ProgressHelper extends Helper
 
     /**
      * Initialize the progress helper.
+     *
+     * @return void
      */
-    protected function inititalize()
+    protected function initialize()
     {
         $this->formatVars = array();
         foreach ($this->defaultFormatVars as $var) {
@@ -236,8 +247,9 @@ class ProgressHelper extends Helper
     /**
      * Generates the array map of format variables to values.
      *
-     * @param Boolean $finish Forces the end result
-     * @return array Array of format vars and values
+     * @param boolean $finish Forces the end result
+     *
+     * @return string[] Array of format vars and values
      */
     protected function generate($finish = false)
     {
@@ -254,13 +266,16 @@ class ProgressHelper extends Helper
                 $completeBars = floor($percent * $this->options['barWidth']);
             } else {
                 if (!$finish) {
-                    $completeBars = floor($this->current % $this->options['barWidth']);
+                    $completeBars = floor(
+                        $this->current % $this->options['barWidth']
+                    );
                 } else {
                     $completeBars = $this->options['barWidth'];
                 }
             }
 
-            $emptyBars = $this->options['barWidth'] - $completeBars - strlen($this->options['progressChar']);
+            $emptyBars = $this->options['barWidth'] - $completeBars
+                - strlen($this->options['progressChar']);
             $bar = str_repeat($this->options['barChar'], $completeBars);
             if ($completeBars < $this->options['barWidth']) {
                 $bar .= $this->options['progressChar'];
@@ -272,11 +287,16 @@ class ProgressHelper extends Helper
 
         if (isset($this->formatVars['elapsed'])) {
             $elapsed = time() - $this->startTime;
-            $vars['elapsed'] = str_pad($this->humaneTime($elapsed), $this->widths['elapsed'], ' ', STR_PAD_LEFT);
+            $vars['elapsed'] = str_pad(
+                $this->humaneTime($elapsed), $this->widths['elapsed'], ' ',
+                STR_PAD_LEFT
+            );
         }
 
         if (isset($this->formatVars['current'])) {
-            $vars['current'] = str_pad($this->current, $this->widths['current'], ' ', STR_PAD_LEFT);
+            $vars['current'] = str_pad(
+                $this->current, $this->widths['current'], ' ', STR_PAD_LEFT
+            );
         }
 
         if (isset($this->formatVars['max'])) {
@@ -284,7 +304,9 @@ class ProgressHelper extends Helper
         }
 
         if (isset($this->formatVars['percent'])) {
-            $vars['percent'] = str_pad($percent * 100, $this->widths['percent'], ' ', STR_PAD_LEFT);
+            $vars['percent'] = str_pad(
+                $percent * 100, $this->widths['percent'], ' ', STR_PAD_LEFT
+            );
         }
 
         return $vars;
@@ -294,6 +316,7 @@ class ProgressHelper extends Helper
      * Converts seconds into human-readable format.
      *
      * @param integer $secs Number of seconds
+     *
      * @return string Time in readable format
      */
     private function humaneTime($secs)
@@ -317,12 +340,16 @@ class ProgressHelper extends Helper
      * Overwrites a previous message to the output.
      *
      * @param OutputInterface $output   An Output instance
-     * @param string|array    $messages The message as an array of lines or a single string
+     * @param string|array    $messages The message as an array of lines or a
+     *     single string
      * @param Boolean         $newline  Whether to add a newline or not
      * @param integer         $size     The size of line
+     *
+     * @return void
      */
-    private function overwrite(OutputInterface $output, $messages, $newline = true, $size = 80)
-    {
+    private function overwrite(OutputInterface $output, $messages,
+        $newline = true, $size = 80
+    ) {
         for ($place = $size; $place > 0; $place--) {
             $output->write("\x08", false);
         }
