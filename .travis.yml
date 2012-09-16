@@ -12,7 +12,7 @@ before_script:
  - sudo apt-get -qq update > /dev/null
  - sudo apt-get -qq install graphviz > /dev/null
  - composer install --dev -q
- - pyrus install pear/PHP_CodeSniffer > /dev/null
- - pyrus install pear.phing.info/phing > /dev/null
- - pyrus install phpunit/phpcpd > /dev/null
- - phpenv rehash > /dev/null
+ - pyrus install pear/PHP_CodeSniffer
+ - pyrus install pear.phing.info/phing
+ - pyrus install phpunit/phpcpd
+ - phpenv rehash
