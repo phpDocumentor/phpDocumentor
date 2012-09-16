@@ -6,7 +6,9 @@ php:
 
 script:
  - phpunit --coverage-text
+ - php bin/behat
 
 before_script:
- - sudo apt-get update -qq
- - sudo apt-get install -qq graphviz
+ - sudo apt-get -qq update
+ - sudo apt-get -qq install graphviz
+ - composer install --dev
