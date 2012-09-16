@@ -2,10 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -32,10 +32,6 @@ use \Symfony\Component\Console\Input\ArrayInput;
  * current working directory and use that to override the default settings if
  * present. In the configuration file can you specify the same settings (and
  * more) as the command line provides.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class RunCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
