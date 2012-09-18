@@ -11,18 +11,17 @@
  */
 namespace phpDocumentor\Command;
 
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Parser\Events\PreFileEvent;
+use phpDocumentor\Events\LogEvent;
+use phpDocumentor\Events\DebugEvent;
 
 /**
  * Base command for phpDocumentor commands.
  *
  * Includes additional methods to forward the output to the logging events
  * of phpDocumentor.
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 class Command extends \Cilex\Command\Command
 {
@@ -33,7 +32,8 @@ class Command extends \Cilex\Command\Command
      *
      * @author Michael Wallner <mike@php.net>
      *
-     * @see http://pear.php.net/package/File_Util/docs/latest/File/File_Util/File_Util.html#methodisAbsolute
+     * @see http://pear.php.net/package/File_Util/docs/latest/File/File_Util/
+     *     File_Util.html#methodisAbsolute
      *
      * @todo consider moving this method to a more logical place
      *
@@ -96,24 +96,25 @@ class Command extends \Cilex\Command\Command
 
         $event_dispatcher->addListener(
             'parser.file.pre',
-            function(\phpDocumentor\Parser\Event\PreFileEvent $event) use ($output) {
+            function (PreFileEvent $event) use ($output) {
                 $output->writeln('Parsing <info>'.$event->getFile().'</info>');
             }
         );
 
         $event_dispatcher->addListener(
             'system.log',
-            function(\phpDocumentor\Event\LogEvent $event) use ($command, $output) {
+            function (LogEvent $event) use ($command, $output) {
                 $command->logEvent($output, $event);
             }
         );
 
         $event_dispatcher->addListener(
             'system.debug',
-            function(\phpDocumentor\Event\DebugEvent $event) use ($command, $output) {
+            function (DebugEvent $event) use ($command, $output) {
                 $command->logEvent($output, $event);
             }
         );
+
         $already_connected = true;
     }
 
@@ -124,13 +125,12 @@ class Command extends \Cilex\Command\Command
      * certain logging in case of verbosity or not.
      *
      * @param OutputInterface $output
-     * @param \sfEvent $event
+     * @param LogEvent        $event
      *
      * @return void.
      */
-    public function logEvent(
-        OutputInterface $output, \phpDocumentor\Event\LogEvent $event
-    ) {
+    public function logEvent(OutputInterface $output, LogEvent $event)
+    {
         $threshold = \phpDocumentor\Plugin\Core\Log::ERR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
             $threshold = \phpDocumentor\Plugin\Core\Log::DEBUG;

@@ -252,6 +252,33 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * Verifies whether a log entry contains the given substring.
+     *
+     * @param string $string
+     *
+     * @Then /^I should get a log entry containing "([^"]*)"$/
+     *
+     * @throws \Exception if the condition is not fulfilled
+     *
+     * @return void
+     */
+    public function iShouldGetALogEntryContaining($string)
+    {
+        $found = false;
+        foreach (explode("\n", $this->output) as $line) {
+            if (strpos(trim($line), $string) !== false) {
+                $found = true;
+            }
+        }
+
+        if (!$found) {
+            throw new \Exception(
+                "Actual output is:\n" . $this->output
+            );
+        }
+    }
+
+    /**
      * Verifies whether none of the log entries contain the given substring.
      *
      * @param string $string
@@ -360,6 +387,24 @@ class FeatureContext extends BehatContext
     {
         $this->iShouldGetALogEntry('[Exception]');
         $this->iShouldGetALogEntry($exception_text);
+    }
+
+    /**
+     * Verifies whether an exception is thrown during execution containing a
+     * substring.
+     *
+     * @param string $exception_text
+     *
+     * @Then /^I should get an exception containing "([^"]*)"$/
+     *
+     * @throws \Exception if the condition is not fulfilled
+     *
+     * @return void
+     */
+    public function iShouldGetAnExceptionContaining($exception_text)
+    {
+        $this->iShouldGetALogEntry('[Exception]');
+        $this->iShouldGetALogEntryContaining($exception_text);
     }
 
     /**

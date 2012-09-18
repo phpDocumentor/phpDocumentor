@@ -11,9 +11,10 @@
  */
 namespace phpDocumentor\Command\Project;
 
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputOption;
-use \Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Parser\Events\PreFileEvent;
 
 /**
  * Parses the given source code and creates a structure file.
@@ -21,10 +22,6 @@ use \Symfony\Component\Console\Output\OutputInterface;
  * The parse task uses the source files defined either by -f or -d options and
  * generates a structure file (structure.xml) at the target location (which is
  * the folder 'output' unless the option -t is provided).
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
@@ -373,9 +370,9 @@ HELP
             return null;
         }
 
-        $this->getService('event_dispatcher')->connect(
+        $this->getService('event_dispatcher')->addListener(
             'parser.file.pre',
-            function() use ($progress) {
+            function (PreFileEvent $event) use ($progress) {
                 $progress->advance();
             }
         );

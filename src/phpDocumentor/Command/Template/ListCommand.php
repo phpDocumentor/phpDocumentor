@@ -2,10 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -17,10 +17,6 @@ use \Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Generates a skeleton template.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class ListCommand extends \Cilex\Command\Command
 {
@@ -64,6 +60,11 @@ HELP
         return 0;
     }
 
+    /**
+     * Returns a list of all template names.
+     *
+     * @return string[]
+     */
     protected function getTemplateNames()
     {
         /** @var \RecursiveDirectoryIterator $files */

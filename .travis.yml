@@ -1,16 +1,19 @@
 language: php
 php:
+  - 5.3.3
   - 5.3
   - 5.4
 
 script:
  - phpunit --coverage-text
+ - php bin/behat --no-paths --format failed
 
 before_script:
- - sudo apt-get update
- - sudo apt-get install graphviz
- - pyrus install -f http://download.pear.php.net/package/PEAR-1.9.4.tgz
- - pyrus install -f -p pyrus/Pyrus_Developer
- - pyrus install -f pear2.php.net/PEAR2_Exception
- - wget http://getcomposer.org/composer.phar
- - php composer.phar install
+ - sudo apt-get -qq update > /dev/null
+ - sudo apt-get -qq install graphviz > /dev/null
+ - composer install --dev -q
+ - pyrus channel-discover pear.phing.info > /dev/null
+ - pyrus install pear/PHP_CodeSniffer > /dev/null
+ - pyrus install pear.phing.info/phing > /dev/null
+ - pyrus install phpunit/phpcpd > /dev/null
+ - phpenv rehash > /dev/null

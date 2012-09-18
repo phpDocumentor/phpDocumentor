@@ -2,28 +2,18 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Tests
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Tests
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
 class TransformerTest extends \PHPUnit_Framework_TestCase
 {
@@ -42,6 +32,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests whether setting a target succeed.
+     *
+     * @covers phpDocumentor\Transformer\Transformer::getTarget
+     * @covers phpDocumentor\Transformer\Transformer::setTarget
      *
      * @return void
      */
@@ -63,6 +56,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests whether setting the source succeeds.
+     *
+     * @covers phpDocumentor\Transformer\Transformer::getSource
+     * @covers phpDocumentor\Transformer\Transformer::setSource
      *
      * @return void
      */
@@ -90,6 +86,9 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests whether adding a template has the desired effect.
+     *
+     * @covers phpDocumentor\Transformer\Transformer::addTemplate
+     * @covers phpDocumentor\Transformer\Transformer::getTransformations
      *
      * @return void
      */
@@ -130,6 +129,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether the generateFilename method returns a file according to
      * the right format.
+     *
+     * @covers phpDocumentor\Transformer\Transformer::generateFilename
      *
      * @return void
      */

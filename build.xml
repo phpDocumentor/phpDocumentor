@@ -23,7 +23,7 @@
 
     <!-- Generate checkstyle.xml -->
     <target name="build:phpcs" description="Checks for Coding Standard violations">
-        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PEAR">
+        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PEAR" haltonerror="true">
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
     </target>

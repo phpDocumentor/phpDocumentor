@@ -2,7 +2,7 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
@@ -27,10 +27,6 @@ use \Symfony\Component\Console\Output\OutputInterface;
  * It is possible for the user to receive additional information using the
  * verbose option or stop additional information using the quiet option. Please
  * take note that the quiet option also disables logging to file.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class TransformCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
@@ -156,7 +152,7 @@ TEXT
         $output->write('Processing behaviours ..');
         $this->getService('event_dispatcher')->addListener(
             'transformer.transform.pre',
-            function() use ($output) {
+            function () use ($output) {
                 $output->writeln(' OK');
                 $output->writeln('Executing transformations');
             }
@@ -191,7 +187,7 @@ TEXT
 
         $this->getService('event_dispatcher')->addListener(
             'transformer.transformation.post',
-            function() use ($progress) {
+            function () use ($progress) {
                 $progress->advance();
             }
         );

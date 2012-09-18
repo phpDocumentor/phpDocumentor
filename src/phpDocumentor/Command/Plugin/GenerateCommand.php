@@ -17,10 +17,6 @@ use \Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Generates a skeleton plugin.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class GenerateCommand extends \Cilex\Command\Command
 {

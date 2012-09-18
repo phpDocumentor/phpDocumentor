@@ -2,7 +2,7 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
@@ -16,15 +16,13 @@ require 'TestAbstract.php';
 
 /**
  * Test for the XML Exporter's Argument exporter class.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class ArgumentExporterTest extends TestAbstract
 {
     /**
      * Tests whether the export method returns the correct XML representation.
+     *
+     * @covers phpDocumentor\Parser\Exporter\Xml\ArgumentExporter::export
      *
      * @return void
      */
