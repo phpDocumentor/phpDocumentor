@@ -142,7 +142,13 @@ class ConfigurableCommand extends Command
     {
         /** @var \Zend\Config\Config $node  */
         $node = $this->getService('config');
+
         foreach (explode('/', $path) as $node_name) {
+            // premature end of the cycle
+            if (!is_object($node)) {
+                return null;
+            }
+
             $node = $node->get($node_name);
         }
 
