@@ -12,13 +12,12 @@
 
 namespace phpDocumentor;
 
-use \Symfony\Component\Console\Input\InputInterface;
+/**
+ * Finds and activates the autoloader.
+ */
+require_once findAutoloader();
 
-if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
-    require_once __DIR__ . '/../../vendor/autoload.php';
-} else if (file_exists(__DIR__ . '/../../../../../vendor/autoload.php')) {
-    require_once __DIR__ . '/../../../../../vendor/autoload.php';
-}
+use \Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Application class for phpDocumentor.
@@ -114,11 +113,7 @@ class Application extends \Cilex\Application
      */
     protected function addAutoloader()
     {
-        if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
-            $this['autoloader'] =  __DIR__ . '/../../vendor/autoload.php';
-        } else if (file_exists(__DIR__ . '/../../../../../vendor/autoload.php')) {
-            $this['autoloader'] =  __DIR__ . '/../../../../../vendor/autoload.php';
-        }
+        $this['autoloader'] = include findAutoloader();
     }
 
     /**
@@ -222,4 +217,29 @@ class Application extends \Cilex\Application
         );
         $this['plugin_manager']->loadFromConfiguration();
     }
+}
+
+/**
+ * Tries to find the autoloader relative to ththis file and return its path.
+ *
+ * @throws \RuntimeException if the autoloader could not be found.
+ *
+ * @return string the path of the autoloader.
+ */
+function findAutoloader()
+{
+    $autoloader_base_path = '/../../vendor/autoload.php';
+
+    // if the file does not exist from a base path it is included as vendor
+    $autoloader_location = file_exists(__DIR__ . $autoloader_base_path)
+        ? __DIR__ . $autoloader_base_path
+        : __DIR__ . '/../../..' . $autoloader_base_path;
+
+    if (!file_exists($autoloader_location)) {
+        throw new \RuntimeException(
+            'Unable to find autoloader at ' . $autoloader_location
+        );
+    }
+
+    return $autoloader_location;
 }
