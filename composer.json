@@ -40,7 +40,9 @@
         "ext-xsl": "to use the XSL based templates"
     },
     "require-dev": {
-        "behat/behat":">=2.4@stable"
+        "behat/behat": ">=2.4@stable",
+        "phpunit/phpunit": "3.7@stable",
+        "mockery/mockery": ">=0.7.0@stable"
     },
     "minimum-stability": "dev",
     "config": {

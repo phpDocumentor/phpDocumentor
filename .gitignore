@@ -1,5 +1,6 @@
 .idea
 bin/behat
+bin/phpunit
 build.properties
 build/*
 .buildpath
