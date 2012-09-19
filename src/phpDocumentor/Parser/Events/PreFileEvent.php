@@ -14,10 +14,6 @@ namespace phpDocumentor\Parser\Events;
 
 /**
  * Event thrown before the parsing of an individual file.
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 class PreFileEvent extends \phpDocumentor\Plugin\Event
 {
@@ -25,14 +21,16 @@ class PreFileEvent extends \phpDocumentor\Plugin\Event
     protected $file;
 
     /**
-     *
      * Sets the name of the file that is about to be processed.
      *
      * @param string $file
+     *
+     * @return self|PreFileEvent
      */
     public function setFile($file)
     {
         $this->file = $file;
+
         return $this;
     }
 

@@ -2,25 +2,21 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 namespace phpDocumentor\Parser;
 
+use phpDocumentor\Plugin\EventDispatcher;
+use phpDocumentor\Events\LogEvent;
+use phpDocumentor\Events\DebugEvent;
+
 /**
  * Layer superclass for \phpDocumentor\Parser Component.
- *
- * @category phpDocumentor
- * @package  Parser
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 abstract class ParserAbstract
 {
@@ -28,17 +24,18 @@ abstract class ParserAbstract
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.
-     * @param int    $priority The logging priority, the lower,
-     *  the more important. Ranges from 1 to 7
+     * @param int    $priority The logging priority, the lower,the more
+     *     important. Ranges from 1 to 7
      *
      * @return void
      */
     public function log($message, $priority = 6)
     {
-        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+        EventDispatcher::getInstance()->dispatch(
             'system.log',
-            \phpDocumentor\Events\LogEvent::createInstance($this)
-            ->setMessage($message)->setPriority($priority)
+            LogEvent::createInstance($this)
+                ->setMessage($message)
+                ->setPriority($priority)
         );
     }
 
@@ -51,10 +48,9 @@ abstract class ParserAbstract
      */
     public function debug($message)
     {
-        \phpDocumentor\Plugin\EventDispatcher::getInstance()->dispatch(
+        EventDispatcher::getInstance()->dispatch(
             'system.debug',
-            \phpDocumentor\Events\DebugEvent::createInstance($this)
-            ->setMessage($message)
+            DebugEvent::createInstance($this)->setMessage($message)
         );
     }
 }

@@ -2,12 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser\Exporter
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -19,12 +17,6 @@ use phpDocumentor\Parser;
 /**
  * Class responsible for writing the results of the Reflection of a single
  * source file to disk.
- *
- * @category phpDocumentor
- * @package  Parser\Exporter
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 abstract class ExporterAbstract extends Parser\ParserAbstract
 {
@@ -94,6 +86,8 @@ abstract class ExporterAbstract extends Parser\ParserAbstract
      * Sets whether to include the source in the structure files.
      *
      * @param boolean $include_source
+     *
+     * @return void
      */
     public function setIncludeSource($include_source)
     {
