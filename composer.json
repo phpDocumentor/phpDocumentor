@@ -6,7 +6,7 @@
     "license": "MIT",
     "autoload": {
         "psr-0":{
-            "phpDocumentor": "src/"
+            "phpDocumentor": ["src/", "tests/unit/"]
         }
     },
     "repositories":[
