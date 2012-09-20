@@ -2,12 +2,10 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser\Exporter\Xml
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -15,16 +13,11 @@
 namespace phpDocumentor\Parser\Exporter\Xml;
 
 use phpDocumentor\Parser\Exporter\ExporterAbstract;
+use phpDocumentor\Reflection\FileReflector;
 
 /**
  * Class responsible for writing the results of the Reflection to a single
  * Intermediate Structure file in XML.
- *
- * @category phpDocumentor
- * @package  Parser\Exporter\Xml
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 class Xml extends ExporterAbstract
 {
@@ -43,10 +36,26 @@ class Xml extends ExporterAbstract
         $document_element = new \DOMElement('project');
         $this->xml->appendChild($document_element);
 
-        $document_element->setAttribute('version', \phpDocumentor\Application::VERSION);
+        $document_element->setAttribute(
+            'version', \phpDocumentor\Application::VERSION
+        );
         $document_element->setAttribute('title', $this->parser->getTitle());
     }
 
+    /**
+     * Finalizes the processing and executing all post-processing actions.
+     *
+     * This method is responsible for extracting and manipulating the data that
+     * is global to the project, such as:
+     *
+     * - Package tree
+     * - Namespace tree
+     * - Marker list
+     * - Deprecated elements listing
+     * - Removal of objects related to visibility
+     *
+     * @return void
+     */
     public function finalize()
     {
         // filter all undesired tags
@@ -73,7 +82,7 @@ class Xml extends ExporterAbstract
     /**
      * Renders the reflected file to a structure file.
      *
-     * @param \phpDocumentor\Reflection\FileReflector $file File to export.
+     * @param FileReflector $file File to export.
      *
      * @return void
      */
@@ -89,7 +98,7 @@ class Xml extends ExporterAbstract
      * DOM to provide an overview.
      *
      * @param \DOMDocument $dom Packages are extracted and a summary inserted
-     *                         in this object.
+     *     in this object.
      *
      * @return void
      */
@@ -118,7 +127,7 @@ class Xml extends ExporterAbstract
      * the DOM to provide an overview.
      *
      * @param \DOMDocument $dom Namespaces are extracted and a summary inserted
-     *                         in this object.
+     *     in this object.
      *
      * @return void
      */
@@ -145,7 +154,7 @@ class Xml extends ExporterAbstract
      * easy referencing.
      *
      * @param \DOMDocument $dom Markers are extracted and a summary inserted in
-     *                         this object.
+     *     this object.
      *
      * @return void
      */
@@ -168,7 +177,7 @@ class Xml extends ExporterAbstract
      * Adds a node to the xml for deprecations and the count value
      *
      * @param \DOMDocument $dom Markers are extracted and a summary inserted in
-     *                         this object.
+     *     this object.
      *
      * @return void
      */
@@ -186,9 +195,9 @@ class Xml extends ExporterAbstract
     /**
      * Build a tag based query string and return result
      *
-     * @param \DOMDocument $dom    Markers are extracted and a summary inserted in
-     *                            this object.
-     * @param string      $marker The marker we are searching for throughout xml
+     * @param \DOMDocument $dom    Markers are extracted and a summary inserted
+     *      in this object.
+     * @param string       $marker The marker we're searching for throughout xml
      *
      * @return \DOMNodeList
      */
@@ -223,7 +232,9 @@ class Xml extends ExporterAbstract
 
         $result = array();
         foreach ($namespaces as $namespace) {
-            if ($namespace == '') $namespace = 'global';
+            if ($namespace == '') {
+                $namespace = 'global';
+            }
 
             $namespace_list = explode('\\', $namespace);
 
@@ -260,8 +271,8 @@ class Xml extends ExporterAbstract
             $node->setAttribute(
                 'full_name',
                 $parent_element->nodeName == $node_name
-                    ? $parent_element->getAttribute('full_name').'\\'.$name
-                    : $name
+                ? $parent_element->getAttribute('full_name').'\\'.$name
+                : $name
             );
             $this->generateNamespaceElements($sub_namespaces, $node, $node_name);
         }

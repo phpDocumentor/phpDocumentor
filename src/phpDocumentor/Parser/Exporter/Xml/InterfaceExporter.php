@@ -2,42 +2,35 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser\Exporter\Xml
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Exporter\Xml;
 
+use phpDocumentor\Reflection\InterfaceReflector;
+
 /**
- *
- *
- * @category phpDocumentor
- * @package  Parser\Exporter\Xml
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * Exports the details of an interface to XML.
  */
 class InterfaceExporter
 {
     /**
      * Export this interface definition to the given parent DOMElement.
      *
-     * @param \DOMElement                         $parent    Element to augment.
-     * @param \phpDocumentor\Reflection\InterfaceReflector $interface Element to log export.
-     * @param \DOMElement                         $child     if supplied this element
-     *     will be augmented instead of freshly added.
+     * @param \DOMElement        $parent    Element to augment.
+     * @param InterfaceReflector $interface Element to log export.
+     * @param \DOMElement        $child     if supplied this element will be
+     *     augmented instead of freshly added.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, $interface,
-        \DOMElement $child = null
+        \DOMElement $parent, $interface, \DOMElement $child = null
     ) {
         if ($child === null) {
             $child = new \DOMElement('interface');

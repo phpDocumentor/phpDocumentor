@@ -2,27 +2,21 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser\Exporter\Xml
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Exporter\Xml;
 
+use phpDocumentor\Reflection\ConstantReflector;
+
 /**
  * Exports a constant element's attributes and properties to a child of the given
  * parent.
- *
- * @category phpDocumentor
- * @package  Parser\Exporter\Xml
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 class ConstantExporter
 {
@@ -38,9 +32,9 @@ class ConstantExporter
      * is the responsibility of the invoker. Essentially this means that the
      * $parent argument is ignored in this case.
      *
-     * @param \DOMElement                  $parent   The parent element to augment.
-     * @param \phpDocumentor\Reflection\ConstantReflector $constant The data source.
-     * @param \DOMElement                  $child    Optional: child element to use
+     * @param \DOMElement       $parent   The parent element to augment.
+     * @param ConstantReflector $constant The data source.
+     * @param \DOMElement       $child    Optional: child element to use
      *     instead of creating a new one on the $parent.
      *
      * @return void

@@ -4,40 +4,33 @@
  *
  * PHP Version 5
  *
- * @category  phpDocumentor
- * @package   Parser\Exporter\Xml
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Exporter\Xml;
 
+use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
+
 /**
  * Exports the details of a variable to XML.
- *
- * @category phpDocumentor
- * @package  Parser\Exporter\Xml
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 class VariableExporter
 {
     /**
      * Export this variable definition to the given parent DOMElement.
      *
-     * @param \DOMElement                        $parent   Element to augment.
-     * @param \phpDocumentor\Reflection\ClassReflector\PropertyReflector $variable Element to log from.
-     * @param \DOMElement                        $child    if supplied this
-     *     element will be augmented instead of freshly added.
+     * @param \DOMElement       $parent   Element to augment.
+     * @param PropertyReflector $variable Element to log from.
+     * @param \DOMElement       $child    if supplied this element will be
+     *     augmented instead of freshly added.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, $variable,
-        \DOMElement $child = null
+        \DOMElement $parent, $variable, \DOMElement $child = null
     ) {
         if (!$child) {
             $child = new \DOMElement('variable');

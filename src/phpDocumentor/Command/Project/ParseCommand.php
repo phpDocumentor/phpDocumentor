@@ -14,7 +14,7 @@ namespace phpDocumentor\Command\Project;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use phpDocumentor\Parser\Events\PreFileEvent;
+use phpDocumentor\Parser\Event\PreFileEvent;
 
 /**
  * Parses the given source code and creates a structure file.

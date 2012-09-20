@@ -2,26 +2,21 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser\Exporter\Xml
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Exporter\Xml;
 
+use phpDocumentor\Reflection\BaseReflector;
+use phpDocumentor\Reflection\DocBlock;
+
 /**
  * Exports the details of an elements' DocBlock to XML.
- *
- * @category phpDocumentor
- * @package  Parser\Exporter\Xml
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 class DocBlockExporter
 {
@@ -37,15 +32,13 @@ class DocBlockExporter
      * is the responsibility of the invoker. Essentially this means that the
      * $parent argument is ignored in this case.
      *
-     * @param \DOMElement                            $parent   The parent element
-     *     to augment.
-     * @param \phpDocumentor\Reflection\BaseReflector $element The data source.
+     * @param \DOMElement   $parent  The parent element to augment.
+     * @param BaseReflector $element The data source.
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $element
-    ) {
+    public function export(\DOMElement $parent, $element)
+    {
         $docblock = $element->getDocBlock();
         if (!$docblock) {
             $parent->setAttribute('package', $element->getDefaultPackageName());
@@ -64,25 +57,30 @@ class DocBlockExporter
         $this->setParentsPackage($parent, $docblock, $element);
     }
 
-    protected function addDescription(
-        \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
-    ) {
-        $node = $child->ownerDocument->createCDATASection(
+    /**
+     * Adds the short description of $docblock to the given node as description
+     * field.
+     *
+     * @param \DOMElement $node
+     * @param DocBlock $docblock
+     *
+     * @return void
+     */
+    protected function addDescription(\DOMElement $node, DocBlock $docblock)
+    {
+        $cdata = $node->ownerDocument->createCDATASection(
             $docblock->getShortDescription()
         );
         $description = new \DOMElement('description');
-        $child->appendChild($description);
-        $description->appendChild($node);
+        $node->appendChild($description);
+        $description->appendChild($cdata);
     }
 
     /**
      * Adds the DocBlock's long description to the $child element,
      *
-     * This method also removes all binary characters to prevent issues in the
-     * XML.
-     *
      * @param \DOMElement $child
-     * @param \phpDocumentor\Reflection\DocBlock $docblock
+     * @param DocBlock $docblock
      *
      * @return void
      */
@@ -97,17 +95,41 @@ class DocBlockExporter
         $element->appendChild($node);
     }
 
-    protected function addTags(\DOMElement $child, $tags, $element)
+    /**
+     * Adds each tag to the $xml_node.
+     *
+     * @param \DOMElement    $xml_node
+     * @param DocBlock\Tag[] $tags
+     * @param BaseReflector  $element
+     *
+     * @return void
+     */
+    protected function addTags(\DOMElement $xml_node, $tags, $element)
     {
         foreach ($tags as $tag) {
             $object = new DocBlockTagExporter();
-            $object->export($child, $tag, $element);
+            $object->export($xml_node, $tag, $element);
         }
     }
 
+    /**
+     * Sets the package of the parent element.
+     *
+     * This method inspects the current DocBlock and extract an @package
+     * element. If that tag is present than the associated element's package
+     * name is set to that value.
+     *
+     * If no @package tag is present in the DocBlock then the default package
+     * name is set.
+     *
+     * @param \DOMElement   $parent
+     * @param DocBlock      $docblock
+     * @param BaseReflector $element
+     *
+     * @return void
+     */
     protected function setParentsPackage(
-        \DOMElement $parent, \phpDocumentor\Reflection\DocBlock $docblock,
-        $element
+        \DOMElement $parent, DocBlock $docblock, $element
     ) {
         /** @var \phpDocumentor\Reflection\DocBlock\Tag $package */
         $package = current($docblock->getTagsByName('package'));

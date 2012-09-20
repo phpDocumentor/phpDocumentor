@@ -2,17 +2,20 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser;
+
+use phpDocumentor\Reflection\FileReflector;
+use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Parser\Event\PreFileEvent;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -28,12 +31,6 @@ namespace phpDocumentor\Parser;
  *     $parser = new \phpDocumentor\Parser\Parser();
  *     $parser->setPath($files->getProjectRoot());
  *     echo $parser->parseFiles($files);
- *
- * @category phpDocumentor
- * @package  Parser
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 class Parser extends ParserAbstract
 {
@@ -349,7 +346,7 @@ class Parser extends ParserAbstract
 
         $dispatched = false;
         try {
-            $file = new \phpDocumentor\Reflection\FileReflector($filename, $this->doValidation());
+            $file = new FileReflector($filename, $this->doValidation());
             $file->setDefaultPackageName($this->getDefaultPackageName());
 
             if (class_exists('phpDocumentor\Event\Dispatcher')) {
@@ -433,18 +430,19 @@ class Parser extends ParserAbstract
     /**
      * Iterates through the given files and builds the structure.xml file.
      *
-     * @param \phpDocumentor\Fileset\Collection $files          A files container
+     * @param Collection $files          A files container
      *     to parse.
-     * @param bool                           $include_source whether to include
-     *     the source in the generated output..
+     * @param bool       $include_source whether to include the source in the
+     *     generated output..
      *
      * @api
      *
+     * @throws Exception if no files were found.
+     *
      * @return bool|string
      */
-    public function parseFiles(
-        \phpDocumentor\Fileset\Collection $files, $include_source = false
-    ) {
+    public function parseFiles(Collection $files, $include_source = false)
+    {
         $timer = microtime(true);
 
         $this->exporter = new \phpDocumentor\Parser\Exporter\Xml\Xml($this);
@@ -467,10 +465,9 @@ class Parser extends ParserAbstract
 
         $file_count = count($paths);
         foreach ($paths as $key => $file) {
-            \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
+            Dispatcher::getInstance()->dispatch(
                 'parser.file.pre',
-                \phpDocumentor\Parser\Event\PreFileEvent::createInstance($this)
-                ->setFile($file)
+                PreFileEvent::createInstance($this)->setFile($file)
             );
 
             $this->parseFile($file, $include_source);

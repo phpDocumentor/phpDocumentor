@@ -1,6 +1,10 @@
 <project name="phpDocumentor" default="build" basedir=".">
     <property file="build.properties"/>
 
+    <target name="pre-push"
+        depends="build:clean,build:phpunit,build:behat,build:phpcs"
+        description="performs pre-push actions by validating the code"/>
+
     <target name="build"
             depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:phpdoc,build:phpcb"
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
@@ -23,6 +27,7 @@
 
     <!-- Generate checkstyle.xml -->
     <target name="build:phpcs" description="Checks for Coding Standard violations">
+        <echo message="Executing phpCodeSniffer, output is in 'build/logs/checkstyle.xml'"/>
         <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PEAR" haltonerror="true">
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
@@ -72,7 +77,16 @@
 
     <!-- Generate phpunit results and code coverage -->
     <target name="build:phpunit" description="Unit test phpDocumentor">
-        <exec executable="phpunit" dir="${project.basedir}" checkreturn="true" passthru="true" />
+        <exec executable="php" dir="${project.basedir}" checkreturn="true" passthru="true">
+            <arg line="bin/phpunit" />
+        </exec>
+    </target>
+
+    <!-- Generate behat results -->
+    <target name="build:behat" description="Run BDD tests for phpDocumentor">
+        <exec executable="php" dir="${project.basedir}" checkreturn="true" passthru="true">
+            <arg line="bin/behat --no-paths -f progress" />
+        </exec>
     </target>
 
     <target name="build:phpcb">

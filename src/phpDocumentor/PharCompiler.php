@@ -22,12 +22,6 @@ use Symfony\Component\Finder\Finder;
  *
  * It is inspired by Goutte's Phar Compiler
  * https://github.com/fabpot/Goutte/blob/master/src/Goutte/Compiler.php
- *
- * @author  Fabien Potencier <fabien@symfony.com>
- * @author  Gordon Franke <info@nevalon.de>
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class PharCompiler
 {
@@ -52,8 +46,6 @@ class PharCompiler
         $phar->stopBuffering();
 
         echo '>> Finished creating phar archive' . PHP_EOL;
-
-//        $phar->compressFiles(\Phar::GZ);
 
         unset($phar);
     }

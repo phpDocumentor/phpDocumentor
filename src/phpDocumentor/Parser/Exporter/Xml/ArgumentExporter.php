@@ -2,26 +2,20 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Parser\Exporter\Xml
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Parser\Exporter\Xml;
 
+use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
+
 /**
  * Exports an argument element into the given DOMElement.
- *
- * @category phpDocumentor
- * @package  Parser\Exporter\Xml
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 class ArgumentExporter
 {
@@ -38,17 +32,15 @@ class ArgumentExporter
      * is the responsibility of the invoker. Essentially this means that the
      * $parent argument is ignored in this case.
      *
-     * @param \DOMElement                        $parent   The parent element to
-     *     augment.
-     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument The data source.
-     * @param \DOMElement                        $child    Optional: child
-     *     element to use instead of creating a new one on the $parent.
+     * @param \DOMElement       $parent   The parent element to augment.
+     * @param ArgumentReflector $argument The data source.
+     * @param \DOMElement       $child    Optional: child element to use instead
+     *     of creating a new one on the $parent.
      *
      * @return void
      */
     public function export(
-        \DOMElement $parent, $argument,
-        \DOMElement $child = null
+        \DOMElement $parent, $argument, \DOMElement $child = null
     ) {
         if (!$child) {
             $child = new \DOMElement('argument');

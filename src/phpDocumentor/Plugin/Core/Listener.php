@@ -2,39 +2,33 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Plugin
- * @subpackage Core
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @author    Mike van Riel <mike.vanriel@naenius.com>
+ * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 namespace phpDocumentor\Plugin\Core;
 
 use phpDocumentor\Plugin\ListenerAbstract;
+use phpDocumentor\Transformer\Event\PreTransformationEvent;
+use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
+use phpDocumentor\Reflection\Event\ExportDocBlockTagEvent;
 
 /**
  * Listener for the Core Plugin.
- *
- * @category   phpDocumentor
- * @package    Plugin
- * @subpackage Core
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
 class Listener extends ListenerAbstract
 {
     /**
      * Applies all behaviours prior to transformation.
      *
-     * @param \phpDocumentor\Transformer\Event\PreTransformationEvent $data
-     *     Event object containing the parameters.
+     * @param PreTransformationEvent $data Event object containing the parameters.
      *
      * @phpdoc-event transformer.transform.pre
+     *
+     * @throws Exception if the event does not originate from the Transformer
      *
      * @return void
      */
@@ -73,8 +67,8 @@ class Listener extends ListenerAbstract
     /**
      * Checks all phpDocumentor whether they match the given rules.
      *
-     * @param \phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent $data
-     *     Event object containing the parameters.
+     * @param PostDocBlockExtractionEvent $data Event object containing the
+     *     parameters.
      *
      * @phpdoc-event reflection.docblock-extraction.post
      *
@@ -126,8 +120,7 @@ class Listener extends ListenerAbstract
     /**
      * Prepare the tag to be injected into the XML file.
      *
-     * @param \phpDocumentor\Reflection\Event\ExportDocBlockTagEvent $data
-     *     Event object containing the parameters.
+     * @param ExportDocBlockTagEvent $data Event object containing the parameters.
      *
      * @phpdoc-event reflection.docblock.tag.export
      *

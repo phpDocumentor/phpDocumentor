@@ -13,9 +13,9 @@ namespace phpDocumentor\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use phpDocumentor\Parser\Events\PreFileEvent;
-use phpDocumentor\Events\LogEvent;
-use phpDocumentor\Events\DebugEvent;
+use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Event\DebugEvent;
 
 /**
  * Base command for phpDocumentor commands.

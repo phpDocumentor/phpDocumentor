@@ -5,7 +5,7 @@ php:
   - 5.4
 
 script:
- - phpunit --coverage-text
+ - php bin/phpunit --coverage-text
  - php bin/behat --no-paths --format failed
 
 before_script:
