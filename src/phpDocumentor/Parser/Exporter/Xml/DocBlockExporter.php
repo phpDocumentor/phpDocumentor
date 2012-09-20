@@ -68,12 +68,12 @@ class DocBlockExporter
      */
     protected function addDescription(\DOMElement $node, DocBlock $docblock)
     {
-        $node = $node->ownerDocument->createCDATASection(
+        $cdata = $node->ownerDocument->createCDATASection(
             $docblock->getShortDescription()
         );
         $description = new \DOMElement('description');
         $node->appendChild($description);
-        $description->appendChild($node);
+        $description->appendChild($cdata);
     }
 
     /**
