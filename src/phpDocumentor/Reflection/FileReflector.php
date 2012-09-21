@@ -278,7 +278,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
             foreach ($node->consts as $constant) {
                 $reflector = new ConstantReflector($node, $constant);
                 $reflector->setNamespaceAliases($this->namespace_aliases);
-                $this->constants[$reflector->getName()] = $reflector;
+                $this->constants[] = $reflector;
             }
             break;
         case 'PHPParser_Node_Expr_FuncCall':
@@ -305,7 +305,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
                 // split over 2 objects
                 $reflector = new ConstantReflector($constant, $constant);
                 $reflector->setNamespaceAliases($this->namespace_aliases);
-                $this->constants[$reflector->getName()] = $reflector;
+                $this->constants[] = $reflector;
             }
             break;
         case 'PHPParser_Node_Expr_Include':
