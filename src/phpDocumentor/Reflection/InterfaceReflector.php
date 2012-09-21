@@ -32,14 +32,14 @@ class InterfaceReflector extends BaseReflector
                     );
                     $reflector->setNamespace($this->getNamespace());
                     $reflector->setNamespaceAliases($this->namespace_aliases);
-                    $this->properties[$reflector->getName()] = $reflector;
+                    $this->properties[] = $reflector;
                 }
                 break;
             case 'PHPParser_Node_Stmt_ClassMethod':
                 $reflector = new ClassReflector\MethodReflector($stmt);
                 $reflector->setNamespace($this->getNamespace());
                 $reflector->setNamespaceAliases($this->namespace_aliases);
-                $this->methods[$reflector->getName()] = $reflector;
+                $this->methods[] = $reflector;
                 break;
             case 'PHPParser_Node_Stmt_ClassConst':
                 foreach ($stmt->consts as $constant) {
@@ -48,7 +48,7 @@ class InterfaceReflector extends BaseReflector
                     );
                     $reflector->setNamespace($this->getNamespace());
                     $reflector->setNamespaceAliases($this->namespace_aliases);
-                    $this->constants[$reflector->getName()] = $reflector;
+                    $this->constants[] = $reflector;
                 }
                 break;
             }
