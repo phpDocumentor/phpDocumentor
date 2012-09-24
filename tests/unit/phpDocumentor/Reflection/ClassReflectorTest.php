@@ -4,9 +4,6 @@
  *
  * PHP Version 5
  *
- * @category   phpDocumentor
- * @package    Parser
- * @subpackage Tests
  * @author     Erik Baars <baarserik@hotmail.com>
  * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
@@ -14,6 +11,11 @@
  */
 namespace phpDocumentor\Reflection;
 
+/**
+ * Class for testing PHPParser_Node_Stmt.
+ *
+ * Extends the PHPParser_Node_Stmt so properties and abstract methods can be mocked, and therefor tested.
+ */
 class NodeMock2 extends \PHPParser_Node_Stmt
 {
     public $type = null;
@@ -23,6 +25,11 @@ class NodeMock2 extends \PHPParser_Node_Stmt
     public $extends = null;
 }
 
+/**
+ * Class for testing ClassReflector.
+ *
+ * Extends the ClassReflector so properties and abstract methods can be mocked, and therefor tested.
+ */
 class ClassReflectorMock extends ClassReflector
 {
     public function setTraits(array $v)
@@ -31,6 +38,9 @@ class ClassReflectorMock extends ClassReflector
     }
 }
 
+/**
+ * Class for testing ClassReflector.
+ */
 class ClassReflectorTest extends \PHPUnit_Framework_TestCase
 {
     /**

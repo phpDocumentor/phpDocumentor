@@ -4,9 +4,6 @@
  *
  * PHP Version 5
  *
- * @category   phpDocumentor
- * @package    Parser
- * @subpackage Tests
  * @author     Erik Baars <baarserik@hotmail.com>
  * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
@@ -14,6 +11,11 @@
  */
 namespace phpDocumentor\Reflection;
 
+/**
+ * Class for testing base reflector.
+ *
+ * Extends the baseReflector so properties and abstract methods can be mocked, and therefor tested.
+ */
 class BaseReflectorMock extends BaseReflector
 {
     /**
@@ -37,6 +39,11 @@ class BaseReflectorMock extends BaseReflector
     }
 }
 
+/**
+ * Class for testing PHPParser_Node_Stmt.
+ *
+ * Extends the PHPParser_Node_Stmt so properties and abstract methods can be mocked, and therefor tested.
+ */
 class NodeMock extends \PHPParser_Node_Stmt
 {
     public $name = null;
@@ -64,6 +71,9 @@ class NodeMock extends \PHPParser_Node_Stmt
     }
 }
 
+/**
+ * Class for testing base reflector.
+ */
 class BaseReflectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
