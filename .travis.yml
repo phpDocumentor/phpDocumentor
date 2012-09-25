@@ -17,3 +17,9 @@ before_script:
  - pyrus install pear.phing.info/phing > /dev/null
  - pyrus install phpunit/phpcpd > /dev/null
  - phpenv rehash > /dev/null
+
+notifications:
+  irc: "irc.freenode.org#phpdocumentor"
+  email:
+    - mike.vanriel@naenius.com
+    - ashnazg@php.net
