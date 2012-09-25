@@ -22,3 +22,4 @@ notifications:
   irc: "irc.freenode.org#phpdocumentor"
   email:
     - mike.vanriel@naenius.com
+    - ashnazg@php.net
