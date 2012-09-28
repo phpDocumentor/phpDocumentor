@@ -14,7 +14,7 @@
 
 error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 require_once('PEAR/PackageFileManager2.php');
-PEAR::setErrorHandling(PEAR_ERROR_DIE);
+\PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 /**
  * Creates a packager object with all basic options set.
@@ -88,15 +88,8 @@ DESC
         .'latest changes'
     );
 
-    $packagexml->setPhpDep('5.3.0');
+    $packagexml->setPhpDep('5.3.3');
     $packagexml->setPearinstallerDep('1.4.0');
-    $packagexml->addPackageDepWithChannel(
-        'required', 'PEAR', 'pear.php.net', '1.4.0'
-    );
-    $packagexml->addPackageDepWithChannel(
-        'optional', 'PEAR_PackageFileManager2', 'pear.php.net', '1.0.2'
-    );
-
     $packagexml->addReplacement(
         'bin/phpdoc.php', 'pear-config', '/usr/bin/env php', 'php_bin'
     );
@@ -108,7 +101,9 @@ DESC
     $packagexml->addMaintainer(
         'lead', 'mvriel', 'Mike van Riel', 'mike.vanriel@naenius.com'
     );
-    $packagexml->addMaintainer('lead', 'ashnazg', 'Chuck Burgess', '');
+    $packagexml->addMaintainer(
+        'lead', 'ashnazg', 'Chuck Burgess', 'ashnazg@php.net'
+    );
     $packagexml->setLicense(
         'MIT', 'http://www.opensource.org/licenses/mit-license.html'
     );
@@ -129,11 +124,11 @@ DESC
 
 echo 'phpDocumentor PEAR Packager v1.0'.PHP_EOL;
 
-if ($argc < 3) {
+if ($argc < 4) {
     echo <<<HELP
 
 Usage:
-  php package.php [version] [stability] [make|nothing]
+  php package.php [version] [api-version] [stability] [make|nothing]
 
 Description:
   The phpDocumentor packager generates a package.xml file and accompanying package.
@@ -148,13 +143,13 @@ HELP;
 
 $packager = createPackager('../../package.xml');
 
-$packager->setAPIVersion($argv[1]);
 $packager->setReleaseVersion($argv[1]);
-$packager->setReleaseStability($argv[2]);
-$packager->setAPIStability($argv[2]);
+$packager->setAPIVersion($argv[2]);
+$packager->setReleaseStability($argv[3]);
+$packager->setAPIStability($argv[3]);
 
 $packager->generateContents();
-if (isset($argv[3]) && ($argv[3] == 'make')) {
+if (isset($argv[4]) && ($argv[4] == 'make')) {
     $packager->writePackageFile();
 } else {
     $packager->debugPackageFile();
