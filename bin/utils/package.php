@@ -14,7 +14,7 @@
 
 error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 require_once('PEAR/PackageFileManager2.php');
-PEAR::setErrorHandling(PEAR_ERROR_DIE);
+\PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 /**
  * Creates a packager object with all basic options set.
@@ -88,15 +88,8 @@ DESC
         .'latest changes'
     );
 
-    $packagexml->setPhpDep('5.3.0');
+    $packagexml->setPhpDep('5.3.3');
     $packagexml->setPearinstallerDep('1.4.0');
-    $packagexml->addPackageDepWithChannel(
-        'required', 'PEAR', 'pear.php.net', '1.4.0'
-    );
-    $packagexml->addPackageDepWithChannel(
-        'optional', 'PEAR_PackageFileManager2', 'pear.php.net', '1.0.2'
-    );
-
     $packagexml->addReplacement(
         'bin/phpdoc.php', 'pear-config', '/usr/bin/env php', 'php_bin'
     );
@@ -108,7 +101,9 @@ DESC
     $packagexml->addMaintainer(
         'lead', 'mvriel', 'Mike van Riel', 'mike.vanriel@naenius.com'
     );
-    $packagexml->addMaintainer('lead', 'ashnazg', 'Chuck Burgess', '');
+    $packagexml->addMaintainer(
+        'lead', 'ashnazg', 'Chuck Burgess', 'ashnazg@php.net'
+    );
     $packagexml->setLicense(
         'MIT', 'http://www.opensource.org/licenses/mit-license.html'
     );
