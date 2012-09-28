@@ -30,7 +30,7 @@ use \Symfony\Component\Console\Input\InputInterface;
  */
 class Application extends \Cilex\Application
 {
-    const VERSION = '2.0.0a10';
+    const VERSION = '2.0.0a11';
 
     /**
      * Initializes all components used by phpDocumentor.
