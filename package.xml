@@ -24,9 +24,9 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <active>yes</active>
  </lead>
  <date>2012-09-28</date>
- <time>22:12:08</time>
+ <time>22:28:44</time>
  <version>
-  <release>2.0.0</release>
+  <release>2.0.0a10</release>
   <api>2.0.0</api>
  </version>
  <stability>
@@ -9203,9 +9203,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/phpDocumentor" name="README.md" role="data">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
-   <file baseinstalldir="/phpDocumentor" name="test.php" role="php">
-    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-   </file>
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -9238,7 +9235,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.0.0</release>
+    <release>2.0.0a10</release>
     <api>2.0.0</api>
    </version>
    <stability>

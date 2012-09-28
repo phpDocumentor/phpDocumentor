@@ -124,11 +124,11 @@ DESC
 
 echo 'phpDocumentor PEAR Packager v1.0'.PHP_EOL;
 
-if ($argc < 3) {
+if ($argc < 4) {
     echo <<<HELP
 
 Usage:
-  php package.php [version] [stability] [make|nothing]
+  php package.php [version] [api-version] [stability] [make|nothing]
 
 Description:
   The phpDocumentor packager generates a package.xml file and accompanying package.
@@ -143,13 +143,13 @@ HELP;
 
 $packager = createPackager('../../package.xml');
 
-$packager->setAPIVersion($argv[1]);
 $packager->setReleaseVersion($argv[1]);
-$packager->setReleaseStability($argv[2]);
-$packager->setAPIStability($argv[2]);
+$packager->setAPIVersion($argv[2]);
+$packager->setReleaseStability($argv[3]);
+$packager->setAPIStability($argv[3]);
 
 $packager->generateContents();
-if (isset($argv[3]) && ($argv[3] == 'make')) {
+if (isset($argv[4]) && ($argv[4] == 'make')) {
     $packager->writePackageFile();
 } else {
     $packager->debugPackageFile();
