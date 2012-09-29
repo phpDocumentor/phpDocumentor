@@ -68,12 +68,9 @@ class DocBlockExporter
      */
     protected function addDescription(\DOMElement $node, DocBlock $docblock)
     {
-        $cdata = $node->ownerDocument->createCDATASection(
-            $docblock->getShortDescription()
+        $node->appendChild(
+            new \DOMElement('description', $docblock->getShortDescription())
         );
-        $description = new \DOMElement('description');
-        $node->appendChild($description);
-        $description->appendChild($cdata);
     }
 
     /**
@@ -88,11 +85,16 @@ class DocBlockExporter
         \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
         $contents = $docblock->getLongDescription()->getFormattedContents();
-        $node = $child->ownerDocument->createCDATASection($contents);
 
-        $element = new \DOMElement('long-description');
-        $child->appendChild($element);
-        $element->appendChild($node);
+        $element = new \DOMDocument();
+        $element->loadXML(
+            '<long_description><div xmlns="http://www.w3.org/1999/xhtml">' .
+            $contents .
+            '</div></long_description>'
+        );
+        $child->appendChild(
+            $child->ownerDocument->importNode($element->documentElement, true)
+        );
     }
 
     /**
