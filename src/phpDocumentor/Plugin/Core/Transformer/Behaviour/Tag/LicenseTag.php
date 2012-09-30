@@ -71,7 +71,7 @@ class LicenseTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             // FIXME: migrate to '#^' . PHPDOC::LINK_REGEX . '(\s+(?P<text>.+))
             // ?$#u' once that const exists
             if (preg_match(
-                '#^(?i)\b(?P<url>(?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.]'
+                '#^(?i)\b(?P<url>(?:https?://|www\d{0,3}\.|[a-z0-9.\-]+\.'
                 .'[a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+'
                 .'(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|'
                 .'[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))(\s+(?P<text>.+))?$#u',
