@@ -28,29 +28,18 @@ namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
  */
 class Author extends Definition
 {
+    public function setDescription($description)
+    {
+        $this->xml->appendChild(new \DOMElement('description', $description));
+    }
+
     protected function configure()
     {
-        $element = new \DOMDocument();
-        $name = htmlspecialchars(
-            $this->tag->getAuthorName(), ENT_NOQUOTES, 'UTF-8'
+        $this->xml->appendChild(
+            new \DOMElement('name', $this->tag->getAuthorName())
         );
-        $email = $this->tag->getAuthorEmail();
-        if ('' != $email) {
-            $email = ' href="mailto:' . htmlspecialchars(
-                $email, ENT_COMPAT, 'UTF-8'
-            ) . '"';
-        }
-        $element->loadXML(<<<HEREDOC
-<description><div xmlns="http://www.w3.org/1999/xhtml">
-    <a{$email}>{$name}</a>
-</div></description>
-HEREDOC
-        );
-        $this->xml->replaceChild(
-            $this->xml->ownerDocument->importNode(
-                $element->documentElement, true
-            ),
-            $this->xml->childNodes->item(0)
+        $this->xml->appendChild(
+            new \DOMElement('email', $this->tag->getAuthorEmail())
         );
     }
 }

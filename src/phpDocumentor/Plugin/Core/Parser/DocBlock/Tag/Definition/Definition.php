@@ -272,10 +272,9 @@ class Definition extends ParserAbstract
      */
     public function setDescription($description)
     {
-        $element = new \DOMDocument();
-        
         $description = trim($description);
-        
+        $element = new \DOMDocument();
+
         //Parsing can fail, so we disable error output temporarily.
         $oldInternalErrors = libxml_use_internal_errors(true);
         if (false === $element->loadXML(
