@@ -274,41 +274,42 @@ class Definition extends ParserAbstract
     {
         $description = trim($description);
         $element = new \DOMDocument();
+        
+        $longDescriptionElement = $this->xml->appendChild(
+            new \DOMElement('description')
+        );
 
         //Parsing can fail, so we disable error output temporarily.
         $oldInternalErrors = libxml_use_internal_errors(true);
         if (false === $element->loadXML(
-            '<description><div xmlns="http://www.w3.org/1999/xhtml">' .
+            '<div xmlns="http://www.w3.org/1999/xhtml">' .
             $description .
-            '</div></description>'
+            '</div>'
         )) {
             //There's some invalid X(HT)ML. Trying with the HTML parser.
             if (false === $element->loadHTML(
-                '<html xmlns="http://www.w3.org/1999/xhtml"><body><div>'
+                '<html><body><div>'
                 . $description .
                 '</div></body></html>'
             )) {
                 //This is so damaged even the HTML parser can't handle it.
                 //Using plain text instead.
-                $element->loadXML(
-                    '<description>' .
-                    htmlspecialchars(
-                        $description, ENT_NOQUOTES, 'UTF-8'
-                    ) .
-                    '</description>');
+                $element = new \DOMElement(
+                    'div', $description, 'http://www.w3.org/1999/xhtml'
+                );
             } else {
                 //The HTML parser handled it, but what we're interested in is
                 //a little deeper. Now making it root.
                 
                 $element->loadXML(
-                    '<description>' .
-                    str_replace(
-                        '<div>',
-                        '<div xmlns="http://www.w3.org/1999/xhtml">',
+                    substr_replace(
                         $element->saveXML(
                             $element->getElementsByTagName('div')->item(0)
-                        )
-                    ) . '</description>'
+                        ),
+                        '<div xmlns="http://www.w3.org/1999/xhtml">',
+                        0,
+                        5
+                    )
                 );
                 
             }
@@ -317,7 +318,7 @@ class Definition extends ParserAbstract
         //Done parsing. Restoring back.
         libxml_use_internal_errors($oldInternalErrors);
         
-        $this->xml->appendChild(
+        $longDescriptionElement->appendChild(
             $this->xml->ownerDocument->importNode(
                 $element->documentElement, true
             )

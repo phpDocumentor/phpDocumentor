@@ -86,41 +86,42 @@ class DocBlockExporter
     ) {
         $description = $docblock->getLongDescription()->getFormattedContents();
         $element = new \DOMDocument();
+        
+        $longDescriptionElement = $child->appendChild(
+            new \DOMElement('long_description')
+        );
 
         //Parsing can fail, so we disable error output temporarily.
         $oldInternalErrors = libxml_use_internal_errors(true);
         if (false === $element->loadXML(
-            '<long_description><div xmlns="http://www.w3.org/1999/xhtml">' .
+            '<div xmlns="http://www.w3.org/1999/xhtml">' .
             $description .
-            '</div></long_description>'
+            '</div>'
         )) {
             //There's some invalid X(HT)ML. Trying with the HTML parser.
             if (false === $element->loadHTML(
-                '<html xmlns="http://www.w3.org/1999/xhtml"><body><div>'
+                '<html><body><div>'
                 . $description .
                 '</div></body></html>'
             )) {
                 //This is so damaged even the HTML parser can't handle it.
                 //Using plain text instead.
-                $element->loadXML(
-                    '<long_description>' .
-                    htmlspecialchars(
-                        $description, ENT_NOQUOTES, 'UTF-8'
-                    ) .
-                    '</long_description>');
+                $element = new \DOMElement(
+                    'div', $description, 'http://www.w3.org/1999/xhtml'
+                );
             } else {
                 //The HTML parser handled it, but what we're interested in is
                 //a little deeper. Now making it root.
                 
                 $element->loadXML(
-                    '<long_description>' .
-                    str_replace(
-                        '<div>',
-                        '<div xmlns="http://www.w3.org/1999/xhtml">',
+                    substr_replace(
                         $element->saveXML(
                             $element->getElementsByTagName('div')->item(0)
-                        )
-                    ) . '</long_description>'
+                        ),
+                        '<div xmlns="http://www.w3.org/1999/xhtml">',
+                        0,
+                        5
+                    )
                 );
                 
             }
@@ -128,9 +129,11 @@ class DocBlockExporter
         
         //Done parsing. Restoring back.
         libxml_use_internal_errors($oldInternalErrors);
-
-        $child->appendChild(
-            $child->ownerDocument->importNode($element->documentElement, true)
+        
+        $longDescriptionElement->appendChild(
+            $child->ownerDocument->importNode(
+                $element->documentElement, true
+            )
         );
     }
 
