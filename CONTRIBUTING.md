@@ -1,26 +1,25 @@
-Contributor's Guidelines
-========================
+Contributing to phpDocumentor
+=============================
 
 Introduction
 ------------
 
-phpDocumentor aims to be a high quality Documentation Generation
-Application (DGA) but at the same time wants to give contributors
-freedom when submitting fixes or improvements.
+phpDocumentor aims to be a high quality Documentation Generation Application
+(DGA) but at the same time wants to give contributors freedom when submitting
+fixes or improvements.
 
-As such we want to *encourage* but not obligate you, the
-contributor, to follow these guidelines. The only exception to this
-are the guidelines regarding *Github usage and branching* to
-prevent ``merge-hell``.
+As such we want to *encourage* but not obligate you, the contributor, to follow
+these guidelines. The only exception to this are the guidelines regarding
+*Github usage and branching* to prevent ``merge-hell``.
 
-Having said that: I do really appreciate it when you apply the
-guidelines in part or wholly.
+Having said that: I do really appreciate it when you apply the guidelines in
+part or wholly.
 
 Github Usage & Branching
 ------------------------
 
 Once you decide you want to contribute to phpDocumentor (which we really
-appreciate!) you can fork the project at
+appreciate!) you can fork the project from
 http://github.com/phpDocumentor/phpDocumentor2.
 
 Please do *not* develop your contribution on your master branch but
@@ -41,11 +40,8 @@ and/or `this help page of Github <http://learn.github.com/p/intro.html>`.
 Coding Standards
 ----------------
 
-PEAR Coding Standards
-~~~~~~~~~~~~~~~~~~~~~
-
-phpDocumentor uses the coding standards as defined by PEAR, which can be
-found at http://pear.php.net/codingstandards.
+phpDocumentor uses a coding standard that is derived from
+(PEAR)[http://pear.php.net/codingstandards].
 
 It is adviced to check your code using \_PHP*CodeSniffer*; it
 includes support for the PEAR coding standard by default. In the
