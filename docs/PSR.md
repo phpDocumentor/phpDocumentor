@@ -115,7 +115,7 @@ document are to be interpreted as described in
   Example:
 
   ```php
-  /** @type int This is a counter. */
+  /** @type int $int This is a counter. */
   $int = 0;
 
   // there should be no docblock here
@@ -130,7 +130,7 @@ document are to be interpreted as described in
    */
   class Foo
   {
-      /** @type string|null Should contain a description if available */
+      /** @type string|null $description Should contain a description */
       protected $description = null;
 
       /**
