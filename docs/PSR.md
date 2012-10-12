@@ -189,6 +189,9 @@ document are to be interpreted as described in
 * "Tag" is a single piece of meta information regarding a "Structural Element"
   or a component thereof.
 
+* "Inline PHPDoc" is a "PHPDoc" that is related to a "Tag" instead of a
+  "Structural element" and replaces the "Tag" his description.
+
 * "Type" is the determination of what type of data is associated with an element.
   This is commonly used when determining the exact values of arguments, constants,
   properties and more.
@@ -218,7 +221,7 @@ definition:
     inline-tag        = "{" tag "}"
     tag               = "@" tag-name [tag-details]
     tag-name          = (ALPHA / "\") *(ALPHA / DIGIT / "\" / "-" / "_")
-    tag-details       = *SP (SP tag-description / tag-signature)
+    tag-details       = *SP (SP tag-description / tag-signature / "{" PHPDoc "}")
     tag-description   = 1*CHAR
     tag-signature     = "(" *tag-argument ")"
     tag-argument      = *SP 1*CHAR [","] *SP
@@ -334,6 +337,20 @@ The contents of a signature are to be determined by the tag type (as described
 in the tag-name) and fall beyond the scope of this specification. However, a
 tag-signature MUST NOT be followed by a description or other form of meta-data.
 
+#### 5.3.3. Inline PHPDoc
+
+Specific Tags MAY have an "Inline PHPDoc" section at the end of the "Tag"
+definition. An "Inline PHPDoc" is a "PHPDoc" element enclosed in braces and is
+only present at the end of a "Tag" sequence. Unless specified otherwise in a
+"Tag" definition will the "Inline PHPDoc" element replace any description that
+could have been provided.
+
+An example can be the @method tag. This tag may be augmented using an
+"Inline PHPDoc" to provide additional information regarding the parameters,
+return value or any other tag supported by functions and methods.
+
+Chapter 5.4 contains an example of use for this construct.
+
 ### 5.4. Examples
 
 The following examples serve to illustrate the basic use of DocBlocks; it is
@@ -360,6 +377,7 @@ A complete example could look like the following example:
  */
 function test($parameter1, $e)
 {
+    ...
 }
 ```
 
@@ -400,6 +418,23 @@ A DocBlock may also span a single line as shown in the following example.
 ```php
 /** @var \ArrayObject $array */
 public $array = null;
+```
+
+Some tags may even feature an "Inline PHPDoc" as shown in the following example.
+
+```php
+/**
+ * @method integer MyMagicMethod(string $argument1) {
+ *     This is the short description for MyMagicMethod.
+ *
+ *     @param string $argument1
+ *
+ *     @return integer
+ */
+ class MyMagicClass
+ {
+     ...
+ }
 ```
 
 ## 6. Inheritance
@@ -1076,7 +1111,7 @@ You may use the @type tag to document the "Type" of the following
 
 #### Syntax
 
-    @type <"Type"> [description]
+    @type <"Type"> element_name [description]
 
 #### Description
 
@@ -1088,15 +1123,18 @@ containing the @type tag. Each Variable, where the type is ambiguous or unknown,
 SHOULD be preceded by a DocBlock containing the @type tag. Any other
 variable MAY be preceeded with a similar DocBlock.
 
+The @type tag MUST contain the name of the element it documents. This is used
+when compound statements are used to define a series of Constants or Properties.
+Such a compound statement can only have one DocBlock whilst several items are
+represented.
+
 It is NOT RECOMMENDED to use the @var alias unless it is necessary in order for
 the application, or associated tools, to function correctly.
-
-This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
 ```php
-/** @type int This is a counter. */
+/** @type int $int This is a counter. */
 $int = 0;
 
 // there should be no docblock here
@@ -1108,7 +1146,7 @@ Or:
 ```php
 class Foo
 {
-  /** @type string|null Should contain a description if available */
+  /** @type string|null $description Should contain a description */
   protected $description = null;
 
   public function setDescription($description)
@@ -1128,6 +1166,34 @@ foreach($connections as $sqlite) {
     // there should be no docblock here
     $sqlite->open('/my/database/path');
     <...>
+}
+```
+
+Even compound statements may be documented:
+
+```php
+class Foo
+{
+  /**
+   * @type string $name Should contain a description
+   * @type string $description Should contain a description
+   */
+  protected $name, $description;
+
+}
+```
+
+Or constants:
+
+```php
+class Foo
+{
+  /**
+   * @type string MY_CONST1 Should contain a description
+   * @type string MY_CONST2 Should contain a description
+   */
+  const MY_CONST1 = "1", MY_CONST2 = "2";
+
 }
 ```
 
@@ -1333,7 +1399,6 @@ The following keywords are recognized by this PSR:
         return null;
     }
     ```
-
 
 11. 'callback', the element to which this type applies is a pointer to a
     function call. This may be any type of callback as defined in the PHP manual
