@@ -430,6 +430,7 @@ Some tags may even feature an "Inline PHPDoc" as shown in the following example.
  *     @param string $argument1
  *
  *     @return integer
+ * }
  */
  class MyMagicClass
  {
