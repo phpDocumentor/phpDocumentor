@@ -416,7 +416,7 @@ function test($parameter1, $parameter2)
 A DocBlock may also span a single line as shown in the following example.
 
 ```php
-/** @var \ArrayObject $array */
+/** @type \ArrayObject $array */
 public $array = null;
 ```
 
