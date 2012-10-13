@@ -778,12 +778,29 @@ function count()
 
 ### 7.7. @global
 
+(TODO:
+write up a usage description for @global...
+or perhaps determine if @type can supercede it)
+
+(TODO:
+should we include @ignore?
+if so, we must be cognizant of the difference between "don't document this element"
+vs "don't parse this element"... this difference has historically been a 
+point of confusion, as phpdoc1 implemented the latter)
+
 ### 7.8. @internal
 
 The @internal tag is used to denote that the associated "Structural Element" is
 a structure internal to this application or library. It may also be used inside
 a long description to insert a piece of text that is only applicable for
 the developers of this software.
+
+(TODO:
+phpdoc1 usage of @internal is the same as {@internal}} as described here,
+rather than being a means to mark an entire element as non-public.
+We should determine if the separate/different use of @internal vs {@internal}}
+should remain, or if another method of marking an element as non-public
+should be derived)
 
 #### Syntax
 
@@ -928,6 +945,9 @@ function count()
     <...>
 }
 ```
+(TODO:
+phpdoc1 syntax of both use the description as the text labels of the URIs.
+should this be specified here?  does phpdoc2 do the same?)
 
 ### 7.11. @method
 
