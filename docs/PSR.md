@@ -782,12 +782,6 @@ function count()
 write up a usage description for @global...
 or perhaps determine if @type can supercede it)
 
-(TODO:
-should we include @ignore?
-if so, we must be cognizant of the difference between "don't document this element"
-vs "don't parse this element"... this difference has historically been a 
-point of confusion, as phpdoc1 implemented the latter)
-
 ### 7.8. @internal
 
 The @internal tag is used to denote that the associated "Structural Element" is
