@@ -1274,6 +1274,49 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 ### 7.24. @version
 
+The @version tag is used to denote some description of "versioning" to an element.
+
+#### Syntax
+
+    @version [description]
+
+#### Description
+
+Documents the "version" of any element.  There is no semantic requirement of what
+this "version" string represents, e.g. application version vs element version.
+It can be anything:  a text description; a string for the application's version;
+a string for the file's revision "version" in the source code repository.
+There is no expectation that the description itself is parsable into any
+distinct or defined parts.
+
+(TODO:
+should @version be left defined this loosely, like it is in phpdoc1?
+or should we specify a stricter definition of layout?
+are there RFCs about software versioning that we should at least recommend?)
+
+The @version tag is not intended for showing _when_ an element was added or modified...
+use the @since tag for that purpose.
+
+#### Examples
+
+```php
+/**
+ * File for class Foo
+ * @version MyApp 2.1.7 
+ *          (this string denotes the application's overall version number)
+ * @version @package_version@ 
+ *          (this PEAR replacement keyword expands upon package installation)
+ * @version $Id$ 
+ *          (this CVS keyword expands to show the CVS file revision number)
+ */
+
+/**
+ * This is Foo
+ */
+class Foo
+```
+
+
 ## Appendix A. Types
 
 ### ABNF
