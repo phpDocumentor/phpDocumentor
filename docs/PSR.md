@@ -1060,7 +1060,7 @@ The @return tag is used to document the return value of functions or methods.
 #### Description
 
 With the @return tag it is possible to document the return type of a
-function or method. When provided it MUST contain a "Type" (See Appendix A)
+function or method. When provided, it MUST contain a "Type" (See Appendix A)
 to indicate what is returned; the description on the other hand is OPTIONAL yet
 RECOMMENDED in case of complicated return structures, such as associative arrays.
 
@@ -1070,14 +1070,14 @@ delimiting.
 It is RECOMMENDED to use this tag with every function and method.
 Exceptions to this recommendation are:
 
-1. **constructors**, the @return tag MAY be omitted here, in which case an
+1. **constructors**: the @return tag MAY be omitted here, in which case an
    interpreter MUST interpret this as if `@return self` is provided.
-2. **functions and methods without a `return` value**, the @return tag MAY be
+2. **functions and methods without a `return` value**: the @return tag MAY be
    omitted here, in which case an interpreter MUST interpret this as if
    `@return void` is provided.
 
 This tag MUST NOT occur more than once in a "DocBlock" and is limited to the
-"DocBlock" of a "Structural Element" or type method or function.
+"DocBlock" of a "Structural Element" of a method or function.
 
 #### Examples
 
@@ -1145,7 +1145,7 @@ variable MAY be preceeded with a similar DocBlock.
 
 The @type tag MUST contain the name of the element it documents. This is used
 when compound statements are used to define a series of Constants or Properties.
-Such a compound statement can only have one DocBlock whilst several items are
+Such a compound statement can only have one DocBlock while several items are
 represented.
 
 It is NOT RECOMMENDED to use the @var alias unless it is necessary in order for
@@ -1222,7 +1222,7 @@ class Foo
 
 ### 7.23. @var [deprecated]
 
-Is a **deprecated** alias for `@type`, please see the documentation for `@type`
+Is a **deprecated** alias for `@type`... please see the documentation for `@type`
 for details of its usage.
 
 This tag MUST NOT occur more than once in a "DocBlock".
@@ -1296,7 +1296,7 @@ or an instance of a class that is a (sub-)child to the given class.
 ### Keyword
 
 A keyword defining the purpose of this type. Not every element is determined
-by a class but still worth of a classification to assist the developer in
+by a class but still worthy of classification to assist the developer in
 understanding the code covered by the DocBlock.
 
 > Note: most of these keywords are allowed as class names in PHP and as
@@ -1357,8 +1357,8 @@ The following keywords are recognized by this PSR:
     }
     ***
 
-    In the example above no return statement is specified and thus is the return
-    value not determined.
+    In the example above no return statement is specified and thus the return
+    value is not determined.
 
     Example 2:
 
@@ -1378,7 +1378,7 @@ The following keywords are recognized by this PSR:
     ```
 
     In this example the function contains a return statement without a given
-    value. Because there is no actual value specified does this also constitute
+    value. Because there is no actual value specified, this also qualifies
     as type 'void'.
 
 10. 'null', the element to which this type applies is a NULL value or, in
