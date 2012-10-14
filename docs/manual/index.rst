@@ -18,7 +18,7 @@ Learn about phpDocumentor
             | :doc:`for-users/installation`
             | :doc:`for-users/getting-started`
             | :doc:`for-users/reporting`
-            | :doc:`for-users/faq`
+            | :doc:`for-users/installation/troubleshooting`
             | :doc:`for-users/phpdoc-reference`
             | :doc:`for-users/configuration`
             | :doc:`for-users/command-reference`

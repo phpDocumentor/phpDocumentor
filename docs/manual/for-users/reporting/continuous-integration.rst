@@ -1,5 +1,5 @@
-@version
-========
+Continuous Integration
+======================
 
 .. note::
 

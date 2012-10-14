@@ -1,5 +1,5 @@
-@version
-========
+Deprecated elements
+===================
 
 .. note::
 

@@ -8,10 +8,10 @@ Installation
    installation/using-phar
    installation/using-pear
    installation/upgrading
-   installation/ide-integration
    installation/troubleshooting
 
 .. toctree::
    :hidden:
 
    installation/requirements
+   installation/ide-integration
