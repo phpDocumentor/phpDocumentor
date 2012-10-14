@@ -1044,8 +1044,10 @@ This tag MUST NOT occur more than once in a "DocBlock".
 ```
 
 ### 7.13. @param
+(TODO: write up a usage description for @param)
 
 ### 7.14. @property
+(TODO: write up a usage description for @property)
 
 ### 7.15. @return
 
@@ -1100,6 +1102,7 @@ function getLabel()
 ```
 
 ### 7.16. @see
+(TODO: write up a usage description for @see)
 
 ### 7.17. @since
 
@@ -1112,8 +1115,10 @@ It is NOT RECOMMENDED for this tag to occur more than once in a "DocBlock".
 This tag MUST NOT occur more than once in a "DocBlock".
 
 ### 7.19. @throws
+(TODO: write up a usage description for @throws)
 
 ### 7.20. @todo
+(TODO: write up a usage description for @todo)
 
 ### 7.21. @type
 
@@ -1213,6 +1218,7 @@ class Foo
 ```
 
 ### 7.22. @uses
+(TODO: write up a usage description for @uses)
 
 ### 7.23. @var [deprecated]
 
@@ -1220,6 +1226,7 @@ Is a **deprecated** alias for `@type`, please see the documentation for `@type`
 for details of its usage.
 
 This tag MUST NOT occur more than once in a "DocBlock".
+(TODO: does this "once only" limit still apply, since @type is allowed multiples?)
 
 ### 7.24. @version
 
