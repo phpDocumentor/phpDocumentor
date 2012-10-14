@@ -1106,9 +1106,53 @@ function getLabel()
 
 ### 7.17. @since
 
+The @since tag is used to denote _when_ an element was introduced or modified,
+using some description of "versioning" to that element.
+
+#### Syntax
+
+    @since [description]
+
 #### Description
 
-It is NOT RECOMMENDED for this tag to occur more than once in a "DocBlock".
+Documents the "version" of the introduction or modification of any element.
+There is no semantic requirement of what this "version" string represents,
+e.g. application version vs element version.  It can be anything:  a text
+description; a string for the application's version; a string for the
+file's revision "version" in the source code repository.
+There is no expectation that the description itself is parsable into any
+distinct or defined parts.
+
+(TODO:
+should @since be left defined this loosely, like it is in phpdoc1?
+or should we specify a stricter definition of layout?
+are there RFCs about software versioning that we should at least recommend?)
+
+The @since tag is not intended for showing the current version of an
+element... use the @version tag for that purpose.
+
+#### Examples
+
+```php
+/**
+ * This is Foo
+ * @version MyApp 2.1.7
+ * @since 2.0.0 introduced
+ */
+class Foo
+
+    /**
+     * Make a bar
+     * @since 2.1.5 bar($arg1 = '', $arg2 = null)
+     *        introduced the optional $arg2
+     * @since 2.1.0 bar($arg1 = '')
+     *        introduced the optional $arg1
+     * @since 2.0.0 bar()
+     *        introduced new method bar()
+     */
+    public function bar($arg1 = '', $arg2 = null) {...}
+
+```
 
 ### 7.18. @subpackage [deprecated]
 
