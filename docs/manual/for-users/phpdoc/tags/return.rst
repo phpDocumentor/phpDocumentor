@@ -6,7 +6,7 @@ The @return tag is used to document the return value of functions or methods.
 Syntax
 ------
 
-    @return <:term:`Type`> [description]
+    @return [:term:`Type`] [<description>]
 
 Description
 -----------

@@ -8,11 +8,11 @@ URI.
 Syntax
 ------
 
-    @link [URI] [description]
+    @link [URI] [<description>]
 
 or inline
 
-   {@link [URI] [description]}
+   {@link [URI] [<description>]}
 
 Description
 -----------

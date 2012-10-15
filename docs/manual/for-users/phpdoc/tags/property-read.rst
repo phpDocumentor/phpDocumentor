@@ -7,7 +7,7 @@ present that are read-only.
 Syntax
 ------
 
-    @property-read <:term:`Type`> [name] [<description>]
+    @property-read [:term:`Type`] [name] [<description>]
 
 Description
 -----------
@@ -22,8 +22,8 @@ __get() method to provide it.
 In this situation, the child class would have a @property-read tag for each
 magic property.
 
-@property-read tags MUST NOT be used in a :term:`PHPDoc` that is not associated with
-a *class* or *interface*.
+@property-read tags MUST NOT be used in a :term:`PHPDoc` that is not associated
+with a *class* or *interface*.
 
 Effects in phpDocumentor
 ------------------------
