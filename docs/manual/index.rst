@@ -53,6 +53,55 @@ Learn about phpDocumentor
             | :doc:`for-developers/profiling`
             | :doc:`for-developers/specifications`
 
+.. container:: row
+
+    .. container:: span9
+
+        .. container:: well
+
+             **Tag reference**
+
+           .. container:: row
+
+              .. container:: span2
+
+                 | :doc:`for-users/phpdoc/tags/api`
+                 | :doc:`for-users/phpdoc/tags/author`
+                 | :doc:`for-users/phpdoc/tags/category`
+                 | :doc:`for-users/phpdoc/tags/copyright`
+                 | :doc:`for-users/phpdoc/tags/deprecated`
+                 | :doc:`for-users/phpdoc/tags/example`
+                 | :doc:`for-users/phpdoc/tags/filesource`
+
+              .. container:: span2
+
+                 | :doc:`for-users/phpdoc/tags/global`
+                 | :doc:`for-users/phpdoc/tags/ignore`
+                 | :doc:`for-users/phpdoc/tags/internal`
+                 | :doc:`for-users/phpdoc/tags/license`
+                 | :doc:`for-users/phpdoc/tags/link`
+                 | :doc:`for-users/phpdoc/tags/method`
+                 | :doc:`for-users/phpdoc/tags/package`
+
+              .. container:: span2
+
+                 | :doc:`for-users/phpdoc/tags/param`
+                 | :doc:`for-users/phpdoc/tags/property-read`
+                 | :doc:`for-users/phpdoc/tags/property-write`
+                 | :doc:`for-users/phpdoc/tags/property`
+                 | :doc:`for-users/phpdoc/tags/return`
+                 | :doc:`for-users/phpdoc/tags/see`
+                 | :doc:`for-users/phpdoc/tags/since`
+
+              .. container:: span2
+
+                 | :doc:`for-users/phpdoc/tags/subpackage`
+                 | :doc:`for-users/phpdoc/tags/throws`
+                 | :doc:`for-users/phpdoc/tags/todo`
+                 | :doc:`for-users/phpdoc/tags/uses`
+                 | :doc:`for-users/phpdoc/tags/var`
+                 | :doc:`for-users/phpdoc/tags/version`
+
 .. toctree::
    :hidden:
 
