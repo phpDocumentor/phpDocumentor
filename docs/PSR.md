@@ -198,6 +198,26 @@ document are to be interpreted as described in
 
   See Appendix A for more detailed information about types.
 
+* "Semantic Version" refers to the definition as set in the Semantic Versioning
+  Specification 2.0.0 at http://www.semver.org.
+
+* "FQSEN" is an abbreviation for Fully Qualified Structural Element Name. This
+  notation expands on the Fully Qualified Class Name and adds a notation to
+  identify class/interface/trait members and re-apply the principles of the FQCN
+  to Interfaces, Traits, Functions and global Constants.
+
+  The following notations can be used per type of "Structural Element":
+
+  *Namespace*:      `\My\Space`
+  *Function*:       `\My\Space\myFunction()`
+  *Constant*:       `\My\Space\MY_CONSTANT`
+  *Class*:          `\My\Space\MyClass`
+  *Interface*:      `\My\Space\MyInterface`
+  *Trait*:          `\My\Space\MyTrait`
+  *Method*:         `\My\Space\MyClass::myMethod()`
+  *Property*:       `\My\Space\MyClass::$my_property`
+  *Class Constant*: `\My\Space\MyClass::MY_CONSTANT`
+
 ## 4. Basic Principles
 
 * A PHPDoc MUST always be contained in a "DocComment"; the combination of these
@@ -234,7 +254,7 @@ A short description MUST contain an abstract of the "Structural Element"
 defining the purpose. It is RECOMMENDED for short descriptions to span a single
 line or at most two but not more than that.
 
-A short description MUST end with either 
+A short description MUST end with either
 * a full stop (.) followed by a line break
 * or two sequential line breaks.
 
@@ -617,7 +637,7 @@ As such, usage of this tag is NOT RECOMMENDED.
 #### Description
 
 The @category tag was meant in the original de-facto Standard to group several
-@packages into one category. These categories could then be used to aid 
+@packages into one category. These categories could then be used to aid
 in the generation of API documentation.
 
 This was necessary since the @package tag as defined in the original Standard did
@@ -673,20 +693,20 @@ deprecated and are to be removed in a future version.
 
 #### Syntax
 
-    @deprecated [<version>] [<description>]
+    @deprecated [<"Semantic Version">] [<description>]
 
 #### Description
 
 The @deprecated tag declares that the associated 'Structural elements' will
-be removed in a future version as it has become obsolete or its usage is otherwise
-not recommended.
+be removed in a future version as it has become obsolete or its usage is
+otherwise not recommended.
 
 This tag MAY also contain a version number up till which it is guaranteed to be
 included in the software. Starting with the given version will the function be
 removed or may be removed without further notice.
 
-If is RECOMMENDED (but not required) to provide an additional description stating
-why the associated element is deprecated.
+If is RECOMMENDED to provide an additional description stating why the
+associated element is deprecated.
 If it is superceded by another method it is RECOMMENDED to add a @see tag in the
 same 'PHPDoc' pointing to the new element.
 
@@ -778,9 +798,44 @@ function count()
 
 ### 7.7. @global
 
-(TODO:
-write up a usage description for @global...
-or perhaps determine if @type can supercede it)
+TODO: The definition of this item should be discussed and whether it may or
+may not be superceded in part or in whole by the @type tag.
+
+The @global tag is used to denote a global variable or its usage.
+
+#### Syntax
+
+    @global ["Type"] [name]
+    @global ["Type"] [description]
+
+#### Description
+
+Since there is no standard way to declare global variables, a @global tag MAY
+be used in a DocBlock preceding a global variable's definition. To support
+previous usages of @global, there is an alternate syntax that applies to
+DocBlocks preceding a function, used to document usage of global
+variables. in other words, There are two usages of @global: definition and
+function usage.
+
+##### Definition
+
+Only one @global tag MAY be allowed per global variable DocBlock. A global
+variable DocBlock MUST be followed by the global variable's definition before
+any other element or DocBlock occurs.
+
+The name MUST be the exact name of the global variable as it is declared in
+the source.
+
+##### Function usage
+
+The function/method @global syntax MAY be used to document usage of global
+variables in a function, and MUST NOT have a $ starting the third word. The
+"Type" will be ignored if a match is made between the declared global
+variable and a variable documented in the project.
+
+#### Examples
+
+(TODO: Examples for this tag should be added)
 
 ### 7.8. @internal
 
@@ -795,6 +850,8 @@ rather than being a means to mark an entire element as non-public.
 We should determine if the separate/different use of @internal vs {@internal}}
 should remain, or if another method of marking an element as non-public
 should be derived)
+
+(MVRIEL: Should perhaps be discussed on the mailinglist)
 
 #### Syntax
 
@@ -855,8 +912,8 @@ function count()
 
 ### 7.9. @license
 
-The @license tag is used to indicate which license is applicable for the associated
-'Structural Elements'.
+The @license tag is used to indicate which license is applicable for the
+associated 'Structural Elements'.
 
 #### Syntax
 
@@ -939,9 +996,6 @@ function count()
     <...>
 }
 ```
-(TODO:
-phpdoc1 syntax of both use the description as the text labels of the URIs.
-should this be specified here?  does phpdoc2 do the same?)
 
 ### 7.11. @method
 
@@ -1044,10 +1098,89 @@ This tag MUST NOT occur more than once in a "DocBlock".
 ```
 
 ### 7.13. @param
-(TODO: write up a usage description for @param)
+
+The @param tag is used to document a single parameter of a function or method.
+
+#### Syntax
+
+    @param ["Type"] [name] [<description>]
+
+#### Description
+
+With the @param tag it is possible to document the type and function of a
+single parameter of a function or method. When provided it MUST contain a
+"Type" to indicate what is expected; the description on the other hand is
+OPTIONAL yet RECOMMENDED. For complex structures such as option arrays it is
+RECOMMENDED to use an "Inline PHPDoc" to describe the option array.
+
+The @param tag MAY have a multi-line description and does not need explicit
+delimiting.
+
+It is RECOMMENDED when documenting to use this tag with every function and
+method. Exceptions to this recommendation are:
+
+This tag MUST NOT occur more than once per parameter in a "PHPDoc" and is
+limited to "Structural Elements" of type method or function.
+
+#### Examples
+
+```php
+/**
+ * Counts the number of items in the provided array.
+ *
+ * @param mixed[] $array Array structure to count the elements of.
+ *
+ * @return int Returns the number of elements.
+ */
+function count(array $items)
+{
+    <...>
+}
+```
+
+(TODO: add an example demonstrating Inline PHPDoc)
 
 ### 7.14. @property
-(TODO: write up a usage description for @property)
+
+The @property tag allows a class to know which 'magic' properties are present.
+
+#### Syntax
+
+    @property ["Type"] [name] [<description>]
+
+#### Description
+
+The @property tag is used in the situation where a class contains the
+`__get()` and `__set()` magic methods and allows for specific names.
+
+An example of this is a child class whose parent has a `__get()`. The child
+knows which properties need to be present but relies on the parent class to use the
+`__get()` method to provide it.
+In this situation, the child class would have a @property tag for each magic
+property.
+
+@property tags MUST NOT be used in a "PHPDoc" that is not associated with
+a *class* or *interface*.
+
+#### Examples
+
+```php
+class Parent
+{
+    public function __get()
+    {
+        <...>
+    }
+}
+
+/**
+ * @property string $myProperty
+ */
+class Child extends Parent
+{
+    <...>
+}
+```
 
 ### 7.15. @return
 
@@ -1102,7 +1235,44 @@ function getLabel()
 ```
 
 ### 7.16. @see
-(TODO: write up a usage description for @see)
+
+The @see tag indicates a reference from the associated "Structural Elements" to
+a website or other "Structural Elements".
+
+#### Syntax
+
+    @see [URI | "Type" | "FQSEN"] [<description>]
+
+#### Description
+
+The @see tag can be used to define a reference to other
+"Structural Elements" or to an URI.
+
+When defining a reference to another "Structural Elements" you can either
+provide a "Type" or refer to a specific element by appending a double colon
+and providing the name of that element (also called the "FQSEN").
+
+A URI MUST be complete and well-formed as specified in
+`RFC2396 <http://www.ietf.org/rfc/rfc2396.txt>`_.
+
+The @see tag SHOULD have a description appended to indicate the type of
+reference defined by this occurrence.
+
+#### Examples
+
+```php
+/**
+ * @see http://example.com/my/bar Documentation of Foo.
+ * @see MyClass::$items           for the property whose items are counted
+ * @see MyClass::setItems()       to set the items for this collection.
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.17. @since
 
@@ -1111,25 +1281,21 @@ using some description of "versioning" to that element.
 
 #### Syntax
 
-    @since [description]
+    @since [<"Semantic Version">] [<description>]
 
 #### Description
 
 Documents the "version" of the introduction or modification of any element.
-There is no semantic requirement of what this "version" string represents,
-e.g. application version vs element version.  It can be anything:  a text
-description; a string for the application's version; a string for the
-file's revision "version" in the source code repository.
-There is no expectation that the description itself is parsable into any
-distinct or defined parts.
 
-(TODO:
-should @since be left defined this loosely, like it is in phpdoc1?
-or should we specify a stricter definition of layout?
-are there RFCs about software versioning that we should at least recommend?)
+It is RECOMMENDED that the version matches a semantic version number (x.x.x)
+and MAY have a description to provide additional information.
 
-The @since tag is not intended for showing the current version of an
-element... use the @version tag for that purpose.
+This information can be used to generate a set of API Documentation where the
+consumer is informed which application version is necessary for a specific
+element.
+
+The @since tag SHOULD NOT be used to show the current version of an element, the
+@version tag MAY be used for that purpose.
 
 #### Examples
 
@@ -1140,9 +1306,10 @@ element... use the @version tag for that purpose.
  * @since 2.0.0 introduced
  */
 class Foo
-
+{
     /**
-     * Make a bar
+     * Make a bar.
+     *
      * @since 2.1.5 bar($arg1 = '', $arg2 = null)
      *        introduced the optional $arg2
      * @since 2.1.0 bar($arg1 = '')
@@ -1150,19 +1317,122 @@ class Foo
      * @since 2.0.0 bar()
      *        introduced new method bar()
      */
-    public function bar($arg1 = '', $arg2 = null) {...}
-
+    public function bar($arg1 = '', $arg2 = null)
+    {
+        <...>
+    }
+}
 ```
 
 ### 7.18. @subpackage [deprecated]
 
-This tag MUST NOT occur more than once in a "DocBlock".
+The @subpackage tag is used to categorize "Structural Elements" into logical
+subdivisions.
+
+#### Syntax
+
+    @subpackage [name]
+
+#### Description
+
+The @subpackage tag MAY be used as a counterpart or supplement to Namespaces.
+Namespaces provide a functional subdivision of "Structural Elements" where
+the @subpackage tag can provide a *logical* subdivision in which way the
+elements can be grouped with a different hierarchy.
+
+If, across the board, both logical and functional subdivisions are equal is it
+NOT RECOMMENDED to use the @subpackage tag, to prevent maintenance overhead.
+
+The @subpackage tag MUST only be used in a select set of DocBlocks, as is
+described in the documentation for the @package tag.
+
+This tag MUST accompany a @package tag and MUST NOT occur more than once per
+DocBlock.
+
+#### Examples
+
+```php
+/**
+ * @package PSR
+ * @subpackage Documentation\API
+ */
+```
 
 ### 7.19. @throws
-(TODO: write up a usage description for @throws)
+
+The @throws tag is used to indicate whether "Structural Elements" throw a
+specific type of exception.
+
+#### Syntax
+
+    @throws ["Type"] [<description>]
+
+#### Description
+
+The @throws tag MAY be used to indicate that "Structural Elements" throw a
+specific type of error.
+
+The type provided with this tag MUST represent an object of the class Exception
+or any subclass thereof.
+
+This tag is used to present in your documentation which error COULD occur and
+under which circumstances. It is RECOMMENDED to provide a description that
+describes the reason an exception is thrown.
+
+It is also RECOMMENDED that this tag occurs for every occurrence of an
+exception, even if it has the same type. By documenting every occurrence a
+detailed view is created and the consumer knows for which errors to check.
+
+#### Examples
+
+```php
+/**
+ * Counts the number of items in the provided array.
+ *
+ * @param mixed[] $array Array structure to count the elements of.
+ *
+ * @throws InvalidArgumentException if the provided argument is not of type
+ *     'array'.
+ *
+ * @return int Returns the number of elements.
+ */
+function count($items)
+{
+    <...>
+}
+```
 
 ### 7.20. @todo
-(TODO: write up a usage description for @todo)
+
+The @todo tag is used to indicate whether any development activities should
+still be executed on associated "Structural Elements".
+
+#### Syntax
+
+    @todo [description]
+
+#### Description
+
+The @todo tag is used to indicate that an activity surrounding the associated
+"Structural Elements" must still occur. Each tag MUST be accompanied by
+a description that communicates the intent of the original author; this could
+however be as short as providing an issue number.
+
+#### Examples
+
+```php
+/**
+ * Counts the number of items in the provided array.
+ *
+ * @todo add an array parameter to count
+ *
+ * @return int Returns the number of elements.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.21. @type
 
@@ -1175,7 +1445,7 @@ You may use the @type tag to document the "Type" of the following
 
 #### Syntax
 
-    @type <"Type"> element_name [description]
+    @type ["Type"] [element_name] [<description>]
 
 #### Description
 
@@ -1266,47 +1536,38 @@ class Foo
 
 ### 7.23. @var [deprecated]
 
-Is a **deprecated** alias for `@type`... please see the documentation for `@type`
-for details of its usage.
-
-This tag MUST NOT occur more than once in a "DocBlock".
-(TODO: does this "once only" limit still apply, since @type is allowed multiples?)
+The @var tag is a **deprecated** alias for `@type`. Please see the documentation
+for `@type` for details of its usage.
 
 ### 7.24. @version
 
-The @version tag is used to denote some description of "versioning" to an element.
+The @version tag is used to denote some description of "versioning" to an
+element.
 
 #### Syntax
 
-    @version [description]
+    @version ["Semantic Version"] [<description>]
 
 #### Description
 
-Documents the "version" of any element.  There is no semantic requirement of what
-this "version" string represents, e.g. application version vs element version.
-It can be anything:  a text description; a string for the application's version;
-a string for the file's revision "version" in the source code repository.
-There is no expectation that the description itself is parsable into any
-distinct or defined parts.
+Documents the current "version" of any element.
 
-(TODO:
-should @version be left defined this loosely, like it is in phpdoc1?
-or should we specify a stricter definition of layout?
-are there RFCs about software versioning that we should at least recommend?)
+It is RECOMMENDED that the version matches a semantic version number (x.x.x)
+and MAY have a description to provide additional information.
 
-The @version tag is not intended for showing _when_ an element was added or modified...
-use the @since tag for that purpose.
+The @version tag MAY NOT be used to show the last modified or introduction
+version of an element, the @since tag SHOULD be used for that purpose.
 
 #### Examples
 
 ```php
 /**
  * File for class Foo
- * @version MyApp 2.1.7 
+ * @version 2.1.7 MyApp
  *          (this string denotes the application's overall version number)
- * @version @package_version@ 
+ * @version @package_version@
  *          (this PEAR replacement keyword expands upon package installation)
- * @version $Id$ 
+ * @version $Id$
  *          (this CVS keyword expands to show the CVS file revision number)
  */
 
@@ -1314,8 +1575,10 @@ use the @since tag for that purpose.
  * This is Foo
  */
 class Foo
+{
+  <...>
+}
 ```
-
 
 ## Appendix A. Types
 
