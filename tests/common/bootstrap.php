@@ -11,5 +11,8 @@
  */
 
 
+/**
+ * @uses \phpDocumentor\Bootstrap
+ */
 require_once __DIR__ . '/../../src/phpDocumentor/Bootstrap.php';
 \phpDocumentor\Bootstrap::createInstance()->initialize();
