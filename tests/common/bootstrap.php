@@ -10,7 +10,9 @@
  * @link      http://phpdoc.org
  */
 
-require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
+/**
+ * @uses \phpDocumentor\Bootstrap
+ */
 require_once __DIR__ . '/../../src/phpDocumentor/Bootstrap.php';
 \phpDocumentor\Bootstrap::createInstance()->initialize();
