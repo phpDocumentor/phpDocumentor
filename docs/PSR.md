@@ -705,7 +705,7 @@ This tag MAY also contain a version number up till which it is guaranteed to be
 included in the software. Starting with the given version will the function be
 removed or may be removed without further notice.
 
-If is RECOMMENDED to provide an additional description stating why the
+It is RECOMMENDED to provide an additional description stating why the
 associated element is deprecated.
 If it is superceded by another method it is RECOMMENDED to add a @see tag in the
 same 'PHPDoc' pointing to the new element.
@@ -814,10 +814,10 @@ Since there is no standard way to declare global variables, a @global tag MAY
 be used in a DocBlock preceding a global variable's definition. To support
 previous usages of @global, there is an alternate syntax that applies to
 DocBlocks preceding a function, used to document usage of global
-variables. in other words, There are two usages of @global: definition and
-function usage.
+variables. In other words, there are two usages of @global: definition and
+usage.
 
-##### Definition
+##### Syntax for the Global's Definition
 
 Only one @global tag MAY be allowed per global variable DocBlock. A global
 variable DocBlock MUST be followed by the global variable's definition before
@@ -826,7 +826,7 @@ any other element or DocBlock occurs.
 The name MUST be the exact name of the global variable as it is declared in
 the source.
 
-##### Function usage
+##### Syntax for the Global's Usage
 
 The function/method @global syntax MAY be used to document usage of global
 variables in a function, and MUST NOT have a $ starting the third word. The
