@@ -55,7 +55,7 @@ Obsoletes:
       7.20. @todo
       7.21. @type
       7.22. @uses
-      7.23. @var
+      7.23. @var [deprecated]
       7.24. @version
     Appendix A. Types
     Appendix B. Differences Compared With The De-facto PHPDoc Standard
@@ -1241,16 +1241,16 @@ a website or other "Structural Elements".
 
 #### Syntax
 
-    @see [URI | "Type" | "FQSEN"] [<description>]
+    @see [URI | "FQSEN"] [<description>]
 
 #### Description
 
 The @see tag can be used to define a reference to other
 "Structural Elements" or to an URI.
 
-When defining a reference to another "Structural Elements" you can either
-provide a "Type" or refer to a specific element by appending a double colon
-and providing the name of that element (also called the "FQSEN").
+When defining a reference to another "Structural Elements" you can refer to a
+specific element by appending a double colon and providing the name of that
+element (also called the "FQSEN").
 
 A URI MUST be complete and well-formed as specified in
 `RFC2396 <http://www.ietf.org/rfc/rfc2396.txt>`_.
@@ -1532,7 +1532,59 @@ class Foo
 ```
 
 ### 7.22. @uses
-(TODO: write up a usage description for @uses)
+
+Indicates whether the current "Structural Element" consumes the
+"Structural Element", or project file, that is provided as target.
+
+#### Syntax
+
+    @uses [file | "FQSEN"] [<description>]
+
+#### Description
+
+The @uses tag describes whether any part of the associated "Structural Element"
+uses, or consumes, another "Structural Element" or a file that is situated in
+the current project.
+
+When defining a reference to another "Structural Element" you can refer to a
+specific element by appending a double colon and providing the name of that
+element (also called the "FQSEN").
+
+Files that are contained in this project can be referred to by this tag. This
+can be used, for example, to indicate a relationship between a Controller and
+a template file (as View).
+
+This tag MUST NOT be used to indicate relations to elements outside of the
+system, so URLs are not usable. To indicate relations with outside elements the
+@see tag can be used.
+
+Applications consuming this tag, such as generators, are RECOMMENDED to provide
+a `@used-by` tag on the destination element. This can be used to provide a
+bi-directional experience and allow for static analysis.
+
+#### Examples
+
+```php
+<?php
+/**
+ * @uses \SimpleXMLElement::__construct()
+ */
+function initializeXml()
+{
+    <...>
+}
+```
+
+```php
+<?php
+/**
+ * @uses MyView.php
+ */
+function executeMyView()
+{
+    <...>
+}
+```
 
 ### 7.23. @var [deprecated]
 
