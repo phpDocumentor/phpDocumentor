@@ -162,27 +162,31 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
             );
 
             if (!empty($comments)) {
-                $docblock = new \phpDocumentor\Reflection\DocBlock(
-                    (string) $comments[0]
-                );
+                try {
+                    $docblock = new \phpDocumentor\Reflection\DocBlock(
+                        (string) $comments[0]
+                    );
 
-                // the first DocBlock in a file documents the file if
-                // * it precedes another DocBlock or
-                // * it contains a @package tag and doesn't precede a class
-                //   declaration or
-                // * it precedes a non-documentable element (thus no include,
-                //   require, class, function, define, const)
-                if (count($comments) > 1
-                    || (!$node instanceof \PHPParser_Node_Stmt_Class
-                    && !$node instanceof \PHPParser_Node_Stmt_Interface
-                    && $docblock->hasTag('package'))
-                    || !$this->isNodeDocumentable($node)
-                ) {
-                    $docblock->line_number = $comments[0]->getLine();
-                    $this->doc_block = $docblock;
+                    // the first DocBlock in a file documents the file if
+                    // * it precedes another DocBlock or
+                    // * it contains a @package tag and doesn't precede a class
+                    //   declaration or
+                    // * it precedes a non-documentable element (thus no include,
+                    //   require, class, function, define, const)
+                    if (count($comments) > 1
+                        || (!$node instanceof \PHPParser_Node_Stmt_Class
+                        && !$node instanceof \PHPParser_Node_Stmt_Interface
+                        && $docblock->hasTag('package'))
+                        || !$this->isNodeDocumentable($node)
+                    ) {
+                        $docblock->line_number = $comments[0]->getLine();
+                        $this->doc_block = $docblock;
 
-                    // remove the file level DocBlock from the node's comments
-                    $comments = array_slice($comments, 1);
+                        // remove the file level DocBlock from the node's comments
+                        $comments = array_slice($comments, 1);
+                    }
+                } catch (\Exception $e) {
+                    $this->log($e->getMessage(), 2);
                 }
             }
 
