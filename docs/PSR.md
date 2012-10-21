@@ -27,6 +27,7 @@ Obsoletes:
       5.3. Tags
         5.3.1. Tag Name
         5.3.2. Tag Signature
+        5.3.3. Inline PHPDoc
       5.4. Examples
     6. Inheritance
       6.1. Class Or Interface
@@ -50,13 +51,15 @@ Obsoletes:
       7.15. @return
       7.16. @see
       7.17. @since
-      7.18. @subpackage [deprecated]
-      7.19. @throws
-      7.20. @todo
-      7.21. @type
-      7.22. @uses
-      7.23. @var [deprecated]
-      7.24. @version
+      7.18. @struct
+      7.19. @subpackage [deprecated]
+      7.20. @throws
+      7.21. @todo
+      7.22. @type
+      7.23. @uses
+      7.24. @var [deprecated]
+      7.25. @version
+    8. Describing hashes
     Appendix A. Types
     Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
@@ -361,9 +364,9 @@ tag-signature MUST NOT be followed by a description or other form of meta-data.
 
 Specific Tags MAY have an "Inline PHPDoc" section at the end of the "Tag"
 definition. An "Inline PHPDoc" is a "PHPDoc" element enclosed in braces and is
-only present at the end of a "Tag" sequence. Unless specified otherwise in a
-"Tag" definition, the "Inline PHPDoc" element will replace any description that
-could have been provided.
+only present at the end of a "Tag" sequence unless specified otherwise in a
+"Tag" definition, the "Inline PHPDoc" element MUST replace any description that
+COULD have been provided.
 
 An example can be the @method tag. This tag may be augmented using an
 "Inline PHPDoc" to provide additional information regarding the parameters,
@@ -844,15 +847,6 @@ a structure internal to this application or library. It may also be used inside
 a long description to insert a piece of text that is only applicable for
 the developers of this software.
 
-(TODO:
-phpdoc1 usage of @internal is the same as {@internal}} as described here,
-rather than being a means to mark an entire element as non-public.
-We should determine if the separate/different use of @internal vs {@internal}}
-should remain, or if another method of marking an element as non-public
-should be derived)
-
-(MVRIEL: Should perhaps be discussed on the mailinglist)
-
 #### Syntax
 
     @internal
@@ -863,7 +857,8 @@ or inline:
 
 The inline version of this tag may, contrary to other inline tags, contain
 text but also other inline tags. To increase readability and ease parsing
-the tag should be terminated with a double closing brace, instead of a single one.
+the tag should be terminated with a double closing brace, instead of a single
+one.
 
 #### Description
 
@@ -1138,7 +1133,23 @@ function count(array $items)
 }
 ```
 
-(TODO: add an example demonstrating Inline PHPDoc)
+The following example demonstrates the use of an "Inline PHPDoc" to document
+an option array with 2 elements: 'required' and 'label'.
+
+```php
+/**
+ * Initializes this class with the given options.
+ *
+ * @param string[] $options {
+ *     @type boolean $required Whether this element is required
+ *     @type string  $label    The display name for this element
+ * }
+ */
+public function __construct(array $options = array())
+{
+    <...>
+}
+```
 
 ### 7.14. @property
 
@@ -1241,7 +1252,7 @@ a website or other "Structural Elements".
 
 #### Syntax
 
-    @see [URI | "FQSEN"] [<description>]
+    @see [URI | "FQSEN"] [<:type:>] [<description>]
 
 #### Description
 
@@ -1255,16 +1266,23 @@ element (also called the "FQSEN").
 A URI MUST be complete and well-formed as specified in
 `RFC2396 <http://www.ietf.org/rfc/rfc2396.txt>`_.
 
-The @see tag SHOULD have a description appended to indicate the type of
-reference defined by this occurrence.
+The type of reference MAY be provided after the URI or FQSEN by mentioning a
+string wrapped in colons that defines the type of relation.
+
+(TODO: where do we keep a list of recommended relation types? here? separate
+RFC (my preference) or somewhere on the internet?)
+
+The @see tag SHOULD have a description appended to provide additional
+information regarding the relationship between the 2 elements.
 
 #### Examples
 
 ```php
 /**
+ * @see number_of() :alias:
+ * @see MyClass::$items           For the property whose items are counted.
+ * @see MyClass::setItems()       To set the items for this collection.
  * @see http://example.com/my/bar Documentation of Foo.
- * @see MyClass::$items           for the property whose items are counted
- * @see MyClass::setItems()       to set the items for this collection.
  *
  * @return integer Indicates the number of items.
  */
@@ -1324,7 +1342,9 @@ class Foo
 }
 ```
 
-### 7.18. @subpackage [deprecated]
+### 7.18. @struct
+
+### 7.19. @subpackage [deprecated]
 
 The @subpackage tag is used to categorize "Structural Elements" into logical
 subdivisions.
@@ -1358,7 +1378,7 @@ DocBlock.
  */
 ```
 
-### 7.19. @throws
+### 7.20. @throws
 
 The @throws tag is used to indicate whether "Structural Elements" throw a
 specific type of exception.
@@ -1402,7 +1422,7 @@ function count($items)
 }
 ```
 
-### 7.20. @todo
+### 7.21. @todo
 
 The @todo tag is used to indicate whether any development activities should
 still be executed on associated "Structural Elements".
@@ -1434,7 +1454,7 @@ function count()
 }
 ```
 
-### 7.21. @type
+### 7.22. @type
 
 You may use the @type tag to document the "Type" of the following
 "Structural Elements":
@@ -1531,7 +1551,7 @@ class Foo
 }
 ```
 
-### 7.22. @uses
+### 7.23. @uses
 
 Indicates whether the current "Structural Element" consumes the
 "Structural Element", or project file, that is provided as target.
@@ -1586,12 +1606,12 @@ function executeMyView()
 }
 ```
 
-### 7.23. @var [deprecated]
+### 7.24. @var [deprecated]
 
 The @var tag is a **deprecated** alias for `@type`. Please see the documentation
 for `@type` for details of its usage.
 
-### 7.24. @version
+### 7.25. @version
 
 The @version tag is used to denote some description of "versioning" to an
 element.
@@ -1631,6 +1651,47 @@ class Foo
   <...>
 }
 ```
+
+## 8. Describing hashes
+
+The structure of a hash may be described using an "Inline PHPDoc" as part of a
+@type, @param or @return declaration or using the @struct tag in the Class'
+DocBlock.
+
+In either case each element of the hash is denoted with a @type declaration in
+the "Inline PHPDoc". Using this tag it is possible to indicate type, name and
+purpose of the element.
+
+Please note that the variable name part of the @type tag still needs to be
+preceded by a dollar sign for readability and parsability of the tag.
+
+Example:
+
+```php
+/**
+ * Initializes this class with the given options.
+ *
+ * @param string[] $options {
+ *     @type boolean $required Whether this element is required
+ *     @type string  $label    The display name for this element
+ * }
+ */
+public function __construct(array $options = array())
+{
+    <...>
+}
+```
+
+### As @struct declaration
+
+In some cases a hash should be documented multiple times in the same class. For
+these purposes you COULD declare it as a 'virtual' "Structural Element" using
+the @struct tag in the declaration of a Class or Interface.
+
+It is RECOMMENDED to use native language constructs in these situations, such as
+a class.
+
+Please see the @struct documentation on how to use this tag.
 
 ## Appendix A. Types
 
