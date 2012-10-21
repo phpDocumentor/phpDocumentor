@@ -37,11 +37,13 @@ class See extends Definition
      */
     protected function configure()
     {
-        $referral = explode('::', $this->xml['refers']);
+        $referral = explode('::', $this->xml->getAttribute('refers'));
         $referral[0] = $this->expandType($referral[0], count($referral) > 1);
-        $this->xml['refers'] = implode('::', $referral);
-        if (trim($this->xml['description']) === '') {
-            $this->xml['description'] = implode('::', $referral);
+        $this->xml->setAttribute(
+            'refers', $referral = implode('::', $referral)
+        );
+        if (trim($this->xml->getAttribute('description')) === '') {
+            $this->xml->setAttribute('description', $referral);
         }
     }
 }
