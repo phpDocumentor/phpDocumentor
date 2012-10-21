@@ -16,7 +16,7 @@
 namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
 
 /**
- * Definition for the @see tag; expands the class mentioned in the refers
+ * Definition for the @uses tag; expands the class mentioned in the refers
  * attribute.
  *
  * @category   phpDocumentor
@@ -26,25 +26,20 @@ namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class See extends Definition
+class Author extends Definition
 {
+    public function setDescription($description)
+    {
+        $this->xml->appendChild(new \DOMElement('description', $description));
+    }
 
-    /**
-     * Adds a new attribute `refers` to the structure element for this tag and
-     * set the description to the element name.
-     *
-     * @return void
-     */
     protected function configure()
     {
-        $referral = explode('::', $this->xml->getAttribute('refers'));
-        $referral[0] = $this->expandType($referral[0], count($referral) > 1);
-        $this->xml->setAttribute(
-            'refers', $referral = implode('::', $referral)
+        $this->xml->appendChild(
+            new \DOMElement('name', $this->tag->getAuthorName())
         );
-        $description = $this->xml->getElementsByTagName('description')->item(0);
-        if (trim($description->nodeValue) === '') {
-            $description->nodeValue = $referral;
-        }
+        $this->xml->appendChild(
+            new \DOMElement('email', $this->tag->getAuthorEmail())
+        );
     }
 }

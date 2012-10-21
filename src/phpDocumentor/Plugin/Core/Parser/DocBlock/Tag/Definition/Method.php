@@ -37,16 +37,20 @@ class Method extends Definition
         /** @var \phpDocumentor\Reflection\DocBlock\Tag\MethodTag $tag */
         $tag = $this->tag;
 
-        $this->xml['method_name'] = $tag->getMethodName();
+        $this->xml->setAttribute('method_name', $tag->getMethodName());
 
         foreach ($tag->getArguments() as $argument) {
-            $argument_obj = $this->xml->addChild('argument');
-            $argument_obj->addChild(
-                'name', $argument[count($argument) > 1 ? 1 : 0]
+            $argument_obj = $this->xml->appendChild(
+                new \DOMElement('argument')
             );
-            $argument_obj->addChild('default');
-            $argument_obj->addChild(
-                'type', count($argument) > 1 ? $argument[0] : null
+            $argument_obj->appendChild(
+                new \DOMElement('name', $argument[count($argument) > 1 ? 1 : 0])
+            );
+            $argument_obj->appendChild(
+                new \DOMElement('default')
+            );
+            $argument_obj->appendChild(
+                new \DOMElement('type', count($argument) > 1 ? $argument[0] : null)
             );
         }
     }

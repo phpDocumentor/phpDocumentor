@@ -71,34 +71,43 @@ class Doctrine extends Definition
      */
     protected function configure()
     {
+        $description = $this->xml->getElementsByTagName('description')->item(0);
+        $descriptionText = trim($description->nodeValue);
         // remove enclosing parenthesis
-        if (trim($this->xml['description'])) {
-            $this->xml['description'] = substr(
-                trim($this->xml['description']), 1, -1
+        if ($descriptionText) {
+            $description->nodeValue = substr(
+                $descriptionText, 1, -1
             );
         }
 
         // add indicator that we are talking about Doctrine Tags
-        $this->xml['plugin'] = 'doctrine';
+        $this->xml->setAttribute('plugin', 'doctrine');
 
-        $name = $this->xml['name'];
+        $name = $this->xml->getAttribute('name');
         if (strpos($name, '\\') !== false) {
             $name = substr($name, strrpos($name, '\\')+1);
         }
 
         // add a link to the documentation for this annotation
-        $this->xml['link'] = 'http://www.doctrine-project.org/docs/orm/2.1/en/'
+        $this->xml->setAttribute(
+            'link',
+            'http://www.doctrine-project.org/docs/orm/2.1/en/'
             . 'reference/annotations-reference.html#annref-'
-            . strtolower($name);
+            . strtolower($name)
+        );
 
-        $this->xml['content'] = $this->xml['description'];
-        $this->xml['description'] = $name;
+        $this->xml->setAttribute('content', $this->tag->getDescription());
+        if ('' === $descriptionText) {
+            $description->nodeValue = $name;
+        }
 
         // find the array of arguments
-        $arguments = $this->findArguments((string)$this->xml['content']);
+        $arguments = $this->findArguments($this->xml->getAttribute('content'));
         foreach ($arguments as $argument) {
-            $arg = $this->xml->addChild('argument', $argument[1]);
-            $arg['field-name'] = $argument[0];
+            $arg = $this->xml->appendChild(
+                new \DOMElement('argument', $argument[1])
+            );
+            $arg->setAttribute('field-name', $argument[0]);
         }
     }
 

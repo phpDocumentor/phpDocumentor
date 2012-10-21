@@ -38,6 +38,6 @@ class Param extends Definition
             // TODO: get the name from the argument list
         }
 
-        $this->xml['variable'] = $this->tag->getVariableName();
+        $this->xml->setAttribute('variable', $this->tag->getVariableName());
     }
 }

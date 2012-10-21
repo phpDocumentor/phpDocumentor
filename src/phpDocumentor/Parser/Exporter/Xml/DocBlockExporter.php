@@ -68,12 +68,9 @@ class DocBlockExporter
      */
     protected function addDescription(\DOMElement $node, DocBlock $docblock)
     {
-        $cdata = $node->ownerDocument->createCDATASection(
-            $docblock->getShortDescription()
+        $node->appendChild(
+            new \DOMElement('description', $docblock->getShortDescription())
         );
-        $description = new \DOMElement('description');
-        $node->appendChild($description);
-        $description->appendChild($cdata);
     }
 
     /**
@@ -87,12 +84,57 @@ class DocBlockExporter
     protected function addLongDescription(
         \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
-        $contents = $docblock->getLongDescription()->getFormattedContents();
-        $node = $child->ownerDocument->createCDATASection($contents);
+        $description = $docblock->getLongDescription()->getFormattedContents();
+        $element = new \DOMDocument();
+        
+        $longDescriptionElement = $child->appendChild(
+            new \DOMElement('long_description')
+        );
 
-        $element = new \DOMElement('long-description');
-        $child->appendChild($element);
-        $element->appendChild($node);
+        //Parsing can fail, so we disable error output temporarily.
+        $oldInternalErrors = libxml_use_internal_errors(true);
+        if (false === $element->loadXML(
+            '<div xmlns="http://www.w3.org/1999/xhtml">' .
+            $description .
+            '</div>'
+        )) {
+            //There's some invalid X(HT)ML. Trying with the HTML parser.
+            if (false === $element->loadHTML(
+                '<html><body><div>'
+                . $description .
+                '</div></body></html>'
+            )) {
+                //This is so damaged even the HTML parser can't handle it.
+                //Using plain text instead.
+                $element = new \DOMElement(
+                    'div', $description, 'http://www.w3.org/1999/xhtml'
+                );
+            } else {
+                //The HTML parser handled it, but what we're interested in is
+                //a little deeper. Now making it root.
+                
+                $element->loadXML(
+                    substr_replace(
+                        $element->saveXML(
+                            $element->getElementsByTagName('div')->item(0)
+                        ),
+                        '<div xmlns="http://www.w3.org/1999/xhtml">',
+                        0,
+                        5
+                    )
+                );
+                
+            }
+        }
+        
+        //Done parsing. Restoring back.
+        libxml_use_internal_errors($oldInternalErrors);
+        
+        $longDescriptionElement->appendChild(
+            $child->ownerDocument->importNode(
+                $element->documentElement, true
+            )
+        );
     }
 
     /**
