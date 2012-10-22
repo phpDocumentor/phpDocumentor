@@ -186,7 +186,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
                         $comments = array_slice($comments, 1);
                     }
                 } catch (\Exception $e) {
-                    $this->log($e->getMessage(), 2);
+                    $this->log($e->getMessage(), \phpDocumentor\Plugin\Core\Log::CRIT);
                 }
             }
 
