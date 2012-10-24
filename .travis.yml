@@ -16,7 +16,7 @@ before_script:
  - pyrus channel-discover pear.netpirates.net
  - pyrus install pear/PHP_CodeSniffer > /dev/null
  - pyrus install pear.phing.info/phing > /dev/null
- - pyrus install phpunit/phpcpd 
+ - pyrus install phpunit/phpcpd
  - phpenv rehash > /dev/null
 
 notifications:
