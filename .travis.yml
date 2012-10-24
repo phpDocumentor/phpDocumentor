@@ -13,6 +13,7 @@ before_script:
  - sudo apt-get -qq install graphviz > /dev/null
  - composer install --dev -q
  - pyrus channel-discover pear.phing.info > /dev/null
+ - pyrus channel-discover pear.netpirates.net
  - pyrus install pear/PHP_CodeSniffer > /dev/null
  - pyrus install pear.phing.info/phing > /dev/null
  - pyrus install phpunit/phpcpd 
