@@ -68,7 +68,8 @@ class ConstantExporter
             new \DOMElement('full_name', $constant->getName())
         );
 
-        $child->appendChild(new \DOMElement('value', $constant->getValue()));
+        $child->appendChild(new \DOMElement('value'))
+            ->appendChild(new \DOMText($constant->getValue()));
 
         $object = new DocBlockExporter();
         $constant->setDefaultPackageName($parent->getAttribute('package'));

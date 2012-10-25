@@ -47,7 +47,8 @@ class VariableExporter
         );
 
         $child->appendChild(new \DOMElement('name', $variable->getName()));
-        $child->appendChild(new \DOMElement('default', $variable->getDefault()));
+        $child->appendChild(new \DOMElement('default'))
+            ->appendChild(new \DOMText($variable->getDefault()));
 
         $object = new DocBlockExporter();
         $object->export($child, $variable);

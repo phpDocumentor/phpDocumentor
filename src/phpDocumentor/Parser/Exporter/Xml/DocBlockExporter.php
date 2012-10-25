@@ -68,9 +68,8 @@ class DocBlockExporter
      */
     protected function addDescription(\DOMElement $node, DocBlock $docblock)
     {
-        $node->appendChild(
-            new \DOMElement('description', $docblock->getShortDescription())
-        );
+        $node->appendChild(new \DOMElement('description'))
+            ->appendChild(new \DOMText($docblock->getShortDescription()));
     }
 
     /**
@@ -84,12 +83,10 @@ class DocBlockExporter
     protected function addLongDescription(
         \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
     ) {
-        $child->appendChild(
-            new \DOMElement(
-                'long-description',
+        $child->appendChild(new \DOMElement('long-description'))
+            ->appendChild(new \DOMText(
                 $docblock->getLongDescription()->getFormattedContents()
-            )
-        );
+            ));
     }
 
     /**
