@@ -330,7 +330,7 @@ class ClassNode extends NodeAbstract
      */
     protected function reflectExternalClass($parent_class_name)
     {
-        if (@class_exists($parent_class_name)) {
+        if (class_exists($parent_class_name, FALSE)) {
             $refl = new \ReflectionClass($parent_class_name);
 
             /** @var \ReflectionMethod $method */
