@@ -36,7 +36,7 @@ class ArgumentExporterTest extends TestAbstract
         );
 
         $output = <<<OUTPUT
-<child line="1"><name>name</name><default><![CDATA[default]]></default><type>string</type></child>
+<child line="1"><name>name</name><default>default</default><type>string</type></child>
 OUTPUT;
         $this->assertEquals($output, $child->ownerDocument->saveXML($child));
     }
