@@ -45,7 +45,7 @@ class DocBlockTagExporter
                 'reflection.docblock.tag.export',
                 \phpDocumentor\Reflection\Event\ExportDocBlockTagEvent
                 ::createInstance($element)->setObject($tag)
-                    ->setXml(simplexml_import_dom($child))
+                    ->setXml($child)
             );
         }
     }

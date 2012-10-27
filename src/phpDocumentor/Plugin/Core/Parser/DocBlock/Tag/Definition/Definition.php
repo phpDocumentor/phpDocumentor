@@ -29,7 +29,7 @@ use \phpDocumentor\Parser\ParserAbstract;
  */
 class Definition extends ParserAbstract
 {
-    /** @var \SimpleXMLElement */
+    /** @var \DOMEelement */
     protected $xml = null;
 
     /** @var \phpDocumentor\Reflection\DocBlock\Tag */
@@ -53,13 +53,13 @@ class Definition extends ParserAbstract
      *     where this tag occurs.
      * @param string[]                               $namespace_aliases Aliases
      *     used for all namespaces at the location of this tag.
-     * @param \SimpleXMLElement                      $xml               XML to
+     * @param \DOMElement                            $xml               XML to
      *     enhance.
      * @param \phpDocumentor\Reflection\DocBlock\Tag $tag               Tag
      *     object to use.
      */
     public function __construct(
-        $namespace, $namespace_aliases, \SimpleXMLElement $xml,
+        $namespace, $namespace_aliases, \DOMElement $xml,
         \phpDocumentor\Reflection\DocBlock\Tag $tag
     ) {
         $this->xml = $xml;
@@ -87,7 +87,7 @@ class Definition extends ParserAbstract
      *     where this tag occurs.
      * @param string[]                               $namespace_aliases Aliases
      *     used for all namespaces at the location of this tag.
-     * @param \SimpleXMLElement                      $xml               Root xml
+     * @param \DOMElement                            $xml               Root xml
      *     element for this tag.
      * @param \phpDocumentor\Reflection\DocBlock\Tag $tag               The
      *     actual tag as reflected.
@@ -98,7 +98,7 @@ class Definition extends ParserAbstract
      * @return Definition
      */
     public static function create(
-        $namespace, $namespace_aliases, \SimpleXMLElement $xml,
+        $namespace, $namespace_aliases, \DOMElement $xml,
         \phpDocumentor\Reflection\DocBlock\Tag $tag
     ) {
         $tag_name = $tag->getName();
@@ -243,7 +243,7 @@ class Definition extends ParserAbstract
      */
     public function setName($name)
     {
-        $this->xml['name'] = $name;
+        $this->xml->setAttribute('name', $name);
     }
 
     /**
@@ -255,7 +255,7 @@ class Definition extends ParserAbstract
      */
     public function setReference($name)
     {
-        $this->xml['refers'] = $name;
+        $this->xml->setAttribute('refers', $name);
     }
 
     /**
@@ -267,7 +267,7 @@ class Definition extends ParserAbstract
      */
     public function setDescription($description)
     {
-        $this->xml['description'] = trim($description);
+        $this->xml->setAttribute('description', trim($description));
     }
 
     /**
@@ -314,17 +314,23 @@ class Definition extends ParserAbstract
 
             // strip ampersands
             $name = str_replace('&', '', $type);
-            $type_object = $this->xml->addChild('type', $name);
+            $type_object = $this->xml->appendChild(
+                new \DOMElement('type', $name)
+            );
 
             // register whether this variable is by reference by checking
             // the first and last character
-            $type_object['by_reference'] = ((substr($type, 0, 1) === '&')
-                                            || (substr($type, -1) === '&'))
+            $type_object->setAttribute(
+                'by_reference',
+                ((substr($type, 0, 1) === '&') || (substr($type, -1) === '&'))
                     ? 'true'
-                    : 'false';
+                    : 'false'
+            );
         }
 
-        $this->xml['type'] = $this->expandType($this->tag->getType());
+        $this->xml->setAttribute(
+            'type', $this->expandType($this->tag->getType())
+        );
     }
 
     /**
