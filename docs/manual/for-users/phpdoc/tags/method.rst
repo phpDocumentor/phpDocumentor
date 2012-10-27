@@ -6,7 +6,7 @@ The @method allows a class to know which 'magic' methods are callable.
 Syntax
 ------
 
-    @method [return type] [name]([type] [parameter], [...]) [<description>]
+    @method [return type] [name]([[type] [parameter]<, ...>]) [<description>]
 
 Description
 -----------

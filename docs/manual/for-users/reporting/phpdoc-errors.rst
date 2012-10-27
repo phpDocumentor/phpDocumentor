@@ -64,17 +64,19 @@ Example::
     You can force phpDocumentor to do a complete re-parse of the source code (and thus
     mention any found issue) by using the ``--force`` argument.
 
-In the Intermediate Structure File
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In the Abstract Syntax Tree (AST)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 phpDocumentor will trace these issues during parsing and store them in the
-:term:`Intermediate Structure File` as *Parser markers* with the file where
+:term:`Abstract Syntax Tree (AST)` as *Parser markers* with the file where
 they occur.
 
 With this information you can build your own logger or even send them to a
 centralized logger if needed.
 
-Example::
+Example:
+
+.. code-block:: xml
 
     <file path="src/XHProf/display/xhprof.php" hash="756d6d2c38893417bc8c3e829654084f" package="phpDocumentor">
         <parse_markers>
@@ -102,18 +104,13 @@ As checkstyle log file
 
 phpDocumentor is also capable of outputting a log file in the
 `checkstyle <http://checkstyle.sourceforge.net/>`_ format. The big advantage is
-that Continuous Integration tools such as Jenkins or phpUnderControl can interpret
-this format and keep statistics.
+that Continuous Integration tools such as Jenkins or phpUnderControl can
+interpret this format and keep statistics.
 
     The checkstyle format is the same one as used by phpCodeSniffer.
 
-In order to generate this report you need to
-
-1. install the checkstyle template::
-
-       $ phpdoc template:install checkstyle
-
-2. Run phpDocumentor and specify *checkstyle* as template::
+In order to generate this report you need to run phpDocumentor and
+specify *checkstyle* as template::
 
        $ phpdoc -d [SOURCE] -t [TARGET] --template checkstyle
 

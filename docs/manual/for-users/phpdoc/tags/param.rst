@@ -6,7 +6,7 @@ The @param tag is used to document a single argument of a function or method.
 Syntax
 ------
 
-    @param <:term:`Type`> [name] [<description>]
+    @param [:term:`Type`] [name] [<description>]
 
 Description
 -----------

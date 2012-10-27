@@ -1,6 +1,14 @@
 Using the installer
 ===================
 
+Requirements
+------------
+
+.. include:: requirements.rst
+
+Instructions
+------------
+
 phpDocumentor provides a stand alone installer that will perform most of the
 actions necessary for a smooth installation.
 
