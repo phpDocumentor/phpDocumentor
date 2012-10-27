@@ -18,16 +18,18 @@ Definitions
              * @return string
              */
 
-    Intermediate Structure File
-        phpDocumentor generates an intermediate XML file between parsing your source
-        code and generating the HTML output. This structure file
-        (called *structure.xml*) contains the raw analyzed data of your project.
+    Abstract Syntax Tree (AST)
+        phpDocumentor generates a XML file between parsing your source code and
+        generating the HTML output. This structure file (called *structure.xml*)
+        contains the raw analyzed data of your project, also called: an Abstract
+        Syntax Tree.
 
-        This same file is also used by phpDocumentor to do incremental parsing of your
-        project by comparing the contents of this file with the content on disk.
+        This same file is also used by phpDocumentor to do incremental parsing
+        of your project by comparing the contents of this file with the content
+        on disk.
 
-        It is thus recommended to keep your structure file and allow phpDocumentor to
-        re-use the contained information.
+        It is thus recommended to keep your structure file and allow
+        phpDocumentor to re-use the contained information.
 
     PHPDoc
         This is a section of documentation which provides information on several
@@ -91,7 +93,6 @@ Definitions
         * function (including methods)
         * property
         * constant
-        * variables, both local and global scope.
 
         It is RECOMMENDED to precede :term:`Structural Elements` with a
         :term:`DocBlock` at its definition and not with each individual usage.
@@ -153,3 +154,15 @@ Definitions
 
         It is recommended to read the chapter :doc:`/for-users/types` for a
         detailed description.
+
+    Fully Qualified Structural Element Name (FQSEN)
+       Each documentable element can be referenced using a unique name based on
+       its local name and any containers it is in.
+
+       It is best demonstrated using an example:
+
+           \My\Space\MyClass::myMethod()
+
+       This FQSEN identifies the *myMethod* method that is contained in the
+       *MyClass* class, which in turn is contained inside the *My\Space*
+       namespace.

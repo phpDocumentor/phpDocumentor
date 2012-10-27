@@ -6,7 +6,7 @@ The @property tag allows a class to know which 'magic' properties are present.
 Syntax
 ------
 
-    @property <:term:`Type`> [name] [<description>]
+    @property [:term:`Type`] [name] [<description>]
 
 Description
 -----------

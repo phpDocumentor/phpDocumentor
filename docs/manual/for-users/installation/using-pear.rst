@@ -1,6 +1,14 @@
 Using PEAR
 ==========
 
+Requirements
+------------
+
+.. include:: requirements.rst
+
+Instructions
+------------
+
 PEAR provides the latest released version of phpDocumentor and is an easy
 way to set up your machine.
 

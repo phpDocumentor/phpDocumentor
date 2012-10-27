@@ -108,7 +108,7 @@
     <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css"/>
     <!--<link rel="stylesheet" href="{{ pathto('_static/configurationblock.css', 1) }}" type="text/css"/>-->
 
-    <link href="http://demo.phpdoc.org/Responsive/css/template.css" rel="stylesheet" media="all">
+    <link href="{{ pathto('_static/css/template.css', 1) }}" rel="stylesheet" media="all">
     <style>
         h1 {
             font-family: serif;
@@ -126,27 +126,32 @@
             font-style: italic;
             margin-top: 15px;
         }
+        .well table.docutils {
+            width: 100%;
+        }
     </style>
 
-    <script src="http://demo.phpdoc.org/Responsive/js/jquery-1.7.1.min.js" type="text/javascript"></script>
-    <script src="http://demo.phpdoc.org/Responsive/js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
-    <script src="http://demo.phpdoc.org/Responsive/js/bootstrap.js" type="text/javascript"></script>
-    <script src="http://demo.phpdoc.org/Responsive/js/prettify/prettify.min.js" type="text/javascript"></script>
+    <script src="{{ pathto('_static/js/jquery-1.7.1.min.js', 1) }}" type="text/javascript"></script>
+    <script src="{{ pathto('_static/js/jquery-ui-1.8.2.custom.min.js', 1) }}" type="text/javascript"></script>
+    <script src="{{ pathto('_static/js/bootstrap.js', 1) }}" type="text/javascript"></script>
+    <script src="{{ pathto('_static/js/prettify/prettify.min.js', 1) }}" type="text/javascript"></script>
     <script type="text/javascript">
 
         function equalHeight(group) {
             var tallest = 0;
+
             group.each(function() {
                 var thisHeight = $(this).height();
                 if(thisHeight > tallest) {
                     tallest = thisHeight;
                 }
             });
+
             group.height(tallest);
         }
 
-        $(document).ready(function(){
-            $('.row').each(function(){
+        $(document).ready(function() {
+            $('.contents .row').each(function() {
                 equalHeight(jQuery(this).find('.well'));
             });
 

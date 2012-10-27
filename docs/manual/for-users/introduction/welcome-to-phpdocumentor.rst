@@ -16,8 +16,8 @@ documentation.
 This documention can prove to be very useful in the following, example,
 situations:
 
-* Sets of libraries or applications providing an API, such as phpDocumentor 2
-  itself Frameworks, such as Zend Framework or Symfony
-* Pluggable architectures, such as WordPress or PyroCMS
+* Sets of libraries or applications providing an API, such as frameworks as
+  Zend Framework or Symfony.
+* Pluggable architectures, such as WordPress or PyroCMS.
 * Long-running, complex projects, to help you find the right function or method
-  for the job
+  for the job.
