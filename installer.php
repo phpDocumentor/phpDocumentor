@@ -342,6 +342,13 @@ try
 {
     $installer->log('phpDocumentor installer for manual installations');
 
+    if (false === extension_loaded('zip')) {
+        throw new \Exception(
+            "The 'zip' extension is required... "
+            . "you should enable it in your php.ini file."
+        );
+    }
+
     // An IP was provided thus we set up proxying
     if (isset($argv[1]) && ($argv[1] != 'dev')) {
         // All HTTP requests are passed through the local NTLM proxy server.
