@@ -43,6 +43,6 @@ class Link extends Definition
             );
         }
 
-        $this->xml['link'] = $this->tag->getLink();
+        $this->xml->setAttribute('link', $this->tag->getLink());
     }
 }

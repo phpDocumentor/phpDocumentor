@@ -94,12 +94,12 @@ class FileExporter
             $child->appendChild($markers);
 
             foreach ($file->getMarkers() as $marker) {
-                $marker_obj = new \DOMElement(
-                    strtolower($marker[0]),
-                    htmlspecialchars(trim($marker[1]))
-                );
+                $marker_obj = new \DOMElement(strtolower($marker[0]));
                 $markers->appendChild($marker_obj);
+
+                $marker_obj->appendChild(new \DOMText(trim($marker[1])));
                 $marker_obj->setAttribute('line', $marker[2]);
+
             }
         }
 
@@ -108,13 +108,13 @@ class FileExporter
             $child->appendChild($parse_errors);
 
             foreach ($file->getParseErrors() as $error) {
-                $marker_obj = new \DOMElement(
-                    strtolower($error[0]),
-                    htmlspecialchars(trim($error[1]))
-                );
+                $marker_obj = new \DOMElement(strtolower($error[0]));
                 $parse_errors->appendChild($marker_obj);
+
+                $marker_obj->appendChild(new \DOMText(trim($error[1])));
                 $marker_obj->setAttribute('line', $error[2]);
                 $marker_obj->setAttribute('code', $error[3]);
+
             }
         }
 

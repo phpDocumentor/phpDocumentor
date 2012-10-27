@@ -47,15 +47,8 @@ class VariableExporter
         );
 
         $child->appendChild(new \DOMElement('name', $variable->getName()));
-        $default = new \DOMElement('default');
-        $child->appendChild($default);
-
-        /** @var \DOMDocument $dom_document */
-        $dom_document = $child->ownerDocument;
-
-        $default->appendChild(
-            $dom_document->createCDATASection($variable->getDefault())
-        );
+        $child->appendChild(new \DOMElement('default'))
+            ->appendChild(new \DOMText($variable->getDefault()));
 
         $object = new DocBlockExporter();
         $object->export($child, $variable);
