@@ -17,7 +17,9 @@ namespace phpDocumentor;
  */
 require_once findAutoloader();
 
-use \Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Cilex\Application as Cilex;
+use Cilex\Provider\MonologServiceProvider;
 
 /**
  * Application class for phpDocumentor.
@@ -28,14 +30,14 @@ use \Symfony\Component\Console\Input\InputInterface;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class Application extends \Cilex\Application
+class Application extends Cilex
 {
     const VERSION = '2.0.0a11';
 
     /**
      * Initializes all components used by phpDocumentor.
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct('phpDocumentor', self::VERSION);
 
@@ -124,7 +126,7 @@ class Application extends \Cilex\Application
     protected function addLogging()
     {
         $this->register(
-            new \Cilex\Provider\MonologServiceProvider(),
+            new MonologServiceProvider(),
             array(
                 'monolog.name'    => 'phpDocumentor',
                 'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
@@ -210,7 +212,9 @@ class Application extends \Cilex\Application
         $this['plugin_manager'] = $this->share(
             function () use ($app) {
                 $manager = new \phpDocumentor\Plugin\Manager(
-                    $app['event_dispatcher'], $app['config'], $app['autoloader']
+                    $app['event_dispatcher'],
+                    $app['config'],
+                    $app['autoloader']
                 );
                 return $manager;
             }

@@ -109,24 +109,22 @@ class Plugin extends PluginAbstract
             $this->options[$key] = $option;
         }
 
-        $this->translate = new \Zend\Translator\Adapter\ArrayAdapter(array(
-            'locale' => 'en',
-            'content' => $path . DIRECTORY_SEPARATOR . 'Messages'
-                . DIRECTORY_SEPARATOR . 'en.php'
-        ));
+        $this->translate = new \Zend\Translator\Adapter\ArrayAdapter(
+            array(
+                'locale' => 'en',
+                'content' => $path . DIRECTORY_SEPARATOR . 'Messages' . DIRECTORY_SEPARATOR . 'en.php'
+            )
+        );
 
         /** @var \DirectoryIterator[] $files  */
         $files = new \DirectoryIterator($path . DIRECTORY_SEPARATOR . 'Messages');
-        foreach($files as $path) {
+        foreach ($files as $path) {
             $base_name = $path->getBasename('.php');
             if (!$path->isFile() || ($base_name == 'en')) {
                 continue;
             }
 
-            $this->translate->addTranslation(array(
-                'locale' => $base_name,
-                'content' => $path->getPath()
-            ));
+            $this->translate->addTranslation(array('locale' => $base_name, 'content' => $path->getPath()));
         }
     }
 

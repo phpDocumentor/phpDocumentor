@@ -52,5 +52,4 @@ class IncludeReflector extends BaseReflector
     {
         return (string)$this->node->expr->value;
     }
-
 }

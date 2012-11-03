@@ -43,96 +43,104 @@ generates a structure file (structure.xml) at the target location.
 HELP
             )
             ->addOption(
-                'target', 't',
+                'target',
+                't',
                 InputOption::VALUE_OPTIONAL,
                 'Path where to store the generated output'
             )
             ->addOption(
-                'filename', 'f',
+                'filename',
+                'f',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of files to parse. The wildcards ? and * '
-                .'are supported'
+                'Comma-separated list of files to parse. The wildcards ? and * are supported'
             )
             ->addOption(
-                'directory', 'd',
+                'directory',
+                'd',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Comma-separated list of directories to (recursively) parse'
             )
             ->addOption(
-                'extensions', 'e',
+                'extensions',
+                'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of extensions to parse, defaults to '
-                . 'php, php3 and phtml'
+                'Comma-separated list of extensions to parse, defaults to php, php3 and phtml'
             )
             ->addOption(
-                'ignore', 'i',
+                'ignore',
+                'i',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of file(s) and directories that will be '
-                . 'ignored. Wildcards * and ? are supported'
+                'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported'
             )
             ->addOption(
-                'ignore-tags', null,
+                'ignore-tags',
+                null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of tags that will be ignored, defaults to '
-                .'none. package, subpackage and ignore may not be ignored.'
+                'Comma-separated list of tags that will be ignored, defaults to none. package, subpackage and ignore '
+                .'may not be ignored.'
             )
             ->addOption(
-                'hidden', null,
+                'hidden',
+                null,
                 InputOption::VALUE_NONE,
-                'set to on to descend into hidden directories '
-                . '(directories starting with \'.\'), default is on'
+                'set to on to descend into hidden directories (directories starting with \'.\'), default is on'
             )
             ->addOption(
-                'ignore-symlinks', null,
+                'ignore-symlinks',
+                null,
                 InputOption::VALUE_NONE,
                 'Ignore symlinks to other files or directories, default is on'
             )
             ->addOption(
-                'markers', 'm',
+                'markers',
+                'm',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Comma-separated list of markers/tags to filter',
                 array('TODO', 'FIXME')
             )
             ->addOption(
-                'title', null,
+                'title',
+                null,
                 InputOption::VALUE_OPTIONAL,
-                'Sets the title for this project; default is the phpDocumentor '
-                .'logo'
+                'Sets the title for this project; default is the phpDocumentor logo'
             )
             ->addOption(
-                'force', null,
+                'force',
+                null,
                 InputOption::VALUE_NONE,
-                'Forces a full build of the documentation, does not increment '
-                .'existing documentation'
+                'Forces a full build of the documentation, does not increment existing documentation'
             )
             ->addOption(
-                'validate', null,
+                'validate',
+                null,
                 InputOption::VALUE_NONE,
-                'Validates every processed file using PHP Lint, costs a lot of '
-                .'performance'
+                'Validates every processed file using PHP Lint, costs a lot of performance'
             )
             ->addOption(
-                'visibility', null,
+                'visibility',
+                null,
                 InputOption::VALUE_OPTIONAL,
-                'Specifies the parse visibility that should be displayed in the '
-                .'documentation (comma seperated e.g. "public,protected")'
+                'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. '
+                . '"public,protected")'
             )
             ->addOption(
-                'defaultpackagename', null,
+                'defaultpackagename',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'Name to use for the default package.',
                 'Default'
             )
             ->addOption(
-                'sourcecode', null,
+                'sourcecode',
+                null,
                 InputOption::VALUE_NONE,
                 'Whether to include syntax highlighted source code'
             )
             ->addOption(
-                'progressbar', 'p',
+                'progressbar',
+                'p',
                 InputOption::VALUE_NONE,
-                'Whether to show a progress bar; will automatically quiet logging '
-                .'to stdout'
+                'Whether to show a progress bar; will automatically quiet logging to stdout'
             );
 
         parent::configure();
@@ -170,16 +178,12 @@ HELP
             // if the folder does not exist at all, create it
             if (!file_exists($target)) {
                 if (!@mkdir($target, 0755, true)) {
-                    throw new \InvalidArgumentException(
-                        'The path "' . $target . '" could not be created'
-                    );
+                    throw new \InvalidArgumentException('The path "' . $target . '" could not be created');
                 }
             }
 
             if (!is_dir($target)) {
-                throw new \InvalidArgumentException(
-                    'The given location "' . $target . '" is not a folder'
-                );
+                throw new \InvalidArgumentException('The given location "' . $target . '" is not a folder');
             }
 
             $path = realpath($target);
@@ -191,8 +195,7 @@ HELP
 
         if (!is_writable($path)) {
             throw new \InvalidArgumentException(
-                'The given path "' . $target . '" either does not exist or is '
-                . 'not writable.'
+                'The given path "' . $target . '" either does not exist or is not writable.'
             );
         }
 
@@ -205,7 +208,7 @@ HELP
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int
+     * @return integer
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -219,29 +222,17 @@ HELP
         }
 
         $output->write('Initializing parser and collecting files .. ');
-        $target = $this->getTarget(
-            $this->getOption($input, 'target', 'parser/target')
-        );
+        $target = $this->getTarget($this->getOption($input, 'target', 'parser/target'));
 
         $parser = new \phpDocumentor\Parser\Parser();
-        $parser->setTitle(
-            (string)$this->getOption($input, 'title', 'title')
-        );
+        $parser->setTitle((string)$this->getOption($input, 'title', 'title'));
         $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
-        $parser->setMarkers(
-            $this->getOption($input, 'markers', 'parser/markers/item', null, true)
-        );
+        $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
-        $parser->setVisibility(
-            (string)$this->getOption($input, 'visibility', 'parser/visibility')
-        );
-        $parser->setDefaultPackageName(
-            $this->getOption(
-                $input, 'defaultpackagename', 'parser/default-package-name'
-            )
-        );
+        $parser->setVisibility((string)$this->getOption($input, 'visibility', 'parser/visibility'));
+        $parser->setDefaultPackageName($this->getOption($input, 'defaultpackagename', 'parser/default-package-name'));
 
         $files = $this->getFileCollection($input);
         $parser->setPath($files->getProjectRoot());
@@ -257,10 +248,7 @@ HELP
             $result = $parser->parseFiles($files, $input->getOption('sourcecode'));
         } catch (\Exception $e) {
             if ($e->getCode() === \phpDocumentor\Parser\Exception::NO_FILES_FOUND) {
-                throw new \Exception(
-                    'No parsable files were found, did you specify any using '
-                    . 'the -f or -d parameter?'
-                );
+                throw new \Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
             }
 
             throw new \Exception($e->getMessage());
@@ -288,28 +276,13 @@ HELP
     {
         $files = new \phpDocumentor\Fileset\Collection();
         $files->setAllowedExtensions(
-            $this->getOption(
-                $input, 'extensions', 'parser/extensions/extension',
-                array('php', 'php3', 'phtml'), true
-            )
+            $this->getOption($input, 'extensions', 'parser/extensions/extension', array('php', 'php3', 'phtml'), true)
         );
-        $files->setIgnorePatterns(
-            $this->getOption($input, 'ignore', 'files/ignore', array(), true)
-        );
-        $files->setIgnoreHidden(
-            $this->getOption(
-                $input, 'hidden', 'files/ignore-hidden', 'off'
-            ) == 'on'
-        );
-        $files->setFollowSymlinks(
-            $this->getOption(
-                $input, 'ignore-symlinks', 'files/ignore-symlinks', 'off'
-            ) == 'on'
-        );
+        $files->setIgnorePatterns($this->getOption($input, 'ignore', 'files/ignore', array(), true));
+        $files->setIgnoreHidden($this->getOption($input, 'hidden', 'files/ignore-hidden', 'off') == 'on');
+        $files->setFollowSymlinks($this->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on');
 
-        $file_options = $this->getOption(
-            $input, 'filename', 'files/file', array(), true
-        );
+        $file_options = $this->getOption($input, 'filename', 'files/file', array(), true);
         $added_files = array();
         foreach ($file_options as $glob) {
             if (!is_string($glob)) {
@@ -330,9 +303,7 @@ HELP
         }
         $files->addFiles($added_files);
 
-        $directory_options = $this->getOption(
-            $input, 'directory', 'files/directory', array(), true
-        );
+        $directory_options = $this->getOption($input, 'directory', 'files/directory', array(), true);
         $added_directories = array();
         foreach ($directory_options as $glob) {
             if (!is_string($glob)) {

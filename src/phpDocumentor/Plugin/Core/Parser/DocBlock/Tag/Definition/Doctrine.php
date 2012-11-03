@@ -72,11 +72,10 @@ class Doctrine extends Definition
     protected function configure()
     {
         $description = trim($this->xml->getAttribute('description'));
+
         // remove enclosing parenthesis
         if ($description) {
-            $this->xml->setAttribute(
-                'description', substr($description, 1, -1)
-            );
+            $this->xml->setAttribute('description', substr($description, 1, -1));
         }
 
         // add indicator that we are talking about Doctrine Tags
@@ -103,9 +102,7 @@ class Doctrine extends Definition
         // find the array of arguments
         $arguments = $this->findArguments($this->xml->getAttribute('content'));
         foreach ($arguments as $argument) {
-            $arg = $this->xml->appendChild(
-                new \DOMElement('argument', $argument[1])
-            );
+            $arg = $this->xml->appendChild(new \DOMElement('argument', $argument[1]));
             $arg->setAttribute('field-name', $argument[0]);
         }
     }
@@ -132,50 +129,51 @@ class Doctrine extends Definition
 
         for ($i = 0; $i < strlen($description); $i++) {
             switch ($description[$i]) {
-            case '{':
-                $level++;
-                continue 2;
-            case '}':
-                $level--;
-                continue 2;
-            case '"':
-                if (!isset($description[$i - 1])
-                    || ($description[$i - 1] != '\\')
-                ) {
-                    $doublequoted_string = !$doublequoted_string;
-                }
-                break;
-            case '\'':
-                if (!isset($description[$i - 1])
-                    || ($description[$i - 1] != '\\')
-                ) {
-                    $quoted_string = !$quoted_string;
-                }
-                break;
-            case '=':
-                if (($level == 0)
-                    && !$doublequoted_string
-                    && !$quoted_string
-                ) {
-                    $key = $value;
-                    $value = '';
+                case '{':
+                    $level++;
                     continue 2;
-                }
-                break;
-            case ',':
-                if (($level == 0)
-                    && !$doublequoted_string
-                    && !$quoted_string
-                ) {
-                    $arguments[] = array(trim($key), trim($value));
-                    $key = $value = '';
+                case '}':
+                    $level--;
                     continue 2;
-                }
-                break;
+                case '"':
+                    if (!isset($description[$i - 1])
+                        || ($description[$i - 1] != '\\')
+                    ) {
+                        $doublequoted_string = !$doublequoted_string;
+                    }
+                    break;
+                case '\'':
+                    if (!isset($description[$i - 1])
+                        || ($description[$i - 1] != '\\')
+                    ) {
+                        $quoted_string = !$quoted_string;
+                    }
+                    break;
+                case '=':
+                    if (($level == 0)
+                        && !$doublequoted_string
+                        && !$quoted_string
+                    ) {
+                        $key = $value;
+                        $value = '';
+                        continue 2;
+                    }
+                    break;
+                case ',':
+                    if (($level == 0)
+                        && !$doublequoted_string
+                        && !$quoted_string
+                    ) {
+                        $arguments[] = array(trim($key), trim($value));
+                        $key = $value = '';
+                        continue 2;
+                    }
+                    break;
             }
 
             $value .= $description[$i];
         }
+
         if ($key != '' || $value != '') {
             $arguments[] = array(trim($key), trim($value));
             $key = $value = '';

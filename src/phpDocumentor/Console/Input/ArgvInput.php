@@ -42,7 +42,8 @@ class ArgvInput extends \Symfony\Component\Console\Input\ArgvInput
      * @api
      */
     public function __construct(
-        array $argv = null, InputDefinition $definition = null
+        array $argv = null,
+        InputDefinition $definition = null
     ) {
         if (null === $argv) {
             $argv = $_SERVER['argv'];
@@ -54,5 +55,4 @@ class ArgvInput extends \Symfony\Component\Console\Input\ArgvInput
 
         parent::__construct($argv, $definition);
     }
-
 }

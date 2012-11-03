@@ -40,9 +40,8 @@ class ClassExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $class, \DOMElement $child = null
-    ) {
+    public function export(\DOMElement $parent, $class, \DOMElement $child = null)
+    {
         if (!$child) {
             $child = new \DOMElement('class');
             $parent->appendChild($child);
@@ -51,17 +50,14 @@ class ClassExporter
         $child->setAttribute('final', $class->isFinal() ? 'true' : 'false');
         $child->setAttribute('abstract', $class->isAbstract() ? 'true' : 'false');
 
-        $child->appendChild(
-            new \DOMElement('extends', $class->getParentClass())
-        );
+        $child->appendChild(new \DOMElement('extends', $class->getParentClass()));
 
         $interfaces = method_exists($class, 'getInterfaces')
             ? $class->getInterfaces()
             : $class->getParentInterfaces();
+
         foreach ($interfaces as $interface) {
-            $child->appendChild(
-                new \DOMElement('implements', $interface)
-            );
+            $child->appendChild(new \DOMElement('implements', $interface));
         }
 
         $object = new InterfaceExporter();

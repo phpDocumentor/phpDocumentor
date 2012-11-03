@@ -39,9 +39,7 @@ class See extends Definition
     {
         $referral = explode('::', $this->xml->getAttribute('refers'));
         $referral[0] = $this->expandType($referral[0], count($referral) > 1);
-        $this->xml->setAttribute(
-            'refers', $referral = implode('::', $referral)
-        );
+        $this->xml->setAttribute('refers', $referral = implode('::', $referral));
         if (trim($this->xml->getAttribute('description')) === '') {
             $this->xml->setAttribute('description', $referral);
         }

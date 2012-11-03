@@ -43,21 +43,18 @@ class PropertyValidator extends ValidatorAbstract
         $valid = true;
 
         if (!$this->docblock) {
-            $this->logParserError(
-                'ERROR', 50018, $this->lineNumber, array($this->entityName)
-            );
+            $this->logParserError('ERROR', 50018, $this->lineNumber, array($this->entityName));
             return false;
         }
 
         if ('' === $this->docblock->getShortDescription()) {
-            foreach($this->docblock->getTagsByName('var') as $varTag) {
+            foreach ($this->docblock->getTagsByName('var') as $varTag) {
                 if ('' !== $varTag->getDescription()) {
                     return true;
                 }
             }
-            $this->logParserError(
-                'CRITICAL', 50019, $this->lineNumber, array($this->entityName)
-            );
+
+            $this->logParserError('CRITICAL', 50019, $this->lineNumber, array($this->entityName));
         }
 
         return $valid;

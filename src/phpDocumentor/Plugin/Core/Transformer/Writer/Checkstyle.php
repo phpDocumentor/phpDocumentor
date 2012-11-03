@@ -37,9 +37,8 @@ class Checkstyle extends \phpDocumentor\Transformer\Writer\WriterAbstract
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure,
-        \phpDocumentor\Transformer\Transformation $transformation
-    ) {
+    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    {
         $artifact = $transformation->getTransformer()->getTarget()
         . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 

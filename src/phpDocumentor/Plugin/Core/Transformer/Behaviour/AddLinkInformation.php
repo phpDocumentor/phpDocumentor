@@ -25,8 +25,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-class AddLinkInformation
-    extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class AddLinkInformation extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 {
     /**
      * Adds extra information to the structure.
@@ -78,11 +77,11 @@ class AddLinkInformation
                 ->findExternalClassDocumentLocation($bare_type)) !== null
             ) {
                 $node->setAttribute('link', $link);
-            } else if (isset($class_paths[$type])) {
+            } elseif (isset($class_paths[$type])) {
                 $file_name = $this->getTransformer()
                     ->generateFilename($class_paths[$type]);
                 $node->setAttribute('link', $file_name . '#' . $type);
-            } else if (isset($declared_classes[$bare_type])) {
+            } elseif (isset($declared_classes[$bare_type])) {
                 // cache reflection calls since these can be expensive
                 if (!isset($unknown_classes[$bare_type])) {
                     $refl = new \ReflectionClass($bare_type);
@@ -116,33 +115,32 @@ class AddLinkInformation
         /** @var \DOMElement $element */
         foreach ($qry as $element) {
             switch($element->getAttribute('name')) {
-            case 'link':
-                $name = $element->getAttribute('link');
-                break;
-            case 'uses':
-            case 'used_by':
-            case 'covers':
-            case 'covered_by':
-            case 'see':
-            case 'inherited_from':
-                $name = $element->getAttribute('refers');
-                if (empty($name)) {
+                case 'link':
+                    $name = $element->getAttribute('link');
+                    break;
+                case 'uses':
+                case 'used_by':
+                case 'covers':
+                case 'covered_by':
+                case 'see':
+                case 'inherited_from':
+                    $name = $element->getAttribute('refers');
+                    if (empty($name)) {
+                        $name = $element->nodeValue;
+                    }
+                    elseif ($name[0] !== '\\') {
+                        $name = '\\' . $name;
+                    }
+                    break;
+                default:
                     $name = $element->nodeValue;
-                }
-                else if ($name[0] !== '\\') {
-                    $name = '\\' . $name;
-                }
-                break;
-            default:
-                $name = $element->nodeValue;
-                break;
+                    break;
             }
 
             $node_value = explode('::', $name);
 
             if (isset($class_paths[$node_value[0]])) {
-                $file_name = $this->getTransformer()
-                    ->generateFilename($class_paths[$node_value[0]]);
+                $file_name = $this->getTransformer()->generateFilename($class_paths[$node_value[0]]);
                 $element->setAttribute('link', $file_name . '#' . $name);
             }
         }
@@ -171,9 +169,7 @@ class AddLinkInformation
         /** @var \DOMElement $element */
         foreach ($qry as $element) {
             $path = $element->parentNode->getAttribute('path');
-            $class_paths[
-                $element->getElementsByTagName('full_name')->item(0)->nodeValue
-            ] = $path;
+            $class_paths[$element->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
         }
 
         return $class_paths;

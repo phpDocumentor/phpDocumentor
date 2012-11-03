@@ -39,9 +39,8 @@ class ArgumentExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $argument, \DOMElement $child = null
-    ) {
+    public function export(\DOMElement $parent, $argument, \DOMElement $child = null)
+    {
         if (!$child) {
             $child = new \DOMElement('argument');
             $parent->appendChild($child);
@@ -53,6 +52,6 @@ class ArgumentExporter
             ->appendChild(new \DOMText($argument->getDefault()));
 
         $type = $argument->getType();
-        $child->appendChild(new \DOMElement('type',  $type ? $type : ''));
+        $child->appendChild(new \DOMElement('type', $type ? $type : ''));
     }
 }

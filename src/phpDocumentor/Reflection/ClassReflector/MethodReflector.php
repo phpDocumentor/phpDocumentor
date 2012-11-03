@@ -11,6 +11,7 @@
  */
 
 namespace phpDocumentor\Reflection\ClassReflector;
+
 use phpDocumentor\Reflection\FunctionReflector;
 
 class MethodReflector extends FunctionReflector
@@ -73,5 +74,4 @@ class MethodReflector extends FunctionReflector
     {
         return $this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL;
     }
-
 }

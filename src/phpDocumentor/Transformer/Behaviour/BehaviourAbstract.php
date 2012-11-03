@@ -24,8 +24,7 @@ namespace phpDocumentor\Transformer\Behaviour;
  * @license    http://www.opensource.org/licenses/mit-license.php MIT
  * @link       http://phpdoc.org
  */
-abstract class BehaviourAbstract
-    extends \phpDocumentor\Transformer\TransformerAbstract
+abstract class BehaviourAbstract extends \phpDocumentor\Transformer\TransformerAbstract
 {
     /** @var \phpDocumentor\Transformer\Transformer $transformer */
     protected $transformer = null;

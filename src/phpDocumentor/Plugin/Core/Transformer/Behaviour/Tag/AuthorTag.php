@@ -83,5 +83,4 @@ class AuthorTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         return $xml;
     }
-
 }

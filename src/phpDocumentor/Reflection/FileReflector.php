@@ -155,7 +155,7 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
             $comments = array_values(
                 array_filter(
                     $comments,
-                    function($comment) {
+                    function ($comment) {
                         return $comment instanceof \PHPParser_Comment_Doc;
                     }
                 )
@@ -247,77 +247,77 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
         $prettyPrinter = new \PHPParser_PrettyPrinter_Zend;
 
         switch(get_class($node)) {
-        case 'PHPParser_Node_Stmt_Use':
-            /** @var \PHPParser_Node_Stmt_UseUse $use */
-            foreach ($node->uses as $use) {
-                $this->namespace_aliases[$use->alias]
-                    = implode('\\', $use->name->parts);
-            }
-            break;
-        case 'PHPParser_Node_Stmt_Namespace':
-            $this->current_namespace = implode('\\', $node->name->parts);
-            break;
-        case 'PHPParser_Node_Stmt_Class':
-            $class = new ClassReflector($node);
-            $class->setNamespaceAliases($this->namespace_aliases);
-            $class->parseSubElements();
-            $this->classes[] = $class;
-            break;
-        case 'PHPParser_Node_Stmt_Trait':
-            $trait = new TraitReflector($node);
-            $trait->setNamespaceAliases($this->namespace_aliases);
-            $this->traits[] = $trait;
-            break;
-        case 'PHPParser_Node_Stmt_Interface':
-            $interface = new InterfaceReflector($node);
-            $interface->setNamespaceAliases($this->namespace_aliases);
-            $interface->parseSubElements();
-            $this->interfaces[] = $interface;
-            break;
-        case 'PHPParser_Node_Stmt_Function':
-            $function = new FunctionReflector($node);
-            $function->setNamespaceAliases($this->namespace_aliases);
-            $this->functions[] = $function;
-            break;
-        case 'PHPParser_Node_Stmt_Const':
-            foreach ($node->consts as $constant) {
-                $reflector = new ConstantReflector($node, $constant);
-                $reflector->setNamespaceAliases($this->namespace_aliases);
-                $this->constants[] = $reflector;
-            }
-            break;
-        case 'PHPParser_Node_Expr_FuncCall':
-            if ($node->name instanceof \PHPParser_Node_Name
-                && $node->name == 'define'
-            ) {
-                $name = trim(
-                    $prettyPrinter->prettyPrintExpr($node->args[0]->value),
-                    '\''
-                );
-                $constant = new \PHPParser_Node_Const(
-                    $name,
-                    $node->args[1]->value,
-                    $node->getAttributes()
-                );
-                $constant->namespacedName = new \PHPParser_Node_Name(
-                    ($this->current_namespace
-                        ? $this->current_namespace.'\\' : '')
-                    .$name
-                );
+            case 'PHPParser_Node_Stmt_Use':
+                /** @var \PHPParser_Node_Stmt_UseUse $use */
+                foreach ($node->uses as $use) {
+                    $this->namespace_aliases[$use->alias]
+                        = implode('\\', $use->name->parts);
+                }
+                break;
+            case 'PHPParser_Node_Stmt_Namespace':
+                $this->current_namespace = implode('\\', $node->name->parts);
+                break;
+            case 'PHPParser_Node_Stmt_Class':
+                $class = new ClassReflector($node);
+                $class->setNamespaceAliases($this->namespace_aliases);
+                $class->parseSubElements();
+                $this->classes[] = $class;
+                break;
+            case 'PHPParser_Node_Stmt_Trait':
+                $trait = new TraitReflector($node);
+                $trait->setNamespaceAliases($this->namespace_aliases);
+                $this->traits[] = $trait;
+                break;
+            case 'PHPParser_Node_Stmt_Interface':
+                $interface = new InterfaceReflector($node);
+                $interface->setNamespaceAliases($this->namespace_aliases);
+                $interface->parseSubElements();
+                $this->interfaces[] = $interface;
+                break;
+            case 'PHPParser_Node_Stmt_Function':
+                $function = new FunctionReflector($node);
+                $function->setNamespaceAliases($this->namespace_aliases);
+                $this->functions[] = $function;
+                break;
+            case 'PHPParser_Node_Stmt_Const':
+                foreach ($node->consts as $constant) {
+                    $reflector = new ConstantReflector($node, $constant);
+                    $reflector->setNamespaceAliases($this->namespace_aliases);
+                    $this->constants[] = $reflector;
+                }
+                break;
+            case 'PHPParser_Node_Expr_FuncCall':
+                if ($node->name instanceof \PHPParser_Node_Name
+                    && $node->name == 'define'
+                ) {
+                    $name = trim(
+                        $prettyPrinter->prettyPrintExpr($node->args[0]->value),
+                        '\''
+                    );
+                    $constant = new \PHPParser_Node_Const(
+                        $name,
+                        $node->args[1]->value,
+                        $node->getAttributes()
+                    );
+                    $constant->namespacedName = new \PHPParser_Node_Name(
+                        ($this->current_namespace
+                            ? $this->current_namespace.'\\' : '')
+                        .$name
+                    );
 
-                // we use $constant here both times since this is a
-                // FuncCall, which combines properties that are otherwise
-                // split over 2 objects
-                $reflector = new ConstantReflector($constant, $constant);
-                $reflector->setNamespaceAliases($this->namespace_aliases);
-                $this->constants[] = $reflector;
-            }
-            break;
-        case 'PHPParser_Node_Expr_Include':
-            $include = new IncludeReflector($node);
-            $include->setNamespaceAliases($this->namespace_aliases);
-            $this->includes[] = $include;
-            break;
+                    // we use $constant here both times since this is a
+                    // FuncCall, which combines properties that are otherwise
+                    // split over 2 objects
+                    $reflector = new ConstantReflector($constant, $constant);
+                    $reflector->setNamespaceAliases($this->namespace_aliases);
+                    $this->constants[] = $reflector;
+                }
+                break;
+            case 'PHPParser_Node_Expr_Include':
+                $include = new IncludeReflector($node);
+                $include->setNamespaceAliases($this->namespace_aliases);
+                $this->includes[] = $include;
+                break;
         }
     }
 
@@ -426,7 +426,8 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
             preg_match_all(
                 '~//[\s]*(' . implode('|', $this->marker_terms) . ')\:?[\s]*(.*)~',
                 $line,
-                $matches, PREG_SET_ORDER
+                $matches,
+                PREG_SET_ORDER
             );
             foreach ($matches as &$match) {
                 $match[3] = $line_number + 1;
@@ -473,6 +474,11 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
         $this->filename = $filename;
     }
 
-    public function leaveNode(\PHPParser_Node $node) { }
-    public function afterTraverse(array $nodes)      { }
+    public function leaveNode(\PHPParser_Node $node)
+    {
+    }
+
+    public function afterTraverse(array $nodes)
+    {
+    }
 }

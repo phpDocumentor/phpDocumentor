@@ -68,8 +68,8 @@ class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             // if the method is not a method but a global function: error!
             if ($method->nodeName != 'method') {
                 $this->log(
-                    'Global function ' . $method_name . ' contains a reference '
-                    . 'to self or $self', \phpDocumentor\Plugin\Core\Log::ERR
+                    'Global function ' . $method_name . ' contains a reference to self or $self',
+                    \phpDocumentor\Plugin\Core\Log::ERR
                 );
                 continue;
             }
@@ -107,5 +107,4 @@ class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         return $xml;
     }
-
 }

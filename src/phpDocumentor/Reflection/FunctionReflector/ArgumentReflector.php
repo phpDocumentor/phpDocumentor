@@ -11,6 +11,7 @@
  */
 
 namespace phpDocumentor\Reflection\FunctionReflector;
+
 use phpDocumentor\Reflection\BaseReflector;
 
 class ArgumentReflector extends BaseReflector

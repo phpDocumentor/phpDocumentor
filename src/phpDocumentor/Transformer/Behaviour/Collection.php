@@ -97,5 +97,4 @@ class Collection extends BehaviourAbstract
 
         return $xml;
     }
-
 }

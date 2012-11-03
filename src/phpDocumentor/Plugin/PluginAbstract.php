@@ -44,9 +44,8 @@ class PluginAbstract
      * @param \Zend\Translator\Adapter\ArrayAdapter $translator
      *     Translator object.
      */
-    public function __construct(
-        $event_dispatcher, $configuration, $translator = null
-    ) {
+    public function __construct($event_dispatcher, $configuration, $translator = null)
+    {
         $this->event_dispatcher = $event_dispatcher;
         $this->configuration    = $configuration;
         $this->translate        = $translator;
@@ -98,8 +97,8 @@ class PluginAbstract
     public function log($message, $priority = 6)
     {
         $this->dispatch(
-            'system.log', \phpDocumentor\Event\LogEvent::createInstance($this)
-            ->setMessage($message)->setPriority($priority)
+            'system.log',
+            \phpDocumentor\Event\LogEvent::createInstance($this)->setMessage($message)->setPriority($priority)
         );
     }
 
@@ -118,9 +117,9 @@ class PluginAbstract
         $message = $this->_($code, $variables);
         $this->log($message, \phpDocumentor\Plugin\Core\Log::ERR);
         $this->dispatch(
-            'parser.log', \phpDocumentor\Parser\Event\LogEvent
-            ::createInstance($this)->setMessage($message)->setType($type)
-            ->setCode($code)->setLine($line)
+            'parser.log',
+            \phpDocumentor\Parser\Event\LogEvent::createInstance($this)
+            ->setMessage($message)->setType($type)->setCode($code)->setLine($line)
         );
     }
 
@@ -133,10 +132,7 @@ class PluginAbstract
      */
     public function debug($message)
     {
-        $this->dispatch(
-            'system.debug', \phpDocumentor\Event\DebugEvent
-            ::createInstance($this)->setMessage($message)
-        );
+        $this->dispatch('system.debug', \phpDocumentor\Event\DebugEvent::createInstance($this)->setMessage($message));
     }
 
     /**
@@ -188,5 +184,4 @@ class PluginAbstract
     {
         return $this->translate;
     }
-
 }

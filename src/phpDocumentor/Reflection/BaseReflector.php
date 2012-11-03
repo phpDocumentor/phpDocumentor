@@ -268,5 +268,4 @@ abstract class BaseReflector extends ReflectionAbstract
 
         return self::$prettyPrinter->prettyPrintExpr($value);
     }
-
 }

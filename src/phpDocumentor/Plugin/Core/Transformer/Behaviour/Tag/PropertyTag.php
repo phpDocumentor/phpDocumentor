@@ -71,9 +71,7 @@ class PropertyTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             $var_tag = new \DOMElement('tag');
             $docblock->appendChild($var_tag);
             $var_tag->setAttribute('name', 'var');
-            $var_tag->setAttribute(
-                'description', $node->getAttribute('description')
-            );
+            $var_tag->setAttribute('description', $node->getAttribute('description'));
             $var_tag->setAttribute('type', $node->getAttribute('type'));
             $var_tag->setAttribute('line', $node->getAttribute('line'));
 
@@ -92,5 +90,4 @@ class PropertyTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         return $xml;
     }
-
 }

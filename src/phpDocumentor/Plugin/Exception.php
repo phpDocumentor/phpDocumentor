@@ -21,5 +21,4 @@ namespace phpDocumentor\Plugin;
  */
 class Exception extends \Exception
 {
-
 }

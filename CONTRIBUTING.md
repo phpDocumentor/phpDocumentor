@@ -39,38 +39,19 @@ and/or [this help page of Github](http://learn.github.com/p/intro.html).
 Coding Standards
 ----------------
 
-phpDocumentor uses a coding standard that is derived from
-(PEAR)[http://pear.php.net/codingstandards].
+phpDocumentor uses the
+[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+as defined by the
+[PHP Framework Interoperability Group (PHP-FIG)](http://www.php-fig.org/).
 
-It is advised to check your code using \_PHP*CodeSniffer*; a phpcs.xml standards
-definition is included which can be used to run your tests.
+It is advised to check your code using phpCodeSniffer; the 'PSR2' standard is
+included by default in the most recent versions.
 
 Example:
 
 ``` bash
-$ phpcs --standard=phpcs.xml [file(s)]
+$ phpcs --standard=PSR2 [file(s)]
 ```
-
-### Amendment: @category, @packages and @subpackages and namespaces
-
-All code should **not** feature the @category, @package or @subpackage tags but
-use namespaces to represent the categorization of code.
-
-The following format is used:
-
-.. code-block:: php
-
-    \phpDocumentor\[Component]\[optional Subcomponent]
-
-It is discouraged to go deeper than 3 levels but not prohibited.
-Please refer to
-(PSR-0)[https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md]
-for a reference on the names for namespaces.
-
-### Amendment: @param descriptions are optional
-
-The code sniffs now report an error that code sniffs are required but this is
-considered optional for phpDocumentor.
 
 Unit testing
 ------------

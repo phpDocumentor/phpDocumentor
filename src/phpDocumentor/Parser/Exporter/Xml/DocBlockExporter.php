@@ -80,13 +80,13 @@ class DocBlockExporter
      *
      * @return void
      */
-    protected function addLongDescription(
-        \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
-    ) {
-        $child->appendChild(new \DOMElement('long-description'))
-            ->appendChild(new \DOMText(
-                $docblock->getLongDescription()->getFormattedContents()
-            ));
+    protected function addLongDescription(\DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock)
+    {
+        $child
+            ->appendChild(new \DOMElement('long-description'))
+            ->appendChild(
+                new \DOMText($docblock->getLongDescription()->getFormattedContents())
+            );
     }
 
     /**
@@ -122,9 +122,8 @@ class DocBlockExporter
      *
      * @return void
      */
-    protected function setParentsPackage(
-        \DOMElement $parent, DocBlock $docblock, $element
-    ) {
+    protected function setParentsPackage(\DOMElement $parent, DocBlock $docblock, $element)
+    {
         /** @var \phpDocumentor\Reflection\DocBlock\Tag $package */
         $package = current($docblock->getTagsByName('package'));
 
@@ -136,8 +135,7 @@ class DocBlockExporter
             $package_name = str_replace(
                 array('.', '_'),
                 '\\',
-                $package->getContent()
-                . ($subpackage ? '\\' . $subpackage->getContent() : '')
+                $package->getContent() . ($subpackage ? '\\' . $subpackage->getContent() : '')
             );
         }
 
@@ -147,5 +145,4 @@ class DocBlockExporter
 
         $parent->setAttribute('package', $package_name);
     }
-
 }

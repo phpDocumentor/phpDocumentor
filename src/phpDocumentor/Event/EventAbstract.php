@@ -19,8 +19,7 @@ namespace phpDocumentor\Event;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-abstract class EventAbstract extends \Symfony\Component\EventDispatcher\Event
-    implements \ArrayAccess
+abstract class EventAbstract extends \Symfony\Component\EventDispatcher\Event implements \ArrayAccess
 {
     /** @var object Represents an object that is the subject of this event */
     protected $subject;
@@ -83,7 +82,8 @@ abstract class EventAbstract extends \Symfony\Component\EventDispatcher\Event
         trigger_error(
             'Calling event attributes as array elements is deprecated since '
             .'2.0.0a8, please use the Event object\'s getters as this feature '
-            .'will be removed in 2.0.0', E_USER_DEPRECATED
+            .'will be removed in 2.0.0',
+            E_USER_DEPRECATED
         );
 
         $offset = str_replace('_', ' ', $offset);

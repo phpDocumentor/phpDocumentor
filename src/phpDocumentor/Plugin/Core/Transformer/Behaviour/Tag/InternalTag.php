@@ -56,13 +56,9 @@ class InternalTag extends IgnoreTag
 
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {
-            $node->nodeValue = preg_replace(
-                '/\{@internal\s(.+?)\}\}/', $replacement, $node->nodeValue
-            );
+            $node->nodeValue = preg_replace('/\{@internal\s(.+?)\}\}/', $replacement, $node->nodeValue);
         }
 
         return $xml;
     }
-
-
 }

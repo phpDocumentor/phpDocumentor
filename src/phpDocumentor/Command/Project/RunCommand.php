@@ -88,104 +88,115 @@ name.
 HELP
             )
             ->addOption(
-                'target', 't',
+                'target',
+                't',
                 InputOption::VALUE_OPTIONAL,
                 'Path where to store the generated output'
             )
             ->addOption(
-                'filename', 'f',
+                'filename',
+                'f',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of files to parse. The wildcards ? and * '
-                .'are supported'
+                'Comma-separated list of files to parse. The wildcards ? and * are supported'
             )
             ->addOption(
-                'directory', 'd',
+                'directory',
+                'd',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Comma-separated list of directories to (recursively) parse'
             )
             ->addOption(
-                'extensions', 'e',
+                'extensions',
+                'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of extensions to parse, defaults to '
-                . 'php, php3 and phtml'
+                'Comma-separated list of extensions to parse, defaults to php, php3 and phtml'
             )
             ->addOption(
-                'ignore', 'i',
+                'ignore',
+                'i',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of file(s) and directories that will be '
-                . 'ignored. Wildcards * and ? are supported'
+                'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported'
             )
             ->addOption(
-                'ignore-tags', null,
+                'ignore-tags',
+                null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of tags that will be ignored, defaults to '
-                .'none. package, subpackage and ignore may not be ignored.'
+                'Comma-separated list of tags that will be ignored, defaults to none. package, subpackage and ignore '
+                . 'may not be ignored.'
             )
             ->addOption(
-                'hidden', null,
+                'hidden',
+                null,
                 InputOption::VALUE_NONE,
-                'set to on to descend into hidden directories '
-                . '(directories starting with \'.\'), default is on'
+                'set to on to descend into hidden directories (directories starting with \'.\'), default is on'
             )
             ->addOption(
-                'ignore-symlinks', null,
+                'ignore-symlinks',
+                null,
                 InputOption::VALUE_NONE,
                 'Ignore symlinks to other files or directories, default is on'
             )
             ->addOption(
-                'markers', 'm',
+                'markers',
+                'm',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Comma-separated list of markers/tags to filter',
                 array('TODO', 'FIXME')
             )
             ->addOption(
-                'title', null,
+                'title',
+                null,
                 InputOption::VALUE_OPTIONAL,
-                'Sets the title for this project; default is the phpDocumentor '
-                .'logo'
+                'Sets the title for this project; default is the phpDocumentor logo'
             )
             ->addOption(
-                'force', null,
+                'force',
+                null,
                 InputOption::VALUE_NONE,
-                'Forces a full build of the documentation, does not increment '
-                .'existing documentation'
+                'Forces a full build of the documentation, does not increment existing documentation'
             )
             ->addOption(
-                'validate', null,
+                'validate',
+                null,
                 InputOption::VALUE_NONE,
-                'Validates every processed file using PHP Lint, costs a lot of '
-                .'performance'
+                'Validates every processed file using PHP Lint, costs a lot of performance'
             )
             ->addOption(
-                'visibility', null,
+                'visibility',
+                null,
                 InputOption::VALUE_OPTIONAL,
-                'Specifies the parse visibility that should be displayed in the '
-                .'documentation (comma seperated e.g. "public,protected")'
+                'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. '
+                . '"public,protected")'
             )
             ->addOption(
-                'defaultpackagename', null,
+                'defaultpackagename',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'Name to use for the default package.',
                 'Default'
             )
             ->addOption(
-                'sourcecode', null,
+                'sourcecode',
+                null,
                 InputOption::VALUE_NONE,
                 'Whether to include syntax highlighted source code'
             )
             ->addOption(
-                'progressbar', 'p',
+                'progressbar',
+                'p',
                 InputOption::VALUE_NONE,
-                'Whether to show a progress bar; will automatically quiet logging '
-                .'to stdout'
+                'Whether to show a progress bar; will automatically quiet logging to stdout'
             )
             ->addOption(
-                'template', null,
+                'template',
+                null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Name of the template to use (optional)'
             )
             ->addOption(
-                'parseprivate', null, InputOption::VALUE_NONE,
+                'parseprivate',
+                null,
+                InputOption::VALUE_NONE,
                 'Whether to parse DocBlocks marked with @internal tag'
             );
 
@@ -226,7 +237,8 @@ HELP
                 '--defaultpackagename' => $input->getOption('defaultpackagename'),
                 '--sourcecode' => $input->getOption('sourcecode'),
                 '--progressbar' => $input->getOption('progressbar')
-            ), $this->getDefinition()
+            ),
+            $this->getDefinition()
         );
 
         $return_code = $parse_command->run($parse_input, $output);

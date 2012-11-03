@@ -31,5 +31,4 @@ namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
  */
 class MethodValidator extends FunctionValidator
 {
-
 }

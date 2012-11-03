@@ -19,5 +19,4 @@ use \phpDocumentor\Plugin;
  */
 class Exception extends Plugin\Exception
 {
-
 }

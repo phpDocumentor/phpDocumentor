@@ -33,26 +33,34 @@ class GenerateCommand extends \Cilex\Command\Command
                 'Generates a skeleton template'
             )
             ->addOption(
-                'target', 't',
+                'target',
+                't',
                 InputOption::VALUE_REQUIRED,
                 'Target location where to generate the new template'
             )
             ->addOption(
-                'name', null, InputOption::VALUE_REQUIRED,
+                'name',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'The name for the new template'
             )
             ->addOption(
-                'author', 'a', InputOption::VALUE_OPTIONAL,
+                'author',
+                'a',
+                InputOption::VALUE_OPTIONAL,
                 'Name of the author'
             )
             ->addOption(
-                'given-version', null, InputOption::VALUE_OPTIONAL,
+                'given-version',
+                null,
+                InputOption::VALUE_OPTIONAL,
                 'Version number of this template'
             )
             ->addOption(
-                'force', null, InputOption::VALUE_NONE,
-                'Forces generation of the new template, even if there '
-                . 'is an existing template at that location'
+                'force',
+                null,
+                InputOption::VALUE_NONE,
+                'Forces generation of the new template, even if there is an existing template at that location'
             );
     }
 
@@ -109,9 +117,7 @@ class GenerateCommand extends \Cilex\Command\Command
                 '/\{\{\s*author\s*\}\}/'
             ),
             array($name, $version, $author),
-            file_get_contents(
-                dirname(__FILE__) . '/../../../../data/base_template/template.xml'
-            )
+            file_get_contents(dirname(__FILE__) . '/../../../../data/base_template/template.xml')
         );
 
         file_put_contents($path . DIRECTORY_SEPARATOR . 'template.xml', $template);
@@ -191,9 +197,7 @@ class GenerateCommand extends \Cilex\Command\Command
         // exception of remove the existing folder.
         if (file_exists($path)) {
             if (!$remove_if_exists) {
-                throw new \InvalidArgumentException(
-                    'The folder "' . $path . '" already exists'
-                );
+                throw new \InvalidArgumentException('The folder "' . $path . '" already exists');
             } else {
                 echo 'Removing previous template' . PHP_EOL;
                 `rm -rf $path`;
@@ -230,9 +234,7 @@ class GenerateCommand extends \Cilex\Command\Command
     protected function validateNameOption($name)
     {
         if ($name == '') {
-            throw new \InvalidArgumentException(
-                'No template name has been given'
-            );
+            throw new \InvalidArgumentException('No template name has been given');
         }
     }
 
@@ -250,15 +252,11 @@ class GenerateCommand extends \Cilex\Command\Command
     {
         // do the sanity checks
         if (!file_exists($target) || !is_dir($target)) {
-            throw new \InvalidArgumentException(
-                'Target path "' . $target . '" must exist'
-            );
+            throw new \InvalidArgumentException('Target path "' . $target . '" must exist');
         }
 
         if (!is_writable($target)) {
-            throw new \InvalidArgumentException(
-                'Target path "' . $target . '" is not writable'
-            );
+            throw new \InvalidArgumentException('Target path "' . $target . '" is not writable');
         }
     }
 }

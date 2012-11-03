@@ -50,7 +50,7 @@ class ClassNode extends NodeAbstract
      *
      * @return string
      */
-    function getFQCN()
+    public function getFQCN()
     {
         return $this->node->getElementsByTagName('full_name')->item(0)->nodeValue;
     }
@@ -60,7 +60,7 @@ class ClassNode extends NodeAbstract
      *
      * @return string
      */
-    function getSuperclassName()
+    public function getSuperclassName()
     {
         $parent = $this->node->getElementsByTagName('extends');
         return $parent->length > 0 ? $parent->item(0)->nodeValue : '';
@@ -71,7 +71,7 @@ class ClassNode extends NodeAbstract
      *
      * @return string[]
      */
-    function getInterfacesNames()
+    public function getInterfacesNames()
     {
         $result = array();
         $interfaces = $this->node->getElementsByTagName('implements');
@@ -280,18 +280,10 @@ class ClassNode extends NodeAbstract
 
         $node_name = new \DOMElement('name', $method->getName());
         $method_node->appendChild($node_name);
-        $method_node->setAttribute(
-            'final', $method->isFinal() ? 'true' : 'false'
-        );
-        $method_node->setAttribute(
-            'abstract', $method->isAbstract() ? 'true' : 'false'
-        );
-        $method_node->setAttribute(
-            'static', $method->isStatic() ? 'true' : 'false'
-        );
-        $method_node->setAttribute(
-            'visibility', $method->isPublic() ? 'public' : 'protected'
-        );
+        $method_node->setAttribute('final', $method->isFinal() ? 'true' : 'false');
+        $method_node->setAttribute('abstract', $method->isAbstract() ? 'true' : 'false');
+        $method_node->setAttribute('static', $method->isStatic() ? 'true' : 'false');
+        $method_node->setAttribute('visibility', $method->isPublic() ? 'public' : 'protected');
 
         $method_obj = new MethodNode($method_node, $this->nodes, $this);
 
@@ -334,5 +326,4 @@ class ClassNode extends NodeAbstract
 
         $this->is_processed = true;
     }
-
 }

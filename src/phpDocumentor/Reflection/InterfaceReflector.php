@@ -25,32 +25,28 @@ class InterfaceReflector extends BaseReflector
     {
         foreach ($this->node->stmts as $stmt) {
             switch (get_class($stmt)) {
-            case 'PHPParser_Node_Stmt_Property':
-                foreach ($stmt->props as $property) {
-                    $reflector = new ClassReflector\PropertyReflector(
-                        $stmt, $property
-                    );
+                case 'PHPParser_Node_Stmt_Property':
+                    foreach ($stmt->props as $property) {
+                        $reflector = new ClassReflector\PropertyReflector($stmt, $property);
+                        $reflector->setNamespace($this->getNamespace());
+                        $reflector->setNamespaceAliases($this->namespace_aliases);
+                        $this->properties[] = $reflector;
+                    }
+                    break;
+                case 'PHPParser_Node_Stmt_ClassMethod':
+                    $reflector = new ClassReflector\MethodReflector($stmt);
                     $reflector->setNamespace($this->getNamespace());
                     $reflector->setNamespaceAliases($this->namespace_aliases);
-                    $this->properties[] = $reflector;
-                }
-                break;
-            case 'PHPParser_Node_Stmt_ClassMethod':
-                $reflector = new ClassReflector\MethodReflector($stmt);
-                $reflector->setNamespace($this->getNamespace());
-                $reflector->setNamespaceAliases($this->namespace_aliases);
-                $this->methods[] = $reflector;
-                break;
-            case 'PHPParser_Node_Stmt_ClassConst':
-                foreach ($stmt->consts as $constant) {
-                    $reflector = new ClassReflector\ConstantReflector(
-                        $stmt, $constant
-                    );
-                    $reflector->setNamespace($this->getNamespace());
-                    $reflector->setNamespaceAliases($this->namespace_aliases);
-                    $this->constants[] = $reflector;
-                }
-                break;
+                    $this->methods[] = $reflector;
+                    break;
+                case 'PHPParser_Node_Stmt_ClassConst':
+                    foreach ($stmt->consts as $constant) {
+                        $reflector = new ClassReflector\ConstantReflector($stmt, $constant);
+                        $reflector->setNamespace($this->getNamespace());
+                        $reflector->setNamespaceAliases($this->namespace_aliases);
+                        $this->constants[] = $reflector;
+                    }
+                    break;
             }
         }
     }

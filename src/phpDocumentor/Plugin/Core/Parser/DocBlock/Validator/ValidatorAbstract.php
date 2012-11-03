@@ -76,7 +76,10 @@ abstract class ValidatorAbstract extends PluginAbstract
      * @param \phpDocumentor\Reflection\DocBlock|null $docblock   Docblock
      * @param \phpDocumentor\Reflection\BaseReflector|null  $source     Source Element.
      */
-    public function __construct($plugin, $name, $docblock = null,
+    public function __construct(
+        $plugin,
+        $name,
+        $docblock = null,
         $source = null
     ) {
         $this->entityName = $name;

@@ -41,26 +41,24 @@ class Listener extends ListenerAbstract
             );
         }
 
-        $behaviours = new \phpDocumentor\Transformer\Behaviour\Collection(
-            $data->getSubject(),
-            array(
-                 new Transformer\Behaviour\GeneratePaths(),
-                 new Transformer\Behaviour\Inherit(),
-                 new Transformer\Behaviour\Tag\IgnoreTag(),
-                 new Transformer\Behaviour\Tag\ReturnTag(),
-                 new Transformer\Behaviour\Tag\ParamTag(),
-                 new Transformer\Behaviour\Tag\VarTag(),
-                 new Transformer\Behaviour\Tag\PropertyTag(),
-                 new Transformer\Behaviour\Tag\MethodTag(),
-                 new Transformer\Behaviour\Tag\UsesTag(),
-                 new Transformer\Behaviour\Tag\CoversTag(),
-                 new Transformer\Behaviour\Tag\AuthorTag(),
-                 new Transformer\Behaviour\Tag\LicenseTag(),
-                 new Transformer\Behaviour\Tag\InternalTag(),
-                 new Transformer\Behaviour\AddLinkInformation(),
-            )
+        $behaviour_objects = array(
+            new Transformer\Behaviour\GeneratePaths(),
+            new Transformer\Behaviour\Inherit(),
+            new Transformer\Behaviour\Tag\IgnoreTag(),
+            new Transformer\Behaviour\Tag\ReturnTag(),
+            new Transformer\Behaviour\Tag\ParamTag(),
+            new Transformer\Behaviour\Tag\VarTag(),
+            new Transformer\Behaviour\Tag\PropertyTag(),
+            new Transformer\Behaviour\Tag\MethodTag(),
+            new Transformer\Behaviour\Tag\UsesTag(),
+            new Transformer\Behaviour\Tag\CoversTag(),
+            new Transformer\Behaviour\Tag\AuthorTag(),
+            new Transformer\Behaviour\Tag\LicenseTag(),
+            new Transformer\Behaviour\Tag\InternalTag(),
+            new Transformer\Behaviour\AddLinkInformation(),
         );
 
+        $behaviours = new \phpDocumentor\Transformer\Behaviour\Collection($data->getSubject(), $behaviour_objects);
         $data->setSource($behaviours->process($data->getSource()));
     }
 
@@ -150,9 +148,7 @@ class Listener extends ListenerAbstract
         $validatorOptions = array();
 
         foreach (array('deprecated', 'required') as $tag) {
-            $validatorOptions[$tag] = $this->loadConfigurationByElement(
-                $configOptions, $tag
-            );
+            $validatorOptions[$tag] = $this->loadConfigurationByElement($configOptions, $tag);
         }
 
         return $validatorOptions;

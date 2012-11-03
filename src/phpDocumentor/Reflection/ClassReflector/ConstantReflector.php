@@ -11,6 +11,7 @@
  */
 
 namespace phpDocumentor\Reflection\ClassReflector;
+
 use phpDocumentor\Reflection\ConstantReflector as BaseConstantReflector;
 
 class ConstantReflector extends BaseConstantReflector

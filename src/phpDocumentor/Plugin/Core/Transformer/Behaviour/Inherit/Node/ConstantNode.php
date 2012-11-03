@@ -48,5 +48,4 @@ class ConstantNode extends PropertyNode
 
         return $parent_class_name . '::' . $this->getName();
     }
-
 }

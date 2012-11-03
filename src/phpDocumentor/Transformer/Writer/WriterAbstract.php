@@ -15,6 +15,8 @@
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Transformer\Transformation;
+
 /**
  * Base class for the actual transformation business logic (writers).
  *
@@ -37,9 +39,7 @@ abstract class WriterAbstract extends \phpDocumentor\Transformer\TransformerAbst
      *
      * @return void
      */
-    abstract public function transform(
-        \DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation
-    );
+    abstract public function transform(\DOMDocument $structure, Transformation $transformation);
 
     /**
      * Returns an instance of a writer and caches it; a single writer
@@ -49,7 +49,7 @@ abstract class WriterAbstract extends \phpDocumentor\Transformer\TransformerAbst
      *
      * @return \phpDocumentor\Transformer\Writer\WriterAbstract
      */
-    static public function getInstanceOf($writer)
+    public static function getInstanceOf($writer)
     {
         static $writers = array();
         $writer_class = 'phpDocumentor\Plugin\Core\Transformer\Writer\\'
@@ -84,8 +84,6 @@ abstract class WriterAbstract extends \phpDocumentor\Transformer\TransformerAbst
     private static function isValidWriterClassname($class_name)
     {
         return class_exists($class_name)
-            && is_subclass_of(
-                $class_name, '\phpDocumentor\Transformer\Writer\WriterAbstract'
-            );
+            && is_subclass_of($class_name, '\phpDocumentor\Transformer\Writer\WriterAbstract');
     }
 }

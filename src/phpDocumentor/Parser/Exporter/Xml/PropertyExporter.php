@@ -27,9 +27,8 @@ class PropertyExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $property
-    ) {
+    public function export(\DOMElement $parent, $property)
+    {
         $child = new \DOMElement('property');
         $parent->appendChild($child);
 

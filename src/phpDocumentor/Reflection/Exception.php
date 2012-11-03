@@ -20,5 +20,4 @@ namespace phpDocumentor\Reflection;
  */
 class Exception extends \Exception
 {
-
 }

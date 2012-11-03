@@ -312,9 +312,7 @@ class Parser extends ParserAbstract
     public function getRelativeFilename($filename)
     {
         // strip path from filename
-        $result = ltrim(
-            substr($filename, strlen($this->path)), DIRECTORY_SEPARATOR
-        );
+        $result = ltrim(substr($filename, strlen($this->path)), DIRECTORY_SEPARATOR);
         if ($result === '') {
             throw new \InvalidArgumentException(
                 'File is not present in the given project path: ' . $filename
@@ -376,9 +374,7 @@ class Parser extends ParserAbstract
                 // if an existing entry who matches the file, then re-use
                 if ($qry->length > 0) {
                     $this->exporter->getDomDocument()->documentElement->appendChild(
-                        $this->exporter->getDomDocument()->importNode(
-                            $qry->item(0), true
-                        )
+                        $this->exporter->getDomDocument()->importNode($qry->item(0), true)
                     );
 
                     $this->log(
@@ -401,12 +397,12 @@ class Parser extends ParserAbstract
             }
         } catch (Exception $e) {
             $this->log(
-                '  Unable to parse file "' . $filename . '", an error was detected: '
-                . $e->getMessage(), \phpDocumentor\Plugin\Core\Log::ALERT
+                '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
+                \phpDocumentor\Plugin\Core\Log::ALERT
             );
             $this->log(
-                'Unable to parse file "' . $filename . '", an error was detected: '
-                . $e->getMessage(), \phpDocumentor\Plugin\Core\Log::DEBUG
+                'Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
+                \phpDocumentor\Plugin\Core\Log::DEBUG
             );
         }
 
@@ -452,19 +448,14 @@ class Parser extends ParserAbstract
         $this->log('Starting to process ' . count($paths) . ' files');
         $this->log('  Project root is:  ' . $files->getProjectRoot());
         $this->log(
-            '  Ignore paths are: ' . implode(
-                ', ', $files->getIgnorePatterns()->getArrayCopy()
-            )
+            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy())
         );
 
         if (count($paths) < 1) {
-            throw new Exception(
-                'No files were found', Exception::NO_FILES_FOUND
-            );
+            throw new Exception('No files were found', Exception::NO_FILES_FOUND);
         }
 
-        $file_count = count($paths);
-        foreach ($paths as $key => $file) {
+        foreach ($paths as $file) {
             Dispatcher::getInstance()->dispatch(
                 'parser.file.pre',
                 PreFileEvent::createInstance($this)->setFile($file)
@@ -511,5 +502,4 @@ class Parser extends ParserAbstract
     {
         return $this->default_package_name;
     }
-
 }

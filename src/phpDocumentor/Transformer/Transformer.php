@@ -380,13 +380,8 @@ class Transformer extends TransformerAbstract
             $name = substr($name, 0, -4);
         }
 
-        return trim(
-            str_replace(
-                array(DIRECTORY_SEPARATOR, '\\'),
-                '.',
-                trim($name, DIRECTORY_SEPARATOR . '.')
-            ), '.'
-        ) . '.html';
+        return trim(str_replace(array(DIRECTORY_SEPARATOR, '\\'), '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
+            . '.html';
     }
 
     /**
@@ -519,5 +514,4 @@ class Transformer extends TransformerAbstract
 
         return null;
     }
-
 }

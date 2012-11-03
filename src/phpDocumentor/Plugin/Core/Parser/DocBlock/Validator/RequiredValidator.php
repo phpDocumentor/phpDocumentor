@@ -61,7 +61,7 @@ class RequiredValidator extends ValidatorAbstract
         $docType = get_class($this->source);
         if (isset($this->options['required'][$docType])) {
             $this->validateTags($docType);
-        } else if (isset($this->options['required']['__ALL__'])) {
+        } elseif (isset($this->options['required']['__ALL__'])) {
             $this->validateTags('__ALL__');
         }
     }
@@ -78,10 +78,7 @@ class RequiredValidator extends ValidatorAbstract
     {
         foreach ($this->options['required'][$key] as $tag) {
             if (count($this->docblock->getTagsByName($tag)) == 0) {
-                $this->logParserError(
-                    'CRITICAL', 50020, $this->lineNumber,
-                    array($tag, $this->entityName)
-                );
+                $this->logParserError('CRITICAL', 50020, $this->lineNumber, array($tag, $this->entityName));
             }
         }
     }

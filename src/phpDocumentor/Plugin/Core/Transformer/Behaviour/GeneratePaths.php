@@ -61,5 +61,4 @@ class GeneratePaths extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstra
 
         return $xml;
     }
-
 }

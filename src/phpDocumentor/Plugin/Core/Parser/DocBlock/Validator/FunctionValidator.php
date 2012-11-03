@@ -38,17 +38,14 @@ class FunctionValidator extends ValidatorAbstract
      */
     public function isValid()
     {
-        if (!$this->hasDocBlock())
-        {
+        if (!$this->hasDocBlock()) {
             return false;
         }
         $this->hasShortDescription();
         $this->validateArguments();
 
         if ($this->docblock->hasTag('return')) {
-            $this->isDefaultIdeType(
-                current($this->docblock->getTagsByName('return'))
-            );
+            $this->isDefaultIdeType(current($this->docblock->getTagsByName('return')));
         }
 
         return true;
@@ -125,10 +122,7 @@ class FunctionValidator extends ValidatorAbstract
                 continue;
             }
 
-            $this->logParserError(
-                'NOTICE', 50013, $this->lineNumber,
-                array($param_name, $this->entityName . '()')
-            );
+            $this->logParserError('NOTICE', 50013, $this->lineNumber, array($param_name, $this->entityName . '()'));
         }
     }
 
@@ -161,7 +155,9 @@ class FunctionValidator extends ValidatorAbstract
         }
 
         $this->logParserError(
-            'ERROR', 50014, $this->lineNumber,
+            'ERROR',
+            50014,
+            $this->lineNumber,
             array($argument->getName(), $param_name, $this->entityName . '()')
         );
 
@@ -189,10 +185,7 @@ class FunctionValidator extends ValidatorAbstract
             return true;
         }
 
-        $this->logParserError(
-            'ERROR', 50015, $this->lineNumber,
-            array($argument->getName(), $this->entityName . '()')
-        );
+        $this->logParserError('ERROR', 50015, $this->lineNumber, array($argument->getName(), $this->entityName . '()'));
         return false;
     }
 
@@ -211,20 +204,15 @@ class FunctionValidator extends ValidatorAbstract
         \phpDocumentor\Reflection\DocBlock\Tag\ParamTag $param,
         \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument
     ) {
-        if (!$argument->getType()
-            || in_array($argument->getType(), $param->getTypes())
+        if (!$argument->getType() || in_array($argument->getType(), $param->getTypes())
         ) {
             return true;
-        } else if ($argument->getType() == 'array'
-            && substr($param->getType(), -2) == '[]'
+        } elseif ($argument->getType() == 'array' && substr($param->getType(), -2) == '[]'
         ) {
             return true;
         }
 
-        $this->logParserError(
-            'ERROR', 50016, $this->lineNumber,
-            array($argument->getName(), $this->entityName . '()')
-        );
+        $this->logParserError('ERROR', 50016, $this->lineNumber, array($argument->getName(), $this->entityName . '()'));
 
         return false;
     }
@@ -245,7 +233,9 @@ class FunctionValidator extends ValidatorAbstract
         }
 
         $this->logParserError(
-            'NOTICE', 50017, $this->lineNumber,
+            'NOTICE',
+            50017,
+            $this->lineNumber,
             array('@' . $param->getName(), $this->entityName . '()')
         );
     }

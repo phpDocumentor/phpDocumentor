@@ -11,6 +11,7 @@
  */
 
 namespace phpDocumentor\Reflection\ClassReflector;
+
 use phpDocumentor\Reflection\BaseReflector;
 
 class PropertyReflector extends BaseReflector

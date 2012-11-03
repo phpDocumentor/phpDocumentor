@@ -23,10 +23,16 @@ namespace phpDocumentor\Parser\Event;
 class LogEvent extends \phpDocumentor\Event\EventAbstract
 {
     /** @var string */
-    protected $message, $type;
+    protected $message;
+
+    /** @var string */
+    protected $type;
 
     /** @var int */
-    protected $code, $line;
+    protected $code;
+
+    /** @var int */
+    protected $line;
 
     /**
      * Sets the numeric code for this event.

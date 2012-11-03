@@ -33,26 +33,34 @@ class GenerateCommand extends \Cilex\Command\Command
                 'Generates a skeleton plugin'
             )
             ->addOption(
-                'target', 't',
+                'target',
+                't',
                 InputOption::VALUE_REQUIRED,
                 'Target location where to generate the new plugin'
             )
             ->addOption(
-                'name', null, InputOption::VALUE_REQUIRED,
+                'name',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'The name for the new plugin'
             )
             ->addOption(
-                'author', 'a', InputOption::VALUE_OPTIONAL,
+                'author',
+                'a',
+                InputOption::VALUE_OPTIONAL,
                 'Name of the author'
             )
             ->addOption(
-                'given-version', null, InputOption::VALUE_OPTIONAL,
+                'given-version',
+                null,
+                InputOption::VALUE_OPTIONAL,
                 'Version number of this plugin'
             )
             ->addOption(
-                'force', null, InputOption::VALUE_NONE,
-                'Forces generation of the new plugin, even if there '
-                . 'is an existing plugin at that location'
+                'force',
+                null,
+                InputOption::VALUE_NONE,
+                'Forces generation of the new plugin, even if there is an existing plugin at that location'
             );
     }
 
@@ -198,7 +206,10 @@ class GenerateCommand extends \Cilex\Command\Command
      * @return void
      */
     protected function generateConfigurationFile(
-        $path, $name, $version, $author
+        $path,
+        $name,
+        $version,
+        $author
     ) {
         $class_part = ucfirst($name);
 
@@ -276,5 +287,4 @@ class Listener extends \phpDocumentor\Plugin\ListenerAbstract
 PHP
         );
     }
-
 }

@@ -29,9 +29,8 @@ class VariableExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $variable, \DOMElement $child = null
-    ) {
+    public function export(\DOMElement $parent, $variable, \DOMElement $child = null)
+    {
         if (!$child) {
             $child = new \DOMElement('variable');
             $parent->appendChild($child);

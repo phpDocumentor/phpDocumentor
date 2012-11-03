@@ -34,9 +34,8 @@ class FileExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $file
-    ) {
+    public function export(\DOMElement $parent, $file)
+    {
         $child = new \DOMElement('file');
         $parent->appendChild($child);
 
@@ -122,12 +121,7 @@ class FileExporter
         // element 'source' which contains a compressed, encoded version
         // of the source
         if ($this->include_source) {
-            $child->appendChild(
-                new \DOMElement(
-                    'source',
-                    base64_encode(gzcompress($file->getContents()))
-                )
-            );
+            $child->appendChild(new \DOMElement('source', base64_encode(gzcompress($file->getContents()))));
         }
     }
 }

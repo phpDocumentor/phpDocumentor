@@ -59,7 +59,9 @@ class Definition extends ParserAbstract
      *     object to use.
      */
     public function __construct(
-        $namespace, $namespace_aliases, \DOMElement $xml,
+        $namespace,
+        $namespace_aliases,
+        \DOMElement $xml,
         \phpDocumentor\Reflection\DocBlock\Tag $tag
     ) {
         $this->xml = $xml;
@@ -92,13 +94,14 @@ class Definition extends ParserAbstract
      * @param \phpDocumentor\Reflection\DocBlock\Tag $tag               The
      *     actual tag as reflected.
      *
-     * @todo replace the switch statement with an intelligent container /
-     * plugin system.
+     * @todo replace the switch statement with an intelligent container / plugin system.
      *
      * @return Definition
      */
     public static function create(
-        $namespace, $namespace_aliases, \DOMElement $xml,
+        $namespace,
+        $namespace_aliases,
+        \DOMElement $xml,
         \phpDocumentor\Reflection\DocBlock\Tag $tag
     ) {
         $tag_name = $tag->getName();
@@ -121,104 +124,88 @@ class Definition extends ParserAbstract
 
         switch ($tag_name)
         {
-        case 'property-write':
-        case 'property-read':
-        case 'property':
-        case 'param':
-            $def = new Param(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        case 'see':
-            $def = new See(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        case 'method':
-            $def = new Method(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        case 'uses':
-            $def = new Uses(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        case 'covers':
-            $def = new Covers(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        case 'link':
-            $def = new Link(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        case '\Doctrine\ORM\Mapping\column':
-        case '\Doctrine\ORM\Mapping\ChangeTrackingPolicy':
-        case '\Doctrine\ORM\Mapping\DiscriminatorColumn':
-        case '\Doctrine\ORM\Mapping\DiscriminatorMap':
-        case '\Doctrine\ORM\Mapping\Entity':
-        case '\Doctrine\ORM\Mapping\GeneratedValue':
-        case '\Doctrine\ORM\Mapping\HasLifecycleCallbacks':
-        case '\Doctrine\ORM\Mapping\Id':
-        case '\Doctrine\ORM\Mapping\InheritanceType':
-        case '\Doctrine\ORM\Mapping\JoinColumn':
-        case '\Doctrine\ORM\Mapping\JoinTable':
-        case '\Doctrine\ORM\Mapping\ManyToOne':
-        case '\Doctrine\ORM\Mapping\ManyToMany':
-        case '\Doctrine\ORM\Mapping\MappedSuperclass':
-        case '\Doctrine\ORM\Mapping\OneToOne':
-        case '\Doctrine\ORM\Mapping\OneToMany':
-        case '\Doctrine\ORM\Mapping\OrderBy':
-        case '\Doctrine\ORM\Mapping\PostLoad':
-        case '\Doctrine\ORM\Mapping\PostPersist':
-        case '\Doctrine\ORM\Mapping\PostRemove':
-        case '\Doctrine\ORM\Mapping\PostUpdate':
-        case '\Doctrine\ORM\Mapping\PrePersist':
-        case '\Doctrine\ORM\Mapping\PreRemove':
-        case '\Doctrine\ORM\Mapping\PreUpdate':
-        case '\Doctrine\ORM\Mapping\SequenceGenerator':
-        case '\Doctrine\ORM\Mapping\Table':
-        case '\Doctrine\ORM\Mapping\UniqueConstraint':
-        case '\Doctrine\ORM\Mapping\Version':
-        case 'Column':
-        case 'ChangeTrackingPolicy':
-        case 'DiscriminatorColumn':
-        case 'DiscriminatorMap':
-        case 'Entity':
-        case 'GeneratedValue':
-        case 'HasLifecycleCallbacks':
-        case 'Id':
-        case 'InheritanceType':
-        case 'JoinColumn':
-        case 'JoinTable':
-        case 'ManyToOne':
-        case 'ManyToMany':
-        case 'MappedSuperclass':
-        case 'OneToOne':
-        case 'OneToMany':
-        case 'OrderBy':
-        case 'PostLoad':
-        case 'PostPersist':
-        case 'PostRemove':
-        case 'PostUpdate':
-        case 'PrePersist':
-        case 'PreRemove':
-        case 'PreUpdate':
-        case 'SequenceGenerator':
-        case 'Table':
-        case 'UniqueConstraint':
-        case 'Version':
-            $def = new Doctrine(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
-        default:
-            $def = new self(
-                $namespace, $namespace_aliases, $xml, $tag
-            );
-            break;
+            case 'property-write':
+            case 'property-read':
+            case 'property':
+            case 'param':
+                $def = new Param($namespace, $namespace_aliases, $xml, $tag);
+                break;
+            case 'see':
+                $def = new See($namespace, $namespace_aliases, $xml, $tag);
+                break;
+            case 'method':
+                $def = new Method($namespace, $namespace_aliases, $xml, $tag);
+                break;
+            case 'uses':
+                $def = new Uses($namespace, $namespace_aliases, $xml, $tag);
+                break;
+            case 'covers':
+                $def = new Covers($namespace, $namespace_aliases, $xml, $tag);
+                break;
+            case 'link':
+                $def = new Link($namespace, $namespace_aliases, $xml, $tag);
+                break;
+            case '\Doctrine\ORM\Mapping\column':
+            case '\Doctrine\ORM\Mapping\ChangeTrackingPolicy':
+            case '\Doctrine\ORM\Mapping\DiscriminatorColumn':
+            case '\Doctrine\ORM\Mapping\DiscriminatorMap':
+            case '\Doctrine\ORM\Mapping\Entity':
+            case '\Doctrine\ORM\Mapping\GeneratedValue':
+            case '\Doctrine\ORM\Mapping\HasLifecycleCallbacks':
+            case '\Doctrine\ORM\Mapping\Id':
+            case '\Doctrine\ORM\Mapping\InheritanceType':
+            case '\Doctrine\ORM\Mapping\JoinColumn':
+            case '\Doctrine\ORM\Mapping\JoinTable':
+            case '\Doctrine\ORM\Mapping\ManyToOne':
+            case '\Doctrine\ORM\Mapping\ManyToMany':
+            case '\Doctrine\ORM\Mapping\MappedSuperclass':
+            case '\Doctrine\ORM\Mapping\OneToOne':
+            case '\Doctrine\ORM\Mapping\OneToMany':
+            case '\Doctrine\ORM\Mapping\OrderBy':
+            case '\Doctrine\ORM\Mapping\PostLoad':
+            case '\Doctrine\ORM\Mapping\PostPersist':
+            case '\Doctrine\ORM\Mapping\PostRemove':
+            case '\Doctrine\ORM\Mapping\PostUpdate':
+            case '\Doctrine\ORM\Mapping\PrePersist':
+            case '\Doctrine\ORM\Mapping\PreRemove':
+            case '\Doctrine\ORM\Mapping\PreUpdate':
+            case '\Doctrine\ORM\Mapping\SequenceGenerator':
+            case '\Doctrine\ORM\Mapping\Table':
+            case '\Doctrine\ORM\Mapping\UniqueConstraint':
+            case '\Doctrine\ORM\Mapping\Version':
+            case 'Column':
+            case 'ChangeTrackingPolicy':
+            case 'DiscriminatorColumn':
+            case 'DiscriminatorMap':
+            case 'Entity':
+            case 'GeneratedValue':
+            case 'HasLifecycleCallbacks':
+            case 'Id':
+            case 'InheritanceType':
+            case 'JoinColumn':
+            case 'JoinTable':
+            case 'ManyToOne':
+            case 'ManyToMany':
+            case 'MappedSuperclass':
+            case 'OneToOne':
+            case 'OneToMany':
+            case 'OrderBy':
+            case 'PostLoad':
+            case 'PostPersist':
+            case 'PostRemove':
+            case 'PostUpdate':
+            case 'PrePersist':
+            case 'PreRemove':
+            case 'PreUpdate':
+            case 'SequenceGenerator':
+            case 'Table':
+            case 'UniqueConstraint':
+            case 'Version':
+                $def = new Doctrine($namespace, $namespace_aliases, $xml, $tag);
+                break;
+            default:
+                $def = new self($namespace, $namespace_aliases, $xml, $tag);
+                break;
         }
 
         $def->configure();
@@ -322,15 +309,11 @@ class Definition extends ParserAbstract
             // the first and last character
             $type_object->setAttribute(
                 'by_reference',
-                ((substr($type, 0, 1) === '&') || (substr($type, -1) === '&'))
-                    ? 'true'
-                    : 'false'
+                ((substr($type, 0, 1) === '&') || (substr($type, -1) === '&')) ? 'true' : 'false'
             );
         }
 
-        $this->xml->setAttribute(
-            'type', $this->expandType($this->tag->getType())
-        );
+        $this->xml->setAttribute('type', $this->expandType($this->tag->getType()));
     }
 
     /**
@@ -433,5 +416,4 @@ class Definition extends ParserAbstract
     {
         return $this->namespace_aliases;
     }
-
 }

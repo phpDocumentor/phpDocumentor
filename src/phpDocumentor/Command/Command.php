@@ -39,7 +39,7 @@ class Command extends \Cilex\Command\Command
      *
      * @return boolean True if the path is absolute, false if it is not
      */
-    function isAbsolute($path)
+    protected function isAbsolute($path)
     {
         if (preg_match('/(?:\/|\\\)\.\.(?=\/|$)/', $path)) {
             return false;
@@ -140,18 +140,17 @@ class Command extends \Cilex\Command\Command
             $message = $event->getMessage();
             switch ($event->getPriority())
             {
-            case \phpDocumentor\Plugin\Core\Log::WARN:
-                $message = '<comment>' . $message . '</comment>';
-                break;
-            case \phpDocumentor\Plugin\Core\Log::EMERG:
-            case \phpDocumentor\Plugin\Core\Log::ALERT:
-            case \phpDocumentor\Plugin\Core\Log::CRIT:
-            case \phpDocumentor\Plugin\Core\Log::ERR:
-                $message = '<error>' . $message . '</error>';
-                break;
+                case \phpDocumentor\Plugin\Core\Log::WARN:
+                    $message = '<comment>' . $message . '</comment>';
+                    break;
+                case \phpDocumentor\Plugin\Core\Log::EMERG:
+                case \phpDocumentor\Plugin\Core\Log::ALERT:
+                case \phpDocumentor\Plugin\Core\Log::CRIT:
+                case \phpDocumentor\Plugin\Core\Log::ERR:
+                    $message = '<error>' . $message . '</error>';
+                    break;
             }
             $output->writeln('  ' . $message);
         }
     }
-
 }

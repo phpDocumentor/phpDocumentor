@@ -23,8 +23,7 @@ namespace phpDocumentor\Transformer;
  * @license  http://www.opensource.org/licenses/mit-license.php MIT
  * @link     http://phpdoc.org
  */
-class Template extends TransformerAbstract
-    implements \ArrayAccess, \Countable, \Iterator
+class Template extends TransformerAbstract implements \ArrayAccess, \Countable, \Iterator
 {
     /** @var string Name for this template */
     protected $name = null;
@@ -221,7 +220,7 @@ class Template extends TransformerAbstract
      *
      * @return Transformation
      */
-    function offsetGet($offset)
+    public function offsetGet($offset)
     {
         return $this->transformations[$offset];
     }
@@ -327,5 +326,4 @@ class Template extends TransformerAbstract
     {
         return current($this->transformations);
     }
-
 }

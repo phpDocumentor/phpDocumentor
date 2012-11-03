@@ -34,13 +34,9 @@ abstract class ListenerAbstract extends PluginAbstract
     {
         $this->plugin = $plugin;
 
-        parent::__construct(
-            $plugin->getEventDispatcher(), $plugin->getConfiguration(),
-            $plugin->getTranslator()
-        );
+        parent::__construct($plugin->getEventDispatcher(), $plugin->getConfiguration(), $plugin->getTranslator());
 
         $this->configure();
-
         $this->connectHooksToDispatcher();
     }
 
