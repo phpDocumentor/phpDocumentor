@@ -12,10 +12,13 @@
 
 namespace phpDocumentor\Parser;
 
+use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Parser\Exporter\ExporterAbstract;
+use phpDocumentor\Parser\Exporter\Xml\Xml as DefaultExporter;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -74,6 +77,17 @@ class Parser extends ParserAbstract
 
     /** @var Exporter\ExporterAbstract */
     protected $exporter = null;
+
+    /**
+     * List of CRC hashes for each file.
+     *
+     * If a pre-existing structure file is found than a list of hashes is retrieved to verify whether the contents
+     * of that file has changed. If it has changed than the parser will analyze the file; otherwise it will re-use
+     * the existing definition.
+     *
+     * @var string[]
+     */
+    protected $hashes = array();
 
     /**
      * Sets the title for this project.
@@ -225,25 +239,39 @@ class Parser extends ParserAbstract
     /**
      * Imports an existing XML source to enable incremental parsing.
      *
-     * @param string|null $xml XML contents if a source exists, otherwise null.
+     * @param string|null $xml XML contents, or filename of an XML file, or null if no source is available.
+     *
+     * @todo this method should be part of the exporter; it should be the exporter who determines whether an entry
+     *     needs to be reparsed since the exporter is aware of the format of the exported file
      *
      * @api
+     *
+     * @throws \InvalidArgumentException if the parameter represents a file that is unreadable or a malformed
+     *     XML string.
      *
      * @return void
      */
     public function setExistingXml($xml)
     {
         $dom = null;
-        if ($xml !== null) {
-            if (substr(trim($xml), 0, 5) != '<?xml') {
-                $xml = (is_readable($xml))
-                    ? file_get_contents($xml)
-                    : '<?xml version="1.0" encoding="utf-8"?><phpdoc></phpdoc>';
-            }
-
-            $dom = new \DOMDocument();
-            $dom->loadXML($xml);
+        if ($xml === null) {
+            $this->existing_xml = $dom;
+            return;
         }
+
+        // is this an XML string?
+        if (substr(trim($xml), 0, 5) != '<?xml') {
+            // if not, find and load the file
+            if (!file_exists($xml) || !is_readable($xml)) {
+                throw new \InvalidArgumentException(
+                    '"'.$xml.'" is a malformed XML string, the file does not exist or is not readable'
+                );
+            }
+            $xml = file_get_contents($xml);
+        }
+
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
 
         $this->existing_xml = $dom;
     }
@@ -323,161 +351,34 @@ class Parser extends ParserAbstract
     }
 
     /**
-     * Runs a file through the static reflectors, generates an XML file element
-     * and returns it.
+     * Sets the exporter that is used to convert the reflected information into output.
      *
-     * @param string $filename       The filename to parse.
-     * @param bool   $include_source whether to include the source in the
-     *  generated output.
+     * After each file is parsed is this Exporter invoked to build an Abstract Syntax Tree. The results from this
+     * export process is returned at the end of the file processing.
      *
-     * @api
+     * @param ExporterAbstract $exporter
      *
      * @return void
      */
-    public function parseFile($filename, $include_source = false)
+    public function setExporter(ExporterAbstract $exporter)
     {
-        $this->log('Starting to parse file: ' . $filename);
-        $this->log(
-            'Starting to parse file: ' . $filename,
-            \phpDocumentor\Plugin\Core\Log::DEBUG
-        );
-
-        $dispatched = false;
-        try {
-            $file = new FileReflector($filename, $this->doValidation());
-            $file->setDefaultPackageName($this->getDefaultPackageName());
-
-            if (class_exists('phpDocumentor\Event\Dispatcher')) {
-                \phpDocumentor\Event\Dispatcher::getInstance()
-                ->addListener(
-                    'parser.log',
-                    array($file, 'addParserMarker')
-                );
-            }
-            $dispatched = true;
-
-            $file->setMarkers($this->getMarkers());
-            $file->setFilename($this->getRelativeFilename($filename));
-
-            // if an existing structure exists; and we do not force re-generation;
-            // re-use the old definition if the hash differs
-            if (($this->getExistingXml() !== null) && (!$this->isForced())) {
-                $xpath = new \DOMXPath($this->getExistingXml());
-
-                // try to find the file with it's hash
-                /** @var \DOMNodeList $qry */
-                $qry = $xpath->query(
-                    '/project/file[@path=\'' . ltrim($file->getFilename(), './')
-                    . '\' and @hash=\'' . $file->getHash() . '\']'
-                );
-
-                // if an existing entry who matches the file, then re-use
-                if ($qry->length > 0) {
-                    $this->exporter->getDomDocument()->documentElement->appendChild(
-                        $this->exporter->getDomDocument()->importNode($qry->item(0), true)
-                    );
-
-                    $this->log(
-                        '>> File has not changed since last build, re-using the '
-                        . 'old definition'
-                    );
-                } else {
-                    $this->log('Exporting file: ' . $filename);
-
-                    $file->process();
-                    $this->exporter->setIncludeSource($include_source);
-                    $this->exporter->export($file);
-                }
-            } else {
-                $this->log('Exporting file: ' . $filename);
-
-                $file->process();
-                $this->exporter->setIncludeSource($include_source);
-                $this->exporter->export($file);
-            }
-        } catch (Exception $e) {
-            $this->log(
-                '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                \phpDocumentor\Plugin\Core\Log::ALERT
-            );
-            $this->log(
-                'Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                \phpDocumentor\Plugin\Core\Log::DEBUG
-            );
-        }
-
-        //disconnects the dispatcher here so if any error occured, it still
-        // removes the event
-        if ($dispatched && class_exists('phpDocumentor\Event\Dispatcher')) {
-            \phpDocumentor\Event\Dispatcher::getInstance()->removeListener(
-                'parser.log',
-                array($file, 'addParserMarker')
-            );
-        }
-
-        $this->log(
-            '>> Memory after processing of file: '
-            . number_format(memory_get_usage()) . ' bytes',
-            \phpDocumentor\Plugin\Core\Log::DEBUG
-        );
-        $this->log('>> Parsed file', \phpDocumentor\Plugin\Core\Log::DEBUG);
+        $this->exporter = $exporter;
     }
 
     /**
-     * Iterates through the given files and builds the structure.xml file.
+     * Returns the exporter for this parser.
      *
-     * @param Collection $files          A files container
-     *     to parse.
-     * @param bool       $include_source whether to include the source in the
-     *     generated output..
+     * If no exporter has been set beforehand does this method create the default exporter.
      *
-     * @api
-     *
-     * @throws Exception if no files were found.
-     *
-     * @return bool|string
+     * @return ExporterAbstract
      */
-    public function parseFiles(Collection $files, $include_source = false)
+    public function getExporter()
     {
-        $timer = microtime(true);
-
-        $this->exporter = new \phpDocumentor\Parser\Exporter\Xml\Xml($this);
-        $this->exporter->initialize();
-
-        $paths = $files->getFilenames();
-        $this->log('Starting to process ' . count($paths) . ' files');
-        $this->log('  Project root is:  ' . $files->getProjectRoot());
-        $this->log(
-            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy())
-        );
-
-        if (count($paths) < 1) {
-            throw new Exception('No files were found', Exception::NO_FILES_FOUND);
+        if (!$this->exporter) {
+            $this->exporter = new DefaultExporter($this);
         }
 
-        foreach ($paths as $file) {
-            Dispatcher::getInstance()->dispatch(
-                'parser.file.pre',
-                PreFileEvent::createInstance($this)->setFile($file)
-            );
-
-            $this->parseFile($file, $include_source);
-        }
-
-        $this->exporter->finalize();
-
-        $this->log('--');
-        $this->log(
-            'Elapsed time to parse all files: '
-            . round(microtime(true) - $timer, 2) . 's'
-        );
-
-        $this->log(
-            'Peak memory usage: '
-            . round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M'
-        );
-
-        return $this->exporter->getContents();
+        return $this->exporter;
     }
 
     /**
@@ -501,5 +402,149 @@ class Parser extends ParserAbstract
     public function getDefaultPackageName()
     {
         return $this->default_package_name;
+    }
+
+    /**
+     * Iterates through the given files and builds the structure.xml file.
+     *
+     * @param Collection $files          A files container to parse.
+     * @param bool       $include_source Whether to include the source in the generated output.
+     *
+     * @api
+     *
+     * @throws Exception if no files were found.
+     *
+     * @return bool|string
+     */
+    public function parseFiles(Collection $files, $include_source = false)
+    {
+        $timer = microtime(true);
+        $paths = $this->getFilenames($files);
+
+        if (!$this->isForced()) {
+            $this->hashes = $this->loadHashes($this->getExistingXml());
+        }
+
+        $this->log('  Project root is:  ' . $files->getProjectRoot());
+        $this->log(
+            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy())
+        );
+
+        $this->getExporter()->initialize();
+        foreach ($paths as $file) {
+            Dispatcher::getInstance()->dispatch('parser.file.pre', PreFileEvent::createInstance($this)->setFile($file));
+            $this->parseFile($file, $include_source);
+        }
+        $this->getExporter()->finalize();
+
+        $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');
+        $this->log('Peak memory usage: '. round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
+
+        return $this->getExporter()->getContents();
+    }
+
+    /**
+     * @param \phpDocumentor\Fileset\Collection $files
+     *
+     * @throws FilesNotFoundException if no files were found.
+     *
+     * @return \string[]
+     */
+    protected function getFilenames(Collection $files)
+    {
+        $paths = $files->getFilenames();
+        $this->log('Starting to process ' . count($paths) . ' files');
+        if (count($paths) < 1) {
+            throw new FilesNotFoundException();
+        }
+        return $paths;
+    }
+
+    /**
+     * Runs a file through the static reflectors, generates an XML file element
+     * and returns it.
+     *
+     * @param string $filename       The filename to parse.
+     * @param bool   $include_source whether to include the source in the
+     *  generated output.
+     *
+     * @api
+     *
+     * @return void
+     */
+    public function parseFile($filename, $include_source = false)
+    {
+        $this->log('Starting to parse file: ' . $filename);
+
+        $dispatched = false;
+        try {
+            $file = new FileReflector($filename, $this->doValidation());
+            $file->setDefaultPackageName($this->getDefaultPackageName());
+
+            if (class_exists('phpDocumentor\Event\Dispatcher')) {
+                Dispatcher::getInstance()->addListener('parser.log', array($file, 'addParserMarker'));
+                $dispatched = true;
+            }
+
+            $file->setMarkers($this->getMarkers());
+            $file->setFilename($this->getRelativeFilename($filename));
+
+            $path = ltrim($file->getFilename(), './');
+
+            if (isset($this->hashes[$path]) && ($this->hashes[$path] == $file->getHash())) {
+                $xpath = new \DOMXPath($this->getExistingXml());
+                $qry = $xpath->query('/project/file[@path=\'' . $path . '\' and @hash=\'' . $file->getHash() . '\']');
+
+                $this->getExporter()->getDomDocument()->documentElement->appendChild(
+                    $this->getExporter()->getDomDocument()->importNode($qry->item(0), true)
+                );
+
+                $this->log('>> File has not changed since last build, re-using the old definition');
+            } else {
+                $this->log('Exporting file: ' . $filename);
+
+                $file->process();
+                $this->getExporter()->setIncludeSource($include_source);
+                $this->getExporter()->export($file);
+            }
+        } catch (Exception $e) {
+            $this->log(
+                '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
+                \phpDocumentor\Plugin\Core\Log::ALERT
+            );
+        }
+
+        // Disconnects the dispatcher here so if any error occurred, it still removes the event
+        if ($dispatched && isset($file)) {
+            Dispatcher::getInstance()->removeListener('parser.log', array($file, 'addParserMarker'));
+        }
+
+        $this->log(
+            '>> Memory after processing of file: ' . number_format(memory_get_usage()) . ' bytes',
+            \phpDocumentor\Plugin\Core\Log::DEBUG
+        );
+    }
+
+    protected function loadHashes(\DOMDocument $document = null)
+    {
+        $result = array();
+        if (!$document) {
+            return $result;
+        }
+
+        $this->log('Loading file hashes for incremental parsing');
+
+        $xpath = new \DOMXPath($document);
+        $qry = $xpath->query('/project/file');
+        for ($i = 0; $i < $qry->length; $i++) {
+            $file = $qry->item($i);
+
+            $path = $file->attributes->getNamedItem('path')->nodeValue;
+            $hash = $file->attributes->getNamedItem('hash')->nodeValue;
+
+            $result[$path] = $hash;
+        }
+
+        return $result;
     }
 }
