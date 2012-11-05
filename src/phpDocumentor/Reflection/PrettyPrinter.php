@@ -45,6 +45,6 @@ class PrettyPrinter extends \PHPParser_PrettyPrinter_Zend
      */
     public function pScalar_String(\PHPParser_Node_Scalar_String $node)
     {
-        return $this->pSafe($node->getAttribute('originalValue'));
+        return $this->pNoIndent($node->getAttribute('originalValue'));
     }
 }
