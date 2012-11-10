@@ -53,9 +53,9 @@
 
     <!-- Generate pmd-cpd.xml -->
     <target name="build:phpcpd" description="Search for duplicated code">
-        <phpcpd file="${project.basedir}/src/phpDocumentor">
-            <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
-        </phpcpd>
+        <!--<phpcpd file="${project.basedir}/src/phpDocumentor">-->
+            <!--<formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>-->
+        <!--</phpcpd>-->
     </target>
 
     <!-- Generate pmd.xml -->
@@ -127,7 +127,7 @@
                         promptText="Enter the stability of the new version (alpha, beta or stable)"
                         useExistingValue="true"/>
         <exec
-            command="php bin/utils/package.php ${version.number} ${version.stability} make"
+            command="php bin/utils/package.php ${version.number} ${version.number} ${version.stability} make"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
