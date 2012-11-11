@@ -11,6 +11,12 @@
             <directory suffix=".php">src/phpDocumentor</directory>
         </whitelist>
     </filter>
+    <php>
+        <!-- Temporary folder for some tests' output. Must already exist. -->
+        <const name="phpDocumentor\PHPUnit\TEMP_DIR" value="/tmp" />
+        <!-- A folder guaranteed not to exist during the test run. -->
+        <const name="phpDocumentor\PHPUnit\UNKNOWN_DIR" value="/tmpa" />
+    </php>
     <logging>
         <log type="coverage-html"
             title="phpDocumentor"
