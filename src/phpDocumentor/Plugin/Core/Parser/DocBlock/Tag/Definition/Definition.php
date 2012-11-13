@@ -149,6 +149,8 @@ class Definition extends ParserAbstract
             case 'version':
             case 'since':
             case 'deprecated':
+            case 'source':
+            case 'example':
                 $def = new Legacy($namespace, $namespace_aliases, $xml, $tag);
                 break;
             case '\Doctrine\ORM\Mapping\column':
