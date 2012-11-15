@@ -453,10 +453,10 @@ class Parser extends ParserAbstract
     protected function getFilenames(Collection $files)
     {
         $paths = $files->getFilenames();
-        $this->log('Starting to process ' . count($paths) . ' files');
         if (count($paths) < 1) {
             throw new FilesNotFoundException();
         }
+        $this->log('Starting to process ' . count($paths) . ' files');
         return $paths;
     }
 
@@ -525,16 +525,31 @@ class Parser extends ParserAbstract
         );
     }
 
-    protected function loadHashes(\DOMDocument $document = null)
+    /**
+     * Retrieves a list of filenames with their content hash from the existing AST.
+     *
+     * @param \DOMDocument|null $ast Either the DOMDocument representing the AST or null to indicate this is a new run.
+     *
+     * @throws \InvalidArgumentException if an invalid object is passed.
+     *
+     * @codeCoverageIgnore should be moved to the exporter
+     *
+     * @return string[] An associative array where the key represents the filename and the value the hash of that file.
+     */
+    protected function loadHashes($ast)
     {
         $result = array();
-        if (!$document) {
+        if (!$ast) {
             return $result;
+        }
+
+        if (!$ast instanceof \DOMDocument) {
+            throw new \InvalidArgumentException('Invalid argument provided, expected a DOMDocument instance.');
         }
 
         $this->log('Loading file hashes for incremental parsing');
 
-        $xpath = new \DOMXPath($document);
+        $xpath = new \DOMXPath($ast);
         $qry = $xpath->query('/project/file');
         for ($i = 0; $i < $qry->length; $i++) {
             $file = $qry->item($i);

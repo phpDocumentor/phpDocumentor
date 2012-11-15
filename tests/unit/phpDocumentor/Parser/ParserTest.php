@@ -282,6 +282,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers            phpDocumentor\Parser\Parser::parseFiles
+     * @covers            phpDocumentor\Parser\Parser::getFilenames
      * @expectedException phpDocumentor\Parser\Exception\FilesNotFoundException
      */
     public function testParseFilesWhenNoFilesWereFound()
@@ -291,5 +292,19 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $parser = new Parser();
         $parser->parseFiles($files);
+    }
+
+    /**
+     * @covers            phpDocumentor\Parser\Parser::parseFiles
+     * @covers            phpDocumentor\Parser\Parser::getFilenames
+     * @expectedException phpDocumentor\Parser\Exception\FilesNotFoundException
+     */
+    public function testParseFilesDispatchesPreFileEvent()
+    {
+//        $files = $this->getMock('phpDocumentor\Fileset\Collection', array('getFilenames'));
+//        $files->expects($this->once())->method('getFilenames')->will($this->returnValue(array()));
+//
+//        $parser = new Parser();
+//        $parser->parseFiles($files);
     }
 }
