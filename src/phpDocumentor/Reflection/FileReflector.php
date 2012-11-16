@@ -4,7 +4,6 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
@@ -14,10 +13,6 @@ namespace phpDocumentor\Reflection;
 
 /**
  * Reflection class for a full file.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
 {
@@ -64,21 +59,19 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
      * @throws \phpDocumentor\Reflection\Exception when the filename is incorrect or
      *   the file can not be opened
      */
-    public function __construct($file, $validate = false)
+    public function __construct($file, $validate = false, $encoding = 'utf-8')
     {
         if (!is_string($file) || (!is_readable($file))) {
-            throw new \phpDocumentor\Reflection\Exception(
-                'The given file should be a string, should exist on the '
-                . 'filesystem and should be readable'
+            throw new Exception\UnreadableFile(
+                'The given file should be a string, should exist on the filesystem and should be readable'
             );
         }
 
         if ($validate) {
             exec('php -l ' . escapeshellarg($file), $output, $result);
             if ($result != 0) {
-                throw new \phpDocumentor\Reflection\Exception(
-                    'The given file could not be interpreted as it contains '
-                    . 'errors: ' . implode(PHP_EOL, $output)
+                throw new Exception\UnparsableFile(
+                    'The given file could not be interpreted as it contains errors: ' . implode(PHP_EOL, $output)
                 );
             }
         }
@@ -86,10 +79,12 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
         $this->filename = $file;
         $this->contents = file_get_contents($file);
 
-        // filemtime($file) is sometimes between 0.00001 and 0.00005 seconds
-        // faster but md5 is more accurate
-        // real world tests with larger code bases should determine how much
-        // it really matters
+        if ($encoding !== 'utf-8') {
+            $this->contents = iconv($encoding, 'utf-8//TRANSLIT', $this->contents);
+        }
+
+        // filemtime($file) is sometimes between 0.00001 and 0.00005 seconds faster but md5 is more accurate.
+        // it can also result in false positives or false negatives after copying or checking out a codebase.
         $this->hash = md5($this->contents);
     }
 

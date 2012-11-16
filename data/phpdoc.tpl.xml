@@ -2,6 +2,7 @@
 <phpdocumentor>
   <parser>
     <default-package-name>Default</default-package-name>
+    <encoding>utf-8</encoding>
     <target>output</target>
     <markers>
       <item>TODO</item>
