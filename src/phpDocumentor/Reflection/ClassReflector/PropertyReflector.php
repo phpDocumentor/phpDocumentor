@@ -22,10 +22,8 @@ class PropertyReflector extends BaseReflector
     /** @var \PHPParser_Node_Stmt_PropertyProperty */
     protected $node;
 
-    public function __construct(
-        \PHPParser_Node_Stmt_Property $property,
-        \PHPParser_Node_Stmt_PropertyProperty $node
-    ) {
+    public function __construct(\PHPParser_Node_Stmt_Property $property, \PHPParser_Node_Stmt_PropertyProperty $node)
+    {
         parent::__construct($node);
         $this->property = $property;
     }
@@ -59,7 +57,7 @@ class PropertyReflector extends BaseReflector
      */
     public function isAbstract()
     {
-        return $this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT;
+        return (bool)($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT);
     }
 
     /**
@@ -95,7 +93,7 @@ class PropertyReflector extends BaseReflector
      */
     public function isStatic()
     {
-        return $this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_STATIC;
+        return (bool)($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_STATIC);
     }
 
     /**
@@ -105,7 +103,7 @@ class PropertyReflector extends BaseReflector
      */
     public function isFinal()
     {
-        return $this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL;
+        return (bool)($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL);
     }
 
     /**

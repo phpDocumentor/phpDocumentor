@@ -48,8 +48,7 @@ class ClassReflector extends InterfaceReflector
      */
     public function isAbstract()
     {
-        return (bool)$this->node->type
-            && \PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT;
+        return (bool)($this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT);
     }
 
     /**
@@ -59,8 +58,7 @@ class ClassReflector extends InterfaceReflector
      */
     public function isFinal()
     {
-        return (bool)$this->node->type
-            && \PHPParser_Node_Stmt_Class::MODIFIER_FINAL;
+        return (bool)($this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL);
     }
 
     /**

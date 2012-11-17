@@ -52,7 +52,7 @@ class MethodReflector extends FunctionReflector
      */
     public function isAbstract()
     {
-        return $this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT;
+        return (bool)($this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT);
     }
 
     /**
@@ -62,7 +62,7 @@ class MethodReflector extends FunctionReflector
      */
     public function isStatic()
     {
-        return $this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_STATIC;
+        return (bool)($this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_STATIC);
     }
 
     /**
@@ -72,6 +72,6 @@ class MethodReflector extends FunctionReflector
      */
     public function isFinal()
     {
-        return $this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL;
+        return (bool)($this->node->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL);
     }
 }
