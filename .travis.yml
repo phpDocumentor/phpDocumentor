@@ -11,8 +11,8 @@ script:
 before_script:
  - sudo apt-get -qq update > /dev/null
  - sudo apt-get -qq install graphviz > /dev/null
- - composer selfupdate
- - composer install --dev 
+ - composer selfupdate --quiet
+ - composer install --dev --quiet
  - phpenv rehash > /dev/null
 
 notifications:
