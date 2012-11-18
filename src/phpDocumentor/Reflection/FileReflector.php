@@ -79,8 +79,8 @@ class FileReflector extends ReflectionAbstract implements \PHPParser_NodeVisitor
         $this->filename = $file;
         $this->contents = file_get_contents($file);
 
-        if ($encoding !== 'utf-8') {
-            $this->contents = iconv($encoding, 'utf-8//TRANSLIT', $this->contents);
+        if (strtolower($encoding) !== 'utf-8') {
+            $this->contents = iconv(strtolower($encoding), 'utf-8//IGNORE//TRANSLIT', $this->contents);
         }
 
         // filemtime($file) is sometimes between 0.00001 and 0.00005 seconds faster but md5 is more accurate.
