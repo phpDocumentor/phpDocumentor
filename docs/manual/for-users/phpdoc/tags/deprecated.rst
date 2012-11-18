@@ -17,8 +17,9 @@ be removed in a future version as it has become obsolete or its usage is otherwi
 not recommended.
 
 This tag MAY also contain a version number up till which it is guaranteed to be
-included in the software. Starting with the given version will the function be
-removed or may be removed without further notice.
+included in the software. Starting with the given version, the function will be
+removed or may be removed without further notice. If specified, the version number
+MUST follow the same rules as those by the :term:`@version` tag's vector.
 
 It is RECOMMENDED (but not required) to provide an additional description stating
 why the associated element is deprecated.
@@ -43,3 +44,7 @@ Examples
      * @deprecated No longer used by internal code and not recommended.
      * @deprecated 1.0.0 No longer used by internal code and not recommended.
      */
+    function count()
+    {
+        <...>
+    }
