@@ -3,7 +3,6 @@ php:
   - 5.3.3
   - 5.3
   - 5.4
-  - 5.4.6
 
 script:
  - php bin/phpunit 
@@ -15,8 +14,6 @@ before_script:
  - composer selfupdate --quiet
  - composer install --dev --quiet
  - phpenv rehash > /dev/null
- - php -m
- - php -i  | grep error_reporting 
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"
