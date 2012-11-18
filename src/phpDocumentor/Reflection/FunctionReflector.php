@@ -13,6 +13,7 @@
 namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\BaseReflector;
+use phpDocumentor\Reflection\DocBlock\Context;
 
 /**
  * Provides Static Reflection for functions.
@@ -35,13 +36,16 @@ class FunctionReflector extends BaseReflector
      *
      * @param \PHPParser_Node_Stmt $node Function object coming from PHP-Parser.
      */
-    public function __construct(\PHPParser_Node_Stmt $node)
+    public function __construct(\PHPParser_Node_Stmt $node, Context $context)
     {
-        parent::__construct($node);
+        parent::__construct($node, $context);
 
         /** @var \PHPParser_Node_Param $param  */
         foreach ($node->params as $param) {
-            $reflector = new FunctionReflector\ArgumentReflector($param);
+            $reflector = new FunctionReflector\ArgumentReflector(
+                $param,
+                $context
+            );
             $this->arguments[$reflector->getName()] = $reflector;
         }
     }

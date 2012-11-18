@@ -11,6 +11,8 @@
  */
 namespace phpDocumentor\Reflection;
 
+use phpDocumentor\Reflection\DocBlock\Context;
+
 /**
  * Class for testing base reflector.
  *
@@ -87,7 +89,10 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function testSetNameSpace()
     {
         /** @var BaseReflector $base_reflector  */
-        $base_reflector = new BaseReflectorMock($this->getMock('PHPParser_Node_Stmt'));
+        $base_reflector = new BaseReflectorMock(
+            $this->getMock('PHPParser_Node_Stmt'),
+            new Context()
+        );
         $base_reflector->setNamespace('namespace_name');
 
         $this->assertEquals('namespace_name', $base_reflector->getNameSpace());
@@ -105,7 +110,10 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function testSetNameSpaceInvalidArgument()
     {
         /** @var BaseReflector $base_reflector  */
-        $base_reflector = new BaseReflectorMock($this->getMock('PHPParser_Node_Stmt'));
+        $base_reflector = new BaseReflectorMock(
+            $this->getMock('PHPParser_Node_Stmt'),
+            new Context()
+        );
         $base_reflector->setNamespace(null);
     }
 
@@ -143,7 +151,10 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function testGetShortName()
     {
         $node = new NodeMock();
-        $base_reflector = new BaseReflectorMock($node);
+        $base_reflector = new BaseReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertEquals($node->__toString(), $base_reflector->getShortName());
 
@@ -163,14 +174,22 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function testGetNamespaceAliases()
     {
         $node = new NodeMock();
-        $base_reflector = new BaseReflectorMock($node);
+        $base_reflector = new BaseReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertEquals(array(), $base_reflector->getNamespaceAliases());
 
-        $base_reflector->setNamespaceAliases(array('test_namespace', 'test_namespace_2'));
+        $base_reflector->setNamespaceAliases(
+            array('test_namespace', 'test_namespace_2')
+        );
 
         $this->assertCount(2, $base_reflector->getNamespaceAliases());
-        $this->assertEquals(array('test_namespace', 'test_namespace_2'), $base_reflector->getNamespaceAliases());
+        $this->assertEquals(
+            array('\test_namespace', '\test_namespace_2'),
+            $base_reflector->getNamespaceAliases()
+        );
     }
 
     /**
@@ -189,7 +208,11 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function testsetNamespaceAlias()
     {
         $node = new NodeMock();
-        $base_reflector = new BaseReflectorMock($node);
+        
+        $base_reflector = new BaseReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertEquals(array(), $base_reflector->getNamespaceAliases());
 
@@ -198,14 +221,14 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
         $namespace_aliases = $base_reflector->getNamespaceAliases();
         $this->assertCount(1, $namespace_aliases);
         $this->assertArrayHasKey('test_alias', $namespace_aliases);
-        $this->assertEquals('test_namespace', $namespace_aliases['test_alias']);
+        $this->assertEquals('\test_namespace', $namespace_aliases['test_alias']);
 
         $base_reflector->setNamespaceAlias('test_alias', 'test_namespace_2');
 
         $namespace_aliases = $base_reflector->getNamespaceAliases();
         $this->assertCount(1, $namespace_aliases);
         $this->assertArrayHasKey('test_alias', $namespace_aliases);
-        $this->assertEquals('test_namespace_2', $namespace_aliases['test_alias']);
+        $this->assertEquals('\test_namespace_2', $namespace_aliases['test_alias']);
 
         $base_reflector->setNamespaceAlias('test_alias2', 'test_namespace');
 
@@ -213,8 +236,8 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $namespace_aliases);
         $this->assertArrayHasKey('test_alias', $namespace_aliases);
         $this->assertArrayHasKey('test_alias2', $namespace_aliases);
-        $this->assertEquals('test_namespace_2', $namespace_aliases['test_alias']);
-        $this->assertEquals('test_namespace', $namespace_aliases['test_alias2']);
+        $this->assertEquals('\test_namespace_2', $namespace_aliases['test_alias']);
+        $this->assertEquals('\test_namespace', $namespace_aliases['test_alias2']);
     }
 
     /**
@@ -227,7 +250,11 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function TestGetLinenumber()
     {
         $node = new NodeMock();
-        $base_reflector = new BaseReflectorMock($node);
+        
+        $base_reflector = new BaseReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertEquals($node->getLine(), $base_reflector->getLinenumber());
 
@@ -247,7 +274,11 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function testSetDefaultPackageName()
     {
         $node = new NodeMock();
-        $base_reflector = new BaseReflectorMock($node);
+        
+        $base_reflector = new BaseReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertInternalType('string', $base_reflector->getDefaultPackageName());
         $this->assertEquals('', $base_reflector->getDefaultPackageName());
@@ -267,7 +298,10 @@ class BaseReflectorTest extends \PHPUnit_Framework_TestCase
     public function testGetRepresentationOfValue()
     {
         $node = new NodeMock();
-        $base_reflector = new BaseReflectorMock($node);
+        $base_reflector = new BaseReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertEquals('', $base_reflector->getValueRepresentation(null));
 

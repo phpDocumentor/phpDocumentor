@@ -12,6 +12,18 @@
 
 namespace phpDocumentor\Reflection;
 
+use Exception;
+use InvalidArgumentException;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Context;
+use phpDocumentor\Reflection\DocBlock\Location;
+use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
+use PHPParser_Node_Expr;
+use PHPParser_Node_Stmt;
+use PHPParser_NodeAbstract;
+use PHPParser_PrettyPrinterAbstract;
+
 /**
  * Basic reflection providing support for events and basic properties as a
  * DocBlock and names.
@@ -22,7 +34,7 @@ namespace phpDocumentor\Reflection;
  */
 abstract class BaseReflector extends ReflectionAbstract
 {
-    /** @var \PHPParser_Node_Stmt */
+    /** @var PHPParser_Node_Stmt */
     protected $node;
 
     /**
@@ -36,26 +48,9 @@ abstract class BaseReflector extends ReflectionAbstract
     protected $default_package_name = '';
 
     /**
-     * Contains name of the namespace in which this element exists.
-     *
-     * @var string|null
-     */
-    protected $namespace = 'global';
-
-    /**
-     * List of namespace aliases.
-     *
-     * The key of each entry represents the alias name and the value the
-     * Fully Qualified Namespace Name (FQNN) that it refers to.
-     *
-     * @var string[]
-     */
-    protected $namespace_aliases = array();
-
-    /**
      * PHP AST pretty printer used to get representations of values.
      *
-     * @var \PHPParser_PrettyPrinterAbstract
+     * @var PHPParser_PrettyPrinterAbstract
      */
     protected static $prettyPrinter = null;
 
@@ -65,11 +60,14 @@ abstract class BaseReflector extends ReflectionAbstract
      *
      * @link http://github.com/nikic/PHP-Parser
      *
-     * @param \PHPParser_NodeAbstract $node
+     * @param PHPParser_NodeAbstract $node
+     * @param Context                $context
      */
-    public function __construct(\PHPParser_NodeAbstract $node)
+    public function __construct(PHPParser_NodeAbstract $node, Context $context)
     {
         $this->node = $node;
+        $context->setLSEN($this->getLSEN());
+        $this->context = $context;
     }
 
     /**
@@ -77,7 +75,7 @@ abstract class BaseReflector extends ReflectionAbstract
      *
      * @param string $namespace
      *
-     * @throws \InvalidArgumentException if something other than a string is
+     * @throws InvalidArgumentException if something other than a string is
      *     passed.
      *
      * @return void
@@ -85,41 +83,52 @@ abstract class BaseReflector extends ReflectionAbstract
     public function setNamespace($namespace)
     {
         if (!is_string($namespace)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Expected a string for the namespace'
             );
         }
 
-        $this->namespace = $namespace;
+        $this->context->setNamespace($namespace);
     }
 
     /**
      * Returns the parsed DocBlock.
      *
-     * @return \phpDocumentor\Reflection\DocBlock|null
+     * @return DocBlock|null
      */
     public function getDocBlock()
     {
+        return $this->extractDocBlock($this->node);
+    }
+    
+    /**
+     * Extracts a parsed DocBlock from an object.
+     * 
+     * @param object $node Any object with a "getDocComment()" method.
+     * 
+     * @return DocBlock|null
+     */
+    protected function extractDocBlock($node)
+    {
         $doc_block = null;
-        if ($comment = $this->node->getDocComment()) {
+        $comment = $node->getDocComment();
+        if ($comment) {
             try {
-                $doc_block = new \phpDocumentor\Reflection\DocBlock(
+                $doc_block = new DocBlock(
                     (string)$comment,
-                    $this->getNamespace(),
-                    $this->getNamespaceAliases()
+                    $this->context,
+                    new Location($comment->getLine())
                 );
-                $doc_block->line_number = $comment->getLine();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->log($e->getMessage(), 2);
             }
         }
-
-        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
+        
+        Dispatcher::getInstance()->dispatch(
             'reflection.docblock-extraction.post',
-            \phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent
+            PostDocBlockExtractionEvent
             ::createInstance($this)->setDocblock($doc_block)
         );
-
         return $doc_block;
     }
 
@@ -148,6 +157,22 @@ abstract class BaseReflector extends ReflectionAbstract
             ? $this->node->name
             : (string)$this->node;
     }
+    
+    /**
+     * Gets the LSEN.
+     * 
+     * Returns this element's Local Structural Element Name (LSEN). This name
+     * consistents of the element's short name, along with punctuation that
+     * hints at the kind of structural element. If the structural element is
+     * part of a type (i.e. an interface/trait/class' property/method/constant),
+     * it also contains the name of the owning type.
+     * 
+     * @return string
+     */
+    public function getLSEN()
+    {
+        return '';
+    }
 
     /**
      * Returns the namespace name for this object.
@@ -160,7 +185,7 @@ abstract class BaseReflector extends ReflectionAbstract
     public function getNamespace()
     {
         if (!$this->node->namespacedName) {
-            return $this->namespace;
+            return $this->context->getNamespace();
         }
 
         $parts = $this->node->namespacedName->parts;
@@ -178,7 +203,7 @@ abstract class BaseReflector extends ReflectionAbstract
      */
     public function getNamespaceAliases()
     {
-        return $this->namespace_aliases;
+        return $this->context->getNamespaceAliases();
     }
 
     /**
@@ -193,7 +218,7 @@ abstract class BaseReflector extends ReflectionAbstract
      */
     public function setNamespaceAliases(array $aliases)
     {
-        $this->namespace_aliases = $aliases;
+        $this->context->setNamespaceAliases($aliases);
     }
 
     /**
@@ -206,7 +231,7 @@ abstract class BaseReflector extends ReflectionAbstract
      */
     public function setNamespaceAlias($alias, $fqnn)
     {
-        $this->namespace_aliases[$alias] = $fqnn;
+        $this->context->setNamespaceAlias($alias, $fqnn);
     }
 
     /**
@@ -251,7 +276,7 @@ abstract class BaseReflector extends ReflectionAbstract
     /**
      * Returns a simple human readable output for a value.
      *
-     * @param \PHPParser_Node_Expr $value The value node as provided by
+     * @param PHPParser_Node_Expr $value The value node as provided by
      *     PHP-Parser.
      *
      * @return string

@@ -11,6 +11,8 @@
  */
 namespace phpDocumentor\Reflection;
 
+use phpDocumentor\Reflection\DocBlock\Context;
+
 /**
  * Class for testing PHPParser_Node_Stmt.
  *
@@ -66,7 +68,10 @@ class ClassReflectorTest extends \PHPUnit_Framework_TestCase
     {
         //$this->markTestSkipped();
         $node = new NodeMock2();
-        $class_reflector = new ClassReflector($node);
+        $class_reflector = new ClassReflector(
+            $node,
+            new Context()
+        );
 
         $this->assertFalse($class_reflector->isAbstract());
 
@@ -84,7 +89,10 @@ class ClassReflectorTest extends \PHPUnit_Framework_TestCase
     public function testIsFinal()
     {
         $node = new NodeMock2();
-        $class_reflector = new ClassReflector($node);
+        $class_reflector = new ClassReflector(
+            $node,
+            new Context()
+        );
 
         $this->assertFalse($class_reflector->isFinal());
 
@@ -102,7 +110,10 @@ class ClassReflectorTest extends \PHPUnit_Framework_TestCase
     public function testGetTraits()
     {
         $node = new NodeMock();
-        $class_reflector = new ClassReflectorMock($node);
+        $class_reflector = new ClassReflectorMock(
+            $node,
+            new Context()
+        );
 
         $traits = $class_reflector->getTraits();
         $this->assertInternalType('array', $traits);
@@ -125,7 +136,10 @@ class ClassReflectorTest extends \PHPUnit_Framework_TestCase
     public function testGetParentClass()
     {
         $node = new NodeMock();
-        $class_reflector = new ClassReflectorMock($node);
+        $class_reflector = new ClassReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertEquals('', $class_reflector->getParentClass());
 
@@ -144,7 +158,10 @@ class ClassReflectorTest extends \PHPUnit_Framework_TestCase
     public function testGetInterfaces()
     {
         $node = new NodeMock();
-        $class_reflector = new ClassReflectorMock($node);
+        $class_reflector = new ClassReflectorMock(
+            $node,
+            new Context()
+        );
 
         $this->assertEquals(array(), $class_reflector->getInterfaces());
 

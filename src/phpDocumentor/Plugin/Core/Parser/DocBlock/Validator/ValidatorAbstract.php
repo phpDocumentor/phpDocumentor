@@ -84,9 +84,10 @@ abstract class ValidatorAbstract extends PluginAbstract
     ) {
         $this->entityName = $name;
         $this->lineNumber = $docblock
-            ? $docblock->line_number : $source->getLineNumber();
+            ? $docblock->getLocation()->getLineNumber()
+            : $source->getLineNumber();
         $this->docblock   = $docblock;
-        $this->source      = $source;
+        $this->source     = $source;
         parent::__construct(
             $plugin->getEventDispatcher(),
             $plugin->getConfiguration(),
