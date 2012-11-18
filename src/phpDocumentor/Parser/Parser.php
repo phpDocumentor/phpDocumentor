@@ -79,6 +79,22 @@ class Parser extends ParserAbstract
     protected $encoding = 'utf-8';
 
     /**
+     * Initializes the parser.
+     *
+     * This constructor checks the user's PHP ini settings to detect which encoding is used by default. This encoding
+     * is used as a default value for phpDocumentor to convert the source files that it receives.
+     *
+     * If no encoding is specified than 'utf-8' is assumed by default.
+     */
+    public function __construct()
+    {
+        $default_encoding = ini_get('zend.script_encoding');
+        if ($default_encoding) {
+            $this->encoding = $default_encoding;
+        }
+    }
+
+    /**
      * Sets the title for this project.
      *
      * @param string $title The intended title for this project.
@@ -244,15 +260,21 @@ class Parser extends ParserAbstract
                     : '<?xml version="1.0" encoding="utf-8"?><phpdoc></phpdoc>';
             }
 
-            // unable to prevent shut up operator in a convenient way; malformed requests always generate a warning
+            libxml_use_internal_errors(true);
             $dom = new \DOMDocument('1.0', 'utf-8');
-            $result = @$dom->loadXML($xml);
+            $result = $dom->loadXML($xml);
 
             // if the loadXml method returns false than there is something wrong with the document; report and do a full
             // run.
             if (!$result) {
-                $dom = null;
+                /** @var \LibXMLError $error */
+                foreach (libxml_get_errors() as $error) {
+                    $this->log($error->message, LOG_ERR);
+                }
+                libxml_clear_errors();
                 $this->log('Existing structure content is corrupt; performing a full parsing session', LOG_ERR);
+
+                $dom = null;
             }
         }
 
@@ -532,7 +554,6 @@ class Parser extends ParserAbstract
     {
         $this->encoding = $encoding;
     }
-
     /**
      * Returns the currently active encoding.
      *
