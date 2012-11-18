@@ -61,6 +61,12 @@ HELP
                 'Comma-separated list of directories to (recursively) parse'
             )
             ->addOption(
+                'encoding',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'encoding to be used to interpret source files with'
+            )
+            ->addOption(
                 'extensions',
                 'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
@@ -228,6 +234,7 @@ HELP
         $parser->setTitle((string)$this->getOption($input, 'title', 'title'));
         $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
+        $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
         $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
