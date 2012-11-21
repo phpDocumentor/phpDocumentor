@@ -13,6 +13,8 @@ before_script:
  - sudo apt-get -qq install graphviz > /dev/null
  - composer selfupdate --quiet
  - composer install --dev 
+ - php bin/phpunit
+ - php bin/behat --no-paths --format failed
  - composer update --dev 
  - phpenv rehash > /dev/null
 
