@@ -49,7 +49,7 @@ class DocBlockExporter
         $parent->appendChild($child);
 
         // TODO: custom attached member variable, make real
-        $child->setAttribute('line', $docblock->line_number);
+        $child->setAttribute('line', $docblock->getLocation()->getLineNumber());
 
         $this->addDescription($child, $docblock);
         $this->addLongDescription($child, $docblock);

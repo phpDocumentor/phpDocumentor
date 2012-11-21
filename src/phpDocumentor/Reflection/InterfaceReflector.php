@@ -27,24 +27,26 @@ class InterfaceReflector extends BaseReflector
             switch (get_class($stmt)) {
                 case 'PHPParser_Node_Stmt_Property':
                     foreach ($stmt->props as $property) {
-                        $reflector = new ClassReflector\PropertyReflector($stmt, $property);
-                        $reflector->setNamespace($this->getNamespace());
-                        $reflector->setNamespaceAliases($this->namespace_aliases);
-                        $this->properties[] = $reflector;
+                        $this->properties[] = new ClassReflector\PropertyReflector(
+                            $stmt,
+                            $this->context,
+                            $property
+                        );
                     }
                     break;
                 case 'PHPParser_Node_Stmt_ClassMethod':
-                    $reflector = new ClassReflector\MethodReflector($stmt);
-                    $reflector->setNamespace($this->getNamespace());
-                    $reflector->setNamespaceAliases($this->namespace_aliases);
-                    $this->methods[] = $reflector;
+                    $this->methods[] = new ClassReflector\MethodReflector(
+                        $stmt,
+                        $this->context
+                    );
                     break;
                 case 'PHPParser_Node_Stmt_ClassConst':
                     foreach ($stmt->consts as $constant) {
-                        $reflector = new ClassReflector\ConstantReflector($stmt, $constant);
-                        $reflector->setNamespace($this->getNamespace());
-                        $reflector->setNamespaceAliases($this->namespace_aliases);
-                        $this->constants[] = $reflector;
+                        $this->constants[] = new ClassReflector\ConstantReflector(
+                            $stmt,
+                            $this->context,
+                            $constant
+                        );
                     }
                     break;
             }

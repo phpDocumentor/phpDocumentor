@@ -13,18 +13,26 @@
 namespace phpDocumentor\Reflection\ClassReflector;
 
 use phpDocumentor\Reflection\BaseReflector;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Context;
+use PHPParser_Node_Stmt_Class;
+use PHPParser_Node_Stmt_Property;
+use PHPParser_Node_Stmt_PropertyProperty;
 
 class PropertyReflector extends BaseReflector
 {
-    /** @var \PHPParser_Node_Stmt_Property */
+    /** @var PHPParser_Node_Stmt_Property */
     protected $property;
 
-    /** @var \PHPParser_Node_Stmt_PropertyProperty */
+    /** @var PHPParser_Node_Stmt_PropertyProperty */
     protected $node;
 
-    public function __construct(\PHPParser_Node_Stmt_Property $property, \PHPParser_Node_Stmt_PropertyProperty $node)
-    {
-        parent::__construct($node);
+    public function __construct(
+        PHPParser_Node_Stmt_Property $property, 
+        Context $context,
+        PHPParser_Node_Stmt_PropertyProperty $node
+    ) {
+        parent::__construct($node, $context);
         $this->property = $property;
     }
 
@@ -57,7 +65,7 @@ class PropertyReflector extends BaseReflector
      */
     public function isAbstract()
     {
-        return (bool)($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT);
+        return (bool)($this->property->type & PHPParser_Node_Stmt_Class::MODIFIER_ABSTRACT);
     }
 
     /**
@@ -76,10 +84,10 @@ class PropertyReflector extends BaseReflector
      */
     public function getVisibility()
     {
-        if ($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_PROTECTED) {
+        if ($this->property->type & PHPParser_Node_Stmt_Class::MODIFIER_PROTECTED) {
             return 'protected';
         }
-        if ($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_PRIVATE) {
+        if ($this->property->type & PHPParser_Node_Stmt_Class::MODIFIER_PRIVATE) {
             return 'private';
         }
 
@@ -93,7 +101,7 @@ class PropertyReflector extends BaseReflector
      */
     public function isStatic()
     {
-        return (bool)($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_STATIC);
+        return (bool)($this->property->type & PHPParser_Node_Stmt_Class::MODIFIER_STATIC);
     }
 
     /**
@@ -103,36 +111,16 @@ class PropertyReflector extends BaseReflector
      */
     public function isFinal()
     {
-        return (bool)($this->property->type & \PHPParser_Node_Stmt_Class::MODIFIER_FINAL);
+        return (bool)($this->property->type & PHPParser_Node_Stmt_Class::MODIFIER_FINAL);
     }
 
     /**
      * Returns the parsed DocBlock.
      *
-     * @return \phpDocumentor\Reflection\DocBlock|null
+     * @return DocBlock|null
      */
     public function getDocBlock()
     {
-        $doc_block = null;
-        if ($comment = $this->property->getDocComment()) {
-            try {
-                $doc_block = new \phpDocumentor\Reflection\DocBlock(
-                    (string)$comment,
-                    $this->getNamespace(),
-                    $this->getNamespaceAliases()
-                );
-                $doc_block->line_number = $comment->getLine();
-            } catch (\Exception $e) {
-                $this->log($e->getMessage(), 2);
-            }
-        }
-
-        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
-            'reflection.docblock-extraction.post',
-            \phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent
-            ::createInstance($this)->setDocblock($doc_block)
-        );
-
-        return $doc_block;
+        return $this->extractDocBlock($this->property);
     }
 }
