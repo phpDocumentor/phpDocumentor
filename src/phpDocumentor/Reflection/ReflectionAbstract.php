@@ -22,6 +22,13 @@ namespace phpDocumentor\Reflection;
 abstract class ReflectionAbstract
 {
     /**
+     * The context (namespace, aliases) for the reflection.
+     * 
+     * @var \phpDocumentor\Reflection\DocBlock\Context
+     */
+    protected $context = null;
+
+    /**
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.

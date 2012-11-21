@@ -12,6 +12,11 @@
 
 namespace phpDocumentor\Reflection;
 
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Context;
+use PHPParser_Node_Const;
+use PHPParser_Node_Stmt_Const;
+
 /**
  * Provides Static Reflection for file-level constants.
  *
@@ -21,22 +26,25 @@ namespace phpDocumentor\Reflection;
  */
 class ConstantReflector extends BaseReflector
 {
-    /** @var \PHPParser_Node_Stmt_Const */
+    /** @var PHPParser_Node_Stmt_Const */
     protected $constant;
 
-    /** @var \PHPParser_Node_Const */
+    /** @var PHPParser_Node_Const */
     protected $node;
 
     /**
      * Registers the Constant Statement and Node with this reflector.
      *
-     * @param \PHPParser_Node_Stmt_Const $stmt
-     * @param \PHPParser_Node_Const      $node
+     * @param PHPParser_Node_Stmt_Const $stmt
+     * @param PHPParser_Node_Const      $node
      */
-    public function __construct($stmt, $node)
-    {
+    public function __construct(
+        PHPParser_Node_Stmt_Const $stmt,
+        Context $context,
+        PHPParser_Node_Const $node
+    ) {
+        parent::__construct($node, $context);
         $this->constant = $stmt;
-        parent::__construct($node);
     }
 
     /**
@@ -52,31 +60,10 @@ class ConstantReflector extends BaseReflector
     /**
      * Returns the parsed DocBlock.
      *
-     * @return \phpDocumentor\Reflection\DocBlock|null
+     * @return DocBlock|null
      */
     public function getDocBlock()
     {
-        $doc_block = null;
-        $comment = $this->constant->getDocComment();
-        if ($comment) {
-            try {
-                $doc_block = new \phpDocumentor\Reflection\DocBlock(
-                    (string)$comment,
-                    $this->getNamespace(),
-                    $this->getNamespaceAliases()
-                );
-                $doc_block->line_number = $comment->getLine();
-            } catch (\Exception $e) {
-                $this->log($e->getMessage(), 2);
-            }
-        }
-
-        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
-            'reflection.docblock-extraction.post',
-            \phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent
-            ::createInstance($this)->setDocblock($doc_block)
-        );
-
-        return $doc_block;
+        return $this->extractDocBlock($this->constant);
     }
 }
