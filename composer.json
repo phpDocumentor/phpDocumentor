@@ -41,9 +41,11 @@
     },
     "require-dev": {
         "behat/behat": ">=2.4@stable",
+        "phpunit/php-mock-objects": "1.2.*@stable",
         "phpunit/phpunit": "3.7.*@stable",
         "mockery/mockery": ">=0.7.0@stable"
     },
+    "minimum-stability": "dev",
     "config": {
         "bin-dir":"bin/"
     },
