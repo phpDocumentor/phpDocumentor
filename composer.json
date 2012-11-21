@@ -44,7 +44,6 @@
         "phpunit/phpunit": "3.7.*@stable",
         "mockery/mockery": ">=0.7.0@stable"
     },
-    "minimum-stability": "dev",
     "config": {
         "bin-dir":"bin/"
     },
