@@ -11,12 +11,12 @@ script:
 before_script:
  - sudo apt-get -qq update > /dev/null
  - sudo apt-get -qq install graphviz > /dev/null
+ - phpenv rehash > /dev/null
  - composer selfupdate --quiet
  - composer install --dev 
  - php bin/phpunit
  - php bin/behat --no-paths --format failed
  - composer update --dev 
- - phpenv rehash > /dev/null
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"
