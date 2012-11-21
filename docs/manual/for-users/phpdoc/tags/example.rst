@@ -1,6 +1,10 @@
 @example
 ========
 
+.. important::
+
+   The effects of this tag are not yet fully implemented in PhpDocumentor2.
+
 The @example tag shows the code of a specified example file, or optionally, just
 a portion of it.
 

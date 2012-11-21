@@ -1,6 +1,10 @@
 @since
 ======
 
+.. important::
+
+   The effects of this tag are not yet fully implemented in PhpDocumentor2.
+
 The @since tag indicates at with which version did the associated
 :term:`Structural Elements` became available.
 
