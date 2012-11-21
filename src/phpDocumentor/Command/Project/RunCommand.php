@@ -106,6 +106,12 @@ HELP
                 'Comma-separated list of directories to (recursively) parse'
             )
             ->addOption(
+                'encoding',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'encoding to be used to interpret source files with'
+            )
+            ->addOption(
                 'extensions',
                 'e',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
@@ -224,6 +230,7 @@ HELP
                 '--target' => $input->getOption('target'),
                 '--filename' => $input->getOption('filename'),
                 '--directory' => $input->getOption('directory'),
+                '--encoding' => $input->getOption('encoding'),
                 '--extensions' => $input->getOption('extensions'),
                 '--ignore' => $input->getOption('ignore'),
                 '--ignore-tags' => $input->getOption('ignore-tags'),
