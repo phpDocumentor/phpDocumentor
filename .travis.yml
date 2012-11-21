@@ -13,6 +13,7 @@ before_script:
  - sudo apt-get -qq install graphviz > /dev/null
  - composer selfupdate --quiet
  - composer install --dev 
+ - composer update --dev 
  - phpenv rehash > /dev/null
 
 notifications:
