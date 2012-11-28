@@ -29,6 +29,7 @@
 	"phpdocumentor/reflection-docblock": "dev-master",
 
         "phpdocumentor/plugin-twig":"1.*",
+        "phpdocumentor/unified-asset-installer": "1.*@beta",
 
         "phpdocumentor/template-responsive": "1.*",
         "phpdocumentor/template-new-black": "1.*",
