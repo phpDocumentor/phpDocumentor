@@ -25,6 +25,7 @@ Tag reference
    tags/return
    tags/see
    tags/since
+   tags/source
    tags/subpackage
    tags/throws
    tags/todo

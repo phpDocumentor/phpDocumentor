@@ -1,6 +1,14 @@
 @link
 =====
 
+.. important::
+
+   The effects of the inline version of this tag are not yet fully implemented
+   in PhpDocumentor2. There's only URI support (i.e. no support for
+   :term:`Structural Elements`), and even that is available only in long descriptions.
+   This is a known issue that is sure to be fixed before the final release of
+   PhpDocumentor 2.0.
+
 The @link tag indicates a custom relation between associated
 :term:`Structural Elements` and a website, which is identified by an absolute
 URI.
