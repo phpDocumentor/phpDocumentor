@@ -9,7 +9,7 @@ the developers of this software.
 Syntax
 ------
 
-    @internal
+    @internal [description]
 
 or inline:
 
