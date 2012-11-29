@@ -1,5 +1,5 @@
 {
-    "hash": "67daf3aba0039309280e09192b9319a4",
+    "hash": "ed167abd256718b42a6bb04bffec441d",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -43,6 +43,7 @@
                     "Cilex": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -84,6 +85,7 @@
                     "dflydev\\markdown": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "New BSD License"
             ],
@@ -138,6 +140,7 @@
                     "PHPParser": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -162,7 +165,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpDocumentor/Fileset/zipball/1.0.0-beta2",
+                "url": "https://github.com/phpDocumentor/Fileset/archive/1.0.0-beta2.zip",
                 "reference": "1.0.0-beta2",
                 "shasum": ""
             },
@@ -178,6 +181,7 @@
                     "": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -214,6 +218,7 @@
                     "phpDocumentor": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -250,6 +255,7 @@
                     "phpDocumentor": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -265,31 +271,31 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection",
-                "reference": "0a7fe201246576d951b6f147436223c13c4cf56d"
+                "reference": "0.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpDocumentor/Reflection/archive/0a7fe201246576d951b6f147436223c13c4cf56d.zip",
-                "reference": "0a7fe201246576d951b6f147436223c13c4cf56d",
+                "url": "https://github.com/phpDocumentor/Reflection/archive/0.1.0.zip",
+                "reference": "0.1.0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "nikic/php-parser": "dev-master",
-                "phpdocumentor/reflection-docblock": "dev-master"
+                "phpdocumentor/reflection-docblock": "2.0.0a1"
             },
             "require-dev": {
                 "behat/behat": ">=2.4@stable",
                 "phpunit/phpunit": "3.7.*@stable",
                 "mockery/mockery": ">=0.7.0@stable"
             },
-            "time": "2012-11-28 00:10:49",
+            "time": "2012-11-29 18:43:21",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "phpDocumentor": [
@@ -299,6 +305,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -313,16 +320,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "dev-master",
+            "version": "2.0.0a1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock",
-                "reference": "0d38c84407857cb178e84774491a5d4afedac2a7"
+                "reference": "2.0.0a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpDocumentor/ReflectionDocBlock/archive/0d38c84407857cb178e84774491a5d4afedac2a7.zip",
-                "reference": "0d38c84407857cb178e84774491a5d4afedac2a7",
+                "url": "https://github.com/phpDocumentor/ReflectionDocBlock/archive/2.0.0a1.zip",
+                "reference": "2.0.0a1",
                 "shasum": ""
             },
             "require": {
@@ -332,9 +339,9 @@
             "require-dev": {
                 "phpunit/phpunit": "*@stable"
             },
-            "time": "2012-11-22 11:22:00",
+            "time": "2012-11-27 17:52:28",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "phpDocumentor": [
@@ -342,6 +349,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -373,6 +381,7 @@
             "time": "2012-08-14 12:55:19",
             "type": "phpdocumentor-template",
             "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -405,6 +414,7 @@
             "time": "2012-08-14 13:16:25",
             "type": "phpdocumentor-template",
             "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -438,6 +448,7 @@
             "time": "2012-09-16 07:11:08",
             "type": "phpdocumentor-template",
             "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -470,6 +481,7 @@
             "time": "2012-08-24 13:05:33",
             "type": "phpdocumentor-template",
             "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -502,6 +514,7 @@
             "time": "2012-11-01 17:12:42",
             "type": "phpdocumentor-template",
             "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -535,6 +548,7 @@
             "time": "2012-07-07 12:53:47",
             "type": "phpdocumentor-template",
             "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -574,6 +588,7 @@
                     "phpDocumentor\\Composer": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -616,6 +631,7 @@
                     "Pimple": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -663,6 +679,7 @@
                     "Symfony\\Component\\Console": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -717,6 +734,7 @@
                     "Symfony\\Component\\EventDispatcher": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -764,6 +782,7 @@
                     "Symfony\\Component\\Finder": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -811,6 +830,7 @@
                     "Symfony\\Component\\Process": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -857,6 +877,7 @@
                     "Twig_": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3"
             ],
@@ -1116,6 +1137,7 @@
                     "Behat\\Behat": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1170,6 +1192,7 @@
                     "Behat\\Gherkin": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1218,6 +1241,7 @@
                     "Mockery": "library/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "New BSD"
             ],
@@ -1275,6 +1299,7 @@
                     "PHP/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ""
             ],
@@ -1321,6 +1346,7 @@
                     "File/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ""
             ],
@@ -1366,6 +1392,7 @@
                     "Text/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ""
             ],
@@ -1410,6 +1437,7 @@
                     "PHP/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ""
             ],
@@ -1455,6 +1483,7 @@
                     "PHP/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ""
             ],
@@ -1523,6 +1552,7 @@
                     "PHPUnit/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 "",
                 "../../symfony/yaml/"
@@ -1574,6 +1604,7 @@
                     "PHPUnit/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 ""
             ],
@@ -1625,6 +1656,7 @@
                     "Symfony\\Component\\Config": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1680,6 +1712,7 @@
                     "Symfony\\Component\\DependencyInjection": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1735,6 +1768,7 @@
                     "Symfony\\Component\\Translation": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1782,6 +1816,7 @@
                     "Symfony\\Component\\Yaml": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1809,8 +1844,7 @@
         "symfony/event-dispatcher": 0,
         "phpdocumentor/graphviz": 10,
         "phpdocumentor/fileset": 10,
-        "phpdocumentor/reflection": 20,
-        "phpdocumentor/reflection-docblock": 20,
+        "phpdocumentor/reflection-docblock": 15,
         "phpdocumentor/unified-asset-installer": 10,
         "behat/behat": 0,
         "phpunit/phpunit": 0,
