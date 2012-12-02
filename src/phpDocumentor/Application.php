@@ -32,7 +32,7 @@ use Cilex\Provider\MonologServiceProvider;
  */
 class Application extends Cilex
 {
-    const VERSION = '2.0.0a12';
+    const VERSION = '2.0.0a13';
 
     /**
      * Initializes all components used by phpDocumentor.
