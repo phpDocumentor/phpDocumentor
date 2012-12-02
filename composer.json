@@ -25,7 +25,7 @@
 
         "phpdocumentor/graphviz": "1.*@beta",
         "phpdocumentor/fileset": "1.0.0-beta2",
-	"phpdocumentor/reflection": "0.1.0",
+	"phpdocumentor/reflection": "0.1.*",
 	"phpdocumentor/reflection-docblock": "2.0.0a1",
 
         "phpdocumentor/plugin-twig":"1.*",
