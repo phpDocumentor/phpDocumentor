@@ -10,7 +10,7 @@
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
-            depends="deploy:package,deploy:publish-pear-package,deploy:publish-demo,deploy:update-manual"
+            depends="deploy:package,deploy:publish-pear-package,deploy:publish-demo,deploy:update-manual,deploy:publish-phar"
             description="Builds a new version, packages and distributes it"/>
 
     <target name="build:clean" description="Deletes and recreates the 'build' folder for Jenkins">
@@ -150,6 +150,13 @@
         <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
         <exec command="php bin/phpdoc.php -t data/output" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+    </target>
+
+    <!-- Builds a new demo and publishes it -->
+    <target name="deploy:publish-phar" description="Generate a phar and upload it to the server">
+        <exec command="php compile" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r ${project.basedir}/phpDocumentor.phar ${server.username}@${server.phar}:${server.phar.path}" passthru="true" checkreturn="true"/>
+        <delete><fileset dir="${project.basedir}"><include name="phpDocumentor.phar"/></fileset></delete>
     </target>
 
     <!-- Updates the continuous integration server to the latest phpdocumentor -->
