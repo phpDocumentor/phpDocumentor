@@ -178,7 +178,7 @@ TEXT
      *
      * @return string[]
      */
-    protected function getTemplates(\Symfony\Component\Console\Input\ArgvInput $input)
+    protected function getTemplates(\Symfony\Component\Console\Input\InputInterface $input)
     {
         $templates = $input->getOption('template');
         if (!$templates) {
