@@ -127,9 +127,9 @@ TEXT
         }
         $transformer->setSource(realpath($source));
 
-        $transformer->setTemplates(
-            (array)$this->getOption($input, 'template', 'transformations/template/name', array('responsive'))
-        );
+        $templates = $this->getTemplates($input);
+
+        $transformer->setTemplates($templates);
         $transformer->setParseprivate($input->getOption('parseprivate'));
 
         // add links to external docs
@@ -169,6 +169,34 @@ TEXT
         }
 
         return 0;
+    }
+
+    /**
+     * Retrieves the templates to be used by analyzing the options and the configuration.
+     *
+     * @param \Symfony\Component\Console\Input\ArgvInput $input
+     *
+     * @return string[]
+     */
+    protected function getTemplates(\Symfony\Component\Console\Input\InputInterface $input)
+    {
+        $templates = $input->getOption('template');
+        if (!$templates) {
+            $value = $this->getConfigValueFromPath('transformations/template');
+            if ($value) {
+                foreach ($value as $template) {
+                    if (is_array($template)) {
+                        $templates[] = $template['name'];
+                    }
+                }
+            }
+        }
+
+        if (!$templates) {
+            $templates = array('responsive');
+        }
+
+        return $templates;
     }
 
     /**
