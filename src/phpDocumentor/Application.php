@@ -169,9 +169,9 @@ class Application extends Cilex
     {
         $this['config'] = $this->share(
             function () {
-                $user_config_file = (file_exists('phpdoc.xml'))
-                    ? 'phpdoc.xml'
-                    : 'phpdoc.dist.xml';
+                $user_config_file = (file_exists(getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'))
+                    ? getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'
+                    : getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.dist.xml';
                 $config_files = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
                 if (is_readable($user_config_file)) {
                     $config_files[] = $user_config_file;

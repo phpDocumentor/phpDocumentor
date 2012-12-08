@@ -121,11 +121,11 @@ TEXT
         }
         $transformer->setTarget($target);
 
-        $source = $this->getOption($input, 'source', 'parser/target');
+        $source = realpath($this->getOption($input, 'source', 'parser/target'));
         if (file_exists($source) and is_dir($source)) {
             $source .= DIRECTORY_SEPARATOR . 'structure.xml';
         }
-        $transformer->setSource(realpath($source));
+        $transformer->setSource($source);
 
         $templates = $this->getTemplates($input);
 

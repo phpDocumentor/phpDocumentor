@@ -146,10 +146,7 @@ class Transformer extends TransformerAbstract
         } else {
             $path = realpath($source);
             if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
-                throw new \InvalidArgumentException(
-                    'Given source (' . $source . ') does not exist or is not '
-                    . 'readable'
-                );
+                throw new \InvalidArgumentException('Given source (' . $source . ') does not exist or is not readable');
             }
 
             // convert to dom document so that the writers do not need to
