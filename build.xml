@@ -6,7 +6,7 @@
         description="performs pre-push actions by validating the code"/>
 
     <target name="build"
-            depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:phpdoc,build:phpcb"
+            depends="build:clean,build:composer:install,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:phpdoc,build:phpcb"
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
@@ -23,6 +23,18 @@
         <mkdir dir="${project.basedir}/build/coverage"/>
         <mkdir dir="${project.basedir}/build/logs"/>
         <mkdir dir="${project.basedir}/build/pdepend"/>
+    </target>
+
+    <target name="build:composer:install">
+        <exec executable="wget" passthru="true">
+            <arg value="-r" />
+            <arg value="http://getcomposer.org/composer.phar"/>
+        </exec>
+        <exec executable="php" passthru="true">
+            <arg value="composer.phar"/>
+            <arg value="install"/>
+            <arg value="--prefer-dist"/>
+        </exec>
     </target>
 
     <!-- Generate checkstyle.xml -->
