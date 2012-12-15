@@ -48,12 +48,15 @@
 
     <!-- Generate API documentation with phpDocumentor -->
     <target name="build:phpdoc" description="Generates API documentation">
+        <exec executable="phploc" passthru="true">
+            <arg line="-t ${project.basedir}/build/api"/>
+        </exec>
     </target>
 
     <!-- Generate phploc.csv -->
     <target name="build:phploc" description="Generates LOC statistics">
         <exec executable="phploc" passthru="true">
-            <arg value="--log-csv ${project.basedir}/build/logs/phploc.csv" />
+            <arg line="--log-csv ${project.basedir}/build/logs/phploc.csv" />
             <arg path="${project.basedir}" />
         </exec>
     </target>
