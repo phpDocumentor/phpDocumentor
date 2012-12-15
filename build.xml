@@ -48,7 +48,7 @@
 
     <!-- Generate API documentation with phpDocumentor -->
     <target name="build:phpdoc" description="Generates API documentation">
-        <exec executable="phploc" passthru="true">
+        <exec executable="phpdoc" passthru="true">
             <arg line="-t ${project.basedir}/build/api"/>
         </exec>
     </target>
