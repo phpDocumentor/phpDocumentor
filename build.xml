@@ -6,7 +6,7 @@
         description="performs pre-push actions by validating the code"/>
 
     <target name="build"
-            depends="build:clean,build:composer:install,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit"
+            depends="build:clean,build:composer:install,build:phpunit,build:phpcs,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpdoc"
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
