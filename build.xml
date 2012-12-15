@@ -6,7 +6,7 @@
         description="performs pre-push actions by validating the code"/>
 
     <target name="build"
-            depends="build:clean,build:composer:install,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:phpdoc,build:phpcb"
+            depends="build:clean,build:composer:install,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit"
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
@@ -48,12 +48,6 @@
 
     <!-- Generate API documentation with phpDocumentor -->
     <target name="build:phpdoc" description="Generates API documentation">
-        <docblox destDir="${project.basedir}/build/api">
-            <fileset dir="${project.basedir}">
-                <include name="**/*.php"/>
-                <exclude name="**/tests/**.php"/>
-            </fileset>
-        </docblox>
     </target>
 
     <!-- Generate phploc.csv -->
@@ -84,7 +78,7 @@
             <arg value="--jdepend-xml=${project.basedir}/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${project.basedir}/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${project.basedir}/build/pdepend/overview-pyramid.svg" />
-            <arg path="${project.basedir}"/>
+            <arg path="${project.basedir}/src/phpDocumentor"/>
         </exec>
     </target>
 
@@ -99,12 +93,6 @@
     <target name="build:behat" description="Run BDD tests for phpDocumentor">
         <exec executable="php" dir="${project.basedir}" checkreturn="true" passthru="true">
             <arg line="bin/behat --no-paths -f progress" />
-        </exec>
-    </target>
-
-    <target name="build:phpcb">
-        <exec executable="phpcb" passthru="true">
-            <arg line="--log ${project.basedir}/build/logs --output ${project.basedir}/build/code-browser"/>
         </exec>
     </target>
 
