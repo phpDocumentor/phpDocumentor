@@ -28,7 +28,7 @@
     <!-- Generate checkstyle.xml -->
     <target name="build:phpcs" description="Checks for Coding Standard violations">
         <echo message="Executing phpCodeSniffer, output is in 'build/logs/checkstyle.xml'"/>
-        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PSR2" haltonerror="true">
+        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PSR2" haltonerror="false">
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
     </target>
