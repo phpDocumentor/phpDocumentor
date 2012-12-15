@@ -27,7 +27,7 @@
 
     <target name="build:composer:install">
         <exec executable="wget" passthru="true">
-            <arg value="-O composer.phar" />
+            <arg value="-Ocomposer.phar" />
             <arg value="http://getcomposer.org/composer.phar"/>
         </exec>
         <exec executable="php" passthru="true">
