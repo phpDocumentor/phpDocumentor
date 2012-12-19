@@ -742,6 +742,45 @@ function count()
 
 ### 7.7. @global
 
+The @global tag is used to describe a global variable _or_ its usage.
+
+#### Syntax
+
+    @global ['Type'] [name]
+    @global ['Type'] [description]
+
+#### Description
+
+Since there is no standard way to declare global variables, a @global tag MAY
+be used in a DocBlock preceding a global variable's definition. To support the
+previous usages of @global, there is an alternate syntax that applies to
+DocBlocks preceding a function, used to document usage of global
+variables. in other words, There are two usages of @global: definition and
+function usage.
+
+##### Definition
+
+Parsers SHOULD NOT attempt to automatically parse out any global variables and
+only one @global tag MAY be allowed per global variable DocBlock. A global
+variable DocBlock MUST be followed by the global variable's definition before
+any other element or DocBlock occurs in the source.
+
+The name MUST be the exact name of the global variable as it is declared in
+the source.
+
+##### Function usage
+
+The function/method @global syntax MAY be used to document usage of global
+variables in a function, and MUST NOT have a dollar sign ($) as the first
+sign of the variable name. The 'Type' will be ignored if a match is made
+between the declared global variable and a variable documented in the project.
+
+#### Examples
+
+.. note::
+
+   Examples for this tag should be added
+
 ### 7.8. @internal
 
 The @internal tag is used to denote that the associated "Structural Element" is
@@ -995,7 +1034,86 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 ### 7.13. @param
 
+The @param tag is used to document a single argument of a function or method.
+
+#### Syntax
+
+    @param ['Type'] [name] [<description>]
+
+#### Description
+
+With the @param tag it is possible to document the type and function of a
+single argument of a function or method. When provided it MUST contain a
+'Type' to indicate what is expected; the description on the other hand is
+OPTIONAL yet RECOMMENDED in case of complicated structures, such as associative
+arrays.
+
+The @param tag MAY have a multi-line description and does not need explicit
+delimiting.
+
+It is RECOMMENDED when documenting to use this tag with every function and
+method. Exceptions to this recommendation are:
+
+This tag MUST NOT occur more than once per argument in a 'PHPDoc' and is
+limited to 'Structural Elements' of type method or function.
+
+#### Examples
+
+```php
+    /**
+     * Counts the number of items in the provided array.
+     *
+     * @param mixed[] $array Array structure to count the elements of.
+     *
+     * @return int Returns the number of elements.
+     */
+    function count(array $items)
+    {
+        <...>
+    }
+```
+
 ### 7.14. @property
+
+The @property tag allows a class to know which 'magic' properties are present.
+
+####Syntax
+
+    @property ['Type'] [name] [<description>]
+
+#### Description
+
+The @property tag is used in the situation where a class contains the
+`__get()` and `__set()` magic methods and allows for specific names.
+
+An example of this is a child class whose parent has a `__get()`. The child knows
+which properties need to be present but relies on the parent class to use the
+`__get()` method to provide it.
+In this situation, the child class would have a @property tag for each magic
+property.
+
+@property tags MUST NOT be used in a 'PHPDoc' that is not associated with
+a *class* or *interface*.
+
+#### Examples
+
+```php
+    class Parent
+    {
+        public function __get()
+        {
+            <...>
+        }
+    }
+
+    /**
+     * @property string $myProperty
+     */
+    class Child extends Parent
+    {
+        <...>
+    }
+```
 
 ### 7.15. @return
 
@@ -1051,19 +1169,205 @@ function getLabel()
 
 ### 7.16. @see
 
-### 7.17. @since
+The @see tag indicates a reference from the associated
+'Structural Elements' to a website or other 'Structural Elements'.
+
+#### Syntax
+
+    @see [URI | 'FQSEN'] [<description>]
 
 #### Description
 
-It is NOT RECOMMENDED for this tag to occur more than once in a "DocBlock".
+The @see tag can be used to define a reference to other
+'Structural Elements' or to an URI.
+
+When defining a reference to another 'Structural Elements' you can provide a
+a specific element by appending a double colon and providing the name of that
+element (also called the 'FQSEN').
+
+A URI MUST be complete and well-formed as specified in
+[RFC2396](http://www.ietf.org/rfc/rfc2396.txt).
+
+The @see tag SHOULD have a description appended to indicate the type of
+reference defined by this occurrence.
+
+#### Examples
+
+```php
+    /**
+     * @see http://example.com/my/bar Documentation of Foo.
+     * @see MyClass::$items           for the property whose items are counted
+     * @see MyClass::setItems()       to set the items for this collection.
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
+```
+
+### 7.17. @since
+
+The @since tag indicates at with which version did the associated
+'Structural Elements' became available.
+
+#### Syntax
+
+    @since [version] [<description>]
+
+#### Description
+
+The @since tag can be used to indicate since which version specific
+'Structural Elements' have become available.
+
+This information can be used to generate a set of API Documentation where the
+consumer is informed which application version is necessary for a specific
+element.
+
+The version MUST follow the same rules as the '@version' tag's vector and
+MAY have a description to provide additional information.
+
+This tag can occur multiple times within a 'PHPDoc'. In that case, each
+occurrence is treated as an entry to a change log. It is RECOMMENDED that you
+also provide a description to each such tag.
+
+#### Examples
+
+```php
+    /**
+     * @since 1.0.1 First time this was introduced.
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
+
+    /**
+     * @since 1.0.2 Added the $b argument.
+     * @since 1.0.1 Added the $a argument.
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    function dump($a, $b)
+    {
+        <...>
+    }
+```
 
 ### 7.18. @subpackage [deprecated]
 
-This tag MUST NOT occur more than once in a "DocBlock".
+The @subpackage tag is used to categorize 'Structural Elements' into
+logical subdivisions.
+
+#### Syntax
+
+    @subpackage [name]
+
+#### Description
+
+The @subpackage tag can be used as a counterpart or supplement to Namespaces.
+Namespaces provide a functional subdivision of 'Structural Elements' where
+the @subpackage tag can provide a *logical* subdivision in which way the
+elements can be grouped with a different hierarchy.
+
+If, across the board, both logical and functional subdivisions are equal it is
+NOT RECOMMENDED to use the @subpackage tag to prevent maintenance overhead.
+
+The @subpackage tag MUST only be used in a select set of DocBlocks, as is
+described in the documentation for the @package tag. It MUST also accompany a
+@package tag and may occur only once per DocBlock.
+
+This tag is considered superseded by the support for multiple levels in the
+@package tag and is as such considered deprecated.
+
+#### Examples
+
+```php
+    /**
+     * @package PSR
+     * @subpackage Documentation\API
+     */
+```
 
 ### 7.19. @throws
 
+The @throws tag is used to indicate whether 'Structural Elements' could
+throw a specific type of exception.
+
+#### Syntax
+
+    @throws ['Type'] [<description>]
+
+#### Description
+
+The @throws tag MAY be used to indicate that 'Structural Elements' could
+throw a specific type of error.
+
+The type provided with this tag MUST represent an object of the class Exception
+or any subclass thereof.
+
+This tag is used to present in your documentation which error COULD occur and
+under which circumstances. It is RECOMMENDED to provide a description that
+describes the reason an exception is thrown.
+
+It is also RECOMMENDED that this tag occurs for every occurrance of an
+exception, even if it has the same type. By documenting every occurance a
+detailed view is created and the consumer knows for which errors to check.
+
+#### Examples
+
+```php
+    /**
+     * Counts the number of items in the provided array.
+     *
+     * @param mixed[] $array Array structure to count the elements of.
+     *
+     * @throws InvalidArgumentException if the provided argument is not of type
+     *     'array'.
+     *
+     * @return int Returns the number of elements.
+     */
+    function count($items)
+    {
+        <...>
+    }
+```
+
 ### 7.20. @todo
+
+The @todo tag is used to indicate whether any development activities should
+still be executed on associated 'Structural Elements'.
+
+#### Syntax
+
+    @todo [description]
+
+#### Description
+
+The @todo tag is used to indicate that an activity surrounding the associated
+'Structural Elements' must still occur. Each tag MUST be accompanied by
+a description that communicates the intent of the original author; this could
+however be as short as providing an issue number.
+
+#### Examples
+
+```php
+    /**
+     * Counts the number of items in the provided array.
+     *
+     * @todo add an array parameter to count
+     *
+     * @return int Returns the number of elements.
+     */
+    function count()
+    {
+        <...>
+    }
+```
 
 ### 7.21. @type
 
@@ -1142,6 +1446,52 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 ### 7.24. @version
 
+The @version tag indicates the current version of a 'Structural Element'.
+
+#### Syntax
+
+    @version [<vector>] [<description>]
+
+#### Description
+
+The @version tag can be used to indicate the current version of a
+'Structural Element'.
+
+This information can be used to generate a set of API Documentation where the
+consumer is informed about elements at a particular version.
+
+It is RECOMMENDED that the version number matches a semantic version number as
+described in the Semantic Versioning Standard version 2.0 at
+http://www.semver.org.
+
+Version vectors from Version Control Systems are also supported, though they
+MUST follow the form:
+
+    name-of-vcs: $vector$
+
+A description MAY be provided, for the purpose of communicating any additional
+version-specific information.
+
+#### Examples
+
+```php
+    /**
+     * @version 1.0.1
+     */
+    class Counter
+    {
+        <...>
+    }
+
+    /**
+     * @version GIT: $Id$ In development. Very unstable.
+     */
+    class NeoCounter
+    {
+        <...>
+    }
+```
+
 ## Appendix A. Types
 
 ### ABNF
@@ -1154,6 +1504,7 @@ This tag MUST NOT occur more than once in a "DocBlock".
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
                                |"double"|"object"|"mixed"|"array"|"resource"
                                |"void"|"null"|"callback"|"false"|"true"|"self"
+                               |"static"
 
 ### Additional details
 
@@ -1343,9 +1694,8 @@ The following keywords are recognized by this PSR:
     the value true or false. No other value will be returned from this
     element.
 
-13. 'self', the element to which this type applies is of the same Class,
-    or any of its children, as which the documented element is originally
-    contained.
+13. 'self', the element to which this type applies is of the same Class as
+    which the documented element is originally contained.
 
     For example:
 
@@ -1363,19 +1713,22 @@ The following keywords are recognized by this PSR:
     In this situation ambiguity may arise as `self` could be interpreted as
     either class A or B. In these cases `self` MUST be interpreted as being
     an instance of the Class where the DocBlock containing the `self` type
-    is written or any of its child classes.
+    is written.
 
-    In the examples above `self` MUST always refer to class A or B, since
-    it is defined with method C() in class A.
-
-    If method C() was to be redefined in class B, including the type
-    definition in the DocBlock, then `self` would refer to class B or any
-    of its children.
+    In the examples above `self` MUST always refer to class A, since it is
+    defined with method C() in class A.
 
     > Due to the above nature it is RECOMMENDED for applications that
     > collect and shape this information to show a list of child classes
     > with each representation of the class. This would make it obvious
     > for the user which classes are acceptable as type.
+
+14. 'static', the element to which this type applies is of the same Class as
+    which the documented element is contained, or when encountered in a
+    subclass is of type of that subclass instead of the original class.
+
+    This keyword behaves the same way as the 'static' keyword keyword (not
+    the static property or method modifier) as defined by PHP.
 
 ## Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
