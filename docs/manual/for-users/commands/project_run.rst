@@ -57,3 +57,10 @@ Parameters
         Currently the transformer will add a link to the given file's source
         next to the name of the file in the top. In the future we will add
         direct links from elements to the line in this source code file.
+
+**--encoding**
+    *Starting with 2.0.0a12*, Sets the encoding type of your source files.
+
+    Add this parameter if the encoding of your source files is not UTF-8.
+    Charset detection is not available, because it would be inaccurate,
+    so you must use this parameter instead.
