@@ -40,3 +40,9 @@ against a newer version of the library than is available on the platform.
 The only solution to resolve this situation is to update your libxml library to
 at least the version as specified in the libxslt line, to update your Zend
 Server to the latest version and/or contact Zend Support for a solution.
+
+I get an error during transformation: Specified DOMDocument lacks documentElement, cannot transform
+----------------------------------------------------------------------------------------------------
+
+Your source files do not have UTF-8 encoding, add ``--encoding`` parameter to the command with the correct encoding
+See also: :doc:`Run command <../commands/project_run>`
