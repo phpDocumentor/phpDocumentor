@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Parser\Exception\FilesNotFoundException;
 
 /**
  * Parses the given source code and creates a structure file.
@@ -253,11 +254,9 @@ HELP
             $output->writeln('OK');
             $output->writeln('Parsing files');
             $result = $parser->parseFiles($files, $input->getOption('sourcecode'));
+        } catch (FilesNotFoundException $e) {
+            throw new \Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
         } catch (\Exception $e) {
-            if ($e->getCode() === \phpDocumentor\Parser\Exception::NO_FILES_FOUND) {
-                throw new \Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
-            }
-
             throw new \Exception($e->getMessage());
         }
 
