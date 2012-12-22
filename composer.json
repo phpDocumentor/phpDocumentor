@@ -20,15 +20,16 @@
         "symfony/event-dispatcher": "2.1.*@stable",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-config": "2.*",
-        "zendframework/zend-locale": "2.*",
         "zendframework/zend-servicemanager": "2.*",
-        "zendframework/zend-translator": "2.*",
+        "zendframework/zend-i18n": "2.*",
 
-        "phpdocumentor/graphviz": "1.*",
+        "phpdocumentor/graphviz": "1.*@beta",
         "phpdocumentor/fileset": "1.0.0-beta2",
-        "phpdocumentor/reflection-docblock": "1.0.*",
+	"phpdocumentor/reflection": "0.1.*",
+	"phpdocumentor/reflection-docblock": "2.0.0a1",
 
         "phpdocumentor/plugin-twig":"1.*",
+        "phpdocumentor/unified-asset-installer": "1.*@beta",
 
         "phpdocumentor/template-responsive": "1.*",
         "phpdocumentor/template-new-black": "1.*",
@@ -39,12 +40,12 @@
     "suggests": {
         "ext-xsl": "to use the XSL based templates"
     },
+    "minimum-version": "dev",
     "require-dev": {
         "behat/behat": ">=2.4@stable",
         "phpunit/phpunit": "3.7.*@stable",
         "mockery/mockery": ">=0.7.0@stable"
     },
-    "minimum-stability": "dev",
     "config": {
         "bin-dir":"bin/"
     },

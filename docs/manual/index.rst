@@ -95,6 +95,7 @@ Learn about phpDocumentor
 
               .. container:: span2
 
+                 | :doc:`for-users/phpdoc/tags/source`
                  | :doc:`for-users/phpdoc/tags/subpackage`
                  | :doc:`for-users/phpdoc/tags/throws`
                  | :doc:`for-users/phpdoc/tags/todo`

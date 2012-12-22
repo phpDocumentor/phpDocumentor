@@ -11,6 +11,8 @@
  */
 namespace phpDocumentor\Plugin;
 
+use Zend\I18n\Translator\Translator;
+
 /**
  * This class represents a single plugin with all it's options and properties.
  *
@@ -109,23 +111,15 @@ class Plugin extends PluginAbstract
             $this->options[$key] = $option;
         }
 
-        $this->translate = new \Zend\Translator\Adapter\ArrayAdapter(
-            array(
-                'locale' => 'en',
-                'content' => $path . DIRECTORY_SEPARATOR . 'Messages' . DIRECTORY_SEPARATOR . 'en.php'
-            )
-        );
-
-        /** @var \DirectoryIterator[] $files  */
-        $files = new \DirectoryIterator($path . DIRECTORY_SEPARATOR . 'Messages');
-        foreach ($files as $path) {
-            $base_name = $path->getBasename('.php');
-            if (!$path->isFile() || ($base_name == 'en')) {
-                continue;
-            }
-
-            $this->translate->addTranslation(array('locale' => $base_name, 'content' => $path->getPath()));
-        }
+        $this->translate = new Translator();
+        $this->translate
+            ->setLocale('en')
+            ->setFallbackLocale('en')
+            ->addTranslationFilePattern(
+                'phparray',
+                $path . DIRECTORY_SEPARATOR . 'Messages',
+                '%s.php'
+            );
     }
 
     /**

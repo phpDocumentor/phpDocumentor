@@ -145,6 +145,14 @@ class Definition extends ParserAbstract
             case 'link':
                 $def = new Link($namespace, $namespace_aliases, $xml, $tag);
                 break;
+            case 'author':
+            case 'version':
+            case 'since':
+            case 'deprecated':
+            case 'source':
+            case 'example':
+                $def = new Legacy($namespace, $namespace_aliases, $xml, $tag);
+                break;
             case '\Doctrine\ORM\Mapping\column':
             case '\Doctrine\ORM\Mapping\ChangeTrackingPolicy':
             case '\Doctrine\ORM\Mapping\DiscriminatorColumn':

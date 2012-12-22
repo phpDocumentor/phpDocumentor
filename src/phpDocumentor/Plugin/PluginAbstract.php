@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Plugin;
 
+use Zend\I18n\Translator\Translator;
+
 /**
  * Layer superclass for the Plugin Component; contains all event
  * dispatching code.
@@ -31,21 +33,24 @@ class PluginAbstract
     /** @var \Zend\Config\Config Configuration object for plugins */
     protected $configuration = null;
 
-    /** @var \Zend\Translator\Adapter\ArrayAdapter Translation object */
+    /** @var Translator Translation object */
     protected $translate = null;
 
     /**
      * Initialize this object with an Event Dispatcher and Configuration object.
      *
-     * @param \phpDocumentor\Event\Dispatcher       $event_dispatcher
+     * @param \phpDocumentor\Event\Dispatcher $event_dispatcher
      *     Dispatcher used to handle events.
-     * @param \Zend\Config\Config                   $configuration
+     * @param \Zend\Config\Config             $configuration
      *     Configuration object for this object.
-     * @param \Zend\Translator\Adapter\ArrayAdapter $translator
+     * @param Translator                      $translator
      *     Translator object.
      */
-    public function __construct($event_dispatcher, $configuration, $translator = null)
-    {
+    public function __construct(
+        $event_dispatcher,
+        $configuration,
+        Translator $translator = null
+    ) {
         $this->event_dispatcher = $event_dispatcher;
         $this->configuration    = $configuration;
         $this->translate        = $translator;
@@ -178,7 +183,7 @@ class PluginAbstract
     /**
      * Returns the translation component.
      *
-     * @return \Zend\Translator\Adapter\ArrayAdapter|null
+     * @return Translator|null
      */
     public function getTranslator()
     {

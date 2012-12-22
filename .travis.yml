@@ -5,19 +5,18 @@ php:
   - 5.4
 
 script:
- - php bin/phpunit --coverage-text
- - php bin/behat --no-paths --format failed
+ - vendor/phpunit/phpunit/composer/bin/phpunit
+ - vendor/behat/behat/bin/behat --no-paths --format failed
 
 before_script:
  - sudo apt-get -qq update > /dev/null
  - sudo apt-get -qq install graphviz > /dev/null
- - composer install --dev -q
- - pyrus channel-discover pear.phing.info > /dev/null
- - pyrus channel-discover pear.netpirates.net > /dev/null
- - pyrus install pear/PHP_CodeSniffer > /dev/null
- - pyrus install pear.phing.info/phing > /dev/null
- - pyrus install phpunit/phpcpd > /dev/null
  - phpenv rehash > /dev/null
+ - composer selfupdate --quiet
+ - composer install --dev 
+ - vendor/phpunit/phpunit/composer/bin/phpunit
+ - vendor/behat/behat/bin/behat --no-paths --format failed
+ - composer update --dev 
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"

@@ -78,6 +78,9 @@ class Parser extends ParserAbstract
     /** @var Exporter\ExporterAbstract */
     protected $exporter = null;
 
+    /** @var string The encoding in which the files are encoded */
+    protected $encoding = 'utf-8';
+
     /**
      * List of CRC hashes for each file.
      *
@@ -88,6 +91,22 @@ class Parser extends ParserAbstract
      * @var string[]
      */
     protected $hashes = array();
+
+    /**
+     * Initializes the parser.
+     *
+     * This constructor checks the user's PHP ini settings to detect which encoding is used by default. This encoding
+     * is used as a default value for phpDocumentor to convert the source files that it receives.
+     *
+     * If no encoding is specified than 'utf-8' is assumed by default.
+     */
+    public function __construct()
+    {
+        $default_encoding = ini_get('zend.script_encoding');
+        if ($default_encoding) {
+            $this->encoding = $default_encoding;
+        }
+    }
 
     /**
      * Sets the title for this project.
@@ -254,24 +273,33 @@ class Parser extends ParserAbstract
     public function setExistingXml($xml)
     {
         $dom = null;
-        if ($xml === null) {
-            $this->existing_xml = $dom;
-            return;
-        }
-
-        // is this an XML string?
-        if (substr(trim($xml), 0, 5) != '<?xml') {
-            // if not, find and load the file
-            if (!file_exists($xml) || !is_readable($xml)) {
-                throw new \InvalidArgumentException(
-                    '"'.$xml.'" is a malformed XML string, the file does not exist or is not readable'
-                );
+        if ($xml !== null) {
+            if (substr(trim($xml), 0, 5) != '<?xml') {
+                if (!file_exists($xml) || !is_readable($xml)) {
+                    throw new \InvalidArgumentException(
+                        '"'.$xml.'" is a malformed XML string, the file does not exist or is not readable'
+                    );
+                }
+                $xml = file_get_contents($xml);
             }
-            $xml = file_get_contents($xml);
-        }
 
-        $dom = new \DOMDocument();
-        $dom->loadXML($xml);
+            libxml_use_internal_errors(true);
+            $dom = new \DOMDocument('1.0', 'utf-8');
+            $result = $dom->loadXML($xml);
+
+            // if the loadXml method returns false than there is something wrong with the document; report and do a full
+            // run.
+            if (!$result) {
+                /** @var \LibXMLError $error */
+                foreach (libxml_get_errors() as $error) {
+                    $this->log($error->message, LOG_ERR);
+                }
+                libxml_clear_errors();
+                $this->log('Existing structure content is corrupt; performing a full parsing session', LOG_ERR);
+
+                $dom = null;
+            }
+        }
 
         $this->existing_xml = $dom;
     }
@@ -478,7 +506,7 @@ class Parser extends ParserAbstract
 
         $dispatched = false;
         try {
-            $file = new FileReflector($filename, $this->doValidation());
+            $file = new FileReflector($filename, $this->doValidation(), $this->getEncoding());
             $file->setDefaultPackageName($this->getDefaultPackageName());
 
             if (class_exists('phpDocumentor\Event\Dispatcher')) {
@@ -561,5 +589,34 @@ class Parser extends ParserAbstract
         }
 
         return $result;
+    }
+
+    /**
+     * Sets the encoding of the files.
+     *
+     * With this option it is possible to tell the parser to use a specific encoding to interpret the provided files.
+     * By default this is set to UTF-8, in which case no action is taken. Any other encoding will result in the output
+     * being converted to UTF-8 using `iconv`.
+     *
+     * Please note that it is recommended to provide files in UTF-8 format; this will ensure a faster performance since
+     * no transformation is required.
+     *
+     * @param string $encoding
+     *
+     * @return void
+     */
+    public function setEncoding($encoding)
+    {
+        $this->encoding = $encoding;
+    }
+
+    /**
+     * Returns the currently active encoding.
+     *
+     * @return string
+     */
+    public function getEncoding()
+    {
+        return $this->encoding;
     }
 }

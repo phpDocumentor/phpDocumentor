@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Transformer;
 
+use \phpDocumentor\PHPUnit;
+
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
  */
@@ -65,18 +67,18 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     public function testSource()
     {
         $this->assertEquals('', $this->fixture->getSource());
-        file_put_contents('/tmp/test_structure.xml', '<structure></structure>');
+        file_put_contents(PHPUnit\TEMP_DIR . '/test_structure.xml', '<structure></structure>');
 
-        $this->fixture->setSource('/tmp/test_structure.xml');
+        $this->fixture->setSource(PHPUnit\TEMP_DIR . '/test_structure.xml');
         $this->assertInstanceOf('\DOMDocument', $this->fixture->getSource());
 
         // directories are not allowed
         $this->setExpectedException('\InvalidArgumentException');
-        $this->fixture->setSource('/tmp');
+        $this->fixture->setSource(PHPUnit\TEMP_DIR);
 
         // unknown directories are not allowed
         $this->setExpectedException('\InvalidArgumentException');
-        $this->fixture->setSource('/tmpa');
+        $this->fixture->setSource(PHPUnit\UNKNOWN_DIR);
 
         $this->markTestIncomplete(
             'We still need to test the structure.xml changes that are induced '
