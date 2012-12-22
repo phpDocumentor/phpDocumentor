@@ -384,11 +384,14 @@ class Parser extends ParserAbstract
      * After each file is parsed is this Exporter invoked to build an Abstract Syntax Tree. The results from this
      * export process is returned at the end of the file processing.
      *
+     * This method is set to protected as it is part of a refactoring to move to a different system of handling
+     * exporting and importing.
+     *
      * @param ExporterAbstract $exporter
      *
      * @return void
      */
-    public function setExporter(ExporterAbstract $exporter)
+    protected function setExporter(ExporterAbstract $exporter)
     {
         $this->exporter = $exporter;
     }
