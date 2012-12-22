@@ -54,6 +54,7 @@ class InterfaceExporter
         }
 
         $object = new DocBlockExporter();
+        $interface->setDefaultPackageName($parent->getAttribute('package'));
         $object->export($child, $interface);
 
         foreach ($interface->getConstants() as $constant) {

@@ -61,6 +61,6 @@ class ClassExporter
         }
 
         $object = new InterfaceExporter();
-        $object->export($child, $class, $child);
+        $object->export($parent, $class, $child);
     }
 }
