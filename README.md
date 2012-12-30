@@ -13,7 +13,7 @@ with the latest technologies and PHP language features.
 Features
 --------
 
-phpDocumentor sports the following:
+phpDocumentor supports the following:
 
 * *PHP 5.3 compatible*, full support for Namespaces, Closures and more is provided.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
