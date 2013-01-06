@@ -25,8 +25,8 @@
 
         "phpdocumentor/graphviz": "1.*@beta",
         "phpdocumentor/fileset": "1.0.0-beta2",
-	"phpdocumentor/reflection": "0.1.*",
-	"phpdocumentor/reflection-docblock": "2.0.0a1",
+	    "phpdocumentor/reflection": "0.1.*",
+	    "phpdocumentor/reflection-docblock": "2.0.0a1",
 
         "phpdocumentor/plugin-twig":"1.*",
         "phpdocumentor/unified-asset-installer": "1.*@beta",
@@ -40,7 +40,7 @@
     "suggests": {
         "ext-xsl": "to use the XSL based templates"
     },
-    "minimum-version": "dev",
+    "minimum-stability": "dev",
     "require-dev": {
         "behat/behat": ">=2.4@stable",
         "phpunit/phpunit": "3.7.*@stable",

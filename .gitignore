@@ -5,8 +5,8 @@ build.properties
 build/*
 .buildpath
 .project
-.settings/
-*.swp
+.settings
 vendor/*
 composer.phar
 data/templates/*
+.vagrant

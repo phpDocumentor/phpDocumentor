@@ -158,7 +158,7 @@
 
     <!-- Builds a new demo and publishes it -->
     <target name="deploy:publish-phar" description="Generate a phar and upload it to the server">
-        <exec command="php compile" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="php bin/compile" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r ${project.basedir}/phpDocumentor.phar ${server.username}@${server.phar}:${server.phar.path}" passthru="true" checkreturn="true"/>
         <delete><fileset dir="${project.basedir}"><include name="phpDocumentor.phar"/></fileset></delete>
     </target>
