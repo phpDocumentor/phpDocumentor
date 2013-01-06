@@ -274,11 +274,11 @@ class Parser extends ParserAbstract
     {
         $dom = null;
         if ($xml !== null) {
+            $this->existing_xml = null;
             if (substr(trim($xml), 0, 5) != '<?xml') {
                 if (!file_exists($xml) || !is_readable($xml)) {
-                    throw new \InvalidArgumentException(
-                        '"'.$xml.'" is a malformed XML string, the file does not exist or is not readable'
-                    );
+                    $this->log('No existing structure file found, executing a full pass');
+                    return;
                 }
                 $xml = file_get_contents($xml);
             }
