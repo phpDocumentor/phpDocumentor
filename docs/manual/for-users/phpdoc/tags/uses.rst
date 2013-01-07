@@ -1,42 +1,40 @@
 @uses & @used-by
 ================
 
-.. note::
-
-   The contents for this chapter requires a review. Why not help us and
-   contribute it at
-   https://github.com/phpDocumentor/phpDocumentor2/tree/develop/docs/manual
-
 The @uses tag indicates a reference to (and from) a single associated :term:`Structural Elements`.
 
 Syntax
 ------
 
-    @uses [URI | :term:`Type` | :term:`FQSEN`] [<description>]
+    @uses [:term:`FQSEN`] [<description>]
 
 Description
 -----------
 
-The @uses tag may be used to document any element (global variable, include, page, class, function, define, method, variable)
+The @uses tag is used to describe a consuming relation between the current element and any other of the
+:term:`Structural Elements`.
 
-@uses only displays links to element documentation. If you want to display a hyperlink, use @link or inline {@link}
+@uses is similar to @see (see the documentation for @see for details on format and structure). The @uses tag differs
+from @see in that @see is a one-way link, meaning the documentation containing a @see tag contains a link to other
+Structural Elements or URI's but no link back is implied.
 
-@uses is very similar to @see (see the documentation for @see for details on format and structure). The @uses tag only differs from @see in that @see is a one-way link, meaning the documentation containing a @see tag contains a link to other documentation.
-The @uses tag automatically creates a virtual @used-by tag in the other documentation that links to the documentation containing the @uses tag. In other words, it is exactly like @see, except a return link is added automatically.
+Documentation generators SHOULD create a @used-by tag in the documentation of the receiving element that links back to
+the element associated with the @uses tag.
 
-When defining a reference to another :term:`Structural Elements` you can either
-provide a :term:`Type` or refer to a specific element by appending a double colon and providing the name of that element (also called the :term:`FQSEN`).
+When defining a reference to another :term:`Structural Elements` you can refer to a specific element by providing the
+:term:`FQSEN`.
 
-The @uses tag SHOULD have a description appended to indicate the type of
-reference defined by this occurrence.
+The @uses tag COULD have a description appended to provide more information regarding the usage of the destination
+element.
 
 Effects in phpDocumentor
 ------------------------
 
-:term:`Structural Elements`, or inline text in a long description, tagged with
-the @uses tag will show a link in their description. If a description is
-provided with the tag then this will be used as link text instead of the URL
-itself.
+:term:`Structural Elements` tagged with the @uses tag will show a link in their description. If a description is
+provided with the tag then this will be shown as additional information.
+
+In addition, phpDocumentor generates a @used-by tag with the receiving element (if documented) referring back to the
+calling element.
 
 Examples
 --------
@@ -45,9 +43,7 @@ Examples
    :linenos:
 
     /**
-     * @uses MyClass                   sets a temporary variable 
-     * @uses MyClass::$items           for the property whose items are counted
-     * @uses MyClass::setItems()       to set the items for this collection.
+     * @uses MyClass::$items to retrieve the count from.
      *
      * @return integer Indicates the number of items.
      */
@@ -55,4 +51,3 @@ Examples
     {
         <...>
     }
-

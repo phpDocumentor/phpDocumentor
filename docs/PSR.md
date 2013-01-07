@@ -1408,7 +1408,47 @@ use this information to help you with auto-completion:
         <...>
     }
 
-### 7.22. @uses
+### 7.22. @uses @used-by
+
+The @uses tag indicates a reference to (and from) a single associated
+"Structural Elements".
+
+#### Syntax
+
+    @uses ["FQSEN"] [<description>]
+
+#### Description
+
+The @uses tag is used to describe a consuming relation between the current
+element and any other of the "Structural Elements".
+
+@uses is similar to @see (see the documentation for @see for details on format
+and structure). The @uses tag differs from @see in that @see is a one-way link,
+meaning the documentation containing a @see tag contains a link to other
+"Structural Elements" or URI's but no link back is implied.
+
+Documentation generators SHOULD create a @used-by tag in the documentation of
+the receiving element that links back to the element associated with the @uses
+tag.
+
+When defining a reference to another "Structural Elements" you can refer to a
+specific element by providing the "FQSEN".
+
+The @uses tag COULD have a description appended to provide more information
+regarding the usage of the destination element.
+
+Examples
+--------
+
+    /**
+     * @uses MyClass::$items to retrieve the count from.
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
 
 ### 7.23. @var [deprecated]
 
