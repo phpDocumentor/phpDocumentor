@@ -243,6 +243,7 @@ The PHPDoc format has the following [ABNF](http://www.ietf.org/rfc/rfc5234.txt)
 definition:
 
     PHPDoc            = [short-description] [long-description] [tags]
+    inline-phpdoc     = "{" *SP PHPDoc *SP "}"
     short-description = *CHAR ("." 1*CRLF / 2*CRLF)
     long-description  = 1*(CHAR / inline-tag) 1*CRLF ; any amount of characters
                                                      ; with inline tags inside
@@ -250,7 +251,7 @@ definition:
     inline-tag        = "{" tag "}"
     tag               = "@" tag-name [tag-details]
     tag-name          = (ALPHA / "\") *(ALPHA / DIGIT / "\" / "-" / "_")
-    tag-details       = *SP (SP tag-description / tag-signature)
+    tag-details       = *SP (SP tag-description / tag-signature / inline-phpdoc)
     tag-description   = 1*CHAR
     tag-signature     = "(" *tag-argument ")"
     tag-argument      = *SP 1*CHAR [","] *SP
