@@ -298,7 +298,7 @@ Common uses for the long description are (amongst others):
 
 Tags provide a way for authors to supply concise meta-data regarding the
 succeeding "Structural Element". They commonly consist of a name followed by
-white-space and a description or Inline DocBlock.
+white-space and a description or Inline PHPDoc.
 If a description is provided, it MAY span multiple lines and COULD follow a
 strict format dictated by the type of tag, as indicated by its name.
 
@@ -429,6 +429,20 @@ A DocBlock may also span a single line as shown in the following example.
 
     /** @var \ArrayObject $array */
     public $array = null;
+
+In addition to the above variant is it also possible to add an Inline PHPDoc to
+define details about a specific tag, such as the @param.
+
+    /**
+     * This is a short description.
+     *
+     * @param int $parameter1 {
+     *
+     * }
+     */
+    function test($parameter1)
+    {
+    }
 
 ## 6. Inheritance
 
