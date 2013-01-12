@@ -54,7 +54,7 @@ class Application extends Cilex
 
         $this->addCommandsForProjectNamespace();
         $this->addCommandsForTemplateNamespace();
-        $this->addCommandsForTemplateNamespace();
+        $this->addCommandsForPluginNamespace();
     }
 
     /**
