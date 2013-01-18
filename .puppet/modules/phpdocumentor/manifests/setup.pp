@@ -1,5 +1,5 @@
 class phpdocumentor::setup {
-    package{["git", "graphviz"]:
+    package{["git", "graphviz", "python-setuptools", "make"]:
         ensure => present
     }
 
@@ -19,5 +19,11 @@ class phpdocumentor::setup {
       command => "/usr/bin/composer install --dev > /var/log/phpdoc-composer.log",
       require => [ Package["git"], Class["php", "composer"], Php::Module["xsl", "intl"] ],
       timeout => 0
+    }
+
+    exec { "sudo easy_install -U sphinx":
+        command => "/usr/bin/sudo /usr/bin/easy_install -U sphinx",
+        require => [ Package["python-setuptools"] ],
+        timeout => 0
     }
 }
