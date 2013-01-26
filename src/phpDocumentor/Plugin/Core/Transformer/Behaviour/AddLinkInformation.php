@@ -269,7 +269,18 @@ class AddLinkInformation extends \phpDocumentor\Transformer\Behaviour\BehaviourA
 			}
 		}
     }
-	
+
+	/**
+	 * Parses the inline see tag and returns the corresponding HTML anchor tag.
+	 * 
+	 * This method creates the HTML anchor tag for the given class, property, or
+	 * method. The description may be omitted.
+	 * 
+	 * @param \DOMElement $element
+	 * @param stiring $see
+	 * @param string $description
+	 * @return string
+	 */
 	protected function getSeeLink($element, $see, $description = '') {
 		$type = 'class';
 		if ($see[0] === '$') {
@@ -303,7 +314,17 @@ class AddLinkInformation extends \phpDocumentor\Transformer\Behaviour\BehaviourA
 		}
 		return '<a href="' . $file_name . '">' . (empty($description) ? $see : $description) . '</a>';
 	}
-	
+
+	/**
+	 * Finds the parent class element.
+	 * 
+	 * This method searches for a parent class element and the class'
+	 * name which is returned when found. If a class element or a
+	 * name element could not be found, an empty string is returned.
+	 * 
+	 * @param \DOMElement $element
+	 * @return string
+	 */
 	protected function getParentClass($element) {
 		if ($element->tagName == 'class') {
 			$current_element = null;
