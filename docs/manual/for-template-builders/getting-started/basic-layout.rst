@@ -8,7 +8,33 @@ A template in phpDocumentor2 is in its most basic form a
 Composer definition
 -------------------
 
-phpDocumentor2 templates are, like every component, Composer packages.
+phpDocumentor2 templates are, like every component of the documentor, Composer
+packages.
+
+The composer file specifies a name in your organization namespace, the type
+``phpdocumentor-template`` and defines the required base template.
+TODO: UnifiedAssetInstaller requires the template to be in the phpdocumentor organization. I think this is wrong, it should be in the authors namespace to make clear where it comes from. Requiring the type phpdocumentor-template should be enough of a sanity check.
+
+Templates also depend on the phpdocumentor/unified-asset-installer which is
+used to install them in the right location.
+TODO: how exactly does this work for a third party template? Do we not need to add something to the post-inst section of the main project?
+
+As an example, see the composer.json of the new-black template::
+
+    {
+        "name": "phpdocumentor/template-new-black",
+        "type": "phpdocumentor-template",
+        "description": "Web 2.0 template with dark sidebar for phpDocumentor",
+        "keywords": ["documentation", "template", "phpdoc"],
+        "homepage": "http://www.phpdoc.org",
+        "license": "MIT",
+        "require": {
+            "ext-xsl": "*",
+            "phpdocumentor/unified-asset-installer": "1.*",
+            "phpdocumentor/template-abstract": "1.*"
+        }
+    }
+
 
 Template definition
 -------------------
@@ -159,3 +185,6 @@ Tips
 
 3. If you want your template to support the --sourcecode argument of phpDocumentor
    then you need to include the Sourcecode writer.
+
+TODO: is there a way to copy files from the project to the doc? i.e. content.html for the introduction,
+images used in the doc and so on.
