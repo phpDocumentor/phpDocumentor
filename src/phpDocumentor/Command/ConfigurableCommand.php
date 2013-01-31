@@ -71,7 +71,8 @@ class ConfigurableCommand extends Command
         }
 
         if ($config_file) {
-            $this->container['config'] = $this->container->share(
+            $container = $this->getContainer();
+            $container['config'] = $container->share(
                 function () use ($config_file) {
                     $files = array(__DIR__ . '/../../../data/phpdoc.tpl.xml');
                     if ($config_file !== 'none') {
