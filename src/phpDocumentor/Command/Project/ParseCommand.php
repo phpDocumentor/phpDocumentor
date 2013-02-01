@@ -233,7 +233,6 @@ HELP
 
         $parser = new \phpDocumentor\Parser\Parser();
         $parser->setTitle((string)$this->getOption($input, 'title', 'title'));
-        $parser->setExistingXml($target);
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
         $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
