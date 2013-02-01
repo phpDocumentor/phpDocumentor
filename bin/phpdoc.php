@@ -27,7 +27,7 @@ require_once $bootstrap_folder . '/phpDocumentor/Application.php';
 $app = new phpDocumentor\Application();
 $app->run();
 
-if (false !== $profile) {
+if (true === $profile) {
     include_once 'XHProf/utils/xhprof_lib.php';
     include_once 'XHProf/utils/xhprof_runs.php';
 
