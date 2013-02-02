@@ -49,8 +49,23 @@ class Application extends Cilex
         $this->loadPlugins();
 
         $this['console']->getHelperSet()->set(
-            new \phpDocumentor\Console\Helper\ProgressHelper()
+            new Console\Helper\ProgressHelper()
         );
+
+        $this['project.serializer.class'] = 'phpDocumentor\Descriptor\Serializer\Igbinary';
+        $this['project.serializer'] = function($container) {
+            return new $container['project.serializer.class']();
+        };
+
+        $this['project.builder'] = function($container) {
+            $builder = new Descriptor\Builder\Reflector();
+            $builder->setSerializer($container['project.serializer']);
+            return $builder;
+        };
+
+        $this['parser'] = function() {
+            return new Parser\Parser();
+        };
 
         $this->addCommandsForProjectNamespace();
         $this->addCommandsForTemplateNamespace();

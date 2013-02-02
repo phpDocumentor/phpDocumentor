@@ -11,11 +11,19 @@
  */
 namespace phpDocumentor\Command\Project;
 
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Console\Helper\ProgressHelper;
+use phpDocumentor\Descriptor\Builder\Reflector;
+use phpDocumentor\Descriptor\BuilderAbstract;
+use phpDocumentor\Descriptor\Serializer\Igbinary;
+use phpDocumentor\Descriptor\Serializer\Serialize;
+use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Parser\Parser;
 
 /**
  * Parses the given source code and creates a structure file.
@@ -222,7 +230,12 @@ HELP
         // invoke parent to load custom config
         parent::execute($input, $output);
 
-        /** @var \phpDocumentor\Console\Helper\ProgressHelper $progress  */
+        /** @var Parser $parser  */
+        $parser  = $this->getService('parser');
+        /** @var BuilderAbstract $builder */
+        $builder = $this->getService('project.builder');
+
+        /** @var ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
             $this->connectOutputToLogging($output);
@@ -231,7 +244,6 @@ HELP
         $output->write('Initializing parser and collecting files .. ');
         $target = $this->getTarget($this->getOption($input, 'target', 'parser/target'));
 
-        $parser = new \phpDocumentor\Parser\Parser();
         $parser->setTitle((string)$this->getOption($input, 'title', 'title'));
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
@@ -252,7 +264,12 @@ HELP
             // save the generate file to the path given as the 'target' option
             $output->writeln('OK');
             $output->writeln('Parsing files');
-            $result = $parser->parseFiles($files, $input->getOption('sourcecode'));
+
+            if ($target && is_readable($target)) {
+                $builder->import(file_get_contents($target));
+            }
+
+            $parser->parse($builder, $files, $input->getOption('sourcecode'));
         } catch (FilesNotFoundException $e) {
             throw new \Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
         } catch (\Exception $e) {
@@ -264,7 +281,8 @@ HELP
         }
 
         $output->write('Storing structure.xml in "'.$target.'" .. ');
-        file_put_contents($target, $result);
+
+        file_put_contents($target, $builder->export());
         $output->writeln('OK');
 
         return 0;
@@ -275,11 +293,11 @@ HELP
      *
      * @param InputInterface $input
      *
-     * @return \phpDocumentor\File\Collection
+     * @return Collection
      */
     protected function getFileCollection($input)
     {
-        $files = new \phpDocumentor\Fileset\Collection();
+        $files = new Collection();
         $files->setAllowedExtensions(
             $this->getOption($input, 'extensions', 'parser/extensions/extension', array('php', 'php3', 'phtml'), true)
         );

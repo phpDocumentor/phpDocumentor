@@ -13,6 +13,7 @@
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\Builder\Reflector;
+use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Fileset\Collection;
@@ -349,16 +350,10 @@ class Parser extends ParserAbstract
      *
      * @return bool|string
      */
-    public function parseFiles(Collection $files, $include_source = false)
+    public function parse(BuilderAbstract $builder, Collection $files, $include_source = false)
     {
-        $reflector = new Reflector();
-
         $timer = microtime(true);
         $paths = $this->getFilenames($files);
-
-        if (!$this->isForced()) {
-
-        }
 
         $this->log('  Project root is:  ' . $files->getProjectRoot());
         $this->log(
@@ -381,13 +376,24 @@ class Parser extends ParserAbstract
                 $file->setMarkers($this->getMarkers());
                 $file->setFilename($this->getRelativeFilename($filename));
 
+                // if the hash is unchanged; continue to the next file
+                $cachedFiles = $builder->getProjectDescriptor()->getFiles();
+                $hash = isset($cachedFiles[$file->getFilename()])
+                    ? $cachedFiles[$file->getFilename()]->getHash()
+                    : null;
+                if ($hash === $file->getHash() && !$this->isForced()) {
+                    $this->log('>> Skipped file '.$file->getFilename().' as no modifications were detected');
+                    continue;
+                }
+
+                // register error listener
                 if (class_exists('phpDocumentor\Event\Dispatcher')) {
                     Dispatcher::getInstance()->addListener('parser.log', array($file, 'addParserMarker'));
                     $dispatched = true;
                 }
 
                 $file->process();
-                $reflector->buildFile($file);
+                $builder->buildFile($file);
             } catch (Exception $e) {
                 $this->log(
                     '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
@@ -408,7 +414,7 @@ class Parser extends ParserAbstract
         $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');
         $this->log('Peak memory usage: '. round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
 
-        return '';
+        return $builder->getProjectDescriptor();
     }
 
     /**

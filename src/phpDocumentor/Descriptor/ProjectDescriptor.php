@@ -6,8 +6,8 @@ class ProjectDescriptor
     /** @var string */
     protected $name = '';
 
-    /** @var \ArrayObject */
-    protected $namespaces;
+    /** @var NamespaceDescriptor */
+    protected $namespace;
 
     /** @var \ArrayObject */
     protected $files;
@@ -21,7 +21,10 @@ class ProjectDescriptor
     public function __construct($name)
     {
         $this->setName($name);
-        $this->setNamespaces(new \ArrayObject());
+        $namespace = new NamespaceDescriptor();
+        $namespace->setName('\\');
+        $namespace->setFullyQualifiedStructuralElementName('\\');
+        $this->setNamespace($namespace);
         $this->setFiles(new \ArrayObject());
         $this->setIndexes(new \ArrayObject());
     }
@@ -75,18 +78,18 @@ class ProjectDescriptor
     }
 
     /**
-     * @param \ArrayObject $namespaces
+     * @param NamespaceDescriptor $namespaces
      */
-    protected function setNamespaces($namespaces)
+    protected function setNamespace($namespace)
     {
-        $this->namespaces = $namespaces;
+        $this->namespace = $namespace;
     }
 
     /**
-     * @return \ArrayObject
+     * @return NamespaceDescriptor
      */
-    public function getNamespaces()
+    public function getNamespace()
     {
-        return $this->namespaces;
+        return $this->namespace;
     }
 }
