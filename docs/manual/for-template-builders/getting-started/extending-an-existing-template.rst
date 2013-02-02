@@ -27,9 +27,15 @@ something more. Then add a transformation entry to run that piece.
     the parent template.xml. This might be added in the future to only need to
     define the differences.
 
-TODO: Is there a way to change the "content" (that is the dashboard welcome page)
-whithout extending the template? i.e. placing a content.html into the source folder
-or specifying a file in phpdoc.xml?
+If you just want to customize the welcome page, you still need your own
+template. The only line you need to change in template.xml then would be the
+one for content.html::
+
+    <transformation query="" writer="xsl" source="templates/your-template/content.xsl" artifact="content.html"/>
+
+Copying asset files from your source directory is not supported (yet). If you
+use images in your phpdoc, you need to include them in the template and define
+a FileIO copy task for them.
 
 
 Root templates and overriding
