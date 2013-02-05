@@ -2,44 +2,32 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 
 /**
  * Base class for the actual transformation business logic (writers).
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
 abstract class WriterAbstract extends \phpDocumentor\Transformer\TransformerAbstract
 {
     /**
-     * Abstract definition of the execute method.
+     * Abstract definition of the transformation method.
      *
-     * @param \DOMDocument                        $structure      Document
-     *  containing the structure.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
-     *  to execute.
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    abstract public function transform(\DOMDocument $structure, Transformation $transformation);
+    abstract public function transform(ProjectDescriptor $project, Transformation $transformation);
 
     /**
      * Returns an instance of a writer and caches it; a single writer

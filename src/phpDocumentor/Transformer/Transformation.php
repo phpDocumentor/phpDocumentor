@@ -2,26 +2,19 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Transformer
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
+
 /**
  * Class representing a single Transformation.
- *
- * @category phpDocumentor
- * @package  Transformer
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
 class Transformation extends TransformerAbstract
 {
@@ -296,13 +289,13 @@ class Transformation extends TransformerAbstract
     /**
      * Executes the transformation.
      *
-     * @param string $structure_file The location of the structure file.
+     * @param ProjectDescriptor $project The location of the structure file.
      *
      * @return void
      */
-    public function execute($structure_file)
+    public function execute($project)
     {
-        $this->getWriter()->transform($structure_file, $this);
+        $this->getWriter()->transform($project, $this);
     }
 
     /**
