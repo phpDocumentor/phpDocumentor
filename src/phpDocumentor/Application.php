@@ -52,19 +52,22 @@ class Application extends Cilex
             new Console\Helper\ProgressHelper()
         );
 
-        $this['project.serializer.class'] = 'phpDocumentor\Descriptor\Serializer\Igbinary';
+        $this['project.serializer.class'] = 'phpDocumentor\Descriptor\Serializer\Serialize';
         $this['project.serializer'] = function($container) {
             return new $container['project.serializer.class']();
         };
 
-        $this['project.builder'] = function($container) {
+        $this['project.builder'] = $this->share(function ($container) {
             $builder = new Descriptor\Builder\Reflector();
             $builder->setSerializer($container['project.serializer']);
             return $builder;
-        };
+        });
 
         $this['parser'] = function() {
             return new Parser\Parser();
+        };
+        $this['transformer'] = function($container) {
+            return new Transformer\Transformer();
         };
 
         $this->addCommandsForProjectNamespace();
@@ -96,9 +99,9 @@ class Application extends Cilex
      */
     protected function addCommandsForProjectNamespace()
     {
-        $this->command(new \phpDocumentor\Command\Project\ParseCommand());
-        $this->command(new \phpDocumentor\Command\Project\RunCommand());
-        $this->command(new \phpDocumentor\Command\Project\TransformCommand());
+        $this->command(new Command\Project\RunCommand());
+        $this->command(new Command\Project\ParseCommand($this['project.builder'], $this['parser']));
+        $this->command(new Command\Project\TransformCommand($this['project.builder'], $this['transformer']));
     }
 
     /**

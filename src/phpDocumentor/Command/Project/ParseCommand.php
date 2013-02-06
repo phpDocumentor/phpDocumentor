@@ -16,10 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use phpDocumentor\Console\Helper\ProgressHelper;
-use phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\BuilderAbstract;
-use phpDocumentor\Descriptor\Serializer\Igbinary;
-use phpDocumentor\Descriptor\Serializer\Serialize;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
@@ -34,6 +31,36 @@ use phpDocumentor\Parser\Parser;
  */
 class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
+    /** @var BuilderAbstract $builder*/
+    protected $builder;
+
+    /** @var Parser $parser */
+    protected $parser;
+
+    public function __construct($builder, $parser)
+    {
+        parent::__construct('project:parse');
+
+        $this->builder = $builder;
+        $this->parser  = $parser;
+    }
+
+    /**
+     * @return \phpDocumentor\Descriptor\BuilderAbstract
+     */
+    public function getBuilder()
+    {
+        return $this->builder;
+    }
+
+    /**
+     * @return \phpDocumentor\Parser\Parser
+     */
+    public function getParser()
+    {
+        return $this->parser;
+    }
+
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.
@@ -42,8 +69,7 @@ class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
      */
     protected function configure()
     {
-        $this->setName('project:parse')
-            ->setAliases(array('parse'))
+        $this->setAliases(array('parse'))
             ->setDescription('Creates a structure file from your source code')
             ->setHelp(
 <<<HELP
@@ -230,10 +256,11 @@ HELP
         // invoke parent to load custom config
         parent::execute($input, $output);
 
-        /** @var Parser $parser  */
-        $parser  = $this->getService('parser');
-        /** @var BuilderAbstract $builder */
-        $builder = $this->getService('project.builder');
+        $builder = $this->getBuilder();
+
+        $output->write('Collecting files .. ');
+        $files = $this->getFileCollection($input);
+        $output->writeln('OK');
 
         /** @var ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
@@ -241,20 +268,10 @@ HELP
             $this->connectOutputToLogging($output);
         }
 
-        $output->write('Initializing parser and collecting files .. ');
+        $output->write('Initializing parser .. ');
         $target = $this->getTarget($this->getOption($input, 'target', 'parser/target'));
 
-        $parser->setTitle((string)$this->getOption($input, 'title', 'title'));
-        $parser->setForced($input->getOption('force'));
-        $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
-        $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
-        $parser->setIgnoredTags($input->getOption('ignore-tags'));
-        $parser->setValidate($input->getOption('validate'));
-        $parser->setVisibility((string)$this->getOption($input, 'visibility', 'parser/visibility'));
-        $parser->setDefaultPackageName($this->getOption($input, 'defaultpackagename', 'parser/default-package-name'));
-
-        $files = $this->getFileCollection($input);
-        $parser->setPath($files->getProjectRoot());
+        $this->populateParser($input, $files);
 
         if ($progress) {
             $progress->start($output, $files->count());
@@ -269,7 +286,7 @@ HELP
                 $builder->import(file_get_contents($target));
             }
 
-            $parser->parse($builder, $files, $input->getOption('sourcecode'));
+            $this->getParser()->parse($builder, $files, $input->getOption('sourcecode'));
         } catch (FilesNotFoundException $e) {
             throw new \Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
         } catch (\Exception $e) {
@@ -280,12 +297,30 @@ HELP
             $progress->finish();
         }
 
-        $output->write('Storing structure.xml in "'.$target.'" .. ');
+        $output->write('Storing cache in "'.$target.'" .. ');
 
         file_put_contents($target, $builder->export());
         $output->writeln('OK');
 
         return 0;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param Collection     $files
+     */
+    protected function populateParser(InputInterface $input, Collection $files)
+    {
+        $parser = $this->getParser();
+        $this->getBuilder()->getProjectDescriptor()->setName((string)$this->getOption($input, 'title', 'title'));
+        $parser->setForced($input->getOption('force'));
+        $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
+        $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
+        $parser->setIgnoredTags($input->getOption('ignore-tags'));
+        $parser->setValidate($input->getOption('validate'));
+        $parser->setVisibility((string)$this->getOption($input, 'visibility', 'parser/visibility'));
+        $parser->setDefaultPackageName($this->getOption($input, 'defaultpackagename', 'parser/default-package-name'));
+        $parser->setPath($files->getProjectRoot());
     }
 
     /**

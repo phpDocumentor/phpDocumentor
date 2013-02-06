@@ -15,6 +15,8 @@ use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Descriptor\BuilderAbstract;
+use phpDocumentor\Transformer\Transformer;
 
 /**
  * Transforms the structure file into the specified output format
@@ -30,6 +32,20 @@ use \Symfony\Component\Console\Output\OutputInterface;
  */
 class TransformCommand extends \phpDocumentor\Command\ConfigurableCommand
 {
+    /** @var BuilderAbstract $builder */
+    protected $builder;
+
+    /** @var Transformer $transformer */
+    protected $transformer;
+
+    public function __construct($builder, $transformer)
+    {
+        parent::__construct('project:transform');
+
+        $this->builder     = $builder;
+        $this->transformer = $transformer;
+    }
+
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.
@@ -38,8 +54,7 @@ class TransformCommand extends \phpDocumentor\Command\ConfigurableCommand
      */
     protected function configure()
     {
-        $this->setName('project:transform')
-            ->setAliases(array('transform'))
+        $this->setAliases(array('transform'))
             ->setDescription(
                 'Converts the PHPDocumentor structure file to documentation'
             )
@@ -91,6 +106,22 @@ TEXT
     }
 
     /**
+     * @return \phpDocumentor\Descriptor\BuilderAbstract
+     */
+    public function getBuilder()
+    {
+        return $this->builder;
+    }
+
+    /**
+     * @return \phpDocumentor\Transformer\Transformer
+     */
+    public function getTransformer()
+    {
+        return $this->transformer;
+    }
+
+    /**
      * Executes the business logic involved with this command.
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
@@ -112,7 +143,7 @@ TEXT
         $output->write('Initializing transformer ..');
 
         // initialize transformer
-        $transformer = new \phpDocumentor\Transformer\Transformer();
+        $transformer = $this->getTransformer();
         $transformer->setTemplatesPath(__DIR__.'/../../../../data/templates');
 
         $target = $this->getOption($input, 'target', 'transformer/target');
@@ -122,10 +153,13 @@ TEXT
         $transformer->setTarget($target);
 
         $source = realpath($this->getOption($input, 'source', 'parser/target'));
-        if (file_exists($source) and is_dir($source)) {
+        if (file_exists($source) && is_dir($source)) {
             $source .= DIRECTORY_SEPARATOR . 'structure.xml';
         }
-        $transformer->setSource($source);
+
+        if ($source && is_readable($source)) {
+            $this->getBuilder()->import(file_get_contents($source));
+        }
 
         $templates = $this->getTemplates($input);
 
@@ -162,7 +196,7 @@ TEXT
             $progress->start($output, count($transformer->getTransformations()));
         }
 
-        $transformer->execute();
+        $transformer->execute($this->getBuilder()->getProjectDescriptor());
 
         if ($progress) {
             $progress->finish();

@@ -37,22 +37,10 @@ use phpDocumentor\Parser\Event\PreFileEvent;
  */
 class Parser extends ParserAbstract
 {
-    /** @var string the title to use in the header */
-    protected $title = '';
-
     /** @var string the name of the default package */
     protected $default_package_name = 'Default';
 
-    /**
-     * @var \DOMDocument|null if any structure.xml was at the target location it
-     *                       is stored for comparison
-     */
-    protected $existing_xml = null;
-
-    /**
-     * @var bool whether we force a full re-parse, independent of existing_xml
-     *           is set
-     */
+    /** @var bool whether we force a full re-parse */
     protected $force = false;
 
     /** @var bool whether to execute a PHPLint on every file */
@@ -95,32 +83,6 @@ class Parser extends ParserAbstract
     }
 
     /**
-     * Sets the title for this project.
-     *
-     * @param string $title The intended title for this project.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * Returns the HTML text which is found at the title's position.
-     *
-     * @api
-     *
-     * @return null|string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
      * Sets whether to force a full parse run of all files.
      *
      * @param bool $forced Forces a full parse.
@@ -137,27 +99,13 @@ class Parser extends ParserAbstract
     /**
      * Returns whether a full rebuild is required.
      *
-     * To prevent incompatibilities we force a full rebuild if the version of
-     * phpDocumentor does not equal the structure's version.
-     *
      * @api
      *
      * @return bool
      */
     public function isForced()
     {
-        $is_version_unequal = (($this->getExistingXml())
-           && ($this->getExistingXml()->documentElement->getAttribute('version')
-               != \phpDocumentor\Application::VERSION));
-
-        if ($is_version_unequal) {
-            $this->log(
-                'Version of phpDocumentor has changed since the last build; '
-                . 'forcing a full re-build'
-            );
-        }
-
-        return $this->force || $is_version_unequal;
+        return $this->force;
     }
 
     /**
@@ -239,18 +187,6 @@ class Parser extends ParserAbstract
     public function getIgnoredTags()
     {
         return $this->ignored_tags;
-    }
-
-    /**
-     * Returns the existing data structure as DOMDocument.
-     *
-     * @api
-     *
-     * @return \DOMDocument|null
-     */
-    public function getExistingXml()
-    {
-        return $this->existing_xml;
     }
 
     /**
@@ -339,10 +275,11 @@ class Parser extends ParserAbstract
     }
 
     /**
-     * Iterates through the given files and builds the structure.xml file.
+     * Iterates through the given files feeds them to the builder.
      *
-     * @param Collection $files          A files container to parse.
-     * @param bool       $include_source Whether to include the source in the generated output.
+     * @param BuilderAbstract $builder
+     * @param Collection      $files          A files container to parse.
+     * @param bool            $include_source Whether to include the source in the generated output.
      *
      * @api
      *
