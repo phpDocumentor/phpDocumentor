@@ -16,7 +16,10 @@
 
 namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
 
+use phpDocumentor\Plugin\Plugin;
 use \phpDocumentor\Plugin\PluginAbstract;
+use phpDocumentor\Reflection\BaseReflector;
+use phpDocumentor\Reflection\DocBlock;
 
 /**
  * Base class for DocBlock Validations.
@@ -70,11 +73,10 @@ abstract class ValidatorAbstract extends PluginAbstract
     /**
      * Constructor
      *
-     * @param \phpDocumentor\Plugin\Plugin            $plugin     Plugin to which this
-     *     validator belongs.
-     * @param string                                  $name       Name of the "entity"
-     * @param \phpDocumentor\Reflection\DocBlock|null $docblock   Docblock
-     * @param \phpDocumentor\Reflection\BaseReflector|null  $source     Source Element.
+     * @param Plugin             $plugin   Plugin to which this validator belongs.
+     * @param string             $name     Name of the "entity"
+     * @param DocBlock|null      $docblock Docblock
+     * @param BaseReflector|null $source   Source Element.
      */
     public function __construct(
         $plugin,
