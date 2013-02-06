@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class PropertyDescriptor extends DescriptorAbstract
+class PropertyDescriptor extends DescriptorAbstract implements Interfaces\PropertyInterface
 {
     protected $type;
     protected $default;

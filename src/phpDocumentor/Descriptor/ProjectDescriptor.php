@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class ProjectDescriptor
+class ProjectDescriptor implements Interfaces\ProjectInterface
 {
     /** @var string */
     protected $name = '';

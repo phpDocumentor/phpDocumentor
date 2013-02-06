@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class TraitDescriptor extends DescriptorAbstract
+class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInterface
 {
     /** @var \ArrayObject $properties */
     protected $properties;

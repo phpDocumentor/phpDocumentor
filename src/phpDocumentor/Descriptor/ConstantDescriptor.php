@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class ConstantDescriptor extends DescriptorAbstract
+class ConstantDescriptor extends DescriptorAbstract implements Interfaces\ConstantInterface
 {
     protected $type;
     protected $value;

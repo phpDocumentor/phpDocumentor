@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class FunctionDescriptor extends DescriptorAbstract
+class FunctionDescriptor extends DescriptorAbstract implements Interfaces\FunctionInterface
 {
     /** @var \ArrayObject $arguments */
     protected $arguments;

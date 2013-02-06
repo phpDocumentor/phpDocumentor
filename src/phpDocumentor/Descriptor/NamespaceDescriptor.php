@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class NamespaceDescriptor extends DescriptorAbstract
+class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
     /** @var \ArrayObject $namespaces*/
     protected $namespaces;

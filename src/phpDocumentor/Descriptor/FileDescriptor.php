@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class FileDescriptor extends DescriptorAbstract
+class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterface
 {
     /** @var string */
     protected $hash;

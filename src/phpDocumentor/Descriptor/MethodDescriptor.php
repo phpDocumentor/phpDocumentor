@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class MethodDescriptor extends DescriptorAbstract
+class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface
 {
     /** @var bool $abstract */
     protected $abstract = false;

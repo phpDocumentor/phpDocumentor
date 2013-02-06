@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-class InterfaceDescriptor extends DescriptorAbstract
+class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
     /** @var \ArrayObject $extends */
     protected $extends;
