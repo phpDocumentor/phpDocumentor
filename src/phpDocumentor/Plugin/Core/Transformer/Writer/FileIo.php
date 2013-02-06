@@ -2,15 +2,11 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
@@ -22,35 +18,27 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
  * supported is:
  *
  * * copy, copies a file or directory to the destination given in $artifact
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Exception;
+use phpDocumentor\Transformer\Transformation;
+
 class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     /** @var \phpDocumentor\Transformer\Transformation */
     protected $transformation = null;
 
-    /** @var \DOMDocument */
-    protected $structure = null;
-
     /**
      * Invokes the query method contained in this class.
      *
-     * @param \DOMDocument                        $structure      Structure document
-     *     to gather data from.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
-     *     containing the meta-data for this request.
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @throws \InvalidArgumentException if the query is not supported.
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -59,8 +47,7 @@ class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
         $method = 'executeQuery' . ucfirst($transformation->getQuery());
         if (!method_exists($this, $method)) {
             throw new \InvalidArgumentException(
-                'The query ' . $method . ' is not supported by the FileIo writer,' .
-                'supported operation is "copy"'
+                'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
             );
         }
 
@@ -70,32 +57,23 @@ class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
     /**
      * Copies files or folders to the Artifact location.
      *
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
-     *     to use as data source.
+     * @param Transformation $transformation Transformation to use as data source.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */
-    public function executeQueryCopy(
-        \phpDocumentor\Transformer\Transformation $transformation
-    ) {
+    public function executeQueryCopy(Transformation $transformation)
+    {
         $path = $transformation->getSourceAsPath();
+
         if (!is_readable($path)) {
-            throw new \phpDocumentor\Transformer\Exception(
-                'Unable to read the source file: ' . $path
-            );
+            throw new Exception('Unable to read the source file: ' . $path);
         }
-
         if (!is_writable($transformation->getTransformer()->getTarget())) {
-            throw new \phpDocumentor\Transformer\Exception(
-                'Unable to write to: ' . dirname($transformation->getArtifact())
-            );
+            throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
         }
 
-        $transformation->getTransformer()->copyRecursive(
-            $path,
-            $transformation->getArtifact()
-        );
+        $transformation->getTransformer()->copyRecursive($path, $transformation->getArtifact());
     }
 }

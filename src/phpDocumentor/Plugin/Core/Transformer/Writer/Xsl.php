@@ -2,29 +2,20 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Transformation;
+
 /**
- * XSL transformation writer; generates static HTML out of the structure and XSL
- * templates.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * XSL transformation writer; generates static HTML out of the structure and XSL templates.
  */
 class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
@@ -34,15 +25,15 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
      * This method combines the structure.xml and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param \DOMDocument                        $structure      XML source.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
-     *
-     * @throws \Exception
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
+        // FIXME
+        return;
         if (!class_exists('XSLTProcessor')) {
             throw new \phpDocumentor\Plugin\Core\Exception(
                 'The XSL writer was unable to find your XSLTProcessor; '

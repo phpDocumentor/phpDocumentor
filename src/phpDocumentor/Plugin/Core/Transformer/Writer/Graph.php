@@ -2,49 +2,42 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * Class diagram generator.
  *
  * Checks whether graphviz is enabled and logs an error if not.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
+class Graph extends WriterAbstract
 {
     /** @var string Name of the font to use to display the node labels with */
     protected $node_font = 'Courier';
 
     /**
-     * Generates an array containing class to path references and then invokes
-     * the Source specific method.
+     * Invokes the query method contained in this class.
      *
-     * @param \DOMDocument                        $structure      Structure source
-     *     use as basis for the transformation.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
-     *     that supplies the meta-data for this writer.
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
+        //FIXME: Convert to new format
+        return;
+
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
         if ($error != 0) {
