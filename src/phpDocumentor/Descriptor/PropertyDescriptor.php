@@ -1,8 +1,11 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
+
 class PropertyDescriptor extends DescriptorAbstract implements Interfaces\PropertyInterface
 {
+    /** @var Collection $type */
     protected $type;
     protected $default;
     protected $static = false;
@@ -28,11 +31,12 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
         return $this->static;
     }
 
-    public function setType($type)
+    public function setType(Collection $type)
     {
         $this->type = $type;
     }
 
+    /** @var Collection */
     public function getType()
     {
         return $this->type;

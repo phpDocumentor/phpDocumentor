@@ -102,6 +102,4 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     {
         return $this->visibility;
     }
-
-
 }
