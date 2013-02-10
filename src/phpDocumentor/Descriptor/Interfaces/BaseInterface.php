@@ -79,7 +79,7 @@ interface BaseInterface
     public function getLine();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getTags();
 }

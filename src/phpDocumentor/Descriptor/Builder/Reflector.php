@@ -3,6 +3,7 @@ namespace phpDocumentor\Descriptor\Builder;
 
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -11,6 +12,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Descriptor\Tag\TagFactory;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\ClassReflector;
@@ -36,9 +38,9 @@ class Reflector extends BuilderAbstract
 
         $file->setSource($data->getContents());
 
-        $file->getIncludes()->exchangeArray($data->getIncludes());
-        $file->getNamespaceAliases()->exchangeArray($data->getNamespaceAliases());
-        $file->getErrors()->exchangeArray($data->getParseErrors());
+        $file->setIncludes(new Collection($data->getIncludes()));
+        $file->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
+        $file->setErrors(new Collection($data->getParseErrors()));
 
         foreach ($data->getConstants() as $constant) {
             $this->buildConstant($constant);
@@ -47,7 +49,11 @@ class Reflector extends BuilderAbstract
             $this->buildFunction($function);
         }
         foreach ($data->getClasses() as $class) {
-            $this->buildClass($class);
+            $classObject = $this->buildClass($class);
+
+            /** @var Collection $classes  */
+            $classes = $this->project->getIndexes()->get('classes', new Collection());
+            $classes->add($classObject->getFullyQualifiedStructuralElementName());
         }
         foreach ($data->getInterfaces() as $interface) {
             $this->buildInterface($interface);
@@ -56,7 +62,9 @@ class Reflector extends BuilderAbstract
             $this->buildTrait($trait);
         }
 
-        $this->getProjectDescriptor()->getFiles()->offsetSet($file->getPath(), $file);
+        $this->getProjectDescriptor()->getFiles()->set($file->getPath(), $file);
+
+        return $file;
     }
 
     /**
@@ -74,7 +82,7 @@ class Reflector extends BuilderAbstract
         $class->setAbstract($data->isAbstract());
         $class->setFinal($data->isFinal());
         $class->setParentClass($data->getParentClass());
-        $class->getInterfaces()->exchangeArray($data->getInterfaces());
+        $class->setInterfaces(new Collection($data->getInterfaces()));
 
         foreach ($data->getConstants() as $constant) {
             $this->buildConstant($constant, $class);
@@ -87,7 +95,9 @@ class Reflector extends BuilderAbstract
         }
 
         $this->locateNamespace($data)
-            ->getClasses()->offsetSet($class->getName(), $class);
+            ->getClasses()->set($class->getName(), $class);
+
+        return $class;
     }
 
     /**
@@ -102,14 +112,16 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $interface);
 
         $interface->setLocation('', $data->getLinenumber());
-        $interface->getParentInterfaces()->exchangeArray($data->getParentInterfaces());
+        $interface->setParentInterfaces(new Collection($data->getParentInterfaces()));
 
         foreach ($data->getMethods() as $method) {
             $this->buildMethod($method, $interface);
         }
 
         $this->locateNamespace($data)
-            ->getInterfaces()->offsetSet($interface->getName(), $interface);
+            ->getInterfaces()->set($interface->getName(), $interface);
+
+        return $interface;
     }
 
     /**
@@ -133,7 +145,9 @@ class Reflector extends BuilderAbstract
         }
 
         $this->locateNamespace($data)
-            ->getClasses()->offsetSet($trait->getName(), $trait);
+            ->getClasses()->set($trait->getName(), $trait);
+
+        return $trait;
     }
 
     /**
@@ -157,10 +171,12 @@ class Reflector extends BuilderAbstract
         $constant->setLocation('', $data->getLinenumber());
 
         if ($container) {
-            $container->getConstants()->offsetSet($constant->getName(), $constant);
+            $container->getConstants()->set($constant->getName(), $constant);
         } else {
-            $this->locateNamespace($data)->getConstants()->offsetSet($constant->getName(), $constant);
+            $this->locateNamespace($data)->getConstants()->set($constant->getName(), $constant);
         }
+
+        return $constant;
     }
 
     /**
@@ -176,7 +192,9 @@ class Reflector extends BuilderAbstract
 
         $function->setLocation('', $data->getLinenumber());
         $this->locateNamespace($data)
-            ->getFunctions()->offsetSet($function->getName(), $function);
+            ->getFunctions()->set($function->getName(), $function);
+
+        return $function;
     }
 
     /**
@@ -198,7 +216,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $property);
 
         $property->setLocation('', $data->getLinenumber());
-        $container->getProperties()->offsetSet($property->getName(), $property);
+        $container->getProperties()->set($property->getName(), $property);
+
+        return $property;
     }
 
     /**
@@ -220,7 +240,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $method);
 
         $method->setLocation('', $data->getLinenumber());
-        $container->getMethods()->offsetSet($method->getName(), $method);
+        $container->getMethods()->set($method->getName(), $method);
+
+        return $method;
     }
 
     /**
@@ -235,10 +257,13 @@ class Reflector extends BuilderAbstract
             $target->setSummary($docBlock->getShortDescription());
             $target->setDescription($docBlock->getLongDescription()->getContents());
 
+            $tagFactory = new TagFactory();
             /** @var Tag $tag */
             foreach ($docBlock->getTags() as $tag) {
-                // TODO: create Tag Descriptor
-//                $target->getTags()->offsetSet($tag->getName(), $tag);
+                $tagObject = $tagFactory->create($tag->getName(), $tag->getDescription());
+                $existingTags = $target->getTags()->get($tag->getName(), array());
+                $existingTags[] = $tagObject;
+                $target->getTags()->set($tag->getName(), $existingTags);
             }
         }
     }
@@ -254,15 +279,15 @@ class Reflector extends BuilderAbstract
         $namespace = $this->getProjectDescriptor()->getNamespace();
         foreach (explode('\\', ltrim($data->getNamespace(), '\\')) as $part) {
             $namespace_name .= '\\' . $part;
-            if ($namespace->getNamespaces()->offsetExists($part)) {
-                $namespace = $namespace->getNamespaces()->offsetGet($part);
+            if ($namespace->getNamespaces()->$part) {
+                $namespace = $namespace->getNamespaces()->$part;
                 continue;
             }
 
             $new_namespace = new NamespaceDescriptor();
             $new_namespace->setName($part);
             $new_namespace->setFullyQualifiedStructuralElementName($namespace_name);
-            $namespace->getNamespaces()->offsetSet($part, $new_namespace);
+            $namespace->getNamespaces()->set($part, $new_namespace);
 
             $namespace = $new_namespace;
         }

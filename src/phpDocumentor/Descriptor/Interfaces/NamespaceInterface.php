@@ -1,35 +1,37 @@
 <?php
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+
 interface NamespaceInterface extends BaseInterface
 {
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getClasses();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getConstants();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getFunctions();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getInterfaces();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getNamespaces();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getTraits();
 }

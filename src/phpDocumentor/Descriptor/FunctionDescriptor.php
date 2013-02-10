@@ -3,24 +3,25 @@ namespace phpDocumentor\Descriptor;
 
 class FunctionDescriptor extends DescriptorAbstract implements Interfaces\FunctionInterface
 {
-    /** @var \ArrayObject $arguments */
+    /** @var Collection $arguments */
     protected $arguments;
 
     public function __construct()
     {
-        $this->setArguments(new \ArrayObject());
+        parent::__construct();
+        $this->setArguments(new Collection());
     }
 
     /**
-     * @param \ArrayObject $arguments
+     * @param Collection $arguments
      */
-    protected function setArguments($arguments)
+    protected function setArguments(Collection $arguments)
     {
         $this->arguments = $arguments;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getArguments()
     {

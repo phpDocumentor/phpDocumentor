@@ -315,8 +315,8 @@ class Parser extends ParserAbstract
 
                 // if the hash is unchanged; continue to the next file
                 $cachedFiles = $builder->getProjectDescriptor()->getFiles();
-                $hash = isset($cachedFiles[$file->getFilename()])
-                    ? $cachedFiles[$file->getFilename()]->getHash()
+                $hash = $cachedFiles->get($file->getFilename())
+                    ? $cachedFiles->get($file->getFilename())->getHash()
                     : null;
                 if ($hash === $file->getHash() && !$this->isForced()) {
                     $this->log('>> Skipped file '.$file->getFilename().' as no modifications were detected');

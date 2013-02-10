@@ -18,23 +18,31 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  */
 class Transformer extends TransformerAbstract
 {
-    /** @var string|null Target location where to output the artifacts */
+    /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
 
-    /** @var \phpDocumentor\Transformer\Template[] */
+    /** @var \phpDocumentor\Transformer\Template[] $templates */
     protected $templates = array();
 
-    /** @var string */
+    /** @var string $templates_path */
     protected $templates_path = '';
 
-    /** @var \phpDocumentor\Plugin\Core\Transformer\Behaviour\Collection */
+    /** @var Behaviour\Collection|null $behaviours */
     protected $behaviours = null;
 
-    /** @var Transformation[] */
+    /** @var Writer\Collection $writer */
+    protected $writers = null;
+
+    /** @var Transformation[] $transformations */
     protected $transformations = array();
 
-    /** @var boolean */
+    /** @var boolean $parsePrivate */
     protected $parsePrivate = false;
+
+    public function __construct(Writer\Collection $writer)
+    {
+        $this->writers = $writer;
+    }
 
     /**
      * Array containing prefix => URL values.
@@ -50,6 +58,28 @@ class Transformer extends TransformerAbstract
      * @var string
      */
     protected $external_class_docs = array();
+
+    /**
+     * Sets the collection of behaviours that are applied before the actual transformation process.
+     *
+     * @param Behaviour\Collection $behaviours
+     *
+     * @return void
+     */
+    public function setBehaviours(Behaviour\Collection $behaviours)
+    {
+        $this->behaviours = $behaviours;
+    }
+
+    /**
+     * Retrieves the collection of behaviours that should occur before the transformation process.
+     *
+     * @return Behaviour\Collection|null
+     */
+    public function getBehaviours()
+    {
+        return $this->behaviours;
+    }
 
     /**
      * Sets the target location where to output the artifacts.
@@ -218,10 +248,8 @@ class Transformer extends TransformerAbstract
 
         // track templates to be able to refer to them later
         $this->templates[$name] = new Template($name, $path);
-        $this->templates[$name]->populate(
-            $this,
-            file_get_contents($path  . DIRECTORY_SEPARATOR . 'template.xml')
-        );
+        $loader = new Template\XmlLoader($this, $this->writers);
+        $loader->load($this->templates[$name], file_get_contents($path  . DIRECTORY_SEPARATOR . 'template.xml'));
     }
 
     /**
@@ -244,24 +272,17 @@ class Transformer extends TransformerAbstract
     /**
      * Executes each transformation.
      *
+     * @param ProjectDescriptor $project
+     *
      * @return void
      */
     public function execute(ProjectDescriptor $project)
     {
-        // invoke pre-transform actions (i.e. enhance source file with additional meta-data)
-//        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
-//            'transformer.transform.pre',
-//            \phpDocumentor\Transformer\Event\PreTransformEvent
-//            ::createInstance($this)->setSource($source)
-//        );
+        if ($this->getBehaviours() instanceof Behaviour\Collection) {
+            $this->getBehaviours()->process($project);
+        }
 
         foreach ($this->getTransformations() as $transformation) {
-//            \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
-//                'transformer.transformation.pre',
-//                \phpDocumentor\Transformer\Event\PreTransformationEvent
-//                ::createInstance($this)->setSource($source)
-//            );
-
             $this->log(
                 'Applying transformation'
                 . ($transformation->getQuery() ? (' query "' . $transformation->getQuery() . '"') : '')
@@ -270,19 +291,7 @@ class Transformer extends TransformerAbstract
             );
 
             $transformation->execute($project);
-
-//            \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
-//                'transformer.transformation.post',
-//                \phpDocumentor\Transformer\Event\PostTransformationEvent
-//                ::createInstance($this)->setSource($source)
-//            );
         }
-
-//        \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
-//            'transformer.transform.post',
-//            \phpDocumentor\Transformer\Event\PostTransformEvent
-//            ::createInstance($this)->setSource($source)
-//        );
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+
 interface ClassInterface extends BaseInterface
 {
     public function setParentClass($extends);
@@ -16,22 +18,22 @@ interface ClassInterface extends BaseInterface
     public function isAbstract();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getConstants();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getInterfaces();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getMethods();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getProperties();
 }

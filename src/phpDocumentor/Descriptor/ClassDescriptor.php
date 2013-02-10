@@ -5,29 +5,29 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
 {
     protected $extends;
 
-    /** @var \ArrayObject $implements */
+    /** @var Collection $implements */
     protected $implements;
 
     protected $abstract = false;
     protected $final = false;
 
-    /** @var \ArrayObject $constants */
+    /** @var Collection $constants */
     protected $constants;
 
-    /** @var \ArrayObject $properties */
+    /** @var Collection $properties */
     protected $properties;
 
-    /** @var \ArrayObject $methods */
+    /** @var Collection $methods */
     protected $methods;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->setInterfaces(new \ArrayObject());
-        $this->setConstants(new \ArrayObject());
-        $this->setProperties(new \ArrayObject());
-        $this->setMethods(new \ArrayObject());
+        $this->setInterfaces(new Collection());
+        $this->setConstants(new Collection());
+        $this->setProperties(new Collection());
+        $this->setMethods(new Collection());
     }
 
     public function setParentClass($extends)
@@ -66,14 +66,14 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getConstants()
     {
         return $this->constants;
     }
 
-    protected function setInterfaces($implements)
+    public function setInterfaces($implements)
     {
         $this->implements = $implements;
     }
@@ -83,7 +83,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->implements;
     }
 
-    protected function setMethods($methods)
+    public function setMethods($methods)
     {
         $this->methods = $methods;
     }
@@ -93,7 +93,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->methods;
     }
 
-    protected function setProperties($properties)
+    public function setProperties($properties)
     {
         $this->properties = $properties;
     }
@@ -102,6 +102,4 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     {
         return $this->properties;
     }
-
-
 }

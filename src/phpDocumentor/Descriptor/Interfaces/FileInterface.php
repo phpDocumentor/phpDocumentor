@@ -1,6 +1,8 @@
 <?php
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+
 interface FileInterface extends BaseInterface
 {
     public function getHash();
@@ -10,42 +12,42 @@ interface FileInterface extends BaseInterface
     public function getSource();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getNamespaceAliases();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getIncludes();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getConstants();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getFunctions();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getClasses();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getInterfaces();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getTraits();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getErrors();
 }

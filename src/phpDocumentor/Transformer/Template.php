@@ -151,48 +151,6 @@ class Template extends TransformerAbstract implements \ArrayAccess, \Countable, 
     }
 
     /**
-     * Populates this template from an XML source.
-     *
-     * @param Transformer $transformer The transformer which is parent.
-     * @param string      $xml         The XML definition for this template.
-     *
-     * @return void
-     */
-    public function populate(Transformer $transformer, $xml)
-    {
-        $xml = new \SimpleXMLElement($xml);
-        $this->author    = $xml->author;
-        $this->version   = $xml->version;
-        $this->copyright = $xml->copyright;
-
-        foreach ($xml->transformations->transformation as $transformation) {
-            $transformation_obj = new Transformation(
-                $transformer,
-                (string)$transformation['query'],
-                (string)$transformation['writer'],
-                (string)$transformation['source'],
-                (string)$transformation['artifact']
-            );
-
-            // import generic parameters of the template
-            if (isset($xml->parameters) && count($xml->parameters)
-            ) {
-                $transformation_obj->importParameters($xml->parameters);
-            }
-
-            if (isset($transformation->parameters)
-                && count($transformation->parameters)
-            ) {
-                $transformation_obj->importParameters(
-                    $transformation->parameters
-                );
-            }
-
-            $this->transformations[] = $transformation_obj;
-        }
-    }
-
-    /**
      * Sets a transformation at the given offset.
      *
      * @param integer|string $offset The offset to place the value at.

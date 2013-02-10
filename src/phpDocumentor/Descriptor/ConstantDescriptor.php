@@ -1,23 +1,23 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Reflection\DocBlock\Type;
 
 class ConstantDescriptor extends DescriptorAbstract implements Interfaces\ConstantInterface
 {
-    /** @var Collection $type */
+    /** @var Type\Collection $type */
     protected $type;
 
     /** @var string $value */
     protected $value;
 
-    public function setType(Collection $type)
+    public function setType(Type\Collection $type)
     {
         $this->type = $type;
     }
 
     /**
-     * @return Collection
+     * @return Type\Collection
      */
     public function getType()
     {

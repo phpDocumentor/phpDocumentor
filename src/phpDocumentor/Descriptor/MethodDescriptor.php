@@ -15,12 +15,13 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /** @var string $visibility */
     protected $visibility = 'public';
 
-    /** @var \ArrayObject */
+    /** @var Collection */
     protected $arguments;
 
     public function __construct()
     {
-        $this->setArguments(new \ArrayObject());
+        parent::__construct();
+        $this->setArguments(new Collection());
     }
 
     /**
@@ -40,15 +41,15 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @param \ArrayObject $arguments
+     * @param Collection $arguments
      */
-    protected function setArguments($arguments)
+    protected function setArguments(Collection $arguments)
     {
         $this->arguments = $arguments;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getArguments()
     {

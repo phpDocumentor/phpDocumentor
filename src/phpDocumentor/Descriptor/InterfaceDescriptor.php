@@ -3,30 +3,30 @@ namespace phpDocumentor\Descriptor;
 
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
-    /** @var \ArrayObject $extends */
+    /** @var Collection $extends */
     protected $extends;
 
-    /** @var \ArrayObject $methods */
+    /** @var Collection $methods */
     protected $methods;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->setParentInterfaces(new \ArrayObject());
-        $this->setMethods(new \ArrayObject());
+        $this->setParentInterfaces(new Collection());
+        $this->setMethods(new Collection());
     }
 
     /**
-     * @param \ArrayObject $extends
+     * @param Collection $extends
      */
-    protected function setParentInterfaces($extends)
+    public function setParentInterfaces(Collection $extends)
     {
         $this->extends = $extends;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getParentInterfaces()
     {
@@ -34,15 +34,15 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @param \ArrayObject $methods
+     * @param Collection $methods
      */
-    protected function setMethods($methods)
+    public function setMethods(Collection $methods)
     {
         $this->methods = $methods;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getMethods()
     {

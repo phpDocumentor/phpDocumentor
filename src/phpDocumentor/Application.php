@@ -52,27 +52,86 @@ class Application extends Cilex
             new Console\Helper\ProgressHelper()
         );
 
-        $this['project.serializer.class'] = 'phpDocumentor\Descriptor\Serializer\Serialize';
-        $this['project.serializer'] = function($container) {
-            return new $container['project.serializer.class']();
-        };
-
-        $this['project.builder'] = $this->share(function ($container) {
-            $builder = new Descriptor\Builder\Reflector();
-            $builder->setSerializer($container['project.serializer']);
-            return $builder;
-        });
-
-        $this['parser'] = function() {
-            return new Parser\Parser();
-        };
-        $this['transformer'] = function($container) {
-            return new Transformer\Transformer();
-        };
+        $this->addDescriptorServices();
+        $this->addParserServices();
+        $this->addTransformerServices();
 
         $this->addCommandsForProjectNamespace();
         $this->addCommandsForTemplateNamespace();
         $this->addCommandsForPluginNamespace();
+    }
+
+    /**
+     * Adds the services to build the descriptors.
+     *
+     * This method injects the following services into the Dependency Injection Container:
+     *
+     * * descriptor.serializer, the serializer used to generate the cache
+     * * descriptor.builder, the builder used to transform the Reflected information into a series of Descriptors.
+     *
+     * It is possible to override which serializer is used by overriding the parameter `descriptor.serializer.class`.
+     *
+     * @return void
+     */
+    protected function addDescriptorServices()
+    {
+        $this['descriptor.serializer.class'] = 'phpDocumentor\Descriptor\Serializer\Serialize';
+
+        $this['descriptor.serializer'] = function ($container) {
+            return new $container['descriptor.serializer.class']();
+        };
+
+        $this['descriptor.builder'] = $this->share(function ($container) {
+            $builder = new Descriptor\Builder\Reflector();
+            $builder->setSerializer($container['descriptor.serializer']);
+            return $builder;
+        });
+    }
+
+    /**
+     * Adds the services to parse a project and generate a statically reflected representation.
+     *
+     * This method injects the following services into the Dependency Injection Container:
+     *
+     * * parser, the component responsible for interacting with the Reflection library and the Project Descriptor.
+     *
+     * @return void
+     */
+    protected function addParserServices()
+    {
+        $this['parser'] = $this->share(function () {
+            return new Parser\Parser();
+        });
+    }
+
+    /**
+     * Adds the services to transform a Project Descriptor into a series of artifacts based on a given (series of)
+     * template(s).
+     *
+     * This method injects the following services into the Dependency Injection Container,
+     *
+     * * transformer.behaviour.collection, the series of behaviours that need to be applied before the transformation
+     *    process, may be augmented by plugins.
+     * * transformer.writer.collection, a pool of writers that the transformer may utilize, may be augmented by plugins.
+     * * transformer, the component responsible for transforming the Project Descriptor into a series of artifacts.
+     *
+     * @return void
+     */
+    protected function addTransformerServices()
+    {
+        $this['transformer.behaviour.collection'] = $this->share(function () {
+            return new Transformer\Behaviour\Collection();
+        });
+
+        $this['transformer.writer.collection'] = $this->share(function () {
+            return new Transformer\Writer\Collection();
+        });
+
+        $this['transformer'] = $this->share(function ($container) {
+            $transformer = new Transformer\Transformer($container['transformer.writer.collection']);
+            $transformer->setBehaviours($container['transformer.behaviour.collection']);
+            return $transformer;
+        });
     }
 
     /**
@@ -100,8 +159,8 @@ class Application extends Cilex
     protected function addCommandsForProjectNamespace()
     {
         $this->command(new Command\Project\RunCommand());
-        $this->command(new Command\Project\ParseCommand($this['project.builder'], $this['parser']));
-        $this->command(new Command\Project\TransformCommand($this['project.builder'], $this['transformer']));
+        $this->command(new Command\Project\ParseCommand($this['descriptor.builder'], $this['parser']));
+        $this->command(new Command\Project\TransformCommand($this['descriptor.builder'], $this['transformer']));
     }
 
     /**

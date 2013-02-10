@@ -9,28 +9,28 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var string|null */
     protected $source = null;
 
-    /** @var \ArrayObject $namespace_aliases */
+    /** @var Collection $namespace_aliases */
     protected $namespace_aliases;
 
-    /** @var \ArrayObject $includes */
+    /** @var Collection $includes */
     protected $includes;
 
-    /** @var \ArrayObject $constants */
+    /** @var Collection $constants */
     protected $constants;
 
-    /** @var \ArrayObject $functions */
+    /** @var Collection $functions */
     protected $functions;
 
-    /** @var \ArrayObject $classes */
+    /** @var Collection $classes */
     protected $classes;
 
-    /** @var \ArrayObject $interfaces */
+    /** @var Collection $interfaces */
     protected $interfaces;
 
-    /** @var \ArrayObject $traits */
+    /** @var Collection $traits */
     protected $traits;
 
-    /** @var \ArrayObject $errors */
+    /** @var Collection $errors */
     protected $errors;
 
     public function __construct($hash)
@@ -38,16 +38,16 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         parent::__construct();
 
         $this->setHash($hash);
-        $this->setNamespaceAliases(new \ArrayObject());
-        $this->setIncludes(new \ArrayObject());
+        $this->setNamespaceAliases(new Collection());
+        $this->setIncludes(new Collection());
 
-        $this->setConstants(new \ArrayObject());
-        $this->setFunctions(new \ArrayObject());
-        $this->setClasses(new \ArrayObject());
-        $this->setInterfaces(new \ArrayObject());
-        $this->setTraits(new \ArrayObject());
+        $this->setConstants(new Collection());
+        $this->setFunctions(new Collection());
+        $this->setClasses(new Collection());
+        $this->setInterfaces(new Collection());
+        $this->setTraits(new Collection());
 
-        $this->setErrors(new \ArrayObject());
+        $this->setErrors(new Collection());
     }
 
     protected function setHash($hash)
@@ -70,7 +70,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->source;
     }
 
-    protected function setNamespaceAliases(\ArrayObject $namespace_aliases)
+    public function setNamespaceAliases(Collection $namespace_aliases)
     {
         $this->namespace_aliases = $namespace_aliases;
     }
@@ -80,20 +80,20 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->namespace_aliases;
     }
 
-    protected function setIncludes(\ArrayObject $includes)
+    public function setIncludes(Collection $includes)
     {
         $this->includes = $includes;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getIncludes()
     {
         return $this->includes;
     }
 
-    protected function setConstants(\ArrayObject $constants)
+    public function setConstants(Collection $constants)
     {
         $this->constants = $constants;
     }
@@ -103,7 +103,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->constants;
     }
 
-    protected function setFunctions(\ArrayObject $functions)
+    public function setFunctions(Collection $functions)
     {
         $this->functions = $functions;
     }
@@ -113,7 +113,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->functions;
     }
 
-    protected function setClasses(\ArrayObject $classes)
+    public function setClasses(Collection $classes)
     {
         $this->classes = $classes;
     }
@@ -123,7 +123,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->classes;
     }
 
-    protected function setInterfaces(\ArrayObject $interfaces)
+    public function setInterfaces(Collection $interfaces)
     {
         $this->interfaces = $interfaces;
     }
@@ -133,7 +133,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->interfaces;
     }
 
-    protected function setTraits(\ArrayObject $traits)
+    public function setTraits(Collection $traits)
     {
         $this->traits = $traits;
     }
@@ -143,7 +143,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->traits;
     }
 
-    protected function setErrors(\ArrayObject $errors)
+    public function setErrors(Collection $errors)
     {
         $this->errors = $errors;
     }

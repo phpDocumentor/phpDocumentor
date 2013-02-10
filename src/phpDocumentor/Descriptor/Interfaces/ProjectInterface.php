@@ -1,6 +1,8 @@
 <?php
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+
 interface ProjectInterface
 {
     /**
@@ -14,12 +16,12 @@ interface ProjectInterface
     public function getName();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getFiles();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getIndexes();
 

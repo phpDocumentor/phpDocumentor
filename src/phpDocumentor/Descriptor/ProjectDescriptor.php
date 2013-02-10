@@ -9,10 +9,10 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /** @var NamespaceDescriptor */
     protected $namespace;
 
-    /** @var \ArrayObject */
+    /** @var Collection */
     protected $files;
 
-    /** @var \ArrayObject */
+    /** @var Collection */
     protected $indexes;
 
     /**
@@ -25,8 +25,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
         $namespace->setName('\\');
         $namespace->setFullyQualifiedStructuralElementName('\\');
         $this->setNamespace($namespace);
-        $this->setFiles(new \ArrayObject());
-        $this->setIndexes(new \ArrayObject());
+        $this->setFiles(new Collection());
+        $this->setIndexes(new Collection());
     }
 
     /**
@@ -46,7 +46,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
-     * @param \ArrayObject $files
+     * @param Collection $files
      */
     protected function setFiles($files)
     {
@@ -54,7 +54,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getFiles()
     {
@@ -62,15 +62,15 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
-     * @param \ArrayObject $indexes
+     * @param Collection $indexes
      */
-    protected function setIndexes($indexes)
+    protected function setIndexes(Collection $indexes)
     {
         $this->indexes = $indexes;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getIndexes()
     {
@@ -78,7 +78,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
-     * @param NamespaceDescriptor $namespaces
+     * @param NamespaceDescriptor $namespace
      */
     protected function setNamespace($namespace)
     {

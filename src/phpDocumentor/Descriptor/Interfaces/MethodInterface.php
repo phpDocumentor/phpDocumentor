@@ -1,6 +1,8 @@
 <?php
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+
 interface MethodInterface extends BaseInterface
 {
     /**
@@ -14,7 +16,7 @@ interface MethodInterface extends BaseInterface
     public function isAbstract();
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getArguments();
 

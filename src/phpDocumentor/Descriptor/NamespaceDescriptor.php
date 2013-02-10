@@ -3,44 +3,44 @@ namespace phpDocumentor\Descriptor;
 
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
-    /** @var \ArrayObject $namespaces*/
+    /** @var Collection $namespaces*/
     protected $namespaces;
 
-    /** @var \ArrayObject $functions*/
+    /** @var Collection $functions*/
     protected $functions;
 
-    /** @var \ArrayObject $constants*/
+    /** @var Collection $constants*/
     protected $constants;
 
-    /** @var \ArrayObject $classes*/
+    /** @var Collection $classes*/
     protected $classes;
 
-    /** @var \ArrayObject $interfaces*/
+    /** @var Collection $interfaces*/
     protected $interfaces;
 
-    /** @var \ArrayObject $traits*/
+    /** @var Collection $traits*/
     protected $traits;
 
     public function __construct()
     {
-        $this->setNamespaces(new \ArrayObject());
-        $this->setFunctions(new \ArrayObject());
-        $this->setConstants(new \ArrayObject());
-        $this->setClasses(new \ArrayObject());
-        $this->setInterfaces(new \ArrayObject());
-        $this->setTraits(new \ArrayObject());
+        $this->setNamespaces(new Collection());
+        $this->setFunctions(new Collection());
+        $this->setConstants(new Collection());
+        $this->setClasses(new Collection());
+        $this->setInterfaces(new Collection());
+        $this->setTraits(new Collection());
     }
 
     /**
-     * @param \ArrayObject $classes
+     * @param Collection $classes
      */
-    protected function setClasses($classes)
+    protected function setClasses(Collection $classes)
     {
         $this->classes = $classes;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getClasses()
     {
@@ -48,15 +48,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * @param \ArrayObject $constants
+     * @param Collection $constants
      */
-    protected function setConstants($constants)
+    protected function setConstants(Collection $constants)
     {
         $this->constants = $constants;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getConstants()
     {
@@ -64,15 +64,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * @param \ArrayObject $functions
+     * @param Collection $functions
      */
-    protected function setFunctions($functions)
+    protected function setFunctions(Collection $functions)
     {
         $this->functions = $functions;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getFunctions()
     {
@@ -80,15 +80,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * @param \ArrayObject $interfaces
+     * @param Collection $interfaces
      */
-    protected function setInterfaces($interfaces)
+    protected function setInterfaces(Collection $interfaces)
     {
         $this->interfaces = $interfaces;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getInterfaces()
     {
@@ -96,15 +96,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * @param \ArrayObject $namespaces
+     * @param Collection $namespaces
      */
-    protected function setNamespaces($namespaces)
+    protected function setNamespaces(Collection $namespaces)
     {
         $this->namespaces = $namespaces;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getNamespaces()
     {
@@ -112,7 +112,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * @param \ArrayObject $traits
+     * @param Collection $traits
      */
     protected function setTraits($traits)
     {
@@ -120,7 +120,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getTraits()
     {

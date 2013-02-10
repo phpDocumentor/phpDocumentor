@@ -85,17 +85,30 @@ class Twig extends WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
-        var_dump($project->getNamespace()->getNamespaces()->count());
         $template_path = $this->getTemplatePath($transformation);
 
-        $destination = $this->getDestinationPath($project, $transformation);
+        $descriptors = $this->getListOfObjects($transformation->getQuery(), $project);
 
-        $this->log('Processing as ' . $destination);
+        foreach ($descriptors as $descriptor) {
+            $destination = $this->getDestinationPath($descriptor, $transformation);
 
-        $environment = $this->initializeEnvironment($project, $transformation, $destination);
+            $this->log('Processing as ' . $destination);
 
-        $html = $environment->render(substr($transformation->getSource(), strlen($template_path)));
-        file_put_contents($destination, $html);
+            $environment = $this->initializeEnvironment($project, $transformation, $destination);
+            $environment->addGlobal('node', $descriptor);
+
+            $html = $environment->render(substr($transformation->getSource(), strlen($template_path)));
+            file_put_contents($destination, $html);
+        }
+    }
+
+    protected function getListOfObjects($query, ProjectDescriptor $project)
+    {
+        if ($query) {
+            return $project->getIndexes()->offsetGet($query);
+        }
+
+        return array($project);
     }
 
     /**
@@ -198,9 +211,6 @@ class Twig extends WriterAbstract
      *   An artefact stating `classes/{full_name}.html` will try to find the
      *   node 'full_name' as a child of the given $node and use that value
      *   instead.
-     *
-     *   An artefact stating `namespaces/{@full_name}.html` will try to find the
-     *   attribute 'full_name' of the given $node and use that value instead.
      *
      * @param DescriptorAbstract $node
      * @param Transformation     $transformation

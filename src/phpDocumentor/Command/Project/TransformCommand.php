@@ -183,14 +183,6 @@ TEXT
         }
 
         $output->writeln(' OK');
-        $output->write('Processing behaviours ..');
-        $this->getService('event_dispatcher')->addListener(
-            'transformer.transform.pre',
-            function () use ($output) {
-                $output->writeln(' OK');
-                $output->writeln('Executing transformations');
-            }
-        );
 
         if ($progress) {
             $progress->start($output, count($transformer->getTransformations()));

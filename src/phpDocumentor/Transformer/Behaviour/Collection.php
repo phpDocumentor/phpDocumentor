@@ -19,26 +19,16 @@ use phpDocumentor\Transformer\Transformer;
  */
 class Collection extends BehaviourAbstract
 {
-    /** @var \phpDocumentor\Transformer\Transformer */
-    protected $transformer = null;
-
     /** @var BehaviourAbstract[] */
     protected $behaviours = array();
 
     /**
      * Initializes the list of Behaviours to execute each request.
      *
-     * @param Transformer         $transformer Object that executes the transformation and contains the meta-data.
      * @param BehaviourAbstract[] $behaviours  List of behaviours to process.
      */
-    public function __construct(Transformer $transformer, array $behaviours = array())
+    public function __construct(array $behaviours = array())
     {
-        $this->transformer = $transformer;
-
-        foreach ($behaviours as $behaviour) {
-            $behaviour->setTransformer($transformer);
-        }
-
         $this->behaviours  = $behaviours;
     }
 

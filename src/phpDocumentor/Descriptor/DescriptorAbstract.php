@@ -24,7 +24,7 @@ class DescriptorAbstract
     /** @var int */
     protected $line = 0;
 
-    /** @var \ArrayObject */
+    /** @var Collection */
     protected $tags;
 
     /**
@@ -32,7 +32,7 @@ class DescriptorAbstract
      */
     public function __construct()
     {
-        $this->setTags(new \ArrayObject());
+        $this->setTags(new Collection());
     }
 
     /**
@@ -136,17 +136,17 @@ class DescriptorAbstract
     }
 
     /**
-     * @param \ArrayObject $tags
+     * @param Collection $tags
      *
      * @return void
      */
-    protected function setTags($tags)
+    protected function setTags(Collection $tags)
     {
         $this->tags = $tags;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getTags()
     {

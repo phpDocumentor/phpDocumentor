@@ -1,5 +1,5 @@
 class phpdocumentor::setup {
-    package{["git", "graphviz", "python-setuptools", "make", "texlive-latex-recommended", "texlive-fonts-recommended", "openjdk-6-jre", "graphviz"]:
+    package{["git", "graphviz", "python-setuptools", "make", "texlive-latex-recommended", "texlive-fonts-recommended", "openjdk-6-jre"]:
         ensure => present
     }
 

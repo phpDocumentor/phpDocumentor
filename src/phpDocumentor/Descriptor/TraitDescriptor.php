@@ -3,30 +3,30 @@ namespace phpDocumentor\Descriptor;
 
 class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInterface
 {
-    /** @var \ArrayObject $properties */
+    /** @var Collection $properties */
     protected $properties;
 
-    /** @var \ArrayObject $methods */
+    /** @var Collection $methods */
     protected $methods;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->setProperties(new \ArrayObject());
-        $this->setMethods(new \ArrayObject());
+        $this->setProperties(new Collection());
+        $this->setMethods(new Collection());
     }
 
     /**
-     * @param \ArrayObject $methods
+     * @param Collection $methods
      */
-    protected function setMethods($methods)
+    protected function setMethods(Collection $methods)
     {
         $this->methods = $methods;
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getMethods()
     {
@@ -34,7 +34,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     }
 
     /**
-     * @param \ArrayObject $properties
+     * @param Collection $properties
      */
     protected function setProperties($properties)
     {
@@ -42,12 +42,10 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     }
 
     /**
-     * @return \ArrayObject
+     * @return Collection
      */
     public function getProperties()
     {
         return $this->properties;
     }
-
-
 }
