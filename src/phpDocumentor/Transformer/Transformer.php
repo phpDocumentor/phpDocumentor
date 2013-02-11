@@ -30,8 +30,8 @@ class Transformer extends TransformerAbstract
     /** @var Behaviour\Collection|null $behaviours */
     protected $behaviours = null;
 
-    /** @var Writer\Collection $writer */
-    protected $writers = null;
+    /** @var Template\Factory $templateFactory */
+    protected $templateFactory = null;
 
     /** @var Transformation[] $transformations */
     protected $transformations = array();
@@ -39,9 +39,14 @@ class Transformer extends TransformerAbstract
     /** @var boolean $parsePrivate */
     protected $parsePrivate = false;
 
-    public function __construct(Writer\Collection $writer)
+    /**
+     * Wires the template factory to this transformer.
+     *
+     * @param Template\Factory $templateFactory
+     */
+    public function __construct(Template\Factory $templateFactory)
     {
-        $this->writers = $writer;
+        $this->templateFactory = $templateFactory;
     }
 
     /**
@@ -204,52 +209,7 @@ class Transformer extends TransformerAbstract
             return;
         }
 
-        $path = null;
-
-        // if this is an absolute path; load the template into the configuration
-        // Please note that this _could_ override an existing template when
-        // you have a template in a subfolder with the same name as a default
-        // template; we have left this in on purpose to allow people to override
-        // templates should they choose to.
-        $config_path = rtrim($name, DIRECTORY_SEPARATOR) . '/template.xml';
-        if (file_exists($config_path) && is_readable($config_path)) {
-            $path = rtrim($name, DIRECTORY_SEPARATOR);
-            $template_name_part = basename($path);
-            $cache_path = rtrim($this->getTemplatesPath(), '/\\')
-            . DIRECTORY_SEPARATOR . $template_name_part;
-
-            // move the files to a cache location and then change the path
-            // variable to match the new location
-            $this->copyRecursive($path, $cache_path);
-            $path = $cache_path;
-
-            // transform all directory separators to underscores and lowercase
-            $name = strtolower(
-                str_replace(
-                    DIRECTORY_SEPARATOR,
-                    '_',
-                    rtrim($name, DIRECTORY_SEPARATOR)
-                )
-            );
-        }
-
-        // if we load a default template
-        if ($path === null) {
-            $path = rtrim($this->getTemplatesPath(), '/\\')
-                    . DIRECTORY_SEPARATOR . $name;
-        }
-
-        if (!file_exists($path) || !is_readable($path)) {
-            throw new \InvalidArgumentException(
-                'The given template ' . $name.' could not be found or is not '
-                . 'readable'
-            );
-        }
-
-        // track templates to be able to refer to them later
-        $this->templates[$name] = new Template($name, $path);
-        $loader = new Template\XmlLoader($this, $this->writers);
-        $loader->load($this->templates[$name], file_get_contents($path  . DIRECTORY_SEPARATOR . 'template.xml'));
+        $this->templates[$name] = $this->getTemplateFactory()->create($name, $this);
     }
 
     /**
@@ -316,46 +276,6 @@ class Transformer extends TransformerAbstract
 
         return trim(str_replace(array(DIRECTORY_SEPARATOR, '\\'), '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
             . '.html';
-    }
-
-    /**
-     * Copies a file or folder recursively to another location.
-     *
-     * @param string $src The source location to copy
-     * @param string $dst The destination location to copy to
-     *
-     * @throws \Exception if $src does not exist or $dst is not writable
-     *
-     * @return void
-     */
-    public function copyRecursive($src, $dst)
-    {
-        // if $src is a normal file we can do a regular copy action
-        if (is_file($src)) {
-            copy($src, $dst);
-            return;
-        }
-
-        $dir = opendir($src);
-        if (!$dir) {
-            throw new \Exception('Unable to locate path "' . $src . '"');
-        }
-
-        // check if the folder exists, otherwise create it
-        if ((!file_exists($dst)) && (false === mkdir($dst))) {
-            throw new \Exception('Unable to create folder "' . $dst . '"');
-        }
-
-        while (false !== ($file = readdir($dir))) {
-            if (($file != '.') && ($file != '..')) {
-                if (is_dir($src . '/' . $file)) {
-                    $this->copyRecursive($src . '/' . $file, $dst . '/' . $file);
-                } else {
-                    copy($src . '/' . $file, $dst . '/' . $file);
-                }
-            }
-        }
-        closedir($dir);
     }
 
     /**
@@ -447,5 +367,15 @@ class Transformer extends TransformerAbstract
         }
 
         return null;
+    }
+
+    /**
+     * Returns the template factory.
+     *
+     * @return Template\Factory
+     */
+    public function getTemplateFactory()
+    {
+        return $this->templateFactory;
     }
 }

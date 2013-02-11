@@ -125,6 +125,10 @@ class Application extends Cilex
      */
     protected function addTransformerServices()
     {
+        // parameters
+        $this['transformer.template.location'] = __DIR__.'/../../data/templates';
+
+        // services
         $this['transformer.behaviour.collection'] = $this->share(function () {
             return new Transformer\Behaviour\Collection();
         });
@@ -133,8 +137,15 @@ class Application extends Cilex
             return new Transformer\Writer\Collection();
         });
 
+        $this['transformer.template.factory'] = $this->share(function ($container) {
+            return new Transformer\Template\Factory(
+                $container['transformer.template.location'],
+                $container['transformer.writer.collection']
+            );
+        });
+
         $this['transformer'] = $this->share(function ($container) {
-            $transformer = new Transformer\Transformer($container['transformer.writer.collection']);
+            $transformer = new Transformer\Transformer($container['transformer.template.factory']);
             $transformer->setBehaviours($container['transformer.behaviour.collection']);
             return $transformer;
         });
