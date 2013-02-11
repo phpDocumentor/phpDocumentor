@@ -20,6 +20,7 @@ require_once findAutoloader();
 use Symfony\Component\Console\Input\InputInterface;
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
+use Zend\I18n\Translator\Translator;
 
 /**
  * Application class for phpDocumentor.
@@ -46,11 +47,16 @@ class Application extends Cilex
         $this->setTimezone();
         $this->addConfiguration();
         $this->addEventDispatcher();
-        $this->loadPlugins();
 
         $this['console']->getHelperSet()->set(
             new Console\Helper\ProgressHelper()
         );
+
+        $this['translator'] = $this->share(function(){
+            return new Translator();
+        });
+
+        $this->loadPlugins();
 
         $this->addDescriptorServices();
         $this->addParserServices();
@@ -290,7 +296,7 @@ class Application extends Cilex
                 $manager = new \phpDocumentor\Plugin\Manager(
                     $app['event_dispatcher'],
                     $app['config'],
-                    $app['autoloader']
+                    $app['translator']
                 );
                 return $manager;
             }

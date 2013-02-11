@@ -12,7 +12,10 @@
 
 namespace phpDocumentor\Plugin;
 
+use Zend\Config\Config;
 use Zend\I18n\Translator\Translator;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Event\EventAbstract;
 
 /**
  * Layer superclass for the Plugin Component; contains all event
@@ -24,13 +27,10 @@ use Zend\I18n\Translator\Translator;
  */
 class PluginAbstract
 {
-    /**
-     * @var \phpDocumentor\Event\Dispatcher Dispatcher used to send events back
-     *     and forth
-     */
+    /** @var Dispatcher Dispatcher used to send events back and forth */
     protected $event_dispatcher = null;
 
-    /** @var \Zend\Config\Config Configuration object for plugins */
+    /** @var Config Configuration object for plugins */
     protected $configuration = null;
 
     /** @var Translator Translation object */
@@ -39,18 +39,12 @@ class PluginAbstract
     /**
      * Initialize this object with an Event Dispatcher and Configuration object.
      *
-     * @param \phpDocumentor\Event\Dispatcher $event_dispatcher
-     *     Dispatcher used to handle events.
-     * @param \Zend\Config\Config             $configuration
-     *     Configuration object for this object.
-     * @param Translator                      $translator
-     *     Translator object.
+     * @param Dispatcher  $event_dispatcher Dispatcher used to handle events.
+     * @param Config      $configuration    Configuration object for this object.
+     * @param Translator  $translator       Translator object.
      */
-    public function __construct(
-        $event_dispatcher,
-        $configuration,
-        Translator $translator = null
-    ) {
+    public function __construct($event_dispatcher, $configuration, Translator $translator)
+    {
         $this->event_dispatcher = $event_dispatcher;
         $this->configuration    = $configuration;
         $this->translate        = $translator;
@@ -65,12 +59,10 @@ class PluginAbstract
      * By not failing we make the Event Dispatcher optional and is it easier
      * for people to re-use this component in their own application.
      *
-     * @param string                             $name  Name of the event to
-     *     dispatch.
-     * @param \phpDocumentor\Event\EventAbstract $event Arguments for this event.
+     * @param string        $name  Name of the event to dispatch.
+     * @param EventAbstract $event Arguments for this event.
      *
-     * @throws \phpDocumentor\Plugin\Exception if there is a dispatcher but it
-     *  is not of type EventDispatcher
+     * @throws Exception if there is a dispatcher but it is not of type EventDispatcher
      *
      * @return void
      */

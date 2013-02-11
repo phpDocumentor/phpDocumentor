@@ -18,16 +18,20 @@ namespace phpDocumentor\Plugin;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
+use Zend\Config\Config;
+use Zend\I18n\Translator\Translator;
+use phpDocumentor\Event\Dispatcher;
+
 class Manager
 {
-    /** @var \phpDocumentor\Event\Dispatcher */
+    /** @var Dispatcher */
     protected $event_dispatcher = null;
 
-    /** @var \SimpleXMLElement */
+    /** @var Config */
     protected $configuration = null;
 
-    /** @var \Composer\Autoload\ClassLoader*/
-    protected $autoloader = null;
+    /** @var Translator */
+    protected $translator;
 
     /** @var \phpDocumentor\Plugin\Plugin */
     protected $plugins = array();
@@ -36,19 +40,16 @@ class Manager
      * Registers the Event Dispatcher, Confguration and Autoloader onto the
      * Manager.
      *
-     * @param \phpDocumentor\Event\Dispatcher $event_dispatcher Event dispatcher
-     *     that plugins can bind to and where events should be dispatched to.
-     * @param \Zend\Config\Config             $configuration    Configuration
-     *    file which can be used to load parameters into the plugins.
-     * @param \Composer\ClassLoader           $autoloader       Plugins can
-     *     additionally load classes; with the autoloader they can register
-     *     themselves.
+     * @param Dispatcher $event_dispatcher Event dispatcher that plugins can bind to and where events should be
+     *     dispatched to.
+     * @param Config     $configuration    Configuration file which can be used to load parameters into the plugins.
+     * @param Translator $translator
      */
-    public function __construct($event_dispatcher, $configuration, $autoloader)
+    public function __construct(Dispatcher $event_dispatcher, Config $configuration, Translator $translator)
     {
         $this->event_dispatcher = $event_dispatcher;
         $this->configuration    = $configuration;
-        $this->autoloader       = $autoloader;
+        $this->translator       = $translator;
     }
 
     /**
@@ -77,13 +78,8 @@ class Manager
 
         // add new plugins
         foreach ($plugins as $plugin_config) {
-            $plugin = new \phpDocumentor\Plugin\Plugin($this->event_dispatcher, $this->configuration);
-
-            $plugin->load(
-                is_string($plugin_config) ? $plugin_config : $plugin_config->path,
-                $this->autoloader
-            );
-
+            $plugin = new Plugin($this->event_dispatcher, $this->configuration, $this->translator);
+            $plugin->load(is_string($plugin_config) ? $plugin_config : $plugin_config->path);
             $this->plugins[] = $plugin;
         }
     }

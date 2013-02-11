@@ -57,14 +57,11 @@ class Plugin extends PluginAbstract
      *
      * If the autoloader is provided then the class' prefix is added to it.
      *
-     * @param string                     $path       Path to the
-     *  configuration file.
-     * @param \Composer\ClassLoader|null $autoloader Autoloader object
-     *  to add the prefix/path combination to.
+     * @param string $path Path to the configuration file.
      *
      * @return void
      */
-    public function load($path, $autoloader = null)
+    public function load($path)
     {
         if (preg_match('/^[a-zA-Z0-9\_]+$/', $path)) {
             $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . $path;
@@ -88,10 +85,6 @@ class Plugin extends PluginAbstract
             ? (string)$xml->class_prefix
             : '';
 
-        if ($autoloader && $this->class_prefix) {
-            $autoloader->add($this->class_prefix, $path);
-        }
-
         $listeners = !is_array($xml->listener)
             ? $xml->listener
             : array($xml->listener);
@@ -111,7 +104,6 @@ class Plugin extends PluginAbstract
             $this->options[$key] = $option;
         }
 
-        $this->translate = new Translator();
         $this->translate
             ->setLocale('en')
             ->setFallbackLocale('en')
