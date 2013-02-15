@@ -14,37 +14,37 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "cilex/cilex": "dev-master",
-        "dflydev/markdown": "1.0.*",
-        "nikic/php-parser": "dev-master",
+        "cilex/cilex": "1.*@dev",
+        "dflydev/markdown": "1.0.*@stable",
         "symfony/event-dispatcher": "2.1.*@stable",
-        "zendframework/zend-stdlib": "2.*",
-        "zendframework/zend-config": "2.*",
-        "zendframework/zend-servicemanager": "2.*",
-        "zendframework/zend-i18n": "2.*",
+        "zendframework/zend-stdlib": "dev-master@dev",
+        "zendframework/zend-servicemanager": "dev-master@dev",
+        "zendframework/zend-config": "dev-master@dev",
+        "zendframework/zend-i18n": "dev-master@dev",
+        "monolog/monolog": "1.4.*@stable",
 
         "phpdocumentor/graphviz": "1.*@beta",
-        "phpdocumentor/fileset": "1.0.0-beta2",
-	    "phpdocumentor/reflection": "0.1.*",
+        "phpdocumentor/fileset": "1.*@beta",
+	    "phpdocumentor/reflection": "0.1.*@stable",
 	    "phpdocumentor/reflection-docblock": "2.0.0a1",
 
-        "phpdocumentor/plugin-twig":"1.*",
+        "phpdocumentor/plugin-twig":"1.*@stable",
         "phpdocumentor/unified-asset-installer": "1.*@beta",
 
-        "phpdocumentor/template-responsive": "1.*",
-        "phpdocumentor/template-new-black": "1.*",
-        "phpdocumentor/template-zend": "1.*",
-        "phpdocumentor/template-old-ocean": "1.*",
-        "phpdocumentor/template-checkstyle": "1.*"
+        "phpdocumentor/template-responsive": "1.*@stable",
+        "phpdocumentor/template-new-black": "1.*@stable",
+        "phpdocumentor/template-zend": "1.*@stable",
+        "phpdocumentor/template-old-ocean": "1.*@stable",
+        "phpdocumentor/template-checkstyle": "1.*@stable"
     },
     "suggests": {
-        "ext-xsl": "to use the XSL based templates"
+        "ext-xsl": "when using XSL based templates"
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "behat/behat": ">=2.4@stable",
-        "phpunit/phpunit": "3.7.*@stable",
-        "mockery/mockery": ">=0.7.0@stable"
+        "behat/behat": ">=2.4",
+        "phpunit/phpunit": "3.7.*",
+        "mockery/mockery": ">=0.7.0"
     },
     "config": {
         "bin-dir":"bin/"
