@@ -1,22 +1,52 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
 namespace phpDocumentor\Transformer\Template;
 
 use phpDocumentor\Transformer\Template;
+use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 
-class Factory
+/**
+ * Contains a collection of Templates that may be queried.
+ */
+class Collection extends \ArrayObject
 {
     protected $templatesPath = 'data/templates';
 
     /** @var \phpDocumentor\Transformer\Writer\Collection */
     protected $writers;
 
-    public function __construct($templatesPath, Collection $writers)
+    public function __construct($templatesPath, WriterCollection $writers)
     {
         $this->templatesPath = $templatesPath;
         $this->writers       = $writers;
+    }
+
+    /**
+     * Returns a list of all transformations contained in the templates of this collection.
+     *
+     * @return Transformation[]
+     */
+    public function getTransformations()
+    {
+        $result = array();
+        foreach ($this as $template) {
+            foreach ($template as $transformation) {
+                $result[] = $transformation;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -26,7 +56,7 @@ class Factory
      *
      * @return Template
      */
-    public function create($nameOrPath, Transformer $transformer)
+    public function load($nameOrPath, Transformer $transformer)
     {
         $path = null;
 
@@ -66,9 +96,20 @@ class Factory
         // track templates to be able to refer to them later
         $template =  new Template($nameOrPath, $path);
 
-        $loader = new Template\XmlLoader($transformer, $this->writers);
-        $loader->load($template, file_get_contents($path  . DIRECTORY_SEPARATOR . 'template.xml'));
+        $fileName = $path . DIRECTORY_SEPARATOR . 'template.xml';
+        $loader = $this->getLoader(substr($fileName, strrpos($fileName, '.') + 1), $transformer);
+        $loader->load($template, file_get_contents($fileName));
         return $template;
+    }
+
+    public function getLoader($extention, $transformer)
+    {
+        switch ($extention) {
+            case 'xml':
+                return new Template\Loader\Xml($transformer, $this->writers);
+            default:
+                throw new \InvalidArgumentException('Unknown file type: ' . $extention);
+        }
     }
 
     public function getTemplatesPath()
@@ -115,4 +156,5 @@ class Factory
         }
         closedir($dir);
     }
+
 }

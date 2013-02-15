@@ -48,4 +48,22 @@ class Collection extends \ArrayObject
 
         parent::offsetSet($index, $newval);
     }
+
+    /**
+     * Retrieves a writer from the collection.
+     *
+     * @param string $index the name of the writer to retrieve.
+     *
+     * @throws \InvalidArgumentException if the writer is not in the collection.
+     *
+     * @return WriterAbstract
+     */
+    public function offsetGet($index)
+    {
+        if (!$this->offsetExists($index)) {
+            throw new \InvalidArgumentException('Writer "' . $index .'" does not exist');
+        }
+
+        parent::offsetGet($index);
+    }
 }

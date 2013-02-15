@@ -21,17 +21,11 @@ class Transformer extends TransformerAbstract
     /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
 
-    /** @var \phpDocumentor\Transformer\Template[] $templates */
-    protected $templates = array();
-
-    /** @var string $templates_path */
-    protected $templates_path = '';
+    /** @var Template\Collection $templates */
+    protected $templates;
 
     /** @var Behaviour\Collection|null $behaviours */
     protected $behaviours = null;
-
-    /** @var Template\Factory $templateFactory */
-    protected $templateFactory = null;
 
     /** @var Transformation[] $transformations */
     protected $transformations = array();
@@ -42,11 +36,11 @@ class Transformer extends TransformerAbstract
     /**
      * Wires the template factory to this transformer.
      *
-     * @param Template\Factory $templateFactory
+     * @param Template\Collection $templateCollection
      */
-    public function __construct(Template\Factory $templateFactory)
+    public function __construct(Template\Collection $templateCollection)
     {
-        $this->templateFactory = $templateFactory;
+        $this->templates = $templateCollection;
     }
 
     /**
@@ -62,7 +56,7 @@ class Transformer extends TransformerAbstract
      *
      * @var string
      */
-    protected $external_class_docs = array();
+    protected $externalClassDocs = array();
 
     /**
      * Sets the collection of behaviours that are applied before the actual transformation process.
@@ -99,10 +93,9 @@ class Transformer extends TransformerAbstract
     public function setTarget($target)
     {
         $path = realpath($target);
-        if (!file_exists($path) && !is_dir($path) && !is_writable($path)) {
+        if (!file_exists($path) || !is_dir($path) || !is_writable($path)) {
             throw new \InvalidArgumentException(
-                'Given target directory (' . $target . ') does not exist or '
-                . 'is not writable'
+                'Given target directory (' . $target . ') does not exist or is not writable'
             );
         }
 
@@ -120,28 +113,6 @@ class Transformer extends TransformerAbstract
     }
 
     /**
-     * Sets the path where the templates are located.
-     *
-     * @param string $path Absolute path where the templates are.
-     *
-     * @return void
-     */
-    public function setTemplatesPath($path)
-    {
-        $this->templates_path = $path;
-    }
-
-    /**
-     * Returns the path where the templates are located.
-     *
-     * @return string
-     */
-    public function getTemplatesPath()
-    {
-        return $this->templates_path;
-    }
-
-    /**
      * Sets flag indicating whether private members and/or elements tagged
      * as {@internal} need to be displayed.
      *
@@ -149,7 +120,7 @@ class Transformer extends TransformerAbstract
      *
      * @return void
      */
-    public function setParseprivate($val)
+    public function setParsePrivate($val)
     {
         $this->parsePrivate = (boolean)$val;
     }
@@ -160,35 +131,15 @@ class Transformer extends TransformerAbstract
      *
      * @return bool
      */
-    public function getParseprivate()
+    public function getParsePrivate()
     {
         return $this->parsePrivate;
     }
 
     /**
-     * Sets one or more templates as basis for the transformations.
-     *
-     * @param string|string[] $template Name or names of the templates.
-     *
-     * @return void
-     */
-    public function setTemplates($template)
-    {
-        $this->templates = array();
-
-        if (!is_array($template)) {
-            $template = array($template);
-        }
-
-        foreach ($template as $item) {
-            $this->addTemplate($item);
-        }
-    }
-
-    /**
      * Returns the list of templates which are going to be adopted.
      *
-     * @return string[]
+     * @return Template\Collection
      */
     public function getTemplates()
     {
@@ -196,41 +147,7 @@ class Transformer extends TransformerAbstract
     }
 
     /**
-     * Loads a template by name, if an additional array with details is provided it will try to load parameters from it.
-     *
-     * @param string $name Name of the template to add.
-     *
-     * @return void
-     */
-    public function addTemplate($name)
-    {
-        // if the template is already loaded we do not reload it.
-        if (isset($this->templates[$name])) {
-            return;
-        }
-
-        $this->templates[$name] = $this->getTemplateFactory()->create($name, $this);
-    }
-
-    /**
-     * Returns the transformation which this transformer will process.
-     *
-     * @return Transformation[]
-     */
-    public function getTransformations()
-    {
-        $result = array();
-        foreach ($this->templates as $template) {
-            foreach ($template as $transformation) {
-                $result[] = $transformation;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Executes each transformation.
+     * Transforms the given project into a series of artifacts as provided by the templates.
      *
      * @param ProjectDescriptor $project
      *
@@ -239,10 +156,13 @@ class Transformer extends TransformerAbstract
     public function execute(ProjectDescriptor $project)
     {
         if ($this->getBehaviours() instanceof Behaviour\Collection) {
+            $this->log('Applying behaviours');
             $this->getBehaviours()->process($project);
         }
 
-        foreach ($this->getTransformations() as $transformation) {
+        $transformations = $this->getTemplates()->getTransformations();
+        $this->log('Applying ' . count($transformations) . ' transformations');
+        foreach ($transformations as $transformation) {
             $this->log(
                 'Applying transformation'
                 . ($transformation->getQuery() ? (' query "' . $transformation->getQuery() . '"') : '')
@@ -252,6 +172,7 @@ class Transformer extends TransformerAbstract
 
             $transformation->execute($project);
         }
+        $this->log('Finished transformation process');
     }
 
     /**
@@ -292,11 +213,14 @@ class Transformer extends TransformerAbstract
      * @param string $prefix Class prefix to match, i.e. Zend_Config_
      * @param string $uri    URI to link to when above prefix is encountered.
      *
+     * @codeCoverageIgnore
+     * @deprecated should be moved to the new router
+     *
      * @return void
      */
     public function setExternalClassDoc($prefix, $uri)
     {
-        $this->external_class_docs[$prefix] = $uri;
+        $this->externalClassDocs[$prefix] = $uri;
     }
 
     /**
@@ -306,21 +230,27 @@ class Transformer extends TransformerAbstract
      *
      * @see self::setExternalClassDoc() for details on this feature.
      *
+     * @codeCoverageIgnore
+     * @deprecated should be moved to the new router
+     *
      * @return void
      */
     public function setExternalClassDocs($external_class_docs)
     {
-        $this->external_class_docs = $external_class_docs;
+        $this->externalClassDocs = $external_class_docs;
     }
 
     /**
      * Returns the registered prefix -> url pairs.
      *
+     * @codeCoverageIgnore
+     * @deprecated should be moved to the new router
+     *
      * @return string[]
      */
     public function getExternalClassDocs()
     {
-        return $this->external_class_docs;
+        return $this->externalClassDocs;
     }
 
     /**
@@ -330,15 +260,18 @@ class Transformer extends TransformerAbstract
      * @param string $class  If provided will replace the {CLASS} param with
      *  this string.
      *
+     * @codeCoverageIgnore
+     * @deprecated should be moved to the new router
+     *
      * @return string|null
      */
     public function getExternalClassDocumentLocation($prefix, $class = null)
     {
-        if (!isset($this->external_class_docs[$prefix])) {
+        if (!isset($this->externalClassDocs[$prefix])) {
             return null;
         }
 
-        $result = $this->external_class_docs[$prefix];
+        $result = $this->externalClassDocs[$prefix];
         if ($class !== null) {
             $result = str_replace(
                 array('{CLASS}', '{LOWERCASE_CLASS}', '{UNPREFIXED_CLASS}'),
@@ -355,27 +288,20 @@ class Transformer extends TransformerAbstract
      *
      * @param string $class FQCN to retrieve documentation URL for.
      *
+     * @codeCoverageIgnore
+     * @deprecated should be moved to the new router
+     *
      * @return null|string
      */
     public function findExternalClassDocumentLocation($class)
     {
         $class = ltrim($class, '\\');
-        foreach (array_keys($this->external_class_docs) as $prefix) {
+        foreach (array_keys($this->externalClassDocs) as $prefix) {
             if (strpos($class, $prefix) === 0) {
                 return $this->getExternalClassDocumentLocation($prefix, $class);
             }
         }
 
         return null;
-    }
-
-    /**
-     * Returns the template factory.
-     *
-     * @return Template\Factory
-     */
-    public function getTemplateFactory()
-    {
-        return $this->templateFactory;
     }
 }

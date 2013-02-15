@@ -1,13 +1,22 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
-namespace phpDocumentor\Transformer\Template;
+namespace phpDocumentor\Transformer\Template\Loader;
 
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 
-class XmlLoader
+class Xml
 {
     /** @var Collection $writerCollection */
     protected $writerCollection;
@@ -15,7 +24,7 @@ class XmlLoader
     /** @var Transformer */
     protected $transformer;
 
-    public function __construct(Transformer $transformer, Collection $writerCollection)
+    public function __construct(Transformer $transformer, WriterCollection $writerCollection)
     {
         $this->writerCollection = $writerCollection;
         $this->transformer = $transformer;
@@ -28,11 +37,11 @@ class XmlLoader
         $template->setVersion((string)$xml->version);
         $template->setCopyright($xml->copyright);
 
-        foreach ($xml->transformations->transformation as $transformation) {
+        foreach ($xml->transformations->transformation as $index => $transformation) {
             $transformation_obj = new Transformation(
                 $this->transformer,
                 (string)$transformation['query'],
-                $this->writerCollection->offsetGet((string)$transformation['writer']),
+                $this->writerCollection[(string)$transformation['writer']],
                 (string)$transformation['source'],
                 (string)$transformation['artifact']
             );

@@ -140,11 +140,10 @@ TEXT
             $this->connectOutputToLogging($output);
         }
 
-        $output->write('Initializing transformer ..');
+        $output->writeln('Initializing transformer');
 
         // initialize transformer
         $transformer = $this->getTransformer();
-        $transformer->setTemplatesPath(__DIR__.'/../../../../data/templates');
 
         $target = $this->getOption($input, 'target', 'transformer/target');
         if (!$this->isAbsolute($target)) {
@@ -161,9 +160,12 @@ TEXT
             $this->getBuilder()->import(file_get_contents($source));
         }
 
-        $templates = $this->getTemplates($input);
+        foreach ($this->getTemplates($input) as $template) {
+            $output->writeln('Loading template "' . $template . '"');
+            $transformer->getTemplates()->load($template, $transformer);
+        }
+        $output->writeln('Prepared ' . count($transformer->getTemplates()->getTransformations()) . ' transformations');
 
-        $transformer->setTemplates($templates);
         $transformer->setParseprivate($input->getOption('parseprivate'));
 
         // add links to external docs
@@ -182,10 +184,8 @@ TEXT
             $transformer->setExternalClassDoc((string)$doc['prefix'], (string)$doc['uri']);
         }
 
-        $output->writeln(' OK');
-
         if ($progress) {
-            $progress->start($output, count($transformer->getTransformations()));
+            $progress->start($output, count($transformer->getTemplates()->getTransformations()));
         }
 
         $transformer->execute($this->getBuilder()->getProjectDescriptor());

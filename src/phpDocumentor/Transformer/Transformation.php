@@ -111,7 +111,7 @@ class Transformation extends TransformerAbstract
      */
     public function setWriter($writer)
     {
-        $this->writer = Writer\WriterAbstract::getInstanceOf($writer);
+        $this->writer = $writer;
     }
 
     /**
@@ -296,61 +296,5 @@ class Transformation extends TransformerAbstract
     public function execute($project)
     {
         $this->getWriter()->transform($project, $this);
-    }
-
-    /**
-     * Factory method to create a new transformation based on a array containing
-     * transformation parameters.
-     *
-     * The array format is:
-     *
-     * <code>
-     * array(
-     *   'query'      => 'Query string',
-     *   'writer'     => 'WriterName',
-     *   'source'     => 'source location',
-     *   'artifact'   => 'path',
-     *   'parameters' => array()
-     * )
-     * </code>
-     *
-     * The parameter array is optional.
-     *
-     * @param Transformer $transformer    Responsible transformer object.
-     * @param mixed[]     $transformation Transformation array, see long
-     *     description for the format.
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return Transformation
-     */
-    public static function createFromArray(Transformer $transformer, array $transformation)
-    {
-        // check if all required items are present
-        if (!array_key_exists('query', $transformation)
-            || !array_key_exists('writer', $transformation)
-            || !array_key_exists('source', $transformation)
-            || !array_key_exists('artifact', $transformation)
-        ) {
-            throw new \InvalidArgumentException(
-                'Transformation array is missing elements, received: '
-                . var_export($transformation, true)
-            );
-        }
-
-        $transformation_obj = new Transformation(
-            $transformer,
-            $transformation['query'],
-            $transformation['writer'],
-            $transformation['source'],
-            $transformation['artifact']
-        );
-        if (isset($transformation['parameters'])
-            && is_array($transformation['parameters'])
-        ) {
-            $transformation_obj->setParameters($transformation['parameters']);
-        }
-
-        return $transformation_obj;
     }
 }

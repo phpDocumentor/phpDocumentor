@@ -168,7 +168,7 @@ class Template extends TransformerAbstract implements \ArrayAccess, \Countable, 
             );
         }
 
-        $this->transformations[$offset] = $value;
+        $this->transformations[] = $value;
     }
 
     /**

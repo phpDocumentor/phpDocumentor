@@ -2,10 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -65,6 +64,8 @@ class Application extends Cilex
         $this->addCommandsForProjectNamespace();
         $this->addCommandsForTemplateNamespace();
         $this->addCommandsForPluginNamespace();
+
+        $this->register(new Plugin\Core\ServiceProvider());
     }
 
     /**
@@ -137,15 +138,15 @@ class Application extends Cilex
             return new Transformer\Writer\Collection();
         });
 
-        $this['transformer.template.factory'] = $this->share(function ($container) {
-            return new Transformer\Template\Factory(
+        $this['transformer.template.collection'] = $this->share(function ($container) {
+            return new Transformer\Template\Collection(
                 $container['transformer.template.location'],
                 $container['transformer.writer.collection']
             );
         });
 
         $this['transformer'] = $this->share(function ($container) {
-            $transformer = new Transformer\Transformer($container['transformer.template.factory']);
+            $transformer = new Transformer\Transformer($container['transformer.template.collection']);
             $transformer->setBehaviours($container['transformer.behaviour.collection']);
             return $transformer;
         });
