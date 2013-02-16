@@ -16,7 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * Class representing a single Transformation.
  */
-class Transformation extends TransformerAbstract
+class Transformation
 {
     /**
      * @Serializer\XmlAttribute

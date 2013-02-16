@@ -12,11 +12,14 @@
 namespace phpDocumentor\Transformer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Event\DebugEvent;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Event\LogEvent;
 
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
  */
-class Transformer extends TransformerAbstract
+class Transformer
 {
     /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
@@ -311,5 +314,37 @@ class Transformer extends TransformerAbstract
         }
 
         return null;
+    }
+
+    /**
+     * Dispatches a logging request.
+     *
+     * @param string $message  The message to log.
+     * @param int    $priority The logging priority, the lower,
+     *  the more important. Ranges from 1 to 7
+     *
+     * @return void
+     */
+    public function log($message, $priority = 6)
+    {
+        Dispatcher::getInstance()->dispatch(
+            'system.log',
+            LogEvent::createInstance($this)->setMessage($message)->setPriority($priority)
+        );
+    }
+
+    /**
+     * Dispatches a logging request to log a debug message.
+     *
+     * @param string $message The message to log.
+     *
+     * @return void
+     */
+    public function debug($message)
+    {
+        Dispatcher::getInstance()->dispatch(
+            'system.debug',
+            DebugEvent::createInstance($this)->setMessage($message)
+        );
     }
 }

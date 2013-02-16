@@ -18,7 +18,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @Serializer\XmlRoot("template")
  */
-class Template extends TransformerAbstract implements \ArrayAccess, \Countable, \Iterator
+class Template implements \ArrayAccess, \Countable, \Iterator
 {
     /**
      * @Serializer\Type("string")
