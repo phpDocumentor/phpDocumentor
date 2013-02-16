@@ -16,7 +16,7 @@ use phpDocumentor\Transformer\Transformer;
 /**
  * Collection object for a set of Behaviours.
  */
-abstract class BehaviourAbstract extends \phpDocumentor\Transformer\TransformerAbstract
+abstract class BehaviourAbstract
 {
     /** @var Transformer $transformer */
     protected $transformer = null;

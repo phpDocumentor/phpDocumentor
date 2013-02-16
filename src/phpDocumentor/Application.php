@@ -21,6 +21,7 @@ use Cilex\Provider\MonologServiceProvider;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
 use Zend\I18n\Translator\Translator;
+use Zend\Serializer\Serializer;
 
 /**
  * Application class for phpDocumentor.
@@ -91,15 +92,13 @@ class Application extends Cilex
      */
     protected function addDescriptorServices()
     {
-        $this['descriptor.serializer.class'] = 'phpDocumentor\Descriptor\Serializer\Serialize';
-
-        $this['descriptor.serializer'] = function ($container) {
-            return new $container['descriptor.serializer.class']();
-        };
+        $this['descriptor.builder.serializer'] = 'PhpSerialize';
 
         $this['descriptor.builder'] = $this->share(function ($container) {
             $builder = new Descriptor\Builder\Reflector();
-            $builder->setSerializer($container['descriptor.serializer']);
+            $builder->setSerializer(
+                Serializer::factory($container['descriptor.builder.serializer'])
+            );
             return $builder;
         });
     }

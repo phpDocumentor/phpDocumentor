@@ -17,7 +17,7 @@ use phpDocumentor\Transformer\Transformation;
 /**
  * Base class for the actual transformation business logic (writers).
  */
-abstract class WriterAbstract extends \phpDocumentor\Transformer\TransformerAbstract
+abstract class WriterAbstract
 {
     /**
      * Abstract definition of the transformation method.
