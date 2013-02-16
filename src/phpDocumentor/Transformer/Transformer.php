@@ -411,10 +411,10 @@ class Transformer extends TransformerAbstract
 
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
-                if (is_dir($src . '/' . $file)) {
-                    $this->copyRecursive($src . '/' . $file, $dst . '/' . $file);
+                if (is_dir($src . DIRECTORY_SEPARATOR . $file)) {
+                    $this->copyRecursive($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
                 } else {
-                    copy($src . '/' . $file, $dst . '/' . $file);
+                    copy($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
                 }
             }
         }
