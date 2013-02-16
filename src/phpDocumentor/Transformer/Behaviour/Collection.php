@@ -17,7 +17,7 @@ use phpDocumentor\Transformer\Transformer;
 /**
  * Collection object for a set of Behaviours.
  */
-class Collection extends BehaviourAbstract
+class Collection extends BehaviourAbstract implements \Countable
 {
     /** @var BehaviourAbstract[] */
     protected $behaviours = array();
@@ -74,5 +74,15 @@ class Collection extends BehaviourAbstract
         }
 
         return $project;
+    }
+
+    /**
+     * Count the number of behaviours in this collection.
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        return count($this->behaviours);
     }
 }

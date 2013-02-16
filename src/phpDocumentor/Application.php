@@ -16,9 +16,10 @@ namespace phpDocumentor;
  */
 require_once findAutoloader();
 
-use Symfony\Component\Console\Input\InputInterface;
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use JMS\Serializer\SerializerBuilder;
 use Zend\I18n\Translator\Translator;
 
 /**
@@ -51,8 +52,16 @@ class Application extends Cilex
             new Console\Helper\ProgressHelper()
         );
 
-        $this['translator'] = $this->share(function(){
+        $this['translator'] = $this->share(function() {
             return new Translator();
+        });
+
+        $this['serializer'] = $this->share(function() {
+            AnnotationRegistry::registerAutoloadNamespace(
+                'JMS\Serializer\Annotation',
+                __DIR__ . '/../../vendor/jms/serializer/src'
+            );
+            return SerializerBuilder::create()->build();
         });
 
         $this->loadPlugins();
@@ -141,12 +150,15 @@ class Application extends Cilex
         $this['transformer.template.collection'] = $this->share(function ($container) {
             return new Transformer\Template\Collection(
                 $container['transformer.template.location'],
-                $container['transformer.writer.collection']
+                $container['serializer']
             );
         });
 
         $this['transformer'] = $this->share(function ($container) {
-            $transformer = new Transformer\Transformer($container['transformer.template.collection']);
+            $transformer = new Transformer\Transformer(
+                $container['transformer.template.collection'],
+                $container['transformer.writer.collection']
+            );
             $transformer->setBehaviours($container['transformer.behaviour.collection']);
             return $transformer;
         });

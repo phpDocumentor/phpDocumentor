@@ -11,73 +11,67 @@
 
 namespace phpDocumentor\Transformer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Class representing a single Transformation.
  */
 class Transformation extends TransformerAbstract
 {
-    /** @var string */
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string
+     */
     protected $query = '';
 
-    /** @var Writer\WriterAbstract */
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string
+     */
     protected $writer = null;
 
-    /** @var string */
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string
+     */
     protected $source = '';
 
-    /** @var string */
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string
+     */
     protected $artifact = '';
 
-    /** @var string[] */
-    protected $parameters = array();
+    /**
+     * @Serializer\Exclude
+     * @var Transformer $transformer
+     */
+    protected $transformer;
 
-    /** @var Transformer */
-    protected $transformer = null;
+    /**
+     * @Serializer\Type("array")
+     * @var string[]
+     */
+    protected $parameters = array();
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
-     * @param Transformer $transformer The parent transformer.
-     * @param string      $query       What information to use as datasource for
-     *     the writer's source.
-     * @param string      $writer      What type of transformation to apply
-     *     (XSLT, PDF, Checkstyle etc).
-     * @param string      $source      Which template or type of source to use.
-     * @param string      $artifact    What is the filename of the result
-     *     (relative to the generated root)
+     * @param string $query       What information to use as datasource for the writer's source.
+     * @param string $writer      What type of transformation to apply (XSLT, PDF, Checkstyle etc).
+     * @param string $source      Which template or type of source to use.
+     * @param string $artifact    What is the filename of the result (relative to the generated root)
      */
-    public function __construct(Transformer $transformer, $query, $writer, $source, $artifact)
+    public function __construct($query, $writer, $source, $artifact)
     {
-        $this->setTransformer($transformer);
         $this->setQuery($query);
         $this->setWriter($writer);
         $this->setSource($source);
         $this->setArtifact($artifact);
-    }
-
-    /**
-     * Sets the transformer object responsible for maintaining the transformations.
-     *
-     * @param Transformer $transformer Responsible transformer object.
-     *
-     * @return void
-     */
-    public function setTransformer(Transformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
-
-    /**
-     * Returns the transformer object which is responsible for maintaining this
-     * transformation.
-     *
-     * @return Transformer
-     */
-    public function getTransformer()
-    {
-        return $this->transformer;
     }
 
     /**
@@ -231,39 +225,6 @@ class Transformation extends TransformerAbstract
     }
 
     /**
-     * Recursive function to convert a SimpleXMLElement to an associative array.
-     *
-     * @param \SimpleXMLElement $sxml object to convert to a flat array.
-     *
-     * @return (string|string[])[]
-     */
-    protected function convertSimpleXmlToArray(\SimpleXMLElement $sxml)
-    {
-        $result = array();
-
-        /** @var \SimpleXMLElement $value */
-        foreach ($sxml->children() as $key => $value) {
-            $result[$key] = count($value->children()) > 1
-                ? $this->convertSimpleXmlToArray($value)
-                : (string)$value;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Imports the parameters from a SimpleXMLElement array.
-     *
-     * @param \SimpleXMLElement $parameters Object to import
-     *
-     * @return void
-     */
-    public function importParameters(\SimpleXMLElement $parameters)
-    {
-        $this->parameters = $this->convertSimpleXmlToArray($parameters);
-    }
-
-    /**
      * Returns all parameters for this transformation.
      *
      * @return string[]
@@ -287,14 +248,22 @@ class Transformation extends TransformerAbstract
     }
 
     /**
-     * Executes the transformation.
+     * Sets the transformer on this transformation.
      *
-     * @param ProjectDescriptor $project The location of the structure file.
-     *
-     * @return void
+     * @param \phpDocumentor\Transformer\Transformer $transformer
      */
-    public function execute($project)
+    public function setTransformer($transformer)
     {
-        $this->getWriter()->transform($project, $this);
+        $this->transformer = $transformer;
+    }
+
+    /**
+     * Returns the transformer for this transformation.
+     *
+     * @return \phpDocumentor\Transformer\Transformer
+     */
+    public function getTransformer()
+    {
+        return $this->transformer;
     }
 }

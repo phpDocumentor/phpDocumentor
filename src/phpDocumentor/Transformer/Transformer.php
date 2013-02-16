@@ -24,6 +24,9 @@ class Transformer extends TransformerAbstract
     /** @var Template\Collection $templates */
     protected $templates;
 
+    /** @var Writer\Collection $writers */
+    protected $writers;
+
     /** @var Behaviour\Collection|null $behaviours */
     protected $behaviours = null;
 
@@ -34,13 +37,15 @@ class Transformer extends TransformerAbstract
     protected $parsePrivate = false;
 
     /**
-     * Wires the template factory to this transformer.
+     * Wires the template collection and writer collection to this transformer.
      *
      * @param Template\Collection $templateCollection
+     * @param Writer\Collection   $writerCollection
      */
-    public function __construct(Template\Collection $templateCollection)
+    public function __construct(Template\Collection $templateCollection, Writer\Collection $writerCollection)
     {
         $this->templates = $templateCollection;
+        $this->writers   = $writerCollection;
     }
 
     /**
@@ -156,21 +161,24 @@ class Transformer extends TransformerAbstract
     public function execute(ProjectDescriptor $project)
     {
         if ($this->getBehaviours() instanceof Behaviour\Collection) {
-            $this->log('Applying behaviours');
+            $this->log(sprintf('Applying %d behaviours', count($this->getBehaviours())));
             $this->getBehaviours()->process($project);
         }
 
         $transformations = $this->getTemplates()->getTransformations();
-        $this->log('Applying ' . count($transformations) . ' transformations');
+        $this->log(sprintf('Applying %d transformations', count($transformations)));
         foreach ($transformations as $transformation) {
             $this->log(
-                'Applying transformation'
-                . ($transformation->getQuery() ? (' query "' . $transformation->getQuery() . '"') : '')
-                . ' using writer ' . get_class($transformation->getWriter())
+                '  Writer ' . $transformation->getWriter()
+                . ($transformation->getQuery() ? (' using query "' . $transformation->getQuery() . '"') : '')
                 . ' on '.$transformation->getArtifact()
             );
 
-            $transformation->execute($project);
+            $transformation->setTransformer($this);
+
+            /** @var Writer\WriterAbstract $writer  */
+            $writer = $this->writers[$transformation->getWriter()];
+            $writer->transform($project, $transformation);
         }
         $this->log('Finished transformation process');
     }

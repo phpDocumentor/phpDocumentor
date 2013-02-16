@@ -11,10 +11,9 @@
 
 namespace phpDocumentor\Transformer\Template;
 
+use JMS\Serializer\Serializer;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 
 /**
  * Contains a collection of Templates that may be queried.
@@ -23,13 +22,13 @@ class Collection extends \ArrayObject
 {
     protected $templatesPath = 'data/templates';
 
-    /** @var \phpDocumentor\Transformer\Writer\Collection */
-    protected $writers;
+    /** @var Serializer $serializer */
+    protected $serializer;
 
-    public function __construct($templatesPath, WriterCollection $writers)
+    public function __construct($templatesPath, Serializer $serializer)
     {
         $this->templatesPath = $templatesPath;
-        $this->writers       = $writers;
+        $this->serializer    = $serializer;
     }
 
     /**
@@ -56,7 +55,7 @@ class Collection extends \ArrayObject
      *
      * @return Template
      */
-    public function load($nameOrPath, Transformer $transformer)
+    public function load($nameOrPath)
     {
         $path = null;
 
@@ -93,28 +92,27 @@ class Collection extends \ArrayObject
             );
         }
 
-        // track templates to be able to refer to them later
-        $template =  new Template($nameOrPath, $path);
+        /** @var Template $template  */
+        $template = $this->getSerializer()->deserialize(
+            file_get_contents($path . DIRECTORY_SEPARATOR . 'template.xml'),
+            'phpDocumentor\Transformer\Template',
+            'xml'
+        );
 
-        $fileName = $path . DIRECTORY_SEPARATOR . 'template.xml';
-        $loader = $this->getLoader(substr($fileName, strrpos($fileName, '.') + 1), $transformer);
-        $loader->load($template, file_get_contents($fileName));
-        return $template;
-    }
-
-    public function getLoader($extention, $transformer)
-    {
-        switch ($extention) {
-            case 'xml':
-                return new Template\Loader\Xml($transformer, $this->writers);
-            default:
-                throw new \InvalidArgumentException('Unknown file type: ' . $extention);
-        }
+        $this[$template->getName()] = $template;
     }
 
     public function getTemplatesPath()
     {
         return $this->templatesPath;
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    public function getSerializer()
+    {
+        return $this->serializer;
     }
 
     /**
@@ -147,14 +145,13 @@ class Collection extends \ArrayObject
 
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
-                if (is_dir($src . '/' . $file)) {
-                    $this->copyRecursive($src . '/' . $file, $dst . '/' . $file);
+                if (is_dir($src . DIRECTORY_SEPARATOR . $file)) {
+                    $this->copyRecursive($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
                 } else {
-                    copy($src . '/' . $file, $dst . '/' . $file);
+                    copy($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
                 }
             }
         }
         closedir($dir);
     }
-
 }

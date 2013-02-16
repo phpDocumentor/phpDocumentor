@@ -64,6 +64,6 @@ class Collection extends \ArrayObject
             throw new \InvalidArgumentException('Writer "' . $index .'" does not exist');
         }
 
-        parent::offsetGet($index);
+        return parent::offsetGet($index);
     }
 }
