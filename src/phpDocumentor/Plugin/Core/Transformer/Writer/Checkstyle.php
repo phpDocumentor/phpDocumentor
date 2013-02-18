@@ -31,15 +31,7 @@ class Checkstyle extends WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
-        $artifact = $transformation->getTransformer()->getTarget()
-        . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-
-        $list = array();
-
-        /** @var FileDescriptor $file */
-        foreach ($project->getFiles() as $file) {
-            array_merge($list, $file->getErrors()->getArrayCopy());
-        }
+        $artifact = $this->getDestinationPath($transformation);
 
         $document = new \DOMDocument();
         $document->formatOutput = true;
@@ -47,24 +39,37 @@ class Checkstyle extends WriterAbstract
         $report->setAttribute('version', '1.3.0');
         $document->appendChild($report);
 
-        foreach ($list as $node) {
-
+        /** @var FileDescriptor $fileDescriptor */
+        foreach ($project->getFiles()->getAll() as $fileDescriptor) {
             $file = $document->createElement('file');
-//            $file->setAttribute('name', $node->parentNode->getAttribute('path'));
+            $file->setAttribute('name', $fileDescriptor->getPath());
             $report->appendChild($file);
 
-            foreach ($node->childNodes as $error) {
-                // FIXME
+            foreach ($fileDescriptor->getErrors()->getAll() as $error) {
                 $item = $document->createElement('error');
-                $item->setAttribute('line', '');
-                $item->setAttribute('severity', '');
-                $item->setAttribute('message', '');
-                $item->setAttribute('source', 'phpDocumentor.phpDocumentor.phpDocumentor');
+                $item->setAttribute('line',     $error['line']);
+                $item->setAttribute('severity', $error['type']);
+                $item->setAttribute('message',  $error['message']);
+                $item->setAttribute('source',   'phpDocumentor.file.'.$error['code']);
                 $file->appendChild($item);
             }
         }
 
         $this->saveCheckstyleReport($artifact, $document);
+    }
+
+    /**
+     * Retrieves the destination location for this artifact.
+     *
+     * @param \phpDocumentor\Transformer\Transformation $transformation
+     *
+     * @return string
+     */
+    protected function getDestinationPath(Transformation $transformation)
+    {
+        $artifact = $transformation->getTransformer()->getTarget()
+            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        return $artifact;
     }
 
     /**
