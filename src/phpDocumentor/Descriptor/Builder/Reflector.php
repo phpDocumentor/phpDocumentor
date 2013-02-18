@@ -51,15 +51,23 @@ class Reflector extends BuilderAbstract
         foreach ($data->getClasses() as $class) {
             $classObject = $this->buildClass($class);
 
-            /** @var Collection $classes  */
+            /** @var Collection $classes */
             $classes = $this->project->getIndexes()->get('classes', new Collection());
-            $classes->add($classObject->getFullyQualifiedStructuralElementName());
+            $classes->set($classObject->getFullyQualifiedStructuralElementName(), $classObject);
         }
         foreach ($data->getInterfaces() as $interface) {
-            $this->buildInterface($interface);
+            $interfaceObject = $this->buildInterface($interface);
+
+            /** @var Collection $interfaces */
+            $interfaces = $this->project->getIndexes()->get('interfaces', new Collection());
+            $interfaces->set($interfaceObject->getFullyQualifiedStructuralElementName(), $interfaceObject);
         }
         foreach ($data->getTraits() as $trait) {
-            $this->buildTrait($trait);
+            $traitObject = $this->buildTrait($trait);
+
+            /** @var Collection $traits */
+            $traits = $this->project->getIndexes()->get('traits', new Collection());
+            $traits->set($traitObject->getFullyQualifiedStructuralElementName(), $traitObject);
         }
 
         $this->getProjectDescriptor()->getFiles()->set($file->getPath(), $file);

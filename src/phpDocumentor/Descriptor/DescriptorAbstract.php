@@ -4,7 +4,7 @@ namespace phpDocumentor\Descriptor;
 /**
  *
  */
-class DescriptorAbstract
+abstract class DescriptorAbstract
 {
     /** @var string */
     protected $fqsen = '';
