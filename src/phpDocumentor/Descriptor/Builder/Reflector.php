@@ -51,7 +51,16 @@ class Reflector extends BuilderAbstract
 
         $file->setIncludes(new Collection($data->getIncludes()));
         $file->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
-        $file->setErrors(new Collection($data->getParseErrors()));
+
+        foreach($data->getParseErrors() as $error) {
+            list($type, $message, $line, $code) = $error;
+            $file->getErrors()->add(array(
+                'type'    => $type,
+                'message' => $message,
+                'line'    => $line,
+                'code'    => $code,
+            ));
+        }
 
         foreach ($data->getConstants() as $constant) {
             $this->buildConstant($constant);
