@@ -126,7 +126,7 @@ class Installer
     {
         $output = array();
         $errorcode = null;
-        exec('php composer.phar 2>&1', $output, $errorcode);
+        exec($this->php . ' composer.phar 2>&1', $output, $errorcode);
 
         return ($errorcode == 0);
     }
@@ -174,7 +174,7 @@ class Installer
         $installer_path = escapeshellarg($installer_path.'/installer');
 
         exec(
-            'php ' . $installer_path . ' --install-dir=' . $composer_install_path
+            $this->php . ' ' . $installer_path . ' --install-dir=' . $composer_install_path
             .' 2>&1',
             $output,
             $error_code
@@ -207,7 +207,7 @@ class Installer
 
         $installer_path .= (($installer_path) ? DIRECTORY_SEPARATOR : '')
             .'composer.phar';
-        exec('php ' . $installer_path . ' install 2>&1', $output, $error_code);
+        exec($this->php . ' ' . $installer_path . ' install 2>&1', $output, $error_code);
 
         if ($error_code != 0) {
             throw new \Exception(
@@ -250,6 +250,18 @@ class Installer
         }
 
         return $errors;
+    }
+
+    /**
+     * Sets the PHP command line that will be used by this script.
+     *
+     * @param string $php php command line.
+     *
+     * @return void.
+     */
+    public function setPHP($php)
+    {
+        $this->php = $php;
     }
 
     /**
@@ -335,12 +347,27 @@ class Installer
         rmdir($directory);
     }
 
+    private $php = 'php';
 }
 
 $installer = new Installer();
 try
 {
     $installer->log('phpDocumentor installer for manual installations');
+
+    /**
+     * All options are optional:
+     *   --proxy=a.b.c.d  Set your HTTP proxy server
+     *   --dev            Get the dev version of phpDocumentor2
+     *   --php='...'      Specify the php command line this script should use
+     *                    when installing packages.
+     */
+
+    $options = getopt(null, array('proxy::', 'dev', 'php::'));
+
+    if (isset($options['php'])) {
+        $installer->setPHP($options['php']);
+    }
 
     if (false === extension_loaded('zip')) {
         throw new \Exception(
@@ -350,22 +377,19 @@ try
     }
 
     // An IP was provided thus we set up proxying
-    if (isset($argv[1]) && ($argv[1] != 'dev')) {
+    if (isset($options['proxy'])) {
         // All HTTP requests are passed through the local NTLM proxy server.
         $r_default_context = stream_context_get_default(
             array(
-                'http' => array('proxy' => $argv[1], 'request_fulluri' => true)
+                'http' => array('proxy' => $options['proxy'], 'request_fulluri' => true)
              )
         );
-
-        // remove the second item in the array and reindex the keys
-        array_splice($argv, 1, 1);
 
         // Though we said system wide, some extensions need a little coaxing.
         libxml_set_streams_context($r_default_context);
     }
 
-    if (isset($argv[1]) && $argv[1] == 'dev') {
+    if (isset($options['dev'])) {
         $installer->log('> Downloading development application from Github');
         $installer->downloadDevelopmentPhpDocumentorArchive();
     } else {
