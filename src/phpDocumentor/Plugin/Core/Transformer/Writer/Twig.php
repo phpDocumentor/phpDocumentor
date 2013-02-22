@@ -14,7 +14,9 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Plugin\Core\Twig\Extension;
+use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
@@ -72,8 +74,11 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  * @see self::getDestinationPath() for more information about variables in the
  *     Artefact attribute.
  */
-class Twig extends WriterAbstract
+class Twig extends WriterAbstract implements Routable
 {
+    /** @var Queue $routers */
+    protected $routers;
+
     /**
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
@@ -90,6 +95,9 @@ class Twig extends WriterAbstract
         $nodes = $this->getListOfNodes($transformation->getQuery(), $project);
         foreach ($nodes as $node) {
             $destination = $this->getDestinationPath($node, $transformation);
+            if ($destination === false) {
+                continue;
+            }
 
             $environment = $this->initializeEnvironment($project, $transformation, $destination);
             $environment->addGlobal('node', $node);
@@ -133,6 +141,8 @@ class Twig extends WriterAbstract
      * @param \Traversable|mixed $objectOrArray
      * @param string             $query         A path to walk separated by dots, i.e. `namespace.namespaces`.
      *
+     * @todo move this to a separate class and make it more flexible.
+     *
      * @return mixed
      */
     public function walkObjectTree($objectOrArray, $query)
@@ -148,7 +158,7 @@ class Twig extends WriterAbstract
                     continue;
                 }
             } elseif (is_object($node)) {
-                if (isset($node->$pathNode)) {
+                if (isset($node->$pathNode) || (method_exists($node, '__get') && $node->$pathNode)) {
                     $node = $node->$pathNode;
                     continue;
                 } elseif (method_exists($node, $pathNode)) {
@@ -164,7 +174,7 @@ class Twig extends WriterAbstract
                     continue;
                 }
             }
-            break;
+            return null;
         }
 
         return $node;
@@ -278,22 +288,39 @@ class Twig extends WriterAbstract
      * @param DescriptorAbstract $node
      * @param Transformation     $transformation
      *
-     * @return string
+     * @throws \InvalidArgumentException if no artifact is provided and no routing rule matches.
+     *
+     * @return string|false returns the destination location or false if generation should be aborted.
      */
     protected function getDestinationPath($node, Transformation $transformation)
     {
         $writer = $this;
+
+        if (!$transformation->getArtifact()) {
+            $rule = $this->routers->match($node);
+            if (!$rule) {
+                throw new \InvalidArgumentException(
+                    'No matching routing rule could be found for the given node, please provide an artifact location, '
+                    . 'encountered: '.get_class($node)
+                );
+            }
+
+            $url = $rule->generate($node);
+            if ($url === false || $url[0] !== '/') {
+                return false;
+            }
+            $path = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $url;
+        } else {
+            $path = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        }
+
         $destination = preg_replace_callback(
             '/{{([^}]+)}}/u',
             function ($query) use ($node, $writer) {
                 // strip any surrounding \ or /
-                $name = trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
-                if ($name == '') {
-                    $name = 'default';
-                }
-                return $name;
+                return trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
             },
-            $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact()
+            $path
         );
 
         // replace any \ with the directory separator to be compatible with the
@@ -319,5 +346,17 @@ class Twig extends WriterAbstract
     {
         $parts = preg_split('[\\\\|/]', $transformation->getSource());
         return $parts[0] . DIRECTORY_SEPARATOR . $parts[1];
+    }
+
+    /**
+     * Sets the routers that can be used to determine the path of links.
+     *
+     * @param Queue $routers
+     *
+     * @return void
+     */
+    public function setRouters(Queue $routers)
+    {
+        $this->routers = $routers;
     }
 }

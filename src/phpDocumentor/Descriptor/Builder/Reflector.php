@@ -175,7 +175,6 @@ class Reflector extends BuilderAbstract
             $parentDescriptor->setName(substr($parentClassName, strrpos($parentClassName, '\\') + 1));
 
             $this->storeClassDescriptor($parentDescriptor);
-            return $parentDescriptor;
         }
         return $parentDescriptor;
     }

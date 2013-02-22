@@ -142,8 +142,17 @@ class Application extends Cilex
             return new Transformer\Behaviour\Collection();
         });
 
-        $this['transformer.writer.collection'] = $this->share(function () {
-            return new Transformer\Writer\Collection();
+        $this['transformer.routing.queue'] = $this->share(function () {
+            $queue = new Transformer\Router\Queue();
+
+            // TODO: load from app configuration instead of hardcoded
+            $queue->insert(new Transformer\Router\StandardRouter(), 10000);
+
+            return $queue;
+        });
+
+        $this['transformer.writer.collection'] = $this->share(function ($container) {
+            return new Transformer\Writer\Collection($container['transformer.routing.queue']);
         });
 
         $this['transformer.template.collection'] = $this->share(function ($container) {
