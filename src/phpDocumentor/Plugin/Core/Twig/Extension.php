@@ -4,8 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Twig;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Router\Queue;
 use \phpDocumentor\Transformer\Transformation;
 
 /**
@@ -27,10 +27,6 @@ use \phpDocumentor\Transformer\Transformation;
  *
  * - *path(string)*, converts the given relative path to be based of the projects
  *   root instead of the current directory
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 class Extension extends \Twig_Extension implements ExtensionInterface
 {
@@ -38,6 +34,9 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      * @var ProjectDescriptor
      */
     protected $data = null;
+
+    /** @var Queue $router */
+    protected $routers;
 
     /**
      * @var string
@@ -64,6 +63,14 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     function getName()
     {
         return 'phpdocumentor';
+    }
+
+    /**
+     * @param Queue $router
+     */
+    public function setRouters($router)
+    {
+        $this->routers = $router;
     }
 
     /**
@@ -163,7 +170,16 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             $path_to_root = '';
         }
 
-        // append the relative path to the root
-        return $path_to_root.ltrim($relative_path, '/');
+        if (is_string($relative_path) && ($relative_path[0] != '@')) {
+            // append the relative path to the root
+            return $path_to_root.ltrim($relative_path, '/');
+        }
+
+        $rule = $this->routers->match($relative_path);
+        if (!$rule) {
+            return null;
+        }
+
+        return $path_to_root.ltrim($rule->generate($relative_path), '/');
     }
 }

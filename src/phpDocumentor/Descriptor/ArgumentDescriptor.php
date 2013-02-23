@@ -1,11 +1,11 @@
 <?php
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 
 class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\ArgumentInterface
 {
-    /** @var Collection $type */
+    /** @var TypeCollection $type */
     protected $type;
 
     /** @var bool $default */
@@ -14,13 +14,13 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /** @var bool $byReference */
     protected $byReference = false;
 
-    public function setType(Collection $type)
+    public function setType(TypeCollection $type)
     {
         $this->type = $type;
     }
 
     /**
-     * @return Collection
+     * @return TypeCollection
      */
     public function getType()
     {

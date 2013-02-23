@@ -3,6 +3,9 @@ namespace phpDocumentor\Descriptor;
 
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
+    /** @var NamespaceDescriptor $parentNamespace */
+    protected $parentNamespace;
+
     /** @var Collection $namespaces*/
     protected $namespaces;
 
@@ -30,6 +33,29 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
         $this->setInterfaces(new Collection());
         $this->setTraits(new Collection());
     }
+
+    /**
+     * Sets the parent namespace for this namespace.
+     *
+     * @param NamespaceDescriptor $parentNamespace
+     *
+     * @return void
+     */
+    public function setParentNamespace($parentNamespace)
+    {
+        $this->parentNamespace = $parentNamespace;
+    }
+
+    /**
+     * Returns the parent namespace for this namespace.
+     *
+     * @return NamespaceDescriptor|null
+     */
+    public function getParentNamespace()
+    {
+        return $this->parentNamespace;
+    }
+
 
     /**
      * @param Collection $classes

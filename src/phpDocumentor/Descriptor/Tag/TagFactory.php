@@ -17,8 +17,8 @@ class TagFactory
     {
         $tagClassName = isset($this->tags[$tagName]) ? $this->tags[$tagName] : null;
         if ($tagClassName === null){
-            $descriptor = new TagDescriptor($tagDescription);
-            $descriptor->setName($tagName);
+            $descriptor = new TagDescriptor($tagName);
+            $descriptor->setDescription($tagDescription);
             return $descriptor;
         }
 

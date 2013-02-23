@@ -93,12 +93,12 @@ class Twig extends WriterAbstract implements Routable
         $template_path = $this->getTemplatePath($transformation);
 
         $nodes = $this->getListOfNodes($transformation->getQuery(), $project);
+
         foreach ($nodes as $node) {
             $destination = $this->getDestinationPath($node, $transformation);
             if ($destination === false) {
                 continue;
             }
-
             $environment = $this->initializeEnvironment($project, $transformation, $destination);
             $environment->addGlobal('node', $node);
 
@@ -224,6 +224,7 @@ class Twig extends WriterAbstract implements Routable
         $base_extension->setDestination(
             substr($destination, strlen($transformation->getTransformer()->getTarget()) + 1)
         );
+        $base_extension->setRouters($this->routers);
         $twigEnvironment->addExtension($base_extension);
     }
 
@@ -309,7 +310,7 @@ class Twig extends WriterAbstract implements Routable
             if ($url === false || $url[0] !== '/') {
                 return false;
             }
-            $path = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $url;
+            $path = $transformation->getTransformer()->getTarget() . $url;
         } else {
             $path = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
         }

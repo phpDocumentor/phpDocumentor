@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Builder;
 
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -52,8 +53,17 @@ class Reflector extends BuilderAbstract
         $file->setIncludes(new Collection($data->getIncludes()));
         $file->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
-        foreach($data->getParseErrors() as $error) {
-            list($type, $message, $line, $code) = $error;
+        foreach($data->getMarkers() as $marker) {
+            list($type, $message, $line) = $marker;
+            $file->getMarkers()->add(array(
+                'type'    => $type,
+                'message' => $message,
+                'line'    => $line,
+            ));
+        }
+
+        foreach($data->getParseErrors() as $marker) {
+            list($type, $message, $line, $code) = $marker;
             $file->getErrors()->add(array(
                 'type'    => $type,
                 'message' => $message,
@@ -376,6 +386,18 @@ class Reflector extends BuilderAbstract
         $method->setAbstract($data->isAbstract());
         $method->setStatic($data->isStatic());
 
+        foreach($data->getArguments() as $argument) {
+            $argumentDescriptor = new ArgumentDescriptor();
+            $argumentDescriptor->setName($argument->getName());
+            if ($argument->getDocBlock()) {
+                $argumentDescriptor->setSummary($argument->getDocBlock()->getShortDescription());
+                $argumentDescriptor->setDescription($argument->getDocBlock()->getLongDescription());
+            }
+            $argumentDescriptor->setDefault($argument->getDefault());
+            $argumentDescriptor->setType(new DocBlock\Type\Collection(explode('|', $argument->getType())));
+            $method->getArguments()->set($argument->getName(), $argument);
+        }
+
         $this->buildDocBlock($data, $method);
 
         $method->setLocation('', $data->getLinenumber());
@@ -417,21 +439,25 @@ class Reflector extends BuilderAbstract
      */
     protected function locateNamespace($namespace)
     {
-        $namespace_name = '';
+        $namespaceName = '';
         $namespaceDescriptor = $this->getProjectDescriptor()->getNamespace();
         foreach (explode('\\', ltrim($namespace, '\\')) as $part) {
-            $namespace_name .= '\\' . $part;
+            $namespaceName .= '\\' . $part;
             if ($namespaceDescriptor->getNamespaces()->$part) {
                 $namespaceDescriptor = $namespaceDescriptor->getNamespaces()->$part;
                 continue;
             }
 
-            $new_namespace = new NamespaceDescriptor();
-            $new_namespace->setName($part);
-            $new_namespace->setFullyQualifiedStructuralElementName($namespace_name);
-            $namespaceDescriptor->getNamespaces()->set($part, $new_namespace);
+            $newNamespace = new NamespaceDescriptor();
+            $newNamespace->setName($part);
+            $newNamespace->setFullyQualifiedStructuralElementName($namespaceName);
+            $namespaceDescriptor->getNamespaces()->set($part, $newNamespace);
 
-            $namespaceDescriptor = $new_namespace;
+            $newNamespace->setParentNamespace($namespaceDescriptor);
+            $namespaceDescriptor = $newNamespace;
+
+            $namespaces = $this->getProjectDescriptor()->getIndexes()->get('namespaces', new Collection());
+            $namespaces->set($namespaceName, $newNamespace);
         }
 
         return $namespaceDescriptor;

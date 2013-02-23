@@ -28,7 +28,7 @@ class Queue extends \SplPriorityQueue
     public function match($node)
     {
         /** @var RouterAbstract $router */
-        foreach ($this as $router) {
+        foreach (clone $this as $router) {
             $rule = $router->match($node);
             if ($rule) {
                 return $rule;

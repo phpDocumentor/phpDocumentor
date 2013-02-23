@@ -17,7 +17,7 @@ class TagDescriptor
         return $this->name;
     }
 
-    protected function setDescription($description)
+    public function setDescription($description)
     {
         $this->description = $description;
     }
