@@ -116,28 +116,6 @@ class Listener extends ListenerAbstract
     }
 
     /**
-     * Prepare the tag to be injected into the XML file.
-     *
-     * @param ExportDocBlockTagEvent $data Event object containing the parameters.
-     *
-     * @phpdoc-event reflection.docblock.tag.export
-     *
-     * @return void
-     */
-    public function exportTag($data)
-    {
-        /** @var \phpDocumentor\Reflection\BaseReflector $subject  */
-        $subject = $data->getSubject();
-
-        Parser\DocBlock\Tag\Definition\Definition::create(
-            $subject->getNamespace(),
-            $subject->getNamespaceAliases(),
-            $data->getXml(),
-            $data->getObject()
-        );
-    }
-
-    /**
      * Load the configuration from the plugin.xml file
      *
      * @return array

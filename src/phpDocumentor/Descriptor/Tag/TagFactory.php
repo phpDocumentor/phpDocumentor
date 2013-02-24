@@ -11,6 +11,7 @@ class TagFactory
         'author' => 'phpDocumentor\Descriptor\Tag\AuthorDescriptor',
         'return' => 'phpDocumentor\Descriptor\Tag\ReturnDescriptor',
         'see'    => 'phpDocumentor\Descriptor\Tag\SeeDescriptor',
+        'link'   => 'phpDocumentor\Descriptor\Tag\LinkDescriptor',
         'uses'   => 'phpDocumentor\Descriptor\Tag\UsesDescriptor',
         'param'  => 'phpDocumentor\Descriptor\Tag\ParamDescriptor',
     );
