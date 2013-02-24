@@ -43,6 +43,8 @@ class Reflector extends BuilderAbstract
      */
     public function buildFile($data)
     {
+        // TODO: remove all cached sub-elements first
+
         $file = new FileDescriptor($data->getHash());
         $file->setLocation($data->getFilename());
         $file->setName(basename($data->getFilename()));
