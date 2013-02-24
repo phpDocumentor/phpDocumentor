@@ -12,6 +12,9 @@ abstract class DescriptorAbstract
     /** @var string */
     protected $name = '';
 
+    /** @var NamespaceDescriptor $namespace */
+    protected $namespace;
+
     /** @var string */
     protected $summary = '';
 
@@ -70,6 +73,23 @@ abstract class DescriptorAbstract
     {
         return $this->name;
     }
+
+    /**
+     * @param NamespaceDescriptor $namespace
+     */
+    public function setNamespace(NamespaceDescriptor $namespace)
+    {
+        $this->namespace = $namespace;
+    }
+
+    /**
+     * @return NamespaceDescriptor|null
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
 
     /**
      * @param string $summary

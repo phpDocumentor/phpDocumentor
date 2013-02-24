@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
@@ -200,8 +201,10 @@ class Reflector extends BuilderAbstract
     {
         $fqcn = $classDescriptor->getFullyQualifiedStructuralElementName();
         $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
-        $this->locateNamespace($namespace)
-            ->getClasses()->set($classDescriptor->getName(), $classDescriptor);
+
+        $namespaceDescriptor = $this->locateNamespace($namespace);
+        $classDescriptor->setNamespace($namespaceDescriptor);
+        $namespaceDescriptor->getClasses()->set($classDescriptor->getName(), $classDescriptor);
 
         /** @var Collection $classes */
         $classes = $this->project->getIndexes()->get('classes', new Collection());
@@ -249,8 +252,9 @@ class Reflector extends BuilderAbstract
     {
         $fqcn = $interface->getFullyQualifiedStructuralElementName();
         $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
-        $this->locateNamespace($namespace)
-            ->getInterfaces()->set($interface->getName(), $interface);
+        $namespaceDescriptor = $this->locateNamespace($namespace);
+        $interface->setNamespace($namespaceDescriptor);
+        $namespaceDescriptor->getInterfaces()->set($interface->getName(), $interface);
 
         /** @var Collection $interfaces */
         $interfaces = $this->project->getIndexes()->get('interfaces', new Collection());
@@ -285,14 +289,16 @@ class Reflector extends BuilderAbstract
     }
 
     /**
-     * @param $trait
+     * @param TraitDescriptor $trait
      */
     protected function storeTraitDescriptor($trait)
     {
         $fqcn = $trait->getFullyQualifiedStructuralElementName();
         $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
-        $this->locateNamespace($namespace)
-            ->getClasses()->set($trait->getName(), $trait);
+
+        $namespaceDescriptor = $this->locateNamespace($namespace);
+        $trait->setNamespace($namespaceDescriptor);
+        $namespaceDescriptor->getTraits()->set($trait->getName(), $trait);
 
         /** @var Collection $traits */
         $traits = $this->project->getIndexes()->get('traits', new Collection());
@@ -322,7 +328,9 @@ class Reflector extends BuilderAbstract
         if ($container) {
             $container->getConstants()->set($constant->getName(), $constant);
         } else {
-            $this->locateNamespace($data->getNamespace())->getConstants()->set($constant->getName(), $constant);
+            $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
+            $constant->setNamespace($namespaceDescriptor);
+            $namespaceDescriptor->getConstants()->set($constant->getName(), $constant);
         }
 
         return $constant;
@@ -340,8 +348,10 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $function);
 
         $function->setLocation('', $data->getLinenumber());
-        $this->locateNamespace($data->getNamespace())
-            ->getFunctions()->set($function->getName(), $function);
+
+        $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
+        $function->setNamespace($namespaceDescriptor);
+        $namespaceDescriptor->getFunctions()->set($function->getName(), $function);
 
         return $function;
     }
@@ -386,19 +396,27 @@ class Reflector extends BuilderAbstract
         $method->setAbstract($data->isAbstract());
         $method->setStatic($data->isStatic());
 
+        $this->buildDocBlock($data, $method);
+
         foreach($data->getArguments() as $argument) {
             $argumentDescriptor = new ArgumentDescriptor();
             $argumentDescriptor->setName($argument->getName());
-            if ($argument->getDocBlock()) {
-                $argumentDescriptor->setSummary($argument->getDocBlock()->getShortDescription());
-                $argumentDescriptor->setDescription($argument->getDocBlock()->getLongDescription());
-            }
-            $argumentDescriptor->setDefault($argument->getDefault());
-            $argumentDescriptor->setType(new DocBlock\Type\Collection(explode('|', $argument->getType())));
-            $method->getArguments()->set($argument->getName(), $argument);
-        }
 
-        $this->buildDocBlock($data, $method);
+            $params = $method->getTags()->get('param');
+
+            /** @var ParamDescriptor $tag */
+            foreach ($params as $tag) {
+                if ($tag->getVariableName() == $argument->getName()) {
+                    $argumentDescriptor->setDescription($tag->getDescription());
+
+                    $types = $tag->getTypes() ?: array($argument->getType() ?: 'mixed');
+                    $argumentDescriptor->setTypes($types);
+                }
+            }
+
+            $argumentDescriptor->setDefault($argument->getDefault());
+            $method->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
+        }
 
         $method->setLocation('', $data->getLinenumber());
         $container->getMethods()->set($method->getName(), $method);
@@ -419,9 +437,11 @@ class Reflector extends BuilderAbstract
             $target->setDescription($docBlock->getLongDescription()->getContents());
 
             $tagFactory = new TagFactory();
+
             /** @var Tag $tag */
             foreach ($docBlock->getTags() as $tag) {
-                $tagObject = $tagFactory->create($tag->getName(), $tag->getDescription());
+                $tagObject = $tagFactory->create($tag);
+
                 $existingTags = $target->getTags()->get($tag->getName(), array());
                 $existingTags[] = $tagObject;
                 $target->getTags()->set($tag->getName(), $existingTags);

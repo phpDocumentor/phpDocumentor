@@ -103,4 +103,13 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     {
         return $this->visibility;
     }
+
+    /**
+     * @return TagDescriptor|null
+     */
+    public function getResponse()
+    {
+        $returnTags = $this->getTags()->get('return');
+        return $returnTags ? current($returnTags) : null;
+    }
 }

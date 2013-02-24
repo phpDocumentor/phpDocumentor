@@ -5,8 +5,8 @@ use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 
 class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\ArgumentInterface
 {
-    /** @var TypeCollection $type */
-    protected $type;
+    /** @var string[] $type */
+    protected $types;
 
     /** @var bool $default */
     protected $default;
@@ -14,17 +14,20 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /** @var bool $byReference */
     protected $byReference = false;
 
-    public function setType(TypeCollection $type)
+    /**
+     * @param string[] $types
+     */
+    public function setTypes($types)
     {
-        $this->type = $type;
+        $this->types = $types;
     }
 
     /**
-     * @return TypeCollection
+     * @return string[]
      */
-    public function getType()
+    public function getTypes()
     {
-        return $this->type;
+        return $this->types;
     }
 
     public function setDefault($value)

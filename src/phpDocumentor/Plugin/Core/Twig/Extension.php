@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Twig;
 
+use dflydev\markdown\MarkdownExtraParser;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use \phpDocumentor\Transformer\Transformation;
@@ -123,6 +124,17 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             'path' => new \Twig_Function_Method($this, 'convertToRootPath'),
         );
     }
+
+    public function getFilters()
+    {
+        $parser = new MarkdownExtraParser();
+        return array(
+            'markdown' => new \Twig_SimpleFilter('markdown', function($value) use ($parser) {
+                return $parser->transform($value);
+            })
+        );
+    }
+
 
     /**
      * Returns an array of global variables to inject into a Twig template.

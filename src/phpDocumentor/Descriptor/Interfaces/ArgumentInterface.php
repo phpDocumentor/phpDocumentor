@@ -5,12 +5,12 @@ use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 interface ArgumentInterface extends BaseInterface
 {
-    public function setType(Collection $type);
+    public function setTypes($types);
 
     /**
-     * @return Collection
+     * @return string[]
      */
-    public function getType();
+    public function getTypes();
 
     public function setDefault($value);
 

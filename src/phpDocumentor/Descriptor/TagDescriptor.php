@@ -2,10 +2,18 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
+
 class TagDescriptor
 {
     protected $name;
     protected $description;
+
+    public function __construct(Tag $reflectionTag)
+    {
+        $this->name        = $reflectionTag->getName();
+        $this->description = $reflectionTag->getDescription();
+    }
 
     public function setName($name)
     {
