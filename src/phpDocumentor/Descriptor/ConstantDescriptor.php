@@ -1,34 +1,54 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Reflection\DocBlock\Type;
-
+/**
+ * Descriptor representing a constant
+ */
 class ConstantDescriptor extends DescriptorAbstract implements Interfaces\ConstantInterface
 {
-    /** @var Type\Collection $type */
-    protected $type;
+    /** @var string[] $type */
+    protected $types = array();
 
     /** @var string $value */
     protected $value;
 
-    public function setType(Type\Collection $type)
+    /**
+     * {@inheritDoc}
+     */
+    public function setTypes(array $types)
     {
-        $this->type = $type;
+        $this->types = $types;
     }
 
     /**
-     * @return Type\Collection
+     * {@inheritDoc}
      */
-    public function getType()
+    public function getTypes()
     {
-        return $this->type;
+        return $this->types;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setValue($value)
     {
         $this->value = $value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getValue()
     {
         return $this->value;

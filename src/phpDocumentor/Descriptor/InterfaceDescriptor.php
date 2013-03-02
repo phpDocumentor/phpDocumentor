@@ -1,6 +1,19 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor;
 
+/**
+ * Descriptor representing an Interface.
+ */
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
     /** @var Collection $extends */
@@ -12,6 +25,9 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /** @var Collection $methods */
     protected $methods;
 
+    /**
+     * Initializes the all properties representing a collection with a new Collection object.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -22,7 +38,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @param Collection $extends
+     * {@inheritDoc}
      */
     public function setParentInterfaces(Collection $extends)
     {
@@ -30,7 +46,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @return Collection
+     * {@inheritDoc}
      */
     public function getParentInterfaces()
     {
@@ -38,15 +54,15 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @param \phpDocumentor\Descriptor\Collection $constants
+     * {@inheritDoc}
      */
-    public function setConstants($constants)
+    public function setConstants(Collection $constants)
     {
         $this->constants = $constants;
     }
 
     /**
-     * @return \phpDocumentor\Descriptor\Collection
+     * {@inheritDoc}
      */
     public function getConstants()
     {
@@ -54,7 +70,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @param Collection $methods
+     * {@inheritDoc}
      */
     public function setMethods(Collection $methods)
     {
@@ -62,7 +78,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @return Collection
+     * {@inheritDoc}
      */
     public function getMethods()
     {
@@ -70,17 +86,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * References to child Descriptors/objects should be assigned a null when the containing object is nulled.
-     *
-     * In this method should all references to objects be assigned the value null; this will clear the references
-     * of child objects from other objects.
-     *
-     * For example:
-     *
-     *     A class should NULL its constants, properties and methods as they are contained WITHIN the class and become
-     *     orphans if not nulled.
-     *
-     * @return void
+     * {@inheritDoc}
      */
     public function clearReferences()
     {

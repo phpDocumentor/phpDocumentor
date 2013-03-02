@@ -1,16 +1,24 @@
 <?php
-namespace phpDocumentor\Descriptor\Interfaces;
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+namespace phpDocumentor\Descriptor\Interfaces;
 
 interface ConstantInterface extends BaseInterface
 {
-    public function setType(Collection $type);
+    public function setTypes(array $types);
 
     /**
-     * @return Collection
+     * @return array[]
      */
-    public function getType();
+    public function getTypes();
 
     public function setValue($value);
 
