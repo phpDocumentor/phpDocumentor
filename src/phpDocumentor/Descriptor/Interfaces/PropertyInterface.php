@@ -1,4 +1,14 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
@@ -13,12 +23,12 @@ interface PropertyInterface extends BaseInterface
 
     public function isStatic();
 
-    public function setType(Collection $type);
+    public function setTypes(array $types);
 
     /**
-     * @return Collection
+     * @return string[]
      */
-    public function getType();
+    public function getTypes();
 
     public function setVisibility($visibility);
 
