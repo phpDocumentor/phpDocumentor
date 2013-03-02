@@ -11,8 +11,6 @@
  */
 namespace phpDocumentor\Plugin;
 
-use Zend\I18n\Translator\Translator;
-
 /**
  * This class represents a single plugin with all it's options and properties.
  *
