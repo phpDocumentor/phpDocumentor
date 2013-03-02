@@ -1,6 +1,19 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor;
 
+/**
+ * Descriptor representing a Method in a Class.
+ */
 class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface
 {
     /** @var bool $abstract */
@@ -18,14 +31,18 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /** @var Collection */
     protected $arguments;
 
+    /**
+     * Initializes the all properties representing a collection with a new Collection object.
+     */
     public function __construct()
     {
         parent::__construct();
+
         $this->setArguments(new Collection());
     }
 
     /**
-     * @param boolean $abstract
+     * {@inheritDoc}
      */
     public function setAbstract($abstract)
     {
@@ -33,7 +50,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return boolean
+     * {@inheritDoc}
      */
     public function isAbstract()
     {
@@ -41,23 +58,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @param Collection $arguments
-     */
-    protected function setArguments(Collection $arguments)
-    {
-        $this->arguments = $arguments;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getArguments()
-    {
-        return $this->arguments;
-    }
-
-    /**
-     * @param boolean $final
+     * {@inheritDoc}
      */
     public function setFinal($final)
     {
@@ -65,7 +66,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return boolean
+     * {@inheritDoc}
      */
     public function isFinal()
     {
@@ -73,7 +74,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @param boolean $static
+     * {@inheritDoc}
      */
     public function setStatic($static)
     {
@@ -81,7 +82,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return boolean
+     * {@inheritDoc}
      */
     public function isStatic()
     {
@@ -89,7 +90,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @param string $visibility
+     * {@inheritDoc}
      */
     public function setVisibility($visibility)
     {
@@ -97,7 +98,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getVisibility()
     {
@@ -105,7 +106,23 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return TagDescriptor|null
+     * {@inheritDoc}
+     */
+    public function setArguments(Collection $arguments)
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function getResponse()
     {
