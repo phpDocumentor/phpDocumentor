@@ -3,7 +3,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 
-interface FileInterface extends BaseInterface
+interface FileInterface extends BaseInterface, ReferencingInterface
 {
     public function getHash();
 

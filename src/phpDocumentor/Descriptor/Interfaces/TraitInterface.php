@@ -3,7 +3,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 
-interface TraitInterface extends BaseInterface
+interface TraitInterface extends BaseInterface, ReferencingInterface
 {
     /**
      * @return Collection

@@ -328,11 +328,11 @@ class Reflector extends BuilderAbstract
         $constant->setLocation('', $data->getLinenumber());
 
         if ($container) {
-            $container->getConstants()->set($constant->getName(), $constant);
+            $container->getConstants()->set($constant->getName(), &$constant);
         } else {
             $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
             $constant->setNamespace($namespaceDescriptor);
-            $namespaceDescriptor->getConstants()->set($constant->getName(), $constant);
+            $namespaceDescriptor->getConstants()->set($constant->getName(), &$constant);
         }
 
         return $constant;
@@ -353,7 +353,7 @@ class Reflector extends BuilderAbstract
 
         $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
         $function->setNamespace($namespaceDescriptor);
-        $namespaceDescriptor->getFunctions()->set($function->getName(), $function);
+        $namespaceDescriptor->getFunctions()->set($function->getName(), &$function);
 
         return $function;
     }
