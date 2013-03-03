@@ -328,11 +328,11 @@ class Reflector extends BuilderAbstract
         $constant->setLocation('', $data->getLinenumber());
 
         if ($container) {
-            $container->getConstants()->set($constant->getName(), &$constant);
+            $container->getConstants()->setReference($constant->getName(), $constant);
         } else {
             $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
             $constant->setNamespace($namespaceDescriptor);
-            $namespaceDescriptor->getConstants()->set($constant->getName(), &$constant);
+            $namespaceDescriptor->getConstants()->setReference($constant->getName(), $constant);
         }
 
         return $constant;
@@ -353,7 +353,7 @@ class Reflector extends BuilderAbstract
 
         $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
         $function->setNamespace($namespaceDescriptor);
-        $namespaceDescriptor->getFunctions()->set($function->getName(), &$function);
+        $namespaceDescriptor->getFunctions()->setReference($function->getName(), $function);
 
         return $function;
     }
@@ -463,7 +463,12 @@ class Reflector extends BuilderAbstract
     {
         $namespaceName = '';
         $namespaceDescriptor = $this->getProjectDescriptor()->getNamespace();
-        foreach (explode('\\', ltrim($namespace, '\\')) as $part) {
+        $trimmedNamespaceName = ltrim($namespace, '\\');
+        if (empty($trimmedNamespaceName)) {
+            return $namespaceDescriptor;
+        }
+
+        foreach (explode('\\', $trimmedNamespaceName) as $part) {
             $namespaceName .= '\\' . $part;
             if ($namespaceDescriptor->getNamespaces()->$part) {
                 $namespaceDescriptor = $namespaceDescriptor->getNamespaces()->$part;

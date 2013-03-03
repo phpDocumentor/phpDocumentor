@@ -290,7 +290,7 @@ HELP
         } catch (FilesNotFoundException $e) {
             throw new \Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \Exception($e->getMessage(), 0, $e);
         }
 
         if ($progress) {
