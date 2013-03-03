@@ -13,7 +13,7 @@ interface ClassInterface extends BaseInterface, ReferencingInterface
      *
      * @return void
      */
-    public function setParentClass(ClassDescriptor &$extends);
+    public function setParentClass(&$extends);
 
     public function getParentClass();
 

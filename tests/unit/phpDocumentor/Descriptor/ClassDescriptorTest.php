@@ -62,6 +62,18 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::setParentClass
+     */
+    public function testSettingNoParentClass()
+    {
+        $mock = null;
+
+        $this->fixture->setParentClass($mock);
+
+        $this->assertSame($mock, $this->fixture->getParentClass());
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\ClassDescriptor::setInterfaces
      * @covers phpDocumentor\Descriptor\ClassDescriptor::getInterfaces
      */
