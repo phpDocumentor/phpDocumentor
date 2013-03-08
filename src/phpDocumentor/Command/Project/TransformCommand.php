@@ -15,6 +15,7 @@ use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Transformer\Transformer;
 
@@ -38,12 +39,16 @@ class TransformCommand extends \phpDocumentor\Command\ConfigurableCommand
     /** @var Transformer $transformer */
     protected $transformer;
 
-    public function __construct($builder, $transformer)
+    /** @var Compiler $compiler */
+    protected $compiler;
+
+    public function __construct($builder, $transformer, $compiler)
     {
         parent::__construct('project:transform');
 
         $this->builder     = $builder;
         $this->transformer = $transformer;
+        $this->compiler    = $compiler;
     }
 
     /**
@@ -188,7 +193,10 @@ TEXT
             $progress->start($output, count($transformer->getTemplates()->getTransformations()));
         }
 
-        $transformer->execute($this->getBuilder()->getProjectDescriptor());
+        $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
+        foreach ($this->compiler as $pass) {
+            $pass->execute($projectDescriptor);
+        }
 
         if ($progress) {
             $progress->finish();

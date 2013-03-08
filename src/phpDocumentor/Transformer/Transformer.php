@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Transformer;
 
+use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
@@ -19,8 +20,11 @@ use phpDocumentor\Event\LogEvent;
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
  */
-class Transformer
+class Transformer implements CompilerPassInterface
 {
+    /** @var integer represents the priority in the Compiler queue. */
+    const COMPILER_PRIORITY = 5000;
+
     /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
 

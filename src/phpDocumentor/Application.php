@@ -138,6 +138,13 @@ class Application extends Cilex
         $this['transformer.template.location'] = __DIR__.'/../../data/templates';
 
         // services
+        $this['compiler'] = $this->share(function ($container) {
+            $compiler = new Compiler\Compiler();
+            $compiler->insert($container['transformer'], Transformer\Transformer::COMPILER_PRIORITY);
+
+            return $compiler;
+        });
+
         $this['transformer.behaviour.collection'] = $this->share(function () {
             return new Transformer\Behaviour\Collection();
         });
@@ -198,7 +205,11 @@ class Application extends Cilex
     {
         $this->command(new Command\Project\RunCommand());
         $this->command(new Command\Project\ParseCommand($this['descriptor.builder'], $this['parser']));
-        $this->command(new Command\Project\TransformCommand($this['descriptor.builder'], $this['transformer']));
+        $this->command(new Command\Project\TransformCommand(
+            $this['descriptor.builder'],
+            $this['transformer'],
+            $this['compiler'])
+        );
     }
 
     /**
