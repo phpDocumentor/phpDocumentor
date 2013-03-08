@@ -185,9 +185,7 @@ TEXT
             $value = $this->getConfigValueFromPath('transformations/template');
             if ($value) {
                 foreach ($value as $template) {
-                    if (is_array($template)) {
-                        $templates[] = $template['name'];
-                    }
+                    $templates[] = $template;
                 }
             }
         }
