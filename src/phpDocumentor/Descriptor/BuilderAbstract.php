@@ -24,9 +24,6 @@ abstract class BuilderAbstract
     public function __construct(ProjectDescriptor $project = null)
     {
         $this->project = $project ?: new ProjectDescriptor('Untitled project');
-        $this->project->getIndexes()->set('classes', new Collection());
-        $this->project->getIndexes()->set('interfaces', new Collection());
-        $this->project->getIndexes()->set('traits', new Collection());
     }
 
     public function getProjectDescriptor()

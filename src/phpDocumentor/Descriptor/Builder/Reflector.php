@@ -15,7 +15,6 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
