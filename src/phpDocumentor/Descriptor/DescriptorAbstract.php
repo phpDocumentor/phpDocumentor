@@ -75,9 +75,9 @@ abstract class DescriptorAbstract
     }
 
     /**
-     * @param NamespaceDescriptor $namespace
+     * @param string|NamespaceDescriptor $namespace
      */
-    public function setNamespace(NamespaceDescriptor $namespace)
+    public function setNamespace($namespace)
     {
         $this->namespace = $namespace;
     }

@@ -53,7 +53,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setParentClass(&$extends)
+    public function setParentClass($extends)
     {
         $this->extends = &$extends;
     }

@@ -43,9 +43,6 @@ class Reflector extends BuilderAbstract
      */
     public function buildFile($data)
     {
-
-        // TODO: remove all cached sub-elements first
-
         $file = new FileDescriptor($data->getHash());
         $file->setLocation($data->getFilename());
         $file->setName(basename($data->getFilename()));
@@ -82,8 +79,8 @@ class Reflector extends BuilderAbstract
         foreach ($data->getFunctions() as $function) {
             $this->buildFunction($function);
         }
-        foreach ($data->getClasses() as $classReflector) {
-            $this->buildClass($classReflector);
+        foreach ($data->getClasses() as $data) {
+            $this->buildClass($data);
         }
         foreach ($data->getInterfaces() as $interface) {
             $this->buildInterface($interface);
@@ -100,118 +97,44 @@ class Reflector extends BuilderAbstract
     /**
      * Builds a ClassDescriptor and stores it in the Project.
      *
-     * This method scans the classes index whether a descriptor already exists in the project, for example when
-     * placeholders are used during inheritance building, and if so, hydrates an existing descriptor.
-     *
-     * If no descriptor is found, than a new descriptor is created.
-     *
      * @param ClassReflector $data The reflection data to use or this operation.
      *
      * @return ClassDescriptor
      */
     public function buildClass($data)
     {
-        $classes = $this->project->getIndexes()->get('classes', new Collection());
-        $classDescriptor = $classes->get($data->getName());
+        $classDescriptor = new ClassDescriptor();
 
-        $classDescriptor = $this->hydrateClassDescriptor($classDescriptor, $data);
+        $classDescriptor->setFullyQualifiedStructuralElementName($data->getName());
+        $classDescriptor->setName($data->getShortName());
 
-        $this->storeClassDescriptor($classDescriptor);
+        $this->buildDocBlock($data, $classDescriptor);
 
-        return $classDescriptor;
-    }
+        $classDescriptor->setParentClass($data->getParentClass());
 
-    /**
-     * @param ClassReflector $classReflector
-     */
-    protected function hydrateClassDescriptor($classDescriptor, $classReflector)
-    {
-        $classDescriptor = $classDescriptor ?: new ClassDescriptor();
+        $classDescriptor->setLocation('', $data->getLinenumber());
+        $classDescriptor->setAbstract($data->isAbstract());
+        $classDescriptor->setFinal($data->isFinal());
 
-        $classDescriptor->setFullyQualifiedStructuralElementName($classReflector->getName());
-        $classDescriptor->setName($classReflector->getShortName());
-
-        $this->buildDocBlock($classReflector, $classDescriptor);
-
-        $parentClassName = $classReflector->getParentClass();
-        $parentDescriptor = $parentClassName
-            ? $this->findOrCreateIndexItemForElement(
-                'classes',
-                $parentClassName,
-                new ClassDescriptor()
-            )
-            : null;
-
-        $classDescriptor->setParentClass($parentDescriptor);
-
-        $classDescriptor->setLocation('', $classReflector->getLinenumber());
-        $classDescriptor->setAbstract($classReflector->isAbstract());
-        $classDescriptor->setFinal($classReflector->isFinal());
-
-        foreach ($classReflector->getInterfaces() as $interfaceClassName) {
-            $interfaceDescriptor = $this->findOrCreateIndexItemForElement(
-                'interfaces',
-                $interfaceClassName,
-                new InterfaceDescriptor()
-            );
-
-            $classDescriptor->getInterfaces()->set($interfaceClassName, $interfaceDescriptor);
+        foreach ($data->getInterfaces() as $interfaceClassName) {
+            $classDescriptor->getInterfaces()->set($interfaceClassName, $interfaceClassName);
         }
-
-        foreach ($classReflector->getConstants() as $constant) {
+        foreach ($data->getConstants() as $constant) {
             $this->buildConstant($constant, $classDescriptor);
         }
-        foreach ($classReflector->getProperties() as $property) {
+        foreach ($data->getProperties() as $property) {
             $this->buildProperty($property, $classDescriptor);
         }
-        foreach ($classReflector->getMethods() as $method) {
+        foreach ($data->getMethods() as $method) {
             $this->buildMethod($method, $classDescriptor);
         }
 
-        return $classDescriptor;
-    }
-
-    /**
-     * @param $indexKey
-     * @param $parentClassName
-     * @param $newClassDescriptor
-     * @return \phpDocumentor\Descriptor\ClassDescriptor
-     */
-    protected function findOrCreateIndexItemForElement($indexKey, $parentClassName, $newClassDescriptor)
-    {
-        $classes = $this->project->getIndexes()->get($indexKey, new Collection());
-
-        /** @var ClassDescriptor $parentDescriptor */
-        $parentDescriptor = $classes->get($parentClassName, $newClassDescriptor);
-        if (!$parentDescriptor->getFullyQualifiedStructuralElementName()) {
-            // on a new descriptor, set the name and store it in the structure
-            $parentDescriptor->setFullyQualifiedStructuralElementName($parentClassName);
-            $parentDescriptor->setName(substr($parentClassName, strrpos($parentClassName, '\\') + 1));
-
-            $this->storeClassDescriptor($parentDescriptor);
-        }
-        return $parentDescriptor;
-    }
-
-    /**
-     * Stores the given Class Descriptor in the correct namespace and in the 'classes' index.
-     *
-     * @param ClassDescriptor $classDescriptor
-     *
-     * @return void
-     */
-    protected function storeClassDescriptor($classDescriptor)
-    {
         $fqcn = $classDescriptor->getFullyQualifiedStructuralElementName();
         $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
 
-        $namespaceDescriptor = $this->locateNamespace($namespace);
-        $classDescriptor->setNamespace($namespaceDescriptor);
-        $namespaceDescriptor->getClasses()->set($classDescriptor->getName(), $classDescriptor);
+        $classDescriptor->setNamespace($namespace);
 
-        /** @var Collection $classes */
-        $classes = $this->project->getIndexes()->get('classes', new Collection());
-        $classes->set($fqcn, $classDescriptor);
+        return $classDescriptor;
     }
 
     /**
@@ -219,8 +142,7 @@ class Reflector extends BuilderAbstract
      */
     public function buildInterface($data)
     {
-        $interfaces = $this->project->getIndexes()->get('interfaces', new Collection());
-        $interfaceDescriptor = $interfaces->get($data->getName(), new InterfaceDescriptor());
+        $interfaceDescriptor = new InterfaceDescriptor();
 
         $interfaceDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $interfaceDescriptor->setName($data->getShortName());
@@ -230,38 +152,16 @@ class Reflector extends BuilderAbstract
         $interfaceDescriptor->setLocation('', $data->getLinenumber());
 
         foreach ($data->getParentInterfaces() as $interfaceClassName) {
-            $interfaceDescriptor = $this->findOrCreateIndexItemForElement(
-                'interfaces',
-                $interfaceClassName,
-                new InterfaceDescriptor()
-            );
-
-            $interfaceDescriptor->getParentInterfaces()->set($interfaceClassName, $interfaceDescriptor);
+            $interfaceDescriptor->getParentInterfaces()->set($interfaceClassName, $interfaceClassName);
         }
 
         foreach ($data->getMethods() as $method) {
             $this->buildMethod($method, $interfaceDescriptor);
         }
 
-        $this->storeInterfaceDescriptor($interfaceDescriptor);
+        $interfaceDescriptor->setNamespace($data->getNamespace());
 
         return $interfaceDescriptor;
-    }
-
-    /**
-     * @param $interface
-     */
-    protected function storeInterfaceDescriptor($interface)
-    {
-        $fqcn = $interface->getFullyQualifiedStructuralElementName();
-        $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
-        $namespaceDescriptor = $this->locateNamespace($namespace);
-        $interface->setNamespace($namespaceDescriptor);
-        $namespaceDescriptor->getInterfaces()->set($interface->getName(), $interface);
-
-        /** @var Collection $interfaces */
-        $interfaces = $this->project->getIndexes()->get('interfaces', new Collection());
-        $interfaces->set($interface->getFullyQualifiedStructuralElementName(), $interface);
     }
 
     /**
@@ -269,11 +169,11 @@ class Reflector extends BuilderAbstract
      */
     public function buildTrait($data)
     {
-        $traits = $this->project->getIndexes()->get('traits', new Collection());
-        $traitDescriptor = $traits->get($data->getName(), new TraitDescriptor());
+        $traitDescriptor = new TraitDescriptor();
 
         $traitDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $traitDescriptor->setName($data->getShortName());
+        $traitDescriptor->setNamespace($data->getNamespace());
 
         $this->buildDocBlock($data, $traitDescriptor);
 
@@ -286,26 +186,7 @@ class Reflector extends BuilderAbstract
             $this->buildProperty($property, $traitDescriptor);
         }
 
-        $this->storeTraitDescriptor($traitDescriptor);
-
         return $traitDescriptor;
-    }
-
-    /**
-     * @param TraitDescriptor $trait
-     */
-    protected function storeTraitDescriptor($trait)
-    {
-        $fqcn = $trait->getFullyQualifiedStructuralElementName();
-        $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
-
-        $namespaceDescriptor = $this->locateNamespace($namespace);
-        $trait->setNamespace($namespaceDescriptor);
-        $namespaceDescriptor->getTraits()->set($trait->getName(), $trait);
-
-        /** @var Collection $traits */
-        $traits = $this->project->getIndexes()->get('traits', new Collection());
-        $traits->set($trait->getFullyQualifiedStructuralElementName(), $trait);
     }
 
     /**
@@ -323,6 +204,7 @@ class Reflector extends BuilderAbstract
         $constant->setFullyQualifiedStructuralElementName($prefix . $data->getName());
         $constant->setName($data->getShortName());
         $constant->setValue($data->getValue());
+        $constant->setNamespace($data->getNamespace());
 
         $this->buildDocBlock($data, $constant);
 
@@ -330,10 +212,6 @@ class Reflector extends BuilderAbstract
 
         if ($container) {
             $container->getConstants()->set($constant->getName(), $constant);
-        } else {
-            $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
-            $constant->setNamespace($namespaceDescriptor);
-            $namespaceDescriptor->getConstants()->set($constant->getName(), $constant);
         }
 
         return $constant;
@@ -351,10 +229,7 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $function);
 
         $function->setLocation('', $data->getLinenumber());
-
-        $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
-        $function->setNamespace($namespaceDescriptor);
-        $namespaceDescriptor->getFunctions()->set($function->getName(), $function);
+        $function->setNamespace($data->getNamespace());
 
         return $function;
     }
@@ -450,44 +325,5 @@ class Reflector extends BuilderAbstract
                 $target->getTags()->set($tag->getName(), $existingTags);
             }
         }
-    }
-
-    /**
-     * Finds the Namespace object in the namespaces tree that matches the given string and creates new namespace where
-     * none are found.
-     *
-     * @param string $namespace
-     *
-     * @return NamespaceDescriptor
-     */
-    protected function locateNamespace($namespace)
-    {
-        $namespaceName = '';
-        $namespaceDescriptor = $this->getProjectDescriptor()->getNamespace();
-        $trimmedNamespaceName = ltrim($namespace, '\\');
-        if (empty($trimmedNamespaceName)) {
-            return $namespaceDescriptor;
-        }
-
-        foreach (explode('\\', $trimmedNamespaceName) as $part) {
-            $namespaceName .= '\\' . $part;
-            if ($namespaceDescriptor->getNamespaces()->$part) {
-                $namespaceDescriptor = $namespaceDescriptor->getNamespaces()->$part;
-                continue;
-            }
-
-            $newNamespace = new NamespaceDescriptor();
-            $newNamespace->setName($part);
-            $newNamespace->setFullyQualifiedStructuralElementName($namespaceName);
-            $namespaceDescriptor->getNamespaces()->set($part, $newNamespace);
-
-            $newNamespace->setParentNamespace($namespaceDescriptor);
-            $namespaceDescriptor = $newNamespace;
-
-            $namespaces = $this->getProjectDescriptor()->getIndexes()->get('namespaces', new Collection());
-            $namespaces->set($namespaceName, $newNamespace);
-        }
-
-        return $namespaceDescriptor;
     }
 }
