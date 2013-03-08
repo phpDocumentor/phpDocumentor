@@ -64,13 +64,4 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     {
         return $this->properties;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function clearReferences()
-    {
-        $this->getProperties()->clearReferences();
-        $this->getMethods()->clearReferences();
-    }
 }

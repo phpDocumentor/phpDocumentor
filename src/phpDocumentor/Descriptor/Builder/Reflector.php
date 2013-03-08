@@ -43,6 +43,7 @@ class Reflector extends BuilderAbstract
      */
     public function buildFile($data)
     {
+
         // TODO: remove all cached sub-elements first
 
         $file = new FileDescriptor($data->getHash());
@@ -328,11 +329,11 @@ class Reflector extends BuilderAbstract
         $constant->setLocation('', $data->getLinenumber());
 
         if ($container) {
-            $container->getConstants()->setReference($constant->getName(), $constant);
+            $container->getConstants()->set($constant->getName(), $constant);
         } else {
             $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
             $constant->setNamespace($namespaceDescriptor);
-            $namespaceDescriptor->getConstants()->setReference($constant->getName(), $constant);
+            $namespaceDescriptor->getConstants()->set($constant->getName(), $constant);
         }
 
         return $constant;
@@ -353,7 +354,7 @@ class Reflector extends BuilderAbstract
 
         $namespaceDescriptor = $this->locateNamespace($data->getNamespace());
         $function->setNamespace($namespaceDescriptor);
-        $namespaceDescriptor->getFunctions()->setReference($function->getName(), $function);
+        $namespaceDescriptor->getFunctions()->set($function->getName(), $function);
 
         return $function;
     }
@@ -404,7 +405,7 @@ class Reflector extends BuilderAbstract
             $argumentDescriptor = new ArgumentDescriptor();
             $argumentDescriptor->setName($argument->getName());
 
-            $params = $method->getTags()->get('param');
+            $params = $method->getTags()->get('param', array());
 
             /** @var ParamDescriptor $tag */
             foreach ($params as $tag) {

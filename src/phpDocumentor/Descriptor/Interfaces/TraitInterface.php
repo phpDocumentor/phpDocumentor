@@ -13,7 +13,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 
-interface TraitInterface extends BaseInterface, ReferencingInterface
+interface TraitInterface extends BaseInterface
 {
     public function setMethods(Collection $methods);
 

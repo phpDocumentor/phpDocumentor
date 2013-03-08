@@ -84,13 +84,4 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     {
         return $this->methods;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function clearReferences()
-    {
-        $this->getMethods()->clearReferences();
-        $this->getConstants()->clearReferences();
-    }
 }

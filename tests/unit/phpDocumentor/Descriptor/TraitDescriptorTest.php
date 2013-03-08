@@ -48,7 +48,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getProperties());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setProperties($mock);
 
@@ -63,28 +63,10 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMethods());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setMethods($mock);
 
         $this->assertSame($mock, $this->fixture->getMethods());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::clearReferences
-     */
-    public function testClearingReferencesClearsMethodsAndProperties()
-    {
-        $properties = m::mock('phpDocumentor\Descriptor\Collection');
-        $methods = clone $properties;
-        $properties->shouldReceive('clearReferences')->once();
-        $methods->shouldReceive('clearReferences')->once();
-
-        $this->fixture->setMethods($methods);
-        $this->fixture->setProperties($properties);
-
-        // without an assert PHPUnit thinks this test is incomplete; but we only want to check mocks,
-        // so we make a faux assert
-        $this->assertNull($this->fixture->clearReferences());
     }
 }

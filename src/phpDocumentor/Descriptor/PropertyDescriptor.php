@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Reflection\DocBlock\Type;
-
 /**
  * Descriptor representing a property.
  */

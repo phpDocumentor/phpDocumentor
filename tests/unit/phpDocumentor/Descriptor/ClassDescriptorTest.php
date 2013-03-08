@@ -50,15 +50,11 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNull($this->fixture->getParentClass());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
 
         $this->fixture->setParentClass($mock);
 
         $this->assertSame($mock, $this->fixture->getParentClass());
-
-        // test if it is really a reference
-        $mock = null;
-        $this->assertNull($this->fixture->getParentClass());
     }
 
     /**
@@ -81,7 +77,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInterfaces());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setInterfaces($mock);
 
@@ -96,7 +92,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getConstants());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setConstants($mock);
 
@@ -111,7 +107,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getProperties());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setProperties($mock);
 
@@ -126,7 +122,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMethods());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setMethods($mock);
 
@@ -157,26 +153,5 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setFinal(true);
 
         $this->assertTrue($this->fixture->isFinal());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::clearReferences
-     */
-    public function testClearingReferencesClearsMethodsConstantsAndProperties()
-    {
-        $constants = m::mock('phpDocumentor\Descriptor\Collection');
-        $properties = clone $constants;
-        $methods = clone $constants;
-        $constants->shouldReceive('clearReferences')->once();
-        $properties->shouldReceive('clearReferences')->once();
-        $methods->shouldReceive('clearReferences')->once();
-
-        $this->fixture->setConstants($constants);
-        $this->fixture->setMethods($methods);
-        $this->fixture->setProperties($properties);
-
-        // without an assert PHPUnit thinks this test is incomplete; but we only want to check mocks,
-        // so we make a faux assert
-        $this->assertNull($this->fixture->clearReferences());
     }
 }

@@ -161,14 +161,4 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     {
         return $this->properties;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function clearReferences()
-    {
-        $this->getMethods()->clearReferences();
-        $this->getProperties()->clearReferences();
-        $this->getConstants()->clearReferences();
-    }
 }

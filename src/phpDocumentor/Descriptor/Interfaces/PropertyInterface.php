@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
-
 interface PropertyInterface extends BaseInterface
 {
     public function setDefault($default);

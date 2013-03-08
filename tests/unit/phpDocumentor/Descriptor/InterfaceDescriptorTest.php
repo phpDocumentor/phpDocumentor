@@ -49,7 +49,7 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getParentInterfaces());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setParentInterfaces($mock);
 
@@ -64,7 +64,7 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getConstants());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setConstants($mock);
 
@@ -79,28 +79,10 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMethods());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
         $this->fixture->setMethods($mock);
 
         $this->assertSame($mock, $this->fixture->getMethods());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::clearReferences
-     */
-    public function testClearingReferencesClearsMethodsAndConstants()
-    {
-        $constants = m::mock('phpDocumentor\Descriptor\Collection');
-        $methods = clone $constants;
-        $constants->shouldReceive('clearReferences')->once();
-        $methods->shouldReceive('clearReferences')->once();
-
-        $this->fixture->setConstants($constants);
-        $this->fixture->setMethods($methods);
-
-        // without an assert PHPUnit thinks this test is incomplete; but we only want to check mocks,
-        // so we make a faux assert
-        $this->assertNull($this->fixture->clearReferences());
     }
 }

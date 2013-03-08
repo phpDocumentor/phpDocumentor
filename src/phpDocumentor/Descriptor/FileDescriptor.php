@@ -172,26 +172,4 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         return $this->errors;
     }
-
-    /**
-     * References to child Descriptors/objects should be assigned a null when the containing object is nulled.
-     *
-     * In this method should all references to objects be assigned the value null; this will clear the references
-     * of child objects from other objects.
-     *
-     * For example:
-     *
-     *     A class should NULL its constants, properties and methods as they are contained WITHIN the class and become
-     *     orphans if not nulled.
-     *
-     * @return void
-     */
-    public function clearReferences()
-    {
-        $this->getConstants()->clearReferences();
-        $this->getFunctions()->clearReferences();
-        $this->getClasses()->clearReferences();
-        $this->getInterfaces()->clearReferences();
-        $this->getTraits()->clearReferences();
-    }
 }

@@ -4,7 +4,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ClassDescriptor;
 
-interface ClassInterface extends BaseInterface, ReferencingInterface
+interface ClassInterface extends BaseInterface
 {
     /**
      * Sets the reference to a superclass for this class.
@@ -13,7 +13,7 @@ interface ClassInterface extends BaseInterface, ReferencingInterface
      *
      * @return void
      */
-    public function setParentClass(&$extends);
+    public function setParentClass($extends);
 
     public function getParentClass();
 
