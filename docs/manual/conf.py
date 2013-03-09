@@ -96,3 +96,4 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 
 # UML diagramming tool
 plantuml = ['java', '-jar', '.exts/plantuml.jar']
+plantuml_latex_output_format = 'pdf'
