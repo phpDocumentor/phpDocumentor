@@ -78,8 +78,8 @@ class Reflector extends BuilderAbstract
         foreach ($data->getFunctions() as $function) {
             $this->buildFunction($function);
         }
-        foreach ($data->getClasses() as $data) {
-            $this->buildClass($data);
+        foreach ($data->getClasses() as $class) {
+            $this->buildClass($class);
         }
         foreach ($data->getInterfaces() as $interface) {
             $this->buildInterface($interface);

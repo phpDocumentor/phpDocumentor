@@ -18,10 +18,20 @@ require_once findAutoloader();
 
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
+
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
+use Symfony\Component\Console\Shell;
+
+use Zend\Config\Factory;
 use Zend\I18n\Translator\Translator;
 use Zend\Serializer\Serializer;
+
+use phpDocumentor\Command\Plugin;
+use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Parser;
+use phpDocumentor\Plugin\Core;
+use phpDocumentor\Plugin\Manager;
 
 /**
  * Application class for phpDocumentor.
@@ -53,185 +63,33 @@ class Application extends Cilex
             new Console\Helper\ProgressHelper()
         );
 
-        $this['translator'] = $this->share(function() {
-            return new Translator();
-        });
+        $this['translator'] = $this->share(
+            function () {
+                return new Translator();
+            }
+        );
 
-        $this['serializer'] = $this->share(function() {
-            AnnotationRegistry::registerAutoloadNamespace(
-                'JMS\Serializer\Annotation',
-                __DIR__ . '/../../vendor/jms/serializer/src'
-            );
-            return SerializerBuilder::create()->build();
-        });
+        $this['serializer'] = $this->share(
+            function () {
+                AnnotationRegistry::registerAutoloadNamespace(
+                    'JMS\Serializer\Annotation',
+                    __DIR__ . '/../../vendor/jms/serializer/src'
+                );
+
+                return SerializerBuilder::create()->build();
+            }
+        );
 
         $this->loadPlugins();
 
         $this->addDescriptorServices();
-        $this->addParserServices();
-        $this->addTransformerServices();
+
+        $this->register(new Parser\ServiceProvider());
+        $this->register(new Transformer\ServiceProvider());
+        $this->register(new Core\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
-        $this->addCommandsForTemplateNamespace();
         $this->addCommandsForPluginNamespace();
-
-        $this->register(new Plugin\Core\ServiceProvider());
-    }
-
-    /**
-     * Adds the services to build the descriptors.
-     *
-     * This method injects the following services into the Dependency Injection Container:
-     *
-     * * descriptor.serializer, the serializer used to generate the cache
-     * * descriptor.builder, the builder used to transform the Reflected information into a series of Descriptors.
-     *
-     * It is possible to override which serializer is used by overriding the parameter `descriptor.serializer.class`.
-     *
-     * @return void
-     */
-    protected function addDescriptorServices()
-    {
-        $this['descriptor.builder.serializer'] = 'PhpSerialize';
-
-        $this['descriptor.builder'] = $this->share(function ($container) {
-            $builder = new Descriptor\Builder\Reflector();
-            $builder->setSerializer(
-                Serializer::factory($container['descriptor.builder.serializer'])
-            );
-            return $builder;
-        });
-    }
-
-    /**
-     * Adds the services to parse a project and generate a statically reflected representation.
-     *
-     * This method injects the following services into the Dependency Injection Container:
-     *
-     * * parser, the component responsible for interacting with the Reflection library and the Project Descriptor.
-     *
-     * @return void
-     */
-    protected function addParserServices()
-    {
-        $this['parser'] = $this->share(function () {
-            return new Parser\Parser();
-        });
-    }
-
-    /**
-     * Adds the services to transform a Project Descriptor into a series of artifacts based on a given (series of)
-     * template(s).
-     *
-     * This method injects the following services into the Dependency Injection Container,
-     *
-     * * transformer.behaviour.collection, the series of behaviours that need to be applied before the transformation
-     *    process, may be augmented by plugins.
-     * * transformer.writer.collection, a pool of writers that the transformer may utilize, may be augmented by plugins.
-     * * transformer, the component responsible for transforming the Project Descriptor into a series of artifacts.
-     *
-     * @return void
-     */
-    protected function addTransformerServices()
-    {
-        // parameters
-        $this['transformer.template.location'] = __DIR__.'/../../data/templates';
-
-        // services
-        $this['compiler'] = $this->share(function ($container) {
-            $compiler = new Compiler\Compiler();
-            $compiler->insert($container['transformer'], Transformer\Transformer::COMPILER_PRIORITY);
-
-            return $compiler;
-        });
-
-        $this['transformer.behaviour.collection'] = $this->share(function () {
-            return new Transformer\Behaviour\Collection();
-        });
-
-        $this['transformer.routing.queue'] = $this->share(function () {
-            $queue = new Transformer\Router\Queue();
-
-            // TODO: load from app configuration instead of hardcoded
-            $queue->insert(new Transformer\Router\StandardRouter(), 10000);
-
-            return $queue;
-        });
-
-        $this['transformer.writer.collection'] = $this->share(function ($container) {
-            return new Transformer\Writer\Collection($container['transformer.routing.queue']);
-        });
-
-        $this['transformer.template.collection'] = $this->share(function ($container) {
-            return new Transformer\Template\Collection(
-                $container['transformer.template.location'],
-                $container['serializer']
-            );
-        });
-
-        $this['transformer'] = $this->share(function ($container) {
-            $transformer = new Transformer\Transformer(
-                $container['transformer.template.collection'],
-                $container['transformer.writer.collection']
-            );
-            $transformer->setBehaviours($container['transformer.behaviour.collection']);
-            return $transformer;
-        });
-    }
-
-    /**
-     * Run the application and if no command is provided, use project:run.
-     *
-     * @param bool $interactive Whether to run in interactive mode.
-     *
-     * @return void
-     */
-    public function run($interactive = false)
-    {
-        $app = $this['console'];
-        if ($interactive) {
-            $app = new \Symfony\Component\Console\Shell($app);
-        }
-
-        $app->run(new \phpDocumentor\Console\Input\ArgvInput());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Project namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForProjectNamespace()
-    {
-        $this->command(new Command\Project\RunCommand());
-        $this->command(new Command\Project\ParseCommand($this['descriptor.builder'], $this['parser']));
-        $this->command(new Command\Project\TransformCommand(
-            $this['descriptor.builder'],
-            $this['transformer'],
-            $this['compiler'])
-        );
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the plugin namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForPluginNamespace()
-    {
-        $this->command(new \phpDocumentor\Command\Plugin\GenerateCommand());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Template namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForTemplateNamespace()
-    {
-        $this->command(new \phpDocumentor\Command\Template\GenerateCommand());
-        $this->command(new \phpDocumentor\Command\Template\ListCommand());
-        $this->command(new \phpDocumentor\Command\Template\PackageCommand());
     }
 
     /**
@@ -254,8 +112,8 @@ class Application extends Cilex
         $this->register(
             new MonologServiceProvider(),
             array(
-                'monolog.name'    => 'phpDocumentor',
-                'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
+                 'monolog.name'    => 'phpDocumentor',
+                 'monolog.logfile' => sys_get_temp_dir() . '/phpdoc.log'
             )
         );
     }
@@ -297,12 +155,12 @@ class Application extends Cilex
                 $user_config_file = (file_exists(getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'))
                     ? getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'
                     : getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.dist.xml';
-                $config_files = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
+                $config_files     = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
                 if (is_readable($user_config_file)) {
                     $config_files[] = $user_config_file;
                 }
 
-                return \Zend\Config\Factory::fromFiles($config_files, true);
+                return Factory::fromFiles($config_files, true);
             }
         );
     }
@@ -324,27 +182,94 @@ class Application extends Cilex
     /**
      * Load the plugins.
      *
-     * phpDocumentor instantiates the plugin manager given the Event Dispatcher,
-     * Configuration and autoloader.
-     * Using this manager it will read the configuration and load the required
-     * plugins.
+     * phpDocumentor instantiates the plugin manager given the Event Dispatcher, Configuration and autoloader.
+     * Using this manager it will read the configuration and load the required plugins.
      *
      * @return void
      */
     protected function loadPlugins()
     {
-        $app = $this;
+        $app                    = $this;
         $this['plugin_manager'] = $this->share(
             function () use ($app) {
-                $manager = new \phpDocumentor\Plugin\Manager(
+                $manager = new Manager(
                     $app['event_dispatcher'],
                     $app['config'],
                     $app['translator']
                 );
+
                 return $manager;
             }
         );
-        $this['plugin_manager']->loadFromConfiguration();
+
+        /** @var Manager $pluginManager  */
+        $pluginManager = $this['plugin_manager'];
+        $pluginManager->loadFromConfiguration();
+    }
+
+    /**
+     * Adds the services to build the descriptors.
+     *
+     * This method injects the following services into the Dependency Injection Container:
+     *
+     * * descriptor.serializer, the serializer used to generate the cache
+     * * descriptor.builder, the builder used to transform the Reflected information into a series of Descriptors.
+     *
+     * It is possible to override which serializer is used by overriding the parameter `descriptor.serializer.class`.
+     *
+     * @return void
+     */
+    protected function addDescriptorServices()
+    {
+        $this['descriptor.builder.serializer'] = 'PhpSerialize';
+
+        $this['descriptor.builder'] = $this->share(
+            function ($container) {
+                $builder = new Descriptor\Builder\Reflector();
+                $builder->setSerializer(
+                    Serializer::factory($container['descriptor.builder.serializer'])
+                );
+
+                return $builder;
+            }
+        );
+    }
+
+    /**
+     * Adds the command to phpDocumentor that belong to the Project namespace.
+     *
+     * @return void
+     */
+    protected function addCommandsForProjectNamespace()
+    {
+        $this->command(new Command\Project\RunCommand());
+    }
+
+    /**
+     * Adds the command to phpDocumentor that belong to the plugin namespace.
+     *
+     * @return void
+     */
+    protected function addCommandsForPluginNamespace()
+    {
+        $this->command(new Plugin\GenerateCommand());
+    }
+
+    /**
+     * Run the application and if no command is provided, use project:run.
+     *
+     * @param bool $interactive Whether to run in interactive mode.
+     *
+     * @return void
+     */
+    public function run($interactive = false)
+    {
+        $app = $this['console'];
+        if ($interactive) {
+            $app = new Shell($app);
+        }
+
+        $app->run(new ArgvInput());
     }
 }
 

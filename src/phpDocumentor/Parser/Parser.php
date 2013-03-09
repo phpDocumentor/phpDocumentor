@@ -328,7 +328,6 @@ class Parser extends ParserAbstract
                     Dispatcher::getInstance()->addListener('parser.log', array($file, 'addParserMarker'));
                     $dispatched = true;
                 }
-
                 $file->process();
                 $builder->buildFile($file);
             } catch (Exception $e) {

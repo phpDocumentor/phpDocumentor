@@ -16,6 +16,10 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Transformer\Event\PostTransformEvent;
+use phpDocumentor\Transformer\Event\PostTransformationEvent;
+use phpDocumentor\Transformer\Event\PreTransformEvent;
+use phpDocumentor\Transformer\Event\PreTransformationEvent;
 
 /**
  * Core class responsible for transforming the cache file to a set of artifacts.
@@ -167,6 +171,8 @@ class Transformer implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project)
     {
+        Dispatcher::getInstance()->dispatch('transformer.transform.pre', PreTransformEvent::createInstance($this));
+
         if ($this->getBehaviours() instanceof Behaviour\Collection) {
             $this->log(sprintf('Applying %d behaviours', count($this->getBehaviours())));
             $this->getBehaviours()->process($project);
@@ -185,8 +191,20 @@ class Transformer implements CompilerPassInterface
 
             /** @var Writer\WriterAbstract $writer  */
             $writer = $this->writers[$transformation->getWriter()];
+
+            Dispatcher::getInstance()->dispatch(
+                'transformer.transformation.pre',
+                PreTransformationEvent::createInstance($this)
+            );
             $writer->transform($project, $transformation);
+            Dispatcher::getInstance()->dispatch(
+                'transformer.transformation.post',
+                PostTransformationEvent::createInstance($this)
+            );
         }
+
+        Dispatcher::getInstance()->dispatch('transformer.transform.post', PostTransformEvent::createInstance($this));
+
         $this->log('Finished transformation process');
     }
 

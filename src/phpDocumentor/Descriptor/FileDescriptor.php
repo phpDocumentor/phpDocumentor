@@ -64,19 +64,14 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         $this->setErrors(new Collection());
     }
 
-    protected function setHash($hash)
-    {
-        $this->hash = $hash;
-    }
-
     public function getHash()
     {
         return $this->hash;
     }
 
-    public function setSource($source)
+    protected function setHash($hash)
     {
-        $this->source = $source;
+        $this->hash = $hash;
     }
 
     public function getSource()
@@ -84,9 +79,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->source;
     }
 
-    public function setNamespaceAliases(Collection $namespace_aliases)
+    public function setSource($source)
     {
-        $this->namespace_aliases = $namespace_aliases;
+        $this->source = $source;
     }
 
     public function getNamespaceAliases()
@@ -94,9 +89,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->namespace_aliases;
     }
 
-    public function setIncludes(Collection $includes)
+    public function setNamespaceAliases(Collection $namespace_aliases)
     {
-        $this->includes = $includes;
+        $this->namespace_aliases = $namespace_aliases;
     }
 
     /**
@@ -107,9 +102,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->includes;
     }
 
-    public function setConstants(Collection $constants)
+    public function setIncludes(Collection $includes)
     {
-        $this->constants = $constants;
+        $this->includes = $includes;
     }
 
     public function getConstants()
@@ -117,9 +112,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->constants;
     }
 
-    public function setFunctions(Collection $functions)
+    public function setConstants(Collection $constants)
     {
-        $this->functions = $functions;
+        $this->constants = $constants;
     }
 
     public function getFunctions()
@@ -127,19 +122,22 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->functions;
     }
 
-    public function setClasses(Collection $classes)
+    public function setFunctions(Collection $functions)
     {
-        $this->classes = $classes;
+        $this->functions = $functions;
     }
 
+    /**
+     * @return Collection|ClassDescriptor[]
+     */
     public function getClasses()
     {
         return $this->classes;
     }
 
-    public function setInterfaces(Collection $interfaces)
+    public function setClasses(Collection $classes)
     {
-        $this->interfaces = $interfaces;
+        $this->classes = $classes;
     }
 
     public function getInterfaces()
@@ -147,9 +145,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->interfaces;
     }
 
-    public function setTraits(Collection $traits)
+    public function setInterfaces(Collection $interfaces)
     {
-        $this->traits = $traits;
+        $this->interfaces = $interfaces;
     }
 
     public function getTraits()
@@ -157,12 +155,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->traits;
     }
 
-    /**
-     * @param Collection $markers
-     */
-    public function setMarkers(Collection $markers)
+    public function setTraits(Collection $traits)
     {
-        $this->markers = $markers;
+        $this->traits = $traits;
     }
 
     /**
@@ -173,13 +168,21 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         return $this->markers;
     }
 
-    public function setErrors(Collection $errors)
+    /**
+     * @param Collection $markers
+     */
+    public function setMarkers(Collection $markers)
     {
-        $this->errors = $errors;
+        $this->markers = $markers;
     }
 
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    public function setErrors(Collection $errors)
+    {
+        $this->errors = $errors;
     }
 }

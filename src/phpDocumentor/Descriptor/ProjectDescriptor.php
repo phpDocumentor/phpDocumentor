@@ -64,7 +64,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection|FileDescriptor[]
      */
     public function getFiles()
     {
