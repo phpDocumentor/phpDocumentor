@@ -4,7 +4,7 @@ Components
 .. toctree::
 
    components/application
-   components/plugins
+   components/parser
    components/descriptor
    components/reflection
    components/reflection-docblock
