@@ -145,6 +145,9 @@ class Definition extends ParserAbstract
             case 'link':
                 $def = new Link($namespace, $namespace_aliases, $xml, $tag);
                 break;
+            case 'runtime':
+                $def = new Link($namespace, $namespace_aliases, $xml, $tag);
+                break;
             case 'author':
             case 'version':
             case 'since':
