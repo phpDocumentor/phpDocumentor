@@ -53,39 +53,63 @@ class Reflector extends BuilderAbstract
         $file->setIncludes(new Collection($data->getIncludes()));
         $file->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
-        foreach($data->getMarkers() as $marker) {
+        foreach ($data->getMarkers() as $marker) {
             list($type, $message, $line) = $marker;
-            $file->getMarkers()->add(array(
-                'type'    => $type,
-                'message' => $message,
-                'line'    => $line,
-            ));
+            $file->getMarkers()->add(
+                array(
+                    'type'    => $type,
+                    'message' => $message,
+                    'line'    => $line,
+                )
+            );
         }
 
-        foreach($data->getParseErrors() as $marker) {
+        foreach ($data->getParseErrors() as $marker) {
             list($type, $message, $line, $code) = $marker;
-            $file->getErrors()->add(array(
-                'type'    => $type,
-                'message' => $message,
-                'line'    => $line,
-                'code'    => $code,
-            ));
+            $file->getErrors()->add(
+                array(
+                    'type'    => $type,
+                    'message' => $message,
+                    'line'    => $line,
+                    'code'    => $code,
+                )
+            );
         }
 
         foreach ($data->getConstants() as $constant) {
-            $this->buildConstant($constant);
+            $constantDescriptor = $this->buildConstant($constant);
+            $file->getConstants()->set(
+                $constantDescriptor->getFullyQualifiedStructuralElementName(),
+                $constantDescriptor
+            );
         }
         foreach ($data->getFunctions() as $function) {
-            $this->buildFunction($function);
+            $functionDescriptor = $this->buildFunction($function);
+            $file->getFunctions()->set(
+                $functionDescriptor->getFullyQualifiedStructuralElementName(),
+                $functionDescriptor
+            );
         }
         foreach ($data->getClasses() as $class) {
-            $this->buildClass($class);
+            $classDescriptor = $this->buildClass($class);
+            $file->getClasses()->set(
+                $classDescriptor->getFullyQualifiedStructuralElementName(),
+                $classDescriptor
+            );
         }
         foreach ($data->getInterfaces() as $interface) {
-            $this->buildInterface($interface);
+            $interfaceDescriptor = $this->buildInterface($interface);
+            $file->getInterfaces()->set(
+                $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
+                $interfaceDescriptor
+            );
         }
         foreach ($data->getTraits() as $trait) {
-            $this->buildTrait($trait);
+            $traitDescriptor = $this->buildTrait($trait);
+            $file->getTraits()->set(
+                $traitDescriptor->getFullyQualifiedStructuralElementName(),
+                $traitDescriptor
+            );
         }
 
         $this->getProjectDescriptor()->getFiles()->set($file->getPath(), $file);

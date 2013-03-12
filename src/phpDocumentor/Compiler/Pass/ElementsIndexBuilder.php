@@ -27,7 +27,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  */
 class ElementsIndexBuilder implements CompilerPassInterface
 {
-    const COMPILER_PRIORITY = 900;
+    const COMPILER_PRIORITY = 15000;
 
     /**
      * {@inheritDoc}

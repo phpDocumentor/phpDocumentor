@@ -9,13 +9,15 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core;
+namespace phpDocumentor\Plugin\Compat2A13;
+
 
 use Cilex\Application;
-use phpDocumentor\Plugin\Core\Transformer\Writer;
+use Cilex\ServiceProviderInterface;
+use phpDocumentor\Plugin\Compat2A13\Transformer\Writer\Xsl;
 use phpDocumentor\Transformer\Writer\Collection;
 
-class ServiceProvider implements \Cilex\ServiceProviderInterface
+class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * Registers services on the given app.
@@ -26,11 +28,6 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
     {
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
-
-        $writerCollection['FileIo']     = new Writer\FileIo();
-        $writerCollection['twig']       = new Writer\Twig();
-        $writerCollection['Graph']      = new Writer\Graph();
-        $writerCollection['Checkstyle'] = new Writer\Checkstyle();
-        $writerCollection['Sourcecode'] = new Writer\Sourcecode();
+        $writerCollection['xsl'] = new Xsl();
     }
 }

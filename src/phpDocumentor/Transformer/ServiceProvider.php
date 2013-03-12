@@ -18,6 +18,8 @@ use phpDocumentor\Command\Template\GenerateCommand;
 use phpDocumentor\Command\Template\ListCommand;
 use phpDocumentor\Command\Template\PackageCommand;
 use phpDocumentor\Compiler\Compiler;
+use phpDocumentor\Compiler\Linker\Linker;
+use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 
 /**
  * This provider is responsible for registering the transformer component with the given Application.
@@ -49,9 +51,17 @@ class ServiceProvider implements ServiceProviderInterface
         $app['compiler'] = $app->share(
             function ($container) {
                 $compiler = new Compiler();
+                $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
+                $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
                 $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
 
                 return $compiler;
+            }
+        );
+
+        $app['linker'] = $app->share(
+            function () {
+                return new Linker();
             }
         );
 

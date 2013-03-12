@@ -30,6 +30,7 @@ use Zend\Serializer\Serializer;
 use phpDocumentor\Command\Plugin;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Parser;
+use phpDocumentor\Plugin\Compat2A13;
 use phpDocumentor\Plugin\Core;
 use phpDocumentor\Plugin\Manager;
 
@@ -44,7 +45,7 @@ use phpDocumentor\Plugin\Manager;
  */
 class Application extends Cilex
 {
-    const VERSION = '2.0.0a13';
+    const VERSION = '2.0.0b1';
 
     /**
      * Initializes all components used by phpDocumentor.
@@ -86,7 +87,10 @@ class Application extends Cilex
 
         $this->register(new Parser\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());
+
+        // TODO: make plugin service provider calls registrable from config
         $this->register(new Core\ServiceProvider());
+        $this->register(new Compat2A13\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
         $this->addCommandsForPluginNamespace();

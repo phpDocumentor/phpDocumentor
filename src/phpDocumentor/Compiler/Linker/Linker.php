@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 
 class Linker implements CompilerPassInterface
 {
-    const COMPILER_PRIORITY = 1000;
+    const COMPILER_PRIORITY = 10000;
 
     /**
      * Executes a compiler pass.

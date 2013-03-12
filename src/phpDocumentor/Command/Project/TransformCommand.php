@@ -195,7 +195,11 @@ TEXT
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         foreach ($this->compiler as $pass) {
+            $timerStart = microtime(true);
             $pass->execute($projectDescriptor);
+            $output->writeln(
+                sprintf('Process compiler pass in %.4fs: \\%s', microtime(true) - $timerStart, get_class($pass))
+            );
         }
 
         if ($progress) {
