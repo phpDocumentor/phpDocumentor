@@ -17,7 +17,7 @@
         "cilex/cilex": "dev-master",
         "dflydev/markdown": "1.0.*",
         "nikic/php-parser": "dev-master",
-        "symfony/event-dispatcher": "2.1.*@stable",
+        "symfony/event-dispatcher": "~2.1@stable",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-config": "2.*",
         "zendframework/zend-servicemanager": "2.*",
