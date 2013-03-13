@@ -11,15 +11,31 @@ Parsing
    Responsible for analyzing the source code of a project (*lexing* and *parsing*), writing the results to an
    Object Graph and serializing the Object Graph to disk (to be used as *Cache*).
 
-Transformation
-    Responsible for interpreting and augmenting the generated Object Graph and create artifacts, such as HTML documents,
-    based on the augmented Object Graph.
+Compiling
+    Responsible for interpreting and augmenting the generated Object Graph, and create artifacts, such as HTML
+    documents, based on the augmented Object Graph.
+
+.. uml::
+
+   start
+
+   :Initialize;
+   :Parse;
+   :Compile;
+
+   stop
 
 Activity Diagram
-~~~~~~~~~~~~~~~~
+----------------
 
-The following diagram intends to provide an overview of the actions executed by phpDocumentor when generating a complete
-set of documentation from start to finish.
+The following diagram intends to provide an overview of the actions executed by phpDocumentor when generating a
+complete set of documentation from start to finish.
+
+As can be seen in the :doc:`introduction` do all packages play a role in the complete execution of the application
+and is depicted in this diagram, even though some packages may be mentioned concisely for brevity and readability.
+
+Each individual component's flow will be described in their own chapter further on in this manual, these diagrams
+will also contain more detail specific to that component.
 
 Each activity is tagged with a color code that corresponds with the phase during which it is executed.
 The following colors are used:

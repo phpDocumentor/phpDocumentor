@@ -1,5 +1,5 @@
-Transformer
-===========
+Compiler
+========
 
 phpDocumentor's Transformer component encapsulates the following processes:
 
