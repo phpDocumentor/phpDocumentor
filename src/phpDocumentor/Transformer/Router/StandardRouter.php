@@ -31,9 +31,42 @@ class StandardRouter extends RouterAbstract
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
         $classGenerator     = new UrlGenerator\Standard\ClassDescriptor();
 
-        $this[] = new Rule(function ($node) { return ($node instanceof NamespaceDescriptor); }, $namespaceGenerator);
-        $this[] = new Rule(function ($node) { return ($node instanceof ClassDescriptor); }, $classGenerator);
-        $this[] = new Rule(function ($node) { return ($node instanceof InterfaceDescriptor); }, $classGenerator);
-        $this[] = new Rule(function ($node) { return ($node instanceof TraitDescriptor); }, $classGenerator);
+        $this[] = new Rule(
+            function ($node) {
+                return ($node instanceof NamespaceDescriptor);
+            },
+            $namespaceGenerator
+        );
+
+        $this[] = new Rule(
+            function ($node) {
+                return ($node instanceof ClassDescriptor);
+            },
+            $classGenerator
+        );
+
+        $this[] = new Rule(
+            function ($node) {
+                return ($node instanceof InterfaceDescriptor);
+            },
+            $classGenerator
+        );
+
+        $this[] = new Rule(
+            function ($node) {
+                return ($node instanceof TraitDescriptor);
+            },
+            $classGenerator
+        );
+
+        // do not generate a file for every unknown type
+        $this[] = new Rule(
+            function ($node) {
+                return true;
+            },
+            function(){
+                return false;
+            }
+        );
     }
 }

@@ -9,14 +9,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Linker\Rule;
+namespace phpDocumentor\Compiler\Pass;
 
-use phpDocumentor\Compiler\Linker\Rule;
+use \Mockery as m;
 
 /**
- * Linker rule instructing the linker to analyse a given field as a collection.
+ * Tests the functionality for the Debug Pass
  */
-class Analyse extends Rule
+class Debug extends \PHPUnit_Framework_TestCase
 {
 
 }

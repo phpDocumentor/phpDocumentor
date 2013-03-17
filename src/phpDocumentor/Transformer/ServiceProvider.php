@@ -19,6 +19,7 @@ use phpDocumentor\Command\Template\ListCommand;
 use phpDocumentor\Command\Template\PackageCommand;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
+use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 
 /**
@@ -46,22 +47,34 @@ class ServiceProvider implements ServiceProviderInterface
 
         // parameters
         $app['transformer.template.location'] = __DIR__ . '/../../../data/templates';
+        $app['linker.substitutions'] = array(
+            '\phpDocumentor\Descriptor\ProjectDescriptor' => array('files'),
+            '\phpDocumentor\Descriptor\FileDescriptor'    => array('classes'),
+            '\phpDocumentor\Descriptor\ClassDescriptor'   => array('parentClass')
+        );
 
         // services
+        $app['compiler.pass.debug'] = $app->share(
+            function ($container) {
+                return new Debug($container['monolog']);
+            }
+        );
+
         $app['compiler'] = $app->share(
             function ($container) {
                 $compiler = new Compiler();
                 $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
                 $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
+                $compiler->insert($container['compiler.pass.debug'], Debug::COMPILER_PRIORITY);
 
                 return $compiler;
             }
         );
 
         $app['linker'] = $app->share(
-            function () {
-                return new Linker();
+            function ($app) {
+                return new Linker($app['linker.substitutions']);
             }
         );
 

@@ -297,12 +297,18 @@ class Twig extends WriterAbstract implements Routable
     {
         $writer = $this;
 
+        if (!$node) {
+            throw new \UnexpectedValueException(
+                'The transformation node in the twig writer is not expected to be false or null'
+            );
+        }
+
         if (!$transformation->getArtifact()) {
             $rule = $this->routers->match($node);
             if (!$rule) {
                 throw new \InvalidArgumentException(
                     'No matching routing rule could be found for the given node, please provide an artifact location, '
-                    . 'encountered: '.get_class($node)
+                    . 'encountered: ' . ($node === null ? 'NULL' : get_class($node))
                 );
             }
 
