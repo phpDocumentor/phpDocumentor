@@ -30,9 +30,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  *
  * As can be seen in the above example is it possible to analyse a tree structure and substitute FQSENs where
  * encountered.
- *
- * @see Rule\Substitute for more information on substitution
- * @see Rule\Analyse for more information on tree analysis.
  */
 class Linker implements CompilerPassInterface
 {
@@ -122,12 +119,12 @@ class Linker implements CompilerPassInterface
 
         foreach ($fieldNames as $fieldName) {
             $fqsen  = $this->findFqsen($object, $fieldName);
-            if (is_object($fqsen)) {
-                $this->substitute($fqsen);
-            } elseif ($fqsen instanceof \Traversable || is_array($fqsen)) {
+            if ($fqsen instanceof \Traversable || is_array($fqsen)) {
                 foreach ($fqsen as $childObject) {
                     $this->substitute($childObject);
                 }
+            } elseif (is_object($fqsen)) {
+                $this->substitute($fqsen);
             } elseif (is_string($fqsen)) {
                 $result = $this->findAlias($fqsen);
 
