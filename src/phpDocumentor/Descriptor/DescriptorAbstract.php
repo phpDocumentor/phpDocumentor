@@ -90,7 +90,7 @@ abstract class DescriptorAbstract
     }
 
     /**
-     * @return NamespaceDescriptor|null
+     * @return NamespaceDescriptor|string|null
      */
     public function getNamespace()
     {

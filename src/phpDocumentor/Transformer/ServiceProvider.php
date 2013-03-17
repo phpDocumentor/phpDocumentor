@@ -21,6 +21,7 @@ use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
+use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 
 /**
  * This provider is responsible for registering the transformer component with the given Application.
@@ -54,19 +55,14 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         // services
-        $app['compiler.pass.debug'] = $app->share(
-            function ($container) {
-                return new Debug($container['monolog']);
-            }
-        );
-
         $app['compiler'] = $app->share(
             function ($container) {
                 $compiler = new Compiler();
                 $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
+                $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
                 $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
-                $compiler->insert($container['compiler.pass.debug'], Debug::COMPILER_PRIORITY);
+                $compiler->insert(new Debug($container['monolog']), Debug::COMPILER_PRIORITY);
 
                 return $compiler;
             }
