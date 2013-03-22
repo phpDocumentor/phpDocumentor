@@ -89,4 +89,4 @@ Parameters
     Specify a template name, or a path to a directory where a custom template resides
 
 **--parseprivate**
-    Expose items marked with @internal despite their visibility
+    Parse items marked with @internal despite their visibility
