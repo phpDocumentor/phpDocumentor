@@ -35,10 +35,18 @@ use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
+/**
+ * Populates the project descriptor using the information retrieved from the
+ * Reflection component.
+ *
+ * @see buildFile() to start digesting information.
+ */
 class Reflector extends BuilderAbstract
 {
     /**
-     * @param FileReflector $data
+     * @param FileReflector $data The reflection of a file.
+     *
+     * @uses FileDescriptor to create a representation of the file.
      */
     public function buildFile($data)
     {

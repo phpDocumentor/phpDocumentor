@@ -97,7 +97,6 @@ abstract class DescriptorAbstract
         return $this->namespace;
     }
 
-
     /**
      * @param string $summary
      *

@@ -38,24 +38,48 @@ class ElementsIndexBuilder implements CompilerPassInterface
         $project->getIndexes()->set('elements', $elementCollection);
 
         foreach ($project->getFiles() as $file) {
-            /** @var DescriptorAbstract[] $elements */
-            $elements = array_merge(
-                $file->getConstants()->getAll(),
-                $file->getFunctions()->getAll(),
-                $file->getClasses()->getAll(),
-                $file->getInterfaces()->getAll(),
-                $file->getTraits()->getAll()
-            );
+            /** @var DescriptorAbstract $element */
+            foreach ($file->getConstants()->getAll() as $element) {
+                $project->getIndexes()->get('constants', new Collection())->add($element);
+                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
+            }
 
-            foreach ($elements as $element) {
+            /** @var DescriptorAbstract $element */
+            foreach ($file->getFunctions()->getAll() as $element) {
+                $project->getIndexes()->get('functions', new Collection())->add($element);
+                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
+            }
+
+            /** @var DescriptorAbstract $element */
+            foreach ($file->getClasses()->getAll() as $element) {
+                $project->getIndexes()->get('classes', new Collection())->add($element);
                 $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
 
-                // process all sub-elements as well
-                $subElements = $this->getSubElements($element);
-                foreach ($subElements as $subElement) {
+                foreach ($this->getSubElements($element) as $subElement) {
                     $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
                 }
             }
+
+            /** @var DescriptorAbstract $element */
+            foreach ($file->getInterfaces()->getAll() as $element) {
+                $project->getIndexes()->get('interfaces', new Collection())->add($element);
+                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
+
+                foreach ($this->getSubElements($element) as $subElement) {
+                    $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
+                }
+            }
+
+            /** @var DescriptorAbstract $element */
+            foreach ($file->getTraits()->getAll() as $element) {
+                $project->getIndexes()->get('traits', new Collection())->add($element);
+                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
+
+                foreach ($this->getSubElements($element) as $subElement) {
+                    $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
+                }
+            }
+
         }
     }
 

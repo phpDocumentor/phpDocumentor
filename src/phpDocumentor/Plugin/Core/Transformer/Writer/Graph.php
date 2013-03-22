@@ -52,7 +52,7 @@ class Graph extends WriterAbstract
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $type_method = 'process' . ucfirst($transformation->getSource());
-        $this->$type_method($project, $transformation);
+//        $this->$type_method($project, $transformation);
     }
 
     /**
