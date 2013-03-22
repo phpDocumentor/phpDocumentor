@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use \phpDocumentor\PHPUnit;
+
 /**
  * Checkstyle transformation writer test suite
  */
@@ -34,7 +36,7 @@ class CheckstyleTest extends \PHPUnit_Framework_TestCase
         $structure, $expected
     ) {
         $tr = new \phpDocumentor\Transformer\Transformer();
-        $tr->setTarget('/tmp');
+        $tr->setTarget(PHPUnit\TEMP_DIR);
         $t = new \phpDocumentor\Transformer\Transformation(
             $tr, '', 'Checkstyle', '', '/checkstyle.xml'
         );
@@ -48,8 +50,8 @@ class CheckstyleTest extends \PHPUnit_Framework_TestCase
         $writer = new Checkstyle();
         $writer->transform($document, $t);
 
-        $this->assertFileExists('/tmp/checkstyle.xml');
-        $actual = file_get_contents('/tmp/checkstyle.xml');
+        $this->assertFileExists(PHPUnit\TEMP_DIR . '/checkstyle.xml');
+        $actual = file_get_contents(PHPUnit\TEMP_DIR . '/checkstyle.xml');
         $this->assertEquals($expected, $actual);
     }
 

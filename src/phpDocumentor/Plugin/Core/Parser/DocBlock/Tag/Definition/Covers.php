@@ -28,5 +28,4 @@ namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Tag\Definition;
  */
 class Covers extends See
 {
-
 }

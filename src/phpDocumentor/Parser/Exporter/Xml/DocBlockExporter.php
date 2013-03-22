@@ -49,7 +49,7 @@ class DocBlockExporter
         $parent->appendChild($child);
 
         // TODO: custom attached member variable, make real
-        $child->setAttribute('line', $docblock->line_number);
+        $child->setAttribute('line', $docblock->getLocation()->getLineNumber());
 
         $this->addDescription($child, $docblock);
         $this->addLongDescription($child, $docblock);
@@ -68,12 +68,8 @@ class DocBlockExporter
      */
     protected function addDescription(\DOMElement $node, DocBlock $docblock)
     {
-        $cdata = $node->ownerDocument->createCDATASection(
-            $docblock->getShortDescription()
-        );
-        $description = new \DOMElement('description');
-        $node->appendChild($description);
-        $description->appendChild($cdata);
+        $node->appendChild(new \DOMElement('description'))
+            ->appendChild(new \DOMText($docblock->getShortDescription()));
     }
 
     /**
@@ -84,15 +80,13 @@ class DocBlockExporter
      *
      * @return void
      */
-    protected function addLongDescription(
-        \DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock
-    ) {
-        $contents = $docblock->getLongDescription()->getFormattedContents();
-        $node = $child->ownerDocument->createCDATASection($contents);
-
-        $element = new \DOMElement('long-description');
-        $child->appendChild($element);
-        $element->appendChild($node);
+    protected function addLongDescription(\DOMElement $child, \phpDocumentor\Reflection\DocBlock $docblock)
+    {
+        $child
+            ->appendChild(new \DOMElement('long-description'))
+            ->appendChild(
+                new \DOMText($docblock->getLongDescription()->getFormattedContents())
+            );
     }
 
     /**
@@ -128,9 +122,8 @@ class DocBlockExporter
      *
      * @return void
      */
-    protected function setParentsPackage(
-        \DOMElement $parent, DocBlock $docblock, $element
-    ) {
+    protected function setParentsPackage(\DOMElement $parent, DocBlock $docblock, $element)
+    {
         /** @var \phpDocumentor\Reflection\DocBlock\Tag $package */
         $package = current($docblock->getTagsByName('package'));
 
@@ -142,8 +135,7 @@ class DocBlockExporter
             $package_name = str_replace(
                 array('.', '_'),
                 '\\',
-                $package->getContent()
-                . ($subpackage ? '\\' . $subpackage->getContent() : '')
+                $package->getContent() . ($subpackage ? '\\' . $subpackage->getContent() : '')
             );
         }
 
@@ -153,5 +145,4 @@ class DocBlockExporter
 
         $parent->setAttribute('package', $package_name);
     }
-
 }

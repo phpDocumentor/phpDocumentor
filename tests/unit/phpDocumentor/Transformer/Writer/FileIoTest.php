@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use \phpDocumentor\PHPUnit;
+
 /**
  * Tests whether the File IO writer properly copies the given source files.
  */
@@ -41,17 +43,17 @@ class FileIoTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteQueryCopy()
     {
-        touch('/tmp/phpdoc_a');
-        @unlink('/tmp/phpdoc_b');
-        $this->assertFileExists('/tmp/phpdoc_a');
-        $this->assertFileNotExists('/tmp/phpdoc_b');
+        touch(PHPUnit\TEMP_DIR . '/phpdoc_a');
+        @unlink(PHPUnit\TEMP_DIR . '/phpdoc_b');
+        $this->assertFileExists(PHPUnit\TEMP_DIR . '/phpdoc_a');
+        $this->assertFileNotExists(PHPUnit\TEMP_DIR . '/phpdoc_b');
 
         $transformer = new \phpDocumentor\Transformer\Transformer();
-        $transformer->setTarget('/tmp');
+        $transformer->setTarget(PHPUnit\TEMP_DIR);
         try
         {
             $transformation = new \phpDocumentor\Transformer\Transformation(
-                $transformer, 'copy', 'FileIo', '/tmp/phpdoc_b', 'phpdoc_c'
+                $transformer, 'copy', 'FileIo', PHPUnit\TEMP_DIR . '/phpdoc_b', 'phpdoc_c'
             );
             $this->fixture->transform(new \DOMDocument(), $transformation);
 
@@ -95,8 +97,8 @@ class FileIoTest extends \PHPUnit_Framework_TestCase
             .'the test code should be adapted'
         );
 
-        unlink('/tmp/phpdoc_a');
-        unlink('/tmp/phpdoc_b');
+        unlink(PHPUnit\TEMP_DIR . '/phpdoc_a');
+        unlink(PHPUnit\TEMP_DIR . '/phpdoc_b');
     }
 
     /**
@@ -110,18 +112,18 @@ class FileIoTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteTransform()
     {
-        touch('/tmp/phpdoc_a');
-        @unlink('/tmp/phpdoc_b');
-        $this->assertFileExists('/tmp/phpdoc_a');
-        $this->assertFileNotExists('/tmp/phpdoc_b');
+        touch(PHPUnit\TEMP_DIR . '/phpdoc_a');
+        @unlink(PHPUnit\TEMP_DIR . '/phpdoc_b');
+        $this->assertFileExists(PHPUnit\TEMP_DIR . '/phpdoc_a');
+        $this->assertFileNotExists(PHPUnit\TEMP_DIR . '/phpdoc_b');
 
         $transformer = new \phpDocumentor\Transformer\Transformer();
-        $transformer->setTarget('/tmp');
+        $transformer->setTarget(PHPUnit\TEMP_DIR);
 
         try
         {
             $transformation = new \phpDocumentor\Transformer\Transformation(
-                $transformer, 'copyz', 'FileIo', '/tmp/phpdoc_a', 'phpdoc_b'
+                $transformer, 'copyz', 'FileIo', PHPUnit\TEMP_DIR . '/phpdoc_a', 'phpdoc_b'
             );
             $this->fixture->transform(new \DOMDocument(), $transformation);
 
@@ -139,7 +141,7 @@ class FileIoTest extends \PHPUnit_Framework_TestCase
             .'the test code should be adapted'
         );
 
-        unlink('/tmp/phpdoc_a');
-        unlink('/tmp/phpdoc_b');
+        unlink(PHPUnit\TEMP_DIR . '/phpdoc_a');
+        unlink(PHPUnit\TEMP_DIR . '/phpdoc_b');
     }
 }

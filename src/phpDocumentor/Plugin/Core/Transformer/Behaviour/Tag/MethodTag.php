@@ -123,5 +123,4 @@ class MethodTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         return $xml;
     }
-
 }

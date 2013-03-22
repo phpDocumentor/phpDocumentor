@@ -146,10 +146,7 @@ class Transformer extends TransformerAbstract
         } else {
             $path = realpath($source);
             if (!file_exists($path) || !is_readable($path) || !is_file($path)) {
-                throw new \InvalidArgumentException(
-                    'Given source (' . $source . ') does not exist or is not '
-                    . 'readable'
-                );
+                throw new \InvalidArgumentException('Given source (' . $source . ') does not exist or is not readable');
             }
 
             // convert to dom document so that the writers do not need to
@@ -380,13 +377,8 @@ class Transformer extends TransformerAbstract
             $name = substr($name, 0, -4);
         }
 
-        return trim(
-            str_replace(
-                array(DIRECTORY_SEPARATOR, '\\'),
-                '.',
-                trim($name, DIRECTORY_SEPARATOR . '.')
-            ), '.'
-        ) . '.html';
+        return trim(str_replace(array(DIRECTORY_SEPARATOR, '\\'), '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
+            . '.html';
     }
 
     /**
@@ -519,5 +511,4 @@ class Transformer extends TransformerAbstract
 
         return null;
     }
-
 }

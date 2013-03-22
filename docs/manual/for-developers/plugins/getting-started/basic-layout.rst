@@ -14,9 +14,7 @@ phpDocumentor itself):
 * Post-processing of transformed files
 * Enhancing logging
 
-The following sections will provide a high-level overview of plugins. The above
-are short examples of use; a full explanation can be found in the `Recipes`_
-chapter.
+The following sections will provide a high-level overview of plugins.
 
 Dependencies
 ------------

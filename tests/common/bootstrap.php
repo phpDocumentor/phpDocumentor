@@ -10,7 +10,13 @@
  * @link      http://phpdoc.org
  */
 
-require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
+/**
+ * @uses \phpDocumentor\Bootstrap
+ */
 require_once __DIR__ . '/../../src/phpDocumentor/Bootstrap.php';
 \phpDocumentor\Bootstrap::createInstance()->initialize();
+
+if (!defined('phpDocumentor\PHPUnit\TEMP_DIR')) {
+    define('phpDocumentor\PHPUnit\TEMP_DIR', realpath(sys_get_temp_dir()));
+}

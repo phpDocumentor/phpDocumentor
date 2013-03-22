@@ -43,9 +43,7 @@ class ClassValidator extends ValidatorAbstract
         $valid = true;
 
         if (null === $this->docblock) {
-            $this->logParserError(
-                'ERROR', 50000, $this->lineNumber, array($this->entityName)
-            );
+            $this->logParserError('ERROR', 50000, $this->lineNumber, array($this->entityName));
             return false;
         }
 
@@ -69,9 +67,7 @@ class ClassValidator extends ValidatorAbstract
         if ('' === $this->docblock->getShortDescription()
             && substr(get_class($this), -15) == '\ClassValidator'
         ) {
-            $this->logParserError(
-                'CRITICAL', 50005, $this->lineNumber, array($this->entityName)
-            );
+            $this->logParserError('CRITICAL', 50005, $this->lineNumber, array($this->entityName));
             $valid = false;
         }
 

@@ -41,10 +41,8 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
      *
      * @return void
      */
-    public function transform(
-        \DOMDocument $structure,
-        \phpDocumentor\Transformer\Transformation $transformation
-    ) {
+    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    {
         if (!class_exists('XSLTProcessor')) {
             throw new \phpDocumentor\Plugin\Core\Exception(
                 'The XSL writer was unable to find your XSLTProcessor; '
@@ -66,21 +64,11 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
             );
         }
 
-        $proc->setParameter(
-            '', 'title', $structure->documentElement->getAttribute('title')
-        );
-        $proc->setParameter(
-            '', 'root',
-            str_repeat('../', substr_count($transformation->getArtifact(), '/'))
-        );
-        $proc->setParameter(
-            '', 'search_template', $transformation->getParameter('search', 'none')
-        );
+        $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
+        $proc->setParameter('', 'root', str_repeat('../', substr_count($transformation->getArtifact(), '/')));
+        $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
         $proc->setParameter('', 'version', \phpDocumentor\Application::VERSION);
-        $proc->setParameter(
-            '', 'generated_datetime', date('r')
-        );
-
+        $proc->setParameter('', 'generated_datetime', date('r'));
 
         // check parameters for variables and add them when found
         $this->setProcessorParameters($transformation, $proc);
@@ -107,20 +95,13 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                     $element->nodeValue
                 );
 
-                $filename = str_replace(
-                    '{$' . $element->nodeName . '}', $file_name, $artifact
-                );
-                $this->log(
-                    'Processing the file: ' . $element->nodeValue
-                    . ' as ' . $filename
-                );
+                $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
+                $this->log('Processing the file: ' . $element->nodeValue . ' as ' . $filename);
 
                 if (!file_exists(dirname($filename))) {
                     mkdir(dirname($filename), 0755, true);
                 }
-                $proc->transformToURI(
-                    $structure, $this->getXsltUriFromFilename($filename)
-                );
+                $proc->transformToURI($structure, $this->getXsltUriFromFilename($filename));
             }
         } else {
             if (substr($transformation->getArtifact(), 0, 1) == '$') {
@@ -132,9 +113,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 if (!file_exists(dirname($artifact))) {
                     mkdir(dirname($artifact), 0755, true);
                 }
-                $proc->transformToURI(
-                    $structure, $this->getXsltUriFromFilename($artifact)
-                );
+                $proc->transformToURI($structure, $this->getXsltUriFromFilename($artifact));
             }
         }
     }
@@ -197,5 +176,4 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
             }
         }
     }
-
 }

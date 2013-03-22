@@ -70,7 +70,7 @@ abstract class NodeAbstract
      * @param \DOMElement|ClassNode $node         Node to search in.
      * @param string                $element_name Name of the element to find.
      *
-     * @return DOMElement[]
+     * @return \DOMElement[]
      */
     protected function getDirectElementsByTagName($node, $element_name)
     {
@@ -116,7 +116,7 @@ abstract class NodeAbstract
      *
      * @return mixed
      */
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
         return call_user_func_array(array($this->node, $name), $arguments);
     }

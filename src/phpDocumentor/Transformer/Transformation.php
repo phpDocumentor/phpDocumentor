@@ -55,9 +55,8 @@ class Transformation extends TransformerAbstract
      * @param string      $artifact    What is the filename of the result
      *     (relative to the generated root)
      */
-    public function __construct(
-        Transformer $transformer, $query, $writer, $source, $artifact
-    ) {
+    public function __construct(Transformer $transformer, $query, $writer, $source, $artifact)
+    {
         $this->setTransformer($transformer);
         $this->setQuery($query);
         $this->setWriter($writer);
@@ -332,9 +331,8 @@ class Transformation extends TransformerAbstract
      *
      * @return Transformation
      */
-    public static function createFromArray(
-        Transformer $transformer, array $transformation
-    ) {
+    public static function createFromArray(Transformer $transformer, array $transformation)
+    {
         // check if all required items are present
         if (!array_key_exists('query', $transformation)
             || !array_key_exists('writer', $transformation)
@@ -362,5 +360,4 @@ class Transformation extends TransformerAbstract
 
         return $transformation_obj;
     }
-
 }

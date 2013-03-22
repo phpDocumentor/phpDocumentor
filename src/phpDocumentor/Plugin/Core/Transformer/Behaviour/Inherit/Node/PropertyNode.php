@@ -41,9 +41,8 @@ class PropertyNode extends NodeAbstract
      * @param array       &$nodes List of classes/interface elements
      * @param ClassNode   $class  Class to which this property belongs.
      */
-    public function __construct(
-        \DOMElement $node, array &$nodes, ClassNode $class
-    ) {
+    public function __construct(\DOMElement $node, array &$nodes, ClassNode $class)
+    {
         parent::__construct($node, $nodes);
 
         $this->class = $class;
@@ -56,9 +55,7 @@ class PropertyNode extends NodeAbstract
      */
     public function getName()
     {
-        return current(
-            $this->getDirectElementsByTagName($this->node, 'name')
-        )->nodeValue;
+        return current($this->getDirectElementsByTagName($this->node, 'name'))->nodeValue;
     }
 
     /**
@@ -68,7 +65,7 @@ class PropertyNode extends NodeAbstract
      *
      * @return void
      */
-    function copyTo(ClassNode $class_or_interface)
+    public function copyTo(ClassNode $class_or_interface)
     {
         // self returns this specific class and not the class of the current
         // object; thus we use get_class to retrieve it.
@@ -145,5 +142,4 @@ class PropertyNode extends NodeAbstract
             new \DOMElement('override_from', $this->class->getFQCN())
         );
     }
-
 }

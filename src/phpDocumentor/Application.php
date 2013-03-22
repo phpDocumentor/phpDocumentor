@@ -17,7 +17,9 @@ namespace phpDocumentor;
  */
 require_once findAutoloader();
 
-use \Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Cilex\Application as Cilex;
+use Cilex\Provider\MonologServiceProvider;
 
 /**
  * Application class for phpDocumentor.
@@ -28,14 +30,14 @@ use \Symfony\Component\Console\Input\InputInterface;
  * @license http://www.opensource.org/licenses/mit-license.php MIT
  * @link    http://phpdoc.org
  */
-class Application extends \Cilex\Application
+class Application extends Cilex
 {
-    const VERSION = '2.0.0a10';
+    const VERSION = '2.0.0a13';
 
     /**
      * Initializes all components used by phpDocumentor.
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct('phpDocumentor', self::VERSION);
 
@@ -52,7 +54,7 @@ class Application extends \Cilex\Application
 
         $this->addCommandsForProjectNamespace();
         $this->addCommandsForTemplateNamespace();
-        $this->addCommandsForTemplateNamespace();
+        $this->addCommandsForPluginNamespace();
     }
 
     /**
@@ -124,7 +126,7 @@ class Application extends \Cilex\Application
     protected function addLogging()
     {
         $this->register(
-            new \Cilex\Provider\MonologServiceProvider(),
+            new MonologServiceProvider(),
             array(
                 'monolog.name'    => 'phpDocumentor',
                 'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
@@ -143,8 +145,7 @@ class Application extends \Cilex\Application
      */
     public function setTimezone()
     {
-        if (false === ini_get('date.timezone')
-            || (version_compare(phpversion(), '5.4.0', '<')
+        if (false === ini_get('date.timezone') || (version_compare(phpversion(), '5.4.0', '<')
             && false === getenv('TZ'))
         ) {
             date_default_timezone_set('UTC');
@@ -167,9 +168,9 @@ class Application extends \Cilex\Application
     {
         $this['config'] = $this->share(
             function () {
-                $user_config_file = (file_exists('phpdoc.xml'))
-                    ? 'phpdoc.xml'
-                    : 'phpdoc.dist.xml';
+                $user_config_file = (file_exists(getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'))
+                    ? getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'
+                    : getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.dist.xml';
                 $config_files = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
                 if (is_readable($user_config_file)) {
                     $config_files[] = $user_config_file;
@@ -210,7 +211,9 @@ class Application extends \Cilex\Application
         $this['plugin_manager'] = $this->share(
             function () use ($app) {
                 $manager = new \phpDocumentor\Plugin\Manager(
-                    $app['event_dispatcher'], $app['config'], $app['autoloader']
+                    $app['event_dispatcher'],
+                    $app['config'],
+                    $app['autoloader']
                 );
                 return $manager;
             }

@@ -39,9 +39,8 @@ class ArgumentExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $argument, \DOMElement $child = null
-    ) {
+    public function export(\DOMElement $parent, $argument, \DOMElement $child = null)
+    {
         if (!$child) {
             $child = new \DOMElement('argument');
             $parent->appendChild($child);
@@ -49,17 +48,10 @@ class ArgumentExporter
 
         $child->setAttribute('line', $argument->getLineNumber());
         $child->appendChild(new \DOMElement('name', $argument->getName()));
-        $default = new \DOMElement('default');
-        $child->appendChild($default);
-
-        /** @var \DOMDocument $dom_document */
-        $dom_document = $child->ownerDocument;
-
-        $default->appendChild(
-            $dom_document->createCDATASection($argument->getDefault())
-        );
+        $child->appendChild(new \DOMElement('default'))
+            ->appendChild(new \DOMText($argument->getDefault()));
 
         $type = $argument->getType();
-        $child->appendChild(new \DOMElement('type',  $type ? $type : ''));
+        $child->appendChild(new \DOMElement('type', $type ? $type : ''));
     }
 }

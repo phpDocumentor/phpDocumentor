@@ -76,14 +76,18 @@ abstract class ValidatorAbstract extends PluginAbstract
      * @param \phpDocumentor\Reflection\DocBlock|null $docblock   Docblock
      * @param \phpDocumentor\Reflection\BaseReflector|null  $source     Source Element.
      */
-    public function __construct($plugin, $name, $docblock = null,
+    public function __construct(
+        $plugin,
+        $name,
+        $docblock = null,
         $source = null
     ) {
         $this->entityName = $name;
         $this->lineNumber = $docblock
-            ? $docblock->line_number : $source->getLineNumber();
+            ? $docblock->getLocation()->getLineNumber()
+            : $source->getLineNumber();
         $this->docblock   = $docblock;
-        $this->source      = $source;
+        $this->source     = $source;
         parent::__construct(
             $plugin->getEventDispatcher(),
             $plugin->getConfiguration(),

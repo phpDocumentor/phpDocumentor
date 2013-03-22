@@ -1,6 +1,11 @@
 IDE Integration
 ===============
 
+FIXME: the images in this chapter are outdated and contain DocBlox references.
+These should be replaces and this document split into sub-documents per IDE.
+
+Als support for Sublime Text, Vim and Eclipse should be added.
+
 phpStorm
 --------
 

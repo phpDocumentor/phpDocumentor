@@ -7,7 +7,7 @@ present that are write-only.
 Syntax
 ------
 
-    @property-write <:term:`Type`> [name] [<description>]
+    @property-write [:term:`Type`] [name] [<description>]
 
 Description
 -----------

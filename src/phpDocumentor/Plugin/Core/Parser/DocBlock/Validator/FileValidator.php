@@ -42,18 +42,14 @@ class FileValidator extends ClassValidator
     {
         $filename = $this->source->getFilename();
         if (!$this->docblock) {
-            $this->logParserError(
-                'ERROR', 50007, $this->lineNumber, array($filename)
-            );
+            $this->logParserError('ERROR', 50007, $this->lineNumber, array($filename));
             return false;
         }
 
         $valid = true;
 
         if ('' === $this->docblock->getShortDescription()) {
-            $this->logParserError(
-                'CRITICAL', 50008, $this->lineNumber, array($this->entityName)
-            );
+            $this->logParserError('CRITICAL', 50008, $this->lineNumber, array($this->entityName));
             $valid = false;
         }
 

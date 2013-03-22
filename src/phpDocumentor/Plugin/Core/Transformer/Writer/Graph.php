@@ -43,10 +43,8 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
      *
      * @return void
      */
-    public function transform(
-        \DOMDocument $structure,
-        \phpDocumentor\Transformer\Transformation $transformation
-    ) {
+    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    {
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
         if ($error != 0) {
@@ -69,9 +67,7 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
         foreach ($qry as $element) {
             $path = $element->getAttribute('generated-path');
             foreach ($element->getElementsByTagName('class') as $class) {
-                $class_paths[
-                    $class->getElementsByTagName('full_name')->item(0)->nodeValue
-                ] = $path;
+                $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
             }
         }
 
@@ -105,8 +101,11 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
      *
      * @return void
      */
-    public function buildNamespaceTree(\phpDocumentor\GraphViz\Graph $graph,
-        \DOMElement $namespace_element, \DOMXPath $xpath, $full_namespace_name
+    public function buildNamespaceTree(
+        \phpDocumentor\GraphViz\Graph $graph,
+        \DOMElement $namespace_element,
+        \DOMXPath $xpath,
+        $full_namespace_name
     ) {
         $namespace = $namespace_element->getAttribute('name');
         $full_namespace_name .= '\\' . $namespace;
@@ -140,9 +139,7 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
 
             if ($sub_element->getAttribute('abstract') == 'true') {
                 $node->setLabel(
-                    '<«abstract»<br/>'
-                    . $sub_element->getElementsByTagName('name')->item(0)->nodeValue
-                    . '>'
+                    '<«abstract»<br/>' . $sub_element->getElementsByTagName('name')->item(0)->nodeValue . '>'
                 );
             }
 
@@ -161,9 +158,7 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
         $graph->addGraph($sub_graph);
 
         foreach ($namespace_element->getElementsByTagName('namespace') as $element) {
-            $this->buildNamespaceTree(
-                $sub_graph, $element, $xpath, $full_namespace_name
-            );
+            $this->buildNamespaceTree($sub_graph, $element, $xpath, $full_namespace_name);
         }
     }
 
@@ -281,5 +276,4 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
 
         $graph->export('svg', $filename);
     }
-
 }

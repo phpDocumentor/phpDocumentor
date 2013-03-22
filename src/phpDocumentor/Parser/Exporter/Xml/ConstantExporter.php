@@ -39,10 +39,8 @@ class ConstantExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $constant,
-        \DOMElement $child = null
-    ) {
+    public function export(\DOMElement $parent, $constant, \DOMElement $child = null)
+    {
         if (!$constant->getName()) {
             return;
         }
@@ -61,22 +59,13 @@ class ConstantExporter
         $child->setAttribute('line', $constant->getLineNumber());
 
         $short_name = method_exists($constant, 'getShortName')
-            ? $constant->getShortName() : $constant->getName();
+            ? $constant->getShortName()
+            : $constant->getName();
 
         $child->appendChild(new \DOMElement('name', $short_name));
-        $child->appendChild(
-            new \DOMElement('full_name', $constant->getName())
-        );
+        $child->appendChild(new \DOMElement('full_name', $constant->getName()));
 
-        $value = new \DOMElement('value');
-        $child->appendChild($value);
-
-        /** @var \DOMDocument $dom_document */
-        $dom_document = $child->ownerDocument;
-
-        $value->appendChild(
-            $dom_document->createCDATASection($constant->getValue())
-        );
+        $child->appendChild(new \DOMElement('value'))->appendChild(new \DOMText($constant->getValue()));
 
         $object = new DocBlockExporter();
         $constant->setDefaultPackageName($parent->getAttribute('package'));

@@ -1,5 +1,5 @@
 <?php
-include('NamespaceTest.php');
+include('NamespaceTestData.php');
 include('../../src/phpDocumentor/Token.php');
 
 class TypesTest

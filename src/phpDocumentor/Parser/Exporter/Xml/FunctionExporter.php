@@ -29,10 +29,8 @@ class FunctionExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $function,
-        \DOMElement $child = null
-    ) {
+    public function export(\DOMElement $parent, $function, \DOMElement $child = null)
+    {
         if (!$child) {
             $child = new \DOMElement('function');
             $parent->appendChild($child);

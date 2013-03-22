@@ -58,36 +58,36 @@ class CoversTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             }
 
             switch($type) {
-            case 'class':
-                // escape single quotes in the class name
-                $xpath_refers = 'concat(\''.str_replace(
-                    array("'", '"'),
-                    array('\', "\'", \'', '\', \'"\' , \''),
-                    $refers
-                ) . "', '')";
+                case 'class':
+                    // escape single quotes in the class name
+                    $xpath_refers = 'concat(\''.str_replace(
+                        array("'", '"'),
+                        array('\', "\'", \'', '\', \'"\' , \''),
+                        $refers
+                    ) . "', '')";
 
-                $qry = '/project/file/class[full_name=' . $xpath_refers . ']';
-                break;
-            default:
-                $class_name = $refers_array[0];
+                    $qry = '/project/file/class[full_name=' . $xpath_refers . ']';
+                    break;
+                default:
+                    $class_name = $refers_array[0];
 
-                // escape single quotes in the class name
-                $xpath_class_name = 'concat(\''.str_replace(
-                    array("'", '"'),
-                    array('\', "\'", \'', '\', \'"\' , \''),
-                    $class_name
-                ) . "', '')";
+                    // escape single quotes in the class name
+                    $xpath_class_name = 'concat(\''.str_replace(
+                        array("'", '"'),
+                        array('\', "\'", \'', '\', \'"\' , \''),
+                        $class_name
+                    ) . "', '')";
 
-                // escape single quotes in the method name
-                $xpath_method_name = 'concat(\''.str_replace(
-                    array("'", '"'),
-                    array('\', "\'", \'', '\', \'"\' , \''),
-                    rtrim($refers_array[1], '()')
-                ) . "', '')";
+                    // escape single quotes in the method name
+                    $xpath_method_name = 'concat(\''.str_replace(
+                        array("'", '"'),
+                        array('\', "\'", \'', '\', \'"\' , \''),
+                        rtrim($refers_array[1], '()')
+                    ) . "', '')";
 
-                $qry = '/project/file/class[full_name=' . $xpath_class_name
-                    . ']/'.$type.'[name=' . $xpath_method_name .']';
-                break;
+                    $qry = '/project/file/class[full_name=' . $xpath_class_name
+                        . ']/'.$type.'[name=' . $xpath_method_name .']';
+                    break;
             }
 
             // get the nodes; we are unable to work around the
@@ -98,8 +98,8 @@ class CoversTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             // the next @covers
             if ($referral_nodes === false) {
                 $this->log(
-                    'An XPath error occurs while processing @covers, '
-                    . 'the query used was: ' . $qry, \phpDocumentor\Plugin\Core\Log::CRIT
+                    'An XPath error occurs while processing @covers, the query used was: ' . $qry,
+                    \phpDocumentor\Plugin\Core\Log::CRIT
                 );
                 continue;
             }
@@ -174,5 +174,4 @@ class CoversTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         return $xml;
     }
-
 }

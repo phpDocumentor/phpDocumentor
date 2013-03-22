@@ -113,9 +113,7 @@ class Dispatcher extends Symfony\EventDispatcher
      */
     public function connect($eventName, $listener)
     {
-        trigger_error(
-            'The method "connect" will be removed in 2.0.0', E_USER_DEPRECATED
-        );
+        trigger_error('The method "connect" will be removed in 2.0.0', E_USER_DEPRECATED);
         $this->addListener($eventName, $listener);
     }
 }

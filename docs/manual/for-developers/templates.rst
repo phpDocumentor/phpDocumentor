@@ -94,28 +94,28 @@ phpDocumentor supports a number of writers:
 .. toctree::
    :maxdepth: 1
 
-   Writers/FileIO
+   templates/writers/fileio
 
 *HTML Rendering*
 
 .. toctree::
    :maxdepth: 1
 
-   Writers/Xsl
-   Writers/Twig
-   Writers/Sourcecode
-   Writers/Search
+   templates/writers/xsl
+   templates/writers/twig
+   templates/writers/sourcecode
+   templates/writers/search
 
 *XML Rendering*
 
 .. toctree::
    :maxdepth: 1
 
-   Writers/Checkstyle
+   templates/writers/checkstyle
 
 *Graph rendering*
 
 .. toctree::
    :maxdepth: 1
 
-   Writers/Graph
+   templates/writers/graph

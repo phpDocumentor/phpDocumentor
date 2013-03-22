@@ -50,7 +50,7 @@ class ClassNode extends NodeAbstract
      *
      * @return string
      */
-    function getFQCN()
+    public function getFQCN()
     {
         return $this->node->getElementsByTagName('full_name')->item(0)->nodeValue;
     }
@@ -60,7 +60,7 @@ class ClassNode extends NodeAbstract
      *
      * @return string
      */
-    function getSuperclassName()
+    public function getSuperclassName()
     {
         $parent = $this->node->getElementsByTagName('extends');
         return $parent->length > 0 ? $parent->item(0)->nodeValue : '';
@@ -71,7 +71,7 @@ class ClassNode extends NodeAbstract
      *
      * @return string[]
      */
-    function getInterfacesNames()
+    public function getInterfacesNames()
     {
         $result = array();
         $interfaces = $this->node->getElementsByTagName('implements');
@@ -280,18 +280,10 @@ class ClassNode extends NodeAbstract
 
         $node_name = new \DOMElement('name', $method->getName());
         $method_node->appendChild($node_name);
-        $method_node->setAttribute(
-            'final', $method->isFinal() ? 'true' : 'false'
-        );
-        $method_node->setAttribute(
-            'abstract', $method->isAbstract() ? 'true' : 'false'
-        );
-        $method_node->setAttribute(
-            'static', $method->isStatic() ? 'true' : 'false'
-        );
-        $method_node->setAttribute(
-            'visibility', $method->isPublic() ? 'public' : 'protected'
-        );
+        $method_node->setAttribute('final', $method->isFinal() ? 'true' : 'false');
+        $method_node->setAttribute('abstract', $method->isAbstract() ? 'true' : 'false');
+        $method_node->setAttribute('static', $method->isStatic() ? 'true' : 'false');
+        $method_node->setAttribute('visibility', $method->isPublic() ? 'public' : 'protected');
 
         $method_obj = new MethodNode($method_node, $this->nodes, $this);
 
@@ -313,34 +305,6 @@ class ClassNode extends NodeAbstract
     }
 
     /**
-     * Reflect an external class and inherit its children.
-     *
-     * This method is used when the parent class is not any of the files that
-     * were parsed by phpDocumentor but is obtainable in the path. For these files
-     * we want to import their methods so that the overview is complete.
-     *
-     * Examples of such classes are classes that are in PHP Core (i.e. Exception)
-     * or available via PECL extensions.
-     *
-     * @param string $parent_class_name FQCL of the external class.
-     *
-     * @todo consider moving this to a separate object?
-     *
-     * @return void
-     */
-    protected function reflectExternalClass($parent_class_name)
-    {
-        if (@class_exists($parent_class_name)) {
-            $refl = new \ReflectionClass($parent_class_name);
-
-            /** @var \ReflectionMethod $method */
-            foreach ($refl->getMethods() as $method) {
-                $this->importReflectedMethod($method);
-            }
-        }
-    }
-
-    /**
      * Traverse through each parent interface and class and inherit its children.
      *
      * @param null $parent is not used in this method. Only there because it is
@@ -356,15 +320,10 @@ class ClassNode extends NodeAbstract
             }
         }
 
-        if ($this->getSuperclassName()) {
-            if (!isset($this->nodes[$this->getSuperclassName()])) {
-                $this->reflectExternalClass($this->getSuperclassName());
-            } else {
-                $this->inheritClassObject($this->nodes[$this->getSuperclassName()]);
-            }
+        if (isset($this->nodes[$this->getSuperclassName()])) {
+            $this->inheritClassObject($this->nodes[$this->getSuperclassName()]);
         }
 
         $this->is_processed = true;
     }
-
 }

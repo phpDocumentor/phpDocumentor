@@ -5,7 +5,6 @@ Command reference
    :maxdepth: 2
 
    commands/project_run
-   commands/project_list
    commands/project_parse
    commands/project_transform
    commands/template_generate

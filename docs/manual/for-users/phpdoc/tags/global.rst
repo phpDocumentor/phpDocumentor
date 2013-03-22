@@ -20,8 +20,8 @@ usage.
 Syntax
 ------
 
-    @global :term:`Type` $name
-    @global :term:`Type` description
+    @global [:term:`Type`] [name]
+    @global [:term:`Type`] [description]
 
 Description
 -----------

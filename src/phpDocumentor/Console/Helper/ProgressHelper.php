@@ -138,7 +138,9 @@ class ProgressHelper extends Helper
      * @return void
      */
     public function start(
-        OutputInterface $output, $max = null, array $options = array()
+        OutputInterface $output,
+        $max = null,
+        array $options = array()
     ) {
         $this->startTime = time();
         $this->current   = 0;
@@ -146,23 +148,23 @@ class ProgressHelper extends Helper
         $this->output    = $output;
 
         switch ($output->getVerbosity()) {
-        case OutputInterface::VERBOSITY_QUIET:
-            $this->options['format'] = self::FORMAT_QUIET_NOMAX;
-            if ($this->max > 0) {
-                $this->options['format'] = self::FORMAT_QUIET;
-            }
-            break;
-        case OutputInterface::VERBOSITY_VERBOSE:
-            $this->options['format'] = self::FORMAT_VERBOSE_NOMAX;
-            if ($this->max > 0) {
-                $this->options['format'] = self::FORMAT_VERBOSE;
-            }
-            break;
-        default:
-            if ($this->max > 0) {
-                $this->options['format'] = self::FORMAT_NORMAL;
-            }
-            break;
+            case OutputInterface::VERBOSITY_QUIET:
+                $this->options['format'] = self::FORMAT_QUIET_NOMAX;
+                if ($this->max > 0) {
+                    $this->options['format'] = self::FORMAT_QUIET;
+                }
+                break;
+            case OutputInterface::VERBOSITY_VERBOSE:
+                $this->options['format'] = self::FORMAT_VERBOSE_NOMAX;
+                if ($this->max > 0) {
+                    $this->options['format'] = self::FORMAT_VERBOSE;
+                }
+                break;
+            default:
+                if ($this->max > 0) {
+                    $this->options['format'] = self::FORMAT_NORMAL;
+                }
+                break;
         }
 
         $this->options = array_merge($this->defaultOptions, $options);
@@ -261,8 +263,6 @@ class ProgressHelper extends Helper
         }
 
         if (isset($this->formatVars['bar'])) {
-            $completeBars = 0;
-            $emptyBars    = 0;
             if ($this->max > 0) {
                 $completeBars = floor($percent * $this->options['barWidth']);
             } else {
@@ -288,16 +288,11 @@ class ProgressHelper extends Helper
 
         if (isset($this->formatVars['elapsed'])) {
             $elapsed = time() - $this->startTime;
-            $vars['elapsed'] = str_pad(
-                $this->humaneTime($elapsed), $this->widths['elapsed'], ' ',
-                STR_PAD_LEFT
-            );
+            $vars['elapsed'] = str_pad($this->humaneTime($elapsed), $this->widths['elapsed'], ' ', STR_PAD_LEFT);
         }
 
         if (isset($this->formatVars['current'])) {
-            $vars['current'] = str_pad(
-                $this->current, $this->widths['current'], ' ', STR_PAD_LEFT
-            );
+            $vars['current'] = str_pad($this->current, $this->widths['current'], ' ', STR_PAD_LEFT);
         }
 
         if (isset($this->formatVars['max'])) {
@@ -305,9 +300,7 @@ class ProgressHelper extends Helper
         }
 
         if (isset($this->formatVars['percent'])) {
-            $vars['percent'] = str_pad(
-                $percent * 100, $this->widths['percent'], ' ', STR_PAD_LEFT
-            );
+            $vars['percent'] = str_pad($percent * 100, $this->widths['percent'], ' ', STR_PAD_LEFT);
         }
 
         return $vars;
@@ -348,8 +341,11 @@ class ProgressHelper extends Helper
      *
      * @return void
      */
-    private function overwrite(OutputInterface $output, $messages,
-        $newline = true, $size = 80
+    private function overwrite(
+        OutputInterface $output,
+        $messages,
+        $newline = true,
+        $size = 80
     ) {
         for ($place = $size; $place > 0; $place--) {
             $output->write("\x08", false);

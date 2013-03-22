@@ -102,5 +102,4 @@ class LicenseTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         return $xml;
     }
-
 }

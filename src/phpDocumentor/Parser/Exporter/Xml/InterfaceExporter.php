@@ -29,9 +29,8 @@ class InterfaceExporter
      *
      * @return void
      */
-    public function export(
-        \DOMElement $parent, $interface, \DOMElement $child = null
-    ) {
+    public function export(\DOMElement $parent, $interface, \DOMElement $child = null)
+    {
         if ($child === null) {
             $child = new \DOMElement('interface');
             $parent->appendChild($child);
@@ -55,6 +54,7 @@ class InterfaceExporter
         }
 
         $object = new DocBlockExporter();
+        $interface->setDefaultPackageName($parent->getAttribute('package'));
         $object->export($child, $interface);
 
         foreach ($interface->getConstants() as $constant) {

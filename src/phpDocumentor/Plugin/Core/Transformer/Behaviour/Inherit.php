@@ -52,7 +52,7 @@ class Inherit extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         $xpath = new \DOMXPath($xml);
 
-        /** @var DOMElement[] $result */
+        /** @var \DOMElement[] $result */
         $result = $xpath->query('/project/file/interface|/project/file/class');
 
         $nodes = array();

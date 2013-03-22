@@ -1,2 +1,1 @@
-@example
-========
+.. include:: ../tags/example.rst

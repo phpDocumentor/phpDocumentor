@@ -111,5 +111,4 @@ class Pdf extends \phpDocumentor\Transformer\Writer\WriterAbstract
             );
         }
     }
-
 }

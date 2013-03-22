@@ -115,9 +115,7 @@ class DocBlockNode extends NodeAbstract
             // if a short description exists in both child and parent; insert the
             // parent's SD when the inline tag {@inheritdoc} is used.
             $desc->nodeValue = htmlspecialchars(
-                str_ireplace(
-                    '{@inheritdoc}', $super_desc->nodeValue, $desc->nodeValue
-                )
+                str_ireplace('{@inheritdoc}', $super_desc->nodeValue, $desc->nodeValue)
             );
         }
     }
@@ -151,9 +149,7 @@ class DocBlockNode extends NodeAbstract
                 // if a long description exists in both child and parent; insert the
                 // parent's LD when the inline tag {@inheritdoc} is used.
                 $desc->nodeValue = htmlspecialchars(
-                    str_ireplace(
-                        '{@inheritdoc}', $super_desc->nodeValue, $desc->nodeValue
-                    )
+                    str_ireplace('{@inheritdoc}', $super_desc->nodeValue, $desc->nodeValue)
                 );
             }
         }
@@ -219,9 +215,8 @@ class DocBlockNode extends NodeAbstract
      *
      * @return void
      */
-    protected function filterSubpackageInheritance(
-        DocBlockNode $parent, array &$tags
-    ) {
+    protected function filterSubpackageInheritance(DocBlockNode $parent, array &$tags)
+    {
         // find the name of the super's package
         /** @var \DOMElement $super_package  */
         $super_package = current($parent->getTagsByName('package'));

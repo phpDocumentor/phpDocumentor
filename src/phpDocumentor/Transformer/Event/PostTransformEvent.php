@@ -21,5 +21,4 @@ namespace phpDocumentor\Transformer\Event;
  */
 class PostTransformEvent extends PreTransformEvent
 {
-
 }

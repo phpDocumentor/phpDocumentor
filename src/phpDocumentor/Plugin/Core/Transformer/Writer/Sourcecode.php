@@ -39,9 +39,8 @@ class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure,
-        \phpDocumentor\Transformer\Transformation $transformation
-    ) {
+    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR
             . ($transformation->getArtifact()
@@ -61,9 +60,7 @@ class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 )
             );
 
-            $root = str_repeat(
-                '../', count(explode(DIRECTORY_SEPARATOR, $filename))
-            );
+            $root = str_repeat('../', count(explode(DIRECTORY_SEPARATOR, $filename)));
             $path = $artifact . DIRECTORY_SEPARATOR . $filename;
             if (!file_exists(dirname($path))) {
                 mkdir(dirname($path), 0755, true);

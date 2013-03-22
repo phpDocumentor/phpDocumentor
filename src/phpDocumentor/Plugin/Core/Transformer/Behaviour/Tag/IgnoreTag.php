@@ -66,5 +66,4 @@ class IgnoreTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
         return $xml;
     }
-
 }

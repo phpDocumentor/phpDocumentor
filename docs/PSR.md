@@ -7,13 +7,13 @@ Author(s):
 
 Acknowledgements:
 
-    The authors wish to thank Chuck Burgess (@ashnazg),
-    Gary Jones (@GaryJ) and all other people who commented on
-    various versions of this proposal.
+    The author(s) wish to thank Chuck Burgess (@ashnazg), Gary Jones (@GaryJ)
+    and all other people who commented and contributed on various versions of
+    this proposal.
 
 Obsoletes:
 
-    De-facto PHPDoc Standard (http://www.phpdoc.org)
+    De-facto PHPDoc Standard (http://www.phpdoc.org/docs/1.4/index.html)
 
 ## Table Of Contents
 
@@ -83,10 +83,9 @@ This document SHALL NOT:
 
 ## 2. Conventions Used In This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in
-[RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
 ## 3. Definitions
 
@@ -95,8 +94,8 @@ document are to be interpreted as described in
 
   > It is important to note that the PHPDoc and the DocBlock are two separate
   > entities. The DocBlock is the combination of a DocComment, which is a type
-  > of comment, and a PHPDoc entity. It is the PHPDoc entity that describes the
-  > Short Description, Long Description and Tags.
+  > of comment, and a PHPDoc entity. It is the PHPDoc entity that contains the
+  > syntax as described in chapter 5 such as the description and tags.
 
 * "Structural Element" is a collection of Programming Constructs which SHOULD be
   preceded by a DocBlock. The collection contains the following constructs:
@@ -121,11 +120,12 @@ document are to be interpreted as described in
   /** @type int $int This is a counter. */
   $int = 0;
 
+
   // there should be no docblock here
   $int++;
   ```
 
-  Or:
+  or
 
   ```php
   /**
@@ -135,6 +135,7 @@ document are to be interpreted as described in
   {
       /** @type string|null $description Should contain a description */
       protected $description = null;
+
 
       /**
        * This method sets a description.
@@ -152,11 +153,11 @@ document are to be interpreted as described in
   ```
 
   An example of use that falls beyond the scope of this Standard is to document
-  the variable in a foreach explicitly; many IDEs use this information to help
-  you with auto-completion.
+  the variable in a foreach explicitly; several IDEs use this information to
+  assist their auto-completion functionality.
 
-  This Standard does not cover this specific instance as a foreach is not
-  considered to be a "Structural Element" but a Control Flow structure.
+  This Standard does not cover this specific instance as a `foreach` statement
+  is not considered to be a "Structural Element" but a Control Flow statement.
 
   ```php
   /** @type \Sqlite3 $sqlite */
@@ -172,6 +173,10 @@ document are to be interpreted as described in
   When a DocComment spans multiple lines, every line SHOULD start with an
   asterisk that is aligned with the first asterisk of the opening clause.
 
+  In case a DocComment spans multiple lines then every line should start with
+  an asterisk (`*`) that is aligned with the first asterisk of the opening
+  clause.
+
   Single line example:
 
   ```php
@@ -186,8 +191,8 @@ document are to be interpreted as described in
    */
   ```
 
-* "DocBlock" is a "DocComment" containing a single "PHPDoc" and represents the
-  basic in-source representation.
+* "DocBlock" is a "DocComment" containing a single "PHPDoc" structure and
+  represents the basic in-source representation.
 
 * "Tag" is a single piece of meta information regarding a "Structural Element"
   or a component thereof.
@@ -221,12 +226,52 @@ document are to be interpreted as described in
   *Property*:       `\My\Space\MyClass::$my_property`
   *Class Constant*: `\My\Space\MyClass::MY_CONSTANT`
 
+* "FQSEN" is short for 'Fully Qualified Structural Element Name'. This is the
+  unique identifier for each Structural Element and should not occur more than
+  once in a project.
+
+  A FQSEN has the following [ABNF](http://www.ietf.org/rfc/rfc5234.txt)
+  definition:
+
+          FQSEN    = fqnn / fqcn / constant / method / property  / function
+          fqnn     = "\" [name] *("\" [name])
+          fqcn     = fqnn "\" name
+          constant = (fqnn "\" / fqcn "::") name
+          method   = fqcn "::" name "()"
+          property = fqcn "::$" name
+          function = fqnn "\" name "()"
+          name     = (ALPHA / "_") *(ALPHA / DIGIT / "_")
+
+  Example, namespace:
+        `\My\Space`
+
+  Example, function:
+        `\My\Space\function()`
+
+  Example, constant:
+        `\My\Space\constant`
+
+  Example, trait:
+        `\My\Space\FactoryTrait`
+
+  Example, interface:
+        `\My\Space\FactoryInterface`
+
+  Example, class:
+        `\My\Space\Factory`
+
+  Example, method:
+        `\My\Space\Factory::method()`
+
+  Example, class constant:
+        `\My\Space\Factory::constant`
+
 ## 4. Basic Principles
 
 * A PHPDoc MUST always be contained in a "DocComment"; the combination of these
   two is called a "DocBlock".
 
-* A DocBlock MUST precede a "Structural Element"
+* A DocBlock MUST directly precede a "Structural Element"
 
   > An exception to this principle is the File-level DocBlock which MUST be
   > placed at the top of a PHP source code file.
@@ -237,6 +282,7 @@ The PHPDoc format has the following [ABNF](http://www.ietf.org/rfc/rfc5234.txt)
 definition:
 
     PHPDoc            = [short-description] [long-description] [tags]
+    inline-phpdoc     = "{" *SP PHPDoc *SP "}"
     short-description = *CHAR ("." 1*CRLF / 2*CRLF)
     long-description  = 1*(CHAR / inline-tag) 1*CRLF ; any amount of characters
                                                      ; with inline tags inside
@@ -244,7 +290,7 @@ definition:
     inline-tag        = "{" tag "}"
     tag               = "@" tag-name [tag-details]
     tag-name          = (ALPHA / "\") *(ALPHA / DIGIT / "\" / "-" / "_")
-    tag-details       = *SP (SP tag-description / tag-signature / "{" PHPDoc "}")
+    tag-details       = *SP (SP tag-description / tag-signature / inline-phpdoc)
     tag-description   = 1*CHAR
     tag-signature     = "(" *tag-argument ")"
     tag-argument      = *SP 1*CHAR [","] *SP
@@ -265,7 +311,8 @@ If a long description is provided, then it MUST be preceded by a short
 description. Otherwise the long description will be considered the short
 description, until the stop of the short description is encountered.
 
-Tags do not necessarily have to be preceded by a short description.
+Tags do not have to be preceded by a short description but it is RECOMMENDED
+to do so.
 
 ### 5.2. Long Description
 
@@ -273,9 +320,9 @@ The long description is OPTIONAL but SHOULD be included when the
 "Structural Element", which this DocBlock precedes, contains more operations, or
 more complex operations, than can be described in the short description alone.
 
-Any application parsing the long description SHOULD support the Markdown
-mark-up language for this field so that it is possible for the author to provide
-formatting and a clear way of representing code examples.
+Any application parsing the long description is RECOMMENDED to support the
+Markdown mark-up language for this field so that it is possible for the author
+to provide formatting and a clear way of representing code examples.
 
 Common uses for the long description are (amongst others):
 
@@ -289,22 +336,23 @@ Common uses for the long description are (amongst others):
 
 Tags provide a way for authors to supply concise meta-data regarding the
 succeeding "Structural Element". They commonly consist of a name followed by
-white-space and a description. The description MAY span multiple lines and MAY
-follow a strict format dictated by the type of tag, as indicated by its name.
+white-space and a description or Inline PHPDoc.
+If a description is provided, it MAY span multiple lines and COULD follow a
+strict format dictated by the type of tag, as indicated by its name.
 
 The meta-data supplied by tags could result in a change of actual runtime behaviour
 of the succeeding "Structural Element", in which case the term "Annotation" is
 commonly used instead of "Tag".
 
-A variation of this is where a tag-signature is used instead of a description;
-in most cases the tag will in fact be an annotation. The tag-signature is able
-to provide the annotation with parameters regarding its operation.
+A variation of this is where, instead of a description, a tag-signature is used;
+in most cases the tag will in fact be an "Annotation". The tag-signature is
+able to provide the annotation with parameters regarding its operation.
 
 If a tag-signature is present then there MUST NOT be a description present in
 the same tag.
 
-Annotations will not be described in further detail in this specification, as
-this falls beyond the scope. This specification provides a basis on top of which
+Annotations will not be described in further detail in this specification as
+this falls beyond scope. This specification provides a basis on top of which
 annotations may be implemented.
 
 #### 5.3.1. Tag Name
@@ -406,35 +454,31 @@ function test($parameter1, $e)
 
 It is also allowed to omit the long description:
 
-```php
-/**
- * This is a short description.
- *
- * @see Markdown
- *
- * @param int        $parameter1 A parameter description.
- * @param \Exception $parameter2 Another parameter description.
- *
- * @\Doctrine\Orm\Mapper\Entity()
- *
- * @return string
- */
-function test($parameter1, $parameter2)
-{
-}
-```
+    /**
+     * This is a short description.
+     *
+     * @see Markdown
+     *
+     * @param int        $parameter1 A parameter description.
+     * @param \Exception $parameter2 Another parameter description.
+     *
+     * @\Doctrine\Orm\Mapper\Entity()
+     *
+     * @return string
+     */
+    function test($parameter1, $parameter2)
+    {
+    }
 
 Or even omit the tags section as well (though in the following example is not
 encouraged as you are missing information on the parameters and return value):
 
-```php
-/**
- * This is a short description.
- */
-function test($parameter1, $parameter2)
-{
-}
-```
+    /**
+     * This is a short description.
+     */
+    function test($parameter1, $parameter2)
+    {
+    }
 
 A DocBlock may also span a single line as shown in the following example.
 
@@ -518,24 +562,22 @@ super-class (or interface) is not the same as the @package of the child class
 
 Example:
 
-```php
-/**
- * @package    Framework
- * @subpackage Controllers
- */
-class Framework_ActionController
-{
-    <...>
-}
+    /**
+     * @package    Framework
+     * @subpackage Controllers
+     */
+    class Framework_ActionController
+    {
+        <...>
+    }
 
-/**
- * @package My
- *
-class My_ActionController extends Framework_ActionController
-{
-    <...>
-}
-```
+    /**
+     * @package My
+     *
+    class My_ActionController extends Framework_ActionController
+    {
+        <...>
+    }
 
 In the example above the My_ActionController MUST NOT inherit the subpackage
 _Controllers_.
@@ -588,19 +630,17 @@ Backwards Compatibility.
 
 #### Examples
 
-```php
-/**
- * This method will not change until a major release.
- *
- * @api
- *
- * @return void
- */
- function showVersion()
- {
-    <...>
- }
-```
+    /**
+     * This method will not change until a major release.
+     *
+     * @api
+     *
+     * @return void
+     */
+     function showVersion()
+     {
+        <...>
+     }
 
 ### 7.2. @author
 
@@ -620,12 +660,10 @@ adhere to the syntax defined in RFC 2822.
 
 #### Examples
 
-```php
-/**
- * @author My Name
- * @author My Name <my.name@example.com>
- */
-```
+    /**
+     * @author My Name
+     * @author My Name <my.name@example.com>
+     */
 
 ### 7.3. @category [deprecated]
 
@@ -653,14 +691,12 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
-```php
-/**
- * Page-Level DocBlock
- *
- * @category MyCategory
- * @package  MyPackage
- */
-```
+    /**
+     * Page-Level DocBlock
+     *
+     * @category MyCategory
+     * @package  MyPackage
+     */
 
 ### 7.4. @copyright
 
@@ -683,11 +719,9 @@ covered by this copyright and the organization involved.
 
 #### Examples
 
-```php
-/**
- * @copyright 1997-2005 The PHP Group
- */
-```
+    /**
+     * @copyright 1997-2005 The PHP Group
+     */
 
 ### 7.5. @deprecated
 
@@ -715,14 +749,12 @@ same 'PHPDoc' pointing to the new element.
 
 #### Examples
 
-```php
-/**
- * @deprecated
- * @deprecated 1.0.0
- * @deprecated No longer used by internal code and not recommended.
- * @deprecated 1.0.0 No longer used by internal code and not recommended.
- */
-```
+    /**
+     * @deprecated
+     * @deprecated 1.0.0
+     * @deprecated No longer used by internal code and not recommended.
+     * @deprecated 1.0.0 No longer used by internal code and not recommended.
+     */
 
 ### 7.6. @example
 
@@ -784,20 +816,18 @@ function of PHP are in effect with regards to the start and end limit.
 
 #### Examples
 
-```php
-/**
- * Counts the number of items.
- * {@example http://example.com/foo-inline.https:2..8}
- *
- * @example http://example.com/foo.phps
- *
- * @return integer Indicates the number of items.
- */
-function count()
-{
-    <...>
-}
-```
+    /**
+     * Counts the number of items.
+     * {@example http://example.com/foo-inline.https:2..8}
+     *
+     * @example http://example.com/foo.phps
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
 
 ### 7.7. @global
 
@@ -879,31 +909,27 @@ documentation from the source code of this piece of software.
 
 Mark the count function as being internal to this project:
 
-```php
-/**
- * @internal
- *
- * @return integer Indicates the number of items.
- */
-function count()
-{
-    <...>
-}
-```
+    /**
+     * @internal
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
 
-```php
-/**
- * Counts the number of Foo.
- *
- * {@internal Silently adds one extra Foo to compensate for lack of Foo }}
- *
- * @return integer Indicates the number of items.
- */
-function count()
-{
-    <...>
-}
-```
+    /**
+     * Counts the number of Foo.
+     *
+     * {@internal Silently adds one extra Foo to compensate for lack of Foo }}
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
 
 ### 7.9. @license
 
@@ -932,12 +958,10 @@ and this SHOULD be interpreted as if having the URL mentioned in the registry.
 
 #### Examples
 
-```php
-/**
- * @license MIT
- * @license http://www.spdx.org/licenses/MIT MIT License
- */
-```
+    /**
+     * @license MIT
+     * @license http://www.spdx.org/licenses/MIT MIT License
+     */
 
 ### 7.10. @link
 
@@ -950,7 +974,7 @@ The @link tag indicates a custom relation between the associated
 
 or inline
 
-   {@link [URI] [description]}
+    @link [URI] [description]
 
 #### Description
 
@@ -965,32 +989,28 @@ defined by this occurrence.
 
 #### Examples
 
-```php
-/**
- * @link http://example.com/my/bar Documentation of Foo.
- *
- * @return integer Indicates the number of items.
- */
-function count()
-{
-    <...>
-}
-```
+    /**
+     * @link http://example.com/my/bar Documentation of Foo.
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
 
-```php
-/**
- * This method counts the occurences of Foo.
- *
- * When no more Foo ({@link http://example.com/my/bar}) are given this
- * function will add one as there must always be one Foo.
- *
- * @return integer Indicates the number of items.
- */
-function count()
-{
-    <...>
-}
-```
+    /**
+     * This method counts the occurences of Foo.
+     *
+     * When no more Foo ({@link http://example.com/my/bar}) are given this
+     * function will add one as there must always be one Foo.
+     *
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
 
 ### 7.11. @method
 
@@ -1002,12 +1022,12 @@ The @method allows a class to know which 'magic' methods are callable.
 
 #### Description
 
-The @method tag is used in situation where a class contains the __call() magic
+The @method tag is used in situation where a class contains the `__call()` magic
 method and defines some definite uses.
 
-An example of this is a child class whose parent has a __call() to have dynamic
+An example of this is a child class whose parent has a `__call()` to have dynamic
 getters or setters for predefined properties. The child knows which getters and
-setters need to be present but relies on the parent class to use the __call()
+setters need to be present but relies on the parent class to use the `__call()`
 method to provide it. In this situation, the child class would have a @method
 tag for each magic setter or getter method.
 
@@ -1022,25 +1042,23 @@ be omitted; in which case 'void' is implied.
 
 #### Examples
 
-```php
-class Parent
-{
-    public function __call()
+    class Parent
+    {
+        public function __call()
+        {
+            <...>
+        }
+    }
+
+    /**
+     * @method string getString()
+     * @method void setInteger(integer $integer)
+     * @method setString(integer $integer)
+     */
+    class Child extends Parent
     {
         <...>
     }
-}
-
-/**
- * @method string getString()
- * @method void setInteger(integer $integer)
- * @method setString(integer $integer)
- */
-class Child extends Parent
-{
-    <...>
-}
-```
 
 ### 7.12. @package
 
@@ -1086,11 +1104,9 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
-```php
-/**
- * @package PSR\Documentation\API
- */
-```
+    /**
+     * @package PSR\Documentation\API
+     */
 
 ### 7.13. @param
 
@@ -1225,25 +1241,21 @@ This tag MUST NOT occur more than once in a "DocBlock" and is limited to the
 
 #### Examples
 
-```php
-/**
- * @return integer Indicates the number of items.
- */
-function count()
-{
-    <...>
-}
-```
+    /**
+     * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
 
-```php
-/**
- * @return string|null The label's text or null if none provided.
- */
-function getLabel()
-{
-    <...>
-}
-```
+    /**
+     * @return string|null The label's text or null if none provided.
+     */
+    function getLabel()
+    {
+        <...>
+    }
 
 ### 7.16. @see
 
@@ -1514,14 +1526,12 @@ class Foo
 Another example is to document the variable in a foreach explicitly; many IDEs
 use this information to help you with auto-completion:
 
-```php
-/** @type \Sqlite3 $sqlite */
-foreach($connections as $sqlite) {
-    // there should be no docblock here
-    $sqlite->open('/my/database/path');
-    <...>
-}
-```
+    /** @type \Sqlite3 $sqlite */
+    foreach($connections as $sqlite) {
+        // there should be no docblock here
+        $sqlite->open('/my/database/path');
+        <...>
+    }
 
 Even compound statements may be documented:
 
@@ -1551,7 +1561,7 @@ class Foo
 }
 ```
 
-### 7.23. @uses
+### 7.22. @uses
 
 Indicates whether the current "Structural Element" consumes the
 "Structural Element", or project file, that is provided as target.
@@ -1606,8 +1616,6 @@ function executeMyView()
 }
 ```
 
-### 7.24. @var [deprecated]
-
 The @var tag is a **deprecated** alias for `@type`. Please see the documentation
 for `@type` for details of its usage.
 
@@ -1624,8 +1632,20 @@ element.
 
 Documents the current "version" of any element.
 
-It is RECOMMENDED that the version matches a semantic version number (x.x.x)
-and MAY have a description to provide additional information.
+This information can be used to generate a set of API Documentation where the
+consumer is informed about elements at a particular version.
+
+It is RECOMMENDED that the version number matches a semantic version number as
+described in the Semantic Versioning Standard version 2.0 at
+http://www.semver.org.
+
+Version vectors from Version Control Systems are also supported, though they
+MUST follow the form:
+
+    name-of-vcs: $vector$
+
+A description MAY be provided, for the purpose of communicating any additional
+version-specific information.
 
 The @version tag MAY NOT be used to show the last modified or introduction
 version of an element, the @since tag SHOULD be used for that purpose.
@@ -1705,6 +1725,7 @@ Please see the @struct documentation on how to use this tag.
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
                                |"double"|"object"|"mixed"|"array"|"resource"
                                |"void"|"null"|"callback"|"false"|"true"|"self"
+                               |"static"
 
 ### Additional details
 
@@ -1810,35 +1831,31 @@ The following keywords are recognized by this PSR:
 
     For example:
 
-    ```php
-    /**
-     * @return void
-     */
-    function outputHello()
-    {
-        echo 'Hello world';
-    }
-    ***
+        /**
+         * @return void
+         */
+        function outputHello()
+        {
+            echo 'Hello world';
+        }
 
     In the example above no return statement is specified and thus the return
     value is not determined.
 
     Example 2:
 
-    ```php
-    /**
-     * @param boolean $hi when true 'Hello world' is echo-ed.
-     *
-     * @return void
-     */
-    function outputHello($quiet)
-    {
-        if ($quiet} {
-            return;
+        /**
+         * @param boolean $hi when true 'Hello world' is echo-ed.
+         *
+         * @return void
+         */
+        function outputHello($quiet)
+        {
+            if ($quiet} {
+                return;
+            }
+            echo 'Hello world';
         }
-        echo 'Hello world';
-    }
-    ```
 
     In this example the function contains a return statement without a given
     value. Because there is no actual value specified, this also qualifies
@@ -1853,37 +1870,38 @@ The following keywords are recognized by this PSR:
 
     Example:
 
-    ```php
-    /**
-     * @return null
-     */
-    function foo()
-    {
-        echo 'Hello world';
-        return null;
-    }
-    ```
+        /**
+         * @return null
+         */
+        function foo()
+        {
+            echo 'Hello world';
+            return null;
+        }
 
     This type is commonly used in conjunction with another type to indicate that
     it is possible that nothing is returned.
 
     Example:
 
-    ```
-    /**
-     * @param boolean $create_new When true returns a new stdClass.
-     *
-     * @return stdClass|null
-     */
-    function foo($create_new)
-    {
-        if ($create_new) {
-            return new stdClass();
+        /**
+         * @param boolean $create_new When true returns a new stdClass.
+         *
+         * @return stdClass|null
+         */
+        function foo($create_new)
+        {
+            if ($create_new) {
+                return new stdClass();
+            }
+
+            return null;
         }
 
         return null;
     }
     ```
+
 
 11. 'callback', the element to which this type applies is a pointer to a
     function call. This may be any type of callback as defined in the PHP manual
@@ -1893,9 +1911,8 @@ The following keywords are recognized by this PSR:
     the value true or false. No other value will be returned from this
     element.
 
-13. 'self', the element to which this type applies is of the same Class,
-    or any of its children, as which the documented element is originally
-    contained.
+13. 'self', the element to which this type applies is of the same Class as
+    which the documented element is originally contained.
 
     For example:
 
@@ -1913,19 +1930,22 @@ The following keywords are recognized by this PSR:
     In this situation ambiguity may arise as `self` could be interpreted as
     either class A or B. In these cases `self` MUST be interpreted as being
     an instance of the Class where the DocBlock containing the `self` type
-    is written or any of its child classes.
+    is written.
 
-    In the examples above `self` MUST always refer to class A or B, since
-    it is defined with method C() in class A.
-
-    If method C() was to be redefined in class B, including the type
-    definition in the DocBlock, then `self` would refer to class B or any
-    of its children.
+    In the examples above `self` MUST always refer to class A, since it is
+    defined with method C() in class A.
 
     > Due to the above nature it is RECOMMENDED for applications that
     > collect and shape this information to show a list of child classes
     > with each representation of the class. This would make it obvious
     > for the user which classes are acceptable as type.
+
+14. 'static', the element to which this type applies is of the same Class as
+    which the documented element is contained, or when encountered in a
+    subclass is of type of that subclass instead of the original class.
+
+    This keyword behaves the same way as the 'static' keyword keyword (not
+    the static property or method modifier) as defined by PHP.
 
 ## Appendix B. Differences Compared With The De-facto PHPDoc Standard
 

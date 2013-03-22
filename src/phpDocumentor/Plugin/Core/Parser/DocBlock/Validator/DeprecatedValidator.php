@@ -61,7 +61,7 @@ class DeprecatedValidator extends ValidatorAbstract
         $docType = get_class($this->source);
         if (isset($this->options['deprecated'][$docType])) {
             $this->validateTags($docType);
-        } else if (isset($this->options['deprecated']['__ALL__'])) {
+        } elseif (isset($this->options['deprecated']['__ALL__'])) {
             $this->validateTags('__ALL__');
         }
     }
@@ -80,9 +80,7 @@ class DeprecatedValidator extends ValidatorAbstract
             if (count($this->docblock->getTagsByName($tag)) < 1) {
                 continue;
             }
-            $this->logParserError(
-                'CRITICAL', 50006, $this->lineNumber, array($tag, $this->entityName)
-            );
+            $this->logParserError('CRITICAL', 50006, $this->lineNumber, array($tag, $this->entityName));
         }
     }
 }

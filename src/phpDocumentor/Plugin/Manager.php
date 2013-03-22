@@ -77,9 +77,7 @@ class Manager
 
         // add new plugins
         foreach ($plugins as $plugin_config) {
-            $plugin = new \phpDocumentor\Plugin\Plugin(
-                $this->event_dispatcher, $this->configuration
-            );
+            $plugin = new \phpDocumentor\Plugin\Plugin($this->event_dispatcher, $this->configuration);
 
             $plugin->load(
                 is_string($plugin_config) ? $plugin_config : $plugin_config->path,
@@ -89,5 +87,4 @@ class Manager
             $this->plugins[] = $plugin;
         }
     }
-
 }

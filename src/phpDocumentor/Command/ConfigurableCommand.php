@@ -31,7 +31,9 @@ class ConfigurableCommand extends Command
     protected function configure()
     {
         $this->addOption(
-            'config', 'c', InputOption::VALUE_OPTIONAL,
+            'config',
+            'c',
+            InputOption::VALUE_OPTIONAL,
             'Location of a custom configuration file'
         );
     }
@@ -69,7 +71,8 @@ class ConfigurableCommand extends Command
         }
 
         if ($config_file) {
-            $this->container['config'] = $this->container->share(
+            $container = $this->getContainer();
+            $container['config'] = $container->share(
                 function () use ($config_file) {
                     $files = array(__DIR__ . '/../../../data/phpdoc.tpl.xml');
                     if ($config_file !== 'none') {
@@ -99,8 +102,12 @@ class ConfigurableCommand extends Command
      *
      * @return string
      */
-    public function getOption(InputInterface $input, $name, $config_path = null,
-        $default = null, $comma_separated = false
+    public function getOption(
+        InputInterface $input,
+        $name,
+        $config_path = null,
+        $default = null,
+        $comma_separated = false
     ) {
         $value = $input->getOption($name);
 
@@ -164,5 +171,4 @@ class ConfigurableCommand extends Command
             ? $node->toArray()
             : trim((string)$node);
     }
-
 }

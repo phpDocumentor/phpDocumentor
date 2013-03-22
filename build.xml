@@ -6,11 +6,11 @@
         description="performs pre-push actions by validating the code"/>
 
     <target name="build"
-            depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:phpdoc,build:phpcb"
+            depends="build:clean,build:composer:install,build:phpunit,build:phpcs,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpdoc"
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
-            depends="deploy:package,deploy:publish-pear-package,deploy:publish-demo,deploy:update-manual"
+            depends="deploy:package,deploy:publish-pear-package,deploy:publish-demo,deploy:update-manual,deploy:publish-phar"
             description="Builds a new version, packages and distributes it"/>
 
     <target name="build:clean" description="Deletes and recreates the 'build' folder for Jenkins">
@@ -25,37 +25,47 @@
         <mkdir dir="${project.basedir}/build/pdepend"/>
     </target>
 
+    <target name="build:composer:install">
+        <exec executable="wget" passthru="true">
+            <arg value="-Ocomposer.phar" />
+            <arg value="http://getcomposer.org/composer.phar"/>
+        </exec>
+        <exec executable="php" passthru="true">
+            <arg value="composer.phar"/>
+            <arg value="install"/>
+            <arg value="--prefer-dist"/>
+            <arg value="--dev"/>
+        </exec>
+    </target>
+
     <!-- Generate checkstyle.xml -->
     <target name="build:phpcs" description="Checks for Coding Standard violations">
         <echo message="Executing phpCodeSniffer, output is in 'build/logs/checkstyle.xml'"/>
-        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PEAR" haltonerror="true">
+        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PSR2" haltonerror="false">
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
     </target>
 
     <!-- Generate API documentation with phpDocumentor -->
     <target name="build:phpdoc" description="Generates API documentation">
-        <docblox destDir="${project.basedir}/build/api">
-            <fileset dir="${project.basedir}">
-                <include name="**/*.php"/>
-                <exclude name="**/tests/**.php"/>
-            </fileset>
-        </docblox>
+        <exec executable="phpdoc" passthru="true">
+            <arg line="-t ${project.basedir}/build/api"/>
+        </exec>
     </target>
 
     <!-- Generate phploc.csv -->
     <target name="build:phploc" description="Generates LOC statistics">
         <exec executable="phploc" passthru="true">
-            <arg value="--log-csv ${project.basedir}/build/logs/phploc.csv" />
+            <arg line="--log-csv ${project.basedir}/build/logs/phploc.csv" />
             <arg path="${project.basedir}" />
         </exec>
     </target>
 
     <!-- Generate pmd-cpd.xml -->
     <target name="build:phpcpd" description="Search for duplicated code">
-        <phpcpd file="${project.basedir}/src/phpDocumentor">
-            <formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
-        </phpcpd>
+        <!--<phpcpd file="${project.basedir}/src/phpDocumentor">-->
+            <!--<formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>-->
+        <!--</phpcpd>-->
     </target>
 
     <!-- Generate pmd.xml -->
@@ -71,7 +81,7 @@
             <arg value="--jdepend-xml=${project.basedir}/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${project.basedir}/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${project.basedir}/build/pdepend/overview-pyramid.svg" />
-            <arg path="${project.basedir}"/>
+            <arg path="${project.basedir}/src/phpDocumentor"/>
         </exec>
     </target>
 
@@ -86,12 +96,6 @@
     <target name="build:behat" description="Run BDD tests for phpDocumentor">
         <exec executable="php" dir="${project.basedir}" checkreturn="true" passthru="true">
             <arg line="bin/behat --no-paths -f progress" />
-        </exec>
-    </target>
-
-    <target name="build:phpcb">
-        <exec executable="phpcb" passthru="true">
-            <arg line="--log ${project.basedir}/build/logs --output ${project.basedir}/build/code-browser"/>
         </exec>
     </target>
 
@@ -127,7 +131,7 @@
                         promptText="Enter the stability of the new version (alpha, beta or stable)"
                         useExistingValue="true"/>
         <exec
-            command="php bin/utils/package.php ${version.number} ${version.stability} make"
+            command="php bin/utils/package.php ${version.number} ${version.number} ${version.stability} make"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
@@ -150,6 +154,13 @@
         <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
         <exec command="php bin/phpdoc.php -t data/output" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+    </target>
+
+    <!-- Builds a new demo and publishes it -->
+    <target name="deploy:publish-phar" description="Generate a phar and upload it to the server">
+        <exec command="php bin/compile" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r ${project.basedir}/phpDocumentor.phar ${server.username}@${server.phar}:${server.phar.path}" passthru="true" checkreturn="true"/>
+        <delete><fileset dir="${project.basedir}"><include name="phpDocumentor.phar"/></fileset></delete>
     </target>
 
     <!-- Updates the continuous integration server to the latest phpdocumentor -->

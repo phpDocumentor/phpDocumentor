@@ -57,26 +57,34 @@ TEXT
             );
 
         $this->addOption(
-            'source', 's', InputOption::VALUE_OPTIONAL,
+            'source',
+            's',
+            InputOption::VALUE_OPTIONAL,
             'Path where the XML source file is located (optional)'
         );
         $this->addOption(
-            'target', 't', InputOption::VALUE_OPTIONAL,
+            'target',
+            't',
+            InputOption::VALUE_OPTIONAL,
             'Path where to store the generated output (optional)'
         );
         $this->addOption(
-            'template', null,
+            'template',
+            null,
             InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
             'Name of the template to use (optional)'
         );
         $this->addOption(
-            'parseprivate', null, InputOption::VALUE_NONE,
+            'parseprivate',
+            null,
+            InputOption::VALUE_NONE,
             'Whether to parse DocBlocks marked with @internal tag'
         );
         $this->addOption(
-            'progressbar', 'p', InputOption::VALUE_NONE,
-            'Whether to show a progress bar; will automatically quiet logging '
-            . 'to stdout'
+            'progressbar',
+            'p',
+            InputOption::VALUE_NONE,
+            'Whether to show a progress bar; will automatically quiet logging to stdout'
         );
 
         parent::configure();
@@ -105,9 +113,7 @@ TEXT
 
         // initialize transformer
         $transformer = new \phpDocumentor\Transformer\Transformer();
-        $transformer->setTemplatesPath(
-            __DIR__.'/../../../../data/templates'
-        );
+        $transformer->setTemplatesPath(__DIR__.'/../../../../data/templates');
 
         $target = $this->getOption($input, 'target', 'transformer/target');
         if (!$this->isAbsolute($target)) {
@@ -115,18 +121,15 @@ TEXT
         }
         $transformer->setTarget($target);
 
-        $source = $this->getOption($input, 'source', 'parser/target');
+        $source = realpath($this->getOption($input, 'source', 'parser/target'));
         if (file_exists($source) and is_dir($source)) {
             $source .= DIRECTORY_SEPARATOR . 'structure.xml';
         }
-        $transformer->setSource(realpath($source));
+        $transformer->setSource($source);
 
-        $transformer->setTemplates(
-            (array)$this->getOption(
-                $input, 'template', 'transformations/template/name',
-                array('responsive')
-            )
-        );
+        $templates = $this->getTemplates($input);
+
+        $transformer->setTemplates($templates);
         $transformer->setParseprivate($input->getOption('parseprivate'));
 
         // add links to external docs
@@ -142,10 +145,7 @@ TEXT
                 continue;
             }
 
-            $transformer->setExternalClassDoc(
-                (string)$doc['prefix'],
-                (string)$doc['uri']
-            );
+            $transformer->setExternalClassDoc((string)$doc['prefix'], (string)$doc['uri']);
         }
 
         $output->writeln(' OK');
@@ -169,6 +169,32 @@ TEXT
         }
 
         return 0;
+    }
+
+    /**
+     * Retrieves the templates to be used by analyzing the options and the configuration.
+     *
+     * @param \Symfony\Component\Console\Input\ArgvInput $input
+     *
+     * @return string[]
+     */
+    protected function getTemplates(\Symfony\Component\Console\Input\InputInterface $input)
+    {
+        $templates = $input->getOption('template');
+        if (!$templates) {
+            $value = $this->getConfigValueFromPath('transformations/template');
+            if ($value) {
+                foreach ($value as $template) {
+                    $templates[] = $template;
+                }
+            }
+        }
+
+        if (!$templates) {
+            $templates = array('responsive');
+        }
+
+        return $templates;
     }
 
     /**
