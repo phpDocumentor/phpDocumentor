@@ -372,7 +372,9 @@ These tags, or annotations, MUST provide a namespace by either
 Example of a tag name prefixed with a php-style namespace (the prefixing slash
 is OPTIONAL):
 
-    @\Doctrine\Orm\Mapping\Entity()
+```php
+@\Doctrine\Orm\Mapping\Entity()
+```
 
 > *Note*: The PHPDoc Standard DOES NOT make assumptions on the meaning of a tag
 > unless specified in this document or subsequent additions or extensions.
@@ -391,7 +393,9 @@ is OPTIONAL):
 
 Example of a tag name prefixed with a vendor name and hyphen:
 
-    @phpdoc-event transformer.transform.pre
+```php
+@phpdoc-event transformer.transform.pre
+```
 
 Tag names that are not prefixed with a vendor or namespace MUST be described in
 this specification (see chapter 7) and/or any official addendum.
@@ -454,31 +458,35 @@ function test($parameter1, $e)
 
 It is also allowed to omit the long description:
 
-    /**
-     * This is a short description.
-     *
-     * @see Markdown
-     *
-     * @param int        $parameter1 A parameter description.
-     * @param \Exception $parameter2 Another parameter description.
-     *
-     * @\Doctrine\Orm\Mapper\Entity()
-     *
-     * @return string
-     */
-    function test($parameter1, $parameter2)
-    {
-    }
+```php
+/**
+ * This is a short description.
+ *
+ * @see Markdown
+ *
+ * @param int        $parameter1 A parameter description.
+ * @param \Exception $parameter2 Another parameter description.
+ *
+ * @\Doctrine\Orm\Mapper\Entity()
+ *
+ * @return string
+ */
+function test($parameter1, $parameter2)
+{
+}
+```
 
 Or even omit the tags section as well (though in the following example is not
 encouraged as you are missing information on the parameters and return value):
 
-    /**
-     * This is a short description.
-     */
-    function test($parameter1, $parameter2)
-    {
-    }
+```php
+/**
+ * This is a short description.
+ */
+function test($parameter1, $parameter2)
+{
+}
+```
 
 A DocBlock may also span a single line as shown in the following example.
 
@@ -562,22 +570,24 @@ super-class (or interface) is not the same as the @package of the child class
 
 Example:
 
-    /**
-     * @package    Framework
-     * @subpackage Controllers
-     */
-    class Framework_ActionController
-    {
-        <...>
-    }
+```php
+/**
+ * @package    Framework
+ * @subpackage Controllers
+ */
+class Framework_ActionController
+{
+    <...>
+}
 
-    /**
-     * @package My
-     *
-    class My_ActionController extends Framework_ActionController
-    {
-        <...>
-    }
+/**
+ * @package My
+ *
+class My_ActionController extends Framework_ActionController
+{
+    <...>
+}
+```
 
 In the example above the My_ActionController MUST NOT inherit the subpackage
 _Controllers_.
@@ -630,17 +640,19 @@ Backwards Compatibility.
 
 #### Examples
 
-    /**
-     * This method will not change until a major release.
-     *
-     * @api
-     *
-     * @return void
-     */
-     function showVersion()
-     {
-        <...>
-     }
+```php
+/**
+ * This method will not change until a major release.
+ *
+ * @api
+ *
+ * @return void
+ */
+ function showVersion()
+ {
+    <...>
+ }
+```
 
 ### 7.2. @author
 
@@ -660,10 +672,12 @@ adhere to the syntax defined in RFC 2822.
 
 #### Examples
 
-    /**
-     * @author My Name
-     * @author My Name <my.name@example.com>
-     */
+```php
+/**
+ * @author My Name
+ * @author My Name <my.name@example.com>
+ */
+```
 
 ### 7.3. @category [deprecated]
 
@@ -691,12 +705,14 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
-    /**
-     * Page-Level DocBlock
-     *
-     * @category MyCategory
-     * @package  MyPackage
-     */
+```php
+/**
+ * Page-Level DocBlock
+ *
+ * @category MyCategory
+ * @package  MyPackage
+ */
+```
 
 ### 7.4. @copyright
 
@@ -719,9 +735,11 @@ covered by this copyright and the organization involved.
 
 #### Examples
 
-    /**
-     * @copyright 1997-2005 The PHP Group
-     */
+```php
+/**
+ * @copyright 1997-2005 The PHP Group
+ */
+```
 
 ### 7.5. @deprecated
 
@@ -749,12 +767,14 @@ same 'PHPDoc' pointing to the new element.
 
 #### Examples
 
-    /**
-     * @deprecated
-     * @deprecated 1.0.0
-     * @deprecated No longer used by internal code and not recommended.
-     * @deprecated 1.0.0 No longer used by internal code and not recommended.
-     */
+```php
+/**
+ * @deprecated
+ * @deprecated 1.0.0
+ * @deprecated No longer used by internal code and not recommended.
+ * @deprecated 1.0.0 No longer used by internal code and not recommended.
+ */
+```
 
 ### 7.6. @example
 
@@ -816,18 +836,20 @@ function of PHP are in effect with regards to the start and end limit.
 
 #### Examples
 
-    /**
-     * Counts the number of items.
-     * {@example http://example.com/foo-inline.https:2..8}
-     *
-     * @example http://example.com/foo.phps
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * Counts the number of items.
+ * {@example http://example.com/foo-inline.https:2..8}
+ *
+ * @example http://example.com/foo.phps
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.7. @global
 
@@ -909,27 +931,29 @@ documentation from the source code of this piece of software.
 
 Mark the count function as being internal to this project:
 
-    /**
-     * @internal
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * @internal
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
 
-    /**
-     * Counts the number of Foo.
-     *
-     * {@internal Silently adds one extra Foo to compensate for lack of Foo }}
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+/**
+ * Counts the number of Foo.
+ *
+ * {@internal Silently adds one extra Foo to compensate for lack of Foo }}
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.9. @license
 
@@ -958,10 +982,12 @@ and this SHOULD be interpreted as if having the URL mentioned in the registry.
 
 #### Examples
 
-    /**
-     * @license MIT
-     * @license http://www.spdx.org/licenses/MIT MIT License
-     */
+```php
+/**
+ * @license MIT
+ * @license http://www.spdx.org/licenses/MIT MIT License
+ */
+```
 
 ### 7.10. @link
 
@@ -989,28 +1015,30 @@ defined by this occurrence.
 
 #### Examples
 
-    /**
-     * @link http://example.com/my/bar Documentation of Foo.
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * @link http://example.com/my/bar Documentation of Foo.
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
 
-    /**
-     * This method counts the occurences of Foo.
-     *
-     * When no more Foo ({@link http://example.com/my/bar}) are given this
-     * function will add one as there must always be one Foo.
-     *
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+/**
+ * This method counts the occurences of Foo.
+ *
+ * When no more Foo ({@link http://example.com/my/bar}) are given this
+ * function will add one as there must always be one Foo.
+ *
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
+```
 
 ### 7.11. @method
 
@@ -1042,23 +1070,25 @@ be omitted; in which case 'void' is implied.
 
 #### Examples
 
-    class Parent
-    {
-        public function __call()
-        {
-            <...>
-        }
-    }
-
-    /**
-     * @method string getString()
-     * @method void setInteger(integer $integer)
-     * @method setString(integer $integer)
-     */
-    class Child extends Parent
+```php
+class Parent
+{
+    public function __call()
     {
         <...>
     }
+}
+
+/**
+ * @method string getString()
+ * @method void setInteger(integer $integer)
+ * @method setString(integer $integer)
+ */
+class Child extends Parent
+{
+    <...>
+}
+```
 
 ### 7.12. @package
 
@@ -1104,9 +1134,11 @@ This tag MUST NOT occur more than once in a "DocBlock".
 
 #### Examples
 
-    /**
-     * @package PSR\Documentation\API
-     */
+```php
+/**
+ * @package PSR\Documentation\API
+ */
+```
 
 ### 7.13. @param
 
@@ -1241,21 +1273,23 @@ This tag MUST NOT occur more than once in a "DocBlock" and is limited to the
 
 #### Examples
 
-    /**
-     * @return integer Indicates the number of items.
-     */
-    function count()
-    {
-        <...>
-    }
+```php
+/**
+ * @return integer Indicates the number of items.
+ */
+function count()
+{
+    <...>
+}
 
-    /**
-     * @return string|null The label's text or null if none provided.
-     */
-    function getLabel()
-    {
-        <...>
-    }
+/**
+ * @return string|null The label's text or null if none provided.
+ */
+function getLabel()
+{
+    <...>
+}
+```
 
 ### 7.16. @see
 
@@ -1356,6 +1390,9 @@ class Foo
 
 ### 7.18. @struct
 
+TODO: specify details
+TODO: determine whether this is a correct approach
+
 ### 7.19. @subpackage [deprecated]
 
 The @subpackage tag is used to categorize "Structural Elements" into logical
@@ -1375,7 +1412,7 @@ elements can be grouped with a different hierarchy.
 If, across the board, both logical and functional subdivisions are equal is it
 NOT RECOMMENDED to use the @subpackage tag, to prevent maintenance overhead.
 
-The @subpackage tag MUST only be used in a select set of DocBlocks, as is
+The @subpackage tag MUST only be used in a specific series of DocBlocks, as is
 described in the documentation for the @package tag.
 
 This tag MUST accompany a @package tag and MUST NOT occur more than once per
@@ -1526,12 +1563,14 @@ class Foo
 Another example is to document the variable in a foreach explicitly; many IDEs
 use this information to help you with auto-completion:
 
-    /** @type \Sqlite3 $sqlite */
-    foreach($connections as $sqlite) {
-        // there should be no docblock here
-        $sqlite->open('/my/database/path');
-        <...>
-    }
+```php
+/** @type \Sqlite3 $sqlite */
+foreach($connections as $sqlite) {
+    // there should be no docblock here
+    $sqlite->open('/my/database/path');
+    <...>
+}
+```
 
 Even compound statements may be documented:
 
@@ -1724,7 +1763,7 @@ Please see the @struct documentation on how to use this tag.
     class-name               = 1*CHAR
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
                                |"double"|"object"|"mixed"|"array"|"resource"
-                               |"void"|"null"|"callback"|"false"|"true"|"self"
+                               |"void"|"null"|"callable"|"false"|"true"|"self"
                                |"static"
 
 ### Additional details
@@ -1903,9 +1942,10 @@ The following keywords are recognized by this PSR:
     ```
 
 
-11. 'callback', the element to which this type applies is a pointer to a
-    function call. This may be any type of callback as defined in the PHP manual
-    at http://php.net/manual/en/language.pseudo-types.php.
+11. 'callable', the element to which this type applies is a pointer to a
+    function call. This may be any type of callable as defined in the PHP manual
+    at http://php.net/manual/en/language.pseudo-types.php or
+    http://php.net/manual/en/language.types.callable.php.
 
 12. 'false' or 'true', the element to which this type applies will have
     the value true or false. No other value will be returned from this
@@ -2002,7 +2042,7 @@ generators.
 #### @link
 
 In the de-facto standard, introduced by phpDocumentor, @link supported the use
-of internal locators for "Structural Element". This use is actually superceded
+of internal locators for "Structural Element". This use is actually superseded
 by the @see tag and thus removed.
 
 It is NOT RECOMMENDED to use the @link tag for referencing "Structural Elements".
@@ -2030,5 +2070,5 @@ See the documentation on the @package tag for details.
 
 #### @var
 
-The @var tag is considered ambiguous and non-semantic; as such it is superceded
+The @var tag is considered ambiguous and non-semantic; as such it is superseded
 by the @type tag which also allows the type of constants to be documented.
