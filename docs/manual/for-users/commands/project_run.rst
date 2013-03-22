@@ -73,6 +73,12 @@ Parameters
         next to the name of the file in the top. In the future we will add
         direct links from elements to the line in this source code file.
 
+**--visibility**
+    Provide a comma-separated list of visibility scopes to parse.
+
+    This parameter may be used to tell phpDocumentor to only parse public
+    properties and methods, or public and protected.
+
 **-p|--progressbar**
     While running, show a short summary of generation progress.
 
@@ -81,3 +87,6 @@ Parameters
 
 **--template**
     Specify a template name, or a path to a directory where a custom template resides
+
+**--parseprivate**
+    Expose items marked with @internal despite their visibility
