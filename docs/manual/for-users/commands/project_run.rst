@@ -75,18 +75,18 @@ Parameters
     ???
 
 **--ignore-symlinks**
-    Tells the parser to not follow symlinks
+    Tells the parser to not follow symlinks.
 
 **-m|--markers[="..."]**
-    ???
+    Provide a comma-separated list of markers to parse.
 
 **--title[="..."]**
-    Specify a title for the documentation
+    Specify a title for the documentation.
 
     Title defaults to "phpDocumentor".
 
 **--force**
-    Ingore exceptions and continue parsing
+    Ingore exceptions and continue parsing.
 
 **--validate**
     ???
@@ -120,10 +120,10 @@ Parameters
     replaced with a short overview of the generation status.
 
 **--template[="..."]**
-    Specify a template name, or a path to a directory where a custom template resides
+    Specify a template name, or a path to a directory where a custom template resides.
 
 **--parseprivate**
-    Parse items marked with @internal despite their visibility
+    Parse items marked with @internal despite their visibility.
 
 **-c|--config[="..."]**
-    Config file to use when parsing
+    Config file to use when parsing.
