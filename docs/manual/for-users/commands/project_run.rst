@@ -79,16 +79,5 @@ Parameters
     When this parameter is provided the default lengthy command line output is
     replaced with a short overview of the generation status.
 
-    Example:
-
-        Initializing parser and collecting files .. OK
-        Parsing files
-         80 [============================]                                              
-        Storing structure.xml in "/path/to/target/structure.xml" .. OK
-        Initializing transformer .. OK
-        Processing behaviours .. OK
-        Executing transformations
-          6 [===========>----------------]    
-
 **--template**
     Specify a template name, or a path to a directory where a custom template resides
