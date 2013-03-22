@@ -29,6 +29,21 @@ Usage
 Parameters
 ----------
 
+**-t**
+    The directory in which the generated documentation will be placed.
+
+**-f**
+    Provide a single file to parse.
+
+    This parameter can be used to tell phpDocumentor to interpret a single file.
+    This may be a single relative or absolute path.
+    When providing a relative path please keep in mind that the path is relative
+    to the current working directory.
+
+    Wilecards * and ? are not supported by this parameter.
+
+    This parameter may be used in conjunction with the ``-d`` parameter.
+
 **-d**
     Provide a comma-separated list of source folders to parse.
 
@@ -57,3 +72,23 @@ Parameters
         Currently the transformer will add a link to the given file's source
         next to the name of the file in the top. In the future we will add
         direct links from elements to the line in this source code file.
+
+**-p|--progressbar**
+    While running, show a short summary of generation progress.
+
+    When this parameter is provided the default lengthy command line output is
+    replaced with a short overview of the generation status.
+
+    Example:
+
+        Initializing parser and collecting files .. OK
+        Parsing files
+         80 [============================]                                              
+        Storing structure.xml in "/path/to/target/structure.xml" .. OK
+        Initializing transformer .. OK
+        Processing behaviours .. OK
+        Executing transformations
+          6 [===========>----------------]    
+
+**--template**
+    Specify a template name, or a path to a directory where a custom template resides
