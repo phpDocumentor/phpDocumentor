@@ -146,6 +146,7 @@ class AddLinkInformation extends \phpDocumentor\Transformer\Behaviour\BehaviourA
         }
 
         $this->processInlineLinkTags($xpath);
+		$this->processInlineSeeTags($xpath);
 
         return $xml;
     }
@@ -210,4 +211,143 @@ class AddLinkInformation extends \phpDocumentor\Transformer\Behaviour\BehaviourA
             );
         }
     }
+
+    /**
+     * Scans the document for any sign of an inline see tag and replaces it
+     * with a link to the respective element documentation.
+     *
+     * This method recognizes two types of inline link tags and handles
+     * them differently:
+     *
+     * * With description: {@see [element] [description]}, this shows the description
+     *   as body of the anchor.
+     * * Without description: {@link [element]}, this shows the element as body of the
+     *   anchor.
+     *
+     * @param \DOMXPath $xpath
+     *
+     * @return void
+     */
+    protected function processInlineSeeTags(\DOMXPath $xpath)
+    {
+        $this->log('Adding link information to inline @see tags');
+
+        $qry = $xpath->query('//long-description[contains(., "{@see ")]');
+
+        // variables are used to clarify function and improve readability
+        $without_description_pattern = '/\{@see\s+([^\s]+)\s*\}/';
+        $with_description_pattern    = '/\{@see\s+([^\s]+)\s+([^\}]+)\}/';
+
+        /** @var \DOMElement $element */
+        foreach ($qry as $element) {
+			preg_match_all(
+				$without_description_pattern,
+				$element->nodeValue,
+				$matches,
+				PREG_SET_ORDER
+			);
+			foreach ($matches as $match) {
+				$element->nodeValue = str_replace(
+					$match[0],
+					$this->getSeeLink($element, $match[1], $match[1]),
+					$element->nodeValue
+				);
+			}
+			
+			preg_match_all(
+				$with_description_pattern,
+				$element->nodeValue,
+				$matches,
+				PREG_SET_ORDER
+			);
+			foreach ($matches as $match) {
+				$element->nodeValue = str_replace(
+					$match[0],
+					$this->getSeeLink($element, $match[1], $match[2]),
+					$element->nodeValue
+				);
+			}
+		}
+    }
+
+	/**
+	 * Parses the inline see tag and returns the corresponding HTML anchor tag.
+	 * 
+	 * This method creates the HTML anchor tag for the given class, property, or
+	 * method. The description may be omitted.
+	 * 
+	 * @param \DOMElement $element
+	 * @param stiring $see
+	 * @param string $description
+	 * @return string
+	 */
+	protected function getSeeLink($element, $see, $description = '') {
+		$type = 'class';
+		if ($see[0] === '$') {
+			$type = 'property';
+		} else if (substr($see, -2) === '()') {
+			$type = 'method';
+		}
+		
+		$file_name = '';
+		switch ($type) {
+			case 'class':
+				$file_name = $this->getTransformer()
+					->generateFilename($see);
+				break;
+
+			case 'property':
+			case 'method':
+				$see_parts = explode('::', $see);
+				if (count($see_parts) === 2) {
+					$file_name = $this->getTransformer()
+						->generateFilename($see_parts[0])
+						. '#' . $type . '_'
+						. str_replace('()', '', $see_parts[1]);
+				} else {
+					$file_name = $this->getTransformer()
+						->generateFilename($this->getParentClass($element))
+						. '#' . $type . '_'
+						. str_replace('()', '', $see);
+				}
+				break;
+		}
+		return '<a href="' . $file_name . '">' . (empty($description) ? $see : $description) . '</a>';
+	}
+
+	/**
+	 * Finds the parent class element.
+	 * 
+	 * This method searches for a parent class element and the class'
+	 * name which is returned when found. If a class element or a
+	 * name element could not be found, an empty string is returned.
+	 * 
+	 * @param \DOMElement $element
+	 * @return string
+	 */
+	protected function getParentClass($element) {
+		if ($element->tagName == 'class') {
+			$current_element = null;
+			for ($i = 0; $i <= $element->childNodes->length; $i++) {
+				if ($current_element === null) {
+					$current_element = $element->firstChild;
+				} else {
+					$current_element = $current_element->nextSibling;
+				}
+				if (
+					property_exists($current_element, 'tagName')
+					&& $current_element->tagName === 'name'
+				) {
+					return $current_element->textContent;
+				}
+			}
+			return '';
+		} else {
+			if ($element->parentNode) {
+				return $this->getParentClass($element->parentNode);
+			} else {
+				return '';
+			}
+		}
+	}
 }
