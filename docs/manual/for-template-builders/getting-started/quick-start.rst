@@ -39,5 +39,3 @@ I will give a step-by-step description how to create your own branding:
    command will always copy your template to the templates directory first.
    If you installed phpDocumentor through PEAR this means you need to change permissions
    on the templates folder or run phpDocumentor as root.
-5. Once your template works fine, build the composer.json so that it can be reused.
-   See the next section for more on that.

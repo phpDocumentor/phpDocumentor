@@ -1,7 +1,7 @@
 Extending an existing template
 ==============================
 
-To extend an existing template, create a template as explain in the previous
+To extend an existing template, create a template as explained in the previous
 sections, but then copy the template.xml of the template you want to extend
 over the generated template.xml.
 
