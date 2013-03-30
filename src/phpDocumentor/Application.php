@@ -23,6 +23,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\Console\Shell;
 
+use Zend\Cache\Storage\Adapter\Filesystem;
+use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Config\Factory;
 use Zend\I18n\Translator\Translator;
 use Zend\Serializer\Serializer;
@@ -38,10 +40,6 @@ use phpDocumentor\Plugin\Manager;
  * Application class for phpDocumentor.
  *
  * Can be used as bootstrap when the run method is not invoked.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class Application extends Cilex
 {
@@ -227,14 +225,23 @@ class Application extends Cilex
     {
         $this['descriptor.builder.serializer'] = 'PhpSerialize';
 
-        $this['descriptor.builder'] = $this->share(
-            function ($container) {
-                $builder = new Descriptor\Builder\Reflector();
-                $builder->setSerializer(
-                    Serializer::factory($container['descriptor.builder.serializer'])
+        $this['descriptor.cache'] = $this->share(
+            function () {
+                $cache = new Filesystem();
+                $cache->setOptions(
+                    array(
+                        'namespace' => 'phpdoc-cache',
+                        'cache_dir' => sys_get_temp_dir(),
+                    )
                 );
+                $cache->addPlugin(new SerializerPlugin());
+                return $cache;
+            }
+        );
 
-                return $builder;
+        $this['descriptor.builder'] = $this->share(
+            function () {
+                return new Descriptor\Builder\Reflector();
             }
         );
     }

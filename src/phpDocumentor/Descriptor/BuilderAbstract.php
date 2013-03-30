@@ -11,15 +11,10 @@
 
 namespace phpDocumentor\Descriptor;
 
-use Zend\Serializer\Adapter\AdapterInterface;
-
 abstract class BuilderAbstract
 {
     /** @var ProjectDescriptor $project */
     protected $project;
-
-    /** @var AdapterInterface $serializer */
-    protected $serializer;
 
     public function __construct(ProjectDescriptor $project = null)
     {
@@ -39,19 +34,4 @@ abstract class BuilderAbstract
     abstract public function buildConstant($data, $container = null);
     abstract public function buildMethod($data, $container);
     abstract public function buildProperty($data, $container);
-
-    public function setSerializer(AdapterInterface $serializer)
-    {
-        $this->serializer = $serializer;
-    }
-
-    public function export()
-    {
-        return $this->serializer->serialize($this->project);
-    }
-
-    public function import($data)
-    {
-        $this->project = $this->serializer->unserialize($data);
-    }
 }

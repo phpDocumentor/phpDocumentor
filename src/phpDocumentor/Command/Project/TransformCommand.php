@@ -11,12 +11,14 @@
  */
 namespace phpDocumentor\Command\Project;
 
-use \Symfony\Component\Console\Input\InputArgument;
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputOption;
-use \Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Descriptor\BuilderAbstract;
+use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Transformer\Transformer;
 
 /**
@@ -127,6 +129,16 @@ TEXT
     }
 
     /**
+     * Returns the Cache.
+     *
+     * @return StorageInterface
+     */
+    protected function getCache()
+    {
+        return $this->getContainer()->offsetGet('descriptor.cache');
+    }
+
+    /**
      * Executes the business logic involved with this command.
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
@@ -161,9 +173,9 @@ TEXT
             $source .= DIRECTORY_SEPARATOR . 'structure.xml';
         }
 
-        if ($source && is_readable($source)) {
-            $this->getBuilder()->import(file_get_contents($source));
-        }
+        $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
+        $mapper = new ProjectDescriptorMapper($this->getCache());
+        $mapper->populate($projectDescriptor);
 
         foreach ($this->getTemplates($input) as $template) {
             $output->writeln('Loading template "' . $template . '"');
@@ -193,7 +205,6 @@ TEXT
             $progress->start($output, count($transformer->getTemplates()->getTransformations()));
         }
 
-        $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         foreach ($this->compiler as $pass) {
             $timerStart = microtime(true);
             $pass->execute($projectDescriptor);

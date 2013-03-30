@@ -17,13 +17,14 @@
         "twig/twig":        "1.*@stable",
 
         "symfony/event-dispatcher": "2.1.*@stable",
-        "jms/serializer": "1.*@dev",
+        "jms/serializer":           "0.12.*@dev",
 
-        "zendframework/zend-stdlib":         "dev-master@dev",
-        "zendframework/zend-servicemanager": "dev-master@dev",
-        "zendframework/zend-config":         "dev-master@dev",
-        "zendframework/zend-i18n":           "dev-master@dev",
-        "zendframework/zend-serializer":     "dev-master@dev",
+        "zendframework/zend-stdlib":         "2.1.*@stable",
+        "zendframework/zend-servicemanager": "2.1.*@stable",
+        "zendframework/zend-config":         "2.1.*@stable",
+        "zendframework/zend-i18n":           "2.1.*@stable",
+        "zendframework/zend-serializer":     "2.1.*@stable",
+        "zendframework/zend-cache":          "2.1.*@stable",
 
         "phpdocumentor/graphviz":            "1.*@beta",
         "phpdocumentor/fileset":             "1.*@beta",

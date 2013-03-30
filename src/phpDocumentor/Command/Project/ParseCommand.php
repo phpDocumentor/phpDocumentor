@@ -15,8 +15,14 @@ use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Zend\Cache\Storage\Adapter\AbstractAdapter;
+use Zend\Cache\Storage\Adapter\Filesystem;
+use Zend\Cache\Storage\StorageInterface;
+use Zend\Cache\Storage\TaggableInterface;
 use phpDocumentor\Console\Helper\ProgressHelper;
 use phpDocumentor\Descriptor\BuilderAbstract;
+use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
@@ -62,6 +68,16 @@ class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
     }
 
     /**
+     * Returns the Cache.
+     *
+     * @return StorageInterface
+     */
+    protected function getCache()
+    {
+        return $this->getContainer()->offsetGet('descriptor.cache');
+    }
+
+    /**
      * Initializes this command and sets the name, description, options and
      * arguments.
      *
@@ -76,12 +92,6 @@ class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
 The parse task uses the source files defined either by -f or -d options and
 generates a structure file (structure.xml) at the target location.
 HELP
-            )
-            ->addOption(
-                'target',
-                't',
-                InputOption::VALUE_OPTIONAL,
-                'Path where to store the generated output'
             )
             ->addOption(
                 'filename',
@@ -188,62 +198,6 @@ HELP
     }
 
     /**
-     * Returns the target location where to store the structure.xml.
-     *
-     * @param string $target
-     *
-     * @throws \InvalidArgumentException if an empty path or root was provided
-     * @throws \InvalidArgumentException if the target location could not be
-     *     created
-     * @throws \InvalidArgumentException if the target location is not a folder
-     * @throws \InvalidArgumentException if the target location is not writable
-     *
-     * @return string
-     */
-    public function getTarget($target)
-    {
-        $target = trim($target);
-        if (($target == '') || ($target == DIRECTORY_SEPARATOR)) {
-            throw new \InvalidArgumentException(
-                'Either an empty path or root was given: ' . $target
-            );
-        }
-
-        // convert target to absolute path to satisfy phar packaging
-        if (!$this->isAbsolute($target)) {
-            $target = getcwd().DIRECTORY_SEPARATOR.$target;
-        }
-
-        // if the target does not end with .xml, assume it is a folder
-        if (substr($target, -4) != '.xml') {
-            // if the folder does not exist at all, create it
-            if (!file_exists($target)) {
-                if (!@mkdir($target, 0755, true)) {
-                    throw new \InvalidArgumentException('The path "' . $target . '" could not be created');
-                }
-            }
-
-            if (!is_dir($target)) {
-                throw new \InvalidArgumentException('The given location "' . $target . '" is not a folder');
-            }
-
-            $path = realpath($target);
-            $target = $path . DIRECTORY_SEPARATOR . 'structure.xml';
-        } else {
-            $path = realpath(dirname($target));
-            $target = $path . DIRECTORY_SEPARATOR . basename($target);
-        }
-
-        if (!is_writable($path)) {
-            throw new \InvalidArgumentException(
-                'The given path "' . $target . '" either does not exist or is not writable.'
-            );
-        }
-
-        return $target;
-    }
-
-    /**
      * Executes the business logic involved with this command.
      *
      * @param InputInterface  $input
@@ -257,6 +211,7 @@ HELP
         parent::execute($input, $output);
 
         $builder = $this->getBuilder();
+        $projectDescriptor = $builder->getProjectDescriptor();
 
         $output->write('Collecting files .. ');
         $files = $this->getFileCollection($input);
@@ -269,8 +224,6 @@ HELP
         }
 
         $output->write('Initializing parser .. ');
-        $target = $this->getTarget($this->getOption($input, 'target', 'parser/target'));
-
         $this->populateParser($input, $files);
 
         if ($progress) {
@@ -278,13 +231,12 @@ HELP
         }
 
         try {
-            // save the generate file to the path given as the 'target' option
             $output->writeln('OK');
             $output->writeln('Parsing files');
 
-            if ($target && is_readable($target)) {
-                $builder->import(file_get_contents($target));
-            }
+            $mapper = new ProjectDescriptorMapper($this->getCache());
+            $mapper->garbageCollect($files);
+            $mapper->populate($projectDescriptor);
 
             $this->getParser()->parse($builder, $files, $input->getOption('sourcecode'));
         } catch (FilesNotFoundException $e) {
@@ -297,9 +249,10 @@ HELP
             $progress->finish();
         }
 
-        $output->write('Storing cache in "'.$target.'" .. ');
+        $output->write('Storing cache in "'.$this->getCache()->getOptions()->getCacheDir().'" .. ');
+        $projectDescriptor = $builder->getProjectDescriptor();
+        $mapper->save($projectDescriptor);
 
-        file_put_contents($target, $builder->export());
         $output->writeln('OK');
 
         return 0;
