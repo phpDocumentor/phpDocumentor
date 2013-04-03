@@ -63,9 +63,9 @@ The approach to finding an answer to this problem consists of the following acti
 3. Attempt to serialize the data set and register the following characteristics:
 
    1. Amount of time in seconds until serialization is completed.
-   1. Amount of time in seconds until deserialization is completed.
-   2. Number of megabytes memory usage at the peak of execution.
-   3. Size of the resulting artifact in kilobytes.
+   2. Amount of time in seconds until deserialization is completed.
+   3. Number of megabytes memory usage at the peak of execution.
+   4. Size of the resulting artifact in kilobytes.
 
 4. Populate a data set known to be exceptionally large.
 5. For each method of serialization; attempt to serialize the second data set and register the characteristics
