@@ -27,6 +27,7 @@ use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\Tag\TagFactory;
 
 use phpDocumentor\Reflection\BaseReflector;
+use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
@@ -50,20 +51,20 @@ class Reflector extends BuilderAbstract
      */
     public function buildFile($data)
     {
-        $file = new FileDescriptor($data->getHash());
-        $file->setLocation($data->getFilename());
-        $file->setName(basename($data->getFilename()));
+        $fileDescriptor = new FileDescriptor($data->getHash());
+        $fileDescriptor->setLocation($data->getFilename());
+        $fileDescriptor->setName(basename($data->getFilename()));
 
-        $this->buildDocBlock($data, $file);
+        $this->buildDocBlock($data, $fileDescriptor);
 
-        $file->setSource($data->getContents());
+        $fileDescriptor->setSource($data->getContents());
 
-        $file->setIncludes(new Collection($data->getIncludes()));
-        $file->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
+        $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
+        $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
         foreach ($data->getMarkers() as $marker) {
             list($type, $message, $line) = $marker;
-            $file->getMarkers()->add(
+            $fileDescriptor->getMarkers()->add(
                 array(
                     'type'    => $type,
                     'message' => $message,
@@ -74,7 +75,7 @@ class Reflector extends BuilderAbstract
 
         foreach ($data->getParseErrors() as $marker) {
             list($type, $message, $line, $code) = $marker;
-            $file->getErrors()->add(
+            $fileDescriptor->getErrors()->add(
                 array(
                     'type'    => $type,
                     'message' => $message,
@@ -84,45 +85,63 @@ class Reflector extends BuilderAbstract
             );
         }
 
+        /** @var ConstantReflector $constant */
         foreach ($data->getConstants() as $constant) {
             $constantDescriptor = $this->buildConstant($constant);
-            $file->getConstants()->set(
+            $constantDescriptor->setLocation($fileDescriptor, $constant->getLineNumber());
+
+            $fileDescriptor->getConstants()->set(
                 $constantDescriptor->getFullyQualifiedStructuralElementName(),
                 $constantDescriptor
             );
         }
+
+        /** @var FunctionReflector $function */
         foreach ($data->getFunctions() as $function) {
             $functionDescriptor = $this->buildFunction($function);
-            $file->getFunctions()->set(
+            $functionDescriptor->setLocation($fileDescriptor, $function->getLineNumber());
+
+            $fileDescriptor->getFunctions()->set(
                 $functionDescriptor->getFullyQualifiedStructuralElementName(),
                 $functionDescriptor
             );
         }
+
+        /** @var ClassReflector $class */
         foreach ($data->getClasses() as $class) {
             $classDescriptor = $this->buildClass($class);
-            $file->getClasses()->set(
+            $classDescriptor->setLocation($fileDescriptor, $class->getLineNumber());
+
+            $fileDescriptor->getClasses()->set(
                 $classDescriptor->getFullyQualifiedStructuralElementName(),
                 $classDescriptor
             );
         }
+
+        /** @var InterfaceReflector $interface */
         foreach ($data->getInterfaces() as $interface) {
             $interfaceDescriptor = $this->buildInterface($interface);
-            $file->getInterfaces()->set(
+            $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLineNumber());
+            $fileDescriptor->getInterfaces()->set(
                 $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
                 $interfaceDescriptor
             );
         }
+
+        /** @var TraitReflector $trait */
         foreach ($data->getTraits() as $trait) {
             $traitDescriptor = $this->buildTrait($trait);
-            $file->getTraits()->set(
+            $traitDescriptor->setLocation($fileDescriptor, $trait->getLineNumber());
+
+            $fileDescriptor->getTraits()->set(
                 $traitDescriptor->getFullyQualifiedStructuralElementName(),
                 $traitDescriptor
             );
         }
 
-        $this->getProjectDescriptor()->getFiles()->set($file->getPath(), $file);
+        $this->getProjectDescriptor()->getFiles()->set($fileDescriptor->getPath(), $fileDescriptor);
 
-        return $file;
+        return $fileDescriptor;
     }
 
     /**
@@ -238,8 +257,6 @@ class Reflector extends BuilderAbstract
         $constant->setNamespace($data->getNamespace());
 
         $this->buildDocBlock($data, $constant);
-
-        $constant->setLocation('', $data->getLinenumber());
 
         if ($container) {
             $container->getConstants()->set($constant->getName(), $constant);
