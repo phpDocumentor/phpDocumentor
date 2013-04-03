@@ -19,6 +19,8 @@ use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Transformer\Template;
+use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 
 /**
@@ -183,6 +185,8 @@ TEXT
         }
         $output->writeln('Prepared ' . count($transformer->getTemplates()->getTransformations()) . ' transformations');
 
+        $this->loadTransformations($transformer);
+
         $transformer->setParseprivate($input->getOption('parseprivate'));
 
         // add links to external docs
@@ -232,10 +236,14 @@ TEXT
         $templates = $input->getOption('template');
         if (!$templates) {
             $value = $this->getConfigValueFromPath('transformations/template');
-            if ($value) {
-                foreach ($value as $template) {
-                    if (is_array($template)) {
-                        $templates[] = $template['name'];
+            if (is_array($value)) {
+                if (isset($value['name'])) {
+                    $templates[] = $value['name'];
+                } else {
+                    foreach ($value as $template) {
+                        if (is_array($template)) {
+                            $templates[] = $template['name'];
+                        }
                     }
                 }
             }
@@ -246,6 +254,50 @@ TEXT
         }
 
         return $templates;
+    }
+
+    /**
+     * Load custom defined transformations.
+     *
+     * @param Transformer $transformer
+     *
+     * @todo this is an ugly implementation done for speed of development, should be refactored
+     *
+     * @return void
+     */
+    protected function loadTransformations(Transformer $transformer)
+    {
+        $received = array();
+        $transformations = $this->getConfigValueFromPath('transformations/transformation');
+        if (is_array($transformations)) {
+            if (isset($transformations['writer'])) {
+                $received[] = new Transformation(
+                    isset($transformations['query']) ? $transformations['query'] : '',
+                    $transformations['writer'],
+                    isset($transformations['source']) ? $transformations['source'] : '',
+                    isset($transformations['artifact']) ? $transformations['artifact'] : ''
+                );
+            } else {
+                foreach ($transformations as $transformation) {
+                    if (is_array($transformation)) {
+                        $received[] = new Transformation(
+                            isset($transformations['query']) ? $transformations['query'] : '',
+                            $transformations['writer'],
+                            isset($transformations['source']) ? $transformations['source'] : '',
+                            isset($transformations['artifact']) ? $transformations['artifact'] : ''
+                        );
+                    }
+                }
+            }
+        }
+
+        if (!empty($received)) {
+            $template = new Template('__');
+            foreach ($received as $transformation) {
+                $template[] = $transformation;
+            }
+            $transformer->getTemplates()->append($template);
+        }
     }
 
     /**
