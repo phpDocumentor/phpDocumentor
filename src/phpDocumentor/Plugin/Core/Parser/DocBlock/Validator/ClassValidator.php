@@ -43,31 +43,29 @@ class ClassValidator extends ValidatorAbstract
         $valid = true;
 
         if (null === $this->docblock) {
-            $this->logParserError('ERROR', 50000, $this->lineNumber, array($this->entityName));
+            $this->logParserError('ERROR', 'PPC:ERR-50000', $this->lineNumber, array($this->entityName));
             return false;
         }
 
         if (count($this->docblock->getTagsByName('package')) > 1) {
-            $this->logParserError('CRITICAL', 50001, $this->lineNumber);
+            $this->logParserError('CRITICAL', 'PPC:ERR-50001', $this->lineNumber);
             $valid = false;
         }
 
         if (count($this->docblock->getTagsByName('subpackage')) > 1) {
-            $this->logParserError('CRITICAL', 50002, $this->lineNumber);
+            $this->logParserError('CRITICAL', 'PPC:ERR-50002', $this->lineNumber);
             $valid = false;
         }
 
-        if ($this->docblock->hasTag('subpackage')
-            && !$this->docblock->hasTag('package')
+        if ($this->docblock->hasTag('subpackage') && !$this->docblock->hasTag('package')
         ) {
-            $this->logParserError('CRITICAL', 50004, $this->lineNumber);
+            $this->logParserError('CRITICAL', 'PPC:ERR-50004', $this->lineNumber);
             $valid = false;
         }
 
-        if ('' === $this->docblock->getShortDescription()
-            && substr(get_class($this), -15) == '\ClassValidator'
+        if ('' === $this->docblock->getShortDescription() && substr(get_class($this), -15) == '\ClassValidator'
         ) {
-            $this->logParserError('CRITICAL', 50005, $this->lineNumber, array($this->entityName));
+            $this->logParserError('CRITICAL', 'PPC:ERR-50005', $this->lineNumber, array($this->entityName));
             $valid = false;
         }
 

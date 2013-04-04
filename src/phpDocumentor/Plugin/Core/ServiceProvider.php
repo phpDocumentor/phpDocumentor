@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
+use Zend\I18n\Translator\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
 
@@ -33,5 +34,13 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
         $writerCollection['Checkstyle'] = new Writer\Checkstyle();
         $writerCollection['Sourcecode'] = new Writer\Sourcecode();
         $writerCollection['AstXml']     = new Writer\AstXml();
+
+        /** @var Translator $translator  */
+        $translator = $app['translator'];
+        $translator->addTranslationFilePattern(
+            'phparray',
+            __DIR__ . DIRECTORY_SEPARATOR . 'Messages',
+            '%s.php'
+        );
     }
 }

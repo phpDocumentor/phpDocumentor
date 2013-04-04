@@ -78,7 +78,12 @@ class RequiredValidator extends ValidatorAbstract
     {
         foreach ($this->options['required'][$key] as $tag) {
             if (count($this->docblock->getTagsByName($tag)) == 0) {
-                $this->logParserError('CRITICAL', 50020, $this->lineNumber, array($tag, $this->entityName));
+                $this->logParserError(
+                    'CRITICAL',
+                    'PPC:ERR-50020',
+                    $this->lineNumber,
+                    array($tag, $this->entityName)
+                );
             }
         }
     }

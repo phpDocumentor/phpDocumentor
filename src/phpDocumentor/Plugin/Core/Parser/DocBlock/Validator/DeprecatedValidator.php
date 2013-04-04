@@ -80,7 +80,7 @@ class DeprecatedValidator extends ValidatorAbstract
             if (count($this->docblock->getTagsByName($tag)) < 1) {
                 continue;
             }
-            $this->logParserError('CRITICAL', 50006, $this->lineNumber, array($tag, $this->entityName));
+            $this->logParserError('CRITICAL', 'PPC:ERR-50006', $this->lineNumber, array($tag, $this->entityName));
         }
     }
 }

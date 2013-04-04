@@ -15,16 +15,12 @@ use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Zend\Cache\Storage\Adapter\AbstractAdapter;
-use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
-use Zend\Cache\Storage\TaggableInterface;
 use Zend\I18n\Translator\Translator;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Console\Helper\ProgressHelper;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
-use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
@@ -91,8 +87,6 @@ class ParseCommand extends ConfigurableCommand
      */
     protected function configure()
     {
-        $translator = $this->translator;
-
         // minimization of the following expression
         $VALUE_OPTIONAL_ARRAY = InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY;
 
@@ -101,6 +95,7 @@ class ParseCommand extends ConfigurableCommand
             ->setHelp($this->__('PPCPP-HELPTEXT'))
             ->addOption('filename', 'f', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-FILENAME'))
             ->addOption('directory', 'd', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-DIRECTORY'))
+            ->addOption('target', 't', InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TARGET'))
             ->addOption('encoding', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-ENCODING'))
             ->addOption('extensions', 'e', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-EXTENSIONS'))
             ->addOption('ignore', 'i', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-IGNORE'))
@@ -137,6 +132,18 @@ class ParseCommand extends ConfigurableCommand
     {
         // invoke parent to load custom config
         parent::execute($input, $output);
+
+        $target = $this->getOption($input, 'target', 'parser/target');
+        if (!$this->isAbsolute($target)) {
+            $target = getcwd().DIRECTORY_SEPARATOR.$target;
+        }
+        if (!file_exists($target)) {
+            mkdir($target, 0777, true);
+        }
+        if (!is_dir($target)) {
+            throw new \Exception($this->__('PPCPP:EXC-BADTARGET'));
+        }
+        $this->getCache()->getOptions()->setCacheDir($target);
 
         $builder = $this->getBuilder();
         $projectDescriptor = $builder->getProjectDescriptor();

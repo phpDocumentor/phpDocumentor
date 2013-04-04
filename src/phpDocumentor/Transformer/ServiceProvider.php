@@ -13,10 +13,12 @@ namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\GenerateCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Command\Template\PackageCommand;
+
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\Debug;

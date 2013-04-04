@@ -43,7 +43,7 @@ class PropertyValidator extends ValidatorAbstract
         $valid = true;
 
         if (!$this->docblock) {
-            $this->logParserError('ERROR', 50018, $this->lineNumber, array($this->entityName));
+            $this->logParserError('ERROR', 'PPC:ERR-50018', $this->lineNumber, array($this->entityName));
             return false;
         }
 
@@ -54,7 +54,7 @@ class PropertyValidator extends ValidatorAbstract
                 }
             }
 
-            $this->logParserError('CRITICAL', 50019, $this->lineNumber, array($this->entityName));
+            $this->logParserError('CRITICAL', 'PPC:ERR-50019', $this->lineNumber, array($this->entityName));
         }
 
         return $valid;

@@ -20,6 +20,7 @@ HELP
     // Parameter descriptions
     'PPCPP:OPT-FILENAME'           => 'Comma-separated list of files to parse. The wildcards ? and * are supported',
     'PPCPP:OPT-DIRECTORY'          => 'Comma-separated list of directories to (recursively) parse',
+    'PPCPP:OPT-TARGET'             => 'Path where to store the cache (optional)',
     'PPCPP:OPT-ENCODING'           => 'Encoding to be used to interpret source files with',
     'PPCPP:OPT-EXTENSIONS'         => 'Comma-separated list of extensions to parse, defaults to php, php3 and phtml',
     'PPCPP:OPT-IGNORE'             => 'Comma-separated list of file(s) and directories that will be ignored. '
@@ -45,7 +46,8 @@ HELP
     'PPCPP:LOG-OK'           => 'OK',
     'PPCPP:LOG-INITIALIZING' => 'Initializing parser .. ',
     'PPCPP:LOG-PARSING'      => 'Parsing files',
-    'PPCPP:EXC-NOFILES'      => 'No parsable files were found, did you specify any using the -f or -d parameter?',
     'PPCPP:LOG-STORECACHE'   => 'Storing cache in "%s" .. ',
+    'PPCPP:EXC-NOFILES'      => 'No parsable files were found, did you specify any using the -f or -d parameter?',
+    'PPCPP:EXC-BADTARGET'    => 'The provided target location must be a directory',
 
 );

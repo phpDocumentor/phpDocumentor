@@ -27,7 +27,6 @@ use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Config\Factory;
 use Zend\I18n\Translator\Translator;
-use Zend\Serializer\Serializer;
 
 use phpDocumentor\Command\Plugin;
 use phpDocumentor\Console\Input\ArgvInput;

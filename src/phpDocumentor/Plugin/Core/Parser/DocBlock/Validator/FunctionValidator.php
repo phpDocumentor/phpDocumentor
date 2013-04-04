@@ -64,7 +64,7 @@ class FunctionValidator extends ValidatorAbstract
 
         $this->logParserError(
             'ERROR',
-            $this instanceof MethodValidator ? 50010 : 50009,
+            $this instanceof MethodValidator ? 'PPC:ERR-50010' : 'PPC:ERR-50009',
             $this->lineNumber,
             array($this->entityName . '()')
         );
@@ -85,7 +85,7 @@ class FunctionValidator extends ValidatorAbstract
 
         $this->logParserError(
             'ERROR',
-            $this instanceof MethodValidator ? 50012 : 50011,
+            $this instanceof MethodValidator ? 'PPC:ERR-50012' : 'PPC:ERR-50011',
             $this->lineNumber,
             array($this->entityName . '()')
         );
@@ -122,8 +122,38 @@ class FunctionValidator extends ValidatorAbstract
                 continue;
             }
 
-            $this->logParserError('NOTICE', 50013, $this->lineNumber, array($param_name, $this->entityName . '()'));
+            $this->logParserError(
+                'NOTICE',
+                'PPC:ERR-50013',
+                $this->lineNumber,
+                array($param_name, $this->entityName . '()')
+            );
         }
+    }
+
+    /**
+     * Validates whether an argument is mentioned in the docblock.
+     *
+     * @param integer                                  $index    The position in
+     *     the argument listing.
+     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument The argument
+     *     itself.
+     * @param \phpDocumentor\Reflection\DocBlock\Tag[] $params   The list of
+     *     param tags to validate against.
+     *
+     * @return bool whether an issue occurred.
+     */
+    protected function isArgumentInDocBlock(
+        $index,
+        \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument,
+        array $params
+    ) {
+        if (isset($params[$index])) {
+            return true;
+        }
+
+        $this->logParserError('ERROR', 'PPC:ERR-50015', $this->lineNumber, array($argument->getName(), $this->entityName . '()'));
+        return false;
     }
 
     /**
@@ -156,36 +186,11 @@ class FunctionValidator extends ValidatorAbstract
 
         $this->logParserError(
             'ERROR',
-            50014,
+            'PPC:ERR-50014',
             $this->lineNumber,
             array($argument->getName(), $param_name, $this->entityName . '()')
         );
 
-        return false;
-    }
-
-    /**
-     * Validates whether an argument is mentioned in the docblock.
-     *
-     * @param integer                                  $index    The position in
-     *     the argument listing.
-     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument The argument
-     *     itself.
-     * @param \phpDocumentor\Reflection\DocBlock\Tag[] $params   The list of
-     *     param tags to validate against.
-     *
-     * @return bool whether an issue occurred.
-     */
-    protected function isArgumentInDocBlock(
-        $index,
-        \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $argument,
-        array $params
-    ) {
-        if (isset($params[$index])) {
-            return true;
-        }
-
-        $this->logParserError('ERROR', 50015, $this->lineNumber, array($argument->getName(), $this->entityName . '()'));
         return false;
     }
 
@@ -212,7 +217,12 @@ class FunctionValidator extends ValidatorAbstract
             return true;
         }
 
-        $this->logParserError('ERROR', 50016, $this->lineNumber, array($argument->getName(), $this->entityName . '()'));
+        $this->logParserError(
+            'ERROR',
+            'PPC:ERR-50016',
+            $this->lineNumber,
+            array($argument->getName(), $this->entityName . '()')
+        );
 
         return false;
     }
@@ -234,7 +244,7 @@ class FunctionValidator extends ValidatorAbstract
 
         $this->logParserError(
             'NOTICE',
-            50017,
+            'PPC:ERR-50017',
             $this->lineNumber,
             array('@' . $param->getName(), $this->entityName . '()')
         );
