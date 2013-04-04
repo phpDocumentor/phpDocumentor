@@ -13,6 +13,7 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use Zend\I18n\Translator\Translator;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 
 /**
@@ -43,6 +44,14 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser']));
+        /** @var Translator $translator  */
+        $translator = $app['translator'];
+        $translator->addTranslationFilePattern(
+            'phparray',
+            __DIR__ . DIRECTORY_SEPARATOR . 'Messages',
+            '%s.php'
+        );
+
+        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
     }
 }

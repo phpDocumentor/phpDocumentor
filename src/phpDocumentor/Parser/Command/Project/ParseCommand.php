@@ -19,6 +19,7 @@ use Zend\Cache\Storage\Adapter\AbstractAdapter;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Cache\Storage\TaggableInterface;
+use Zend\I18n\Translator\Translator;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Console\Helper\ProgressHelper;
 use phpDocumentor\Descriptor\BuilderAbstract;
@@ -44,12 +45,16 @@ class ParseCommand extends ConfigurableCommand
     /** @var Parser $parser */
     protected $parser;
 
-    public function __construct($builder, $parser)
-    {
-        parent::__construct('project:parse');
+    /** @var Translator */
+    protected $translator;
 
-        $this->builder = $builder;
-        $this->parser  = $parser;
+    public function __construct($builder, $parser, $translator)
+    {
+        $this->builder    = $builder;
+        $this->parser     = $parser;
+        $this->translator = $translator;
+
+        parent::__construct('project:parse');
     }
 
     /**
@@ -86,113 +91,35 @@ class ParseCommand extends ConfigurableCommand
      */
     protected function configure()
     {
+        $translator = $this->translator;
+
+        // minimization of the following expression
+        $VALUE_OPTIONAL_ARRAY = InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY;
+
         $this->setAliases(array('parse'))
-            ->setDescription('Creates a structure file from your source code')
-            ->setHelp(
-<<<HELP
-The parse task uses the source files defined either by -f or -d options and
-generates cache files at the target location.
-HELP
-            )
-            ->addOption(
-                'filename',
-                'f',
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of files to parse. The wildcards ? and * are supported'
-            )
-            ->addOption(
-                'directory',
-                'd',
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of directories to (recursively) parse'
-            )
-            ->addOption(
-                'encoding',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'encoding to be used to interpret source files with'
-            )
-            ->addOption(
-                'extensions',
-                'e',
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of extensions to parse, defaults to php, php3 and phtml'
-            )
-            ->addOption(
-                'ignore',
-                'i',
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported'
-            )
-            ->addOption(
-                'ignore-tags',
-                null,
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of tags that will be ignored, defaults to none. package, subpackage and ignore '
-                .'may not be ignored.'
-            )
-            ->addOption(
-                'hidden',
-                null,
-                InputOption::VALUE_NONE,
-                'set to on to descend into hidden directories (directories starting with \'.\'), default is on'
-            )
-            ->addOption(
-                'ignore-symlinks',
-                null,
-                InputOption::VALUE_NONE,
-                'Ignore symlinks to other files or directories, default is on'
-            )
-            ->addOption(
-                'markers',
-                'm',
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of markers/tags to filter',
-                array('TODO', 'FIXME')
-            )
-            ->addOption(
-                'title',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Sets the title for this project; default is the phpDocumentor logo'
-            )
-            ->addOption(
-                'force',
-                null,
-                InputOption::VALUE_NONE,
-                'Forces a full build of the documentation, does not increment existing documentation'
-            )
-            ->addOption(
-                'validate',
-                null,
-                InputOption::VALUE_NONE,
-                'Validates every processed file using PHP Lint, costs a lot of performance'
-            )
-            ->addOption(
-                'visibility',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Specifies the parse visibility that should be displayed in the documentation (comma seperated e.g. '
-                . '"public,protected")'
-            )
+            ->setDescription($this->__('PPCPP-DESCRIPTION'))
+            ->setHelp($this->__('PPCPP-HELPTEXT'))
+            ->addOption('filename', 'f', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-FILENAME'))
+            ->addOption('directory', 'd', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-DIRECTORY'))
+            ->addOption('encoding', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-ENCODING'))
+            ->addOption('extensions', 'e', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-EXTENSIONS'))
+            ->addOption('ignore', 'i', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-IGNORE'))
+            ->addOption('ignore-tags', null, $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-IGNORETAGS'))
+            ->addOption('hidden', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-HIDDEN'))
+            ->addOption('ignore-symlinks', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-IGNORESYMLINKS'))
+            ->addOption('markers', 'm', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-MARKERS'), array('TODO', 'FIXME'))
+            ->addOption('title', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TITLE'))
+            ->addOption('force', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-FORCE'))
+            ->addOption('validate', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-VALIDATE'))
+            ->addOption('visibility', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-VISIBILITY'))
+            ->addOption('sourcecode', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-SOURCECODE'))
+            ->addOption('progressbar', 'p', InputOption::VALUE_NONE, $this->__('PPCPP:OPT-PROGRESSBAR'))
             ->addOption(
                 'defaultpackagename',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Name to use for the default package.',
+                $this->__('PPCPP:OPT-DEFAULTPACKAGENAME'),
                 'Default'
-            )
-            ->addOption(
-                'sourcecode',
-                null,
-                InputOption::VALUE_NONE,
-                'Whether to include syntax highlighted source code'
-            )
-            ->addOption(
-                'progressbar',
-                'p',
-                InputOption::VALUE_NONE,
-                'Whether to show a progress bar; will automatically quiet logging to stdout'
             );
 
         parent::configure();
@@ -214,9 +141,9 @@ HELP
         $builder = $this->getBuilder();
         $projectDescriptor = $builder->getProjectDescriptor();
 
-        $output->write('Collecting files .. ');
+        $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
-        $output->writeln('OK');
+        $output->writeln($this->__('PPCPP:LOG-OK'));
 
         /** @var ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
@@ -224,7 +151,7 @@ HELP
             $this->connectOutputToLogging($output);
         }
 
-        $output->write('Initializing parser .. ');
+        $output->write($this->__('PPCPP:LOG-INITIALIZING'));
         $this->populateParser($input, $files);
 
         if ($progress) {
@@ -232,8 +159,8 @@ HELP
         }
 
         try {
-            $output->writeln('OK');
-            $output->writeln('Parsing files');
+            $output->writeln($this->__('PPCPP:LOG-OK'));
+            $output->writeln($this->__('PPCPP:LOG-PARSING'));
 
             $mapper = new ProjectDescriptorMapper($this->getCache());
             $mapper->garbageCollect($files);
@@ -241,7 +168,7 @@ HELP
 
             $this->getParser()->parse($builder, $files, $input->getOption('sourcecode'));
         } catch (FilesNotFoundException $e) {
-            throw new \Exception('No parsable files were found, did you specify any using the -f or -d parameter?');
+            throw new \Exception($this->__('PPCPP:EXC-NOFILES'));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), 0, $e);
         }
@@ -250,11 +177,11 @@ HELP
             $progress->finish();
         }
 
-        $output->write('Storing cache in "'.$this->getCache()->getOptions()->getCacheDir().'" .. ');
+        $output->write($this->__('PPCPP:LOG-STORECACHE', $this->getCache()->getOptions()->getCacheDir()));
         $projectDescriptor = $builder->getProjectDescriptor();
         $mapper->save($projectDescriptor);
 
-        $output->writeln('OK');
+        $output->writeln($this->__('PPCPP:LOG-OK'));
 
         return 0;
     }
@@ -361,5 +288,18 @@ HELP
         );
 
         return $progress;
+    }
+
+    /**
+     * Translates the provided text and replaces any contained parameters using printf notation.
+     *
+     * @param string   $text
+     * @param string[] $parameters
+     *
+     * @return string
+     */
+    protected function __($text, $parameters = array())
+    {
+        return vsprintf($this->translator->translate($text), $parameters);
     }
 }
