@@ -22,6 +22,9 @@ abstract class DescriptorAbstract
     /** @var NamespaceDescriptor $namespace */
     protected $namespace;
 
+    /** @var string $package */
+    protected $package;
+
     /** @var string */
     protected $summary = '';
 
@@ -177,5 +180,21 @@ abstract class DescriptorAbstract
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @param string $package
+     */
+    public function setPackage($package)
+    {
+        $this->package = $package;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPackage()
+    {
+        return $this->package;
     }
 }

@@ -84,4 +84,17 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     {
         return $this->methods;
     }
+
+    public function setPackage($package)
+    {
+        parent::setPackage($package);
+
+        foreach ($this->getConstants() as $constant) {
+            $constant->setPackage($package);
+        }
+
+        foreach ($this->getMethods() as $method) {
+            $method->setPackage($package);
+        }
+    }
 }

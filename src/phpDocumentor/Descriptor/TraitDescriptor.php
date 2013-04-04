@@ -64,4 +64,17 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     {
         return $this->properties;
     }
+
+    public function setPackage($package)
+    {
+        parent::setPackage($package);
+
+        foreach ($this->getProperties() as $property) {
+            $property->setPackage($package);
+        }
+
+        foreach ($this->getMethods() as $method) {
+            $method->setPackage($package);
+        }
+    }
 }

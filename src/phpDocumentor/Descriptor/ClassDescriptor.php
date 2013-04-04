@@ -161,4 +161,21 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     {
         return $this->properties;
     }
+
+    public function setPackage($package)
+    {
+        parent::setPackage($package);
+
+        foreach ($this->getConstants() as $constant) {
+            $constant->setPackage($package);
+        }
+
+        foreach ($this->getProperties() as $property) {
+            $property->setPackage($package);
+        }
+
+        foreach ($this->getMethods() as $method) {
+            $method->setPackage($package);
+        }
+    }
 }

@@ -57,7 +57,9 @@ class Reflector extends BuilderAbstract
 
         $this->buildDocBlock($data, $fileDescriptor);
 
+        $packageTagObject = reset($data->getDocBlock()->getTagsByName('package'));
         $fileDescriptor->setSource($data->getContents());
+        $fileDescriptor->setPackage($packageTagObject ? $packageTagObject->getDescription() : '');
 
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
@@ -89,6 +91,7 @@ class Reflector extends BuilderAbstract
         foreach ($data->getConstants() as $constant) {
             $constantDescriptor = $this->buildConstant($constant);
             $constantDescriptor->setLocation($fileDescriptor, $constant->getLineNumber());
+            $constantDescriptor->setPackage($fileDescriptor->getPackage());
 
             $fileDescriptor->getConstants()->set(
                 $constantDescriptor->getFullyQualifiedStructuralElementName(),
@@ -100,6 +103,7 @@ class Reflector extends BuilderAbstract
         foreach ($data->getFunctions() as $function) {
             $functionDescriptor = $this->buildFunction($function);
             $functionDescriptor->setLocation($fileDescriptor, $function->getLineNumber());
+            $functionDescriptor->setPackage($fileDescriptor->getPackage());
 
             $fileDescriptor->getFunctions()->set(
                 $functionDescriptor->getFullyQualifiedStructuralElementName(),
@@ -111,6 +115,9 @@ class Reflector extends BuilderAbstract
         foreach ($data->getClasses() as $class) {
             $classDescriptor = $this->buildClass($class);
             $classDescriptor->setLocation($fileDescriptor, $class->getLineNumber());
+            if (!$classDescriptor->getPackage()) {
+                $classDescriptor->setPackage($fileDescriptor->getPackage());
+            }
 
             $fileDescriptor->getClasses()->set(
                 $classDescriptor->getFullyQualifiedStructuralElementName(),
@@ -122,6 +129,10 @@ class Reflector extends BuilderAbstract
         foreach ($data->getInterfaces() as $interface) {
             $interfaceDescriptor = $this->buildInterface($interface);
             $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLineNumber());
+            if (!$interfaceDescriptor->getPackage()) {
+                $interfaceDescriptor->setPackage($fileDescriptor->getPackage());
+            }
+
             $fileDescriptor->getInterfaces()->set(
                 $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
                 $interfaceDescriptor
@@ -132,6 +143,9 @@ class Reflector extends BuilderAbstract
         foreach ($data->getTraits() as $trait) {
             $traitDescriptor = $this->buildTrait($trait);
             $traitDescriptor->setLocation($fileDescriptor, $trait->getLineNumber());
+            if (!$traitDescriptor->getPackage()) {
+                $traitDescriptor->setPackage($fileDescriptor->getPackage());
+            }
 
             $fileDescriptor->getTraits()->set(
                 $traitDescriptor->getFullyQualifiedStructuralElementName(),
