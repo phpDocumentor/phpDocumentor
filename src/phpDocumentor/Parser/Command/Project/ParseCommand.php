@@ -9,7 +9,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-namespace phpDocumentor\Command\Project;
+namespace phpDocumentor\Parser\Command\Project;
 
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,6 +19,7 @@ use Zend\Cache\Storage\Adapter\AbstractAdapter;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Cache\Storage\TaggableInterface;
+use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Console\Helper\ProgressHelper;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
@@ -35,7 +36,7 @@ use phpDocumentor\Parser\Parser;
  * generates a structure file (structure.xml) at the target location (which is
  * the folder 'output' unless the option -t is provided).
  */
-class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
+class ParseCommand extends ConfigurableCommand
 {
     /** @var BuilderAbstract $builder*/
     protected $builder;
@@ -90,7 +91,7 @@ class ParseCommand extends \phpDocumentor\Command\ConfigurableCommand
             ->setHelp(
 <<<HELP
 The parse task uses the source files defined either by -f or -d options and
-generates a structure file (structure.xml) at the target location.
+generates cache files at the target location.
 HELP
             )
             ->addOption(

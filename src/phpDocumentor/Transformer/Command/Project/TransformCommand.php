@@ -9,13 +9,14 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-namespace phpDocumentor\Command\Project;
+namespace phpDocumentor\Transformer\Command\Project;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zend\Cache\Storage\StorageInterface;
+use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
@@ -35,7 +36,7 @@ use phpDocumentor\Transformer\Transformer;
  * verbose option or stop additional information using the quiet option. Please
  * take note that the quiet option also disables logging to file.
  */
-class TransformCommand extends \phpDocumentor\Command\ConfigurableCommand
+class TransformCommand extends ConfigurableCommand
 {
     /** @var BuilderAbstract $builder */
     protected $builder;

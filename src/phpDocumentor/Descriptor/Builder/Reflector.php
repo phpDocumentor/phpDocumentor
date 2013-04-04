@@ -57,7 +57,9 @@ class Reflector extends BuilderAbstract
 
         $this->buildDocBlock($data, $fileDescriptor);
 
-        $packageTagObject = reset($data->getDocBlock()->getTagsByName('package'));
+        $packageTagObject = $data->getDocBlock()
+            ? reset($data->getDocBlock()->getTagsByName('package'))
+            : null;
         $fileDescriptor->setSource($data->getContents());
         $fileDescriptor->setPackage($packageTagObject ? $packageTagObject->getDescription() : '');
 

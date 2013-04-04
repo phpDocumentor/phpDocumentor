@@ -13,7 +13,7 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Command\Project\ParseCommand;
+use phpDocumentor\Parser\Command\Project\ParseCommand;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
