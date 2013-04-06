@@ -16,14 +16,36 @@ namespace phpDocumentor\Descriptor;
  */
 class PropertyDescriptor extends DescriptorAbstract implements Interfaces\PropertyInterface
 {
+    /** @var ClassDescriptor|TraitDescriptor $parent */
+    protected $parent;
+
     /** @var string[] $types */
     protected $types = array();
 
+    /** @var string $default */
     protected $default;
 
+    /** @var bool $static */
     protected $static = false;
 
+    /** @var string $visibility */
     protected $visibility = 'public';
+
+    /**
+     * @param ClassDescriptor|TraitDescriptor $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return ClassDescriptor|TraitDescriptor
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
 
     /**
      * {@inheritDoc}

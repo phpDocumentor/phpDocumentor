@@ -64,7 +64,7 @@ class StandardRouter extends RouterAbstract
             function ($node) {
                 return true;
             },
-            function(){
+            function () {
                 return false;
             }
         );

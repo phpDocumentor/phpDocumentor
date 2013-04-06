@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin\Core\Twig;
 use dflydev\markdown\MarkdownExtraParser;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
-use \phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformation;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -127,11 +127,36 @@ class Extension extends \Twig_Extension implements ExtensionInterface
 
     public function getFilters()
     {
+        $routers = $this->routers;
         $parser = new MarkdownExtraParser();
         return array(
-            'markdown' => new \Twig_SimpleFilter('markdown', function($value) use ($parser) {
-                return $parser->transform($value);
-            })
+            'markdown' => new \Twig_SimpleFilter(
+                'markdown',
+                function ($value) use ($parser) {
+                    return $parser->transform($value);
+                }
+            ),
+            'route' => new \Twig_SimpleFilter(
+                'route',
+                function ($value) use ($routers) {
+                    $result = array();
+                    foreach ((array)$value as $path) {
+                        $rule = $routers->match($path);
+                        if ($rule) {
+                            trigger_error(var_export($rule, true), E_USER_WARNING);
+
+                            $url = ltrim($rule->generate($path), '/');
+
+                            if (!$url) {
+                                $result[] = $path;
+                            }
+                        }
+                        $result[] = sprintf('<a href="%s">%s</a>', $url, $path);
+                    }
+
+                    return $result;
+                }
+            ),
         );
     }
 

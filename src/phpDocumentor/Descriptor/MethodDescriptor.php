@@ -12,10 +12,13 @@
 namespace phpDocumentor\Descriptor;
 
 /**
- * Descriptor representing a Method in a Class.
+ * Descriptor representing a Method in a Class, Interface or Trait.
  */
 class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface
 {
+    /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent */
+    protected $parent;
+
     /** @var bool $abstract */
     protected $abstract = false;
 
@@ -39,6 +42,22 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         parent::__construct();
 
         $this->setArguments(new Collection());
+    }
+
+    /**
+     * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return ClassDescriptor|InterfaceDescriptor|TraitDescriptor
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 
     /**

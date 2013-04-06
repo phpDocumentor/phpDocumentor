@@ -11,8 +11,8 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
 
 /**
  * Common interface representing the description of a class.
@@ -60,19 +60,19 @@ interface ClassInterface extends BaseInterface
     /**
      * @return Collection
      */
-    public function getConstants();
+    public function getConstants($includeInherited = true);
 
     public function setMethods(Collection $methods);
 
     /**
      * @return Collection
      */
-    public function getMethods();
+    public function getMethods($includeInherited = true);
 
     public function setProperties(Collection $properties);
 
     /**
      * @return Collection
      */
-    public function getProperties();
+    public function getProperties($includeInherited = true);
 }

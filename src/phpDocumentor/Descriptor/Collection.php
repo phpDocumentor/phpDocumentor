@@ -184,4 +184,16 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         unset($this->items[$offset]);
     }
+
+    /**
+     * Returns a new collection with the items from this collection and the provided combined.
+     *
+     * @param Collection $collection
+     *
+     * @return Collection
+     */
+    public function merge(Collection $collection)
+    {
+        return new Collection(array_merge($this->items, $collection->getAll()));
+    }
 }

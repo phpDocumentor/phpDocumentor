@@ -13,28 +13,27 @@ namespace phpDocumentor\Descriptor\Builder;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\BuilderAbstract;
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
-use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\TagFactory;
-
+use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\BaseReflector;
-use phpDocumentor\Reflection\ConstantReflector;
-use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\ClassReflector;
-use phpDocumentor\Reflection\InterfaceReflector;
-use phpDocumentor\Reflection\TraitReflector;
-use phpDocumentor\Reflection\FunctionReflector;
+use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\FileReflector;
+use phpDocumentor\Reflection\FunctionReflector;
+use phpDocumentor\Reflection\InterfaceReflector;
+use phpDocumentor\Reflection\TraitReflector;
 
 /**
  * Populates the project descriptor using the information retrieved from the
@@ -275,6 +274,7 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $constant);
 
         if ($container) {
+            $constant->setParent($container);
             $container->getConstants()->set($constant->getName(), $constant);
         }
 
@@ -317,6 +317,7 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $property);
 
         $property->setLocation('', $data->getLinenumber());
+        $property->setParent($container);
         $container->getProperties()->set($property->getName(), $property);
 
         return $property;
@@ -337,6 +338,7 @@ class Reflector extends BuilderAbstract
         $method->setFinal($data->isFinal());
         $method->setAbstract($data->isAbstract());
         $method->setStatic($data->isStatic());
+        $method->setParent($container);
 
         $this->buildDocBlock($data, $method);
 

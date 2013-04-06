@@ -16,11 +16,30 @@ namespace phpDocumentor\Descriptor;
  */
 class ConstantDescriptor extends DescriptorAbstract implements Interfaces\ConstantInterface
 {
+    /** @var ClassDescriptor|InterfaceDescriptor|null $parent */
+    protected $parent;
+
     /** @var string[] $type */
     protected $types = array();
 
     /** @var string $value */
     protected $value;
+
+    /**
+     * @param null|ClassDescriptor|InterfaceDescriptor $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return null|ClassDescriptor|InterfaceDescriptor
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
 
     /**
      * {@inheritDoc}

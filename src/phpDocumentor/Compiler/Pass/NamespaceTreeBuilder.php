@@ -12,7 +12,6 @@
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
-
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
@@ -126,6 +125,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 
             // namespace does not exist, create it
             $interimNamespaceDescriptor = new NamespaceDescriptor();
+            $interimNamespaceDescriptor->setParentNamespace($pointer);
             $interimNamespaceDescriptor->setName($part);
             $interimNamespaceDescriptor->setFullyQualifiedStructuralElementName($fqnn);
 

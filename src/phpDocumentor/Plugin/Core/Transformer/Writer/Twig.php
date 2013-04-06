@@ -95,6 +95,9 @@ class Twig extends WriterAbstract implements Routable
         $nodes = $this->getListOfNodes($transformation->getQuery(), $project);
 
         foreach ($nodes as $node) {
+            if (!$node) {
+                continue;
+            }
             $destination = $this->getDestinationPath($node, $transformation);
             if ($destination === false) {
                 continue;

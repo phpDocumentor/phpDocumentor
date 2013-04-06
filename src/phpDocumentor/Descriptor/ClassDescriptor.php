@@ -125,9 +125,13 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getConstants()
+    public function getConstants($includeInherited = true)
     {
-        return $this->constants;
+        if (!$includeInherited || !$this->getParentClass() || (!$this->getParentClass() instanceof ClassDescriptor)) {
+            return $this->constants;
+        }
+
+        return $this->constants->merge($this->getParentClass()->getConstants(true));
     }
 
     /**
@@ -141,9 +145,13 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getMethods()
+    public function getMethods($includeInherited = true)
     {
-        return $this->methods;
+        if (!$includeInherited || !$this->getParentClass() || (!$this->getParentClass() instanceof ClassDescriptor)) {
+            return $this->methods;
+        }
+
+        return $this->methods->merge($this->getParentClass()->getMethods(true));
     }
 
     /**
@@ -157,9 +165,13 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getProperties()
+    public function getProperties($includeInherited = true)
     {
-        return $this->properties;
+        if (!$includeInherited || !$this->getParentClass() || (!$this->getParentClass() instanceof ClassDescriptor)) {
+            return $this->properties;
+        }
+
+        return $this->properties->merge($this->getParentClass()->getProperties(true));
     }
 
     public function setPackage($package)
