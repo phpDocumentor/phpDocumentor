@@ -1,5 +1,5 @@
 {
-    "hash": "4f5eabda110ebcd461bf0f4753faf006",
+    "hash": "be4ef9e40dc60531ed0c75f9066307e1",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -1954,12 +1954,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "84b43613e4346d7892ee4375a30614edf1ad36c2"
+                "reference": "cc72f44a00c9abc963e91a796db6166f0c7a7a7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/84b43613e4346d7892ee4375a30614edf1ad36c2",
-                "reference": "84b43613e4346d7892ee4375a30614edf1ad36c2",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/cc72f44a00c9abc963e91a796db6166f0c7a7a7e",
+                "reference": "cc72f44a00c9abc963e91a796db6166f0c7a7a7e",
                 "shasum": ""
             },
             "require": {
@@ -1999,7 +1999,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2013-03-22 12:04:50"
+            "time": "2013-04-04 17:33:04"
         },
         {
             "name": "phpunit/php-code-coverage",

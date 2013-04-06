@@ -13,7 +13,7 @@ namespace phpDocumentor\Compiler\Pass;
 
 use Psr\Log\LoggerInterface;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 
 /**
@@ -29,14 +29,19 @@ class Debug implements CompilerPassInterface
     /** @var \Psr\Log\LoggerInterface $log */
     protected $log;
 
+    /** @var ProjectAnalyzer $analyzer */
+    protected $analyzer;
+
     /**
      * Registers the logger with this Compiler Pass.
      *
      * @param LoggerInterface $log
+     * @param ProjectAnalyzer $analyzer
      */
-    public function __construct(LoggerInterface $log)
+    public function __construct(LoggerInterface $log, ProjectAnalyzer $analyzer)
     {
-        $this->log = $log;
+        $this->log      = $log;
+        $this->analyzer = $analyzer;
     }
 
     /**
@@ -44,41 +49,7 @@ class Debug implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project)
     {
-        $elementCounter = array();
-        $unknownParentClasses = 0;
-        foreach ($project->getIndexes()->elements as $element) {
-            if (!isset($elementCounter[get_class($element)])) {
-                $elementCounter[get_class($element)] = 0;
-            }
-            $elementCounter[get_class($element)]++;
-
-            if ($element instanceof ClassDescriptor) {
-                if (is_string($element->getParentClass())) {
-                    $unknownParentClasses++;
-                }
-            }
-        }
-
-
-        $logString = <<<TEXT
-In the ProjectDescriptor are:
-  %8d files
-  %8d top-level namespaces
-  %8d unresolvable parent classes
-
-TEXT;
-        foreach ($elementCounter as $class => $count) {
-            $logString .= sprintf('  %8d %s elements' . PHP_EOL, $count, $class);
-        }
-
-        $this->log->debug(
-            sprintf(
-                $logString,
-                count($project->getFiles()),
-                count($project->getNamespace()->getNamespaces()),
-                $unknownParentClasses
-            )
-        );
-
+        $this->analyzer->analyze($project);
+        $this->log->debug((string)$this->analyzer);
     }
 }

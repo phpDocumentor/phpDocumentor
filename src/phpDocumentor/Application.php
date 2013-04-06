@@ -11,29 +11,27 @@
 
 namespace phpDocumentor;
 
-/**
- * Finds and activates the autoloader.
- */
-require_once findAutoloader();
-
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
-
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\Console\Shell;
-
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Config\Factory;
 use Zend\I18n\Translator\Translator;
-
 use phpDocumentor\Command\Plugin;
 use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Parser;
 use phpDocumentor\Plugin\Compat2A13;
 use phpDocumentor\Plugin\Core;
 use phpDocumentor\Plugin\Manager;
+
+/**
+ * Finds and activates the autoloader.
+ */
+require_once findAutoloader();
 
 /**
  * Application class for phpDocumentor.
@@ -243,6 +241,10 @@ class Application extends Cilex
                 return new Descriptor\Builder\Reflector();
             }
         );
+
+        $this['descriptor.analyzer'] = function () {
+            return new ProjectAnalyzer();
+        };
     }
 
     /**
