@@ -13,17 +13,15 @@ namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-
-use phpDocumentor\Transformer\Command\Project\TransformCommand;
-use phpDocumentor\Transformer\Command\Template\GenerateCommand;
-use phpDocumentor\Transformer\Command\Template\ListCommand;
-use phpDocumentor\Transformer\Command\Template\PackageCommand;
-
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
+use phpDocumentor\Transformer\Command\Project\TransformCommand;
+use phpDocumentor\Transformer\Command\Template\GenerateCommand;
+use phpDocumentor\Transformer\Command\Template\ListCommand;
+use phpDocumentor\Transformer\Command\Template\PackageCommand;
 
 /**
  * This provider is responsible for registering the transformer component with the given Application.
@@ -64,7 +62,10 @@ class ServiceProvider implements ServiceProviderInterface
                 $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
                 $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
-                $compiler->insert(new Debug($container['monolog']), Debug::COMPILER_PRIORITY);
+                $compiler->insert(
+                    new Debug($container['monolog'], $container['descriptor.analyzer']),
+                    Debug::COMPILER_PRIORITY
+                );
 
                 return $compiler;
             }
