@@ -4,25 +4,15 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\BehatContext;
+use Behat\Gherkin\Node\PyStringNode;
 
 /**
  * Context class for the phpDocumentor Features.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class FeatureContext extends BehatContext
 {
@@ -79,9 +69,6 @@ class FeatureContext extends BehatContext
      */
     public function iRun($command)
     {
-        if (file_exists('build/structure.xml')) {
-            unlink('build/structure.xml');
-        }
         exec($command.' 2>&1', $this->output, $this->return_code);
         $this->output = implode("\n", $this->output);
     }
@@ -301,73 +288,6 @@ class FeatureContext extends BehatContext
         if ($found) {
             throw new \Exception(
                 "Actual output is:\n" . $this->output
-            );
-        }
-    }
-
-    /**
-     * Verifies whether the AST contains a file element with the given path.
-     *
-     * @param string $file_path
-     *
-     * @Then /^my AST should contain the file "([^"]*)"$/
-     *
-     * @throws \Exception if the condition is not fulfilled
-     *
-     * @return void
-     */
-    public function myAstShouldContainTheFile($file_path)
-    {
-        /** @var \SimpleXMLElement $structure  */
-        $structure = simplexml_load_file('build/structure.xml');
-        if (!$structure->xpath('/project/file[@path="'.$file_path.'"]')) {
-            throw new \Exception(
-                "File not found in structure file:\n" . $structure->asXML()
-            );
-        }
-    }
-
-    /**
-     * Verifies whether the AST contains a file-level DocBlock with a non-empty
-     * short description.
-     *
-     * @Then /^my AST should have a file level DocBlock with short description$/
-     *
-     * @throws \Exception if the condition is not fulfilled
-     *
-     * @return void
-     */
-    public function myAstShouldHaveAFileLevelDocBlockWithShortDescription()
-    {
-        /** @var \SimpleXMLElement $structure  */
-        $structure = simplexml_load_file('build/structure.xml');
-        if (!$structure->xpath('/project/file/docblock[description != ""]')) {
-            throw new \Exception(
-                "File-level DocBlock not found in structure file:\n"
-                . $structure->asXML()
-            );
-        }
-    }
-
-    /**
-     * Verifies whether the AST contains the given number of class definitions.
-     *
-     * @param int $class_count
-     *
-     * @Then /^my AST should contain (\d+) class definitions$/
-     *
-     * @throws \Exception if the condition is not fulfilled
-     *
-     * @return void
-     */
-    public function myAstShouldContainClassDefinitions($class_count)
-    {
-        /** @var \SimpleXMLElement $structure  */
-        $structure = simplexml_load_file('build/structure.xml');
-        if (count($structure->xpath('//class')) !== (int)$class_count) {
-            throw new \Exception(
-                "Class count did not match in structure file:\n"
-                . $structure->asXML()
             );
         }
     }
