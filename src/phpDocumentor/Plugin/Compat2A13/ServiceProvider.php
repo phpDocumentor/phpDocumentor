@@ -15,7 +15,6 @@ namespace phpDocumentor\Plugin\Compat2A13;
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Plugin\Compat2A13\Transformer\Writer\Xsl;
-use phpDocumentor\Transformer\Writer\Collection;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -26,8 +25,5 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        /** @var Collection $writerCollection */
-        $writerCollection = $app['transformer.writer.collection'];
-        $writerCollection['xsl'] = new Xsl();
     }
 }

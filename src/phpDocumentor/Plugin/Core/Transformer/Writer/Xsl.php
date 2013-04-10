@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Compat2A13\Transformer\Writer;
+namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
