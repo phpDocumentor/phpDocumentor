@@ -1,51 +1,51 @@
-??/??/2012: Version 2.0.0a4
+2013/05/01: Version 2.0.0b1
 ---------------------------
 
-* FIXED:    #284, Windows gives errno 22 (I/O error: Invalid argument)
+The first beta of phpDocumentor contains the final functionality for version 2.0.
+A lot of effort has been put in making sure that the API, Object structure and plugin mechanism will remain
+backwards compatible until version 3.0.
 
-13/05/2012: Version 2.0.0a3
----------------------------
+Features have been changed, removed and added; making this an incredibly large backwards compatibility break compared
+to 2.0.0a13.
 
-* BC_BREAK: Minimum version is bumped to 5.3.2
-* BC-BREAK: #440, Paths for plugins must now adhere to the PSR-0, see docs for
-            more information
-* BC-BREAK: URLs of templates have changed to a more semantic version
-* BC-BREAK: new_black template is renamed to new-black
-* BC-BREAK: Templates will no longer be published via PEAR; they will be offered
-            purely using Composer
-* CHANGED:  Started transition to namespaces
-* CHANGED:  phpDocumentor to use Composer (http://getcomposer.org)
-* REMOVED:  Moved GraphViz library to a separate Component
-* REMOVED:  Moved ReflectionDocBlock to a separate Component
-* REMOVED:  ZendX_Autoloader as we are now using Composer's autoloader.
-* REMOVED:  phpDocumentor_Core_Debug class as it was no longer serving a real
-            purpose.
-* CHANGED:  Logging class is moved to Core plugin
-* CHANGED:  Templates are now all installed by default instead, they can be
-            updated using Composer
-* FIXED:    #420, @param type hints were erroneous if they contained a namespace
-            separator
-* FIXED:    #426, constants did not receive the @package name of the file docblock
-* FIXED:    #454, Writers failed if the include path contained a similar class
-* FIXED:    #452, template:install did not work for a PEAR installation
-* FIXED:    Class breadcrumb was not visible in responsive template
-* FIXED:    #421, js folder was overwritten if the user himself had a folder js
-            in his/her project root
-* FIXED:    #356, global functions do not inherit file's @package name
-* FIXED:    #377, multiple template definitions in a config file did not work
-* ADDED:    phpDocumentor, its components and templates are on packagist
-* ADDED:    #368, @var descriptions now support markdown
+> Important: if you have written your own XSL based template; please change the template.xml to generate the XML output
+> first by adding a transformation with the XmlAst writer. Please look at our existing templates for an example.
 
-01/04/2012: Version 2.0.0
---------------------------
+> Important: please open an issue for every broken piece of functionality. We have taken the utmost care not to
+> introduce bugs but due to large change some might occur.
 
-* CHANGED:  #380, The regex that strips the docblock from the cruft (asterisks)
-            did not remove any tabs that happened directly after the asterisk.
-            This is now added to perform a cleaner stripping and prevent any
-            issues from unexpected whitespace.
-* FIXED:    #398, Interfaces were not inherited correctly
-* CHANGED:  Several documentation improvements
-* FIXED:    #379, alternative formats for @method were not recognized
-* FIXED:    GH #379: OR (|) operator was not supported for @method annotation;
-            added support
-* ADDED:    Support for PHPUnit's @covers annotation thanks to @ClockWerx
+In the following list we have tried to exhaustively document the list of changes and their impact. Due to the size of
+the refactoring it is nigh impossible to make a 100% accurate list. Please contact us if you have questions; the website
+http://www.phpdoc.org describes various methods.
+
+========== ==================================================================================================
+ADDED      Twig Writer
+ADDED      XmlAst Writer
+ADDED      Router component to provide locations for various Url Schemes
+ADDED      Responsive-twig template
+ADDED      More tests
+ADDED      Statistics are being logged to a log file (more will be logged there in the future)
+ADDED      Compiler component that adds the ability to inject compiler passes at various points
+ADDED      Linker to create object links between the various elements
+ADDED      Indexes containing pre-generated lists to make the generation of templates faster
+FIXED      Define transformations in phpdoc.xml
+FIXED      Define multiple templates in phpdoc.xml
+FIXED      Performance is improved by re-approaching inheritance from a different angle
+CHANGED    Temporarily removed deprecated report
+CHANGED    Target option of parser now only accepts a folder
+CHANGED    Various performance improvements
+CHANGED    Doctrine Support is moved to its own Service Provider
+CHANGED    Rewired dependencies and injection scheme to make better of the DIC
+CHANGED    Object graph is written to various cache folders in a directory named 'build' by default
+CHANGED    Cache is generated by Zend\Cache
+CHANGED    Commands have been moved to their respective component
+CHANGED    The Parser has been promoted to Service Provider
+CHANGED    The Transformer has been promoted to Service Provider
+CHANGED    Parse command has been prepared for internationalization
+CHANGED    Template configuration is parsed using JmsSerializer
+DEPRECATED Behaviours are only executed for the XmlAst writer
+BC-BREAK   Parser generates an object graph and not XML (structure.xml, use XmlAst writer now for XML output)
+BC-BREAK   Replaced plugin system with Service Providers
+========== ==================================================================================================
+
+
