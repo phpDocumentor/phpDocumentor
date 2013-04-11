@@ -58,7 +58,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /**
      * @param Collection $files
      */
-    protected function setFiles($files)
+    public function setFiles($files)
     {
         $this->files = $files;
     }
@@ -74,7 +74,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /**
      * @param Collection $indexes
      */
-    protected function setIndexes(Collection $indexes)
+    public function setIndexes(Collection $indexes)
     {
         $this->indexes = $indexes;
     }
@@ -90,7 +90,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /**
      * @param NamespaceDescriptor $namespace
      */
-    protected function setNamespace($namespace)
+    public function setNamespace($namespace)
     {
         $this->namespace = $namespace;
     }

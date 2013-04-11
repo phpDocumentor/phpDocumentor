@@ -190,4 +190,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $method->setPackage($package);
         }
     }
+
+    public function __toString()
+    {
+        return $this->getFullyQualifiedStructuralElementName();
+    }
 }

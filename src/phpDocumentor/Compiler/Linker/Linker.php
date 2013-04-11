@@ -41,6 +41,9 @@ class Linker implements CompilerPassInterface
     /** @var string[][] */
     protected $substitutions = array();
 
+    /** @var string[] Prevent cycles by tracking which objects have been analyzed */
+    protected $processedObjects = array();
+
     /**
      * Initializes the linker with a series of Descriptors to link to.
      *
@@ -93,7 +96,7 @@ class Linker implements CompilerPassInterface
      *
      * @return string|object
      */
-    public function findFqsen($object, $fieldName)
+    public function findFieldValue($object, $fieldName)
     {
         $getter = 'get'.ucfirst($fieldName);
 
@@ -101,39 +104,75 @@ class Linker implements CompilerPassInterface
     }
 
     /**
-     * Substitutes the FQSEN in one or more fields of the given object with an object alias that is provided with the
-     * object list in the setObjectAliasesList method.
+     * Substitutes the given item or its children's FQCN with an object alias.
      *
-     * @param object $object
+     * This method may do either of the following depending on the item's type
      *
-     * @see self::setObjectAliasesList for the location where the object list is provided.
+     * String
+     *     If the given item is a string then this method will attempt to find an appropriate Class, Interface or
+     *     TraitDescriptor object and return that.
      *
-     * @return void
+     * Array or Traversable
+     *     Iterate through each item, pass each key's contents to a new call to substitute and replace the key's
+     *     contents if the contents is not an object (objects automatically update and saves performance).
+     *
+     * Object
+     *     Determines all eligible substitutions using the substitutions property, construct a getter and retrieve
+     *     the field's contents. Pass these contents to a new call of substitute and use a setter to replace the field's
+     *     contents if anything other than null is returned.
+     *
+     * This method will return null if no substitution was possible and all of the above should not update the parent
+     * item when null is passed.
+     *
+     * @param string|object|\Traversable|array $item
+     *
+     * @return null|string|DescriptorAbstract
      */
-    public function substitute($object)
+    public function substitute($item)
     {
-        $objectClassName = get_class($object);
-        $fieldNames = isset($this->substitutions[$objectClassName])
-            ? $this->substitutions[$objectClassName]
-            : array();
+        $result = null;
 
-        foreach ($fieldNames as $fieldName) {
-            $fqsen  = $this->findFqsen($object, $fieldName);
-            if ($fqsen instanceof \Traversable || is_array($fqsen)) {
-                foreach ($fqsen as $childObject) {
-                    $this->substitute($childObject);
+        if (is_string($item)) {
+            $result = $this->findAlias($item);
+        } elseif (is_array($item) || $item instanceof \Traversable) {
+            $isModified = false;
+            foreach ($item as $key => $element) {
+                $isModified = true;
+
+                $element = $this->substitute($element);
+                if ($element !== null) {
+                    $item[$key] = $element;
                 }
-            } elseif (is_object($fqsen)) {
-                $this->substitute($fqsen);
-            } elseif (is_string($fqsen)) {
-                $result = $this->findAlias($fqsen);
+            }
+            if ($isModified) {
+                $result = $item;
+            }
+        } elseif (is_object($item)) {
+            $hash = spl_object_hash($item);
+            if (isset($this->processedObjects[$hash])) {
+                // if analyzed; just return
+                return null;
+            }
+            $this->processedObjects[$hash] = true;
 
-                $setter = 'set'.ucfirst($fieldName);
-                if (is_object($result)) {
-                    $object->$setter($result);
+            $objectClassName = get_class($item);
+            $fieldNames = isset($this->substitutions[$objectClassName])
+                ? $this->substitutions[$objectClassName]
+                : array();
+
+            foreach ($fieldNames as $fieldName) {
+                $fieldValue = $this->findFieldValue($item, $fieldName);
+                $response = $this->substitute($fieldValue);
+
+                // if the returned response is not an object it must be grafted on the calling object
+                if ($response !== null) {
+                    $setter = 'set'.ucfirst($fieldName);
+                    $item->$setter($response);
                 }
             }
         }
+
+        return $result;
     }
 
     /**

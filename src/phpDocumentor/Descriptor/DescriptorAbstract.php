@@ -169,7 +169,7 @@ abstract class DescriptorAbstract
      *
      * @return void
      */
-    protected function setTags(Collection $tags)
+    public function setTags(Collection $tags)
     {
         $this->tags = $tags;
     }

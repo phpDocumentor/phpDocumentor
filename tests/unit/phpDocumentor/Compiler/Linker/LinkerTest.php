@@ -44,7 +44,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::findFqsen
+     * @covers phpDocumentor\Compiler\Linker\Linker::findFieldValue
      */
     public function testFindFqsenInObject()
     {
@@ -56,7 +56,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         $linker = new Linker(array());
 
-        $this->assertSame($fqsen, $linker->findFqsen($object, $fieldName));
+        $this->assertSame($fqsen, $linker->findFieldValue($object, $fieldName));
     }
 
     /**

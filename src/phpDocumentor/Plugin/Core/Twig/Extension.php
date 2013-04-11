@@ -141,17 +141,9 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                 function ($value) use ($routers) {
                     $result = array();
                     foreach ((array)$value as $path) {
-                        $rule = $routers->match($path);
-                        if ($rule) {
-                            trigger_error(var_export($rule, true), E_USER_WARNING);
-
-                            $url = ltrim($rule->generate($path), '/');
-
-                            if (!$url) {
-                                $result[] = $path;
-                            }
-                        }
-                        $result[] = sprintf('<a href="%s">%s</a>', $url, $path);
+                        $rule     = $routers->match($path);
+                        $url      = $rule ? ltrim($rule->generate($path), '/') : false;
+                        $result[] = $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
                     }
 
                     return $result;

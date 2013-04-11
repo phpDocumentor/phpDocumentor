@@ -15,6 +15,11 @@ class ReturnDescriptor extends TagDescriptor
         $this->types = $reflectionTag->getTypes();
     }
 
+    public function setTypes($types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * @return string[]
      */

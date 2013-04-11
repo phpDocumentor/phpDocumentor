@@ -22,9 +22,13 @@ class ParamDescriptor extends TagDescriptor
         return $this->variableName;
     }
 
+    public function setTypes($types)
+    {
+        $this->types = $types;
+    }
+
     public function getTypes()
     {
         return $this->types;
     }
-
 }

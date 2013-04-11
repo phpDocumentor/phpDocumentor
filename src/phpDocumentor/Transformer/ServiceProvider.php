@@ -49,9 +49,12 @@ class ServiceProvider implements ServiceProviderInterface
         // parameters
         $app['transformer.template.location'] = __DIR__ . '/../../../data/templates';
         $app['linker.substitutions'] = array(
-            'phpDocumentor\Descriptor\ProjectDescriptor' => array('files'),
-            'phpDocumentor\Descriptor\FileDescriptor'    => array('classes'),
-            'phpDocumentor\Descriptor\ClassDescriptor'   => array('parentClass')
+            'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
+            'phpDocumentor\Descriptor\FileDescriptor'         => array('classes'),
+            'phpDocumentor\Descriptor\ClassDescriptor'        => array('parentClass', 'methods'),
+            'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags'),
+            'phpDocumentor\Descriptor\Tag\ParamDescriptor'    => array('types'),
+            'phpDocumentor\Descriptor\Tag\ReturnDescriptor'   => array('types'),
         );
 
         // services
