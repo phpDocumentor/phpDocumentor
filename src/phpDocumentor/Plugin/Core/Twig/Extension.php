@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Twig;
 
 use dflydev\markdown\MarkdownExtraParser;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Transformation;
@@ -127,6 +128,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
 
     public function getFilters()
     {
+        $extension = $this;
         $routers = $this->routers;
         $parser = new MarkdownExtraParser();
         return array(
@@ -138,15 +140,27 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
             'route' => new \Twig_SimpleFilter(
                 'route',
-                function ($value) use ($routers) {
+                function ($value) use ($extension, $routers) {
+                    // FIXME: this code is suboptimal and needs refactoring
                     $result = array();
-                    foreach ((array)$value as $path) {
+                    if ($value instanceof Collection) {
+                        $value = $value->getAll();
+                    }
+                    $singleResult = !is_array($value);
+                    $value = !is_array($value) ? array($value) : $value;
+
+                    foreach ($value as $path) {
                         $rule     = $routers->match($path);
                         $url      = $rule ? ltrim($rule->generate($path), '/') : false;
+
+                        if ($url && $url[0] != '/') {
+                            $url = $extension->convertToRootPath($url);
+                        }
+
                         $result[] = $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
                     }
 
-                    return $result;
+                    return $singleResult ? reset($result) : $result;
                 }
             ),
         );

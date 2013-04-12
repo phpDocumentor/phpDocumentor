@@ -55,7 +55,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function setParentClass($extends)
     {
-        $this->extends = &$extends;
+        $this->extends = $extends;
     }
 
     /**
@@ -189,10 +189,5 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         foreach ($this->getMethods() as $method) {
             $method->setPackage($package);
         }
-    }
-
-    public function __toString()
-    {
-        return $this->getFullyQualifiedStructuralElementName();
     }
 }

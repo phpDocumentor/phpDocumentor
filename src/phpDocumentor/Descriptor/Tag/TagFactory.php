@@ -14,6 +14,8 @@ class TagFactory
         'link'   => 'phpDocumentor\Descriptor\Tag\LinkDescriptor',
         'uses'   => 'phpDocumentor\Descriptor\Tag\UsesDescriptor',
         'param'  => 'phpDocumentor\Descriptor\Tag\ParamDescriptor',
+        'throws' => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
+        'throw'  => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
     );
 
     public function create(Tag $reflectorTag)

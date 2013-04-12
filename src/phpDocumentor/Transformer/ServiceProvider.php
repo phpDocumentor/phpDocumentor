@@ -26,7 +26,7 @@ use phpDocumentor\Transformer\Command\Template\PackageCommand;
 /**
  * This provider is responsible for registering the transformer component with the given Application.
  */
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProvider extends \stdClass implements ServiceProviderInterface
 {
     /**
      * Registers services on the given app.
@@ -51,8 +51,17 @@ class ServiceProvider implements ServiceProviderInterface
         $app['linker.substitutions'] = array(
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
             'phpDocumentor\Descriptor\FileDescriptor'         => array('classes'),
-            'phpDocumentor\Descriptor\ClassDescriptor'        => array('parentClass', 'methods'),
-            'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags'),
+            'phpDocumentor\Descriptor\ClassDescriptor'        => array(
+                'parentClass',
+                'interfaces',
+                'methods',
+                'properties',
+                'constants'
+            ),
+            'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags', 'arguments'),
+            'phpDocumentor\Descriptor\ArgumentDescriptor'     => array('types'),
+            'phpDocumentor\Descriptor\PropertyDescriptor'     => array('types'),
+            'phpDocumentor\Descriptor\ConstantDescriptor'     => array('types'),
             'phpDocumentor\Descriptor\Tag\ParamDescriptor'    => array('types'),
             'phpDocumentor\Descriptor\Tag\ReturnDescriptor'   => array('types'),
         );

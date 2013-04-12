@@ -197,4 +197,14 @@ abstract class DescriptorAbstract
     {
         return $this->package;
     }
+
+    /**
+     * Represents this object by its unique identifier, the Fully Qualified Structural Element Name.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getFullyQualifiedStructuralElementName();
+    }
 }
