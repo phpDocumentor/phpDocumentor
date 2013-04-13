@@ -11,7 +11,9 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use Zend\I18n\Exception\RuntimeException;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Plugin\Core\Exception;
 use phpDocumentor\Transformer\Transformation;
 
 /**
@@ -32,27 +34,35 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
-        // FIXME
-        return;
         if (!class_exists('XSLTProcessor')) {
-            throw new \phpDocumentor\Plugin\Core\Exception(
+            throw new Exception(
                 'The XSL writer was unable to find your XSLTProcessor; '
                 . 'please check if you have installed the PHP XSL extension'
             );
         }
 
         $artifact = $transformation->getTransformer()->getTarget()
-        . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
         $xsl = new \DOMDocument();
         $xsl->load($transformation->getSourceAsPath());
 
+        $structureFilename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';
+        if (!is_readable($structureFilename)) {
+            throw new RuntimeException(
+                'Structure.xml file was not found in the target directory, is the XML writer missing from the '
+                . 'template definition?'
+            );
+        }
+
+        // load the structure file (ast)
+        $structure = new \DOMDocument('1.0', 'utf-8');
+        $structure->load($structureFilename);
+
         $proc = new \XSLTProcessor();
         $proc->importStyleSheet($xsl);
         if (empty($structure->documentElement)) {
-            throw new \phpDocumentor\Plugin\Core\Exception(
-                'Specified DOMDocument lacks documentElement, cannot transform'
-            );
+            throw new Exception('Specified DOMDocument lacks documentElement, cannot transform');
         }
 
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
@@ -68,7 +78,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         // location by replacing ($<var>} with the sluggified node-value of the
         // search result
         if ($transformation->getQuery() !== '') {
-            $xpath = new \DOMXPath($transformation->getTransformer()->getSource());
+            $xpath = new \DOMXPath($structure);
 
             /** @var \DOMNodeList $qry */
             $qry = $xpath->query($transformation->getQuery());
@@ -87,7 +97,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 );
 
                 $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
-                $this->log('Processing the file: ' . $element->nodeValue . ' as ' . $filename);
+//                $this->log('Processing the file: ' . $element->nodeValue . ' as ' . $filename);
 
                 if (!file_exists(dirname($filename))) {
                     mkdir(dirname($filename), 0755, true);

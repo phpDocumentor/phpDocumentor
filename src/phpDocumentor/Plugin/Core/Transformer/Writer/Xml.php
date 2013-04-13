@@ -112,11 +112,11 @@ class Xml extends WriterAbstract
             $child->appendChild($markers);
 
             foreach ($file->getMarkers() as $marker) {
-                $marker_obj = new \DOMElement(strtolower($marker[0]));
+                $marker_obj = new \DOMElement(strtolower($marker['type']));
                 $markers->appendChild($marker_obj);
 
-                $marker_obj->appendChild(new \DOMText(trim($marker[1])));
-                $marker_obj->setAttribute('line', $marker[2]);
+                $marker_obj->appendChild(new \DOMText(trim($marker['message'])));
+                $marker_obj->setAttribute('line', $marker['line']);
 
             }
         }
@@ -126,12 +126,12 @@ class Xml extends WriterAbstract
             $child->appendChild($parse_errors);
 
             foreach ($file->getErrors() as $error) {
-                $marker_obj = new \DOMElement(strtolower($error[0]));
+                $marker_obj = new \DOMElement(strtolower($error['type']));
                 $parse_errors->appendChild($marker_obj);
 
-                $marker_obj->appendChild(new \DOMText(trim($error[1])));
-                $marker_obj->setAttribute('line', $error[2]);
-                $marker_obj->setAttribute('code', $error[3]);
+                $marker_obj->appendChild(new \DOMText(trim($error['message'])));
+                $marker_obj->setAttribute('line', $error['line']);
+                $marker_obj->setAttribute('code', $error['code']);
 
             }
         }
