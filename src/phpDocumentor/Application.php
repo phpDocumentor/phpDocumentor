@@ -15,6 +15,7 @@ use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
+use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
@@ -276,12 +277,17 @@ class Application extends Cilex
      */
     public function run($interactive = false)
     {
+        /** @var ConsoleApplication $app  */
         $app = $this['console'];
+
         if ($interactive) {
             $app = new Shell($app);
         }
 
-        $app->run(new ArgvInput());
+        $output = new Console\Output\Output();
+        $output->setLogger($this['monolog']);
+
+        $app->run(new ArgvInput(), $output);
     }
 }
 
