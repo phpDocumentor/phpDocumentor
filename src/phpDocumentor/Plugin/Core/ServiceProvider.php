@@ -33,7 +33,7 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
         $writerCollection['Graph']      = new Writer\Graph();
         $writerCollection['Checkstyle'] = new Writer\Checkstyle();
         $writerCollection['Sourcecode'] = new Writer\Sourcecode();
-        $writerCollection['AstXml']     = new Writer\AstXml();
+        $writerCollection['xml']        = new Writer\Xml();
         $writerCollection['xsl']        = new Writer\Xsl();
 
         /** @var Translator $translator  */

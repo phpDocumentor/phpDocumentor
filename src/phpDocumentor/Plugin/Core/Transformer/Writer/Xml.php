@@ -31,7 +31,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 /**
  * Converts the structural information of phpDocumentor into a XML AST file.
  */
-class AstXml extends WriterAbstract
+class Xml extends WriterAbstract
 {
     /** @var \DOMDocument $xml */
     protected $xml;
