@@ -62,7 +62,7 @@ class ProjectAnalyzer
 
         $this->descriptorCountByType  = $elementCounter;
         $this->fileCount              = count($projectDescriptor->getFiles());
-        $this->topLevelNamespaceCount = count($projectDescriptor->getNamespace()->getNamespaces());
+        $this->topLevelNamespaceCount = count($projectDescriptor->getNamespace()->getChildren());
     }
 
     /**

@@ -208,7 +208,7 @@ class Graph extends WriterAbstract
             $sub_graph->setNode($node);
         }
 
-        foreach ($namespace->getNamespaces()->getAll() as $element) {
+        foreach ($namespace->getChildren()->getAll() as $element) {
             $this->buildNamespaceTree($sub_graph, $element);
         }
 

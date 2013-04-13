@@ -3,10 +3,10 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 
-interface NamespaceInterface extends BaseInterface, ContainerInterface
+interface PackageInterface extends BaseInterface, ContainerInterface
 {
     /**
-     * @return NamespaceInterface
+     * @return PackageInterface
      */
     public function getParent();
 

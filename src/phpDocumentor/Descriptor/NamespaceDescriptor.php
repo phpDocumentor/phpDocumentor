@@ -14,10 +14,10 @@ namespace phpDocumentor\Descriptor;
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
     /** @var NamespaceDescriptor $parentNamespace */
-    protected $parentNamespace;
+    protected $parent;
 
     /** @var Collection $namespaces*/
-    protected $namespaces;
+    protected $children;
 
     /** @var Collection $functions*/
     protected $functions;
@@ -36,7 +36,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
 
     public function __construct()
     {
-        $this->setNamespaces(new Collection());
+        $this->setChildren(new Collection());
         $this->setFunctions(new Collection());
         $this->setConstants(new Collection());
         $this->setClasses(new Collection());
@@ -47,13 +47,13 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets the parent namespace for this namespace.
      *
-     * @param NamespaceDescriptor $parentNamespace
+     * @param NamespaceDescriptor $parent
      *
      * @return void
      */
-    public function setParentNamespace($parentNamespace)
+    public function setParent($parent)
     {
-        $this->parentNamespace = $parentNamespace;
+        $this->parent = $parent;
     }
 
     /**
@@ -61,9 +61,9 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
      *
      * @return NamespaceDescriptor|null
      */
-    public function getParentNamespace()
+    public function getParent()
     {
-        return $this->parentNamespace;
+        return $this->parent;
     }
 
 
@@ -132,19 +132,19 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * @param Collection $namespaces
+     * @param Collection $children
      */
-    protected function setNamespaces(Collection $namespaces)
+    protected function setChildren(Collection $children)
     {
-        $this->namespaces = $namespaces;
+        $this->children = $children;
     }
 
     /**
      * @return Collection
      */
-    public function getNamespaces()
+    public function getChildren()
     {
-        return $this->namespaces;
+        return $this->children;
     }
 
     /**

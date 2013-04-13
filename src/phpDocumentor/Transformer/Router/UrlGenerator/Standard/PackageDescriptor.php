@@ -15,7 +15,7 @@ use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
-class ClassDescriptor implements UrlGeneratorInterface
+class PackageDescriptor implements UrlGeneratorInterface
 {
     /**
      * Generates a URL from the given node or returns false if unable.
@@ -26,6 +26,13 @@ class ClassDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        return '/classes/'.str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\')).'.html';
+        $name = str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\'));
+
+        // convert root namespace to default; default is a keyword and no namespace CAN be named as such
+        if ($name === '') {
+            $name = 'default';
+        }
+
+        return '/packages/'. $name .'.html';
     }
 }

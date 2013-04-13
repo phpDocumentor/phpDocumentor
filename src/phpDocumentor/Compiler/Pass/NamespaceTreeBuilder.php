@@ -118,19 +118,19 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         $pointer = $project->getNamespace();
         foreach ($parts as $part) {
             $fqnn .= '\\' . $part;
-            if ($pointer->getNamespaces()->get($part)) {
-                $pointer = $pointer->getNamespaces()->get($part);
+            if ($pointer->getChildren()->get($part)) {
+                $pointer = $pointer->getChildren()->get($part);
                 continue;
             }
 
             // namespace does not exist, create it
             $interimNamespaceDescriptor = new NamespaceDescriptor();
-            $interimNamespaceDescriptor->setParentNamespace($pointer);
+            $interimNamespaceDescriptor->setParent($pointer);
             $interimNamespaceDescriptor->setName($part);
             $interimNamespaceDescriptor->setFullyQualifiedStructuralElementName($fqnn);
 
             // add to the pointer's list of children
-            $pointer->getNamespaces()->set($part, $interimNamespaceDescriptor);
+            $pointer->getChildren()->set($part, $interimNamespaceDescriptor);
 
             // add to index
             $project->getIndexes()->elements['~' . $fqnn] = $interimNamespaceDescriptor;

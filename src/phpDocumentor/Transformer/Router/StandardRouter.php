@@ -14,6 +14,7 @@ namespace phpDocumentor\Transformer\Router;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 
 /**
@@ -29,7 +30,15 @@ class StandardRouter extends RouterAbstract
     public function configure()
     {
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
+        $packageGenerator = new UrlGenerator\Standard\PackageDescriptor();
         $classGenerator     = new UrlGenerator\Standard\ClassDescriptor();
+
+        $this[] = new Rule(
+            function ($node) {
+                return ($node instanceof PackageDescriptor);
+            },
+            $packageGenerator
+        );
 
         $this[] = new Rule(
             function ($node) {

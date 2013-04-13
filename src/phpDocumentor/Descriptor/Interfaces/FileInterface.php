@@ -3,7 +3,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 
-interface FileInterface extends BaseInterface
+interface FileInterface extends BaseInterface, ContainerInterface
 {
     public function getHash();
 
@@ -20,31 +20,6 @@ interface FileInterface extends BaseInterface
      * @return Collection
      */
     public function getIncludes();
-
-    /**
-     * @return Collection
-     */
-    public function getConstants();
-
-    /**
-     * @return Collection
-     */
-    public function getFunctions();
-
-    /**
-     * @return Collection
-     */
-    public function getClasses();
-
-    /**
-     * @return Collection
-     */
-    public function getInterfaces();
-
-    /**
-     * @return Collection
-     */
-    public function getTraits();
 
     /**
      * @return Collection
