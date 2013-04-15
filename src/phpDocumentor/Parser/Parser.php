@@ -12,13 +12,13 @@
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Descriptor\Builder\Reflector;
+use Psr\Log\LogLevel;
 use phpDocumentor\Descriptor\BuilderAbstract;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\FileReflector;
-use phpDocumentor\Fileset\Collection;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\Event\PreFileEvent;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -333,7 +333,7 @@ class Parser extends ParserAbstract
             } catch (Exception $e) {
                 $this->log(
                     '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                    \phpDocumentor\Plugin\Core\Log::ALERT
+                    LogLevel::ALERT
                 );
             }
 
@@ -344,7 +344,7 @@ class Parser extends ParserAbstract
 
             $this->log(
                 '>> Memory after processing of file: ' . number_format(memory_get_usage()) . ' bytes',
-                \phpDocumentor\Plugin\Core\Log::DEBUG
+                LogLevel::DEBUG
             );
         }
         $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');

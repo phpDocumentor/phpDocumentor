@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use Psr\Log\LogLevel;
 use Zend\I18n\Exception\RuntimeException;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Plugin\Core\Exception;
@@ -159,7 +160,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                     'XSLT does not allow both double and single quotes in '
                     . 'a variable; transforming single quotes to a character '
                     . 'encoded version in variable: ' . $key,
-                    \phpDocumentor\Plugin\Core\Log::WARN
+                    LogLevel::WARNING
                 );
                 $variable = str_replace("'", "&#39;", $variable);
             }

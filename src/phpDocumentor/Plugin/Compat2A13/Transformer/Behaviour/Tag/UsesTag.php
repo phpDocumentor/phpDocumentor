@@ -15,6 +15,8 @@
 
 namespace phpDocumentor\Plugin\Compat2A13\Transformer\Behaviour\Tag;
 
+use Psr\Log\LogLevel;
+
 /**
  * Behaviour that adds support for the uses tag
  *
@@ -99,7 +101,7 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             if ($referral_nodes === false) {
                 $this->log(
                     'An XPath error occurs while processing @uses, the query used was: ' . $qry,
-                    \phpDocumentor\Plugin\Core\Log::CRIT
+                    LogLevel::CRITICAL
                 );
                 continue;
             }
@@ -107,10 +109,7 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             // check if the result is unique; if not we error and continue
             // to the next @uses
             if ($referral_nodes->length > 1) {
-                $this->log(
-                    '@uses "'.$refers.'" refers to more than 1 element',
-                    \phpDocumentor\Plugin\Core\Log::ERR
-                );
+                $this->log('@uses "'.$refers.'" refers to more than 1 element', LogLevel::ERROR);
                 continue;
             }
 

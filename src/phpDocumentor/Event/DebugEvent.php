@@ -12,6 +12,8 @@
  */
 namespace phpDocumentor\Event;
 
+use Psr\Log\LogLevel;
+
 /**
  * Event representing some debugging information for phpDocumentor.
  *
@@ -28,7 +30,7 @@ class DebugEvent extends \phpDocumentor\Event\EventAbstract
     protected $message;
 
     /** @var int Default priority level for these events is DEBUG */
-    protected $priority = \phpDocumentor\Plugin\Core\Log::DEBUG;
+    protected $priority = LogLevel::DEBUG;
 
     /**
      * Provides the message that is to be shown with this event.

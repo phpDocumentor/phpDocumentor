@@ -15,6 +15,8 @@
 
 namespace phpDocumentor\Plugin\Compat2A13\Transformer\Behaviour\Tag;
 
+use Psr\Log\LogLevel;
+
 /**
  * Behaviour that adds support for the return tag
  *
@@ -69,7 +71,7 @@ class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             if ($method->nodeName != 'method') {
                 $this->log(
                     'Global function ' . $method_name . ' contains a reference to self or $self',
-                    \phpDocumentor\Plugin\Core\Log::ERR
+                    LogLevel::ERROR
                 );
                 continue;
             }
