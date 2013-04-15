@@ -60,6 +60,14 @@ class Transformer implements CompilerPassInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getDescription()
+    {
+        return 'Transform analyzed project into artifacts';
+    }
+
+    /**
      * Array containing prefix => URL values.
      *
      * What happens is that the transformer knows where to find external API

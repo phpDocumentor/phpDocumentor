@@ -45,6 +45,14 @@ class Linker implements CompilerPassInterface
     protected $processedObjects = array();
 
     /**
+     * {@inheritDoc}
+     */
+    public function getDescription()
+    {
+        return 'Replace textual FQCNs with object aliases';
+    }
+
+    /**
      * Initializes the linker with a series of Descriptors to link to.
      *
      * @param string[] $substitutions

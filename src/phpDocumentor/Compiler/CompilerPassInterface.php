@@ -19,6 +19,16 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 interface CompilerPassInterface
 {
     /**
+     * Returns a textual description of what this pass does for output purposes.
+     *
+     * Please note that the command line will be truncated to 68 characters (<message> .. 000.000s) so longer
+     * descriptions won't have much use.
+     *
+     * @return string
+     */
+    public function getDescription();
+
+    /**
      * Executes a compiler pass.
      *
      * This method will execute the business logic associated with a given compiler pass and allow it to manipulate

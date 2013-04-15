@@ -34,6 +34,14 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
+    public function getDescription()
+    {
+        return 'Build "namespaces" index and add namespaces to "elements"';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function execute(ProjectDescriptor $project)
     {
         $project->getIndexes()->elements['~\\'] = $project->getNamespace();

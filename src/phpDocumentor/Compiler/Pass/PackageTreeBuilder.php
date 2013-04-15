@@ -33,6 +33,14 @@ class PackageTreeBuilder implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
+    public function getDescription()
+    {
+        return 'Build "packages" index';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function execute(ProjectDescriptor $project)
     {
         $project->getIndexes()->set('packages', new Collection());

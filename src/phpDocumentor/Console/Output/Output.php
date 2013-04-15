@@ -35,6 +35,16 @@ class Output extends ConsoleOutput
         return $this->logger;
     }
 
+    public function writeTimedLog($message, $operation, array $arguments = array())
+    {
+        $this->write(sprintf('%-68.68s .. ', $message));
+        $timerStart = microtime(true);
+
+        call_user_func_array($operation, $arguments);
+
+        $this->writeln(sprintf('%8.3fs', microtime(true) - $timerStart));
+    }
+
     public function write($message, $newline = false, $type = 0)
     {
         if ($this->getLogger()) {

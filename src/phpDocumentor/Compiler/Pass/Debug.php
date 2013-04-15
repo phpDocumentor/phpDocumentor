@@ -47,6 +47,14 @@ class Debug implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
+    public function getDescription()
+    {
+        return 'Analyze results and write report to log';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function execute(ProjectDescriptor $project)
     {
         $this->analyzer->analyze($project);

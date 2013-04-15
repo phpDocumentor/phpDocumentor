@@ -18,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Compiler\Compiler;
+use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Transformer\Template;
@@ -160,8 +161,6 @@ TEXT
             $this->connectOutputToLogging($output);
         }
 
-        $output->writeln('Initializing transformer');
-
         // initialize transformer
         $transformer = $this->getTransformer();
 
@@ -171,51 +170,37 @@ TEXT
         }
         $transformer->setTarget($target);
 
-        $source = realpath($this->getOption($input, 'source', 'parser/target'));
-        if (file_exists($source) && is_dir($source)) {
-            $source .= DIRECTORY_SEPARATOR . 'structure.xml';
-        }
+        // $source = realpath($this->getOption($input, 'source', 'parser/target'));
+        // if (file_exists($source) && is_dir($source)) {
+        //     $source .= DIRECTORY_SEPARATOR . 'structure.xml';
+        // }
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
-        $mapper->populate($projectDescriptor);
+        $output->writeTimedLog('Load cache', array($mapper, 'populate'), array($projectDescriptor));
 
         foreach ($this->getTemplates($input) as $template) {
-            $output->writeln('Loading template "' . $template . '"');
-            $transformer->getTemplates()->load($template, $transformer);
+            $output->writeTimedLog(
+                'Preparing template "'. $template .'"',
+                array($transformer->getTemplates(), 'load'),
+                array($template, $transformer)
+            );
         }
-        $output->writeln('Prepared ' . count($transformer->getTemplates()->getTransformations()) . ' transformations');
-
-        $this->loadTransformations($transformer);
+        $output->writeTimedLog(
+            'Preparing ' . count($transformer->getTemplates()->getTransformations()) . ' transformations',
+            array($this, 'loadTransformations'),
+            array($transformer)
+        );
 
         $transformer->setParseprivate($input->getOption('parseprivate'));
-
-        // add links to external docs
-        $external_class_documentation = (array)$this->getConfigValueFromPath(
-            'transformer/external-class-documentation'
-        );
-        if (!isset($external_class_documentation[0])) {
-            $external_class_documentation = array($external_class_documentation);
-        }
-
-        foreach ($external_class_documentation as $doc) {
-            if (empty($doc)) {
-                continue;
-            }
-
-            $transformer->setExternalClassDoc((string)$doc['prefix'], (string)$doc['uri']);
-        }
 
         if ($progress) {
             $progress->start($output, count($transformer->getTemplates()->getTransformations()));
         }
 
+        /** @var CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
-            $timerStart = microtime(true);
-            $pass->execute($projectDescriptor);
-            $output->writeln(
-                sprintf('Process compiler pass in %.4fs: \\%s', microtime(true) - $timerStart, get_class($pass))
-            );
+            $output->writeTimedLog($pass->getDescription(), array($pass, 'execute'), array($projectDescriptor));
         }
 
         if ($progress) {
@@ -266,7 +251,7 @@ TEXT
      *
      * @return void
      */
-    protected function loadTransformations(Transformer $transformer)
+    public function loadTransformations(Transformer $transformer)
     {
         $received = array();
         $transformations = $this->getConfigValueFromPath('transformations/transformation');

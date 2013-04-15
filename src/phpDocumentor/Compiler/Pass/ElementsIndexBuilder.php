@@ -32,6 +32,14 @@ class ElementsIndexBuilder implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
+    public function getDescription()
+    {
+        return 'Build "elements" index';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function execute(ProjectDescriptor $project)
     {
         $elementCollection = new Collection();
