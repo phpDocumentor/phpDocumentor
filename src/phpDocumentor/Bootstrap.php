@@ -4,8 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -18,12 +17,7 @@ require_once __DIR__.'/Application.php';
  * This class provides a bootstrap for all application who wish to interface
  * with phpDocumentor.
  *
- * The Bootstrapper is responsible for setting up the phpDocumentor autoloader,
- * setting up the event dispatcher and initializing the plugins.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
+ * The Bootstrapper is responsible for setting up the phpDocumentor application.
  */
 class Bootstrap
 {
@@ -44,7 +38,7 @@ class Bootstrap
     /**
      * Convenience method that does the complete initialization for phpDocumentor.
      *
-     * This method will register the autoloader, event dispatcher and plugins.
+     * This method will register the application.
      * The methods called can also be implemented separately, for example when
      * you want to use your own autoloader.
      *

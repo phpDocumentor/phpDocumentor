@@ -259,7 +259,7 @@ class Twig extends WriterAbstract implements Routable
 
             // to support 'normal' Twig extensions we check the interface to determine what instantiation to do.
             $implements_interface = in_array(
-                'phpDocumentor\Plugin\Twig\ExtensionInterface',
+                'phpDocumentor\Plugin\Core\Twig\ExtensionInterface',
                 class_implements($extension)
             );
 

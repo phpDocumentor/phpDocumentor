@@ -14,7 +14,6 @@ namespace phpDocumentor\Plugin\Compat2A13;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Plugin\Compat2A13\Transformer\Writer\Xsl;
 
 class ServiceProvider implements ServiceProviderInterface
 {

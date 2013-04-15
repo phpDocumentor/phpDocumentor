@@ -21,13 +21,11 @@ use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Config\Factory;
 use Zend\I18n\Translator\Translator;
-use phpDocumentor\Command\Plugin;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Parser;
 use phpDocumentor\Plugin\Compat2A13;
 use phpDocumentor\Plugin\Core;
-use phpDocumentor\Plugin\Manager;
 
 /**
  * Finds and activates the autoloader.
@@ -77,8 +75,6 @@ class Application extends Cilex
             }
         );
 
-        $this->loadPlugins();
-
         $this->addDescriptorServices();
 
         $this->register(new Parser\ServiceProvider());
@@ -89,7 +85,6 @@ class Application extends Cilex
         $this->register(new Compat2A13\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
-        $this->addCommandsForPluginNamespace();
     }
 
     /**
@@ -180,34 +175,6 @@ class Application extends Cilex
     }
 
     /**
-     * Load the plugins.
-     *
-     * phpDocumentor instantiates the plugin manager given the Event Dispatcher, Configuration and autoloader.
-     * Using this manager it will read the configuration and load the required plugins.
-     *
-     * @return void
-     */
-    protected function loadPlugins()
-    {
-        $app                    = $this;
-        $this['plugin_manager'] = $this->share(
-            function () use ($app) {
-                $manager = new Manager(
-                    $app['event_dispatcher'],
-                    $app['config'],
-                    $app['translator']
-                );
-
-                return $manager;
-            }
-        );
-
-        /** @var Manager $pluginManager  */
-        $pluginManager = $this['plugin_manager'];
-        $pluginManager->loadFromConfiguration();
-    }
-
-    /**
      * Adds the services to build the descriptors.
      *
      * This method injects the following services into the Dependency Injection Container:
@@ -256,16 +223,6 @@ class Application extends Cilex
     protected function addCommandsForProjectNamespace()
     {
         $this->command(new Command\Project\RunCommand());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the plugin namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForPluginNamespace()
-    {
-        $this->command(new Plugin\GenerateCommand());
     }
 
     /**

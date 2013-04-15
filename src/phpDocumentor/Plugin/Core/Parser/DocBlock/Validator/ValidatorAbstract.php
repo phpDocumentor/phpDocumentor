@@ -2,38 +2,22 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Parser
- * @subpackage DocBlock_Validators
- * @author     Ben Selby <benmatselby@gmail.com>
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Parser\DocBlock\Validator;
 
-use phpDocumentor\Plugin\Plugin;
-use \phpDocumentor\Plugin\PluginAbstract;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock;
 
 /**
  * Base class for DocBlock Validations.
- *
- * @category   phpDocumentor
- * @package    Parser
- * @subpackage DocBlock_Validators
- * @author     Ben Selby <benmatselby@gmail.com>
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-abstract class ValidatorAbstract extends PluginAbstract
+abstract class ValidatorAbstract
 {
     /**
      * Name of the "entity" being validated.
@@ -73,7 +57,7 @@ abstract class ValidatorAbstract extends PluginAbstract
     /**
      * Constructor
      *
-     * @param Plugin             $plugin   Plugin to which this validator belongs.
+     * @param object             $plugin   Plugin to which this validator belongs.
      * @param string             $name     Name of the "entity"
      * @param DocBlock|null      $docblock Docblock
      * @param BaseReflector|null $source   Source Element.
@@ -90,11 +74,6 @@ abstract class ValidatorAbstract extends PluginAbstract
             : $source->getLineNumber();
         $this->docblock   = $docblock;
         $this->source     = $source;
-        parent::__construct(
-            $plugin->getEventDispatcher(),
-            $plugin->getConfiguration(),
-            $plugin->getTranslator()
-        );
     }
 
     /**
