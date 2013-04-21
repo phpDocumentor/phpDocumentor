@@ -20,9 +20,9 @@ use Symfony\Component\Console\Shell;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Config\Factory;
-use Zend\I18n\Translator\Translator;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
+use phpDocumentor\Descriptor\Validation;
 use phpDocumentor\Parser;
 use phpDocumentor\Plugin\Compat2A13;
 use phpDocumentor\Plugin\Core;
@@ -58,9 +58,13 @@ class Application extends Cilex
             new Console\Helper\ProgressHelper()
         );
 
+        $this['translator.locale'] = 'en';
         $this['translator'] = $this->share(
-            function () {
-                return new Translator();
+            function ($app) {
+                $translator = new Translator();
+                $translator->setFallbackLocale('en');
+                $translator->setLocale($app['translator.locale']);
+                return $translator;
             }
         );
 
@@ -204,9 +208,17 @@ class Application extends Cilex
             }
         );
 
+        $this['descriptor.builder.validator'] = $this->share(
+            function ($container) {
+                return new Validation($container['translator']);
+            }
+        );
+
         $this['descriptor.builder'] = $this->share(
-            function () {
-                return new Descriptor\Builder\Reflector();
+            function ($container) {
+                $builder = new Descriptor\Builder\Reflector();
+                $builder->setValidation($container['descriptor.builder.validator']);
+                return $builder;
             }
         );
 

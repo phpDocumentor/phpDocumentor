@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\TagFactory;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\Validation;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
@@ -43,6 +44,31 @@ use phpDocumentor\Reflection\TraitReflector;
  */
 class Reflector extends BuilderAbstract
 {
+    /** @var Validation $validation */
+    protected $validation;
+
+    /**
+     * Sets the Validation Manager.
+     *
+     * @param Validation $validation
+     *
+     * @return void
+     */
+    public function setValidation(Validation $validation)
+    {
+        $this->validation = $validation;
+    }
+
+    /**
+     * Returns the validation manager.
+     *
+     * @return Validation
+     */
+    public function getValidation()
+    {
+        return $this->validation;
+    }
+
     /**
      * @param FileReflector $data The reflection of a file.
      *
@@ -72,18 +98,6 @@ class Reflector extends BuilderAbstract
                     'type'    => $type,
                     'message' => $message,
                     'line'    => $line,
-                )
-            );
-        }
-
-        foreach ($data->getParseErrors() as $marker) {
-            list($type, $message, $line, $code) = $marker;
-            $fileDescriptor->getErrors()->add(
-                array(
-                    'type'    => $type,
-                    'message' => $message,
-                    'line'    => $line,
-                    'code'    => $code,
                 )
             );
         }
@@ -156,6 +170,9 @@ class Reflector extends BuilderAbstract
 
         $this->getProjectDescriptor()->getFiles()->set($fileDescriptor->getPath(), $fileDescriptor);
 
+        // validate the Reflected Information
+        $fileDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
         return $fileDescriptor;
     }
 
@@ -199,6 +216,9 @@ class Reflector extends BuilderAbstract
 
         $classDescriptor->setNamespace($namespace);
 
+        // validate the Reflected Information
+        $classDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
         return $classDescriptor;
     }
 
@@ -226,6 +246,9 @@ class Reflector extends BuilderAbstract
 
         $interfaceDescriptor->setNamespace($data->getNamespace());
 
+        // validate the Reflected Information
+        $interfaceDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
         return $interfaceDescriptor;
     }
 
@@ -251,6 +274,9 @@ class Reflector extends BuilderAbstract
             $this->buildProperty($property, $traitDescriptor);
         }
 
+        // validate the Reflected Information
+        $traitDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
         return $traitDescriptor;
     }
 
@@ -260,25 +286,28 @@ class Reflector extends BuilderAbstract
      */
     public function buildConstant($data, $container = null)
     {
-        $constant = new ConstantDescriptor();
+        $constantDescriptor = new ConstantDescriptor();
 
         $prefix = ($container)
             ? $container->getFullyQualifiedStructuralElementName() . '::'
             : $data->getNamespace() . '\\';
 
-        $constant->setFullyQualifiedStructuralElementName($prefix . $data->getName());
-        $constant->setName($data->getShortName());
-        $constant->setValue($data->getValue());
-        $constant->setNamespace($data->getNamespace());
+        $constantDescriptor->setFullyQualifiedStructuralElementName($prefix . $data->getName());
+        $constantDescriptor->setName($data->getShortName());
+        $constantDescriptor->setValue($data->getValue());
+        $constantDescriptor->setNamespace($data->getNamespace());
 
-        $this->buildDocBlock($data, $constant);
+        $this->buildDocBlock($data, $constantDescriptor);
 
         if ($container) {
-            $constant->setParent($container);
-            $container->getConstants()->set($constant->getName(), $constant);
+            $constantDescriptor->setParent($container);
+            $container->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
         }
 
-        return $constant;
+        // validate the Reflected Information
+        $constantDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
+        return $constantDescriptor;
     }
 
     /**
@@ -286,16 +315,21 @@ class Reflector extends BuilderAbstract
      */
     public function buildFunction($data)
     {
-        $function = new FunctionDescriptor();
-        $function->setFullyQualifiedStructuralElementName($data->getNamespace() . '\\' . $data->getName() . '()');
-        $function->setName($data->getShortName());
+        $functionDescriptor = new FunctionDescriptor();
+        $functionDescriptor->setFullyQualifiedStructuralElementName(
+            $data->getNamespace() . '\\' . $data->getName() . '()'
+        );
+        $functionDescriptor->setName($data->getShortName());
 
-        $this->buildDocBlock($data, $function);
+        $this->buildDocBlock($data, $functionDescriptor);
 
-        $function->setLocation('', $data->getLinenumber());
-        $function->setNamespace($data->getNamespace());
+        $functionDescriptor->setLocation('', $data->getLinenumber());
+        $functionDescriptor->setNamespace($data->getNamespace());
 
-        return $function;
+        // validate the Reflected Information
+        $functionDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
+        return $functionDescriptor;
     }
 
     /**
@@ -304,23 +338,28 @@ class Reflector extends BuilderAbstract
      */
     public function buildProperty($data, $container)
     {
-        $property = new PropertyDescriptor();
-        $property->setFullyQualifiedStructuralElementName(
+        $propertyDescriptor = new PropertyDescriptor();
+        $propertyDescriptor->setFullyQualifiedStructuralElementName(
             $container->getFullyQualifiedStructuralElementName() . '::$' . $data->getName()
         );
-        $property->setName($data->getShortName());
-        $property->setVisibility($data->getVisibility());
-        $property->setStatic($data->isStatic());
-        $property->setDefault($data->getDefault());
-//        $property->setType();
+        $propertyDescriptor->setName($data->getShortName());
+        $propertyDescriptor->setVisibility($data->getVisibility());
+        $propertyDescriptor->setStatic($data->isStatic());
+        $propertyDescriptor->setDefault($data->getDefault());
 
-        $this->buildDocBlock($data, $property);
+        // TODO: get Type from @var/@type and set it on the property itself
+        // $propertyDescriptor->setType();
 
-        $property->setLocation('', $data->getLinenumber());
-        $property->setParent($container);
-        $container->getProperties()->set($property->getName(), $property);
+        $this->buildDocBlock($data, $propertyDescriptor);
 
-        return $property;
+        $propertyDescriptor->setLocation('', $data->getLinenumber());
+        $propertyDescriptor->setParent($container);
+        $container->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
+
+        // validate the Reflected Information
+        $propertyDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
+        return $propertyDescriptor;
     }
 
     /**
@@ -329,24 +368,24 @@ class Reflector extends BuilderAbstract
      */
     public function buildMethod($data, $container)
     {
-        $method = new MethodDescriptor();
-        $method->setFullyQualifiedStructuralElementName(
+        $methodDescriptor = new MethodDescriptor();
+        $methodDescriptor->setFullyQualifiedStructuralElementName(
             $container->getFullyQualifiedStructuralElementName() . '::' . $data->getName() . '()'
         );
-        $method->setName($data->getShortName());
-        $method->setVisibility($data->getVisibility());
-        $method->setFinal($data->isFinal());
-        $method->setAbstract($data->isAbstract());
-        $method->setStatic($data->isStatic());
-        $method->setParent($container);
+        $methodDescriptor->setName($data->getShortName());
+        $methodDescriptor->setVisibility($data->getVisibility());
+        $methodDescriptor->setFinal($data->isFinal());
+        $methodDescriptor->setAbstract($data->isAbstract());
+        $methodDescriptor->setStatic($data->isStatic());
+        $methodDescriptor->setParent($container);
 
-        $this->buildDocBlock($data, $method);
+        $this->buildDocBlock($data, $methodDescriptor);
 
-        foreach($data->getArguments() as $argument) {
+        foreach ($data->getArguments() as $argument) {
             $argumentDescriptor = new ArgumentDescriptor();
             $argumentDescriptor->setName($argument->getName());
 
-            $params = $method->getTags()->get('param', array());
+            $params = $methodDescriptor->getTags()->get('param', array());
 
             /** @var ParamDescriptor $tag */
             foreach ($params as $tag) {
@@ -359,13 +398,16 @@ class Reflector extends BuilderAbstract
             }
 
             $argumentDescriptor->setDefault($argument->getDefault());
-            $method->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
+            $methodDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 
-        $method->setLocation('', $data->getLinenumber());
-        $container->getMethods()->set($method->getName(), $method);
+        $methodDescriptor->setLocation('', $data->getLinenumber());
+        $container->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
 
-        return $method;
+        // validate the Reflected Information
+        $methodDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+
+        return $methodDescriptor;
     }
 
     /**

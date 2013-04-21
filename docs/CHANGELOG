@@ -43,7 +43,9 @@ CHANGED    The Parser has been promoted to Service Provider
 CHANGED    The Transformer has been promoted to Service Provider
 CHANGED    Parse command has been prepared for internationalization
 CHANGED    Template configuration is parsed using JmsSerializer
+CHANGED    All logging is now PSR-3 compliant
 DEPRECATED Behaviours are only executed for the XmlAst writer
+BC-BREAK   Moved Validators to the Descriptor Builder and refactored for internationalization
 BC-BREAK   Parser generates an object graph and not XML (structure.xml, use XmlAst writer now for XML output)
 BC-BREAK   Replaced plugin system with Service Providers
 ========== ==================================================================================================

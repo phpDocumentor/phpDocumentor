@@ -173,7 +173,7 @@ class ParseCommand extends ConfigurableCommand
             $mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
-            $this->getParser()->parse($builder, $files, $input->getOption('sourcecode'));
+            $this->getParser()->parse($builder, $files);
         } catch (FilesNotFoundException $e) {
             throw new \Exception($this->__('PPCPP:EXC-NOFILES'));
         } catch (\Exception $e) {

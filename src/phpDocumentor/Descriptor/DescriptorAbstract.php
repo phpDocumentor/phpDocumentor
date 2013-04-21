@@ -40,12 +40,16 @@ abstract class DescriptorAbstract
     /** @var Collection */
     protected $tags;
 
+    /** @var Collection */
+    protected $errors;
+
     /**
      * Initializes this descriptor.
      */
     public function __construct()
     {
         $this->setTags(new Collection());
+        $this->setErrors(new Collection());
     }
 
     /**
@@ -206,5 +210,21 @@ abstract class DescriptorAbstract
     public function __toString()
     {
         return $this->getFullyQualifiedStructuralElementName();
+    }
+
+    /**
+     * @param Collection $errors
+     */
+    public function setErrors($errors)
+    {
+        $this->errors = $errors;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

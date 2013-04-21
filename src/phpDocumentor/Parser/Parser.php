@@ -287,7 +287,7 @@ class Parser extends ParserAbstract
      *
      * @return bool|string
      */
-    public function parse(BuilderAbstract $builder, Collection $files, $include_source = false)
+    public function parse(BuilderAbstract $builder, Collection $files)
     {
         $timer = microtime(true);
         $paths = $this->getFilenames($files);
@@ -306,7 +306,7 @@ class Parser extends ParserAbstract
             }
             $this->log('Starting to parse file: ' . $filename);
 
-            $dispatched = false;
+            $memory = memory_get_usage();
             try {
                 $file = new FileReflector($filename, $this->doValidation(), $this->getEncoding());
                 $file->setDefaultPackageName($this->getDefaultPackageName());
@@ -323,13 +323,13 @@ class Parser extends ParserAbstract
                     continue;
                 }
 
-                // register error listener
-                if (class_exists('phpDocumentor\Event\Dispatcher')) {
-                    Dispatcher::getInstance()->addListener('parser.log', array($file, 'addParserMarker'));
-                    $dispatched = true;
-                }
                 $file->process();
                 $builder->buildFile($file);
+                $fileDescriptor = $builder->getProjectDescriptor()->getFiles()->get($file->getFilename());
+                $errors = $fileDescriptor->getAllErrors();
+                foreach ($errors as $error) {
+                    $this->log($error->getCode(), $error->getSeverity(), $error->getContext());
+                }
             } catch (Exception $e) {
                 $this->log(
                     '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
@@ -337,13 +337,11 @@ class Parser extends ParserAbstract
                 );
             }
 
-            // Disconnects the dispatcher here so if any error occurred, it still removes the event
-            if ($dispatched && isset($file)) {
-                Dispatcher::getInstance()->removeListener('parser.log', array($file, 'addParserMarker'));
-            }
-
+            $memoryDelta = memory_get_usage() - $memory;
             $this->log(
-                '>> Memory after processing of file: ' . number_format(memory_get_usage()) . ' bytes',
+                '>> Memory after processing of file: ' . number_format(memory_get_usage() / 1024 / 1024, 2)
+                . ' megabytes (' . (($memoryDelta > -0) ? '+' : '') . number_format($memoryDelta / 1024)
+                . ' kilobytes)',
                 LogLevel::DEBUG
             );
         }

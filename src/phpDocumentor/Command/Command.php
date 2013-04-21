@@ -14,6 +14,7 @@ namespace phpDocumentor\Command;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Zend\I18n\Translator\Translator;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Event\PreFileEvent;
@@ -138,7 +139,10 @@ class Command extends \Cilex\Command\Command
         }
 
         if ($event->getPriority() <= $threshold) {
-            $message = $event->getMessage();
+            /** @var Translator $translator  */
+            $translator = $this->getContainer()->offsetGet('translator');
+            $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
+
             switch ($event->getPriority())
             {
                 case LogLevel::WARNING:

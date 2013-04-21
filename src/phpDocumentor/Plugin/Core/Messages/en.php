@@ -4,8 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -17,20 +16,11 @@ return array(
     'PPC:ERR-50004' => 'Cannot have a @subpackage when a @package tag is not present',
     'PPC:ERR-50005' => 'No short description for class %s',
     'PPC:ERR-50006' => 'Found deprecated tag "%s" in %s',
-    'PPC:ERR-50007' => 'No page-level DocBlock was found in file %s',
-    'PPC:ERR-50008' => 'No short description for file %s',
-    'PPC:ERR-50009' => 'No DocBlock was found for function %s',
-    'PPC:ERR-50010' => 'No DocBlock was found for method %s',
-    'PPC:ERR-50011' => 'No short description for function %s',
-    'PPC:ERR-50012' => 'No short description for method %s',
     'PPC:ERR-50013' => 'Parameter %s could not be found in %s',
     'PPC:ERR-50014' => 'Name of argument %s does not match with the DocBlock\'s name %s in %s',
     'PPC:ERR-50015' => 'Argument %s is missing from the Docblock of %s',
     'PPC:ERR-50016' => 'The type hint of the argument is incorrect for the type definition '
         . 'of the @param tag with argument %s in %s',
     'PPC:ERR-50017' => 'The type for the %s tag in %s is "type"; isn\'t this an IDE default?',
-    'PPC:ERR-50018' => 'No DocBlock was found for property %s',
-    'PPC:ERR-50019' => 'No short description for property %s',
     'PPC:ERR-50020' => 'Not found required tag "%s" in %s',
-    'PPC:ERR-50021' => 'Missing @package tag in file %s',
 );

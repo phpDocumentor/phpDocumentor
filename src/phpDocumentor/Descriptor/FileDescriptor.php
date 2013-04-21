@@ -185,4 +185,52 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         $this->errors = $errors;
     }
+
+    public function getAllErrors()
+    {
+        $errors = $this->getErrors();
+
+        foreach ($this->getFunctions() as $element) {
+            $errors = $errors->merge($element->getErrors());
+        }
+
+        foreach ($this->getConstants() as $element) {
+            $errors = $errors->merge($element->getErrors());
+        }
+
+        foreach ($this->getClasses() as $element) {
+            $errors = $errors->merge($element->getErrors());
+            foreach ($element->getConstants() as $item) {
+                $errors = $errors->merge($item->getErrors());
+            }
+            foreach ($element->getProperties() as $item) {
+                $errors = $errors->merge($item->getErrors());
+            }
+            foreach ($element->getMethods() as $item) {
+                $errors = $errors->merge($item->getErrors());
+            }
+        }
+
+        foreach ($this->getInterfaces() as $element) {
+            $errors = $errors->merge($element->getErrors());
+            foreach ($element->getConstants() as $item) {
+                $errors = $errors->merge($item->getErrors());
+            }
+            foreach ($element->getMethods() as $item) {
+                $errors = $errors->merge($item->getErrors());
+            }
+        }
+
+        foreach ($this->getTraits() as $element) {
+            $errors = $errors->merge($element->getErrors());
+            foreach ($element->getProperties() as $item) {
+                $errors = $errors->merge($item->getErrors());
+            }
+            foreach ($element->getMethods() as $item) {
+                $errors = $errors->merge($item->getErrors());
+            }
+        }
+
+        return $errors;
+    }
 }

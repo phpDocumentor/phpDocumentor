@@ -13,6 +13,15 @@ namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
 use Zend\I18n\Translator\Translator;
+use phpDocumentor\Descriptor\Validation;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasPackageWithSubpackage;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasShortDescription;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasSinglePackage;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasSingleSubpackage;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Functions\AreAllArgumentsValid;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Functions\IsReturnTypeNotAnIdeDefault;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Generic\HasDocBlock;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Properties\HasShortDescription as PropertyHasShortDescription;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
 
@@ -42,6 +51,79 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
             'phparray',
             __DIR__ . DIRECTORY_SEPARATOR . 'Messages',
             '%s.php'
+        );
+
+        $this->addValidators($app);
+    }
+
+    /**
+     * Adds validators for the Structural Elements.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addValidators(Application $app)
+    {
+        /** @var Validation $validation */
+        $validation = $app['descriptor.builder.validator'];
+        $validation->register(
+            array(
+                 Validation::TYPE_FILE,
+                 Validation::TYPE_CLASS,
+                 Validation::TYPE_INTERFACE,
+                 Validation::TYPE_TRAIT,
+                 Validation::TYPE_METHOD,
+                 Validation::TYPE_PROPERTY,
+                 Validation::TYPE_FUNCTION,
+                 Validation::TYPE_CONSTANT,
+            ),
+            array(new HasDocBlock())
+        );
+
+        $validation->register(
+            array(
+                 Validation::TYPE_FILE,
+                 Validation::TYPE_CLASS,
+                 Validation::TYPE_INTERFACE,
+                 Validation::TYPE_TRAIT,
+            ),
+            array(
+                 new HasSinglePackage(),
+                 new HasSingleSubpackage(),
+                 new HasPackageWithSubpackage(),
+            )
+        );
+
+        $validation->register(
+            array(
+                 Validation::TYPE_FILE,
+                 Validation::TYPE_CLASS,
+                 Validation::TYPE_INTERFACE,
+                 Validation::TYPE_TRAIT,
+                 Validation::TYPE_METHOD,
+                 Validation::TYPE_FUNCTION,
+            ),
+            array(new HasShortDescription())
+        );
+
+        $validation->register(
+            array(
+                 Validation::TYPE_CONSTANT,
+                 Validation::TYPE_PROPERTY,
+            ),
+            array(new PropertyHasShortDescription())
+        );
+
+        $validation->register(
+            array(
+                 Validation::TYPE_METHOD,
+                 Validation::TYPE_FUNCTION,
+            ),
+            array(
+                 new AreAllArgumentsValid(),
+                 new IsReturnTypeNotAnIdeDefault(),
+            )
         );
     }
 }
