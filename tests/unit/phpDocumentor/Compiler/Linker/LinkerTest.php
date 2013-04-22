@@ -68,7 +68,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $elementList = array(
             'phpDocumentor\Descriptor\ProjectDescriptor' => 'files',
             'phpDocumentor\Descriptor\FileDescriptor'    => 'classes',
-            'phpDocumentor\Descriptor\ClassDescriptor'   => 'parentClass'
+            'phpDocumentor\Descriptor\ClassDescriptor'   => 'parent'
         );
         $linker = new Linker($elementList);
 

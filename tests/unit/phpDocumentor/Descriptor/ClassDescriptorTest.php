@@ -46,7 +46,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
      * @covers phpDocumentor\Descriptor\ClassDescriptor::setParent
      * @covers phpDocumentor\Descriptor\ClassDescriptor::getParent
      */
-    public function testSettingAndGettingAParentClass()
+    public function testSettingAndGettingAParent()
     {
         $this->assertNull($this->fixture->getParent());
 
@@ -60,7 +60,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Descriptor\ClassDescriptor::setParent
      */
-    public function testSettingNoParentClass()
+    public function testSettingNoParent()
     {
         $mock = null;
 

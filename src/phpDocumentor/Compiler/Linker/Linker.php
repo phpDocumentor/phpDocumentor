@@ -23,8 +23,8 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  * An example scenario sould be:
  *
  *     The Descriptor ``\phpDocumentor\Descriptor\ClassDescriptor`` has a *Substitute* rule determining that the
- *     contents of the ``ParentClass`` field should be substituted with another ClassDescriptor with the FQCN
- *     represented by the value of the ParentClass field. In addition (second element) it has an *Analyse* rule
+ *     contents of the ``Parent`` field should be substituted with another ClassDescriptor with the FQCN
+ *     represented by the value of the Parent field. In addition (second element) it has an *Analyse* rule
  *     specifying that the contents of the ``Methods`` field should be interpreted by the linker. Because that field
  *     contains an array or Descriptor Collection will each element be analysed by the linker.
  *

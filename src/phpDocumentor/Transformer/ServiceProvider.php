@@ -53,7 +53,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
             'phpDocumentor\Descriptor\FileDescriptor'         => array('classes'),
             'phpDocumentor\Descriptor\ClassDescriptor'        => array(
-                'parentClass',
+                'parent',
                 'interfaces',
                 'methods',
                 'properties',

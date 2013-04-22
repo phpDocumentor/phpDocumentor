@@ -192,7 +192,7 @@ class Reflector extends BuilderAbstract
 
         $this->buildDocBlock($data, $classDescriptor);
 
-        $classDescriptor->setParent($data->getParentClass());
+        $classDescriptor->setParent($data->getParent());
 
         $classDescriptor->setLocation('', $data->getLinenumber());
         $classDescriptor->setAbstract($data->isAbstract());
