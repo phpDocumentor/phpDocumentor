@@ -192,7 +192,7 @@ class Reflector extends BuilderAbstract
 
         $this->buildDocBlock($data, $classDescriptor);
 
-        $classDescriptor->setParentClass($data->getParentClass());
+        $classDescriptor->setParent($data->getParentClass());
 
         $classDescriptor->setLocation('', $data->getLinenumber());
         $classDescriptor->setAbstract($data->isAbstract());
@@ -237,7 +237,7 @@ class Reflector extends BuilderAbstract
         $interfaceDescriptor->setLocation('', $data->getLinenumber());
 
         foreach ($data->getParentInterfaces() as $interfaceClassName) {
-            $interfaceDescriptor->getParentInterfaces()->set($interfaceClassName, $interfaceClassName);
+            $interfaceDescriptor->getParent()->set($interfaceClassName, $interfaceClassName);
         }
 
         foreach ($data->getMethods() as $method) {

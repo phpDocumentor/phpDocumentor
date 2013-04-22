@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor;
 
-use \Mockery as m;
+use Mockery as m;
 
 /**
  * Tests the functionality for the ClassDescriptor class.
@@ -43,30 +43,30 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setParentClass
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getParentClass
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::setParent
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getParent
      */
     public function testSettingAndGettingAParentClass()
     {
-        $this->assertNull($this->fixture->getParentClass());
+        $this->assertNull($this->fixture->getParent());
 
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
 
-        $this->fixture->setParentClass($mock);
+        $this->fixture->setParent($mock);
 
-        $this->assertSame($mock, $this->fixture->getParentClass());
+        $this->assertSame($mock, $this->fixture->getParent());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setParentClass
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::setParent
      */
     public function testSettingNoParentClass()
     {
         $mock = null;
 
-        $this->fixture->setParentClass($mock);
+        $this->fixture->setParent($mock);
 
-        $this->assertSame($mock, $this->fixture->getParentClass());
+        $this->assertSame($mock, $this->fixture->getParent());
     }
 
     /**

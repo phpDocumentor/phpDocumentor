@@ -15,12 +15,12 @@ use phpDocumentor\Descriptor\Collection;
 
 interface InterfaceInterface extends BaseInterface
 {
-    public function setParentInterfaces(Collection $extends);
+    public function setParent(Collection $extends);
 
     /**
      * @return Collection
      */
-    public function getParentInterfaces();
+    public function getParent();
 
     public function setMethods(Collection $methods);
 

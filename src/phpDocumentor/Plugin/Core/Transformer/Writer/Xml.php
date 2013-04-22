@@ -298,9 +298,9 @@ class Xml extends WriterAbstract
         $child->appendChild(
             new \DOMElement(
                 'extends',
-                is_string($class->getParentClass())
-                    ? $class->getParentClass()
-                    : $class->getParentClass()->getFullyQualifiedStructuralElementName()
+                is_string($class->getParent())
+                    ? $class->getParent()
+                    : $class->getParent()->getFullyQualifiedStructuralElementName()
             )
         );
 
@@ -414,7 +414,7 @@ class Xml extends WriterAbstract
             $parent->appendChild($child);
         }
 
-        foreach ($interface->getParentInterfaces() as $parentInterface) {
+        foreach ($interface->getParent() as $parentInterface) {
             $child->appendChild(
                 new \DOMElement(
                     'extends',

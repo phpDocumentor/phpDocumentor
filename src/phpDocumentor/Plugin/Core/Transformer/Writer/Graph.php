@@ -94,13 +94,13 @@ class Graph extends WriterAbstract
             $parents     = array();
             $implemented = array();
             if ($container instanceof ClassDescriptor) {
-                if ($container->getParentClass()) {
-                    $parents[] = $container->getParentClass();
+                if ($container->getParent()) {
+                    $parents[] = $container->getParent();
                 }
                 $implemented = $container->getInterfaces()->getAll();
             }
             if ($container instanceof InterfaceDescriptor) {
-                $parents = $container->getParentInterfaces()->getAll();
+                $parents = $container->getParent()->getAll();
             }
 
             /** @var string|ClassDescriptor|InterfaceDescriptor $parent */

@@ -30,7 +30,7 @@ interface ClassInterface extends BaseInterface
      *
      * @return void
      */
-    public function setParentClass($extends);
+    public function setParent($extends);
 
     /**
      * Sets the parent class.
@@ -38,7 +38,7 @@ interface ClassInterface extends BaseInterface
      * @return ClassDescriptor|null represents ClassDescriptor with the superclass or null
      *    if not extended.
      */
-    public function getParentClass();
+    public function getParent();
 
     public function setInterfaces(Collection $interfaces);
 

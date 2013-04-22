@@ -53,7 +53,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setParentClass($extends)
+    public function setParent($extends)
     {
         $this->extends = $extends;
     }
@@ -61,7 +61,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getParentClass()
+    public function getParent()
     {
         return $this->extends;
     }
@@ -127,11 +127,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getConstants($includeInherited = true)
     {
-        if (!$includeInherited || !$this->getParentClass() || (!$this->getParentClass() instanceof ClassDescriptor)) {
+        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
             return $this->constants;
         }
 
-        return $this->constants->merge($this->getParentClass()->getConstants(true));
+        return $this->constants->merge($this->getParent()->getConstants(true));
     }
 
     /**
@@ -147,11 +147,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getMethods($includeInherited = true)
     {
-        if (!$includeInherited || !$this->getParentClass() || (!$this->getParentClass() instanceof ClassDescriptor)) {
+        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
             return $this->methods;
         }
 
-        return $this->methods->merge($this->getParentClass()->getMethods(true));
+        return $this->methods->merge($this->getParent()->getMethods(true));
     }
 
     /**
@@ -167,11 +167,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getProperties($includeInherited = true)
     {
-        if (!$includeInherited || !$this->getParentClass() || (!$this->getParentClass() instanceof ClassDescriptor)) {
+        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
             return $this->properties;
         }
 
-        return $this->properties->merge($this->getParentClass()->getProperties(true));
+        return $this->properties->merge($this->getParent()->getProperties(true));
     }
 
     public function setPackage($package)

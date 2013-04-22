@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Compiler\Linker;
 
-use \Mockery as m;
+use Mockery as m;
 
 /**
  * Tests the functionality for the Linker class.
@@ -200,7 +200,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $object = m::mock('stdClass');
         $fqsen  = get_class($object);
         $object->shouldReceive('getChild')->atLeast()->once()->andReturn(array($childObject));
-        $object->shouldReceive('setChild')->never();
+        $object->shouldReceive('setChild');
 
         // prepare linker
         $linker = new Linker(

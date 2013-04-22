@@ -32,7 +32,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     {
         parent::__construct();
 
-        $this->setParentInterfaces(new Collection());
+        $this->setParent(new Collection());
         $this->setConstants(new Collection());
         $this->setMethods(new Collection());
     }
@@ -40,7 +40,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function setParentInterfaces(Collection $extends)
+    public function setParent(Collection $extends)
     {
         $this->extends = $extends;
     }
@@ -48,7 +48,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function getParentInterfaces()
+    public function getParent()
     {
         return $this->extends;
     }

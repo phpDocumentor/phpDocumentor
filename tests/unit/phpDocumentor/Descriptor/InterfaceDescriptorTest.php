@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor;
 
-use \Mockery as m;
+use Mockery as m;
 
 /**
  * Tests the functionality for the InterfaceDescriptor class.
@@ -42,18 +42,18 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::setParentInterfaces
-     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getParentInterfaces
+     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::setParent
+     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getParent
      */
     public function testSettingAndGettingParentInterfaces()
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getParentInterfaces());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getParent());
 
         $mock = m::mock('phpDocumentor\Descriptor\Collection');
 
-        $this->fixture->setParentInterfaces($mock);
+        $this->fixture->setParent($mock);
 
-        $this->assertSame($mock, $this->fixture->getParentInterfaces());
+        $this->assertSame($mock, $this->fixture->getParent());
     }
 
     /**

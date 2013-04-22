@@ -54,7 +54,7 @@ class ProjectAnalyzer
             $elementCounter[get_class($element)]++;
 
             if ($element instanceof ClassDescriptor) {
-                if (is_string($element->getParentClass())) {
+                if (is_string($element->getParent())) {
                     $this->unresolvedParentClassesCount++;
                 }
             }
