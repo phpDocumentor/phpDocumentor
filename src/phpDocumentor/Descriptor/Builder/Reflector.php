@@ -294,7 +294,7 @@ class Reflector extends BuilderAbstract
             $this->buildMethod($method, $interfaceDescriptor);
         }
 
-        $interfaceDescriptor->setNamespace($data->getNamespace());
+        $interfaceDescriptor->setNamespace('\\' . $data->getNamespace());
 
         // validate the Reflected Information
         if ($this->getValidation()) {
@@ -317,7 +317,7 @@ class Reflector extends BuilderAbstract
 
         $traitDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $traitDescriptor->setName($data->getShortName());
-        $traitDescriptor->setNamespace($data->getNamespace());
+        $traitDescriptor->setNamespace('\\' . $data->getNamespace());
 
         $this->buildDocBlock($data, $traitDescriptor);
 
@@ -352,12 +352,12 @@ class Reflector extends BuilderAbstract
 
         $prefix = ($container)
             ? $container->getFullyQualifiedStructuralElementName() . '::'
-            : $data->getNamespace() . '\\';
+            : '\\' . $data->getNamespace() . '\\';
 
         $constantDescriptor->setFullyQualifiedStructuralElementName($prefix . $data->getName());
         $constantDescriptor->setName($data->getShortName());
         $constantDescriptor->setValue($data->getValue());
-        $constantDescriptor->setNamespace($data->getNamespace());
+        $constantDescriptor->setNamespace('\\' . $data->getNamespace());
 
         $this->buildDocBlock($data, $constantDescriptor);
 
@@ -381,14 +381,14 @@ class Reflector extends BuilderAbstract
     {
         $functionDescriptor = new FunctionDescriptor();
         $functionDescriptor->setFullyQualifiedStructuralElementName(
-            $data->getNamespace() . '\\' . $data->getName() . '()'
+            '\\' . $data->getNamespace() . '\\' . $data->getName() . '()'
         );
         $functionDescriptor->setName($data->getShortName());
 
         $this->buildDocBlock($data, $functionDescriptor);
 
         $functionDescriptor->setLocation('', $data->getLinenumber());
-        $functionDescriptor->setNamespace($data->getNamespace());
+        $functionDescriptor->setNamespace('\\' . $data->getNamespace());
 
         // validate the Reflected Information
         if ($this->getValidation()) {

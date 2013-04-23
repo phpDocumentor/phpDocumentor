@@ -24,7 +24,6 @@ use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\Validation;
 use phpDocumentor\Parser;
-use phpDocumentor\Plugin\Compat2A13;
 use phpDocumentor\Plugin\Core;
 
 /**
@@ -86,7 +85,6 @@ class Application extends Cilex
 
         // TODO: make plugin service provider calls registrable from config
         $this->register(new Core\ServiceProvider());
-        $this->register(new Compat2A13\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
     }

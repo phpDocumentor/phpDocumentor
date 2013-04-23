@@ -2,30 +2,17 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Compat2A13\Transformer\Behaviour\Tag;
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
  * Behaviour that adds support for @internal tag.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Stepan Anchugov <kix@kixlive.ru>
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
 class InternalTag extends IgnoreTag
 {
@@ -43,8 +30,6 @@ class InternalTag extends IgnoreTag
         if (!$this->getTransformer()->getParseprivate()) {
             $xml = parent::process($xml);
         }
-
-        $this->log('Removing @internal inline tags');
 
         $ignoreQry = '//long-description[contains(., "{@internal")]';
 

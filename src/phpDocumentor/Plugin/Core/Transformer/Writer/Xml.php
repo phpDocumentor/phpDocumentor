@@ -23,6 +23,17 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\AuthorTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\CoversTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\IgnoreTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\LicenseTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\MethodTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\ParamTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\PropertyTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\ReturnTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\UsesTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\VarTag;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Transformer\Transformation;
@@ -36,6 +47,9 @@ class Xml extends WriterAbstract
     /** @var \DOMDocument $xml */
     protected $xml;
 
+    /** @var bool mustInherit determines whether this writer should inherit all information when building. */
+    protected $mustInherit = false;
+
     /**
      * This method generates the AST output
      *
@@ -47,6 +61,7 @@ class Xml extends WriterAbstract
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
+        $this->mustInherit = $transformation->getParameter('mustInherit', 'false') === 'true' ? true : false;
 
         $this->xml = new \DOMDocument('1.0', 'utf-8');
         $this->xml->formatOutput = true;
@@ -79,12 +94,6 @@ class Xml extends WriterAbstract
             $child->appendChild($alias_obj);
             $alias_obj->setAttribute('name', $alias);
         }
-
-//        foreach ($file->getIncludes() as $include) {
-//            $include->setDefaultPackageName($file->getDefaultPackageName());
-//            $object = new IncludeExporter();
-//            $object->export($child, $include);
-//        }
 
         /** @var ConstantDescriptor $constant */
         foreach ($file->getConstants() as $constant) {
@@ -126,12 +135,12 @@ class Xml extends WriterAbstract
             $child->appendChild($parse_errors);
 
             foreach ($file->getErrors() as $error) {
-                $marker_obj = new \DOMElement(strtolower($error['type']));
+                $marker_obj = new \DOMElement(strtolower($error->getSeverity()));
                 $parse_errors->appendChild($marker_obj);
 
-                $marker_obj->appendChild(new \DOMText(trim($error['message'])));
-                $marker_obj->setAttribute('line', $error['line']);
-                $marker_obj->setAttribute('code', $error['code']);
+                $marker_obj->appendChild(new \DOMText(trim($error->getCode())));
+                $marker_obj->setAttribute('line', $error->getLine());
+                $marker_obj->setAttribute('code', $error->getCode());
 
             }
         }
@@ -189,7 +198,7 @@ class Xml extends WriterAbstract
         $namespace = $constant->getNamespace()
             ? $constant->getNamespace()
             : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', $namespace);
+        $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', $constant->getLine());
 
         $child->appendChild(new \DOMElement('name', $constant->getName()));
@@ -219,7 +228,7 @@ class Xml extends WriterAbstract
         $namespace = $function->getNamespace()
             ? $function->getNamespace()
             : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', $namespace);
+        $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', $function->getLine());
 
         $child->appendChild(new \DOMElement('name', $function->getName()));
@@ -321,7 +330,8 @@ class Xml extends WriterAbstract
             $parent->appendChild($child);
         }
 
-        $child->setAttribute('namespace', $class->getNamespace()->getFullyQualifiedStructuralElementName());
+        $namespace = $class->getNamespace()->getFullyQualifiedStructuralElementName();
+        $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', $class->getLine());
 
         $child->appendChild(new \DOMElement('name', $class->getName()));
@@ -371,7 +381,8 @@ class Xml extends WriterAbstract
         $child->setAttribute('final', $trait->isFinal() ? 'true' : 'false');
         $child->setAttribute('abstract', $trait->isAbstract() ? 'true' : 'false');
 
-        $child->setAttribute('namespace', $trait->getNamespace());
+        $namespace = $trait->getNamespace();
+        $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', $trait->getLine());
 
         $child->appendChild(new \DOMElement('name', $trait->getName()));
@@ -425,7 +436,8 @@ class Xml extends WriterAbstract
             );
         }
 
-        $child->setAttribute('namespace', $interface->getNamespace()->getFullyQualifiedStructuralElementName());
+        $namespace = $interface->getNamespace()->getFullyQualifiedStructuralElementName();
+        $child->setAttribute('namespace', ltrim($namespace, '\\'));
         $child->setAttribute('line', $interface->getLine());
 
         $child->appendChild(new \DOMElement('name', $interface->getName()));
@@ -671,6 +683,35 @@ class Xml extends WriterAbstract
      */
     protected function finalize()
     {
+        // TODO: move all these behaviours to a central location for all template parsers
+        $behaviour = new AuthorTag();
+        $behaviour->process($this->xml);
+        $behaviour = new CoversTag();
+        $behaviour->process($this->xml);
+        $behaviour = new IgnoreTag();
+        $behaviour->process($this->xml);
+//        $behaviour = new InternalTag();
+//        $behaviour->process($this->xml);
+        $behaviour = new LicenseTag();
+        $behaviour->process($this->xml);
+        $behaviour = new MethodTag();
+        $behaviour->process($this->xml);
+        $behaviour = new ParamTag();
+        $behaviour->process($this->xml);
+        $behaviour = new PropertyTag();
+        $behaviour->process($this->xml);
+        $behaviour = new ReturnTag();
+        $behaviour->process($this->xml);
+        $behaviour = new UsesTag();
+        $behaviour->process($this->xml);
+        $behaviour = new VarTag();
+        $behaviour->process($this->xml);
+
+        if ($this->mustInherit) {
+            $inherit = new Inherit();
+            $inherit->process($this->xml);
+        }
+
         $this->buildPackageTree($this->xml);
         $this->buildNamespaceTree($this->xml);
         $this->buildMarkerList($this->xml);
@@ -716,7 +757,6 @@ class Xml extends WriterAbstract
      */
     protected function buildNamespaceTree(\DOMDocument $dom)
     {
-//        $this->log('Collecting all namespaces');
         $xpath = new \DOMXPath($dom);
         $namespaces = array();
         $qry = $xpath->query('//@namespace');
@@ -767,8 +807,6 @@ class Xml extends WriterAbstract
      */
     protected function buildDeprecationList(\DOMDocument $dom)
     {
-//        $this->log('Counting all deprecations');
-
         $nodes = $this->getNodeListForTagBasedQuery($dom, 'deprecated');
 
         $node = new \DOMElement('deprecated');
@@ -816,7 +854,7 @@ class Xml extends WriterAbstract
 
         $result = array();
         foreach ($namespaces as $namespace) {
-            if ($namespace == '') {
+            if (!$namespace) {
                 $namespace = 'global';
             }
 

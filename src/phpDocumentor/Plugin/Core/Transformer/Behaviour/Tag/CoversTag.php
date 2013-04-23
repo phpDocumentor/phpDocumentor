@@ -2,33 +2,21 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Compat2A13\Transformer\Behaviour\Tag;
+namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 use Psr\Log\LogLevel;
 
 /**
- * Behaviour that adds support for the uses tag
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviour
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * Behaviour that adds support for the @covers tag
  */
-class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class CoversTag
 {
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
@@ -43,14 +31,14 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
     public function process(\DOMDocument $xml)
     {
         $xpath = new \DOMXPath($xml);
-        $nodes = $xpath->query('//tag[@name=\'uses\']');
+        $nodes = $xpath->query('//tag[@name=\'covers\']');
 
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {
             $refers = $node->getAttribute('refers');
             $refers_array = explode('::', $refers);
 
-            // determine the type so we know where to put the @usedby tag on
+            // determine the type so we know where to put the @coveredby tag on
             $type = 'class';
             if (isset($refers_array[1])) {
                 // starts with $ = property, ends with () = method,
@@ -97,25 +85,24 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             $referral_nodes = @$xpath->query($qry);
 
             // if the query is wrong; output a Critical error and continue to
-            // the next @uses
+            // the next @covers
             if ($referral_nodes === false) {
                 $this->log(
-                    'An XPath error occurs while processing @uses, the query used was: ' . $qry,
+                    'An XPath error occurs while processing @covers, the query used was: ' . $qry,
                     LogLevel::CRITICAL
                 );
                 continue;
             }
 
             // check if the result is unique; if not we error and continue
-            // to the next @uses
+            // to the next @covers
             if ($referral_nodes->length > 1) {
-                $this->log('@uses "'.$refers.'" refers to more than 1 element', LogLevel::ERROR);
                 continue;
             }
 
             // if there is one matching element; link them together
             if ($referral_nodes->length > 0) {
-                /** @var \DOMElement $referral */
+                /** @var \DOMElement $referral  */
                 $referral = $referral_nodes->item(0);
                 $docblock = $referral->getElementsByTagName('docblock');
                 if ($docblock->length < 1) {
@@ -133,7 +120,7 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
                 // gather the name of the referring element and set that as refers
                 // attribute
                 if ($node->parentNode->parentNode->nodeName == 'class') {
-                    // if the element where the @uses is in is a class; nothing
+                    // if the element where the @covers is in is a class; nothing
                     // more than the class name need to returned
                     $referral_name = $node->parentNode->parentNode
                         ->getElementsByTagName('full_name')->item(0)->nodeValue;
@@ -141,14 +128,14 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
                     $referral_class_name = null;
                     if ($node->parentNode->parentNode->nodeName == 'method') {
-                        // gather the name of the class where the @uses is in
+                        // gather the name of the class where the @covers is in
                         $referral_class_name = $node->parentNode->parentNode
                             ->parentNode->getElementsByTagName('full_name')->item(0)
                             ->nodeValue;
                     }
 
                     // gather the name of the subelement of the class where
-                    // the @uses is in
+                    // the @covers is in
                     $referral_name = $node->parentNode->parentNode
                         ->getElementsByTagName('name')->item(0)->nodeValue;
 
