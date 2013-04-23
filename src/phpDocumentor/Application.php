@@ -38,14 +38,16 @@ require_once findAutoloader();
  */
 class Application extends Cilex
 {
-    const VERSION = '2.0.0b1';
+    public static $VERSION;
 
     /**
      * Initializes all components used by phpDocumentor.
      */
     public function __construct()
     {
-        parent::__construct('phpDocumentor', self::VERSION);
+        self::$VERSION = file_get_contents(__DIR__ . '/../../VERSION');
+
+        parent::__construct('phpDocumentor', self::$VERSION);
 
         $this->addAutoloader();
         $this->addLogging();

@@ -69,7 +69,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
         $proc->setParameter('', 'root', str_repeat('../', substr_count($transformation->getArtifact(), '/')));
         $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
-        $proc->setParameter('', 'version', \phpDocumentor\Application::VERSION);
+        $proc->setParameter('', 'version', \phpDocumentor\Application::$VERSION);
         $proc->setParameter('', 'generated_datetime', date('r'));
 
         // check parameters for variables and add them when found

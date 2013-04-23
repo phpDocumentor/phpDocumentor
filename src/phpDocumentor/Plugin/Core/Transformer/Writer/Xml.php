@@ -68,7 +68,7 @@ class Xml extends WriterAbstract
         $document_element = new \DOMElement('project');
         $this->xml->appendChild($document_element);
 
-        $document_element->setAttribute('version', Application::VERSION);
+        $document_element->setAttribute('version', Application::$VERSION);
 
         foreach ($project->getFiles() as $file) {
             $this->buildFile($document_element, $file);
