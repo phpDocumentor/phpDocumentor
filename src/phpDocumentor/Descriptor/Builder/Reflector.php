@@ -37,20 +37,45 @@ use phpDocumentor\Reflection\InterfaceReflector;
 use phpDocumentor\Reflection\TraitReflector;
 
 /**
- * Populates the project descriptor using the information retrieved from the
- * Reflection component.
+ * Builds a Project Descriptor using the information from the Reflection component.
  *
- * @see buildFile() to start digesting information.
+ * The Descriptors are a light representation of the element structure in a project, also known as AST
+ * (Abstract Syntax Tree). In order to build this representation from the Reflection API of phpDocumentor
+ * can this builder be used.
+ *
+ * The most straightforward usage is to pass each processed File (in the form of a FileReflector object) to the
+ * {@see buildFile()} method. This will extract the file's meta data and child elements (and their child elements),
+ * build a FileDescriptor and inject that into the ProjectDescriptor that is created (or passed) as part of this
+ * builder (see {@see BuilderAbstract::__construct()}).
+ *
+ * Example:
+ *
+ * ```
+ * $reflector = new \phpDocumentor\Descriptor\Builder\Reflector();
+ * $reflector->buildFile($fileReflector);
+ * $projectDescriptor = $reflector->getProjectDescriptor();
+ * ```
+ *
+ * It is also possible to convert each individual element using their respective *build* method but this will not
+ * automatically link the element to the correct file.
+ *
+ * This builder is also capable of validating each Reflector's properties (usually DocBlocks) and populate the *errors*
+ * of the linked Descriptor. This only occurs when a Validation manager is supplied, see {@see setValidation()} for
+ * more information.
+ *
+ * @todo Consider moving the individual build* method's contents to mapper classes, they map Reflectors to Descriptors
  */
 class Reflector extends BuilderAbstract
 {
-    /** @var Validation $validation */
+    /** @var Validation $validation The validation manager that may interpret the Reflectors. */
     protected $validation;
 
     /**
-     * Sets the Validation Manager.
+     * Registers the Validation Manager.
      *
      * @param Validation $validation
+     *
+     * @see getValidation for a description how validation works for this Builder.
      *
      * @return void
      */
@@ -60,7 +85,14 @@ class Reflector extends BuilderAbstract
     }
 
     /**
-     * Returns the validation manager.
+     * Returns the Validation Manager.
+     *
+     * This method allows the caller to retrieve a validation manager that can reflect the provided FileReflectors.
+     * It does this by calling the {@see Validation::validate()} method, passing the element that needs to be validated,
+     * and provides {@see Error} objects to the linked Descriptor's {@see DescriptorAbstract::$errors} field.
+     *
+     * @see Validation for more information regarding how validation works and how to register validators.
+     * @see setValidation() to register the Validation Manager with this object.
      *
      * @return Validation
      */
@@ -70,9 +102,18 @@ class Reflector extends BuilderAbstract
     }
 
     /**
+     * Constructs a FileDescriptor, and child Descriptors, from a FileReflector.
+     *
+     * This method interprets the provided File Reflector and populates a new FileDescriptor, its child elements and
+     * any markers that have been found during the Reflection of a file. If a Validation Manager is provided using the
+     * {@see setValidation()} method then this file is also validated and its error collection populated with any
+     * violation that was found.
+     *
      * @param FileReflector $data The reflection of a file.
      *
-     * @uses FileDescriptor to create a representation of the file.
+     * @see FileReflector for more information regarding the parsing and analysis of a PHP Source File.
+     *
+     * @return FileDescriptor
      */
     public function buildFile($data)
     {
@@ -82,9 +123,10 @@ class Reflector extends BuilderAbstract
 
         $this->buildDocBlock($data, $fileDescriptor);
 
-        $packageTagObject = $data->getDocBlock()
-            ? reset($data->getDocBlock()->getTagsByName('package'))
-            : null;
+        /** @var DocBlock $docBlock  */
+        $docBlock         = $data->getDocBlock();
+        $packageTagObject = $docBlock ? reset($docBlock->getTagsByName('package')) : null;
+
         $fileDescriptor->setSource($data->getContents());
         $fileDescriptor->setPackage($packageTagObject ? $packageTagObject->getDescription() : '');
 
@@ -171,13 +213,15 @@ class Reflector extends BuilderAbstract
         $this->getProjectDescriptor()->getFiles()->set($fileDescriptor->getPath(), $fileDescriptor);
 
         // validate the Reflected Information
-        $fileDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $fileDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $fileDescriptor;
     }
 
     /**
-     * Builds a ClassDescriptor and stores it in the Project.
+     * Builds a ClassDescriptor using a given Reflector.
      *
      * @param ClassReflector $data The reflection data to use or this operation.
      *
@@ -217,13 +261,19 @@ class Reflector extends BuilderAbstract
         $classDescriptor->setNamespace($namespace);
 
         // validate the Reflected Information
-        $classDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $classDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $classDescriptor;
     }
 
     /**
+     * Builds a InterfaceDescriptor using a given Reflector.
+     *
      * @param InterfaceReflector $data
+     *
+     * @return InterfaceDescriptor
      */
     public function buildInterface($data)
     {
@@ -247,13 +297,19 @@ class Reflector extends BuilderAbstract
         $interfaceDescriptor->setNamespace($data->getNamespace());
 
         // validate the Reflected Information
-        $interfaceDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $interfaceDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $interfaceDescriptor;
     }
 
     /**
+     * Builds a TraitDescriptor using a given Reflector.
+     *
      * @param TraitReflector $data
+     *
+     * @return TraitDescriptor
      */
     public function buildTrait($data)
     {
@@ -275,14 +331,20 @@ class Reflector extends BuilderAbstract
         }
 
         // validate the Reflected Information
-        $traitDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $traitDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $traitDescriptor;
     }
 
     /**
-     * @param ClassReflector\ConstantReflector $data
-     * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor|null $container
+     * Builds a ConstantDescriptor using a given Reflector and links it to a parent class or interface if provided.
+     *
+     * @param ClassReflector\ConstantReflector|ConstantReflector $data
+     * @param ClassDescriptor|InterfaceDescriptor|null           $container
+     *
+     * @return ConstantDescriptor
      */
     public function buildConstant($data, $container = null)
     {
@@ -305,7 +367,9 @@ class Reflector extends BuilderAbstract
         }
 
         // validate the Reflected Information
-        $constantDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $constantDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $constantDescriptor;
     }
@@ -327,7 +391,9 @@ class Reflector extends BuilderAbstract
         $functionDescriptor->setNamespace($data->getNamespace());
 
         // validate the Reflected Information
-        $functionDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $functionDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $functionDescriptor;
     }
@@ -357,7 +423,9 @@ class Reflector extends BuilderAbstract
         $container->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
 
         // validate the Reflected Information
-        $propertyDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $propertyDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $propertyDescriptor;
     }
@@ -405,7 +473,9 @@ class Reflector extends BuilderAbstract
         $container->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
 
         // validate the Reflected Information
-        $methodDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        if ($this->getValidation()) {
+            $methodDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        }
 
         return $methodDescriptor;
     }
