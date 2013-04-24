@@ -40,7 +40,10 @@ use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
- * Converts the structural information of phpDocumentor into a XML AST file.
+ * Converts the structural information of phpDocumentor into an XML file.
+ *
+ * @todo this class currently only contains the old AST format for phpDocumentor; refactor!
+ * @todo merge checkstyle writer into this one with query checkstyle
  */
 class Xml extends WriterAbstract
 {
@@ -565,21 +568,16 @@ class Xml extends WriterAbstract
      *
      * @return void
      */
-    public function buildDocBlockTag(\DOMElement $parent, $tag)
+    public function buildDocBlockTag(\DOMElement $parent, $tag, $element)
     {
         $child = new \DOMElement('tag');
         $parent->appendChild($child);
 
+        $child->setAttribute('name', $tag->getName());
+        $child->setAttribute('description', $tag->getDescription());
         $child->setAttribute('line', $parent->getAttribute('line'));
 
-//        if (class_exists('phpDocumentor\Event\Dispatcher')) {
-//            \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
-//                'reflection.docblock.tag.export',
-//                \phpDocumentor\Reflection\Event\ExportDocBlockTagEvent
-//                    ::createInstance($element)->setObject($tag)
-//                    ->setXml($child)
-//            );
-//        }
+        // TODO: Serialize specific tag information
     }
 
     /**
@@ -622,8 +620,10 @@ class Xml extends WriterAbstract
      */
     protected function addTags(\DOMElement $xml_node, $element)
     {
-        foreach ($element->getTags() as $tag) {
-            $this->buildDocBlockTag($xml_node, $tag);
+        foreach ($element->getTags() as $tagGroup) {
+            foreach ($tagGroup as $tag) {
+                $this->buildDocBlockTag($xml_node, $tag, $element);
+            }
         }
     }
 
