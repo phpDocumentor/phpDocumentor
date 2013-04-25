@@ -258,14 +258,13 @@ class Twig extends WriterAbstract implements Routable
             }
 
             // to support 'normal' Twig extensions we check the interface to determine what instantiation to do.
-            $implements_interface = in_array(
+            $implementsInterface = in_array(
                 'phpDocumentor\Plugin\Core\Twig\ExtensionInterface',
                 class_implements($extension)
             );
 
-            $twigEnvironment->addExtension($implements_interface
-                ? new $extension($project, $transformation)
-                : new $extension()
+            $twigEnvironment->addExtension(
+                $implementsInterface ? new $extension($project, $transformation) : new $extension()
             );
         }
     }
@@ -321,7 +320,8 @@ class Twig extends WriterAbstract implements Routable
             }
             $path = $transformation->getTransformer()->getTarget() . $url;
         } else {
-            $path = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+            $path = $transformation->getTransformer()->getTarget()
+                . DIRECTORY_SEPARATOR . $transformation->getArtifact();
         }
 
         $destination = preg_replace_callback(

@@ -44,6 +44,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  *
  * @todo this class currently only contains the old AST format for phpDocumentor; refactor!
  * @todo merge checkstyle writer into this one with query checkstyle
+ * @todo the packages may not be propagated correctly, check it
  */
 class Xml extends WriterAbstract
 {
@@ -307,25 +308,17 @@ class Xml extends WriterAbstract
         $child->setAttribute('final', $class->isFinal() ? 'true' : 'false');
         $child->setAttribute('abstract', $class->isAbstract() ? 'true' : 'false');
 
-        $child->appendChild(
-            new \DOMElement(
-                'extends',
-                is_string($class->getParent())
-                    ? $class->getParent()
-                    : $class->getParent()->getFullyQualifiedStructuralElementName()
-            )
-        );
+        $parentFqcn = is_string($class->getParent())
+            ? $class->getParent()
+            : $class->getParent()->getFullyQualifiedStructuralElementName();
+        $child->appendChild(new \DOMElement('extends', $parentFqcn));
 
         /** @var InterfaceDescriptor $interface */
         foreach ($class->getInterfaces() as $interface) {
-            $child->appendChild(
-                new \DOMElement(
-                    'implements',
-                    is_string($interface)
-                        ? $interface
-                        : $interface->getFullyQualifiedStructuralElementName()
-                )
-            );
+            $interfaceFcqn = is_string($interface)
+                ? $interface
+                : $interface->getFullyQualifiedStructuralElementName();
+            $child->appendChild(new \DOMElement('implements', $interfaceFcqn));
         }
 
         if ($child === null) {
@@ -429,14 +422,10 @@ class Xml extends WriterAbstract
         }
 
         foreach ($interface->getParent() as $parentInterface) {
-            $child->appendChild(
-                new \DOMElement(
-                    'extends',
-                    is_string($parentInterface)
-                        ? $parentInterface
-                        : $parentInterface->getFullyQualifiedStructuralName()
-                )
-            );
+            $parentFqcn = is_string($parentInterface)
+                ? $parentInterface
+                : $parentInterface->getFullyQualifiedStructuralName();
+            $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 
         $namespace = $interface->getNamespace()->getFullyQualifiedStructuralElementName();
@@ -475,12 +464,10 @@ class Xml extends WriterAbstract
 
         $child->setAttribute('line', $property->getLine());
 
-        $child->setAttribute(
-            'namespace',
-            $property->getNamespace()
-                ? $property->getNamespace()->getFullyQualifiedStructuralElementName()
-                : $parent->getAttribute('namespace')
-        );
+        $namespaceFqnn = $property->getNamespace()
+            ? $property->getNamespace()->getFullyQualifiedStructuralElementName()
+            : $parent->getAttribute('namespace');
+        $child->setAttribute('namespace', $namespaceFqnn);
 
         $child->appendChild(new \DOMElement('name', $property->getName()));
         $child->appendChild(new \DOMElement('default'))
@@ -507,12 +494,10 @@ class Xml extends WriterAbstract
         $child->setAttribute('static', $method->isStatic() ? 'true' : 'false');
         $child->setAttribute('visibility', $method->getVisibility());
 
-        $child->setAttribute(
-            'namespace',
-            $method->getNamespace()
-                ? $method->getNamespace()->getFullyQualifiedStructuralElementName()
-                : $parent->getAttribute('namespace')
-        );
+        $namespaceFqnn = $method->getNamespace()
+            ? $method->getNamespace()->getFullyQualifiedStructuralElementName()
+            : $parent->getAttribute('namespace');
+        $child->setAttribute('namespace', $namespaceFqnn);
         $child->setAttribute('line', $method->getLine());
 
         $child->appendChild(new \DOMElement('name', $method->getName()));
@@ -628,46 +613,6 @@ class Xml extends WriterAbstract
     }
 
     /**
-     * Sets the package of the parent element.
-     *
-     * This method inspects the current DocBlock and extract an @package
-     * element. If that tag is present than the associated element's package
-     * name is set to that value.
-     *
-     * If no @package tag is present in the DocBlock then the default package
-     * name is set.
-     *
-     * @param \DOMElement   $parent
-     * @param DocBlock      $docblock
-     * @param BaseReflector $element
-     *
-     * @return void
-     */
-//    protected function setParentsPackage(\DOMElement $parent, DocBlock $docblock, $element)
-//    {
-//        /** @var \phpDocumentor\Reflection\DocBlock\Tag $package */
-//        $package = current($docblock->getTagsByName('package'));
-//
-//        /** @var \phpDocumentor\Reflection\DocBlock\Tag $subpackage */
-//        $subpackage = current($docblock->getTagsByName('subpackage'));
-//
-//        $package_name = '';
-//        if ($package) {
-//            $package_name = str_replace(
-//                array('.', '_'),
-//                '\\',
-//                $package->getContent() . ($subpackage ? '\\' . $subpackage->getContent() : '')
-//            );
-//        }
-//
-//        if (!$package_name) {
-//            $package_name = $element->getDefaultPackageName();
-//        }
-//
-//        $parent->setAttribute('package', $package_name);
-//    }
-
-    /**
      * Finalizes the processing and executing all post-processing actions.
      *
      * This method is responsible for extracting and manipulating the data that
@@ -690,8 +635,8 @@ class Xml extends WriterAbstract
         $behaviour->process($this->xml);
         $behaviour = new IgnoreTag();
         $behaviour->process($this->xml);
-//        $behaviour = new InternalTag();
-//        $behaviour->process($this->xml);
+        //$behaviour = new InternalTag();
+        //$behaviour->process($this->xml);
         $behaviour = new LicenseTag();
         $behaviour->process($this->xml);
         $behaviour = new MethodTag();
@@ -716,7 +661,7 @@ class Xml extends WriterAbstract
         $this->buildNamespaceTree($this->xml);
         $this->buildMarkerList($this->xml);
         $this->buildDeprecationList($this->xml);
-//        $this->filterVisibility($this->xml, $this->parser->getVisibility());
+        //$this->filterVisibility($this->xml, $this->parser->getVisibility());
     }
 
     /**
@@ -730,7 +675,6 @@ class Xml extends WriterAbstract
      */
     protected function buildPackageTree(\DOMDocument $dom)
     {
-//        $this->log('Collecting all packages');
         $xpath = new \DOMXPath($dom);
         $packages = array();
         $qry = $xpath->query('//@package');
@@ -785,17 +729,14 @@ class Xml extends WriterAbstract
      */
     protected function buildMarkerList(\DOMDocument $dom)
     {
-//        $this->log('Collecting all marker types');
+        //foreach ($this->parser->getMarkers() as $marker) {
+        //    $marker = strtolower($marker);
+        //    $nodes = $this->getNodeListForTagBasedQuery($dom, $marker);
 
-//        foreach ($this->parser->getMarkers() as $marker) {
-//
-//            $marker = strtolower($marker);
-//            $nodes = $this->getNodeListForTagBasedQuery($dom, $marker);
-//
-//            $node = new \DOMElement('marker', $marker);
-//            $dom->documentElement->appendChild($node);
-//            $node->setAttribute('count', $nodes->length);
-//        }
+        //    $node = new \DOMElement('marker', $marker);
+        //    $dom->documentElement->appendChild($node);
+        //    $node->setAttribute('count', $nodes->length);
+        //}
     }
 
     /**
@@ -889,12 +830,10 @@ class Xml extends WriterAbstract
             $node = new \DOMElement($node_name);
             $parent_element->appendChild($node);
             $node->setAttribute('name', $name);
-            $node->setAttribute(
-                'full_name',
-                $parent_element->nodeName == $node_name
-                    ? $parent_element->getAttribute('full_name').'\\'.$name
-                    : $name
-            );
+            $fullName = $parent_element->nodeName == $node_name
+                ? $parent_element->getAttribute('full_name') . '\\' . $name
+                : $name;
+            $node->setAttribute('full_name', $fullName);
             $this->generateNamespaceElements($sub_namespaces, $node, $node_name);
         }
     }

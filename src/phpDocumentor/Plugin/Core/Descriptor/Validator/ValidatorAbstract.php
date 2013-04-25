@@ -11,6 +11,11 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator;
 
+use Psr\Log\LogLevel;
+use phpDocumentor\Event\DebugEvent;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Event\EventAbstract;
+use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock;
 
@@ -19,6 +24,9 @@ use phpDocumentor\Reflection\DocBlock;
  */
 abstract class ValidatorAbstract
 {
+    /** @var Translator $translate */
+    protected $translate;
+
     /**
      * Name of the "entity" being validated.
      *
@@ -61,11 +69,8 @@ abstract class ValidatorAbstract
      * @param DocBlock|null      $docblock Docblock
      * @param BaseReflector|null $source   Source Element.
      */
-    public function __construct(
-        $name,
-        $docblock = null,
-        $source = null
-    ) {
+    public function __construct($name, $docblock = null, $source = null)
+    {
         $this->entityName = $name;
         $this->lineNumber = $docblock
             ? $docblock->getLocation()->getLineNumber()
@@ -102,7 +107,7 @@ abstract class ValidatorAbstract
      * @param string        $name  Name of the event to dispatch.
      * @param EventAbstract $event Arguments for this event.
      *
-     * @throws Exception if there is a dispatcher but it is not of type EventDispatcher
+     * @throws \Exception if there is a dispatcher but it is not of type EventDispatcher
      *
      * @return void
      */
@@ -112,10 +117,9 @@ abstract class ValidatorAbstract
             return null;
         }
 
-        if (!$this->event_dispatcher instanceof \phpDocumentor\Event\Dispatcher) {
-            throw new Exception(
-                'Expected the event dispatcher to be an instance of '
-                    . 'phpDocumentor\Event\Dispatcher'
+        if (!$this->event_dispatcher instanceof Dispatcher) {
+            throw new \Exception(
+                'Expected the event dispatcher to be an instance of phpDocumentor\Event\Dispatcher'
             );
         }
 
@@ -126,16 +130,17 @@ abstract class ValidatorAbstract
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.
-     * @param int    $priority The logging priority, the lower,
-     *  the more important. Ranges from 1 to 7
+     * @param string $priority The logging priority.
      *
      * @return void
      */
-    public function log($message, $priority = 6)
+    public function log($message, $priority = LogLevel::INFO)
     {
         $this->dispatch(
             'system.log',
-            \phpDocumentor\Event\LogEvent::createInstance($this)->setMessage($message)->setPriority($priority)
+            LogEvent::createInstance($this)
+                ->setMessage($message)
+                ->setPriority($priority)
         );
     }
 
@@ -143,7 +148,7 @@ abstract class ValidatorAbstract
      * Dispatches a parser error to be logged.
      *
      * @param string   $type      The logging priority as string
-     * @param string   $message   The message to log.
+     * @param string   $code      The message to log.
      * @param string   $line      The line number where the error occurred..
      * @param string[] $variables an array with message substitution variables.
      *
@@ -151,12 +156,15 @@ abstract class ValidatorAbstract
      */
     public function logParserError($type, $code, $line, $variables = array())
     {
-        $message = $this->_($code, $variables);
-        $this->log($message, \phpDocumentor\Plugin\Core\Log::ERR);
+        $message = $this->__($code, $variables);
+        $this->log($message, LogLevel::ERROR);
         $this->dispatch(
             'parser.log',
-            \phpDocumentor\Parser\Event\LogEvent::createInstance($this)
-                ->setMessage($message)->setType($type)->setCode($code)->setLine($line)
+            LogEvent::createInstance($this)
+                ->setMessage($message)
+                ->setType($type)
+                ->setCode($code)
+                ->setLine($line)
         );
     }
 
@@ -169,7 +177,7 @@ abstract class ValidatorAbstract
      */
     public function debug($message)
     {
-        $this->dispatch('system.debug', \phpDocumentor\Event\DebugEvent::createInstance($this)->setMessage($message));
+        $this->dispatch('system.debug', DebugEvent::createInstance($this)->setMessage($message));
     }
 
     /**
@@ -180,16 +188,19 @@ abstract class ValidatorAbstract
      *
      * @param string $message   ID or message to translate.
      * @param array  $variables Variables to use for substitution.
+     * @codingStandardsIgnoreStart
      *
      * @return string
      */
-    public function _($message, $variables = array())
+    public function __($message, $variables = array())
     {
         if (!$this->translate) {
             return vsprintf($message, $variables);
         }
 
-        return vsprintf($this->translate->translate($message), $variables);
+        $translator = $this->translate;
+
+        return vsprintf($translator->translate($message), $variables);
     }
 
     /**
@@ -205,7 +216,7 @@ abstract class ValidatorAbstract
     /**
      * Returns the event dispatcher.
      *
-     * @return \phpDocumentor\Event\Dispatcher
+     * @return Dispatcher
      */
     public function getEventDispatcher()
     {

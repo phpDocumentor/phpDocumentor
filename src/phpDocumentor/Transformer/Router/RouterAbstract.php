@@ -11,11 +11,11 @@
 
 namespace phpDocumentor\Transformer\Router;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
+
 /**
  * Object containing a collection of routes.
  */
-use phpDocumentor\Descriptor\DescriptorAbstract;
-
 abstract class RouterAbstract extends \ArrayObject
 {
     /**
@@ -45,7 +45,7 @@ abstract class RouterAbstract extends \ArrayObject
     public function match($node)
     {
         /** @var Rule $rule */
-        foreach($this as $rule) {
+        foreach ($this as $rule) {
             if ($rule->match($node)) {
                 return $rule;
             }

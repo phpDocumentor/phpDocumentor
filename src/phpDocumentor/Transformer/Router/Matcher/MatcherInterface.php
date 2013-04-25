@@ -23,5 +23,4 @@ interface MatcherInterface
      * @return boolean
      */
     public function __invoke($node);
-
 }

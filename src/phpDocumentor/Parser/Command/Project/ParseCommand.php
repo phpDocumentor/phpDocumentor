@@ -306,7 +306,9 @@ class ParseCommand extends ConfigurableCommand
      *
      * @return string
      */
+    // @codingStandardsIgnoreStart
     protected function __($text, $parameters = array())
+    // @codingStandardsIgnoreEnd
     {
         return vsprintf($this->translator->translate($text), $parameters);
     }

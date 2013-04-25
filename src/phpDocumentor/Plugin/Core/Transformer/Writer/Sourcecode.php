@@ -37,7 +37,7 @@ class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 : 'source');
 
         /** @var FileDescriptor $file */
-        foreach($project->getFiles() as $file) {
+        foreach ($project->getFiles() as $file) {
             $filename = $file->getPath();
             $source   = $file->getSource();
 

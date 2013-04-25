@@ -32,6 +32,8 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  * Currently supported:
  *
  * * 'class', a Class Diagram Generated using GraphViz
+ *
+ * @todo Fix this class
  */
 class Graph extends WriterAbstract
 {
@@ -52,7 +54,7 @@ class Graph extends WriterAbstract
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $type_method = 'process' . ucfirst($transformation->getSource());
-//        $this->$type_method($project, $transformation);
+        $this->$type_method($project, $transformation);
     }
 
     /**
@@ -200,9 +202,9 @@ class Graph extends WriterAbstract
                 $node->setLabel('<«abstract»<br/>' . $sub_element->getName(). '>');
             }
 
-//            $full_name = $sub_element->getFullyQualifiedStructuralElementName();
-//            $node->setURL($this->class_paths[$full_name]);
-//            $node->setTarget('_parent');
+            //$full_name = $sub_element->getFullyQualifiedStructuralElementName();
+            //$node->setURL($this->class_paths[$full_name]);
+            //$node->setTarget('_parent');
 
             $this->nodeCache[$sub_element->getFullyQualifiedStructuralElementName()] = $node;
             $sub_graph->setNode($node);
@@ -240,7 +242,7 @@ class Graph extends WriterAbstract
         if ($error != 0) {
             throw new ExtensionNotLoadedException(
                 'Unable to find the `dot` command of the GraphViz package. '
-                    . 'Is GraphViz correctly installed and present in your path?'
+                . 'Is GraphViz correctly installed and present in your path?'
             );
         }
     }

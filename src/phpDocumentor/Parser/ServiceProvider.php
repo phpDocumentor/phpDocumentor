@@ -107,16 +107,18 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Load the configuration from the plugin.xml file
      *
+     * @todo restore required/deprecated validators
+     *
      * @return array
      */
     protected function loadConfiguration()
     {
-//        $configOptions = $this->plugin->getOptions();
+        //$configOptions = $this->plugin->getOptions();
         $validatorOptions = array();
 
-//        foreach (array('deprecated', 'required') as $tag) {
-//            $validatorOptions[$tag] = $this->loadConfigurationByElement($configOptions, $tag);
-//        }
+        //foreach (array('deprecated', 'required') as $tag) {
+        //    $validatorOptions[$tag] = $this->loadConfigurationByElement($configOptions, $tag);
+        //}
 
         return $validatorOptions;
     }

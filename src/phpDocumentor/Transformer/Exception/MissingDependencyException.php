@@ -16,5 +16,4 @@ namespace phpDocumentor\Transformer\Exception;
  */
 class MissingDependencyException extends \RuntimeException
 {
-
 }

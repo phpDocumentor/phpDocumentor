@@ -62,7 +62,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      *
      * @return string The extension name
      */
-    function getName()
+    public function getName()
     {
         return 'phpdocumentor';
     }

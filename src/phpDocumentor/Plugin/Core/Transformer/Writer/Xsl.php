@@ -98,7 +98,6 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 );
 
                 $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
-//                $this->log('Processing the file: ' . $element->nodeValue . ' as ' . $filename);
 
                 if (!file_exists(dirname($filename))) {
                     mkdir(dirname($filename), 0755, true);

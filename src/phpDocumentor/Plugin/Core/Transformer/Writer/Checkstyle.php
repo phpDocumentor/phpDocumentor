@@ -47,10 +47,10 @@ class Checkstyle extends WriterAbstract
 
             foreach ($fileDescriptor->getErrors()->getAll() as $error) {
                 $item = $document->createElement('error');
-                $item->setAttribute('line',     $error['line']);
+                $item->setAttribute('line', $error['line']);
                 $item->setAttribute('severity', $error['type']);
-                $item->setAttribute('message',  $error['message']);
-                $item->setAttribute('source',   'phpDocumentor.file.'.$error['code']);
+                $item->setAttribute('message', $error['message']);
+                $item->setAttribute('source', 'phpDocumentor.file.'.$error['code']);
                 $file->appendChild($item);
             }
         }
