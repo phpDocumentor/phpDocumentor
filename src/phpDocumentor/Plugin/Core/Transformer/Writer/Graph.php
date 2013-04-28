@@ -13,6 +13,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use Zend\Stdlib\Exception\ExtensionNotLoadedException;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -85,7 +86,7 @@ class Graph extends WriterAbstract
 
         $classes    = $project->getIndexes()->get('classes')->getAll();
         $interfaces = $project->getIndexes()->get('interfaces')->getAll();
-        $traits     = $project->getIndexes()->get('traits')->getAll();
+        $traits     = $project->getIndexes()->get('traits', new Collection())->getAll();
 
         /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers  */
         $containers = array_merge($classes, $interfaces, $traits);
