@@ -28,15 +28,16 @@
 
         "phpdocumentor/graphviz":            "1.*@beta",
         "phpdocumentor/fileset":             "1.*@beta",
-	    "phpdocumentor/reflection":          "0.1.*",
-	    "phpdocumentor/reflection-docblock": "2.0.0@dev",
+	    "phpdocumentor/reflection":          "0.1.*@dev",
+	    "phpdocumentor/reflection-docblock": "2.*@dev",
 
-        "phpdocumentor/unified-asset-installer": "1.*@beta",
-        "phpdocumentor/template-responsive":     "1.*@stable",
-        "phpdocumentor/template-new-black":      "1.*@stable",
-        "phpdocumentor/template-zend":           "1.*@stable",
-        "phpdocumentor/template-old-ocean":      "1.*@stable",
-        "phpdocumentor/template-checkstyle":     "1.*@stable"
+        "phpdocumentor/unified-asset-installer":  "1.*@beta",
+        "phpdocumentor/template-responsive-twig": "0.1.*@dev",
+        "phpdocumentor/template-responsive":      "1.*@stable",
+        "phpdocumentor/template-new-black":       "1.*@stable",
+        "phpdocumentor/template-zend":            "1.*@stable",
+        "phpdocumentor/template-old-ocean":       "1.*@stable",
+        "phpdocumentor/template-checkstyle":      "1.*@stable"
     },
     "suggests": {
         "ext-xsl": "when using XSL based templates"
