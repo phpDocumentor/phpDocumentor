@@ -28,8 +28,8 @@
 
         "phpdocumentor/graphviz":            "1.*@beta",
         "phpdocumentor/fileset":             "1.*@beta",
-	    "phpdocumentor/reflection":          "0.1.*@stable",
-	    "phpdocumentor/reflection-docblock": "2.0.0a1",
+	    "phpdocumentor/reflection":          "0.1.*",
+	    "phpdocumentor/reflection-docblock": "2.0.0@dev",
 
         "phpdocumentor/unified-asset-installer": "1.*@beta",
         "phpdocumentor/template-responsive":     "1.*@stable",
@@ -43,8 +43,8 @@
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "behat/behat":     ">=2.4",
-        "phpunit/phpunit": "3.7.*",
+        "behat/behat":     ">=2.4@stable",
+        "phpunit/phpunit": "3.7.*@stable",
         "mockery/mockery": ">=0.8.0"
     },
     "config": {
