@@ -3,7 +3,7 @@
     <parser>
         <default-package-name>Default</default-package-name>
         <encoding>utf-8</encoding>
-        <target>output</target>
+        <target>output/build</target>
         <markers>
             <item>TODO</item>
             <item>FIXME</item>

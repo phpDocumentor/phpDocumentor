@@ -2,10 +2,10 @@
 <phpdocumentor>
     <parser>
         <default-package-name>phpDocumentor</default-package-name>
-        <target>data/output</target>
+        <target>build</target>
     </parser>
     <transformer>
-        <target>data/output</target>
+        <target>build/apidocs</target>
     </transformer>
     <files>
         <directory>.</directory>
@@ -13,8 +13,9 @@
         <ignore>vendor/*</ignore>
     </files>
     <plugins>
-        <plugin path="Core">
-            <option name="a">value</option>
-        </plugin>
+        <plugin path="Core" />
     </plugins>
+    <transformations>
+        <template name="responsive-twig"></template>
+    </transformations>
 </phpdocumentor>

@@ -1,0 +1,6 @@
+Research
+========
+
+.. toctree::
+
+   research/serialization

@@ -1,45 +1,34 @@
 <?php
 /**
- * Sourcecode Transformer File
+ * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Transformation;
+
 /**
- * Sourcecode transformation writer; generates syntax highlighted source files
- * in a destination's subfolder.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * Sourcecode transformation writer; generates syntax highlighted source files in a destination's subfolder.
  */
 class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     /**
-     * This method writes every source code entry in the structure file
-     * to a highlighted file.
+     * This method writes every source code entry in the structure file to a highlighted file.
      *
-     * @param \DOMDocument                        $structure      XML source.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
-     *
-     * @throws \Exception
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR
@@ -47,18 +36,10 @@ class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 ? $transformation->getArtifact()
                 : 'source');
 
-        $xpath = new \DOMXPath($structure);
-        $list = $xpath->query("/project/file[source]");
-
-        for ($i=0; $i < $list->length; $i++) {
-            /** @var \DOMElement $element */
-            $element  = $list->item($i);
-            $filename = $element->getAttribute('path');
-            $source   = gzuncompress(
-                base64_decode(
-                    $element->getElementsByTagName('source')->item(0)->nodeValue
-                )
-            );
+        /** @var FileDescriptor $file */
+        foreach ($project->getFiles() as $file) {
+            $filename = $file->getPath();
+            $source   = $file->getSource();
 
             $root = str_repeat('../', count(explode(DIRECTORY_SEPARATOR, $filename)));
             $path = $artifact . DIRECTORY_SEPARATOR . $filename;
@@ -116,6 +97,7 @@ class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
 </html>
 HTML
             );
+
         }
     }
 }

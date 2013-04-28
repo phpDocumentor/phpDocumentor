@@ -2,57 +2,69 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Transformer
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
- * Model representing a loaded template.
+ * Model representing a template.
  *
- * @category phpDocumentor
- * @package  Transformer
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
+ * @Serializer\XmlRoot("template")
  */
-class Template extends TransformerAbstract implements \ArrayAccess, \Countable, \Iterator
+class Template implements \ArrayAccess, \Countable, \Iterator
 {
-    /** @var string Name for this template */
+    /**
+     * @Serializer\Type("string")
+     * @var string Name for this template
+     */
     protected $name = null;
 
-    /** @var string */
+    /**
+     * @Serializer\Type("string")
+     * @var string
+     */
     protected $author = '';
 
-    /** @var string */
+    /**
+     * @Serializer\Type("string")
+     * @var string
+     */
     protected $version = '';
 
-    /** @var string */
+    /**
+     * @Serializer\Type("string")
+     * @var string
+     */
     protected $copyright = '';
 
-    /** @var string */
-    protected $path = '';
+    /**
+     * @Serializer\Type("string")
+     * @var string
+     */
+    protected $description = '';
 
-    /** @var Transformation */
+    /**
+     * @Serializer\XmlList(entry = "transformation")
+     * @Serializer\Type("array<phpDocumentor\Transformer\Transformation>")
+     * @var Transformation
+     */
     protected $transformations = array();
 
     /**
      * Initializes this object with a name and optionally with contents.
      *
      * @param string $name Name for this template.
-     * @param string $path The location of the template on this server.
      */
-    public function __construct($name, $path)
+    public function __construct($name)
     {
         $this->name = $name;
-        $this->path = $path;
     }
 
     /**
@@ -112,16 +124,6 @@ class Template extends TransformerAbstract implements \ArrayAccess, \Countable, 
     }
 
     /**
-     * Returns the location of this template.
-     *
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
      * Sets the version number for this template.
      *
      * @param string $version Semantic version number in this format: 1.0.0
@@ -151,46 +153,28 @@ class Template extends TransformerAbstract implements \ArrayAccess, \Countable, 
     }
 
     /**
-     * Populates this template from an XML source.
+     * Sets the description for this template.
      *
-     * @param Transformer $transformer The transformer which is parent.
-     * @param string      $xml         The XML definition for this template.
+     * @param string $description An unconstrained text field where the user can provide additional information
+     *     regarding details of the template.
      *
      * @return void
      */
-    public function populate(Transformer $transformer, $xml)
+    public function setDescription($description)
     {
-        $xml = new \SimpleXMLElement($xml);
-        $this->author    = $xml->author;
-        $this->version   = $xml->version;
-        $this->copyright = $xml->copyright;
-
-        foreach ($xml->transformations->transformation as $transformation) {
-            $transformation_obj = new Transformation(
-                $transformer,
-                (string)$transformation['query'],
-                (string)$transformation['writer'],
-                (string)$transformation['source'],
-                (string)$transformation['artifact']
-            );
-
-            // import generic parameters of the template
-            if (isset($xml->parameters) && count($xml->parameters)
-            ) {
-                $transformation_obj->importParameters($xml->parameters);
-            }
-
-            if (isset($transformation->parameters)
-                && count($transformation->parameters)
-            ) {
-                $transformation_obj->importParameters(
-                    $transformation->parameters
-                );
-            }
-
-            $this->transformations[] = $transformation_obj;
-        }
+        $this->description = $description;
     }
+
+    /**
+     * Returns the description for this template.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
 
     /**
      * Sets a transformation at the given offset.
@@ -210,7 +194,7 @@ class Template extends TransformerAbstract implements \ArrayAccess, \Countable, 
             );
         }
 
-        $this->transformations[$offset] = $value;
+        $this->transformations[] = $value;
     }
 
     /**

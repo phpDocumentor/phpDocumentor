@@ -32,19 +32,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Parser\Parser::getTitle
-     * @covers phpDocumentor\Parser\Parser::setTitle
-     */
-    public function testSetAndGetTitle()
-    {
-        $parser = new Parser();
-        $this->assertEquals('', $parser->getTitle());
-
-        $parser->setTitle('My Title');
-        $this->assertEquals('My Title', $parser->getTitle());
-    }
-
-    /**
      * @covers phpDocumentor\Parser\Parser::getIgnoredTags
      * @covers phpDocumentor\Parser\Parser::setIgnoredTags
      */
@@ -55,43 +42,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $parser->setIgnoredTags(array('param'));
         $this->assertEquals(array('param'), $parser->getIgnoredTags());
-    }
-
-    /**
-     * Tests whether the isForced method correctly functions.
-     *
-     * @covers phpDocumentor\Parser\Parser::setForced
-     * @covers phpDocumentor\Parser\Parser::isForced
-     *
-     * @return void
-     */
-    public function testForced()
-    {
-        // defaults to false
-        $this->assertEquals(false, $this->fixture->isForced());
-
-        $xml = new \SimpleXMLElement('<project></project>');
-        $xml->addAttribute('version', \phpDocumentor\Application::VERSION);
-
-        $this->fixture->setExistingXml($xml->asXML());
-        $this->assertEquals(false, $this->fixture->isForced());
-
-        // if version differs, we force a rebuild
-        $xml['version'] = \phpDocumentor\Application::VERSION . 'a';
-        $this->fixture->setExistingXml($xml->asXML());
-        $this->assertEquals(true, $this->fixture->isForced());
-
-        // switching back should undo the force
-        $xml['version'] = \phpDocumentor\Application::VERSION;
-        $this->fixture->setExistingXml($xml->asXML());
-        $this->assertEquals(false, $this->fixture->isForced());
-
-        // manually setting forced should result in a force
-        $this->fixture->setForced(true);
-        $this->assertEquals(true, $this->fixture->isForced());
-
-        $this->fixture->setForced(false);
-        $this->assertEquals(false, $this->fixture->isForced());
     }
 
     /**
@@ -133,68 +83,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $this->fixture->setMarkers($fixture_data);
         $this->assertEquals($fixture_data, $this->fixture->getMarkers());
-    }
-
-    /**
-     * Tests whether the getExistingXml() and setExistingXml() methods read a given XML string.
-     *
-     * @covers phpDocumentor\Parser\Parser::setExistingXml
-     * @covers phpDocumentor\Parser\Parser::getExistingXml
-     *
-     * @return void
-     */
-    public function testSetAndGetExistingXmlUsingContentString()
-    {
-        $parser = new Parser();
-        $xml = '<?xml version="1.0" ?><project version="1.0"></project>';
-
-        $this->assertEquals(null, $parser->getExistingXml());
-
-        $parser->setExistingXml($xml);
-        $this->assertInstanceOf('DOMDocument', $parser->getExistingXml());
-        $this->assertEquals('1.0', $parser->getExistingXml()->documentElement->getAttribute('version'));
-
-        $parser->setExistingXml(null);
-        $this->assertEquals(null, $parser->getExistingXml());
-    }
-
-    /**
-     * Tests whether the getExistingXml() and setExistingXml() methods read a given filename.
-     *
-     * @covers phpDocumentor\Parser\Parser::setExistingXml
-     * @covers phpDocumentor\Parser\Parser::getExistingXml
-     *
-     * @return void
-     */
-    public function testSetAndGetExistingXmlUsingPath()
-    {
-        $parser = new Parser();
-        $xml = '<?xml version="1.0" ?><project version="1.0"></project>';
-
-        $this->assertEquals(null, $parser->getExistingXml());
-
-        $tmpfile = tempnam(sys_get_temp_dir(), 'PDT');
-        file_put_contents($tmpfile, $xml);
-
-        $parser->setExistingXml($tmpfile);
-        $this->assertInstanceOf('DOMDocument', $parser->getExistingXml());
-        $this->assertEquals('1.0', $parser->getExistingXml()->documentElement->getAttribute('version'));
-
-        unlink($tmpfile);
-    }
-
-    /**
-     * Tests whether an exception is thrown is the given value is an invalid file or XML string.
-     *
-     * @covers phpDocumentor\Parser\Parser::setExistingXml
-     * @expectedException InvalidArgumentException
-     *
-     * @return void
-     */
-    public function testSetExistingXmlWithInvalidValue()
-    {
-        $parser = new Parser();
-        $parser->setExistingXml('this-should-not-match');
     }
 
     /**
@@ -279,33 +167,5 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser->setDefaultPackageName('test');
 
         $this->assertSame('test', $parser->getDefaultPackageName());
-    }
-
-    /**
-     * @covers            phpDocumentor\Parser\Parser::parseFiles
-     * @covers            phpDocumentor\Parser\Parser::getFilenames
-     * @expectedException phpDocumentor\Parser\Exception\FilesNotFoundException
-     */
-    public function testParseFilesWhenNoFilesWereFound()
-    {
-        $files = $this->getMock('phpDocumentor\Fileset\Collection', array('getFilenames'));
-        $files->expects($this->once())->method('getFilenames')->will($this->returnValue(array()));
-
-        $parser = new Parser();
-        $parser->parseFiles($files);
-    }
-
-    /**
-     * @covers            phpDocumentor\Parser\Parser::parseFiles
-     * @covers            phpDocumentor\Parser\Parser::getFilenames
-     */
-    public function testParseFilesDispatchesPreFileEvent()
-    {
-        $this->markTestIncomplete('');
-//        $files = $this->getMock('phpDocumentor\Fileset\Collection', array('getFilenames'));
-//        $files->expects($this->once())->method('getFilenames')->will($this->returnValue(array()));
-//
-//        $parser = new Parser();
-//        $parser->parseFiles($files);
     }
 }

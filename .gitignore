@@ -10,3 +10,4 @@ vendor/*
 composer.phar
 data/templates/*
 .vagrant
+composer.phar

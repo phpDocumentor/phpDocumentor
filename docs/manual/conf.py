@@ -39,6 +39,7 @@ latex_documents = [
   ('for-users', 'phpDocumentor.tex', u'phpDocumentor', u'Mike van Riel', 'manual'),
   ('for-template-builders', 'phpDocumentor-for-template-builders.tex', u'phpDocumentor', u'Mike van Riel', 'manual'),
   ('for-developers', 'phpDocumentor-for-developers.tex', u'phpDocumentor', u'Mike van Riel', 'manual'),
+  ('for-developers/serialization', 'phpDocumentor-serialization.tex', u'phpDocumentor', u'Mike van Riel', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -95,3 +96,4 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 
 # UML diagramming tool
 plantuml = ['java', '-jar', '.exts/plantuml.jar']
+plantuml_latex_output_format = 'pdf'

@@ -11,11 +11,13 @@
  */
 namespace phpDocumentor\Command;
 
+use Psr\Log\LogLevel;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Event\LogEvent;
+use Zend\I18n\Translator\Translator;
 use phpDocumentor\Event\DebugEvent;
+use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Parser\Event\PreFileEvent;
 
 /**
  * Base command for phpDocumentor commands.
@@ -131,22 +133,25 @@ class Command extends \Cilex\Command\Command
      */
     public function logEvent(OutputInterface $output, LogEvent $event)
     {
-        $threshold = \phpDocumentor\Plugin\Core\Log::ERR;
+        $threshold = LogLevel::ERROR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
-            $threshold = \phpDocumentor\Plugin\Core\Log::DEBUG;
+            $threshold = LogLevel::DEBUG;
         }
 
         if ($event->getPriority() <= $threshold) {
-            $message = $event->getMessage();
+            /** @var Translator $translator  */
+            $translator = $this->getContainer()->offsetGet('translator');
+            $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
+
             switch ($event->getPriority())
             {
-                case \phpDocumentor\Plugin\Core\Log::WARN:
+                case LogLevel::WARNING:
                     $message = '<comment>' . $message . '</comment>';
                     break;
-                case \phpDocumentor\Plugin\Core\Log::EMERG:
-                case \phpDocumentor\Plugin\Core\Log::ALERT:
-                case \phpDocumentor\Plugin\Core\Log::CRIT:
-                case \phpDocumentor\Plugin\Core\Log::ERR:
+                case LogLevel::EMERGENCY:
+                case LogLevel::ALERT:
+                case LogLevel::CRITICAL:
+                case LogLevel::ERROR:
                     $message = '<error>' . $message . '</error>';
                     break;
             }

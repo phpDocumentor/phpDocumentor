@@ -99,21 +99,4 @@ class Dispatcher extends Symfony\EventDispatcher
     {
         parent::addListener($eventName, $listener, $priority);
     }
-
-    /**
-     * Alias of addListener() provided for backwards-compatiblity.
-     *
-     * @param string                                 $eventName
-     * @param \phpDocumentor\Plugin\ListenerAbstract $listener
-     *
-     * @deprecated provided for BC compatibility; use addListener instead.
-     *     Will be removed in 2.0.0 Beta or RC
-     *
-     * @return void
-     */
-    public function connect($eventName, $listener)
-    {
-        trigger_error('The method "connect" will be removed in 2.0.0', E_USER_DEPRECATED);
-        $this->addListener($eventName, $listener);
-    }
 }

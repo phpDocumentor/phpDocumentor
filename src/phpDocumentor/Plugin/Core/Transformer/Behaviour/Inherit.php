@@ -2,15 +2,11 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviour
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
@@ -27,14 +23,9 @@ namespace phpDocumentor\Plugin\Core\Transformer\Behaviour;
  * If a parent class and interface both have the same method declared; inherit
  * the class' method as that will probably contain more specific information.
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviour
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @deprecated this class and its functionality is deprecated and only used with the XML Writer.
  */
-class Inherit extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class Inherit
 {
     /**
      * Apply inheritance of docblock elements to all elements.
@@ -48,8 +39,6 @@ class Inherit extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
      */
     public function process(\DOMDocument $xml)
     {
-        $this->log('Copying all inherited elements');
-
         $xpath = new \DOMXPath($xml);
 
         /** @var \DOMElement[] $result */
