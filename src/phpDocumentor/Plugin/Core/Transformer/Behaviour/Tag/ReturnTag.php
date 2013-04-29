@@ -2,31 +2,19 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
  * Behaviour that adds support for the return tag
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class ReturnTag
 {
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
@@ -46,11 +34,6 @@ class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query($ignoreQry);
 
-        $this->log(
-            'Transforming `self` and `$this` statements for @return tags, found: '
-            . $nodes->length
-        );
-
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {
             // if a node with name 'type' is selected we need to reach one
@@ -67,10 +50,6 @@ class ReturnTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
 
             // if the method is not a method but a global function: error!
             if ($method->nodeName != 'method') {
-                $this->log(
-                    'Global function ' . $method_name . ' contains a reference to self or $self',
-                    \phpDocumentor\Plugin\Core\Log::ERR
-                );
                 continue;
             }
 

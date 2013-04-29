@@ -119,7 +119,6 @@ class PharCompiler
                     'nikic/php-parser/test_old',
                     'phpdocumentor/fileset/tests',
                     'phpdocumentor/graphviz/tests',
-                    'phpdocumentor/plugin-twig/tests',
                     'phpdocumentor/reflection-docblock/tests',
                     'pimple/pimple/tests',
                     'twig/twig/test',

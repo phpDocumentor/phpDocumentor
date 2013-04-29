@@ -2,32 +2,19 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
  * Behaviour that enables links to URLs in the @license tag.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     David Zülke <david.zuelke@bitextender.com>
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class LicenseTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class LicenseTag
 {
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
@@ -39,8 +26,6 @@ class LicenseTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
      */
     public function process(\DOMDocument $xml)
     {
-        $this->log('Linking to license URLs in @license tags');
-
         $licenseMap = array(
             '#^\s*(GPL|GNU General Public License)((\s?v?|version)?2)\s*$#i'
                 => 'http://opensource.org/licenses/GPL-2.0',

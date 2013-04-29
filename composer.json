@@ -9,42 +9,44 @@
             "phpDocumentor": ["src/", "tests/unit/"]
         }
     },
-    "repositories":[
-        { "type":"composer", "url":"http://packages.zendframework.com"}
-    ],
     "require": {
-        "php": ">=5.3.3",
-        "cilex/cilex": "dev-master",
-        "dflydev/markdown": "1.0.*",
-        "nikic/php-parser": "dev-master",
-        "symfony/event-dispatcher": "~2.1@stable",
-        "zendframework/zend-stdlib": "2.*",
-        "zendframework/zend-config": "2.*",
-        "zendframework/zend-servicemanager": "2.*",
-        "zendframework/zend-i18n": "2.*",
+        "php":              ">=5.3.3",
+        "cilex/cilex":      "1.*@dev",
+        "dflydev/markdown": "1.0.*@stable",
+        "monolog/monolog":  "1.4.*@stable",
+        "twig/twig":        "1.*@stable",
 
-        "phpdocumentor/graphviz": "1.*@beta",
-        "phpdocumentor/fileset": "1.0.0-beta2",
-	    "phpdocumentor/reflection": "0.1.*",
-	    "phpdocumentor/reflection-docblock": "2.0.0a3",
+        "symfony/event-dispatcher": "2.1.*@stable",
+        "jms/serializer":           "0.12.*@dev",
 
-        "phpdocumentor/plugin-twig":"1.*",
-        "phpdocumentor/unified-asset-installer": "1.*@beta",
+        "zendframework/zend-stdlib":         "2.1.*@stable",
+        "zendframework/zend-servicemanager": "2.1.*@stable",
+        "zendframework/zend-config":         "2.1.*@stable",
+        "zendframework/zend-i18n":           "2.1.*@stable",
+        "zendframework/zend-serializer":     "2.1.*@stable",
+        "zendframework/zend-cache":          "2.1.*@stable",
 
-        "phpdocumentor/template-responsive": "1.*",
-        "phpdocumentor/template-new-black": "1.*",
-        "phpdocumentor/template-zend": "1.*",
-        "phpdocumentor/template-old-ocean": "1.*",
-        "phpdocumentor/template-checkstyle": "1.*"
+        "phpdocumentor/graphviz":            "1.*@beta",
+        "phpdocumentor/fileset":             "1.*@beta",
+	    "phpdocumentor/reflection":          "0.1.*@dev",
+	    "phpdocumentor/reflection-docblock": "2.*@dev",
+
+        "phpdocumentor/unified-asset-installer":  "1.*@beta",
+        "phpdocumentor/template-responsive-twig": "0.1.*@dev",
+        "phpdocumentor/template-responsive":      "1.*@stable",
+        "phpdocumentor/template-new-black":       "1.*@stable",
+        "phpdocumentor/template-zend":            "1.*@stable",
+        "phpdocumentor/template-old-ocean":       "1.*@stable",
+        "phpdocumentor/template-checkstyle":      "1.*@stable"
     },
     "suggests": {
-        "ext-xsl": "to use the XSL based templates"
+        "ext-xsl": "when using XSL based templates"
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "behat/behat": ">=2.4@stable",
+        "behat/behat":     ">=2.4@stable",
         "phpunit/phpunit": "3.7.*@stable",
-        "mockery/mockery": ">=0.7.0@stable"
+        "mockery/mockery": ">=0.8.0"
     },
     "config": {
         "bin-dir":"bin/"

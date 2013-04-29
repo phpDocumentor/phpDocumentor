@@ -12,6 +12,8 @@
  */
 namespace phpDocumentor\Event;
 
+use Psr\Log\LogLevel;
+
 /**
  * Event representing some debugging information for phpDocumentor.
  *
@@ -28,7 +30,10 @@ class DebugEvent extends \phpDocumentor\Event\EventAbstract
     protected $message;
 
     /** @var int Default priority level for these events is DEBUG */
-    protected $priority = \phpDocumentor\Plugin\Core\Log::DEBUG;
+    protected $priority = LogLevel::DEBUG;
+
+    /** @var string[] Extra parameters to insert into the message after translation */
+    protected $context = array();
 
     /**
      * Provides the message that is to be shown with this event.
@@ -61,5 +66,29 @@ class DebugEvent extends \phpDocumentor\Event\EventAbstract
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * Sets additional context (parameters) to use when translating messages.
+     *
+     * @param string[] $context
+     *
+     * @return self
+     */
+    public function setContext(array $context)
+    {
+        $this->context = $context;
+
+        return $this;
+    }
+
+    /**
+     * Returns the context for this event.
+     *
+     * @return string[]
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 }

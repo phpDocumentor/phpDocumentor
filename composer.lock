@@ -1,36 +1,40 @@
 {
-    "hash": "234341da0ed657691a30122742694c83",
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "a9854449d2eb2883030fc393b49886ed",
     "packages": [
         {
             "name": "cilex/cilex",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Cilex/Cilex",
-                "reference": "6f73fe881572d45940d1907708ea07c268a72f49"
+                "url": "https://github.com/Cilex/Cilex.git",
+                "reference": "341b74cdb07418dd168ac21563f3634505801e09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Cilex/Cilex/archive/6f73fe881572d45940d1907708ea07c268a72f49.zip",
-                "reference": "6f73fe881572d45940d1907708ea07c268a72f49",
+                "url": "https://api.github.com/repos/Cilex/Cilex/zipball/341b74cdb07418dd168ac21563f3634505801e09",
+                "reference": "341b74cdb07418dd168ac21563f3634505801e09",
                 "shasum": ""
             },
             "require": {
-                "pimple/pimple": "1.0.*",
-                "symfony/process": "2.1.*",
-                "symfony/finder": "2.1.*",
+                "cilex/console-service-provider": "1.*@dev",
                 "php": ">=5.3.3",
-                "cilex/console-service-provider": "1.*@dev"
+                "pimple/pimple": "1.0.*",
+                "symfony/finder": ">=2.1,<3.0",
+                "symfony/process": ">=2.1,<3.0"
             },
             "require-dev": {
-                "symfony/validator": "2.1.*"
+                "phpunit/phpunit": "3.7.*",
+                "symfony/validator": ">=2.1,<3.0"
             },
             "suggest": {
                 "monolog/monolog": ">=1.0.0",
-                "symfony/yaml": ">=1.0.0",
-                "symfony/validator": ">=1.0.0"
+                "symfony/validator": ">=1.0.0",
+                "symfony/yaml": ">=1.0.0"
             },
-            "time": "2013-01-08 05:33:15",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -55,9 +59,10 @@
             "description": "The PHP micro-framework for Command line tools based on the Symfony2 Components",
             "homepage": "http://cilex.github.com",
             "keywords": [
-                "microframework",
-                "cli"
-            ]
+                "cli",
+                "microframework"
+            ],
+            "time": "2013-03-22 08:46:07"
         },
         {
             "name": "cilex/console-service-provider",
@@ -69,7 +74,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Cilex/console-service-provider/archive/25ee3d1875243d38e1a3448ff94bdf944f70d24e.zip",
+                "url": "https://api.github.com/repos/Cilex/console-service-provider/zipball/25ee3d1875243d38e1a3448ff94bdf944f70d24e",
                 "reference": "25ee3d1875243d38e1a3448ff94bdf944f70d24e",
                 "shasum": ""
             },
@@ -82,7 +87,6 @@
                 "cilex/cilex": "1.*@dev",
                 "silex/silex": "1.*@dev"
             },
-            "time": "2012-12-19 10:50:58",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -111,45 +115,39 @@
             ],
             "description": "Console Service Provider",
             "keywords": [
-                "silex",
+                "cilex",
                 "console",
-                "service-provider",
                 "pimple",
-                "cilex"
-            ]
+                "service-provider",
+                "silex"
+            ],
+            "time": "2012-12-19 10:50:58"
         },
         {
             "name": "dflydev/markdown",
-            "version": "dev-master",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dflydev/dflydev-markdown.git",
-                "reference": "11f8faa2d17f717a038b4d372abd22a6ac4a15dc"
+                "reference": "v1.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/dflydev/dflydev-markdown/archive/11f8faa2d17f717a038b4d372abd22a6ac4a15dc.zip",
-                "reference": "11f8faa2d17f717a038b4d372abd22a6ac4a15dc",
+                "url": "https://github.com/dflydev/dflydev-markdown/zipball/v1.0.2",
+                "reference": "v1.0.2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
-            "time": "2012-07-15 16:31:27",
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "dflydev\\markdown": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "New BSD License"
             ],
             "authors": [
                 {
@@ -175,27 +173,376 @@
             "homepage": "http://github.com/dflydev/dflydev-markdown",
             "keywords": [
                 "markdown"
-            ]
+            ],
+            "time": "2012-01-15 19:36:37"
+        },
+        {
+            "name": "doctrine/annotations",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/annotations.git",
+                "reference": "v1.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/v1.1.1",
+                "reference": "v1.1.1",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/lexer": "1.*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "doctrine/cache": "1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\Common\\Annotations\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com",
+                    "homepage": "http://www.jwage.com/"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com",
+                    "homepage": "http://www.instaclick.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "Docblock Annotations Parser",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "annotations",
+                "docblock",
+                "parser"
+            ],
+            "time": "2013-04-20 08:30:17"
+        },
+        {
+            "name": "doctrine/lexer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/lexer.git",
+                "reference": "bc0e1f0cc285127a38c6c8ea88bc5dba2fd53e94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/bc0e1f0cc285127a38c6c8ea88bc5dba2fd53e94",
+                "reference": "bc0e1f0cc285127a38c6c8ea88bc5dba2fd53e94",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\Common\\Lexer\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com",
+                    "homepage": "http://www.instaclick.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "lexer",
+                "parser"
+            ],
+            "time": "2013-03-07 12:15:25"
+        },
+        {
+            "name": "jms/metadata",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/metadata.git",
+                "reference": "0979c7d9eb7f0031a3c5ffed1d6e1fa4eb846e4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/metadata/zipball/0979c7d9eb7f0031a3c5ffed1d6e1fa4eb846e4e",
+                "reference": "0979c7d9eb7f0031a3c5ffed1d6e1fa4eb846e4e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "doctrine/common": ">=2.0,<2.4-dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Metadata\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "http://jmsyst.com",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "Class/method/property metadata management in PHP",
+            "keywords": [
+                "annotations",
+                "metadata",
+                "xml",
+                "yaml"
+            ],
+            "time": "2013-03-28 16:32:37"
+        },
+        {
+            "name": "jms/parser-lib",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/schmittjoh/parser-lib",
+                "reference": "4d469a70c6dd03f921cbdeadafbcb261bb23e8b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/parser-lib/zipball/4d469a70c6dd03f921cbdeadafbcb261bb23e8b0",
+                "reference": "4d469a70c6dd03f921cbdeadafbcb261bb23e8b0",
+                "shasum": ""
+            },
+            "require": {
+                "phpoption/phpoption": ">=0.9,<2.0-dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "JMS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "description": "A library for easily creating recursive-descent parsers.",
+            "time": "2012-11-30 08:11:04"
+        },
+        {
+            "name": "jms/serializer",
+            "version": "0.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/serializer.git",
+                "reference": "0.12.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/0.12.0",
+                "reference": "0.12.0",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "1.*",
+                "jms/metadata": ">=1.1,<2.0",
+                "jms/parser-lib": "1.*",
+                "php": ">=5.3.2",
+                "phpcollection/phpcollection": ">=0.1,<0.3-dev"
+            },
+            "require-dev": {
+                "doctrine/orm": ">=2.1,<2.4-dev",
+                "symfony/filesystem": "2.*",
+                "symfony/form": ">=2.1,<2.2-dev",
+                "symfony/translation": ">=2.0,<2.2-dev",
+                "symfony/validator": ">=2.0,<2.2-dev",
+                "symfony/yaml": "2.*",
+                "twig/twig": ">=1.8,<2.0-dev"
+            },
+            "suggest": {
+                "symfony/yaml": "Required if you'd like to serialize data to YAML format."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.12-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "JMS\\Serializer": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "http://jmsyst.com",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "Library for (de-)serializing data of any complexity; supports XML, JSON, and YAML.",
+            "homepage": "http://jmsyst.com/libs/serializer",
+            "keywords": [
+                "deserialization",
+                "jaxb",
+                "json",
+                "serialization",
+                "xml"
+            ],
+            "time": "2013-03-28 16:41:24"
+        },
+        {
+            "name": "monolog/monolog",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "1.4.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1.4.1",
+                "reference": "1.4.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/log": ">=1.0,<2.0"
+            },
+            "require-dev": {
+                "doctrine/couchdb": "dev-master",
+                "mlehner/gelf-php": "1.0.*",
+                "raven/raven": "0.3.*"
+            },
+            "suggest": {
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mongo": "Allow sending log messages to a MongoDB server",
+                "mlehner/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "raven/raven": "Allow sending log messages to a Sentry server"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Monolog": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "time": "2013-04-01 10:04:58"
         },
         {
             "name": "nikic/php-parser",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser",
-                "reference": "81d20bf10e33b9fca0ddf082322a74df1f71c9f8"
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "8e686ce7a7bab35a0bc205715d23a1bc90c93b04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/nikic/PHP-Parser/archive/81d20bf10e33b9fca0ddf082322a74df1f71c9f8.zip",
-                "reference": "81d20bf10e33b9fca0ddf082322a74df1f71c9f8",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/8e686ce7a7bab35a0bc205715d23a1bc90c93b04",
+                "reference": "8e686ce7a7bab35a0bc205715d23a1bc90c93b04",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2"
             },
-            "time": "2013-01-15 17:21:42",
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.9-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "PHPParser": "lib/"
@@ -212,9 +559,60 @@
             ],
             "description": "A PHP parser written in PHP",
             "keywords": [
-                "php",
-                "parser"
-            ]
+                "parser",
+                "php"
+            ],
+            "time": "2013-04-15 18:56:45"
+        },
+        {
+            "name": "phpcollection/phpcollection",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/php-collection.git",
+                "reference": "3ce8ffb990e9511c7a843f20740373eb27e4c3bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/php-collection/zipball/3ce8ffb990e9511c7a843f20740373eb27e4c3bd",
+                "reference": "3ce8ffb990e9511c7a843f20740373eb27e4c3bd",
+                "shasum": ""
+            },
+            "require": {
+                "phpoption/phpoption": "1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpCollection": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "http://jmsyst.com",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "General-Purpose Collection Library for PHP",
+            "keywords": [
+                "collection",
+                "list",
+                "map",
+                "sequence",
+                "set"
+            ],
+            "time": "2013-02-25 13:15:41"
         },
         {
             "name": "phpdocumentor/fileset",
@@ -234,7 +632,6 @@
                 "php": ">=5.3.3",
                 "symfony/finder": "2.*"
             },
-            "time": "2012-06-04 17:49:45",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -247,10 +644,11 @@
             "description": "Fileset component for collecting a set of files given directories and file paths",
             "homepage": "http://www.phpdoc.org",
             "keywords": [
-                "phpdoc",
                 "files",
-                "fileset"
-            ]
+                "fileset",
+                "phpdoc"
+            ],
+            "time": "2012-06-04 17:49:45"
         },
         {
             "name": "phpdocumentor/graphviz",
@@ -269,7 +667,6 @@
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "2012-04-06 16:56:51",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -284,71 +681,33 @@
                     "name": "Mike van Riel",
                     "email": "mike.vanriel@naenius.com"
                 }
-            ]
-        },
-        {
-            "name": "phpdocumentor/plugin-twig",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpDocumentor/plugin-twig.git",
-                "reference": "1.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/phpDocumentor/plugin-twig/zipball/1.0.0",
-                "reference": "1.0.0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "twig/twig": ">=1.8,<2.0-dev"
-            },
-            "time": "2012-07-08 11:11:16",
-            "type": "phpdocumentor-plugin",
-            "autoload": {
-                "psr-0": {
-                    "phpDocumentor": "src/"
-                }
-            },
-            "license": [
-                "MIT"
             ],
-            "description": "Plugin for phpDocumentor2 that adds support for creating templates using Twig as templating engine",
-            "homepage": "http://www.phpdoc.org",
-            "keywords": [
-                "documentation",
-                "phpdoc",
-                "twig",
-                "plugin",
-                "phpDocumentor"
-            ]
+            "time": "2012-04-06 16:56:51"
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "0.1.2",
+            "version": "0.1.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpDocumentor/Reflection",
-                "reference": "0.1.2"
+                "url": "https://github.com/phpDocumentor/Reflection.git",
+                "reference": "0.1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpDocumentor/Reflection/archive/0.1.2.zip",
-                "reference": "0.1.2",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/0.1.4",
+                "reference": "0.1.4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
                 "nikic/php-parser": "dev-master",
-                "phpdocumentor/reflection-docblock": "2.0.0a1"
+                "php": ">=5.3.3",
+                "phpdocumentor/reflection-docblock": "2.0.0a3"
             },
             "require-dev": {
                 "behat/behat": ">=2.4@stable",
-                "phpunit/phpunit": "3.7.*@stable",
-                "mockery/mockery": ">=0.7.0@stable"
+                "mockery/mockery": ">=0.7.0@stable",
+                "phpunit/phpunit": "3.7.*@stable"
             },
-            "time": "2012-12-22 16:40:20",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -366,34 +725,34 @@
             "description": "Reflection library to do Static Analysis for PHP Projects",
             "homepage": "http://www.phpdoc.org",
             "keywords": [
+                "phpDocumentor",
                 "phpdoc",
                 "reflection",
-                "static analysis",
-                "phpDocumentor"
-            ]
+                "static analysis"
+            ],
+            "time": "2013-04-25 15:32:51"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "2.0.0a1",
+            "version": "2.0.0a3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpDocumentor/ReflectionDocBlock",
-                "reference": "2.0.0a1"
+                "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
+                "reference": "2.0.0a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpDocumentor/ReflectionDocBlock/archive/2.0.0a1.zip",
-                "reference": "2.0.0a1",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/2.0.0a3",
+                "reference": "2.0.0a3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2",
-                "dflydev/markdown": "1.0.*"
+                "dflydev/markdown": "1.0.*",
+                "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "*@stable"
+                "phpunit/phpunit": "3.7.*@stable"
             },
-            "time": "2012-11-27 17:52:28",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -402,6 +761,7 @@
                     ]
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -410,7 +770,8 @@
                     "name": "Mike van Riel",
                     "email": "mike.vanriel@naenius.com"
                 }
-            ]
+            ],
+            "time": "2013-04-16 14:22:15"
         },
         {
             "name": "phpdocumentor/template-abstract",
@@ -430,7 +791,6 @@
                 "ext-xsl": "*",
                 "phpdocumentor/unified-asset-installer": "1.*"
             },
-            "time": "2012-08-14 19:55:19",
             "type": "phpdocumentor-template",
             "license": [
                 "MIT"
@@ -441,7 +801,8 @@
                 "documentation",
                 "phpdoc",
                 "template"
-            ]
+            ],
+            "time": "2012-08-14 19:55:19"
         },
         {
             "name": "phpdocumentor/template-checkstyle",
@@ -461,7 +822,6 @@
                 "ext-xsl": "*",
                 "phpdocumentor/unified-asset-installer": "1.*"
             },
-            "time": "2012-08-14 20:16:25",
             "type": "phpdocumentor-template",
             "license": [
                 "MIT"
@@ -472,7 +832,8 @@
                 "documentation",
                 "phpdoc",
                 "template"
-            ]
+            ],
+            "time": "2012-08-14 20:16:25"
         },
         {
             "name": "phpdocumentor/template-new-black",
@@ -490,10 +851,9 @@
             },
             "require": {
                 "ext-xsl": "*",
-                "phpdocumentor/unified-asset-installer": "1.*",
-                "phpdocumentor/template-abstract": "1.*"
+                "phpdocumentor/template-abstract": "1.*",
+                "phpdocumentor/unified-asset-installer": "1.*"
             },
-            "time": "2012-09-16 07:11:08",
             "type": "phpdocumentor-template",
             "license": [
                 "MIT"
@@ -504,7 +864,8 @@
                 "documentation",
                 "phpdoc",
                 "template"
-            ]
+            ],
+            "time": "2012-09-16 07:11:08"
         },
         {
             "name": "phpdocumentor/template-old-ocean",
@@ -524,7 +885,6 @@
                 "ext-xsl": "*",
                 "phpdocumentor/unified-asset-installer": "1.*"
             },
-            "time": "2012-08-24 20:05:33",
             "type": "phpdocumentor-template",
             "license": [
                 "MIT"
@@ -535,7 +895,8 @@
                 "documentation",
                 "phpdoc",
                 "template"
-            ]
+            ],
+            "time": "2012-08-24 20:05:33"
         },
         {
             "name": "phpdocumentor/template-responsive",
@@ -555,7 +916,6 @@
                 "ext-xsl": "*",
                 "phpdocumentor/unified-asset-installer": "1.*"
             },
-            "time": "2012-11-01 17:12:42",
             "type": "phpdocumentor-template",
             "license": [
                 "MIT"
@@ -566,7 +926,39 @@
                 "documentation",
                 "phpdoc",
                 "template"
-            ]
+            ],
+            "time": "2012-11-01 17:12:42"
+        },
+        {
+            "name": "phpdocumentor/template-responsive-twig",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/template.responsive-twig.git",
+                "reference": "0.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/template.responsive-twig/zipball/0.1.1",
+                "reference": "0.1.1",
+                "shasum": ""
+            },
+            "require": {
+                "phpdocumentor/unified-asset-installer": "1.*"
+            },
+            "type": "phpdocumentor-template",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Responsive modern template for phpDocumentor for Twig",
+            "homepage": "http://www.phpdoc.org",
+            "keywords": [
+                "documentation",
+                "phpdoc",
+                "template"
+            ],
+            "time": "2013-04-28 19:32:19"
         },
         {
             "name": "phpdocumentor/template-zend",
@@ -584,10 +976,9 @@
             },
             "require": {
                 "ext-xsl": "*",
-                "phpdocumentor/unified-asset-installer": "1.*",
-                "phpdocumentor/template-abstract": "1.*"
+                "phpdocumentor/template-abstract": "1.*",
+                "phpdocumentor/unified-asset-installer": "1.*"
             },
-            "time": "2012-07-07 19:53:47",
             "type": "phpdocumentor-template",
             "license": [
                 "MIT"
@@ -595,13 +986,14 @@
             "description": "Official Zend Framework Template for phpDocumentor2",
             "homepage": "http://www.phpdoc.org",
             "keywords": [
+                "ZendFramework",
                 "documentation",
                 "phpdoc",
                 "template",
                 "zend",
-                "ZendFramework",
                 "zf"
-            ]
+            ],
+            "time": "2012-07-07 19:53:47"
         },
         {
             "name": "phpdocumentor/unified-asset-installer",
@@ -618,10 +1010,9 @@
                 "shasum": ""
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*@stable",
-                "composer/composer": "1.*@dev"
+                "composer/composer": "1.*@dev",
+                "phpunit/phpunit": "3.7.*@stable"
             },
-            "time": "2013-01-28 20:44:42",
             "type": "composer-installer",
             "extra": {
                 "class": "\\phpDocumentor\\Composer\\UnifiedAssetInstaller"
@@ -645,26 +1036,75 @@
                 "installer",
                 "plugins",
                 "templates"
-            ]
+            ],
+            "time": "2013-01-28 20:44:42"
+        },
+        {
+            "name": "phpoption/phpoption",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/php-option.git",
+                "reference": "e686c0d55c87e042dec9c7fe3fa86b2b3b9d9ee3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/e686c0d55c87e042dec9c7fe3fa86b2b3b9d9ee3",
+                "reference": "e686c0d55c87e042dec9c7fe3fa86b2b3b9d9ee3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpOption\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "http://jmsyst.com",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "Option Type for PHP",
+            "keywords": [
+                "language",
+                "option",
+                "php",
+                "type"
+            ],
+            "time": "2013-03-28 16:34:57"
         },
         {
             "name": "pimple/pimple",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/fabpot/Pimple.git",
-                "reference": "d58cec632dfdd3305d6b4f2563a5cf2a75b4d978"
+                "url": "https://github.com/fabpot/Pimple.git",
+                "reference": "v1.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Pimple/archive/d58cec632dfdd3305d6b4f2563a5cf2a75b4d978.zip",
-                "reference": "d58cec632dfdd3305d6b4f2563a5cf2a75b4d978",
+                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/v1.0.2",
+                "reference": "v1.0.2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-07 10:39:26",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -689,29 +1129,67 @@
             "description": "Pimple is a simple Dependency Injection Container for PHP 5.3",
             "homepage": "http://pimple.sensiolabs.org",
             "keywords": [
-                "dependency injection",
-                "container"
-            ]
+                "container",
+                "dependency injection"
+            ],
+            "time": "2013-03-08 08:21:40"
         },
         {
-            "name": "symfony/console",
-            "version": "dev-master",
-            "target-dir": "Symfony/Component/Console",
+            "name": "psr/log",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Console",
-                "reference": "fdb2d9320106926266a0f7a5a97aab7213e11ad6"
+                "url": "https://github.com/php-fig/log",
+                "reference": "1.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Console/archive/fdb2d9320106926266a0f7a5a97aab7213e11ad6.zip",
-                "reference": "fdb2d9320106926266a0f7a5a97aab7213e11ad6",
+                "url": "https://github.com/php-fig/log/archive/1.0.0.zip",
+                "reference": "1.0.0",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Psr\\Log\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "symfony/console",
+            "version": "2.2.x-dev",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "5e07a488dbf2da31b5e102ba2ff7a0d4122b837a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/5e07a488dbf2da31b5e102ba2ff7a0d4122b837a",
+                "reference": "5e07a488dbf2da31b5e102ba2ff7a0d4122b837a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-24 15:55:08",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -738,21 +1216,22 @@
                 }
             ],
             "description": "Symfony Console Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-04-26 22:56:13"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.1.7",
+            "version": "v2.1.9",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher",
-                "reference": "v2.1.7"
+                "url": "https://github.com/symfony/EventDispatcher.git",
+                "reference": "v2.1.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/EventDispatcher/archive/v2.1.7.zip",
-                "reference": "v2.1.7",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/v2.1.9",
+                "reference": "v2.1.9",
                 "shasum": ""
             },
             "require": {
@@ -765,7 +1244,6 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/http-kernel": "2.1.*"
             },
-            "time": "2013-01-11 00:31:43",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -787,31 +1265,36 @@
                 }
             ],
             "description": "Symfony EventDispatcher Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-02-11 11:26:14"
         },
         {
             "name": "symfony/finder",
-            "version": "2.1.x-dev",
+            "version": "2.2.x-dev",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Finder",
-                "reference": "v2.1.7"
+                "url": "https://github.com/symfony/Finder.git",
+                "reference": "v2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Finder/archive/v2.1.7.zip",
-                "reference": "v2.1.7",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/v2.2.1",
+                "reference": "v2.2.1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-09 08:51:07",
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
-                    "Symfony\\Component\\Finder": ""
+                    "Symfony\\Component\\Finder\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -829,31 +1312,36 @@
                 }
             ],
             "description": "Symfony Finder Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-04-01 07:51:50"
         },
         {
             "name": "symfony/process",
-            "version": "2.1.x-dev",
+            "version": "dev-master",
             "target-dir": "Symfony/Component/Process",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Process",
-                "reference": "v2.1.7"
+                "url": "https://github.com/symfony/Process.git",
+                "reference": "d55770ab111a89ee92773eb16f8acef9b09870f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Process/archive/v2.1.7.zip",
-                "reference": "v2.1.7",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/d55770ab111a89ee92773eb16f8acef9b09870f5",
+                "reference": "d55770ab111a89ee92773eb16f8acef9b09870f5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-16 09:27:54",
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
-                    "Symfony\\Component\\Process": ""
+                    "Symfony\\Component\\Process\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -871,26 +1359,26 @@
                 }
             ],
             "description": "Symfony Process Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-04-25 13:23:11"
         },
         {
             "name": "twig/twig",
-            "version": "dev-master",
+            "version": "v1.12.3",
             "source": {
                 "type": "git",
-                "url": "git://github.com/fabpot/Twig.git",
-                "reference": "eaadcca54b888db779a355e449a16dd8c7760e11"
+                "url": "https://github.com/fabpot/Twig.git",
+                "reference": "v1.12.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/eaadcca54b888db779a355e449a16dd8c7760e11.zip",
-                "reference": "eaadcca54b888db779a355e449a16dd8c7760e11",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/v1.12.3",
+                "reference": "v1.12.3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2013-01-27 16:32:04",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -920,133 +1408,340 @@
             "homepage": "http://twig.sensiolabs.org",
             "keywords": [
                 "templating"
-            ]
+            ],
+            "time": "2013-04-08 12:40:11"
+        },
+        {
+            "name": "zendframework/zend-cache",
+            "version": "2.1.5",
+            "target-dir": "Zend/Cache",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendCache.git",
+                "reference": "release-2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendCache/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-eventmanager": "self.version",
+                "zendframework/zend-servicemanager": "self.version",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "require-dev": {
+                "zendframework/zend-serializer": "self.version"
+            },
+            "suggest": {
+                "ext-apc": "APC >= 3.1.6 to use the APC storage adapter",
+                "ext-dba": "DBA, to use the DBA storage adapter",
+                "ext-memcached": "Memcached >= 1.0.0 to use the Memcached storage adapter",
+                "ext-wincache": "WinCache, to use the WinCache storage adapter",
+                "zendframework/zend-serializer": "Zend\\Serializer component",
+                "zendframework/zend-session": "Zend\\Session component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Cache\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides a generic way to cache any data",
+            "keywords": [
+                "cache",
+                "zf2"
+            ],
+            "time": "2013-04-17 11:42:28"
         },
         {
             "name": "zendframework/zend-config",
-            "version": "2.0.6",
+            "version": "2.1.5",
             "target-dir": "Zend/Config",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendConfig.git",
+                "reference": "release-2.1.5"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_Config-2.0.6.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://api.github.com/repos/zendframework/Component_ZendConfig/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Zend\\Config\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
             "description": "provides a nested object property based user interface for accessing this configuration data within application code",
-            "homepage": "http://packages.zendframework.com/",
             "keywords": [
-                "zf2",
-                "config"
+                "config",
+                "zf2"
             ],
-            "support": {
-                "email": "fw-general-subscribe@lists.zend.com",
-                "irc": "irc://irc.freenode.net/zftalk",
-                "issues": "https://github.com/zendframework/zf2/issues",
-                "source": "https://github.com/zendframework/zf2"
-            }
+            "time": "2013-02-20 08:29:59"
         },
         {
-            "name": "zendframework/zend-filter",
-            "version": "2.0.6",
-            "target-dir": "Zend/Filter",
+            "name": "zendframework/zend-eventmanager",
+            "version": "2.1.5",
+            "target-dir": "Zend/EventManager",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendEventManager.git",
+                "reference": "release-2.1.5"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_Filter-2.0.6.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "zendframework/zend-crypt": "self.version"
-            },
-            "suggest": {
-                "zendframework/zend-i18n": "Zend\\I18n component",
-                "zendframework/zend-validator": "Zend\\Validator component",
-                "zendframework/zend-crypt": "Zend\\Crypt component"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Zend\\Filter\\": ""
-                }
-            },
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "provides a set of commonly needed data filters",
-            "homepage": "http://packages.zendframework.com/",
-            "keywords": [
-                "zf2",
-                "filter"
-            ],
-            "support": {
-                "email": "fw-general-subscribe@lists.zend.com",
-                "irc": "irc://irc.freenode.net/zftalk",
-                "issues": "https://github.com/zendframework/zf2/issues",
-                "source": "https://github.com/zendframework/zf2"
-            }
-        },
-        {
-            "name": "zendframework/zend-i18n",
-            "version": "2.0.6",
-            "target-dir": "Zend/I18n",
-            "dist": {
-                "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_I18n-2.0.6.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://api.github.com/repos/zendframework/Component_ZendEventManager/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "ext-intl": "*",
-                "zendframework/zend-filter": "self.version",
                 "zendframework/zend-stdlib": "self.version"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\EventManager\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "keywords": [
+                "eventmanager",
+                "zf2"
+            ],
+            "time": "2013-04-15 20:25:51"
+        },
+        {
+            "name": "zendframework/zend-i18n",
+            "version": "2.1.5",
+            "target-dir": "Zend/I18n",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendI18n.git",
+                "reference": "release-2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "suggest": {
+                "zendframework/zend-filter": "You should install this package to use the provided filters",
+                "zendframework/zend-validator": "You should install this package to use the provided validators",
+                "zendframework/zend-view": "You should install this package to use the provided view helpers"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Zend\\I18n\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": " ",
-            "homepage": "http://packages.zendframework.com/",
             "keywords": [
-                "zf2",
-                "i18n"
+                "i18n",
+                "zf2"
             ],
-            "support": {
-                "email": "fw-general-subscribe@lists.zend.com",
-                "irc": "irc://irc.freenode.net/zftalk",
-                "issues": "https://github.com/zendframework/zf2/issues",
-                "source": "https://github.com/zendframework/zf2"
-            }
+            "time": "2013-04-10 18:14:09"
+        },
+        {
+            "name": "zendframework/zend-json",
+            "version": "2.1.5",
+            "target-dir": "Zend/Json",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendJson.git",
+                "reference": "release-2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendJson/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "suggest": {
+                "zendframework/zend-server": "Zend\\Server component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Json\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides convenience methods for serializing native PHP to JSON and decoding JSON to native PHP",
+            "keywords": [
+                "json",
+                "zf2"
+            ],
+            "time": "2013-04-16 21:18:18"
+        },
+        {
+            "name": "zendframework/zend-math",
+            "version": "2.1.5",
+            "target-dir": "Zend/Math",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendMath.git",
+                "reference": "release-2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendMath/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ircmaxell/random-lib": "Fallback random byte generator for Zend\\Math\\Rand if OpenSSL/Mcrypt extensions are unavailable"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Math\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "keywords": [
+                "math",
+                "zf2"
+            ],
+            "time": "2013-03-14 11:13:27"
+        },
+        {
+            "name": "zendframework/zend-serializer",
+            "version": "2.1.5",
+            "target-dir": "Zend/Serializer",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendSerializer.git",
+                "reference": "release-2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendSerializer/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-json": "self.version",
+                "zendframework/zend-math": "self.version",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Serializer\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides an adapter based interface to simply generate storable representation of PHP types by different facilities, and recover",
+            "keywords": [
+                "serializer",
+                "zf2"
+            ],
+            "time": "2013-04-17 11:42:28"
         },
         {
             "name": "zendframework/zend-servicemanager",
-            "version": "2.0.6",
+            "version": "2.1.5",
             "target-dir": "Zend/ServiceManager",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendServiceManager.git",
+                "reference": "release-2.1.5"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_ServiceManager-2.0.6.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
@@ -1055,36 +1750,41 @@
                 "zendframework/zend-di": "Zend\\Di component"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Zend\\ServiceManager\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": " ",
-            "homepage": "http://packages.zendframework.com/",
             "keywords": [
-                "zf2",
-                "servicemanager"
+                "servicemanager",
+                "zf2"
             ],
-            "support": {
-                "email": "fw-general-subscribe@lists.zend.com",
-                "irc": "irc://irc.freenode.net/zftalk",
-                "issues": "https://github.com/zendframework/zf2/issues",
-                "source": "https://github.com/zendframework/zf2"
-            }
+            "time": "2013-04-17 11:42:28"
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "2.0.6",
+            "version": "2.1.5",
             "target-dir": "Zend/Stdlib",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendStdlib.git",
+                "reference": "release-2.1.5"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_Stdlib-2.0.6.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/release-2.1.5",
+                "reference": "release-2.1.5",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
@@ -1093,26 +1793,26 @@
                 "pecl-weakref": "Implementation of weak references for Stdlib\\CallbackHandler"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Zend\\Stdlib\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": " ",
-            "homepage": "http://packages.zendframework.com/",
             "keywords": [
-                "zf2",
-                "stdlib"
+                "stdlib",
+                "zf2"
             ],
-            "support": {
-                "email": "fw-general-subscribe@lists.zend.com",
-                "irc": "irc://irc.freenode.net/zftalk",
-                "issues": "https://github.com/zendframework/zf2/issues",
-                "source": "https://github.com/zendframework/zf2"
-            }
+            "time": "2013-04-15 11:43:47"
         }
     ],
     "packages-dev": [
@@ -1131,22 +1831,21 @@
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.1",
                 "behat/gherkin": ">=2.2.4,<2.3-dev",
-                "symfony/console": ">=2.0,<2.3-dev",
+                "php": ">=5.3.1",
                 "symfony/config": ">=2.0,<2.3-dev",
+                "symfony/console": ">=2.0,<2.3-dev",
                 "symfony/dependency-injection": ">=2.0,<2.3-dev",
                 "symfony/event-dispatcher": ">=2.0,<2.3-dev",
+                "symfony/finder": ">=2.0,<2.3-dev",
                 "symfony/translation": ">=2.0,<2.3-dev",
-                "symfony/yaml": ">=2.0,<2.3-dev",
-                "symfony/finder": ">=2.0,<2.3-dev"
+                "symfony/yaml": ">=2.0,<2.3-dev"
             },
             "suggest": {
+                "behat/mink-extension": "for integration with Mink testing framework",
                 "behat/symfony2-extension": "for integration with Symfony2 web framework",
-                "behat/yii-extension": "for integration with Yii web framework",
-                "behat/mink-extension": "for integration with Mink testing framework"
+                "behat/yii-extension": "for integration with Yii web framework"
             },
-            "time": "2013-01-27 14:45:41",
             "bin": [
                 "bin/behat"
             ],
@@ -1175,40 +1874,40 @@
             "description": "Scenario-oriented BDD framework for PHP 5.3",
             "homepage": "http://behat.org/",
             "keywords": [
-                "Symfony2",
                 "BDD",
-                "Behat"
-            ]
+                "Behat",
+                "Symfony2"
+            ],
+            "time": "2013-01-27 14:45:41"
         },
         {
             "name": "behat/gherkin",
             "version": "dev-develop",
             "source": {
                 "type": "git",
-                "url": "git://github.com/Behat/Gherkin.git",
-                "reference": "f88e765e16eee1566e9942d1457912dd7202e0e6"
+                "url": "https://github.com/Behat/Gherkin.git",
+                "reference": "70a37689d6fc5d4b9772dfac35c112f031306d09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Behat/Gherkin/archive/f88e765e16eee1566e9942d1457912dd7202e0e6.zip",
-                "reference": "f88e765e16eee1566e9942d1457912dd7202e0e6",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/70a37689d6fc5d4b9772dfac35c112f031306d09",
+                "reference": "70a37689d6fc5d4b9772dfac35c112f031306d09",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.1",
-                "symfony/finder": ">=2.0,<2.3-dev"
+                "symfony/finder": ">=2.0,<3.0"
             },
             "require-dev": {
-                "symfony/yaml": ">=2.0,<2.3-dev",
-                "symfony/translation": ">=2.0,<2.3-dev",
-                "symfony/config": ">=2.0,<2.3-dev"
+                "symfony/config": ">=2.0,<3.0",
+                "symfony/translation": ">=2.0,<3.0",
+                "symfony/yaml": ">=2.0,<3.0"
             },
             "suggest": {
-                "symfony/yaml": "If you want to parse features, represented in YAML files",
+                "symfony/config": "If you want to use Config component to manage resources",
                 "symfony/translation": "If you want to use Symfony2 translations adapter",
-                "symfony/config": "If you want to use Config component to manage resources"
+                "symfony/yaml": "If you want to parse features, represented in YAML files"
             },
-            "time": "2013-01-26 23:59:16",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1234,34 +1933,34 @@
             "description": "Gherkin DSL parser for PHP 5.3",
             "homepage": "http://behat.org/",
             "keywords": [
-                "Symfony2",
                 "BDD",
-                "parser",
+                "Behat",
                 "DSL",
-                "Behat"
-            ]
+                "Symfony2",
+                "parser"
+            ],
+            "time": "2013-03-08 10:25:28"
         },
         {
             "name": "mockery/mockery",
-            "version": "0.7.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/padraic/mockery.git",
-                "reference": "0.7.2"
+                "url": "https://github.com/padraic/mockery.git",
+                "reference": "f0d465adfd157a254a856e9ef0302fc2239642d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/padraic/mockery/zipball/0.7.2",
-                "reference": "0.7.2",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/f0d465adfd157a254a856e9ef0302fc2239642d3",
+                "reference": "f0d465adfd157a254a856e9ef0302fc2239642d3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
-            "suggest": {
-                "Hamcrest": "1.0.0"
+            "require-dev": {
+                "hamcrest/hamcrest": "1.1.0"
             },
-            "time": "2012-01-24 12:22:39",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -1270,7 +1969,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "New BSD"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -1282,43 +1981,43 @@
             "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succint API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
             "homepage": "http://github.com/padraic/mockery",
             "keywords": [
-                "testing",
-                "library",
                 "BDD",
                 "TDD",
-                "test",
-                "mockery",
+                "library",
                 "mock",
+                "mock objects",
+                "mockery",
                 "stub",
+                "test",
                 "test double",
-                "mock objects"
-            ]
+                "testing"
+            ],
+            "time": "2013-04-17 21:08:10"
         },
         {
             "name": "phpunit/php-code-coverage",
             "version": "1.2.x-dev",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "ec7f6f388ca315b6520f61be670ff82fa6ce68fb"
+                "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
+                "reference": "1.2.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/php-code-coverage/archive/ec7f6f388ca315b6520f61be670ff82fa6ce68fb.zip",
-                "reference": "ec7f6f388ca315b6520f61be670ff82fa6ce68fb",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1.2.9",
+                "reference": "1.2.9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "phpunit/php-file-iterator": ">=1.3.0@stable",
-                "phpunit/php-token-stream": ">=1.1.3@stable",
-                "phpunit/php-text-template": ">=1.1.1@stable"
+                "phpunit/php-text-template": ">=1.1.1@stable",
+                "phpunit/php-token-stream": ">=1.1.3@stable"
             },
             "suggest": {
                 "ext-dom": "*",
                 "ext-xdebug": ">=2.0.5"
             },
-            "time": "2013-01-07 10:45:42",
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -1342,29 +2041,29 @@
             "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
             "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
             "keywords": [
-                "testing",
                 "coverage",
+                "testing",
                 "xunit"
-            ]
+            ],
+            "time": "2013-02-26 18:55:56"
         },
         {
             "name": "phpunit/php-file-iterator",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/php-file-iterator.git",
+                "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
                 "reference": "2deb24c65ea78e126daa8d45b2089ddc29ec1d26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/php-file-iterator/archive/2deb24c65ea78e126daa8d45b2089ddc29ec1d26.zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/2deb24c65ea78e126daa8d45b2089ddc29ec1d26",
                 "reference": "2deb24c65ea78e126daa8d45b2089ddc29ec1d26",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-07 10:47:05",
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -1390,26 +2089,26 @@
             "keywords": [
                 "filesystem",
                 "iterator"
-            ]
+            ],
+            "time": "2013-01-07 10:47:05"
         },
         {
             "name": "phpunit/php-text-template",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/php-text-template.git",
+                "url": "https://github.com/sebastianbergmann/php-text-template.git",
                 "reference": "1eeef106193d2f8c539728e566bb4793071a9e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/php-text-template/archive/1eeef106193d2f8c539728e566bb4793071a9e18.zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/1eeef106193d2f8c539728e566bb4793071a9e18",
                 "reference": "1eeef106193d2f8c539728e566bb4793071a9e18",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-07 10:56:17",
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -1434,26 +2133,26 @@
             "homepage": "https://github.com/sebastianbergmann/php-text-template/",
             "keywords": [
                 "template"
-            ]
+            ],
+            "time": "2013-01-07 10:56:17"
         },
         {
             "name": "phpunit/php-timer",
-            "version": "dev-master",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/php-timer.git",
-                "reference": "6d28a5483f2b824a5bcc39c3761eb2cb9a0dd0a0"
+                "url": "https://github.com/sebastianbergmann/php-timer.git",
+                "reference": "ecf7920b27003a9412b07dad79dbb5ad1249e6c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/php-timer/archive/6d28a5483f2b824a5bcc39c3761eb2cb9a0dd0a0.zip",
-                "reference": "6d28a5483f2b824a5bcc39c3761eb2cb9a0dd0a0",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/ecf7920b27003a9412b07dad79dbb5ad1249e6c3",
+                "reference": "ecf7920b27003a9412b07dad79dbb5ad1249e6c3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-07 10:52:28",
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -1478,19 +2177,20 @@
             "homepage": "https://github.com/sebastianbergmann/php-timer/",
             "keywords": [
                 "timer"
-            ]
+            ],
+            "time": "2013-01-30 06:08:51"
         },
         {
             "name": "phpunit/php-token-stream",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/php-token-stream.git",
+                "url": "https://github.com/sebastianbergmann/php-token-stream.git",
                 "reference": "c25dd88e1592e66dee2553c99ef244203d5a1b98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/php-token-stream/archive/c25dd88e1592e66dee2553c99ef244203d5a1b98.zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/c25dd88e1592e66dee2553c99ef244203d5a1b98",
                 "reference": "c25dd88e1592e66dee2553c99ef244203d5a1b98",
                 "shasum": ""
             },
@@ -1498,7 +2198,6 @@
                 "ext-tokenizer": "*",
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-07 10:56:35",
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -1523,42 +2222,45 @@
             "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
             "keywords": [
                 "tokenizer"
-            ]
+            ],
+            "time": "2013-01-07 10:56:35"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "3.7.13",
+            "version": "3.7.19",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3.7.13"
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "3.7.19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/phpunit/archive/3.7.13.zip",
-                "reference": "3.7.13",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3.7.19",
+                "reference": "3.7.19",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
-                "phpunit/php-file-iterator": ">=1.3.1",
-                "phpunit/php-text-template": ">=1.1.1",
-                "phpunit/php-code-coverage": ">=1.2.1",
-                "phpunit/php-timer": ">=1.0.2",
-                "phpunit/phpunit-mock-objects": ">=1.2.0,<1.3.0",
-                "symfony/yaml": ">=2.1.0,<2.2.0",
                 "ext-dom": "*",
                 "ext-pcre": "*",
                 "ext-reflection": "*",
-                "ext-spl": "*"
+                "ext-spl": "*",
+                "php": ">=5.3.3",
+                "phpunit/php-code-coverage": ">=1.2.1,<1.3.0",
+                "phpunit/php-file-iterator": ">=1.3.1",
+                "phpunit/php-text-template": ">=1.1.1",
+                "phpunit/php-timer": ">=1.0.2,<1.1.0",
+                "phpunit/phpunit-mock-objects": ">=1.2.0,<1.3.0",
+                "symfony/yaml": ">=2.0.0,<2.3.0"
+            },
+            "require-dev": {
+                "pear-pear/pear": "1.9.4"
             },
             "suggest": {
-                "phpunit/php-invoker": ">=1.1.0",
                 "ext-json": "*",
                 "ext-simplexml": "*",
-                "ext-tokenizer": "*"
+                "ext-tokenizer": "*",
+                "phpunit/php-invoker": ">=1.1.0,<1.2.0"
             },
-            "time": "2013-01-13 10:21:19",
             "bin": [
                 "composer/bin/phpunit"
             ],
@@ -1591,23 +2293,24 @@
             "description": "The PHP Unit Testing framework.",
             "homepage": "http://www.phpunit.de/",
             "keywords": [
-                "testing",
                 "phpunit",
+                "testing",
                 "xunit"
-            ]
+            ],
+            "time": "2013-03-25 11:45:06"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
             "version": "1.2.x-dev",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "1.2.3"
+                "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
+                "reference": "d49b5683200b5db9b1c64cb06f52f50d147891c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/phpunit-mock-objects/archive/1.2.3.zip",
-                "reference": "1.2.3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/d49b5683200b5db9b1c64cb06f52f50d147891c4",
+                "reference": "d49b5683200b5db9b1c64cb06f52f50d147891c4",
                 "shasum": ""
             },
             "require": {
@@ -1617,7 +2320,6 @@
             "suggest": {
                 "ext-soap": "*"
             },
-            "time": "2013-01-13 10:24:48",
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -1643,27 +2345,27 @@
             "keywords": [
                 "mock",
                 "xunit"
-            ]
+            ],
+            "time": "2013-02-05 07:46:41"
         },
         {
             "name": "symfony/config",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "target-dir": "Symfony/Component/Config",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Config",
-                "reference": "bbab70a5220e3435180d51685e135c158b1fa2e8"
+                "url": "https://github.com/symfony/Config.git",
+                "reference": "dd19d55c3493d1afa0600bb8cd7c83945c2f0cdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Config/archive/bbab70a5220e3435180d51685e135c158b1fa2e8.zip",
-                "reference": "bbab70a5220e3435180d51685e135c158b1fa2e8",
+                "url": "https://api.github.com/repos/symfony/Config/zipball/dd19d55c3493d1afa0600bb8cd7c83945c2f0cdb",
+                "reference": "dd19d55c3493d1afa0600bb8cd7c83945c2f0cdb",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-28 17:21:49",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1690,35 +2392,35 @@
                 }
             ],
             "description": "Symfony Config Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-04-20 18:42:10"
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "target-dir": "Symfony/Component/DependencyInjection",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/DependencyInjection",
-                "reference": "d032758b8387a3415b6d8a9f4e64463db01a9827"
+                "url": "https://github.com/symfony/DependencyInjection.git",
+                "reference": "e0dab3fc8ae19857067d322347c8209e14cbd8ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/DependencyInjection/archive/d032758b8387a3415b6d8a9f4e64463db01a9827.zip",
-                "reference": "d032758b8387a3415b6d8a9f4e64463db01a9827",
+                "url": "https://api.github.com/repos/symfony/DependencyInjection/zipball/e0dab3fc8ae19857067d322347c8209e14cbd8ba",
+                "reference": "e0dab3fc8ae19857067d322347c8209e14cbd8ba",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "symfony/yaml": "2.2.*",
-                "symfony/config": "2.2.*"
+                "symfony/config": ">=2.2,<2.3-dev",
+                "symfony/yaml": ">=2.0,<3.0"
             },
             "suggest": {
-                "symfony/yaml": "2.2.*",
-                "symfony/config": "2.2.*"
+                "symfony/config": "2.2.*",
+                "symfony/yaml": "2.2.*"
             },
-            "time": "2013-01-28 17:21:49",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1745,35 +2447,35 @@
                 }
             ],
             "description": "Symfony DependencyInjection Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-04-20 18:42:11"
         },
         {
             "name": "symfony/translation",
-            "version": "dev-master",
+            "version": "2.2.x-dev",
             "target-dir": "Symfony/Component/Translation",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Translation",
-                "reference": "v2.2.0-BETA2"
+                "url": "https://github.com/symfony/Translation.git",
+                "reference": "8cb617d4d486aa4d1a3c11b8c02c2c963dfad723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Translation/archive/v2.2.0-BETA2.zip",
-                "reference": "v2.2.0-BETA2",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/8cb617d4d486aa4d1a3c11b8c02c2c963dfad723",
+                "reference": "8cb617d4d486aa4d1a3c11b8c02c2c963dfad723",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "symfony/config": "2.2.*",
-                "symfony/yaml": "2.2.*"
+                "symfony/config": ">=2.0,<2.3-dev",
+                "symfony/yaml": ">=2.2,<3.0"
             },
             "suggest": {
                 "symfony/config": "2.2.*",
                 "symfony/yaml": "2.2.*"
             },
-            "time": "2013-01-17 15:25:59",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1800,31 +2502,36 @@
                 }
             ],
             "description": "Symfony Translation Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-04-24 09:42:33"
         },
         {
             "name": "symfony/yaml",
-            "version": "2.1.x-dev",
+            "version": "2.2.x-dev",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Yaml",
-                "reference": "882b70fb7072e3f1fa95d249fd527a4e3998dc1a"
+                "url": "https://github.com/symfony/Yaml.git",
+                "reference": "v2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Yaml/archive/882b70fb7072e3f1fa95d249fd527a4e3998dc1a.zip",
-                "reference": "882b70fb7072e3f1fa95d249fd527a4e3998dc1a",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/v2.2.1",
+                "reference": "v2.2.1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-27 16:12:43",
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
-                    "Symfony\\Component\\Yaml": ""
+                    "Symfony\\Component\\Yaml\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1842,7 +2549,8 @@
                 }
             ],
             "description": "Symfony Yaml Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "2013-03-23 07:49:54"
         }
     ],
     "aliases": [
@@ -1851,14 +2559,35 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cilex/cilex": 20,
-        "nikic/php-parser": 20,
+        "dflydev/markdown": 0,
+        "monolog/monolog": 0,
+        "twig/twig": 0,
         "symfony/event-dispatcher": 0,
+        "jms/serializer": 20,
+        "zendframework/zend-stdlib": 0,
+        "zendframework/zend-servicemanager": 0,
+        "zendframework/zend-config": 0,
+        "zendframework/zend-i18n": 0,
+        "zendframework/zend-serializer": 0,
+        "zendframework/zend-cache": 0,
         "phpdocumentor/graphviz": 10,
         "phpdocumentor/fileset": 10,
-        "phpdocumentor/reflection-docblock": 15,
+        "phpdocumentor/reflection": 20,
+        "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/unified-asset-installer": 10,
+        "phpdocumentor/template-responsive-twig": 20,
+        "phpdocumentor/template-responsive": 0,
+        "phpdocumentor/template-new-black": 0,
+        "phpdocumentor/template-zend": 0,
+        "phpdocumentor/template-old-ocean": 0,
+        "phpdocumentor/template-checkstyle": 0,
         "behat/behat": 0,
-        "phpunit/phpunit": 0,
-        "mockery/mockery": 0
-    }
+        "phpunit/phpunit": 0
+    },
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": [
+
+    ]
 }

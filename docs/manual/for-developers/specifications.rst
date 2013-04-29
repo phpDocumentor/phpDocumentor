@@ -6,3 +6,4 @@ Specification
 
    specifications/documenting-multiple-versions
    specifications/extensions
+   specifications/routing

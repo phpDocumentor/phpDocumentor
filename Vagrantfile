@@ -4,6 +4,8 @@
 Vagrant::Config.run do |config|
   config.vm.box     = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.share_folder("v-root", "/vagrant", ".", :nfs => true)
+  config.vm.network :hostonly, "192.168.255.2"
 
   config.vm.provision :puppet do |puppet|
      puppet.module_path    = ".puppet/modules"

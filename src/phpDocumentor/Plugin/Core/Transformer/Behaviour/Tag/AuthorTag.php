@@ -2,34 +2,19 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
  * Behaviour that links to email addresses in the @author tag.
- *
- * PHP Version 5
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     David Zülke <david.zuelke@bitextender.com>
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class AuthorTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class AuthorTag
 {
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
@@ -41,8 +26,6 @@ class AuthorTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
      */
     public function process(\DOMDocument $xml)
     {
-        $this->log('Linking to email addresses in @author tags');
-
         // matches:
         // - foo@bar.com
         // - <foo@bar.com>

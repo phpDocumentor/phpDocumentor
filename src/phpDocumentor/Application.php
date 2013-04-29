@@ -2,110 +2,93 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor;
 
+use Cilex\Application as Cilex;
+use Cilex\Provider\MonologServiceProvider;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use JMS\Serializer\SerializerBuilder;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Shell;
+use Zend\Cache\Storage\Adapter\Filesystem;
+use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
+use Zend\Config\Factory;
+use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Descriptor\ProjectAnalyzer;
+use phpDocumentor\Descriptor\Validation;
+use phpDocumentor\Parser;
+use phpDocumentor\Plugin\Core;
+
 /**
  * Finds and activates the autoloader.
  */
 require_once findAutoloader();
 
-use Symfony\Component\Console\Input\InputInterface;
-use Cilex\Application as Cilex;
-use Cilex\Provider\MonologServiceProvider;
-
 /**
  * Application class for phpDocumentor.
  *
  * Can be used as bootstrap when the run method is not invoked.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class Application extends Cilex
 {
-    const VERSION = '2.0.0a13';
+    public static $VERSION;
 
     /**
      * Initializes all components used by phpDocumentor.
      */
     public function __construct()
     {
-        parent::__construct('phpDocumentor', self::VERSION);
+        self::$VERSION = file_get_contents(__DIR__ . '/../../VERSION');
+
+        parent::__construct('phpDocumentor', self::$VERSION);
 
         $this->addAutoloader();
         $this->addLogging();
         $this->setTimezone();
         $this->addConfiguration();
         $this->addEventDispatcher();
-        $this->loadPlugins();
 
         $this['console']->getHelperSet()->set(
-            new \phpDocumentor\Console\Helper\ProgressHelper()
+            new Console\Helper\ProgressHelper()
         );
 
+        $this['translator.locale'] = 'en';
+        $this['translator'] = $this->share(
+            function ($app) {
+                $translator = new Translator();
+                $translator->setFallbackLocale('en');
+                $translator->setLocale($app['translator.locale']);
+                return $translator;
+            }
+        );
+
+        $this['serializer'] = $this->share(
+            function () {
+                AnnotationRegistry::registerAutoloadNamespace(
+                    'JMS\Serializer\Annotation',
+                    __DIR__ . '/../../vendor/jms/serializer/src'
+                );
+
+                return SerializerBuilder::create()->build();
+            }
+        );
+
+        $this->addDescriptorServices();
+
+        $this->register(new Parser\ServiceProvider());
+        $this->register(new Transformer\ServiceProvider());
+
+        // TODO: make plugin service provider calls registrable from config
+        $this->register(new Core\ServiceProvider());
+
         $this->addCommandsForProjectNamespace();
-        $this->addCommandsForTemplateNamespace();
-        $this->addCommandsForPluginNamespace();
-    }
-
-    /**
-     * Run the application and if no command is provided, use project:run.
-     *
-     * @param bool $interactive Whether to run in interactive mode.
-     *
-     * @return void
-     */
-    public function run($interactive = false)
-    {
-        $app = $this['console'];
-        if ($interactive) {
-            $app = new \Symfony\Component\Console\Shell($app);
-        }
-
-        $app->run(new \phpDocumentor\Console\Input\ArgvInput());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Project namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForProjectNamespace()
-    {
-        $this->command(new \phpDocumentor\Command\Project\ParseCommand());
-        $this->command(new \phpDocumentor\Command\Project\RunCommand());
-        $this->command(new \phpDocumentor\Command\Project\TransformCommand());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the plugin namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForPluginNamespace()
-    {
-        $this->command(new \phpDocumentor\Command\Plugin\GenerateCommand());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Template namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForTemplateNamespace()
-    {
-        $this->command(new \phpDocumentor\Command\Template\GenerateCommand());
-        $this->command(new \phpDocumentor\Command\Template\ListCommand());
-        $this->command(new \phpDocumentor\Command\Template\PackageCommand());
     }
 
     /**
@@ -128,8 +111,8 @@ class Application extends Cilex
         $this->register(
             new MonologServiceProvider(),
             array(
-                'monolog.name'    => 'phpDocumentor',
-                'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
+                 'monolog.name'    => 'phpDocumentor',
+                 'monolog.logfile' => sys_get_temp_dir() . '/phpdoc.log'
             )
         );
     }
@@ -171,12 +154,12 @@ class Application extends Cilex
                 $user_config_file = (file_exists(getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'))
                     ? getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'
                     : getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.dist.xml';
-                $config_files = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
+                $config_files     = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
                 if (is_readable($user_config_file)) {
                     $config_files[] = $user_config_file;
                 }
 
-                return \Zend\Config\Factory::fromFiles($config_files, true);
+                return Factory::fromFiles($config_files, true);
             }
         );
     }
@@ -196,29 +179,84 @@ class Application extends Cilex
     }
 
     /**
-     * Load the plugins.
+     * Adds the services to build the descriptors.
      *
-     * phpDocumentor instantiates the plugin manager given the Event Dispatcher,
-     * Configuration and autoloader.
-     * Using this manager it will read the configuration and load the required
-     * plugins.
+     * This method injects the following services into the Dependency Injection Container:
+     *
+     * * descriptor.serializer, the serializer used to generate the cache
+     * * descriptor.builder, the builder used to transform the Reflected information into a series of Descriptors.
+     *
+     * It is possible to override which serializer is used by overriding the parameter `descriptor.serializer.class`.
      *
      * @return void
      */
-    protected function loadPlugins()
+    protected function addDescriptorServices()
     {
-        $app = $this;
-        $this['plugin_manager'] = $this->share(
-            function () use ($app) {
-                $manager = new \phpDocumentor\Plugin\Manager(
-                    $app['event_dispatcher'],
-                    $app['config'],
-                    $app['autoloader']
+        $this['descriptor.builder.serializer'] = 'PhpSerialize';
+
+        $this['descriptor.cache'] = $this->share(
+            function () {
+                $cache = new Filesystem();
+                $cache->setOptions(
+                    array(
+                        'namespace' => 'phpdoc-cache',
+                        'cache_dir' => sys_get_temp_dir(),
+                    )
                 );
-                return $manager;
+                $cache->addPlugin(new SerializerPlugin());
+                return $cache;
             }
         );
-        $this['plugin_manager']->loadFromConfiguration();
+
+        $this['descriptor.builder.validator'] = $this->share(
+            function ($container) {
+                return new Validation($container['translator']);
+            }
+        );
+
+        $this['descriptor.builder'] = $this->share(
+            function ($container) {
+                $builder = new Descriptor\Builder\Reflector();
+                $builder->setValidation($container['descriptor.builder.validator']);
+                return $builder;
+            }
+        );
+
+        $this['descriptor.analyzer'] = function () {
+            return new ProjectAnalyzer();
+        };
+    }
+
+    /**
+     * Adds the command to phpDocumentor that belong to the Project namespace.
+     *
+     * @return void
+     */
+    protected function addCommandsForProjectNamespace()
+    {
+        $this->command(new Command\Project\RunCommand());
+    }
+
+    /**
+     * Run the application and if no command is provided, use project:run.
+     *
+     * @param bool $interactive Whether to run in interactive mode.
+     *
+     * @return void
+     */
+    public function run($interactive = false)
+    {
+        /** @var ConsoleApplication $app  */
+        $app = $this['console'];
+
+        if ($interactive) {
+            $app = new Shell($app);
+        }
+
+        $output = new Console\Output\Output();
+        $output->setLogger($this['monolog']);
+
+        $app->run(new ArgvInput(), $output);
     }
 }
 

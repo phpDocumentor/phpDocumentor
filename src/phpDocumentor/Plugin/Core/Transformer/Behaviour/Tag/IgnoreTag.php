@@ -2,32 +2,19 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
  * Behaviour that adds support for @ignore tag.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Stepan Anchugov <kix@kixlive.ru>
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class IgnoreTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class IgnoreTag
 {
     protected $tag = 'ignore';
 
@@ -40,8 +27,6 @@ class IgnoreTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
      */
     public function process(\DOMDocument $xml)
     {
-        $this->log('Removing DocBlocks containing the @'.$this->tag.' tag');
-
         $ignoreQry = '//tag[@name=\''. $this->tag . '\']';
 
         $xpath = new \DOMXPath($xml);
