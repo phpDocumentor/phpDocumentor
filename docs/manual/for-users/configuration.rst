@@ -99,8 +99,7 @@ your project is and what files to ignore.
       </files>
 
 It is allowed to use relative paths here; just remember that these
-are relative from the working directory where you execute phpDocumentor
-in.
+are relative from the the location of your configuration file.
 
 It is possible to specify specific files or a specific set of **files**
 using the element. As with the -f parameter it supports wildcards.
