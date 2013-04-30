@@ -16,7 +16,7 @@
         "monolog/monolog":  "1.4.*@stable",
         "twig/twig":        "1.*@stable",
 
-        "symfony/event-dispatcher": "2.1.*@stable",
+        "symfony/event-dispatcher": "~2.1@stable",
         "jms/serializer":           "0.12.*@dev",
 
         "zendframework/zend-stdlib":         "2.1.*@stable",
