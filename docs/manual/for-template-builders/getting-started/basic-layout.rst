@@ -1,14 +1,18 @@
 Basic Layout
 ============
 
-A template in phpDocumentor2 is in its most basic form a
-1. `Composer <http://getcomposer.org>`_ definition (composer.json) and
-2. A Template Definition (called template.xml).
+A template in phpDocumentor2 is in its most basic form a folder
+containing a template.xml file.
 
-Composer definition
--------------------
+Standalone additionally require a composer.json file.
 
-phpDocumentor2 templates are, like every component, Composer packages.
+
+..
+
+    To build a template specific to your project, you don't need to put it into
+    a separate repository but can distribute it with your project. Simply specify
+    the path to that template as name of the template to use.
+
 
 Template definition
 -------------------
@@ -159,3 +163,39 @@ Tips
 
 3. If you want your template to support the --sourcecode argument of phpDocumentor
    then you need to include the Sourcecode writer.
+
+
+
+Composer definition
+-------------------
+
+To build a standalone phpDocumentor2 template, you need to make it a
+`Composer <http://getcomposer.org>`_ packages, like every component of the
+documentor.
+
+The project name in the composer file must start with ``template-``, the template name
+used in the install will be what follows after. For example the template "new-black"
+has the name ``template-new-black``. A template also needs to specify the attribute
+``type: phpdocumentor-template``. Currently, all templates must be in the
+namespace ``phpdocumentor``.
+
+Templates must depend on the phpdocumentor/unified-asset-installer which is
+used to install them in the right location. If they extend a base template,
+this should be specified as well.
+
+As an example, see the composer.json of the new-black template::
+
+    {
+        "name": "phpdocumentor/template-new-black",
+        "type": "phpdocumentor-template",
+        "description": "Web 2.0 template with dark sidebar for phpDocumentor",
+        "keywords": ["documentation", "template", "phpdoc"],
+        "homepage": "http://www.phpdoc.org",
+        "license": "MIT",
+        "require": {
+            "ext-xsl": "*",
+            "phpdocumentor/unified-asset-installer": "1.*",
+            "phpdocumentor/template-abstract": "1.*"
+        }
+    }
+
