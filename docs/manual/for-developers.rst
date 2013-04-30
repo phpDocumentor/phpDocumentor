@@ -12,7 +12,7 @@ For developers
    for-developers/introduction
    for-developers/architecture
    for-developers/documentation
-   for-developers/plugins
    for-developers/integrate-into-your-own-project
    for-developers/profiling
    for-developers/specifications
+   for-developers/research

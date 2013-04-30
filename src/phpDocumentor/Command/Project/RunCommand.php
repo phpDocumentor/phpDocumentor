@@ -11,10 +11,10 @@
  */
 namespace phpDocumentor\Command\Project;
 
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputOption;
-use \Symfony\Component\Console\Output\OutputInterface;
-use \Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -226,7 +226,6 @@ HELP
         $parse_input = new ArrayInput(
             array(
                 'command' => 'project:parse',
-                '--target' => $input->getOption('target'),
                 '--filename' => $input->getOption('filename'),
                 '--directory' => $input->getOption('directory'),
                 '--encoding' => $input->getOption('encoding'),
@@ -260,7 +259,6 @@ HELP
         $transform_input = new ArrayInput(
             array(
                 'command' => 'project:transform',
-                '--source' => $input->getOption('target'),
                 '--target' => $target,
                 '--template' => $input->getOption('template'),
                 '--parseprivate' => $input->getOption('parseprivate'),

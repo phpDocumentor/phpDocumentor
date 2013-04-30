@@ -119,7 +119,7 @@ class PropertyNode extends NodeAbstract
             $parent_class_name = $this->class->getFQCN();
         }
 
-        return $parent_class_name . '::$' . $this->getName();
+        return $parent_class_name . '::' . $this->getName();
     }
 
     /**

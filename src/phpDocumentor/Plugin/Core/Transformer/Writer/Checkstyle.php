@@ -1,48 +1,37 @@
 <?php
 /**
- * Checkstyle Transformer File
+ * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Ben Selby <benmatselby@gmail.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
+
 /**
  * Checkstyle transformation writer; generates checkstyle report
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Ben Selby <benmatselby@gmail.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class Checkstyle extends \phpDocumentor\Transformer\Writer\WriterAbstract
+class Checkstyle extends WriterAbstract
 {
     /**
      * This method generates the checkstyle.xml report
      *
-     * @param \DOMDocument                              $structure      XML source.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
-     *
-     * @throws \Exception
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
-        $artifact = $transformation->getTransformer()->getTarget()
-        . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-
-        $list = $structure->getElementsByTagName('parse_markers');
+        $artifact = $this->getDestinationPath($transformation);
 
         $document = new \DOMDocument();
         $document->formatOutput = true;
@@ -50,26 +39,37 @@ class Checkstyle extends \phpDocumentor\Transformer\Writer\WriterAbstract
         $report->setAttribute('version', '1.3.0');
         $document->appendChild($report);
 
-        foreach ($list as $node) {
-
+        /** @var FileDescriptor $fileDescriptor */
+        foreach ($project->getFiles()->getAll() as $fileDescriptor) {
             $file = $document->createElement('file');
-            $file->setAttribute('name', $node->parentNode->getAttribute('path'));
+            $file->setAttribute('name', $fileDescriptor->getPath());
             $report->appendChild($file);
 
-            foreach ($node->childNodes as $error) {
-
-                if ((string)$error->nodeName != '#text') {
-                    $item = $document->createElement('error');
-                    $item->setAttribute('line', $error->getAttribute('line'));
-                    $item->setAttribute('severity', $error->nodeName);
-                    $item->setAttribute('message', $error->textContent);
-                    $item->setAttribute('source', 'phpDocumentor.phpDocumentor.phpDocumentor');
-                    $file->appendChild($item);
-                }
+            foreach ($fileDescriptor->getErrors()->getAll() as $error) {
+                $item = $document->createElement('error');
+                $item->setAttribute('line', $error['line']);
+                $item->setAttribute('severity', $error['type']);
+                $item->setAttribute('message', $error['message']);
+                $item->setAttribute('source', 'phpDocumentor.file.'.$error['code']);
+                $file->appendChild($item);
             }
         }
 
         $this->saveCheckstyleReport($artifact, $document);
+    }
+
+    /**
+     * Retrieves the destination location for this artifact.
+     *
+     * @param \phpDocumentor\Transformer\Transformation $transformation
+     *
+     * @return string
+     */
+    protected function getDestinationPath(Transformation $transformation)
+    {
+        $artifact = $transformation->getTransformer()->getTarget()
+            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        return $artifact;
     }
 
     /**

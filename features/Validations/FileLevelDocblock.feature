@@ -70,4 +70,3 @@ Feature: Validate whether the File-level DocBlock is valid
     namespace My\Name\Space {}
     """
     Then I should not get a log entry containing "No page-level DocBlock was found"
-    And my AST should have a file level DocBlock with short description

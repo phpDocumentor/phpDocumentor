@@ -2,29 +2,23 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use Psr\Log\LogLevel;
+use Zend\I18n\Exception\RuntimeException;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Plugin\Core\Exception;
+use phpDocumentor\Transformer\Transformation;
+
 /**
- * XSL transformation writer; generates static HTML out of the structure and XSL
- * templates.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * XSL transformation writer; generates static HTML out of the structure and XSL templates.
  */
 class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
@@ -34,40 +28,48 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
      * This method combines the structure.xml and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param \DOMDocument                        $structure      XML source.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
-     *
-     * @throws \Exception
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         if (!class_exists('XSLTProcessor')) {
-            throw new \phpDocumentor\Plugin\Core\Exception(
+            throw new Exception(
                 'The XSL writer was unable to find your XSLTProcessor; '
                 . 'please check if you have installed the PHP XSL extension'
             );
         }
 
         $artifact = $transformation->getTransformer()->getTarget()
-        . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
         $xsl = new \DOMDocument();
         $xsl->load($transformation->getSourceAsPath());
 
+        $structureFilename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';
+        if (!is_readable($structureFilename)) {
+            throw new RuntimeException(
+                'Structure.xml file was not found in the target directory, is the XML writer missing from the '
+                . 'template definition?'
+            );
+        }
+
+        // load the structure file (ast)
+        $structure = new \DOMDocument('1.0', 'utf-8');
+        $structure->load($structureFilename);
+
         $proc = new \XSLTProcessor();
         $proc->importStyleSheet($xsl);
         if (empty($structure->documentElement)) {
-            throw new \phpDocumentor\Plugin\Core\Exception(
-                'Specified DOMDocument lacks documentElement, cannot transform'
-            );
+            throw new Exception('Specified DOMDocument lacks documentElement, cannot transform');
         }
 
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
         $proc->setParameter('', 'root', str_repeat('../', substr_count($transformation->getArtifact(), '/')));
         $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
-        $proc->setParameter('', 'version', \phpDocumentor\Application::VERSION);
+        $proc->setParameter('', 'version', \phpDocumentor\Application::$VERSION);
         $proc->setParameter('', 'generated_datetime', date('r'));
 
         // check parameters for variables and add them when found
@@ -77,7 +79,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         // location by replacing ($<var>} with the sluggified node-value of the
         // search result
         if ($transformation->getQuery() !== '') {
-            $xpath = new \DOMXPath($transformation->getTransformer()->getSource());
+            $xpath = new \DOMXPath($structure);
 
             /** @var \DOMNodeList $qry */
             $qry = $xpath->query($transformation->getQuery());
@@ -96,7 +98,6 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 );
 
                 $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
-                $this->log('Processing the file: ' . $element->nodeValue . ' as ' . $filename);
 
                 if (!file_exists(dirname($filename))) {
                     mkdir(dirname($filename), 0755, true);
@@ -158,7 +159,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                     'XSLT does not allow both double and single quotes in '
                     . 'a variable; transforming single quotes to a character '
                     . 'encoded version in variable: ' . $key,
-                    \phpDocumentor\Plugin\Core\Log::WARN
+                    LogLevel::WARNING
                 );
                 $variable = str_replace("'", "&#39;", $variable);
             }
