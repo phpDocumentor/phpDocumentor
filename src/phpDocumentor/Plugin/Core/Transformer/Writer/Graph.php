@@ -84,8 +84,8 @@ class Graph extends WriterAbstract
 
         $this->buildNamespaceTree($graph, $project->getNamespace());
 
-        $classes    = $project->getIndexes()->get('classes')->getAll();
-        $interfaces = $project->getIndexes()->get('interfaces')->getAll();
+        $classes    = $project->getIndexes()->get('classes', new Collection())->getAll();
+        $interfaces = $project->getIndexes()->get('interfaces', new Collection())->getAll();
         $traits     = $project->getIndexes()->get('traits', new Collection())->getAll();
 
         /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers  */
