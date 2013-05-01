@@ -215,7 +215,7 @@ abstract class DescriptorAbstract
     /**
      * @param Collection $errors
      */
-    public function setErrors($errors)
+    public function setErrors(Collection $errors)
     {
         $this->errors = $errors;
     }

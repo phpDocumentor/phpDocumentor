@@ -43,9 +43,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var Collection $errors */
     protected $markers;
 
-    /** @var Collection $errors */
-    protected $errors;
-
     public function __construct($hash)
     {
         parent::__construct();
@@ -61,7 +58,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         $this->setTraits(new Collection());
 
         $this->setMarkers(new Collection());
-        $this->setErrors(new Collection());
     }
 
     public function getHash()
@@ -174,16 +170,6 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     public function setMarkers(Collection $markers)
     {
         $this->markers = $markers;
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    public function setErrors(Collection $errors)
-    {
-        $this->errors = $errors;
     }
 
     public function getAllErrors()

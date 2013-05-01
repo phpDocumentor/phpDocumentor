@@ -1,6 +1,43 @@
 Extending an existing template
 ==============================
 
+To extend an existing template, create a template as explained in the previous
+sections, but then copy the template.xml of the template you want to extend
+over the generated template.xml.
+
+Then configure what template to inherit from. Look for the lines declaring the
+dependencies, and add the template you are extending.
+
+For example, to extend the new-black theme, add it to the dependencies::
+
+    <dependencies>
+        <template name="abstract" version="1.0.3" />
+        <template name="new-black" version="1.0.3" />
+    </dependencies>
+
+Now you can change any of the transformation lines if you want to skip
+something or do it differently. All paths are relative to the data directory
+of phpDocumentor. To change specific parts of the template, copy that part
+(css, js, xsl) into the template folder or add an additional one that does
+something more. Then add a transformation entry to run that piece.
+
+..
+
+    Note that for now, the template.xml file does not inherit information from
+    the parent template.xml. This might be added in the future to only need to
+    define the differences.
+
+If you just want to customize the welcome page, you still need your own
+template. The only line you need to change in template.xml then would be the
+one for content.html::
+
+    <transformation query="" writer="xsl" source="templates/your-template/content.xsl" artifact="content.html"/>
+
+Copying asset files from your source directory is not supported (yet). If you
+use images in your phpdoc, you need to include them in the template and define
+a FileIO copy task for them.
+
+
 Root templates and overriding
 -----------------------------
 
