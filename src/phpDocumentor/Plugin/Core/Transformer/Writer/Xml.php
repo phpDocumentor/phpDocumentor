@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
+use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -37,7 +40,7 @@ use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\VarTag;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
+use phpDocumentor\Translator;
 
 /**
  * Converts the structural information of phpDocumentor into an XML file.
@@ -46,13 +49,38 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  * @todo merge checkstyle writer into this one with query checkstyle
  * @todo the packages may not be propagated correctly, check it
  */
-class Xml extends WriterAbstract
+class Xml extends WriterAbstract implements Translatable
 {
     /** @var \DOMDocument $xml */
     protected $xml;
 
     /** @var bool mustInherit determines whether this writer should inherit all information when building. */
     protected $mustInherit = false;
+
+    /** @var Translator $translator */
+    protected $translator;
+
+    /**
+     * Returns an instance of the object responsible for translating content.
+     *
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    /**
+     * Sets a new object capable of translating strings on this writer.
+     *
+     * @param Translator $translator
+     *
+     * @return void
+     */
+    public function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
 
     /**
      * This method generates the AST output
@@ -130,7 +158,6 @@ class Xml extends WriterAbstract
 
                 $marker_obj->appendChild(new \DOMText(trim($marker['message'])));
                 $marker_obj->setAttribute('line', $marker['line']);
-
             }
         }
 
@@ -138,14 +165,9 @@ class Xml extends WriterAbstract
             $parse_errors = new \DOMElement('parse_markers');
             $child->appendChild($parse_errors);
 
-            foreach ($file->getErrors() as $error) {
-                $marker_obj = new \DOMElement(strtolower($error->getSeverity()));
-                $parse_errors->appendChild($marker_obj);
-
-                $marker_obj->appendChild(new \DOMText(trim($error->getCode())));
-                $marker_obj->setAttribute('line', $error->getLine());
-                $marker_obj->setAttribute('code', $error->getCode());
-
+            /** @var Error $error */
+            foreach ($file->getAllErrors() as $error) {
+                $this->createErrorEntry($error, $parse_errors);
             }
         }
 
@@ -155,6 +177,28 @@ class Xml extends WriterAbstract
         if ($file->getSource()) {
             $child->appendChild(new \DOMElement('source', base64_encode(gzcompress($file->getSource()))));
         }
+    }
+
+    /**
+     * Creates an entry in the ParseErrors collection of a file for a given error.
+     *
+     * @param Error       $error
+     * @param \DOMElement $parse_errors
+     *
+     * @return void
+     */
+    protected function createErrorEntry($error, $parse_errors)
+    {
+        $marker_obj = new \DOMElement(strtolower($error->getSeverity()));
+        $parse_errors->appendChild($marker_obj);
+
+        $message = ($this->getTranslator())
+            ? vsprintf($this->getTranslator()->translate($error->getCode()), $error->getContext())
+            : $error->getCode();
+
+        $marker_obj->appendChild(new \DOMText($message));
+        $marker_obj->setAttribute('line', $error->getLine());
+        $marker_obj->setAttribute('code', $error->getCode());
     }
 
     /**

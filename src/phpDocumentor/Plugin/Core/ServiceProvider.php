@@ -53,6 +53,7 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
             '%s.php'
         );
 
+        $writerCollection['xml']->setTranslator($translator);
         $this->addValidators($app);
     }
 
