@@ -191,7 +191,7 @@ abstract class DescriptorAbstract
      */
     public function setPackage($package)
     {
-        $this->package = $package;
+        $this->package = trim($package);
     }
 
     /**
