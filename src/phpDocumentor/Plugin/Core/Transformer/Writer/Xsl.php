@@ -58,12 +58,18 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
 
         // load the structure file (ast)
         $structure = new \DOMDocument('1.0', 'utf-8');
+        libxml_use_internal_errors(true);
         $structure->load($structureFilename);
 
         $proc = new \XSLTProcessor();
         $proc->importStyleSheet($xsl);
         if (empty($structure->documentElement)) {
-            throw new Exception('Specified DOMDocument lacks documentElement, cannot transform');
+            $message = 'Specified DOMDocument lacks documentElement, cannot transform.';
+            if (libxml_get_last_error()) {
+                $message .= PHP_EOL . 'Apparently an error occurred with reading the structure.xml file, the reported '
+                . 'error was "' . trim(libxml_get_last_error()->message) . '" on line ' . libxml_get_last_error()->line;
+            }
+            throw new Exception($message);
         }
 
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
