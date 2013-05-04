@@ -6,7 +6,7 @@ use phpDocumentor\Descriptor\Collection;
 interface NamespaceInterface extends BaseInterface, ContainerInterface
 {
     /**
-     * @return NamespaceInterface
+     * @return static
      */
     public function getParent();
 
