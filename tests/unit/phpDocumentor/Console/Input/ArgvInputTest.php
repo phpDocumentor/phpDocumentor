@@ -36,7 +36,6 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
     public function provideArgvArrays()
     {
         return array(
-            array(null, array($_SERVER['argv'][1])),
             array(array('bla'), array('project:run')),
             array(array('bla', 'project:parse'), array('project:parse')),
             array(array('bla', '-f', 'blabla'), array('project:run', '-f', 'blabla')),
