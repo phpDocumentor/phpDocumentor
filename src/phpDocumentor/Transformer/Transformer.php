@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Transformer;
 
+use Psr\Log\LogLevel;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\DebugEvent;
@@ -323,16 +324,17 @@ class Transformer implements CompilerPassInterface
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.
-     * @param int    $priority The logging priority, the lower,
-     *  the more important. Ranges from 1 to 7
+     * @param int    $priority The logging priority
      *
      * @return void
      */
-    public function log($message, $priority = 6)
+    public function log($message, $priority = LogLevel::INFO)
     {
         Dispatcher::getInstance()->dispatch(
             'system.log',
-            LogEvent::createInstance($this)->setMessage($message)->setPriority($priority)
+            LogEvent::createInstance($this)
+                ->setMessage($message)
+                ->setPriority($priority)
         );
     }
 
@@ -347,7 +349,8 @@ class Transformer implements CompilerPassInterface
     {
         Dispatcher::getInstance()->dispatch(
             'system.debug',
-            DebugEvent::createInstance($this)->setMessage($message)
+            DebugEvent::createInstance($this)
+                ->setMessage($message)
         );
     }
 }

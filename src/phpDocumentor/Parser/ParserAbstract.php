@@ -25,8 +25,7 @@ abstract class ParserAbstract
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.
-     * @param int    $priority The logging priority, the lower,the more
-     *     important. Ranges from 1 to 7
+     * @param int    $priority The logging priority as declared in the LogLevel PSR-3 class.
      *
      * @return void
      */

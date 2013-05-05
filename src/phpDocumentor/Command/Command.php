@@ -133,12 +133,23 @@ class Command extends \Cilex\Command\Command
      */
     public function logEvent(OutputInterface $output, LogEvent $event)
     {
+        $numericErrors = array(
+            LogLevel::DEBUG     => 0,
+            LogLevel::NOTICE    => 1,
+            LogLevel::INFO      => 2,
+            LogLevel::WARNING   => 3,
+            LogLevel::ERROR     => 4,
+            LogLevel::ALERT     => 5,
+            LogLevel::CRITICAL  => 6,
+            LogLevel::EMERGENCY => 7,
+        );
+
         $threshold = LogLevel::ERROR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
             $threshold = LogLevel::DEBUG;
         }
 
-        if ($event->getPriority() <= $threshold) {
+        if ($numericErrors[$event->getPriority()] >= $numericErrors[$threshold]) {
             /** @var Translator $translator  */
             $translator = $this->getContainer()->offsetGet('translator');
             $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
