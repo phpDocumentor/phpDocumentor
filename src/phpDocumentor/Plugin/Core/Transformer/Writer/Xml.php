@@ -41,6 +41,7 @@ use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\VarTag;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Translator;
 
 /**
@@ -103,20 +104,29 @@ class Xml extends WriterAbstract implements Translatable
 
         $document_element->setAttribute('version', Application::$VERSION);
 
+        $transformer = $transformation->getTransformer();
         foreach ($project->getFiles() as $file) {
-            $this->buildFile($document_element, $file);
+            $this->buildFile($document_element, $file, $transformer);
         }
 
         $this->finalize($project);
         file_put_contents($artifact, $this->xml->saveXML());
     }
 
-    protected function buildFile(\DOMElement $parent, FileDescriptor $file)
-    {
+    protected function buildFile(
+        \DOMElement $parent,
+        FileDescriptor $file,
+        Transformer $transformer
+    ) {
         $child = new \DOMElement('file');
         $parent->appendChild($child);
 
-        $child->setAttribute('path', ltrim($file->getPath(), './'));
+        $path = ltrim($file->getPath(), './');
+        $child->setAttribute('path', $path);
+        $child->setAttribute(
+            'generated-path',
+            $transformer->generateFilename($path)
+        );
         $child->setAttribute('hash', $file->getHash());
 
         $this->buildDocBlock($child, $file);
