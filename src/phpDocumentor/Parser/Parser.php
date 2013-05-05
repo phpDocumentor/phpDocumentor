@@ -293,9 +293,12 @@ class Parser extends ParserAbstract
         $paths = $this->getFilenames($files);
 
         $this->log('  Project root is:  ' . $files->getProjectRoot());
-        $this->log(
-            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy())
-        );
+        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
+
+        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
+            $this->setForced(true);
+            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
+        }
 
         foreach ($paths as $filename) {
             if (class_exists('phpDocumentor\Event\Dispatcher')) {

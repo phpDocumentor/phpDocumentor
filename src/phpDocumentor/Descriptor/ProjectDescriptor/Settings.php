@@ -24,6 +24,9 @@ class Settings
     /** @var integer by default ignore internal visibility but show others */
     const VISIBILITY_DEFAULT   = 7;
 
+    /** @var boolean Represents whether this settings object has been modified */
+    protected $isModified = false;
+
     /** @var integer a bitflag representing which visibilities are contained and allowed in this project */
     protected $visibility = self::VISIBILITY_DEFAULT;
 
@@ -36,7 +39,7 @@ class Settings
      */
     public function setVisibility($visibilityFlag)
     {
-        $this->visibility = $visibilityFlag;
+        $this->setValueAndCheckIfModified('visibility', $visibilityFlag);
     }
 
     /**
@@ -49,5 +52,27 @@ class Settings
     public function getVisibility()
     {
         return $this->visibility;
+    }
+
+    /**
+     * Returns whether one of the values of this object was modified.
+     *
+     * @return boolean
+     */
+    public function isModified()
+    {
+        return $this->isModified;
+    }
+
+    /**
+     * Sets a property's value and if it differs from the previous then mark these settings as modified.
+     */
+    protected function setValueAndCheckIfModified($propertyName, $value)
+    {
+        if ($this->$propertyName != $value) {
+            $this->isModified = true;
+        }
+
+        $this->$propertyName = $value;
     }
 }

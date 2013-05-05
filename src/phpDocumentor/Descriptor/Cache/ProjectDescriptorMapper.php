@@ -63,7 +63,10 @@ class ProjectDescriptorMapper
         $iteratorInterface = $this->getCache()->getIterator();
 
         // load the settings object
-        $projectDescriptor->setSettings($this->getCache()->getItem(self::KEY_SETTINGS));
+        $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
+        if ($settings) {
+            $projectDescriptor->setSettings($settings);
+        }
 
         // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
         if ($iteratorInterface->valid()) {

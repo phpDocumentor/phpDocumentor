@@ -15,18 +15,19 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 class ProjectDescriptor implements Interfaces\ProjectInterface
 {
-    /** @var string */
+    /** @var string $name */
     protected $name = '';
 
-    /** @var NamespaceDescriptor */
+    /** @var NamespaceDescriptor $namespace */
     protected $namespace;
 
-    /** @var Collection */
+    /** @var Collection $files*/
     protected $files;
 
-    /** @var Collection */
+    /** @var Collection $indexes */
     protected $indexes;
 
+    /** @var Settings $settings */
     protected $settings;
 
     /**
