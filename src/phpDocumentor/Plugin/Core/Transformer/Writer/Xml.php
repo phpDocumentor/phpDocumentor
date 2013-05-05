@@ -524,7 +524,7 @@ class Xml extends WriterAbstract implements Translatable
             : $parent->getAttribute('namespace');
         $child->setAttribute('namespace', $namespaceFqnn);
 
-        $child->appendChild(new \DOMElement('name', $property->getName()));
+        $child->appendChild(new \DOMElement('name', '$' . $property->getName()));
         $child->appendChild(new \DOMElement('default'))
             ->appendChild(new \DOMText($property->getDefault()));
 
