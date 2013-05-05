@@ -12,7 +12,7 @@
 namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
-use Zend\I18n\Translator\Translator;
+use phpDocumentor\Translator;
 use phpDocumentor\Descriptor\Validation;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasPackageWithSubpackage;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasShortDescription;
@@ -47,11 +47,7 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
 
         /** @var Translator $translator  */
         $translator = $app['translator'];
-        $translator->addTranslationFilePattern(
-            'phparray',
-            __DIR__ . DIRECTORY_SEPARATOR . 'Messages',
-            '%s.php'
-        );
+        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $writerCollection['xml']->setTranslator($translator);
         $this->addValidators($app);

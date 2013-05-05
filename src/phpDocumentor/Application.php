@@ -63,7 +63,6 @@ class Application extends Cilex
         $this['translator'] = $this->share(
             function ($app) {
                 $translator = new Translator();
-                $translator->setFallbackLocale('en');
                 $translator->setLocale($app['translator.locale']);
                 return $translator;
             }
