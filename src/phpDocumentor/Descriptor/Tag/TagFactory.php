@@ -1,4 +1,13 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
 namespace phpDocumentor\Descriptor\Tag;
 
@@ -14,6 +23,7 @@ class TagFactory
         'link'   => 'phpDocumentor\Descriptor\Tag\LinkDescriptor',
         'uses'   => 'phpDocumentor\Descriptor\Tag\UsesDescriptor',
         'param'  => 'phpDocumentor\Descriptor\Tag\ParamDescriptor',
+        'var'    => 'phpDocumentor\Descriptor\Tag\VarDescriptor',
         'throws' => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
         'throw'  => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
     );

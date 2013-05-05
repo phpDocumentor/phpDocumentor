@@ -617,6 +617,17 @@ class Xml extends WriterAbstract implements Translatable
         $child->setAttribute('description', $tag->getDescription());
         $child->setAttribute('line', $parent->getAttribute('line'));
 
+        if (method_exists($tag, 'getTypes')) {
+            $typeString = '';
+            foreach ($tag->getTypes() as $type) {
+                $child->appendChild(new \DOMElement('type', $type));
+                $typeString .= $type . '|';
+            }
+            $child->setAttribute('type', rtrim($typeString, '|'));
+        }
+        if (method_exists($tag, 'getVariableName')) {
+            $child->setAttribute('variable', $tag->getVariableName());
+        }
         // TODO: Serialize specific tag information
     }
 

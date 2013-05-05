@@ -11,8 +11,8 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 
-class UsesDescriptor extends ReturnDescriptor
+class VarDescriptor extends ParamDescriptor
 {
 }
