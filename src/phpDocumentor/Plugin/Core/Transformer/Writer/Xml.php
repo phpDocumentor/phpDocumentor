@@ -30,6 +30,7 @@ use phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\AuthorTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\CoversTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\IgnoreTag;
+use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\InternalTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\LicenseTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\MethodTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\ParamTag;
@@ -106,7 +107,7 @@ class Xml extends WriterAbstract implements Translatable
             $this->buildFile($document_element, $file);
         }
 
-        $this->finalize();
+        $this->finalize($project);
         file_put_contents($artifact, $this->xml->saveXML());
     }
 
@@ -650,6 +651,10 @@ class Xml extends WriterAbstract implements Translatable
     protected function addTags(\DOMElement $xml_node, $element)
     {
         foreach ($element->getTags() as $tagGroup) {
+            if ($tagGroup === null) {
+                continue;
+            }
+
             foreach ($tagGroup as $tag) {
                 $this->buildDocBlockTag($xml_node, $tag, $element);
             }
@@ -670,7 +675,7 @@ class Xml extends WriterAbstract implements Translatable
      *
      * @return void
      */
-    protected function finalize()
+    protected function finalize(ProjectDescriptor $projectDescriptor)
     {
         // TODO: move all these behaviours to a central location for all template parsers
         $behaviour = new AuthorTag();
@@ -679,8 +684,10 @@ class Xml extends WriterAbstract implements Translatable
         $behaviour->process($this->xml);
         $behaviour = new IgnoreTag();
         $behaviour->process($this->xml);
-        //$behaviour = new InternalTag();
-        //$behaviour->process($this->xml);
+        $behaviour = new InternalTag(
+            $projectDescriptor->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)
+        );
+        $behaviour->process($this->xml);
         $behaviour = new LicenseTag();
         $behaviour->process($this->xml);
         $behaviour = new MethodTag();

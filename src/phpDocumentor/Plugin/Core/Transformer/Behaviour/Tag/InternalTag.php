@@ -11,33 +11,40 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
+use phpDocumentor\Transformer\Transformer;
+
 /**
- * Behaviour that adds support for @internal tag.
+ * Behaviour that adds support for @internal inline tag.
  */
-class InternalTag extends IgnoreTag
+class InternalTag
 {
-    protected $tag = 'internal';
+    /** @var boolean $internalAllowed */
+    protected $internalAllowed;
+
+    public function __construct($internalAllowed)
+    {
+        $this->internalAllowed = $internalAllowed;
+    }
 
     /**
-     * Removes DocBlocks marked with 'internal' tag from the structure.
+     * Converts the 'internal' tags in Long Descriptions.
      *
      * @param \DOMDocument $xml Structure source to apply behaviour onto.
+     *
+     * @todo This behaviours actions should be moved to the parser / Reflector builder so that it can be cached
+     *     and is available to all writers.
      *
      * @return \DOMDocument
      */
     public function process(\DOMDocument $xml)
     {
-        if (!$this->getTransformer()->getParseprivate()) {
-            $xml = parent::process($xml);
-        }
-
         $ignoreQry = '//long-description[contains(., "{@internal")]';
 
         $xpath = new \DOMXPath($xml);
         $nodes = $xpath->query($ignoreQry);
 
         // either replace it with nothing or with the 'stored' value
-        $replacement = $this->getTransformer()->getParseprivate() ? '$1' : '';
+        $replacement = $this->internalAllowed ? '$1' : '';
 
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {

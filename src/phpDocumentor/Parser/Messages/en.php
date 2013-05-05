@@ -40,6 +40,7 @@ HELP
     'PPCPP:OPT-DEFAULTPACKAGENAME' => 'Name to use for the default package.',
     'PPCPP:OPT-SOURCECODE'         => 'Whether to include syntax highlighted source code',
     'PPCPP:OPT-PROGRESSBAR'        => 'Whether to show a progress bar; will automatically quiet logging to stdout',
+    'PPCPP:OPT-PARSEPRIVATE'       => 'Whether to parse DocBlocks marked with @internal tag',
 
     // Log and exception messages
     'PPCPP:LOG-COLLECTING'   => 'Collecting files .. ',

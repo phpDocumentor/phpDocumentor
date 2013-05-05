@@ -100,19 +100,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::getParsePrivate
-     * @covers phpDocumentor\Transformer\Transformer::setParsePrivate
-     */
-    public function testSettingAndGettingPrivateParsing()
-    {
-        $this->assertEquals(false, $this->fixture->getParsePrivate());
-
-        $this->fixture->setParsePrivate(true);
-
-        $this->assertEquals(true, $this->fixture->getParsePrivate());
-    }
-
-    /**
      * @covers phpDocumentor\Transformer\Transformer::getTemplates
      */
     public function testRetrieveTemplateCollection()

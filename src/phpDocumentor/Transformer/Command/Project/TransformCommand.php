@@ -101,12 +101,6 @@ TEXT
             'Name of the template to use (optional)'
         );
         $this->addOption(
-            'parseprivate',
-            null,
-            InputOption::VALUE_NONE,
-            'Whether to parse DocBlocks marked with @internal tag'
-        );
-        $this->addOption(
             'progressbar',
             'p',
             InputOption::VALUE_NONE,
@@ -191,8 +185,6 @@ TEXT
             array($this, 'loadTransformations'),
             array($transformer)
         );
-
-        $transformer->setParseprivate($input->getOption('parseprivate'));
 
         if ($progress) {
             $progress->start($output, count($transformer->getTemplates()->getTransformations()));

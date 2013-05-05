@@ -21,6 +21,7 @@ use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Console\Helper\ProgressHelper;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
@@ -109,6 +110,7 @@ class ParseCommand extends ConfigurableCommand
             ->addOption('visibility', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-VISIBILITY'))
             ->addOption('sourcecode', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-SOURCECODE'))
             ->addOption('progressbar', 'p', InputOption::VALUE_NONE, $this->__('PPCPP:OPT-PROGRESSBAR'))
+            ->addOption('parseprivate', null, InputOption::VALUE_NONE, 'PPCPP:OPT-PARSEPRIVATE')
             ->addOption(
                 'defaultpackagename',
                 null,
@@ -147,6 +149,11 @@ class ParseCommand extends ConfigurableCommand
 
         $builder = $this->getBuilder();
         $projectDescriptor = $builder->getProjectDescriptor();
+        $visibility = ProjectDescriptor::VISIBILITY_DEFAULT;
+        if ($input->getOption('parseprivate')) {
+            $visibility = $visibility | ProjectDescriptor::VISIBILITY_INTERNAL;
+        }
+        $projectDescriptor->setAllowedVisibility($visibility);
 
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
@@ -185,7 +192,6 @@ class ParseCommand extends ConfigurableCommand
         }
 
         $output->write($this->__('PPCPP:LOG-STORECACHE', $this->getCache()->getOptions()->getCacheDir()));
-        $projectDescriptor = $builder->getProjectDescriptor();
         $mapper->save($projectDescriptor);
 
         $output->writeln($this->__('PPCPP:LOG-OK'));

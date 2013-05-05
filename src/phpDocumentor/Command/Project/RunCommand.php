@@ -241,6 +241,7 @@ HELP
                 '--visibility' => $input->getOption('visibility'),
                 '--defaultpackagename' => $input->getOption('defaultpackagename'),
                 '--sourcecode' => $input->getOption('sourcecode'),
+                '--parseprivate' => $input->getOption('parseprivate'),
                 '--progressbar' => $input->getOption('progressbar')
             ),
             $this->getDefinition()
@@ -261,7 +262,6 @@ HELP
                 'command' => 'project:transform',
                 '--target' => $target,
                 '--template' => $input->getOption('template'),
-                '--parseprivate' => $input->getOption('parseprivate'),
                 '--progressbar' => $input->getOption('progressbar')
             )
         );

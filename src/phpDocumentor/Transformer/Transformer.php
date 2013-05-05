@@ -44,9 +44,6 @@ class Transformer implements CompilerPassInterface
     /** @var Transformation[] $transformations */
     protected $transformations = array();
 
-    /** @var boolean $parsePrivate */
-    protected $parsePrivate = false;
-
     /**
      * Wires the template collection and writer collection to this transformer.
      *
@@ -134,30 +131,6 @@ class Transformer implements CompilerPassInterface
     public function getTarget()
     {
         return $this->target;
-    }
-
-    /**
-     * Sets flag indicating whether private members and/or elements tagged
-     * as {@internal} need to be displayed.
-     *
-     * @param bool $val True if all needs to be shown, false otherwise.
-     *
-     * @return void
-     */
-    public function setParsePrivate($val)
-    {
-        $this->parsePrivate = (boolean)$val;
-    }
-
-    /**
-     * Returns flag indicating whether private members and/or elements tagged
-     * as {@internal} need to be displayed.
-     *
-     * @return bool
-     */
-    public function getParsePrivate()
-    {
-        return $this->parsePrivate;
     }
 
     /**

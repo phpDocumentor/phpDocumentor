@@ -26,6 +26,24 @@ abstract class BuilderAbstract
         return $this->project;
     }
 
+    /**
+     * Verifies whether the given visibility is allowed to be included in the Descriptors.
+     *
+     * This method is used anytime a Descriptor is added to a collection (for example, when adding a Method to a Class)
+     * to determine whether the visibility of that element is matches what the user has specified when it ran
+     * phpDocumentor.
+     *
+     * @param integer $visibility One of the visibility constants of the ProjectDescriptor class.
+     *
+     * @see ProjectDescriptor where the visibility is stored and that declares the constants to use.
+     *
+     * @return boolean
+     */
+    public function isVisibilityAllowed($visibility)
+    {
+        return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
+    }
+
     abstract public function buildFile($data);
     abstract public function buildClass($data);
     abstract public function buildInterface($data);

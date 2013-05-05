@@ -13,6 +13,14 @@ namespace phpDocumentor\Descriptor;
 
 class ProjectDescriptor implements Interfaces\ProjectInterface
 {
+    const VISIBILITY_PUBLIC    = 1;
+    const VISIBILITY_PROTECTED = 2;
+    const VISIBILITY_PRIVATE   = 4;
+    const VISIBILITY_INTERNAL  = 8;
+
+    /** @var integer by default ignore internal visibility but show others */
+    const VISIBILITY_DEFAULT   = 7;
+
     /** @var string */
     protected $name = '';
 
@@ -24,6 +32,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
 
     /** @var Collection */
     protected $indexes;
+
+    /** @var integer A bitflag representing which visibility modifiers are allowed to be included */
+    protected $visibilityFlag = self::VISIBILITY_DEFAULT;
 
     /**
      * Initializes this descriptor.
@@ -101,5 +112,41 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     public function getNamespace()
     {
         return $this->namespace;
+    }
+
+    /**
+     * Stores the visibilities that are allowed to be executed as a bitflag.
+     *
+     * @param integer $visibilityFlag A bitflag combining the VISIBILITY_* constants.
+     *
+     * @return void
+     */
+    public function setAllowedVisibility($visibilityFlag)
+    {
+        $this->visibilityFlag = $visibilityFlag;
+    }
+
+    /**
+     * Returns the bit flag representing which visibilities are allowed.
+     *
+     * @see self::isVisibilityAllowed() for a convenience method to easily check against a specific visibility.
+     *
+     * @return integer
+     */
+    public function getAllowedVisibility()
+    {
+        return $this->visibilityFlag;
+    }
+
+    /**
+     * Checks whether the Project supports the given visibility.
+     *
+     * @param integer $visibility One of the VISIBILITY_* constants of this class.
+     *
+     * @return boolean
+     */
+    public function isVisibilityAllowed($visibility)
+    {
+        return (bool)($this->getAllowedVisibility() & $visibility);
     }
 }
