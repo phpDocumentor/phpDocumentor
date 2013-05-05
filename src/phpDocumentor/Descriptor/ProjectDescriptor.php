@@ -11,16 +11,10 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+
 class ProjectDescriptor implements Interfaces\ProjectInterface
 {
-    const VISIBILITY_PUBLIC    = 1;
-    const VISIBILITY_PROTECTED = 2;
-    const VISIBILITY_PRIVATE   = 4;
-    const VISIBILITY_INTERNAL  = 8;
-
-    /** @var integer by default ignore internal visibility but show others */
-    const VISIBILITY_DEFAULT   = 7;
-
     /** @var string */
     protected $name = '';
 
@@ -33,8 +27,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /** @var Collection */
     protected $indexes;
 
-    /** @var integer A bitflag representing which visibility modifiers are allowed to be included */
-    protected $visibilityFlag = self::VISIBILITY_DEFAULT;
+    protected $settings;
 
     /**
      * Initializes this descriptor.
@@ -42,10 +35,13 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     public function __construct($name)
     {
         $this->setName($name);
+        $this->setSettings(new Settings());
+
         $namespace = new NamespaceDescriptor();
         $namespace->setName('\\');
         $namespace->setFullyQualifiedStructuralElementName('\\');
         $this->setNamespace($namespace);
+
         $this->setFiles(new Collection());
         $this->setIndexes(new Collection());
     }
@@ -115,38 +111,42 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
-     * Stores the visibilities that are allowed to be executed as a bitflag.
+     * Sets the settings used to build the documentation for this project.
      *
-     * @param integer $visibilityFlag A bitflag combining the VISIBILITY_* constants.
+     * @param Settings $settings
      *
      * @return void
      */
-    public function setAllowedVisibility($visibilityFlag)
+    public function setSettings($settings)
     {
-        $this->visibilityFlag = $visibilityFlag;
+        $this->settings = $settings;
     }
 
     /**
-     * Returns the bit flag representing which visibilities are allowed.
+     * Returns the settings used to build the documentation for this project.
      *
-     * @see self::isVisibilityAllowed() for a convenience method to easily check against a specific visibility.
-     *
-     * @return integer
+     * @return Settings
      */
-    public function getAllowedVisibility()
+    public function getSettings()
     {
-        return $this->visibilityFlag;
+        return $this->settings;
     }
 
     /**
      * Checks whether the Project supports the given visibility.
      *
-     * @param integer $visibility One of the VISIBILITY_* constants of this class.
+     * @param integer $visibility One of the VISIBILITY_* constants of the Settings class.
+     *
+     * @see Settings for a list of the available VISIBILITY_* constants.
      *
      * @return boolean
      */
     public function isVisibilityAllowed($visibility)
     {
-        return (bool)($this->getAllowedVisibility() & $visibility);
+        $visibilityAllowed = $this->getSettings()
+            ? $this->getSettings()->getVisibility()
+            : Settings::VISIBILITY_DEFAULT;
+
+        return (bool)($visibilityAllowed & $visibility);
     }
 }

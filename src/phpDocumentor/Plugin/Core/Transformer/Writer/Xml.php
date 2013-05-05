@@ -695,7 +695,7 @@ class Xml extends WriterAbstract implements Translatable
         $behaviour = new IgnoreTag();
         $behaviour->process($this->xml);
         $behaviour = new InternalTag(
-            $projectDescriptor->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)
+            $projectDescriptor->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
         );
         $behaviour->process($this->xml);
         $behaviour = new LicenseTag();

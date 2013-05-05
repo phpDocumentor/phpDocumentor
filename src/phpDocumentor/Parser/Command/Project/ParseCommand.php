@@ -149,11 +149,11 @@ class ParseCommand extends ConfigurableCommand
 
         $builder = $this->getBuilder();
         $projectDescriptor = $builder->getProjectDescriptor();
-        $visibility = ProjectDescriptor::VISIBILITY_DEFAULT;
+        $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
         if ($input->getOption('parseprivate')) {
-            $visibility = $visibility | ProjectDescriptor::VISIBILITY_INTERNAL;
+            $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
         }
-        $projectDescriptor->setAllowedVisibility($visibility);
+        $projectDescriptor->getSettings()->setVisibility($visibility);
 
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);

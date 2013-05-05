@@ -248,7 +248,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $classDescriptor);
 
         // if internal elements are not allowed; do not add this element
-        if ($classDescriptor->getTags()->get('internal') && !$this->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)) {
+        if ($classDescriptor->getTags()->get('internal')
+            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
+        ) {
             return null;
         }
 
@@ -301,7 +303,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $interfaceDescriptor);
 
         // if internal elements are not allowed; do not add this element
-        if ($interfaceDescriptor->getTags()->get('internal') && !$this->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)) {
+        if ($interfaceDescriptor->getTags()->get('internal')
+            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
+        ) {
             return null;
         }
 
@@ -343,7 +347,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $traitDescriptor);
 
         // if internal elements are not allowed; do not add this element
-        if ($traitDescriptor->getTags()->get('internal') && !$this->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)) {
+        if ($traitDescriptor->getTags()->get('internal')
+            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
+        ) {
             return null;
         }
 
@@ -388,7 +394,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $constantDescriptor);
 
         // if internal elements are not allowed; do not add this element
-        if ($constantDescriptor->getTags()->get('internal') && !$this->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)) {
+        if ($constantDescriptor->getTags()->get('internal')
+            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
+        ) {
             return null;
         }
 
@@ -419,7 +427,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $functionDescriptor);
 
         // if internal elements are not allowed; do not add this element
-        if ($functionDescriptor->getTags()->get('internal') && !$this->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)) {
+        if ($functionDescriptor->getTags()->get('internal')
+            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
+        ) {
             return null;
         }
 
@@ -455,7 +465,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $propertyDescriptor);
 
         // if internal elements are not allowed; do not add this element
-        if ($propertyDescriptor->getTags()->get('internal') && !$this->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)) {
+        if ($propertyDescriptor->getTags()->get('internal')
+            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
+        ) {
             return null;
         }
 
@@ -491,7 +503,9 @@ class Reflector extends BuilderAbstract
         $this->buildDocBlock($data, $methodDescriptor);
 
         // if internal elements are not allowed; do not add this element
-        if ($methodDescriptor->getTags()->get('internal') && !$this->isVisibilityAllowed(ProjectDescriptor::VISIBILITY_INTERNAL)) {
+        if ($methodDescriptor->getTags()->get('internal')
+            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
+        ) {
             return null;
         }
 

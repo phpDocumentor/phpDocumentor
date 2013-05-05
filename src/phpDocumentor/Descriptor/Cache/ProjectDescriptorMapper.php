@@ -26,6 +26,8 @@ class ProjectDescriptorMapper
 {
     const FILE_PREFIX = 'file_';
 
+    const KEY_SETTINGS = 'settings';
+
     /** @var StorageInterface|IterableInterface */
     protected $cache;
 
@@ -60,6 +62,9 @@ class ProjectDescriptorMapper
         /** @var IteratorInterface $iteratorInterface */
         $iteratorInterface = $this->getCache()->getIterator();
 
+        // load the settings object
+        $projectDescriptor->setSettings($this->getCache()->getItem(self::KEY_SETTINGS));
+
         // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
         if ($iteratorInterface->valid()) {
             foreach ($this->getCache() as $key) {
@@ -92,6 +97,9 @@ class ProjectDescriptorMapper
                 $keys[] = $key;
             }
         }
+
+        // store the settings for this Project Descriptor
+        $cache->setItem(self::KEY_SETTINGS, $projectDescriptor->getSettings());
 
         // store cache items
         $usedKeys = array();
