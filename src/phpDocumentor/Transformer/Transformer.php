@@ -115,9 +115,21 @@ class Transformer implements CompilerPassInterface
     public function setTarget($target)
     {
         $path = realpath($target);
-        if (!file_exists($path) || !is_dir($path) || !is_writable($path)) {
+        if (false === $path) {
+            if (mkdir($target, 0755, true)) {
+                $path = realpath($target);
+            } else {
+                throw new \InvalidArgumentException(
+                    'Target directory ('
+                    . $target .
+                    ') does not exist and could not be created'
+                );
+            }
+        }
+
+        if (!is_dir($path) || !is_writable($path)) {
             throw new \InvalidArgumentException(
-                'Given target directory (' . $target . ') does not exist or is not writable'
+                'Given target (' . $target . ') is not a writeable directory'
             );
         }
 
