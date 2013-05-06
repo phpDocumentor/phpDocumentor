@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c49c562e83c549472c0ea18ef0e621ef",
+    "hash": "a2cae8b062e1afe406359ef8845083bf",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -686,16 +686,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "0.1.4",
+            "version": "0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "0.1.4"
+                "reference": "0.1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/0.1.4",
-                "reference": "0.1.4",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/0.1.5",
+                "reference": "0.1.5",
                 "shasum": ""
             },
             "require": {
@@ -730,7 +730,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2013-04-25 15:32:51"
+            "time": "2013-05-06 05:21:52"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2577,7 +2577,7 @@
         "zendframework/zend-cache": 0,
         "phpdocumentor/graphviz": 10,
         "phpdocumentor/fileset": 10,
-        "phpdocumentor/reflection": 20,
+        "phpdocumentor/reflection": 0,
         "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/unified-asset-installer": 10,
         "phpdocumentor/template-responsive-twig": 20,
