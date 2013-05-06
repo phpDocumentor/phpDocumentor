@@ -28,7 +28,7 @@
 
         "phpdocumentor/graphviz":            "1.*@beta",
         "phpdocumentor/fileset":             "1.*@beta",
-	    "phpdocumentor/reflection":          "0.1.*@dev",
+	    "phpdocumentor/reflection":          "0.1.*@stable",
 	    "phpdocumentor/reflection-docblock": "2.*@dev",
 
         "phpdocumentor/unified-asset-installer":  "1.*@beta",
