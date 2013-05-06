@@ -386,7 +386,7 @@ class Reflector extends BuilderAbstract
             ? $container->getFullyQualifiedStructuralElementName() . '::'
             : '\\' . $data->getNamespace() . '\\';
 
-        $constantDescriptor->setFullyQualifiedStructuralElementName($prefix . $data->getName());
+        $constantDescriptor->setFullyQualifiedStructuralElementName($prefix . $data->getShortName());
         $constantDescriptor->setName($data->getShortName());
         $constantDescriptor->setValue($data->getValue());
         $constantDescriptor->setNamespace('\\' . $data->getNamespace());
