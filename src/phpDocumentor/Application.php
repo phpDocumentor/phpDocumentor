@@ -68,16 +68,7 @@ class Application extends Cilex
             }
         );
 
-        $this['serializer'] = $this->share(
-            function () {
-                AnnotationRegistry::registerAutoloadNamespace(
-                    'JMS\Serializer\Annotation',
-                    __DIR__ . '/../../vendor/jms/serializer/src'
-                );
-
-                return SerializerBuilder::create()->build();
-            }
-        );
+        $this->addSerializer();
 
         $this->addDescriptorServices();
 
@@ -237,6 +228,31 @@ class Application extends Cilex
     }
 
     /**
+     * Adds the serializer to the container
+     *
+     * @return void
+     */
+    protected function addSerializer()
+    {
+        $this['serializer'] = $this->share(
+            function () {
+                $serializerPath = __DIR__ . '/../../vendor/jms/serializer/src';
+
+                if (!file_exists($serializerPath)) {
+                    $serializerPath = __DIR__ . '/../../../../jms/serializer/src';
+                }
+
+                AnnotationRegistry::registerAutoloadNamespace(
+                    'JMS\Serializer\Annotation',
+                    $serializerPath
+                );
+
+                return SerializerBuilder::create()->build();
+            }
+        );
+    }
+
+    /**
      * Run the application and if no command is provided, use project:run.
      *
      * @param bool $interactive Whether to run in interactive mode.
@@ -260,7 +276,7 @@ class Application extends Cilex
 }
 
 /**
- * Tries to find the autoloader relative to ththis file and return its path.
+ * Tries to find the autoloader relative to this file and return its path.
  *
  * @throws \RuntimeException if the autoloader could not be found.
  *
