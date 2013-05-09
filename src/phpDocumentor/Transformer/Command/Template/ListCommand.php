@@ -67,10 +67,13 @@ HELP
      */
     protected function getTemplateNames()
     {
+        $template_dir = dirname(__FILE__) . '/../../../../data/templates';
+        if (!file_exists($template_dir)) {
+            $template_dir = dirname(__FILE__) . '/../../../../../data/templates';
+        }
+
         /** @var \RecursiveDirectoryIterator $files */
-        $files = new \DirectoryIterator(
-            dirname(__FILE__) . '/../../../../data/templates'
-        );
+        $files = new \DirectoryIterator($template_dir);
 
         $template_names = array();
         while ($files->valid()) {
