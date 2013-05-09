@@ -1,34 +1,32 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 
-class ParamDescriptor extends TagDescriptor
+class ParamDescriptor extends ReturnDescriptor
 {
     protected $variableName = '';
-    protected $types;
 
     public function __construct(ParamTag $reflectionTag)
     {
         parent::__construct($reflectionTag);
 
         $this->variableName = $reflectionTag->getVariableName();
-        $this->types = $reflectionTag->getTypes();
     }
 
     public function getVariableName()
     {
         return $this->variableName;
-    }
-
-    public function setTypes($types)
-    {
-        $this->types = $types;
-    }
-
-    public function getTypes()
-    {
-        return $this->types;
     }
 }
