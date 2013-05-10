@@ -17,7 +17,7 @@ namespace phpDocumentor\Descriptor;
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
     /** @var Collection $extends */
-    protected $extends;
+    protected $parents;
 
     /** @var Collection $constants */
     protected $constants;
@@ -40,9 +40,9 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /**
      * {@inheritDoc}
      */
-    public function setParent(Collection $extends)
+    public function setParent($parents)
     {
-        $this->extends = $extends;
+        $this->parents = $parents;
     }
 
     /**
@@ -50,7 +50,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
      */
     public function getParent()
     {
-        return $this->extends;
+        return $this->parents;
     }
 
     /**
