@@ -154,4 +154,33 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->fixture->isFinal());
     }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getMagicProperties
+     */
+    public function testGetMagicPropertiesUsingPropertyTags()
+    {
+        $variableName = 'variableName';
+        $description  = 'description';
+        $types        = array('string');
+
+        $this->assertEquals(0, $this->fixture->getMagicProperties()->count());
+
+        $propertyMock = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
+        $propertyMock->shouldReceive('getVariableName')->andReturn($variableName);
+        $propertyMock->shouldReceive('getDescription')->andReturn($description);
+        $propertyMock->shouldReceive('getTypes')->andReturn($types);
+
+        $this->fixture->getTags()->get('property', new Collection())->add($propertyMock);
+
+        $magicProperties = $this->fixture->getMagicProperties();
+
+        $this->assertCount(1, $magicProperties);
+
+        /** @var PropertyDescriptor $magicProperty */
+        $magicProperty = current($magicProperties->getAll());
+        $this->assertEquals($variableName, $magicProperty->getName());
+        $this->assertEquals($description, $magicProperty->getDescription());
+        $this->assertEquals($types, $magicProperty->getTypes());
+    }
 }

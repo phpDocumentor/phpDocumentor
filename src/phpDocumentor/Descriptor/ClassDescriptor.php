@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
+
 /**
  * Descriptor representing a Class.
  */
@@ -172,6 +174,35 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         }
 
         return $this->properties->merge($this->getParent()->getProperties(true));
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMagicProperties()
+    {
+        /** @var Collection $propertyTags */
+        $propertyTags = clone $this->getTags()->get('property', new Collection());
+        $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
+        $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
+
+        if ($this->getParent() instanceof static) {
+            $propertyTags->merge($this->getParent()->getMagicProperties());
+        }
+
+        $properties = new Collection();
+
+        /** @var Tag\PropertyDescriptor $propertyTag */
+        foreach ($propertyTags as $propertyTag) {
+            $property = new PropertyDescriptor();
+            $property->setName($propertyTag->getVariableName());
+            $property->setDescription($propertyTag->getDescription());
+            $property->setTypes($propertyTag->getTypes());
+
+            $properties->add($property);
+        }
+
+        return $properties;
     }
 
     public function setPackage($package)
