@@ -20,26 +20,8 @@ use phpDocumentor\Descriptor\Collection;
  * @see NamespaceInterface Classes may be contained in namespaces.
  * @see FileInterface      Classes may be defined in a file.
  */
-interface ClassInterface extends BaseInterface
+interface ClassInterface extends BaseInterface, ChildInterface
 {
-    /**
-     * Sets the reference to a superclass for this class.
-     *
-     * @param ClassDescriptor $extends Reference to the Object representing another class.
-     *   May not point to the same class.
-     *
-     * @return void
-     */
-    public function setParent($extends);
-
-    /**
-     * Sets the parent class.
-     *
-     * @return ClassDescriptor|null represents ClassDescriptor with the superclass or null
-     *    if not extended.
-     */
-    public function getParent();
-
     public function setInterfaces(Collection $interfaces);
 
     /**

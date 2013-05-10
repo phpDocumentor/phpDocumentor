@@ -13,15 +13,8 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 
-interface InterfaceInterface extends BaseInterface
+interface InterfaceInterface extends BaseInterface, ChildInterface
 {
-    public function setParent(Collection $extends);
-
-    /**
-     * @return Collection
-     */
-    public function getParent();
-
     public function setMethods(Collection $methods);
 
     /**
