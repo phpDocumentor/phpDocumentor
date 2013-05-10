@@ -17,7 +17,7 @@ namespace phpDocumentor\Descriptor;
 class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInterface
 {
     /** @var ClassDescriptor|null $extends Reference to an instance of the superclass for this class, if any. */
-    protected $extends;
+    protected $parent;
 
     /** @var Collection $implements References to interfaces that are implemented by this class. */
     protected $implements;
@@ -53,9 +53,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setParent($extends)
+    public function setParent($parents)
     {
-        $this->extends = $extends;
+        $this->parent = $parents;
     }
 
     /**
@@ -63,7 +63,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getParent()
     {
-        return $this->extends;
+        return $this->parent;
     }
 
     /**
