@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Tag\BaseTypes;
 
-abstract class TypedVariableAbstract extends TypedDescriptorAbstract
+abstract class TypedVariableAbstract extends TypedAbstract
 {
     protected $variableName = '';
 
