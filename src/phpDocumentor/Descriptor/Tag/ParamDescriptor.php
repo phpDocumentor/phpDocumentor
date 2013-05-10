@@ -11,22 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
-
-class ParamDescriptor extends ReturnDescriptor
+class ParamDescriptor extends BaseTypes\TypedVariableAbstract
 {
-    protected $variableName = '';
-
-    public function __construct(ParamTag $reflectionTag)
-    {
-        parent::__construct($reflectionTag);
-
-        $this->variableName = $reflectionTag->getVariableName();
-    }
-
-    public function getVariableName()
-    {
-        return $this->variableName;
-    }
 }

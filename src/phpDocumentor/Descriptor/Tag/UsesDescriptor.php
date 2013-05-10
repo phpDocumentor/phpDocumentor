@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
-
-class UsesDescriptor extends ReturnDescriptor
+class UsesDescriptor extends BaseTypes\TypedAbstract
 {
 }
