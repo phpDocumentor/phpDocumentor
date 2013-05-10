@@ -30,7 +30,7 @@ class StandardRouter extends RouterAbstract
     public function configure()
     {
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
-        $packageGenerator = new UrlGenerator\Standard\PackageDescriptor();
+        $packageGenerator   = new UrlGenerator\Standard\PackageDescriptor();
         $classGenerator     = new UrlGenerator\Standard\ClassDescriptor();
 
         $this[] = new Rule(
