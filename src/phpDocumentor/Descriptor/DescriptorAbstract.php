@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+
 abstract class DescriptorAbstract
 {
     /** @var string */
@@ -119,6 +121,11 @@ abstract class DescriptorAbstract
      */
     public function getSummary()
     {
+        // if the summary is not set, inherit it from the parent
+        if (!$this->summary && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
+            return $this->getParent()->getSummary();
+        }
+
         return $this->summary;
     }
 
@@ -137,6 +144,11 @@ abstract class DescriptorAbstract
      */
     public function getDescription()
     {
+        // if the summary is not set, inherit it from the parent
+        if (!$this->description && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
+            return $this->getParent()->getDescription();
+        }
+
         return $this->description;
     }
 
@@ -199,17 +211,66 @@ abstract class DescriptorAbstract
      */
     public function getPackage()
     {
+        // if the package is not set, inherit it from the parent
+        if (!$this->package && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
+            return $this->getParent()->getPackage();
+        }
+
         return $this->package;
     }
 
     /**
-     * Represents this object by its unique identifier, the Fully Qualified Structural Element Name.
+     * Returns the authors for this element.
      *
-     * @return string
+     * @return Collection
      */
-    public function __toString()
+    public function getAuthor()
     {
-        return $this->getFullyQualifiedStructuralElementName();
+        /** @var Collection $author */
+        $author = $this->getTags()->get('author', new Collection());
+
+        // if the package is not set, inherit it from the parent
+        if ($author->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
+            return $this->getParent()->getAuthor();
+        }
+
+        return $author;
+    }
+
+    /**
+     * Returns the versions for this element.
+     *
+     * @return Collection
+     */
+    public function getVersion()
+    {
+        /** @var Collection $version */
+        $version = $this->getTags()->get('version', new Collection());
+
+        // if the package is not set, inherit it from the parent
+        if ($version->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
+            return $this->getParent()->getVersion();
+        }
+
+        return $version;
+    }
+
+    /**
+     * Returns the copyrights for this element.
+     *
+     * @return Collection
+     */
+    public function getCopyright()
+    {
+        /** @var Collection $copyright */
+        $copyright = $this->getTags()->get('copyright', new Collection());
+
+        // if the package is not set, inherit it from the parent
+        if ($copyright->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
+            return $this->getParent()->getCopyright();
+        }
+
+        return $copyright;
     }
 
     /**
@@ -226,5 +287,38 @@ abstract class DescriptorAbstract
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Dynamically constructs a set of getters to retrieve tag (collections) with.
+     *
+     * Important: __call() is not a fast method of access; it is preferred to directly use the getTags() collection.
+     * This interface is provided to allow for uniform and easy access to certain tags.
+     *
+     * @param string  $name
+     * @param mixed[] $arguments
+     *
+     * @return Collection|null
+     */
+    public function __call($name, $arguments)
+    {
+        if (substr($name, 0, 3) !== 'get') {
+            return null;
+        }
+
+        $tagName = substr($name, 3);
+        $tagName[0] = strtolower($tagName[0]); // lowercase the first letter
+
+        return $this->getTags()->get($tagName, new Collection());
+    }
+
+    /**
+     * Represents this object by its unique identifier, the Fully Qualified Structural Element Name.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getFullyQualifiedStructuralElementName();
     }
 }
