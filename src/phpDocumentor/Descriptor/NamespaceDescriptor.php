@@ -66,7 +66,6 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
         return $this->parent;
     }
 
-
     /**
      * @param Collection $classes
      */
