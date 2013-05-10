@@ -17,15 +17,18 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 class TagFactory
 {
     protected $tags = array(
-        'author' => 'phpDocumentor\Descriptor\Tag\AuthorDescriptor',
-        'return' => 'phpDocumentor\Descriptor\Tag\ReturnDescriptor',
-        'see'    => 'phpDocumentor\Descriptor\Tag\SeeDescriptor',
-        'link'   => 'phpDocumentor\Descriptor\Tag\LinkDescriptor',
-        'uses'   => 'phpDocumentor\Descriptor\Tag\UsesDescriptor',
-        'param'  => 'phpDocumentor\Descriptor\Tag\ParamDescriptor',
-        'var'    => 'phpDocumentor\Descriptor\Tag\VarDescriptor',
-        'throws' => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
-        'throw'  => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
+        'author'         => 'phpDocumentor\Descriptor\Tag\AuthorDescriptor',
+        'return'         => 'phpDocumentor\Descriptor\Tag\ReturnDescriptor',
+        'see'            => 'phpDocumentor\Descriptor\Tag\SeeDescriptor',
+        'link'           => 'phpDocumentor\Descriptor\Tag\LinkDescriptor',
+        'uses'           => 'phpDocumentor\Descriptor\Tag\UsesDescriptor',
+        'param'          => 'phpDocumentor\Descriptor\Tag\ParamDescriptor',
+        'var'            => 'phpDocumentor\Descriptor\Tag\VarDescriptor',
+        'property'       => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
+        'property-read'  => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
+        'property-write' => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
+        'throws'         => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
+        'throw'          => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
     );
 
     public function create(Tag $reflectorTag)
