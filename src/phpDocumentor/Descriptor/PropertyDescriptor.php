@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+
 /**
  * Descriptor representing a property.
  */
@@ -109,5 +111,23 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     public function getVisibility()
     {
         return $this->visibility;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getVar()
+    {
+        /** @var Collection $version */
+        $var = $this->getTags()->get('var', new Collection());
+
+        if ($var->count() == 0 && ($this->getParent() instanceof ChildInterface)) {
+            $parentProperty = $this->getParent()->getProperties()->get($this->getName());
+            if ($parentProperty) {
+                return $parentProperty->getVar();
+            }
+        }
+
+        return $var;
     }
 }
