@@ -224,8 +224,11 @@ abstract class DescriptorAbstract
      */
     public function getSubPackage()
     {
-        // if the subpackage is not set, inherit it from the parent
-        if (!$this->subpackage
+        /** @var Collection $version */
+        $subpackage = $this->getTags()->get('subpackage', new Collection());
+
+        // if the package is not set, inherit it from the parent
+        if ($subpackage->count() == 0
             && ($this instanceof ChildInterface)
             && ($this->getParent() instanceof self)
             && ($this->getParent()->getPackage() == $this->getPackage())
@@ -233,7 +236,8 @@ abstract class DescriptorAbstract
             return $this->getParent()->getSubPackage();
         }
 
-        return $this->subpackage;
+        return $subpackage;
+
     }
 
     /**
