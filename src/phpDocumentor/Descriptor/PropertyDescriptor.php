@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
 
 /**
  * Descriptor representing a property.
@@ -21,8 +22,8 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     /** @var ClassDescriptor|TraitDescriptor $parent */
     protected $parent;
 
-    /** @var string[] $types */
-    protected $types = array();
+    /** @var string[]|null $types */
+    protected $types;
 
     /** @var string $default */
     protected $default;
@@ -94,6 +95,16 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
      */
     public function getTypes()
     {
+        if (!$this->types) {
+            $this->types = array();
+
+            /** @var VarDescriptor $var */
+            $var = current($this->getVar());
+            if ($var) {
+                $this->types = $var->getTypes();
+            }
+        }
+
         return $this->types;
     }
 
