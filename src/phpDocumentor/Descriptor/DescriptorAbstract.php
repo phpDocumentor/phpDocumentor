@@ -220,6 +220,23 @@ abstract class DescriptorAbstract
     }
 
     /**
+     * @return string
+     */
+    public function getSubPackage()
+    {
+        // if the subpackage is not set, inherit it from the parent
+        if (!$this->subpackage
+            && ($this instanceof ChildInterface)
+            && ($this->getParent() instanceof self)
+            && ($this->getParent()->getPackage() == $this->getPackage())
+        ) {
+            return $this->getParent()->getSubPackage();
+        }
+
+        return $this->subpackage;
+    }
+
+    /**
      * Returns the authors for this element.
      *
      * @return Collection
