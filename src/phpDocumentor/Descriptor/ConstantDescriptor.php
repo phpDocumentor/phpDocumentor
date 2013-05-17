@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+
 /**
  * Descriptor representing a constant
  */
@@ -82,7 +84,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         $var = $this->getTags()->get('var', new Collection());
 
         if ($var->count() == 0 && ($this->getParent() instanceof ChildInterface)) {
-            $parentConstant = $this->getParent()->getProperties()->get($this->getName());
+            $parentConstant = $this->getParent()->getConstants()->get($this->getName());
             if ($parentConstant) {
                 return $parentConstant->getVar();
             }
