@@ -10,7 +10,7 @@ For developers
    :maxdepth: 2
 
    for-developers/introduction
-   for-developers/architecture
+   for-developers/architecture/index
    for-developers/documentation
    for-developers/integrate-into-your-own-project
    for-developers/profiling
