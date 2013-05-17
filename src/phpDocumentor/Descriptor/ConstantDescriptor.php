@@ -72,4 +72,22 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     {
         return $this->value;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getVar()
+    {
+        /** @var Collection $version */
+        $var = $this->getTags()->get('var', new Collection());
+
+        if ($var->count() == 0 && ($this->getParent() instanceof ChildInterface)) {
+            $parentConstant = $this->getParent()->getProperties()->get($this->getName());
+            if ($parentConstant) {
+                return $parentConstant->getVar();
+            }
+        }
+
+        return $var;
+    }
 }
