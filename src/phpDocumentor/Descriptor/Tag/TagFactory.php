@@ -24,6 +24,7 @@ class TagFactory
         'uses'           => 'phpDocumentor\Descriptor\Tag\UsesDescriptor',
         'param'          => 'phpDocumentor\Descriptor\Tag\ParamDescriptor',
         'var'            => 'phpDocumentor\Descriptor\Tag\VarDescriptor',
+        'method'         => 'phpDocumentor\Descriptor\Tag\MethodDescriptor',
         'property'       => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
         'property-read'  => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
         'property-write' => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',

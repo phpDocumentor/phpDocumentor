@@ -65,6 +65,32 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     }
 
     /**
+     * @return Collection
+     */
+    public function getMagicMethods()
+    {
+        /** @var Collection $methodTags */
+        $methodTags = clone $this->getTags()->get('method', new Collection());
+
+        if ($this->getParent() instanceof static) {
+            $methodTags->merge($this->getParent()->getMagicMethods());
+        }
+
+        $methods = new Collection();
+
+        /** @var Tag\MethodDescriptor $methodTag */
+        foreach ($methodTags as $methodTag) {
+            $method = new MethodDescriptor();
+            $method->setName($methodTag->getVariableName());
+            $method->setDescription($methodTag->getDescription());
+
+            $methods->add($method);
+        }
+
+        return $methods;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function setProperties(Collection $properties)
@@ -93,6 +119,35 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         $inheritedProperties->merge($this->getParent()->getInheritedProperties());
 
         return $inheritedProperties;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMagicProperties()
+    {
+        /** @var Collection $propertyTags */
+        $propertyTags = clone $this->getTags()->get('property', new Collection());
+        $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
+        $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
+
+        if ($this->getParent() instanceof static) {
+            $propertyTags->merge($this->getParent()->getMagicProperties());
+        }
+
+        $properties = new Collection();
+
+        /** @var Tag\PropertyDescriptor $propertyTag */
+        foreach ($propertyTags as $propertyTag) {
+            $property = new PropertyDescriptor();
+            $property->setName($propertyTag->getVariableName());
+            $property->setDescription($propertyTag->getDescription());
+            $property->setTypes($propertyTag->getTypes());
+
+            $properties->add($property);
+        }
+
+        return $properties;
     }
 
     public function setPackage($package)

@@ -168,6 +168,32 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
+     * @return Collection
+     */
+    public function getMagicMethods()
+    {
+        /** @var Collection $methodTags */
+        $methodTags = clone $this->getTags()->get('method', new Collection());
+
+        if ($this->getParent() instanceof static) {
+            $methodTags->merge($this->getParent()->getMagicMethods());
+        }
+
+        $methods = new Collection();
+
+        /** @var Tag\MethodDescriptor $methodTag */
+        foreach ($methodTags as $methodTag) {
+            $method = new MethodDescriptor();
+            $method->setName($methodTag->getVariableName());
+            $method->setDescription($methodTag->getDescription());
+
+            $methods->add($method);
+        }
+
+        return $methods;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function setProperties(Collection $properties)
@@ -222,6 +248,10 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $property->setTypes($propertyTag->getTypes());
 
             $properties->add($property);
+        }
+
+        if ($this->getParent() instanceof ClassDescriptor) {
+            $properties->merge($this->getParent()->getMagicProperties());
         }
 
         return $properties;
