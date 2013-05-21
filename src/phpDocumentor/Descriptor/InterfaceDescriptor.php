@@ -85,6 +85,21 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $this->methods;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getInheritedMethods()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof InterfaceDescriptor)) {
+            return new Collection();
+        }
+
+        $inheritedMethods = clone $this->getParent()->getMethods();
+        $inheritedMethods->merge($this->getParent()->getInheritedMethods());
+
+        return $inheritedMethods;
+    }
+
     public function setPackage($package)
     {
         parent::setPackage($package);

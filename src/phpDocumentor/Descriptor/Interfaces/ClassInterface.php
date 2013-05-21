@@ -49,12 +49,22 @@ interface ClassInterface extends BaseInterface, ChildInterface
     /**
      * @return Collection
      */
-    public function getMethods($includeInherited = true);
+    public function getMethods();
+
+    /**
+     * @return Collection
+     */
+    public function getInheritedMethods();
 
     public function setProperties(Collection $properties);
 
     /**
      * @return Collection
      */
-    public function getProperties($includeInherited = true);
+    public function getProperties();
+
+    /**
+     * @return Collection
+     */
+    public function getInheritedProperties();
 }

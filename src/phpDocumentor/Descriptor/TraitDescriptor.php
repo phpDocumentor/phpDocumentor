@@ -52,6 +52,21 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /**
      * {@inheritDoc}
      */
+    public function getInheritedMethods()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof TraitDescriptor)) {
+            return new Collection();
+        }
+
+        $inheritedMethods = clone $this->getParent()->getMethods();
+        $inheritedMethods->merge($this->getParent()->getInheritedMethods());
+
+        return $inheritedMethods;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setProperties(Collection $properties)
     {
         $this->properties = $properties;
@@ -63,6 +78,21 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     public function getProperties()
     {
         return $this->properties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInheritedProperties()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof TraitDescriptor)) {
+            return new Collection();
+        }
+
+        $inheritedProperties = clone $this->getParent()->getProperties();
+        $inheritedProperties->merge($this->getParent()->getInheritedProperties());
+
+        return $inheritedProperties;
     }
 
     public function setPackage($package)

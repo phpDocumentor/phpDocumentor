@@ -15,6 +15,13 @@ use phpDocumentor\Descriptor\Collection;
 
 interface InterfaceInterface extends BaseInterface, ChildInterface
 {
+    public function setConstants(Collection $constants);
+
+    /**
+     * @return Collection
+     */
+    public function getConstants();
+
     public function setMethods(Collection $methods);
 
     /**
@@ -22,10 +29,8 @@ interface InterfaceInterface extends BaseInterface, ChildInterface
      */
     public function getMethods();
 
-    public function setConstants(Collection $constants);
-
     /**
      * @return Collection
      */
-    public function getConstants();
+    public function getInheritedMethods();
 }

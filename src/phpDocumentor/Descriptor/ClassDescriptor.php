@@ -147,13 +147,24 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getMethods($includeInherited = true)
+    public function getMethods()
     {
-        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
-            return $this->methods;
+        return $this->methods;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInheritedMethods()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+            return new Collection();
         }
 
-        return $this->methods->merge($this->getParent()->getMethods(true));
+        $inheritedMethods = clone $this->getParent()->getMethods();
+        $inheritedMethods->merge($this->getParent()->getInheritedMethods());
+
+        return $inheritedMethods;
     }
 
     /**
@@ -167,13 +178,24 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getProperties($includeInherited = true)
+    public function getProperties()
     {
-        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
-            return $this->properties;
+        return $this->properties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInheritedProperties()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+            return new Collection();
         }
 
-        return $this->properties->merge($this->getParent()->getProperties(true));
+        $inheritedProperties = clone $this->getParent()->getProperties();
+        $inheritedProperties->merge($this->getParent()->getInheritedProperties());
+
+        return $inheritedProperties;
     }
 
     /**
