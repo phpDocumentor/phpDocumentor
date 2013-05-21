@@ -122,7 +122,10 @@ abstract class DescriptorAbstract
     public function getSummary()
     {
         // if the summary is not set, inherit it from the parent
-        if (!$this->summary && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
+        if ((!$this->summary || strtolower(trim($this->summary)) == '{@inheritdoc}')
+            && ($this instanceof ChildInterface)
+            && ($this->getParent() instanceof self)
+        ) {
             return $this->getParent()->getSummary();
         }
 
