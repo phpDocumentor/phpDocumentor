@@ -15,6 +15,18 @@ use phpDocumentor\Descriptor\Collection;
 
 interface TraitInterface extends BaseInterface
 {
+    public function setProperties(Collection $properties);
+
+    /**
+     * @return Collection
+     */
+    public function getProperties();
+
+    /**
+     * @return Collection
+     */
+    public function getInheritedProperties();
+
     public function setMethods(Collection $methods);
 
     /**
@@ -22,10 +34,8 @@ interface TraitInterface extends BaseInterface
      */
     public function getMethods();
 
-    public function setProperties(Collection $properties);
-
     /**
      * @return Collection
      */
-    public function getProperties();
+    public function getInheritedMethods();
 }

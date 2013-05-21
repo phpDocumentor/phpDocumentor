@@ -1,7 +1,7 @@
-2013/05/01: Version 2.0.0b1
+2013/06/01: Version 2.0.0b1
 ---------------------------
 
-The first beta of phpDocumentor contains the final functionality for version 2.0.
+The 13th alpha of phpDocumentor contains the final functionality for version 2.0.
 A lot of effort has been put in making sure that the API, Object structure and plugin mechanism will remain
 backwards compatible until version 3.0.
 
@@ -33,6 +33,7 @@ FIXED      Define transformations in phpdoc.xml
 FIXED      Define multiple templates in phpdoc.xml
 FIXED      Performance is improved by re-approaching inheritance from a different angle
 FIXED      Various small and unnamed bugs
+CHANGED    Moved Inheritance from a Behaviour into the Descriptors
 CHANGED    Temporarily removed deprecated report
 CHANGED    Target option of parser now only accepts a folder
 CHANGED    Various performance improvements

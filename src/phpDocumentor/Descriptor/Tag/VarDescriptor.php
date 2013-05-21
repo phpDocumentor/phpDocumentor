@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
-
-class VarDescriptor extends ParamDescriptor
+class VarDescriptor extends BaseTypes\TypedVariableAbstract
 {
 }
