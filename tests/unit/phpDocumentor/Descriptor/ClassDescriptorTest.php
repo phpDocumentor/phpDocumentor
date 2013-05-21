@@ -130,6 +130,16 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
+     */
+    public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent()
+    {
+        $inheritedMethods = $this->fixture->getInheritedMethods();
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $inheritedMethods);
+        $this->assertCount(0, $inheritedMethods);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\ClassDescriptor::isAbstract
      * @covers phpDocumentor\Descriptor\ClassDescriptor::setAbstract
      */
