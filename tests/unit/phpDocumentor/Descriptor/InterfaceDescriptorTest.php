@@ -36,7 +36,7 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInitialize()
     {
-        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'extends', $this->fixture);
+        $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'parents', $this->fixture);
         $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'constants', $this->fixture);
         $this->assertAttributeInstanceOf('phpDocumentor\Descriptor\Collection', 'methods', $this->fixture);
     }
