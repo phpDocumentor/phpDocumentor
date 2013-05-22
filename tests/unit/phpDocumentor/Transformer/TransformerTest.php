@@ -77,15 +77,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::setTarget
-     * @expectedException \InvalidArgumentException
-     */
-    public function testExceptionWhenUnknownDirectoryIsProvided()
-    {
-        $this->fixture->setTarget(__DIR__ . '_make_this_unknown');
-    }
-
-    /**
      * @covers phpDocumentor\Transformer\Transformer::setBehaviours
      * @covers phpDocumentor\Transformer\Transformer::getBehaviours
      */
