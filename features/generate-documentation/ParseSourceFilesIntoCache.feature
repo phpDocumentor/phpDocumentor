@@ -1,6 +1,6 @@
-Feature: Generate an AST (Structure file)
-  In order to generate an Abstract Syntax Tree of the source code
-  as documentation generating user
+Feature: Parse source files
+  In order to generate documentation
+  as a documentation generating user
   I need to parse the contents of my source tree
 
   Scenario: Do not provide any files or directories to parse
