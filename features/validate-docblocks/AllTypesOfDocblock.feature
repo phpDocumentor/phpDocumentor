@@ -6,8 +6,8 @@ Feature: Validate whether my DocBlocks are valid
   Scenario: Show an error when DocBlocks are missing a Short Description.
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor against the file "tests/data/NoShortDescription.php"
-    Then I should get a log entry "No short description for function \noShortDescriptionFunction()"
-    Then I should get a log entry "No short description for file NoShortDescription.php"
-    Then I should get a log entry "No short description for class \NoShortDescription"
-    Then I should get a log entry "No short description for property $_noShortDescriptionProperty"
-    Then I should get a log entry "No short description for method noShortDescriptionFound()"
+    Then I should get a log entry "No short description for \noShortDescriptionFunction()"
+    Then I should get a log entry "No short description for NoShortDescription.php"
+    Then I should get a log entry "No short description for \NoShortDescription"
+    Then I should get a log entry "No short description for $_noShortDescriptionProperty"
+    Then I should get a log entry "No short description for noShortDescriptionFound()"
