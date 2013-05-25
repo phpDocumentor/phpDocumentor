@@ -47,10 +47,11 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
 
-        $mock = &m::mock('phpDocumentor\Descriptor\Collection');
+        $mockInstance = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock = &$mockInstance;
 
         $this->fixture->setArguments($mock);
 
-        $this->assertSame($mock, $this->fixture->getArguments());
+        $this->assertSame($mockInstance, $this->fixture->getArguments());
     }
 }
