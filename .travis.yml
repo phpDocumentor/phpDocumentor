@@ -5,8 +5,8 @@ php:
   - 5.4
 
 script:
- - vendor/phpunit/phpunit/composer/bin/phpunit
-# - vendor/behat/behat/bin/behat --no-paths --format failed
+ - bin/phpunit
+# - bin/behat --no-paths --format failed
 
 before_script:
  - sudo apt-get -qq update > /dev/null
@@ -14,8 +14,8 @@ before_script:
  - phpenv rehash > /dev/null
  - composer selfupdate --quiet
  - composer install --dev
- - vendor/phpunit/phpunit/composer/bin/phpunit
-# - vendor/behat/behat/bin/behat --no-paths --format failed
+ - bin/phpunit
+# - bin/behat --no-paths --format failed
  - composer update --dev
 
 notifications:

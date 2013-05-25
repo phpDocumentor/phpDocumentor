@@ -11,16 +11,44 @@
 
 namespace phpDocumentor\Descriptor;
 
+/**
+ * Base class for constructing a ProjectDescriptor with Descriptor tree.
+ *
+ * This class takes a Project Descriptor and allows the user to add all element types onto it. These
+ * element types may be derived from an undescribed data source so that it is possible to have various
+ * inputs.
+ *
+ * Example usages are (these do not have to exist):
+ *
+ * - Builder\Reflection, where the elements that are interpreted by phpDocumentor's Static Reflection library are
+ *   converted into matching Descriptors.
+ * - Builder\Database, where elements are stored in a database and an id is provided as data
+ *
+ * And more of these are imaginable.
+ */
 abstract class BuilderAbstract
 {
+    /** @var string  */
+    const DEFAULT_PROJECT_NAME = 'Untitled project';
+
     /** @var ProjectDescriptor $project */
     protected $project;
 
+    /**
+     * Initializes this builder with a new or existing Project Descriptor.
+     *
+     * @param ProjectDescriptor $project
+     */
     public function __construct(ProjectDescriptor $project = null)
     {
-        $this->project = $project ?: new ProjectDescriptor('Untitled project');
+        $this->project = $project ?: new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
     }
 
+    /**
+     * Returns the project descriptor that is being built.
+     *
+     * @return ProjectDescriptor
+     */
     public function getProjectDescriptor()
     {
         return $this->project;
