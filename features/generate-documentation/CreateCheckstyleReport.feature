@@ -24,6 +24,6 @@ Feature: Create a report of all errors formatted using the CheckStyle format
   Scenario: Write errors to an XML file by adding the Checkstyle writer to the config.
     Given a source file containing validation errors
       And the configuration file has a transformation with the "checkstyle" writer having "checkstyle.xml" as artifact
-    When I run phpDocumentor
+    When I run phpDocumentor with the "responsive-twig" template
     Then I should get a file "checkstyle.xml" containing checkstyle error definitions
 

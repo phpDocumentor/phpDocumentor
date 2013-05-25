@@ -240,12 +240,4 @@ class ExecutionContext extends BehatContext
     {
         throw new PendingException();
     }
-
-    /**
-     * @When /^I run phpDocumentor$/
-     */
-    public function iRunPhpdocumentor()
-    {
-        throw new PendingException();
-    }
 }
