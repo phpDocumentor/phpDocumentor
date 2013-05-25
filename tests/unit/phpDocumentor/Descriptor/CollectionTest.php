@@ -169,6 +169,21 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\Collection::clear
+     */
+    public function testClearingTheCollection()
+    {
+        $this->fixture[1] = 'a';
+        $this->fixture[2] = 'b';
+
+        $this->assertCount(2, $this->fixture);
+
+        $this->fixture->clear();
+
+        $this->assertCount(0, $this->fixture);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\Collection::offsetExists
      */
     public function testIfExistingElementsAreDetected()
@@ -180,5 +195,22 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(isset($this->fixture[0]));
         $this->assertTrue($this->fixture->offsetExists(0));
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\Collection::merge
+     */
+    public function testIfAfterMergeCollectionContainsAllItems()
+    {
+        $expected = array(1 => 'a', 2 => 'b', 4 => 'c');
+        $this->fixture[1] = 'a';
+        $this->fixture[2] = 'b';
+
+        $collection2 = new Collection();
+        $collection2[4] = 'c';
+
+        $result = $this->fixture->merge($collection2);
+
+        $this->assertSame($expected, $result->getAll());
     }
 }
