@@ -69,7 +69,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * @param Collection $classes
      */
-    protected function setClasses(Collection $classes)
+    public function setClasses(Collection $classes)
     {
         $this->classes = $classes;
     }
@@ -85,7 +85,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * @param Collection $constants
      */
-    protected function setConstants(Collection $constants)
+    public function setConstants(Collection $constants)
     {
         $this->constants = $constants;
     }
@@ -101,7 +101,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * @param Collection $functions
      */
-    protected function setFunctions(Collection $functions)
+    public function setFunctions(Collection $functions)
     {
         $this->functions = $functions;
     }
@@ -117,7 +117,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * @param Collection $interfaces
      */
-    protected function setInterfaces(Collection $interfaces)
+    public function setInterfaces(Collection $interfaces)
     {
         $this->interfaces = $interfaces;
     }
@@ -133,7 +133,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * @param Collection $children
      */
-    protected function setChildren(Collection $children)
+    public function setChildren(Collection $children)
     {
         $this->children = $children;
     }
@@ -149,7 +149,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * @param Collection $traits
      */
-    protected function setTraits($traits)
+    public function setTraits($traits)
     {
         $this->traits = $traits;
     }
