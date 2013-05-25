@@ -29,10 +29,20 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     protected $value;
 
     /**
-     * @param null|ClassDescriptor|InterfaceDescriptor $parent
+     * Registers a parent class or interface with this constant.
+     *
+     * @param ClassDescriptor|InterfaceDescriptor|null $parent
+     *
+     * @throws \InvalidArgumentException if anything other than a class, interface or null was passed.
+     *
+     * @return void
      */
     public function setParent($parent)
     {
+        if (!$parent instanceof ClassDescriptor && !$parent instanceof InterfaceDescriptor && $parent !== null) {
+            throw new \InvalidArgumentException('Constants can only have an interface or class as parent');
+        }
+
         $this->parent = $parent;
     }
 
@@ -61,7 +71,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
             $this->types = array();
 
             /** @var VarDescriptor $var */
-            $var = current($this->getVar());
+            $var = $this->getVar()->get(0);
             if ($var) {
                 $this->types = $var->getTypes();
             }
@@ -91,11 +101,17 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function getVar()
     {
-        /** @var Collection $version */
+        /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
 
-        if ($var->count() == 0 && ($this->getParent() instanceof ChildInterface)) {
-            $parentConstant = $this->getParent()->getConstants()->get($this->getName());
+        if ($var->count() == 0
+            && ($this->getParent() instanceof ChildInterface)
+            && (
+                $this->getParent()->getParent() instanceof ClassDescriptor
+                || $this->getParent()->getParent() instanceof InterfaceDescriptor
+            )
+        ) {
+            $parentConstant = $this->getParent()->getParent()->getConstants()->get($this->getName());
             if ($parentConstant) {
                 return $parentConstant->getVar();
             }

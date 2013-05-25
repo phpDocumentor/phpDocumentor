@@ -30,6 +30,43 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getParent
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     */
+    public function testSetAndGetParentClass()
+    {
+        $this->assertSame(null, $this->fixture->getParent());
+
+        $parentMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $this->fixture->setParent($parentMock);
+
+        $this->assertSame($parentMock, $this->fixture->getParent());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSettingAParentFailsWhenInputIsNotNullClassOrInterface()
+    {
+        $this->fixture->setParent('string');
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getParent
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     */
+    public function testSetAndGetParentInterface()
+    {
+        $this->assertSame(null, $this->fixture->getParent());
+
+        $parentMock = m::mock('phpDocumentor\Descriptor\InterfaceDescriptor');
+        $this->fixture->setParent($parentMock);
+
+        $this->assertSame($parentMock, $this->fixture->getParent());
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::setTypes
      */
@@ -43,6 +80,50 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     */
+    public function testgetTypesDerivedFromVarTag()
+    {
+        $expected = array('string', 'null');
+
+        $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
+        $varTag->shouldReceive('getTypes')->andReturn($expected);
+
+        $this->fixture->getTags()->set('var', new Collection(array($varTag)));
+
+        $this->assertSame($expected, $this->fixture->getTypes());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     */
+    public function testGetTypesUsingInheritanceOfVarTag()
+    {
+        $expected = array('string', 'null');
+
+        $constantName = 'CONSTANT';
+        $this->fixture->setName($constantName);
+        $parentClass = $this->createParentClassWithSuperClassAndConstant($expected, $constantName);
+
+        // Attempt to get the types; which come from the superclass' constants
+        $this->fixture->setParent($parentClass);
+        $types = $this->fixture->getTypes();
+
+        $this->assertSame($expected, $types);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     */
+    public function testGetTypesUsingInheritanceWithInterfaceOfVarTag()
+    {
+        $this->markTestIncomplete('This functionality does not work yet');
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::getValue
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::setValue
      */
@@ -53,5 +134,40 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setValue('a');
 
         $this->assertSame('a', $this->fixture->getValue());
+    }
+
+    /**
+     * Creates a parentClass for a Constant with a SuperClass, which in turn has a constant exposing the given types.
+     *
+     * The created ParentClass can be used to test the inheritance of properties of a constant descriptor, such as
+     * inheriting type information.
+     *
+     * @param string[] $types
+     * @param string $constantName
+     *
+     * @return m\MockInterface|ClassDescriptor
+     */
+    protected function createParentClassWithSuperClassAndConstant($types, $constantName)
+    {
+        // construct the to-be-inherited constant and its @var tag
+        $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
+        $varTag->shouldReceive('getTypes')->andReturn($types);
+
+        $parentConstant = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+        $parentConstant->shouldReceive('getVar')->andReturn(new Collection(array($varTag)));
+
+        // create SuperClassMock and add a Constant collection with out to-be-inherited constant
+        $superClass = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $superClass->shouldReceive('getConstants')->andReturn(
+            new Collection(
+                array($constantName => $parentConstant)
+            )
+        );
+
+        // create and set the parent class for our fixture
+        $parentClass = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $parentClass->shouldReceive('getParent')->andReturn($superClass);
+
+        return $parentClass;
     }
 }

@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Tag\VarDescriptor;
-
 /**
  * Descriptor representing a Class.
  */
