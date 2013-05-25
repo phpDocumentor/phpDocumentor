@@ -11,13 +11,15 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
+
 /**
  * Descriptor representing a Class.
  */
 class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInterface
 {
     /** @var ClassDescriptor|null $extends Reference to an instance of the superclass for this class, if any. */
-    protected $extends;
+    protected $parent;
 
     /** @var Collection $implements References to interfaces that are implemented by this class. */
     protected $implements;
@@ -53,9 +55,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function setParent($extends)
+    public function setParent($parents)
     {
-        $this->extends = $extends;
+        $this->parent = $parents;
     }
 
     /**
@@ -63,7 +65,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getParent()
     {
-        return $this->extends;
+        return $this->parent;
     }
 
     /**
@@ -145,13 +147,50 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getMethods($includeInherited = true)
+    public function getMethods()
     {
-        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
-            return $this->methods;
+        return $this->methods;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInheritedMethods()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+            return new Collection();
         }
 
-        return $this->methods->merge($this->getParent()->getMethods(true));
+        $inheritedMethods = clone $this->getParent()->getMethods();
+        $inheritedMethods->merge($this->getParent()->getInheritedMethods());
+
+        return $inheritedMethods;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMagicMethods()
+    {
+        /** @var Collection $methodTags */
+        $methodTags = clone $this->getTags()->get('method', new Collection());
+
+        if ($this->getParent() instanceof static) {
+            $methodTags->merge($this->getParent()->getMagicMethods());
+        }
+
+        $methods = new Collection();
+
+        /** @var Tag\MethodDescriptor $methodTag */
+        foreach ($methodTags as $methodTag) {
+            $method = new MethodDescriptor();
+            $method->setName($methodTag->getVariableName());
+            $method->setDescription($methodTag->getDescription());
+
+            $methods->add($method);
+        }
+
+        return $methods;
     }
 
     /**
@@ -165,13 +204,57 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getProperties($includeInherited = true)
+    public function getProperties()
     {
-        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
-            return $this->properties;
+        return $this->properties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInheritedProperties()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+            return new Collection();
         }
 
-        return $this->properties->merge($this->getParent()->getProperties(true));
+        $inheritedProperties = clone $this->getParent()->getProperties();
+        $inheritedProperties->merge($this->getParent()->getInheritedProperties());
+
+        return $inheritedProperties;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMagicProperties()
+    {
+        /** @var Collection $propertyTags */
+        $propertyTags = clone $this->getTags()->get('property', new Collection());
+        $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
+        $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
+
+        if ($this->getParent() instanceof static) {
+            $propertyTags->merge($this->getParent()->getMagicProperties());
+        }
+
+        $properties = new Collection();
+
+        /** @var Tag\PropertyDescriptor $propertyTag */
+        foreach ($propertyTags as $propertyTag) {
+            $property = new PropertyDescriptor();
+            $property->setName($propertyTag->getVariableName());
+            $property->setDescription($propertyTag->getDescription());
+            $property->setTypes($propertyTag->getTypes());
+
+            $properties->add($property);
+        }
+
+        if ($this->getParent() instanceof ClassDescriptor) {
+            $properties->merge($this->getParent()->getMagicProperties());
+        }
+
+        return $properties;
     }
 
     public function setPackage($package)

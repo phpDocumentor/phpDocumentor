@@ -9,11 +9,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Descriptor\Tag;
+namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
 
-class ReturnDescriptor extends BaseTypes\TypedAbstract
+interface ChildInterface
 {
+    public function getParent();
+
+    public function setParent($parent);
 }

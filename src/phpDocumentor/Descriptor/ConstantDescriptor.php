@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
+
 /**
  * Descriptor representing a constant
  */
@@ -19,8 +22,8 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /** @var ClassDescriptor|InterfaceDescriptor|null $parent */
     protected $parent;
 
-    /** @var string[] $type */
-    protected $types = array();
+    /** @var string[]|null $type */
+    protected $types;
 
     /** @var string $value */
     protected $value;
@@ -54,6 +57,16 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function getTypes()
     {
+        if ($this->types === null) {
+            $this->types = array();
+
+            /** @var VarDescriptor $var */
+            $var = current($this->getVar());
+            if ($var) {
+                $this->types = $var->getTypes();
+            }
+        }
+
         return $this->types;
     }
 
@@ -71,5 +84,23 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getVar()
+    {
+        /** @var Collection $version */
+        $var = $this->getTags()->get('var', new Collection());
+
+        if ($var->count() == 0 && ($this->getParent() instanceof ChildInterface)) {
+            $parentConstant = $this->getParent()->getConstants()->get($this->getName());
+            if ($parentConstant) {
+                return $parentConstant->getVar();
+            }
+        }
+
+        return $var;
     }
 }

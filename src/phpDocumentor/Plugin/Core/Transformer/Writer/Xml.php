@@ -26,7 +26,6 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Plugin\Core\Transformer\Behaviour\Inherit;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\AuthorTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\CoversTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\IgnoreTag;
@@ -55,9 +54,6 @@ class Xml extends WriterAbstract implements Translatable
 {
     /** @var \DOMDocument $xml */
     protected $xml;
-
-    /** @var bool mustInherit determines whether this writer should inherit all information when building. */
-    protected $mustInherit = false;
 
     /** @var Translator $translator */
     protected $translator;
@@ -95,8 +91,6 @@ class Xml extends WriterAbstract implements Translatable
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
-        $this->mustInherit = $transformation->getParameter('mustInherit', 'false') === 'true' ? true : false;
-
         $this->xml = new \DOMDocument('1.0', 'utf-8');
         $this->xml->formatOutput = true;
         $document_element = new \DOMElement('project');
@@ -723,12 +717,6 @@ class Xml extends WriterAbstract implements Translatable
         $behaviour->process($this->xml);
         $behaviour = new VarTag();
         $behaviour->process($this->xml);
-
-        if ($this->mustInherit) {
-            $inherit = new Inherit();
-            $inherit->process($this->xml);
-        }
-
         $this->buildPackageTree($this->xml);
         $this->buildNamespaceTree($this->xml);
         $this->buildMarkerList($this->xml);

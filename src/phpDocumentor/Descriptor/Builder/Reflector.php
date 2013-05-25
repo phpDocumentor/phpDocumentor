@@ -459,9 +459,6 @@ class Reflector extends BuilderAbstract
         $propertyDescriptor->setStatic($data->isStatic());
         $propertyDescriptor->setDefault($data->getDefault());
 
-        // TODO: get Type from @var/@type and set it on the property itself
-        // $propertyDescriptor->setType();
-
         $this->buildDocBlock($data, $propertyDescriptor);
 
         // if internal elements are not allowed; do not add this element
