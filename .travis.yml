@@ -6,17 +6,17 @@ php:
 
 script:
  - vendor/phpunit/phpunit/composer/bin/phpunit
- - vendor/behat/behat/bin/behat --no-paths --format failed
+# - vendor/behat/behat/bin/behat --no-paths --format failed
 
 before_script:
  - sudo apt-get -qq update > /dev/null
  - sudo apt-get -qq install graphviz > /dev/null
  - phpenv rehash > /dev/null
  - composer selfupdate --quiet
- - composer install --dev 
+ - composer install --dev
  - vendor/phpunit/phpunit/composer/bin/phpunit
- - vendor/behat/behat/bin/behat --no-paths --format failed
- - composer update --dev 
+# - vendor/behat/behat/bin/behat --no-paths --format failed
+ - composer update --dev
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"
