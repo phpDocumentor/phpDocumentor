@@ -72,12 +72,5 @@ abstract class BuilderAbstract
         return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
     }
 
-    abstract public function buildFile($data);
-    abstract public function buildClass($data);
-    abstract public function buildInterface($data);
-    abstract public function buildTrait($data);
-    abstract public function buildFunction($data);
-    abstract public function buildConstant($data, $container = null);
-    abstract public function buildMethod($data, $container);
-    abstract public function buildProperty($data, $container);
+    abstract public function setFile($data);
 }

@@ -12,6 +12,13 @@
 namespace phpDocumentor\Descriptor\Builder;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
 use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
@@ -166,10 +173,7 @@ class Reflector extends BuilderAbstract
                 $functionDescriptor->setLocation($fileDescriptor, $function->getLineNumber());
                 $functionDescriptor->setPackage($fileDescriptor->getPackage());
 
-                $fileDescriptor->getFunctions()->set(
-                    $functionDescriptor->getFullyQualifiedStructuralElementName(),
-                    $functionDescriptor
-                );
+                $this->addToContainer($functionDescriptor, $fileDescriptor->getFunctions());
             }
         }
 
@@ -240,29 +244,14 @@ class Reflector extends BuilderAbstract
      */
     public function buildClass($data)
     {
-        $classDescriptor = new ClassDescriptor();
+        $assembler = new ClassAssembler();
+        $classDescriptor = $assembler->create($data);
 
-        $classDescriptor->setFullyQualifiedStructuralElementName($data->getName());
-        $classDescriptor->setName($data->getShortName());
-
-        $this->buildDocBlock($data, $classDescriptor);
-
-        // if internal elements are not allowed; do not add this element
-        if ($classDescriptor->getTags()->get('internal')
-            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
-        ) {
+        $classDescriptor = $this->filterInternalTag($classDescriptor);
+        if (!$classDescriptor) {
             return null;
         }
 
-        $classDescriptor->setParent($data->getParentClass());
-
-        $classDescriptor->setLocation('', $data->getLinenumber());
-        $classDescriptor->setAbstract($data->isAbstract());
-        $classDescriptor->setFinal($data->isFinal());
-
-        foreach ($data->getInterfaces() as $interfaceClassName) {
-            $classDescriptor->getInterfaces()->set($interfaceClassName, $interfaceClassName);
-        }
         foreach ($data->getConstants() as $constant) {
             $this->buildConstant($constant, $classDescriptor);
         }
@@ -273,15 +262,7 @@ class Reflector extends BuilderAbstract
             $this->buildMethod($method, $classDescriptor);
         }
 
-        $fqcn = $classDescriptor->getFullyQualifiedStructuralElementName();
-        $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
-
-        $classDescriptor->setNamespace($namespace);
-
-        // validate the Reflected Information
-        if ($this->getValidation()) {
-            $classDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
-        }
+        $this->validateElement($data, $classDescriptor);
 
         return $classDescriptor;
     }
@@ -295,35 +276,17 @@ class Reflector extends BuilderAbstract
      */
     public function buildInterface($data)
     {
-        $interfaceDescriptor = new InterfaceDescriptor();
+        $assembler = new InterfaceAssembler();
+        $interfaceDescriptor = $assembler->create($data);
 
-        $interfaceDescriptor->setFullyQualifiedStructuralElementName($data->getName());
-        $interfaceDescriptor->setName($data->getShortName());
+        $interfaceDescriptor = $this->filterInternalTag($interfaceDescriptor);
 
-        $this->buildDocBlock($data, $interfaceDescriptor);
+        if ($interfaceDescriptor) {
+            foreach ($data->getMethods() as $method) {
+                $this->buildMethod($method, $interfaceDescriptor);
+            }
 
-        // if internal elements are not allowed; do not add this element
-        if ($interfaceDescriptor->getTags()->get('internal')
-            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
-        ) {
-            return null;
-        }
-
-        $interfaceDescriptor->setLocation('', $data->getLinenumber());
-
-        foreach ($data->getParentInterfaces() as $interfaceClassName) {
-            $interfaceDescriptor->getParent()->set($interfaceClassName, $interfaceClassName);
-        }
-
-        foreach ($data->getMethods() as $method) {
-            $this->buildMethod($method, $interfaceDescriptor);
-        }
-
-        $interfaceDescriptor->setNamespace('\\' . $data->getNamespace());
-
-        // validate the Reflected Information
-        if ($this->getValidation()) {
-            $interfaceDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+            $this->validateElement($data, $interfaceDescriptor);
         }
 
         return $interfaceDescriptor;
@@ -338,33 +301,20 @@ class Reflector extends BuilderAbstract
      */
     public function buildTrait($data)
     {
-        $traitDescriptor = new TraitDescriptor();
+        $assembler = new TraitAssembler();
+        $traitDescriptor = $assembler->create($data);
 
-        $traitDescriptor->setFullyQualifiedStructuralElementName($data->getName());
-        $traitDescriptor->setName($data->getShortName());
-        $traitDescriptor->setNamespace('\\' . $data->getNamespace());
+        $traitDescriptor = $this->filterInternalTag($traitDescriptor);
 
-        $this->buildDocBlock($data, $traitDescriptor);
+        if ($traitDescriptor) {
+            foreach ($data->getMethods() as $method) {
+                $this->buildMethod($method, $traitDescriptor);
+            }
+            foreach ($data->getProperties() as $property) {
+                $this->buildProperty($property, $traitDescriptor);
+            }
 
-        // if internal elements are not allowed; do not add this element
-        if ($traitDescriptor->getTags()->get('internal')
-            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
-        ) {
-            return null;
-        }
-
-        $traitDescriptor->setLocation('', $data->getLinenumber());
-
-        foreach ($data->getMethods() as $method) {
-            $this->buildMethod($method, $traitDescriptor);
-        }
-        foreach ($data->getProperties() as $property) {
-            $this->buildProperty($property, $traitDescriptor);
-        }
-
-        // validate the Reflected Information
-        if ($this->getValidation()) {
-            $traitDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+            $this->validateElement($data, $traitDescriptor);
         }
 
         return $traitDescriptor;
@@ -380,34 +330,25 @@ class Reflector extends BuilderAbstract
      */
     public function buildConstant($data, $container = null)
     {
-        $constantDescriptor = new ConstantDescriptor();
+        $assembler = new ConstantAssembler();
+        $constantDescriptor = $assembler->create($data);
 
-        $prefix = ($container)
-            ? $container->getFullyQualifiedStructuralElementName() . '::'
-            : '\\' . $data->getNamespace() . '\\';
+        $constantDescriptor->setFullyQualifiedStructuralElementName(
+            (($container)
+                ? $container->getFullyQualifiedStructuralElementName() . '::'
+                : '\\' . $data->getNamespace() . '\\')
+            . $constantDescriptor->getFullyQualifiedStructuralElementName()
+        );
 
-        $constantDescriptor->setFullyQualifiedStructuralElementName($prefix . $data->getShortName());
-        $constantDescriptor->setName($data->getShortName());
-        $constantDescriptor->setValue($data->getValue());
-        $constantDescriptor->setNamespace('\\' . $data->getNamespace());
+        $constantDescriptor = $this->filterInternalTag($constantDescriptor);
 
-        $this->buildDocBlock($data, $constantDescriptor);
+        if ($constantDescriptor) {
+            if ($container) {
+                $constantDescriptor->setParent($container);
+                $this->addToContainer($constantDescriptor, $container->getConstants());
+            }
 
-        // if internal elements are not allowed; do not add this element
-        if ($constantDescriptor->getTags()->get('internal')
-            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
-        ) {
-            return null;
-        }
-
-        if ($container) {
-            $constantDescriptor->setParent($container);
-            $container->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
-        }
-
-        // validate the Reflected Information
-        if ($this->getValidation()) {
-            $constantDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+            $this->validateElement($data, $constantDescriptor);
         }
 
         return $constantDescriptor;
@@ -418,27 +359,12 @@ class Reflector extends BuilderAbstract
      */
     public function buildFunction($data)
     {
-        $functionDescriptor = new FunctionDescriptor();
-        $functionDescriptor->setFullyQualifiedStructuralElementName(
-            '\\' . $data->getNamespace() . '\\' . $data->getName() . '()'
-        );
-        $functionDescriptor->setName($data->getShortName());
+        $assembler = new FunctionAssembler();
+        $functionDescriptor = $assembler->create($data);
 
-        $this->buildDocBlock($data, $functionDescriptor);
-
-        // if internal elements are not allowed; do not add this element
-        if ($functionDescriptor->getTags()->get('internal')
-            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
-        ) {
-            return null;
-        }
-
-        $functionDescriptor->setLocation('', $data->getLinenumber());
-        $functionDescriptor->setNamespace('\\' . $data->getNamespace());
-
-        // validate the Reflected Information
-        if ($this->getValidation()) {
-            $functionDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        $functionDescriptor = $this->filterInternalTag($functionDescriptor);
+        if ($functionDescriptor) {
+            $this->validateElement($data, $functionDescriptor);
         }
 
         return $functionDescriptor;
@@ -450,31 +376,18 @@ class Reflector extends BuilderAbstract
      */
     public function buildProperty($data, $container)
     {
-        $propertyDescriptor = new PropertyDescriptor();
+        $assembler = new PropertyAssembler();
+        $propertyDescriptor = $assembler->create($data);
+
         $propertyDescriptor->setFullyQualifiedStructuralElementName(
-            $container->getFullyQualifiedStructuralElementName() . '::$' . $data->getName()
+            $container->getFullyQualifiedStructuralElementName()
+            . '::' . $propertyDescriptor->getFullyQualifiedStructuralElementName()
         );
-        $propertyDescriptor->setName($data->getShortName());
-        $propertyDescriptor->setVisibility($data->getVisibility());
-        $propertyDescriptor->setStatic($data->isStatic());
-        $propertyDescriptor->setDefault($data->getDefault());
 
-        $this->buildDocBlock($data, $propertyDescriptor);
-
-        // if internal elements are not allowed; do not add this element
-        if ($propertyDescriptor->getTags()->get('internal')
-            && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
-        ) {
-            return null;
-        }
-
-        $propertyDescriptor->setLocation('', $data->getLinenumber());
-        $propertyDescriptor->setParent($container);
-        $container->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
-
-        // validate the Reflected Information
-        if ($this->getValidation()) {
-            $propertyDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
+        $propertyDescriptor = $this->filterInternalTag($propertyDescriptor);
+        if ($propertyDescriptor) {
+            $this->validateElement($data, $propertyDescriptor);
+            $this->addToContainer($propertyDescriptor, $container->getProperties());
         }
 
         return $propertyDescriptor;
@@ -486,55 +399,45 @@ class Reflector extends BuilderAbstract
      */
     public function buildMethod($data, $container)
     {
-        $methodDescriptor = new MethodDescriptor();
+        $assembler = new MethodAssembler();
+        $methodDescriptor = $assembler->create($data);
+
         $methodDescriptor->setFullyQualifiedStructuralElementName(
-            $container->getFullyQualifiedStructuralElementName() . '::' . $data->getName() . '()'
+            $container->getFullyQualifiedStructuralElementName()
+            . '::' . $methodDescriptor->getFullyQualifiedStructuralElementName()
         );
-        $methodDescriptor->setName($data->getShortName());
-        $methodDescriptor->setVisibility($data->getVisibility());
-        $methodDescriptor->setFinal($data->isFinal());
-        $methodDescriptor->setAbstract($data->isAbstract());
-        $methodDescriptor->setStatic($data->isStatic());
-        $methodDescriptor->setParent($container);
 
-        $this->buildDocBlock($data, $methodDescriptor);
+        $methodDescriptor = $this->filterInternalTag($methodDescriptor);
+        if ($methodDescriptor) {
+            $this->validateElement($data, $methodDescriptor);
+            $this->addToContainer($methodDescriptor, $container->getMethods());
+        }
 
+        return $methodDescriptor;
+    }
+
+    protected function addToContainer($descriptor, $container)
+    {
+        $container->set($descriptor->getName(), $descriptor);
+    }
+
+    /**
+     *
+     *
+     * @param DescriptorAbstract $descriptor
+     *
+     * @return DescriptorAbstract| null
+     */
+    protected function filterInternalTag($descriptor)
+    {
         // if internal elements are not allowed; do not add this element
-        if ($methodDescriptor->getTags()->get('internal')
+        if ($descriptor->getTags()->get('internal')
             && !$this->isVisibilityAllowed(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
         ) {
             return null;
         }
 
-        foreach ($data->getArguments() as $argument) {
-            $argumentDescriptor = new ArgumentDescriptor();
-            $argumentDescriptor->setName($argument->getName());
-
-            $params = $methodDescriptor->getTags()->get('param', array());
-
-            /** @var ParamDescriptor $tag */
-            foreach ($params as $tag) {
-                if ($tag->getVariableName() == $argument->getName()) {
-                    $argumentDescriptor->setDescription($tag->getDescription());
-
-                    $types = $tag->getTypes() ?: array($argument->getType() ?: 'mixed');
-                    $argumentDescriptor->setTypes($types);
-                }
-            }
-
-            $argumentDescriptor->setDefault($argument->getDefault());
-            $methodDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
-        }
-
-        $methodDescriptor->setLocation('', $data->getLinenumber());
-        $container->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
-
-        // validate the Reflected Information
-        if ($this->getValidation()) {
-            $methodDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
-        }
-
-        return $methodDescriptor;
+        return $descriptor;
     }
 
     /**
@@ -559,6 +462,20 @@ class Reflector extends BuilderAbstract
                 $existingTags[] = $tagObject;
                 $target->getTags()->set($tag->getName(), $existingTags);
             }
+        }
+    }
+
+    /**
+     *
+     *
+     * @param $data
+     * @param $traitDescriptor
+     *
+     */
+    protected function validateElement($data, $traitDescriptor)
+    {
+        if ($this->getValidation()) {
+            $traitDescriptor->setErrors(new Collection($this->getValidation()->validate($data)));
         }
     }
 }

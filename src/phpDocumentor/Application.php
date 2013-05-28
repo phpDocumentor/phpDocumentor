@@ -15,6 +15,7 @@ use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
+use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Zend\Cache\Storage\Adapter\Filesystem;
@@ -198,6 +199,12 @@ class Application extends Cilex
             }
         );
 
+        $this['descriptor.builder.assembler.factory'] = $this->share(
+            function () {
+                return new AssemblerFactory();
+            }
+        );
+
         $this['descriptor.builder.validator'] = $this->share(
             function ($container) {
                 return new Validation($container['translator']);
@@ -206,9 +213,11 @@ class Application extends Cilex
 
         $this['descriptor.builder'] = $this->share(
             function ($container) {
-                $builder = new Descriptor\Builder\Reflector();
-                $builder->setValidation($container['descriptor.builder.validator']);
-                return $builder;
+//                $builder = new Descriptor\ProjectDescriptorBuilder($container['descriptor.builder.assembler.factory']);
+                // TODO: Replace custom validation with the Symfony2 Validator Component
+                // TODO: Add filtering with the Zend\Filter Component
+//                $builder->setValidation($container['descriptor.builder.validator']);
+//                return $builder;
             }
         );
 
