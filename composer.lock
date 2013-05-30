@@ -903,7 +903,7 @@
             "target-dir": "Zend/Config",
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_Config-2.0.4.zip",
+                "url": "http://packages.zendframework.com/composer/zendframework-zend-config-2.0.4-release-2.0.5-4dc001.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -939,7 +939,7 @@
             "target-dir": "Zend/Filter",
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_Filter-2.0.4.zip",
+                "url": "http://packages.zendframework.com/composer/zendframework-zend-filter-2.0.4-release-2.0.5-4dc001.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -983,7 +983,7 @@
             "target-dir": "Zend/I18n",
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_I18n-2.0.4.zip",
+                "url": "http://packages.zendframework.com/composer/zendframework-zend-i18n-2.0.4-release-2.0.6-efd3b8.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1022,7 +1022,7 @@
             "target-dir": "Zend/ServiceManager",
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_ServiceManager-2.0.4.zip",
+                "url": "http://packages.zendframework.com/composer/zendframework-zend-servicemanager-2.0.4-release-2.0.5-4dc001.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -1061,7 +1061,7 @@
             "target-dir": "Zend/Stdlib",
             "dist": {
                 "type": "zip",
-                "url": "http://packages.zendframework.com/composer/Zend_Stdlib-2.0.4.zip",
+                "url": "http://packages.zendframework.com/composer/zendframework-zend-stdlib-2.0.4-release-2.0.5-4dc001.zip",
                 "reference": null,
                 "shasum": null
             },
