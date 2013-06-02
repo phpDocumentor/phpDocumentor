@@ -13,7 +13,7 @@ Learn about phpDocumentor
 
                **For users**
 
-            | :doc:`Table of Contents <for-users>`
+            | :doc:`Table of Contents <for-users/index>`
             | :doc:`for-users/introduction`
             | :doc:`for-users/installation`
             | :doc:`for-users/getting-started`
@@ -33,7 +33,7 @@ Learn about phpDocumentor
 
                **For template builders**
 
-            | :doc:`Table of Contents <for-template-builders>`
+            | :doc:`Table of Contents <for-template-builders/index>`
             | :doc:`for-template-builders/introduction`
             | :doc:`for-template-builders/getting-started`
 
@@ -47,9 +47,8 @@ Learn about phpDocumentor
 
                **For developers**
 
-            | :doc:`Table of Contents <for-developers>`
+            | :doc:`Table of Contents <for-developers/index>`
             | :doc:`for-developers/introduction`
-            | :doc:`for-developers/plugins`
             | :doc:`for-developers/profiling`
             | :doc:`for-developers/specifications`
 
@@ -106,6 +105,6 @@ Learn about phpDocumentor
 .. toctree::
    :hidden:
 
-   for-users
-   for-template-builders
-   for-developers
+   for-users/index
+   for-template-builders/index
+   for-developers/index
