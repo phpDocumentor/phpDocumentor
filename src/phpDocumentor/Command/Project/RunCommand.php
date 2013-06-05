@@ -236,6 +236,7 @@ HELP
                 '--ignore-symlinks' => $input->getOption('ignore-symlinks'),
                 '--markers' => $input->getOption('markers'),
                 '--title' => $input->getOption('title'),
+                '--target' => $input->getOption('target'),
                 '--force' => $input->getOption('force'),
                 '--validate' => $input->getOption('validate'),
                 '--visibility' => $input->getOption('visibility'),
@@ -252,15 +253,10 @@ HELP
             return $return_code;
         }
 
-        $target = $input->getOption('target');
-        if (!is_null($target) && !is_dir($target)) {
-            $target = dirname($target);
-        }
-
         $transform_input = new ArrayInput(
             array(
                 'command' => 'project:transform',
-                '--target' => $target,
+                '--target' => $input->getOption('target'),
                 '--template' => $input->getOption('template'),
                 '--progressbar' => $input->getOption('progressbar')
             )
