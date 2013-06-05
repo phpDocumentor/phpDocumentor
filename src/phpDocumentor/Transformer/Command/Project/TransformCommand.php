@@ -164,10 +164,12 @@ TEXT
         }
         $transformer->setTarget($target);
 
-        // $source = realpath($this->getOption($input, 'source', 'parser/target'));
-        // if (file_exists($source) && is_dir($source)) {
-        //     $source .= DIRECTORY_SEPARATOR . 'structure.xml';
-        // }
+        $source = realpath($this->getOption($input, 'source', 'parser/target'));
+        if (!file_exists($source) || !is_dir($source)) {
+            throw new \Exception('Invalid source location provided, a path to an existing folder was expected');
+        }
+
+        $this->getCache()->getOptions()->setCacheDir($source);
 
         $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
