@@ -256,6 +256,7 @@ HELP
         $transform_input = new ArrayInput(
             array(
                 'command' => 'project:transform',
+                '--source' => $input->getOption('target'),
                 '--target' => $input->getOption('target'),
                 '--template' => $input->getOption('template'),
                 '--progressbar' => $input->getOption('progressbar')
