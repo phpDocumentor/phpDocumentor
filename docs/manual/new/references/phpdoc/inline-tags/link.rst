@@ -1,0 +1,1 @@
+.. include:: ../tags/link.rst

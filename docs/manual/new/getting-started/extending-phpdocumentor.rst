@@ -1,6 +1,8 @@
 Extending phpDocumentor
 =======================
 
+.. note:: this is still a placeholder document; more content will be added
+
 Creating a Service Provider
 ---------------------------
 

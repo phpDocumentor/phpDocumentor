@@ -100,20 +100,10 @@ Outline
 
     Service Providers -- Revisited
 
-    Validation
-
-    Encoding
-
-    Internationalization
+    Documentation sniffs
 
     References
     ----------
-
-    Service Providers
-      Descriptor
-      Parser
-      Transformer
-      Core
 
     PHPDoc Reference
     Tag Reference

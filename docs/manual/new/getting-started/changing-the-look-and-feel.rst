@@ -1,6 +1,8 @@
 Changing the Look and Feel
 ==========================
 
+.. note:: this is still a placeholder document; more content will be added
+
 Applying a template
 -------------------
 
