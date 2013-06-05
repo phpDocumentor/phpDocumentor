@@ -10,7 +10,7 @@
         }
     },
     "repositories":[
-        { "type":"composer", "url":"http://packages.zendframework.com"}
+        { "type":"composer", "url":"https://packages.zendframework.com"}
     ],
     "require": {
         "php": ">=5.3.3",
