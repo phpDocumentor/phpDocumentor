@@ -99,7 +99,7 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
             $this->types = array();
 
             /** @var VarDescriptor $var */
-            $var = current($this->getVar());
+            $var = $this->getVar()->getIterator()->current();
             if ($var) {
                 $this->types = $var->getTypes();
             }
@@ -132,8 +132,15 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
         /** @var Collection $version */
         $var = $this->getTags()->get('var', new Collection());
 
-        if (count($var) && ($this->getParent() instanceof ChildInterface)) {
-            $parentProperty = $this->getParent()->getProperties()->get($this->getName());
+        if ($var->count() == 0
+            && ($this->getParent() instanceof ChildInterface)
+            && (
+                $this->getParent()->getParent() instanceof ClassDescriptor
+                || $this->getParent()->getParent() instanceof InterfaceDescriptor
+            )
+        ) {
+            /** @var PropertyDescriptor|null $parentProperty */
+            $parentProperty = $this->getParent()->getParent()->getProperties()->get($this->getName());
             if ($parentProperty) {
                 return $parentProperty->getVar();
             }
