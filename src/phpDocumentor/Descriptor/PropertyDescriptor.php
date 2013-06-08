@@ -99,7 +99,7 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
             $this->types = array();
 
             /** @var VarDescriptor $var */
-            $var = current($this->getVar());
+            $var = $this->getVar()->getIterator()->current();
             if ($var) {
                 $this->types = $var->getTypes();
             }
