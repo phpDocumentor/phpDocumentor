@@ -1,4 +1,12 @@
-2013/06/01: Version 2.0.0b1
+2013/06/09: Version 2.0.0b2
+---------------------------
+
+```
+FIXED      Package could not be set for constants, resulting in fatal error
+FIXED      Default template was still responsive and not responsive-twig
+```
+
+2013/06/09: Version 2.0.0b1
 ---------------------------
 
 The 13th alpha of phpDocumentor contains the final functionality for version 2.0.

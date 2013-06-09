@@ -24,10 +24,10 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <active>yes</active>
  </lead>
  <date>2013-06-09</date>
- <time>19:36:17</time>
+ <time>21:18:28</time>
  <version>
-  <release>2.0.0b1</release>
-  <api>2.0.0b1</api>
+  <release>2.0.0b2</release>
+  <api>2.0.0b2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -16619,8 +16619,8 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.0.0b1</release>
-    <api>2.0.0b1</api>
+    <release>2.0.0b2</release>
+    <api>2.0.0b2</api>
    </version>
    <stability>
     <release>beta</release>
