@@ -1,4 +1,12 @@
-2013/06/01: Version 2.0.0b1
+2013/06/09: Version 2.0.0b2
+---------------------------
+
+```
+FIXED      Package could not be set for constants, resulting in fatal error
+FIXED      Default template was still responsive and not responsive-twig
+```
+
+2013/06/09: Version 2.0.0b1
 ---------------------------
 
 The 13th alpha of phpDocumentor contains the final functionality for version 2.0.
@@ -18,7 +26,7 @@ In the following list we have tried to exhaustively document the list of changes
 the refactoring it is nigh impossible to make a 100% accurate list. Please contact us if you have questions; the website
 http://www.phpdoc.org describes various methods.
 
-========== ==================================================================================================
+```
 ADDED      Twig Writer
 ADDED      Xml Writer
 ADDED      Router component to provide locations for various Url Schemes
@@ -53,4 +61,4 @@ DEPRECATED Behaviours are only executed for the XmlAst writer
 BC-BREAK   Moved Validators to the Descriptor Builder and refactored for internationalization
 BC-BREAK   Parser generates an object graph and not XML (structure.xml, use XmlAst writer now for XML output)
 BC-BREAK   Replaced plugin system with Service Providers
-========== ==================================================================================================
+```
