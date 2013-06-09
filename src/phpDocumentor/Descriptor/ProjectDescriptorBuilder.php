@@ -13,26 +13,29 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use Symfony\Component\Validator\Validator;
 
 /**
  * Builds a Project Descriptor and underlying tree.
  */
 class ProjectDescriptorBuilder
 {
-    /** @var string  */
+    /** @var string */
     const DEFAULT_PROJECT_NAME = 'Untitled project';
 
-    /**
-     * @var AssemblerFactory assemblerFactory
-     */
+    /** @var AssemblerFactory $assemblerFactory */
     protected $assemblerFactory;
+
+    /** @var Validator $validator */
+    protected $validator;
 
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    public function __construct(AssemblerFactory $assemblerFactory, $filterManager, $validator)
+    public function __construct(AssemblerFactory $assemblerFactory, $filterManager, Validator $validator)
     {
         $this->assemblerFactory = $assemblerFactory;
+        $this->validator = $validator;
     }
 
     public function createProjectDescriptor()
@@ -100,7 +103,10 @@ class ProjectDescriptorBuilder
                 'Unable to build a Descriptor; the provided data did not match any Assembler'
             );
         }
-        $assembler->setBuilder($this);
+
+        if ($assembler instanceof Builder\AssemblerAbstract) {
+            $assembler->setBuilder($this);
+        }
 
         // create Descriptor and populate with the provided data
         $descriptor = $assembler->create($data);
@@ -153,6 +159,7 @@ class ProjectDescriptorBuilder
      */
     public function validate(DescriptorAbstract $descriptor)
     {
+        $errors = $this->validator->validate($descriptor);
         return new Collection();
     }
 }

@@ -11,20 +11,24 @@
     },
     "require": {
         "php":              ">=5.3.3",
+
         "cilex/cilex":      "1.*@dev",
-        "dflydev/markdown": "1.0.*@stable",
+        "symfony/validator": ">=v2.3.0@stable",
+
         "monolog/monolog":  "1.4.*@stable",
         "twig/twig":        "1.*@stable",
+        "dflydev/markdown": "1.0.*@stable",
 
         "symfony/event-dispatcher": "~2.1@stable",
         "jms/serializer":           "0.12.*@dev",
 
-        "zendframework/zend-stdlib":         "2.1.*@stable",
-        "zendframework/zend-servicemanager": "2.1.*@stable",
-        "zendframework/zend-config":         "2.1.*@stable",
-        "zendframework/zend-i18n":           "2.1.*@stable",
-        "zendframework/zend-serializer":     "2.1.*@stable",
-        "zendframework/zend-cache":          "2.1.*@stable",
+        "zendframework/zend-stdlib":         "2.*@stable",
+        "zendframework/zend-servicemanager": "2.*@stable",
+        "zendframework/zend-config":         "2.*@stable",
+        "zendframework/zend-i18n":           "2.*@stable",
+        "zendframework/zend-serializer":     "2.*@stable",
+        "zendframework/zend-cache":          "2.*@stable",
+        "zendframework/zend-filter":         "2.*@stable",
 
         "phpdocumentor/graphviz":            "1.*@beta",
         "phpdocumentor/fileset":             "1.*@beta",
