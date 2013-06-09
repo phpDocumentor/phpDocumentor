@@ -264,7 +264,10 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         }
 
         foreach ($this->getProperties() as $property) {
-            $property->setPackage($package);
+            // TODO #840: Workaround; for some reason there are NULLs in the properties array.
+            if ($property) {
+                $property->setPackage($package);
+            }
         }
 
         foreach ($this->getMethods() as $method) {

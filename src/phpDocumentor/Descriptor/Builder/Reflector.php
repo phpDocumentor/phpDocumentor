@@ -456,11 +456,9 @@ class Reflector extends BuilderAbstract
 
             /** @var Tag $tag */
             foreach ($docBlock->getTags() as $tag) {
-                $tagObject = $tagFactory->create($tag);
-
-                $existingTags = $target->getTags()->get($tag->getName(), array());
-                $existingTags[] = $tagObject;
-                $target->getTags()->set($tag->getName(), $existingTags);
+                $target->getTags()
+                    ->get($tag->getName(), new Collection())
+                    ->add($tagFactory->create($tag));
             }
         }
     }
