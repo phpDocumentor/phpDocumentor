@@ -18,7 +18,7 @@ In the following list we have tried to exhaustively document the list of changes
 the refactoring it is nigh impossible to make a 100% accurate list. Please contact us if you have questions; the website
 http://www.phpdoc.org describes various methods.
 
-========== ==================================================================================================
+```
 ADDED      Twig Writer
 ADDED      Xml Writer
 ADDED      Router component to provide locations for various Url Schemes
@@ -53,4 +53,4 @@ DEPRECATED Behaviours are only executed for the XmlAst writer
 BC-BREAK   Moved Validators to the Descriptor Builder and refactored for internationalization
 BC-BREAK   Parser generates an object graph and not XML (structure.xml, use XmlAst writer now for XML output)
 BC-BREAK   Replaced plugin system with Service Providers
-========== ==================================================================================================
+```
