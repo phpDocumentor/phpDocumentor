@@ -45,12 +45,13 @@ function createPackager($original_file, $options = array())
             'vendor/twig/twig/ext/*'
         ),
         'exceptions'        => array(
-            'bin/phpdoc.php'  => 'script',
-            'bin/phpdoc.bat'  => 'script',
-            'phpdoc.dist.xml' => 'php',
+            'bin/phpdoc.php'   => 'script',
+            'bin/phpdoc.bat'   => 'script',
+            'phpdoc.dist.xml'  => 'php',
             'LICENSE'          => 'php',
             'phpunit.xml.dist' => 'php',
             'README'           => 'php',
+            'VERSION'          => 'php',
             'vendor/phpunit/phpunit-mock-objects/PHPUnit/Framework/MockObject/Autoload.php.in' => 'php',
             'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php.in' => 'php',
             'vendor/phpunit/phpunit/PHPUnit/Autoload.php.in' => 'php',
