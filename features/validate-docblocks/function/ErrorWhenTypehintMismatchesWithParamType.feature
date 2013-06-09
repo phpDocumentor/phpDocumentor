@@ -3,11 +3,6 @@ Feature: Validate whether a Function's DocBlock is valid
   As a documentation generating user
   I want to see if there are any errors specifically regarding my DocBlocks for global functions
 
-  Scenario: Show an error when a DocBlock is missing for a function.
-    Given I am in the phpDocumentor root directory
-    When I run phpDocumentor against the file "tests/data/NoFunctionDocBlock.php"
-    Then I should get a log entry "No DocBlock was found for \noFunctionDocBlock()"
-
   Scenario: Show an error when an argument typehint mismatches with an @param tag.
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor with:
@@ -19,7 +14,7 @@ Feature: Validate whether a Function's DocBlock is valid
     Then I should get a log entry "The type hint of the argument is incorrect for the type definition of the @param tag with argument $b in \a()"
 
   Scenario: Show an error when an argument typehint mismatches with an @param tag
-            due to a missing root slash in the description.
+  due to a missing root slash in the description.
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor with:
     """
@@ -52,7 +47,7 @@ Feature: Validate whether a Function's DocBlock is valid
     Then I should not get a log entry "The type hint of the argument is incorrect for the type definition of the @param tag with argument $b in \a()"
 
   Scenario: Do not show an error when an argument typehint is a FQCN but the
-            Typehint must be expanded
+  Typehint must be expanded
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor with:
     """
@@ -65,7 +60,7 @@ Feature: Validate whether a Function's DocBlock is valid
     Then I should not get a log entry "The type hint of the argument is incorrect for the type definition of the @param tag with argument $b in \My\Space\a()"
 
   Scenario: Do not show an error when an argument typehint and Typehint match
-            and both are FQCN
+  and both are FQCN
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor with:
     """
@@ -78,7 +73,7 @@ Feature: Validate whether a Function's DocBlock is valid
     Then I should not get a log entry containing "The type hint of the argument is incorrect"
 
   Scenario: Do not show an error when an argument typehint and Typehint match
-            and both must be expanded
+  and both must be expanded
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor with:
     """
@@ -91,7 +86,7 @@ Feature: Validate whether a Function's DocBlock is valid
     Then I should not get a log entry containing "The type hint of the argument is incorrect"
 
   Scenario: Do not show an error when an argument typehint must be expanded but the
-            Typehint is a FQCN
+  Typehint is a FQCN
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor with:
     """
