@@ -385,15 +385,24 @@ class Xml extends WriterAbstract implements Translatable
         $this->buildDocBlock($child, $class);
 
         foreach ($class->getConstants() as $constant) {
-            $this->buildConstant($child, $constant);
+            // TODO #840: Workaround; for some reason there are NULLs in the constants array.
+            if ($constant) {
+                $this->buildConstant($child, $constant);
+            }
         }
 
         foreach ($class->getProperties() as $property) {
-            $this->buildProperty($child, $property);
+            // TODO #840: Workaround; for some reason there are NULLs in the properties array.
+            if ($property) {
+                $this->buildProperty($child, $property);
+            }
         }
 
         foreach ($class->getMethods() as $method) {
-            $this->buildMethod($child, $method);
+            // TODO #840: Workaround; for some reason there are NULLs in the methods array.
+            if ($method) {
+                $this->buildMethod($child, $method);
+            }
         }
     }
 
@@ -604,6 +613,10 @@ class Xml extends WriterAbstract implements Translatable
      */
     public function buildDocBlockTag(\DOMElement $parent, $tag, $element)
     {
+        if (!$tag) {
+            // TODO #840: Workaround; for some reason there are NULLs in the tags array.
+            return;
+        }
         $child = new \DOMElement('tag');
         $parent->appendChild($child);
 
