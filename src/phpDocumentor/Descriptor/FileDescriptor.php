@@ -177,22 +177,37 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         $errors = $this->getErrors();
 
         foreach ($this->getFunctions() as $element) {
+            if (!$element) {
+                continue;
+            }
             $errors = $errors->merge($element->getErrors());
         }
 
         foreach ($this->getConstants() as $element) {
+            if (!$element) {
+                continue;
+            }
             $errors = $errors->merge($element->getErrors());
         }
 
         foreach ($this->getClasses() as $element) {
             $errors = $errors->merge($element->getErrors());
             foreach ($element->getConstants() as $item) {
+                if (!$element) {
+                    continue;
+                }
                 $errors = $errors->merge($item->getErrors());
             }
             foreach ($element->getProperties() as $item) {
+                if (!$item) {
+                    continue;
+                }
                 $errors = $errors->merge($item->getErrors());
             }
             foreach ($element->getMethods() as $item) {
+                if (!$item) {
+                    continue;
+                }
                 $errors = $errors->merge($item->getErrors());
             }
         }
@@ -200,9 +215,15 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         foreach ($this->getInterfaces() as $element) {
             $errors = $errors->merge($element->getErrors());
             foreach ($element->getConstants() as $item) {
+                if (!$item) {
+                    continue;
+                }
                 $errors = $errors->merge($item->getErrors());
             }
             foreach ($element->getMethods() as $item) {
+                if (!$item) {
+                    continue;
+                }
                 $errors = $errors->merge($item->getErrors());
             }
         }
@@ -210,9 +231,15 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         foreach ($this->getTraits() as $element) {
             $errors = $errors->merge($element->getErrors());
             foreach ($element->getProperties() as $item) {
+                if (!$item) {
+                    continue;
+                }
                 $errors = $errors->merge($item->getErrors());
             }
             foreach ($element->getMethods() as $item) {
+                if (!$item) {
+                    continue;
+                }
                 $errors = $errors->merge($item->getErrors());
             }
         }

@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Translator;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -39,6 +40,9 @@ class Extension extends \Twig_Extension implements ExtensionInterface
 
     /** @var Queue $router */
     protected $routers;
+
+    /** @var Translator */
+    protected $translator;
 
     /**
      * @var string
@@ -73,6 +77,14 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     public function setRouters($router)
     {
         $this->routers = $router;
+    }
+
+    /**
+     * @param Translator $translator
+     */
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -131,11 +143,23 @@ class Extension extends \Twig_Extension implements ExtensionInterface
         $extension = $this;
         $routers = $this->routers;
         $parser = new MarkdownExtraParser();
+        $translator = $this->translator;
+
         return array(
             'markdown' => new \Twig_SimpleFilter(
                 'markdown',
                 function ($value) use ($parser) {
                     return $parser->transform($value);
+                }
+            ),
+            'trans' => new \Twig_SimpleFilter(
+                'trans',
+                function ($value, $context) use ($translator) {
+                    if (!$context) {
+                        $context = array();
+                    }
+
+                    return vsprintf($translator->translate($value), $context);
                 }
             ),
             'route' => new \Twig_SimpleFilter(

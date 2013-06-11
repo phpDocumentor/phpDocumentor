@@ -50,6 +50,8 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $writerCollection['xml']->setTranslator($translator);
+        $writerCollection['twig']->setTranslator($translator);
+
         $this->addValidators($app);
     }
 
