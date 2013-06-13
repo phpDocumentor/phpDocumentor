@@ -51,6 +51,7 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
 
         $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
+        $writerCollection['twig']->setTranslator($translator);
 
         $this->addValidators($app);
     }
