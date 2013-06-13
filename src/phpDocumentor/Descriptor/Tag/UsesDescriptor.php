@@ -11,6 +11,17 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
+
 class UsesDescriptor extends BaseTypes\TypedAbstract
 {
+    /**
+     * @param UsesTag $reflectionTag
+     */
+    public function __construct($reflectionTag)
+    {
+        $this->name        = $reflectionTag->getName();
+        $this->description = $reflectionTag->getDescription();
+        $this->types       = $reflectionTag->getReference();
+    }
 }
