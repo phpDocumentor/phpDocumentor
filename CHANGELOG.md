@@ -1,3 +1,16 @@
+2013/06/14: Version 2.0.0b3
+---------------------------
+
+```
+FIXED      Using an @uses tag results in a fatal error during execution
+FIXED      Errors are now shown on the errors report of the responsive-twig template
+FIXED      The error count on the index page of the responsive-twig template is restored
+FIXED      Checkstyle output now functions as expected
+FIXED      new-black template failed due to a capitalization issue with the Sourcecode writer
+FIXED      Updated all templates to generate a structure.xml
+FIXED      Fatal error when a property, constant or method collection contains a null value
+```
+
 2013/06/09: Version 2.0.0b2
 ---------------------------
 
