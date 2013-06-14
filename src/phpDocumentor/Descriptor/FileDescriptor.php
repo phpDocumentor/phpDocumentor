@@ -193,7 +193,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         foreach ($this->getClasses() as $element) {
             $errors = $errors->merge($element->getErrors());
             foreach ($element->getConstants() as $item) {
-                if (!$element) {
+                if (!$item) {
                     continue;
                 }
                 $errors = $errors->merge($item->getErrors());
