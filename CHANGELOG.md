@@ -9,6 +9,9 @@ FIXED      Checkstyle output now functions as expected
 FIXED      new-black template failed due to a capitalization issue with the Sourcecode writer
 FIXED      Updated all templates to generate a structure.xml
 FIXED      Fatal error when a property, constant or method collection contains a null value
+FIXED      Fixed several errors in the Old Ocean template
+FIXED      Removed broken logging call from Xsl writer
+FIXED      Several PHP notices
 ```
 
 2013/06/09: Version 2.0.0b2
