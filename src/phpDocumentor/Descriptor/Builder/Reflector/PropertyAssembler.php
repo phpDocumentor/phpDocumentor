@@ -30,7 +30,7 @@ class PropertyAssembler extends AssemblerAbstract
     public function create($data)
     {
         $propertyDescriptor = new PropertyDescriptor();
-        $propertyDescriptor->setFullyQualifiedStructuralElementName('$' . $data->getName());
+        $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $propertyDescriptor->setName($data->getShortName());
         $propertyDescriptor->setVisibility($data->getVisibility());
         $propertyDescriptor->setStatic($data->isStatic());

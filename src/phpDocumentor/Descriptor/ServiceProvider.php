@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
@@ -30,9 +31,14 @@ use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
 use phpDocumentor\Reflection\TraitReflector;
+use phpDocumentor\Descriptor\ProjectAnalyzer;
+
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Cache\Storage\Adapter\Filesystem;
-use phpDocumentor\Descriptor\ProjectAnalyzer;
 
 /**
  * This provider is responsible for registering the Descriptor component with the given Application.
@@ -55,6 +61,12 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        if (!isset($app['validator.mapping.class_metadata_factory'])) {
+            throw new Exception\MissingDependencyException(
+                'The validator factory object that is used to validate the Descriptors is missing'
+            );
+        }
+
         $app['descriptor.builder.serializer'] = 'PhpSerialize';
 
         $app['descriptor.cache'] = $app->share(
@@ -90,7 +102,7 @@ class ServiceProvider implements ServiceProviderInterface
                 $builder = new ProjectDescriptorBuilder(
                     $container['descriptor.builder.assembler.factory'],
                     null, // TODO: Add filtering with the Zend\Filter Component
-                    $container['descriptor.builder.validator']
+                    $container['validator']
                 );
 
                 return $builder;
@@ -100,6 +112,23 @@ class ServiceProvider implements ServiceProviderInterface
         $app['descriptor.analyzer'] = function () {
             return new ProjectAnalyzer();
         };
+
+        /** @var ClassMetadataFactory $metadataFactory */
+        $metadataFactory   = $app['validator.mapping.class_metadata_factory'];
+        $constantMetadata  = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
+        $functionMetadata  = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
+        $classMetadata     = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
+        $interfaceMetadata = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\InterfaceDescriptor');
+        $traitMetadata     = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
+        $propertyMetadata  = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
+        $methodMetadata    = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
+
+        $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
+        $propertyMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50007')));
+        $methodMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50008')));
+        $interfaceMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50009')));
+        $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
+        $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
     }
 
     /**

@@ -39,8 +39,9 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
      */
     public function setParent($parent)
     {
+        var_dump($parent->getFullyQualifiedStructuralElementName());
         $this->setFullyQualifiedStructuralElementName(
-            $parent->getFullyQualifiedStructuralElementName() . '::$' . $this->getName()
+            $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
         );
 
         $this->parent = $parent;

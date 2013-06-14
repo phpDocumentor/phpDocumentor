@@ -13,6 +13,7 @@ namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
+use Cilex\Provider\ValidatorServiceProvider;
 use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
@@ -64,6 +65,7 @@ class Application extends Cilex
 
         $this->addSerializer();
 
+        $this->register(new ValidatorServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
         $this->register(new Parser\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());

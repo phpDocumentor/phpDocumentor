@@ -13,6 +13,9 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Validator\Error;
+use Psr\Log\LogLevel;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator;
 
 /**
@@ -32,7 +35,7 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    public function __construct(AssemblerFactory $assemblerFactory, $filterManager, Validation $validator)
+    public function __construct(AssemblerFactory $assemblerFactory, $filterManager, Validator $validator)
     {
         $this->assemblerFactory = $assemblerFactory;
         $this->validator = $validator;
@@ -159,7 +162,21 @@ class ProjectDescriptorBuilder
      */
     public function validate(DescriptorAbstract $descriptor)
     {
-        $errors = $this->validator->validate($descriptor);
-        return new Collection();
+        $violations = $this->validator->validate($descriptor);
+        $errors = new Collection();
+
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            $errors->add(
+                new Error(
+                    LogLevel::ERROR,
+                    $violation->getMessageTemplate(),
+                    $descriptor->getLine(),
+                    $violation->getMessageParameters() + array($descriptor->getFullyQualifiedStructuralElementName())
+                )
+            );
+        }
+
+        return $errors;
     }
 }
