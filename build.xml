@@ -144,7 +144,7 @@
             depends="deploy:get-version-number"
             description="Uploads the PEAR package to the distribution server and update pirum">
         <exec command="scp ${project.basedir}/phpDocumentor-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
-        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
+        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; ./pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
         <delete file="${project.basedir}/phpDocumentor-${version.number}.tgz" />
     </target>
 
