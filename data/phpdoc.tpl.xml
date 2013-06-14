@@ -30,6 +30,6 @@
         </paths>
     </logging>
     <transformations>
-        <template name="responsive"/>
+        <template name="responsive-twig"/>
     </transformations>
 </phpdocumentor>

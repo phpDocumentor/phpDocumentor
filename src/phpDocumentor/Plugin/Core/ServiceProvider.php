@@ -34,22 +34,25 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        /** @var Translator $translator  */
+        $translator = $app['translator'];
+        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
+
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
 
         $writerCollection['FileIo']     = new Writer\FileIo();
         $writerCollection['twig']       = new Writer\Twig();
         $writerCollection['Graph']      = new Writer\Graph();
-        $writerCollection['Checkstyle'] = new Writer\Checkstyle();
-        $writerCollection['Sourcecode'] = new Writer\Sourcecode();
+        $writerCollection['checkstyle'] = new Writer\Checkstyle();
+        $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['xml']        = new Writer\Xml();
         $writerCollection['xsl']        = new Writer\Xsl();
 
-        /** @var Translator $translator  */
-        $translator = $app['translator'];
-        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
-
+        $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
+        $writerCollection['twig']->setTranslator($translator);
+
         $this->addValidators($app);
     }
 
