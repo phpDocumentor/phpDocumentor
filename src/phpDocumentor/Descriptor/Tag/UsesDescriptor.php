@@ -11,17 +11,29 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
 
-class UsesDescriptor extends BaseTypes\TypedAbstract
+class UsesDescriptor extends TagDescriptor
 {
+    /** @var string the FQCN where the uses tag refers to */
+    protected $reference = '';
+
     /**
      * @param UsesTag $reflectionTag
      */
     public function __construct($reflectionTag)
     {
-        $this->name        = $reflectionTag->getName();
-        $this->description = $reflectionTag->getDescription();
-        $this->types       = $reflectionTag->getReference();
+        parent::__construct($reflectionTag);
+
+        $this->reference = $reflectionTag->getReference();
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
     }
 }
