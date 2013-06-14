@@ -11,6 +11,7 @@
  */
 namespace phpDocumentor\Parser\Command\Project;
 
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,7 +56,7 @@ class ParseCommand extends ConfigurableCommand
     }
 
     /**
-     * @return \phpDocumentor\Descriptor\BuilderAbstract
+     * @return ProjectDescriptorBuilder
      */
     public function getBuilder()
     {
@@ -148,6 +149,7 @@ class ParseCommand extends ConfigurableCommand
         $this->getCache()->getOptions()->setCacheDir($target);
 
         $builder = $this->getBuilder();
+        $builder->createProjectDescriptor();
         $projectDescriptor = $builder->getProjectDescriptor();
         $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
         if ($input->getOption('parseprivate')) {

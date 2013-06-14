@@ -30,14 +30,14 @@ class ConstantAssembler extends AssemblerAbstract
     public function create($data)
     {
         $constantDescriptor = new ConstantDescriptor();
-        $constantDescriptor->setFullyQualifiedStructuralElementName($data->getName() . '()');
         $constantDescriptor->setName($data->getShortName());
         $constantDescriptor->setValue($data->getValue());
         $constantDescriptor->setNamespace('\\' . $data->getNamespace());
+        $constantDescriptor->setFullyQualifiedStructuralElementName(
+            $constantDescriptor->getNamespace() . '\\' . $data->getShortName()
+        );
 
-        if ($data->getDocBlock()) {
-            $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);
-        }
+        $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);
 
         $constantDescriptor->setLocation('', $data->getLinenumber());
 

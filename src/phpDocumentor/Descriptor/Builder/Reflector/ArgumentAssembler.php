@@ -12,14 +12,13 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
-use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 
 /**
  * Assembles an ArgumentDescriptor using an ArgumentReflector and ParamDescriptors.
  */
-class ArgumentAssembler implements AssemblerInterface
+class ArgumentAssembler extends AssemblerAbstract
 {
     /**
      * Creates a Descriptor from the provided data.

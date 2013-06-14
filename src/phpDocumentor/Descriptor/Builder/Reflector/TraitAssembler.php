@@ -12,6 +12,8 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Reflection\ClassReflector\MethodReflector;
+use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
 use phpDocumentor\Reflection\TraitReflector;
 
 /**
@@ -33,11 +35,51 @@ class TraitAssembler extends AssemblerAbstract
         $traitDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $traitDescriptor->setName($data->getShortName());
         $traitDescriptor->setNamespace('\\' . $data->getNamespace());
-
-        $this->assembleDocBlock($data, $traitDescriptor);
-
         $traitDescriptor->setLocation('', $data->getLinenumber());
 
+        $this->assembleDocBlock($data->getDocBlock(), $traitDescriptor);
+
+        $this->addProperties($data->getProperties(), $traitDescriptor);
+        $this->addMethods($data->getMethods(), $traitDescriptor);
+
         return $traitDescriptor;
+    }
+
+    /**
+     * Registers the child properties with the generated Trait Descriptor.
+     *
+     * @param PropertyReflector[] $properties
+     * @param TraitDescriptor     $traitDescriptor
+     *
+     * @return void
+     */
+    protected function addProperties($properties, $traitDescriptor)
+    {
+        foreach ($properties as $property) {
+            $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
+            if ($propertyDescriptor) {
+                $propertyDescriptor->setParent($traitDescriptor);
+                $traitDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
+            }
+        }
+    }
+
+    /**
+     * Registers the child methods with the generated Trait Descriptor.
+     *
+     * @param MethodReflector[] $methods
+     * @param TraitDescriptor   $traitDescriptor
+     *
+     * @return void
+     */
+    protected function addMethods($methods, $traitDescriptor)
+    {
+        foreach ($methods as $method) {
+            $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
+            if ($methodDescriptor) {
+                $methodDescriptor->setParent($traitDescriptor);
+                $traitDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
+            }
+        }
     }
 }

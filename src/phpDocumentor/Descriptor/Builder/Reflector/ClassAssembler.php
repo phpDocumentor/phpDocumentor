@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Reflection\ClassReflector;
+use phpDocumentor\Reflection\ConstantReflector;
 
 /**
  * Assembles an ClassDescriptor using an ClassReflector.
@@ -46,9 +47,69 @@ class ClassAssembler extends AssemblerAbstract
         $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
         $classDescriptor->setNamespace($namespace);
 
+        $this->assembleDocBlock($data->getDocBlock(), $classDescriptor);
 
-        $this->assembleDocBlock($data, $classDescriptor);
+        $this->addConstants($data->getConstants(), $classDescriptor);
+        $this->addProperties($data->getProperties(), $classDescriptor);
+        $this->addMethods($data->getMethods(), $classDescriptor);
 
         return $classDescriptor;
+    }
+
+    /**
+     * Registers the child constants with the generated Class Descriptor.
+     *
+     * @param ConstantReflector[] $constants
+     * @param ClassDescriptor     $classDescriptor
+     *
+     * @return void
+     */
+    protected function addConstants($constants, $classDescriptor)
+    {
+        foreach ($constants as $constant) {
+            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
+            if ($constantDescriptor) {
+                $constantDescriptor->setParent($classDescriptor);
+                $classDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
+            }
+        }
+    }
+
+    /**
+     * Registers the child properties with the generated Class Descriptor.
+     *
+     * @param ClassReflector\PropertyReflector[] $properties
+     * @param ClassDescriptor                    $classDescriptor
+     *
+     * @return void
+     */
+    protected function addProperties($properties, $classDescriptor)
+    {
+        foreach ($properties as $property) {
+            $propertyDescriptor = $this->getBuilder()->buildDescriptor($property);
+            if ($propertyDescriptor) {
+                $propertyDescriptor->setParent($classDescriptor);
+                $classDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
+            }
+        }
+    }
+
+    /**
+     * Registers the child methods with the generated Class Descriptor.
+     *
+     * @param ClassReflector\MethodReflector[] $methods
+     * @param ClassDescriptor $classDescriptor
+     *
+     * @return void
+     */
+    protected function addMethods($methods, $classDescriptor)
+    {
+        foreach ($methods as $method) {
+            $methodDescriptor = $this->getBuilder()->buildDescriptor($method);
+            if ($methodDescriptor) {
+                $methodDescriptor->setParent($classDescriptor);
+                $classDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
+            }
+        }
     }
 }

@@ -32,7 +32,7 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    public function __construct(AssemblerFactory $assemblerFactory, $filterManager, Validator $validator)
+    public function __construct(AssemblerFactory $assemblerFactory, $filterManager, Validation $validator)
     {
         $this->assemblerFactory = $assemblerFactory;
         $this->validator = $validator;
@@ -100,7 +100,7 @@ class ProjectDescriptorBuilder
         $assembler = $this->getAssembler($data);
         if (!$assembler) {
             throw new \InvalidArgumentException(
-                'Unable to build a Descriptor; the provided data did not match any Assembler'
+                'Unable to build a Descriptor; the provided data did not match any Assembler '. get_class($data)
             );
         }
 

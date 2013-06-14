@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Tag\TagFactory;
 use phpDocumentor\Reflection\BaseReflector;
@@ -25,6 +26,10 @@ abstract class AssemblerAbstract extends BaseAssembler
      */
     protected function assembleDocBlock($docBlock, $target)
     {
+        if (!$docBlock) {
+            return;
+        }
+
         $target->setSummary($docBlock->getShortDescription());
         $target->setDescription($docBlock->getLongDescription()->getContents());
 
@@ -32,11 +37,9 @@ abstract class AssemblerAbstract extends BaseAssembler
 
         /** @var DocBlock\Tag $tag */
         foreach ($docBlock->getTags() as $tag) {
-            $tagObject = $tagFactory->create($tag);
-
-            $existingTags = $target->getTags()->get($tag->getName(), array());
-            $existingTags[] = $tagObject;
-            $target->getTags()->set($tag->getName(), $existingTags);
+            $target->getTags()
+                ->get($tag->getName(), new Collection())
+                ->add($tagFactory->create($tag));
         }
     }
 }

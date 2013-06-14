@@ -37,9 +37,7 @@ class FunctionAssembler extends AssemblerAbstract
         $functionDescriptor->setNamespace('\\' . $data->getNamespace());
         $functionDescriptor->setLocation('', $data->getLinenumber());
 
-        if ($data->getDocBlock()) {
-            $this->assembleDocBlock($data->getDocBlock(), $functionDescriptor);
-        }
+        $this->assembleDocBlock($data->getDocBlock(), $functionDescriptor);
 
         foreach ($data->getArguments() as $argument) {
             $argumentAssembler  = new ArgumentAssembler();

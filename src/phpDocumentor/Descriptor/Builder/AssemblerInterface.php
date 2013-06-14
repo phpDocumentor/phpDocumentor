@@ -11,8 +11,8 @@
 
 namespace phpDocumentor\Descriptor\Builder;
 
-use phpDocumentor\Descriptor\Builder;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Interface for Assembler classes that transform data to specific Descriptor types.
@@ -28,5 +28,5 @@ interface AssemblerInterface
      */
     public function create($data);
 
-    public function setBuilder(Builder $builder);
+    public function setBuilder(ProjectDescriptorBuilder $builder);
 }

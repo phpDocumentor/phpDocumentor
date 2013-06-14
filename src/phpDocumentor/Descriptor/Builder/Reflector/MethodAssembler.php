@@ -37,9 +37,7 @@ class MethodAssembler extends AssemblerAbstract
         $methodDescriptor->setAbstract($data->isAbstract());
         $methodDescriptor->setStatic($data->isStatic());
 
-        if ($data->getDocBlock()) {
-            $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);
-        }
+        $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);
 
         foreach ($data->getArguments() as $argument) {
             $argumentAssembler  = new ArgumentAssembler();

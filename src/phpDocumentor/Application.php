@@ -13,19 +13,12 @@ namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use JMS\Serializer\SerializerBuilder;
-use phpDocumentor\Descriptor\Builder\AssemblerFactory;
+use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
-use Zend\Cache\Storage\Adapter\Filesystem;
-use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use JMS\Serializer\SerializerBuilder;
 use Zend\Config\Factory;
-use phpDocumentor\Console\Input\ArgvInput;
-use phpDocumentor\Descriptor\ProjectAnalyzer;
-use phpDocumentor\Descriptor\Validation;
-use phpDocumentor\Parser;
-use phpDocumentor\Plugin\Core;
 
 /**
  * Finds and activates the autoloader.
@@ -71,13 +64,12 @@ class Application extends Cilex
 
         $this->addSerializer();
 
-        $this->addDescriptorServices();
-
+        $this->register(new Descriptor\ServiceProvider());
         $this->register(new Parser\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());
 
         // TODO: make plugin service provider calls registrable from config
-        $this->register(new Core\ServiceProvider());
+        $this->register(new Plugin\Core\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
     }
@@ -168,64 +160,6 @@ class Application extends Cilex
             }
         );
     }
-
-    /**
-     * Adds the services to build the descriptors.
-     *
-     * This method injects the following services into the Dependency Injection Container:
-     *
-     * * descriptor.serializer, the serializer used to generate the cache
-     * * descriptor.builder, the builder used to transform the Reflected information into a series of Descriptors.
-     *
-     * It is possible to override which serializer is used by overriding the parameter `descriptor.serializer.class`.
-     *
-     * @return void
-     */
-    protected function addDescriptorServices()
-    {
-        $this['descriptor.builder.serializer'] = 'PhpSerialize';
-
-        $this['descriptor.cache'] = $this->share(
-            function () {
-                $cache = new Filesystem();
-                $cache->setOptions(
-                    array(
-                        'namespace' => 'phpdoc-cache',
-                        'cache_dir' => sys_get_temp_dir(),
-                    )
-                );
-                $cache->addPlugin(new SerializerPlugin());
-                return $cache;
-            }
-        );
-
-        $this['descriptor.builder.assembler.factory'] = $this->share(
-            function () {
-                return new AssemblerFactory();
-            }
-        );
-
-        $this['descriptor.builder.validator'] = $this->share(
-            function ($container) {
-                return new Validation($container['translator']);
-            }
-        );
-
-        $this['descriptor.builder'] = $this->share(
-            function ($container) {
-//                $builder = new Descriptor\ProjectDescriptorBuilder($container['descriptor.builder.assembler.factory']);
-                // TODO: Replace custom validation with the Symfony2 Validator Component
-                // TODO: Add filtering with the Zend\Filter Component
-//                $builder->setValidation($container['descriptor.builder.validator']);
-//                return $builder;
-            }
-        );
-
-        $this['descriptor.analyzer'] = function () {
-            return new ProjectAnalyzer();
-        };
-    }
-
     /**
      * Adds the command to phpDocumentor that belong to the Project namespace.
      *
