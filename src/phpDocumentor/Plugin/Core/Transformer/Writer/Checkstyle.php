@@ -13,14 +13,42 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use phpDocumentor\Translator;
 
 /**
  * Checkstyle transformation writer; generates checkstyle report
  */
-class Checkstyle extends WriterAbstract
+class Checkstyle extends WriterAbstract implements Translatable
 {
+    /** @var Translator $translator */
+    protected $translator;
+
+    /**
+     * Returns an instance of the object responsible for translating content.
+     *
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    /**
+     * Sets a new object capable of translating strings on this writer.
+     *
+     * @param Translator $translator
+     *
+     * @return void
+     */
+    public function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * This method generates the checkstyle.xml report
      *
@@ -45,12 +73,16 @@ class Checkstyle extends WriterAbstract
             $file->setAttribute('name', $fileDescriptor->getPath());
             $report->appendChild($file);
 
+            /** @var Error $error */
             foreach ($fileDescriptor->getErrors()->getAll() as $error) {
                 $item = $document->createElement('error');
-                $item->setAttribute('line', $error['line']);
-                $item->setAttribute('severity', $error['type']);
-                $item->setAttribute('message', $error['message']);
-                $item->setAttribute('source', 'phpDocumentor.file.'.$error['code']);
+                $item->setAttribute('line', $error->getLine());
+                $item->setAttribute('severity', $error->getSeverity());
+                $item->setAttribute(
+                    'message',
+                    $this->getTranslator()->translate(vsprintf($error->getCode(), $error->getContext()))
+                );
+                $item->setAttribute('source', 'phpDocumentor.file.'.$error->getCode());
                 $file->appendChild($item);
             }
         }
