@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "acf9636c8ba79e657dc4b3c51dbe0611",
+    "hash": "0630faa4ea88b2cf05c388e7a21cd6d6",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -934,16 +934,16 @@
         },
         {
             "name": "phpdocumentor/template-responsive-twig",
-            "version": "0.1.1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/template.responsive-twig.git",
-                "reference": "0.1.1"
+                "reference": "1.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/template.responsive-twig/zipball/0.1.1",
-                "reference": "0.1.1",
+                "url": "https://api.github.com/repos/phpDocumentor/template.responsive-twig/zipball/1.0.0",
+                "reference": "1.0.0",
                 "shasum": ""
             },
             "require": {
@@ -961,7 +961,7 @@
                 "phpdoc",
                 "template"
             ],
-            "time": "2013-04-28 19:32:19"
+            "time": "2013-06-14 06:32:49"
         },
         {
             "name": "phpdocumentor/template-zend",
@@ -2646,7 +2646,7 @@
         "phpdocumentor/reflection": 0,
         "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/unified-asset-installer": 10,
-        "phpdocumentor/template-responsive-twig": 20,
+        "phpdocumentor/template-responsive-twig": 0,
         "phpdocumentor/template-responsive": 0,
         "phpdocumentor/template-new-black": 0,
         "phpdocumentor/template-zend": 0,
