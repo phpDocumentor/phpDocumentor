@@ -49,6 +49,10 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      */
     public function setParent($parent)
     {
+        $this->setFullyQualifiedStructuralElementName(
+            $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()'
+        );
+
         $this->parent = $parent;
     }
 

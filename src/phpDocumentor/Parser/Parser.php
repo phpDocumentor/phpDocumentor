@@ -12,8 +12,8 @@
 
 namespace phpDocumentor\Parser;
 
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Psr\Log\LogLevel;
-use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
@@ -277,9 +277,8 @@ class Parser extends ParserAbstract
     /**
      * Iterates through the given files feeds them to the builder.
      *
-     * @param BuilderAbstract $builder
-     * @param Collection      $files          A files container to parse.
-     * @param bool            $include_source Whether to include the source in the generated output.
+     * @param ProjectDescriptorBuilder $builder
+     * @param Collection               $files          A files container to parse.
      *
      * @api
      *
@@ -287,7 +286,7 @@ class Parser extends ParserAbstract
      *
      * @return bool|string
      */
-    public function parse(BuilderAbstract $builder, Collection $files)
+    public function parse(ProjectDescriptorBuilder $builder, Collection $files)
     {
         $timer = microtime(true);
         $paths = $this->getFilenames($files);
@@ -327,7 +326,7 @@ class Parser extends ParserAbstract
                 }
 
                 $file->process();
-                $builder->buildFile($file);
+                $builder->buildFileUsingSourceData($file);
                 $fileDescriptor = $builder->getProjectDescriptor()->getFiles()->get($file->getFilename());
                 $errors = $fileDescriptor->getAllErrors();
                 foreach ($errors as $error) {

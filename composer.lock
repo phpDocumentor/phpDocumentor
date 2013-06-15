@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0630faa4ea88b2cf05c388e7a21cd6d6",
+    "hash": "1d54ffabfc9f5ed1cd0d74432388b163",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -1378,6 +1378,122 @@
             "time": "2013-05-16 07:54:39"
         },
         {
+            "name": "symfony/translation",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Translation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Translation.git",
+                "reference": "ed0c7257bfc533205dff78f9d247c2544c830ddc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/ed0c7257bfc533205dff78f9d247c2544c830ddc",
+                "reference": "ed0c7257bfc533205dff78f9d247c2544c830ddc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/config": ">=2.0,<3.0",
+                "symfony/yaml": ">=2.2,<3.0"
+            },
+            "suggest": {
+                "symfony/config": "",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Translation\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Translation Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-05-16 07:54:39"
+        },
+        {
+            "name": "symfony/validator",
+            "version": "v2.3.1",
+            "target-dir": "Symfony/Component/Validator",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Validator.git",
+                "reference": "v2.3.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Validator/zipball/v2.3.1",
+                "reference": "v2.3.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/translation": ">=2.0,<3.0"
+            },
+            "require-dev": {
+                "symfony/config": ">=2.2,<3.0",
+                "symfony/http-foundation": ">=2.1,<3.0",
+                "symfony/intl": ">=2.3,<3.0",
+                "symfony/yaml": ">=2.0,<3.0"
+            },
+            "suggest": {
+                "doctrine/common": "",
+                "symfony/config": "",
+                "symfony/http-foundation": "",
+                "symfony/intl": "",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Validator\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Validator Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-06-10 16:23:25"
+        },
+        {
             "name": "twig/twig",
             "version": "v1.13.1",
             "source": {
@@ -1428,17 +1544,17 @@
         },
         {
             "name": "zendframework/zend-cache",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/Cache",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendCache.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendCache/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendCache/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
@@ -1461,8 +1577,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1479,32 +1595,36 @@
                 "cache",
                 "zf2"
             ],
-            "time": "2013-04-17 11:42:28"
+            "time": "2013-06-12 19:48:32"
         },
         {
             "name": "zendframework/zend-config",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/Config",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendConfig.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendConfig/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendConfig/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "zendframework/zend-stdlib": "self.version"
             },
+            "suggest": {
+                "zendframework/zend-json": "Zend\\Json to use the Json reader or writer classes",
+                "zendframework/zend-servicemanager": "Zend\\ServiceManager for use with the Config Factory to retrieve reader and writer instances"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1521,21 +1641,21 @@
                 "config",
                 "zf2"
             ],
-            "time": "2013-02-20 08:29:59"
+            "time": "2013-06-12 19:46:29"
         },
         {
             "name": "zendframework/zend-eventmanager",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/EventManager",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendEventManager.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendEventManager/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendEventManager/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
@@ -1545,8 +1665,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1562,29 +1682,82 @@
                 "eventmanager",
                 "zf2"
             ],
-            "time": "2013-04-15 20:25:51"
+            "time": "2013-06-12 19:45:10"
+        },
+        {
+            "name": "zendframework/zend-filter",
+            "version": "2.2.1",
+            "target-dir": "Zend/Filter",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendFilter.git",
+                "reference": "release-2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendFilter/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "require-dev": {
+                "zendframework/zend-crypt": "self.version"
+            },
+            "suggest": {
+                "zendframework/zend-crypt": "Zend\\Crypt component",
+                "zendframework/zend-i18n": "Zend\\I18n component",
+                "zendframework/zend-stdlib": "Zend\\Stdlib component",
+                "zendframework/zend-uri": "Zend\\Uri component for UriNormalize filter",
+                "zendframework/zend-validator": "Zend\\Validator component"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Filter\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides a set of commonly needed data filters",
+            "keywords": [
+                "filter",
+                "zf2"
+            ],
+            "time": "2013-06-12 19:46:18"
         },
         {
             "name": "zendframework/zend-i18n",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/I18n",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendI18n.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
-                "ext-intl": "*",
                 "php": ">=5.3.3",
                 "zendframework/zend-stdlib": "self.version"
             },
             "suggest": {
+                "ext-intl": "Required for most features of Zend\\I18n; included in default builds of PHP",
+                "zendframework/zend-eventmanager": "You should install this package to use the events in the translator",
                 "zendframework/zend-filter": "You should install this package to use the provided filters",
                 "zendframework/zend-validator": "You should install this package to use the provided validators",
                 "zendframework/zend-view": "You should install this package to use the provided view helpers"
@@ -1592,8 +1765,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1609,21 +1782,21 @@
                 "i18n",
                 "zf2"
             ],
-            "time": "2013-04-10 18:14:09"
+            "time": "2013-05-07 20:00:09"
         },
         {
             "name": "zendframework/zend-json",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/Json",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendJson.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendJson/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendJson/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
@@ -1636,8 +1809,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1654,21 +1827,21 @@
                 "json",
                 "zf2"
             ],
-            "time": "2013-04-16 21:18:18"
+            "time": "2013-05-01 21:53:20"
         },
         {
             "name": "zendframework/zend-math",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/Math",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendMath.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendMath/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendMath/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
@@ -1680,8 +1853,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1697,21 +1870,21 @@
                 "math",
                 "zf2"
             ],
-            "time": "2013-03-14 11:13:27"
+            "time": "2013-05-01 21:53:31"
         },
         {
             "name": "zendframework/zend-serializer",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/Serializer",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendSerializer.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendSerializer/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendSerializer/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
@@ -1720,11 +1893,14 @@
                 "zendframework/zend-math": "self.version",
                 "zendframework/zend-stdlib": "self.version"
             },
+            "suggest": {
+                "zendframework/zend-servicemanager": "To support plugin manager support"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1741,21 +1917,21 @@
                 "serializer",
                 "zf2"
             ],
-            "time": "2013-04-17 11:42:28"
+            "time": "2013-05-08 18:00:24"
         },
         {
             "name": "zendframework/zend-servicemanager",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/ServiceManager",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendServiceManager.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
@@ -1767,8 +1943,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1784,34 +1960,35 @@
                 "servicemanager",
                 "zf2"
             ],
-            "time": "2013-04-17 11:42:28"
+            "time": "2013-05-08 18:00:17"
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "2.1.5",
+            "version": "2.2.1",
             "target-dir": "Zend/Stdlib",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/Component_ZendStdlib.git",
-                "reference": "release-2.1.5"
+                "reference": "release-2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/release-2.1.5",
-                "reference": "release-2.1.5",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/release-2.2.1",
+                "reference": "release-2.2.1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "suggest": {
-                "pecl-weakref": "Implementation of weak references for Stdlib\\CallbackHandler"
+                "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+                "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev",
-                    "dev-develop": "2.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1827,7 +2004,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2013-04-15 11:43:47"
+            "time": "2013-06-12 19:46:58"
         }
     ],
     "packages-dev": [
@@ -2522,61 +2699,6 @@
             "time": "2013-06-11 07:15:38"
         },
         {
-            "name": "symfony/translation",
-            "version": "dev-master",
-            "target-dir": "Symfony/Component/Translation",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Translation.git",
-                "reference": "ed0c7257bfc533205dff78f9d247c2544c830ddc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/ed0c7257bfc533205dff78f9d247c2544c830ddc",
-                "reference": "ed0c7257bfc533205dff78f9d247c2544c830ddc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "symfony/config": ">=2.0,<3.0",
-                "symfony/yaml": ">=2.2,<3.0"
-            },
-            "suggest": {
-                "symfony/config": "",
-                "symfony/yaml": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\Translation\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Translation Component",
-            "homepage": "http://symfony.com",
-            "time": "2013-05-16 07:54:39"
-        },
-        {
             "name": "symfony/yaml",
             "version": "dev-master",
             "target-dir": "Symfony/Component/Yaml",
@@ -2630,9 +2752,10 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cilex/cilex": 20,
-        "dflydev/markdown": 0,
+        "symfony/validator": 0,
         "monolog/monolog": 0,
         "twig/twig": 0,
+        "dflydev/markdown": 0,
         "symfony/event-dispatcher": 0,
         "jms/serializer": 20,
         "zendframework/zend-stdlib": 0,
@@ -2641,6 +2764,7 @@
         "zendframework/zend-i18n": 0,
         "zendframework/zend-serializer": 0,
         "zendframework/zend-cache": 0,
+        "zendframework/zend-filter": 0,
         "phpdocumentor/graphviz": 10,
         "phpdocumentor/fileset": 10,
         "phpdocumentor/reflection": 0,

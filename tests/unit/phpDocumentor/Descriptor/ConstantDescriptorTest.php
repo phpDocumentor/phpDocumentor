@@ -38,6 +38,8 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(null, $this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestClass');
+
         $this->fixture->setParent($parentMock);
 
         $this->assertSame($parentMock, $this->fixture->getParent());
@@ -61,6 +63,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(null, $this->fixture->getParent());
 
         $parentMock = m::mock('phpDocumentor\Descriptor\InterfaceDescriptor');
+        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestInterface');
         $this->fixture->setParent($parentMock);
 
         $this->assertSame($parentMock, $this->fixture->getParent());
@@ -166,6 +169,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // create and set the parent class for our fixture
         $parentClass = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $parentClass->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('TestClass');
         $parentClass->shouldReceive('getParent')->andReturn($superClass);
 
         return $parentClass;
