@@ -11,6 +11,7 @@
  */
 namespace phpDocumentor\Parser\Command\Project;
 
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,7 +20,6 @@ use Zend\Cache\Storage\StorageInterface;
 use Zend\I18n\Translator\Translator;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Console\Helper\ProgressHelper;
-use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Fileset\Collection;
@@ -36,7 +36,7 @@ use phpDocumentor\Parser\Parser;
  */
 class ParseCommand extends ConfigurableCommand
 {
-    /** @var BuilderAbstract $builder*/
+    /** @var ProjectDescriptorBuilder $builder*/
     protected $builder;
 
     /** @var Parser $parser */
@@ -55,7 +55,7 @@ class ParseCommand extends ConfigurableCommand
     }
 
     /**
-     * @return \phpDocumentor\Descriptor\BuilderAbstract
+     * @return ProjectDescriptorBuilder
      */
     public function getBuilder()
     {
@@ -148,6 +148,7 @@ class ParseCommand extends ConfigurableCommand
         $this->getCache()->getOptions()->setCacheDir($target);
 
         $builder = $this->getBuilder();
+        $builder->createProjectDescriptor();
         $projectDescriptor = $builder->getProjectDescriptor();
         $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
         if ($input->getOption('parseprivate')) {
