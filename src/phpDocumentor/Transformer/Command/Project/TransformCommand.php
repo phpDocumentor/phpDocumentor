@@ -11,6 +11,7 @@
  */
 namespace phpDocumentor\Transformer\Command\Project;
 
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,7 +20,6 @@ use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
@@ -39,7 +39,7 @@ use phpDocumentor\Transformer\Transformer;
  */
 class TransformCommand extends ConfigurableCommand
 {
-    /** @var BuilderAbstract $builder */
+    /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
 
     /** @var Transformer $transformer */
@@ -111,7 +111,7 @@ TEXT
     }
 
     /**
-     * @return \phpDocumentor\Descriptor\BuilderAbstract
+     * @return ProjectDescriptorBuilder
      */
     public function getBuilder()
     {

@@ -24,6 +24,9 @@ use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
+use phpDocumentor\Descriptor\Filter\ClassFactory;
+use phpDocumentor\Descriptor\Filter\Filter;
+use phpDocumentor\Descriptor\Filter\stripInternal;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\ClassReflector;
@@ -37,6 +40,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
+use Symfony\Component\Validator\Validator;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Cache\Storage\Adapter\Filesystem;
 
@@ -91,9 +95,9 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->addReflectionAssemblers($app['descriptor.builder.assembler.factory']);
 
-        $app['descriptor.builder.validator'] = $app->share(
+        $app['descriptor.filter'] = $app->share(
             function ($container) {
-                return new Validation($container['translator']);
+                return new Filter(new ClassFactory());
             }
         );
 
@@ -101,7 +105,7 @@ class ServiceProvider implements ServiceProviderInterface
             function ($container) {
                 $builder = new ProjectDescriptorBuilder(
                     $container['descriptor.builder.assembler.factory'],
-                    null, // TODO: Add filtering with the Zend\Filter Component
+                    $container['descriptor.filter'],
                     $container['validator']
                 );
 
@@ -113,15 +117,15 @@ class ServiceProvider implements ServiceProviderInterface
             return new ProjectAnalyzer();
         };
 
-        /** @var ClassMetadataFactory $metadataFactory */
-        $metadataFactory   = $app['validator.mapping.class_metadata_factory'];
-        $constantMetadata  = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
-        $functionMetadata  = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
-        $classMetadata     = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
-        $interfaceMetadata = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\InterfaceDescriptor');
-        $traitMetadata     = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
-        $propertyMetadata  = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
-        $methodMetadata    = $metadataFactory->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
+        /** @var Validator $validator */
+        $validator         = $app['validator'];
+        $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
+        $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
+        $classMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
+        $interfaceMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\InterfaceDescriptor');
+        $traitMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
+        $propertyMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
+        $methodMetadata    = $validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
 
         $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
         $propertyMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50007')));
@@ -129,6 +133,16 @@ class ServiceProvider implements ServiceProviderInterface
         $interfaceMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50009')));
         $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
         $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
+
+        /** @var Filter $filter */
+        $filter = $app['descriptor.filter'];
+        $stripInternalFilter = new stripInternal($app['descriptor.builder']);
+        $filter->attach('phpDocumentor\Descriptor\ConstantDescriptor', $stripInternalFilter);
+        $filter->attach('phpDocumentor\Descriptor\FunctionDescriptor', $stripInternalFilter);
+        $filter->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $stripInternalFilter);
+        $filter->attach('phpDocumentor\Descriptor\TraitDescriptor', $stripInternalFilter);
+        $filter->attach('phpDocumentor\Descriptor\PropertyDescriptor', $stripInternalFilter);
+        $filter->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripInternalFilter);
     }
 
     /**

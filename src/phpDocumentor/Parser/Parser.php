@@ -14,7 +14,6 @@ namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Psr\Log\LogLevel;
-use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;

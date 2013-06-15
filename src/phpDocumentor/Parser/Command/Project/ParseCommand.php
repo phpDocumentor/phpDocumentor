@@ -20,7 +20,6 @@ use Zend\Cache\Storage\StorageInterface;
 use Zend\I18n\Translator\Translator;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Console\Helper\ProgressHelper;
-use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Fileset\Collection;
@@ -37,7 +36,7 @@ use phpDocumentor\Parser\Parser;
  */
 class ParseCommand extends ConfigurableCommand
 {
-    /** @var BuilderAbstract $builder*/
+    /** @var ProjectDescriptorBuilder $builder*/
     protected $builder;
 
     /** @var Parser $parser */

@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Validator\Error;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -32,13 +33,17 @@ class ProjectDescriptorBuilder
     /** @var Validator $validator */
     protected $validator;
 
+    /** @var Filter $filter */
+    protected $filter;
+
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    public function __construct(AssemblerFactory $assemblerFactory, $filterManager, Validator $validator)
+    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
     {
         $this->assemblerFactory = $assemblerFactory;
-        $this->validator = $validator;
+        $this->validator        = $validator;
+        $this->filter           = $filterManager;
     }
 
     public function createProjectDescriptor()
@@ -142,7 +147,7 @@ class ProjectDescriptorBuilder
     }
 
     /**
-     *
+     * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
      *
      * @param DescriptorAbstract $descriptor
      *
@@ -150,11 +155,11 @@ class ProjectDescriptorBuilder
      */
     public function filter(DescriptorAbstract $descriptor)
     {
-        return $descriptor;
+        return $this->filter->filter($descriptor);
     }
 
     /**
-     *
+     * Validates the contents of the Descriptor and outputs warnings and error if something is amiss.
      *
      * @param DescriptorAbstract $descriptor
      *
@@ -169,7 +174,7 @@ class ProjectDescriptorBuilder
         foreach ($violations as $violation) {
             $errors->add(
                 new Error(
-                    LogLevel::ERROR,
+                    LogLevel::ERROR, // TODO: Make configurable
                     $violation->getMessageTemplate(),
                     $descriptor->getLine(),
                     $violation->getMessageParameters() + array($descriptor->getFullyQualifiedStructuralElementName())
