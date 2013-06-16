@@ -32,9 +32,13 @@ class ConstantAssembler extends AssemblerAbstract
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getShortName());
         $constantDescriptor->setValue($data->getValue());
-        $constantDescriptor->setNamespace('\\' . $data->getNamespace());
         $constantDescriptor->setFullyQualifiedStructuralElementName(
             $constantDescriptor->getNamespace() . '\\' . $data->getShortName()
+        );
+
+        // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
+        $constantDescriptor->setNamespace(
+            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
         );
 
         $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);

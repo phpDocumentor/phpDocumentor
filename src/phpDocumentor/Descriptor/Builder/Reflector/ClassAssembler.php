@@ -33,11 +33,15 @@ class ClassAssembler extends AssemblerAbstract
 
         $classDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $classDescriptor->setName($data->getShortName());
-        $classDescriptor->setNamespace('\\' . $data->getNamespace());
         $classDescriptor->setLocation('', $data->getLinenumber());
         $classDescriptor->setParent($data->getParentClass());
         $classDescriptor->setAbstract($data->isAbstract());
         $classDescriptor->setFinal($data->isFinal());
+
+        // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
+        $classDescriptor->setNamespace(
+            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
+        );
 
         foreach ($data->getInterfaces() as $interfaceClassName) {
             $classDescriptor->getInterfaces()->set($interfaceClassName, $interfaceClassName);

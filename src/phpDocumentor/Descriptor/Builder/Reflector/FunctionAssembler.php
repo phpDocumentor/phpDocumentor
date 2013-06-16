@@ -34,8 +34,12 @@ class FunctionAssembler extends AssemblerAbstract
             '\\' . $data->getNamespace() . '\\' . $data->getName() . '()'
         );
         $functionDescriptor->setName($data->getShortName());
-        $functionDescriptor->setNamespace('\\' . $data->getNamespace());
         $functionDescriptor->setLocation('', $data->getLinenumber());
+
+        // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
+        $functionDescriptor->setNamespace(
+            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
+        );
 
         $this->assembleDocBlock($data->getDocBlock(), $functionDescriptor);
 
