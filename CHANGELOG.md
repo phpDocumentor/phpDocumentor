@@ -1,3 +1,11 @@
+2013/06/?: Version 2.0.0b5
+--------------------------
+
+```
+FIXED: Root namespace was named `global` in overviews
+FIXED: An empty `Global ('\')` entry pointed to a non-existing default.html in the index
+```
+
 2013/06/16: Version 2.0.0b4
 ---------------------------
 
