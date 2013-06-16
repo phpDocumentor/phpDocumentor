@@ -34,8 +34,12 @@ class TraitAssembler extends AssemblerAbstract
 
         $traitDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $traitDescriptor->setName($data->getShortName());
-        $traitDescriptor->setNamespace('\\' . $data->getNamespace());
         $traitDescriptor->setLocation('', $data->getLinenumber());
+
+        // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
+        $traitDescriptor->setNamespace(
+            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
+        );
 
         $this->assembleDocBlock($data->getDocBlock(), $traitDescriptor);
 
