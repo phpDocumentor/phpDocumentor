@@ -4,6 +4,7 @@
 ```
 FIXED: Root namespace was named `global` in overviews
 FIXED: An empty `Global ('\')` entry pointed to a non-existing default.html in the index
+FIXED: Since tag now shows the version number
 ```
 
 2013/06/16: Version 2.0.0b4
