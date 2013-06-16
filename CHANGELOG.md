@@ -1,3 +1,15 @@
+2013/06/16: Version 2.0.0b4
+---------------------------
+
+```
+FIXED      Fatal error that occurs when a constant has an error
+FIXED      Fatal error that occurs in certain cases with the getError() method
+FIXED      Refactored Builder into Assemblers to reduce technical debt
+CHANGED    Refactored ProjectDescriptor Builder to separate assembling from filtering and validating
+CHANGED    Introduced Symfony Validator component for element validation
+CHANGED    Introduced ZF2 Filter component to filter elements (for example with @internal)
+```
+
 2013/06/14: Version 2.0.0b3
 ---------------------------
 
