@@ -23,11 +23,11 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <email>ashnazg@php.net</email>
   <active>yes</active>
  </lead>
- <date>2013-06-14</date>
- <time>08:23:02</time>
+ <date>2013-06-16</date>
+ <time>08:07:08</time>
  <version>
-  <release>2.0.0b3</release>
-  <api>2.0.0b3</api>
+  <release>2.0.0b4</release>
+  <api>2.0.0b4</api>
  </version>
  <stability>
   <release>beta</release>
@@ -2280,6 +2280,13 @@ Please see the CHANGELOG in the root of the application for the latest changes
     </file>
    </dir> <!-- /features -->
    <dir name="src">
+    <dir name="Cilex">
+     <dir name="Providers">
+      <file baseinstalldir="/phpDocumentor" name="ValidatorServiceProvider.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /src/Cilex/Providers -->
+    </dir> <!-- /src/Cilex -->
     <dir name="phpDocumentor">
      <dir name="Command">
       <dir name="Project">
@@ -2340,7 +2347,45 @@ Please see the CHANGELOG in the root of the application for the latest changes
      </dir> <!-- /src/phpDocumentor/Console -->
      <dir name="Descriptor">
       <dir name="Builder">
-       <file baseinstalldir="/phpDocumentor" name="Reflector.php" role="php">
+       <dir name="Reflector">
+        <file baseinstalldir="/phpDocumentor" name="ArgumentAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="AssemblerAbstract.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="ClassAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="ConstantAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="FileAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="FunctionAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="InterfaceAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="MethodAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="PropertyAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="TraitAssembler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /src/phpDocumentor/Descriptor/Builder/Reflector -->
+       <file baseinstalldir="/phpDocumentor" name="AssemblerAbstract.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="AssemblerFactory.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="AssemblerInterface.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
       </dir> <!-- /src/phpDocumentor/Descriptor/Builder -->
@@ -2349,6 +2394,22 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
       </dir> <!-- /src/phpDocumentor/Descriptor/Cache -->
+      <dir name="Exception">
+       <file baseinstalldir="/phpDocumentor" name="MissingDependencyException.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /src/phpDocumentor/Descriptor/Exception -->
+      <dir name="Filter">
+       <file baseinstalldir="/phpDocumentor" name="ClassFactory.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="Filter.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="stripInternal.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /src/phpDocumentor/Descriptor/Filter -->
       <dir name="Interfaces">
        <file baseinstalldir="/phpDocumentor" name="ArgumentInterface.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -2455,9 +2516,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/phpDocumentor" name="ArgumentDescriptor.php" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
-      <file baseinstalldir="/phpDocumentor" name="BuilderAbstract.php" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
       <file baseinstalldir="/phpDocumentor" name="ClassDescriptor.php" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
@@ -2494,7 +2552,13 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/phpDocumentor" name="ProjectDescriptor.php" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
+      <file baseinstalldir="/phpDocumentor" name="ProjectDescriptorBuilder.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
       <file baseinstalldir="/phpDocumentor" name="PropertyDescriptor.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="ServiceProvider.php" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="TagDescriptor.php" role="php">
@@ -2938,9 +3002,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/phpDocumentor" name="ArgumentDescriptorTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
-       <file baseinstalldir="/phpDocumentor" name="BuilderAbstractTest.php" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
        <file baseinstalldir="/phpDocumentor" name="ClassDescriptorTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -2960,6 +3021,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="NamespaceDescriptorTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="ProjectDescriptorBuilderTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="PropertyDescriptorTest.php" role="php">
@@ -13123,6 +13187,926 @@ Please see the CHANGELOG in the root of the application for the latest changes
        </dir> <!-- /vendor/symfony/translation/Symfony/Component -->
       </dir> <!-- /vendor/symfony/translation/Symfony -->
      </dir> <!-- /vendor/symfony/translation -->
+     <dir name="validator">
+      <dir name="Symfony">
+       <dir name="Component">
+        <dir name="Validator">
+         <dir name="Constraints">
+          <dir name="Collection">
+           <file baseinstalldir="/phpDocumentor" name="Optional.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="Required.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Constraints/Collection -->
+          <file baseinstalldir="/phpDocumentor" name="AbstractComparison.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AbstractComparisonValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="All.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AllValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Blank.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BlankValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Callback.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CallbackValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CardScheme.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CardSchemeValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Choice.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ChoiceValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Collection.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CollectionValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Count.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Country.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CountryValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CountValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Currency.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CurrencyValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Date.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DateTime.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DateTimeValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DateValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Email.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="EmailValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="EqualTo.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="EqualToValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Existence.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="False.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FalseValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="File.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FileValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GreaterThan.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GreaterThanOrEqual.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GreaterThanOrEqualValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GreaterThanValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GroupSequence.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GroupSequenceProvider.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Iban.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IbanValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IdenticalTo.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IdenticalToValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Image.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ImageValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Ip.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IpValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Isbn.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IsbnValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Issn.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IssnValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Language.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LanguageValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Length.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LengthValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LessThan.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LessThanOrEqual.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LessThanOrEqualValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LessThanValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Locale.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LocaleValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Luhn.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LuhnValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotBlank.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotBlankValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotEqualTo.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotEqualToValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotIdenticalTo.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotIdenticalToValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotNull.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NotNullValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Null.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NullValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Optional.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Range.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RangeValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Regex.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RegexValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Required.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Time.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TimeValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="True.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TrueValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Type.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TypeValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Url.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="UrlValidator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Valid.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+         </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Constraints -->
+         <dir name="Exception">
+          <file baseinstalldir="/phpDocumentor" name="BadMethodCallException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ConstraintDefinitionException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ExceptionInterface.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GroupDefinitionException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="InvalidArgumentException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="InvalidOptionsException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MappingException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MissingOptionsException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NoSuchMetadataException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="UnexpectedTypeException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ValidatorException.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+         </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Exception -->
+         <dir name="Mapping">
+          <dir name="Cache">
+           <file baseinstalldir="/phpDocumentor" name="ApcCache.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CacheInterface.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Mapping/Cache -->
+          <dir name="Loader">
+           <dir name="schema">
+            <dir name="dic">
+             <dir name="constraint-mapping">
+              <file baseinstalldir="/phpDocumentor" name="constraint-mapping-1.0.xsd" role="data">
+               <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+              </file>
+             </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Mapping/Loader/schema/dic/constraint-mapping -->
+            </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Mapping/Loader/schema/dic -->
+           </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Mapping/Loader/schema -->
+           <file baseinstalldir="/phpDocumentor" name="AbstractLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="AnnotationLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FileLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FilesLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LoaderChain.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LoaderInterface.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="StaticMethodLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="XmlFileLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="XmlFilesLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="YamlFileLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="YamlFilesLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Mapping/Loader -->
+          <file baseinstalldir="/phpDocumentor" name="BlackholeMetadataFactory.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ClassMetadata.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ClassMetadataFactory.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ElementMetadata.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GetterMetadata.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MemberMetadata.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PropertyMetadata.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+         </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Mapping -->
+         <dir name="Resources">
+          <dir name="translations">
+           <file baseinstalldir="/phpDocumentor" name="validators.af.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.ar.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.bg.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.ca.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.cs.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.cy.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.da.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.de.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.el.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.en.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.es.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.et.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.eu.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.fa.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.fi.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.fr.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.gl.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.he.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.hr.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.hu.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.hy.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.id.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.it.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.ja.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.lb.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.lt.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.mn.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.nb.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.nl.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.no.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.pl.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.pt.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.pt_BR.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.ro.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.ru.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.sk.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.sl.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.sq.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.sr_Cyrl.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.sr_Latn.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.sv.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.tr.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.uk.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="validators.zh_CN.xlf" role="data">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Resources/translations -->
+         </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Resources -->
+         <dir name="Tests">
+          <dir name="Constraints">
+           <dir name="Fixtures">
+            <file baseinstalldir="/phpDocumentor" name="test.gif" role="data">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+           </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Tests/Constraints/Fixtures -->
+           <file baseinstalldir="/phpDocumentor" name="AbstractComparisonValidatorTestCase.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="AllTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="AllValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="BlankValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CallbackValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CardSchemeValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ChoiceValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CollectionTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CollectionValidatorArrayObjectTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CollectionValidatorArrayTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CollectionValidatorCustomArrayObjectTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CollectionValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CountryValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CountValidatorArrayTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CountValidatorCountableTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CountValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="CurrencyValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="DateTimeValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="DateValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="EmailValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="EqualToValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FalseValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FileValidatorObjectTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FileValidatorPathTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FileValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="GreaterThanOrEqualValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="GreaterThanValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="IbanValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="IdenticalToValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ImageValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="IpValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="IsbnValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="IssnValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LanguageValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LengthValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LessThanOrEqualValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LessThanValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LocaleValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="LuhnValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="NotBlankValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="NotEqualToValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="NotIdenticalToValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="NotNullValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="NullValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="RangeValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="RegexValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="TimeValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="TrueValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="TypeValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="UrlValidatorTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ValidTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Tests/Constraints -->
+          <dir name="Fixtures">
+           <file baseinstalldir="/phpDocumentor" name="ClassConstraint.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ConstraintA.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ConstraintAValidator.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ConstraintB.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ConstraintC.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="Entity.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="EntityInterface.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="EntityParent.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FailingConstraint.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FailingConstraintValidator.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FakeMetadataFactory.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="FilesLoader.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="GroupSequenceProviderEntity.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="InvalidConstraint.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="InvalidConstraintValidator.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="PropertyConstraint.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="Reference.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Tests/Fixtures -->
+          <dir name="Mapping">
+           <dir name="Cache">
+            <file baseinstalldir="/phpDocumentor" name="ApcCacheTest.php" role="php">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+           </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Tests/Mapping/Cache -->
+           <dir name="Loader">
+            <file baseinstalldir="/phpDocumentor" name="AnnotationLoaderTest.php" role="php">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="constraint-mapping.xml" role="data">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="constraint-mapping.yml" role="data">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="empty-mapping.yml" role="data">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="FilesLoaderTest.php" role="php">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="LoaderChainTest.php" role="php">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="nonvalid-mapping.yml" role="data">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="StaticMethodLoaderTest.php" role="php">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="withdoctype.xml" role="data">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="XmlFileLoaderTest.php" role="php">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+            <file baseinstalldir="/phpDocumentor" name="YamlFileLoaderTest.php" role="php">
+             <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+            </file>
+           </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Tests/Mapping/Loader -->
+           <file baseinstalldir="/phpDocumentor" name="ClassMetadataFactoryTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ClassMetadataTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="ElementMetadataTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="GetterMetadataTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="MemberMetadataTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="PropertyMetadataTest.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Tests/Mapping -->
+          <file baseinstalldir="/phpDocumentor" name="ConstraintTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ConstraintViolationListTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ConstraintViolationTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ExecutionContextTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ValidationVisitorTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ValidatorBuilderTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ValidatorTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+         </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator/Tests -->
+         <file baseinstalldir="/phpDocumentor" name="CHANGELOG.md" role="data">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ClassBasedInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="composer.json" role="data">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Constraint.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintValidator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintValidatorFactory.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintValidatorFactoryInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintValidatorInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintViolation.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintViolationInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintViolationList.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstraintViolationListInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="DefaultTranslator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ExecutionContext.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ExecutionContextInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="GlobalExecutionContextInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="GroupSequenceProviderInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="LICENSE" role="data">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="MetadataFactoryInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="MetadataInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ObjectInitializerInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="phpunit.xml.dist" role="data">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="PropertyMetadataContainerInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="PropertyMetadataInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="README.md" role="data">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Validation.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ValidationVisitor.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ValidationVisitorInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Validator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ValidatorBuilder.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ValidatorBuilderInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ValidatorInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /vendor/symfony/validator/Symfony/Component/Validator -->
+       </dir> <!-- /vendor/symfony/validator/Symfony/Component -->
+      </dir> <!-- /vendor/symfony/validator/Symfony -->
+     </dir> <!-- /vendor/symfony/validator -->
      <dir name="yaml">
       <dir name="Symfony">
        <dir name="Component">
@@ -15018,6 +16002,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          </file>
         </dir> <!-- /vendor/zendframework/zend-cache/Zend/Cache/Pattern -->
         <dir name="Service">
+         <file baseinstalldir="/phpDocumentor" name="StorageCacheAbstractServiceFactory.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="StorageCacheFactory.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -15076,6 +16063,15 @@ Please see the CHANGELOG in the root of the application for the latest changes
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
           <file baseinstalldir="/phpDocumentor" name="MemoryOptions.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Redis.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RedisOptions.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RedisResourceManager.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
           <file baseinstalldir="/phpDocumentor" name="Session.php" role="php">
@@ -15319,6 +16315,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
         </dir> <!-- /vendor/zendframework/zend-eventmanager/Zend/EventManager/Filter -->
+        <file baseinstalldir="/phpDocumentor" name="AbstractListenerAggregate.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="composer.json" role="data">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
@@ -15352,6 +16351,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <file baseinstalldir="/phpDocumentor" name="ListenerAggregateInterface.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
+        <file baseinstalldir="/phpDocumentor" name="ListenerAggregateTrait.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="ProvidesEvents.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
@@ -15382,11 +16384,231 @@ Please see the CHANGELOG in the root of the application for the latest changes
        </dir> <!-- /vendor/zendframework/zend-eventmanager/Zend/EventManager -->
       </dir> <!-- /vendor/zendframework/zend-eventmanager/Zend -->
      </dir> <!-- /vendor/zendframework/zend-eventmanager -->
+     <dir name="zend-filter">
+      <dir name="Zend">
+       <dir name="Filter">
+        <dir name="Compress">
+         <file baseinstalldir="/phpDocumentor" name="AbstractCompressionAlgorithm.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Bz2.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="CompressionAlgorithmInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Gz.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Lzf.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Rar.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Snappy.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Tar.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Zip.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /vendor/zendframework/zend-filter/Zend/Filter/Compress -->
+        <dir name="Encrypt">
+         <file baseinstalldir="/phpDocumentor" name="BlockCipher.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="EncryptionAlgorithmInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Openssl.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /vendor/zendframework/zend-filter/Zend/Filter/Encrypt -->
+        <dir name="Exception">
+         <file baseinstalldir="/phpDocumentor" name="BadMethodCallException.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="DomainException.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ExceptionInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ExtensionNotLoadedException.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="InvalidArgumentException.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="RuntimeException.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /vendor/zendframework/zend-filter/Zend/Filter/Exception -->
+        <dir name="File">
+         <file baseinstalldir="/phpDocumentor" name="Decrypt.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Encrypt.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="LowerCase.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="Rename.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="RenameUpload.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="UpperCase.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /vendor/zendframework/zend-filter/Zend/Filter/File -->
+        <dir name="Word">
+         <file baseinstalldir="/phpDocumentor" name="AbstractSeparator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="CamelCaseToDash.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="CamelCaseToSeparator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="CamelCaseToUnderscore.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="DashToCamelCase.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="DashToSeparator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="DashToUnderscore.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="SeparatorToCamelCase.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="SeparatorToDash.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="SeparatorToSeparator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="UnderscoreToCamelCase.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="UnderscoreToDash.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="UnderscoreToSeparator.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /vendor/zendframework/zend-filter/Zend/Filter/Word -->
+        <file baseinstalldir="/phpDocumentor" name="AbstractFilter.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="AbstractUnicode.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="BaseName.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Boolean.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Callback.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="composer.json" role="data">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Compress.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="DateTimeFormatter.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Decompress.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Decrypt.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Digits.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Dir.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Encrypt.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="FilterChain.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="FilterInterface.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="FilterPluginManager.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="HtmlEntities.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Inflector.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Int.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Null.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="PregReplace.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="README.md" role="data">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="RealPath.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="StaticFilter.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="StringToLower.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="StringToUpper.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="StringTrim.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="StripNewlines.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="StripTags.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="UriNormalize.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /vendor/zendframework/zend-filter/Zend/Filter -->
+      </dir> <!-- /vendor/zendframework/zend-filter/Zend -->
+     </dir> <!-- /vendor/zendframework/zend-filter -->
      <dir name="zend-i18n">
       <dir name="Zend">
        <dir name="I18n">
         <dir name="Exception">
          <file baseinstalldir="/phpDocumentor" name="ExceptionInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ExtensionNotLoadedException.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="InvalidArgumentException.php" role="php">
@@ -15468,16 +16690,753 @@ Please see the CHANGELOG in the root of the application for the latest changes
          </file>
         </dir> <!-- /vendor/zendframework/zend-i18n/Zend/I18n/Translator -->
         <dir name="Validator">
+         <dir name="PhoneNumber">
+          <file baseinstalldir="/phpDocumentor" name="AC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AD.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AX.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="AZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BB.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BD.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BJ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BQ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="BZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CD.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CV.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CX.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="CZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DJ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="DZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="EC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="EE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="EG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="EH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ER.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ES.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ET.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FJ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="FR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GB.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GD.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GP.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GQ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="GY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="HK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="HN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="HR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="HT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="HU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ID.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IQ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="IT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="JE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="JM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="JO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="JP.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KP.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="KZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LB.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LV.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="LY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MD.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ME.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ML.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MP.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MQ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MV.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MX.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="MZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NP.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="NZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="OM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="PY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="QA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="RW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SB.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SD.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SJ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ST.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SV.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SX.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="SZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TD.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TH.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TJ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TK.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TL.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TO.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TR.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TV.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="TZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="UA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="UG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="US.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="UY.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="UZ.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="VA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="VC.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="VE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="VG.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="VI.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="VN.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="VU.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="WF.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="WS.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="YE.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="YT.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ZA.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ZM.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ZW.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+         </dir> <!-- /vendor/zendframework/zend-i18n/Zend/I18n/Validator/PhoneNumber -->
          <file baseinstalldir="/phpDocumentor" name="Alnum.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="Alpha.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="DateTime.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="Float.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="Int.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="PhoneNumber.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="PostCode.php" role="php">
@@ -15797,6 +17756,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
         </dir> <!-- /vendor/zendframework/zend-servicemanager/Zend/ServiceManager/Exception -->
+        <dir name="Proxy">
+         <file baseinstalldir="/phpDocumentor" name="LazyServiceFactory.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="LazyServiceFactoryFactory.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /vendor/zendframework/zend-servicemanager/Zend/ServiceManager/Proxy -->
         <file baseinstalldir="/phpDocumentor" name="AbstractFactoryInterface.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
@@ -15812,10 +17779,16 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <file baseinstalldir="/phpDocumentor" name="ConfigInterface.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
+        <file baseinstalldir="/phpDocumentor" name="DelegatorFactoryInterface.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="FactoryInterface.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
         <file baseinstalldir="/phpDocumentor" name="InitializerInterface.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="MutableCreationOptionsInterface.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
         <file baseinstalldir="/phpDocumentor" name="README.md" role="data">
@@ -15882,6 +17855,20 @@ Please see the CHANGELOG in the root of the application for the latest changes
          </file>
         </dir> <!-- /vendor/zendframework/zend-stdlib/Zend/Stdlib/Exception -->
         <dir name="Hydrator">
+         <dir name="Aggregate">
+          <file baseinstalldir="/phpDocumentor" name="AggregateHydrator.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="ExtractEvent.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="HydrateEvent.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="HydratorListener.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+         </dir> <!-- /vendor/zendframework/zend-stdlib/Zend/Stdlib/Hydrator/Aggregate -->
          <dir name="Filter">
           <file baseinstalldir="/phpDocumentor" name="FilterComposite.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -15931,10 +17918,16 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="ClassMethods.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="HydratorAwareInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="HydratorInterface.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="HydratorOptionsInterface.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="HydratorPluginManager.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="ObjectProperty.php" role="php">
@@ -16124,14 +18117,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.0.0b3</release>
-    <api>2.0.0b3</api>
+    <release>2.0.0b4</release>
+    <api>2.0.0b4</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2013-06-14</date>
+   <date>2013-06-16</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
