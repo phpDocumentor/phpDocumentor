@@ -28,6 +28,7 @@ class TagFactory
         'property'       => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
         'property-read'  => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
         'property-write' => 'phpDocumentor\Descriptor\Tag\PropertyDescriptor',
+        'since'          => 'phpDocumentor\Descriptor\Tag\SinceDescriptor',
         'throws'         => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
         'throw'          => 'phpDocumentor\Descriptor\Tag\ThrowsDescriptor',
     );
