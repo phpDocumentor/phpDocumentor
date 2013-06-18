@@ -98,8 +98,10 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         /** @var self $parent */
         foreach ($this->getParent() as $parent) {
-            $inheritedMethods->merge($parent->getMethods());
-            $inheritedMethods->merge($parent->getInheritedMethods());
+            if (is_object($parent)) {
+                $inheritedMethods->merge($parent->getMethods());
+                $inheritedMethods->merge($parent->getInheritedMethods());
+            }
         }
 
         return $inheritedMethods;
