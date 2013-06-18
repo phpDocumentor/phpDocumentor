@@ -32,7 +32,7 @@ class MethodAssembler extends AssemblerAbstract
         $methodDescriptor = new MethodDescriptor();
         $methodDescriptor->setFullyQualifiedStructuralElementName($data->getName() . '()');
         $methodDescriptor->setName($data->getShortName());
-        $methodDescriptor->setVisibility($data->getVisibility());
+        $methodDescriptor->setVisibility($data->getVisibility() ?: 'public');
         $methodDescriptor->setFinal($data->isFinal());
         $methodDescriptor->setAbstract($data->isAbstract());
         $methodDescriptor->setStatic($data->isStatic());
