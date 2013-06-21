@@ -23,11 +23,11 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <email>ashnazg@php.net</email>
   <active>yes</active>
  </lead>
- <date>2013-06-16</date>
- <time>08:07:08</time>
+ <date>2013-06-21</date>
+ <time>12:41:45</time>
  <version>
-  <release>2.0.0b4</release>
-  <api>2.0.0b4</api>
+  <release>2.0.0b5</release>
+  <api>2.0.0b5</api>
  </version>
  <stability>
   <release>beta</release>
@@ -1488,6 +1488,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </file>
      </dir> <!-- /data/templates/responsive -->
      <dir name="responsive-twig">
+      <dir name="base">
+       <file baseinstalldir="/phpDocumentor" name="class.sidebar.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="sidebar.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/responsive-twig/base -->
       <dir name="graphs">
        <file baseinstalldir="/phpDocumentor" name="class.html.twig" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -2490,6 +2498,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="SeeDescriptor.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="SinceDescriptor.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="TagFactory.php" role="php">
@@ -18117,14 +18128,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.0.0b4</release>
-    <api>2.0.0b4</api>
+    <release>2.0.0b5</release>
+    <api>2.0.0b5</api>
    </version>
    <stability>
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2013-06-16</date>
+   <date>2013-06-21</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
