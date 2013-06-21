@@ -1,10 +1,16 @@
-2013/06/?: Version 2.0.0b5
---------------------------
+2013/06/21: Version 2.0.0b5
+---------------------------
 
 ```
-FIXED: Root namespace was named `global` in overviews
-FIXED: An empty `Global ('\')` entry pointed to a non-existing default.html in the index
-FIXED: Since tag now shows the version number
+FIXED:     Root namespace was named `global` in overviews
+FIXED:     An empty `Global ('\')` entry pointed to a non-existing default.html in the index
+FIXED:     Since tag now shows the version number
+FIXED:     Fatal error when an interface's parent could not be resolved in this project
+FIXED:     API Documentation menu remains empty
+FIXED:     Interface parents now link to the rest of the documentation
+FIXED:     Inheritance of methods, constants and properties was not correctly recognized; this is now fixed
+FIXED:     When a method argument has a typehint but no @param tag then the typehint will be shown
+FIXED      Fatal error in XSL based templates when an interface extends another
 ```
 
 2013/06/16: Version 2.0.0b4
