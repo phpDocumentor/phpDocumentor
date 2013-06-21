@@ -162,12 +162,6 @@ class ServiceProvider implements ServiceProviderInterface
         );
         $factory->register(
             function ($criteria) {
-                return $criteria instanceof FunctionReflector;
-            },
-            new FunctionAssembler()
-        );
-        $factory->register(
-            function ($criteria) {
                 return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
             },
             new ConstantAssembler()
@@ -207,6 +201,12 @@ class ServiceProvider implements ServiceProviderInterface
                 return $criteria instanceof FunctionReflector\ArgumentReflector;
             },
             new ArgumentAssembler()
+        );
+        $factory->register(
+            function ($criteria) {
+                return $criteria instanceof FunctionReflector;
+            },
+            new FunctionAssembler()
         );
     }
 }

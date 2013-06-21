@@ -32,7 +32,7 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor = new PropertyDescriptor();
         $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $propertyDescriptor->setName($data->getShortName());
-        $propertyDescriptor->setVisibility($data->getVisibility());
+        $propertyDescriptor->setVisibility($data->getVisibility() ?: 'public');
         $propertyDescriptor->setStatic($data->isStatic());
         $propertyDescriptor->setDefault($data->getDefault());
 
