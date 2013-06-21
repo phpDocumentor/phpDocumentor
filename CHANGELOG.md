@@ -1,3 +1,10 @@
+2013/06/21: Version 2.0.0b6
+---------------------------
+
+```
+FIXED:     Packages were not indexed and shown correctly
+```
+
 2013/06/21: Version 2.0.0b5
 ---------------------------
 
