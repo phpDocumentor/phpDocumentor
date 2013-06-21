@@ -42,4 +42,23 @@ abstract class AssemblerAbstract extends BaseAssembler
                 ->add($tagFactory->create($tag));
         }
     }
+
+    /**
+     * Extracts the package from the DocBlock.
+     *
+     * @param DocBlock $docBlock
+     *
+     * @return string|null
+     */
+    protected function extractPackageFromDocBlock($docBlock)
+    {
+        $packageTaqs = $docBlock ? $docBlock->getTagsByName('package') : null;
+        if (! $packageTaqs) {
+            return null;
+        }
+
+        /** @var DocBlock\Tag $tag */
+        $tag = reset($packageTaqs);
+        return trim($tag->getContent());
+    }
 }
