@@ -48,7 +48,6 @@ class FileAssembler extends AssemblerAbstract
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
         $this->assembleDocBlock($data->getDocBlock(), $fileDescriptor);
-        $this->extractPackageFromDocBlock($data->getDocBlock());
 
         $this->addMarkers($data->getMarkers(), $fileDescriptor);
         $this->addConstants($data->getConstants(), $fileDescriptor);
@@ -58,20 +57,6 @@ class FileAssembler extends AssemblerAbstract
         $this->addTraits($data->getTraits(), $fileDescriptor);
 
         return $fileDescriptor;
-    }
-
-    /**
-     * Extracts the package from the DocBlock.
-     *
-     * @param DocBlock $docBlock
-     *
-     * @return string|null
-     */
-    protected function extractPackageFromDocBlock($docBlock)
-    {
-        $packageTaqs = $docBlock ? $docBlock->getTagsByName('package') : null;
-
-        return $packageTaqs ? trim(reset($packageTaqs)) : null;
     }
 
     /**
@@ -88,7 +73,9 @@ class FileAssembler extends AssemblerAbstract
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
             if ($constantDescriptor) {
                 $constantDescriptor->setLocation($fileDescriptor, $constant->getLineNumber());
-                $constantDescriptor->setPackage($fileDescriptor->getPackage());
+                if ($constantDescriptor->getPackage() === '') {
+                    $constantDescriptor->setPackage($fileDescriptor->getPackage());
+                }
 
                 $fileDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
             }
@@ -109,7 +96,9 @@ class FileAssembler extends AssemblerAbstract
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function);
             if ($functionDescriptor) {
                 $functionDescriptor->setLocation($fileDescriptor, $function->getLineNumber());
-                $functionDescriptor->setPackage($fileDescriptor->getPackage());
+                if ($functionDescriptor->getPackage() === '') {
+                    $functionDescriptor->setPackage($fileDescriptor->getPackage());
+                }
 
                 $fileDescriptor->getFunctions()->set($functionDescriptor->getName(), $functionDescriptor);
             }
@@ -130,7 +119,9 @@ class FileAssembler extends AssemblerAbstract
             $classDescriptor = $this->getBuilder()->buildDescriptor($class);
             if ($classDescriptor) {
                 $classDescriptor->setLocation($fileDescriptor, $class->getLineNumber());
-                $classDescriptor->setPackage($fileDescriptor->getPackage());
+                if ($classDescriptor->getPackage() === '') {
+                    $classDescriptor->setPackage($fileDescriptor->getPackage());
+                }
 
                 $fileDescriptor->getClasses()->set($classDescriptor->getName(), $classDescriptor);
             }
@@ -151,7 +142,9 @@ class FileAssembler extends AssemblerAbstract
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface);
             if ($interfaceDescriptor) {
                 $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLineNumber());
-                $interfaceDescriptor->setPackage($fileDescriptor->getPackage());
+                if ($interfaceDescriptor->getPackage() === '') {
+                    $interfaceDescriptor->setPackage($fileDescriptor->getPackage());
+                }
 
                 $fileDescriptor->getInterfaces()->set($interfaceDescriptor->getName(), $interfaceDescriptor);
             }
@@ -172,7 +165,9 @@ class FileAssembler extends AssemblerAbstract
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait);
             if ($traitDescriptor) {
                 $traitDescriptor->setLocation($fileDescriptor, $trait->getLineNumber());
-                $traitDescriptor->setPackage($fileDescriptor->getPackage());
+                if ($traitDescriptor->getPackage() === '') {
+                    $traitDescriptor->setPackage($fileDescriptor->getPackage());
+                }
 
                 $fileDescriptor->getTraits()->set($traitDescriptor->getName(), $traitDescriptor);
             }
