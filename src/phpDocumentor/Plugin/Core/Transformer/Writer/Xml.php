@@ -99,6 +99,7 @@ class Xml extends WriterAbstract implements Translatable
         $document_element->setAttribute('version', Application::$VERSION);
 
         $transformer = $transformation->getTransformer();
+//        var_dump($project);
         foreach ($project->getFiles() as $file) {
             $this->buildFile($document_element, $file, $transformer);
         }
@@ -479,10 +480,11 @@ class Xml extends WriterAbstract implements Translatable
             $parent->appendChild($child);
         }
 
+        /** @var InterfaceDescriptor $parentInterface */
         foreach ($interface->getParent() as $parentInterface) {
-            $parentFqcn = is_string($parentInterface)
-                ? $parentInterface
-                : $parentInterface->getFullyQualifiedStructuralName();
+            $parentFqcn = is_string($parentInterface) === false
+                ? $parentInterface->getFullyQualifiedStructuralElementName()
+                : $parentInterface;
             $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 

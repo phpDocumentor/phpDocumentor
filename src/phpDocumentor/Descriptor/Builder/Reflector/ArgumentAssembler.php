@@ -32,6 +32,7 @@ class ArgumentAssembler extends AssemblerAbstract
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());
+        $argumentDescriptor->setTypes($data->getType() ? array($data->getType()) : array());
 
         /** @var ParamDescriptor $tag */
         foreach ($params as $tag) {

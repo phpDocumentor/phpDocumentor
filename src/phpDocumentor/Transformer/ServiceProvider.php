@@ -51,13 +51,22 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         $app['transformer.template.location'] = __DIR__ . '/../../../data/templates';
         $app['linker.substitutions'] = array(
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
-            'phpDocumentor\Descriptor\FileDescriptor'         => array('classes'),
+            'phpDocumentor\Descriptor\FileDescriptor'         => array('classes', 'interfaces', 'traits'),
             'phpDocumentor\Descriptor\ClassDescriptor'        => array(
                 'parent',
                 'interfaces',
-                'methods',
+                'constants',
                 'properties',
-                'constants'
+                'methods',
+            ),
+            'phpDocumentor\Descriptor\InterfaceDescriptor'    => array(
+                'parent',
+                'constants',
+                'methods',
+            ),
+            'phpDocumentor\Descriptor\TraitDescriptor'        => array(
+                'properties',
+                'methods',
             ),
             'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags', 'arguments'),
             'phpDocumentor\Descriptor\ArgumentDescriptor'     => array('types'),
