@@ -13,7 +13,7 @@ Acknowledgements:
 
 Obsoletes:
 
-    De-facto PHPDoc Standard (http://www.phpdoc.org/docs/1.4/index.html)
+    [De-facto PHPDoc Standard][DEFACTO]
 
 ## Table Of Contents
 
@@ -33,33 +33,34 @@ Obsoletes:
       6.1. Class Or Interface
       6.2. Function Or Method
       6.3. Constant Or Property
-    7. Tags
-      7.1.  @api
-      7.2.  @author
-      7.3.  @category [deprecated]
-      7.4.  @copyright
-      7.5.  @deprecated
-      7.6.  @example
-      7.7.  @global
-      7.8.  @internal
-      7.9.  @license
-      7.10. @link
-      7.11. @method
-      7.12. @package
-      7.13. @param
-      7.14. @property
-      7.15. @return
-      7.16. @see
-      7.17. @since
-      7.18. @struct
-      7.19. @subpackage [deprecated]
-      7.20. @throws
-      7.21. @todo
-      7.22. @type
-      7.23. @uses
-      7.24. @var [deprecated]
-      7.25. @version
-    8. Describing hashes
+    7. Describing hashes
+    8. Describing anonymous functions
+    8. Tags
+      8.1.  @api
+      8.2.  @author
+      8.3.  @category [deprecated]
+      8.4.  @copyright
+      8.5.  @deprecated
+      8.6.  @example
+      8.7.  @global
+      8.8.  @internal
+      8.9.  @license
+      8.10. @link
+      8.11. @method
+      8.12. @package
+      8.13. @param
+      8.14. @property
+      8.15. @return
+      8.16. @see
+      8.17. @since
+      8.18. @struct
+      8.19. @subpackage [deprecated]
+      8.20. @throws
+      8.21. @todo
+      8.22. @type
+      8.23. @uses
+      8.24. @var [deprecated]
+      8.25. @version
     Appendix A. Types
     Appendix B. Differences Compared With The De-facto PHPDoc Standard
 
@@ -67,7 +68,7 @@ Obsoletes:
 
 The main purpose of this PSR is to provide a complete and formal definition of
 the PHPDoc standard. This PSR deviates from its predecessor, the de-facto PHPDoc
-Standard associated with [phpDocumentor 1.x](http://www.phpdoc.org), to provide
+Standard associated with [phpDocumentor 1.x][PHPDOC.ORG], to provide
 support for newer features in the PHP language and to address some of the
 shortcomings of its predecessor.
 
@@ -85,7 +86,7 @@ This document SHALL NOT:
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-interpreted as described in [RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
+interpreted as described in [RFC 2119][RFC2119].
 
 ## 3. Definitions
 
@@ -206,8 +207,8 @@ interpreted as described in [RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
   See Appendix A for more detailed information about types.
 
-* "Semantic Version" refers to the definition as set in the Semantic Versioning
-  Specification 2.0.0 at http://www.semver.org.
+* "Semantic Version" refers to the definition as set in the [Semantic Versioning
+  Specification 2.0.0][SEMVER2].
 
 * "FQSEN" is an abbreviation for Fully Qualified Structural Element Name. This
   notation expands on the Fully Qualified Class Name and adds a notation to
@@ -230,7 +231,7 @@ interpreted as described in [RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
   unique identifier for each Structural Element and should not occur more than
   once in a project.
 
-  A FQSEN has the following [ABNF](http://www.ietf.org/rfc/rfc5234.txt)
+  A FQSEN has the following [ABNF][RFC5234]
   definition:
 
           FQSEN    = fqnn / fqcn / constant / method / property  / function
@@ -278,7 +279,7 @@ interpreted as described in [RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
 ## 5. The PHPDoc Format
 
-The PHPDoc format has the following [ABNF](http://www.ietf.org/rfc/rfc5234.txt)
+The PHPDoc format has the following [ABNF][RFC5234]
 definition:
 
     PHPDoc            = [short-description] [long-description] [tags]
@@ -429,7 +430,7 @@ Chapter 5.4 contains an example of use for this construct.
 ### 5.4. Examples
 
 The following examples serve to illustrate the basic use of DocBlocks; it is
-advised to read through the list of tags in chapter 7.
+advised to read through the list of tags in chapter 8.
 
 A complete example could look like the following example:
 
@@ -612,12 +613,53 @@ A constant or property SHOULD inherit the following deprecated tags if supplied:
 
 * [@var](#723-var)
 
-## 7. Tags
+## 7. Describing hashes
+
+The structure of a hash may be described using an "Inline PHPDoc" as part of a
+@type, @param or @return declaration or using the @struct tag in the Class'
+DocBlock.
+
+In either case each element of the hash is denoted with a @type declaration in
+the "Inline PHPDoc". Using this tag it is possible to indicate type, name and
+purpose of the element.
+
+Please note that the variable name part of the @type tag still needs to be
+preceded by a dollar sign for readability and parsability of the tag.
+
+Example:
+
+```php
+/**
+ * Initializes this class with the given options.
+ *
+ * @param string[] $options {
+ *     @type boolean $required Whether this element is required
+ *     @type string  $label    The display name for this element
+ * }
+ */
+public function __construct(array $options = array())
+{
+    <...>
+}
+```
+
+### As @struct declaration
+
+In some cases a hash should be documented multiple times in the same class. For
+these purposes you COULD declare it as a 'virtual' "Structural Element" using
+the @struct tag in the declaration of a Class or Interface.
+
+It is RECOMMENDED to use native language constructs in these situations, such as
+a class.
+
+Please see the @struct documentation on how to use this tag.
+
+## 8. Tags
 
 Unless specifically mentioned in the description each tag MAY occur zero or more
 times in each "DocBlock".
 
-### 7.1. @api
+### 8.1. @api
 
 The @api tag is used to declare "Structural Elements" as being suitable for
 consumption by third parties.
@@ -654,7 +696,7 @@ Backwards Compatibility.
  }
 ```
 
-### 7.2. @author
+### 8.2. @author
 
 The @author tag is used to document the author of any "Structural Element".
 
@@ -679,7 +721,7 @@ adhere to the syntax defined in RFC 2822.
  */
 ```
 
-### 7.3. @category [deprecated]
+### 8.3. @category [deprecated]
 
 The @category tag is used to organize groups of packages together but is
 deprecated in favour of occupying the top-level with the @package tag.
@@ -714,7 +756,7 @@ This tag MUST NOT occur more than once in a "DocBlock".
  */
 ```
 
-### 7.4. @copyright
+### 8.4. @copyright
 
 The @copyright tag is used to document the copyright information of any
 "Structural element".
@@ -741,7 +783,7 @@ covered by this copyright and the organization involved.
  */
 ```
 
-### 7.5. @deprecated
+### 8.5. @deprecated
 
 The @deprecated tag is used to indicate which 'Structural elements' are
 deprecated and are to be removed in a future version.
@@ -776,7 +818,7 @@ same 'PHPDoc' pointing to the new element.
  */
 ```
 
-### 7.6. @example
+### 8.6. @example
 
 The @example tag is used to link to an external source code file which contains
 an example of use for the current "Structural element". An inline variant exists
@@ -826,8 +868,8 @@ show the example code in case an inline example tag is used.
 
 The start and end argument may be omitted but the ellipsis should remain in
 case either is used to give a clear visual indication. The same rules as
-specified with the [substr](http://nl.php.net/manual/en/function.substr.php)
-function of PHP are in effect with regards to the start and end limit.
+specified with the [substr][PHP_SUBSTR] function of PHP are in effect with
+regards to the start and end limit.
 
 > A consuming application MAY choose to support the limit format as used in the
 > previous standard but it is deprecated per this PSR.
@@ -851,7 +893,7 @@ function count()
 }
 ```
 
-### 7.7. @global
+### 8.7. @global
 
 TODO: The definition of this item should be discussed and whether it may or
 may not be superceded in part or in whole by the @type tag.
@@ -892,7 +934,7 @@ variable and a variable documented in the project.
 
 (TODO: Examples for this tag should be added)
 
-### 7.8. @internal
+### 8.8. @internal
 
 The @internal tag is used to denote that the associated "Structural Element" is
 a structure internal to this application or library. It may also be used inside
@@ -955,7 +997,7 @@ function count()
 }
 ```
 
-### 7.9. @license
+### 8.9. @license
 
 The @license tag is used to indicate which license is applicable for the
 associated 'Structural Elements'.
@@ -977,7 +1019,7 @@ Whenever multiple licenses apply there MUST be one @license tag per applicable
 license.
 
 Instead of providing a URL an identifier as identified in the
-[SPDX Open Source License Registry](http://www.spdx.org/licenses/) MAY be provided
+[SPDX Open Source License Registry][SPDX] MAY be provided
 and this SHOULD be interpreted as if having the URL mentioned in the registry.
 
 #### Examples
@@ -989,7 +1031,7 @@ and this SHOULD be interpreted as if having the URL mentioned in the registry.
  */
 ```
 
-### 7.10. @link
+### 8.10. @link
 
 The @link tag indicates a custom relation between the associated
 "Structural Element" and a website, which is identified by an absolute URI.
@@ -1040,7 +1082,7 @@ function count()
 }
 ```
 
-### 7.11. @method
+### 8.11. @method
 
 The @method allows a class to know which 'magic' methods are callable.
 
@@ -1090,7 +1132,7 @@ class Child extends Parent
 }
 ```
 
-### 7.12. @package
+### 8.12. @package
 
 The @package tag is used to categorize "Structural Elements" into logical
 subdivisions.
@@ -1140,7 +1182,7 @@ This tag MUST NOT occur more than once in a "DocBlock".
  */
 ```
 
-### 7.13. @param
+### 8.13. @param
 
 The @param tag is used to document a single parameter of a function or method.
 
@@ -1199,7 +1241,7 @@ public function __construct(array $options = array())
 }
 ```
 
-### 7.14. @property
+### 8.14. @property
 
 The @property tag allows a class to know which 'magic' properties are present.
 
@@ -1241,7 +1283,7 @@ class Child extends Parent
 }
 ```
 
-### 7.15. @return
+### 8.15. @return
 
 The @return tag is used to document the return value of functions or methods.
 
@@ -1291,7 +1333,7 @@ function getLabel()
 }
 ```
 
-### 7.16. @see
+### 8.16. @see
 
 The @see tag indicates a reference from the associated "Structural Elements" to
 a website or other "Structural Elements".
@@ -1309,8 +1351,7 @@ When defining a reference to another "Structural Elements" you can refer to a
 specific element by appending a double colon and providing the name of that
 element (also called the "FQSEN").
 
-A URI MUST be complete and well-formed as specified in
-`RFC2396 <http://www.ietf.org/rfc/rfc2396.txt>`_.
+A URI MUST be complete and well-formed as specified in [RFC 2396][RFC2396].
 
 The type of reference MAY be provided after the URI or FQSEN by mentioning a
 string wrapped in colons that defines the type of relation.
@@ -1338,7 +1379,7 @@ function count()
 }
 ```
 
-### 7.17. @since
+### 8.17. @since
 
 The @since tag is used to denote _when_ an element was introduced or modified,
 using some description of "versioning" to that element.
@@ -1388,12 +1429,12 @@ class Foo
 }
 ```
 
-### 7.18. @struct
+### 8.18. @struct
 
 TODO: specify details
 TODO: determine whether this is a correct approach
 
-### 7.19. @subpackage [deprecated]
+### 8.19. @subpackage [deprecated]
 
 The @subpackage tag is used to categorize "Structural Elements" into logical
 subdivisions.
@@ -1427,7 +1468,7 @@ DocBlock.
  */
 ```
 
-### 7.20. @throws
+### 8.20. @throws
 
 The @throws tag is used to indicate whether "Structural Elements" throw a
 specific type of exception.
@@ -1471,7 +1512,7 @@ function count($items)
 }
 ```
 
-### 7.21. @todo
+### 8.21. @todo
 
 The @todo tag is used to indicate whether any development activities should
 still be executed on associated "Structural Elements".
@@ -1503,7 +1544,7 @@ function count()
 }
 ```
 
-### 7.22. @type
+### 8.22. @type
 
 You may use the @type tag to document the "Type" of the following
 "Structural Elements":
@@ -1600,7 +1641,7 @@ class Foo
 }
 ```
 
-### 7.22. @uses
+### 8.22. @uses
 
 Indicates whether the current "Structural Element" consumes the
 "Structural Element", or project file, that is provided as target.
@@ -1658,7 +1699,7 @@ function executeMyView()
 The @var tag is a **deprecated** alias for `@type`. Please see the documentation
 for `@type` for details of its usage.
 
-### 7.25. @version
+### 8.25. @version
 
 The @version tag is used to denote some description of "versioning" to an
 element.
@@ -1675,8 +1716,7 @@ This information can be used to generate a set of API Documentation where the
 consumer is informed about elements at a particular version.
 
 It is RECOMMENDED that the version number matches a semantic version number as
-described in the Semantic Versioning Standard version 2.0 at
-http://www.semver.org.
+described in the [Semantic Versioning Standard version 2.0][SEMVER2].
 
 Version vectors from Version Control Systems are also supported, though they
 MUST follow the form:
@@ -1711,47 +1751,6 @@ class Foo
 }
 ```
 
-## 8. Describing hashes
-
-The structure of a hash may be described using an "Inline PHPDoc" as part of a
-@type, @param or @return declaration or using the @struct tag in the Class'
-DocBlock.
-
-In either case each element of the hash is denoted with a @type declaration in
-the "Inline PHPDoc". Using this tag it is possible to indicate type, name and
-purpose of the element.
-
-Please note that the variable name part of the @type tag still needs to be
-preceded by a dollar sign for readability and parsability of the tag.
-
-Example:
-
-```php
-/**
- * Initializes this class with the given options.
- *
- * @param string[] $options {
- *     @type boolean $required Whether this element is required
- *     @type string  $label    The display name for this element
- * }
- */
-public function __construct(array $options = array())
-{
-    <...>
-}
-```
-
-### As @struct declaration
-
-In some cases a hash should be documented multiple times in the same class. For
-these purposes you COULD declare it as a 'virtual' "Structural Element" using
-the @struct tag in the declaration of a Class or Interface.
-
-It is RECOMMENDED to use native language constructs in these situations, such as
-a class.
-
-Please see the @struct documentation on how to use this tag.
-
 ## Appendix A. Types
 
 ### ABNF
@@ -1764,7 +1763,7 @@ Please see the @struct documentation on how to use this tag.
     keyword                  = "string"|"integer"|"int"|"boolean"|"bool"|"float"
                                |"double"|"object"|"mixed"|"array"|"resource"
                                |"void"|"null"|"callable"|"false"|"true"|"self"
-                               |"static"
+                               |"static"|"$this"
 
 ### Additional details
 
@@ -1860,8 +1859,7 @@ The following keywords are recognized by this PSR:
 7.  'array', the element to which this type applies is an array of values.
 
 8.  'resource', the element to which this type applies is a resource per
-    the definition of PHP at
-    http://www.php.net/manual/en/language.types.resource.php.
+    the [definition of PHP][PHP_RESOURCE].
 
 9.  'void', this type is commonly only used when defining the return type of a
     method or function.
@@ -1944,8 +1942,7 @@ The following keywords are recognized by this PSR:
 
 11. 'callable', the element to which this type applies is a pointer to a
     function call. This may be any type of callable as defined in the PHP manual
-    at http://php.net/manual/en/language.pseudo-types.php or
-    http://php.net/manual/en/language.types.callable.php.
+    about [pseudo-types][PHP_PSEUDO] or the section on [callable][PHP_CALLABLE].
 
 12. 'false' or 'true', the element to which this type applies will have
     the value true or false. No other value will be returned from this
@@ -1987,88 +1984,23 @@ The following keywords are recognized by this PSR:
     This keyword behaves the same way as the 'static' keyword keyword (not
     the static property or method modifier) as defined by PHP.
 
-## Appendix B. Differences Compared With The De-facto PHPDoc Standard
+15. '$this', the element to which this type applies is the same exact instance
+    as the current Class in the given context. As such this type is a stricter
+    version of 'static' as, in addition, the returned instance must not only
+    be of the same Class but also the same instance.
 
-This specification intends to improve upon the de-facto PHPDoc standard by
-expanding syntax and deprecating redundant elements.
+    This type is often used as return value for methods implementing the
+    [Fluent Interface][FLUENT] design pattern.
 
-The following changes may be observed and a concise rationale is provided.
-
-### Syntax Changes
-
-#### Added Support For Namespaces
-
-#### Added 'self' As "Type"
-
-#### Added Array Notation For "Type"
-
-#### Expanded Basic Syntax To Support Doctrine2/Symfony2 Style Annotations
-
-### Tag Additions
-
-#### @api
-
-Framework and library developers needed a way for consumers to distinguish
-between public methods intended for internal use or public methods fit for
-consuming.
-
-#### @type
-
-This tag is meant to replace @var and better convey the meaning and intention:
-to tell the user which *type* of data is contained in the succeeding
-"Structural Element".
-
-Additionally constants did not have a tag which identified the type of the
-contained data. Instead of re-using @var, which is inappropriate since
-a constant is not variable, or defining a *new* tag @const, which would make
-usage of the right tag even more complex, a new tag @type was created to replace
-@var and serve as new tag for constants.
-
-### Tag Changes
-
-#### @package
-
-The @package tag replaces the function of the @category and @subpackage by
-allowing a layered hierarchy using the '\' operator.
-
-See the documentation on the @package tag for details.
-
-#### @ignore
-
-The @ignore tag has not been included in this specification as it is not a tag
-but an annotation specific to phpDocumentor and derived documentation
-generators.
-
-#### @link
-
-In the de-facto standard, introduced by phpDocumentor, @link supported the use
-of internal locators for "Structural Element". This use is actually superseded
-by the @see tag and thus removed.
-
-It is NOT RECOMMENDED to use the @link tag for referencing "Structural Elements".
-
-#### @method
-
-phpDocumentor had a different signature where the method name was repeated. Since
-this repetition only caused overhead it has been removed in this specification.
-
-### Deprecated Tags
-
-#### @category
-
-The @package tag replaces the function of the @category and @subpackage by
-allowing a layered hierarchy using the '\' operator.
-
-See the documentation on the @package tag for details.
-
-#### @subpackage
-
-The @package tag replaces the function of the @category and @subpackage by
-allowing a layered hierarchy using the '\' operator.
-
-See the documentation on the @package tag for details.
-
-#### @var
-
-The @var tag is considered ambiguous and non-semantic; as such it is superseded
-by the @type tag which also allows the type of constants to be documented.
+[RFC2119]:      http://www.ietf.org/rfc/rfc2119.txt
+[RFC5234]:      http://www.ietf.org/rfc/rfc5234.txt
+[RFC2396]:      http://www.ietf.org/rfc/rfc2396.txt
+[SEMVER2]:      http://www.semver.org
+[PHP_SUBSTR]:   http://nl.php.net/manual/en/function.substr.php
+[PHP_RESOURCE]: http://www.php.net/manual/en/language.types.resource.php
+[PHP_PSEUDO]:   http://php.net/manual/en/language.pseudo-types.php
+[PHP_CALLABLE]: http://php.net/manual/en/language.types.callable.php
+[SPDX]:         http://www.spdx.org/licenses
+[DEFACTO]:      http://www.phpdoc.org/docs/1.4/index.html
+[PHPDOC.ORG]:   http://www.phpdoc.org
+[FLUENT]:       http://en.wikipedia.org/wiki/Fluent_interface
