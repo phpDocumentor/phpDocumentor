@@ -15,6 +15,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Plugin\Core\Twig\Extension;
 use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
@@ -198,12 +199,24 @@ class Twig extends WriterAbstract implements Routable
      */
     protected function initializeEnvironment(ProjectDescriptor $project, Transformation $transformation, $destination)
     {
-        $template_path = $this->getTemplatePath($transformation);
+        $callingTemplatePath = $this->getTemplatePath($transformation);
 
-        $templatesPath = $transformation->getTransformer()->getTemplates()->getTemplatesPath();
-        $env = new \Twig_Environment(
-            new \Twig_Loader_Filesystem($templatesPath . '/..' . DIRECTORY_SEPARATOR . $template_path)
+        $baseTemplatesPath = $transformation->getTransformer()->getTemplates()->getTemplatesPath();
+
+        $templateFolders = array(
+            $baseTemplatesPath . '/..' . DIRECTORY_SEPARATOR . $callingTemplatePath,
+            // http://twig.sensiolabs.org/doc/recipes.html#overriding-a-template-that-also-extends-itself
+            $baseTemplatesPath
         );
+
+        // get all invoked template paths, they overrule the calling template path
+        /** @var Template $template */
+        foreach ($transformation->getTransformer()->getTemplates() as $template) {
+            $path = $baseTemplatesPath . DIRECTORY_SEPARATOR . $template->getName();
+            array_unshift($templateFolders, $path);
+        }
+
+        $env = new \Twig_Environment(new \Twig_Loader_Filesystem($templateFolders));
 
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
         $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);
