@@ -26,8 +26,7 @@ references to their elements.
 
 .. hint::
 
-   To document TODO items inline in the code, consider using the TODO markers,
-   see the chapter :doc:`../../reporting/markers` for more information.
+   To document TODO items inline in the code, consider using TODO markers.
 
 Examples
 --------

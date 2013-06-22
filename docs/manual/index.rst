@@ -105,6 +105,7 @@ Learn about phpDocumentor
 .. toctree::
    :hidden:
 
+   new/index
    for-users/index
    for-template-builders/index
    for-developers/index

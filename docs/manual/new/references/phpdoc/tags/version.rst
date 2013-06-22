@@ -1,5 +1,5 @@
 @version
-======
+========
 
 The @version tag indicates the current version of :term:`Structural Elements`.
 

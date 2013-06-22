@@ -60,7 +60,7 @@ elements are counted as such:
     * variables, both local and global scope.
 
 A more detailed description of what :term:`Structural Elements` are and how
-DocBlocks apply to them can be found in the :doc:`../introduction/definitions`.
+DocBlocks apply to them can be found in the :doc:`definitions`.
 
 Sections
 --------
@@ -112,7 +112,7 @@ Long descriptions can also contain inline tags. These are special annotations
 that can be substituted for a specialized type of information (such as {@link}).
 Inline tags are always surrounded by braces.
 
-A complete listing is provided in :doc:`inline-tag-reference`.
+A complete listing is provided in :doc:`inline-tags/index`.
 
 Tags
 ~~~~
@@ -121,7 +121,7 @@ Tags represent meta-data with which IDEs, external tooling or even the
 application itself know how to interpret an element.
 
 phpDocumentor understands and uses (almost) all types supported by phpDocumentor.
-A complete listing is provided in :doc:`tag-reference`.
+A complete listing is provided in :doc:`tags/index`.
 
 In addition phpDocumentor is able to understand, and link to, the annotations of
 Doctrine2.

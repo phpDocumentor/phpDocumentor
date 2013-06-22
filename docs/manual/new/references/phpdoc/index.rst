@@ -4,8 +4,9 @@ PHPDoc reference
 .. toctree::
    :maxdepth: 2
 
-   phpdoc/basic-syntax
-   phpdoc/types
-   phpdoc/inheritance
-   phpdoc/inline-tag-reference
-   phpdoc/tag-reference
+   basic-syntax
+   inheritance
+   types
+   inline-tags/index
+   tags/index
+   definitions

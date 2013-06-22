@@ -5,3 +5,4 @@ Learn about phpDocumentor
 
     getting-started/index
     guides/index
+    references/index
