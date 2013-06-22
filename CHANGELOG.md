@@ -1,4 +1,62 @@
-2013/06/01: Version 2.0.0b1
+2013/06/21: Version 2.0.0b6
+---------------------------
+
+```
+FIXED:     Packages were not indexed and shown correctly
+```
+
+2013/06/21: Version 2.0.0b5
+---------------------------
+
+```
+FIXED:     Root namespace was named `global` in overviews
+FIXED:     An empty `Global ('\')` entry pointed to a non-existing default.html in the index
+FIXED:     Since tag now shows the version number
+FIXED:     Fatal error when an interface's parent could not be resolved in this project
+FIXED:     API Documentation menu remains empty
+FIXED:     Interface parents now link to the rest of the documentation
+FIXED:     Inheritance of methods, constants and properties was not correctly recognized; this is now fixed
+FIXED:     When a method argument has a typehint but no @param tag then the typehint will be shown
+FIXED      Fatal error in XSL based templates when an interface extends another
+```
+
+2013/06/16: Version 2.0.0b4
+---------------------------
+
+```
+FIXED      Fatal error that occurs when a constant has an error
+FIXED      Fatal error that occurs in certain cases with the getError() method
+FIXED      Refactored Builder into Assemblers to reduce technical debt
+CHANGED    Refactored ProjectDescriptor Builder to separate assembling from filtering and validating
+CHANGED    Introduced Symfony Validator component for element validation
+CHANGED    Introduced ZF2 Filter component to filter elements (for example with @internal)
+```
+
+2013/06/14: Version 2.0.0b3
+---------------------------
+
+```
+FIXED      Using an @uses tag results in a fatal error during execution
+FIXED      Errors are now shown on the errors report of the responsive-twig template
+FIXED      The error count on the index page of the responsive-twig template is restored
+FIXED      Checkstyle output now functions as expected
+FIXED      new-black template failed due to a capitalization issue with the Sourcecode writer
+FIXED      Updated all templates to generate a structure.xml
+FIXED      Fatal error when a property, constant or method collection contains a null value
+FIXED      Fixed several errors in the Old Ocean template
+FIXED      Removed broken logging call from Xsl writer
+FIXED      Several PHP notices
+```
+
+2013/06/09: Version 2.0.0b2
+---------------------------
+
+```
+FIXED      Package could not be set for constants, resulting in fatal error
+FIXED      Default template was still responsive and not responsive-twig
+```
+
+2013/06/09: Version 2.0.0b1
 ---------------------------
 
 The 13th alpha of phpDocumentor contains the final functionality for version 2.0.
@@ -18,7 +76,7 @@ In the following list we have tried to exhaustively document the list of changes
 the refactoring it is nigh impossible to make a 100% accurate list. Please contact us if you have questions; the website
 http://www.phpdoc.org describes various methods.
 
-========== ==================================================================================================
+```
 ADDED      Twig Writer
 ADDED      Xml Writer
 ADDED      Router component to provide locations for various Url Schemes
@@ -53,4 +111,4 @@ DEPRECATED Behaviours are only executed for the XmlAst writer
 BC-BREAK   Moved Validators to the Descriptor Builder and refactored for internationalization
 BC-BREAK   Parser generates an object graph and not XML (structure.xml, use XmlAst writer now for XML output)
 BC-BREAK   Replaced plugin system with Service Providers
-========== ==================================================================================================
+```

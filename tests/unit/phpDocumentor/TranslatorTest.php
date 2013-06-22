@@ -70,23 +70,23 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslationFile
+     * @covers phpDocumentor\Translator::addTranslations
      * @covers phpDocumentor\Translator::translate
      */
     public function testCanUseTranslationFromIndividualFile()
     {
-        $this->fixture->addTranslationFile($this->filename);
+        $this->fixture->addTranslations($this->filename);
 
         $this->assertEquals(self::TEST_VALUE, $this->fixture->translate(self::TEST_KEY));
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslationFile
+     * @covers phpDocumentor\Translator::addTranslations
      * @covers phpDocumentor\Translator::translate
      */
     public function testCanUseTranslationFromIndividualFileWithAlternateLocale()
     {
-        $this->fixture->addTranslationFile($this->filename, self::LOCALE_NL);
+        $this->fixture->addTranslations($this->filename, self::LOCALE_NL);
 
         $this->assertEquals(
             self::TEST_VALUE,
@@ -95,24 +95,24 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslationFile
+     * @covers phpDocumentor\Translator::addTranslations
      * @covers phpDocumentor\Translator::translate
      */
     public function testTranslateWithAlternateDefaultLocale()
     {
-        $this->fixture->addTranslationFile($this->filename, self::LOCALE_NL);
+        $this->fixture->addTranslations($this->filename, self::LOCALE_NL);
         $this->fixture->setLocale(self::LOCALE_NL);
 
         $this->assertEquals(self::TEST_VALUE, $this->fixture->translate(self::TEST_KEY));
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslationFile
+     * @covers phpDocumentor\Translator::addTranslations
      * @covers phpDocumentor\Translator::translate
      */
     public function testCanUseTranslationFromIndividualFileWithFallbackToEnglish()
     {
-        $this->fixture->addTranslationFile($this->filename, Translator::DEFAULT_LOCALE);
+        $this->fixture->addTranslations($this->filename, Translator::DEFAULT_LOCALE);
 
         $this->assertEquals(
             self::TEST_VALUE,

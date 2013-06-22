@@ -34,93 +34,23 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        /** @var Translator $translator  */
+        $translator = $app['translator'];
+        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
+
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
 
         $writerCollection['FileIo']     = new Writer\FileIo();
         $writerCollection['twig']       = new Writer\Twig();
         $writerCollection['Graph']      = new Writer\Graph();
-        $writerCollection['Checkstyle'] = new Writer\Checkstyle();
-        $writerCollection['Sourcecode'] = new Writer\Sourcecode();
+        $writerCollection['checkstyle'] = new Writer\Checkstyle();
+        $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['xml']        = new Writer\Xml();
         $writerCollection['xsl']        = new Writer\Xsl();
 
-        /** @var Translator $translator  */
-        $translator = $app['translator'];
-        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
-
+        $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
-        $this->addValidators($app);
-    }
-
-    /**
-     * Adds validators for the Structural Elements.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    protected function addValidators(Application $app)
-    {
-        /** @var Validation $validation */
-        $validation = $app['descriptor.builder.validator'];
-        $validation->register(
-            array(
-                 Validation::TYPE_FILE,
-                 Validation::TYPE_CLASS,
-                 Validation::TYPE_INTERFACE,
-                 Validation::TYPE_TRAIT,
-                 Validation::TYPE_METHOD,
-                 Validation::TYPE_PROPERTY,
-                 Validation::TYPE_FUNCTION,
-                 Validation::TYPE_CONSTANT,
-            ),
-            array(new HasDocBlock())
-        );
-
-        $validation->register(
-            array(
-                 Validation::TYPE_FILE,
-                 Validation::TYPE_CLASS,
-                 Validation::TYPE_INTERFACE,
-                 Validation::TYPE_TRAIT,
-            ),
-            array(
-                 new HasSinglePackage(),
-                 new HasSingleSubpackage(),
-                 new HasPackageWithSubpackage(),
-            )
-        );
-
-        $validation->register(
-            array(
-                 Validation::TYPE_FILE,
-                 Validation::TYPE_CLASS,
-                 Validation::TYPE_INTERFACE,
-                 Validation::TYPE_TRAIT,
-                 Validation::TYPE_METHOD,
-                 Validation::TYPE_FUNCTION,
-            ),
-            array(new HasShortDescription())
-        );
-
-        $validation->register(
-            array(
-                 Validation::TYPE_CONSTANT,
-                 Validation::TYPE_PROPERTY,
-            ),
-            array(new PropertyHasShortDescription())
-        );
-
-        $validation->register(
-            array(
-                 Validation::TYPE_METHOD,
-                 Validation::TYPE_FUNCTION,
-            ),
-            array(
-                 new AreAllArgumentsValid(),
-                 new IsReturnTypeNotAnIdeDefault(),
-            )
-        );
+        $writerCollection['twig']->setTranslator($translator);
     }
 }

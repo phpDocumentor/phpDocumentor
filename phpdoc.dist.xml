@@ -2,10 +2,10 @@
 <phpdocumentor>
     <parser>
         <default-package-name>phpDocumentor</default-package-name>
-        <target>build</target>
+        <target>/tmp/phpdoc-demo</target>
     </parser>
     <transformer>
-        <target>build/apidocs</target>
+        <target>/tmp/phpdoc-demo/responsive</target>
     </transformer>
     <files>
         <directory>.</directory>
@@ -16,6 +16,6 @@
         <plugin path="Core" />
     </plugins>
     <transformations>
-        <template name="responsive-twig"></template>
+        <template name="responsive-twig" />
     </transformations>
 </phpdocumentor>

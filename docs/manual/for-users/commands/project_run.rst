@@ -29,7 +29,22 @@ Usage
 Parameters
 ----------
 
-**-d**
+**-t|--target[="..."]**
+    The directory in which the generated documentation will be placed.
+
+**-f|--filename[="..."]**
+    Provide a single file to parse.
+
+    This parameter can be used to tell phpDocumentor to interpret a single file.
+    This may be a single relative or absolute path.
+    When providing a relative path please keep in mind that the path is relative
+    to the current working directory.
+
+    Wilecards * and ? are not supported by this parameter.
+
+    This parameter may be used in conjunction with the ``-d`` parameter.
+
+**-d|--directory[="..."]**
     Provide a comma-separated list of source folders to parse.
 
     This parameter can be used to tell phpDocumentor which folders need to be
@@ -44,6 +59,46 @@ Parameters
 
     This parameter may be used in conjunction with the ``-f`` parameter.
 
+**--encoding[="..."]**
+    ???
+
+**-e|--extensions[="..."]**
+    ???
+
+**-i|--ignore["..."]**
+    Provide a comma-seeparated list of paths to skip when parsing.
+
+**--ignore-tags[="..."]**
+    ???
+
+**--hidden**
+    ???
+
+**--ignore-symlinks**
+    Tells the parser to not follow symlinks.
+
+**-m|--markers[="..."]**
+    Provide a comma-separated list of markers to parse.
+
+**--title[="..."]**
+    Specify a title for the documentation.
+
+    Title defaults to "phpDocumentor".
+
+**--force**
+    Ingore exceptions and continue parsing.
+
+**--validate**
+    ???
+
+**--visibility[="..."]**
+    Provide a comma-separated list of visibility scopes to parse.
+
+    This parameter may be used to tell phpDocumentor to only parse public
+    properties and methods, or public and protected.
+
+**--defaultpackagename[="..."]**
+
 **--sourcecode**
     *Starting with 0.16.0*, Stores the sourcecode of each file with the structure.
 
@@ -57,3 +112,18 @@ Parameters
         Currently the transformer will add a link to the given file's source
         next to the name of the file in the top. In the future we will add
         direct links from elements to the line in this source code file.
+
+**-p|--progressbar**
+    While running, show a short summary of generation progress.
+
+    When this parameter is provided the default lengthy command line output is
+    replaced with a short overview of the generation status.
+
+**--template[="..."]**
+    Specify a template name, or a path to a directory where a custom template resides.
+
+**--parseprivate**
+    Parse items marked with @internal despite their visibility.
+
+**-c|--config[="..."]**
+    Config file to use when parsing.

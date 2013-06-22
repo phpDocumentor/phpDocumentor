@@ -75,7 +75,14 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 2. Run the installer:
 
+       `mkdir tmp && cd tmp # Optional, but recommended.`
        `php installer.php`
+
+    installer.php accepts the following options:
+
+    `--php='...'` Specify a PHP command line to run (e.g. `--php='php -d detect_unicode=Off'`).  
+    `--proxy='...'` Specify a proxy URL to use for HTTP calls.  
+    `--dev` Retrieve the develop branch version of phpDocumentor2.
 
 3. Set up your binaries to use phpDocumentor from any location:
 

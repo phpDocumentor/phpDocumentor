@@ -127,11 +127,22 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
      */
     public function getConstants($includeInherited = true)
     {
-        if (!$includeInherited || !$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
-            return $this->constants;
+        return $this->constants;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInheritedConstants()
+    {
+        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+            return new Collection();
         }
 
-        return $this->constants->merge($this->getParent()->getConstants(true));
+        $inheritedMethods = clone $this->getParent()->getConstants();
+        $inheritedMethods->merge($this->getParent()->getInheritedConstants());
+
+        return $inheritedMethods;
     }
 
     /**
@@ -260,15 +271,24 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         parent::setPackage($package);
 
         foreach ($this->getConstants() as $constant) {
-            $constant->setPackage($package);
+            // TODO #840: Workaround; for some reason there are NULLs in the constants array.
+            if ($constant) {
+                $constant->setPackage($package);
+            }
         }
 
         foreach ($this->getProperties() as $property) {
-            $property->setPackage($package);
+            // TODO #840: Workaround; for some reason there are NULLs in the properties array.
+            if ($property) {
+                $property->setPackage($package);
+            }
         }
 
         foreach ($this->getMethods() as $method) {
-            $method->setPackage($package);
+            // TODO #840: Workaround; for some reason there are NULLs in the methods array.
+            if ($method) {
+                $method->setPackage($package);
+            }
         }
     }
 }

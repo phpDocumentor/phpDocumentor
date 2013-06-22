@@ -113,12 +113,12 @@
     </target>
 
     <!-- Asks for the post-deployment version number -->
-    <target name="deploy:get-version-number"
-            description="Ask the user for the new version">
-        <exec
-            command="grep -Pom1 &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Application.php"
-            dir="${project.basedir}" outputProperty="version.number"
-        />
+    <target name="deploy:get-version-number" description="Ask the user for the new version">
+        <loadfile property="version.number" file="${project.basedir}/VERSION">
+            <filterchain>
+                <striplinebreaks />
+            </filterchain>
+        </loadfile>
     </target>
 
     <!-- Creates a PEAR package from this project -->
@@ -131,7 +131,7 @@
                         promptText="Enter the stability of the new version (alpha, beta or stable)"
                         useExistingValue="true"/>
         <exec
-            command="php bin/utils/package.php ${version.number} ${version.number} ${version.stability} make"
+            command="php bin/utils/package.php '${version.number}' '${version.number}' '${version.stability}' make"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
@@ -144,16 +144,16 @@
             depends="deploy:get-version-number"
             description="Uploads the PEAR package to the distribution server and update pirum">
         <exec command="scp ${project.basedir}/phpDocumentor-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
-        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
+        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; ./pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
         <delete file="${project.basedir}/phpDocumentor-${version.number}.tgz" />
     </target>
 
     <!-- Builds a new demo and publishes it -->
     <target name="deploy:publish-demo"
             description="Generate a demo and upload it to the server">
-        <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
-        <exec command="php bin/phpdoc.php -t data/output" dir="${project.basedir}" passthru="true" checkreturn="true"/>
-        <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+        <delete><fileset dir="/tmp/phpdoc-demo/responsive"><include name="*"/></fileset></delete>
+        <exec command="php bin/phpdoc.php -t /tmp/phpdoc-demo/responsive" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r /tmp/phpdoc-demo/responsive/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
     </target>
 
     <!-- Builds a new demo and publishes it -->
