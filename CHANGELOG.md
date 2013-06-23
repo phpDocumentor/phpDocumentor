@@ -3,6 +3,7 @@
 
 ```
 FIXED:     Packages were not indexed and shown correctly
+FIXED:     @var descriptions were not shown as summary if the summary was absent for a property
 ```
 
 2013/06/21: Version 2.0.0b5
