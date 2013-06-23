@@ -4,6 +4,8 @@
 ```
 FIXED:     Packages were not indexed and shown correctly
 FIXED:     @var descriptions were not shown as summary if the summary was absent for a property
+FIXED:     Added static label on a property in the responsive template
+FIXED:     Alignment of tags in table display
 CHANGED:   Deep link should not be shown for members without location
 ```
 
