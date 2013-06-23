@@ -8,6 +8,8 @@ FIXED:     Added static label on a property in the responsive template.
 FIXED:     Alignment of tags in table display.
 FIXED:     Response information was missing from method description.
 FIXED:     Sourcecode viewer in new-black template.
+FIXED:     Magic methods are now shown and inherited in the class view for the responsive-twig template.
+FIXED:     Magic properties are now shown and inherited in the class view for the responsive-twig template.
 CHANGED:   Deep link should not be shown for members without location.
 CHANGED:   phpDocumentor now sets the memory limit to -1 to prevent issues due to a limited memory usage.
 REMOVED:   `/bin/parse.php` binary; its function is carried out by `phpdoc project:parse`.

@@ -12,8 +12,26 @@
 namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
 
 class MethodDescriptor extends TagDescriptor
 {
+    protected $methodName = '';
 
+    public function __construct(MethodTag $reflectionTag)
+    {
+        parent::__construct($reflectionTag);
+
+        $this->methodName = $reflectionTag->getMethodName();
+
+        // TODO: add response and arguments
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return $this->methodName;
+    }
 }
