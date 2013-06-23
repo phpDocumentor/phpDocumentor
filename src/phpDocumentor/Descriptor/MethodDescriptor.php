@@ -149,7 +149,9 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      */
     public function getResponse()
     {
+        /** @var Collection|null $returnTags */
         $returnTags = $this->getTags()->get('return');
-        return $returnTags ? current($returnTags) : null;
+
+        return $returnTags instanceof Collection ? current($returnTags->getAll()) : null;
     }
 }
