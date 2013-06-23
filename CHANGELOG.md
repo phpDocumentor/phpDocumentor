@@ -2,13 +2,16 @@
 ---------------------------
 
 ```
-FIXED:     Packages were not indexed and shown correctly
-FIXED:     @var descriptions were not shown as summary if the summary was absent for a property
-FIXED:     Added static label on a property in the responsive template
-FIXED:     Alignment of tags in table display
-FIXED:     Response information was missing from method description
-FIXED:     Sourcecode viewer in new-black template
-CHANGED:   Deep link should not be shown for members without location
+FIXED:     Packages were not indexed and shown correctly.
+FIXED:     @var descriptions were not shown as summary if the summary was absent for a property.
+FIXED:     Added static label on a property in the responsive template.
+FIXED:     Alignment of tags in table display.
+FIXED:     Response information was missing from method description.
+FIXED:     Sourcecode viewer in new-black template.
+CHANGED:   Deep link should not be shown for members without location.
+CHANGED:   phpDocumentor now sets the memory limit to -1 to prevent issues due to a limited memory usage.
+REMOVED:   `/bin/parse.php` binary; its function is carried out by `phpdoc project:parse`.
+REMOVED:   `/bin/transform.php` binary; its function is carried out by `phpdoc project:transform`.
 ```
 
 2013/06/21: Version 2.0.0b5

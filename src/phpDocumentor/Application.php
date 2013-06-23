@@ -33,6 +33,7 @@ require_once findAutoloader();
  */
 class Application extends Cilex
 {
+    /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
     public static $VERSION;
 
     /**
@@ -40,6 +41,8 @@ class Application extends Cilex
      */
     public function __construct()
     {
+        ini_set('memory_limit', -1);
+
         self::$VERSION = file_get_contents(__DIR__ . '/../../VERSION');
 
         parent::__construct('phpDocumentor', self::$VERSION);
