@@ -7,6 +7,7 @@ FIXED:     @var descriptions were not shown as summary if the summary was absent
 FIXED:     Added static label on a property in the responsive template
 FIXED:     Alignment of tags in table display
 FIXED:     Response information was missing from method description
+FIXED:     Sourcecode viewer in new-black template
 CHANGED:   Deep link should not be shown for members without location
 ```
 
