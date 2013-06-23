@@ -14,6 +14,7 @@ FIXED:     Magic properties are now shown and inherited in the class view for th
 FIXED:     Markdown fencing in responsive and responsive-twig template now correctly indents code examples.
 CHANGED:   Deep link should not be shown for members without location.
 CHANGED:   phpDocumentor now sets the memory limit to -1 to prevent issues due to a limited memory usage.
+CHANGED:   Bumped maximum recursion setting from 5.000 to 10.000 since errors were still reported.
 REMOVED:   `/bin/parse.php` binary; its function is carried out by `phpdoc project:parse`.
 REMOVED:   `/bin/transform.php` binary; its function is carried out by `phpdoc project:transform`.
 ```
