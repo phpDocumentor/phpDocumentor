@@ -247,6 +247,8 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             return null;
         }
 
-        return $path_to_root.ltrim($rule->generate($relative_path), '/');
+        $generatedPath = $rule->generate($relative_path);
+
+        return $generatedPath ? $path_to_root.ltrim($generatedPath, '/') : null;
     }
 }
