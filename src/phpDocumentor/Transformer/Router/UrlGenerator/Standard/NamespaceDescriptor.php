@@ -33,6 +33,6 @@ class NamespaceDescriptor implements UrlGeneratorInterface
             $name = 'default';
         }
 
-        return '/namespaces/'. $name .'.html';
+        return DIRECTORY_SEPARATOR . 'namespaces' . DIRECTORY_SEPARATOR . $name .'.html';
     }
 }

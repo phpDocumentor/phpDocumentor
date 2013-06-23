@@ -26,6 +26,7 @@ class ClassDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        return '/classes/'.str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\')).'.html';
+        return DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR
+            . str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\')).'.html';
     }
 }
