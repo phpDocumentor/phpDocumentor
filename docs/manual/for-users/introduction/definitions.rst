@@ -152,7 +152,7 @@ Definitions
         This is a generic name for anything that can be returned or provided as
         identity for a value.
 
-        It is recommended to read the chapter :doc:`/for-users/types` for a
+        It is recommended to read the chapter :doc:`../phpdoc/types` for a
         detailed description.
 
     Fully Qualified Structural Element Name (FQSEN)
@@ -161,8 +161,8 @@ Definitions
 
        It is best demonstrated using an example:
 
-           \My\Space\MyClass::myMethod()
+           \\My\\Space\\MyClass::myMethod()
 
        This FQSEN identifies the *myMethod* method that is contained in the
-       *MyClass* class, which in turn is contained inside the *My\Space*
+       *MyClass* class, which in turn is contained inside the *My\\Space*
        namespace.
