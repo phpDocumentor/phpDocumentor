@@ -27,6 +27,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
 use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\stripInternal;
+use phpDocumentor\Descriptor\Filter\stripIgnore;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\ClassReflector;
@@ -143,6 +144,13 @@ class ServiceProvider implements ServiceProviderInterface
         $filter->attach('phpDocumentor\Descriptor\TraitDescriptor', $stripInternalFilter);
         $filter->attach('phpDocumentor\Descriptor\PropertyDescriptor', $stripInternalFilter);
         $filter->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripInternalFilter);
+        $stripIgnoreFilter = new stripIgnore($app['descriptor.builder']);
+        $filter->attach('phpDocumentor\Descriptor\ConstantDescriptor', $stripIgnoreFilter);
+        $filter->attach('phpDocumentor\Descriptor\FunctionDescriptor', $stripIgnoreFilter);
+        $filter->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $stripIgnoreFilter);
+        $filter->attach('phpDocumentor\Descriptor\TraitDescriptor', $stripIgnoreFilter);
+        $filter->attach('phpDocumentor\Descriptor\PropertyDescriptor', $stripIgnoreFilter);
+        $filter->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripIgnoreFilter);
     }
 
     /**
