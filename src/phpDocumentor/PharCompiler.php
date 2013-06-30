@@ -101,7 +101,7 @@ class PharCompiler
      */
     protected function getFiles()
     {
-        $files = array('LICENSE', 'README.md');
+        $files = array('LICENSE', 'README.md', 'VERSION');
 
         $finder = new Finder();
         $iterator = $finder->files()
