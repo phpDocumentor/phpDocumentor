@@ -5,6 +5,7 @@
 FIXED:     Warning in browser console 'Viewport argument value "device-width;" for key "width" is invalid, and has
            been ignored. Note that ';' is not a separator in viewport values. The list should be comma-separated.'
 FIXED:     VERSION file was missing from phar archive, causing it to fail
+FIXED:     Elements with an @ignore tag were not filtered
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
 ```
