@@ -115,7 +115,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->fixture->getResponse());
 
-        $this->fixture->getTags()->set('return', array($mock));
+        $this->fixture->getTags()->set('return', new Collection(array($mock)));
 
         $this->assertSame($mock, $this->fixture->getResponse());
     }
