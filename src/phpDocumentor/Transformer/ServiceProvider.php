@@ -74,6 +74,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             'phpDocumentor\Descriptor\ConstantDescriptor'     => array('types'),
             'phpDocumentor\Descriptor\Tag\ParamDescriptor'    => array('types'),
             'phpDocumentor\Descriptor\Tag\ReturnDescriptor'   => array('types'),
+            'phpDocumentor\Descriptor\Tag\SeeDescriptor'      => array('reference'),
         );
 
         // services
