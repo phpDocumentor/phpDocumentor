@@ -13,7 +13,7 @@
         "php":              ">=5.3.3",
 
         "cilex/cilex":      "1.*@dev",
-        "symfony/validator": ">=v2.3.0@stable",
+        "symfony/validator": "~2.2@stable",
 
         "monolog/monolog":  "1.4.*@stable",
         "twig/twig":        "1.*@stable",

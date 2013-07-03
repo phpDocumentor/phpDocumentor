@@ -8,6 +8,7 @@ FIXED:     VERSION file was missing from phar archive, causing it to fail
 FIXED:     Elements with an @ignore tag were not filtered
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
+FIXED:     The @see reference was not shown and interpreted
 ```
 
 2013/06/23: Version 2.0.0b6
