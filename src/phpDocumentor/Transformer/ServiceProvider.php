@@ -51,8 +51,9 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         $app['transformer.template.location'] = __DIR__ . '/../../../data/templates';
         $app['linker.substitutions'] = array(
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
-            'phpDocumentor\Descriptor\FileDescriptor'         => array('classes', 'interfaces', 'traits'),
+            'phpDocumentor\Descriptor\FileDescriptor'         => array('tags', 'classes', 'interfaces', 'traits'),
             'phpDocumentor\Descriptor\ClassDescriptor'        => array(
+                'tags',
                 'parent',
                 'interfaces',
                 'constants',
@@ -60,18 +61,20 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'methods',
             ),
             'phpDocumentor\Descriptor\InterfaceDescriptor'    => array(
+                'tags',
                 'parent',
                 'constants',
                 'methods',
             ),
             'phpDocumentor\Descriptor\TraitDescriptor'        => array(
+                'tags',
                 'properties',
                 'methods',
             ),
             'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags', 'arguments'),
             'phpDocumentor\Descriptor\ArgumentDescriptor'     => array('types'),
-            'phpDocumentor\Descriptor\PropertyDescriptor'     => array('types'),
-            'phpDocumentor\Descriptor\ConstantDescriptor'     => array('types'),
+            'phpDocumentor\Descriptor\PropertyDescriptor'     => array('tags', 'types'),
+            'phpDocumentor\Descriptor\ConstantDescriptor'     => array('tags', 'types'),
             'phpDocumentor\Descriptor\Tag\ParamDescriptor'    => array('types'),
             'phpDocumentor\Descriptor\Tag\ReturnDescriptor'   => array('types'),
             'phpDocumentor\Descriptor\Tag\SeeDescriptor'      => array('reference'),

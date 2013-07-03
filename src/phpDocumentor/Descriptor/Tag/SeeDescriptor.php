@@ -11,11 +11,14 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class SeeDescriptor extends TagDescriptor
 {
+    /** @var DescriptorAbstract|string $reference */
     protected $reference = '';
 
     /**
@@ -27,11 +30,20 @@ class SeeDescriptor extends TagDescriptor
     {
         parent::__construct($reflectionTag);
 
-        $this->reference = $reflectionTag->getReference();
+        // TODO: move this to the ReflectionDocBlock component
+        $referenceParts = explode('::', $reflectionTag->getReference());
+        $type = current($referenceParts);
+        $type = new Collection(
+            array($type),
+            $reflectionTag->getDocBlock() ? $reflectionTag->getDocBlock()->getContext() : null
+        );
+        $referenceParts[0] = $type;
+
+        $this->reference = implode('::', $referenceParts);
     }
 
     /**
-     * @param string $reference
+     * @param DescriptorAbstract|string $reference
      */
     public function setReference($reference)
     {
@@ -39,7 +51,7 @@ class SeeDescriptor extends TagDescriptor
     }
 
     /**
-     * @return string
+     * @return DescriptorAbstract|string
      */
     public function getReference()
     {
