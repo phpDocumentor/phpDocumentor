@@ -3,4 +3,4 @@
 	url = https://github.com/willdurand/puppet-composer.git
 [submodule ".puppet/modules/php"]
 	path = .puppet/modules/php
-	url = https://github.com/saz/puppet-php.git
+	url = https://github.com/example42/puppet-php.git
