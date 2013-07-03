@@ -6,6 +6,7 @@ class phpdocumentor::setup {
     include php
     php::module { "xsl": }
     php::module { "intl": }
+    php::module { "xdebug": }
 
     class { 'composer':
       command_name => 'composer',
