@@ -48,6 +48,7 @@ class SuperClass implements SubInterface
     /**
      * A public property
      * @var Subclass
+     * @deprecated
      */
     public $publicProperty;
 
@@ -84,6 +85,8 @@ class SuperClass implements SubInterface
      *     echo 'another indented string';
      * }
      * ```
+     *
+     * @deprecated
      */
     public function publicMethod()
     {
