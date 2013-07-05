@@ -47,11 +47,11 @@ class Filter
     /**
      * Filters the given Descriptor and returns the altered object.
      *
-     * @param DescriptorAbstract $descriptor
+     * @param Filterable $descriptor
      *
-     * @return DescriptorAbstract|null
+     * @return Filterable|null
      */
-    public function filter(DescriptorAbstract $descriptor)
+    public function filter(Filterable $descriptor)
     {
         $chain = $this->factory->getChainFor(get_class($descriptor));
 

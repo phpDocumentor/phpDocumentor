@@ -11,20 +11,22 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
-class TagDescriptor
+class TagDescriptor implements Filterable
 {
     protected $name;
     protected $description;
+    protected $errors;
 
-    public function __construct(Tag $reflectionTag)
+    public function __construct($name)
     {
-        $this->name        = $reflectionTag->getName();
-        $this->description = $reflectionTag->getDescription();
+        $this->setName($name);
+        $this->errors = new Collection();
     }
 
-    public function setName($name)
+    protected function setName($name)
     {
         $this->name = $name;
     }
@@ -42,5 +44,21 @@ class TagDescriptor
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param Collection $errors
+     */
+    public function setErrors(Collection $errors)
+    {
+        $this->errors = $errors;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

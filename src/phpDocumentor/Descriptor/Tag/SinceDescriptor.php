@@ -18,15 +18,16 @@ class SinceDescriptor extends TagDescriptor
 {
     protected $version;
 
-    public function __construct(SinceTag $reflectionTag)
-    {
-        parent::__construct($reflectionTag);
-
-        $this->version = $reflectionTag->getVersion();
-    }
-
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * @param mixed $version
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
     }
 }

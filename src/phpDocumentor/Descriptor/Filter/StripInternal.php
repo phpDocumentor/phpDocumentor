@@ -10,7 +10,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Zend\Filter\AbstractFilter;
 
-class stripIgnore extends AbstractFilter
+class StripInternal extends AbstractFilter
 {
     /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
@@ -26,7 +26,7 @@ class stripIgnore extends AbstractFilter
     }
 
     /**
-     * Filter Descriptor with ignore tags.
+     * If the ProjectDescriptor's settings allow internal tags then return the Descriptor, otherwise null to filter it.
      *
      * @param DescriptorAbstract $value
      *
@@ -34,7 +34,8 @@ class stripIgnore extends AbstractFilter
      */
     public function filter($value)
     {
-        if (!is_null($value) && $value->getTags()->get('ignore')) {
+        // if internal elements are not allowed; filter this element
+        if ($value->getTags()->get('internal') && !$this->builder->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL)) {
             return null;
         }
 

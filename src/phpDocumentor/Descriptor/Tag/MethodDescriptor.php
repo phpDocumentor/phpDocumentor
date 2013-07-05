@@ -18,13 +18,12 @@ class MethodDescriptor extends TagDescriptor
 {
     protected $methodName = '';
 
-    public function __construct(MethodTag $reflectionTag)
+    /**
+     * @param string $methodName
+     */
+    public function setMethodName($methodName)
     {
-        parent::__construct($reflectionTag);
-
-        $this->methodName = $reflectionTag->getMethodName();
-
-        // TODO: add response and arguments
+        $this->methodName = $methodName;
     }
 
     /**

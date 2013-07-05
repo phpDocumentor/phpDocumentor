@@ -31,11 +31,10 @@ class FileAssembler extends AssemblerAbstract
      * Creates a Descriptor from the provided data.
      *
      * @param FileReflector $data
-     * @param ParamDescriptor[] $params
      *
      * @return FileDescriptor
      */
-    public function create($data, $params = array())
+    public function create($data)
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setName($data->getName());

@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Filter\Filter;
+use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Validator\Error;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -149,11 +150,11 @@ class ProjectDescriptorBuilder
     /**
      * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
      *
-     * @param DescriptorAbstract $descriptor
+     * @param Filterable $descriptor
      *
-     * @return DescriptorAbstract
+     * @return Filterable
      */
-    public function filter(DescriptorAbstract $descriptor)
+    public function filter(Filterable $descriptor)
     {
         return $this->filter->filter($descriptor);
     }
@@ -165,7 +166,7 @@ class ProjectDescriptorBuilder
      *
      * @return Collection
      */
-    public function validate(DescriptorAbstract $descriptor)
+    public function validate($descriptor)
     {
         $violations = $this->validator->validate($descriptor);
         $errors = new Collection();

@@ -11,9 +11,10 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 
-abstract class DescriptorAbstract
+abstract class DescriptorAbstract implements Filterable
 {
     /** @var string */
     protected $fqsen = '';
