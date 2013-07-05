@@ -280,11 +280,13 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         $provider = $this;
-        $app->extend(
-            'descriptor.builder.assembler.factory',
-            function ($factory) use ($provider) {
-                return $provider->attachAssemblersToFactory($factory);
-            }
+        $app->share(
+            $app->extend(
+                'descriptor.builder.assembler.factory',
+                function ($factory) use ($provider) {
+                    return $provider->attachAssemblersToFactory($factory);
+                }
+            )
         );
     }
 
@@ -323,11 +325,13 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $provider = $this;
-        $app->extend(
-            'validator',
-            function ($validatorManager) use ($provider) {
-                return $provider->attachValidators($validatorManager);
-            }
+        $app->share(
+            $app->extend(
+                'validator',
+                function ($validatorManager) use ($provider) {
+                    return $provider->attachValidators($validatorManager);
+                }
+            )
         );
     }
 }
