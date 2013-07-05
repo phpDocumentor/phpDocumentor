@@ -193,7 +193,12 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $method->setDescription($methodTag->getDescription());
             $method->setParent($this);
 
-            // TODO: add Response and arguments
+            $returnTags = $method->getTags()->get('return', new Collection());
+            $returnTags->add($methodTag->getResponse());
+
+            foreach ($methodTag->getArguments() as $name => $argument) {
+                $method->getArguments()->set($name, $argument);
+            }
 
             $methods->add($method);
         }

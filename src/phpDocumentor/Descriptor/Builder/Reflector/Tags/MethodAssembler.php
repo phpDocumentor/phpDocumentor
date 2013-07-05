@@ -11,8 +11,10 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
 
 class MethodAssembler extends AssemblerAbstract
@@ -30,7 +32,17 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setDescription($data->getDescription());
         $descriptor->setMethodName($data->getMethodName());
 
-        // TODO: add response and arguments.
+        $response = new ReturnDescriptor('return');
+        $response->setTypes($data->getTypes());
+        $descriptor->setResponse($response);
+
+        foreach ($data->getArguments() as $argument) {
+            list($argumentType, $argumentName) = $argument;
+            $argumentDescriptor = new ArgumentDescriptor();
+            $argumentDescriptor->setTypes(array($argumentType));
+            $argumentDescriptor->setName($argumentName);
+            $descriptor->getArguments()->set($argumentName, $argumentDescriptor);
+        }
 
         return $descriptor;
     }
