@@ -86,136 +86,15 @@ class ServiceProvider implements ServiceProviderInterface
         $this->addCache($app);
         $this->addAssemblers($app);
         $this->addFilters($app);
-        $this->addBuilder($app);
         $this->addValidators($app);
+        $this->addBuilder($app);
+
+        // I would prefer to extend it but due to a circular reference will pimple fatal
+        $this->attachFiltersToManager($app['descriptor.filter'], $app);
 
         $app['descriptor.analyzer'] = function () {
             return new ProjectAnalyzer();
         };
-    }
-
-    /**
-     * Adds the caching mechanism to the dependency injection container with key 'descriptor.cache'.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    protected function addCache(Application $app)
-    {
-        $app['descriptor.cache'] = $app->share(
-            function () {
-                $cache = new Filesystem();
-                $cache->setOptions(
-                    array(
-                         'namespace' => 'phpdoc-cache',
-                         'cache_dir' => sys_get_temp_dir(),
-                    )
-                );
-                $cache->addPlugin(new SerializerPlugin());
-
-                return $cache;
-            }
-        );
-    }
-
-    /**
-     * Adds the Building mechanism using the key 'descriptor.builder'.
-     *
-     * Please note that the type of serializer can be configured using the parameter 'descriptor.builder.serializer'; it
-     * accepts any parameter that Zend\Serializer supports.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    protected function addBuilder(Application $app)
-    {
-        $app['descriptor.builder.serializer'] = 'PhpSerialize';
-
-        $app['descriptor.builder'] = $app->share(
-            function ($container) {
-                $builder = new ProjectDescriptorBuilder(
-                    $container['descriptor.builder.assembler.factory'],
-                    $container['descriptor.filter'],
-                    $container['validator']
-                );
-
-                return $builder;
-            }
-        );
-    }
-
-    /**
-     * Adds the assembler factory and attaches the basic assemblers with key 'descriptor.builder.assembler.factory'.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    protected function addAssemblers(Application $app)
-    {
-        $app['descriptor.builder.assembler.factory'] = $app->share(
-            function () {
-                return new AssemblerFactory();
-            }
-        );
-
-        $provider = $this;
-        $app->extend(
-            'descriptor.builder.assembler.factory',
-            function ($factory) use ($provider) {
-                return $provider->attachAssemblersToFactory($factory);
-            }
-        );
-    }
-
-    /**
-     * Adds the descriptor filtering mechanism and attaches the basic filters using key 'descriptor.filter'.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    protected function addFilters(Application $app)
-    {
-        $app['descriptor.filter'] = $app->share(
-            function () {
-                return new Filter(new ClassFactory());
-            }
-        );
-
-//        $provider = $this;
-//        $app->extend(
-//            'descriptor.filter',
-//            function ($filterManager, $app) use ($provider) {
-//                return $provider->attachFiltersToManager($filterManager, $app);
-//            }
-//        );
-    }
-
-    /**
-     * Adds validators for the descriptors to the validator manager.
-     *
-     * @param Application $app
-     *
-     * @throws Exception\MissingDependencyException if the validator could not be found.
-     *
-     * @return void
-     */
-    protected function addValidators(Application $app)
-    {
-        if (!isset($app['validator'])) {
-            throw new Exception\MissingDependencyException('The validator manager is missing');
-        }
-
-        $provider = $this;
-        $app->extend(
-            'validator',
-            function ($validatorManager) use ($provider) {
-                return $provider->attachValidators($validatorManager);
-            }
-        );
     }
 
     /**
@@ -331,5 +210,124 @@ class ServiceProvider implements ServiceProviderInterface
         $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
 
         return $validator;
+    }
+
+    /**
+     * Adds the caching mechanism to the dependency injection container with key 'descriptor.cache'.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addCache(Application $app)
+    {
+        $app['descriptor.cache'] = $app->share(
+            function () {
+                $cache = new Filesystem();
+                $cache->setOptions(
+                    array(
+                         'namespace' => 'phpdoc-cache',
+                         'cache_dir' => sys_get_temp_dir(),
+                    )
+                );
+                $cache->addPlugin(new SerializerPlugin());
+
+                return $cache;
+            }
+        );
+    }
+
+    /**
+     * Adds the Building mechanism using the key 'descriptor.builder'.
+     *
+     * Please note that the type of serializer can be configured using the parameter 'descriptor.builder.serializer'; it
+     * accepts any parameter that Zend\Serializer supports.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addBuilder(Application $app)
+    {
+        $app['descriptor.builder.serializer'] = 'PhpSerialize';
+
+        $app['descriptor.builder'] = $app->share(
+            function ($container) {
+                $builder = new ProjectDescriptorBuilder(
+                    $container['descriptor.builder.assembler.factory'],
+                    $container['descriptor.filter'],
+                    $container['validator']
+                );
+
+                return $builder;
+            }
+        );
+    }
+
+    /**
+     * Adds the assembler factory and attaches the basic assemblers with key 'descriptor.builder.assembler.factory'.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addAssemblers(Application $app)
+    {
+        $app['descriptor.builder.assembler.factory'] = $app->share(
+            function () {
+                return new AssemblerFactory();
+            }
+        );
+
+        $provider = $this;
+        $app->extend(
+            'descriptor.builder.assembler.factory',
+            function ($factory) use ($provider) {
+                return $provider->attachAssemblersToFactory($factory);
+            }
+        );
+    }
+
+    /**
+     * Adds the descriptor filtering mechanism and using key 'descriptor.filter'.
+     *
+     * Please note that filters can only be attached after the builder is instantiated because it is needed; so the
+     * filters can be attached by extending 'descriptor.builder'.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addFilters(Application $app)
+    {
+        $app['descriptor.filter'] = $app->share(
+            function () {
+                return new Filter(new ClassFactory());
+            }
+        );
+    }
+
+    /**
+     * Adds validators for the descriptors to the validator manager.
+     *
+     * @param Application $app
+     *
+     * @throws Exception\MissingDependencyException if the validator could not be found.
+     *
+     * @return void
+     */
+    protected function addValidators(Application $app)
+    {
+        if (!isset($app['validator'])) {
+            throw new Exception\MissingDependencyException('The validator manager is missing');
+        }
+
+        $provider = $this;
+        $app->extend(
+            'validator',
+            function ($validatorManager) use ($provider) {
+                return $provider->attachValidators($validatorManager);
+            }
+        );
     }
 }
