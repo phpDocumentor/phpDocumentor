@@ -280,7 +280,7 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         $provider = $this;
-        $app->share(
+        $app['descriptor.builder.assembler.factory'] = $app->share(
             $app->extend(
                 'descriptor.builder.assembler.factory',
                 function ($factory) use ($provider) {
@@ -325,7 +325,7 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $provider = $this;
-        $app->share(
+        $app['validator'] = $app->share(
             $app->extend(
                 'validator',
                 function ($validatorManager) use ($provider) {
