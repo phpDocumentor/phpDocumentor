@@ -299,6 +299,16 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Checks whether this element is deprecated.
+     *
+     * @return boolean
+     */
+    public function isDeprecated()
+    {
+        return isset($this->tags['deprecated']);
+    }
+
+    /**
      * @param Collection $errors
      */
     public function setErrors(Collection $errors)
