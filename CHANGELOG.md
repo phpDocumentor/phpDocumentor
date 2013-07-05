@@ -7,9 +7,14 @@ FIXED:     Warning in browser console 'Viewport argument value "device-width;" f
 FIXED:     VERSION file was missing from phar archive, causing it to fail
 FIXED:     Elements with an @ignore tag were not filtered
 FIXED:     Deprecated elements are now striken in the class overview
+FIXED:     The @see reference was not shown and interpreted
+FIXED:     Response type was not shown with magic methods
+FIXED:     Arguments were not shown with magic methods
+FIXED:     Type is not shown with magic properties
+FIXED:     Magic methods were missing from sidebar
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
-FIXED:     The @see reference was not shown and interpreted
+CHANGED:   Assembling of Tags to Descriptors was refactored to work the same way as other Descriptors.
 ```
 
 2013/06/23: Version 2.0.0b6
