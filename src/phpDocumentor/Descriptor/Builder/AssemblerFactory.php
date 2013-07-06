@@ -18,6 +18,7 @@ class AssemblerFactory
 {
     /** @var mixed[]  */
     protected $assemblers = array();
+    protected $fallbackAssemblers = array();
 
     /**
      * Registers an assembler instance to this factory.
@@ -38,6 +39,25 @@ class AssemblerFactory
     }
 
     /**
+     * Registers an assembler instance to this factory that is to be executed after all other assemblers have been
+     * checked.
+     *
+     * @param callable           $matcher   A callback function accepting the criteria as only parameter and which must
+     *     return a boolean.
+     * @param AssemblerInterface $assembler An instance of the Assembler that will be returned if the callback returns
+     *     true with the provided criteria.
+     *
+     * @return void
+     */
+    public function registerFallback($matcher, AssemblerInterface $assembler)
+    {
+        $this->fallbackAssemblers[] = array(
+            'matcher'   => $matcher,
+            'assembler' => $assembler
+        );
+    }
+
+    /**
      * Retrieves a matching Assembler based on the provided criteria or null if none was found.
      *
      * @param mixed $criteria
@@ -46,7 +66,7 @@ class AssemblerFactory
      */
     public function get($criteria)
     {
-        foreach ($this->assemblers as $candidate) {
+        foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
             $matcher = $candidate['matcher'];
             if ($matcher($criteria) === true) {
                 return $candidate['assembler'];

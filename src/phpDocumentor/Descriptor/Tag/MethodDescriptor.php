@@ -11,9 +11,69 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\TagDescriptor;
 
 class MethodDescriptor extends TagDescriptor
 {
+    protected $methodName = '';
 
+    protected $arguments;
+
+    protected $response;
+
+    public function __construct($name)
+    {
+        parent::__construct($name);
+
+        $this->arguments = new Collection();
+    }
+
+    /**
+     * @param string $methodName
+     */
+    public function setMethodName($methodName)
+    {
+        $this->methodName = $methodName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return $this->methodName;
+    }
+
+    /**
+     * @param mixed $arguments
+     */
+    public function setArguments($arguments)
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * @param mixed $response
+     */
+    public function setResponse($response)
+    {
+        $this->response = $response;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
 }

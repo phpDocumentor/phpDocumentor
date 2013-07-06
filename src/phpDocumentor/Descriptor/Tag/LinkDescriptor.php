@@ -18,10 +18,19 @@ class LinkDescriptor extends TagDescriptor
 {
     protected $link;
 
-    public function __construct(LinkTag $reflectionTag)
+    /**
+     * @param string $link
+     */
+    public function setLink($link)
     {
-        parent::__construct($reflectionTag);
+        $this->link = $link;
+    }
 
-        $this->link = $reflectionTag->getLink();
+    /**
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
     }
 }

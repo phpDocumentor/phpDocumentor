@@ -184,19 +184,27 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         /** @var Collection $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
 
-        if ($this->getParent() instanceof static) {
-            $methodTags->merge($this->getParent()->getMagicMethods());
-        }
-
         $methods = new Collection();
 
         /** @var Tag\MethodDescriptor $methodTag */
         foreach ($methodTags as $methodTag) {
             $method = new MethodDescriptor();
-            $method->setName($methodTag->getVariableName());
+            $method->setName($methodTag->getMethodName());
             $method->setDescription($methodTag->getDescription());
+            $method->setParent($this);
+
+            $returnTags = $method->getTags()->get('return', new Collection());
+            $returnTags->add($methodTag->getResponse());
+
+            foreach ($methodTag->getArguments() as $name => $argument) {
+                $method->getArguments()->set($name, $argument);
+            }
 
             $methods->add($method);
+        }
+
+        if ($this->getParent() instanceof static) {
+            $methods = $methods->merge($this->getParent()->getMagicMethods());
         }
 
         return $methods;
@@ -240,27 +248,24 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     {
         /** @var Collection $propertyTags */
         $propertyTags = clone $this->getTags()->get('property', new Collection());
-        $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
-        $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
-
-        if ($this->getParent() instanceof static) {
-            $propertyTags->merge($this->getParent()->getMagicProperties());
-        }
+        $propertyTags = $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
+        $propertyTags = $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
 
         $properties = new Collection();
 
         /** @var Tag\PropertyDescriptor $propertyTag */
         foreach ($propertyTags as $propertyTag) {
             $property = new PropertyDescriptor();
-            $property->setName($propertyTag->getVariableName());
+            $property->setName(ltrim($propertyTag->getVariableName(), '$'));
             $property->setDescription($propertyTag->getDescription());
             $property->setTypes($propertyTag->getTypes());
+            $property->setParent($this);
 
             $properties->add($property);
         }
 
         if ($this->getParent() instanceof ClassDescriptor) {
-            $properties->merge($this->getParent()->getMagicProperties());
+            $properties = $properties->merge($this->getParent()->getMagicProperties());
         }
 
         return $properties;

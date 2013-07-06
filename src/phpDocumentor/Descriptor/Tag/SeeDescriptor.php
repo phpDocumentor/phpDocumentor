@@ -11,8 +11,27 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\TagDescriptor;
 
 class SeeDescriptor extends TagDescriptor
 {
+    /** @var DescriptorAbstract|string $reference */
+    protected $reference = '';
+
+    /**
+     * @param DescriptorAbstract|string $reference
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+    }
+
+    /**
+     * @return DescriptorAbstract|string
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
 }

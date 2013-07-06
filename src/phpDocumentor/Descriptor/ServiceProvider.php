@@ -23,13 +23,38 @@ use phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\GenericTagAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler as PropertyTagAssembler;
 use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
-use phpDocumentor\Descriptor\Filter\stripInternal;
+use phpDocumentor\Descriptor\Filter\StripInternal;
+use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\ClassReflector;
+use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
+use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
+use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
+use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
+use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
+use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
+use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
+use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
+use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
+use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
+use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
@@ -50,14 +75,7 @@ use Zend\Cache\Storage\Adapter\Filesystem;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * Adds the services to build the descriptors.
-     *
-     * This method injects the following services into the Dependency Injection Container:
-     *
-     * * descriptor.serializer, the serializer used to generate the cache
-     * * descriptor.builder, the builder used to transform the Reflected information into a series of Descriptors.
-     *
-     * It is possible to override which serializer is used by overriding the parameter `descriptor.serializer.class`.
+     * Adds the services needed to build the descriptors.
      *
      * @param Application $app An Application instance
      *
@@ -65,60 +83,117 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        if (!isset($app['validator.mapping.class_metadata_factory'])) {
-            throw new Exception\MissingDependencyException(
-                'The validator factory object that is used to validate the Descriptors is missing'
-            );
-        }
+        $this->addCache($app);
+        $this->addAssemblers($app);
+        $this->addFilters($app);
+        $this->addValidators($app);
+        $this->addBuilder($app);
 
-        $app['descriptor.builder.serializer'] = 'PhpSerialize';
-
-        $app['descriptor.cache'] = $app->share(
-            function () {
-                $cache = new Filesystem();
-                $cache->setOptions(
-                    array(
-                         'namespace' => 'phpdoc-cache',
-                         'cache_dir' => sys_get_temp_dir(),
-                    )
-                );
-                $cache->addPlugin(new SerializerPlugin());
-                return $cache;
-            }
-        );
-
-        $app['descriptor.builder.assembler.factory'] = $app->share(
-            function () {
-                return new AssemblerFactory();
-            }
-        );
-
-        $this->addReflectionAssemblers($app['descriptor.builder.assembler.factory']);
-
-        $app['descriptor.filter'] = $app->share(
-            function ($container) {
-                return new Filter(new ClassFactory());
-            }
-        );
-
-        $app['descriptor.builder'] = $app->share(
-            function ($container) {
-                $builder = new ProjectDescriptorBuilder(
-                    $container['descriptor.builder.assembler.factory'],
-                    $container['descriptor.filter'],
-                    $container['validator']
-                );
-
-                return $builder;
-            }
-        );
+        // I would prefer to extend it but due to a circular reference will pimple fatal
+        $this->attachFiltersToManager($app['descriptor.filter'], $app);
 
         $app['descriptor.analyzer'] = function () {
             return new ProjectAnalyzer();
         };
+    }
 
-        /** @var Validator $validator */
-        $validator         = $app['validator'];
+    /**
+     * Registers the Assemblers used to convert Reflection objects to Descriptors.
+     *
+     * @param AssemblerFactory $factory
+     *
+     * @return AssemblerFactory
+     */
+    public function attachAssemblersToFactory(AssemblerFactory $factory)
+    {
+        $fileMatcher      = function ($criteria) {return $criteria instanceof FileReflector; };
+        $constantMatcher  = function ($criteria) {
+            return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
+        };
+        $classMatcher     = function ($criteria) { return $criteria instanceof ClassReflector; };
+        $interfaceMatcher = function ($criteria) { return $criteria instanceof InterfaceReflector; };
+        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
+        $propertyMatcher  = function ($criteria) { return $criteria instanceof ClassReflector\PropertyReflector; };
+        $methodMatcher    = function ($criteria) { return $criteria instanceof ClassReflector\MethodReflector; };
+        $argumentMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector\ArgumentReflector; };
+        $functionMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector; };
+
+        $authorMatcher      = function ($criteria) { return $criteria instanceof AuthorTag; };
+        $linkMatcher        = function ($criteria) { return $criteria instanceof LinkTag; };
+        $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
+        $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
+        $paramMatcher       = function ($criteria) { return $criteria instanceof ParamTag; };
+        $returnMatcher      = function ($criteria) { return $criteria instanceof ReturnTag; };
+        $seeMatcher         = function ($criteria) { return $criteria instanceof SeeTag; };
+        $sinceMatcher       = function ($criteria) { return $criteria instanceof SinceTag; };
+        $throwsMatcher      = function ($criteria) { return $criteria instanceof ThrowsTag; };
+        $usesMatcher        = function ($criteria) { return $criteria instanceof UsesTag; };
+        $varMatcher         = function ($criteria) { return $criteria instanceof VarTag; };
+
+        $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
+
+        $factory->register($fileMatcher, new FileAssembler());
+        $factory->register($constantMatcher, new ConstantAssembler());
+        $factory->register($classMatcher, new ClassAssembler());
+        $factory->register($interfaceMatcher, new InterfaceAssembler());
+        $factory->register($traitMatcher, new TraitAssembler());
+        $factory->register($propertyMatcher, new PropertyAssembler());
+        $factory->register($methodMatcher, new MethodAssembler());
+        $factory->register($argumentMatcher, new ArgumentAssembler());
+        $factory->register($functionMatcher, new FunctionAssembler());
+
+        $factory->register($authorMatcher, new AuthorAssembler());
+        $factory->register($linkMatcher, new LinkAssembler());
+        $factory->register($methodTagMatcher, new MethodTagAssembler());
+        $factory->register($propertyTagMatcher, new PropertyTagAssembler());
+        $factory->register($paramMatcher, new ParamAssembler());
+        $factory->register($returnMatcher, new ReturnAssembler());
+        $factory->register($seeMatcher, new SeeAssembler());
+        $factory->register($sinceMatcher, new SinceAssembler());
+        $factory->register($throwsMatcher, new ThrowsAssembler());
+        $factory->register($usesMatcher, new UsesAssembler());
+
+        $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
+
+        return $factory;
+    }
+
+    /**
+     * Attaches filters to the manager.
+     *
+     * @param Filter $filterManager
+     * @param Application $app
+     *
+     * @return Filter
+     */
+    public function attachFiltersToManager(Filter $filterManager, Application $app)
+    {
+        $filtersOnAllDescriptors = array(
+            new StripInternal($app['descriptor.builder']),
+            new StripIgnore($app['descriptor.builder'])
+        );
+
+        foreach ($filtersOnAllDescriptors as $filter) {
+            $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\TraitDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\PropertyDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\MethodDescriptor', $filter);
+        }
+
+        return $filterManager;
+    }
+
+    /**
+     * Adds validators to check the Descriptors.
+     *
+     * @param Validator $validator
+     *
+     * @return Validator
+     */
+    public function attachValidators(Validator $validator)
+    {
         $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
         $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
         $classMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
@@ -134,79 +209,129 @@ class ServiceProvider implements ServiceProviderInterface
         $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
         $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
 
-        /** @var Filter $filter */
-        $filter = $app['descriptor.filter'];
-        $stripInternalFilter = new stripInternal($app['descriptor.builder']);
-        $filter->attach('phpDocumentor\Descriptor\ConstantDescriptor', $stripInternalFilter);
-        $filter->attach('phpDocumentor\Descriptor\FunctionDescriptor', $stripInternalFilter);
-        $filter->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $stripInternalFilter);
-        $filter->attach('phpDocumentor\Descriptor\TraitDescriptor', $stripInternalFilter);
-        $filter->attach('phpDocumentor\Descriptor\PropertyDescriptor', $stripInternalFilter);
-        $filter->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripInternalFilter);
+        return $validator;
     }
 
     /**
-     * Registers the Assemblers used to convert Reflection objects to Descriptors.
+     * Adds the caching mechanism to the dependency injection container with key 'descriptor.cache'.
      *
-     * @param AssemblerFactory $factory
+     * @param Application $app
      *
      * @return void
      */
-    protected function addReflectionAssemblers(AssemblerFactory $factory)
+    protected function addCache(Application $app)
     {
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof FileReflector;
-            },
-            new FileAssembler()
+        $app['descriptor.cache'] = $app->share(
+            function () {
+                $cache = new Filesystem();
+                $cache->setOptions(
+                    array(
+                         'namespace' => 'phpdoc-cache',
+                         'cache_dir' => sys_get_temp_dir(),
+                    )
+                );
+                $cache->addPlugin(new SerializerPlugin());
+
+                return $cache;
+            }
         );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
-            },
-            new ConstantAssembler()
+    }
+
+    /**
+     * Adds the Building mechanism using the key 'descriptor.builder'.
+     *
+     * Please note that the type of serializer can be configured using the parameter 'descriptor.builder.serializer'; it
+     * accepts any parameter that Zend\Serializer supports.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addBuilder(Application $app)
+    {
+        $app['descriptor.builder.serializer'] = 'PhpSerialize';
+
+        $app['descriptor.builder'] = $app->share(
+            function ($container) {
+                $builder = new ProjectDescriptorBuilder(
+                    $container['descriptor.builder.assembler.factory'],
+                    $container['descriptor.filter'],
+                    $container['validator']
+                );
+
+                return $builder;
+            }
         );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof ClassReflector;
-            },
-            new ClassAssembler()
+    }
+
+    /**
+     * Adds the assembler factory and attaches the basic assemblers with key 'descriptor.builder.assembler.factory'.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addAssemblers(Application $app)
+    {
+        $app['descriptor.builder.assembler.factory'] = $app->share(
+            function () {
+                return new AssemblerFactory();
+            }
         );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof InterfaceReflector;
-            },
-            new InterfaceAssembler()
+
+        $provider = $this;
+        $app['descriptor.builder.assembler.factory'] = $app->share(
+            $app->extend(
+                'descriptor.builder.assembler.factory',
+                function ($factory) use ($provider) {
+                    return $provider->attachAssemblersToFactory($factory);
+                }
+            )
         );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof TraitReflector;
-            },
-            new TraitAssembler()
+    }
+
+    /**
+     * Adds the descriptor filtering mechanism and using key 'descriptor.filter'.
+     *
+     * Please note that filters can only be attached after the builder is instantiated because it is needed; so the
+     * filters can be attached by extending 'descriptor.builder'.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function addFilters(Application $app)
+    {
+        $app['descriptor.filter'] = $app->share(
+            function () {
+                return new Filter(new ClassFactory());
+            }
         );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof ClassReflector\PropertyReflector;
-            },
-            new PropertyAssembler()
-        );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof ClassReflector\MethodReflector;
-            },
-            new MethodAssembler()
-        );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof FunctionReflector\ArgumentReflector;
-            },
-            new ArgumentAssembler()
-        );
-        $factory->register(
-            function ($criteria) {
-                return $criteria instanceof FunctionReflector;
-            },
-            new FunctionAssembler()
+    }
+
+    /**
+     * Adds validators for the descriptors to the validator manager.
+     *
+     * @param Application $app
+     *
+     * @throws Exception\MissingDependencyException if the validator could not be found.
+     *
+     * @return void
+     */
+    protected function addValidators(Application $app)
+    {
+        if (!isset($app['validator'])) {
+            throw new Exception\MissingDependencyException('The validator manager is missing');
+        }
+
+        $provider = $this;
+        $app['validator'] = $app->share(
+            $app->extend(
+                'validator',
+                function ($validatorManager) use ($provider) {
+                    return $provider->attachValidators($validatorManager);
+                }
+            )
         );
     }
 }

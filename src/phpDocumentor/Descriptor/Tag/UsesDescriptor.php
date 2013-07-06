@@ -16,18 +16,8 @@ use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
 
 class UsesDescriptor extends TagDescriptor
 {
-    /** @var string the FQCN where the uses tag refers to */
+    /** @var string the FQSEN where the uses tag refers to */
     protected $reference = '';
-
-    /**
-     * @param UsesTag $reflectionTag
-     */
-    public function __construct($reflectionTag)
-    {
-        parent::__construct($reflectionTag);
-
-        $this->reference = $reflectionTag->getReference();
-    }
 
     /**
      * @return string
@@ -35,5 +25,13 @@ class UsesDescriptor extends TagDescriptor
     public function getReference()
     {
         return $this->reference;
+    }
+
+    /**
+     * @param string $reference
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
     }
 }

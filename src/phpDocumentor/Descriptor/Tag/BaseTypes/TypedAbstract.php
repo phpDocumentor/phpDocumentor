@@ -17,13 +17,6 @@ abstract class TypedAbstract extends TagDescriptor
 {
     protected $types;
 
-    public function __construct($reflectionTag)
-    {
-        parent::__construct($reflectionTag);
-
-        $this->types = $reflectionTag->getTypes();
-    }
-
     public function setTypes($types)
     {
         $this->types = $types;

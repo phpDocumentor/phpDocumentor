@@ -1,8 +1,41 @@
-2013/06/21: Version 2.0.0b6
+2013/06/??: Version 2.0.0b7
 ---------------------------
 
 ```
-FIXED:     Packages were not indexed and shown correctly
+FIXED:     Warning in browser console 'Viewport argument value "device-width;" for key "width" is invalid, and has
+           been ignored. Note that ';' is not a separator in viewport values. The list should be comma-separated.'
+FIXED:     VERSION file was missing from phar archive, causing it to fail
+FIXED:     Elements with an @ignore tag were not filtered
+FIXED:     Deprecated elements are now striken in the class overview
+FIXED:     The @see reference was not shown and interpreted
+FIXED:     Response type was not shown with magic methods
+FIXED:     Arguments were not shown with magic methods
+FIXED:     Type is not shown with magic properties
+FIXED:     Magic methods were missing from sidebar
+ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
+           https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
+CHANGED:   Assembling of Tags to Descriptors was refactored to work the same way as other Descriptors.
+```
+
+2013/06/23: Version 2.0.0b6
+---------------------------
+
+```
+ADDED:     Travis configuration was changed to test against 5.5
+FIXED:     Packages were not indexed and shown correctly.
+FIXED:     @var descriptions were not shown as summary if the summary was absent for a property.
+FIXED:     Added static label on a property in the responsive template.
+FIXED:     Alignment of tags in table display.
+FIXED:     Response information was missing from method description.
+FIXED:     Sourcecode viewer in new-black template.
+FIXED:     Magic methods are now shown and inherited in the class view for the responsive-twig template.
+FIXED:     Magic properties are now shown and inherited in the class view for the responsive-twig template.
+FIXED:     Markdown fencing in responsive and responsive-twig template now correctly indents code examples.
+CHANGED:   Deep link should not be shown for members without location.
+CHANGED:   phpDocumentor now sets the memory limit to -1 to prevent issues due to a limited memory usage.
+CHANGED:   Bumped maximum recursion setting from 5.000 to 10.000 since errors were still reported.
+REMOVED:   `/bin/parse.php` binary; its function is carried out by `phpdoc project:parse`.
+REMOVED:   `/bin/transform.php` binary; its function is carried out by `phpdoc project:transform`.
 ```
 
 2013/06/21: Version 2.0.0b5

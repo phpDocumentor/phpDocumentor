@@ -15,15 +15,16 @@ abstract class TypedVariableAbstract extends TypedAbstract
 {
     protected $variableName = '';
 
-    public function __construct($reflectionTag)
-    {
-        parent::__construct($reflectionTag);
-
-        $this->variableName = $reflectionTag->getVariableName();
-    }
-
     public function getVariableName()
     {
         return $this->variableName;
+    }
+
+    /**
+     * @param string $variableName
+     */
+    public function setVariableName($variableName)
+    {
+        $this->variableName = $variableName;
     }
 }

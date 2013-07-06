@@ -11,9 +11,10 @@
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 
-abstract class DescriptorAbstract
+abstract class DescriptorAbstract implements Filterable
 {
     /** @var string */
     protected $fqsen = '';
@@ -295,6 +296,16 @@ abstract class DescriptorAbstract
         }
 
         return $copyright;
+    }
+
+    /**
+     * Checks whether this element is deprecated.
+     *
+     * @return boolean
+     */
+    public function isDeprecated()
+    {
+        return isset($this->tags['deprecated']);
     }
 
     /**

@@ -33,6 +33,6 @@ class PackageDescriptor implements UrlGeneratorInterface
             $name = 'default';
         }
 
-        return '/packages/'. $name .'.html';
+        return DIRECTORY_SEPARATOR . 'packages' . DIRECTORY_SEPARATOR . $name .'.html';
     }
 }
