@@ -29,21 +29,24 @@ class ReflectorTest extends \PHPUnit_Framework_TestCase
         $reflector = $this->createFileReflectorMock($path);
 
         $test = $this;
-        $file_descriptor_test = m::on(function($file_descriptor) use ($path, $test) {
-            $test->assertInstanceOf('phpDocumentor\Descriptor\FileDescriptor', $file_descriptor);
-            $test->assertEquals($path, $file_descriptor->getPath());
-            $test->assertEquals(0, $file_descriptor->getLine());
-            $test->assertEquals('path.txt', $file_descriptor->getName());
-            $test->assertEquals('short', $file_descriptor->getSummary());
-            $test->assertEquals('long', $file_descriptor->getDescription());
-            $test->assertCount(1, $file_descriptor->getTags());
-            $test->assertEquals('contents', $file_descriptor->getSource());
-            return true;
-        });
+        $file_descriptor_test = m::on(
+            function ($file_descriptor) use ($path, $test) {
+                $test->assertInstanceOf('phpDocumentor\Descriptor\FileDescriptor', $file_descriptor);
+                $test->assertEquals($path, $file_descriptor->getPath());
+                $test->assertEquals(0, $file_descriptor->getLine());
+                $test->assertEquals('path.txt', $file_descriptor->getName());
+                $test->assertEquals('short', $file_descriptor->getSummary());
+                $test->assertEquals('long', $file_descriptor->getDescription());
+                $test->assertCount(1, $file_descriptor->getTags());
+                $test->assertEquals('contents', $file_descriptor->getSource());
+                return true;
+            }
+        );
 
         $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor')
             ->shouldReceive('getFiles')->andReturn(
-                m::mock('ArrayObject')->shouldReceive('offsetSet')->once()->with($path, $file_descriptor_test)->getMock()
+                m::mock('ArrayObject')->shouldReceive('offsetSet')
+                    ->once()->with($path, $file_descriptor_test)->getMock()
             )
             ->getMock();
 

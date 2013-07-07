@@ -4,4 +4,6 @@
  * 
  * This DocBlock will attach to the class statement
  */
-class foo {}
+class foo
+{
+}

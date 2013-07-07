@@ -21,7 +21,6 @@ namespace Test\Tests5
 
     interface iTest extends \Countable
     {
-
     }
 
     abstract class test implements iTest
@@ -115,7 +114,7 @@ namespace Test
          *
          * @return void
          */
-        static public function StaticPublicMethod(array $argument_a, FooBarClass $argument_b = null)
+        public static function StaticPublicMethod(array $argument_a, FooBarClass $argument_b = null)
         {
         }
 
@@ -144,5 +143,4 @@ namespace Test
     {
         const TEST = 'test2';
     }
-
 }
