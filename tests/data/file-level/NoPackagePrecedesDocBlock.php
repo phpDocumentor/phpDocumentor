@@ -8,4 +8,6 @@
  * this DocBlock will attach to the class statement
  * @package SomePackage
  */
-class foo {}
+class foo
+{
+}

@@ -162,12 +162,12 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
                 && ((strpos($variable, "'") !== false))
             ) {
                 // TODO: inject the logger and use it here
-//                $this->log(
-//                    'XSLT does not allow both double and single quotes in '
-//                    . 'a variable; transforming single quotes to a character '
-//                    . 'encoded version in variable: ' . $key,
-//                    LogLevel::WARNING
-//                );
+                //$this->log(
+                //    'XSLT does not allow both double and single quotes in '
+                //    . 'a variable; transforming single quotes to a character '
+                //    . 'encoded version in variable: ' . $key,
+                //    LogLevel::WARNING
+                //);
                 $variable = str_replace("'", "&#39;", $variable);
             }
 

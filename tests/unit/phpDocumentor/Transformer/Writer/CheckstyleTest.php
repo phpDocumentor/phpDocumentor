@@ -33,14 +33,19 @@ class CheckstyleTest extends \PHPUnit_Framework_TestCase
      * @return void
      */
     public function testTransformCanIdentifyParseMarkersAndCreateCheckstyleReport(
-        $structure, $expected
+        $structure,
+        $expected
     ) {
         // FIXME
         $this->markTestIncomplete('Fix with mocks');
         $tr = new \phpDocumentor\Transformer\Transformer();
         $tr->setTarget(PHPUnit\TEMP_DIR);
         $t = new \phpDocumentor\Transformer\Transformation(
-            $tr, '', 'Checkstyle', '', '/checkstyle.xml'
+            $tr,
+            '',
+            'Checkstyle',
+            '',
+            '/checkstyle.xml'
         );
 
         $expectedDom = new \DOMDocument();

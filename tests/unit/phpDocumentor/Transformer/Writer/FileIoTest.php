@@ -52,31 +52,33 @@ class FileIoTest extends \PHPUnit_Framework_TestCase
 
         $transformer = new \phpDocumentor\Transformer\Transformer();
         $transformer->setTarget(PHPUnit\TEMP_DIR);
-        try
-        {
+        try {
             $transformation = new \phpDocumentor\Transformer\Transformation(
-                $transformer, 'copy', 'FileIo', PHPUnit\TEMP_DIR . '/phpdoc_b', 'phpdoc_c'
+                $transformer,
+                'copy',
+                'FileIo',
+                PHPUnit\TEMP_DIR . '/phpdoc_b',
+                'phpdoc_c'
             );
             $this->fixture->transform(new \DOMDocument(), $transformation);
 
             $this->fail(
                 'When a non-existing source is provided, an exception is expected'
             );
-        }
-        catch (\PHPUnit_Framework_AssertionFailedError $e)
-        {
+        } catch (\PHPUnit_Framework_AssertionFailedError $e) {
             throw $e;
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             // this is good
         }
 
-        try
-        {
+        try {
             $transformer->setTarget('/tmpz');
             $transformation = new \phpDocumentor\Transformer\Transformation(
-                $transformer, 'copy', 'FileIo', '/tmp/phpdoc_a', 'phpdoc_b'
+                $transformer,
+                'copy',
+                'FileIo',
+                '/tmp/phpdoc_a',
+                'phpdoc_b'
             );
             $this->fixture->transform(new \DOMDocument(), $transformation);
 
@@ -84,13 +86,9 @@ class FileIoTest extends \PHPUnit_Framework_TestCase
                 'When a non-existing transformer target is provided, '
                 . 'an exception is expected'
             );
-        }
-        catch (\PHPUnit_Framework_AssertionFailedError $e)
-        {
+        } catch (\PHPUnit_Framework_AssertionFailedError $e) {
             throw $e;
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             // this is good
         }
 
@@ -124,19 +122,20 @@ class FileIoTest extends \PHPUnit_Framework_TestCase
         $transformer = new \phpDocumentor\Transformer\Transformer();
         $transformer->setTarget(PHPUnit\TEMP_DIR);
 
-        try
-        {
+        try {
             $transformation = new \phpDocumentor\Transformer\Transformation(
-                $transformer, 'copyz', 'FileIo', PHPUnit\TEMP_DIR . '/phpdoc_a', 'phpdoc_b'
+                $transformer,
+                'copyz',
+                'FileIo',
+                PHPUnit\TEMP_DIR . '/phpdoc_a',
+                'phpdoc_b'
             );
             $this->fixture->transform(new \DOMDocument(), $transformation);
 
             $this->fail(
                 'When un unknown query type is used an exception is expected'
             );
-        }
-        catch (\InvalidArgumentException $e)
-        {
+        } catch (\InvalidArgumentException $e) {
             // this is good
         }
 

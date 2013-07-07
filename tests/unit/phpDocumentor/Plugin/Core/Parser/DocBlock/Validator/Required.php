@@ -38,7 +38,12 @@ class RequiredValidatorTest extends \PHPUnit_Framework_TestCase
      * @return void
      */
     public function testIsValidCanLogErrorsDependingOnConfigurationOptions(
-        $docblock, $options, $entity, $lineNumber, $tagCount, $logCount,
+        $docblock,
+        $options,
+        $entity,
+        $lineNumber,
+        $tagCount,
+        $logCount,
         $expectedLog
     ) {
         $docblock = new \phpDocumentor\Reflection\DocBlock(
@@ -55,7 +60,8 @@ class RequiredValidatorTest extends \PHPUnit_Framework_TestCase
             $val->expects($this->$logCount())
                 ->method('logParserError')
                 ->with(
-                    $this->equalTo('CRITICAL'), $this->equalTo($expectedLog),
+                    $this->equalTo('CRITICAL'),
+                    $this->equalTo($expectedLog),
                     $this->equalTo($lineNumber)
                 );
         } else {
