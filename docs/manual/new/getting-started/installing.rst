@@ -11,9 +11,12 @@ installed before installing phpDocumentor.
 -  `intl extension for PHP`_
 -  Graphviz_
 
-When using any of the XSL-based templates you also need the following:
+.. note::
 
--  `XSL extension for PHP`_
+    When using any of the XSL-based templates you also need the following (the default template uses Twig and as such
+    does not need this):
+
+    -  `XSL extension for PHP`_
 
 Using PEAR
 ----------
@@ -66,7 +69,7 @@ This command can also be used to add phpDocumentor to your existing composer-bas
 
 .. _Composer:               http:/getcomposer.org
 .. _`PHP 5.3.3`:            http://www.php.net
-.. _Graphviz:               http://graphviz.org
+.. _Graphviz:               http://graphviz.org/Download..php
 .. _intl extension for PHP: http://www.php.net/intl
 .. _XSL extension for PHP:  http://www.php.net/xsl
 
