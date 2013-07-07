@@ -11,4 +11,6 @@
  * This is also the recommended usage
  * @package SomePackage
  */
-class foo {}
+class foo
+{
+}
