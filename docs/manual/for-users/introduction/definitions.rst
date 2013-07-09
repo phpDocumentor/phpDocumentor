@@ -154,7 +154,8 @@ Definitions
 
         It is recommended to read the chapter :doc:`../phpdoc/types` for a
         detailed description.
-
+    FQSEN
+        See term:`Fully Qualified Structural Element Name (FQSEN)`
     Fully Qualified Structural Element Name (FQSEN)
        Each documentable element can be referenced using a unique name based on
        its local name and any containers it is in.
