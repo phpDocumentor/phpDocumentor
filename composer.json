@@ -41,7 +41,8 @@
         "phpdocumentor/template-new-black":       ">=1.1.0@stable",
         "phpdocumentor/template-zend":            ">=1.1.0@stable",
         "phpdocumentor/template-old-ocean":       ">=1.1.0@stable",
-        "phpdocumentor/template-checkstyle":      "1.*@stable"
+        "phpdocumentor/template-checkstyle":      "1.*@stable",
+        "phpdocumentor/template-xml":             "1.0.*@stable"
     },
     "minimum-stability": "dev",
     "require-dev": {
