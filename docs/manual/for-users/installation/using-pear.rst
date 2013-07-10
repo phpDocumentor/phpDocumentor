@@ -18,7 +18,7 @@ You can prepare your PEAR installation using the following commands::
 
 And to install phpDocumentor you can use the following command::
 
-    $ pear install phpdoc/phpDocumentor-alpha
+    $ pear install phpdoc/phpDocumentor-beta
 
 When the installation is finished you can invoke the ``phpdoc``
 command from any path in your system. Recommended is to read the

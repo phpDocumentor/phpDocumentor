@@ -123,11 +123,11 @@ class ServiceProvider implements ServiceProviderInterface
         $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
         $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
         $paramMatcher       = function ($criteria) { return $criteria instanceof ParamTag; };
+        $throwsMatcher      = function ($criteria) { return $criteria instanceof ThrowsTag; };
         $returnMatcher      = function ($criteria) { return $criteria instanceof ReturnTag; };
+        $usesMatcher        = function ($criteria) { return $criteria instanceof UsesTag; };
         $seeMatcher         = function ($criteria) { return $criteria instanceof SeeTag; };
         $sinceMatcher       = function ($criteria) { return $criteria instanceof SinceTag; };
-        $throwsMatcher      = function ($criteria) { return $criteria instanceof ThrowsTag; };
-        $usesMatcher        = function ($criteria) { return $criteria instanceof UsesTag; };
         $varMatcher         = function ($criteria) { return $criteria instanceof VarTag; };
 
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
@@ -147,11 +147,11 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
         $factory->register($paramMatcher, new ParamAssembler());
+        $factory->register($throwsMatcher, new ThrowsAssembler());
         $factory->register($returnMatcher, new ReturnAssembler());
+        $factory->register($usesMatcher, new UsesAssembler());
         $factory->register($seeMatcher, new SeeAssembler());
         $factory->register($sinceMatcher, new SinceAssembler());
-        $factory->register($throwsMatcher, new ThrowsAssembler());
-        $factory->register($usesMatcher, new UsesAssembler());
 
         $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
 

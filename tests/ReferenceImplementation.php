@@ -1,6 +1,7 @@
 <?php
 /**
  * @package File
+ * @filesource
  */
 
 namespace My\Space;
@@ -33,6 +34,12 @@ class Subclass extends SuperClass
 }
 
 /**
+ * This is the summary for this class.
+ *
+ * This is a *longer* description that may contain Markdown code
+ * and span multiple lines without causing any issues.
+ *
+ * @source
  * @author Mike van Riel <mike.vanriel@naenius.com>
  * @package Class
  * @method string myMagicMethod(\stdClass $argument1) This is a description.
@@ -69,6 +76,8 @@ class SuperClass implements SubInterface
      * }
      * ```
      *
+     * @deprecated
+     *
      * @see GLOBAL_CONSTANT_DEFINE Refer to global constant.
      * @see globalFunction         Refer to global function.
      * @see self::CLASS_CONSTANT   Refer to class constant.
@@ -76,6 +85,10 @@ class SuperClass implements SubInterface
      * @see self::$privateProperty Refer to property.
      * @see SuperInterface         Refer to interface.
      * @see SubClass               Refer to class.
+     *
+     * @throws \Exception if it fails.
+     * @uses self::protectedMethod()
+     * @link http://www.phpdoc.org
      *
      * @return SubInterface an instance of the SubInterface interface.
      * Example in the return statement:
@@ -85,8 +98,6 @@ class SuperClass implements SubInterface
      *     echo 'another indented string';
      * }
      * ```
-     *
-     * @deprecated
      */
     public function publicMethod()
     {

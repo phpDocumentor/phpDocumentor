@@ -28,4 +28,4 @@ PEAR
 
 Upgrading your installation using PEAR can be done using the following command::
 
-    $ pear upgrade phpdoc/phpDocumentor-alpha
+    $ pear upgrade phpdoc/phpDocumentor-beta
