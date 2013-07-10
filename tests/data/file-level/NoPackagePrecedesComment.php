@@ -3,4 +3,7 @@
  * This is documentation for the function
  */
 // a comment!
-function roar() { echo 'ROAR'; }
+function roar()
+{
+    echo 'ROAR';
+}

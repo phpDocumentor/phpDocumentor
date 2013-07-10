@@ -99,7 +99,7 @@ class Xml extends WriterAbstract implements Translatable
         $document_element->setAttribute('version', Application::$VERSION);
 
         $transformer = $transformation->getTransformer();
-//        var_dump($project);
+        //var_dump($project);
         foreach ($project->getFiles() as $file) {
             $this->buildFile($document_element, $file, $transformer);
         }

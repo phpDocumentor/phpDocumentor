@@ -39,6 +39,5 @@ class NoShortDescription
      */
     public function noShortDescriptionFound()
     {
-
     }
 }

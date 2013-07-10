@@ -99,7 +99,8 @@ class Installer
             // zipfile contains an unwanted root folder; copy all files one
             // level lower and delete unwanted root folder.
             $this->recursiveCopy(
-                sys_get_temp_dir().DIRECTORY_SEPARATOR.$root_dir['name'], '.'
+                sys_get_temp_dir().DIRECTORY_SEPARATOR.$root_dir['name'],
+                '.'
             );
             $this->recursiveRmdir(
                 sys_get_temp_dir().DIRECTORY_SEPARATOR.$root_dir['name']
@@ -311,7 +312,7 @@ class Installer
 
             $source_path      = $source . DIRECTORY_SEPARATOR . $file;
             $destination_path = $destination . DIRECTORY_SEPARATOR . $file;
-            if (is_dir($source_path) ) {
+            if (is_dir($source_path)) {
                 $this->recursiveCopy($source_path, $destination_path);
             } else {
                 copy($source_path, $destination_path);
@@ -332,7 +333,9 @@ class Installer
     {
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator(
-                $directory, \FilesystemIterator::SKIP_DOTS),
+                $directory,
+                \FilesystemIterator::SKIP_DOTS
+            ),
             \RecursiveIteratorIterator::CHILD_FIRST
         );
 
@@ -351,8 +354,7 @@ class Installer
 }
 
 $installer = new Installer();
-try
-{
+try {
     $installer->log('phpDocumentor installer for manual installations');
 
     /**
@@ -408,7 +410,8 @@ try
         $installer->log();
         $installer->log(
             'Composer (http://www.getcomposer.org) is not installed, downloading '
-            .'temporary version for installation', 1
+            .'temporary version for installation',
+            1
         );
         $installer->log();
 
@@ -423,7 +426,7 @@ try
         $installer->log();
         array_walk(
             $output,
-            function($value) use ($installer) {
+            function ($value) use ($installer) {
                 $installer->log($value, 1);
             }
         );
@@ -435,7 +438,7 @@ try
     $installer->log();
     array_walk(
         $output,
-        function($value) use ($installer) {
+        function ($value) use ($installer) {
             $installer->log($value, 1);
         }
     );
@@ -450,15 +453,13 @@ try
         $installer->log();
         array_walk(
             $output,
-            function($value) use ($installer) {
+            function ($value) use ($installer) {
                 $installer->log($value, 1);
             }
         );
         $installer->log();
     }
-}
-catch (\Exception $e)
-{
+} catch (\Exception $e) {
     $installer->log('Error: ' . $e->getMessage());
     die(1);
 }

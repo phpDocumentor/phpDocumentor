@@ -21,6 +21,5 @@ class NoMethodDocBlock
 {
     public function noDocblockMethod()
     {
-
     }
 }
