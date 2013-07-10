@@ -12,6 +12,10 @@ FIXED:     Response type was not shown with magic methods
 FIXED:     Arguments were not shown with magic methods
 FIXED:     Type is not shown with magic properties
 FIXED:     Magic methods were missing from sidebar
+FIXED:     Coding standards issues
+FIXED:     Several documentation issues
+FIXED:     Windows error where the directory slashes were incorrectly presented.
+ADDED:     New template 'xml' for outputting a pure XML representation of the
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
 CHANGED:   Assembling of Tags to Descriptors was refactored to work the same way as other Descriptors.

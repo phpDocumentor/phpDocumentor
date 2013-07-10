@@ -336,7 +336,7 @@ class Twig extends WriterAbstract implements Routable
             if ($url === false || $url[0] !== '/') {
                 return false;
             }
-            $path = $transformation->getTransformer()->getTarget() . $url;
+            $path = $transformation->getTransformer()->getTarget() . str_replace('/', DIRECTORY_SEPARATOR, $url);
         } else {
             $path = $transformation->getTransformer()->getTarget()
                 . DIRECTORY_SEPARATOR . $transformation->getArtifact();
