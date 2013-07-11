@@ -117,7 +117,7 @@ class GenerateCommand extends \Cilex\Command\Command
                 '/\{\{\s*author\s*\}\}/'
             ),
             array($name, $version, $author),
-            file_get_contents(dirname(__FILE__) . '/../../../../data/base_template/template.xml')
+            file_get_contents(dirname(__FILE__) . '/../../../../../data/base_template/template.xml')
         );
 
         file_put_contents($path . DIRECTORY_SEPARATOR . 'template.xml', $template);
@@ -133,7 +133,7 @@ class GenerateCommand extends \Cilex\Command\Command
     protected function generateTemplateCssFile($css_path)
     {
         copy(
-            dirname(__FILE__) . '/../../../../data/base_template/css/template.css',
+            dirname(__FILE__) . '/../../../../../data/base_template/css/template.css',
             $css_path . DIRECTORY_SEPARATOR . 'template.css'
         );
     }
@@ -148,7 +148,7 @@ class GenerateCommand extends \Cilex\Command\Command
     protected function generateIndexTemplate($path)
     {
         copy(
-            dirname(__FILE__) . '/../../../../data/base_template/index.xsl',
+            dirname(__FILE__) . '/../../../../../data/base_template/index.xsl',
             $path . DIRECTORY_SEPARATOR . 'index.xsl'
         );
     }

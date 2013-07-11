@@ -9,6 +9,7 @@
         <transformation query="copy" writer="FileIo" source="images" artifact="images"/>
         <transformation query="copy" writer="FileIo" source="templates/abstract/css" artifact="css"/>
         <transformation query="copy" writer="FileIo" source="templates/{{ name }}/css" artifact="css"/>
+        <transformation writer="xml" artifact="structure.xml"/>
         <transformation query="" writer="xsl" source="templates/{{ name }}/index.xsl" artifact="index.html"/>
         <transformation query="" writer="xsl" source="templates/abstract/sidebar.xsl" artifact="nav.html">
             <parameters>
