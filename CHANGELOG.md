@@ -1,4 +1,4 @@
-2013/06/??: Version 2.0.0b7
+2013/07/12: Version 2.0.0b7
 ---------------------------
 
 ```
@@ -15,10 +15,12 @@ FIXED:     Magic methods were missing from sidebar
 FIXED:     Coding standards issues
 FIXED:     Several documentation issues
 FIXED:     Windows error where the directory slashes were incorrectly presented.
+FIXED:     When a file contains multiple errors, only the first is shown.
 ADDED:     New template 'xml' for outputting a pure XML representation of the
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
 CHANGED:   Assembling of Tags to Descriptors was refactored to work the same way as other Descriptors.
+CHANGED:   Properties won't emit an error regarding a missing summary if it has an @var tag with a description.
 ```
 
 2013/06/23: Version 2.0.0b6

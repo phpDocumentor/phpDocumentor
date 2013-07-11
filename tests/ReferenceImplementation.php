@@ -23,6 +23,13 @@ function globalFunction($param1, \stdClass $param2, $param3 = '')
 
 }
 
+/**
+ * A reference implementation for a subclass.
+ *
+ * This subclass's package has a different case than the superclass to test issue #558.
+ *
+ * @package class
+ */
 class Subclass extends SuperClass
 {
 

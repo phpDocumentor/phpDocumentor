@@ -40,6 +40,7 @@ use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\StripInternal;
 use phpDocumentor\Descriptor\Filter\StripIgnore;
+use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\ClassReflector;
@@ -61,6 +62,7 @@ use phpDocumentor\Reflection\InterfaceReflector;
 use phpDocumentor\Reflection\TraitReflector;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 
+use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -203,7 +205,24 @@ class ServiceProvider implements ServiceProviderInterface
         $methodMetadata    = $validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
 
         $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
-        $propertyMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50007')));
+        $propertyMetadata->addConstraint(
+            new Assert\Callback(
+                array(
+                     'methods' => array(
+                         function (PropertyDescriptor $property, ExecutionContext $context) {
+                             if (! $property->getSummary()
+                                 && (
+                                     $property->getVar()->count() == 0
+                                     || ! current($property->getVar()->getAll())->getDescription()
+                                 )
+                             ) {
+                                 $context->addViolationAt('summary', 'PPC:ERR-50007', array(), null);
+                             }
+                         }
+                     )
+                )
+            )
+        );
         $methodMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50008')));
         $interfaceMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50009')));
         $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
