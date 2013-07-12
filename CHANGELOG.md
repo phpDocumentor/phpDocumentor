@@ -1,3 +1,10 @@
+2013/07/??: Version 2.0.0b8
+---------------------------
+
+```
+FIXED:     Ampersands in tag descriptions caused XSL based templates to fatal
+```
+
 2013/07/12: Version 2.0.0b7
 ---------------------------
 

@@ -623,7 +623,7 @@ class Xml extends WriterAbstract implements Translatable
         $parent->appendChild($child);
 
         $child->setAttribute('name', $tag->getName());
-        $child->setAttribute('description', $tag->getDescription());
+        $child->setAttribute('description', htmlspecialchars($tag->getDescription(), ENT_QUOTES, 'UTF-8'));
         $child->setAttribute('line', $parent->getAttribute('line'));
 
         if (method_exists($tag, 'getTypes')) {
