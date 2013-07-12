@@ -23,6 +23,7 @@ FIXED:     Linking to functions
 FIXED:     Linking to constants
 FIXED:     Linking to properties
 FIXED:     Linking to methods
+FIXED:     Root elements with the same shortname and file but in a different namespace would overwrite the other.
 ADDED:     New template 'xml' for outputting a pure XML representation of the project's structure
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
