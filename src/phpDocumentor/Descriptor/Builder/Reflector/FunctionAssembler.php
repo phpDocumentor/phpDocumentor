@@ -30,9 +30,7 @@ class FunctionAssembler extends AssemblerAbstract
     public function create($data)
     {
         $functionDescriptor = new FunctionDescriptor();
-        $functionDescriptor->setFullyQualifiedStructuralElementName(
-            '\\' . $data->getNamespace() . '\\' . $data->getName() . '()'
-        );
+        $functionDescriptor->setFullyQualifiedStructuralElementName($data->getName() . '()');
         $functionDescriptor->setName($data->getShortName());
         $functionDescriptor->setLocation('', $data->getLinenumber());
 

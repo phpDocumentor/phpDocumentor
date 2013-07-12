@@ -8,6 +8,7 @@ FIXED:     VERSION file was missing from phar archive, causing it to fail
 FIXED:     Elements with an @ignore tag were not filtered
 FIXED:     Deprecated elements are now striken in the class overview
 FIXED:     The @see reference was not shown and interpreted
+FIXED:     The @uses reference was not shown and interpreted
 FIXED:     Response type was not shown with magic methods
 FIXED:     Arguments were not shown with magic methods
 FIXED:     Type is not shown with magic properties
@@ -18,6 +19,10 @@ FIXED:     Windows error where the directory slashes were incorrectly presented.
 FIXED:     When a file contains multiple errors, only the first is shown.
 FIXED:     Generating a new template gave a fatal error
 FIXED:     Generated templates were missing the transformation line for their structure.xml
+FIXED:     Linking to functions
+FIXED:     Linking to constants
+FIXED:     Linking to properties
+FIXED:     Linking to methods
 ADDED:     New template 'xml' for outputting a pure XML representation of the project's structure
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb

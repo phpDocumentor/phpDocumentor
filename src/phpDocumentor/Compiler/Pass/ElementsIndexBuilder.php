@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\PropertyDescriptor;
 
 /**
  * This class constructs the index 'elements' and populates it with all Structural Elements.
@@ -64,7 +65,14 @@ class ElementsIndexBuilder implements CompilerPassInterface
                 $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
 
                 foreach ($this->getSubElements($element) as $subElement) {
-                    $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
+                    $key = $subElement->getFullyQualifiedStructuralElementName();
+
+                    // properties should have an additional $ before the property name
+                    if ($subElement instanceof PropertyDescriptor) {
+                        list($fqcn, $propertyName) = explode('::', $key);
+                        $key = $fqcn . '::$' . $propertyName;
+                    }
+                    $elementCollection->set($key, $subElement);
                 }
             }
 
@@ -84,7 +92,14 @@ class ElementsIndexBuilder implements CompilerPassInterface
                 $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
 
                 foreach ($this->getSubElements($element) as $subElement) {
-                    $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
+                    $key = $subElement->getFullyQualifiedStructuralElementName();
+
+                    // properties should have an additional $ before the property name
+                    if ($subElement instanceof PropertyDescriptor) {
+                        list($fqcn, $propertyName) = explode('::', $key);
+                        $key = $fqcn . '::$' . $propertyName;
+                    }
+                    $elementCollection->set($key, $subElement);
                 }
             }
 

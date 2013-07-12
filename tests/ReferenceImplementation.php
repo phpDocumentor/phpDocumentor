@@ -18,6 +18,15 @@ define("Namespaced\\GLOBAL_CONSTANT_DEFINE", 'test');
  */
 const GLOBAL_CONSTANT_CONST = 'test';
 
+/**
+ *
+ *
+ * @param integer   $param1 Example of a description & with ampersand (&).
+ * @param \stdClass $param2
+ * @param string    $param3
+ *
+ * @return void
+ */
 function globalFunction($param1, \stdClass $param2, $param3 = '')
 {
 
@@ -30,7 +39,7 @@ function globalFunction($param1, \stdClass $param2, $param3 = '')
  *
  * @package class
  */
-class Subclass extends SuperClass
+class SubClass extends SuperClass
 {
 
     /**
@@ -61,7 +70,7 @@ class SuperClass implements SubInterface
 
     /**
      * A public property
-     * @var Subclass
+     * @var SubClass
      * @deprecated
      */
     public $publicProperty;
@@ -85,13 +94,15 @@ class SuperClass implements SubInterface
      *
      * @deprecated
      *
-     * @see GLOBAL_CONSTANT_DEFINE Refer to global constant.
-     * @see globalFunction         Refer to global function.
-     * @see self::CLASS_CONSTANT   Refer to class constant.
-     * @see self::staticMethod()   Refer to method.
-     * @see self::$privateProperty Refer to property.
-     * @see SuperInterface         Refer to interface.
-     * @see SubClass               Refer to class.
+     * @see GLOBAL_CONSTANT_DEFINE       Refer to global constant.
+     * @see globalFunction()             Refer to global function.
+     * @see SuperClass::CLASS_CONSTANT   Refer to class constant.
+     * @see self::CLASS_CONSTANT         Refer to class constant.
+     * @see self::staticMethod()         Refer to method.
+     * @see self::$privateProperty       Refer to property.
+     * @see SuperClass::$privateProperty Refer to property.
+     * @see SuperInterface               Refer to interface.
+     * @see SubClass                     Refer to class.
      *
      * @throws \Exception if it fails.
      * @uses self::protectedMethod()

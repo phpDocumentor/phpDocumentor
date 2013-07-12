@@ -14,18 +14,20 @@ namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
-class ClassDescriptor implements UrlGeneratorInterface
+class FunctionDescriptor implements UrlGeneratorInterface
 {
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param DescriptorAbstract $node
+     * @param \phpDocumentor\Descriptor\FunctionDescriptor $node
      *
      * @return string|false
      */
     public function __invoke($node)
     {
-        return '/classes/'
-            . str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\')).'.html';
+        $namespaceName = $node->getNamespace();
+        $name          = $node->getName();
+
+        return '/namespaces/' . str_replace('\\', '.', ltrim($namespaceName, '\\')).'.html#function_' . $name;
     }
 }
