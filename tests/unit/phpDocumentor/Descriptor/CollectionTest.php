@@ -202,7 +202,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfAfterMergeCollectionContainsAllItems()
     {
-        $expected = array(1 => 'a', 2 => 'b', 4 => 'c');
+        $expected = array(0 => 'a', 1 => 'b', 2 => 'c');
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
 
