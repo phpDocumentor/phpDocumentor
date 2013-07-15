@@ -211,7 +211,8 @@ class Application extends Cilex
     {
         /** @var ConsoleApplication $app  */
         $app = $this['console'];
-
+        $app->setAutoExit(false);
+        
         if ($interactive) {
             $app = new Shell($app);
         }
