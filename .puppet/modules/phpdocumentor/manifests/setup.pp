@@ -4,6 +4,7 @@ class phpdocumentor::setup {
     }
 
     include php
+    include apache
     php::module { "xsl": }
     php::module { "intl": }
     php::module { "xdebug": }
