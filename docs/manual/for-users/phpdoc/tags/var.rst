@@ -22,7 +22,18 @@ Syntax
 Description
 -----------
 
+With the @var tag it is possible to document the type and function of a 
+class property. When provided it MUST contain a :term:`Type` to indicate what 
+is expected; the description on the other hand is OPTIONAL yet RECOMMENDED in 
+case of complicated structures, such as associative arrays.
 
+The @var tag MAY have a multi-line description and does not need explicit
+delimiting.
+
+It is RECOMMENDED when documenting to use this tag with every property.
+
+This tag MUST NOT occur more than once per property in a :term:`PHPDoc` and is
+limited to :term:`Structural Elements` of type property.
 
 
 Effects in phpDocumentor
