@@ -55,4 +55,14 @@ class DebugTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(true);
     }
+
+    /**
+     * @covers phpDocumentor\Compiler\Pass\Debug::getDescription
+     */
+    public function testGetDescription()
+    {
+        $debug = new Debug(m::mock('Psr\Log\LoggerInterface'), m::mock('phpDocumentor\Descriptor\ProjectAnalyzer'));
+        $expected = 'Analyze results and write report to log';
+        $this->assertSame($expected, $debug->getDescription());
+    }
 }
