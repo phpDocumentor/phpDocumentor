@@ -4,6 +4,7 @@
 ```
 ADDED:     Presentation mode to router Twig filter, allows for different representations
 FIXED:     Minor Descriptor tweaks
+FIXED:     Inheritance was broken due to an erroneous merge
 FIXED:     Ampersands in tag descriptions caused XSL based templates to fatal
 REMOVED:   Installer is removed; proved too unreliable
 ```
