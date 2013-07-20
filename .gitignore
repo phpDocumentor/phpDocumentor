@@ -11,3 +11,4 @@ composer.phar
 data/templates/*
 .vagrant
 composer.phar
+/nbproject/private/
