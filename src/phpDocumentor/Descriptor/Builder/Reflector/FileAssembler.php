@@ -37,10 +37,9 @@ class FileAssembler extends AssemblerAbstract
     public function create($data)
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
-        $fileDescriptor->setName($data->getName());
 
-        $fileDescriptor->setLocation($data->getFilename());
         $fileDescriptor->setName(basename($data->getFilename()));
+        $fileDescriptor->setPath($data->getFilename());
         $fileDescriptor->setSource($data->getContents());
         $fileDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));

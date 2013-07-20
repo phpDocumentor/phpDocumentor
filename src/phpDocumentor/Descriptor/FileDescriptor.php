@@ -16,6 +16,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var string */
     protected $hash;
 
+    /** @var string */
+    protected $path = '';
+
     /** @var string|null */
     protected $source = null;
 
@@ -245,5 +248,21 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         }
 
         return $errors;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
     }
 }
