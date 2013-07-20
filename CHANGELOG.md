@@ -3,6 +3,7 @@
 
 ```
 FIXED:     Ampersands in tag descriptions caused XSL based templates to fatal
+REMOVED:   Installer is removed; proved too unreliable
 ```
 
 2013/07/12: Version 2.0.0b7
