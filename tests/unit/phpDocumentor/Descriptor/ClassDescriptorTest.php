@@ -212,7 +212,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $collectionMock = m::mock('phpDocumentor\Descriptor\Collection');
         $collectionMock->shouldReceive('get');
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mock->shouldReceive('getConstants')->andReturn(new Collection(array('contants')));
+        $mock->shouldReceive('getConstants')->andReturn(new Collection(array('constants')));
         $mock->shouldReceive('getInheritedConstants')->andReturn(new Collection(array('inherited')));
 
         $this->fixture->setParent($mock);
