@@ -734,7 +734,6 @@ class Xml extends WriterAbstract implements Translatable
         $behaviour->process($this->xml);
         $this->buildPackageTree($this->xml);
         $this->buildNamespaceTree($this->xml);
-        $this->buildMarkerList($this->xml);
         $this->buildDeprecationList($this->xml);
         //$this->filterVisibility($this->xml, $this->parser->getVisibility());
     }
@@ -789,29 +788,6 @@ class Xml extends WriterAbstract implements Translatable
 
         $namespaces = $this->generateNamespaceTree(array_keys($namespaces));
         $this->generateNamespaceElements($namespaces, $dom->documentElement);
-    }
-
-    /**
-     * Retrieves a list of all marker types and adds them to the XML for
-     * easy referencing.
-     *
-     * @param \DOMDocument $dom Markers are extracted and a summary inserted in
-     *     this object.
-     *
-     * @todo this functionality should be moved to a Compiler pass that builds a list of markers.
-     *
-     * @return void
-     */
-    protected function buildMarkerList(\DOMDocument $dom)
-    {
-        //foreach ($this->parser->getMarkers() as $marker) {
-        //    $marker = strtolower($marker);
-        //    $nodes = $this->getNodeListForTagBasedQuery($dom, $marker);
-
-        //    $node = new \DOMElement('marker', $marker);
-        //    $dom->documentElement->appendChild($node);
-        //    $node->setAttribute('count', $nodes->length);
-        //}
     }
 
     /**
