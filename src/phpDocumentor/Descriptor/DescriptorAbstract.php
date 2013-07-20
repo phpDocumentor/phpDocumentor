@@ -26,7 +26,7 @@ abstract class DescriptorAbstract implements Filterable
     protected $namespace;
 
     /** @var string $package */
-    protected $package;
+    protected $package = '';
 
     /** @var string */
     protected $summary = '';
@@ -34,8 +34,8 @@ abstract class DescriptorAbstract implements Filterable
     /** @var string */
     protected $description = '';
 
-    /** @var string */
-    protected $path = '';
+    /** @var FileDescriptor */
+    protected $fileDescriptor;
 
     /** @var int */
     protected $line = 0;
@@ -164,7 +164,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function setLocation($file, $line = 0)
     {
-        $this->path = $file;
+        $this->fileDescriptor = $file;
         $this->line = $line;
     }
 
@@ -173,7 +173,15 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getPath()
     {
-        return $this->path;
+        return $this->fileDescriptor ? $this->fileDescriptor->getPath() : '';
+    }
+
+    /**
+     * @return FileDescriptor
+     */
+    public function getFile()
+    {
+        return $this->fileDescriptor;
     }
 
     /**
