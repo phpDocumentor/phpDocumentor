@@ -270,4 +270,25 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $expected = 'Replace textual FQCNs with object aliases';
         $this->assertSame($expected, $linker->getDescription());
     }
+
+    /**
+     * @covers phpDocumentor\Compiler\Linker\Linker::execute
+     */
+    public function testExecute()
+    {
+        $std = m::mock('stdClass');
+        $std->shouldReceive('getAll')->andReturn(array());
+        $indexes = new \stdClass();
+        $indexes->elements = $std;
+        $descriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $descriptor->shouldReceive('getIndexes')->andReturn($indexes);
+
+        $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
+        $mock->shouldDeferMissing();
+        $mock->shouldReceive('substitute')->with($descriptor);
+        $mock->execute($descriptor);
+
+        // mark test as successful due to asserts in Mockery
+        $this->assertTrue(true);
+    }
 }
