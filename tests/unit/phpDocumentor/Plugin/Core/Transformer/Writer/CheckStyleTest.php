@@ -41,6 +41,9 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
         $this->fs = vfsStream::setup('CheckStyleTest');
     }
 
+    /**
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle::transform
+     */
     public function testTransform()
     {
         $transformer = m::mock('phpDocumentor\Transformer\Transformation');
