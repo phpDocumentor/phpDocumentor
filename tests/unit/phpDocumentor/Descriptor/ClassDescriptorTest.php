@@ -193,4 +193,33 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($description, $magicProperty->getDescription());
         $this->assertEquals($types, $magicProperty->getTypes());
     }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedConstants
+     */
+    public function testGetInheritedConstantsNoParent() {
+        $descriptor = new ClassDescriptor();
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedConstants());
+
+        $descriptor->setParent(new \stdClass());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedConstants());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedConstants
+     */
+    public function testGetInheritedConstantsWithClassDescriptorParent() {
+        $collectionMock = m::mock('phpDocumentor\Descriptor\Collection');
+        $collectionMock->shouldReceive('get');
+        $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $mock->shouldReceive('getConstants')->andReturn(new Collection(array('contants')));
+        $mock->shouldReceive('getInheritedConstants')->andReturn(new Collection(array('inherited')));
+
+        $this->fixture->setParent($mock);
+        $result = $this->fixture->getInheritedConstants();
+        $expected = array('constants', 'inherited');
+
+        $this->assertSame($expected, $result->getAll());
+    }
+
 }
