@@ -217,4 +217,57 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         // mark test as successful due to asserts in Mockery
         $this->assertTrue(true);
     }
+
+    /**
+     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     */
+    public function testSubstituteArrayRecursive()
+    {
+        $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
+        $mock->shouldDeferMissing();
+        $mock->shouldReceive('findAlias')->andReturn('substituted');
+        $elementList = array(
+            'one' => array('two' => 'two'),
+        );
+        $result = $mock->substitute($elementList);
+        $expected = array(
+            'one' => array('two' => 'substituted'),
+        );
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Test that already processed objects don't substitute again
+     * Using mockery, as return value would be `null` in both cases
+     *
+     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     */
+    public function testSubstituteSkipProcessed()
+    {
+        $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');
+        $mock->shouldDeferMissing();
+        $mock->shouldReceive('findFieldValue')->atMost()->once();
+
+        $item = new \stdClass();
+        $item->attribute = 'foreachme';
+
+        //findFieldValue() should be called
+        $result = $mock->substitute($item);
+
+        //findFieldvalue() should NOT be called
+        $result = $mock->substitute($item);
+
+        // mark test as successful due to asserts in Mockery
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @covers phpDocumentor\Compiler\Linker\Linker::getDescription
+     */
+    public function testGetDescription()
+    {
+        $linker = new Linker(array());
+        $expected = 'Replace textual FQCNs with object aliases';
+        $this->assertSame($expected, $linker->getDescription());
+    }
 }
