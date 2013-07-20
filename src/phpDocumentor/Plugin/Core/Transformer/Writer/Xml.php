@@ -735,7 +735,6 @@ class Xml extends WriterAbstract implements Translatable
         $this->buildPackageTree($this->xml);
         $this->buildNamespaceTree($this->xml);
         $this->buildDeprecationList($this->xml);
-        //$this->filterVisibility($this->xml, $this->parser->getVisibility());
     }
 
     /**
@@ -886,58 +885,6 @@ class Xml extends WriterAbstract implements Translatable
                 : $name;
             $node->setAttribute('full_name', $fullName);
             $this->generateNamespaceElements($sub_namespaces, $node, $node_name);
-        }
-    }
-
-    /**
-     * Filter the function visibility based on options used
-     *
-     * @param \DOMDocument $dom        Markers are extracted and a summary
-     *     inserted in this object.
-     * @param array        $visibility The visibility we want to filter on
-     *
-     * @return void
-     */
-    protected function filterVisibility($dom, array $visibility)
-    {
-        $visibilityQry = '//*[';
-        $accessQry = '//tag[@name=\'access\' and (';
-        foreach ($visibility as $key => $vis) {
-            $visibilityQry .= '(@visibility!=\''.$vis.'\')';
-            $accessQry .= '@description!=\''.$vis.'\'';
-
-            if (($key + 1) < count($visibility)) {
-                $visibilityQry .= ' and ';
-                $accessQry .= ' and ';
-            }
-
-        }
-        $visibilityQry .= ']';
-        $accessQry .= ')]';
-
-        $qry = '('.$visibilityQry.') | ('.$accessQry.')';
-
-        $xpath = new \DOMXPath($dom);
-        $nodes = $xpath->query($qry);
-
-        /** @var \DOMElement $node */
-        foreach ($nodes as $node) {
-            if (($node->nodeName == 'tag')
-                && ($node->parentNode->parentNode->parentNode)
-            ) {
-                $remove = $node->parentNode->parentNode;
-
-                // if a parent was removed before this child we get warnings
-                // that we cannot detect before hand. So we check for a nodeName
-                // and if thar returns null then the node has been deleted in
-                // the mean time.
-                if (@$node->nodeName === null) {
-                    continue;
-                }
-                $node->parentNode->parentNode->parentNode->removeChild($remove);
-            } else {
-                $node->parentNode->removeChild($node);
-            }
         }
     }
 }
