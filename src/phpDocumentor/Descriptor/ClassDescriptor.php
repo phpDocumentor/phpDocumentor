@@ -125,7 +125,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /**
      * {@inheritDoc}
      */
-    public function getConstants($includeInherited = true)
+    public function getConstants()
     {
         return $this->constants;
     }
