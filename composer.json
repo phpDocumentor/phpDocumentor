@@ -18,6 +18,7 @@
         "monolog/monolog":  "1.4.*@stable",
         "twig/twig":        "1.*@stable",
         "dflydev/markdown": "1.0.*@stable",
+        "ezyang/htmlpurifier": "v4.5.0",
 
         "symfony/event-dispatcher": "~2.1@stable",
         "jms/serializer":           "0.12.*@dev",
@@ -42,7 +43,7 @@
         "phpdocumentor/template-zend":            ">=1.1.0@stable",
         "phpdocumentor/template-old-ocean":       ">=1.1.0@stable",
         "phpdocumentor/template-checkstyle":      "1.*@stable",
-        "phpdocumentor/template-xml":             "1.0.*@stable"
+        "phpdocumentor/template-xml":             ">=1.1.0@stable"
     },
     "minimum-stability": "dev",
     "require-dev": {
