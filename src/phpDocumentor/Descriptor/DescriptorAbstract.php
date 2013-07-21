@@ -232,11 +232,11 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * @return string
+     * @return Collection
      */
     public function getSubPackage()
     {
-        /** @var Collection $version */
+        /** @var Collection $subpackage */
         $subpackage = $this->getTags()->get('subpackage', new Collection());
 
         // if the package is not set, inherit it from the parent
