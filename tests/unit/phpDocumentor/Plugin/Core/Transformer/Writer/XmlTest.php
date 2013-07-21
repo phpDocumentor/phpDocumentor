@@ -134,7 +134,6 @@ class XmlTest extends \PHPUnit_Framework_TestCase
 
         $actualXml = new \DOMDocument;
         $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
-        //echo file_get_contents(vfsStream::url('XmlTest/artifact.xml'));
 
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
     }
