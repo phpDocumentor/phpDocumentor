@@ -148,7 +148,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getDescription()
     {
-        // if the summary is not set, inherit it from the parent
+        // if the description is not set, inherit it from the parent
         if (!$this->description && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getDescription();
         }
@@ -157,12 +157,12 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * @param string $file
+     * @param FileDescriptor $file
      * @param int    $line
      *
      * @return void
      */
-    public function setLocation($file, $line = 0)
+    public function setLocation(FileDescriptor $file, $line = 0)
     {
         $this->fileDescriptor = $file;
         $this->line = $line;
