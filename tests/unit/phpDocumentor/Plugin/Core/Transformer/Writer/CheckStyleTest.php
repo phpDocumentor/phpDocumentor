@@ -65,17 +65,24 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
 
         $this->translator->shouldReceive('translate')->with('5678')->andReturn('5678 %s');
 
+        // Call the actual method
         $this->checkStyle->transform($projectDescriptor, $transformer);
 
         // Assert file exists
         $this->assertTrue($this->fs->hasChild('artifact.xml'));
 
         // Inspect XML
-        $xml = simplexml_load_file(vfsStream::url('CheckStyleTest/artifact.xml'));
-        $this->assertSame('/foo/bar/baz', (string) $xml->file['name']);
-        $this->assertSame('1234', (string) $xml->file->error['line']);
-        $this->assertSame('error', (string) $xml->file->error['severity']);
-        $this->assertSame('5678 myContext', (string) $xml->file->error['message']);
-        $this->assertSame('phpDocumentor.file.5678', (string) $xml->file->error['source']);
+        $expectedXml = new \DOMDocument;
+        $expectedXml->loadXML('<?xml version="1.0"?>
+<checkstyle version="1.3.0">
+  <file name="/foo/bar/baz">
+    <error line="1234" severity="error" message="5678 myContext" source="phpDocumentor.file.5678"/>
+  </file>
+</checkstyle>');
+
+        $actualXml = new \DOMDocument;
+        $actualXml->load(vfsStream::url('CheckStyleTest/artifact.xml'));
+
+        $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
     }
 }
