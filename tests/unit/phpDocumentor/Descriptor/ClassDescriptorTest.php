@@ -140,6 +140,26 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
+     */
+    public function testRetrievingInheritedMethodsReturnsCollectionWithParent()
+    {
+        $collectionMock = m::mock('phpDocumentor\Descriptor\Collection');
+        $collectionMock->shouldReceive('get');
+        $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $mock->shouldReceive('getMethods')->andReturn(new Collection(array('methods')));
+        $mock->shouldReceive('getInheritedMethods')->andReturn(new Collection(array('inherited')));
+
+        $this->fixture->setParent($mock);
+        $result = $this->fixture->getInheritedMethods();
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+
+        $expected = array('methods', 'inherited');
+        $this->assertSame($expected, $result->getAll());
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\ClassDescriptor::isAbstract
      * @covers phpDocumentor\Descriptor\ClassDescriptor::setAbstract
      */
@@ -192,6 +212,13 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($variableName, $magicProperty->getName());
         $this->assertEquals($description, $magicProperty->getDescription());
         $this->assertEquals($types, $magicProperty->getTypes());
+
+        $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $mock->shouldReceive('getMagicProperties')->andReturn(new Collection(array('magicProperties')));
+        $this->fixture->setParent($mock);
+
+        $magicProperties = $this->fixture->getMagicProperties();
+        $this->assertCount(2, $magicProperties);
     }
 
     /**
@@ -217,8 +244,40 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedConstants();
-        $expected = array('constants', 'inherited');
 
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+
+        $expected = array('constants', 'inherited');
+        $this->assertSame($expected, $result->getAll());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
+     */
+    public function testGetInheritedPropertiesNoParent() {
+        $descriptor = new ClassDescriptor();
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedProperties());
+
+        $descriptor->setParent(new \stdClass());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedProperties());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
+     */
+    public function testGetInheritedPropertieesWithClassDescriptorParent() {
+        $collectionMock = m::mock('phpDocumentor\Descriptor\Collection');
+        $collectionMock->shouldReceive('get');
+        $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $mock->shouldReceive('getProperties')->andReturn(new Collection(array('properties')));
+        $mock->shouldReceive('getInheritedProperties')->andReturn(new Collection(array('inherited')));
+
+        $this->fixture->setParent($mock);
+        $result = $this->fixture->getInheritedProperties();
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+
+        $expected = array('properties', 'inherited');
         $this->assertSame($expected, $result->getAll());
     }
 
