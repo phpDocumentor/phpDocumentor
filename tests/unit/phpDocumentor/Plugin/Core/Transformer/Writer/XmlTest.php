@@ -14,6 +14,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
@@ -59,23 +60,30 @@ class XmlTest extends \PHPUnit_Framework_TestCase
 
         $this->implementProtectedFinalize($this->projectDescriptor);
 
+        // Call the actual method
         $this->xml->transform($this->projectDescriptor, $transformation);
 
         // Check file exists
         $this->assertTrue($this->fs->hasChild('artifact.xml'));
 
         // Inspect XML
-        $xml = simplexml_load_file(vfsStream::url('XmlTest/artifact.xml'));
-        $this->assertSame('0', (string) $xml->deprecated['count']);
+        $expectedXml = new \DOMDocument;
+        $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0b8&#10;">
+  <deprecated count="0"/>
+</project>');
+
+        $actualXml = new \DOMDocument;
+        $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
+
+        $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
     }
 
     /**
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml::transform
      */
-    public function testTransform()
+    public function testTransformWithEmptyFileDescriptor()
     {
-        $this->markTestIncomplete();
-
         $transformer = m::mock('phpDocumentor\Transformer\Transformer');
         $transformer->shouldReceive('getTarget')->andReturn(vfsStream::url('XmlTest'));
 
@@ -86,20 +94,49 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $fileDescriptor->shouldReceive('getPath')->andReturn('foo.php');
         $transformer->shouldReceive('generateFilename')->with('foo.php')->andReturn('generated-foo.php');
-        $fileDescriptor->shouldReceive('getHash')->andReturn(sha1(''));
+        $fileDescriptor->shouldReceive('getHash')->andReturn('hash');
 
         $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array($fileDescriptor));
 
         $this->implementProtectedFinalize($this->projectDescriptor);
+        $this->implementProtectedBuildDocBlock($fileDescriptor);
 
+        $fileDescriptor->shouldReceive('getNamespaceAliases')->andReturn(array('foo', 'bar'));
+        $fileDescriptor->shouldReceive('getConstants')->andReturn(array());
+        $fileDescriptor->shouldReceive('getFunctions')->andReturn(array());
+        $fileDescriptor->shouldReceive('getInterfaces')->andReturn(array());
+        $fileDescriptor->shouldReceive('getClasses')->andReturn(array());
+        $fileDescriptor->shouldReceive('getMarkers')->andReturn(array());
+        $fileDescriptor->shouldReceive('getErrors')->andReturn(array());
+        $fileDescriptor->shouldReceive('getSource')->andReturn(null);
+
+        // Call the actual method
         $this->xml->transform($this->projectDescriptor, $transformation);
 
         // Check file exists
         $this->assertTrue($this->fs->hasChild('artifact.xml'));
 
         // Inspect XML
-        $xml = simplexml_load_file(vfsStream::url('XmlTest/artifact.xml'));
-        $this->assertSame('0', (string) $xml->deprecated['count']);
+        $expectedXml = new \DOMDocument;
+        $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0b8&#10;">
+  <file path="foo.php" generated-path="generated-foo.php" hash="hash" package="myPackage">
+    <docblock line="666">
+      <description>my summary</description>
+      <long-description>my description</long-description>
+    </docblock>
+    <namespace-alias name="0">foo</namespace-alias>
+    <namespace-alias name="1">bar</namespace-alias>
+  </file>
+  <package name="myPackage" full_name="myPackage"/>
+  <deprecated count="0"/>
+</project>');
+
+        $actualXml = new \DOMDocument;
+        $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
+        //echo file_get_contents(vfsStream::url('XmlTest/artifact.xml'));
+
+        $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
     }
 
     /**
@@ -113,5 +150,20 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $this->projectDescriptor->shouldReceive('isVisibilityAllowed')
             ->with(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)
             ->andReturn(true);
+    }
+
+    /**
+     * This implements testing of the protected buildDocBlock method
+     *
+     * @param DescriptorAbstract $descriptor
+     * @return void
+     */
+    protected function implementProtectedBuildDocBlock(DescriptorAbstract $descriptor)
+    {
+        $descriptor->shouldReceive('getLine')->andReturn(666);
+        $descriptor->shouldReceive('getPackage')->andReturn('myPackage');
+        $descriptor->shouldReceive('getSummary')->andReturn('my summary');
+        $descriptor->shouldReceive('getDescription')->andReturn('my description');
+        $descriptor->shouldReceive('getTags')->andReturn(array());
     }
 }
