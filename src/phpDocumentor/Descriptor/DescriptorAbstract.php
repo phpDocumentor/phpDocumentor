@@ -248,8 +248,9 @@ abstract class DescriptorAbstract implements Filterable
             return $this->getParent()->getSubPackage();
         }
 
-        return $subpackage;
+        $subpackageDescriptor = current(current($subpackage));
 
+        return $subpackageDescriptor ? $subpackageDescriptor->getDescription() : '';
     }
 
     /**
