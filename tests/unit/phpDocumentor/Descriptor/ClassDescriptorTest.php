@@ -336,6 +336,9 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $magicMethods);
     }
 
+    /**
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::setPackage
+     */
     public function testSetPackage()
     {
         $package = 'Package';
