@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "dab1b5786df263abd83613252b651fe9",
+    "hash": "d9069ea992bd0c96dc961241e0faa927",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -2169,6 +2169,41 @@
             "time": "2013-05-09 15:20:54"
         },
         {
+            "name": "mikey179/vfsStream",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikey179/vfsStream.git",
+                "reference": "bfe5bcf59eb50b5029546d080c23146f7528024f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/bfe5bcf59eb50b5029546d080c23146f7528024f",
+                "reference": "bfe5bcf59eb50b5029546d080c23146f7528024f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "org\\bovigo\\vfs\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "homepage": "http://vfs.bovigo.org/",
+            "time": "2013-05-28 21:32:26"
+        },
+        {
             "name": "mockery/mockery",
             "version": "dev-master",
             "source": {
@@ -2824,7 +2859,8 @@
         "phpdocumentor/template-checkstyle": 0,
         "phpdocumentor/template-xml": 0,
         "behat/behat": 0,
-        "phpunit/phpunit": 0
+        "phpunit/phpunit": 0,
+        "mikey179/vfsstream": 20
     },
     "platform": {
         "php": ">=5.3.3"

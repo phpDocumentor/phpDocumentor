@@ -46,9 +46,10 @@
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "behat/behat":     ">=2.4@stable",
-        "phpunit/phpunit": "3.7.*@stable",
-        "mockery/mockery": ">=0.8.0"
+        "behat/behat":        ">=2.4@stable",
+        "phpunit/phpunit":    "3.7.*@stable",
+        "mockery/mockery":    ">=0.8.0",
+        "mikey179/vfsStream": "1.3.*@dev"
     },
     "config": {
         "bin-dir":"bin/"
