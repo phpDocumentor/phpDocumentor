@@ -31,6 +31,19 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::__construct
+     */
+    public function testInitialize()
+    {
+        $mock = $this->getMockBuilder('phpDocumentor\Descriptor\DescriptorAbstract')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($this->once())->method('setTags')->with(new Collection());
+        $mock->expects($this->once())->method('setErrors')->with(new Collection());
+        $mock->__construct();
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::setFullyQualifiedStructuralElementName
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getFullyQualifiedStructuralElementName
      */

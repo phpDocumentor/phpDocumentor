@@ -379,4 +379,14 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(true);
     }
 
+    /**
+     * Test to cover magic method of parent abstract class
+     *
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::__call
+     */
+    public function testCall()
+    {
+        $this->assertNull($this->fixture->notexisting());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getNotexisting());
+    }
 }
