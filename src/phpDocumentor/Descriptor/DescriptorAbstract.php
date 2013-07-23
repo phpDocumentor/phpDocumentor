@@ -239,7 +239,7 @@ abstract class DescriptorAbstract implements Filterable
         /** @var Collection $subpackage */
         $subpackage = $this->getTags()->get('subpackage', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the subpackage is not set, inherit it from the parent
         if ($subpackage->count() == 0
             && ($this instanceof ChildInterface)
             && ($this->getParent() instanceof self)
@@ -262,7 +262,7 @@ abstract class DescriptorAbstract implements Filterable
         /** @var Collection $author */
         $author = $this->getTags()->get('author', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the author is not set, inherit it from the parent
         if ($author->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getAuthor();
         }
@@ -280,7 +280,7 @@ abstract class DescriptorAbstract implements Filterable
         /** @var Collection $version */
         $version = $this->getTags()->get('version', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the version is not set, inherit it from the parent
         if ($version->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getVersion();
         }
@@ -298,7 +298,7 @@ abstract class DescriptorAbstract implements Filterable
         /** @var Collection $copyright */
         $copyright = $this->getTags()->get('copyright', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the copyright is not set, inherit it from the parent
         if ($copyright->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getCopyright();
         }
