@@ -27,6 +27,15 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $input = new ArgvInput($argvArray);
         $this->assertAttributeEquals($expected, 'tokens', $input);
     }
+    
+    public function testIfServerArgvIsArray(){
+        $_SERVER['argv'] = array('foo', 'bar', 'pizza');
+        
+        $input = new ArgvInput(null);
+        
+        $this->assertAttributeEquals(array('bar', 'pizza'), 'tokens', $input);
+        
+    }
 
     /**
      * Provides a series of Argv arrays to use as test scenarios for the testPrependsCommandName test.
