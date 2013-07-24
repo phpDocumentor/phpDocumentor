@@ -74,14 +74,19 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
      */
     public function getInheritedConstants()
     {
-        if (!$this->getParent() || (!$this->getParent() instanceof ClassDescriptor)) {
+        if (!$this->getParent() || !$this->getParent() instanceof Collection || $this->getParent()->count() === 0) {
             return new Collection();
         }
 
-        $inheritedMethods = clone $this->getParent()->getConstants();
-        $inheritedMethods->merge($this->getParent()->getInheritedConstants());
+        $inheritedConstants = new Collection();
 
-        return $inheritedMethods;
+        /** @var self $parent */
+        foreach ($this->getParent() as $parent) {
+            $inheritedConstants = $inheritedConstants->merge($parent->getConstants());
+            $inheritedConstants = $inheritedConstants->merge($parent->getInheritedConstants());
+        }
+
+        return $inheritedConstants;
     }
 
     /**
@@ -105,7 +110,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
      */
     public function getInheritedMethods()
     {
-        if (!$this->getParent() || ($this->getParent()->count() === 0)) {
+        if (!$this->getParent() || !$this->getParent() instanceof Collection || $this->getParent()->count() === 0) {
             return new Collection();
         }
 
@@ -113,10 +118,8 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         /** @var self $parent */
         foreach ($this->getParent() as $parent) {
-            if (is_object($parent)) {
-                $inheritedMethods->merge($parent->getMethods());
-                $inheritedMethods->merge($parent->getInheritedMethods());
-            }
+            $inheritedMethods = $inheritedMethods->merge($parent->getMethods());
+            $inheritedMethods = $inheritedMethods->merge($parent->getInheritedMethods());
         }
 
         return $inheritedMethods;
