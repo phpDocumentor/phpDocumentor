@@ -80,7 +80,7 @@ class Checkstyle extends WriterAbstract implements Translatable
                 $item->setAttribute('severity', $error->getSeverity());
                 $item->setAttribute(
                     'message',
-                    $this->getTranslator()->translate(vsprintf($error->getCode(), $error->getContext()))
+                    vsprintf($this->getTranslator()->translate($error->getCode()), $error->getContext())
                 );
                 $item->setAttribute('source', 'phpDocumentor.file.'.$error->getCode());
                 $file->appendChild($item);
