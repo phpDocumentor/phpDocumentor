@@ -14,20 +14,14 @@ namespace phpDocumentor\Console\Helper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Helper;
 
-class ProgressHelperTest extends \PHPUnit_Framework_TestCase{
-    
-    public function testToSetTimeInHumanReadableText(){
-        $time = new ProgressHelper();
-        
-        $this->assertEquals('2', 'humaneTime', $time);
-    }
-    
-    public function testIfICanGetTheName(){
+class ProgressHelperTest extends \PHPUnit_Framework_TestCase
+{
+    public function testIfICanGetTheName()
+    {
         $name = new ProgressHelper();
-        
+
         $getName = $name->getName();
-        
+
         $this->assertEquals('progress', $getName);
     }
 }
-?>

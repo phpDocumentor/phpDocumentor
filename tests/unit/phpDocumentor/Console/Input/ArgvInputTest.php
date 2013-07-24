@@ -19,7 +19,7 @@ use Mockery as m;
 class ArgvInputTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers phpDocumentor\Console\Input\ArgvInput::__construct
+     * @covers       phpDocumentor\Console\Input\ArgvInput::__construct
      * @dataProvider provideArgvArrays
      */
     public function testPrependsCommandName($argvArray, $expected)
@@ -27,14 +27,17 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
         $input = new ArgvInput($argvArray);
         $this->assertAttributeEquals($expected, 'tokens', $input);
     }
-    
-    public function testIfServerArgvIsArray(){
+
+    /**
+     * @covers phpDocumentor\Console\Input\ArgvInput::__construct
+     */
+    public function testIfServerArgvIsArray()
+    {
         $_SERVER['argv'] = array('foo', 'bar', 'pizza');
-        
+
         $input = new ArgvInput(null);
-        
+
         $this->assertAttributeEquals(array('bar', 'pizza'), 'tokens', $input);
-        
     }
 
     /**
