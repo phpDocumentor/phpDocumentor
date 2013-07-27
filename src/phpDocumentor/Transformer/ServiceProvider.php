@@ -20,9 +20,7 @@ use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
-use phpDocumentor\Transformer\Command\Template\GenerateCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
-use phpDocumentor\Transformer\Command\Template\PackageCommand;
 
 /**
  * This provider is responsible for registering the transformer component with the given Application.
@@ -149,8 +147,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         );
 
         $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
-        $app->command(new GenerateCommand());
         $app->command(new ListCommand());
-        $app->command(new PackageCommand());
     }
 }
