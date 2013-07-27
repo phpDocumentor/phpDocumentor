@@ -3,9 +3,13 @@
 
 ```
 ADDED:     Presentation mode to router Twig filter, allows for different representations
+ADDED:     StandardRouter now also supports generating paths for file documentation pages.
+FIXED:     Generated paths in the Twig writer were not windows safe
 FIXED:     Minor Descriptor tweaks
 FIXED:     Inheritance was broken due to an erroneous merge
 FIXED:     Ampersands in tag descriptions caused XSL based templates to fatal
+FIXED:     Inheritance of methods in interfaces was broken
+FIXED:     All elements had an internal and ignore tag added due to an error in filtering
 REMOVED:   Installer is removed; proved too unreliable
 ```
 
