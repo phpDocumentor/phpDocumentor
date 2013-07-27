@@ -96,6 +96,7 @@ class Xml extends WriterAbstract implements Translatable
         $document_element = new \DOMElement('project');
         $this->xml->appendChild($document_element);
 
+        $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
         $transformer = $transformation->getTransformer();
