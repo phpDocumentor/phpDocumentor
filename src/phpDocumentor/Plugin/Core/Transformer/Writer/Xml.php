@@ -596,7 +596,7 @@ class Xml extends WriterAbstract implements Translatable
         $parent->appendChild($child);
 
         $child->setAttribute('line', $element->getLine());
-        $parent->setAttribute('package', $element->getPackage());
+        $parent->setAttribute('package', ltrim($element->getPackage(), '\\'));
 
         $this->addDescription($child, $element);
         $this->addLongDescription($child, $element);
