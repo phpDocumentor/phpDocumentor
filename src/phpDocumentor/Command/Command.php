@@ -34,7 +34,7 @@ class Command extends \Cilex\Command\Command
      *
      * @author Michael Wallner <mike@php.net>
      *
-     * @see http://pear.php.net/package/File_Util/docs/latest/File/File_Util/
+     * @link http://pear.php.net/package/File_Util/docs/latest/File/File_Util/
      *     File_Util.html#methodisAbsolute
      *
      * @todo consider moving this method to a more logical place
@@ -129,7 +129,7 @@ class Command extends \Cilex\Command\Command
      * @param OutputInterface $output
      * @param LogEvent        $event
      *
-     * @return void.
+     * @return void
      */
     public function logEvent(OutputInterface $output, LogEvent $event)
     {
