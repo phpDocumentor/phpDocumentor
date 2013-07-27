@@ -14,6 +14,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Plugin\Core\Twig\Extension;
+use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
@@ -332,7 +333,8 @@ class Twig extends WriterAbstract implements Routable
                 );
             }
 
-            $url = $rule->generate($node);
+            $rule = new ForFileProxy($rule);
+            $url  = $rule->generate($node);
             if ($url === false || $url[0] !== '/') {
                 return false;
             }
