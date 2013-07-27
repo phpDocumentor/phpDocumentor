@@ -92,7 +92,7 @@ class SuperClass implements SubInterface
      * }
      * ```
      *
-     * @deprecated
+     * @deprecated This is superseded by the SuperClass
      *
      * @see GLOBAL_CONSTANT_DEFINE       Refer to global constant.
      * @see globalFunction()             Refer to global function.
