@@ -85,4 +85,94 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($mock, $this->fixture->getMethods());
     }
+
+    /**
+     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedConstants
+     */
+    public function testGetInheritedConstantsNoParent()
+    {
+        $descriptor = new InterfaceDescriptor();
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedConstants());
+
+        $descriptor->setParent(new \stdClass());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $descriptor->getInheritedConstants());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedConstants
+     */
+    public function testGetInheritedConstantsWithClassDescriptorParent()
+    {
+        $parentDescriptor = new ConstantDescriptor();
+        $parentDescriptor->setName('parent');
+        $parentDescriptorCollection = new Collection();
+        $parentDescriptorCollection->add($parentDescriptor);
+        $parent = new InterfaceDescriptor();
+        $parent->setConstants($parentDescriptorCollection);
+
+        $grandParentDescriptor = new ConstantDescriptor();
+        $grandParentDescriptor->setName('grandparent');
+        $grandParentDescriptorCollection = new Collection();
+        $grandParentDescriptorCollection->add($grandParentDescriptor);
+        $grandParent = new InterfaceDescriptor();
+        $grandParent->setConstants($grandParentDescriptorCollection);
+
+        $grandParentCollection = new Collection();
+        $grandParentCollection->add($grandParent);
+        $parent->setParent($grandParentCollection);
+
+        $parentCollection = new Collection();
+        $parentCollection->add($parent);
+
+        $this->fixture->setParent($parentCollection);
+        $result = $this->fixture->getInheritedConstants();
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+
+        $this->assertSame(array($parentDescriptor, $grandParentDescriptor), $result->getAll());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedMethods
+     */
+    public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent()
+    {
+        $inheritedMethods = $this->fixture->getInheritedMethods();
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $inheritedMethods);
+        $this->assertCount(0, $inheritedMethods);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedMethods
+     */
+    public function testRetrievingInheritedMethodsReturnsCollectionWithParent()
+    {
+        $parentDescriptor = new MethodDescriptor();
+        $parentDescriptor->setName('parent');
+        $parentDescriptorCollection = new Collection();
+        $parentDescriptorCollection->add($parentDescriptor);
+        $parent = new InterfaceDescriptor();
+        $parent->setMethods($parentDescriptorCollection);
+        $parentCollection = new Collection();
+        $parentCollection->add($parent);
+
+        $grandParentDescriptor = new MethodDescriptor();
+        $grandParentDescriptor->setName('grandparent');
+        $grandParentDescriptorCollection = new Collection();
+        $grandParentDescriptorCollection->add($grandParentDescriptor);
+        $grandParent = new InterfaceDescriptor();
+        $grandParent->setMethods($grandParentDescriptorCollection);
+        $grandParentCollection = new Collection();
+        $grandParentCollection->add($grandParent);
+
+        $parent->setParent($grandParentCollection);
+
+        $this->fixture->setParent($parentCollection);
+        $result = $this->fixture->getInheritedMethods();
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+
+        $this->assertSame(array($parentDescriptor, $grandParentDescriptor), $result->getAll());
+    }
+
 }
