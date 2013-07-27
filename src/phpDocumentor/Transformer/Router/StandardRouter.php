@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\FileDescriptor;
 
 /**
  * The default router for phpDocumentor.
@@ -33,6 +34,7 @@ class StandardRouter extends RouterAbstract
      */
     public function configure()
     {
+        $fileGenerator      = new UrlGenerator\Standard\FileDescriptor();
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
         $packageGenerator   = new UrlGenerator\Standard\PackageDescriptor();
         $classGenerator     = new UrlGenerator\Standard\ClassDescriptor();
@@ -42,6 +44,7 @@ class StandardRouter extends RouterAbstract
         $propertyGenerator  = new UrlGenerator\Standard\PropertyDescriptor();
 
         // @codingStandardsIgnoreStart
+        $this[] = new Rule(function ($node) { return ($node instanceof FileDescriptor); }, $fileGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof PackageDescriptor); }, $packageGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof TraitDescriptor); }, $classGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof NamespaceDescriptor); }, $namespaceGenerator);
