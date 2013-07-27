@@ -71,7 +71,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function get($index, $valueIfEmpty = null)
     {
-        if (!$this->offsetExists($index)) {
+        if (!$this->offsetExists($index) && $valueIfEmpty !== null) {
             $this->offsetSet($index, $valueIfEmpty);
         }
 
