@@ -78,10 +78,8 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
             return new Collection();
         }
 
-        $inheritedMethods = clone $this->getParent()->getConstants();
-        $inheritedMethods->merge($this->getParent()->getInheritedConstants());
-
-        return $inheritedMethods;
+        $inheritedConstants = clone $this->getParent()->getConstants();
+        return $inheritedConstants->merge($this->getParent()->getInheritedConstants());
     }
 
     /**
@@ -114,8 +112,8 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         /** @var self $parent */
         foreach ($this->getParent() as $parent) {
             if (is_object($parent)) {
-                $inheritedMethods->merge($parent->getMethods());
-                $inheritedMethods->merge($parent->getInheritedMethods());
+                $inheritedMethods = $inheritedMethods->merge($parent->getMethods());
+                $inheritedMethods = $inheritedMethods->merge($parent->getInheritedMethods());
             }
         }
 
