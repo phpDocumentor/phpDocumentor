@@ -542,7 +542,7 @@ class Xml extends WriterAbstract implements Translatable
      * @param \DOMElement     $parent Element to augment.
      * @param MethodDescriptor $method Element to export.
      *
-     * @return void
+     * @return \DOMElement
      */
     public function buildMethod(\DOMElement $parent, MethodDescriptor $method)
     {
@@ -568,6 +568,8 @@ class Xml extends WriterAbstract implements Translatable
         foreach ($method->getArguments() as $argument) {
             $this->buildArgument($child, $argument);
         }
+
+        return $child;
     }
 
     /**

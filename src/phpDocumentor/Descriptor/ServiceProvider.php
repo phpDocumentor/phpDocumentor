@@ -65,6 +65,7 @@ use phpDocumentor\Descriptor\ProjectAnalyzer;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
 
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Validator;
@@ -196,37 +197,53 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function attachValidators(Validator $validator)
     {
+        /** @var ClassMetadata $fileMetadata */
+        $fileMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
+        /** @var ClassMetadata $constantMetadata */
         $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
+        /** @var ClassMetadata $functionMetadata */
         $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
+        /** @var ClassMetadata $classMetadata */
         $classMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
+        /** @var ClassMetadata $interfaceMetadata */
         $interfaceMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\InterfaceDescriptor');
+        /** @var ClassMetadata $traitMetadata */
         $traitMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
+        /** @var ClassMetadata $propertyMetadata */
         $propertyMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
+        /** @var ClassMetadata $methodMetadata */
         $methodMetadata    = $validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
 
         $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
-        $propertyMetadata->addConstraint(
-            new Assert\Callback(
-                array(
-                     'methods' => array(
-                         function (PropertyDescriptor $property, ExecutionContext $context) {
-                             if (! $property->getSummary()
-                                 && (
-                                     $property->getVar()->count() == 0
-                                     || ! current($property->getVar()->getAll())->getDescription()
-                                 )
-                             ) {
-                                 $context->addViolationAt('summary', 'PPC:ERR-50007', array(), null);
-                             }
-                         }
-                     )
-                )
-            )
-        );
+        $propertyMetadata->addConstraint(new phpDocAssert\Property\HasSummary());
         $methodMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50008')));
         $interfaceMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50009')));
         $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
         $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
+
+        $functionMetadata->addGetterConstraint(
+            'response',
+            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
+        );
+        $methodMetadata->addGetterConstraint(
+            'response',
+            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
+        );
+
+        $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+
+        $classMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+
+        $classMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
+        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
+        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
+        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
 
         return $validator;
     }
