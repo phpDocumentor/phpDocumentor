@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5dff9ce3a6738b1b30b50e9f45415ee8",
+    "hash": "1c8cdbaf1c94d4fae182c29885912ece",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -571,12 +571,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "f9c3aa2a22498ff4c0db38bae40999cebe60f831"
+                "reference": "77c08a75c97b67840c91f178b654136ceec92c35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f9c3aa2a22498ff4c0db38bae40999cebe60f831",
-                "reference": "f9c3aa2a22498ff4c0db38bae40999cebe60f831",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/77c08a75c97b67840c91f178b654136ceec92c35",
+                "reference": "77c08a75c97b67840c91f178b654136ceec92c35",
                 "shasum": ""
             },
             "require": {
@@ -607,7 +607,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2013-07-12 23:03:57"
+            "time": "2013-07-27 14:23:27"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -881,6 +881,35 @@
                 "template"
             ],
             "time": "2013-07-21 05:30:11"
+        },
+        {
+            "name": "phpdocumentor/template-clean",
+            "version": "1.0.0b1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/template.clean.git",
+                "reference": "1.0.0b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/template.clean/zipball/1.0.0b1",
+                "reference": "1.0.0b1",
+                "shasum": ""
+            },
+            "type": "phpdocumentor-template",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A clean, responsive modern template for phpDocumentor for Twig aimed at usability",
+            "homepage": "http://www.phpdoc.org",
+            "keywords": [
+                "documentation",
+                "phpdoc",
+                "responsive",
+                "template"
+            ],
+            "time": "2013-07-27 20:50:06"
         },
         {
             "name": "phpdocumentor/template-new-black",
@@ -2721,12 +2750,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/DependencyInjection.git",
-                "reference": "ccaef06529bd56ab07f8f5966ca1de1640aed8dc"
+                "reference": "c88c668b422e76052f767e14001b43ddaa2f8a44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/DependencyInjection/zipball/ccaef06529bd56ab07f8f5966ca1de1640aed8dc",
-                "reference": "ccaef06529bd56ab07f8f5966ca1de1640aed8dc",
+                "url": "https://api.github.com/repos/symfony/DependencyInjection/zipball/c88c668b422e76052f767e14001b43ddaa2f8a44",
+                "reference": "c88c668b422e76052f767e14001b43ddaa2f8a44",
                 "shasum": ""
             },
             "require": {
@@ -2768,7 +2797,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "http://symfony.com",
-            "time": "2013-07-21 20:19:01"
+            "time": "2013-07-27 05:01:52"
         },
         {
             "name": "symfony/filesystem",
@@ -2889,6 +2918,7 @@
         "phpdocumentor/reflection": 0,
         "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/unified-asset-installer": 10,
+        "phpdocumentor/template-clean": 10,
         "phpdocumentor/template-responsive-twig": 0,
         "phpdocumentor/template-responsive": 0,
         "phpdocumentor/template-new-black": 0,
