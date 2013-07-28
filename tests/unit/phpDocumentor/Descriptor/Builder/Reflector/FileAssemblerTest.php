@@ -45,6 +45,7 @@ class FileAssemblerTest extends \PHPUnit_Framework_TestCase
         $filename = 'file.php';
         $content = '<?php ... ?>';
         $hash = md5($content);
+        $defaultPackageName = 'Package';
 
         $docBlockDescription = new DocBlock\Description('
             /**
@@ -58,11 +59,12 @@ class FileAssemblerTest extends \PHPUnit_Framework_TestCase
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
 
-        $fileReflectorMock = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $fileReflectorMock = m::mock('phpDocumentor\Reflector\FileReflector');
         $fileReflectorMock->shouldReceive('getName')->andReturn($filename);
         $fileReflectorMock->shouldReceive('getFilename')->andReturn($filename);
         $fileReflectorMock->shouldReceive('getHash')->andReturn($hash);
         $fileReflectorMock->shouldReceive('getContents')->andReturn($content);
+        $fileReflectorMock->shouldReceive('getDefaultPackageName')->andReturn($defaultPackageName);
         $fileReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
 
         $fileReflectorMock->shouldReceive('getIncludes')->andReturn(new Collection);

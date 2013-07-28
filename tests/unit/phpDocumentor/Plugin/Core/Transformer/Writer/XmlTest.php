@@ -57,6 +57,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $transformation->shouldReceive('getTransformer')->andReturn($transformer);
 
         $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array());
+        $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
 
         $this->implementProtectedFinalize($this->projectDescriptor);
 
@@ -69,7 +70,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         // Inspect XML
         $expectedXml = new \DOMDocument;
         $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
-<project version="2.0.0b8&#10;">
+<project version="2.0.0b8&#10;" title="project">
   <deprecated count="0"/>
 </project>');
 
@@ -97,6 +98,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $fileDescriptor->shouldReceive('getHash')->andReturn('hash');
 
         $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array($fileDescriptor));
+        $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
 
         $this->implementProtectedFinalize($this->projectDescriptor);
         $this->implementProtectedBuildDocBlock($fileDescriptor);
@@ -119,7 +121,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         // Inspect XML
         $expectedXml = new \DOMDocument;
         $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
-<project version="2.0.0b8&#10;">
+<project version="2.0.0b8&#10;" title="project">
   <file path="foo.php" generated-path="generated-foo.php" hash="hash" package="myPackage">
     <docblock line="666">
       <description>my summary</description>
