@@ -193,6 +193,18 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets the line number for this element's location in the source file.
+     *
+     * @param integer $lineNumber
+     *
+     * @return void
+     */
+    public function setLine($lineNumber)
+    {
+        $this->line = $lineNumber;
+    }
+
+    /**
      * @param Collection $tags
      *
      * @return void

@@ -32,7 +32,7 @@ class FunctionAssembler extends AssemblerAbstract
         $functionDescriptor = new FunctionDescriptor();
         $functionDescriptor->setFullyQualifiedStructuralElementName($data->getName() . '()');
         $functionDescriptor->setName($data->getShortName());
-        $functionDescriptor->setLocation('', $data->getLinenumber());
+        $functionDescriptor->setLine($data->getLinenumber());
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $functionDescriptor->setNamespace(

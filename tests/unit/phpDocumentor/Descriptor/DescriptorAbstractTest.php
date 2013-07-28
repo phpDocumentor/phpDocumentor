@@ -327,6 +327,19 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::setLine
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getLine
+     */
+    public function testSetLineNumber()
+    {
+        $this->assertSame(0, $this->fixture->getLine());
+
+        $this->fixture->setLine(5);
+
+        $this->assertSame(5, $this->fixture->getLine());
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPath
      */
     public function testGetPath()

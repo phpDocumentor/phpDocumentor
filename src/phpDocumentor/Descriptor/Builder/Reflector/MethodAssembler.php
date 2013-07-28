@@ -48,7 +48,7 @@ class MethodAssembler extends AssemblerAbstract
             $methodDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 
-        $methodDescriptor->setLocation('', $data->getLinenumber());
+        $methodDescriptor->setLine($data->getLinenumber());
 
         return $methodDescriptor;
     }
