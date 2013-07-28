@@ -176,13 +176,15 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
         $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface');
         $mock->shouldDeferMissing();
 
-        $subpackage = new Collection(array('sub'));
+        $subpackageMock = m::mock('phpDocumentor\Descriptor\TagDescriptor');
+        $subpackageMock->shouldReceive('getDescription')->andReturn('sub');
+        $subpackage = new Collection(array($subpackageMock));
 
         $collection = new Collection();
         $collection->offsetSet('subpackage', $subpackage);
 
         $mock->shouldReceive('getTags')->andReturn($collection);
-        $this->assertSame($subpackage, $mock->getSubPackage());
+        $this->assertSame('sub', $mock->getSubPackage());
     }
 
     /**
