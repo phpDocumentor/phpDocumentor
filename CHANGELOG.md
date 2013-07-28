@@ -10,6 +10,7 @@ FIXED:     Inheritance was broken due to an erroneous merge
 FIXED:     Ampersands in tag descriptions caused XSL based templates to fatal
 FIXED:     Inheritance of methods in interfaces was broken
 FIXED:     All elements had an internal and ignore tag added due to an error in filtering
+FIXED:     @internal inline tag handling did not function
 REMOVED:   Installer is removed; proved too unreliable
 ```
 
