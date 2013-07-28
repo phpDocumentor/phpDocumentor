@@ -16,6 +16,6 @@
         <plugin path="Core" />
     </plugins>
     <transformations>
-        <template name="responsive-twig" />
+        <template name="clean" />
     </transformations>
 </phpdocumentor>
