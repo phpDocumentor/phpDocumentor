@@ -44,7 +44,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project)
     {
-        $project->getIndexes()->elements['~\\'] = $project->getNamespace();
+        $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->get('namespaces', new Collection())->add($project->getNamespace());
 
         foreach ($project->getFiles() as $file) {
