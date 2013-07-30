@@ -24,7 +24,7 @@ use Mockery as m;
  */
 class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Compiler $fixture */
+    /** @var ClassAssembler $fixture */
     protected $fixture;
 
     /**
@@ -57,7 +57,7 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
 
-        $classReflectorMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $classReflectorMock = m::mock('phpDocumentor\Reflection\ClassReflector');
         $classReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $name);
         $classReflectorMock->shouldReceive('getShortName')->andReturn($name);
         $classReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
