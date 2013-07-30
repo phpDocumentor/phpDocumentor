@@ -40,6 +40,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
     {
         $this->translator = m::mock('phpDocumentor\Translator');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $this->projectDescriptor->shouldReceive('getName')->andReturn('fooName');
         $this->xml = new Xml();
         $this->xml->setTranslator($this->translator);
         $this->fs = vfsStream::setup('XmlTest');
@@ -69,7 +70,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         // Inspect XML
         $expectedXml = new \DOMDocument;
         $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
-<project version="2.0.0b8&#10;">
+<project title="fooName" version="2.0.0b8&#10;">
   <deprecated count="0"/>
 </project>');
 
@@ -119,7 +120,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         // Inspect XML
         $expectedXml = new \DOMDocument;
         $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
-<project version="2.0.0b8&#10;">
+<project title="fooName" version="2.0.0b8&#10;">
   <file path="foo.php" generated-path="generated-foo.php" hash="hash" package="myPackage">
     <docblock line="666">
       <description>my summary</description>
@@ -142,7 +143,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
      * This implements testing of the protected finalize method.
      *
      * @param ProjectDescriptor $projectDescriptor
-     * @return voidasdasda
+     * @return void
      */
     protected function implementProtectedFinalize(ProjectDescriptor $projectDescriptor)
     {

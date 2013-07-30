@@ -23,7 +23,7 @@ use Mockery as m;
  */
 class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Compiler $fixture */
+    /** @var ArgumentAssembler $fixture */
     protected $fixture;
 
     /**
@@ -44,7 +44,7 @@ class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
         $name = 'goodArgument';
         $type = 'boolean';
 
-        $argumentReflectorMock = m::mock('phpDocumentor\Descriptor\ArgumentDescriptor');
+        $argumentReflectorMock = m::mock('phpDocumentor\Reflection\FunctionReflector\ArgumentReflector');
         $argumentReflectorMock->shouldReceive('getName')->andReturn($name);
         $argumentReflectorMock->shouldReceive('getType')->andReturn($type);
         $argumentReflectorMock->shouldReceive('getDefault')->andReturn(false); // Turns out its a bad argument ;)

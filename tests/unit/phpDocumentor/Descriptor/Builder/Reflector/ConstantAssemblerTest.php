@@ -23,7 +23,7 @@ use Mockery as m;
  */
 class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Compiler $fixture */
+    /** @var ConstantAssembler $fixture */
     protected $fixture;
 
     /**
@@ -57,7 +57,7 @@ class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
 
-        $constantReflectorMock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+        $constantReflectorMock = m::mock('phpDocumentor\Reflection\ConstantReflector');
         $constantReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $name);
         $constantReflectorMock->shouldReceive('getShortName')->andReturn($name);
         $constantReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
