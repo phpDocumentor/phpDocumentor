@@ -24,7 +24,7 @@ use Mockery as m;
  */
 class FileAssemblerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Compiler $fixture */
+    /** @var FileAssembler $fixture */
     protected $fixture;
 
     /**
@@ -59,7 +59,7 @@ class FileAssemblerTest extends \PHPUnit_Framework_TestCase
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
 
-        $fileReflectorMock = m::mock('phpDocumentor\Reflector\FileReflector');
+        $fileReflectorMock = m::mock('phpDocumentor\Reflection\FileReflector');
         $fileReflectorMock->shouldReceive('getName')->andReturn($filename);
         $fileReflectorMock->shouldReceive('getFilename')->andReturn($filename);
         $fileReflectorMock->shouldReceive('getHash')->andReturn($hash);

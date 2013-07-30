@@ -23,7 +23,7 @@ use Mockery as m;
  */
 class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Compiler $fixture */
+    /** @var FunctionAssembler $fixture */
     protected $fixture;
 
     /**
@@ -64,7 +64,7 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
         $argumentMock->shouldReceive('getType')->andReturn($argumentType);
         $argumentMock->shouldReceive('getDefault')->andReturn(true);
 
-        $functionReflectorMock = m::mock('phpDocumentor\Descriptor\FunctionDescriptor');
+        $functionReflectorMock = m::mock('phpDocumentor\Reflection\FunctionReflector');
         $functionReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $functionName);
         $functionReflectorMock->shouldReceive('getShortName')->andReturn($functionName);
         $functionReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);

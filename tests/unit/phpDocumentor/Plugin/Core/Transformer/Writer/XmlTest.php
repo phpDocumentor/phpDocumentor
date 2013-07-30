@@ -144,7 +144,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
      * This implements testing of the protected finalize method.
      *
      * @param ProjectDescriptor $projectDescriptor
-     * @return voidasdasda
+     * @return void
      */
     protected function implementProtectedFinalize(ProjectDescriptor $projectDescriptor)
     {
