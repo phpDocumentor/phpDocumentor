@@ -11,12 +11,12 @@ whenever we ask you to run a command it would be in the following form::
     $ phpdoc
 
 When you have installed a version via the installer you should invoke the
-``phpdoc.php`` script in the ``bin`` folder of your phpDocumentor installation
+``phpdoc`` script in the ``bin`` folder of your phpDocumentor installation
 unless you have added a symlink as described in the chapter :doc:`../installation`.
 
 Under Linux / MacOSX that would be::
 
-    $ [PHPDOC_FOLDER]/bin/phpdoc.php
+    $ [PHPDOC_FOLDER]/bin/phpdoc
 
 And under Windows that would be::
 
