@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\FunctionReflector;
 
 /**

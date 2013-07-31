@@ -130,6 +130,7 @@ class Collection extends \ArrayObject
         // if $src is a normal file we can do a regular copy action
         if (is_file($src)) {
             copy($src, $dst);
+
             return;
         }
 

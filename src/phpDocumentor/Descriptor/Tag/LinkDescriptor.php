@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 
 class LinkDescriptor extends TagDescriptor
 {

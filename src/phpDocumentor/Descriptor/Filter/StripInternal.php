@@ -54,6 +54,7 @@ class StripInternal extends AbstractFilter
         $isInternalAllowed = $this->builder->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
         if ($isInternalAllowed) {
             $value->setDescription(preg_replace('/{@internal\ (.+)}}/', '$1', $value->getDescription()));
+
             return $value;
         }
 

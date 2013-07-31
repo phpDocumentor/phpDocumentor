@@ -327,6 +327,7 @@ class ProgressHelper extends Helper
                 }
             }
         }
+
         return $text;
     }
 

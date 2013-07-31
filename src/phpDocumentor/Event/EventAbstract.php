@@ -88,6 +88,7 @@ abstract class EventAbstract extends \Symfony\Component\EventDispatcher\Event im
 
         $offset = str_replace('_', ' ', $offset);
         $offset = 'get'.str_replace(' ', '', ucwords($offset));
+
         return $this->$offset();
     }
 

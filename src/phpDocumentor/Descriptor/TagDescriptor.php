@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Filter\Filterable;
-use phpDocumentor\Reflection\DocBlock\Tag;
 
 class TagDescriptor implements Filterable
 {

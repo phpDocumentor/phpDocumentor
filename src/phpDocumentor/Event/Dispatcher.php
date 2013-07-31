@@ -31,7 +31,7 @@ use Symfony\Component\EventDispatcher as Symfony;
 class Dispatcher extends Symfony\EventDispatcher
 {
     /** @var Dispatcher[] Keep track of an array of instances. */
-    static protected $instances = array();
+    protected static $instances = array();
 
     /**
      * Override constructor to make this singleton.

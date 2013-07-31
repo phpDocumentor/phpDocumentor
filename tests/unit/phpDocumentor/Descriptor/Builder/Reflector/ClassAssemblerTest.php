@@ -75,6 +75,6 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($namespace . '\\' . $name, $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame((string)$descriptor->getDescription(), $docBlockDescriptionContent);
+        $this->assertSame((string) $descriptor->getDescription(), $docBlockDescriptionContent);
     }
 }

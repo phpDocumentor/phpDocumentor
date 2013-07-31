@@ -154,8 +154,7 @@ class Command extends \Cilex\Command\Command
             $translator = $this->getContainer()->offsetGet('translator');
             $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
 
-            switch ($event->getPriority())
-            {
+            switch ($event->getPriority()) {
                 case LogLevel::WARNING:
                     $message = '<comment>' . $message . '</comment>';
                     break;

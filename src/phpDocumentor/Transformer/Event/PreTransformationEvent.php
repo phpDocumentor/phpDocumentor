@@ -34,6 +34,7 @@ class PreTransformationEvent extends \phpDocumentor\Event\EventAbstract
     public function setSource($source)
     {
         $this->source = $source;
+
         return $this;
     }
 

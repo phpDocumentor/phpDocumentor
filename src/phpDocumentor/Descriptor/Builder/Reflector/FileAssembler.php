@@ -13,10 +13,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
-use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\InterfaceReflector;

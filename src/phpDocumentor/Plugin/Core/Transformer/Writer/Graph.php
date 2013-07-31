@@ -160,6 +160,7 @@ class Graph extends WriterAbstract
         $node->setFontColor('gray');
         $node->setLabel($name);
         $graph->setNode($node);
+
         return $node;
     }
 
@@ -226,6 +227,7 @@ class Graph extends WriterAbstract
     {
         $filename = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+
         return $filename;
     }
 

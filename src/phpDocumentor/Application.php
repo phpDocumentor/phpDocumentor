@@ -61,6 +61,7 @@ class Application extends Cilex
             function ($app) {
                 $translator = new Translator();
                 $translator->setLocale($app['translator.locale']);
+
                 return $translator;
             }
         );

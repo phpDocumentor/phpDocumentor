@@ -181,8 +181,9 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                             $url = $extension->convertToRootPath($url);
                         }
 
-                        switch($presentation) {
+                        switch ($presentation) {
                             case 'url': // return the first url
+
                                 return $url;
                             case 'class:short':
                                 $parts = explode('\\', $path);
@@ -198,7 +199,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
         );
     }
-
 
     /**
      * Returns an array of global variables to inject into a Twig template.

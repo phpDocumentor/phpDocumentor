@@ -1,5 +1,6 @@
 .idea
 bin/behat
+bin/phpcs
 bin/phpunit
 build.properties
 build/*

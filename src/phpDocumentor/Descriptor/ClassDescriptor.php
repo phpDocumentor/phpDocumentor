@@ -140,6 +140,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         }
 
         $inheritedMethods = clone $this->getParent()->getConstants();
+
         return $inheritedMethods->merge($this->getParent()->getInheritedConstants());
     }
 
@@ -169,6 +170,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         }
 
         $inheritedMethods = clone $this->getParent()->getMethods();
+
         return $inheritedMethods->merge($this->getParent()->getInheritedMethods());
     }
 
@@ -232,6 +234,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         }
 
         $inheritedProperties = clone $this->getParent()->getProperties();
+
         return $inheritedProperties->merge($this->getParent()->getInheritedProperties());
     }
 
