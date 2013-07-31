@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\TagDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
 
 class SinceDescriptor extends TagDescriptor
 {

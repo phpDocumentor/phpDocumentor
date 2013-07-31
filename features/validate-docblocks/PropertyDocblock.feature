@@ -6,5 +6,5 @@ Feature: Validate whether a Property's DocBlock is valid
   Scenario: Show an error when a DocBlock is missing for a property.
     Given I am in the phpDocumentor root directory
     When I run phpDocumentor against the file "tests/data/NoPropertyDocBlock.php"
-    Then I should get a log entry "No DocBlock was found for $_noDocBlockProperty"
+    Then I should get a log entry "No summary for property $_noDocBlockProperty"
 

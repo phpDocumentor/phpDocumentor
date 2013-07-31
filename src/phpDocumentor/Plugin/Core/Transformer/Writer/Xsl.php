@@ -141,6 +141,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             $filename = '/' . $filename;
         }
+
         return 'file://' . $filename;
     }
 

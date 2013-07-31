@@ -33,5 +33,4 @@ class PropertyAssembler extends AssemblerAbstract
 
         return $descriptor;
     }
-
 }

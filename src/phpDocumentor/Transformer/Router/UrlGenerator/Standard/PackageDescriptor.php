@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 

@@ -33,5 +33,4 @@ class ParamAssembler extends AssemblerAbstract
 
         return $descriptor;
     }
-
 }

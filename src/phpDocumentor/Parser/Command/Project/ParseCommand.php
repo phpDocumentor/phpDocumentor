@@ -207,14 +207,14 @@ class ParseCommand extends ConfigurableCommand
     protected function populateParser(InputInterface $input, Collection $files)
     {
         $parser = $this->getParser();
-        $title = (string)$this->getOption($input, 'title', 'title');
+        $title = (string) $this->getOption($input, 'title', 'title');
         $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
         $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
-        $parser->setVisibility((string)$this->getOption($input, 'visibility', 'parser/visibility'));
+        $parser->setVisibility((string) $this->getOption($input, 'visibility', 'parser/visibility'));
         $parser->setDefaultPackageName($this->getOption($input, 'defaultpackagename', 'parser/default-package-name'));
         $parser->setPath($files->getProjectRoot());
     }

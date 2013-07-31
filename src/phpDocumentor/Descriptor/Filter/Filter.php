@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use Zend\Filter\FilterInterface;
 
 class Filter

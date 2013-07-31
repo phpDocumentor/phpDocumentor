@@ -175,7 +175,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
         return $this->description;
     }
 
-
     /**
      * Sets a transformation at the given offset.
      *

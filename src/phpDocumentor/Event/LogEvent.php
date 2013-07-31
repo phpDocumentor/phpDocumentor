@@ -39,6 +39,7 @@ class LogEvent extends DebugEvent
     public function setPriority($priority)
     {
         $this->priority = $priority;
+
         return $this;
     }
 }

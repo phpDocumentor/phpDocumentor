@@ -14,7 +14,6 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Functions;
 use Psr\Log\LogLevel;
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Descriptor\Validator\ValidatorInterface;
-use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
@@ -125,6 +124,7 @@ class AreAllArgumentsValid implements ValidatorInterface
 
         if ($param_name == '') {
             $param->setVariableName($argument->getName());
+
             return null;
         }
 

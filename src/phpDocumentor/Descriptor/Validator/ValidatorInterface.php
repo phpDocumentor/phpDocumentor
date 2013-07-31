@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Validator;
 
-use phpDocumentor\Reflection\BaseReflector;
-
 /**
  * Interface dictating how a validator should be formed.
  */

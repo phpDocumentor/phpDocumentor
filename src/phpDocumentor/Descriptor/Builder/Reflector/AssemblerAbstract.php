@@ -14,7 +14,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock;
 
 abstract class AssemblerAbstract extends BaseAssembler
@@ -63,6 +62,7 @@ abstract class AssemblerAbstract extends BaseAssembler
 
         /** @var DocBlock\Tag $tag */
         $tag = reset($packageTaqs);
+
         return trim($tag->getContent());
     }
 }
