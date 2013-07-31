@@ -197,7 +197,7 @@ class PharCompiler
     protected function getCliStub()
     {
         return "<?php " . $this->getLicense()
-            . " require_once __DIR__.'/bin/phpdoc.php'; __HALT_COMPILER();";
+            . " require_once __DIR__.'/bin/phpdoc'; __HALT_COMPILER();";
     }
 
     /**

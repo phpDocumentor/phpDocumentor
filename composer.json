@@ -56,5 +56,5 @@
     "config": {
         "bin-dir":"bin/"
     },
-    "bin": ["bin/phpdoc.php"]
+    "bin": ["bin/phpdoc"]
 }

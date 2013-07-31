@@ -152,7 +152,7 @@
     <target name="deploy:publish-demo"
             description="Generate a demo and upload it to the server">
         <delete><fileset dir="/tmp/phpdoc-demo/responsive"><include name="*"/></fileset></delete>
-        <exec command="php bin/phpdoc.php -t /tmp/phpdoc-demo/responsive" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="php bin/phpdoc -t /tmp/phpdoc-demo/responsive" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r /tmp/phpdoc-demo/responsive/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
     </target>
 

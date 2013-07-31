@@ -7,7 +7,7 @@ I want to install phpDocumentor without internet access
 At http://pear.phpdoc.org you can find compressed archives that can be used to do an offline install using PEAR, or
 when you do not have PEAR on the designated machine you can uncompress the archive in your installation path.
 
-The binary's path is ``<installation_path>/bin/phpdoc.php``.
+The binary's path is ``<installation_path>/bin/phpdoc``.
 
 I get the following error: preg_match(): Compilation failed: support for \P, \p, and \X has not been compiled
 -------------------------------------------------------------------------------------------------------------

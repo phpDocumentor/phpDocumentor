@@ -78,7 +78,7 @@ class ExecutionContext extends BehatContext
      */
     public function iRunPhpdocumentorAgainstNoFilesOrDirectories()
     {
-        $this->iRun("php bin/phpdoc.php -t build --config=none --force");
+        $this->iRun("php bin/phpdoc -t build --config=none --force");
     }
 
     /**
@@ -96,7 +96,7 @@ class ExecutionContext extends BehatContext
     public function iRunPhpDocumentorAgainstTheFile($file_path)
     {
         $this->iRun(
-            "php bin/phpdoc.php -f $file_path -t build --config=none --force"
+            "php bin/phpdoc -f $file_path -t build --config=none --force"
         );
     }
 
@@ -116,7 +116,7 @@ class ExecutionContext extends BehatContext
     {
         $file = tempnam(sys_get_temp_dir(), 'pdb');
         file_put_contents($file, $code);
-        $this->iRun("php bin/phpdoc.php -f $file -t build --config=none --force $extraParameters");
+        $this->iRun("php bin/phpdoc -f $file -t build --config=none --force $extraParameters");
         unlink($file);
     }
 
@@ -133,7 +133,7 @@ class ExecutionContext extends BehatContext
     public function iRunPhpDocumentorAgainstTheFileUsingOption($file_path, $options)
     {
         $this->iRun(
-            "php bin/phpdoc.php -f $file_path -t build --config=none "
+            "php bin/phpdoc -f $file_path -t build --config=none "
             ."--force $options"
         );
     }
@@ -150,7 +150,7 @@ class ExecutionContext extends BehatContext
     public function iRunPhpDocumentorAgainstTheDirectory($folder_path)
     {
         $this->iRun(
-            "php bin/phpdoc.php -d $folder_path -t build --config=none --force"
+            "php bin/phpdoc -d $folder_path -t build --config=none --force"
         );
     }
 
