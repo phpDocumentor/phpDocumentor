@@ -20,21 +20,34 @@ class Output extends ConsoleOutput
     protected $logger;
 
     /**
-     * @param \Monolog\Logger $logger
+     * Sets a logger object to write information to.
+     *
+     * @param Logger $logger
      */
-    public function setLogger($logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @return \Monolog\Logger
+     * Returns the object where is being logged to.
+     *
+     * @return Logger
      */
     public function getLogger()
     {
         return $this->logger;
     }
 
+    /**
+     * Executes a callable piece of code and writes an entry to the log detailing how long it took.
+     *
+     * @param string   $message
+     * @param callable $operation
+     * @param array    $arguments
+     *
+     * @return void
+     */
     public function writeTimedLog($message, $operation, array $arguments = array())
     {
         $this->write(sprintf('%-68.68s .. ', $message));
@@ -45,6 +58,15 @@ class Output extends ConsoleOutput
         $this->writeln(sprintf('%8.3fs', microtime(true) - $timerStart));
     }
 
+    /**
+     * Write an entry to the console and to the provided logger.
+     *
+     * @param array|string $message
+     * @param bool         $newline
+     * @param int          $type
+     *
+     * @return void
+     */
     public function write($message, $newline = false, $type = 0)
     {
         if ($this->getLogger()) {

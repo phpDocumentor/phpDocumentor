@@ -16,6 +16,7 @@ use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
 use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Shell;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JMS\Serializer\SerializerBuilder;
@@ -53,9 +54,7 @@ class Application extends Cilex
         $this->addConfiguration();
         $this->addEventDispatcher();
 
-        $this['console']->getHelperSet()->set(
-            new Console\Helper\ProgressHelper()
-        );
+        $this['console']->getHelperSet()->set(new ProgressHelper());
 
         $this['translator.locale'] = 'en';
         $this['translator'] = $this->share(
@@ -212,7 +211,7 @@ class Application extends Cilex
         /** @var ConsoleApplication $app  */
         $app = $this['console'];
         $app->setAutoExit(false);
-        
+
         if ($interactive) {
             $app = new Shell($app);
         }

@@ -15,7 +15,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 use Mockery as m;
 
-class ArgvOutputTest extends \PHPUnit_Framework_TestCase
+/**
+ * Tests whether the utility functions for writing to stdOut work.
+ */
+class OutputTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Console\Output\Output::setLogger
@@ -24,11 +27,11 @@ class ArgvOutputTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetLoggerWithString()
     {
         $output = new Output();
-        $output->setLogger('Foo bar');
+        $logger = m::mock('Monolog\Logger');
 
-        $loggerOutput = $output->getLogger();
+        $output->setLogger($logger);
 
-        $this->assertEquals('Foo bar', $loggerOutput);
+        $this->assertEquals($logger, $output->getLogger());
     }
 
     /**
@@ -36,52 +39,50 @@ class ArgvOutputTest extends \PHPUnit_Framework_TestCase
      */
     public function testWriteTimedLog()
     {
-        $message   = 'asjkdfnildbfhildsbidsbhivdsbhsdnFHIBAFSHLVBSDHFBHADSBFHIFBHVNSDIFBHI ANFIDBFHDBAFBAJSDBFHADSB'
-            . 'FADSUFBADSJKFBASUFBJKADSBFGABFJKADSFBASGBHISABGHKAFBIGYA';
-        $arguments = array("Foo", "Bar");
+        $output = new Output();
+        $stream = fopen('php://memory', 'a', false);
 
-        $writeMock = m::mock('phpDocumentor\Console\Output');
+        // because the ConsoleOutput base class disables injecting the stream and uses php://stdout we need to crack
+        // open the class and inject our own stream.(php://stdout cannot be captured with output buffering)
+        $reflectedStream = new \ReflectionProperty('Symfony\Component\Console\Output\StreamOutput', 'stream');
+        $reflectedStream->setAccessible(true);
+        $reflectedStream->setValue($output, $stream);
 
-        $writeMock->shouldDeferMissing();
+        $suite = $this;
 
-        $writeMock->shouldReceive('write')->with(substr($message, 0, 68) . " .. ");
-        $writeMock->shouldReceive('writeln')->withAnyArgs();
-
-        $writeTimedLogClass = new Output();
-
-        $suit = $this;
-
-        $writeTimedLogClass->writeTimedLog(
-            $message,
-            function ($operation, $arguments) use ($suit) {
-                $suit->assertSame('Foo', $operation);
-                $suit->assertSame('Bar', $arguments);
+        $output->writeTimedLog(
+            str_repeat('1', 80),
+            function ($operation, $arguments) use ($suite) {
+                $suite->assertSame('Foo', $operation);
+                $suite->assertSame('Bar', $arguments);
             },
-            $arguments
+            array('Foo', 'Bar')
         );
+
+        rewind($stream);
+        $this->assertRegExp('/^[1]{68} .. [\ 0-9\.]{8}s\n$/', stream_get_contents($stream));
     }
 
     public function testWriteLogger()
     {
-        $this->markTestIncomplete();
-        $outputInterface = m::mock('Symfony\Component\Console\Output\OutputInterface');
+        $output = new Output();
+        $stream = fopen('php://memory', 'a', false);
 
-        $outputInterface->shouldIgnoreMissing();
+        // because the ConsoleOutput base class disables injecting the stream and uses php://stdout we need to crack
+        // open the class and inject our own stream.(php://stdout cannot be captured with output buffering)
+        $reflectedStream = new \ReflectionProperty('Symfony\Component\Console\Output\StreamOutput', 'stream');
+        $reflectedStream->setAccessible(true);
+        $reflectedStream->setValue($output, $stream);
 
-        $formatterMock = m::mock('Symfony\Component\Console\Output\Output');
-        $formatterMock->shouldDeferMissing();
+        // provided error messages should be logged
+        $logger = m::mock('Monolog\Logger')->shouldReceive('info')->with('test')->getMock();
+        $output->setLogger($logger);
 
-        $formatterMock->setErrorOutput($outputInterface);
+        $suite = $this;
 
-        $mock = m::mock('phpDocumentor\Console\Output\Output');
-        $mock->shouldDeferMissing();
-        $mock->setFormatter($formatterMock);
+        $output->write('test');
 
-        $message = "Foo bar";
-        $newline = true;
-
-        $mock->shouldReceive('doWrite')->with($message, $newline);
-
-        $mock->write($message, $newline, 0);
+        rewind($stream);
+        $this->assertRegExp('/^test$/', stream_get_contents($stream));
     }
 }
