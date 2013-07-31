@@ -37,7 +37,12 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setResponse($response);
 
         foreach ($data->getArguments() as $argument) {
-            list($argumentType, $argumentName) = $argument;
+            if (count($argument) > 1) {
+                list($argumentType, $argumentName) = $argument;
+            } else {
+                $argumentName = current($argument);
+                $argumentType = 'mixed';
+            }
             $argumentDescriptor = new ArgumentDescriptor();
             $argumentDescriptor->setTypes(array($argumentType));
             $argumentDescriptor->setName($argumentName);
