@@ -50,6 +50,7 @@ class ForFileProxy
     public function generate($node, $directorySeparator = DIRECTORY_SEPARATOR)
     {
         $webserverPath = $this->rule->generate($node);
+
         return $webserverPath === false ? false : str_replace('/', $directorySeparator, $webserverPath);
     }
 }

@@ -136,6 +136,7 @@ class Twig extends WriterAbstract implements Routable
             if (!is_array($node) && (!$node instanceof \Traversable)) {
                 $node = array($node);
             }
+
             return $node;
         }
 
@@ -183,6 +184,7 @@ class Twig extends WriterAbstract implements Routable
                     continue;
                 }
             }
+
             return null;
         }
 
@@ -270,8 +272,8 @@ class Twig extends WriterAbstract implements Routable
         \Twig_Environment $twigEnvironment
     ) {
         /** @var \SimpleXMLElement $extension */
-        foreach ((array)$transformation->getParameter('twig-extension', array()) as $extension) {
-            $extension = (string)$extension;
+        foreach ((array) $transformation->getParameter('twig-extension', array()) as $extension) {
+            $extension = (string) $extension;
             if (!class_exists($extension)) {
                 throw new \InvalidArgumentException('Unknown twig extension: ' . $extension);
             }
@@ -348,7 +350,7 @@ class Twig extends WriterAbstract implements Routable
             '/{{([^}]+)}}/u',
             function ($query) use ($node, $writer) {
                 // strip any surrounding \ or /
-                return trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
+                return trim((string) $writer->walkObjectTree($node, $query[1]), '\\/');
             },
             $path
         );
@@ -375,6 +377,7 @@ class Twig extends WriterAbstract implements Routable
     protected function getTemplatePath($transformation)
     {
         $parts = preg_split('[\\\\|/]', $transformation->getSource());
+
         return $parts[0] . DIRECTORY_SEPARATOR . $parts[1];
     }
 

@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
 

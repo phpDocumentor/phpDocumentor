@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 class PropertyDescriptor implements UrlGeneratorInterface

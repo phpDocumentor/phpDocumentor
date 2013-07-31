@@ -12,8 +12,6 @@
  */
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\Collection;
-
 use Mockery as m;
 
 /**

@@ -82,6 +82,7 @@ class PharCompiler
         echo '>> Initializing new phar archive' . PHP_EOL;
         $phar = new \Phar($pharFile, 0, 'phpDocumentor');
         $phar->setSignatureAlgorithm(\Phar::SHA1);
+
         return $phar;
     }
 
