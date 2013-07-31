@@ -47,10 +47,11 @@ Please see the documentation about creating your own templates for more informat
 Installation
 ------------
 
-There are 2 ways to install phpDocumentor:
+There are 3 ways to install phpDocumentor:
 
 1. Via PEAR (recommended)
-2. Using the PHAR
+2. Via [Composer](https://getcomposer.org)
+3. Using the PHAR
 
 _*Please note* that it is required that the installation path of phpDocumentor does not
 contain spaces. This is a requirement imposed by an external library (libxml)_
@@ -64,6 +65,13 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 2. After that it is a simple matter of invoking PEAR to install the application
 
         $ pear install phpdoc/phpDocumentor-beta
+
+### Via Composer
+
+1. phpDocumentor is available on [Packagist](https://packagist.org).
+2. It can be installed as a dependency of your project by running
+
+        $ composer require-dev phpdocumentor/phpdocumentor
 
 ### Using the PHAR
 
