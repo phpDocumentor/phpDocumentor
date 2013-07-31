@@ -831,6 +831,7 @@ class Xml extends WriterAbstract implements Translatable
         $query .= '/project/file/constant/docblock/tag[@name="'.$marker.'"]';
 
         $nodes = $xpath->query($query);
+
         return $nodes;
     }
 

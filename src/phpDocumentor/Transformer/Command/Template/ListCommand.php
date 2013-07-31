@@ -12,7 +12,6 @@
 namespace phpDocumentor\Transformer\Command\Template;
 
 use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -88,6 +87,7 @@ HELP
             $template_names[] = $name;
             $files->next();
         }
+
         return $template_names;
     }
 }

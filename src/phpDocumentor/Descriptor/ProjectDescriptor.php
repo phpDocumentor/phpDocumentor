@@ -148,6 +148,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
             ? $this->getSettings()->getVisibility()
             : Settings::VISIBILITY_DEFAULT;
 
-        return (bool)($visibilityAllowed & $visibility);
+        return (bool) ($visibilityAllowed & $visibility);
     }
 }

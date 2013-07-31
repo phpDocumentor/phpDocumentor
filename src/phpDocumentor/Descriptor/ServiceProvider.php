@@ -30,7 +30,6 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
-use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
@@ -62,12 +61,10 @@ use phpDocumentor\Reflection\InterfaceReflector;
 use phpDocumentor\Reflection\TraitReflector;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 
-use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
 
-use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Validator;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Cache\Storage\Adapter\Filesystem;

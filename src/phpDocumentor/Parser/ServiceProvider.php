@@ -134,11 +134,11 @@ class ServiceProvider implements ServiceProviderInterface
         if (isset($configOptions[$configType]->tag)) {
 
             foreach ($configOptions[$configType]->tag as $tag) {
-                $tagName = (string)$tag['name'];
+                $tagName = (string) $tag['name'];
 
                 if (isset($tag->element)) {
                     foreach ($tag->element as $type) {
-                        $typeName = (string)$type;
+                        $typeName = (string) $type;
                         $validatorOptions[$typeName][] = $tagName;
                     }
                 } else {

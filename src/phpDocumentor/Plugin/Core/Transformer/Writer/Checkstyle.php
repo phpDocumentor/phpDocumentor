@@ -101,13 +101,14 @@ class Checkstyle extends WriterAbstract implements Translatable
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+
         return $artifact;
     }
 
     /**
      * Save the checkstyle report to the artifact
      *
-     * @param string      $artifact Target name for the report
+     * @param string       $artifact Target name for the report
      * @param \DOMDocument $document The actual xml document being saved
      *
      * @return void

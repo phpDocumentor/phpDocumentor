@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-
 interface ChildInterface
 {
     public function getParent();

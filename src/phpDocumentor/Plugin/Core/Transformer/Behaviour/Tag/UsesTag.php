@@ -45,7 +45,7 @@ class UsesTag
                 $type = substr($refers_array[1], -2) == '()' ? 'method' : $type;
             }
 
-            switch($type) {
+            switch ($type) {
                 case 'class':
                     // escape single quotes in the class name
                     $xpath_refers = 'concat(\''.str_replace(

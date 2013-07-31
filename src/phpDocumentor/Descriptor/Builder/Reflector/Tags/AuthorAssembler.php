@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;

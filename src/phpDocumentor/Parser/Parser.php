@@ -367,6 +367,7 @@ class Parser extends ParserAbstract
             throw new FilesNotFoundException();
         }
         $this->log('Starting to process ' . count($paths) . ' files');
+
         return $paths;
     }
 

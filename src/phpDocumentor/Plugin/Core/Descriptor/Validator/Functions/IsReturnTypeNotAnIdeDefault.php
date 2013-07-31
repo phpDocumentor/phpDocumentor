@@ -14,7 +14,6 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Functions;
 use Psr\Log\LogLevel;
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Descriptor\Validator\ValidatorInterface;
-use phpDocumentor\Reflection\BaseReflector;
 
 class IsReturnTypeNotAnIdeDefault implements ValidatorInterface
 {
