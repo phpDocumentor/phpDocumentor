@@ -18,7 +18,6 @@
         "monolog/monolog":  "1.4.*@stable",
         "twig/twig":        "1.*@stable",
         "dflydev/markdown": "1.0.*@stable",
-        "ezyang/htmlpurifier": "v4.5.0",
 
         "symfony/event-dispatcher": "~2.1@stable",
         "jms/serializer":           "0.12.*@dev",
@@ -36,7 +35,8 @@
         "phpdocumentor/reflection":          "0.1.*@stable",
         "phpdocumentor/reflection-docblock": "2.*@dev",
 
-        "phpdocumentor/template-clean":           "1.*@beta",
+        "phpdocumentor/template-abstract":        "~1.2@stable",
+        "phpdocumentor/template-clean":           "~1.0@stable",
         "phpdocumentor/template-responsive-twig": "~1.2@stable",
         "phpdocumentor/template-responsive":      "~1.3@stable",
         "phpdocumentor/template-new-black":       "~1.3@stable",
