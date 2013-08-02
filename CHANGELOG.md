@@ -1,21 +1,27 @@
-2013/07/??: Version 2.0.0b8
----------------------------
+2013/08/03: Version 2.0.0
+-------------------------
 
 ```
-ADDED:     Presentation mode to router Twig filter, allows for different representations
-ADDED:     StandardRouter now also supports generating paths for file documentation pages.
-ADDED:     Version tag is now processed in the descriptors
-FIXED:     Generated paths in the Twig writer were not windows safe
-FIXED:     Minor Descriptor tweaks
-FIXED:     Inheritance was broken due to an erroneous merge
-FIXED:     Ampersands in tag descriptions caused XSL based templates to fatal
-FIXED:     Inheritance of methods in interfaces was broken
-FIXED:     All elements had an internal and ignore tag added due to an error in filtering
-FIXED:     @internal inline tag handling did not function
-FIXED:     Fatal error when an argument in an @method tag does not have a type
-CHANGED:   The included ProgressHelper was replaced with the new ProgressHelper of Symfony Console
-           Components (https://github.com/symfony/symfony/pull/3501).
-REMOVED:   Installer is removed; proved too unreliable
+ADDED:      Presentation mode to router Twig filter, allows for different representations
+ADDED:      StandardRouter now also supports generating paths for file documentation pages.
+ADDED:      Version tag is now processed in the descriptors
+FIXED:      Generated paths in the Twig writer were not windows safe
+FIXED:      Minor Descriptor tweaks
+FIXED:      Inheritance was broken due to an erroneous merge
+FIXED:      Ampersands in tag descriptions caused XSL based templates to fatal
+FIXED:      Inheritance of methods in interfaces was broken
+FIXED:      All elements had an internal and ignore tag added due to an error in filtering
+FIXED:      @internal inline tag handling did not function
+FIXED:      Fatal error when an argument in an @method tag does not have a type
+CHANGED:    When installing composer the template folder will be vendor/phpdocumentor/templates and not data/templates
+CHANGED:    The included ProgressHelper was replaced with the new ProgressHelper of Symfony Console
+            Components (https://github.com/symfony/symfony/pull/3501).
+REMOVED:    Installer is removed; proved too unreliable
+DEPRECATED: Previously shared assets could be in the /data folder; this unnecessarily complicated template handling
+            and composer integration. Shared assets have now been moved inside the templates and when a template
+            requests shared assets it is in fact requesting files from the abstract template.
+            Using a source attribute with a transformation that has no direct reference to a template will be removed
+            in version 3.0; until that point the code will trigger E_USER_DEPRECATED warnings.
 ```
 
 2013/07/12: Version 2.0.0b7
