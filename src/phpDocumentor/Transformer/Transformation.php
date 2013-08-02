@@ -183,6 +183,11 @@ class Transformation
             return __DIR__ . '/../../../' .$this->source;
         }
 
+        // in case of a composer installation
+        if (file_exists(__DIR__ . '/../../../../templates')) {
+            return __DIR__ . '/../../../../' . $this->source;
+        }
+
         // TODO: replace this as it breaks the component stuff
         // we should ditch the idea of a global set of files to fetch and have
         // a variable / injection for the global templates folder and inject
