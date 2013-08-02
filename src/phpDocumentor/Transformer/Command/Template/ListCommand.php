@@ -68,7 +68,8 @@ HELP
     {
         $template_dir = dirname(__FILE__) . '/../../../../data/templates';
         if (!file_exists($template_dir)) {
-            $template_dir = dirname(__FILE__) . '/../../../../../data/templates';
+            //Vendored installation
+            $template_dir = dirname(__FILE__) . '/../../../../../../templates';
         }
 
         /** @var \RecursiveDirectoryIterator $files */
