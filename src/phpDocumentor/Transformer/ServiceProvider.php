@@ -47,7 +47,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $templateDir = __DIR__ . '/../../../data/templates';
         // vendored installation
-        if (!file_exists($templateDir . '/abstract')) {
+        if (!file_exists($templateDir)) {
             $templateDir = __DIR__ . '/../../../../templates';
         }
 
