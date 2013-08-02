@@ -45,8 +45,14 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             );
         }
 
+        $templateDir = __DIR__ . '/../../../data/templates';
+        // vendored installation
+        if (!file_exists($templateDir)) {
+            $templateDir = __DIR__ . '/../../../../../templates';
+        }
+
         // parameters
-        $app['transformer.template.location'] = __DIR__ . '/../../../data/templates';
+        $app['transformer.template.location'] = $templateDir;
         $app['linker.substitutions'] = array(
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
             'phpDocumentor\Descriptor\FileDescriptor'         => array('tags', 'classes', 'interfaces', 'traits'),
