@@ -13,6 +13,8 @@
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Event\DebugEvent;
+use phpDocumentor\Event\LogEvent;
 use Psr\Log\LogLevel;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
@@ -35,7 +37,7 @@ use phpDocumentor\Reflection\FileReflector;
  *     $parser->setPath($files->getProjectRoot());
  *     echo $parser->parseFiles($files);
  */
-class Parser extends ParserAbstract
+class Parser
 {
     /** @var string the name of the default package */
     protected $default_package_name = 'Default';
@@ -398,5 +400,39 @@ class Parser extends ParserAbstract
     public function getEncoding()
     {
         return $this->encoding;
+    }
+
+    /**
+     * Dispatches a logging request.
+     *
+     * @param string $message  The message to log.
+     * @param int    $priority The logging priority as declared in the LogLevel PSR-3 class.
+     *
+     * @return void
+     */
+    public function log($message, $priority = LogLevel::INFO, $parameters = array())
+    {
+        Dispatcher::getInstance()->dispatch(
+            'system.log',
+            LogEvent::createInstance($this)
+            ->setContext($parameters)
+            ->setMessage($message)
+            ->setPriority($priority)
+        );
+    }
+
+    /**
+     * Dispatches a logging request to log a debug message.
+     *
+     * @param string $message The message to log.
+     *
+     * @return void
+     */
+    public function debug($message)
+    {
+        Dispatcher::getInstance()->dispatch(
+            'system.debug',
+            DebugEvent::createInstance($this)->setMessage($message)
+        );
     }
 }
