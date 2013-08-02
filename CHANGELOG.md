@@ -4,6 +4,7 @@
 ```
 ADDED:     Presentation mode to router Twig filter, allows for different representations
 ADDED:     StandardRouter now also supports generating paths for file documentation pages.
+ADDED:     Version tag is now processed in the descriptors
 FIXED:     Generated paths in the Twig writer were not windows safe
 FIXED:     Minor Descriptor tweaks
 FIXED:     Inheritance was broken due to an erroneous merge
@@ -11,6 +12,7 @@ FIXED:     Ampersands in tag descriptions caused XSL based templates to fatal
 FIXED:     Inheritance of methods in interfaces was broken
 FIXED:     All elements had an internal and ignore tag added due to an error in filtering
 FIXED:     @internal inline tag handling did not function
+FIXED:     Fatal error when an argument in an @method tag does not have a type
 CHANGED:   The included ProgressHelper was replaced with the new ProgressHelper of Symfony Console
            Components (https://github.com/symfony/symfony/pull/3501).
 REMOVED:   Installer is removed; proved too unreliable
