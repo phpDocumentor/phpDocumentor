@@ -30,6 +30,8 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
@@ -129,6 +131,7 @@ class ServiceProvider implements ServiceProviderInterface
         $seeMatcher         = function ($criteria) { return $criteria instanceof SeeTag; };
         $sinceMatcher       = function ($criteria) { return $criteria instanceof SinceTag; };
         $varMatcher         = function ($criteria) { return $criteria instanceof VarTag; };
+        $versionMatcher     = function ($criteria) { return $criteria instanceof Tag\VersionTag; };
 
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
 
@@ -152,6 +155,8 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($usesMatcher, new UsesAssembler());
         $factory->register($seeMatcher, new SeeAssembler());
         $factory->register($sinceMatcher, new SinceAssembler());
+        $factory->register($varMatcher, new VarAssembler());
+        $factory->register($versionMatcher, new VersionAssembler());
 
         $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
 
