@@ -146,6 +146,7 @@
                     "dflydev\\markdown": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "New BSD License"
             ],
@@ -614,7 +615,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpDocumentor/Fileset/zipball/1.0.0-beta2",
+                "url": "https://github.com/phpDocumentor/Fileset/archive/1.0.0-beta2.zip",
                 "reference": "1.0.0-beta2",
                 "shasum": ""
             },
@@ -628,6 +629,7 @@
                     "": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -638,7 +640,7 @@
                 "fileset",
                 "phpdoc"
             ],
-            "time": "2012-06-04 17:49:45"
+            "time": "2012-06-04 10:49:45"
         },
         {
             "name": "phpdocumentor/graphviz",
@@ -663,6 +665,7 @@
                     "phpDocumentor": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -672,7 +675,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2012-04-06 16:56:51"
+            "time": "2012-04-06 09:56:51"
         },
         {
             "name": "phpdocumentor/reflection",
