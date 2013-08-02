@@ -13,6 +13,7 @@ FIXED:      Inheritance of methods in interfaces was broken
 FIXED:      All elements had an internal and ignore tag added due to an error in filtering
 FIXED:      @internal inline tag handling did not function
 FIXED:      Fatal error when an argument in an @method tag does not have a type
+FIXED:      The logging directives in the configuration file were not followed.
 CHANGED:    When installing composer the template folder will be vendor/phpdocumentor/templates and not data/templates
 CHANGED:    The included ProgressHelper was replaced with the new ProgressHelper of Symfony Console
             Components (https://github.com/symfony/symfony/pull/3501).

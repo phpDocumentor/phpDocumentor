@@ -82,6 +82,22 @@ class ConfigurableCommand extends Command
                     return \Zend\Config\Factory::fromFiles($files, true);
                 }
             );
+
+            if (isset($container['config']->logging)) {
+                $level = (string)$container['config']->logging->level;
+
+                // null means the default is used
+                $logPath = isset($container['config']->logging->paths->default)
+                    ? (string) $container['config']->logging->paths->default
+                    : null;
+
+                // null means the default is used
+                $debugPath = isset($container['config']->logging->paths->errors)
+                    ? (string) $container['config']->logging->paths->errors
+                    : null;
+
+                $container->configureLogger($container['monolog'], $level, $logPath, $debugPath);
+            }
         }
     }
 
