@@ -1,0 +1,12 @@
+[submodule ".puppet/modules/composer"]
+	path = .puppet/modules/composer
+	url = https://github.com/willdurand/puppet-composer.git
+[submodule ".puppet/modules/php"]
+	path = .puppet/modules/php
+	url = https://github.com/example42/puppet-php.git
+[submodule ".puppet/modules/puppi"]
+	path = .puppet/modules/puppi
+	url = https://github.com/example42/puppi.git
+[submodule ".puppet/modules/apache"]
+	path = .puppet/modules/apache
+	url = https://github.com/example42/puppet-apache.git

@@ -12,10 +12,13 @@
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Reflection\FileReflector;
-use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use Psr\Log\LogLevel;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Reflection\FileReflector;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -34,22 +37,10 @@ use phpDocumentor\Parser\Event\PreFileEvent;
  */
 class Parser extends ParserAbstract
 {
-    /** @var string the title to use in the header */
-    protected $title = '';
-
     /** @var string the name of the default package */
     protected $default_package_name = 'Default';
 
-    /**
-     * @var \DOMDocument|null if any structure.xml was at the target location it
-     *                       is stored for comparison
-     */
-    protected $existing_xml = null;
-
-    /**
-     * @var bool whether we force a full re-parse, independent of existing_xml
-     *           is set
-     */
+    /** @var bool whether we force a full re-parse */
     protected $force = false;
 
     /** @var bool whether to execute a PHPLint on every file */
@@ -72,9 +63,6 @@ class Parser extends ParserAbstract
      */
     protected $visibility = array('public', 'protected', 'private');
 
-    /** @var Exporter\ExporterAbstract */
-    protected $exporter = null;
-
     /** @var string The encoding in which the files are encoded */
     protected $encoding = 'utf-8';
 
@@ -95,32 +83,6 @@ class Parser extends ParserAbstract
     }
 
     /**
-     * Sets the title for this project.
-     *
-     * @param string $title The intended title for this project.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * Returns the HTML text which is found at the title's position.
-     *
-     * @api
-     *
-     * @return null|string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
      * Sets whether to force a full parse run of all files.
      *
      * @param bool $forced Forces a full parse.
@@ -137,27 +99,13 @@ class Parser extends ParserAbstract
     /**
      * Returns whether a full rebuild is required.
      *
-     * To prevent incompatibilities we force a full rebuild if the version of
-     * phpDocumentor does not equal the structure's version.
-     *
      * @api
      *
      * @return bool
      */
     public function isForced()
     {
-        $is_version_unequal = (($this->getExistingXml())
-           && ($this->getExistingXml()->documentElement->getAttribute('version')
-               != \phpDocumentor\Application::VERSION));
-
-        if ($is_version_unequal) {
-            $this->log(
-                'Version of phpDocumentor has changed since the last build; '
-                . 'forcing a full re-build'
-            );
-        }
-
-        return $this->force || $is_version_unequal;
+        return $this->force;
     }
 
     /**
@@ -242,58 +190,6 @@ class Parser extends ParserAbstract
     }
 
     /**
-     * Imports an existing XML source to enable incremental parsing.
-     *
-     * @param string|null $xml XML contents if a source exists, otherwise null.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setExistingXml($xml)
-    {
-        $dom = null;
-        if ($xml !== null) {
-            if (substr(trim($xml), 0, 5) != '<?xml') {
-                $xml = (is_readable($xml))
-                    ? file_get_contents($xml)
-                    : '<?xml version="1.0" encoding="utf-8"?><phpdoc></phpdoc>';
-            }
-
-            libxml_use_internal_errors(true);
-            $dom = new \DOMDocument('1.0', 'utf-8');
-            $result = $dom->loadXML($xml);
-
-            // if the loadXml method returns false than there is something wrong with the document; report and do a full
-            // run.
-            if (!$result) {
-                /** @var \LibXMLError $error */
-                foreach (libxml_get_errors() as $error) {
-                    $this->log($error->message, LOG_ERR);
-                }
-                libxml_clear_errors();
-                $this->log('Existing structure content is corrupt; performing a full parsing session', LOG_ERR);
-
-                $dom = null;
-            }
-        }
-
-        $this->existing_xml = $dom;
-    }
-
-    /**
-     * Returns the existing data structure as DOMDocument.
-     *
-     * @api
-     *
-     * @return \DOMDocument|null
-     */
-    public function getExistingXml()
-    {
-        return $this->existing_xml;
-    }
-
-    /**
      * Sets the base path of the files that will be parsed.
      *
      * @param string $path Must be an absolute path.
@@ -356,164 +252,6 @@ class Parser extends ParserAbstract
     }
 
     /**
-     * Runs a file through the static reflectors, generates an XML file element
-     * and returns it.
-     *
-     * @param string $filename       The filename to parse.
-     * @param bool   $include_source whether to include the source in the
-     *  generated output.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function parseFile($filename, $include_source = false)
-    {
-        $this->log('Starting to parse file: ' . $filename);
-        $this->log(
-            'Starting to parse file: ' . $filename,
-            \phpDocumentor\Plugin\Core\Log::DEBUG
-        );
-
-        $dispatched = false;
-        try {
-            $file = new FileReflector($filename, $this->doValidation(), $this->getEncoding());
-            $file->setDefaultPackageName($this->getDefaultPackageName());
-
-            if (class_exists('phpDocumentor\Event\Dispatcher')) {
-                \phpDocumentor\Event\Dispatcher::getInstance()
-                ->addListener(
-                    'parser.log',
-                    array($file, 'addParserMarker')
-                );
-            }
-            $dispatched = true;
-
-            $file->setMarkers($this->getMarkers());
-            $file->setFilename($this->getRelativeFilename($filename));
-
-            // if an existing structure exists; and we do not force re-generation;
-            // re-use the old definition if the hash differs
-            if (($this->getExistingXml() !== null) && (!$this->isForced())) {
-                $xpath = new \DOMXPath($this->getExistingXml());
-
-                // try to find the file with it's hash
-                /** @var \DOMNodeList $qry */
-                $qry = $xpath->query(
-                    '/project/file[@path=\'' . ltrim($file->getFilename(), './')
-                    . '\' and @hash=\'' . $file->getHash() . '\']'
-                );
-
-                // if an existing entry who matches the file, then re-use
-                if ($qry->length > 0) {
-                    $this->exporter->getDomDocument()->documentElement->appendChild(
-                        $this->exporter->getDomDocument()->importNode($qry->item(0), true)
-                    );
-
-                    $this->log(
-                        '>> File has not changed since last build, re-using the '
-                        . 'old definition'
-                    );
-                } else {
-                    $this->log('Exporting file: ' . $filename);
-
-                    $file->process();
-                    $this->exporter->setIncludeSource($include_source);
-                    $this->exporter->export($file);
-                }
-            } else {
-                $this->log('Exporting file: ' . $filename);
-
-                $file->process();
-                $this->exporter->setIncludeSource($include_source);
-                $this->exporter->export($file);
-            }
-        } catch (Exception $e) {
-            $this->log(
-                '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                \phpDocumentor\Plugin\Core\Log::ALERT
-            );
-            $this->log(
-                'Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                \phpDocumentor\Plugin\Core\Log::DEBUG
-            );
-        }
-
-        //disconnects the dispatcher here so if any error occured, it still
-        // removes the event
-        if ($dispatched && class_exists('phpDocumentor\Event\Dispatcher')) {
-            \phpDocumentor\Event\Dispatcher::getInstance()->removeListener(
-                'parser.log',
-                array($file, 'addParserMarker')
-            );
-        }
-
-        $this->log(
-            '>> Memory after processing of file: '
-            . number_format(memory_get_usage()) . ' bytes',
-            \phpDocumentor\Plugin\Core\Log::DEBUG
-        );
-        $this->log('>> Parsed file', \phpDocumentor\Plugin\Core\Log::DEBUG);
-    }
-
-    /**
-     * Iterates through the given files and builds the structure.xml file.
-     *
-     * @param Collection $files          A files container
-     *     to parse.
-     * @param bool       $include_source whether to include the source in the
-     *     generated output..
-     *
-     * @api
-     *
-     * @throws Exception if no files were found.
-     *
-     * @return bool|string
-     */
-    public function parseFiles(Collection $files, $include_source = false)
-    {
-        $timer = microtime(true);
-
-        $this->exporter = new \phpDocumentor\Parser\Exporter\Xml\Xml($this);
-        $this->exporter->initialize();
-
-        $paths = $files->getFilenames();
-        $this->log('Starting to process ' . count($paths) . ' files');
-        $this->log('  Project root is:  ' . $files->getProjectRoot());
-        $this->log(
-            '  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy())
-        );
-
-        if (count($paths) < 1) {
-            throw new Exception('No files were found', Exception::NO_FILES_FOUND);
-        }
-
-        foreach ($paths as $file) {
-            Dispatcher::getInstance()->dispatch(
-                'parser.file.pre',
-                PreFileEvent::createInstance($this)->setFile($file)
-            );
-
-            $this->parseFile($file, $include_source);
-        }
-
-        $this->exporter->finalize();
-
-        $this->log('--');
-        $this->log(
-            'Elapsed time to parse all files: '
-            . round(microtime(true) - $timer, 2) . 's'
-        );
-
-        $this->log(
-            'Peak memory usage: '
-            . round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M'
-        );
-
-        return $this->exporter->getContents();
-    }
-
-    /**
      * Sets the name of the default package.
      *
      * @param string $default_package_name Name used to categorize elements
@@ -537,6 +275,103 @@ class Parser extends ParserAbstract
     }
 
     /**
+     * Iterates through the given files feeds them to the builder.
+     *
+     * @param ProjectDescriptorBuilder $builder
+     * @param Collection               $files          A files container to parse.
+     *
+     * @api
+     *
+     * @throws Exception if no files were found.
+     *
+     * @return bool|string
+     */
+    public function parse(ProjectDescriptorBuilder $builder, Collection $files)
+    {
+        $timer = microtime(true);
+        $paths = $this->getFilenames($files);
+
+        $this->log('  Project root is:  ' . $files->getProjectRoot());
+        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
+
+        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
+            $this->setForced(true);
+            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
+        }
+
+        foreach ($paths as $filename) {
+            if (class_exists('phpDocumentor\Event\Dispatcher')) {
+                Dispatcher::getInstance()->dispatch(
+                    'parser.file.pre',
+                    PreFileEvent::createInstance($this)->setFile($filename)
+                );
+            }
+            $this->log('Starting to parse file: ' . $filename);
+
+            $memory = memory_get_usage();
+            try {
+                $file = new FileReflector($filename, $this->doValidation(), $this->getEncoding());
+                $file->setDefaultPackageName($this->getDefaultPackageName());
+                $file->setMarkers($this->getMarkers());
+                $file->setFilename($this->getRelativeFilename($filename));
+
+                // if the hash is unchanged; continue to the next file
+                $cachedFiles = $builder->getProjectDescriptor()->getFiles();
+                $hash = $cachedFiles->get($file->getFilename())
+                    ? $cachedFiles->get($file->getFilename())->getHash()
+                    : null;
+                if ($hash === $file->getHash() && !$this->isForced()) {
+                    $this->log('>> Skipped file '.$file->getFilename().' as no modifications were detected');
+                    continue;
+                }
+
+                $file->process();
+                $builder->buildFileUsingSourceData($file);
+                $fileDescriptor = $builder->getProjectDescriptor()->getFiles()->get($file->getFilename());
+                $errors = $fileDescriptor->getAllErrors();
+                foreach ($errors as $error) {
+                    $this->log($error->getCode(), $error->getSeverity(), $error->getContext());
+                }
+            } catch (Exception $e) {
+                $this->log(
+                    '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
+                    LogLevel::ALERT
+                );
+            }
+
+            $memoryDelta = memory_get_usage() - $memory;
+            $this->log(
+                '>> Memory after processing of file: ' . number_format(memory_get_usage() / 1024 / 1024, 2)
+                . ' megabytes (' . (($memoryDelta > -0) ? '+' : '') . number_format($memoryDelta / 1024)
+                . ' kilobytes)',
+                LogLevel::DEBUG
+            );
+        }
+        $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');
+        $this->log('Peak memory usage: '. round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
+
+        return $builder->getProjectDescriptor();
+    }
+
+    /**
+     * @param \phpDocumentor\Fileset\Collection $files
+     *
+     * @throws FilesNotFoundException if no files were found.
+     *
+     * @return \string[]
+     */
+    protected function getFilenames(Collection $files)
+    {
+        $paths = $files->getFilenames();
+        if (count($paths) < 1) {
+            throw new FilesNotFoundException();
+        }
+        $this->log('Starting to process ' . count($paths) . ' files');
+
+        return $paths;
+    }
+
+    /**
      * Sets the encoding of the files.
      *
      * With this option it is possible to tell the parser to use a specific encoding to interpret the provided files.
@@ -554,6 +389,7 @@ class Parser extends ParserAbstract
     {
         $this->encoding = $encoding;
     }
+
     /**
      * Returns the currently active encoding.
      *

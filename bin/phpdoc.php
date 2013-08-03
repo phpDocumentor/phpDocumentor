@@ -5,8 +5,7 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -27,7 +26,7 @@ require_once $bootstrap_folder . '/phpDocumentor/Application.php';
 $app = new phpDocumentor\Application();
 $app->run();
 
-if (false !== $profile) {
+if (true === $profile) {
     include_once 'XHProf/utils/xhprof_lib.php';
     include_once 'XHProf/utils/xhprof_runs.php';
 

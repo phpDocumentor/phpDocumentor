@@ -11,11 +11,13 @@
  */
 namespace phpDocumentor\Command;
 
+use Psr\Log\LogLevel;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Event\LogEvent;
+use Zend\I18n\Translator\Translator;
 use phpDocumentor\Event\DebugEvent;
+use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Parser\Event\PreFileEvent;
 
 /**
  * Base command for phpDocumentor commands.
@@ -32,7 +34,7 @@ class Command extends \Cilex\Command\Command
      *
      * @author Michael Wallner <mike@php.net>
      *
-     * @see http://pear.php.net/package/File_Util/docs/latest/File/File_Util/
+     * @link http://pear.php.net/package/File_Util/docs/latest/File/File_Util/
      *     File_Util.html#methodisAbsolute
      *
      * @todo consider moving this method to a more logical place
@@ -127,26 +129,39 @@ class Command extends \Cilex\Command\Command
      * @param OutputInterface $output
      * @param LogEvent        $event
      *
-     * @return void.
+     * @return void
      */
     public function logEvent(OutputInterface $output, LogEvent $event)
     {
-        $threshold = \phpDocumentor\Plugin\Core\Log::ERR;
+        $numericErrors = array(
+            LogLevel::DEBUG     => 0,
+            LogLevel::NOTICE    => 1,
+            LogLevel::INFO      => 2,
+            LogLevel::WARNING   => 3,
+            LogLevel::ERROR     => 4,
+            LogLevel::ALERT     => 5,
+            LogLevel::CRITICAL  => 6,
+            LogLevel::EMERGENCY => 7,
+        );
+
+        $threshold = LogLevel::ERROR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
-            $threshold = \phpDocumentor\Plugin\Core\Log::DEBUG;
+            $threshold = LogLevel::DEBUG;
         }
 
-        if ($event->getPriority() <= $threshold) {
-            $message = $event->getMessage();
-            switch ($event->getPriority())
-            {
-                case \phpDocumentor\Plugin\Core\Log::WARN:
+        if ($numericErrors[$event->getPriority()] >= $numericErrors[$threshold]) {
+            /** @var Translator $translator  */
+            $translator = $this->getContainer()->offsetGet('translator');
+            $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
+
+            switch ($event->getPriority()) {
+                case LogLevel::WARNING:
                     $message = '<comment>' . $message . '</comment>';
                     break;
-                case \phpDocumentor\Plugin\Core\Log::EMERG:
-                case \phpDocumentor\Plugin\Core\Log::ALERT:
-                case \phpDocumentor\Plugin\Core\Log::CRIT:
-                case \phpDocumentor\Plugin\Core\Log::ERR:
+                case LogLevel::EMERGENCY:
+                case LogLevel::ALERT:
+                case LogLevel::CRITICAL:
+                case LogLevel::ERROR:
                     $message = '<error>' . $message . '</error>';
                     break;
             }

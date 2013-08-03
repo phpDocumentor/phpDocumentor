@@ -31,7 +31,7 @@ use Symfony\Component\EventDispatcher as Symfony;
 class Dispatcher extends Symfony\EventDispatcher
 {
     /** @var Dispatcher[] Keep track of an array of instances. */
-    static protected $instances = array();
+    protected static $instances = array();
 
     /**
      * Override constructor to make this singleton.
@@ -98,22 +98,5 @@ class Dispatcher extends Symfony\EventDispatcher
     public function addListener($eventName, $listener, $priority = 0)
     {
         parent::addListener($eventName, $listener, $priority);
-    }
-
-    /**
-     * Alias of addListener() provided for backwards-compatiblity.
-     *
-     * @param string                                 $eventName
-     * @param \phpDocumentor\Plugin\ListenerAbstract $listener
-     *
-     * @deprecated provided for BC compatibility; use addListener instead.
-     *     Will be removed in 2.0.0 Beta or RC
-     *
-     * @return void
-     */
-    public function connect($eventName, $listener)
-    {
-        trigger_error('The method "connect" will be removed in 2.0.0', E_USER_DEPRECATED);
-        $this->addListener($eventName, $listener);
     }
 }

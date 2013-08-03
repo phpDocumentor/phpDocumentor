@@ -48,6 +48,7 @@ class LogEvent extends \phpDocumentor\Event\EventAbstract
     public function setCode($code)
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -73,6 +74,7 @@ class LogEvent extends \phpDocumentor\Event\EventAbstract
     public function setLine($line)
     {
         $this->line = $line;
+
         return $this;
     }
 
@@ -98,6 +100,7 @@ class LogEvent extends \phpDocumentor\Event\EventAbstract
     public function setMessage($message)
     {
         $this->message = $message;
+
         return $this;
     }
 
@@ -123,6 +126,7 @@ class LogEvent extends \phpDocumentor\Event\EventAbstract
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 

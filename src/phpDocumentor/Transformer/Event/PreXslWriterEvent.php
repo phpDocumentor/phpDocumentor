@@ -40,6 +40,7 @@ class PreXslWriterEvent extends \phpDocumentor\Event\EventAbstract
     public function setElement($element)
     {
         $this->element = $element;
+
         return $this;
     }
 
@@ -64,6 +65,7 @@ class PreXslWriterEvent extends \phpDocumentor\Event\EventAbstract
     public function setProgress($progress)
     {
         $this->progress = $progress;
+
         return $this;
     }
 

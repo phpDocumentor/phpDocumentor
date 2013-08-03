@@ -12,7 +12,7 @@
         </whitelist>
     </filter>
     <php>
-        <!-- 
+        <!--
             Temporary folder for some tests' output.
             Must already exist.
             Defaults to the OS' temp folder.
@@ -30,7 +30,6 @@
             highlight="false"
             lowUpperBound="35"
             highLowerBound="70" />
-        <log type="coverage-clover" target="build/logs/clover.xml" />
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
     </logging>
     <listeners>

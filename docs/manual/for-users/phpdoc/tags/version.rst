@@ -17,11 +17,12 @@ The @version tag can be used to indicate the current version of
 This information can be used to generate a set of API Documentation where the
 consumer is informed about elements at a particular version.
 
-The version vector MUST start with a digit. It is RECOMMENDED that it matches a
-semantic version number (x.x.x).
+It is RECOMMENDED that the version number matches a semantic version number as
+described in the Semantic Versioning Standard version 2.0 at
+http://www.semver.org.
 
-Version vectors from Version Control Systems are also recognized, though they
-MUST follow the form
+Version vectors from Version Control Systems are also supported, though they
+MUST follow the form:
 
     name-of-vcs: $vector$
 

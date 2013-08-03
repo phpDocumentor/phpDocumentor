@@ -7,7 +7,7 @@ The @see tag indicates a reference from the associated
 Syntax
 ------
 
-    @see [URI | :term:`Type` | :term:`FQSEN`] [<description>]
+    @see [URI | :term:`FQSEN`] [<description>]
 
 Description
 -----------
@@ -15,9 +15,9 @@ Description
 The @see tag can be used to define a reference to other
 :term:`Structural Elements` or to an URI.
 
-When defining a reference to another :term:`Structural Elements` you can either
-provide a :term:`Type` or refer to a specific element by appending a double colon
-and providing the name of that element (also called the :term:`FQSEN`).
+When defining a reference to another :term:`Structural Elements` you can provide
+a specific element by appending a double colon and providing the name of that
+element (also called the :term:`FQSEN`).
 
 A URI MUST be complete and well-formed as specified in
 `RFC2396 <http://www.ietf.org/rfc/rfc2396.txt>`_.

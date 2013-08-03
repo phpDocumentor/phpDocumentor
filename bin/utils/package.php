@@ -27,51 +27,55 @@ require_once('PEAR/PackageFileManager2.php');
 function createPackager($original_file, $options = array())
 {
     // merge the options with these defaults.
-    $options = array_merge(array(
-        'packagefile'       => 'package.xml',
-        'filelistgenerator' => 'file',
-        'simpleoutput'      => true,
-        'baseinstalldir'    => '/phpDocumentor',
-        'packagedirectory'  => dirname(__FILE__).'/../../',
-        'clearcontents'     => true,
-        'ignore'            => array(
-            'build.properties',
-            'build.xml',
-            'build/*',
-            'data/output/*',
-            'data/log/*',
-            'bin/utils/*',
-            'src/XHProf/*',     // Profiling package
-            'vendor/twig/twig/ext/*'
+    $options = array_merge(
+        array(
+            'packagefile'       => 'package.xml',
+            'filelistgenerator' => 'file',
+            'simpleoutput'      => true,
+            'baseinstalldir'    => '/phpDocumentor',
+            'packagedirectory'  => dirname(__FILE__).'/../../',
+            'clearcontents'     => true,
+            'ignore'            => array(
+                'build.properties',
+                'build.xml',
+                'build/*',
+                'data/output/*',
+                'data/log/*',
+                'bin/utils/*',
+                'src/XHProf/*',     // Profiling package
+                'vendor/twig/twig/ext/*'
+            ),
+            'exceptions'        => array(
+                'bin/phpdoc.php'   => 'script',
+                'bin/phpdoc.bat'   => 'script',
+                'phpdoc.dist.xml'  => 'php',
+                'LICENSE'          => 'php',
+                'phpunit.xml.dist' => 'php',
+                'README'           => 'php',
+                'VERSION'          => 'php',
+                'vendor/phpunit/phpunit-mock-objects/PHPUnit/Framework/MockObject/Autoload.php.in' => 'php',
+                'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php.in' => 'php',
+                'vendor/phpunit/phpunit/PHPUnit/Autoload.php.in' => 'php',
+                'vendor/phpunit/php-token-stream/PHP/Token/Stream/Autoload.php.in' => 'php',
+                'vendor/phpunit/php-timer/PHP/Timer/Autoload.php.in' => 'php',
+                'vendor/phpunit/php-text-template/Text/Template/Autoload.php.in' => 'php',
+                'vendor/phpunit/php-file-iterator/File/Iterator/Autoload.php.in' => 'php',
+                'vendor/phpunit/php-code-coverage/PHP/CodeCoverage/Autoload.php.in' => 'php',
+            ),
+            'installexceptions' => array(
+                'bin/phpdoc.php' => '/',
+                'bin/phpdoc.bat' => '/'
+            ),
+            'dir_roles'         => array(
+                'bin'   => 'php',
+                'docs'  => 'php',
+                'data'  => 'php',
+                'tests' => 'php',
+                'src'   => 'php',
+            ),
         ),
-        'exceptions'        => array(
-            'bin/phpdoc.php'  => 'script',
-            'bin/phpdoc.bat'  => 'script',
-            'phpdoc.dist.xml' => 'php',
-            'LICENSE'          => 'php',
-            'phpunit.xml.dist' => 'php',
-            'README'           => 'php',
-            'vendor/phpunit/phpunit-mock-objects/PHPUnit/Framework/MockObject/Autoload.php.in' => 'php',
-            'vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php.in' => 'php',
-            'vendor/phpunit/phpunit/PHPUnit/Autoload.php.in' => 'php',
-            'vendor/phpunit/php-token-stream/PHP/Token/Stream/Autoload.php.in' => 'php',
-            'vendor/phpunit/php-timer/PHP/Timer/Autoload.php.in' => 'php',
-            'vendor/phpunit/php-text-template/Text/Template/Autoload.php.in' => 'php',
-            'vendor/phpunit/php-file-iterator/File/Iterator/Autoload.php.in' => 'php',
-            'vendor/phpunit/php-code-coverage/PHP/CodeCoverage/Autoload.php.in' => 'php',
-        ),
-        'installexceptions' => array(
-            'bin/phpdoc.php' => '/',
-            'bin/phpdoc.bat' => '/'
-        ),
-        'dir_roles'         => array(
-            'bin'   => 'php',
-            'docs'  => 'php',
-            'data'  => 'php',
-            'tests' => 'php',
-            'src'   => 'php',
-        ),
-    ), $options);
+        $options
+    );
 
     $packagexml = PEAR_PackageFileManager2::importOptions($original_file, $options);
     $packagexml->setPackageType('php');
@@ -99,21 +103,34 @@ DESC
     $packagexml->setPhpDep('5.3.3');
     $packagexml->setPearinstallerDep('1.4.0');
     $packagexml->addReplacement(
-        'bin/phpdoc.php', 'pear-config', '/usr/bin/env php', 'php_bin'
+        'bin/phpdoc.php',
+        'pear-config',
+        '/usr/bin/env php',
+        'php_bin'
     );
     $packagexml->addGlobalReplacement('pear-config', '@php_bin@', 'php_bin');
     $packagexml->addReplacement(
-        'bin/phpdoc.php', 'pear-config', '@php_dir@', 'php_dir'
+        'bin/phpdoc.php',
+        'pear-config',
+        '@php_dir@',
+        'php_dir'
     );
 
     $packagexml->addMaintainer(
-        'lead', 'mvriel', 'Mike van Riel', 'mike.vanriel@naenius.com'
+        'lead',
+        'mvriel',
+        'Mike van Riel',
+        'mike.vanriel@naenius.com'
     );
     $packagexml->addMaintainer(
-        'lead', 'ashnazg', 'Chuck Burgess', 'ashnazg@php.net'
+        'lead',
+        'ashnazg',
+        'Chuck Burgess',
+        'ashnazg@php.net'
     );
     $packagexml->setLicense(
-        'MIT', 'http://www.opensource.org/licenses/mit-license.html'
+        'MIT',
+        'http://www.opensource.org/licenses/mit-license.html'
     );
 
     // Add this as a release, and generate XML content

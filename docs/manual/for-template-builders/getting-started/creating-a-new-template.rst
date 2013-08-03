@@ -31,20 +31,3 @@ solution or mail your request.
 
     Iframes are a necessity for larger projects to decrease bandwidth and
     increase performance as navigation sidebars can become quite large.
-
-Steps
------
-
-Depending on the needed level of customization you have the following steps to
-go through when creating a template:
-
-1. Generate a template skeleton using the ``template:generate`` method
-2. Alter the template.css file in the css folder
-3. Extend the index.xsl or api-doc.xsl file with new or overridden xsl:templates
-4. Edit the generated template.xml and insert your own values and writers.
-
-That is the gist of it. In the following chapters we will discuss this more
-in-depth.
-
-    Generating a template is covered in the `Quickstart`_ and will not be covered
-    in the proceeding chapters.

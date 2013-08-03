@@ -2,31 +2,19 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
  * Behaviour that adds support for the uses tag
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviour
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class UsesTag
 {
     /**
      * Find all return tags that contain 'self' or '$this' and replace those
@@ -57,7 +45,7 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
                 $type = substr($refers_array[1], -2) == '()' ? 'method' : $type;
             }
 
-            switch($type) {
+            switch ($type) {
                 case 'class':
                     // escape single quotes in the class name
                     $xpath_refers = 'concat(\''.str_replace(
@@ -97,20 +85,12 @@ class UsesTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             // if the query is wrong; output a Critical error and continue to
             // the next @uses
             if ($referral_nodes === false) {
-                $this->log(
-                    'An XPath error occurs while processing @uses, the query used was: ' . $qry,
-                    \phpDocumentor\Plugin\Core\Log::CRIT
-                );
                 continue;
             }
 
             // check if the result is unique; if not we error and continue
             // to the next @uses
             if ($referral_nodes->length > 1) {
-                $this->log(
-                    '@uses "'.$refers.'" refers to more than 1 element',
-                    \phpDocumentor\Plugin\Core\Log::ERR
-                );
                 continue;
             }
 

@@ -13,7 +13,7 @@ with the latest technologies and PHP language features.
 Features
 --------
 
-phpDocumentor sports the following:
+phpDocumentor supports the following:
 
 * *PHP 5.3 compatible*, full support for Namespaces, Closures and more is provided.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
@@ -47,10 +47,11 @@ Please see the documentation about creating your own templates for more informat
 Installation
 ------------
 
-There are 2 ways to install phpDocumentor:
+There are 3 ways to install phpDocumentor:
 
 1. Via PEAR (recommended)
-2. Manual installation using the installer.
+2. Via [Composer](https://getcomposer.org)
+3. Using the PHAR
 
 _*Please note* that it is required that the installation path of phpDocumentor does not
 contain spaces. This is a requirement imposed by an external library (libxml)_
@@ -63,26 +64,20 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 2. After that it is a simple matter of invoking PEAR to install the application
 
-        $ pear install phpdoc/phpDocumentor-alpha
+        $ pear install phpdoc/phpDocumentor-beta
 
-### Manual Installation
+### Via Composer
 
-1. Download the php installer from:
+1. phpDocumentor is available on [Packagist](https://packagist.org).
+2. It can be installed as a dependency of your project by running
 
-        https://raw.github.com/phpDocumentor/phpDocumentor2/develop/installer.php
+        $ composer require-dev phpdocumentor/phpdocumentor
 
-   to the intended location. We will refer to this as `<PHPDOC_PATH>`.
+### Using the PHAR
 
-2. Run the installer:
-
-       `php installer.php`
-
-3. Set up your binaries to use phpDocumentor from any location:
-
-   - __For Linux or Mac OSX__: create a symlink from `<PHPDOC_PATH>/bin/phpdoc.php`
-      to your bin folder (usually /usr/bin) named `phpdoc`.
-   - __For Windows__: Add `<PHPDOC_PATH>/bin` to your PATH so that you can invoke
-      `phpdoc.bat` from any location.
+1. Download the phar file from http://phpdoc.org/phpDocumentor.phar
+2. ???
+3. Profit!
 
 How to use phpDocumentor?
 -------------------

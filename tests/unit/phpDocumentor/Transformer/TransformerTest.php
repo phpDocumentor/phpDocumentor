@@ -12,14 +12,16 @@
 
 namespace phpDocumentor\Transformer;
 
-use \phpDocumentor\PHPUnit;
+use Mockery as m;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
+ *
+ * @covers phpDocumentor\Transformer\Transformer
  */
 class TransformerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Transformer */
+    /** @var Transformer $fixture */
     protected $fixture = null;
 
     /**
@@ -29,103 +31,112 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->fixture = new Transformer();
+        $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $templateCollectionMock->shouldIgnoreMissing();
+        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
+        $writerCollectionMock->shouldIgnoreMissing();
+
+        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
     }
 
     /**
-     * Tests whether setting a target succeed.
-     *
+     * @covers phpDocumentor\Transformer\Transformer::__construct
+     */
+    public function testInitialization()
+    {
+        $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $templateCollectionMock->shouldIgnoreMissing();
+        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
+        $writerCollectionMock->shouldIgnoreMissing();
+        $this->fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+
+        $this->assertAttributeEquals($templateCollectionMock, 'templates', $this->fixture);
+        $this->assertAttributeEquals($writerCollectionMock, 'writers', $this->fixture);
+    }
+
+    /**
      * @covers phpDocumentor\Transformer\Transformer::getTarget
      * @covers phpDocumentor\Transformer\Transformer::setTarget
-     *
-     * @return void
      */
-    public function testTarget()
+    public function testSettingAndGettingATarget()
     {
         $this->assertEquals('', $this->fixture->getTarget());
 
-        $this->fixture->setTarget(dirname(__FILE__));
-        $this->assertEquals(dirname(__FILE__), $this->fixture->getTarget());
+        $this->fixture->setTarget(__DIR__);
 
-        // only directories are accepted, not files
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->assertEquals(__DIR__, $this->fixture->getTarget());
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Transformer::setTarget
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionWhenSettingFileAsTarget()
+    {
         $this->fixture->setTarget(__FILE__);
-
-        // only valid directories are accepted
-        $this->setExpectedException('\InvalidArgumentException');
-        $this->fixture->setTarget(dirname(__FILE__) . 'a');
     }
 
     /**
-     * Tests whether setting the source succeeds.
-     *
-     * @covers phpDocumentor\Transformer\Transformer::getSource
-     * @covers phpDocumentor\Transformer\Transformer::setSource
-     *
-     * @return void
+     * @covers phpDocumentor\Transformer\Transformer::setBehaviours
+     * @covers phpDocumentor\Transformer\Transformer::getBehaviours
      */
-    public function testSource()
+    public function testProvidingBehaviours()
     {
-        $this->assertEquals('', $this->fixture->getSource());
-        file_put_contents(PHPUnit\TEMP_DIR . '/test_structure.xml', '<structure></structure>');
+        $this->assertEquals(null, $this->fixture->getBehaviours());
 
-        $this->fixture->setSource(PHPUnit\TEMP_DIR . '/test_structure.xml');
-        $this->assertInstanceOf('\DOMDocument', $this->fixture->getSource());
+        $behaviours = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
+        $this->fixture->setBehaviours($behaviours);
 
-        // directories are not allowed
-        $this->setExpectedException('\InvalidArgumentException');
-        $this->fixture->setSource(PHPUnit\TEMP_DIR);
-
-        // unknown directories are not allowed
-        $this->setExpectedException('\InvalidArgumentException');
-        $this->fixture->setSource(PHPUnit\UNKNOWN_DIR);
-
-        $this->markTestIncomplete(
-            'We still need to test the structure.xml changes that are induced '
-            . 'by the addMetaDataToStructure method'
-        );
+        $this->assertEquals($behaviours, $this->fixture->getBehaviours());
     }
 
     /**
-     * Tests whether adding a template has the desired effect.
-     *
-     * @covers phpDocumentor\Transformer\Transformer::addTemplate
-     * @covers phpDocumentor\Transformer\Transformer::getTransformations
-     *
-     * @return void
+     * @covers phpDocumentor\Transformer\Transformer::getTemplates
      */
-    public function testAddTemplate()
+    public function testRetrieveTemplateCollection()
     {
-        $this->fixture->setTemplatesPath(
-            dirname(__FILE__).'/../../../../data/templates'
-        );
-        $this->fixture->addTemplate('responsive');
+        $templateCollectionMock = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $templateCollectionMock->shouldIgnoreMissing();
+        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
+        $writerCollectionMock->shouldIgnoreMissing();
 
-        $this->assertGreaterThan(
-            0,
-            count($this->fixture->getTransformations()),
-            'Transformations should be added'
+        $fixture = new Transformer($templateCollectionMock, $writerCollectionMock);
+
+        $this->assertEquals($templateCollectionMock, $fixture->getTemplates());
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Transformer::execute
+     */
+    public function testExecute()
+    {
+        // FIXME
+        $this->markTestIncomplete();
+        $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+
+        $behaviourCollection = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
+        $behaviourCollection ->shouldReceive('process')->with($project);
+        $behaviourCollection ->shouldReceive('count')->andReturn(0);
+
+        $transformation = m::mock('phpDocumentor\Transformer\Transformation')
+            ->shouldReceive('execute')->with($project)
+            ->shouldReceive('getQuery')->andReturn('')
+            ->shouldReceive('getWriter')->andReturn(new \stdClass())
+            ->shouldReceive('getArtifact')->andReturn('')
+            ->getMock();
+
+        $templateCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
+        $templateCollection->shouldReceive('getTransformations')->andReturn(
+            array($transformation)
         );
 
-        try
-        {
-            $this->fixture->addTemplate('wargarbl');
-            $this->fail(
-                'Expected an exception to be thrown when '
-                . 'supplying a non-existent template'
-            );
-        }
-        catch (\InvalidArgumentException $e)
-        {
-            // this is good; exception is thrown
-        }
-        catch (\Exception $e)
-        {
-            $this->fail(
-                'An unknown exception has occurred when supplying a '
-                . 'non-existent template: ' . $e->getMessage()
-            );
-        }
+        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
+        $writerCollectionMock->shouldIgnoreMissing();
+
+        $fixture = new Transformer($templateCollection, $writerCollectionMock);
+        $fixture->setBehaviours($behaviourCollection);
+
+        $this->assertNull($fixture->execute($project));
     }
 
     /**
@@ -138,14 +149,8 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateFilename()
     {
-        // separate the directories with the DIRECTORY_SEPARATOR constant to
-        // prevent failing tests on windows
-        $filename = 'directory' . DIRECTORY_SEPARATOR . 'directory2'
-            . DIRECTORY_SEPARATOR . 'file.php';
-        $this->assertEquals(
-            'directory.directory2.file.html',
-            $this->fixture->generateFilename($filename)
-        );
+        // separate the directories with the DIRECTORY_SEPARATOR constant to prevent failing tests on windows
+        $filename = 'directory' . DIRECTORY_SEPARATOR . 'directory2' . DIRECTORY_SEPARATOR . 'file.php';
+        $this->assertEquals('directory.directory2.file.html', $this->fixture->generateFilename($filename));
     }
-
 }

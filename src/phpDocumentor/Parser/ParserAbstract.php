@@ -11,9 +11,10 @@
  */
 namespace phpDocumentor\Parser;
 
+use Psr\Log\LogLevel;
+use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
-use phpDocumentor\Event\DebugEvent;
 
 /**
  * Layer superclass for \phpDocumentor\Parser Component.
@@ -24,16 +25,16 @@ abstract class ParserAbstract
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.
-     * @param int    $priority The logging priority, the lower,the more
-     *     important. Ranges from 1 to 7
+     * @param int    $priority The logging priority as declared in the LogLevel PSR-3 class.
      *
      * @return void
      */
-    public function log($message, $priority = 6)
+    public function log($message, $priority = LogLevel::INFO, $parameters = array())
     {
         Dispatcher::getInstance()->dispatch(
             'system.log',
             LogEvent::createInstance($this)
+                ->setContext($parameters)
                 ->setMessage($message)
                 ->setPriority($priority)
         );

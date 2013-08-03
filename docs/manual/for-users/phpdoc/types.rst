@@ -81,13 +81,6 @@ The following keywords are recognized:
 
 5.  **object**, the element to which this type applies is the instance of an
     undetermined class.
-    This could be considered an alias for providing the class stdClass, as this
-    is the base class of all classes, but the intention of the type differs.
-
-    Providing stdClass will imply the intention that the related element contains
-    an actual object of class stdClass or direct descendant, whereas object
-    implies that it is completely unknown of which class the contained
-    object will be.
 
 6.  **mixed**, the element to which this type applies can be of any type as
     specified here. It is not known on compile time which type will be used.

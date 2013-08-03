@@ -2,272 +2,120 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use Zend\Stdlib\Exception\ExtensionNotLoadedException;
+use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\GraphViz\Edge;
+use phpDocumentor\GraphViz\Graph as GraphVizGraph;
+use phpDocumentor\GraphViz\Node;
+use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
+
 /**
- * Class diagram generator.
+ * Writer responsible for generating various graphs.
  *
- * Checks whether graphviz is enabled and logs an error if not.
+ * The Graph writer is capable of generating a Graph (as provided using the 'source' parameter) at the location provided
+ * using the artefact parameter.
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Writers
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * Currently supported:
+ *
+ * * 'class', a Class Diagram Generated using GraphViz
+ *
+ * @todo Fix this class
  */
-class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
+class Graph extends WriterAbstract
 {
     /** @var string Name of the font to use to display the node labels with */
-    protected $node_font = 'Courier';
+    protected $nodeFont = 'Courier';
+
+    /** @var Node[] a cache where nodes for classes, interfaces and traits are stored for reference */
+    protected $nodeCache = array();
 
     /**
-     * Generates an array containing class to path references and then invokes
-     * the Source specific method.
+     * Invokes the query method contained in this class.
      *
-     * @param \DOMDocument                        $structure      Structure source
-     *     use as basis for the transformation.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
-     *     that supplies the meta-data for this writer.
+     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(\DOMDocument $structure, \phpDocumentor\Transformer\Transformation $transformation)
+    public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
-        // NOTE: the -V flag sends output using STDERR and STDOUT
-        exec('dot -V 2>&1', $output, $error);
-        if ($error != 0) {
-            $this->log(
-                'Unable to find the `dot` command of the GraphViz package. '
-                .'Is GraphViz correctly installed and present in your path?',
-                \phpDocumentor\Plugin\Core\Log::ERR
-            );
-            return;
-        }
-
-        $this->node_font = $transformation->getParameter('font', 'Courier');
-
-        // add to classes
-        $xpath = new \DOMXPath($structure);
-        $qry = $xpath->query('//class[full_name]/..');
-        $class_paths = array();
-
-        /** @var \DOMElement $element */
-        foreach ($qry as $element) {
-            $path = $element->getAttribute('generated-path');
-            foreach ($element->getElementsByTagName('class') as $class) {
-                $class_paths[$class->getElementsByTagName('full_name')->item(0)->nodeValue] = $path;
-            }
-        }
-
-        // add to interfaces
-        $qry = $xpath->query('//interface[full_name]/..');
-        /** @var \DOMElement $element */
-        foreach ($qry as $element) {
-            $path = $element->getAttribute('generated-path');
-            foreach ($element->getElementsByTagName('interface') as $class) {
-                $class_paths[
-                    $class->getElementsByTagName('full_name')->item(0)->nodeValue
-                ] = $path;
-            }
-        }
-
-        $this->class_paths = $class_paths;
         $type_method = 'process' . ucfirst($transformation->getSource());
-        $this->$type_method($structure, $transformation);
-    }
-
-    /**
-     * Builds a tree of namespace subgraphs with their classes associated.
-     *
-     * @param \phpDocumentor\GraphViz\Graph $graph               Graph to expand on.
-     * @param \DOMElement             $namespace_element   Namespace index element.
-     * @param \DOMXPath               $xpath               $xpath object to use
-     *     for querying.
-     * @param string                 $full_namespace_name unabbreviated version
-     *     of the current namespace, namespace index only contains an abbreviated
-     *     version and by building/passing this icnreases performance.
-     *
-     * @return void
-     */
-    public function buildNamespaceTree(
-        \phpDocumentor\GraphViz\Graph $graph,
-        \DOMElement $namespace_element,
-        \DOMXPath $xpath,
-        $full_namespace_name
-    ) {
-        $namespace = $namespace_element->getAttribute('name');
-        $full_namespace_name .= '\\' . $namespace;
-        $full_namespace_name = ltrim($full_namespace_name, '\\');
-
-        $sub_graph = \phpDocumentor\GraphViz\Graph::create(
-            'cluster_' . $full_namespace_name
-        )
-            ->setLabel($full_namespace_name != 'default' ? $namespace : '')
-            ->setStyle('rounded')
-            ->setColor($full_namespace_name != 'default' ? 'gray' : 'none')
-            ->setFontColor('gray')
-            ->setFontSize('11')
-            ->setRankDir('LR');
-
-        $sub_qry = $xpath->query(
-            "/project/file/interface[@namespace='$full_namespace_name']"
-            ."|/project/file/class[@namespace='$full_namespace_name']"
-        );
-
-        /** @var \DOMElement $sub_element */
-        foreach ($sub_qry as $sub_element) {
-            $node = \phpDocumentor\GraphViz\Node::create(
-                $sub_element->getElementsByTagName('full_name')->item(0)->nodeValue,
-                $sub_element->getElementsByTagName('name')->item(0)->nodeValue
-            );
-
-            $node->setShape('box');
-            $node->setFontName($this->node_font);
-            $node->setFontSize('11');
-
-            if ($sub_element->getAttribute('abstract') == 'true') {
-                $node->setLabel(
-                    '<«abstract»<br/>' . $sub_element->getElementsByTagName('name')->item(0)->nodeValue . '>'
-                );
-            }
-
-            $full_name = $sub_element->getElementsByTagName('full_name')
-                ->item(0)->nodeValue;
-            if (!isset($this->class_paths[$full_name])) {
-                echo $full_name . PHP_EOL;
-            } else {
-                $node->setURL($this->class_paths[$full_name]);
-                $node->setTarget('_parent');
-            }
-
-            $sub_graph->setNode($node);
-        }
-
-        $graph->addGraph($sub_graph);
-
-        foreach ($namespace_element->getElementsByTagName('namespace') as $element) {
-            $this->buildNamespaceTree($sub_graph, $element, $xpath, $full_namespace_name);
-        }
+        $this->$type_method($project, $transformation);
     }
 
     /**
      * Creates a class inheritance diagram.
      *
-     * @param \DOMDocument                        $structure      Structure
-     *     document used to gather data from.
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation
-     *     element containing the meta-data.
+     * @param ProjectDescriptor $project
+     * @param Transformation    $transformation
      *
      * @return void
      */
-    public function processClass(
-        \DOMDocument $structure,
-        \phpDocumentor\Transformer\Transformation $transformation
-    ) {
-        $filename = $transformation->getTransformer()->getTarget()
-            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-        $graph = \phpDocumentor\GraphViz\Graph::create()
-                ->setRankSep('1.0')
-                ->setCenter('true')
-                ->setRank('source')
-                ->setRankDir('RL')
-                ->setSplines('true')
-                ->setConcentrate('true');
+    public function processClass(ProjectDescriptor $project, Transformation $transformation)
+    {
+        $this->checkIfGraphVizIsInstalled();
 
-        $xpath = new \DOMXPath($structure);
-        $qry = $xpath->query("/project/namespace");
+        $this->nodeFont = $transformation->getParameter('font', 'Courier');
 
-        /** @var \DOMElement $element */
-        foreach ($qry as $element) {
-            $this->buildNamespaceTree($graph, $element, $xpath, '');
-        }
+        $filename = $this->getDestinationPath($transformation);
 
-        // link all extended relations
-        $qry = $xpath->query(
-            '/project/file/interface[extends]|/project/file/class[extends]'
-        );
+        $graph = GraphVizGraph::create()
+            ->setRankSep('1.0')
+            ->setCenter('true')
+            ->setRank('source')
+            ->setRankDir('RL')
+            ->setSplines('true')
+            ->setConcentrate('true');
 
-        /** @var \DOMElement $element */
-        foreach ($qry as $element) {
-            $from_name = $element->getElementsByTagName('full_name')->item(0)
-                ->nodeValue;
+        $this->buildNamespaceTree($graph, $project->getNamespace());
 
-            foreach ($element->getElementsByTagName('extends') as $extends) {
-                $to_name = $extends->nodeValue;
+        $classes    = $project->getIndexes()->get('classes', new Collection())->getAll();
+        $interfaces = $project->getIndexes()->get('interfaces', new Collection())->getAll();
+        $traits     = $project->getIndexes()->get('traits', new Collection())->getAll();
 
-                if (!$to_name) {
-                    continue;
+        /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers  */
+        $containers = array_merge($classes, $interfaces, $traits);
+
+        foreach ($containers as $container) {
+            $from_name = $container->getFullyQualifiedStructuralElementName();
+
+            $parents     = array();
+            $implemented = array();
+            if ($container instanceof ClassDescriptor) {
+                if ($container->getParent()) {
+                    $parents[] = $container->getParent();
                 }
+                $implemented = $container->getInterfaces()->getAll();
+            }
+            if ($container instanceof InterfaceDescriptor) {
+                $parents = $container->getParent()->getAll();
+            }
 
-                $from = $graph->findNode($from_name);
-                $to = $graph->findNode($to_name);
-
-                if ($from === null) {
-                    $from = \phpDocumentor\GraphViz\Node::create($from_name);
-                    $from->setFontColor('gray');
-                    $from->setLabel($from_name);
-                    $graph->setNode($from);
-                }
-
-                if ($to === null) {
-                    $to = \phpDocumentor\GraphViz\Node::create($to_name);
-                    $to->setFontColor('gray');
-                    $to->setLabel($to_name);
-                    $graph->setNode($to);
-                }
-
-                $edge = \phpDocumentor\GraphViz\Edge::create($from, $to);
+            /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
+            foreach ($parents as $parent) {
+                $edge = $this->createEdge($graph, $from_name, $parent);
                 $edge->setArrowHead('empty');
                 $graph->link($edge);
             }
-        }
-        // link all implemented relations
-        $qry = $xpath->query(
-            '/project/file/interface[imports]|/project/file/class[implements]'
-        );
 
-        /** @var \DOMElement $element */
-        foreach ($qry as $element) {
-            $from_name = $element->getElementsByTagName('full_name')->item(0)
-                ->nodeValue;
-
-            foreach ($element->getElementsByTagName('implements') as $implements) {
-                $to_name = $implements->nodeValue;
-
-                if (!$to_name) {
-                    continue;
-                }
-
-                $from = $graph->findNode($from_name);
-                $to = $graph->findNode($to_name);
-
-                if ($from === null) {
-                    $from = \phpDocumentor\GraphViz\Node::create($from_name);
-                    $from->setFontColor('gray');
-                    $from->setLabel(addslashes($from_name));
-                    $graph->setNode($from);
-                }
-
-                if ($to === null) {
-                    $to = \phpDocumentor\GraphViz\Node::create($to_name);
-                    $to->setFontColor('gray');
-                    $to->setLabel(addslashes($to_name));
-                    $graph->setNode($to);
-                }
-
-                $edge = \phpDocumentor\GraphViz\Edge::create($from, $to);
+            /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
+            foreach ($implemented as $parent) {
+                $edge = $this->createEdge($graph, $from_name, $parent);
                 $edge->setStyle('dotted');
                 $edge->setArrowHead('empty');
                 $graph->link($edge);
@@ -275,5 +123,130 @@ class Graph extends \phpDocumentor\Transformer\Writer\WriterAbstract
         }
 
         $graph->export('svg', $filename);
+    }
+
+    /**
+     * Creates a GraphViz Edge between two nodes.
+     *
+     * @param Graph  $graph
+     * @param string $from_name
+     * @param string|ClassDescriptor|InterfaceDescriptor|TraitDescriptor $to
+     *
+     * @return Edge
+     */
+    protected function createEdge($graph, $from_name, $to)
+    {
+        $to_name = !is_string($to) ? $to->getFullyQualifiedStructuralElementName() : $to;
+
+        if (!isset($this->nodeCache[$from_name])) {
+            $this->nodeCache[$from_name] = $this->createEmptyNode($from_name, $graph);
+        }
+        if (!isset($this->nodeCache[$to_name])) {
+            $this->nodeCache[$to_name] = $this->createEmptyNode($to_name, $graph);
+        }
+
+        return Edge::create($this->nodeCache[$from_name], $this->nodeCache[$to_name]);
+    }
+
+    /**
+     * @param string $name
+     * @param Graph $graph
+     *
+     * @return Node
+     */
+    protected function createEmptyNode($name, $graph)
+    {
+        $node = Node::create($name);
+        $node->setFontColor('gray');
+        $node->setLabel($name);
+        $graph->setNode($node);
+
+        return $node;
+    }
+
+    /**
+     * Builds a tree of namespace subgraphs with their classes associated.
+     *
+     * @param GraphVizGraph       $graph
+     * @param NamespaceDescriptor $namespace
+     *
+     * @return void
+     */
+    protected function buildNamespaceTree(GraphVizGraph $graph, NamespaceDescriptor $namespace)
+    {
+        $full_namespace_name = $namespace->getFullyQualifiedStructuralElementName();
+        if ($full_namespace_name == '\\') {
+            $full_namespace_name = 'Global';
+        }
+
+        $sub_graph = GraphVizGraph::create('cluster_' . $full_namespace_name)
+            ->setLabel($namespace->getName())
+            ->setStyle('rounded')
+            ->setColor('gray')
+            ->setFontColor('gray')
+            ->setFontSize('11')
+            ->setRankDir('LR');
+
+        $elements = array_merge(
+            $namespace->getClasses()->getAll(),
+            $namespace->getInterfaces()->getAll(),
+            $namespace->getTraits()->getAll()
+        );
+
+        /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $sub_element */
+        foreach ($elements as $sub_element) {
+            $node = Node::create($sub_element->getFullyQualifiedStructuralElementName(), $sub_element->getName())
+                ->setShape('box')
+                ->setFontName($this->nodeFont)
+                ->setFontSize('11');
+
+            if ($sub_element instanceof ClassDescriptor && $sub_element->isAbstract()) {
+                $node->setLabel('<«abstract»<br/>' . $sub_element->getName(). '>');
+            }
+
+            //$full_name = $sub_element->getFullyQualifiedStructuralElementName();
+            //$node->setURL($this->class_paths[$full_name]);
+            //$node->setTarget('_parent');
+
+            $this->nodeCache[$sub_element->getFullyQualifiedStructuralElementName()] = $node;
+            $sub_graph->setNode($node);
+        }
+
+        foreach ($namespace->getChildren()->getAll() as $element) {
+            $this->buildNamespaceTree($sub_graph, $element);
+        }
+
+        $graph->addGraph($sub_graph);
+    }
+
+    /**
+     * @param \phpDocumentor\Transformer\Transformation $transformation
+     * @return string
+     */
+    protected function getDestinationPath(Transformation $transformation)
+    {
+        $filename = $transformation->getTransformer()->getTarget()
+            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+
+        return $filename;
+    }
+
+    /**
+     * Checks whether GraphViz is installed and throws an Exception otherwise.
+     *
+     * @throws ExtensionNotLoadedException if graphviz is not found.
+     *
+     * @return void
+     */
+    protected function checkIfGraphVizIsInstalled()
+    {
+        // NOTE: the -V flag sends output using STDERR and STDOUT
+        exec('dot -V 2>&1', $output, $error);
+        if ($error != 0) {
+            throw new ExtensionNotLoadedException(
+                'Unable to find the `dot` command of the GraphViz package. '
+                . 'Is GraphViz correctly installed and present in your path?'
+            );
+        }
     }
 }

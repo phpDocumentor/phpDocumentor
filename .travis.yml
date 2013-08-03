@@ -3,20 +3,21 @@ php:
   - 5.3.3
   - 5.3
   - 5.4
+  - 5.5
 
 script:
- - vendor/phpunit/phpunit/composer/bin/phpunit
- - vendor/behat/behat/bin/behat --no-paths --format failed
+ - bin/phpunit
+# - bin/behat --no-paths --format failed
 
 before_script:
  - sudo apt-get -qq update > /dev/null
  - sudo apt-get -qq install graphviz > /dev/null
  - phpenv rehash > /dev/null
  - composer selfupdate --quiet
- - composer install --dev 
- - vendor/phpunit/phpunit/composer/bin/phpunit
- - vendor/behat/behat/bin/behat --no-paths --format failed
- - composer update --dev 
+ - composer install -n --prefer-source --dev
+ - bin/phpunit
+# - bin/behat --no-paths --format failed
+ - composer update -n --prefer-source --dev
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"

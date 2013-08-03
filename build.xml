@@ -6,7 +6,7 @@
         description="performs pre-push actions by validating the code"/>
 
     <target name="build"
-            depends="build:clean,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpcs,build:phpunit,build:phpdoc,build:phpcb"
+            depends="build:clean,build:composer:install,build:phpunit,build:phpcs,build:phploc,build:phpmd,build:phpcpd,build:pdepend,build:phpdoc"
             description="Builds phpDocumentor and generates all artefacts needed for Jenkins"/>
 
     <target name="deploy"
@@ -25,28 +25,38 @@
         <mkdir dir="${project.basedir}/build/pdepend"/>
     </target>
 
+    <target name="build:composer:install">
+        <exec executable="wget" passthru="true">
+            <arg value="-Ocomposer.phar" />
+            <arg value="http://getcomposer.org/composer.phar"/>
+        </exec>
+        <exec executable="php" passthru="true">
+            <arg value="composer.phar"/>
+            <arg value="install"/>
+            <arg value="--prefer-dist"/>
+            <arg value="--dev"/>
+        </exec>
+    </target>
+
     <!-- Generate checkstyle.xml -->
     <target name="build:phpcs" description="Checks for Coding Standard violations">
         <echo message="Executing phpCodeSniffer, output is in 'build/logs/checkstyle.xml'"/>
-        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PSR2" haltonerror="true">
+        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PSR2" haltonerror="false">
             <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
         </phpcodesniffer>
     </target>
 
     <!-- Generate API documentation with phpDocumentor -->
     <target name="build:phpdoc" description="Generates API documentation">
-        <docblox destDir="${project.basedir}/build/api">
-            <fileset dir="${project.basedir}">
-                <include name="**/*.php"/>
-                <exclude name="**/tests/**.php"/>
-            </fileset>
-        </docblox>
+        <exec executable="phpdoc" passthru="true">
+            <arg line="-t ${project.basedir}/build/api"/>
+        </exec>
     </target>
 
     <!-- Generate phploc.csv -->
     <target name="build:phploc" description="Generates LOC statistics">
         <exec executable="phploc" passthru="true">
-            <arg value="--log-csv ${project.basedir}/build/logs/phploc.csv" />
+            <arg line="--log-csv ${project.basedir}/build/logs/phploc.csv" />
             <arg path="${project.basedir}" />
         </exec>
     </target>
@@ -71,7 +81,7 @@
             <arg value="--jdepend-xml=${project.basedir}/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${project.basedir}/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${project.basedir}/build/pdepend/overview-pyramid.svg" />
-            <arg path="${project.basedir}"/>
+            <arg path="${project.basedir}/src/phpDocumentor"/>
         </exec>
     </target>
 
@@ -89,12 +99,6 @@
         </exec>
     </target>
 
-    <target name="build:phpcb">
-        <exec executable="phpcb" passthru="true">
-            <arg line="--log ${project.basedir}/build/logs --output ${project.basedir}/build/code-browser"/>
-        </exec>
-    </target>
-
     <!-- Generates the manual locally -->
     <target name="deploy:generate-manual" description="Generates a local copy of the documentation">
         <exec command="make html" dir="${project.basedir}/docs/manual" passthru="true" />
@@ -109,12 +113,12 @@
     </target>
 
     <!-- Asks for the post-deployment version number -->
-    <target name="deploy:get-version-number"
-            description="Ask the user for the new version">
-        <exec
-            command="grep -Pom1 &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Application.php"
-            dir="${project.basedir}" outputProperty="version.number"
-        />
+    <target name="deploy:get-version-number" description="Ask the user for the new version">
+        <loadfile property="version.number" file="${project.basedir}/VERSION">
+            <filterchain>
+                <striplinebreaks />
+            </filterchain>
+        </loadfile>
     </target>
 
     <!-- Creates a PEAR package from this project -->
@@ -127,7 +131,7 @@
                         promptText="Enter the stability of the new version (alpha, beta or stable)"
                         useExistingValue="true"/>
         <exec
-            command="php bin/utils/package.php ${version.number} ${version.number} ${version.stability} make"
+            command="php bin/utils/package.php '${version.number}' '${version.number}' '${version.stability}' make"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
@@ -140,22 +144,24 @@
             depends="deploy:get-version-number"
             description="Uploads the PEAR package to the distribution server and update pirum">
         <exec command="scp ${project.basedir}/phpDocumentor-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
-        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
+        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; ${server.pear.path}/../pirum add web phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
         <delete file="${project.basedir}/phpDocumentor-${version.number}.tgz" />
     </target>
 
     <!-- Builds a new demo and publishes it -->
     <target name="deploy:publish-demo"
             description="Generate a demo and upload it to the server">
-        <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
-        <exec command="php bin/phpdoc.php -t data/output" dir="${project.basedir}" passthru="true" checkreturn="true"/>
-        <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+        <delete><fileset dir="/tmp/phpdoc-demo/responsive"><include name="*"/></fileset></delete>
+        <exec command="php bin/phpdoc.php -t /tmp/phpdoc-demo/responsive" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r /tmp/phpdoc-demo/responsive/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
     </target>
 
     <!-- Builds a new demo and publishes it -->
     <target name="deploy:publish-phar" description="Generate a phar and upload it to the server">
-        <exec command="php compile" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="php bin/compile" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r ${project.basedir}/phpDocumentor.phar ${server.username}@${server.phar}:${server.phar.path}" passthru="true" checkreturn="true"/>
+        <exec command="openssl sha1 phpDocumentor.phar" passthru="true" />
+        <echo msg="Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above" />
         <delete><fileset dir="${project.basedir}"><include name="phpDocumentor.phar"/></fileset></delete>
     </target>
 
