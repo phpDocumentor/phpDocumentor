@@ -14,6 +14,10 @@ namespace phpDocumentor;
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
+use Monolog\ErrorHandler;
+use Monolog\Handler\NullHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Helper\ProgressHelper;
@@ -49,9 +53,9 @@ class Application extends Cilex
         parent::__construct('phpDocumentor', self::$VERSION);
 
         $this->addAutoloader();
+        $this->addConfiguration();
         $this->addLogging();
         $this->setTimezone();
-        $this->addConfiguration();
         $this->addEventDispatcher();
 
         $this['console']->getHelperSet()->set(new ProgressHelper());
@@ -99,10 +103,119 @@ class Application extends Cilex
         $this->register(
             new MonologServiceProvider(),
             array(
-                 'monolog.name'    => 'phpDocumentor',
-                 'monolog.logfile' => sys_get_temp_dir() . '/phpdoc.log'
+                 'monolog.name'      => 'phpDocumentor',
+                 'monolog.logfile'   => sys_get_temp_dir() . '/phpdoc.log',
+                 'monolog.debugfile' => sys_get_temp_dir() . '/phpdoc.debug.log',
+                 'monolog.level'     => Logger::INFO,
             )
         );
+
+        $app = $this;
+        $this['monolog.configure'] = $this->protect(
+            function ($log) use ($app) {
+                $level = (string)$app['config']->logging->level;
+
+                // null means the default is used
+                $logPath = isset($app['config']->logging->paths->default)
+                    ? (string) $app['config']->logging->paths->default
+                    : null;
+
+                // null means the default is used
+                $debugPath = isset($app['config']->logging->paths->errors)
+                    ? (string) $app['config']->logging->paths->errors
+                    : null;
+
+                $app->configureLogger($log, $level, $logPath,$debugPath);
+            }
+        );
+        ErrorHandler::register($this['monolog']);
+    }
+
+    /**
+     * Removes all logging handlers and replaces them with handlers that can write to the given logPath and level.
+     *
+     * @param Logger  $logger       The logger instance that needs to be configured.
+     * @param integer $level        The minimum level that will be written to the normal logfile; matches one of the
+     *                              constants in {@see \Monolog\Logger}.
+     * @param string  $logPath      The full path where the normal log file needs to be written.
+     * @param string  $debugLogPath The full path where the log file containing debug information needs to be written.
+     *
+     * @return void
+     */
+    public function configureLogger($logger, $level, $logPath = null, $debugLogPath = null)
+    {
+        /** @var Logger $monolog */
+        $monolog = $logger;
+
+        switch($level) {
+            case 'emergency':
+            case 'emerg':
+                $level = Logger::EMERGENCY;
+                break;
+            case 'alert':
+                $level = Logger::ALERT;
+                break;
+            case 'critical':
+            case 'crit':
+                $level = Logger::CRITICAL;
+                break;
+            case 'error':
+            case 'err':
+                $level = Logger::ERROR;
+                break;
+            case 'warning':
+            case 'warn':
+                $level = Logger::WARNING;
+                break;
+            case 'notice':
+                $level = Logger::NOTICE;
+                break;
+            case 'info':
+                $level = Logger::INFO;
+                break;
+            case 'debug':
+                $level = Logger::DEBUG;
+                break;
+        }
+
+        $this['monolog.level']   = $level;
+        if ($logPath) {
+            $logPath = str_replace(
+                array('{APP_ROOT}', '{DATE}'),
+                array(realpath(__DIR__.'/../..'), time()),
+                $logPath
+            );
+            $this['monolog.logfile'] = $logPath;
+        }
+        if (!$debugLogPath) {
+            // custom property, only used in this function so we retrieve its default.
+            $debugLogPath = $this['monolog.debugfile'];
+        } else {
+            $debugLogPath = str_replace(
+                array('{APP_ROOT}', '{DATE}'),
+                array(realpath(__DIR__.'/../..'), time()),
+                $debugLogPath
+            );
+            $this['monolog.debugfile'] = $debugLogPath;
+        }
+
+        // remove all handlers from the stack
+        try {
+            while ($monolog->popHandler()) {
+            }
+        } catch (\LogicException $e) {
+            // popHandler throws an exception when you try to pop the empty stack; to us this is not an
+            // error but an indication that the handler stack is empty.
+        }
+
+        if ($level === 'quiet') {
+            $monolog->pushHandler(new NullHandler());
+            return;
+        }
+
+        // set our new handlers
+        $monolog->pushHandler(new StreamHandler($logPath, $level));
+        $monolog->pushHandler(new StreamHandler($debugLogPath, Logger::DEBUG));
     }
 
     /**

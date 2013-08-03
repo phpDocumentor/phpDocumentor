@@ -23,10 +23,10 @@
         <target>output</target>
     </transformer>
     <logging>
-        <level>warn</level>
+        <level>info</level>
         <paths>
-            <default>{APP_ROOT}/data/log/{DATE}.log</default>
-            <errors>{APP_ROOT}/data/log/{DATE}.errors.log</errors>
+            <default>phpdoc-{DATE}.log</default>
+            <errors>phpdoc-{DATE}.errors.log</errors>
         </paths>
     </logging>
     <transformations>
