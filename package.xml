@@ -23,15 +23,15 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <email>ashnazg@php.net</email>
   <active>yes</active>
  </lead>
- <date>2013-07-12</date>
- <time>14:50:53</time>
+ <date>2013-08-03</date>
+ <time>06:07:28</time>
  <version>
-  <release>2.0.0b7</release>
-  <api>2.0.0b7</api>
+  <release>2.0.0</release>
+  <api>2.0.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
  <notes>
@@ -53,19 +53,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
     </file>
    </dir> <!-- /bin -->
    <dir name="data">
-    <dir name="base_template">
-     <dir name="css">
-      <file baseinstalldir="/phpDocumentor" name="template.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-     </dir> <!-- /data/base_template/css -->
-     <file baseinstalldir="/phpDocumentor" name="index.xsl" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
-     <file baseinstalldir="/phpDocumentor" name="template.xml" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
-    </dir> <!-- /data/base_template -->
     <dir name="images">
      <dir name="icons">
       <file baseinstalldir="/phpDocumentor" name="arrow_down.png" role="php">
@@ -162,312 +149,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
     </dir> <!-- /data/js -->
-    <dir name="syntax_highlighter">
-     <dir name="compass">
-      <file baseinstalldir="/phpDocumentor" name="config.rb" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCore.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreDefault.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreDjango.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreEclipse.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreEmacs.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreFadeToGrey.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreMDUltra.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreMidnight.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreRDark.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeDefault.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeDjango.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeEclipse.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeEmacs.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeFadeToGrey.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeMDUltra.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeMidnight.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeRDark.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="_theme_template.scss" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-     </dir> <!-- /data/syntax_highlighter/compass -->
-     <dir name="scripts">
-      <file baseinstalldir="/phpDocumentor" name="shAutoloader.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushAppleScript.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushAS3.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushBash.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushColdFusion.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushCpp.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushCSharp.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushCss.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushDelphi.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushDiff.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushErlang.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushGroovy.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushJava.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushJavaFX.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushJScript.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushPerl.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushPhp.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushPlain.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushPowerShell.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushPython.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushRuby.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushSass.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushScala.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushSql.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushVb.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shBrushXml.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCore.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shLegacy.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-     </dir> <!-- /data/syntax_highlighter/scripts -->
-     <dir name="src">
-      <file baseinstalldir="/phpDocumentor" name="shAutoloader.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCore.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shLegacy.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-     </dir> <!-- /data/syntax_highlighter/src -->
-     <dir name="styles">
-      <file baseinstalldir="/phpDocumentor" name="shCore.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreDefault.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreDjango.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreEclipse.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreEmacs.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreFadeToGrey.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreMDUltra.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreMidnight.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shCoreRDark.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeDefault.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeDjango.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeEclipse.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeEmacs.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeFadeToGrey.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeMDUltra.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeMidnight.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeRDark.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="shThemeWordpress.css" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-     </dir> <!-- /data/syntax_highlighter/styles -->
-     <dir name="tests">
-      <dir name="brushes">
-       <file baseinstalldir="/phpDocumentor" name="sass.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-      </dir> <!-- /data/syntax_highlighter/tests/brushes -->
-      <dir name="cases">
-       <file baseinstalldir="/phpDocumentor" name="001_basic.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="002_brushes.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="003_script_tag.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="004_url_parsing.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="005_no_gutter.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="006_pad_line_numbers.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="007_collapse.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="007_collapse_interaction.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="008_first_line.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="009_class_name.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="010_highlight.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="011_smart_tabs.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="012_server_side.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="013_html_script.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="014_legacy.html" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-      </dir> <!-- /data/syntax_highlighter/tests/cases -->
-      <dir name="js">
-       <file baseinstalldir="/phpDocumentor" name="jquery-1.4.2.js" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="qunit.css" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-       <file baseinstalldir="/phpDocumentor" name="qunit.js" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-      </dir> <!-- /data/syntax_highlighter/tests/js -->
-      <file baseinstalldir="/phpDocumentor" name="brushes_tests.html" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="commonjs_tests.js" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="syntaxhighlighter_tests.html" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="theme_tests.html" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="webrick.rb" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-      <file baseinstalldir="/phpDocumentor" name="webrick.sh" role="php">
-       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-      </file>
-     </dir> <!-- /data/syntax_highlighter/tests -->
-     <file baseinstalldir="/phpDocumentor" name="index.html" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
-     <file baseinstalldir="/phpDocumentor" name="LGPL-LICENSE" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
-     <file baseinstalldir="/phpDocumentor" name="MIT-LICENSE" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
-    </dir> <!-- /data/syntax_highlighter -->
     <dir name="templates">
      <dir name="abstract">
       <dir name="api-doc">
@@ -516,6 +197,65 @@ Please see the CHANGELOG in the root of the application for the latest changes
        </file>
       </dir> <!-- /data/templates/abstract/css -->
       <dir name="images">
+       <dir name="icons">
+        <file baseinstalldir="/phpDocumentor" name="arrow_down.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="arrow_right.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="class.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="constant.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="favicon.ico" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="file-php.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="file.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="folder.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="function.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="interface.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="method.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="ok.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="property.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="search.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="variable.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="view_source.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_private.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_protected.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_public.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /data/templates/abstract/images/icons -->
        <file baseinstalldir="/phpDocumentor" name="collapse_all.png" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -530,6 +270,39 @@ Please see the CHANGELOG in the root of the application for the latest changes
        </file>
       </dir> <!-- /data/templates/abstract/images -->
       <dir name="js">
+       <file baseinstalldir="/phpDocumentor" name="jquery-1.4.2.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery-1.7.1.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery-ui-1.8.2.custom.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.cookie.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.panzoom.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.splitter.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.tools.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.treeview.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="menu.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="sidebar.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="SVGPan.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
        <file baseinstalldir="/phpDocumentor" name="template.js" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -574,6 +347,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
       <file baseinstalldir="/phpDocumentor" name="content.xsl" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
@@ -609,6 +385,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
       <file baseinstalldir="/phpDocumentor" name="README" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
@@ -616,6 +395,176 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
      </dir> <!-- /data/templates/checkstyle -->
+     <dir name="clean">
+      <dir name="css">
+       <dir name="phpdocumentor-clean-icons">
+        <dir name="fonts">
+         <file baseinstalldir="/phpDocumentor" name="phpdocumentor-clean-icons.dev.svg" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="phpdocumentor-clean-icons.eot" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="phpdocumentor-clean-icons.svg" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="phpdocumentor-clean-icons.ttf" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="phpdocumentor-clean-icons.woff" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /data/templates/clean/css/phpdocumentor-clean-icons/fonts -->
+        <file baseinstalldir="/phpDocumentor" name="lte-ie7.js" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="Read Me.txt" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="style.css" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /data/templates/clean/css/phpdocumentor-clean-icons -->
+       <file baseinstalldir="/phpDocumentor" name="jquery.iviewer.css" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="prism.css" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="template.css" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/clean/css -->
+      <dir name="elements">
+       <file baseinstalldir="/phpDocumentor" name="constant.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="method.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="namespaces.sidebar.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="property.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/clean/elements -->
+      <dir name="graphs">
+       <file baseinstalldir="/phpDocumentor" name="class.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/clean/graphs -->
+      <dir name="images">
+       <dir name="iviewer">
+        <file baseinstalldir="/phpDocumentor" name="grab.cur" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="hand.cur" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="iviewer.rotate_left.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="iviewer.rotate_right.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="iviewer.zoom_fit.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="iviewer.zoom_in.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="iviewer.zoom_out.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="iviewer.zoom_zero.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /data/templates/clean/images/iviewer -->
+       <file baseinstalldir="/phpDocumentor" name="custom-icons.svg" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="hierarchy-item.png" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="icon-class-13x13.png" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="icon-class.svg" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="icon-interface-13x13.png" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="icon-interface.svg" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="icon-trait-13x13.png" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="icon-trait.svg" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/clean/images -->
+      <dir name="js">
+       <file baseinstalldir="/phpDocumentor" name="jquery.dotdotdot-1.5.9.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.dotdotdot-1.5.9.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.iviewer.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.iviewer.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.smooth-scroll.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="prism.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/clean/js -->
+      <dir name="reports">
+       <file baseinstalldir="/phpDocumentor" name="deprecated.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="errors.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="markers.html.twig" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/clean/reports -->
+      <file baseinstalldir="/phpDocumentor" name="class.html.twig" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="file.html.twig" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="file.source.txt.twig" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="interface.html.twig" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="layout.html.twig" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="namespace.html.twig" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="template.xml" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+     </dir> <!-- /data/templates/clean -->
      <dir name="new-black">
       <dir name="css">
        <dir name="images">
@@ -784,7 +733,13 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
       </dir> <!-- /data/templates/new-black/search -->
+      <file baseinstalldir="/phpDocumentor" name="ajax_search.php" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
       <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="README.md" role="php">
@@ -912,6 +867,65 @@ Please see the CHANGELOG in the root of the application for the latest changes
        </file>
       </dir> <!-- /data/templates/old-ocean/css -->
       <dir name="images">
+       <dir name="icons">
+        <file baseinstalldir="/phpDocumentor" name="arrow_down.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="arrow_right.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="class.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="constant.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="favicon.ico" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="file-php.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="file.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="folder.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="function.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="interface.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="method.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="ok.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="property.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="search.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="variable.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="view_source.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_private.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_protected.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_public.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /data/templates/old-ocean/images/icons -->
        <file baseinstalldir="/phpDocumentor" name="background.png" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -928,6 +942,41 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
       </dir> <!-- /data/templates/old-ocean/images -->
+      <dir name="js">
+       <file baseinstalldir="/phpDocumentor" name="jquery-1.4.2.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery-1.7.1.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery-ui-1.8.2.custom.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.cookie.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.panzoom.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.splitter.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.tools.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.treeview.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="menu.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="sidebar.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="SVGPan.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /data/templates/old-ocean/js -->
       <dir name="preprocess">
        <file baseinstalldir="/phpDocumentor" name="object-index.xsl" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -943,6 +992,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="file.xsl" role="php">
@@ -1024,10 +1076,28 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </dir> <!-- /data/templates/responsive/graphs -->
       <dir name="img">
        <dir name="icons">
+        <file baseinstalldir="/phpDocumentor" name="arrow_down.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="arrow_right.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="class.png" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
         <file baseinstalldir="/phpDocumentor" name="constant.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="favicon.ico" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="file-php.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="file.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="folder.gif" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
         <file baseinstalldir="/phpDocumentor" name="function.png" role="php">
@@ -1048,7 +1118,28 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <file baseinstalldir="/phpDocumentor" name="method.png" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
+        <file baseinstalldir="/phpDocumentor" name="ok.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="property.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="search.gif" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="variable.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="view_source.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_private.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_protected.png" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="visibility_public.png" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
        </dir> <!-- /data/templates/responsive/img/icons -->
@@ -1178,6 +1269,18 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/phpDocumentor" name="bootstrap.min.js" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery-1.4.2.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery-1.7.1.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery-ui-1.8.2.custom.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.cookie.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
        <file baseinstalldir="/phpDocumentor" name="jquery.iviewer.js" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -1185,6 +1288,27 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="jquery.mousewheel.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.panzoom.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.splitter.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.tools.min.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="jquery.treeview.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="menu.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="sidebar.js" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="SVGPan.js" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="template.js" role="php">
@@ -1206,6 +1330,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="graph.html" role="php">
@@ -1287,6 +1414,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
       <file baseinstalldir="/phpDocumentor" name="README.md" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
@@ -1314,6 +1444,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
        </file>
       </dir> <!-- /data/templates/zend/js -->
       <file baseinstalldir="/phpDocumentor" name="composer.json" role="php">
+       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+      </file>
+      <file baseinstalldir="/phpDocumentor" name="composer.lock" role="php">
        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
       </file>
       <file baseinstalldir="/phpDocumentor" name="index.xsl" role="php">
@@ -1474,9 +1607,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/phpDocumentor" name="extending-an-existing-template.rst" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
-       <file baseinstalldir="/phpDocumentor" name="quick-start.rst" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
        <file baseinstalldir="/phpDocumentor" name="what-can-you-do-with-a-template.rst" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -1544,7 +1674,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/phpDocumentor" name="upgrading.rst" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
-       <file baseinstalldir="/phpDocumentor" name="using-installer.rst" role="php">
+       <file baseinstalldir="/phpDocumentor" name="using-composer.rst" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="using-pear.rst" role="php">
@@ -2097,11 +2227,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </file>
      </dir> <!-- /src/phpDocumentor/Compiler -->
      <dir name="Console">
-      <dir name="Helper">
-       <file baseinstalldir="/phpDocumentor" name="ProgressHelper.php" role="php">
-        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-       </file>
-      </dir> <!-- /src/phpDocumentor/Console/Helper -->
       <dir name="Input">
        <file baseinstalldir="/phpDocumentor" name="ArgvInput.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -2151,6 +2276,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="VarAssembler.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="VersionAssembler.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
         </dir> <!-- /src/phpDocumentor/Descriptor/Builder/Reflector/Tags -->
@@ -2316,6 +2444,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
        <file baseinstalldir="/phpDocumentor" name="VarDescriptor.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
+       <file baseinstalldir="/phpDocumentor" name="VersionDescriptor.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
       </dir> <!-- /src/phpDocumentor/Descriptor/Tag -->
       <dir name="Validator">
        <file baseinstalldir="/phpDocumentor" name="Error.php" role="php">
@@ -2443,20 +2574,36 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <dir name="Core">
        <dir name="Descriptor">
         <dir name="Validator">
-         <dir name="Classes">
-          <file baseinstalldir="/phpDocumentor" name="HasPackageWithSubpackage.php" role="php">
-           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-          </file>
-          <file baseinstalldir="/phpDocumentor" name="HasShortDescription.php" role="php">
-           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-          </file>
-          <file baseinstalldir="/phpDocumentor" name="HasSinglePackage.php" role="php">
-           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-          </file>
-          <file baseinstalldir="/phpDocumentor" name="HasSingleSubpackage.php" role="php">
-           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-          </file>
-         </dir> <!-- /src/phpDocumentor/Plugin/Core/Descriptor/Validator/Classes -->
+         <dir name="Constraints">
+          <dir name="Classes">
+           <file baseinstalldir="/phpDocumentor" name="HasPackageWithSubpackage.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="HasPackageWithSubpackageValidator.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="HasSinglePackage.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="HasSinglePackageValidator.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="HasSingleSubpackage.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="HasSingleSubpackageValidator.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /src/phpDocumentor/Plugin/Core/Descriptor/Validator/Constraints/Classes -->
+          <dir name="Property">
+           <file baseinstalldir="/phpDocumentor" name="HasSummary.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+           <file baseinstalldir="/phpDocumentor" name="HasSummaryValidator.php" role="php">
+            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+           </file>
+          </dir> <!-- /src/phpDocumentor/Plugin/Core/Descriptor/Validator/Constraints/Property -->
+         </dir> <!-- /src/phpDocumentor/Plugin/Core/Descriptor/Validator/Constraints -->
          <dir name="Functions">
           <file baseinstalldir="/phpDocumentor" name="AreAllArgumentsValid.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -2465,16 +2612,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
          </dir> <!-- /src/phpDocumentor/Plugin/Core/Descriptor/Validator/Functions -->
-         <dir name="Generic">
-          <file baseinstalldir="/phpDocumentor" name="HasDocBlock.php" role="php">
-           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-          </file>
-         </dir> <!-- /src/phpDocumentor/Plugin/Core/Descriptor/Validator/Generic -->
-         <dir name="Properties">
-          <file baseinstalldir="/phpDocumentor" name="HasShortDescription.php" role="php">
-           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-          </file>
-         </dir> <!-- /src/phpDocumentor/Plugin/Core/Descriptor/Validator/Properties -->
          <file baseinstalldir="/phpDocumentor" name="DeprecatedValidator.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -2588,13 +2725,7 @@ Please see the CHANGELOG in the root of the application for the latest changes
         </file>
        </dir> <!-- /src/phpDocumentor/Transformer/Command/Project -->
        <dir name="Template">
-        <file baseinstalldir="/phpDocumentor" name="GenerateCommand.php" role="php">
-         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-        </file>
         <file baseinstalldir="/phpDocumentor" name="ListCommand.php" role="php">
-         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-        </file>
-        <file baseinstalldir="/phpDocumentor" name="PackageCommand.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
        </dir> <!-- /src/phpDocumentor/Transformer/Command/Template -->
@@ -2638,6 +2769,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="ConstantDescriptor.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="FileDescriptor.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="FunctionDescriptor.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -2658,6 +2792,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
        </dir> <!-- /src/phpDocumentor/Transformer/Router/UrlGenerator -->
+       <file baseinstalldir="/phpDocumentor" name="ForFileProxy.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
        <file baseinstalldir="/phpDocumentor" name="Queue.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -2805,6 +2942,15 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <file baseinstalldir="/phpDocumentor" name="DebugTest.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
+        <file baseinstalldir="/phpDocumentor" name="ElementsIndexBuilderTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="NamespaceTreeBuilderTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+        <file baseinstalldir="/phpDocumentor" name="PackageTreeBuilderTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
        </dir> <!-- /tests/unit/phpDocumentor/Compiler/Pass -->
        <file baseinstalldir="/phpDocumentor" name="CompilerTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -2816,13 +2962,37 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
        </dir> <!-- /tests/unit/phpDocumentor/Console/Input -->
+       <dir name="Output">
+        <file baseinstalldir="/phpDocumentor" name="OutputTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
+       </dir> <!-- /tests/unit/phpDocumentor/Console/Output -->
       </dir> <!-- /tests/unit/phpDocumentor/Console -->
       <dir name="Descriptor">
        <dir name="Builder">
-        <file baseinstalldir="/phpDocumentor" name="ReflectorTest.php" role="php">
+        <dir name="Reflector">
+         <file baseinstalldir="/phpDocumentor" name="ArgumentAssemblerTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ClassAssemblerTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="ConstantAssemblerTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="FileAssemblerTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="FunctionAssemblerTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+        </dir> <!-- /tests/unit/phpDocumentor/Descriptor/Builder/Reflector -->
+       </dir> <!-- /tests/unit/phpDocumentor/Descriptor/Builder -->
+       <dir name="Filter">
+        <file baseinstalldir="/phpDocumentor" name="StripInternalTest.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
-       </dir> <!-- /tests/unit/phpDocumentor/Descriptor/Builder -->
+       </dir> <!-- /tests/unit/phpDocumentor/Descriptor/Filter -->
        <file baseinstalldir="/phpDocumentor" name="ArgumentDescriptorTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -2833,6 +3003,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="ConstantDescriptorTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="DescriptorAbstractTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="FunctionDescriptorTest.php" role="php">
@@ -2864,29 +3037,19 @@ Please see the CHANGELOG in the root of the application for the latest changes
       </dir> <!-- /tests/unit/phpDocumentor/Parser -->
       <dir name="Plugin">
        <dir name="Core">
-        <dir name="Parser">
-         <dir name="DocBlock">
-          <dir name="Validator">
-           <file baseinstalldir="/phpDocumentor" name="DeprecatedValidator.php" role="php">
-            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-           </file>
-           <file baseinstalldir="/phpDocumentor" name="Required.php" role="php">
-            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-           </file>
-          </dir> <!-- /tests/unit/phpDocumentor/Plugin/Core/Parser/DocBlock/Validator -->
-         </dir> <!-- /tests/unit/phpDocumentor/Plugin/Core/Parser/DocBlock -->
-        </dir> <!-- /tests/unit/phpDocumentor/Plugin/Core/Parser -->
+        <dir name="Transformer">
+         <dir name="Writer">
+          <file baseinstalldir="/phpDocumentor" name="CheckStyleTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="XmlTest.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+         </dir> <!-- /tests/unit/phpDocumentor/Plugin/Core/Transformer/Writer -->
+        </dir> <!-- /tests/unit/phpDocumentor/Plugin/Core/Transformer -->
        </dir> <!-- /tests/unit/phpDocumentor/Plugin/Core -->
       </dir> <!-- /tests/unit/phpDocumentor/Plugin -->
       <dir name="Transformer">
-       <dir name="Writer">
-        <file baseinstalldir="/phpDocumentor" name="CheckstyleTest.php" role="php">
-         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-        </file>
-        <file baseinstalldir="/phpDocumentor" name="FileIoTest.php" role="php">
-         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-        </file>
-       </dir> <!-- /tests/unit/phpDocumentor/Transformer/Writer -->
        <file baseinstalldir="/phpDocumentor" name="TransformerTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -2916,6 +3079,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
        <file baseinstalldir="/phpDocumentor" name="Makefile" role="data">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+       <file baseinstalldir="/phpDocumentor" name="usage.rst" role="data">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
       </dir> <!-- /vendor/cilex/cilex/docs -->
@@ -3062,6 +3228,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/phpDocumentor" name="ClassLoader.php" role="php">
+      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+     </file>
+     <file baseinstalldir="/phpDocumentor" name="include_paths.php" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/phpDocumentor" name="installed.json" role="data">
@@ -4828,6 +4997,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <file baseinstalldir="/phpDocumentor" name="ActivationStrategyInterface.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
+          <file baseinstalldir="/phpDocumentor" name="ChannelLevelActivationStrategy.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
           <file baseinstalldir="/phpDocumentor" name="ErrorLevelActivationStrategy.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
@@ -4856,6 +5028,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="DoctrineCouchDBHandler.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="ErrorLogHandler.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="FingersCrossedHandler.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -4871,6 +5046,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="HandlerInterface.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="HipChatHandler.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="MailHandler.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -4881,6 +5059,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="NativeMailerHandler.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="NewRelicHandler.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="NullHandler.php" role="php">
@@ -4930,13 +5111,22 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="MemoryUsageProcessor.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="ProcessIdProcessor.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="PsrLogMessageProcessor.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="UidProcessor.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="WebProcessor.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
         </dir> <!-- /vendor/monolog/monolog/src/Monolog/Processor -->
+        <file baseinstalldir="/phpDocumentor" name="ErrorHandler.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="Logger.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
@@ -5014,6 +5204,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="GroupHandlerTest.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="HipChatHandlerTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="MailHandlerTest.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -5024,6 +5217,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="NativeMailerHandlerTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="NewRelicHandlerTest.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="NullHandlerTest.php" role="php">
@@ -5067,10 +5263,19 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="MemoryUsageProcessorTest.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
+         <file baseinstalldir="/phpDocumentor" name="ProcessIdProcessorTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
+         <file baseinstalldir="/phpDocumentor" name="UidProcessorTest.php" role="php">
+          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+         </file>
          <file baseinstalldir="/phpDocumentor" name="WebProcessorTest.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
         </dir> <!-- /vendor/monolog/monolog/tests/Monolog/Processor -->
+        <file baseinstalldir="/phpDocumentor" name="ErrorHandlerTest.php" role="php">
+         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+        </file>
         <file baseinstalldir="/phpDocumentor" name="LoggerTest.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
@@ -5150,9 +5355,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="Function.php" role="php">
-          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-         </file>
-         <file baseinstalldir="/phpDocumentor" name="Interface.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
          <file baseinstalldir="/phpDocumentor" name="Method.php" role="php">
@@ -5624,9 +5826,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
          </file>
         </dir> <!-- /vendor/nikic/php-parser/lib/PHPParser/NodeVisitor -->
         <dir name="PrettyPrinter">
-         <file baseinstalldir="/phpDocumentor" name="Default.php" role="php">
-          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-         </file>
          <file baseinstalldir="/phpDocumentor" name="Zend.php" role="php">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -5672,9 +5871,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
         <file baseinstalldir="/phpDocumentor" name="NodeTraverser.php" role="php">
-         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-        </file>
-        <file baseinstalldir="/phpDocumentor" name="NodeTraverserInterface.php" role="php">
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
         <file baseinstalldir="/phpDocumentor" name="NodeVisitor.php" role="php">
@@ -5958,18 +6154,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <file baseinstalldir="/phpDocumentor" name="comments.test" role="data">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
-         <file baseinstalldir="/phpDocumentor" name="inlineHTMLandPHPtest.file-test" role="data">
-          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-         </file>
-         <file baseinstalldir="/phpDocumentor" name="namespaces.test" role="data">
-          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-         </file>
-         <file baseinstalldir="/phpDocumentor" name="onlyInlineHTML.file-test" role="data">
-          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-         </file>
-         <file baseinstalldir="/phpDocumentor" name="onlyPHP.file-test" role="data">
-          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-         </file>
          <file baseinstalldir="/phpDocumentor" name="parentheses.test" role="data">
           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
          </file>
@@ -5985,9 +6169,6 @@ Please see the CHANGELOG in the root of the application for the latest changes
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
           <file baseinstalldir="/phpDocumentor" name="FunctionTest.php" role="php">
-           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-          </file>
-          <file baseinstalldir="/phpDocumentor" name="InterfaceTest.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
           <file baseinstalldir="/phpDocumentor" name="MethodTest.php" role="php">
@@ -6483,6 +6664,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
           <file baseinstalldir="/phpDocumentor" name="Location.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
+          <file baseinstalldir="/phpDocumentor" name="Serializer.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
           <file baseinstalldir="/phpDocumentor" name="Tag.php" role="php">
@@ -12735,6 +12919,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
           <file baseinstalldir="/phpDocumentor" name="NumberOfParameterFilter.php" role="php">
            <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
           </file>
+          <file baseinstalldir="/phpDocumentor" name="OptionalParametersFilter.php" role="php">
+           <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+          </file>
          </dir> <!-- /vendor/zendframework/zend-stdlib/Zend/Stdlib/Hydrator/Filter -->
          <dir name="Strategy">
           <file baseinstalldir="/phpDocumentor" name="ClosureStrategy.php" role="php">
@@ -12902,13 +13089,13 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/phpDocumentor" name="CONTRIBUTING.md" role="data">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
-   <file baseinstalldir="/phpDocumentor" name="installer.php" role="php">
-    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-   </file>
    <file baseinstalldir="/phpDocumentor" name="LICENSE" role="php">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
    <file baseinstalldir="/phpDocumentor" name="phpdoc.dist.xml" role="php">
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+   </file>
+   <file baseinstalldir="/phpDocumentor" name="phpDocumentor-2.0.0.tgz" role="data">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
    <file baseinstalldir="/phpDocumentor" name="phpunit.xml.dist" role="php">
@@ -12955,14 +13142,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.0.0b7</release>
-    <api>2.0.0b7</api>
+    <release>2.0.0</release>
+    <api>2.0.0</api>
    </version>
    <stability>
-    <release>beta</release>
-    <api>beta</api>
+    <release>stable</release>
+    <api>stable</api>
    </stability>
-   <date>2013-07-12</date>
+   <date>2013-08-03</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
