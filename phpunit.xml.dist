@@ -9,6 +9,9 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src/phpDocumentor</directory>
+            <exclude>
+                <directory suffix=".php">src/phpDocumentor/*/Messages</directory>
+            </exclude>
         </whitelist>
     </filter>
     <php>
@@ -31,6 +34,7 @@
             lowUpperBound="35"
             highLowerBound="70" />
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
     </logging>
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"
