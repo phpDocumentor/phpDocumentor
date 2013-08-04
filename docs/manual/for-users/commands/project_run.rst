@@ -59,8 +59,12 @@ Parameters
 
     This parameter may be used in conjunction with the ``-f`` parameter.
 
-**--encoding[="..."]**
-    ???
+**--encoding**
+    *Starting with 2.0.0a12*, Sets the encoding type of your source files.
+
+    Add this parameter if the encoding of your source files is not UTF-8.
+    Charset detection is not available, because it would be inaccurate,
+    so you must use this parameter instead.
 
 **-e|--extensions[="..."]**
     ???
@@ -112,18 +116,3 @@ Parameters
         Currently the transformer will add a link to the given file's source
         next to the name of the file in the top. In the future we will add
         direct links from elements to the line in this source code file.
-
-**-p|--progressbar**
-    While running, show a short summary of generation progress.
-
-    When this parameter is provided the default lengthy command line output is
-    replaced with a short overview of the generation status.
-
-**--template[="..."]**
-    Specify a template name, or a path to a directory where a custom template resides.
-
-**--parseprivate**
-    Parse items marked with @internal despite their visibility.
-
-**-c|--config[="..."]**
-    Config file to use when parsing.
