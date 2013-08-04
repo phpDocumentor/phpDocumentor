@@ -70,19 +70,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Parser\Parser::__construct
-     */
-    public function testIfTheZendEncodingSettingInfluencesTheDefaultValueForEncoding()
-    {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this->markTestSkipped('zend.script_encoding is not used before PHP 5.4');
-        }
-        ini_set('zend.script_encoding', 'utf-7');
-        $parser = new Parser();
-        $this->assertEquals('utf-7', $parser->getEncoding());
-    }
-
-    /**
      * Tests whether the doValidation() and setValidate methods function
      * properly.
      *
