@@ -57,5 +57,10 @@
     "config": {
         "bin-dir":"bin/"
     },
-    "bin": ["bin/phpdoc.php"]
+    "bin": ["bin/phpdoc.php"],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        }
+    }
 }
