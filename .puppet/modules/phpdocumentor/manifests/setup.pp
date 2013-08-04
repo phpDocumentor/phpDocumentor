@@ -1,13 +1,15 @@
 class phpdocumentor::setup {
-    package{["git", "graphviz", "python-setuptools", "make", "texlive-latex-recommended", "texlive-fonts-recommended", "openjdk-6-jre"]:
+    package{["git", "graphviz", "python-setuptools", "make", "texlive-latex-recommended", "texlive-fonts-recommended", "openjdk-6-jre", "mongodb"]:
         ensure => present
     }
 
     include php
     include apache
     php::module { "xsl": }
+    php::module { "mongo": }
     php::module { "intl": }
     php::module { "xdebug": }
+    php::module { "xhprof": }
 
     class { 'composer':
       command_name => 'composer',
