@@ -35,7 +35,6 @@
             highLowerBound="70" />
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
     </logging>
-    </logging>
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"
             file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"></listener>
