@@ -15,13 +15,13 @@ namespace phpDocumentor\Parser;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\DebugEvent;
-use phpDocumentor\Event\LogEvent;
-use Psr\Log\LogLevel;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\FileReflector;
+use Psr\Log\LogLevel;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -380,7 +380,7 @@ class Parser
         try {
             $file = $this->createFileReflector($builder, $filename);
             if (!$file) {
-                $this->log('>> Skipped file ' . $file->getFilename() . ' as no modifications were detected');
+                $this->log('>> Skipped file ' . $filename . ' as no modifications were detected');
                 return;
             }
 
