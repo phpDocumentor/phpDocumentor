@@ -34,7 +34,7 @@
         "phpdocumentor/graphviz":            "1.*@beta",
         "phpdocumentor/fileset":             "1.*@beta",
         "phpdocumentor/reflection":          "~1.0",
-        "phpdocumentor/reflection-docblock": "~2.0@dev",
+        "phpdocumentor/reflection-docblock": "~2.0.*@dev",
 
         "phpdocumentor/template-abstract":        "~1.2",
         "phpdocumentor/template-clean":           "~1.0",
