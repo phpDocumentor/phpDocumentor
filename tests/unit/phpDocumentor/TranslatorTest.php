@@ -30,6 +30,9 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     /** @var string Name of the file where an example translation file is stored. */
     protected $filename;
 
+    /** @var string Name of the file where an example domain specific translation file is stored. */
+    protected $domainFilename;
+
     /**
      * Instantiates a new Translator for use as fixture.
      *
@@ -40,12 +43,22 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $this->fixture = new Translator();
 
         $this->filename = sys_get_temp_dir() . '/en.php';
+        $this->domainFilename = sys_get_temp_dir() . '/domain.en.php';
         file_put_contents(
             $this->filename,
             <<<TRANSLATION_FILE
 <?php
 return array(
     'KEY' => 'value',
+);
+TRANSLATION_FILE
+        );
+        file_put_contents(
+            $this->domainFilename,
+            <<<TRANSLATION_FILE
+<?php
+return array(
+    'KEY' => 'domain',
 );
 TRANSLATION_FILE
         );
@@ -129,5 +142,16 @@ TRANSLATION_FILE
         $this->fixture->addTranslationFolder(dirname($this->filename));
 
         $this->assertEquals(self::TEST_VALUE, $this->fixture->translate(self::TEST_KEY));
+    }
+
+    /**
+     * @covers phpDocumentor\Translator::addTranslationFolder
+     * @covers phpDocumentor\Translator::translate
+     */
+    public function testCanUseTranslationsFromASpecificDomainOrCatalogue()
+    {
+        $this->fixture->addTranslationsUsingPattern(dirname($this->domainFilename), 'domain');
+
+        $this->assertEquals('domain', $this->fixture->translate(self::TEST_KEY, 'domain'));
     }
 }
