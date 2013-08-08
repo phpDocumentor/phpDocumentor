@@ -1,3 +1,9 @@
+2013/08/08: Version 2.0.1
+-------------------------
+
+FIXED:      Generated phar files could not be set to executable and ran.
+FIXED:      Missing File-level DocBlocks were not detected.
+
 2013/08/03: Version 2.0.0
 -------------------------
 

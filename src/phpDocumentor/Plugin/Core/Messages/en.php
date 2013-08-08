@@ -10,7 +10,7 @@
  */
 
 return array(
-    'PPC:ERR-50000' => 'No DocBlock was found for %s',
+    'PPC:ERR-50000' => 'No summary was found for this file',
     'PPC:ERR-50001' => 'Only one @package tag is allowed',
     'PPC:ERR-50002' => 'Only one @subpackage tag is allowed',
     'PPC:ERR-50004' => 'Cannot have a @subpackage when a @package tag is not present',
