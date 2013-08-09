@@ -11,11 +11,10 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Functions;
 
-use Psr\Log\LogLevel;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Descriptor\Validator\ValidatorInterface;
+use Psr\Log\LogLevel;
 
-class IsReturnTypeNotAnIdeDefault implements ValidatorInterface
+class IsReturnTypeNotAnIdeDefault
 {
     public function validate($element)
     {

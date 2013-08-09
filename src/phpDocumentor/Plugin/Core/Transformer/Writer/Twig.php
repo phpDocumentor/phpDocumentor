@@ -340,7 +340,7 @@ class Twig extends WriterAbstract implements Routable
 
             $rule = new ForFileProxy($rule);
             $url  = $rule->generate($node);
-            if ($url === false || $url[0] !== '/') {
+            if ($url === false || $url[0] !== DIRECTORY_SEPARATOR) {
                 return false;
             }
             $path = $transformation->getTransformer()->getTarget() . str_replace('/', DIRECTORY_SEPARATOR, $url);
@@ -358,9 +358,10 @@ class Twig extends WriterAbstract implements Routable
             $path
         );
 
+
         // replace any \ with the directory separator to be compatible with the
         // current filesystem and allow the next file_exists to do its work
-        $destination = str_replace('\\', DIRECTORY_SEPARATOR, $destination);
+        $destination = str_replace(array('/','\\'), DIRECTORY_SEPARATOR, $destination);
 
         // create directory if it does not exist yet
         if (!file_exists(dirname($destination))) {

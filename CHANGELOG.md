@@ -5,6 +5,17 @@
 REMOVED:   #814; removed ParserAbstract base class for Parser
 ```
 
+2013/08/08: Version 2.0.1
+-------------------------
+
+```
+FIXED:      Generated phar files could not be set to executable and ran.
+FIXED:      Missing File-level DocBlocks were not detected.
+FIXED:      Classes and namespace were not generated in Windows.
+FIXED:      Notices were thrown with the Clean template.
+FIXED:      In windows were path calculated incorrectly.
+```
+
 2013/08/03: Version 2.0.0
 -------------------------
 

@@ -11,18 +11,17 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Functions;
 
-use Psr\Log\LogLevel;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Descriptor\Validator\ValidatorInterface;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 use phpDocumentor\Reflection\FunctionReflector;
+use Psr\Log\LogLevel;
 
 /**
  * @todo break this validator up in subvalidators for each Error
  */
-class AreAllArgumentsValid implements ValidatorInterface
+class AreAllArgumentsValid
 {
     public function validate($element)
     {
