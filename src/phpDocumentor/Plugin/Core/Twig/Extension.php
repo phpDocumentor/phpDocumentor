@@ -239,7 +239,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     public function convertToRootPath($relative_path)
     {
         // get the path to the root directory
-        $path_parts = explode('/', $this->getDestination());
+        $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
         if (count($path_parts) > 1) {
             $path_to_root = implode('/', array_fill(0, count($path_parts) -1, '..')).'/';
         } else {
