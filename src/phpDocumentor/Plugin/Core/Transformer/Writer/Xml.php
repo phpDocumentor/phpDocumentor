@@ -638,7 +638,7 @@ class Xml extends WriterAbstract implements Translatable
         
         $child->setAttribute(
             'description',
-            htmlspecialchars(trim($description), ENT_QUOTES, 'UTF-8')
+            str_replace('&', '&amp;', trim($description))
         );
 
         if (method_exists($tag, 'getTypes')) {
@@ -657,18 +657,21 @@ class Xml extends WriterAbstract implements Translatable
             $child->setAttribute('type', rtrim($typeString, '|'));
         }
         if (method_exists($tag, 'getVariableName')) {
-            $child->setAttribute('variable', $tag->getVariableName());
+            $child->setAttribute(
+                'variable',
+                str_replace('&', '&amp;', $tag->getVariableName())
+            );
         }
         if (method_exists($tag, 'getReference')) {
             $child->setAttribute(
                 'link',
-                htmlspecialchars($tag->getReference(), ENT_QUOTES, 'UTF-8')
+                str_replace('&', '&amp;', $tag->getReference())
             );
         }
         if (method_exists($tag, 'getLink')) {
             $child->setAttribute(
                 'link',
-                htmlspecialchars($tag->getLink(), ENT_QUOTES, 'UTF-8')
+                str_replace('&', '&amp;', $tag->getLink())
             );
         }
     }
