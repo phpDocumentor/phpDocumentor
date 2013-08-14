@@ -644,8 +644,15 @@ class Xml extends WriterAbstract implements Translatable
         if (method_exists($tag, 'getTypes')) {
             $typeString = '';
             foreach ($tag->getTypes() as $type) {
-                $child->appendChild(new \DOMElement('type', $type));
                 $typeString .= $type . '|';
+                $typeNode = $child->appendChild(new \DOMElement('type', $type));
+                $lastSlashPos = strrpos($type, '\\');
+                if (false !== $lastSlashPos) {
+                    $typeNode->setAttribute(
+                        'link',
+                        substr($type, $lastSlashPos + 1) . '.html'
+                    );
+                }
             }
             $child->setAttribute('type', rtrim($typeString, '|'));
         }
