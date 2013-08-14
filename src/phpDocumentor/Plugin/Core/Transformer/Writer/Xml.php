@@ -626,8 +626,20 @@ class Xml extends WriterAbstract implements Translatable
         $parent->appendChild($child);
 
         $child->setAttribute('name', $tag->getName());
-        $child->setAttribute('description', htmlspecialchars($tag->getDescription(), ENT_QUOTES, 'UTF-8'));
         $child->setAttribute('line', $parent->getAttribute('line'));
+        
+        $description = '';
+        //@version, @deprecated, @since
+        if (method_exists($tag, 'getVersion')) {
+            $description .= $tag->getVersion() . ' ';
+        }
+        //TODO: Other previously unsupported tags are to be "serialized" here.
+        $description .= $tag->getDescription();
+        
+        $child->setAttribute(
+            'description',
+            htmlspecialchars(trim($description), ENT_QUOTES, 'UTF-8')
+        );
 
         if (method_exists($tag, 'getTypes')) {
             $typeString = '';
@@ -640,7 +652,18 @@ class Xml extends WriterAbstract implements Translatable
         if (method_exists($tag, 'getVariableName')) {
             $child->setAttribute('variable', $tag->getVariableName());
         }
-        // TODO: Serialize specific tag information
+        if (method_exists($tag, 'getReference')) {
+            $child->setAttribute(
+                'link',
+                htmlspecialchars($tag->getReference(), ENT_QUOTES, 'UTF-8')
+            );
+        }
+        if (method_exists($tag, 'getLink')) {
+            $child->setAttribute(
+                'link',
+                htmlspecialchars($tag->getLink(), ENT_QUOTES, 'UTF-8')
+            );
+        }
     }
 
     /**
