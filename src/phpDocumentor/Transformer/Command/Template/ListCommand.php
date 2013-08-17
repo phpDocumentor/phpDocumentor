@@ -67,7 +67,7 @@ HELP
     protected function getTemplateNames()
     {
         // TODO: this directory needs to come from the parameter set in the DIC in the ServiceProvider
-        $template_dir = dirname(__FILE__) . '/../../../../data/templates';
+        $template_dir = dirname(__FILE__) . '/../../../../../data/templates';
         if (!file_exists($template_dir)) {
             //Vendored installation
             $template_dir = dirname(__FILE__) . '/../../../../../../templates';
