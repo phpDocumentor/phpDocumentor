@@ -13,11 +13,11 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Translator;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
+use phpDocumentor\Translator;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -52,16 +52,14 @@ class ServiceProvider implements ServiceProviderInterface
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
-
-        /** @var Dispatcher $dispatcher  */
-        $dispatcher = $app['event_dispatcher'];
-        $dispatcher->addListener('reflection.docblock-extraction.post', array($this, 'validateDocBlocks'));
     }
 
     /**
      * Checks all phpDocumentor whether they match the given rules.
      *
      * @param PostDocBlockExtractionEvent $data Event object containing the parameters.
+     *
+     * @todo convert this method to the new style validators; this method is not invoked anymore
      *
      * @return void
      */
