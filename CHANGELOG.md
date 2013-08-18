@@ -1,3 +1,9 @@
+2013/08/18: Version 2.0.2
+-------------------------
+
+FIXED:      Fatal error with some of the old-style validations
+FIXED:      Template:list command errors due to an incorrect path
+
 2013/08/08: Version 2.0.1
 -------------------------
 
