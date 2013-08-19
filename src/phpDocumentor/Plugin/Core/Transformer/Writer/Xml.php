@@ -253,7 +253,7 @@ class Xml extends WriterAbstract implements Translatable
         $namespace = $constant->getNamespace()
             ? $constant->getNamespace()
             : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
+        $child->setAttribute('namespace', ltrim($namespace, '\\') ?: 'Default');
         $child->setAttribute('line', $constant->getLine());
 
         $child->appendChild(new \DOMElement('name', $constant->getName()));
@@ -283,7 +283,7 @@ class Xml extends WriterAbstract implements Translatable
         $namespace = $function->getNamespace()
             ? $function->getNamespace()
             : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
+        $child->setAttribute('namespace', ltrim($namespace, '\\') ?: 'Default');
         $child->setAttribute('line', $function->getLine());
 
         $child->appendChild(new \DOMElement('name', $function->getName()));
@@ -378,7 +378,7 @@ class Xml extends WriterAbstract implements Translatable
         }
 
         $namespace = $class->getNamespace()->getFullyQualifiedStructuralElementName();
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
+        $child->setAttribute('namespace', ltrim($namespace, '\\') ?: 'Default');
         $child->setAttribute('line', $class->getLine());
 
         $child->appendChild(new \DOMElement('name', $class->getName()));
@@ -437,8 +437,8 @@ class Xml extends WriterAbstract implements Translatable
         $child->setAttribute('final', $trait->isFinal() ? 'true' : 'false');
         $child->setAttribute('abstract', $trait->isAbstract() ? 'true' : 'false');
 
-        $namespace = $trait->getNamespace();
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
+        $namespace = $trait->getNamespace()->getFullyQualifiedStructuralElementName();
+        $child->setAttribute('namespace', ltrim($namespace, '\\') ?: 'Default');
         $child->setAttribute('line', $trait->getLine());
 
         $child->appendChild(new \DOMElement('name', $trait->getName()));
@@ -490,7 +490,7 @@ class Xml extends WriterAbstract implements Translatable
         }
 
         $namespace = $interface->getNamespace()->getFullyQualifiedStructuralElementName();
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
+        $child->setAttribute('namespace', ltrim($namespace, '\\') ?: 'Default');
         $child->setAttribute('line', $interface->getLine());
 
         $child->appendChild(new \DOMElement('name', $interface->getName()));
@@ -525,10 +525,10 @@ class Xml extends WriterAbstract implements Translatable
 
         $child->setAttribute('line', $property->getLine());
 
-        $namespaceFqnn = $property->getNamespace()
+        $namespace = $property->getNamespace()
             ? $property->getNamespace()->getFullyQualifiedStructuralElementName()
             : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', $namespaceFqnn);
+        $child->setAttribute('namespace', ltrim($namespace, '\\') ?: 'Default');
 
         $child->appendChild(new \DOMElement('name', '$' . $property->getName()));
         $child->appendChild(new \DOMElement('default'))
@@ -555,10 +555,10 @@ class Xml extends WriterAbstract implements Translatable
         $child->setAttribute('static', $method->isStatic() ? 'true' : 'false');
         $child->setAttribute('visibility', $method->getVisibility());
 
-        $namespaceFqnn = $method->getNamespace()
+        $namespace = $method->getNamespace()
             ? $method->getNamespace()->getFullyQualifiedStructuralElementName()
             : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', $namespaceFqnn);
+        $child->setAttribute('namespace', ltrim($namespace, '\\') ?: 'Default');
         $child->setAttribute('line', $method->getLine());
 
         $child->appendChild(new \DOMElement('name', $method->getName()));
@@ -627,7 +627,7 @@ class Xml extends WriterAbstract implements Translatable
 
         $child->setAttribute('name', $tag->getName());
         $child->setAttribute('line', $parent->getAttribute('line'));
-        
+
         $description = '';
         //@version, @deprecated, @since
         if (method_exists($tag, 'getVersion')) {
@@ -635,7 +635,7 @@ class Xml extends WriterAbstract implements Translatable
         }
         //TODO: Other previously unsupported tags are to be "serialized" here.
         $description .= $tag->getDescription();
-        
+
         $child->setAttribute(
             'description',
             str_replace('&', '&amp;', trim($description))
