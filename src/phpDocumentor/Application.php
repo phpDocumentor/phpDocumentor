@@ -57,6 +57,7 @@ class Application extends Cilex
         $this->addLogging();
         $this->setTimezone();
         $this->addEventDispatcher();
+        $this->addTranslator();
 
         $this['console']->getHelperSet()->set(new ProgressHelper());
 
@@ -278,6 +279,27 @@ class Application extends Cilex
             }
         );
     }
+    
+    /**
+     * Adds the message translator to phpDocumentor's container.
+     * 
+     * @return void
+     */
+    protected function addTranslator()
+    {
+        $config = $this['config']->toArray();
+        
+        $this['translator.locale'] = isset($config['translator']['locale']) ? $config['translator']['locale'] : 'en';
+        $this['translator'] = $this->share(
+            function ($app) {
+                $translator = new Translator();
+                $translator->setLocale($this['translator.locale']);
+                
+                return $translator;
+            }
+        );
+    }
+    
     /**
      * Adds the command to phpDocumentor that belong to the Project namespace.
      *
