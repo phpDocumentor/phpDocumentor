@@ -167,9 +167,25 @@ class Transformation
             }
         }
 
+        // counter a BC break that we introduced in 2.0 stable; we removed the notion of global assets
+        // to be able to provide composer integration
+        // TODO: remove in version 3.0
+        if (strpos($this->source, 'templates/') !== 0) {
+            $this->source = 'templates/abstract/' . $this->source;
+            trigger_error(
+                'Using shared assets in a template is deprecated and will be removed in version 3.0',
+                E_USER_DEPRECATED
+            );
+        }
+
         // check whether the file exists in the phpDocumentor project directory
         if (file_exists(__DIR__.'/../../../'.$this->source)) {
             return __DIR__ . '/../../../' .$this->source;
+        }
+
+        // in case of a composer installation
+        if (file_exists(__DIR__ . '/../../../../templates')) {
+            return __DIR__ . '/../../../../' . $this->source;
         }
 
         // TODO: replace this as it breaks the component stuff

@@ -49,6 +49,7 @@ Learn about phpDocumentor
 
             | :doc:`Table of Contents <for-developers/index>`
             | :doc:`for-developers/introduction`
+            | :doc:`for-developers/plugins`
             | :doc:`for-developers/profiling`
             | :doc:`for-developers/specifications`
 

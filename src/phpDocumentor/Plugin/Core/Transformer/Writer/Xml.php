@@ -96,10 +96,11 @@ class Xml extends WriterAbstract implements Translatable
         $document_element = new \DOMElement('project');
         $this->xml->appendChild($document_element);
 
+        $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
         $transformer = $transformation->getTransformer();
-//        var_dump($project);
+
         foreach ($project->getFiles() as $file) {
             $this->buildFile($document_element, $file, $transformer);
         }
@@ -542,7 +543,7 @@ class Xml extends WriterAbstract implements Translatable
      * @param \DOMElement     $parent Element to augment.
      * @param MethodDescriptor $method Element to export.
      *
-     * @return void
+     * @return \DOMElement
      */
     public function buildMethod(\DOMElement $parent, MethodDescriptor $method)
     {
@@ -568,6 +569,8 @@ class Xml extends WriterAbstract implements Translatable
         foreach ($method->getArguments() as $argument) {
             $this->buildArgument($child, $argument);
         }
+
+        return $child;
     }
 
     /**
@@ -593,7 +596,7 @@ class Xml extends WriterAbstract implements Translatable
         $parent->appendChild($child);
 
         $child->setAttribute('line', $element->getLine());
-        $parent->setAttribute('package', $element->getPackage());
+        $parent->setAttribute('package', ltrim($element->getPackage(), '\\'));
 
         $this->addDescription($child, $element);
         $this->addLongDescription($child, $element);
@@ -623,7 +626,7 @@ class Xml extends WriterAbstract implements Translatable
         $parent->appendChild($child);
 
         $child->setAttribute('name', $tag->getName());
-        $child->setAttribute('description', $tag->getDescription());
+        $child->setAttribute('description', htmlspecialchars($tag->getDescription(), ENT_QUOTES, 'UTF-8'));
         $child->setAttribute('line', $parent->getAttribute('line'));
 
         if (method_exists($tag, 'getTypes')) {
@@ -734,9 +737,7 @@ class Xml extends WriterAbstract implements Translatable
         $behaviour->process($this->xml);
         $this->buildPackageTree($this->xml);
         $this->buildNamespaceTree($this->xml);
-        $this->buildMarkerList($this->xml);
         $this->buildDeprecationList($this->xml);
-        //$this->filterVisibility($this->xml, $this->parser->getVisibility());
     }
 
     /**
@@ -792,29 +793,6 @@ class Xml extends WriterAbstract implements Translatable
     }
 
     /**
-     * Retrieves a list of all marker types and adds them to the XML for
-     * easy referencing.
-     *
-     * @param \DOMDocument $dom Markers are extracted and a summary inserted in
-     *     this object.
-     *
-     * @todo this functionality should be moved to a Compiler pass that builds a list of markers.
-     *
-     * @return void
-     */
-    protected function buildMarkerList(\DOMDocument $dom)
-    {
-        //foreach ($this->parser->getMarkers() as $marker) {
-        //    $marker = strtolower($marker);
-        //    $nodes = $this->getNodeListForTagBasedQuery($dom, $marker);
-
-        //    $node = new \DOMElement('marker', $marker);
-        //    $dom->documentElement->appendChild($node);
-        //    $node->setAttribute('count', $nodes->length);
-        //}
-    }
-
-    /**
      * Adds a node to the xml for deprecations and the count value
      *
      * @param \DOMDocument $dom Markers are extracted and a summary inserted in this object.
@@ -853,6 +831,7 @@ class Xml extends WriterAbstract implements Translatable
         $query .= '/project/file/constant/docblock/tag[@name="'.$marker.'"]';
 
         $nodes = $xpath->query($query);
+
         return $nodes;
     }
 
@@ -910,58 +889,6 @@ class Xml extends WriterAbstract implements Translatable
                 : $name;
             $node->setAttribute('full_name', $fullName);
             $this->generateNamespaceElements($sub_namespaces, $node, $node_name);
-        }
-    }
-
-    /**
-     * Filter the function visibility based on options used
-     *
-     * @param \DOMDocument $dom        Markers are extracted and a summary
-     *     inserted in this object.
-     * @param array        $visibility The visibility we want to filter on
-     *
-     * @return void
-     */
-    protected function filterVisibility($dom, array $visibility)
-    {
-        $visibilityQry = '//*[';
-        $accessQry = '//tag[@name=\'access\' and (';
-        foreach ($visibility as $key => $vis) {
-            $visibilityQry .= '(@visibility!=\''.$vis.'\')';
-            $accessQry .= '@description!=\''.$vis.'\'';
-
-            if (($key + 1) < count($visibility)) {
-                $visibilityQry .= ' and ';
-                $accessQry .= ' and ';
-            }
-
-        }
-        $visibilityQry .= ']';
-        $accessQry .= ')]';
-
-        $qry = '('.$visibilityQry.') | ('.$accessQry.')';
-
-        $xpath = new \DOMXPath($dom);
-        $nodes = $xpath->query($qry);
-
-        /** @var \DOMElement $node */
-        foreach ($nodes as $node) {
-            if (($node->nodeName == 'tag')
-                && ($node->parentNode->parentNode->parentNode)
-            ) {
-                $remove = $node->parentNode->parentNode;
-
-                // if a parent was removed before this child we get warnings
-                // that we cannot detect before hand. So we check for a nodeName
-                // and if thar returns null then the node has been deleted in
-                // the mean time.
-                if (@$node->nodeName === null) {
-                    continue;
-                }
-                $node->parentNode->parentNode->parentNode->removeChild($remove);
-            } else {
-                $node->parentNode->removeChild($node);
-            }
         }
     }
 }

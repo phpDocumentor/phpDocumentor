@@ -12,7 +12,6 @@
 namespace phpDocumentor\Transformer\Command\Template;
 
 use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -67,9 +66,11 @@ HELP
      */
     protected function getTemplateNames()
     {
+        // TODO: this directory needs to come from the parameter set in the DIC in the ServiceProvider
         $template_dir = dirname(__FILE__) . '/../../../../data/templates';
         if (!file_exists($template_dir)) {
-            $template_dir = dirname(__FILE__) . '/../../../../../data/templates';
+            //Vendored installation
+            $template_dir = dirname(__FILE__) . '/../../../../../../templates';
         }
 
         /** @var \RecursiveDirectoryIterator $files */
@@ -88,6 +89,7 @@ HELP
             $template_names[] = $name;
             $files->next();
         }
+
         return $template_names;
     }
 }

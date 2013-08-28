@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
@@ -33,6 +32,6 @@ class NamespaceDescriptor implements UrlGeneratorInterface
             $name = 'default';
         }
 
-        return DIRECTORY_SEPARATOR . 'namespaces' . DIRECTORY_SEPARATOR . $name .'.html';
+        return '/namespaces/' . $name .'.html';
     }
 }

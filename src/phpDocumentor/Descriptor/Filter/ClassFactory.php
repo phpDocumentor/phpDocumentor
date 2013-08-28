@@ -5,7 +5,6 @@
 
 namespace phpDocumentor\Descriptor\Filter;
 
-
 use Zend\Filter\FilterChain;
 
 class ClassFactory

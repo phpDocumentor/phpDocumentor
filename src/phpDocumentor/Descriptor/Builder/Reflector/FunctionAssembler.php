@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\FunctionReflector;
 
 /**
@@ -30,11 +29,9 @@ class FunctionAssembler extends AssemblerAbstract
     public function create($data)
     {
         $functionDescriptor = new FunctionDescriptor();
-        $functionDescriptor->setFullyQualifiedStructuralElementName(
-            '\\' . $data->getNamespace() . '\\' . $data->getName() . '()'
-        );
+        $functionDescriptor->setFullyQualifiedStructuralElementName($data->getName() . '()');
         $functionDescriptor->setName($data->getShortName());
-        $functionDescriptor->setLocation('', $data->getLinenumber());
+        $functionDescriptor->setLine($data->getLinenumber());
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $functionDescriptor->setNamespace(

@@ -6,7 +6,6 @@
 namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Zend\Filter\AbstractFilter;
 

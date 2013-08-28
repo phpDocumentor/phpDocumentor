@@ -44,7 +44,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project)
     {
-        $project->getIndexes()->elements['~\\'] = $project->getNamespace();
+        $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->get('namespaces', new Collection())->add($project->getNamespace());
 
         foreach ($project->getFiles() as $file) {
@@ -74,7 +74,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            $namespaceName = (string)$element->getNamespace();
+            $namespaceName = (string) $element->getNamespace();
 
             // ensure consistency by trimming the slash prefix and then reappending it.
             $namespaceIndexName = '~\\' . ltrim($namespaceName, '\\');

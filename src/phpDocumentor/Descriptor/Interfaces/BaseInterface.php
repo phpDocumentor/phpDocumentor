@@ -9,6 +9,7 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\FileDescriptor;
 
 interface BaseInterface
 {
@@ -61,12 +62,12 @@ interface BaseInterface
     public function getDescription();
 
     /**
-     * @param string $file
+     * @param FileDescriptor $file
      * @param int    $line
      *
      * @return void
      */
-    public function setLocation($file, $line = 0);
+    public function setLocation(FileDescriptor $file, $line = 0);
 
     /**
      * @return string

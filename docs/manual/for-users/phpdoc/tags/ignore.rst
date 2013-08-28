@@ -12,7 +12,7 @@ Syntax
 Description
 -----------
 
-The @deprecated tag tells phpDocumentor that the :term:`Structural Elements` associated
+The @ignore tag tells phpDocumentor that the :term:`Structural Elements` associated
 with the tag are not to be processed. An example of use might be to prevent
 duplicate documenting of conditional constants.
 

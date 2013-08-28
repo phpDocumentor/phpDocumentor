@@ -10,7 +10,6 @@
  * @link      http://phpdoc.org
  */
 
-
 /**
  * @uses \phpDocumentor\Bootstrap
  */

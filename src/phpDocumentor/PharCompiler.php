@@ -82,6 +82,7 @@ class PharCompiler
         echo '>> Initializing new phar archive' . PHP_EOL;
         $phar = new \Phar($pharFile, 0, 'phpDocumentor');
         $phar->setSignatureAlgorithm(\Phar::SHA1);
+
         return $phar;
     }
 
@@ -196,8 +197,11 @@ class PharCompiler
      */
     protected function getCliStub()
     {
-        return "<?php " . $this->getLicense()
-            . " require_once __DIR__.'/bin/phpdoc.php'; __HALT_COMPILER();";
+        return <<<'PHP'
+#!/usr/bin/env php
+<?php
+require_once __DIR__.'/bin/phpdoc.php'; __HALT_COMPILER();
+PHP;
     }
 
     /**
@@ -207,9 +211,12 @@ class PharCompiler
      */
     protected function getWebStub()
     {
-        return "<?php " . $this->getLicense()
-            . "throw new \LogicException('This PHAR file can only be used from "
-            ."the CLI.'); __HALT_COMPILER();";
+        return <<<'PHP'
+#!/usr/bin/env php
+"<?php
+throw new \LogicException('This PHAR file can only be used from the CLI.');
+__HALT_COMPILER();
+PHP;
     }
 
     /**

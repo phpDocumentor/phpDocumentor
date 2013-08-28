@@ -1,5 +1,6 @@
 .idea
 bin/behat
+bin/phpcs
 bin/phpunit
 build.properties
 build/*
@@ -11,3 +12,4 @@ composer.phar
 data/templates/*
 .vagrant
 composer.phar
+/nbproject/private/

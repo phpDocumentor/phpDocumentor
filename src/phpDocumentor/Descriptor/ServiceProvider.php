@@ -13,7 +13,6 @@ namespace phpDocumentor\Descriptor;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler;
@@ -23,26 +22,29 @@ use phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\GenericTagAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler as PropertyTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler;
-use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
-use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
-use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
-use phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler as PropertyTagAssembler;
 use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
-use phpDocumentor\Descriptor\Filter\StripInternal;
 use phpDocumentor\Descriptor\Filter\StripIgnore;
+use phpDocumentor\Descriptor\Filter\StripInternal;
+use phpDocumentor\Descriptor\ProjectAnalyzer;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
-use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\ClassReflector;
+use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
 use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
@@ -59,15 +61,11 @@ use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
 use phpDocumentor\Reflection\TraitReflector;
-use phpDocumentor\Descriptor\ProjectAnalyzer;
-
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
-
-use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator;
-use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 use Zend\Cache\Storage\Adapter\Filesystem;
+use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
 
 /**
  * This provider is responsible for registering the Descriptor component with the given Application.
@@ -123,12 +121,13 @@ class ServiceProvider implements ServiceProviderInterface
         $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
         $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
         $paramMatcher       = function ($criteria) { return $criteria instanceof ParamTag; };
+        $throwsMatcher      = function ($criteria) { return $criteria instanceof ThrowsTag; };
         $returnMatcher      = function ($criteria) { return $criteria instanceof ReturnTag; };
+        $usesMatcher        = function ($criteria) { return $criteria instanceof UsesTag; };
         $seeMatcher         = function ($criteria) { return $criteria instanceof SeeTag; };
         $sinceMatcher       = function ($criteria) { return $criteria instanceof SinceTag; };
-        $throwsMatcher      = function ($criteria) { return $criteria instanceof ThrowsTag; };
-        $usesMatcher        = function ($criteria) { return $criteria instanceof UsesTag; };
         $varMatcher         = function ($criteria) { return $criteria instanceof VarTag; };
+        $versionMatcher     = function ($criteria) { return $criteria instanceof Tag\VersionTag; };
 
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
 
@@ -147,11 +146,13 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
         $factory->register($paramMatcher, new ParamAssembler());
+        $factory->register($throwsMatcher, new ThrowsAssembler());
         $factory->register($returnMatcher, new ReturnAssembler());
+        $factory->register($usesMatcher, new UsesAssembler());
         $factory->register($seeMatcher, new SeeAssembler());
         $factory->register($sinceMatcher, new SinceAssembler());
-        $factory->register($throwsMatcher, new ThrowsAssembler());
-        $factory->register($usesMatcher, new UsesAssembler());
+        $factory->register($varMatcher, new VarAssembler());
+        $factory->register($versionMatcher, new VersionAssembler());
 
         $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
 
@@ -194,20 +195,54 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function attachValidators(Validator $validator)
     {
+        /** @var ClassMetadata $fileMetadata */
+        $fileMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
+        /** @var ClassMetadata $constantMetadata */
         $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
+        /** @var ClassMetadata $functionMetadata */
         $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
+        /** @var ClassMetadata $classMetadata */
         $classMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\ClassDescriptor');
+        /** @var ClassMetadata $interfaceMetadata */
         $interfaceMetadata = $validator->getMetadataFor('phpDocumentor\Descriptor\InterfaceDescriptor');
+        /** @var ClassMetadata $traitMetadata */
         $traitMetadata     = $validator->getMetadataFor('phpDocumentor\Descriptor\TraitDescriptor');
+        /** @var ClassMetadata $propertyMetadata */
         $propertyMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\PropertyDescriptor');
+        /** @var ClassMetadata $methodMetadata */
         $methodMetadata    = $validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
 
+        $fileMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50000')));
         $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
-        $propertyMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50007')));
+        $propertyMetadata->addConstraint(new phpDocAssert\Property\HasSummary());
         $methodMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50008')));
         $interfaceMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50009')));
         $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
         $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
+
+        $functionMetadata->addGetterConstraint(
+            'response',
+            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
+        );
+        $methodMetadata->addGetterConstraint(
+            'response',
+            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
+        );
+
+        $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
+
+        $classMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasSingleSubpackage());
+
+        $classMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
+        $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
+        $traitMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
+        $fileMetadata->addConstraint(new phpDocAssert\Classes\HasPackageWithSubpackage());
 
         return $validator;
     }

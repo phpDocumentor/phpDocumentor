@@ -13,15 +13,6 @@ namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
 use phpDocumentor\Translator;
-use phpDocumentor\Descriptor\Validation;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasPackageWithSubpackage;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasShortDescription;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasSinglePackage;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Classes\HasSingleSubpackage;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Functions\AreAllArgumentsValid;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Functions\IsReturnTypeNotAnIdeDefault;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Generic\HasDocBlock;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Properties\HasShortDescription as PropertyHasShortDescription;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
 

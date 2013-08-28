@@ -26,7 +26,7 @@ abstract class DescriptorAbstract implements Filterable
     protected $namespace;
 
     /** @var string $package */
-    protected $package;
+    protected $package = '';
 
     /** @var string */
     protected $summary = '';
@@ -34,8 +34,8 @@ abstract class DescriptorAbstract implements Filterable
     /** @var string */
     protected $description = '';
 
-    /** @var string */
-    protected $path = '';
+    /** @var FileDescriptor */
+    protected $fileDescriptor;
 
     /** @var int */
     protected $line = 0;
@@ -148,7 +148,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getDescription()
     {
-        // if the summary is not set, inherit it from the parent
+        // if the description is not set, inherit it from the parent
         if (!$this->description && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getDescription();
         }
@@ -157,14 +157,14 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * @param string $file
+     * @param FileDescriptor $file
      * @param int    $line
      *
      * @return void
      */
-    public function setLocation($file, $line = 0)
+    public function setLocation(FileDescriptor $file, $line = 0)
     {
-        $this->path = $file;
+        $this->fileDescriptor = $file;
         $this->line = $line;
     }
 
@@ -173,7 +173,15 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getPath()
     {
-        return $this->path;
+        return $this->fileDescriptor ? $this->fileDescriptor->getPath() : '';
+    }
+
+    /**
+     * @return FileDescriptor
+     */
+    public function getFile()
+    {
+        return $this->fileDescriptor;
     }
 
     /**
@@ -182,6 +190,18 @@ abstract class DescriptorAbstract implements Filterable
     public function getLine()
     {
         return $this->line;
+    }
+
+    /**
+     * Sets the line number for this element's location in the source file.
+     *
+     * @param integer $lineNumber
+     *
+     * @return void
+     */
+    public function setLine($lineNumber)
+    {
+        $this->line = $lineNumber;
     }
 
     /**
@@ -224,14 +244,14 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * @return string
+     * @return Collection
      */
     public function getSubPackage()
     {
-        /** @var Collection $version */
+        /** @var Collection $subpackage */
         $subpackage = $this->getTags()->get('subpackage', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the subpackage is not set, inherit it from the parent
         if ($subpackage->count() == 0
             && ($this instanceof ChildInterface)
             && ($this->getParent() instanceof self)
@@ -240,8 +260,9 @@ abstract class DescriptorAbstract implements Filterable
             return $this->getParent()->getSubPackage();
         }
 
-        return $subpackage;
+        $subpackageDescriptor = current(current($subpackage));
 
+        return $subpackageDescriptor ? $subpackageDescriptor->getDescription() : '';
     }
 
     /**
@@ -254,7 +275,7 @@ abstract class DescriptorAbstract implements Filterable
         /** @var Collection $author */
         $author = $this->getTags()->get('author', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the author is not set, inherit it from the parent
         if ($author->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getAuthor();
         }
@@ -272,7 +293,7 @@ abstract class DescriptorAbstract implements Filterable
         /** @var Collection $version */
         $version = $this->getTags()->get('version', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the version is not set, inherit it from the parent
         if ($version->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getVersion();
         }
@@ -290,7 +311,7 @@ abstract class DescriptorAbstract implements Filterable
         /** @var Collection $copyright */
         $copyright = $this->getTags()->get('copyright', new Collection());
 
-        // if the package is not set, inherit it from the parent
+        // if the copyright is not set, inherit it from the parent
         if ($copyright->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
             return $this->getParent()->getCopyright();
         }

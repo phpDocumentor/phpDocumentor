@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Reflection\ClassReflector\MethodReflector;
 
 /**
@@ -48,7 +47,7 @@ class MethodAssembler extends AssemblerAbstract
             $methodDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 
-        $methodDescriptor->setLocation('', $data->getLinenumber());
+        $methodDescriptor->setLine($data->getLinenumber());
 
         return $methodDescriptor;
     }

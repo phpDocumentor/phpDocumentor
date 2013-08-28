@@ -14,6 +14,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Plugin\Core\Twig\Extension;
+use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
@@ -135,6 +136,7 @@ class Twig extends WriterAbstract implements Routable
             if (!is_array($node) && (!$node instanceof \Traversable)) {
                 $node = array($node);
             }
+
             return $node;
         }
 
@@ -182,6 +184,7 @@ class Twig extends WriterAbstract implements Routable
                     continue;
                 }
             }
+
             return null;
         }
 
@@ -269,8 +272,8 @@ class Twig extends WriterAbstract implements Routable
         \Twig_Environment $twigEnvironment
     ) {
         /** @var \SimpleXMLElement $extension */
-        foreach ((array)$transformation->getParameter('twig-extension', array()) as $extension) {
-            $extension = (string)$extension;
+        foreach ((array) $transformation->getParameter('twig-extension', array()) as $extension) {
+            $extension = (string) $extension;
             if (!class_exists($extension)) {
                 throw new \InvalidArgumentException('Unknown twig extension: ' . $extension);
             }
@@ -332,11 +335,12 @@ class Twig extends WriterAbstract implements Routable
                 );
             }
 
-            $url = $rule->generate($node);
-            if ($url === false || $url[0] !== '/') {
+            $rule = new ForFileProxy($rule);
+            $url  = $rule->generate($node);
+            if ($url === false || $url[0] !== DIRECTORY_SEPARATOR) {
                 return false;
             }
-            $path = $transformation->getTransformer()->getTarget() . $url;
+            $path = $transformation->getTransformer()->getTarget() . str_replace('/', DIRECTORY_SEPARATOR, $url);
         } else {
             $path = $transformation->getTransformer()->getTarget()
                 . DIRECTORY_SEPARATOR . $transformation->getArtifact();
@@ -346,14 +350,15 @@ class Twig extends WriterAbstract implements Routable
             '/{{([^}]+)}}/u',
             function ($query) use ($node, $writer) {
                 // strip any surrounding \ or /
-                return trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
+                return trim((string) $writer->walkObjectTree($node, $query[1]), '\\/');
             },
             $path
         );
 
+
         // replace any \ with the directory separator to be compatible with the
         // current filesystem and allow the next file_exists to do its work
-        $destination = str_replace('\\', DIRECTORY_SEPARATOR, $destination);
+        $destination = str_replace(array('/','\\'), DIRECTORY_SEPARATOR, $destination);
 
         // create directory if it does not exist yet
         if (!file_exists(dirname($destination))) {
@@ -373,6 +378,7 @@ class Twig extends WriterAbstract implements Routable
     protected function getTemplatePath($transformation)
     {
         $parts = preg_split('[\\\\|/]', $transformation->getSource());
+
         return $parts[0] . DIRECTORY_SEPARATOR . $parts[1];
     }
 

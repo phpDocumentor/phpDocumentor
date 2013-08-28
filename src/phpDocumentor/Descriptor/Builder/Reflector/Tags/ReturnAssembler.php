@@ -32,5 +32,4 @@ class ReturnAssembler extends AssemblerAbstract
 
         return $descriptor;
     }
-
 }

@@ -39,6 +39,7 @@ class Rule
     public function match($node)
     {
         $callable = $this->matcher;
+
         return $callable($node);
     }
 
@@ -52,6 +53,7 @@ class Rule
     public function generate($node)
     {
         $callable = $this->generator;
+
         return $callable($node);
     }
 }

@@ -13,10 +13,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
-use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
@@ -37,12 +35,13 @@ class FileAssembler extends AssemblerAbstract
     public function create($data)
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
-        $fileDescriptor->setName($data->getName());
 
-        $fileDescriptor->setLocation($data->getFilename());
         $fileDescriptor->setName(basename($data->getFilename()));
+        $fileDescriptor->setPath($data->getFilename());
         $fileDescriptor->setSource($data->getContents());
-        $fileDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
+        $fileDescriptor->setPackage(
+            $this->extractPackageFromDocBlock($data->getDocBlock()) ?: $data->getDefaultPackageName()
+        );
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
@@ -76,7 +75,10 @@ class FileAssembler extends AssemblerAbstract
                     $constantDescriptor->setPackage($fileDescriptor->getPackage());
                 }
 
-                $fileDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
+                $fileDescriptor->getConstants()->set(
+                    $constantDescriptor->getFullyQualifiedStructuralElementName(),
+                    $constantDescriptor
+                );
             }
         }
     }
@@ -99,7 +101,10 @@ class FileAssembler extends AssemblerAbstract
                     $functionDescriptor->setPackage($fileDescriptor->getPackage());
                 }
 
-                $fileDescriptor->getFunctions()->set($functionDescriptor->getName(), $functionDescriptor);
+                $fileDescriptor->getFunctions()->set(
+                    $functionDescriptor->getFullyQualifiedStructuralElementName(),
+                    $functionDescriptor
+                );
             }
         }
     }
@@ -122,7 +127,10 @@ class FileAssembler extends AssemblerAbstract
                     $classDescriptor->setPackage($fileDescriptor->getPackage());
                 }
 
-                $fileDescriptor->getClasses()->set($classDescriptor->getName(), $classDescriptor);
+                $fileDescriptor->getClasses()->set(
+                    $classDescriptor->getFullyQualifiedStructuralElementName(),
+                    $classDescriptor
+                );
             }
         }
     }
@@ -145,7 +153,10 @@ class FileAssembler extends AssemblerAbstract
                     $interfaceDescriptor->setPackage($fileDescriptor->getPackage());
                 }
 
-                $fileDescriptor->getInterfaces()->set($interfaceDescriptor->getName(), $interfaceDescriptor);
+                $fileDescriptor->getInterfaces()->set(
+                    $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
+                    $interfaceDescriptor
+                );
             }
         }
     }
@@ -168,7 +179,10 @@ class FileAssembler extends AssemblerAbstract
                     $traitDescriptor->setPackage($fileDescriptor->getPackage());
                 }
 
-                $fileDescriptor->getTraits()->set($traitDescriptor->getName(), $traitDescriptor);
+                $fileDescriptor->getTraits()->set(
+                    $traitDescriptor->getFullyQualifiedStructuralElementName(),
+                    $traitDescriptor
+                );
             }
         }
     }

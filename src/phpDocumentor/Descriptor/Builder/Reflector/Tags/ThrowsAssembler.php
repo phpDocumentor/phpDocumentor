@@ -32,5 +32,4 @@ class ThrowsAssembler extends AssemblerAbstract
 
         return $descriptor;
     }
-
 }

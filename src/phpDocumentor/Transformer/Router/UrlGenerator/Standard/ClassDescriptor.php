@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
@@ -26,7 +25,7 @@ class ClassDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        return DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR
+        return '/classes/'
             . str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\')).'.html';
     }
 }

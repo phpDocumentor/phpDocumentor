@@ -5,7 +5,7 @@
  * PHP Version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,13 +13,13 @@ namespace phpDocumentor\Parser\Command\Project;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\I18n\Translator\Translator;
 use phpDocumentor\Command\ConfigurableCommand;
-use phpDocumentor\Console\Helper\ProgressHelper;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Fileset\Collection;
@@ -207,14 +207,14 @@ class ParseCommand extends ConfigurableCommand
     protected function populateParser(InputInterface $input, Collection $files)
     {
         $parser = $this->getParser();
-        $title = (string)$this->getOption($input, 'title', 'title');
+        $title = (string) $this->getOption($input, 'title', 'title');
         $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
         $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
-        $parser->setVisibility((string)$this->getOption($input, 'visibility', 'parser/visibility'));
+        $parser->setVisibility((string) $this->getOption($input, 'visibility', 'parser/visibility'));
         $parser->setDefaultPackageName($this->getOption($input, 'defaultpackagename', 'parser/default-package-name'));
         $parser->setPath($files->getProjectRoot());
     }

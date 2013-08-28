@@ -1,4 +1,40 @@
-2013/06/??: Version 2.0.0b7
+2013/08/08: Version 2.0.1
+-------------------------
+
+FIXED:      Generated phar files could not be set to executable and ran.
+FIXED:      Missing File-level DocBlocks were not detected.
+FIXED:      Classes and namespace were not generated in Windows.
+FIXED:      Notices were thrown with the Clean template.
+FIXED:      In windows were path calculated incorrectly.
+
+2013/08/03: Version 2.0.0
+-------------------------
+
+```
+ADDED:      Presentation mode to router Twig filter, allows for different representations
+ADDED:      StandardRouter now also supports generating paths for file documentation pages.
+ADDED:      Version tag is now processed in the descriptors
+FIXED:      Generated paths in the Twig writer were not windows safe
+FIXED:      Minor Descriptor tweaks
+FIXED:      Inheritance was broken due to an erroneous merge
+FIXED:      Ampersands in tag descriptions caused XSL based templates to fatal
+FIXED:      Inheritance of methods in interfaces was broken
+FIXED:      All elements had an internal and ignore tag added due to an error in filtering
+FIXED:      @internal inline tag handling did not function
+FIXED:      Fatal error when an argument in an @method tag does not have a type
+FIXED:      The logging directives in the configuration file were not followed.
+CHANGED:    When installing composer the template folder will be vendor/phpdocumentor/templates and not data/templates
+CHANGED:    The included ProgressHelper was replaced with the new ProgressHelper of Symfony Console
+            Components (https://github.com/symfony/symfony/pull/3501).
+REMOVED:    Installer is removed; proved too unreliable
+DEPRECATED: Previously shared assets could be in the /data folder; this unnecessarily complicated template handling
+            and composer integration. Shared assets have now been moved inside the templates and when a template
+            requests shared assets it is in fact requesting files from the abstract template.
+            Using a source attribute with a transformation that has no direct reference to a template will be removed
+            in version 3.0; until that point the code will trigger E_USER_DEPRECATED warnings.
+```
+
+2013/07/12: Version 2.0.0b7
 ---------------------------
 
 ```
@@ -8,13 +44,27 @@ FIXED:     VERSION file was missing from phar archive, causing it to fail
 FIXED:     Elements with an @ignore tag were not filtered
 FIXED:     Deprecated elements are now striken in the class overview
 FIXED:     The @see reference was not shown and interpreted
+FIXED:     The @uses reference was not shown and interpreted
 FIXED:     Response type was not shown with magic methods
 FIXED:     Arguments were not shown with magic methods
 FIXED:     Type is not shown with magic properties
 FIXED:     Magic methods were missing from sidebar
+FIXED:     Coding standards issues
+FIXED:     Several documentation issues
+FIXED:     Windows error where the directory slashes were incorrectly presented.
+FIXED:     When a file contains multiple errors, only the first is shown.
+FIXED:     Generating a new template gave a fatal error
+FIXED:     Generated templates were missing the transformation line for their structure.xml
+FIXED:     Linking to functions
+FIXED:     Linking to constants
+FIXED:     Linking to properties
+FIXED:     Linking to methods
+FIXED:     Root elements with the same shortname and file but in a different namespace would overwrite the other.
+ADDED:     New template 'xml' for outputting a pure XML representation of the project's structure
 ADDED:     Update instructions to issue a PR against homebrew if the phar file updates:
            https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb
 CHANGED:   Assembling of Tags to Descriptors was refactored to work the same way as other Descriptors.
+CHANGED:   Properties won't emit an error regarding a missing summary if it has an @var tag with a description.
 ```
 
 2013/06/23: Version 2.0.0b6

@@ -44,4 +44,15 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     {
         return $this->arguments;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getResponse()
+    {
+        /** @var Collection|null $returnTags */
+        $returnTags = $this->getTags()->get('return');
+
+        return $returnTags instanceof Collection ? current($returnTags->getAll()) : null;
+    }
 }

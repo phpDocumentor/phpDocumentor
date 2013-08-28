@@ -164,7 +164,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
             'route' => new \Twig_SimpleFilter(
                 'route',
-                function ($value) use ($extension, $routers) {
+                function ($value, $presentation = 'normal') use ($extension, $routers) {
                     // FIXME: this code is suboptimal and needs refactoring
                     $result = array();
                     if ($value instanceof Collection) {
@@ -181,6 +181,16 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                             $url = $extension->convertToRootPath($url);
                         }
 
+                        switch ($presentation) {
+                            case 'url': // return the first url
+
+                                return $url;
+                            case 'class:short':
+                                $parts = explode('\\', $path);
+                                $path = end($parts);
+                                break;
+                        }
+
                         $result[] = $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
                     }
 
@@ -189,7 +199,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
         );
     }
-
 
     /**
      * Returns an array of global variables to inject into a Twig template.
@@ -230,7 +239,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     public function convertToRootPath($relative_path)
     {
         // get the path to the root directory
-        $path_parts = explode('/', $this->getDestination());
+        $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
         if (count($path_parts) > 1) {
             $path_to_root = implode('/', array_fill(0, count($path_parts) -1, '..')).'/';
         } else {
