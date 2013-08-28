@@ -12,7 +12,9 @@
 namespace phpDocumentor\Command;
 
 use Psr\Log\LogLevel;
+use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zend\I18n\Translator\Translator;
 use phpDocumentor\Event\DebugEvent;
@@ -27,6 +29,14 @@ use phpDocumentor\Parser\Event\PreFileEvent;
  */
 class Command extends \Cilex\Command\Command
 {
+    /**
+     * Adds the option to output to a log file or suppress it by omitting.
+     */
+    protected function configure()
+    {
+        $this->addOption('log-text', null, InputOption::VALUE_OPTIONAL, 'Log file to write to');
+    }
+
     /**
      * Returns boolean based on whether given path is absolute or not.
      *
@@ -63,7 +73,7 @@ class Command extends \Cilex\Command\Command
      *
      * @param InputInterface $input
      *
-     * @return \phpDocumentor\Console\Helper\ProgressHelper
+     * @return ProgressHelper
      */
     protected function getProgressBar(InputInterface $input)
     {

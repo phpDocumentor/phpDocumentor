@@ -82,7 +82,6 @@ class ConfigurableCommand extends Command
                     return \Zend\Config\Factory::fromFiles($files, true);
                 }
             );
-
             if (isset($container['config']->logging)) {
                 $level = (string)$container['config']->logging->level;
 

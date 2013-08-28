@@ -187,10 +187,7 @@ class Application extends Cilex
             );
             $this['monolog.logfile'] = $logPath;
         }
-        if (!$debugLogPath) {
-            // custom property, only used in this function so we retrieve its default.
-            $debugLogPath = $this['monolog.debugfile'];
-        } else {
+        if ($debugLogPath) {
             $debugLogPath = str_replace(
                 array('{APP_ROOT}', '{DATE}'),
                 array(realpath(__DIR__.'/../..'), time()),
@@ -214,8 +211,12 @@ class Application extends Cilex
         }
 
         // set our new handlers
-        $monolog->pushHandler(new StreamHandler($logPath, $level));
-        $monolog->pushHandler(new StreamHandler($debugLogPath, Logger::DEBUG));
+        if ($logPath) {
+            $monolog->pushHandler(new StreamHandler($logPath, $level));
+        }
+        if ($debugLogPath) {
+            $monolog->pushHandler(new StreamHandler($debugLogPath, Logger::DEBUG));
+        }
     }
 
     /**
