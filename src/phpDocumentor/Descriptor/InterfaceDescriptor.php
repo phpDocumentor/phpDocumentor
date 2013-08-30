@@ -82,6 +82,10 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         /** @var self $parent */
         foreach ($this->getParent() as $parent) {
+            if (!$parent instanceof Interfaces\InterfaceInterface) {
+                continue;
+            }
+
             $inheritedConstants = $inheritedConstants->merge($parent->getConstants());
             $inheritedConstants = $inheritedConstants->merge($parent->getInheritedConstants());
         }
@@ -118,6 +122,10 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         /** @var self $parent */
         foreach ($this->getParent() as $parent) {
+            if (!$parent instanceof Interfaces\InterfaceInterface) {
+                continue;
+            }
+
             $inheritedMethods = $inheritedMethods->merge($parent->getMethods());
             $inheritedMethods = $inheritedMethods->merge($parent->getInheritedMethods());
         }
