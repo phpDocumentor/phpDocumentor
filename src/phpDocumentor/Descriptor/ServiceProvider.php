@@ -220,14 +220,8 @@ class ServiceProvider implements ServiceProviderInterface
         $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
         $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
 
-        $functionMetadata->addGetterConstraint(
-            'response',
-            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
-        );
-        $methodMetadata->addGetterConstraint(
-            'response',
-            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
-        );
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
 
         $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
         $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
