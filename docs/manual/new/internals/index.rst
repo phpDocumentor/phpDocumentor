@@ -4,4 +4,5 @@ Internals
 .. toctree::
 
    tags
-   deployment-process
+   versioning
+   build-and-release-process
