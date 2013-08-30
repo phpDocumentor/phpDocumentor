@@ -28,6 +28,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        ini_set('zend.script_encoding', null);
         $this->fixture = new Parser();
     }
 
@@ -42,6 +43,30 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $parser->setIgnoredTags(array('param'));
         $this->assertEquals(array('param'), $parser->getIgnoredTags());
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::setForced
+     * @covers phpDocumentor\Parser\Parser::isForced
+     */
+    public function testSetAndCheckWhetherParsingIsForced()
+    {
+        $this->assertEquals(false, $this->fixture->isForced());
+
+        $this->fixture->setForced(true);
+        $this->assertEquals(true, $this->fixture->isForced());
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::setEncoding
+     * @covers phpDocumentor\Parser\Parser::getEncoding
+     */
+    public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles()
+    {
+        $this->assertEquals('utf-8', $this->fixture->getEncoding());
+
+        $this->fixture->setEncoding('iso-8859-1');
+        $this->assertEquals('iso-8859-1', $this->fixture->getEncoding());
     }
 
     /**
@@ -151,12 +176,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests whether setting the package name is persisted.
-     *
      * @covers phpDocumentor\Parser\Parser::setDefaultPackageName
      * @covers phpDocumentor\Parser\Parser::getDefaultPackageName
-     *
-     * @return void
      */
     public function testSetAndGetDefaultPackageName()
     {
@@ -167,5 +188,43 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser->setDefaultPackageName('test');
 
         $this->assertSame('test', $parser->getDefaultPackageName());
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::parse
+     */
+    public function testCreateFileDescriptorFromFiles()
+    {
+
+    }
+
+    public function testForceCompleteParseIfProjectSettingsAreModified()
+    {
+
+    }
+
+    public function testParserFilePreHookIsDispatchedForEachFile()
+    {
+
+    }
+
+    public function testDescriptorIsReUsedWhenThereAreNoModifications()
+    {
+
+    }
+
+    public function testFileDescriptorIsBuildWithReflector()
+    {
+
+    }
+
+    public function testErrorsInFileDescriptorsAreLogged()
+    {
+
+    }
+
+    public function testLogMessageOnExceptionButNoError()
+    {
+
     }
 }

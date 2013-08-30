@@ -35,7 +35,7 @@ class AreAllArgumentsValid
         if ($docBlock->hasTag('return')) {
             $returnTag = current($docBlock->getTagsByName('return'));
             if ($returnTag->getType() == 'type') {
-                return new Error(LogLevel::WARNING, 'PPC:ERR-50004', $element->getLinenumber());
+                return new Error(LogLevel::WARNING, 'PPC:ERR-50017', $element->getLinenumber());
             }
         }
 

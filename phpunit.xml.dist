@@ -9,6 +9,9 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src/phpDocumentor</directory>
+            <exclude>
+                <directory suffix=".php">src/phpDocumentor/*/Messages</directory>
+            </exclude>
         </whitelist>
     </filter>
     <php>

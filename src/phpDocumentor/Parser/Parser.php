@@ -12,13 +12,16 @@
 
 namespace phpDocumentor\Parser;
 
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Psr\Log\LogLevel;
+use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\FileReflector;
+use Psr\Log\LogLevel;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -35,7 +38,7 @@ use phpDocumentor\Reflection\FileReflector;
  *     $parser->setPath($files->getProjectRoot());
  *     echo $parser->parseFiles($files);
  */
-class Parser extends ParserAbstract
+class Parser
 {
     /** @var string the name of the default package */
     protected $default_package_name = 'Default';
@@ -275,103 +278,6 @@ class Parser extends ParserAbstract
     }
 
     /**
-     * Iterates through the given files feeds them to the builder.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     * @param Collection               $files          A files container to parse.
-     *
-     * @api
-     *
-     * @throws Exception if no files were found.
-     *
-     * @return bool|string
-     */
-    public function parse(ProjectDescriptorBuilder $builder, Collection $files)
-    {
-        $timer = microtime(true);
-        $paths = $this->getFilenames($files);
-
-        $this->log('  Project root is:  ' . $files->getProjectRoot());
-        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
-
-        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
-            $this->setForced(true);
-            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
-        }
-
-        foreach ($paths as $filename) {
-            if (class_exists('phpDocumentor\Event\Dispatcher')) {
-                Dispatcher::getInstance()->dispatch(
-                    'parser.file.pre',
-                    PreFileEvent::createInstance($this)->setFile($filename)
-                );
-            }
-            $this->log('Starting to parse file: ' . $filename);
-
-            $memory = memory_get_usage();
-            try {
-                $file = new FileReflector($filename, $this->doValidation(), $this->getEncoding());
-                $file->setDefaultPackageName($this->getDefaultPackageName());
-                $file->setMarkers($this->getMarkers());
-                $file->setFilename($this->getRelativeFilename($filename));
-
-                // if the hash is unchanged; continue to the next file
-                $cachedFiles = $builder->getProjectDescriptor()->getFiles();
-                $hash = $cachedFiles->get($file->getFilename())
-                    ? $cachedFiles->get($file->getFilename())->getHash()
-                    : null;
-                if ($hash === $file->getHash() && !$this->isForced()) {
-                    $this->log('>> Skipped file '.$file->getFilename().' as no modifications were detected');
-                    continue;
-                }
-
-                $file->process();
-                $builder->buildFileUsingSourceData($file);
-                $fileDescriptor = $builder->getProjectDescriptor()->getFiles()->get($file->getFilename());
-                $errors = $fileDescriptor->getAllErrors();
-                foreach ($errors as $error) {
-                    $this->log($error->getCode(), $error->getSeverity(), $error->getContext());
-                }
-            } catch (Exception $e) {
-                $this->log(
-                    '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                    LogLevel::ALERT
-                );
-            }
-
-            $memoryDelta = memory_get_usage() - $memory;
-            $this->log(
-                '>> Memory after processing of file: ' . number_format(memory_get_usage() / 1024 / 1024, 2)
-                . ' megabytes (' . (($memoryDelta > -0) ? '+' : '') . number_format($memoryDelta / 1024)
-                . ' kilobytes)',
-                LogLevel::DEBUG
-            );
-        }
-        $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');
-        $this->log('Peak memory usage: '. round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
-
-        return $builder->getProjectDescriptor();
-    }
-
-    /**
-     * @param \phpDocumentor\Fileset\Collection $files
-     *
-     * @throws FilesNotFoundException if no files were found.
-     *
-     * @return \string[]
-     */
-    protected function getFilenames(Collection $files)
-    {
-        $paths = $files->getFilenames();
-        if (count($paths) < 1) {
-            throw new FilesNotFoundException();
-        }
-        $this->log('Starting to process ' . count($paths) . ' files');
-
-        return $paths;
-    }
-
-    /**
      * Sets the encoding of the files.
      *
      * With this option it is possible to tell the parser to use a specific encoding to interpret the provided files.
@@ -398,5 +304,180 @@ class Parser extends ParserAbstract
     public function getEncoding()
     {
         return $this->encoding;
+    }
+
+    /**
+     * Iterates through the given files feeds them to the builder.
+     *
+     * @param ProjectDescriptorBuilder $builder
+     * @param Collection               $files          A files container to parse.
+     *
+     * @api
+     *
+     * @throws Exception if no files were found.
+     *
+     * @return bool|string
+     */
+    public function parse(ProjectDescriptorBuilder $builder, Collection $files)
+    {
+        $timer = microtime(true);
+        $paths = $this->getFilenames($files);
+
+        $this->log('  Project root is:  ' . $files->getProjectRoot());
+        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
+
+        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
+            $this->setForced(true);
+            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
+        }
+
+        foreach ($paths as $filename) {
+            $this->parseFileIntoDescriptor($builder, $filename);
+        }
+        $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');
+        $this->log('Peak memory usage: '. round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
+
+        return $builder->getProjectDescriptor();
+    }
+
+    /**
+     * @param \phpDocumentor\Fileset\Collection $files
+     *
+     * @throws FilesNotFoundException if no files were found.
+     *
+     * @return \string[]
+     */
+    protected function getFilenames(Collection $files)
+    {
+        $paths = $files->getFilenames();
+        if (count($paths) < 1) {
+            throw new FilesNotFoundException();
+        }
+        $this->log('Starting to process ' . count($paths) . ' files');
+
+        return $paths;
+    }
+
+    /**
+     * Parses a file and creates a Descriptor for it in the project.
+     *
+     * @param ProjectDescriptorBuilder $builder
+     * @param string                   $filename
+     *
+     * @return void
+     */
+    protected function parseFileIntoDescriptor(ProjectDescriptorBuilder $builder, $filename)
+    {
+        if (class_exists('phpDocumentor\Event\Dispatcher')) {
+            Dispatcher::getInstance()->dispatch(
+                'parser.file.pre',
+                PreFileEvent::createInstance($this)->setFile($filename)
+            );
+        }
+        $this->log('Starting to parse file: ' . $filename);
+
+        $memory = memory_get_usage();
+        try {
+            $file = $this->createFileReflector($builder, $filename);
+            if (!$file) {
+                $this->log('>> Skipped file ' . $filename . ' as no modifications were detected');
+                return;
+            }
+
+            $file->process();
+            $builder->buildFileUsingSourceData($file);
+            $this->logErrorsForDescriptor($builder->getProjectDescriptor()->getFiles()->get($file->getFilename()));
+        } catch (Exception $e) {
+            $this->log(
+                '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
+                LogLevel::ALERT
+            );
+        }
+
+        $memoryDelta = memory_get_usage() - $memory;
+        $this->log(
+            '>> Memory after processing of file: ' . number_format(memory_get_usage() / 1024 / 1024, 2)
+            . ' megabytes (' . (($memoryDelta > -0)
+                ? '+'
+                : '') . number_format($memoryDelta / 1024)
+            . ' kilobytes)',
+            LogLevel::DEBUG
+        );
+    }
+
+    /**
+     * Creates a new FileReflector for the given filename or null if the file contains no modifications.
+     *
+     * @param ProjectDescriptorBuilder $builder
+     * @param string                   $filename
+     *
+     * @return FileReflector|null Returns a new FileReflector or null if no modifications were detected for the given
+     *     filename.
+     */
+    protected function createFileReflector(ProjectDescriptorBuilder $builder, $filename)
+    {
+        $file = new FileReflector($filename, $this->doValidation(), $this->getEncoding());
+        $file->setDefaultPackageName($this->getDefaultPackageName());
+        $file->setMarkers($this->getMarkers());
+        $file->setFilename($this->getRelativeFilename($filename));
+
+        $cachedFiles = $builder->getProjectDescriptor()->getFiles();
+        $hash        = $cachedFiles->get($file->getFilename())
+            ? $cachedFiles->get($file->getFilename())->getHash()
+            : null;
+
+        return $hash === $file->getHash() && !$this->isForced()
+            ? null
+            : $file;
+    }
+
+    /**
+     * Writes the errors found in the Descriptor to the log.
+     *
+     * @param FileDescriptor $fileDescriptor
+     *
+     * @return void
+     */
+    protected function logErrorsForDescriptor($fileDescriptor)
+    {
+        $errors = $fileDescriptor->getAllErrors();
+        foreach ($errors as $error) {
+            $this->log($error->getCode(), $error->getSeverity(), $error->getContext());
+        }
+    }
+
+    /**
+     * Dispatches a logging request.
+     *
+     * @param string   $message  The message to log.
+     * @param int      $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string[] $parameters
+     *
+     * @return void
+     */
+    protected function log($message, $priority = LogLevel::INFO, $parameters = array())
+    {
+        Dispatcher::getInstance()->dispatch(
+            'system.log',
+            LogEvent::createInstance($this)
+            ->setContext($parameters)
+            ->setMessage($message)
+            ->setPriority($priority)
+        );
+    }
+
+    /**
+     * Dispatches a logging request to log a debug message.
+     *
+     * @param string $message The message to log.
+     *
+     * @return void
+     */
+    protected function debug($message)
+    {
+        Dispatcher::getInstance()->dispatch(
+            'system.debug',
+            DebugEvent::createInstance($this)->setMessage($message)
+        );
     }
 }

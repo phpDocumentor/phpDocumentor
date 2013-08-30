@@ -45,9 +45,6 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
-        $xsl = new \DOMDocument();
-        $xsl->load($transformation->getSourceAsPath());
-
         $structureFilename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';
         if (!is_readable($structureFilename)) {
             throw new RuntimeException(
@@ -61,8 +58,17 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         libxml_use_internal_errors(true);
         $structure->load($structureFilename);
 
-        $proc = new \XSLTProcessor();
-        $proc->importStyleSheet($xsl);
+        if (extension_loaded('xslcache')) {
+            $proc = new \XSLTCache();
+            $proc->importStyleSheet($transformation->getSourceAsPath(), true);
+        } else {
+            $xsl = new \DOMDocument();
+            $xsl->load($transformation->getSourceAsPath());
+
+            $proc = new \XSLTProcessor();
+            $proc->importStyleSheet($xsl);
+        }
+        
         if (empty($structure->documentElement)) {
             $message = 'Specified DOMDocument lacks documentElement, cannot transform.';
             if (libxml_get_last_error()) {

@@ -219,7 +219,10 @@ class Twig extends WriterAbstract implements Routable
             array_unshift($templateFolders, $path);
         }
 
-        $env = new \Twig_Environment(new \Twig_Loader_Filesystem($templateFolders));
+        $env = new \Twig_Environment(
+            new \Twig_Loader_Filesystem($templateFolders),
+            array('cache' => sys_get_temp_dir() . '/phpdoc-twig-cache')
+        );
 
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
         $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);
