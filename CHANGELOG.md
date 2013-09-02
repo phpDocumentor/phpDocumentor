@@ -2,6 +2,8 @@
 -----------------------
 
 ```
+ADDED:     New cli option 'log' to tell phpDocumentor the path where to log to
+ADDED:     Verbosity can now be provided in three level, each indicating how much is written in the log
 ADDED:     Support for the XSLCache drop in replacement of ext/xsl
 ADDED:     Locale can now be supplied in the configuration
 ADDED:     German translation for error messages
@@ -13,6 +15,7 @@ FIXED:     XML output now does not choke on special characters
 FIXED:     Error code for return type was incorrect
 REMOVED:   #814; removed ParserAbstract base class for Parser
 REMOVED:   PSR Draft is now moved to its own repo: https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md
+REMOVED:   Automatic generation of log files, the new log option can be used or a configuration option
 ```
 
 2013/08/08: Version 2.0.1
