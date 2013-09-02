@@ -53,7 +53,8 @@ class Transformation
     protected $transformer;
 
     /**
-     * @Serializer\Type("array")
+     * @Serializer\XmlMap(keyAttribute="key", entry="parameter")
+     * @Serializer\Type("array<string, string>")
      * @var string[]
      */
     protected $parameters = array();

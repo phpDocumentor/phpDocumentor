@@ -274,6 +274,12 @@ class Twig extends WriterAbstract implements Routable
         ProjectDescriptor $project,
         \Twig_Environment $twigEnvironment
     ) {
+        $isDebug = $transformation->getParameter('twig-debug', 'false');
+        if ($isDebug == 'true') {
+            $twigEnvironment->enableDebug();
+            $twigEnvironment->addExtension(new \Twig_Extension_Debug());
+        }
+
         /** @var \SimpleXMLElement $extension */
         foreach ((array) $transformation->getParameter('twig-extension', array()) as $extension) {
             $extension = (string) $extension;

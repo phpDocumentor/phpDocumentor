@@ -98,6 +98,7 @@ class Collection extends \ArrayObject
             'phpDocumentor\Transformer\Template',
             'xml'
         );
+        $template->propagateParameters();
 
         $this[$template->getName()] = $template;
     }

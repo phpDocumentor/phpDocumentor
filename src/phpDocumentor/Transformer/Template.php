@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer;
 
 use JMS\Serializer\Annotation as Serializer;
+use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * Model representing a template.
@@ -53,9 +54,16 @@ class Template implements \ArrayAccess, \Countable, \Iterator
     /**
      * @Serializer\XmlList(entry = "transformation")
      * @Serializer\Type("array<phpDocumentor\Transformer\Transformation>")
-     * @var Transformation
+     * @var Transformation[]
      */
     protected $transformations = array();
+
+    /**
+     * @Serializer\XmlKeyValuePairs
+     * @Serializer\Type("array")
+     * @var string[]
+     */
+    protected $parameters = array();
 
     /**
      * Initializes this object with a name and optionally with contents.
@@ -308,5 +316,32 @@ class Template implements \ArrayAccess, \Countable, \Iterator
     public function current()
     {
         return current($this->transformations);
+    }
+
+    /**
+     * Returns the parameters associated with this template.
+     *
+     * @return \phpDocumentor\Transformer\Template\Parameter[]
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    public function setParameter($key, $value)
+    {
+        $this->parameters[$key] = $value;
+    }
+
+    /**
+     * Pushes the parameters of this template into the transformations.
+     *
+     * @return void
+     */
+    public function propagateParameters()
+    {
+        foreach ($this->transformations as $transformation) {
+            $transformation->setParameters(array_merge($transformation->getParameters(), $this->getParameters()));
+        }
     }
 }
