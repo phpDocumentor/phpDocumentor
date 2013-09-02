@@ -14,16 +14,17 @@ namespace phpDocumentor;
 use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use JMS\Serializer\SerializerBuilder;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Shell;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use JMS\Serializer\SerializerBuilder;
 use Zend\Config\Factory;
 
 /**
@@ -52,6 +53,8 @@ class Application extends Cilex
 
         parent::__construct('phpDocumentor', self::$VERSION);
 
+        $this['kernel.timer.start'] = time();
+
         $this->addAutoloader();
         $this->addConfiguration();
         $this->addLogging();
@@ -59,7 +62,9 @@ class Application extends Cilex
         $this->addEventDispatcher();
         $this->addTranslator();
 
-        $this['console']->getHelperSet()->set(new ProgressHelper());
+        /** @var ConsoleApplication $console */
+        $console = $this['console'];
+        $console->getHelperSet()->set(new LoggerHelper());
 
         $this['translator.locale'] = 'en';
         $this['translator'] = $this->share(
@@ -139,11 +144,10 @@ class Application extends Cilex
      * @param integer $level        The minimum level that will be written to the normal logfile; matches one of the
      *                              constants in {@see \Monolog\Logger}.
      * @param string  $logPath      The full path where the normal log file needs to be written.
-     * @param string  $debugLogPath The full path where the log file containing debug information needs to be written.
      *
      * @return void
      */
-    public function configureLogger($logger, $level, $logPath = null, $debugLogPath = null)
+    public function configureLogger($logger, $level, $logPath = null)
     {
         /** @var Logger $monolog */
         $monolog = $logger;
@@ -183,18 +187,10 @@ class Application extends Cilex
         if ($logPath) {
             $logPath = str_replace(
                 array('{APP_ROOT}', '{DATE}'),
-                array(realpath(__DIR__.'/../..'), time()),
+                array(realpath(__DIR__.'/../..'), $this['kernel.timer.start']),
                 $logPath
             );
             $this['monolog.logfile'] = $logPath;
-        }
-        if ($debugLogPath) {
-            $debugLogPath = str_replace(
-                array('{APP_ROOT}', '{DATE}'),
-                array(realpath(__DIR__.'/../..'), time()),
-                $debugLogPath
-            );
-            $this['monolog.debugfile'] = $debugLogPath;
         }
 
         // remove all handlers from the stack
@@ -214,9 +210,8 @@ class Application extends Cilex
         // set our new handlers
         if ($logPath) {
             $monolog->pushHandler(new StreamHandler($logPath, $level));
-        }
-        if ($debugLogPath) {
-            $monolog->pushHandler(new StreamHandler($debugLogPath, Logger::DEBUG));
+        } else {
+            $monolog->pushHandler(new StreamHandler('php://stdout', $level));
         }
     }
 
@@ -280,27 +275,27 @@ class Application extends Cilex
             }
         );
     }
-    
+
     /**
      * Adds the message translator to phpDocumentor's container.
-     * 
+     *
      * @return void
      */
     protected function addTranslator()
     {
         $config = $this['config']->toArray();
-        
+
         $this['translator.locale'] = isset($config['translator']['locale']) ? $config['translator']['locale'] : 'en';
         $this['translator'] = $this->share(
             function ($app) {
                 $translator = new Translator();
                 $translator->setLocale($this['translator.locale']);
-                
+
                 return $translator;
             }
         );
     }
-    
+
     /**
      * Adds the command to phpDocumentor that belong to the Project namespace.
      *

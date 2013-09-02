@@ -11,18 +11,18 @@
  */
 namespace phpDocumentor\Transformer\Command\Project;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Transforms the structure file into the specified output format
@@ -148,10 +148,9 @@ TEXT
         // invoke parent to load custom config
         parent::execute($input, $output);
 
-        /** @var \phpDocumentor\Console\Helper\ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
-            $this->connectOutputToLogging($output);
+            $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
         }
 
         // initialize transformer
@@ -159,7 +158,7 @@ TEXT
 
         $target = $this->getOption($input, 'target', 'transformer/target');
         if (!$this->isAbsolute($target)) {
-            $target = getcwd().DIRECTORY_SEPARATOR.$target;
+            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
         $transformer->setTarget($target);
 
