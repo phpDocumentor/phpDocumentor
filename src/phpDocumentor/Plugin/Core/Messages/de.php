@@ -27,5 +27,6 @@ return array(
     'PPC:ERR-50016' => 'Der Type-Hint von dem Argument ist für die Typ-Definition '
         . 'des @param Tags mit dem Argument %s in %s nicht korrekt',
     'PPC:ERR-50017' => 'Der Typ für das %s Tag in %s ist "type"; ist das nicht ein IDE default?',
+    'PPC:ERR-50018' => 'Der Typ für das param Tag %s in %s ist entweder "type" oder "unknown"; ist das nicht ein IDE default?',
     'PPC:ERR-50020' => 'Benötigtes Tag "%s" wurde nicht in %s gefunden',
 );
