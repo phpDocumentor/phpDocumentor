@@ -664,7 +664,7 @@ class Xml extends WriterAbstract implements Translatable
         }
         if (method_exists($tag, 'getReference')) {
             $child->setAttribute(
-                'link',
+                'reference',
                 str_replace('&', '&amp;', $tag->getReference())
             );
         }
