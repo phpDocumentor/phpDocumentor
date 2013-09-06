@@ -222,6 +222,12 @@ class ServiceProvider implements ServiceProviderInterface
 
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
+        
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
+        
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
 
         $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
         $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
