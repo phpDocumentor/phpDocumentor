@@ -274,27 +274,29 @@ class Twig extends WriterAbstract implements Routable
         ProjectDescriptor $project,
         \Twig_Environment $twigEnvironment
     ) {
-        $isDebug = $transformation->getParameter('twig-debug', 'false');
+        $isDebug = $transformation->getParameter('twig-debug')
+            ? $transformation->getParameter('twig-debug')->getValue()
+            : false;
         if ($isDebug == 'true') {
             $twigEnvironment->enableDebug();
             $twigEnvironment->addExtension(new \Twig_Extension_Debug());
         }
 
-        /** @var \SimpleXMLElement $extension */
-        foreach ((array) $transformation->getParameter('twig-extension', array()) as $extension) {
-            $extension = (string) $extension;
-            if (!class_exists($extension)) {
-                throw new \InvalidArgumentException('Unknown twig extension: ' . $extension);
+        /** @var Template\Parameter $extension */
+        foreach ($transformation->getParametersWithKey('twig-extension') as $extension) {
+            $extensionValue = $extension->getValue();
+            if (!class_exists($extensionValue)) {
+                throw new \InvalidArgumentException('Unknown twig extension: ' . $extensionValue);
             }
 
             // to support 'normal' Twig extensions we check the interface to determine what instantiation to do.
             $implementsInterface = in_array(
                 'phpDocumentor\Plugin\Core\Twig\ExtensionInterface',
-                class_implements($extension)
+                class_implements($extensionValue)
             );
 
             $twigEnvironment->addExtension(
-                $implementsInterface ? new $extension($project, $transformation) : new $extension()
+                $implementsInterface ? new $extensionValue($project, $transformation) : new $extensionValue()
             );
         }
     }
