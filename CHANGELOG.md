@@ -8,11 +8,14 @@ ADDED:     Support for the XSLCache drop in replacement of ext/xsl
 ADDED:     Locale can now be supplied in the configuration
 ADDED:     German translation for error messages
 FIXED:     Validation to check for validity of return types
+FIXED:     Validation to check for validity of parameters
 FIXED:     Fatal error when a parent interface is not in the project
 FIXED:     Template:list does not throw an error
 FIXED:     XML output correctly exposes @see, @link, @version
 FIXED:     XML output now does not choke on special characters
 FIXED:     Error code for return type was incorrect
+FIXED:     Functions in the responsive twig now unfold to show complete contents
+FIXED:     Constants in the responsive twig now unfold to show complete contents
 REMOVED:   #814; removed ParserAbstract base class for Parser
 REMOVED:   PSR Draft is now moved to its own repo: https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md
 REMOVED:   Automatic generation of log files, the new log option can be used or a configuration option
