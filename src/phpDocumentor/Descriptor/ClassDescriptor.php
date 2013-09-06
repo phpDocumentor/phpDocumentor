@@ -139,9 +139,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             return new Collection();
         }
 
-        $inheritedMethods = clone $this->getParent()->getConstants();
+        $inheritedConstants = clone $this->getParent()->getConstants();
 
-        return $inheritedMethods->merge($this->getParent()->getInheritedConstants());
+        return $inheritedConstants->merge($this->getParent()->getInheritedConstants());
     }
 
     /**
