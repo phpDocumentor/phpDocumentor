@@ -33,6 +33,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  * Currently supported:
  *
  * * 'class', a Class Diagram Generated using GraphViz
+ * * 'classuml' , UML Class Diagrams Generated using GraphViz
  *
  * @todo Fix this class
  */
@@ -123,6 +124,98 @@ class Graph extends WriterAbstract
         }
 
         $graph->export('svg', $filename);
+    }
+    
+    /**
+     * Creates a uml class diagram.
+     *
+     * @param ProjectDescriptor $project
+     * @param Transformation $transformation
+     *
+     * @return void
+     */
+    public function processClassUml(ProjectDescriptor $project, Transformation $transformation)
+    {
+        $this->checkIfGraphVizIsInstalled();
+
+        $this->nodeFont = $transformation->getParameter('font', 'Courier');
+
+        $classes    = $project->getIndexes()->get('classes', new Collection())->getAll();
+        $interfaces = $project->getIndexes()->get('interfaces', new Collection())->getAll();
+        $traits     = $project->getIndexes()->get('traits', new Collection())->getAll();
+
+        $containers = array_merge($classes, $interfaces, $traits);
+
+        foreach($containers as $container) {
+            $filename = $this->getDestinationPath($transformation) . DIRECTORY_SEPARATOR . 'uml';
+            $from_name = $container->getFullyQualifiedStructuralElementName();
+
+            $elementName = $formattedName = $container->getName();
+            if (method_exists($container, 'isAbstract') && $container->isAbstract()) {
+                $formattedName = "<i>{$container->getName()}</i>";
+            }
+
+            $visibilitySigns = array('public' => '+', 'protected' => '#', 'private' => '-');
+
+            $uml = '';
+
+            if (method_exists($container, 'getProperties')) {
+                $properties = $container->getProperties();
+                foreach($properties as $property) {
+                    $uml .= sprintf(
+                        "%s %s : %s<br align='left'/>",
+                        $visibilitySigns[$property->getVisibility()],
+                        $property->getName(),
+                        current($property->getTypes())
+                    );
+                }
+            }
+            $uml .= '|';
+
+            $methods = $container->getMethods();
+
+            foreach($methods as $method) {
+                $arguments = $method->getArguments();
+                $signature = array();
+                foreach($arguments as $argument) {
+                    $signature[] = sprintf(
+                        "%s %s",
+                        current($argument->getTypes()),
+                        $argument->getName() . ($argument->getDefault() ? ' = ' . $argument->getDefault() : '')
+                    );
+                }
+                $return = $method->getResponse();
+                $type = 'void';
+                if ($return instanceof ReturnDescriptor) {
+                    $types = $return->getTypes();
+                    $type = is_array($types) && !empty($types) ? implode(', ', $types) : 'void';
+                }
+                $uml .= sprintf(
+                    '%s %s%s%s(%s) : %s<br align="left" />',
+                    $visibilitySigns[$method->getVisibility()],
+                    $method->isStatic() ? '<u>' : '',
+                    $method->getName(),
+                    $method->isStatic() ? '</u>' : '',
+                    implode(', ', $signature),
+                    $type
+                );
+                unset($signature);
+            }
+
+            $graph = GraphVizGraph::create()
+                ->setNode(
+                    Node::create(
+                        $elementName,
+                        sprintf('<{%s|%s}>', $formattedName, $uml)
+                    )->setShape('record')->setFontsize('10')
+                );
+
+            if (!file_exists($filename)) {
+                mkdir($filename, 0755, true);
+            }
+
+            $graph->export('svg', $filename . DIRECTORY_SEPARATOR . ltrim(str_replace(array('/', '\\'), '.', $from_name), '.') . '.svg');
+        }
     }
 
     /**
