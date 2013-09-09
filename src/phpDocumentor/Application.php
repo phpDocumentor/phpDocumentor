@@ -306,9 +306,9 @@ class Application extends Cilex
     {
         $config = $this['config']->toArray();
 
-        if (isset($config['introduction']['url'])) {
+        if (isset($config['introduction']['file'])) {
             $md = new \dflydev\markdown\MarkdownExtraParser;
-            $this['introduction'] = $md->transformMarkdown(file_get_contents($config['introduction']['url']));
+            $this['introduction'] = $md->transformMarkdown(file_get_contents($config['introduction']['file']));
         } else {
             $this['introduction'] = isset($config['introduction']) ? $config['introduction'] : '';
         }
