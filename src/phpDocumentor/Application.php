@@ -276,6 +276,7 @@ class Application extends Cilex
         $config = $this['config']->toArray();
 
         $this['translator.locale'] = isset($config['translator']['locale']) ? $config['translator']['locale'] : 'en';
+        $app = $this;
         $this['translator'] = $this->share(
             function ($app) {
                 $translator = new Translator();
