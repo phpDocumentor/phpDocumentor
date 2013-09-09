@@ -58,6 +58,20 @@ class Xml extends WriterAbstract implements Translatable
     /** @var Translator $translator */
     protected $translator;
 
+    protected $introduction;
+
+    public function getIntroduction()
+    {
+        return $this->introduction;
+    }
+
+    public function setIntroduction($introduction)
+    {
+        $this->introduction = $introduction;
+
+        return $this;
+    }
+    
     /**
      * Returns an instance of the object responsible for translating content.
      *
@@ -73,11 +87,13 @@ class Xml extends WriterAbstract implements Translatable
      *
      * @param Translator $translator
      *
-     * @return void
+     * @return Xml
      */
     public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
+        
+        return $this;
     }
 
     /**
@@ -95,9 +111,13 @@ class Xml extends WriterAbstract implements Translatable
         $this->xml->formatOutput = true;
         $document_element = new \DOMElement('project');
         $this->xml->appendChild($document_element);
-
+        
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
+        
+        $introduction = new \DOMElement('introduction');
+        $document_element->appendChild($introduction);
+        $introduction->appendChild(new \DOMText($this->getIntroduction()));
 
         $transformer = $transformation->getTransformer();
 
