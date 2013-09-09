@@ -28,6 +28,8 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
         /** @var Translator $translator  */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
+        
+        $introduction = $app['introduction'];
 
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
@@ -41,7 +43,7 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
         $writerCollection['xsl']        = new Writer\Xsl();
 
         $writerCollection['checkstyle']->setTranslator($translator);
-        $writerCollection['xml']->setTranslator($translator);
+        $writerCollection['xml']->setTranslator($translator)->setIntroduction($introduction);
         $writerCollection['twig']->setTranslator($translator);
     }
 }
