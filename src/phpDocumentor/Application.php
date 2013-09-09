@@ -61,6 +61,7 @@ class Application extends Cilex
         $this->setTimezone();
         $this->addEventDispatcher();
         $this->addTranslator();
+        $this->addIntroduction();
 
         /** @var ConsoleApplication $console */
         $console = $this['console'];
@@ -294,6 +295,18 @@ class Application extends Cilex
                 return $translator;
             }
         );
+    }
+    
+    /**
+     * Adds an introduction page to phpDocumentor's container.
+     *
+     * @return void
+     */
+    protected function addIntroduction()
+    {
+        $config = $this['config']->toArray();
+
+        $this['introduction'] = isset($config['introduction']) ? $config['introduction'] : '';
     }
 
     /**
