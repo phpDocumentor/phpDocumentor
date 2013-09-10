@@ -30,6 +30,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /** @var Settings $settings */
     protected $settings;
 
+    /** @var string $introduction */
+    protected $introduction;
+
     /**
      * Initializes this descriptor.
      */
@@ -131,6 +134,28 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     public function getSettings()
     {
         return $this->settings;
+    }
+
+    /**
+     * Sets the introduction page.
+     *
+     * @param string $introduction
+     *
+     * @return void
+     */
+    public function setIntroduction($introduction)
+    {
+        $this->introduction = $introduction;
+    }
+
+    /**
+     * Returns the introduction for this project.
+     *
+     * @return string
+     */
+    public function getIntroduction()
+    {
+        return $this->introduction;
     }
 
     /**

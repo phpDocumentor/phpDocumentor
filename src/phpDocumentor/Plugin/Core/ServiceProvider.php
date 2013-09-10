@@ -44,6 +44,6 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
 
         $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator)->setIntroduction($introduction);
-        $writerCollection['twig']->setTranslator($translator);
+        $writerCollection['twig']->setTranslator($translator)->setIntroduction($introduction);
     }
 }

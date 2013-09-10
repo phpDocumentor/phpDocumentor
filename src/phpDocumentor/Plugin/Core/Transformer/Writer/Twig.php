@@ -85,6 +85,9 @@ class Twig extends WriterAbstract implements Routable
     /** @var Translator $translator */
     protected $translator;
 
+    /** @var string $introduction */
+    protected $introduction;
+
     /**
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
@@ -224,6 +227,7 @@ class Twig extends WriterAbstract implements Routable
             array('cache' => sys_get_temp_dir() . '/phpdoc-twig-cache')
         );
 
+        $project->setIntroduction($this->introduction);
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
         $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);
 
@@ -411,5 +415,17 @@ class Twig extends WriterAbstract implements Routable
     public function setTranslator($translator)
     {
         $this->translator = $translator;
+    }
+
+    /**
+     * @param string $introduction
+     *
+     * @return Twig
+     */
+    public function setIntroduction($introduction)
+    {
+        $this->introduction = $introduction;
+
+	return $this;
     }
 }
