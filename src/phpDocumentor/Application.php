@@ -66,16 +66,6 @@ class Application extends Cilex
         $console = $this['console'];
         $console->getHelperSet()->set(new LoggerHelper());
 
-        $this['translator.locale'] = 'en';
-        $this['translator'] = $this->share(
-            function ($app) {
-                $translator = new Translator();
-                $translator->setLocale($app['translator.locale']);
-
-                return $translator;
-            }
-        );
-
         $this->addSerializer();
 
         $this->register(new ValidatorServiceProvider());
@@ -286,6 +276,7 @@ class Application extends Cilex
         $config = $this['config']->toArray();
 
         $this['translator.locale'] = isset($config['translator']['locale']) ? $config['translator']['locale'] : 'en';
+        $app = $this;
         $this['translator'] = $this->share(
             function ($app) {
                 $translator = new Translator();
