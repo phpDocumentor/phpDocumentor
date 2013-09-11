@@ -7,6 +7,7 @@ ADDED:     Verbosity can now be provided in three level, each indicating how muc
 ADDED:     Support for the XSLCache drop in replacement of ext/xsl
 ADDED:     Locale can now be supplied in the configuration
 ADDED:     German translation for error messages
+CHANGED:   phpDocumentor now checks for transformation requirements at the start of the application (#148)
 FIXED:     Validation to check for validity of return types
 FIXED:     Validation to check for validity of parameters
 FIXED:     Fatal error when a parent interface is not in the project
