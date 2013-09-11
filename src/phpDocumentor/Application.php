@@ -61,7 +61,7 @@ class Application extends Cilex
         $this->setTimezone();
         $this->addEventDispatcher();
         $this->addTranslator();
-        $this->addIntroduction();
+        $this->addPageElements();
 
         /** @var ConsoleApplication $console */
         $console = $this['console'];
@@ -296,22 +296,34 @@ class Application extends Cilex
             }
         );
     }
-    
+
     /**
-     * Adds an introduction page to phpDocumentor's container.
+     * Adds page elements.
      *
      * @return void
      */
-    protected function addIntroduction()
+    protected function addPageElements()
     {
         $config = $this['config']->toArray();
 
-        if (isset($config['introduction']['file'])) {
-            $md = new \dflydev\markdown\MarkdownExtraParser;
-            $this['introduction'] = $md->transformMarkdown(file_get_contents($config['introduction']['file']));
-        } else {
-            $this['introduction'] = isset($config['introduction']) ? $config['introduction'] : '';
+        $prefix = isset($config['prefix']) ? $config['prefix'] : 'var';
+        $files = isset($config['pages']['file']) ? $config['pages']['file'] : array();
+        $directories = isset($config['pages']['directory']) ? iterator_to_array(new \CachingIterator(new \FilesystemIterator($config['pages']['directory'], \FilesystemIterator::KEY_AS_FILENAME))) : array();
+        $directories += isset($config['pages']['glob']) ? iterator_to_array(new \CachingIterator(new \GlobIterator($config['pages']['glob'], \FilesystemIterator::KEY_AS_FILENAME))) : array();
+
+        $md = new \dflydev\markdown\MarkdownExtraParser;
+
+        foreach($directories as $key => $file) {
+            list($name,) = explode('.', $file->getFilename(), 2);
+            $this[$prefix . strtolower($name)] = $md->transformMarkdown(file_get_contents($file->getPathname()));
         }
+
+        foreach($files as $file) {
+            $info = pathinfo($file);
+            $this[$prefix . strtolower($info['filename'])] = $md->transformMarkdown(file_get_contents($file));
+        }
+
+        $this['prefix'] = $prefix;
     }
 
     /**

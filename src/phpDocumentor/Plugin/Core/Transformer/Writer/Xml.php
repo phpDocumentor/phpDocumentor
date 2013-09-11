@@ -58,20 +58,29 @@ class Xml extends WriterAbstract implements Translatable
     /** @var Translator $translator */
     protected $translator;
 
-    protected $introduction;
+    /** @var string[] $pageElements */
+    protected $pageElements;
 
-    public function getIntroduction()
+    /**
+     * @return string[]
+     */
+    public function getPageElements()
     {
-        return $this->introduction;
+        return $this->pageElements;
     }
 
-    public function setIntroduction($introduction)
+    /**
+     * @param string[] $pageElements
+     *
+     * @return Xml
+     */
+    public function setPageElements($pageElements)
     {
-        $this->introduction = $introduction;
+        $this->pageElements = $pageElements;
 
         return $this;
     }
-    
+
     /**
      * Returns an instance of the object responsible for translating content.
      *
@@ -92,7 +101,7 @@ class Xml extends WriterAbstract implements Translatable
     public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
-        
+
         return $this;
     }
 
@@ -111,10 +120,10 @@ class Xml extends WriterAbstract implements Translatable
         $this->xml->formatOutput = true;
         $document_element = new \DOMElement('project');
         $this->xml->appendChild($document_element);
-        
+
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
-        
+
         $introduction = new \DOMElement('introduction');
         $document_element->appendChild($introduction);
         $introduction->appendChild(new \DOMText($this->getIntroduction()));
@@ -647,7 +656,7 @@ class Xml extends WriterAbstract implements Translatable
 
         $child->setAttribute('name', $tag->getName());
         $child->setAttribute('line', $parent->getAttribute('line'));
-        
+
         $description = '';
         //@version, @deprecated, @since
         if (method_exists($tag, 'getVersion')) {
@@ -655,7 +664,7 @@ class Xml extends WriterAbstract implements Translatable
         }
         //TODO: Other previously unsupported tags are to be "serialized" here.
         $description .= $tag->getDescription();
-        
+
         $child->setAttribute(
             'description',
             str_replace('&', '&amp;', trim($description))

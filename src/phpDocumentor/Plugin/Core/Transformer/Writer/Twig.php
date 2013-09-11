@@ -85,8 +85,8 @@ class Twig extends WriterAbstract implements Routable
     /** @var Translator $translator */
     protected $translator;
 
-    /** @var string $introduction */
-    protected $introduction;
+    /** @var string $pageElements */
+    protected $pageElements;
 
     /**
      * This method combines the ProjectDescriptor and the given target template
@@ -227,7 +227,7 @@ class Twig extends WriterAbstract implements Routable
             array('cache' => sys_get_temp_dir() . '/phpdoc-twig-cache')
         );
 
-        $project->setIntroduction($this->introduction);
+        $project->setPageElements($this->pageElements);
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
         $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);
 
@@ -418,13 +418,13 @@ class Twig extends WriterAbstract implements Routable
     }
 
     /**
-     * @param string $introduction
+     * @param string[] $pageElements
      *
      * @return Twig
      */
-    public function setIntroduction($introduction)
+    public function setPageElements($pageElements)
     {
-        $this->introduction = $introduction;
+        $this->pageElements = $pageElements;
 
         return $this;
     }

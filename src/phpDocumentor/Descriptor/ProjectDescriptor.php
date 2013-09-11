@@ -30,8 +30,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /** @var Settings $settings */
     protected $settings;
 
-    /** @var string $introduction */
-    protected $introduction;
+    /** @var string[] $pageElements */
+    protected $pageElements;
 
     /**
      * Initializes this descriptor.
@@ -137,25 +137,21 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     }
 
     /**
-     * Sets the introduction page.
-     *
-     * @param string $introduction
+     * @param string[]
      *
      * @return void
      */
-    public function setIntroduction($introduction)
+    public function setPageElements($pageElements)
     {
-        $this->introduction = $introduction;
+        $this->pageElements = $pageElements;
     }
 
     /**
-     * Returns the introduction for this project.
-     *
-     * @return string
+     * @return string[]
      */
-    public function getIntroduction()
+    public function getPageElements()
     {
-        return $this->introduction;
+        return $this->pageElements;
     }
 
     /**
