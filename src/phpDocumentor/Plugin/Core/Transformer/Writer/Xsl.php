@@ -11,11 +11,11 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use Psr\Log\LogLevel;
-use Zend\I18n\Exception\RuntimeException;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Plugin\Core\Exception;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
+use Zend\I18n\Exception\RuntimeException;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.
@@ -23,6 +23,16 @@ use phpDocumentor\Transformer\Transformation;
 class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
 {
     protected $xsl_variables = array();
+
+    public function checkRequirements()
+    {
+        if (!class_exists('XSLTProcessor') && (!extension_loaded('xslcache'))) {
+            throw new RequirementMissing(
+                'The XSL writer was unable to find your XSLTProcessor; '
+                . 'please check if you have installed the PHP XSL extension or XSLCache extension'
+            );
+        }
+    }
 
     /**
      * This method combines the structure.xml and the given target template
@@ -35,13 +45,6 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
-        if (!class_exists('XSLTProcessor')) {
-            throw new Exception(
-                'The XSL writer was unable to find your XSLTProcessor; '
-                . 'please check if you have installed the PHP XSL extension'
-            );
-        }
-
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
 
@@ -58,17 +61,8 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         libxml_use_internal_errors(true);
         $structure->load($structureFilename);
 
-        if (extension_loaded('xslcache')) {
-            $proc = new \XSLTCache();
-            $proc->importStyleSheet($transformation->getSourceAsPath(), true);
-        } else {
-            $xsl = new \DOMDocument();
-            $xsl->load($transformation->getSourceAsPath());
+        $proc = $this->getXslProcessor($transformation);
 
-            $proc = new \XSLTProcessor();
-            $proc->importStyleSheet($xsl);
-        }
-        
         if (empty($structure->documentElement)) {
             $message = 'Specified DOMDocument lacks documentElement, cannot transform.';
             if (libxml_get_last_error()) {
@@ -189,6 +183,31 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
             foreach ($parameters['variables'] as $key => $value) {
                 $proc->setParameter('', $key, $value);
             }
+        }
+    }
+
+    /**
+     *
+     *
+     * @param Transformation $transformation
+     *
+     * @return \XSLTCache|\XSLTProcessor
+     */
+    protected function getXslProcessor(Transformation $transformation)
+    {
+        if (extension_loaded('xslcache')) {
+            $proc = new \XSLTCache();
+            $proc->importStyleSheet($transformation->getSourceAsPath(), true);
+
+            return $proc;
+        } else {
+            $xsl = new \DOMDocument();
+            $xsl->load($transformation->getSourceAsPath());
+
+            $proc = new \XSLTProcessor();
+            $proc->importStyleSheet($xsl);
+
+            return $proc;
         }
     }
 }

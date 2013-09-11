@@ -22,6 +22,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Shell;
@@ -85,6 +86,15 @@ class Application extends Cilex
 
         // TODO: make plugin service provider calls registrable from config
         $this->register(new Plugin\Core\ServiceProvider());
+
+        try {
+            $this['transformer.writer.collection']->checkRequirements();
+        } catch (RequirementMissing $e) {
+            $this['monolog']->emerg(
+                'phpDocumentor detected that a requirement is missing in your system setup: ' . $e->getMessage()
+            );
+            exit(1);
+        }
 
         $this->addCommandsForProjectNamespace();
     }

@@ -14,6 +14,7 @@ namespace phpDocumentor\Transformer\Writer;
 /**
  * Collection object for a set of Writers.
  */
+
 use phpDocumentor\Transformer\Router\Queue;
 
 class Collection extends \ArrayObject
@@ -79,5 +80,20 @@ class Collection extends \ArrayObject
         }
 
         return parent::offsetGet($index);
+    }
+
+    /**
+     * Iterates over each writer in this collection and checks its requirements.
+     *
+     * @throws Exception\RequirementMissing if a requirement of a writer is missing.
+     *
+     * @return void
+     */
+    public function checkRequirements()
+    {
+        /** @var WriterAbstract $writer */
+        foreach ($this as $writer) {
+            $writer->checkRequirements();
+        }
     }
 }
