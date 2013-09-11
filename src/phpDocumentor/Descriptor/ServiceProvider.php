@@ -108,9 +108,9 @@ class ServiceProvider implements ServiceProviderInterface
         $constantMatcher  = function ($criteria) {
             return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
         };
+        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
         $classMatcher     = function ($criteria) { return $criteria instanceof ClassReflector; };
         $interfaceMatcher = function ($criteria) { return $criteria instanceof InterfaceReflector; };
-        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
         $propertyMatcher  = function ($criteria) { return $criteria instanceof ClassReflector\PropertyReflector; };
         $methodMatcher    = function ($criteria) { return $criteria instanceof ClassReflector\MethodReflector; };
         $argumentMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector\ArgumentReflector; };
@@ -133,9 +133,9 @@ class ServiceProvider implements ServiceProviderInterface
 
         $factory->register($fileMatcher, new FileAssembler());
         $factory->register($constantMatcher, new ConstantAssembler());
+        $factory->register($traitMatcher, new TraitAssembler());
         $factory->register($classMatcher, new ClassAssembler());
         $factory->register($interfaceMatcher, new InterfaceAssembler());
-        $factory->register($traitMatcher, new TraitAssembler());
         $factory->register($propertyMatcher, new PropertyAssembler());
         $factory->register($methodMatcher, new MethodAssembler());
         $factory->register($argumentMatcher, new ArgumentAssembler());
@@ -222,10 +222,10 @@ class ServiceProvider implements ServiceProviderInterface
 
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
-        
+
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
-        
+
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
 
