@@ -61,7 +61,7 @@ class Application extends Cilex
         $this->setTimezone();
         $this->addEventDispatcher();
         $this->addTranslator();
-        $this->addPageElements();
+        $this->addPartials();
 
         /** @var ConsoleApplication $console */
         $console = $this['console'];
@@ -298,32 +298,33 @@ class Application extends Cilex
     }
 
     /**
-     * Adds page elements.
+     * Adds partials.
      *
      * @return void
      */
-    protected function addPageElements()
+    protected function addPartials()
     {
         $config = $this['config']->toArray();
 
-        $prefix = isset($config['prefix']) ? $config['prefix'] : 'var';
-        $files = isset($config['pages']['file']) ? $config['pages']['file'] : array();
-        $directories = isset($config['pages']['directory']) ? iterator_to_array(new \CachingIterator(new \FilesystemIterator($config['pages']['directory'], \FilesystemIterator::KEY_AS_FILENAME))) : array();
-        $directories += isset($config['pages']['glob']) ? iterator_to_array(new \CachingIterator(new \GlobIterator($config['pages']['glob'], \FilesystemIterator::KEY_AS_FILENAME))) : array();
+        $this['partials.prefix'] = isset($config['partials']['prefix']) ? $config['partials']['prefix'] : null;
+        $this['partials.directory'] = isset($config['partials']['directory']) ? new \FilesystemIterator($config['partials']['directory']) : null;
+        $this['partials.glob'] = isset($config['partials']['glob']) ? new \GlobIterator($config['partials']['glob']) : null;
+        $this['partials.file'] = isset($config['partials']['file']) ? $config['partials']['file'] : array();
 
-        $md = new \dflydev\markdown\MarkdownExtraParser;
+        $app = $this;
+        $this['tutorials'] = $this->share(
+            function ($app) {
+                $tutorials = new Tutorials;
+                $tutorials->setParser(new \dflydev\markdown\MarkdownExtraParser)
+                    ->setPrefix($this['partials.prefix'])
+                    ->addDirectory($this['partials.directory'])
+                    ->addDirectory($this['partials.glob'])
+                    ->addFiles($this['partials.file'])
+                    ->parse();
 
-        foreach($directories as $key => $file) {
-            list($name,) = explode('.', $file->getFilename(), 2);
-            $this[$prefix . strtolower($name)] = $md->transformMarkdown(file_get_contents($file->getPathname()));
-        }
-
-        foreach($files as $file) {
-            $info = pathinfo($file);
-            $this[$prefix . strtolower($info['filename'])] = $md->transformMarkdown(file_get_contents($file));
-        }
-
-        $this['prefix'] = $prefix;
+                return $tutorials;
+            }
+        );
     }
 
     /**

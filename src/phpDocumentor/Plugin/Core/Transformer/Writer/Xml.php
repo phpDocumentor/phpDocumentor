@@ -58,25 +58,16 @@ class Xml extends WriterAbstract implements Translatable
     /** @var Translator $translator */
     protected $translator;
 
-    /** @var string[] $pageElements */
-    protected $pageElements;
+    protected $partials;
 
-    /**
-     * @return string[]
-     */
-    public function getPageElements()
+    public function getPartials()
     {
-        return $this->pageElements;
+        return $this->partials;
     }
 
-    /**
-     * @param string[] $pageElements
-     *
-     * @return Xml
-     */
-    public function setPageElements($pageElements)
+    public function setPartials($partials)
     {
-        $this->pageElements = $pageElements;
+        $this->partials = $partials;
 
         return $this;
     }
@@ -124,9 +115,11 @@ class Xml extends WriterAbstract implements Translatable
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
-        $introduction = new \DOMElement('introduction');
-        $document_element->appendChild($introduction);
-        $introduction->appendChild(new \DOMText($this->getIntroduction()));
+        foreach($this->getPartials() as $name => $element) {
+            $domElement = new \DOMElement($name);
+            $document_element->appendChild($domElement);
+            $domElement->appendChild(new \DOMText($element));
+        }
 
         $transformer = $transformation->getTransformer();
 

@@ -31,7 +31,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     protected $settings;
 
     /** @var string[] $pageElements */
-    protected $pageElements;
+    protected $partials;
 
     /**
      * Initializes this descriptor.
@@ -136,22 +136,14 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
         return $this->settings;
     }
 
-    /**
-     * @param string[]
-     *
-     * @return void
-     */
-    public function setPageElements($pageElements)
+    public function setPartials($partials)
     {
-        $this->pageElements = $pageElements;
+        $this->partials = $partials;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getPageElements()
+    public function getPartials()
     {
-        return $this->pageElements;
+        return $this->partials;
     }
 
     /**
