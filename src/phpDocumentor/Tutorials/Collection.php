@@ -26,19 +26,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function __construct($items = array())
     {
+        $this->parser = new \dflydev\markdown\MarkdownExtraParser;
         $this->items = $items;
-    }
-
-    /**
-     * Adds a new item to this collection, generally a Descriptor.
-     *
-     * @param DescriptorAbstract|mixed $item
-     *
-     * @return void
-     */
-    public function add($item)
-    {
-        $this->items[] = $item;
     }
 
     /**
@@ -51,7 +40,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function set($index, $item)
     {
-        $this->offsetSet($index, $item);
+        $content = is_readable($item) ? file_get_contents($item) : $item;
+        $this->offsetSet($index, $this->parser->transformMarkdown($content));
     }
 
     /**
