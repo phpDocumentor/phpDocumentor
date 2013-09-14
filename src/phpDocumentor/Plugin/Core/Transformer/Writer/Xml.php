@@ -73,13 +73,11 @@ class Xml extends WriterAbstract implements Translatable
      *
      * @param Translator $translator
      *
-     * @return Xml
+     * @return void
      */
     public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
-
-        return $this;
     }
 
     /**
