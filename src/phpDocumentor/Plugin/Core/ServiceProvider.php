@@ -29,8 +29,6 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
-        $tutorials = $app['tutorials']->getCollection()->getAll();
-
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
 
@@ -43,7 +41,7 @@ class ServiceProvider implements \Cilex\ServiceProviderInterface
         $writerCollection['xsl']        = new Writer\Xsl();
 
         $writerCollection['checkstyle']->setTranslator($translator);
-        $writerCollection['xml']->setTranslator($translator)->setPartials($tutorials);
-        $writerCollection['twig']->setTranslator($translator)->setPartials($tutorials);
+        $writerCollection['xml']->setTranslator($translator);
+        $writerCollection['twig']->setTranslator($translator);
     }
 }
