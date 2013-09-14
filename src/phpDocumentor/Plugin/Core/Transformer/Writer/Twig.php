@@ -227,7 +227,6 @@ class Twig extends WriterAbstract implements Routable
             array('cache' => sys_get_temp_dir() . '/phpdoc-twig-cache')
         );
 
-        $project->setPartials($this->partials);
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
         $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);
 
@@ -415,17 +414,5 @@ class Twig extends WriterAbstract implements Routable
     public function setTranslator($translator)
     {
         $this->translator = $translator;
-    }
-
-    /**
-     * @param string[] $partials
-     *
-     * @return Twig
-     */
-    public function setPartials($partials)
-    {
-        $this->partials = $partials;
-
-        return $this;
     }
 }
