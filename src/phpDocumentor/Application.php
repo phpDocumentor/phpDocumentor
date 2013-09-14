@@ -61,7 +61,6 @@ class Application extends Cilex
         $this->setTimezone();
         $this->addEventDispatcher();
         $this->addTranslator();
-        $this->addPartials();
 
         /** @var ConsoleApplication $console */
         $console = $this['console'];
@@ -293,36 +292,6 @@ class Application extends Cilex
                 $translator->setLocale($this['translator.locale']);
 
                 return $translator;
-            }
-        );
-    }
-
-    /**
-     * Adds partials.
-     *
-     * @return void
-     */
-    protected function addPartials()
-    {
-        $config = $this['config']->toArray();
-
-        $this['partials.prefix'] = isset($config['partials']['prefix']) ? $config['partials']['prefix'] : null;
-        $this['partials.directory'] = isset($config['partials']['directory']) ? new \FilesystemIterator($config['partials']['directory']) : null;
-        $this['partials.glob'] = isset($config['partials']['glob']) ? new \GlobIterator($config['partials']['glob']) : null;
-        $this['partials.file'] = isset($config['partials']['file']) ? $config['partials']['file'] : array();
-
-        $app = $this;
-        $this['tutorials'] = $this->share(
-            function ($app) {
-                $tutorials = new Tutorials;
-                $tutorials->setParser(new \dflydev\markdown\MarkdownExtraParser)
-                    ->setPrefix($this['partials.prefix'])
-                    ->addDirectory($this['partials.directory'])
-                    ->addDirectory($this['partials.glob'])
-                    ->addFiles($this['partials.file'])
-                    ->parse();
-
-                return $tutorials;
             }
         );
     }
