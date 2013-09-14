@@ -115,10 +115,13 @@ class Xml extends WriterAbstract implements Translatable
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
+        $partials = new \DOMElement('partials');
+        $document_element->appendChild($partials);
         foreach($this->getPartials() as $name => $element) {
-            $domElement = new \DOMElement($name);
-            $document_element->appendChild($domElement);
-            $domElement->appendChild(new \DOMText($element));
+            $partial = new \DOMElement('partial');
+            $partials->appendChild($partial);
+            $partial->setAttribute('name', $name);
+            $partial->appendChild(new \DOMText($element));
         }
 
         $transformer = $transformation->getTransformer();
