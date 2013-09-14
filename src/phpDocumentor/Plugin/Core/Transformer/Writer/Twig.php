@@ -85,9 +85,6 @@ class Twig extends WriterAbstract implements Routable
     /** @var Translator $translator */
     protected $translator;
 
-    /** @var string $partials */
-    protected $partials;
-
     /**
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
