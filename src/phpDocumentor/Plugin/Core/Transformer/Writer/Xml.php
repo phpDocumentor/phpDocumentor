@@ -58,20 +58,6 @@ class Xml extends WriterAbstract implements Translatable
     /** @var Translator $translator */
     protected $translator;
 
-    protected $partials;
-
-    public function getPartials()
-    {
-        return $this->partials;
-    }
-
-    public function setPartials($partials)
-    {
-        $this->partials = $partials;
-
-        return $this;
-    }
-
     /**
      * Returns an instance of the object responsible for translating content.
      *
@@ -117,7 +103,7 @@ class Xml extends WriterAbstract implements Translatable
 
         $partials = new \DOMElement('partials');
         $document_element->appendChild($partials);
-        foreach($this->getPartials() as $name => $element) {
+        foreach($project->getPartials() as $name => $element) {
             $partial = new \DOMElement('partial');
             $partials->appendChild($partial);
             $partial->setAttribute('name', $name);
