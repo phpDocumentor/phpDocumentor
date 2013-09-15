@@ -47,6 +47,28 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $config = $app['config']->toArray();
+
+        if (isset($config['partials']) && isset($config['partials']['partial'])) {
+            $tutorials = new TutorialsCollection;
+
+            foreach($config['partials']['partial'] as $partial) {
+                if (isset($partial['content'])) {
+                    $tutorials->set($partial['name'], $partial['content']);
+                } elseif(isset($partial['href'])) {
+                    $tutorials->set($partial['name'], $partial['href']);
+                }
+            }
+
+            $app['tutorials.collection'] = $tutorials;
+
+            $app['tutorials'] = $app->share(
+                function ($app) {
+                    return $app['tutorials.collection'];
+                }
+            );
+        }
+
         /** @var Translator $translator  */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
