@@ -56,8 +56,8 @@ class ServiceProvider implements ServiceProviderInterface
             foreach($config['partials']['partial'] as $partial) {
                 if (isset($partial['content'])) {
                     $partials->set($partial['name'], $partial['content']);
-                } elseif(isset($partial['href'])) {
-                    $partials->set($partial['name'], $partial['href']);
+                } elseif(isset($partial['href']) && is_readable($partial['href'])) {
+                    $partials->set($partial['name'], file_get_contents($partial['href']));
                 } else {
                     $partials->set($partial['name'], '');
                 }

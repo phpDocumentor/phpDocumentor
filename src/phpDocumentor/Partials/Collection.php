@@ -42,12 +42,6 @@ class Collection extends DescriptorCollection
      */
     public function set($index, $item)
     {
-        $this->offsetSet($index, $this->getContentByItem($item));
-    }
-
-    protected function getContentByItem($item)
-    {
-        $content = is_readable($item) ? file_get_contents($item) : $item;
-        return $this->parser->transformMarkdown($content);
+        $this->offsetSet($index, $this->parser->transformMarkdown($item));
     }
 }
