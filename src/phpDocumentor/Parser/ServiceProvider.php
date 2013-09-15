@@ -31,6 +31,7 @@ class ServiceProvider implements ServiceProviderInterface
      * @param Application $app An Application instance
      *
      * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
+     * @throws Exception\MissingNameForPartialException if a partial has no name provided.
      *
      * @return void
      */
@@ -54,6 +55,11 @@ class ServiceProvider implements ServiceProviderInterface
             $partials = new PartialsCollection;
 
             foreach($config['partials']['partial'] as $partial) {
+                if (!isset($partial['name'])) {
+                    throw new Exception\MissingNameForPartialException(
+                        'The name of the partial to load is missing'
+                    );
+                }
                 if (isset($partial['content'])) {
                     $partials->set($partial['name'], $partial['content']);
                 } elseif(isset($partial['href']) && is_readable($partial['href'])) {
