@@ -51,21 +51,21 @@ class ServiceProvider implements ServiceProviderInterface
         $config = $app['config']->toArray();
 
         if (isset($config['partials']) && isset($config['partials']['partial'])) {
-            $tutorials = new PartialsCollection;
+            $partials = new PartialsCollection;
 
             foreach($config['partials']['partial'] as $partial) {
                 if (isset($partial['content'])) {
-                    $tutorials->set($partial['name'], $partial['content']);
+                    $partials->set($partial['name'], $partial['content']);
                 } elseif(isset($partial['href'])) {
-                    $tutorials->set($partial['name'], $partial['href']);
+                    $partials->set($partial['name'], $partial['href']);
                 }
             }
 
-            $app['tutorials.collection'] = $tutorials;
+            $app['partials.collection'] = $partials;
 
-            $app['tutorials'] = $app->share(
+            $app['partials'] = $app->share(
                 function ($app) {
-                    return $app['tutorials.collection'];
+                    return $app['partials.collection'];
                 }
             );
         }

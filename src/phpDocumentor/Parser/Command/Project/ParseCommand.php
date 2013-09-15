@@ -192,7 +192,7 @@ class ParseCommand extends ConfigurableCommand
             $progress->finish();
         }
 
-        $projectDescriptor->setPartials($this->getService('tutorials'));
+        $projectDescriptor->setPartials($this->getService('partials'));
 
         $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
         $mapper->save($projectDescriptor);
