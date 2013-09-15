@@ -58,6 +58,8 @@ class ServiceProvider implements ServiceProviderInterface
                     $partials->set($partial['name'], $partial['content']);
                 } elseif(isset($partial['href'])) {
                     $partials->set($partial['name'], $partial['href']);
+                } else {
+                    $partials->set($partial['name'], '');
                 }
             }
 
