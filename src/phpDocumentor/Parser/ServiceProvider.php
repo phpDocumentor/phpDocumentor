@@ -63,13 +63,7 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             }
 
-            $app['partials.collection'] = $partials;
-
-            $app['partials'] = $app->share(
-                function ($app) {
-                    return $app['partials.collection'];
-                }
-            );
+            $app['partials'] = $partials;
         }
 
         /** @var Translator $translator  */
