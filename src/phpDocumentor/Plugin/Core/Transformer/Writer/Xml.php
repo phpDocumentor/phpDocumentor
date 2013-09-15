@@ -99,14 +99,7 @@ class Xml extends WriterAbstract implements Translatable
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
-        $partials = new \DOMElement('partials');
-        $document_element->appendChild($partials);
-        foreach($project->getPartials() as $name => $element) {
-            $partial = new \DOMElement('partial');
-            $partials->appendChild($partial);
-            $partial->setAttribute('name', $name);
-            $partial->appendChild(new \DOMText($element));
-        }
+        $this->buildPartials($document_element, $project);
 
         $transformer = $transformation->getTransformer();
 
@@ -116,6 +109,18 @@ class Xml extends WriterAbstract implements Translatable
 
         $this->finalize($project);
         file_put_contents($artifact, $this->xml->saveXML());
+    }
+
+    protected function buildPartials(\DOMElement $parent, ProjectDescriptor $project)
+    {
+        $child = new \DOMElement('partials');
+        $parent->appendChild($child);
+        foreach($project->getPartials() as $name => $element) {
+            $partial = new \DOMElement('partial');
+            $child->appendChild($partial);
+            $partial->setAttribute('name', $name);
+            $partial->appendChild(new \DOMText($element));
+        }
     }
 
     protected function buildFile(
