@@ -51,25 +51,29 @@ class ServiceProvider implements ServiceProviderInterface
 
         $config = $app['config']->toArray();
 
-        if (isset($config['partials']) && isset($config['partials']['partial'])) {
-            $partials = new PartialsCollection;
+        if (isset($config['partials'])) {
+            $partialsCollection = new PartialsCollection;
 
-            foreach($config['partials']['partial'] as $partial) {
+            $partials = is_array(current($config['partials']['partial']))
+                ? $config['partials']['partial']
+                : array($config['partials']['partial']);
+
+            foreach($partials as $partial) {
                 if (!isset($partial['name'])) {
                     throw new Exception\MissingNameForPartialException(
-                        'The name of the partial to load is missing'
+                       'The name of the partial to load is missing'
                     );
                 }
                 if (isset($partial['content'])) {
-                    $partials->set($partial['name'], $partial['content']);
-                } elseif(isset($partial['href']) && is_readable($partial['href'])) {
-                    $partials->set($partial['name'], file_get_contents($partial['href']));
+                    $partialsCollection->set($partial['name'], $partial['content']);
+                } elseif(isset($partial['link']) && is_readable($partial['link'])) {
+                    $partialsCollection->set($partial['name'], file_get_contents($partial['link']));
                 } else {
-                    $partials->set($partial['name'], '');
+                    $partialsCollection->set($partial['name'], '');
                 }
             }
 
-            $app['partials'] = $partials;
+            $app['partials'] = $partialsCollection;
         }
 
         /** @var Translator $translator  */
