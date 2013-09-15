@@ -42,23 +42,12 @@ class Collection extends DescriptorCollection
      */
     public function set($index, $item)
     {
+        $this->offsetSet($index, $this->getContentByItem($item));
+    }
+
+    protected function getContentByItem($item)
+    {
         $content = is_readable($item) ? file_get_contents($item) : $item;
-        $this->offsetSet($index, $this->parser->transformMarkdown($content));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getParser()
-    {
-        return $parser;
-    }
-
-    /**
-     * @param mixed $parser
-     */
-    public function setParser($parser)
-    {
-        $this->parser = $parser;
+        return $this->parser->transformMarkdown($content);
     }
 }
