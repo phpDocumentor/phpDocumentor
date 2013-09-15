@@ -13,6 +13,7 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Translator;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
@@ -50,7 +51,7 @@ class ServiceProvider implements ServiceProviderInterface
         $config = $app['config']->toArray();
 
         if (isset($config['partials']) && isset($config['partials']['partial'])) {
-            $tutorials = new TutorialsCollection;
+            $tutorials = new PartialsCollection;
 
             foreach($config['partials']['partial'] as $partial) {
                 if (isset($partial['content'])) {
