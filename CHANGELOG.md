@@ -8,6 +8,7 @@ ADDED:     Support for the XSLCache drop in replacement of ext/xsl
 ADDED:     Locale can now be supplied in the configuration
 ADDED:     German translation for error messages
 CHANGED:   phpDocumentor now checks for transformation requirements at the start of the application (#148)
+FIXED:     Checkstyle error report only showed errors of the file itself and not subelements (#1046)
 FIXED:     Validation to check for validity of return types
 FIXED:     Validation to check for validity of parameters
 FIXED:     Fatal error when a parent interface is not in the project
