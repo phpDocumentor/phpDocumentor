@@ -22,6 +22,7 @@ use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\FileReflector;
 use Psr\Log\LogLevel;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Class responsible for parsing the given file or files to the intermediate
@@ -69,6 +70,9 @@ class Parser
     /** @var string The encoding in which the files are encoded */
     protected $encoding = 'utf-8';
 
+    /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
+    protected $stopwatch = null;
+
     /**
      * Initializes the parser.
      *
@@ -83,6 +87,18 @@ class Parser
         if ($default_encoding) {
             $this->encoding = $default_encoding;
         }
+    }
+
+    /**
+     * Registers the component that profiles the execution of the parser.
+     *
+     * @param Stopwatch $stopwatch
+     *
+     * @return void
+     */
+    public function setStopwatch($stopwatch)
+    {
+        $this->stopwatch = $stopwatch;
     }
 
     /**
@@ -320,7 +336,10 @@ class Parser
      */
     public function parse(ProjectDescriptorBuilder $builder, Collection $files)
     {
-        $timer = microtime(true);
+        if ($this->stopwatch) {
+            $this->stopwatch->start('parser.parse');
+        }
+
         $paths = $this->getFilenames($files);
 
         $this->log('  Project root is:  ' . $files->getProjectRoot());
@@ -334,8 +353,13 @@ class Parser
         foreach ($paths as $filename) {
             $this->parseFileIntoDescriptor($builder, $filename);
         }
-        $this->log('Elapsed time to parse all files: ' . round(microtime(true) - $timer, 2) . 's');
-        $this->log('Peak memory usage: '. round(memory_get_peak_usage() / 1024 / 1024, 2) . 'M');
+
+        if ($this->stopwatch) {
+            $event = $this->stopwatch->stop('parser.parse');
+
+            $this->log('Elapsed time to parse all files: ' . round($event->getDuration(), 2) . 's');
+            $this->log('Peak memory usage: '. round($event->getMemory() / 1024 / 1024, 2) . 'M');
+        }
 
         return $builder->getProjectDescriptor();
     }

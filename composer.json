@@ -19,8 +19,8 @@
         "twig/twig":        "~1.3",
         "dflydev/markdown": "~1.0",
 
-
         "symfony/event-dispatcher": "~2.1",
+        "symfony/stopwatch":        "~2.3",
         "jms/serializer":           "~0.12",
 
         "zendframework/zend-stdlib":         "2.*",

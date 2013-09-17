@@ -13,11 +13,11 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Translator;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
+use phpDocumentor\Translator;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -42,8 +42,10 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         $app['parser'] = $app->share(
-            function () {
-                return new Parser();
+            function ($app) {
+                $parser = new Parser();
+                $parser->setStopwatch($app['kernel.stopwatch']);
+                return $parser;
             }
         );
 

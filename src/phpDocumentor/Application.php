@@ -26,6 +26,7 @@ use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Shell;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Zend\Config\Factory;
 
 /**
@@ -55,6 +56,9 @@ class Application extends Cilex
         parent::__construct('phpDocumentor', self::$VERSION);
 
         $this['kernel.timer.start'] = time();
+        $this['kernel.stopwatch'] = function () {
+            return new Stopwatch();
+        };
 
         $this->addAutoloader();
         $this->addConfiguration();
