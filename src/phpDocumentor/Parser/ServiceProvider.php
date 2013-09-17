@@ -49,10 +49,20 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['markdown'] = $app->share(
+            function () {
+                return new \dflydev\markdown\MarkdownExtraParser;
+            }
+        );
+
+        /** @var Translator $translator  */
+        $translator = $app['translator'];
+        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
+
         $config = $app['config']->toArray();
 
         if (isset($config['partials'])) {
-            $partialsCollection = new PartialsCollection;
+            $partialsCollection = new PartialsCollection($app['markdown']);
 
             $partials = is_array(current($config['partials']['partial']))
                 ? $config['partials']['partial']
@@ -66,8 +76,14 @@ class ServiceProvider implements ServiceProviderInterface
                 }
                 if (isset($partial['content'])) {
                     $partialsCollection->set($partial['name'], $partial['content']);
-                } elseif(isset($partial['link']) && is_readable($partial['link'])) {
-                    $partialsCollection->set($partial['name'], file_get_contents($partial['link']));
+                } elseif(isset($partial['link'])) {
+                    if (!is_readable($partial['link'])) {
+                        $app['monolog']->error(
+                            sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial['link'])
+                        );
+                    } else {
+                        $partialsCollection->set($partial['name'], file_get_contents($partial['link']));
+                    }
                 } else {
                     $partialsCollection->set($partial['name'], '');
                 }
@@ -75,10 +91,6 @@ class ServiceProvider implements ServiceProviderInterface
 
             $app['partials'] = $partialsCollection;
         }
-
-        /** @var Translator $translator  */
-        $translator = $app['translator'];
-        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
 

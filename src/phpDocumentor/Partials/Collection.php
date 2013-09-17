@@ -18,25 +18,24 @@ use phpDocumentor\Descriptor\Collection as DescriptorCollection;
  */
 class Collection extends DescriptorCollection
 {
-    /** @var mixed $parser */
+    /** @var \dflydev\markdown\MarkdownExtraParser $parser */
     protected $parser = null;
 
     /**
-     * Constructs a new collection object with optionally a series of items, generally Descriptors.
+     * Constructs a new collection object.
      *
-     * @param DescriptorAbstract[]|mixed[] $items
+     * @param \dflydev\markdown\MarkdownExtraParser $parsr
      */
-    public function __construct($items = array())
+    public function __construct($parser)
     {
-        $this->parser = new \dflydev\markdown\MarkdownExtraParser;
-        $this->items = $items;
+        $this->parser = $parser;
     }
 
     /**
      * Sets a new object onto the collection or clear it using null.
      *
      * @param string|integer                $index An index value to recognize this item with.
-     * @param DescriptorAbstract|mixed|null $item  The item to store, generally a Descriptor but may be something else.
+     * @param string                        $item  The item to store, generally a Descriptor but may be something else.
      *
      * @return void
      */
