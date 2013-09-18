@@ -361,13 +361,14 @@ class Parser implements LoggerAwareInterface
 
             $lap       = $this->stopwatch->lap('parser.parse');
             $oldMemory = $memory;
-            $memory    = $lap->getMemory();
+            $periods   = $lap->getPeriods();
+            $memory    = end($periods)->getMemory();
 
             $this->log(
                 '>> Memory after processing of file: ' . number_format($memory / 1024 / 1024, 2)
-                . ' megabytes (' . (($memory - $oldMemory > -0)
+                . ' megabytes (' . (($memory - $oldMemory >= 0)
                     ? '+'
-                    : '') . number_format($memory - $oldMemory / 1024)
+                    : '-') . number_format(($memory - $oldMemory) / 1024)
                 . ' kilobytes)',
                 LogLevel::DEBUG
             );
