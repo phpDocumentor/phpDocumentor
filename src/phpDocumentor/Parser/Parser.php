@@ -21,6 +21,8 @@ use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Reflection\FileReflector;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -39,10 +41,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
  *     $parser->setPath($files->getProjectRoot());
  *     echo $parser->parseFiles($files);
  */
-class Parser
+class Parser implements LoggerAwareInterface
 {
     /** @var string the name of the default package */
-    protected $default_package_name = 'Default';
+    protected $defaultPackageName = 'Default';
 
     /** @var bool whether we force a full re-parse */
     protected $force = false;
@@ -54,10 +56,13 @@ class Parser
     protected $markers = array('TODO', 'FIXME');
 
     /** @var string[] which tags to ignore */
-    protected $ignored_tags = array();
+    protected $ignoredTags = array();
 
     /** @var string target location's root path */
     protected $path = null;
+
+    /** @var LoggerInterface $logger */
+    protected $logger;
 
     /**
      * Array of visibility modifiers that should be adhered to when generating
@@ -83,9 +88,9 @@ class Parser
      */
     public function __construct()
     {
-        $default_encoding = ini_get('zend.script_encoding');
-        if ($default_encoding) {
-            $this->encoding = $default_encoding;
+        $defaultEncoding = ini_get('zend.script_encoding');
+        if ($defaultEncoding) {
+            $this->encoding = $defaultEncoding;
         }
     }
 
@@ -185,15 +190,15 @@ class Parser
     /**
      * Sets a list of tags to ignore.
      *
-     * @param string[] $ignored_tags A list of tags to ignore.
+     * @param string[] $ignoredTags A list of tags to ignore.
      *
      * @api
      *
      * @return void
      */
-    public function setIgnoredTags(array $ignored_tags)
+    public function setIgnoredTags(array $ignoredTags)
     {
-        $this->ignored_tags = $ignored_tags;
+        $this->ignoredTags = $ignoredTags;
     }
 
     /**
@@ -205,7 +210,7 @@ class Parser
      */
     public function getIgnoredTags()
     {
-        return $this->ignored_tags;
+        return $this->ignoredTags;
     }
 
     /**
@@ -273,14 +278,14 @@ class Parser
     /**
      * Sets the name of the default package.
      *
-     * @param string $default_package_name Name used to categorize elements
+     * @param string $defaultPackageName Name used to categorize elements
      *  without an @package tag.
      *
      * @return void
      */
-    public function setDefaultPackageName($default_package_name)
+    public function setDefaultPackageName($defaultPackageName)
     {
-        $this->default_package_name = $default_package_name;
+        $this->defaultPackageName = $defaultPackageName;
     }
 
     /**
@@ -290,7 +295,7 @@ class Parser
      */
     public function getDefaultPackageName()
     {
-        return $this->default_package_name;
+        return $this->defaultPackageName;
     }
 
     /**
@@ -326,7 +331,7 @@ class Parser
      * Iterates through the given files feeds them to the builder.
      *
      * @param ProjectDescriptorBuilder $builder
-     * @param Collection               $files          A files container to parse.
+     * @param Collection               $files   A files container to parse.
      *
      * @api
      *
@@ -350,8 +355,22 @@ class Parser
             $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
         }
 
+        $memory = 0;
         foreach ($paths as $filename) {
             $this->parseFileIntoDescriptor($builder, $filename);
+
+            $lap       = $this->stopwatch->lap('parser.parse');
+            $oldMemory = $memory;
+            $memory    = $lap->getMemory();
+
+            $this->log(
+                '>> Memory after processing of file: ' . number_format($memory / 1024 / 1024, 2)
+                . ' megabytes (' . (($memory - $oldMemory > -0)
+                    ? '+'
+                    : '') . number_format($memory - $oldMemory / 1024)
+                . ' kilobytes)',
+                LogLevel::DEBUG
+            );
         }
 
         if ($this->stopwatch) {
@@ -365,11 +384,13 @@ class Parser
     }
 
     /**
-     * @param \phpDocumentor\Fileset\Collection $files
+     * Extract all filenames from the given collection and output the amount of files.
+     *
+     * @param Collection $files
      *
      * @throws FilesNotFoundException if no files were found.
      *
-     * @return \string[]
+     * @return string[]
      */
     protected function getFilenames(Collection $files)
     {
@@ -400,7 +421,6 @@ class Parser
         }
         $this->log('Starting to parse file: ' . $filename);
 
-        $memory = memory_get_usage();
         try {
             $file = $this->createFileReflector($builder, $filename);
             if (!$file) {
@@ -417,16 +437,6 @@ class Parser
                 LogLevel::ALERT
             );
         }
-
-        $memoryDelta = memory_get_usage() - $memory;
-        $this->log(
-            '>> Memory after processing of file: ' . number_format(memory_get_usage() / 1024 / 1024, 2)
-            . ' megabytes (' . (($memoryDelta > -0)
-                ? '+'
-                : '') . number_format($memoryDelta / 1024)
-            . ' kilobytes)',
-            LogLevel::DEBUG
-        );
     }
 
     /**
@@ -503,5 +513,17 @@ class Parser
             'system.debug',
             DebugEvent::createInstance($this)->setMessage($message)
         );
+    }
+
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     *
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 }

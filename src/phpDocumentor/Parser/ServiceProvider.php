@@ -45,6 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
             function ($app) {
                 $parser = new Parser();
                 $parser->setStopwatch($app['kernel.stopwatch']);
+                $parser->setLogger($app['monolog']);
                 return $parser;
             }
         );
