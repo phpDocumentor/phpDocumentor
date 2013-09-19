@@ -7,6 +7,7 @@ ADDED:     Verbosity can now be provided in three level, each indicating how muc
 ADDED:     Support for the XSLCache drop in replacement of ext/xsl
 ADDED:     Locale can now be supplied in the configuration
 ADDED:     German translation for error messages
+ADDED:     Support to insert Markdown files into specific points of the outputted documentation (partials)
 CHANGED:   phpDocumentor now checks for transformation requirements at the start of the application (#148)
 FIXED:     Checkstyle error report only showed errors of the file itself and not subelements (#1046)
 FIXED:     Validation to check for validity of return types
