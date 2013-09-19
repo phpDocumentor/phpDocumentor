@@ -99,6 +99,8 @@ class Xml extends WriterAbstract implements Translatable
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
+        $this->buildPartials($document_element, $project);
+
         $transformer = $transformation->getTransformer();
 
         foreach ($project->getFiles() as $file) {
@@ -107,6 +109,18 @@ class Xml extends WriterAbstract implements Translatable
 
         $this->finalize($project);
         file_put_contents($artifact, $this->xml->saveXML());
+    }
+
+    protected function buildPartials(\DOMElement $parent, ProjectDescriptor $project)
+    {
+        $child = new \DOMElement('partials');
+        $parent->appendChild($child);
+        foreach($project->getPartials() as $name => $element) {
+            $partial = new \DOMElement('partial');
+            $child->appendChild($partial);
+            $partial->setAttribute('name', $name);
+            $partial->appendChild(new \DOMText($element));
+        }
     }
 
     protected function buildFile(
@@ -627,7 +641,7 @@ class Xml extends WriterAbstract implements Translatable
 
         $child->setAttribute('name', $tag->getName());
         $child->setAttribute('line', $parent->getAttribute('line'));
-        
+
         $description = '';
         //@version, @deprecated, @since
         if (method_exists($tag, 'getVersion')) {
@@ -635,7 +649,7 @@ class Xml extends WriterAbstract implements Translatable
         }
         //TODO: Other previously unsupported tags are to be "serialized" here.
         $description .= $tag->getDescription();
-        
+
         $child->setAttribute(
             'description',
             str_replace('&', '&amp;', trim($description))
