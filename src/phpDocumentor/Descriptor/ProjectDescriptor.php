@@ -30,6 +30,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     /** @var Settings $settings */
     protected $settings;
 
+    /** @var Collection $partials */
+    protected $partials;
+
     /**
      * Initializes this descriptor.
      */
@@ -45,6 +48,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
 
         $this->setFiles(new Collection());
         $this->setIndexes(new Collection());
+
+        $this->setPartials(new Collection());
     }
 
     /**
@@ -131,6 +136,22 @@ class ProjectDescriptor implements Interfaces\ProjectInterface
     public function getSettings()
     {
         return $this->settings;
+    }
+
+    /**
+     * @param Collection $partials
+     */
+    public function setPartials(Collection $partials)
+    {
+        $this->partials = $partials;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPartials()
+    {
+        return $this->partials;
     }
 
     /**
