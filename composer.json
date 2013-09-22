@@ -21,6 +21,7 @@
 
         "symfony/event-dispatcher": "~2.1",
         "symfony/stopwatch":        "~2.3",
+        "symfony/config":           "~2.3",
         "jms/serializer":           "~0.12",
 
         "zendframework/zend-stdlib":         "2.*",
