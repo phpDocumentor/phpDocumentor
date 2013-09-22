@@ -610,7 +610,10 @@ class Xml extends WriterAbstract implements Translatable
         $parent->appendChild($child);
 
         $child->setAttribute('line', $element->getLine());
-        $parent->setAttribute('package', ltrim($element->getPackage(), '\\'));
+        $parent->setAttribute(
+            'package',
+            str_replace('&', '&amp;', ltrim($element->getPackage(), '\\'))
+        );
 
         $this->addDescription($child, $element);
         $this->addLongDescription($child, $element);
@@ -639,7 +642,10 @@ class Xml extends WriterAbstract implements Translatable
         $child = new \DOMElement('tag');
         $parent->appendChild($child);
 
-        $child->setAttribute('name', $tag->getName());
+        $child->setAttribute(
+            'name',
+            str_replace('&', '&amp;', $tag->getName())
+        );
         $child->setAttribute('line', $parent->getAttribute('line'));
 
         $description = '';
@@ -659,16 +665,20 @@ class Xml extends WriterAbstract implements Translatable
             $typeString = '';
             foreach ($tag->getTypes() as $type) {
                 $typeString .= $type . '|';
-                $typeNode = $child->appendChild(new \DOMElement('type', $type));
+                $typeNode = $child->appendChild(new \DOMElement('type'));
+                $typeNode->appendChild(new \DOMText($type));
                 $lastSlashPos = strrpos($type, '\\');
                 if (false !== $lastSlashPos) {
                     $typeNode->setAttribute(
                         'link',
-                        substr($type, $lastSlashPos + 1) . '.html'
+                        str_replace('&', '&amp;', substr($type, $lastSlashPos + 1)) . '.html'
                     );
                 }
             }
-            $child->setAttribute('type', rtrim($typeString, '|'));
+            $child->setAttribute(
+                'type',
+                str_replace('&', '&amp;', rtrim($typeString, '|'))
+            );
         }
         if (method_exists($tag, 'getVariableName')) {
             $child->setAttribute(

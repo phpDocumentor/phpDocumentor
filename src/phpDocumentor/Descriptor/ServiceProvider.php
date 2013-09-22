@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\GenericTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
@@ -46,6 +47,7 @@ use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
+use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
 use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
@@ -117,6 +119,7 @@ class ServiceProvider implements ServiceProviderInterface
         $functionMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector; };
 
         $authorMatcher      = function ($criteria) { return $criteria instanceof AuthorTag; };
+        $deprecatedMatcher  = function ($criteria) { return $criteria instanceof DeprecatedTag; };
         $linkMatcher        = function ($criteria) { return $criteria instanceof LinkTag; };
         $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
         $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
@@ -142,6 +145,7 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($functionMatcher, new FunctionAssembler());
 
         $factory->register($authorMatcher, new AuthorAssembler());
+        $factory->register($deprecatedMatcher, new DeprecatedAssembler());
         $factory->register($linkMatcher, new LinkAssembler());
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
