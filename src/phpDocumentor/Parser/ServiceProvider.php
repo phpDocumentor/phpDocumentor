@@ -13,12 +13,12 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Partials\Collection as PartialsCollection;
-use phpDocumentor\Translator;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
+use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
+use phpDocumentor\Translator;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -64,9 +64,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $config = $app['config']->toArray();
 
+        $partialsCollection = new PartialsCollection($app['markdown']);
         if (isset($config['partials'])) {
-            $partialsCollection = new PartialsCollection($app['markdown']);
-
             $partials = is_array(current($config['partials']['partial']))
                 ? $config['partials']['partial']
                 : array($config['partials']['partial']);
@@ -92,8 +91,8 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             }
 
-            $app['partials'] = $partialsCollection;
         }
+        $app['partials'] = $partialsCollection;
 
         $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
 
