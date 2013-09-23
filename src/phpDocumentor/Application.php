@@ -81,15 +81,7 @@ class Application extends Cilex
         // TODO: make plugin service provider calls registrable from config
         $this->register(new Plugin\Core\ServiceProvider());
 
-        try {
-            $this['transformer.writer.collection']->checkRequirements();
-        } catch (RequirementMissing $e) {
-            $this['monolog']->emerg(
-                'phpDocumentor detected that a requirement is missing in your system setup: ' . $e->getMessage()
-            );
-            exit(1);
-        }
-
+        $this->verifyWriterRequirementsAndExitIfBroken();
         $this->addCommandsForProjectNamespace();
     }
 
@@ -357,6 +349,18 @@ class Application extends Cilex
         $output->setLogger($this['monolog']);
 
         $app->run(new ArgvInput(), $output);
+    }
+
+    protected function verifyWriterRequirementsAndExitIfBroken()
+    {
+        try {
+            $this['transformer.writer.collection']->checkRequirements();
+        } catch (RequirementMissing $e) {
+            $this['monolog']->emerg(
+                'phpDocumentor detected that a requirement is missing in your system setup: ' . $e->getMessage()
+            );
+            exit(1);
+        }
     }
 }
 
