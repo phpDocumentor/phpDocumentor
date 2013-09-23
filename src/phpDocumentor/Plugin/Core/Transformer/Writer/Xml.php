@@ -698,6 +698,12 @@ class Xml extends WriterAbstract implements Translatable
                 str_replace('&', '&amp;', $tag->getLink())
             );
         }
+        if (method_exists($tag, 'getMethodName')) {
+            $child->setAttribute(
+                'method_name',
+                str_replace('&', '&amp;', $tag->getMethodName())
+            );
+        }
     }
 
     /**
