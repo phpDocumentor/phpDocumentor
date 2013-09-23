@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Partials;
 
+use dflydev\markdown\MarkdownExtraParser;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 
 /**
@@ -18,13 +19,13 @@ use phpDocumentor\Descriptor\Collection as DescriptorCollection;
  */
 class Collection extends DescriptorCollection
 {
-    /** @var \dflydev\markdown\MarkdownExtraParser $parser */
+    /** @var MarkdownExtraParser $parser */
     protected $parser = null;
 
     /**
      * Constructs a new collection object.
      *
-     * @param \dflydev\markdown\MarkdownExtraParser $parsr
+     * @param MarkdownExtraParser $parser
      */
     public function __construct($parser)
     {
@@ -34,8 +35,8 @@ class Collection extends DescriptorCollection
     /**
      * Sets a new object onto the collection or clear it using null.
      *
-     * @param string|integer                $index An index value to recognize this item with.
-     * @param string                        $item  The item to store, generally a Descriptor but may be something else.
+     * @param string|integer $index An index value to recognize this item with.
+     * @param string         $item  The item to store, generally a Descriptor but may be something else.
      *
      * @return void
      */
