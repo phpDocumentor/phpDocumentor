@@ -16,7 +16,7 @@ pygments_style = 'sphinx'
 
 # -- Options for HTML output ---------------------------------------------------
 
-html_theme = 'default'
+html_theme = 'sphinxdoc' # 'default'
 html_title = 'phpDocumentor'
 #html_favicon = None
 html_static_path = ['.static']

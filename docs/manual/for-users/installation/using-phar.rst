@@ -9,8 +9,7 @@ Requirements
 Instructions
 ------------
 
-You can download the latest PHAR file from
-http://www.phpdoc.org/phpDocumentor.phar.
+You can download the latest PHAR file from http://www.phpdoc.org/phpDocumentor.phar.
 
 .. important::
 
