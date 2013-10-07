@@ -6,10 +6,16 @@ class phpdocumentor::setup {
     include php
     include apache
     php::module { "xsl": }
-    php::module { "mongo": }
     php::module { "intl": }
     php::module { "xdebug": }
-    php::module { "xhprof": }
+    class { "php::pear": }
+    php::pecl::module { "xhprof":
+      use_package     => 'false',
+      preferred_state => 'beta',
+    }
+    php::pecl::module { "mongo":
+      use_package     => 'false',
+    }    
 
     class { 'composer':
       command_name => 'composer',
