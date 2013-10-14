@@ -64,7 +64,7 @@ If you want to see profiling output for phpDocumentor the following manual steps
 Once you have done this you should be able to browse to http://profiling.phpdocumentor.local and see the xhgui. As you haven't done any profiling runs just yet
 there will be no info on this screen.
 
-2. ssh into the vagrant virtual machine with vagrant ssh
+2. ssh into the vagrant virtual machine with vagrant ssh.
 3. xhgui by default will only profile 1 out of 100 requests. To make it profile every request edit the following file on the guest machine
    /var/www/xhgui/external/header.php
    and remove the code below located on line 45
@@ -82,6 +82,10 @@ if (rand(0, 100) !== 42) {
 ```
 5. On the guest machine you can profile phpDocumentor using the docs of phpDocumentor itself. To do that
 ``` bash
-/vagrant/bin/phpdoc.php run -d ../vendor/phpdocumentor
+/vagrant/bin/phpdoc.php run -d /vagrant/vendor/phpdocumentor
 ```
-6. Now browse to http://profiling.phpdocumentor.local url and you should see profiling output. If you click on the date you should be able to see the profile output for phpDocumentor.
+You should see PROFILING ENABLED when you run phpDocumentor.
+
+6. Now browse to http://profiling.phpdocumentor.local url and you should see profiling output. If you click on the date you should be able to see the profile output for phpDocumentor. Clicking on the url does work as it expects a url and we are profiling a command line application.
+
+
