@@ -5,9 +5,20 @@ class phpdocumentor::profiling {
      php::module { "mcrypt": }
 
      class { "php::pear": }
+
+     php::pecl::module { "mongo":
+        use_package     => 'false',
+     }
+
+     #I couldn't find the manifest to do this so enable extension using the puppet file resource
+     #Not sure if there is a better way
+     file { "/etc/php5/cli/conf.d/mongo.ini":
+        content => "; enable mongo php extension\nextension=mongo.so;",
+     }
+
      php::pecl::module { "xhprof":
-          use_package     => 'false',
-          preferred_state => 'beta',
+        use_package     => 'false',
+        preferred_state => 'beta',
      }
 
      #I couldn't find the manifest to do this so enable extension using the puppet file resource
@@ -16,15 +27,6 @@ class phpdocumentor::profiling {
         content => "; enable mongo php extension\nextension=xhprof.so",
      }
 
-     php::pecl::module { "mongo":
-          use_package     => 'false',
-     }
-
-     #I couldn't find the manifest to do this so enable extension using the puppet file resource
-     #Not sure if there is a better way
-     file { "/etc/php5/cli/conf.d/mongo.ini":
-        content => "; enable mongo php extension\nextension=mongo.so;",
-     }
      #gets the code from github for xhgui.
      vcsrepo { "/var/www/xhgui":
          ensure => present,
