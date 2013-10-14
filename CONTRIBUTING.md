@@ -55,7 +55,7 @@ Profiling phpDocumentor
 
 The phpDocumentor vagrant setup installs the various components so that profiling of phpDocumentor can be done.
 
-If you want to see profiling output for phpDocumentor the following needs to be done
+If you want to see profiling output for phpDocumentor the following manual steps need to be done
 
 1. Open your hosts file locally on your machine and add the following entry
 ``` bash
@@ -75,7 +75,7 @@ if (rand(0, 100) !== 42) {
 }
 ```
 
-4. You need to let phpDocumentor that you want to switch profiling on. Todo this you need to create two environment variables using the command below
+4. You need to let phpDocumentor know that you want to switch profiling on. Todo this you need to create two environment variables using the command below
 ``` bash
    export PHPDOC_PROFILE="on"
    export XHGUI_PATH="/var/www/xhgui"
@@ -84,4 +84,4 @@ if (rand(0, 100) !== 42) {
 ``` bash
 /vagrant/bin/phpdoc.php run -d ../vendor/phpdocumentor
 ```
-6. Now browse to http://profiling.phpdocumentor.local url and you should see profiling output. Goodluck!
+6. Now browse to http://profiling.phpdocumentor.local url and you should see profiling output. If you click on the date you should be able to see the profile output for phpDocumentor.
