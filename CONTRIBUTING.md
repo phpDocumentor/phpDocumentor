@@ -80,5 +80,8 @@ if (rand(0, 100) !== 42) {
    export PHPDOC_PROFILE="on"
    export XHGUI_PATH="/var/www/xhgui"
 ```
-5. On the guest machine if you run you can profile phpDocumentor using the docs of phpDocumentor /vagrant/bin/phpdoc.php run -d ../vendor/phpdocumentor
+5. On the guest machine if you can profile phpDocumentor using the docs of phpDocumentor itself. To do that
+``` bash
+/vagrant/bin/phpdoc.php run -d ../vendor/phpdocumentor
+```
 6. Now browse to http://profiling.phpdocumentor.local url and you should see profiling output. Goodluck!
