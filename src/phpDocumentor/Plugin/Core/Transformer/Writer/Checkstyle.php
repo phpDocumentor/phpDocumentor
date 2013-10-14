@@ -74,7 +74,7 @@ class Checkstyle extends WriterAbstract implements Translatable
             $report->appendChild($file);
 
             /** @var Error $error */
-            foreach ($fileDescriptor->getErrors()->getAll() as $error) {
+            foreach ($fileDescriptor->getAllErrors()->getAll() as $error) {
                 $item = $document->createElement('error');
                 $item->setAttribute('line', $error->getLine());
                 $item->setAttribute('severity', $error->getSeverity());

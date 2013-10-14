@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\GenericTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
@@ -46,6 +47,7 @@ use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
+use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
 use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
@@ -108,15 +110,16 @@ class ServiceProvider implements ServiceProviderInterface
         $constantMatcher  = function ($criteria) {
             return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
         };
+        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
         $classMatcher     = function ($criteria) { return $criteria instanceof ClassReflector; };
         $interfaceMatcher = function ($criteria) { return $criteria instanceof InterfaceReflector; };
-        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
         $propertyMatcher  = function ($criteria) { return $criteria instanceof ClassReflector\PropertyReflector; };
         $methodMatcher    = function ($criteria) { return $criteria instanceof ClassReflector\MethodReflector; };
         $argumentMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector\ArgumentReflector; };
         $functionMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector; };
 
         $authorMatcher      = function ($criteria) { return $criteria instanceof AuthorTag; };
+        $deprecatedMatcher  = function ($criteria) { return $criteria instanceof DeprecatedTag; };
         $linkMatcher        = function ($criteria) { return $criteria instanceof LinkTag; };
         $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
         $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
@@ -133,15 +136,16 @@ class ServiceProvider implements ServiceProviderInterface
 
         $factory->register($fileMatcher, new FileAssembler());
         $factory->register($constantMatcher, new ConstantAssembler());
+        $factory->register($traitMatcher, new TraitAssembler());
         $factory->register($classMatcher, new ClassAssembler());
         $factory->register($interfaceMatcher, new InterfaceAssembler());
-        $factory->register($traitMatcher, new TraitAssembler());
         $factory->register($propertyMatcher, new PropertyAssembler());
         $factory->register($methodMatcher, new MethodAssembler());
         $factory->register($argumentMatcher, new ArgumentAssembler());
         $factory->register($functionMatcher, new FunctionAssembler());
 
         $factory->register($authorMatcher, new AuthorAssembler());
+        $factory->register($deprecatedMatcher, new DeprecatedAssembler());
         $factory->register($linkMatcher, new LinkAssembler());
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
@@ -220,14 +224,14 @@ class ServiceProvider implements ServiceProviderInterface
         $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
         $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
 
-        $functionMetadata->addGetterConstraint(
-            'response',
-            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
-        );
-        $methodMetadata->addGetterConstraint(
-            'response',
-            new Assert\NotEqualTo(array('value' => 'type', 'message' => 'PPC:ERR-50017'))
-        );
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
+
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
+
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
 
         $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
         $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());

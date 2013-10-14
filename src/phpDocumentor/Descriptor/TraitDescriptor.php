@@ -22,6 +22,9 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     /** @var Collection $methods */
     protected $methods;
 
+    /** @var Collection $usedTraits */
+    protected $usedTraits;
+
     /**
      * Initializes the all properties representing a collection with a new Collection object.
      */
@@ -31,6 +34,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
 
         $this->setProperties(new Collection());
         $this->setMethods(new Collection());
+        $this->setUsedTraits(new Collection());
     }
 
     /**
@@ -54,14 +58,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      */
     public function getInheritedMethods()
     {
-        if (!$this->getParent() || (!$this->getParent() instanceof TraitDescriptor)) {
-            return new Collection();
-        }
-
-        $inheritedMethods = clone $this->getParent()->getMethods();
-        $inheritedMethods->merge($this->getParent()->getInheritedMethods());
-
-        return $inheritedMethods;
+        return new Collection();
     }
 
     /**
@@ -71,10 +68,6 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     {
         /** @var Collection $methodTags */
         $methodTags = clone $this->getTags()->get('method', new Collection());
-
-        if ($this->getParent() instanceof static) {
-            $methodTags->merge($this->getParent()->getMagicMethods());
-        }
 
         $methods = new Collection();
 
@@ -111,14 +104,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
      */
     public function getInheritedProperties()
     {
-        if (!$this->getParent() || (!$this->getParent() instanceof TraitDescriptor)) {
-            return new Collection();
-        }
-
-        $inheritedProperties = clone $this->getParent()->getProperties();
-        $inheritedProperties->merge($this->getParent()->getInheritedProperties());
-
-        return $inheritedProperties;
+        return new Collection();
     }
 
     /**
@@ -130,10 +116,6 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         $propertyTags = clone $this->getTags()->get('property', new Collection());
         $propertyTags->merge($this->getTags()->get('property-read', new Collection()));
         $propertyTags->merge($this->getTags()->get('property-write', new Collection()));
-
-        if ($this->getParent() instanceof static) {
-            $propertyTags->merge($this->getParent()->getMagicProperties());
-        }
 
         $properties = new Collection();
 
@@ -161,5 +143,29 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         foreach ($this->getMethods() as $method) {
             $method->setPackage($package);
         }
+    }
+
+    /**
+     * Sets a collection of all traits used by this class.
+     *
+     * @param Collection $usedTraits
+     *
+     * @return void
+     */
+    public function setUsedTraits($usedTraits)
+    {
+        $this->usedTraits = $usedTraits;
+    }
+
+    /**
+     * Returns the traits used by this class.
+     *
+     * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
+     *
+     * @return Collection
+     */
+    public function getUsedTraits()
+    {
+        return $this->usedTraits;
     }
 }

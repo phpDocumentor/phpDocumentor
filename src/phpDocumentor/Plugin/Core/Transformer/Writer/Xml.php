@@ -99,6 +99,8 @@ class Xml extends WriterAbstract implements Translatable
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
+        $this->buildPartials($document_element, $project);
+
         $transformer = $transformation->getTransformer();
 
         foreach ($project->getFiles() as $file) {
@@ -107,6 +109,18 @@ class Xml extends WriterAbstract implements Translatable
 
         $this->finalize($project);
         file_put_contents($artifact, $this->xml->saveXML());
+    }
+
+    protected function buildPartials(\DOMElement $parent, ProjectDescriptor $project)
+    {
+        $child = new \DOMElement('partials');
+        $parent->appendChild($child);
+        foreach($project->getPartials() as $name => $element) {
+            $partial = new \DOMElement('partial');
+            $child->appendChild($partial);
+            $partial->setAttribute('name', $name);
+            $partial->appendChild(new \DOMText($element));
+        }
     }
 
     protected function buildFile(
@@ -596,7 +610,10 @@ class Xml extends WriterAbstract implements Translatable
         $parent->appendChild($child);
 
         $child->setAttribute('line', $element->getLine());
-        $parent->setAttribute('package', ltrim($element->getPackage(), '\\'));
+        $parent->setAttribute(
+            'package',
+            str_replace('&', '&amp;', ltrim($element->getPackage(), '\\'))
+        );
 
         $this->addDescription($child, $element);
         $this->addLongDescription($child, $element);
@@ -625,22 +642,68 @@ class Xml extends WriterAbstract implements Translatable
         $child = new \DOMElement('tag');
         $parent->appendChild($child);
 
-        $child->setAttribute('name', $tag->getName());
-        $child->setAttribute('description', htmlspecialchars($tag->getDescription(), ENT_QUOTES, 'UTF-8'));
+        $child->setAttribute(
+            'name',
+            str_replace('&', '&amp;', $tag->getName())
+        );
         $child->setAttribute('line', $parent->getAttribute('line'));
+
+        $description = '';
+        //@version, @deprecated, @since
+        if (method_exists($tag, 'getVersion')) {
+            $description .= $tag->getVersion() . ' ';
+        }
+        //TODO: Other previously unsupported tags are to be "serialized" here.
+        $description .= $tag->getDescription();
+
+        $child->setAttribute(
+            'description',
+            str_replace('&', '&amp;', trim($description))
+        );
 
         if (method_exists($tag, 'getTypes')) {
             $typeString = '';
             foreach ($tag->getTypes() as $type) {
-                $child->appendChild(new \DOMElement('type', $type));
                 $typeString .= $type . '|';
+                $typeNode = $child->appendChild(new \DOMElement('type'));
+                $typeNode->appendChild(new \DOMText($type));
+                $lastSlashPos = strrpos($type, '\\');
+                if (false !== $lastSlashPos) {
+                    $typeNode->setAttribute(
+                        'link',
+                        str_replace('&', '&amp;', substr($type, $lastSlashPos + 1)) . '.html'
+                    );
+                }
             }
-            $child->setAttribute('type', rtrim($typeString, '|'));
+            $child->setAttribute(
+                'type',
+                str_replace('&', '&amp;', rtrim($typeString, '|'))
+            );
         }
         if (method_exists($tag, 'getVariableName')) {
-            $child->setAttribute('variable', $tag->getVariableName());
+            $child->setAttribute(
+                'variable',
+                str_replace('&', '&amp;', $tag->getVariableName())
+            );
         }
-        // TODO: Serialize specific tag information
+        if (method_exists($tag, 'getReference')) {
+            $child->setAttribute(
+                'link',
+                str_replace('&', '&amp;', $tag->getReference())
+            );
+        }
+        if (method_exists($tag, 'getLink')) {
+            $child->setAttribute(
+                'link',
+                str_replace('&', '&amp;', $tag->getLink())
+            );
+        }
+        if (method_exists($tag, 'getMethodName')) {
+            $child->setAttribute(
+                'method_name',
+                str_replace('&', '&amp;', $tag->getMethodName())
+            );
+        }
     }
 
     /**

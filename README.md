@@ -17,14 +17,14 @@ phpDocumentor supports the following:
 
 * *PHP 5.3 compatible*, full support for Namespaces, Closures and more is provided.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
-* *Processing speed*, Zend Framework experienced an 80% reduction in processing time compared to phpDocumentor 1.
+* *Processing speed*, Zend Framework experienced a significant reduction in processing time compared to phpDocumentor 1.
 * *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
 * *Incremental parsing*, if you kept the Structure file from a previous run you get an additional performance boost of up
   to 80% on top of the mentioned processing speed above.
 * *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
 * *Command-line compatibility with phpDocumentor 1*, phpDocumentor 2 is an application in its own right but the
   basic phpDocumentor 1 arguments, such as --directory, --file and --target, have been adopted.
-* *Two-step process*, phpDocumentor first generates a XML file with your application structure before creating the output.
+* *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
   If you'd like you can use that to power your own tools or formatters!
 
 Requirements
@@ -33,14 +33,16 @@ Requirements
 phpDocumentor requires the following:
 
 * PHP 5.3.3 or higher
-* iconv/ext, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
-* The XSL extension, http://www.php.net/manual/en/book.xsl.php
+* ext/iconv, http://php.net/manual/en/book.iconv.php (is enabled by default since PHP 5.0.0)
+* ext/intl, http://php.net/manual/en/book.intl.php
+* The XSL extension, http://www.php.net/manual/en/book.xsl.php (optional, only used with XSL based templates)
 * Graphviz (optional, used for generating Class diagrams)
-* PEAR (optional, used for generating Class Diagrams or installing via PEAR)
 
 **Note:**
-If you do not want to install the PEAR or Graphviz dependency you are encouraged to generate your own template and make sure that it does not contain anything related to `Graph`.
-An easier solution might be to edit `data/templates/responsive/template.xml` file and remove every line containing the word `Graph` but this will be undone with every upgrade of phpDocumentor.
+If you do not want to install the Graphviz dependency you are encouraged to generate your own template and make sure
+that it does not contain anything related to `Graph`.
+An easier solution might be to edit `data/templates/responsive/template.xml` file and remove every line
+containing the word `Graph` but this will be undone with every upgrade of phpDocumentor.
 
 Please see the documentation about creating your own templates for more information.
 
@@ -64,7 +66,7 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 2. After that it is a simple matter of invoking PEAR to install the application
 
-        $ pear install phpdoc/phpDocumentor-beta
+        $ pear install phpdoc/phpDocumentor
 
 ### Via Composer
 
@@ -108,10 +110,7 @@ For more detailed information you can check our online documentation at [http://
 Known issues
 ------------
 
-1. Search does not work / is not available when accessing the documentation locally from Google Chrome.
-   Google Chrome blocks access to local files (and thus the search index) using Javascript when working
-   with local files (file://); it is not possible for us to fix this.
-2. phpDocumentor must be installed in a path without spaces due to restrictions in libxml. The XSL transformation
+1. phpDocumentor must be installed in a path without spaces due to restrictions in libxml. The XSL transformation
    will throw all kinds of odd warnings if the path contains spaces.
 
 Contact
