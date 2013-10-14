@@ -76,7 +76,7 @@ if (rand(0, 100) !== 42) {
 ```
 
 4. You need to let phpDocumentor that you want to switch profiling on. Todo this you need to create two environment variables using the command below
-```bash
+``` bash
    export PHPDOC_PROFILE="on"
    export XHGUI_PATH="/var/www/xhgui"
 ```
