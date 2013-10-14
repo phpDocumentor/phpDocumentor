@@ -1,0 +1,163 @@
+{
+  "name": "puppetlabs/vcsrepo",
+  "version": "0.1.2",
+  "source": "UNKNOWN",
+  "author": "puppetlabs",
+  "license": "Apache License, Version 2.0",
+  "summary": "UNKNOWN",
+  "description": "UNKNOWN",
+  "project_page": "UNKNOWN",
+  "dependencies": [
+
+  ],
+  "types": [
+    {
+      "name": "vcsrepo",
+      "doc": "A local version control repository",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "  Valid values are `present`, `bare`, `absent`, `latest`."
+        },
+        {
+          "name": "revision",
+          "doc": "The revision of the repository  Values can match `/^\\S+$/`."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "path",
+          "doc": "Absolute path to repository"
+        },
+        {
+          "name": "source",
+          "doc": "The source URI for the repository"
+        },
+        {
+          "name": "fstype",
+          "doc": "Filesystem type  Requires features filesystem_types."
+        },
+        {
+          "name": "owner",
+          "doc": "The user/uid that owns the repository files"
+        },
+        {
+          "name": "group",
+          "doc": "The group/gid that owns the repository files"
+        },
+        {
+          "name": "user",
+          "doc": "The user to run for repository operations"
+        },
+        {
+          "name": "excludes",
+          "doc": "Files to be excluded from the repository"
+        },
+        {
+          "name": "force",
+          "doc": "Force repository creation, destroying any files on the path in the process.  Valid values are `true`, `false`."
+        },
+        {
+          "name": "compression",
+          "doc": "Compression level  Requires features gzip_compression."
+        },
+        {
+          "name": "basic_auth_username",
+          "doc": "HTTP Basic Auth username  Requires features basic_auth."
+        },
+        {
+          "name": "basic_auth_password",
+          "doc": "HTTP Basic Auth password  Requires features basic_auth."
+        },
+        {
+          "name": "identity",
+          "doc": "SSH identity file  Requires features ssh_identity."
+        },
+        {
+          "name": "module",
+          "doc": "The repository module to manage  Requires features modules."
+        },
+        {
+          "name": "remote",
+          "doc": "The remote repository to track  Requires features multiple_remotes."
+        }
+      ],
+      "providers": [
+        {
+          "name": "bzr",
+          "doc": "Supports Bazaar repositories\n\nRequired binaries: `bzr`.  Supported features: `reference_tracking`."
+        },
+        {
+          "name": "cvs",
+          "doc": "Supports CVS repositories/workspaces\n\nRequired binaries: `cvs`.  Supported features: `gzip_compression`, `modules`, `reference_tracking`."
+        },
+        {
+          "name": "dummy",
+          "doc": "Dummy default provider\n\nDefault for `vcsrepo` == `dummy`."
+        },
+        {
+          "name": "git",
+          "doc": "Supports Git repositories\n\nRequired binaries: `git`, `su`.  Supported features: `bare_repositories`, `multiple_remotes`, `reference_tracking`, `ssh_identity`, `user`."
+        },
+        {
+          "name": "hg",
+          "doc": "Supports Mercurial repositories\n\nRequired binaries: `hg`.  Supported features: `reference_tracking`."
+        },
+        {
+          "name": "svn",
+          "doc": "Supports Subversion repositories\n\nRequired binaries: `svn`, `svnadmin`.  Supported features: `basic_auth`, `filesystem_types`, `reference_tracking`."
+        }
+      ]
+    }
+  ],
+  "checksums": {
+    "Gemfile": "5267cfa2cd3ba585074266d1953d8c03",
+    "Gemfile.lock": "fd2fec7051e81117a8e58479730797a2",
+    "LICENSE": "b8d96fef1f55096f9d39326408122136",
+    "Modulefile": "fb14134bceb39eedff322332fab7ea34",
+    "README.BZR.markdown": "97f638d169a1c39d461c3f2c0e2ec32f",
+    "README.CVS.markdown": "720eeee9129c1c474086444efd825de4",
+    "README.GIT.markdown": "7ee485d38000553a28e2d539b0a1860a",
+    "README.HG.markdown": "ef123968ea2c29275a6c914515798e2d",
+    "README.SVN.markdown": "daee8377e9dc1f27224f145452d2e3f4",
+    "README.markdown": "e031416a5be95d1fbe9947732e7ee9eb",
+    "Rakefile": "cc0e9a5225430b6a13c74ae74032ed33",
+    "examples/bzr/branch.pp": "05c66419324a576b9b28df876673580d",
+    "examples/bzr/init_repo.pp": "fadd2321866ffb0aacff698d2dc1f0ca",
+    "examples/cvs/local.pp": "7fbde03a5c71edf168267ae42d0bbcbc",
+    "examples/cvs/remote.pp": "491f18f752752bec6133a88de242c44d",
+    "examples/git/bare_init.pp": "7cf56abffdf99f379153166f18f961f8",
+    "examples/git/clone.pp": "0e3181990c095efee1498ccfca5897fb",
+    "examples/git/working_copy_init.pp": "99d92d9957e78a0c03f9cbed989c79ca",
+    "examples/hg/clone.pp": "c92bbd704a4c2da55fff5f45955ce6d1",
+    "examples/hg/init_repo.pp": "bf5fa0ab48a2f5a1ccb63768d961413d",
+    "examples/svn/checkout.pp": "9ef7a8fbd3a763fa3894efa864047023",
+    "examples/svn/server.pp": "94b26f6e50d5e411b33b1ded1bc2138a",
+    "lib/puppet/provider/vcsrepo/bzr.rb": "99dd23d88e88f3cfd4c610d7eef0531f",
+    "lib/puppet/provider/vcsrepo/cvs.rb": "60525f5be2bbbae7916cd09895309ede",
+    "lib/puppet/provider/vcsrepo/dummy.rb": "2f8159468d6ecc8087debde858a80dd6",
+    "lib/puppet/provider/vcsrepo/git.rb": "897973e79c87f852ae4d98f5b722096f",
+    "lib/puppet/provider/vcsrepo/hg.rb": "ea7524cd71732abb3e8670eeaaf37ac6",
+    "lib/puppet/provider/vcsrepo/svn.rb": "8533be9aaa1c632d9be9e46d3e35c2f6",
+    "lib/puppet/provider/vcsrepo.rb": "f5b8a90080b8c27e2656af8605148928",
+    "lib/puppet/type/vcsrepo.rb": "83b3f41d92989fa7ca80d8b6fb8f7db9",
+    "spec/fixtures/bzr_version_info.txt": "5edb13429faf2f0b9964b4326ef49a65",
+    "spec/fixtures/git_branch_a.txt": "2371229e7c1706c5ab8f90f0cd57230f",
+    "spec/fixtures/hg_parents.txt": "efc28a1bd3f1ce7fb4481f76feed3f6e",
+    "spec/fixtures/hg_tags.txt": "8383048b15adb3d58a92ea0c8b887537",
+    "spec/fixtures/manifests/site.pp": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/svn_info.txt": "978db25720a098e5de48388fe600c062",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "spec/spec_helper.rb": "a35385c068516f356cf6667b82f83db7",
+    "spec/support/filesystem_helpers.rb": "eb2a8eb3769865004c84e971ccb1396c",
+    "spec/support/fixture_helpers.rb": "61781d99ea201e9da6d23c64a25cc285",
+    "spec/support/provider_example_group.rb": "fab04f82b6531fbb127445345ce6c50c",
+    "spec/unit/puppet/provider/vcsrepo/bzr_spec.rb": "b112a7ae4769eff1da41db7867f06fff",
+    "spec/unit/puppet/provider/vcsrepo/cvs_spec.rb": "ea38bf0b060adcf7c9e43e5ed245c132",
+    "spec/unit/puppet/provider/vcsrepo/dummy_spec.rb": "52ce05ffc829113dc5e74cb4a51c0a71",
+    "spec/unit/puppet/provider/vcsrepo/git_spec.rb": "0713fa3542bace46c15bff00914c3630",
+    "spec/unit/puppet/provider/vcsrepo/hg_spec.rb": "cb4e25597dca41fb75a8d82ac409a14c",
+    "spec/unit/puppet/provider/vcsrepo/svn_spec.rb": "67a40762923bf7cbe8199c3f1d14e943",
+    "spec/unit/puppet/type/README.markdown": "de26a7643813abd6c2e7e28071b1ef94"
+  }
+}
