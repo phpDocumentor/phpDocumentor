@@ -80,7 +80,7 @@ if (rand(0, 100) !== 42) {
    export PHPDOC_PROFILE="on"
    export XHGUI_PATH="/var/www/xhgui"
 ```
-5. On the guest machine if you can profile phpDocumentor using the docs of phpDocumentor itself. To do that
+5. On the guest machine you can profile phpDocumentor using the docs of phpDocumentor itself. To do that
 ``` bash
 /vagrant/bin/phpdoc.php run -d ../vendor/phpdocumentor
 ```
