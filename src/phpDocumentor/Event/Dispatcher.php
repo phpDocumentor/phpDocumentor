@@ -4,8 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -23,10 +22,6 @@ use Symfony\Component\EventDispatcher as Symfony;
  *
  * The class is implemented as (mockable) Singleton as this was the best
  * solution to make the functionality available in every class of the project.
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 class Dispatcher extends Symfony\EventDispatcher
 {
@@ -35,6 +30,7 @@ class Dispatcher extends Symfony\EventDispatcher
 
     /**
      * Override constructor to make this singleton.
+     * @codeCoverageIgnore For some reason
      */
     protected function __construct()
     {
@@ -79,6 +75,8 @@ class Dispatcher extends Symfony\EventDispatcher
      * @param string $eventName
      * @param EventAbstract $event
      *
+     * @codeCoverageIgnore Untestable and not really necessary
+     *
      * @return EventAbstract
      */
     public function dispatch($eventName, Symfony\Event $event = null)
@@ -92,6 +90,8 @@ class Dispatcher extends Symfony\EventDispatcher
      * @param string   $eventName
      * @param callable $listener
      * @param int      $priority
+     *
+     * @codeCoverageIgnore Untestable and not really necessary
      *
      * @return void
      */

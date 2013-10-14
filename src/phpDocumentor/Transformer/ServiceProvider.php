@@ -63,6 +63,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'constants',
                 'properties',
                 'methods',
+                'usedTraits',
             ),
             'phpDocumentor\Descriptor\InterfaceDescriptor'    => array(
                 'tags',
@@ -74,6 +75,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'tags',
                 'properties',
                 'methods',
+                'usedTraits',
             ),
             'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags', 'arguments'),
             'phpDocumentor\Descriptor\ArgumentDescriptor'     => array('types'),

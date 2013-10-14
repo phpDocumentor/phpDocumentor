@@ -11,9 +11,11 @@
  */
 
 // check whether xhprof is loaded
-$profile = (bool)(getenv('PHPDOC_PROFILE') === 'on');
-if ($profile && extension_loaded('xhprof')) {
-    xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
+$profile   = (bool)(getenv('PHPDOC_PROFILE') === 'on');
+$xhguiPath = getenv('XHGUI_PATH');
+if ($profile && $xhguiPath && extension_loaded('xhprof')) {
+    echo 'PROFILING ENABLED' . PHP_EOL;
+    include($xhguiPath . '/external/header.php');
 }
 
 // determine base include folder, if @php_dir@ contains @php_dir then
@@ -25,19 +27,6 @@ $bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
 require_once $bootstrap_folder . '/phpDocumentor/Application.php';
 $app = new phpDocumentor\Application();
 $app->run();
-
-if (true === $profile) {
-    include_once 'XHProf/utils/xhprof_lib.php';
-    include_once 'XHProf/utils/xhprof_runs.php';
-
-    $xhprof_data = xhprof_disable();
-    if ($xhprof_data !== null) {
-        $xhprof_runs = new XHProfRuns_Default();
-        $run_id = $xhprof_runs->save_run($xhprof_data, 'phpdoc');
-        $profiler_url = sprintf('index.php?run=%s&source=%s', $run_id, 'phpdoc');
-        echo 'Profile can be found at: ' . $profiler_url . PHP_EOL;
-    }
-}
 
 // disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
 error_reporting(error_reporting() & ~E_STRICT);

@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use Zend\Stdlib\Exception\ExtensionNotLoadedException;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
@@ -23,6 +22,7 @@ use phpDocumentor\GraphViz\Graph as GraphVizGraph;
 use phpDocumentor\GraphViz\Node;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Zend\Stdlib\Exception\ExtensionNotLoadedException;
 
 /**
  * Writer responsible for generating various graphs.
@@ -68,7 +68,12 @@ class Graph extends WriterAbstract
      */
     public function processClass(ProjectDescriptor $project, Transformation $transformation)
     {
-        $this->checkIfGraphVizIsInstalled();
+        try {
+            $this->checkIfGraphVizIsInstalled();
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            return;
+        }
 
         $this->nodeFont = $transformation->getParameter('font', 'Courier');
 

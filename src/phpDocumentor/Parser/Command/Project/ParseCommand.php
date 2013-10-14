@@ -11,7 +11,14 @@
  */
 namespace phpDocumentor\Parser\Command\Project;
 
+use phpDocumentor\Command\ConfigurableCommand;
+use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Parser\Parser;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,13 +26,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\I18n\Translator\Translator;
-use phpDocumentor\Command\ConfigurableCommand;
-use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Fileset\Collection;
-use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Parser\Exception\FilesNotFoundException;
-use phpDocumentor\Parser\Parser;
 
 /**
  * Parses the given source code and creates a structure file.
@@ -163,7 +163,7 @@ class ParseCommand extends ConfigurableCommand
         /** @var ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
         if (!$progress) {
-            $this->connectOutputToLogging($output);
+            $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
         }
 
         $output->write($this->__('PPCPP:LOG-INITIALIZING'));
@@ -191,6 +191,8 @@ class ParseCommand extends ConfigurableCommand
         if ($progress) {
             $progress->finish();
         }
+
+        $projectDescriptor->setPartials($this->getService('partials'));
 
         $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
         $mapper->save($projectDescriptor);

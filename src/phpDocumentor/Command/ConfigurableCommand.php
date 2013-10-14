@@ -11,9 +11,9 @@
  */
 namespace phpDocumentor\Command;
 
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Output\OutputInterface;
-use \Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for commands that may make use of the configuration.
@@ -36,6 +36,8 @@ class ConfigurableCommand extends Command
             InputOption::VALUE_OPTIONAL,
             'Location of a custom configuration file'
         );
+
+        parent::configure();
     }
 
     /**
@@ -58,47 +60,34 @@ class ConfigurableCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config_file = $input->getOption('config');
-        if ($config_file && $config_file !== 'none') {
-            $config_file = realpath($config_file);
+        $configFile = $input->getOption('config');
+
+        if ($configFile && $configFile !== 'none') {
+            $configFile = realpath($configFile);
 
             // all relative paths mentioned in the configuration file should
             // be relative to the configuration file.
             // This means that if we provide an alternate configuration file
             // that we need to go to that directory first so that paths can be
             // calculated from there.
-            chdir(dirname($config_file));
+            chdir(dirname($configFile));
         }
 
-        if ($config_file) {
-            $container = $this->getContainer();
+        $container = $this->getContainer();
+        if ($configFile) {
             $container['config'] = $container->share(
-                function () use ($config_file) {
+                function () use ($configFile) {
                     $files = array(__DIR__ . '/../../../data/phpdoc.tpl.xml');
-                    if ($config_file !== 'none') {
-                        $files[] = $config_file;
+                    if ($configFile !== 'none') {
+                        $files[] = $configFile;
                     }
 
                     return \Zend\Config\Factory::fromFiles($files, true);
                 }
             );
-
-            if (isset($container['config']->logging)) {
-                $level = (string)$container['config']->logging->level;
-
-                // null means the default is used
-                $logPath = isset($container['config']->logging->paths->default)
-                    ? (string) $container['config']->logging->paths->default
-                    : null;
-
-                // null means the default is used
-                $debugPath = isset($container['config']->logging->paths->errors)
-                    ? (string) $container['config']->logging->paths->errors
-                    : null;
-
-                $container->configureLogger($container['monolog'], $level, $logPath, $debugPath);
-            }
         }
+
+        $this->getHelper('phpdocumentor_logger')->reconfigureLogger($input, $output, $this);
     }
 
     /**

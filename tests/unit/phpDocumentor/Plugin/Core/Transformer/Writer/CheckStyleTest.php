@@ -56,7 +56,7 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
 
         $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
         $fileDescriptor->shouldReceive('getPath')->andReturn('/foo/bar/baz');
-        $fileDescriptor->shouldReceive('getErrors->getAll')->andReturn(array($error));
+        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn(array($error));
 
         $error->shouldReceive('getLine')->andReturn(1234);
         $error->shouldReceive('getCode')->andReturn(5678);

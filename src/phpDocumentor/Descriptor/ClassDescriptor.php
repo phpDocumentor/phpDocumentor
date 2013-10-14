@@ -37,6 +37,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /** @var Collection $methods References to methods defined in this class. */
     protected $methods;
 
+    /** @var Collection $usedTraits References to traits consumed by this class */
+    protected $usedTraits = array();
+
     /**
      * Initializes the all properties representing a collection with a new Collection object.
      */
@@ -45,6 +48,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         parent::__construct();
 
         $this->setInterfaces(new Collection());
+        $this->setUsedTraits(new Collection());
         $this->setConstants(new Collection());
         $this->setProperties(new Collection());
         $this->setMethods(new Collection());
@@ -139,9 +143,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             return new Collection();
         }
 
-        $inheritedMethods = clone $this->getParent()->getConstants();
+        $inheritedConstants = clone $this->getParent()->getConstants();
 
-        return $inheritedMethods->merge($this->getParent()->getInheritedConstants());
+        return $inheritedConstants->merge($this->getParent()->getInheritedConstants());
     }
 
     /**
@@ -292,5 +296,29 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                 $method->setPackage($package);
             }
         }
+    }
+
+    /**
+     * Sets a collection of all traits used by this class.
+     *
+     * @param Collection $usedTraits
+     *
+     * @return void
+     */
+    public function setUsedTraits($usedTraits)
+    {
+        $this->usedTraits = $usedTraits;
+    }
+
+    /**
+     * Returns the traits used by this class.
+     *
+     * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
+     *
+     * @return Collection
+     */
+    public function getUsedTraits()
+    {
+        return $this->usedTraits;
     }
 }

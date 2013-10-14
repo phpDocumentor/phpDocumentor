@@ -66,10 +66,11 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
         $classReflectorMock->shouldReceive('isAbstract')->andReturn(false);
         $classReflectorMock->shouldReceive('isFinal')->andReturn(false);
         $classReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
-        $classReflectorMock->shouldReceive('getInterfaces')->andReturn(new Collection);
-        $classReflectorMock->shouldReceive('getConstants')->andReturn(new Collection);
-        $classReflectorMock->shouldReceive('getProperties')->andReturn(new Collection);
-        $classReflectorMock->shouldReceive('getMethods')->andReturn(new Collection);
+        $classReflectorMock->shouldReceive('getInterfaces')->andReturn(array());
+        $classReflectorMock->shouldReceive('getConstants')->andReturn(array());
+        $classReflectorMock->shouldReceive('getProperties')->andReturn(array());
+        $classReflectorMock->shouldReceive('getMethods')->andReturn(array());
+        $classReflectorMock->shouldReceive('getTraits')->andReturn(array());
 
         $descriptor = $this->fixture->create($classReflectorMock);
 

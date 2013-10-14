@@ -37,10 +37,10 @@ Parameters
 
     This parameter can be used to tell phpDocumentor to interpret a single file.
     This may be a single relative or absolute path.
-    When providing a relative path please keep in mind that the path is relative
+    When providing a relative path, please keep in mind that the path is relative
     to the current working directory.
 
-    Wilecards * and ? are not supported by this parameter.
+    Wildcards * and ? are not supported by this parameter.
 
     This parameter may be used in conjunction with the ``-d`` parameter.
 
@@ -50,10 +50,10 @@ Parameters
     This parameter can be used to tell phpDocumentor which folders need to be
     interpreted. This may be a single relative or absolute path; or a list of
     paths separated by commas.
-    When providing a relative path please keep in mind that the path is relative
+    When providing a relative path, please keep in mind that the path is relative
     to the current working directory.
 
-    Wildcards * and ? are supported by this parameter but please keep in mind to
+    Wildcards * and ? are supported by this parameter, but please keep in mind to
     surround the parameter value with double quotes or your operating system
     might try to interpret them instead of phpDocumentor doing so.
 
@@ -79,7 +79,7 @@ Parameters
     ???
 
 **--ignore-symlinks**
-    Tells the parser to not follow symlinks.
+    Tells the parser not to follow symlinks.
 
 **-m|--markers[="..."]**
     Provide a comma-separated list of markers to parse.

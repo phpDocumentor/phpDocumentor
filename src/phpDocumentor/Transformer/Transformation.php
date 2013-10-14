@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer;
 
 use JMS\Serializer\Annotation as Serializer;
+use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * Class representing a single Transformation.
@@ -53,8 +54,9 @@ class Transformation
     protected $transformer;
 
     /**
-     * @Serializer\Type("array")
-     * @var string[]
+     * @Serializer\XmlList(entry = "parameter")
+     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
+     * @var Parameter[]
      */
     protected $parameters = array();
 
@@ -230,7 +232,7 @@ class Transformation
     /**
      * Sets an array of parameters (key => value).
      *
-     * @param string[] $parameters Associative multidimensional array containing
+     * @param Parameter[] $parameters Associative multidimensional array containing
      *     parameters for the Writer.
      *
      * @return void
@@ -243,7 +245,7 @@ class Transformation
     /**
      * Returns all parameters for this transformation.
      *
-     * @return string[]
+     * @return Parameter[]
      */
     public function getParameters()
     {
@@ -253,14 +255,41 @@ class Transformation
     /**
      * Returns a specific parameter, or $default if none exists.
      *
-     * @param string $name    Name of the parameter to return.
-     * @param mixed  $default Default value is parameter does not exist.
+     * @param string $name Name of the parameter to return.
      *
-     * @return string
+     * @return Parameter
      */
-    public function getParameter($name, $default = null)
+    public function getParameter($name)
     {
-        return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+        /** @var Parameter $parameter */
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->getKey() == $name) {
+                return $parameter;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a specific parameter, or $default if none exists.
+     *
+     * @param string $name Name of the parameter to return.
+     *
+     * @return Parameter
+     */
+    public function getParametersWithKey($name)
+    {
+        $parameters = array();
+
+        /** @var Parameter $parameter */
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->getKey() == $name) {
+                $parameters[] = $parameter;
+            }
+        }
+
+        return $parameters;
     }
 
     /**

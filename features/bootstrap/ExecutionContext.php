@@ -78,7 +78,8 @@ class ExecutionContext extends BehatContext
      */
     public function iRunPhpdocumentorAgainstNoFilesOrDirectories()
     {
-        $this->iRun("php bin/phpdoc.php -t build --config=none --force");
+        $tmp = $this->getTmpFolder();
+        $this->iRun("php bin/phpdoc.php -t $tmp --config=none --force");
     }
 
     /**
@@ -95,8 +96,9 @@ class ExecutionContext extends BehatContext
      */
     public function iRunPhpDocumentorAgainstTheFile($file_path)
     {
+        $tmp = $this->getTmpFolder();
         $this->iRun(
-            "php bin/phpdoc.php -f $file_path -t build --config=none --force"
+            "php bin/phpdoc.php -f $file_path -t $tmp --config=none --force"
         );
     }
 
@@ -114,9 +116,10 @@ class ExecutionContext extends BehatContext
      */
     public function iRunPhpDocumentorWith(PyStringNode $code, $extraParameters = '')
     {
+        $tmp = $this->getTmpFolder();
         $file = tempnam(sys_get_temp_dir(), 'pdb');
         file_put_contents($file, $code);
-        $this->iRun("php bin/phpdoc.php -f $file -t build --config=none --force $extraParameters");
+        $this->iRun("php bin/phpdoc.php -f $file -t $tmp --config=none --force $extraParameters");
         unlink($file);
     }
 
@@ -132,8 +135,9 @@ class ExecutionContext extends BehatContext
      */
     public function iRunPhpDocumentorAgainstTheFileUsingOption($file_path, $options)
     {
+        $tmp = $this->getTmpFolder();
         $this->iRun(
-            "php bin/phpdoc.php -f $file_path -t build --config=none "
+            "php bin/phpdoc.php -f $file_path -t tmp --config=none "
             ."--force $options"
         );
     }
@@ -149,8 +153,9 @@ class ExecutionContext extends BehatContext
      */
     public function iRunPhpDocumentorAgainstTheDirectory($folder_path)
     {
+        $tmp = $this->getTmpFolder();
         $this->iRun(
-            "php bin/phpdoc.php -d $folder_path -t build --config=none --force"
+            "php bin/phpdoc.php -d $folder_path -t tmp --config=none --force"
         );
     }
 
@@ -239,5 +244,48 @@ class ExecutionContext extends BehatContext
     public function theConfigurationFileHasATransformationWithTheWriterHavingAsArtifact($arg1, $arg2)
     {
         throw new PendingException();
+    }
+
+    /**
+     * @Given /^I have removed all files with the "([^"]*)" extension$/
+     */
+    public function iHaveRemovedAllFilesWithTheExtension($arg1)
+    {
+        $iterator = new DirectoryIterator(getcwd());
+
+        /** @var \SplFileInfo $file */
+        foreach ($iterator as $file) {
+            if ($file->getExtension() === $arg1) {
+                unlink($file->getRealPath());
+            }
+        }
+    }
+
+    /**
+     * @Then /^there should be no files with the "([^"]*)" extension$/
+     */
+    public function thereShouldBeNoFilesWithTheExtension($arg1)
+    {
+        $iterator = new DirectoryIterator(getcwd());
+
+        /** @var \SplFileInfo $file */
+        foreach ($iterator as $file) {
+            if ($file->getExtension() === $arg1) {
+                throw new \Exception('Found a file with the extension ' . $arg1 . ': ' . $file->getFilename());
+            }
+        }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return string
+     */
+    protected function getTmpFolder()
+    {
+        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behatTests';
+
+        return $tmp;
     }
 }

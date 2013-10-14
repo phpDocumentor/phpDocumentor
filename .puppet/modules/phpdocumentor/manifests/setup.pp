@@ -1,5 +1,5 @@
 class phpdocumentor::setup {
-    package{["git", "graphviz", "python-setuptools", "make", "texlive-latex-recommended", "texlive-fonts-recommended", "openjdk-6-jre"]:
+    package{["git", "graphviz", "python-setuptools", "make", "texlive-latex-recommended", "texlive-fonts-recommended", "openjdk-6-jre", "mongodb"]:
         ensure => present
     }
 
@@ -8,6 +8,14 @@ class phpdocumentor::setup {
     php::module { "xsl": }
     php::module { "intl": }
     php::module { "xdebug": }
+    class { "php::pear": }
+    php::pecl::module { "xhprof":
+      use_package     => 'false',
+      preferred_state => 'beta',
+    }
+    php::pecl::module { "mongo":
+      use_package     => 'false',
+    }    
 
     class { 'composer':
       command_name => 'composer',
