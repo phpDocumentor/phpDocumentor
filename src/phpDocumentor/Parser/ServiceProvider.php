@@ -95,16 +95,14 @@ class ServiceProvider implements ServiceProviderInterface
         $app['partials'] = $partialsCollection;
 
         $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
-
-        /** @var Dispatcher $dispatcher  */
-        $dispatcher = $app['event_dispatcher'];
-        $dispatcher->addListener('reflection.docblock-extraction.post', array($this, 'validateDocBlocks'));
     }
 
     /**
      * Checks all phpDocumentor whether they match the given rules.
      *
      * @param PostDocBlockExtractionEvent $data Event object containing the parameters.
+     *
+     * @todo convert this method to the new style validators; this method is not invoked anymore
      *
      * @return void
      */
