@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e6fb26fc3caf94b65046efc40ee7c9b7",
+    "hash": "970325e30a0fa266688963dcc93ed925",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -1078,17 +1078,20 @@
         },
         {
             "name": "phpdocumentor/unified-asset-installer",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/UnifiedAssetInstaller.git",
-                "reference": "1.1.1"
+                "reference": "241fb036268cd9da7d76da3db66e3eda66259c52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/UnifiedAssetInstaller/zipball/1.1.1",
-                "reference": "1.1.1",
+                "url": "https://api.github.com/repos/phpDocumentor/UnifiedAssetInstaller/zipball/241fb036268cd9da7d76da3db66e3eda66259c52",
+                "reference": "241fb036268cd9da7d76da3db66e3eda66259c52",
                 "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "1.0.0"
             },
             "require-dev": {
                 "composer/composer": "~1.0@dev",
@@ -1118,7 +1121,7 @@
                 "plugins",
                 "templates"
             ],
-            "time": "2013-08-02 06:40:32"
+            "time": "2013-09-09 06:13:02"
         },
         {
             "name": "phpoption/phpoption",
