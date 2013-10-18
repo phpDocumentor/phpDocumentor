@@ -91,6 +91,8 @@ Outline
 
     Anatomy of a DocBlock
 
+    Running phpDocumentor
+
     Integrating with Your Project
       Configuration
       IDE

@@ -54,3 +54,12 @@ I get an error during transformation: Specified DOMDocument lacks documentElemen
 
 Your source files do not have UTF-8 encoding, add ``--encoding`` parameter to the command with the correct encoding
 See also: :doc:`Run command <../commands/project_run>`
+
+I have installed GraphViz but no class diagram is generated on Windows
+----------------------------------------------------------------------
+
+When using GraphViz 2.34.0 it can happen that no diagrams are generated despite phpDocumentor
+does not report an error.
+
+This issue can be resolved by downgrading GraphViz to version 2.28, see http://www.graphviz.org/pub/graphviz/stable/
+for more information.
