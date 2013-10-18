@@ -17,6 +17,11 @@ use Behat\Gherkin\Node\PyStringNode;
  */
 class ExecutionContext extends BehatContext
 {
+    public function __construct()
+    {
+        unlink($this->getTempXmlConfiguration());
+    }
+
     /**
      * Contains the last output of a iRun command.
      *
@@ -277,6 +282,49 @@ class ExecutionContext extends BehatContext
     }
 
     /**
+     * @Given /^the "([^"]*)" section of the configuration has$/
+     */
+    public function theSectionOfTheConfigurationHas($arg1, PyStringNode $string)
+    {
+        $config = $this->getCustomConfigurationAsXml();
+        $element = $config->documentElement;
+
+        $el = $element->getElementsByTagName($arg1)->item(0);
+        if (!$el) {
+            $el = new DOMElement($arg1);
+            $element->appendChild($el);
+        }
+
+        $f = $config->createDocumentFragment();
+        $f->appendXML((string)$string);
+        $el->appendChild($f);
+
+        $config->save($this->getTempXmlConfiguration());
+    }
+
+    /**
+     *
+     * @return DOMDocument
+     */
+    protected function getCustomConfigurationAsXml()
+    {
+        $filename = $this->getTempXmlConfiguration();
+        if (!file_exists($filename)) {
+            file_put_contents($filename, <<<XML
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+</phpdocumentor>
+XML
+            );
+        }
+
+        $dom_sxe = dom_import_simplexml(simplexml_load_file($filename));
+        $dom = new DOMDocument('1.0');
+        $dom_sxe = $dom->importNode($dom_sxe, true);
+        $dom_sxe = $dom->appendChild($dom_sxe);
+        return $dom;
+    }
+    /**
      *
      *
      *
@@ -285,7 +333,21 @@ class ExecutionContext extends BehatContext
     protected function getTmpFolder()
     {
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behatTests';
+        if (!file_exists($tmp)) {
+            mkdir($tmp);
+        }
 
         return $tmp;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return string
+     */
+    protected function getTempXmlConfiguration()
+    {
+        return $this->getTmpFolder() . DIRECTORY_SEPARATOR . 'phpdoc.xml';
     }
 }

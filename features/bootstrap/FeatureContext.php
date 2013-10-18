@@ -28,6 +28,7 @@ class FeatureContext extends BehatContext
     {
         $this->useContext('execution', new \ExecutionContext());
         $this->useContext('checkstyle', new \CheckstyleContext());
+        $this->useContext('html_output', new \HtmlOutputContext());
     }
 
     /**
