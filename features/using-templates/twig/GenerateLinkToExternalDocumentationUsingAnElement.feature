@@ -21,4 +21,5 @@ Feature: Show links to external documentation for specific external classes
       {
       }
       """
-    Then the parent class should link to "http://pear.php.net/package/HTML_QuickForm2/docs/latest/HTML_QuickForm2/HTML_QuickForm2_Container"
+    Then I expect the file "classes/myContainer.html"
+     And the parent class should link to "http://pear.php.net/package/HTML_QuickForm2/docs/latest/HTML_QuickForm2/HTML_QuickForm2_Container"

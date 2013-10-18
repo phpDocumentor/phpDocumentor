@@ -19,7 +19,10 @@ class ExecutionContext extends BehatContext
 {
     public function __construct()
     {
-        unlink($this->getTempXmlConfiguration());
+        if (file_exists($this->getTempXmlConfiguration())) {
+            unlink($this->getTempXmlConfiguration());
+        }
+        $this->getCustomConfigurationAsXml(); // create new file
     }
 
     /**
@@ -84,7 +87,7 @@ class ExecutionContext extends BehatContext
     public function iRunPhpdocumentorAgainstNoFilesOrDirectories()
     {
         $tmp = $this->getTmpFolder();
-        $this->iRun("php bin/phpdoc.php -t $tmp --config=none --force");
+        $this->iRun("php bin/phpdoc.php -t $tmp --config='{$this->getTempXmlConfiguration()}' --force");
     }
 
     /**
@@ -103,15 +106,12 @@ class ExecutionContext extends BehatContext
     {
         $tmp = $this->getTmpFolder();
         $this->iRun(
-            "php bin/phpdoc.php -f $file_path -t $tmp --config=none --force"
+            "php bin/phpdoc.php -f $file_path -t $tmp --config='{$this->getTempXmlConfiguration()}' --force"
         );
     }
 
     /**
      * Parses the given PHP code with phpDocumentor.
-     *
-     * The configuration is explicitly disabled to prevent tainting via
-     * the configuration.
      *
      * @param PyStringNode $code
      *
@@ -124,7 +124,9 @@ class ExecutionContext extends BehatContext
         $tmp = $this->getTmpFolder();
         $file = tempnam(sys_get_temp_dir(), 'pdb');
         file_put_contents($file, $code);
-        $this->iRun("php bin/phpdoc.php -f $file -t $tmp --config=none --force $extraParameters");
+        $this->iRun(
+            "php bin/phpdoc.php -f $file -t $tmp --config='{$this->getTempXmlConfiguration()}' --force $extraParameters"
+        );
         unlink($file);
     }
 
@@ -142,7 +144,7 @@ class ExecutionContext extends BehatContext
     {
         $tmp = $this->getTmpFolder();
         $this->iRun(
-            "php bin/phpdoc.php -f $file_path -t tmp --config=none "
+            "php bin/phpdoc.php -f $file_path -t $tmp --config=--config='{$this->getTempXmlConfiguration()}' "
             ."--force $options"
         );
     }
@@ -160,7 +162,7 @@ class ExecutionContext extends BehatContext
     {
         $tmp = $this->getTmpFolder();
         $this->iRun(
-            "php bin/phpdoc.php -d $folder_path -t tmp --config=none --force"
+            "php bin/phpdoc.php -d $folder_path -t $tmp --config=--config='{$this->getTempXmlConfiguration()}' --force"
         );
     }
 
@@ -330,7 +332,7 @@ XML
      *
      * @return string
      */
-    protected function getTmpFolder()
+    public function getTmpFolder()
     {
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behatTests';
         if (!file_exists($tmp)) {

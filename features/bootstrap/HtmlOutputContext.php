@@ -16,6 +16,23 @@ use Behat\Behat\Exception\PendingException;
  */
 class HtmlOutputContext extends BehatContext
 {
+    protected $filename;
+
+    /**
+     * @Then /^I expect the file "([^"]*)"$/
+     */
+    public function iExpectTheFile($arg1)
+    {
+        /** @var ExecutionContext $executionContext */
+        $executionContext = $this->getMainContext()->getSubcontext('execution');
+
+        $this->filename = $executionContext->getTmpFolder() . DIRECTORY_SEPARATOR . $arg1;
+        if (!file_exists($this->filename)) {
+            throw new \Exception("File with filename '{$this->filename}' could not be found");
+        }
+
+    }
+
     /**
      * @Then /^the parent class should link to "([^"]*)"$/
      */
