@@ -66,21 +66,6 @@ class Transformer implements CompilerPassInterface
     }
 
     /**
-     * Array containing prefix => URL values.
-     *
-     * What happens is that the transformer knows where to find external API
-     * docs for classes with a certain prefix.
-     *
-     * For example: having a prefix HTML_QuickForm2_ will link an unidentified
-     * class that starts with HTML_QuickForm2_ to a (defined) URL
-     * i.e. http://pear.php.net/package/HTML_QuickForm2/docs/
-     * latest/HTML_QuickForm2/${class}.html
-     *
-     * @var string
-     */
-    protected $externalClassDocs = array();
-
-    /**
      * Sets the collection of behaviours that are applied before the actual transformation process.
      *
      * @param Behaviour\Collection $behaviours
@@ -224,112 +209,6 @@ class Transformer implements CompilerPassInterface
 
         return trim(str_replace(array(DIRECTORY_SEPARATOR, '\\'), '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
             . '.html';
-    }
-
-    /**
-     * Adds a link to external documentation.
-     *
-     * Please note that the prefix string is matched against the
-     * start of the class name and that the preceding \ for namespaces
-     * should NOT be included.
-     *
-     * You can augment the URI with the name of the found class by inserting
-     * the param {CLASS}. By default the class is inserted as-is; to insert a
-     * lowercase variant use the parameter {LOWERCASE_CLASS}
-     *
-     * @param string $prefix Class prefix to match, i.e. Zend_Config_
-     * @param string $uri    URI to link to when above prefix is encountered.
-     *
-     * @codeCoverageIgnore
-     * @deprecated should be moved to the new router
-     *
-     * @return void
-     */
-    public function setExternalClassDoc($prefix, $uri)
-    {
-        $this->externalClassDocs[$prefix] = $uri;
-    }
-
-    /**
-     * Sets a set of prefix -> url parts.
-     *
-     * @param string[] $external_class_docs Array containing prefix => URI pairs.
-     *
-     * @see self::setExternalClassDoc() for details on this feature.
-     *
-     * @codeCoverageIgnore
-     * @deprecated should be moved to the new router
-     *
-     * @return void
-     */
-    public function setExternalClassDocs($external_class_docs)
-    {
-        $this->externalClassDocs = $external_class_docs;
-    }
-
-    /**
-     * Returns the registered prefix -> url pairs.
-     *
-     * @codeCoverageIgnore
-     * @deprecated should be moved to the new router
-     *
-     * @return string[]
-     */
-    public function getExternalClassDocs()
-    {
-        return $this->externalClassDocs;
-    }
-
-    /**
-     * Retrieves the url for a given prefix.
-     *
-     * @param string $prefix Class prefix to retrieve a URL for.
-     * @param string $class  If provided will replace the {CLASS} param with
-     *  this string.
-     *
-     * @codeCoverageIgnore
-     * @deprecated should be moved to the new router
-     *
-     * @return string|null
-     */
-    public function getExternalClassDocumentLocation($prefix, $class = null)
-    {
-        if (!isset($this->externalClassDocs[$prefix])) {
-            return null;
-        }
-
-        $result = $this->externalClassDocs[$prefix];
-        if ($class !== null) {
-            $result = str_replace(
-                array('{CLASS}', '{LOWERCASE_CLASS}', '{UNPREFIXED_CLASS}'),
-                array($class, strtolower($class), substr($class, strlen($prefix))),
-                $result
-            );
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the url for this class if it is registered.
-     *
-     * @param string $class FQCN to retrieve documentation URL for.
-     *
-     * @codeCoverageIgnore
-     * @deprecated should be moved to the new router
-     *
-     * @return null|string
-     */
-    public function findExternalClassDocumentLocation($class)
-    {
-        $class = ltrim($class, '\\');
-        foreach (array_keys($this->externalClassDocs) as $prefix) {
-            if (strpos($class, $prefix) === 0) {
-                return $this->getExternalClassDocumentLocation($prefix, $class);
-            }
-        }
-
-        return null;
     }
 
     /**
