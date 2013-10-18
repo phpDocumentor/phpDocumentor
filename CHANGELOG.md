@@ -1,3 +1,11 @@
+2013/11/23: Version 2.2
+-----------------------
+
+```
+CHANGED:   Moved the external class documentation code to their own router
+FIXED:     #720: external class documentation had ../files prepended
+```
+
 2013/09/28: Version 2.1
 -----------------------
 
