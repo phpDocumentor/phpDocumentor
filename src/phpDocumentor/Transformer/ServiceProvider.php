@@ -116,12 +116,25 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             }
         );
 
-        $app['transformer.routing.queue'] = $app->share(
+
+        $app['transformer.routing.standard'] = $app->share(
             function () {
+                return new Router\StandardRouter();
+            }
+        );
+        $app['transformer.routing.external'] = $app->share(
+            function ($container) {
+                return new Router\ExternalRouter($container['config']);
+            }
+        );
+
+        $app['transformer.routing.queue'] = $app->share(
+            function ($container) {
                 $queue = new Router\Queue();
 
                 // TODO: load from app configuration instead of hardcoded
-                $queue->insert(new Router\StandardRouter(), 10000);
+                $queue->insert($container['transformer.routing.external'], 10500);
+                $queue->insert($container['transformer.routing.standard'], 10000);
 
                 return $queue;
             }

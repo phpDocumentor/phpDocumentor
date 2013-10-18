@@ -177,7 +177,11 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                         $rule     = $routers->match($path);
                         $url      = $rule ? ltrim($rule->generate($path), '/') : false;
 
-                        if ($url && $url[0] != '/') {
+                        if ($url
+                            && $url[0] != '/'
+                            && (strpos($url, 'http://') !== 0)
+                            && (strpos($url, 'https://') !== 0)
+                        ) {
                             $url = $extension->convertToRootPath($url);
                         }
 
