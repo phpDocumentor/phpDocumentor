@@ -19,6 +19,7 @@ use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
+use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
 
@@ -91,6 +92,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             function ($container) {
                 $compiler = new Compiler();
                 $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
+                $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
                 $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);

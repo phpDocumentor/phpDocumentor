@@ -164,7 +164,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function setLocation(FileDescriptor $file, $line = 0)
     {
-        $this->fileDescriptor = $file;
+        $this->setFile($file);
         $this->line = $line;
     }
 
@@ -182,6 +182,18 @@ abstract class DescriptorAbstract implements Filterable
     public function getFile()
     {
         return $this->fileDescriptor;
+    }
+
+    /**
+     * Sets the file to which this element is associated.
+     *
+     * @param FileDescriptor $file
+     *
+     * @return false
+     */
+    public function setFile(FileDescriptor $file)
+    {
+        $this->fileDescriptor = $file;
     }
 
     /**

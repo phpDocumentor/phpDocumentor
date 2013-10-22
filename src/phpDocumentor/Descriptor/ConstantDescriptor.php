@@ -123,4 +123,14 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
 
         return $var;
     }
+
+    /**
+     * Returns the file associated with the parent class, interface or trait when inside a container.
+     *
+     * @return FileDescriptor
+     */
+    public function getFile()
+    {
+        return $this->getFile() ?: $this->getParent()->getFile();
+    }
 }

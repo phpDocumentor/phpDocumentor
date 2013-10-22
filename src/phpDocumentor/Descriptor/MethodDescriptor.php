@@ -154,4 +154,14 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
         return $returnTags instanceof Collection ? current($returnTags->getAll()) : null;
     }
+
+    /**
+     * Returns the file associated with the parent class, interface or trait.
+     *
+     * @return FileDescriptor
+     */
+    public function getFile()
+    {
+        return $this->getParent()->getFile();
+    }
 }

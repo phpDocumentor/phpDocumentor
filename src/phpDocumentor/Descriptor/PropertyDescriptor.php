@@ -152,4 +152,14 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
 
         return $var;
     }
+
+    /**
+     * Returns the file associated with the parent class or trait.
+     *
+     * @return FileDescriptor
+     */
+    public function getFile()
+    {
+        return $this->getParent()->getFile();
+    }
 }
