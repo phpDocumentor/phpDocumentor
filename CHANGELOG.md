@@ -3,8 +3,9 @@
 
 ```
 CHANGED:   Moved the external class documentation code to their own router
-FIXED:     #720: external class documentation had ../files prepended
+FIXED:     #720: External class documentation had ../files prepended
 FIXED:     #932: Todo tags did not show up in Twig templates
+FIXED:     #1049: Arguments passed by reference did not show up as being by reference
 ```
 
 2013/09/28: Version 2.1
