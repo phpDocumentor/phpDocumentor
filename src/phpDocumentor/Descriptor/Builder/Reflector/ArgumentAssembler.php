@@ -45,6 +45,7 @@ class ArgumentAssembler extends AssemblerAbstract
         }
 
         $argumentDescriptor->setDefault($data->getDefault());
+        $argumentDescriptor->setByReference($data->isByRef());
 
         return $argumentDescriptor;
     }
