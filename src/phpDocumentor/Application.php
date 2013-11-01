@@ -60,10 +60,10 @@ class Application extends Cilex
             return new Stopwatch();
         };
 
+        $this->setTimezone();
         $this->addAutoloader();
         $this->addConfiguration();
         $this->addLogging();
-        $this->setTimezone();
         $this->addEventDispatcher();
         $this->addTranslator();
 
@@ -83,6 +83,24 @@ class Application extends Cilex
 
         $this->verifyWriterRequirementsAndExitIfBroken();
         $this->addCommandsForProjectNamespace();
+    }
+
+    /**
+     * If the timezone is not set anywhere, set it to UTC.
+     *
+     * This is done to prevent any warnings being outputted in relation to using
+     * date/time functions. What is checked is php.ini, and if the PHP version
+     * is prior to 5.4, the TZ environment variable.
+     *
+     * @return void
+     */
+    public function setTimezone()
+    {
+        if (false === ini_get('date.timezone') || (version_compare(phpversion(), '5.4.0', '<')
+            && false === getenv('TZ'))
+        ) {
+            date_default_timezone_set('UTC');
+        }
     }
 
     /**
@@ -208,24 +226,6 @@ class Application extends Cilex
             $monolog->pushHandler(new StreamHandler($logPath, $level));
         } else {
             $monolog->pushHandler(new StreamHandler('php://stdout', $level));
-        }
-    }
-
-    /**
-     * If the timezone is not set anywhere, set it to UTC.
-     *
-     * This is done to prevent any warnings being outputted in relation to using
-     * date/time functions. What is checked is php.ini, and if the PHP version
-     * is prior to 5.4, the TZ environment variable.
-     *
-     * @return void
-     */
-    public function setTimezone()
-    {
-        if (false === ini_get('date.timezone') || (version_compare(phpversion(), '5.4.0', '<')
-            && false === getenv('TZ'))
-        ) {
-            date_default_timezone_set('UTC');
         }
     }
 
