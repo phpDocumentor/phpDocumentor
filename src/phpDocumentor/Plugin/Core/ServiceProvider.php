@@ -12,11 +12,12 @@
 namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
+use Cilex\ServiceProviderInterface;
 use phpDocumentor\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
 
-class ServiceProvider implements \Cilex\ServiceProviderInterface
+class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * Registers services on the given app.

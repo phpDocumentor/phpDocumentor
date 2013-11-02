@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
+/**
+ * Descriptor representing the var tag on a property.
+ */
 class VarDescriptor extends BaseTypes\TypedVariableAbstract
 {
 }

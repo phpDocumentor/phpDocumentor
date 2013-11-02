@@ -41,7 +41,6 @@ use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Descriptor\Filter\StripInternal;
-use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ClassReflector;
@@ -106,7 +105,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function attachAssemblersToFactory(AssemblerFactory $factory)
     {
-        $fileMatcher      = function ($criteria) {return $criteria instanceof FileReflector; };
+        // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
+        $fileMatcher      = function ($criteria) { return $criteria instanceof FileReflector; };
         $constantMatcher  = function ($criteria) {
             return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
         };
@@ -133,6 +133,7 @@ class ServiceProvider implements ServiceProviderInterface
         $versionMatcher     = function ($criteria) { return $criteria instanceof Tag\VersionTag; };
 
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
+        // @codingStandardsIgnoreEnd
 
         $factory->register($fileMatcher, new FileAssembler());
         $factory->register($constantMatcher, new ConstantAssembler());

@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Builder;
 
-use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**

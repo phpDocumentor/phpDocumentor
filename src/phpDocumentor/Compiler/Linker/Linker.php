@@ -20,7 +20,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  *
  * This object contains a list of class FQCNs for Descriptors and their associated linker rules.
  *
- * An example scenario sould be:
+ * An example scenario should be:
  *
  *     The Descriptor ``\phpDocumentor\Descriptor\ClassDescriptor`` has a *Substitute* rule determining that the
  *     contents of the ``Parent`` field should be substituted with another ClassDescriptor with the FQCN

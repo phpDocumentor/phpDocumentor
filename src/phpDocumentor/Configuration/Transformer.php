@@ -13,6 +13,9 @@ namespace phpDocumentor\Configuration;
 
 use JMS\Serializer\Annotation as Serializer;
 
+/**
+ * Configuration definition for the transformer.
+ */
 class Transformer
 {
     /** @var string destination location for the transformer's output */

@@ -11,26 +11,23 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\ConstantDescriptor;
-use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\PropertyDescriptor;
-use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Descriptor\FileDescriptor;
 use Zend\Config\Config;
 
 /**
- * The default router for phpDocumentor.
+ * Connects class, interface and traits to remote documentation sets.
  */
 class ExternalRouter extends RouterAbstract
 {
     /** @var Config */
     protected $configuration;
 
+    /**
+     * Registers the application configuration with this router.
+     *
+     * The configuration is used to extract which external routes to add to the application.
+     *
+     * @param Config $configuration
+     */
     public function __construct(Config $configuration)
     {
         $this->configuration = $configuration;

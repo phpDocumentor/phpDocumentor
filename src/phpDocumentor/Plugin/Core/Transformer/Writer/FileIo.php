@@ -22,8 +22,9 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Exception;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 
-class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
+class FileIo extends WriterAbstract
 {
     /** @var \phpDocumentor\Transformer\Transformation */
     protected $transformation = null;

@@ -45,9 +45,6 @@ class ReturnTag
             /** @var \DOMElement $method  */
             $method = $docblock->parentNode;
 
-            // find the name of the method
-            $method_name = $method->getElementsByTagName('name')->item(0)->nodeValue;
-
             // if the method is not a method but a global function: error!
             if ($method->nodeName != 'method') {
                 continue;

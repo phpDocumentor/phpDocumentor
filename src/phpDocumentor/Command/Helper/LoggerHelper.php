@@ -56,6 +56,7 @@ class LoggerHelper extends Helper
      * Connect the logging events to the output object of Symfony Console.
      *
      * @param OutputInterface $output
+     * @param Command $command
      *
      * @return void
      */
@@ -97,10 +98,11 @@ class LoggerHelper extends Helper
      *
      * @param OutputInterface $output
      * @param LogEvent        $event
+     * @param Command         $command
      *
      * @return void
      */
-    public function logEvent(OutputInterface $output, LogEvent $event, $command)
+    public function logEvent(OutputInterface $output, LogEvent $event, Command $command)
     {
         $numericErrors = array(
             LogLevel::DEBUG     => 0,

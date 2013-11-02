@@ -11,8 +11,9 @@
 
 namespace phpDocumentor\Partials;
 
-
-
+/**
+ * Model representing a piece of text that can be injected into a template and can be set in the configuration.
+ */
 class Partial
 {
     protected $href;

@@ -56,7 +56,7 @@ class StandardRouter extends RouterAbstract
         $this[] = new Rule( function ($node) { return ($node instanceof PropertyDescriptor); }, $propertyGenerator);
 
         // do not generate a file for every unknown type
-        $this[] = new Rule(function ($node) { return true; }, function () { return false; });
+        $this[] = new Rule(function () { return true; }, function () { return false; });
         // @codingStandardsIgnoreEnd
     }
 }

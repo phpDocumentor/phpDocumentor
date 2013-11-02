@@ -114,7 +114,7 @@ class Transformer implements CompilerPassInterface
 
         if (!is_dir($path) || !is_writable($path)) {
             throw new \InvalidArgumentException(
-                'Given target (' . $target . ') is not a writeable directory'
+                'Given target (' . $target . ') is not a writable directory'
             );
         }
 
@@ -192,10 +192,10 @@ class Transformer implements CompilerPassInterface
      *
      * This method strips down the given $name using the following rules:
      *
-     * * if the $name is postfixed with .php then that is removed
-     * * any occurance of \ or DIRECTORY_SEPARATOR is replaced with .
+     * * if the $name is suffixed with .php then that is removed
+     * * any occurrence of \ or DIRECTORY_SEPARATOR is replaced with .
      * * any dots that the name starts or ends with is removed
-     * * the result is postfixed with .html
+     * * the result is suffixed with .html
      *
      * @param string $name Name to convert.
      *
@@ -215,7 +215,7 @@ class Transformer implements CompilerPassInterface
      * Dispatches a logging request.
      *
      * @param string $message  The message to log.
-     * @param int    $priority The logging priority
+     * @param string $priority The logging priority
      *
      * @return void
      */

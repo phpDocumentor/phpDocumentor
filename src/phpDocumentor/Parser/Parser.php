@@ -485,7 +485,7 @@ class Parser implements LoggerAwareInterface
      * Dispatches a logging request.
      *
      * @param string   $message  The message to log.
-     * @param int      $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      *
      * @return void

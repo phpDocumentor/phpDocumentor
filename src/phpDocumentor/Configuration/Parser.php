@@ -13,6 +13,9 @@ namespace phpDocumentor\Configuration;
 
 use JMS\Serializer\Annotation as Serializer;
 
+/**
+ * Configuration definition for the parser.
+ */
 class Parser
 {
     /**

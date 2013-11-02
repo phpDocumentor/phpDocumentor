@@ -13,10 +13,11 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use dflydev\markdown\MarkdownExtraParser;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Partials\Collection as PartialsCollection;
-use phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\ValidatorAbstract;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
 use phpDocumentor\Translator;
 
@@ -54,7 +55,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app['markdown'] = $app->share(
             function () {
-                return new \dflydev\markdown\MarkdownExtraParser;
+                return new MarkdownExtraParser;
             }
         );
 
@@ -70,15 +71,13 @@ class ServiceProvider implements ServiceProviderInterface
                 ? $config['partials']['partial']
                 : array($config['partials']['partial']);
 
-            foreach($partials as $partial) {
+            foreach ($partials as $partial) {
                 if (!isset($partial['name'])) {
-                    throw new Exception\MissingNameForPartialException(
-                       'The name of the partial to load is missing'
-                    );
+                    throw new Exception\MissingNameForPartialException('The name of the partial to load is missing');
                 }
                 if (isset($partial['content'])) {
                     $partialsCollection->set($partial['name'], $partial['content']);
-                } elseif(isset($partial['link'])) {
+                } elseif (isset($partial['link'])) {
                     if (!is_readable($partial['link'])) {
                         $app['monolog']->error(
                             sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial['link'])
@@ -138,7 +137,7 @@ class ServiceProvider implements ServiceProviderInterface
                 /** @var ValidatorAbstract $val */
                 $val = new $class($element->getName(), $docblock, $element);
                 $val->setOptions($validatorOptions);
-                $val->isValid();
+                $val->isValid($element);
             }
         }
     }

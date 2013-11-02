@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Descriptor;
 
+/**
+ * Represents a namespace and its children for a project.
+ */
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
     /** @var NamespaceDescriptor $parentNamespace */
@@ -34,6 +37,9 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /** @var Collection $traits*/
     protected $traits;
 
+    /**
+     * Initializes the namespace with collections for its children.
+     */
     public function __construct()
     {
         $this->setChildren(new Collection());
@@ -67,7 +73,11 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Sets a list of all classes in this project.
+     *
      * @param Collection $classes
+     *
+     * @return void
      */
     public function setClasses(Collection $classes)
     {
@@ -75,6 +85,8 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Returns a list of all classes in this namespace.
+     *
      * @return Collection
      */
     public function getClasses()
@@ -83,7 +95,11 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Sets a list of all constants in this namespace.
+     *
      * @param Collection $constants
+     *
+     * @return void
      */
     public function setConstants(Collection $constants)
     {
@@ -91,6 +107,8 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Returns a list of all constants in this namespace.
+     *
      * @return Collection
      */
     public function getConstants()
@@ -99,7 +117,11 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Sets a list of all functions in this namespace.
+     *
      * @param Collection $functions
+     *
+     * @return void
      */
     public function setFunctions(Collection $functions)
     {
@@ -107,6 +129,8 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Returns a list of all functions in this namespace.
+     *
      * @return Collection
      */
     public function getFunctions()
@@ -115,7 +139,11 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Sets a list of all interfaces in this namespace.
+     *
      * @param Collection $interfaces
+     *
+     * @return void
      */
     public function setInterfaces(Collection $interfaces)
     {
@@ -123,6 +151,8 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Returns a list of all interfaces in this namespace.
+     *
      * @return Collection
      */
     public function getInterfaces()
@@ -131,7 +161,11 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Sets a list of all child namespaces in this namespace.
+     *
      * @param Collection $children
+     *
+     * @return void
      */
     public function setChildren(Collection $children)
     {
@@ -139,6 +173,8 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Returns a list of all namespaces contained in this namespace and its children.
+     *
      * @return Collection
      */
     public function getChildren()
@@ -147,7 +183,11 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Sets a list of all traits contained in this namespace.
+     *
      * @param Collection $traits
+     *
+     * @return void
      */
     public function setTraits($traits)
     {
@@ -155,6 +195,8 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
+     * Returns a list of all traits in this namespace.
+     *
      * @return Collection
      */
     public function getTraits()

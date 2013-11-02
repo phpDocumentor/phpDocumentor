@@ -76,7 +76,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         foreach ($elements as $element) {
             $namespaceName = (string) $element->getNamespace();
 
-            // ensure consistency by trimming the slash prefix and then reappending it.
+            // ensure consistency by trimming the slash prefix and then re-appending it.
             $namespaceIndexName = '~\\' . ltrim($namespaceName, '\\');
 
             if (!isset($project->getIndexes()->elements[$namespaceIndexName])) {

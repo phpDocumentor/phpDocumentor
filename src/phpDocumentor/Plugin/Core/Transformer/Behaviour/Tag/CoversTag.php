@@ -80,8 +80,7 @@ class CoversTag
                     break;
             }
 
-            // get the nodes; we are unable to work around the
-            // shut up operator as there is no pre-validation possible.
+            /** @noinspection PhpUsageOfSilenceOperatorInspection as there is no pre-validation possible */
             $referral_nodes = @$xpath->query($qry);
 
             // if the query is wrong; output a Critical error and continue to

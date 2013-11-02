@@ -14,6 +14,8 @@ namespace phpDocumentor\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Zend\Config\Config;
+use Zend\Config\Factory;
 
 /**
  * Base class for commands that may make use of the configuration.
@@ -82,7 +84,7 @@ class ConfigurableCommand extends Command
                         $files[] = $configFile;
                     }
 
-                    return \Zend\Config\Factory::fromFiles($files, true);
+                    return Factory::fromFiles($files, true);
                 }
             );
         }
@@ -152,11 +154,11 @@ class ConfigurableCommand extends Command
      *
      * @param string $path Path to the config value separated by '/'.
      *
-     * @return \Zend\Config\Config
+     * @return Config
      */
     protected function getConfigValueFromPath($path)
     {
-        /** @var \Zend\Config\Config $node  */
+        /** @var Config $node  */
         $node = $this->getService('config');
 
         foreach (explode('/', $path) as $node_name) {
@@ -172,7 +174,7 @@ class ConfigurableCommand extends Command
             return null;
         }
 
-        return $node instanceof \Zend\Config\Config
+        return $node instanceof Config
             ? $node->toArray()
             : trim((string)$node);
     }

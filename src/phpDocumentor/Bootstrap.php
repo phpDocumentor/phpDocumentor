@@ -42,10 +42,10 @@ class Bootstrap
      * The methods called can also be implemented separately, for example when
      * you want to use your own autoloader.
      *
-     * @return \phpDocumentor\Application
+     * @return Application
      */
     public function initialize()
     {
-        return new \phpDocumentor\Application();
+        return new Application();
     }
 }

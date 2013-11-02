@@ -12,10 +12,12 @@
 
 namespace phpDocumentor\Parser\Event;
 
+use phpDocumentor\Event\EventAbstract;
+
 /**
  * Event thrown before the parsing of an individual file.
  */
-class PreFileEvent extends \phpDocumentor\Event\EventAbstract
+class PreFileEvent extends EventAbstract
 {
     /** @var string */
     protected $file;

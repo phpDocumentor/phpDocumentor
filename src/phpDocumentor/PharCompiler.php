@@ -51,7 +51,7 @@ class PharCompiler
     }
 
     /**
-     * Detects whether the given PHAR file alrready exists and removes it if so.
+     * Detects whether the given PHAR file already exists and removes it if so.
      *
      * @param string $pharFile
      *
@@ -157,8 +157,7 @@ class PharCompiler
     /**
      * Adds the given file to the PHAR archive,
      *
-     * Before adding files to the archive they are bein converted to
-     * relative paths.
+     * Before adding files to the archive they are being converted to relative paths.
      *
      * @param string $file
      * @param \Phar  $phar

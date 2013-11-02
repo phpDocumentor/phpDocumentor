@@ -13,12 +13,20 @@ namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 
+/**
+ * Descriptor representing the link tag with a descriptor.
+ */
 class LinkDescriptor extends TagDescriptor
 {
+    /** @var string $link the url where the link points to. */
     protected $link;
 
     /**
+     * Sets the URL where the link points to.
+     *
      * @param string $link
+     *
+     * @return void
      */
     public function setLink($link)
     {
@@ -26,6 +34,8 @@ class LinkDescriptor extends TagDescriptor
     }
 
     /**
+     * Returns the URL where this link points to.
+     *
      * @return string
      */
     public function getLink()

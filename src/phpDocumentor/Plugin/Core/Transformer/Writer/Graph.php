@@ -28,7 +28,7 @@ use Zend\Stdlib\Exception\ExtensionNotLoadedException;
  * Writer responsible for generating various graphs.
  *
  * The Graph writer is capable of generating a Graph (as provided using the 'source' parameter) at the location provided
- * using the artefact parameter.
+ * using the artifact parameter.
  *
  * Currently supported:
  *

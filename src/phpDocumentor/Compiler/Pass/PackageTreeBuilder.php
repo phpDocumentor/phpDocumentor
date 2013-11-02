@@ -78,7 +78,7 @@ class PackageTreeBuilder implements CompilerPassInterface
                 $packageName .= '\\' . $element->getSubPackage();
             }
 
-            // ensure consistency by trimming the slash prefix and then reappending it.
+            // ensure consistency by trimming the slash prefix and then re-appending it.
             $packageIndexName = '\\' . ltrim($packageName, '\\');
 
             if (!isset($project->getIndexes()->packages[$packageIndexName])) {

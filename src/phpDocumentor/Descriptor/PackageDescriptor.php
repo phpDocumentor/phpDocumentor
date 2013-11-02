@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Descriptor;
 
+/**
+ * Represents the package for a class, trait, interface or file.
+ */
 class PackageDescriptor extends NamespaceDescriptor implements Interfaces\PackageInterface
 {
 }

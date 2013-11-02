@@ -115,7 +115,7 @@ class Xml extends WriterAbstract implements Translatable
     {
         $child = new \DOMElement('partials');
         $parent->appendChild($child);
-        foreach($project->getPartials() as $name => $element) {
+        foreach ($project->getPartials() as $name => $element) {
             $partial = new \DOMElement('partial');
             $child->appendChild($partial);
             $partial->setAttribute('name', $name);
@@ -381,10 +381,10 @@ class Xml extends WriterAbstract implements Translatable
 
         /** @var InterfaceDescriptor $interface */
         foreach ($class->getInterfaces() as $interface) {
-            $interfaceFcqn = is_string($interface)
+            $interfaceFqcn = is_string($interface)
                 ? $interface
                 : $interface->getFullyQualifiedStructuralElementName();
-            $child->appendChild(new \DOMElement('implements', $interfaceFcqn));
+            $child->appendChild(new \DOMElement('implements', $interfaceFqcn));
         }
 
         if ($child === null) {
@@ -436,7 +436,7 @@ class Xml extends WriterAbstract implements Translatable
      * $parent argument is ignored in this case.
      *
      * @param \DOMElement     $parent The parent element to augment.
-     * @param ClassDescriptor $trait  The data source.
+     * @param TraitDescriptor $trait  The data source.
      * @param \DOMElement     $child  Optional: child element to use instead of creating a
      *      new one on the $parent.
      *
@@ -769,6 +769,8 @@ class Xml extends WriterAbstract implements Translatable
      * - Marker list
      * - Deprecated elements listing
      * - Removal of objects related to visibility
+     *
+     * @param ProjectDescriptor $projectDescriptor
      *
      * @return void
      */

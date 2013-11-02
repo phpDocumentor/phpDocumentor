@@ -14,36 +14,41 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 
+/**
+ * Base class for descriptors containing the most used options.
+ */
 abstract class DescriptorAbstract implements Filterable
 {
-    /** @var string */
+    /**
+     * @var string $fqsen Fully Qualified Structural Element Name; the FQCN including method, property of constant name
+     */
     protected $fqsen = '';
 
-    /** @var string */
+    /** @var string $name The local name for this element */
     protected $name = '';
 
-    /** @var NamespaceDescriptor $namespace */
+    /** @var NamespaceDescriptor $namespace The namespace for this element */
     protected $namespace;
 
-    /** @var string $package */
+    /** @var string $package The package with which this element is associated */
     protected $package = '';
 
-    /** @var string */
+    /** @var string $summary A summary describing the function of this element in short. */
     protected $summary = '';
 
-    /** @var string */
+    /** @var string $description A more extensive description of this element. */
     protected $description = '';
 
-    /** @var FileDescriptor */
+    /** @var FileDescriptor|null $file The file to which this element belongs; if applicable */
     protected $fileDescriptor;
 
-    /** @var int */
+    /** @var int $line The line number on which this element occurs. */
     protected $line = 0;
 
-    /** @var Collection */
+    /** @var Collection $tags The tags associated with this element. */
     protected $tags;
 
-    /** @var Collection */
+    /** @var Collection $errors A list of errors found while building this element. */
     protected $errors;
 
     /**
@@ -56,6 +61,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
+     *
      * @param string $name
      *
      * @return void
@@ -66,6 +73,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the Fully Qualified Structural Element Name (FQSEN) for this element.
+     *
      * @return string
      */
     public function getFullyQualifiedStructuralElementName()
@@ -74,6 +83,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets the local name for this element.
+     *
      * @param string $name
      *
      * @return void
@@ -84,6 +95,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the local name for this element.
+     *
      * @return string
      */
     public function getName()
@@ -92,7 +105,9 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * @param string|NamespaceDescriptor $namespace
+     * Sets the namespace (name) for this element.
+     *
+     * @param NamespaceDescriptor|string $namespace
      */
     public function setNamespace($namespace)
     {
@@ -100,6 +115,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the namespace for this element or null if none is attached.
+     *
      * @return NamespaceDescriptor|string|null
      */
     public function getNamespace()
@@ -108,6 +125,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets the summary describing this element in short.
+     *
      * @param string $summary
      *
      * @return void
@@ -118,6 +137,10 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the summary which describes this element.
+     *
+     * This method will automatically attempt to inherit the parent's summary if this one has none.
+     *
      * @return string
      */
     public function getSummary()
@@ -134,6 +157,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets a description for this element.
+     *
      * @param string $description
      *
      * @return void
@@ -144,6 +169,10 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the description for this element.
+     *
+     * This method will automatically attempt to inherit the parent's description if this one has none.
+     *
      * @return string
      */
     public function getDescription()
@@ -157,8 +186,10 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets the file and linenumber where this element is at.
+     *
      * @param FileDescriptor $file
-     * @param int    $line
+     * @param int            $line
      *
      * @return void
      */
@@ -169,6 +200,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the path to the file containing this element relative to the project's root.
+     *
      * @return string
      */
     public function getPath()
@@ -177,7 +210,9 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * @return FileDescriptor
+     * Returns the file in which this element resides or null in case the element is not bound to a file..
+     *
+     * @return FileDescriptor|null
      */
     public function getFile()
     {
@@ -197,6 +232,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the line number where the definition for this element can be found.
+     *
      * @return int
      */
     public function getLine()
@@ -217,6 +254,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets the tags associated with this element.
+     *
      * @param Collection $tags
      *
      * @return void
@@ -227,6 +266,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the tags associated with this element.
+     *
      * @return Collection
      */
     public function getTags()
@@ -235,7 +276,11 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets the name of the package to which this element belongs.
+     *
      * @param string $package
+     *
+     * @return void
      */
     public function setPackage($package)
     {
@@ -243,6 +288,10 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the package to which this element belongs.
+     *
+     * This method will automatically attempt to inherit the parent's package if this one has none.
+     *
      * @return string
      */
     public function getPackage()
@@ -256,6 +305,10 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns the subpackage for this element.
+     *
+     * This method will automatically attempt to inherit the parent's subpackage if this one has none.
+     *
      * @return Collection
      */
     public function getSubPackage()
@@ -342,6 +395,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Sets a list of all errors associated with this element.
+     *
      * @param Collection $errors
      */
     public function setErrors(Collection $errors)
@@ -350,6 +405,8 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
+     * Returns all errors that occur in this element.
+     *
      * @return Collection
      */
     public function getErrors()

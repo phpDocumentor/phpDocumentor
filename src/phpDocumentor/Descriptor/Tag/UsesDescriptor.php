@@ -13,12 +13,17 @@ namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 
+/**
+ * Descriptor representing the uses tag on any element.
+ */
 class UsesDescriptor extends TagDescriptor
 {
     /** @var string the FQSEN where the uses tag refers to */
     protected $reference = '';
 
     /**
+     * Returns the FQSEN to which this tag points.
+     *
      * @return string
      */
     public function getReference()
@@ -27,7 +32,11 @@ class UsesDescriptor extends TagDescriptor
     }
 
     /**
+     * Sets the FQSEN to which this tag points.
+     *
      * @param string $reference
+     *
+     * @return void
      */
     public function setReference($reference)
     {

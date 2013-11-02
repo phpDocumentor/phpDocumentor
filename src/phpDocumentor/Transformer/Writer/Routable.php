@@ -13,6 +13,9 @@ namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Transformer\Router\Queue;
 
+/**
+ * Public interface for writers who use the routing system to determine relative URLs for Descriptors.
+ */
 interface Routable
 {
     /**

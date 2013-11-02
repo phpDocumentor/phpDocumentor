@@ -27,7 +27,7 @@ use Zend\I18n\Translator\Translator as ZendTranslator;
  * Due to issue 2 this class extends the Zend Translator and does not use composition to proxy calls to the translator;
  * as such it is not recommended to use any public function not defined in this proxy as it may be removed.
  *
- * Before invoking the {@see self::translate()} methdd the user must first load a series of translation messages in the
+ * Before invoking the {@see self::translate()} method the user must first load a series of translation messages in the
  * desired locale; this can be done by invoking the {@see self::addTranslationFile()} or
  * {@see self::addTranslationFolder()} methods. These try to include a file containing a plain PHP Array and merge that
  * with the translation table of this translator.
@@ -147,7 +147,7 @@ class Translator extends ZendTranslator
     /**
      * Adds a series of translation files given a pattern.
      *
-     * This method will search the base directory for a series of files mathing the given pattern (where %s is replaces
+     * This method will search the base directory for a series of files matching the given pattern (where %s is replaces
      * by the two-letter locale shorthand) and adds any translations to the translation table.
      *
      * @param string $baseDir    Directory to search in (not-recursive)

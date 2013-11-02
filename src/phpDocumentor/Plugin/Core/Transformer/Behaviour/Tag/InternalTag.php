@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
-use phpDocumentor\Transformer\Transformer;
-
 /**
  * Behaviour that adds support for @internal inline tag.
  */

@@ -13,6 +13,9 @@ namespace phpDocumentor\Transformer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 
+/**
+ * Generates relative URLs with elements for use in the generated HTML documentation.
+ */
 interface UrlGeneratorInterface
 {
     /**

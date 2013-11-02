@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Compiler;
 
+/**
+ * Contains a series of compiler steps in a specific order; ready to be executed during transformation.
+ */
 class Compiler extends \SplPriorityQueue
 {
     /** @var integer Default priority assigned to Compiler Passes without provided priority */

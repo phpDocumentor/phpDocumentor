@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Event\EventAbstract;
+
 /**
  * Event launched during the Xsl Transformation of an individual output file.
  *
@@ -22,7 +24,7 @@ namespace phpDocumentor\Transformer\Event;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PreXslWriterEvent extends \phpDocumentor\Event\EventAbstract
+class PreXslWriterEvent extends EventAbstract
 {
     /** @var \DOMElement */
     protected $element;

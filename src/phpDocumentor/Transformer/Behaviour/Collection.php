@@ -12,7 +12,6 @@
 namespace phpDocumentor\Transformer\Behaviour;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Transformer;
 
 /**
  * Collection object for a set of Behaviours.

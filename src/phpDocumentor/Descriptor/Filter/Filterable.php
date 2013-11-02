@@ -13,7 +13,17 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Descriptor\Collection;
 
+/**
+ * Interface to determine which elements can be filtered and to provide a way to set errors on the descriptor.
+ */
 interface Filterable
 {
+    /**
+     * Sets a list of errors on the associated element.
+     *
+     * @param Collection $errors
+     *
+     * @return void
+     */
     public function setErrors(Collection $errors);
 }

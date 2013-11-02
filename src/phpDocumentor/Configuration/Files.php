@@ -13,6 +13,9 @@ namespace phpDocumentor\Configuration;
 
 use JMS\Serializer\Annotation as Serializer;
 
+/**
+ * Represents the settings in the phpdoc.xml related to finding the files that are to be parsed.
+ */
 class Files
 {
     /**

@@ -138,8 +138,10 @@ TEXT
     /**
      * Executes the business logic involved with this command.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @throws \Exception if the provided source is not an existing file or a folder.
      *
      * @return int
      */
@@ -205,11 +207,11 @@ TEXT
     /**
      * Retrieves the templates to be used by analyzing the options and the configuration.
      *
-     * @param \Symfony\Component\Console\Input\ArgvInput $input
+     * @param InputInterface $input
      *
      * @return string[]
      */
-    protected function getTemplates(\Symfony\Component\Console\Input\InputInterface $input)
+    protected function getTemplates(InputInterface $input)
     {
         $templates = $input->getOption('template');
         if (!$templates) {
@@ -281,7 +283,7 @@ TEXT
     /**
      * Adds the transformer.transformation.post event to advance the progressbar.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
      *
      * @return \Symfony\Component\Console\Helper\HelperInterface|null
      */

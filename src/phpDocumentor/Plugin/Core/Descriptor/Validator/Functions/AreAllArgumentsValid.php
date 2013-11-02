@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Functions;
 
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
@@ -23,6 +24,15 @@ use Psr\Log\LogLevel;
  */
 class AreAllArgumentsValid
 {
+    /**
+     * Validates whether the given Reflector's arguments match the business rules of phpDocumentor.
+     *
+     * @param BaseReflector $element
+     *
+     * @throws \UnexpectedValueException if no DocBlock is associated with the given Reflector.
+     *
+     * @return Error|null
+     */
     public function validate($element)
     {
         $docBlock = $element->getDocBlock();
@@ -42,6 +52,13 @@ class AreAllArgumentsValid
         return null;
     }
 
+    /**
+     * Returns an error if the given Reflector's arguments do not match expectations.
+     *
+     * @param FunctionReflector $element
+     *
+     * @return Error|null
+     */
     protected function validateArguments($element)
     {
         $params = $element->getDocBlock()->getTagsByName('param');
@@ -63,6 +80,7 @@ class AreAllArgumentsValid
             }
         }
 
+        /** @var ParamTag $param */
         foreach ($params as $param) {
             $param_name = $param->getVariableName();
 
@@ -77,6 +95,8 @@ class AreAllArgumentsValid
                 array($param_name, $element->getName())
             );
         }
+
+        return null;
     }
 
     /**
@@ -84,11 +104,12 @@ class AreAllArgumentsValid
      *
      * @param integer           $index    The position in the argument listing.
      * @param ArgumentReflector $argument The argument itself.
+     * @param BaseReflector     $element
      * @param Tag[]             $params   The list of param tags to validate against.
      *
      * @return bool whether an issue occurred.
      */
-    protected function isArgumentInDocBlock($index, ArgumentReflector $argument, $element, array $params)
+    protected function isArgumentInDocBlock($index, ArgumentReflector $argument, BaseReflector $element, array $params)
     {
         if (isset($params[$index])) {
             return null;
@@ -111,10 +132,11 @@ class AreAllArgumentsValid
      *
      * @param ParamTag          $param    param to validate with.
      * @param ArgumentReflector $argument Argument to validate against.
+     * @param BaseReflector     $element
      *
      * @return Error|null whether an issue occurred
      */
-    protected function doesArgumentNameMatchParam(ParamTag $param, ArgumentReflector $argument, $element)
+    protected function doesArgumentNameMatchParam(ParamTag $param, ArgumentReflector $argument, BaseReflector $element)
     {
         $param_name = $param->getVariableName();
         if ($param_name == $argument->getName()) {
@@ -143,11 +165,15 @@ class AreAllArgumentsValid
      *
      * @param ParamTag          $param
      * @param ArgumentReflector $argument
+     * @param BaseReflector     $element
      *
      * @return Error|null
      */
-    protected function doesArgumentTypehintMatchParam(ParamTag $param, ArgumentReflector $argument, $element)
-    {
+    protected function doesArgumentTypehintMatchParam(
+        ParamTag $param,
+        ArgumentReflector $argument,
+        BaseReflector $element
+    ) {
         if (!$argument->getType() || in_array($argument->getType(), $param->getTypes())) {
             return null;
         } elseif ($argument->getType() == 'array' && substr($param->getType(), -2) == '[]') {

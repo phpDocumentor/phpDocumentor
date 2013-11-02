@@ -1,6 +1,12 @@
 <?php
 /**
- * phpDocumentor2
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Descriptor\Filter;
@@ -9,6 +15,9 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Zend\Filter\AbstractFilter;
 
+/**
+ * Strips any Descriptor if the ignore tag is present with that element.
+ */
 class StripIgnore extends AbstractFilter
 {
     /** @var ProjectDescriptorBuilder $builder */

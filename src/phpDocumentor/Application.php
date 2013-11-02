@@ -145,7 +145,7 @@ class Application extends Cilex
                     ? (string) $app['config']->logging->paths->errors
                     : null;
 
-                $app->configureLogger($log, $level, $logPath,$debugPath);
+                $app->configureLogger($log, $level, $logPath, $debugPath);
             }
         );
         ErrorHandler::register($this['monolog']);
@@ -236,7 +236,7 @@ class Application extends Cilex
      * and then the phpdoc.dist.xml, or the phpdoc.xml if it exists but not both,
      * from the current working directory.
      *
-     * The user config file (either phpdox.dist.xml or phpdoc.xml) is merged
+     * The user config file (either phpdoc.dist.xml or phpdoc.xml) is merged
      * with the template file.
      *
      * @return void

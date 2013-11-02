@@ -31,7 +31,10 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance
+     * @param Application $app An Application instance.
+     *
+     * @throws Exception\MissingDependencyException if the application does not have a descriptor.builder service.
+     * @throws Exception\MissingDependencyException if the application does not have a serializer service.
      */
     public function register(Application $app)
     {

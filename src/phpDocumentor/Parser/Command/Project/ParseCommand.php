@@ -128,6 +128,8 @@ class ParseCommand extends ConfigurableCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
+     * @throws \Exception if the target location is not a folder.
+     *
      * @return integer
      */
     protected function execute(InputInterface $input, OutputInterface $output)

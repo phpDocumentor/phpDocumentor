@@ -16,5 +16,4 @@ namespace phpDocumentor\Transformer\Writer\Exception;
  */
 class RequirementMissing extends \RuntimeException
 {
-
 }

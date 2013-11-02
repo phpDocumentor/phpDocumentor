@@ -13,6 +13,9 @@ namespace phpDocumentor\Transformer\Exception;
 
 use phpDocumentor\Transformer\Exception;
 
+/**
+ * Exception thrown when a template attempts to use a writer that is unknown to phpDocumentor.
+ */
 class UnknownWriter extends Exception
 {
 }

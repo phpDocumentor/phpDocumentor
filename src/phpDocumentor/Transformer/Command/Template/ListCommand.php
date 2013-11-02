@@ -11,13 +11,14 @@
  */
 namespace phpDocumentor\Transformer\Command\Template;
 
+use Cilex\Command\Command;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Generates a skeleton template.
  */
-class ListCommand extends \Cilex\Command\Command
+class ListCommand extends Command
 {
     /**
      * Initializes this command and sets the name, description, options and

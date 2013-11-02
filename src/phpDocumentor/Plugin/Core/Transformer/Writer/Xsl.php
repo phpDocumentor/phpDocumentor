@@ -11,16 +11,21 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Plugin\Core\Exception;
+use phpDocumentor\Transformer\Event\PreXslWriterEvent;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformation as TransformationObject;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Zend\I18n\Exception\RuntimeException;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.
  */
-class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
+class Xsl extends WriterAbstract
 {
     protected $xsl_variables = array();
 
@@ -40,6 +45,10 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
      *
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
+     *
+     * @throws RuntimeException if the structure.xml file could not be found.
+     * @throws Exception        if the structure.xml file's documentRoot could not be read because of encoding issues
+     *    or because it was absent.
      *
      * @return void
      */
@@ -75,7 +84,7 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
         $proc->setParameter('', 'root', str_repeat('../', substr_count($transformation->getArtifact(), '/')));
         $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
-        $proc->setParameter('', 'version', \phpDocumentor\Application::$VERSION);
+        $proc->setParameter('', 'version', Application::$VERSION);
         $proc->setParameter('', 'generated_datetime', date('r'));
 
         // check parameters for variables and add them when found
@@ -91,9 +100,9 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
             $qry = $xpath->query($transformation->getQuery());
             $count = $qry->length;
             foreach ($qry as $key => $element) {
-                \phpDocumentor\Event\Dispatcher::getInstance()->dispatch(
+                Dispatcher::getInstance()->dispatch(
                     'transformer.writer.xsl.pre',
-                    \phpDocumentor\Transformer\Event\PreXslWriterEvent
+                    PreXslWriterEvent
                     ::createInstance($this)->setElement($element)
                     ->setProgress(array($key+1, $count))
                 );
@@ -148,13 +157,13 @@ class Xsl extends \phpDocumentor\Transformer\Writer\WriterAbstract
     /**
      * Sets the parameters of the XSLT processor.
      *
-     * @param \phpDocumentor\Transformer\Transformation $transformation Transformation.
-     * @param \XSLTProcessor                      $proc           XSLTProcessor.
+     * @param TransformationObject $transformation Transformation.
+     * @param \XSLTProcessor       $proc           XSLTProcessor.
      *
      * @return void
      */
     public function setProcessorParameters(
-        \phpDocumentor\Transformer\Transformation $transformation,
+        TransformationObject $transformation,
         \XSLTProcessor $proc
     ) {
         foreach ($this->xsl_variables as $key => $variable) {

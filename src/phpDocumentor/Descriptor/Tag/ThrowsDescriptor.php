@@ -11,8 +11,9 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
-
+/**
+ * Descriptor representing the throws tag on a class or trait.
+ */
 class ThrowsDescriptor extends ReturnDescriptor
 {
 }

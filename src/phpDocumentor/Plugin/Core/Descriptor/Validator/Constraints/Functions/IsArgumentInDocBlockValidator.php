@@ -13,7 +13,6 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions;
 
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -37,7 +36,7 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
 
         if ($args->count() > 0) {
             $params = $args->getAll();
-            foreach($params as $param) {
+            foreach ($params as $param) {
                 $type = $param->getTypes();
                 if (is_array($type) && empty($type)) {
                     $this->context->addViolationAt(

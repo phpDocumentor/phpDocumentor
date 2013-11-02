@@ -13,6 +13,9 @@ namespace phpDocumentor\Transformer\Router\Matcher;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 
+/**
+ * Description of the public interface to match Descriptors with a Routing rule.
+ */
 interface MatcherInterface
 {
     /**

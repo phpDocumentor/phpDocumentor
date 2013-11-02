@@ -13,6 +13,9 @@ namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
+/**
+ * Generates a relative URL with methods for use in the generated HTML documentation.
+ */
 class MethodDescriptor implements UrlGeneratorInterface
 {
     /**

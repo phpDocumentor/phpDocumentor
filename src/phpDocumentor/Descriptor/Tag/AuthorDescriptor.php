@@ -13,6 +13,9 @@ namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 
+/**
+ * Descriptor representing the author tag with a descriptor.
+ */
 class AuthorDescriptor extends TagDescriptor
 {
 }

@@ -13,11 +13,23 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 
+/**
+ * Descriptor representing a global function in a file.
+ */
 interface FunctionInterface extends BaseInterface
 {
+    /**
+     * Sets the arguments related to this function.
+     *
+     * @param Collection $arguments
+     *
+     * @return void
+     */
     public function setArguments(Collection $arguments);
 
     /**
+     * Returns the arguments related to this function.
+     *
      * @return Collection
      */
     public function getArguments();
