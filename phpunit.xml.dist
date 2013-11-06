@@ -25,6 +25,7 @@
         <const name="phpDocumentor\PHPUnit\UNKNOWN_DIR" value="/tmpa" />
     </php>
     <logging>
+<!--
         <log type="coverage-html"
             title="phpDocumentor"
             target="build/coverage"
@@ -33,6 +34,7 @@
             highlight="false"
             lowUpperBound="35"
             highLowerBound="70" />
+-->
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
     </logging>
     <listeners>
