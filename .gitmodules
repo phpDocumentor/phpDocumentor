@@ -10,3 +10,6 @@
 [submodule ".puppet/modules/apache"]
 	path = .puppet/modules/apache
 	url = https://github.com/example42/puppet-apache.git
+[submodule ".puppet/modules/vcsrepo"]
+	path = .puppet/modules/vcsrepo
+	url = https://github.com/puppetlabs/puppetlabs-vcsrepo.git
