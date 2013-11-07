@@ -21,9 +21,9 @@ interface UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|DescriptorAbstract $node
+     * @param DescriptorAbstract $node
      *
      * @return string|false
      */
-    public function __invoke($node);
+    public function __invoke(DescriptorAbstract $node);
 }
