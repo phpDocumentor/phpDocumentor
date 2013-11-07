@@ -12,7 +12,6 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\NamespaceDescriptor as OriginalNamespaceDescriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 class NamespaceDescriptor implements UrlGeneratorInterface
@@ -20,7 +19,7 @@ class NamespaceDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param OriginalNamespaceDescriptor $node
+     * @param DescriptorAbstract $node
      *
      * @return string|false
      */
