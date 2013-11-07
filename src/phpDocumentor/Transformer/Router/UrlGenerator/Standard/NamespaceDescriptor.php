@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\NamespaceDescriptor as OriginalNamespaceDescriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 class NamespaceDescriptor implements UrlGeneratorInterface
@@ -19,11 +20,11 @@ class NamespaceDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param DescriptorAbstract $node
+     * @param OriginalNamespaceDescriptor $node
      *
      * @return string|false
      */
-    public function __invoke($node)
+    public function __invoke(DescriptorAbstract $node)
     {
         $name = str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\'));
 

@@ -11,7 +11,9 @@
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
-use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ConstantDescriptor as OriginalConstantDescriptor;
+use phpDocumentor\Descriptor\FileDescriptor as OriginalFileDescriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 class ConstantDescriptor implements UrlGeneratorInterface
@@ -19,16 +21,16 @@ class ConstantDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param \phpDocumentor\Descriptor\ConstantDescriptor $node
+     * @param OriginalConstantDescriptor $node
      *
      * @return string|false
      */
-    public function __invoke($node)
+    public function __invoke(DescriptorAbstract $node)
     {
         $name = $node->getName();
 
         // global constant
-        if ($node->getParent() instanceof FileDescriptor || ! $node->getParent()) {
+        if ($node->getParent() instanceof OriginalFileDescriptor || ! $node->getParent()) {
             $namespaceName = $node->getNamespace();
 
             return '/namespaces/' . str_replace('\\', '.', ltrim($namespaceName, '\\')).'.html#constant_' . $name;

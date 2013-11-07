@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\PackageDescriptor as OriginalPackageDescriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 class PackageDescriptor implements UrlGeneratorInterface
@@ -19,11 +20,11 @@ class PackageDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param DescriptorAbstract $node
+     * @param OriginalPackageDescriptor $node
      *
      * @return string|false
      */
-    public function __invoke($node)
+    public function __invoke(DescriptorAbstract $node)
     {
         $name = str_replace(array('\\', '_'), '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\'));
 

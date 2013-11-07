@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\MethodDescriptor as OriginalMethodDescriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 /**
@@ -21,11 +23,11 @@ class MethodDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param \phpDocumentor\Descriptor\MethodDescriptor $node
+     * @param OriginalMethodDescriptor $node
      *
      * @return string|false
      */
-    public function __invoke($node)
+    public function __invoke(DescriptorAbstract $node)
     {
         $className = $node->getParent()->getFullyQualifiedStructuralElementName();
         $name = $node->getName();
