@@ -19,7 +19,7 @@ class ConstantDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|Descriptor\DescriptorAbstract $node
+     * @param string|Descriptor\ConstantDescriptor $node
      *
      * @return string|false
      */
