@@ -19,11 +19,11 @@ class ConstantDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param Descriptor\DescriptorAbstract $node
+     * @param string|Descriptor\DescriptorAbstract $node
      *
      * @return string|false
      */
-    public function __invoke(Descriptor\DescriptorAbstract $node)
+    public function __invoke($node)
     {
         $name = $node->getName();
 

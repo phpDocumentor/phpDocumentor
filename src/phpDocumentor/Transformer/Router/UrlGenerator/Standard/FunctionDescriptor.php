@@ -22,11 +22,11 @@ class FunctionDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param DescriptorAbstract $node
+     * @param string|DescriptorAbstract $node
      *
      * @return string|false
      */
-    public function __invoke(DescriptorAbstract $node)
+    public function __invoke($node)
     {
         $namespaceName = $node->getNamespace();
         $name          = $node->getName();
