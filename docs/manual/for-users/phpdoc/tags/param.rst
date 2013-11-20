@@ -62,7 +62,7 @@ Examples
     /**
      * Counts the number of items in the provided array.
      *
-     * @param mixed[] $array Array structure to count the elements of.
+     * @param mixed[] $items Array structure to count the elements of.
      *
      * @return int Returns the number of elements.
      */
