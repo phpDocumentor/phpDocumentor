@@ -1,1 +1,0 @@
-.. include:: ../tags/example.rst
