@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
 
+use phpDocumentor\Descriptor;
 use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 /**
@@ -21,7 +22,7 @@ class MethodDescriptor implements UrlGeneratorInterface
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param \phpDocumentor\Descriptor\MethodDescriptor $node
+     * @param string|Descriptor\MethodDescriptor $node
      *
      * @return string|false
      */
