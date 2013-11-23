@@ -30,19 +30,27 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (! $value instanceof MethodDescriptor && ! $value instanceof FunctionDescriptor) {
+        if (!is_array($value)) {
             throw new ConstraintDefinitionException(
-                'The Functions\IsArgumentInDocBlock validator may only be used on function or method objects'
+                'The Functions\IsArgumentInDocBlock subvalidator may only be used on '
+                . ' an array containing a parameter key, a fqsen and an argument object'
             );
         }
 
-        /** @var Collection|ArgumentDescriptor[] $arguments */
-        $arguments  = $value->getArguments();
-        $parameters = $value->getTags()->get('param');
+        extract($value);
 
-        foreach ($arguments as $argument) {
-            if ($this->existsParamTagWithArgument($parameters, $argument)) {
-                continue;
+        if (!is_int($key) && !is_string($fqsen) && !$argument instanceof ArgumentDescriptor) {
+            throw new ConstraintDefinitionException(
+                'The Functions\IsArgumentInDocBlock validator may only be used on a key, fqsen and an argument object'
+            );
+        }
+
+        if (!empty($params)) {
+            $iter = $params->getIterator();
+            foreach($iter as $param) {
+                if ($param instanceof ParamDescriptor && $param->getVariableName() === $key) {
+                    return $param;
+                }
             }
 
             $this->context->addViolationAt(
@@ -51,6 +59,8 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
                 array($argument->getName(), $value->getFullyQualifiedStructuralElementName())
             );
         }
+
+        return array($argument->getName(), $fqsen);
     }
 
     /**

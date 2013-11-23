@@ -41,6 +41,7 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
         }
 
         $params = $value->getParam();
+
         foreach ($params as $param) {
             if (! $param instanceof ParamDescriptor) {
                 continue;

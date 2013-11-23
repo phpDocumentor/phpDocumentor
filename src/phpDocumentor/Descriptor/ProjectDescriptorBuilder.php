@@ -187,7 +187,7 @@ class ProjectDescriptorBuilder
         foreach ($violations as $violation) {
             $errors->add(
                 new Error(
-                    LogLevel::ERROR, // TODO: Make configurable
+                    $this->mapCodeToSeverity($violation->getCode()),
                     $violation->getMessageTemplate(),
                     $descriptor->getLine(),
                     $violation->getMessageParameters() + array($descriptor->getFullyQualifiedStructuralElementName())
@@ -245,5 +245,34 @@ class ProjectDescriptorBuilder
         $descriptor->setErrors($this->validate($descriptor));
 
         return $descriptor;
+
+    /**
+     * Map error code to severity.
+     *
+     * @param int $code
+     *
+     * @return string
+     */
+    protected function mapCodeToSeverity($code)
+    {
+        switch ($code) {
+            case 50013:
+                $severity = LogLevel::NOTICE;
+                break;
+            case 50004:
+                $severity = LogLevel::WARNING;
+                break;
+            case 50006:
+            case 50020:
+                $severity = LogLevel::CRITICAL;
+                break;
+            case 50014:
+            case 50015:
+            case 50016:
+            default:
+                $severity = LogLevel::ERROR;
+        }
+
+        return $severity;
     }
 }

@@ -38,7 +38,7 @@ class HasSummaryValidator extends ConstraintValidator
 
         $var = $value->getVar();
         if (! $value->getSummary() && ($var->count() == 0 || ! current($var->getAll())->getDescription())) {
-            $this->context->addViolationAt('summary', $constraint->message);
+            $this->context->addViolationAt('summary', $constraint->message, array($value->getFullyQualifiedStructuralElementName(), $value->getLine()));
         }
     }
 }

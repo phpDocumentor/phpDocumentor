@@ -109,14 +109,13 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function attachAssemblersToFactory(AssemblerFactory $factory)
     {
-        // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
-        $fileMatcher      = function ($criteria) { return $criteria instanceof FileReflector; };
+        $fileMatcher      = function ($criteria) {return $criteria instanceof FileReflector; };
         $constantMatcher  = function ($criteria) {
             return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
         };
-        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
         $classMatcher     = function ($criteria) { return $criteria instanceof ClassReflector; };
         $interfaceMatcher = function ($criteria) { return $criteria instanceof InterfaceReflector; };
+        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
         $propertyMatcher  = function ($criteria) { return $criteria instanceof ClassReflector\PropertyReflector; };
         $methodMatcher    = function ($criteria) { return $criteria instanceof ClassReflector\MethodReflector; };
         $argumentMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector\ArgumentReflector; };
@@ -139,14 +138,13 @@ class ServiceProvider implements ServiceProviderInterface
         $typeCollectionMatcher = function ($criteria) { return $criteria instanceof TypeCollection; };
 
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
-        // @codingStandardsIgnoreEnd
 
         $argumentAssembler = new ArgumentAssembler();
         $factory->register($fileMatcher, new FileAssembler());
         $factory->register($constantMatcher, new ConstantAssembler());
-        $factory->register($traitMatcher, new TraitAssembler());
         $factory->register($classMatcher, new ClassAssembler());
         $factory->register($interfaceMatcher, new InterfaceAssembler());
+        $factory->register($traitMatcher, new TraitAssembler());
         $factory->register($propertyMatcher, new PropertyAssembler());
         $factory->register($argumentMatcher, $argumentAssembler);
         $factory->register($methodMatcher, new MethodAssembler($argumentAssembler));
@@ -240,12 +238,10 @@ class ServiceProvider implements ServiceProviderInterface
 
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
-
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
-
-        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
-        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\AreAllArgumentsValid());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\AreAllArgumentsValid());
 
         $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
         $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
