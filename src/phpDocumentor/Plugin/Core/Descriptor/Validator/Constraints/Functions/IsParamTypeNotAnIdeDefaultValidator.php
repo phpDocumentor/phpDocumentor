@@ -36,7 +36,7 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
     {
         if (! $value instanceof MethodDescriptor && ! $value instanceof FunctionDescriptor) {
             throw new ConstraintDefinitionException(
-                'The Functions\IsParamTypeNotAnIdeDefault validator may only be used on function or method objects'
+                'The Functions\IsParamTypeNotAnIdeDefault validator may only be used on function or method objects.'
             );
         }
 
