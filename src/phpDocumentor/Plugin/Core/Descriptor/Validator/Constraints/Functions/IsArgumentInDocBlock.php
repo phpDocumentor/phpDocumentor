@@ -13,7 +13,7 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validates whether a function has a default return type in the docblock present.
+ * Validates whether a function has a missing argument in the docblock.
  *
  * @Annotation
  */
