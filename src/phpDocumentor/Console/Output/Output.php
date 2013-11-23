@@ -50,7 +50,7 @@ class Output extends ConsoleOutput
      */
     public function writeTimedLog($message, $operation, array $arguments = array())
     {
-        $this->write(sprintf('%-68.68s .. ', $message));
+        $this->write(sprintf('%-66.66s .. ', $message));
         $timerStart = microtime(true);
 
         call_user_func_array($operation, $arguments);
