@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use Monolog\Logger;
 use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\Dispatcher;
@@ -20,15 +21,36 @@ use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformation as TransformationObject;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use Zend\I18n\Exception\RuntimeException;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.
  */
 class Xsl extends WriterAbstract
 {
+    /** @var \Monolog\Logger $logger */
+    protected $logger;
+
     protected $xsl_variables = array();
 
+    /**
+     * Initialize this writer with the logger so that it can output logs.
+     *
+     * @param Logger $logger
+     */
+    public function __construct(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * Checks whether XSL handling is enabled with PHP as that is not enabled by default.
+     *
+     * To enable XSL handling you need either the xsl extension or the xslcache extension installed.
+     *
+     * @throws RequirementMissing if neither xsl extensions are installed.
+     *
+     * @return void
+     */
     public function checkRequirements()
     {
         if (!class_exists('XSLTProcessor') && (!extension_loaded('xslcache'))) {
@@ -46,7 +68,7 @@ class Xsl extends WriterAbstract
      * @param ProjectDescriptor $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
-     * @throws RuntimeException if the structure.xml file could not be found.
+     * @throws \RuntimeException if the structure.xml file could not be found.
      * @throws Exception        if the structure.xml file's documentRoot could not be read because of encoding issues
      *    or because it was absent.
      *
@@ -59,7 +81,7 @@ class Xsl extends WriterAbstract
 
         $structureFilename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';
         if (!is_readable($structureFilename)) {
-            throw new RuntimeException(
+            throw new \RuntimeException(
                 'Structure.xml file was not found in the target directory, is the XML writer missing from the '
                 . 'template definition?'
             );
@@ -204,14 +226,20 @@ class Xsl extends WriterAbstract
      */
     protected function getXslProcessor(Transformation $transformation)
     {
+        $xslTemplatePath = $transformation->getSourceAsPath();
+        $this->logger->debug('Loading XSL template: ' . $xslTemplatePath);
+        if (!file_exists($xslTemplatePath)) {
+            throw new Exception('Unable to find XSL template "' . $xslTemplatePath . '"');
+        }
+
         if (extension_loaded('xslcache')) {
             $proc = new \XSLTCache();
-            $proc->importStyleSheet($transformation->getSourceAsPath(), true);
+            $proc->importStyleSheet($xslTemplatePath, true);
 
             return $proc;
         } else {
             $xsl = new \DOMDocument();
-            $xsl->load($transformation->getSourceAsPath());
+            $xsl->load($xslTemplatePath);
 
             $proc = new \XSLTProcessor();
             $proc->importStyleSheet($xsl);

@@ -39,7 +39,7 @@ class ServiceProvider implements ServiceProviderInterface
         $writerCollection['checkstyle'] = new Writer\Checkstyle();
         $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['xml']        = new Writer\Xml();
-        $writerCollection['xsl']        = new Writer\Xsl();
+        $writerCollection['xsl']        = new Writer\Xsl($app['monolog']);
 
         $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
