@@ -1,8 +1,6 @@
 README
 ======
 
-<script data-gittip-username="mvriel" data-gittip-widget="button" src="//gttp.co/v1.js"></script>
-
 What is phpDocumentor?
 ----------------
 
