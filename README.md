@@ -113,6 +113,12 @@ Known issues
 1. phpDocumentor must be installed in a path without spaces due to restrictions in libxml. The XSL transformation
    will throw all kinds of odd warnings if the path contains spaces.
 
+Donations
+---------
+
+If you would like to help out financially we accept donations using [gittip](https://www.gittip.com/mvriel/). All
+donations will be used to cover the costs for hosting phpDocumentor's website and PEAR repository.
+
 Contact
 -------
 
