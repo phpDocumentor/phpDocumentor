@@ -3,6 +3,7 @@
 
 ```
 CHANGED:   Moved the external class documentation code to their own router
+CHANGED:   #1080: Replaced MarkDownExtra dependency with Parsedown
 FIXED:     #720: External class documentation had ../files prepended
 FIXED:     #932: Todo tags did not show up in Twig templates
 FIXED:     #1049: Arguments passed by reference did not show up as being by reference

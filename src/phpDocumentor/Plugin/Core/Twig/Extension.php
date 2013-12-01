@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Twig;
 
-use dflydev\markdown\MarkdownExtraParser;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
@@ -142,14 +141,14 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     {
         $extension = $this;
         $routers = $this->routers;
-        $parser = new MarkdownExtraParser();
+        $parser = \Parsedown::instance();
         $translator = $this->translator;
 
         return array(
             'markdown' => new \Twig_SimpleFilter(
                 'markdown',
                 function ($value) use ($parser) {
-                    return $parser->transform($value);
+                    return $parser->parse($value);
                 }
             ),
             'trans' => new \Twig_SimpleFilter(

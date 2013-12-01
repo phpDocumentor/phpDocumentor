@@ -114,7 +114,6 @@ class PharCompiler
                     'output',
                     'behat',
                     'cilex/cilex/tests',
-                    'dflydev/markdown/tests',
                     'nikic/php-parser/doc',
                     'nikic/php-parser/test',
                     'nikic/php-parser/test_old',

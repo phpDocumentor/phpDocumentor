@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
-use dflydev\markdown\MarkdownExtraParser;
-
 /**
  * Behaviour that adds support for the @param tags.
  */
@@ -42,8 +40,8 @@ class ParamTag
             // other than word characters, whitespaces and punctuation characters.
             // This is because Markdown is a huge performance hit on the system
             if (!preg_match('/^[\w|\s|\.|,|;|\:|\&|\#]+$/', $node->nodeValue)) {
-                $md = new MarkdownExtraParser();
-                $node->nodeValue =  $md->transformMarkdown($node->nodeValue);
+                $md = \Parsedown::instance();
+                $node->nodeValue =  $md->parse($node->nodeValue);
             } else {
                 // markdown will always surround the element with a paragraph;
                 // we do the same here to make it consistent

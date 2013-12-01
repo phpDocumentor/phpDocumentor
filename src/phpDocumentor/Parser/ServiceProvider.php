@@ -13,7 +13,6 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use dflydev\markdown\MarkdownExtraParser;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Partials\Collection as PartialsCollection;
@@ -55,7 +54,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app['markdown'] = $app->share(
             function () {
-                return new MarkdownExtraParser;
+                return \Parsedown::instance();
             }
         );
 
