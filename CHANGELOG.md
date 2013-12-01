@@ -2,11 +2,17 @@
 -----------------------
 
 ```
+ADDED:     Information how to donate to phpDocumentor using gittip
+ADDED:     Profiling information and process
 CHANGED:   Moved the external class documentation code to their own router
 CHANGED:   #1080: Replaced MarkDownExtra dependency with Parsedown
+CHANGED:   Rewrote a lot of the documentation; still a work in progress
 FIXED:     #720: External class documentation had ../files prepended
 FIXED:     #932: Todo tags did not show up in Twig templates
 FIXED:     #1049: Arguments passed by reference did not show up as being by reference
+FIXED:     #1075: Prevent output from wrapping in Windows console
+FIXED:     Cleaned up code based on Continuous Integration messages
+FIXED:     Timezone issues on some machines
 ```
 
 2013/09/28: Version 2.1
