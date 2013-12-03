@@ -42,7 +42,7 @@ used inline, tagged with the @internal tag will be filtered out when creating
 the HTML output unless the ``--parseprivate`` command line argument is used.
 
 The :term:`Abstract Syntax Tree` will still contain the internal information.
-Any consumer of this file is responsible himself for filtering the information.
+Any consumer of this file is responsible for filtering the information.
 
 Examples
 --------
