@@ -732,9 +732,12 @@ class Xml extends WriterAbstract implements Translatable
      */
     protected function addLongDescription(\DOMElement $child, DescriptorAbstract $element)
     {
+        $parser = \Parsedown::instance();
+        $description = $parser->parse($element->getDescription());
+
         $child
             ->appendChild(new \DOMElement('long-description'))
-            ->appendChild(new \DOMText($element->getDescription()));
+            ->appendChild(new \DOMText($description));
     }
 
     /**
