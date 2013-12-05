@@ -110,7 +110,13 @@ class Application extends Cilex
                     $provider = $plugin['path'];
                 }
                 try {
-                    $that->register(new $provider);
+                    if (class_exists($provider)) {
+                        $that->register(new $provider);
+                    } else {
+                        throw new \RuntimeException(
+                            "Loading Service Provider for $provider failed."
+                        );
+                    }
                 } catch (\InvalidArgumentException $e) {
                     throw new \RuntimeException($e->getMessage());
                 }
