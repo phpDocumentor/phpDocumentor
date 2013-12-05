@@ -201,18 +201,22 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                     return $singleResult ? reset($result) : $result;
                 }
             ),
-            'sortAsc' => new \Twig_SimpleFilter(
-                'sortAsc',
-                function (Collection $collection) {
+            'sort' => new \Twig_SimpleFilter(
+                'sort_*',
+                function ($direction, Collection $collection) {
                     $iterator = $collection->getIterator();
                     $iterator->uasort(
-                        function ($a, $b) {
+                        function ($a, $b) use ($direction) {
                             $aElem = strtolower($a->getName());
                             $bElem = strtolower($b->getName());
                             if ($aElem === $bElem) {
                                 return 0;
                             }
-                            if ($aElem > $bElem) {
+                            if (
+                                $direction === 'asc' && $aElem > $bElem
+                                ||
+                                $direction === 'desc' && $aElem < $bElem
+                            ) {
                                 return 1;
                             }
                             return -1;
