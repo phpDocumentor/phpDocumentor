@@ -13,6 +13,7 @@ FIXED:     #1049: Arguments passed by reference did not show up as being by refe
 FIXED:     #1075: Prevent output from wrapping in Windows console
 FIXED:     Cleaned up code based on Continuous Integration messages
 FIXED:     Timezone issues on some machines
+FIXED:     Various issues in several templates
 ```
 
 2013/09/28: Version 2.1
