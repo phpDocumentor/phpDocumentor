@@ -9,6 +9,8 @@ Guides
 .. toctree::
    :hidden:
 
+   types
+   inheritance
    running-phpdocumentor
    project-integration
    documentation-sniffs

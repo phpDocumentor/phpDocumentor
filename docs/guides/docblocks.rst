@@ -66,17 +66,13 @@ Description
 Tags
 ~~~~
 
-Types of DocBlocks
-------------------
-
-Inheritance
------------
-
 DocBlock templates
 ------------------
 
 Read more
 ---------
 
+* :doc:`inheritance`
+* :doc:`types`
 * :doc:`../getting-started/your-first-set-of-documentation`
 * :doc:`../references/phpdoc/index`
