@@ -43,7 +43,7 @@
 {%- endblock %}
 {%- block sidebartoc %}
 {%- if display_toc %}
-<h3><a href="{{ pathto(master_doc) }}">{{ _('Table Of Contents') }}</a>
+<h3><a href="{{ pathto(master_doc) }}">{{ _('Table of Contents') }}</a>
 </h3>
 {{ toc }}
 {%- endif %}
@@ -87,10 +87,39 @@
 
 <div id="___" class="container">
     <div class="row">
-        <div class="span3">
+        <div class="span3 sidebar">
             {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
             <!--{%- block header %}{% endblock %}-->
             <!--{%- block relbar1 %}{{ relbar() }}{% endblock %}-->
+            <h4>Tags</h4>
+            <a href="{{ pathto('references/phpdoc/tags/api') }}">@api</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/author') }}">@author</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/category') }}">@category</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/copyright') }}">@copyright</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/deprecated') }}">@deprecated</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/example') }}">@example</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/filesource') }}">@filesource</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/global') }}">@global</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/ignore') }}">@ignore</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/internal') }}">@internal</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/license') }}">@license</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/link') }}">@link</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/method') }}">@method</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/package') }}">@package</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/param') }}">@param</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/property') }}">@property</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/property-read') }}">@property-read</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/property-write') }}">@property-write</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/return') }}">@return</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/see') }}">@see</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/since') }}">@since</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/source') }}">@source</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/subpackage') }}">@subpackage</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/throws') }}">@throws</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/todo') }}">@todo</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/uses') }}">@uses</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/var') }}">@var</a><br />
+            <a href="{{ pathto('references/phpdoc/tags/version') }}">@version</a><br />
         </div>
         <div class="span9 contents">
             <article>
