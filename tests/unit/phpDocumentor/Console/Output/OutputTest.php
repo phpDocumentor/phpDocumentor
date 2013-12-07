@@ -60,7 +60,7 @@ class OutputTest extends \PHPUnit_Framework_TestCase
         );
 
         rewind($stream);
-        $this->assertRegExp('/^[1]{68} .. [\ 0-9\.]{8}s\n$/', stream_get_contents($stream));
+        $this->assertRegExp('/^[1]{66} .. [\ 0-9\.]{8}s\n$/', stream_get_contents($stream));
     }
 
     public function testWriteLogger()
