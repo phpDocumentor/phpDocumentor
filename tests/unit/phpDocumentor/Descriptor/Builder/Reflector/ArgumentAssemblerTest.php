@@ -46,6 +46,7 @@ class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
         $argumentReflectorMock->shouldReceive('getName')->andReturn($name);
         $argumentReflectorMock->shouldReceive('getType')->andReturn($type);
         $argumentReflectorMock->shouldReceive('getDefault')->andReturn(false); // Turns out its a bad argument ;)
+        $argumentReflectorMock->shouldReceive('isByRef')->andReturn(false);
 
         $descriptor = $this->fixture->create($argumentReflectorMock);
 
