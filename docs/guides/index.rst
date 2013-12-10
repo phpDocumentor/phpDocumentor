@@ -5,11 +5,11 @@ Guides
    :maxdepth: 2
 
    docblocks
+   types
 
 .. toctree::
    :hidden:
 
-   types
    inheritance
    running-phpdocumentor
    project-integration

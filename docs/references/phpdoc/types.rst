@@ -179,7 +179,7 @@ The following keywords are recognized:
         }
 
 
-11. **callback**, the element to which this type applies is a pointer to a
+11. **callable**, the element to which this type applies is a pointer to a
     function call. This may be any type of callback as defined in the PHP manual
     at http://php.net/manual/en/language.pseudo-types.php.
 

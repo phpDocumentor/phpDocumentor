@@ -3,6 +3,24 @@ Glossary
 
 .. glossary::
 
+    DocComment
+    DocComments
+        A DocComment starts with a forward slash and two asterisks (``/**``), which is similar to how you start a
+        multiline comment but with an additional asterisk, and ends with an asterisk and forward slash (``*/``).
+        DocComments may be a single line in size but may also span multiple lines, in which case each line must start
+        with an asterisk. It is customary, and recommended, to align the asterisks vertically when spanning multiple
+        lines.
+
+        So, a single line DocComment looks like this::
+
+            /** This is a single line DocComment. */
+
+        And a multiline DocComment looks like this::
+
+            /**
+             * This is a multi-line DocComment.
+             */
+
     DocBlock
     DocBlocks
         This is a :term:`DocComment` containing a single :term:`PHPDoc` and
@@ -190,6 +208,10 @@ Glossary
 
     Tag
     Tags
+       .. note:: Here a text must be added
+
+    Inline Tag
+    Inline Tags
        .. note:: Here a text must be added
 
     Annotation
