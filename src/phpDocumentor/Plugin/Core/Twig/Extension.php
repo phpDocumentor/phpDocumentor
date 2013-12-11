@@ -200,6 +200,31 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                     return $singleResult ? reset($result) : $result;
                 }
             ),
+            'sort' => new \Twig_SimpleFilter(
+                'sort_*',
+                function ($direction, Collection $collection) {
+                    $iterator = $collection->getIterator();
+                    $iterator->uasort(
+                        function ($a, $b) use ($direction) {
+                            $aElem = strtolower($a->getName());
+                            $bElem = strtolower($b->getName());
+                            if ($aElem === $bElem) {
+                                return 0;
+                            }
+                            if (
+                                $direction === 'asc' && $aElem > $bElem
+                                ||
+                                $direction === 'desc' && $aElem < $bElem
+                            ) {
+                                return 1;
+                            }
+                            return -1;
+                        }
+                    );
+
+                    return $iterator;
+                }
+            ),
         );
     }
 
