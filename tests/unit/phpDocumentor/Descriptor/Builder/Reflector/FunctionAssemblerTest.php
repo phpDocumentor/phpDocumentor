@@ -63,6 +63,7 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
         $argumentMock->shouldReceive('getName')->andReturn($argumentName);
         $argumentMock->shouldReceive('getType')->andReturn($argumentType);
         $argumentMock->shouldReceive('getDefault')->andReturn(true);
+        $argumentMock->shouldReceive('isByRef')->andReturn(false);
 
         $functionReflectorMock = m::mock('phpDocumentor\Reflection\FunctionReflector');
         $functionReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $functionName);
