@@ -78,11 +78,50 @@ class Application extends Cilex
         $this->register(new Parser\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());
 
-        // TODO: make plugin service provider calls registrable from config
-        $this->register(new Plugin\Core\ServiceProvider());
+        $this->addPlugins();
 
         $this->verifyWriterRequirementsAndExitIfBroken();
         $this->addCommandsForProjectNamespace();
+    }
+
+    /**
+     * Instantiates plugin service providers and adds them to phpDocumentor's container.
+     * 
+     * @return void
+     */
+    protected function addPlugins()
+    {
+        $config = $this['config']->toArray();
+
+        if (!isset($config['plugins']['plugin'][0]['path'])) {
+            return $this->register(new Plugin\Core\ServiceProvider());
+        }
+
+        $that = $this;
+        array_walk(
+            $config['plugins']['plugin'],
+            function ($plugin) use ($that) {
+                if (strpos($plugin['path'], '\\') === false) {
+                    $provider = sprintf(
+                        "phpDocumentor\Plugin\%s\ServiceProvider",
+                        $plugin['path']
+                    );
+                } else {
+                    $provider = $plugin['path'];
+                }
+                try {
+                    if (class_exists($provider)) {
+                        $that->register(new $provider);
+                    } else {
+                        throw new \RuntimeException(
+                            "Loading Service Provider for $provider failed."
+                        );
+                    }
+                } catch (\InvalidArgumentException $e) {
+                    throw new \RuntimeException($e->getMessage());
+                }
+            }
+        );
     }
 
     /**
