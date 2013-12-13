@@ -7,11 +7,11 @@ Guides
    docblocks
    types
    inheritance
+   running-phpdocumentor
 
 .. toctree::
    :hidden:
 
-   running-phpdocumentor
    project-integration
    documentation-sniffs
    templates
