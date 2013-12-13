@@ -13,6 +13,5 @@ Guides
    :hidden:
 
    project-integration
-   documentation-sniffs
    templates
    service-providers
