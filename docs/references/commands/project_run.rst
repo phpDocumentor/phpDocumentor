@@ -90,7 +90,7 @@ Parameters
     Title defaults to "phpDocumentor".
 
 **--force**
-    Ingore exceptions and continue parsing.
+    Ignore exceptions and continue parsing.
 
 **--validate**
     ???
