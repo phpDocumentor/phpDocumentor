@@ -89,8 +89,8 @@ It is possible to specify specific files or a specific set of **files** using th
 it supports wildcards.
 
 In addition you can also provide entire **directory** trees using the element. This also supports the use of wildcards.
-Please note that in contrary to the element that the element is recursive and will tell phpDocumentor to process all
-files contained in this folder and every subfolder.
+Please note that in contrary to the ``file`` element that the ``directory`` element is recursive and will tell
+phpDocumentor to process all files contained in this folder and every subfolder.
 
 In some cases you will have to **ignore** certain files in your project; examples of these can be third party libraries
 and/or tests. In this case you can use the *ignore* element and provide a pattern (not a path) to ignore. This if you
