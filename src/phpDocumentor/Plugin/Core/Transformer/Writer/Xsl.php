@@ -93,6 +93,8 @@ class Xsl extends WriterAbstract
         $structure->load($structureFilename);
 
         $proc = $this->getXslProcessor($transformation);
+        
+        $proc->registerPHPFunctions();
 
         if (empty($structure->documentElement)) {
             $message = 'Specified DOMDocument lacks documentElement, cannot transform.';
