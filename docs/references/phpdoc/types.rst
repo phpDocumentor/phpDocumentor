@@ -5,8 +5,8 @@ Many tags use a :term:`Type` as part of their definition (such as the @return ta
 These types differ from the official PHP definition to be able to represent all
 kinds of data.
 
-In the succeeding sections will a complete definition be given of these types
-and what they represent.
+A complete definition will be given of these types and what they represent in 
+the following sections.
 
 ABNF
 ----

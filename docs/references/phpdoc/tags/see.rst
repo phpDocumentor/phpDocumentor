@@ -41,8 +41,8 @@ Examples
 
     /**
      * @see http://example.com/my/bar Documentation of Foo.
-     * @see MyClass::$items           for the property whose items are counted
-     * @see MyClass::setItems()       to set the items for this collection.
+     * @see MyClass::$items           For the property whose items are counted.
+     * @see MyClass::setItems()       To set the items for this collection.
      *
      * @return integer Indicates the number of items.
      */
