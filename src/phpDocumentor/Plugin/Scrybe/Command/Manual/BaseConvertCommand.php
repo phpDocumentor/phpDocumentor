@@ -131,16 +131,18 @@ DESCRIPTION
         $converter = $this->getConverter($input);
         $converter->setOption('title', $input->getOption('title'));
 
-        $files = $converter->convert(
-            $this->buildCollection(
-                $input->getArgument('source'),
-                $converter->getDefinition()->getInputFormat()->getExtensions()
-            ),
-            $this->getTemplate($input)
+        $output->writeln('Collect all documents');
+        $files = $this->buildCollection(
+            $input->getArgument('source'),
+            $converter->getDefinition()->getInputFormat()->getExtensions()
         );
 
-        $output->writeln('Writing converted files to disk');
+        $output->writeln('Converting documents');
+        $files = $converter->convert($files, $this->getTemplate($input));
+
+        $output->writeln('Writing converted documents to disk');
         $this->writeToDisk($files, $input->getOption('target'));
+
         $output->writeln('Writing assets to disk');
         $converter->getAssets()->copyTo($input->getOption('target'));
     }

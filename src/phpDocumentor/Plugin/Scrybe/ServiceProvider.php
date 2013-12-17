@@ -16,6 +16,12 @@ use Cilex\ServiceProviderInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Definition\Factory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
 
+/**
+ * Creates and binds the components for the generation of manuals.
+ *
+ * Scrybe is a plugin that allows authors to write documentation in a markup format of their choosing and generate
+ * human-readable documentation from it.
+ */
 class ServiceProvider implements ServiceProviderInterface
 {
     const CONVERTER_FACTORY            = 'converter-factory';
