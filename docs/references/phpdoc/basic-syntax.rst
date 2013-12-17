@@ -1,15 +1,15 @@
 Basic Syntax
 ============
 
-In this chapter will an overview be given of the syntax used with
-DocBlocks. The precise effect of a tag including examples are
+This chapter gives an overview of the syntax of "DocBlocks".
+The precise effect of a tag including examples are
 provided in different chapters which are accessible via this
 document.
 
 What is a DocBlock?
 -------------------
 
-A docblock is a special type of comment that can provide verbose
+A DocBlock is a special type of comment that can provide verbose
 information about an element in your code.
 
 The information provided in this type of comment can be used by

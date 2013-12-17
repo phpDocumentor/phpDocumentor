@@ -16,7 +16,7 @@ The @uses tag is used to describe a consuming relation between the current eleme
 
 @uses is similar to @see (see the documentation for @see for details on format and structure). The @uses tag differs
 from @see in that @see is a one-way link, meaning the documentation containing a @see tag contains a link to other
-Structural Elements or URI's but no link back is implied.
+Structural Elements or URIs but no link back is implied.
 
 Documentation generators SHOULD create a @used-by tag in the documentation of the receiving element that links back to
 the element associated with the @uses tag.
