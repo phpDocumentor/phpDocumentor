@@ -21,6 +21,8 @@ use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents\File;
  * document is found it will generate a mini-table of contents at that location with the depth given using the
  * `:maxdepth:` parameter.
  *
+ * Another option is :hidden: that will hide the toc from view while still making connections.
+ *
  * This directive is inspired by {@link http://sphinx.pocoo.org/concepts.html#the-toc-tree Sphinx' toctree} directive.
  */
 class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDirective
@@ -85,6 +87,12 @@ class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDi
     public function toXhtml(\DOMDocument $document, \DOMElement $root)
     {
         $this->addLinksToTableOfContents();
+
+        // if the hidden flag is set then this item should not be rendered but still processed (see above)
+        if (isset($this->node->options['hidden'])) {
+            return;
+        }
+
         $list = $document->createElement('ol');
         $root->appendChild($list);
 
@@ -94,7 +102,7 @@ class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDi
 
             $link_element = $document->createElement('a');
             $list_item->appendChild($link_element);
-            $link_element->appendChild($document->createCDATASection($this->getCaption($link)));
+            $link_element->appendChild($document->createTextNode($this->getCaption($link)));
             $link_element->setAttribute('href', str_replace('\\', '/', $link) . '.html');
         }
     }
