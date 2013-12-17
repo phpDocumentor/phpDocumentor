@@ -47,18 +47,32 @@ class Doc extends \ezcDocumentRstTextRole implements \ezcDocumentRstXhtmlTextRol
     public function toXhtml(\DOMDocument $document, \DOMElement $root)
     {
         $content = '';
+        $caption = '';
+
         foreach ($this->node->nodes as $node) {
             $content .= $node->token->content;
         }
 
-        $link = $document->createElement(
-            'a',
-            str_replace(
+        $matches = array();
+        if (preg_match('/([^<]*)<?([^>]*)>?/', $content, $matches)) {
+            // if the role uses the `caption<content>` notation; extract the two parts
+            if (isset($matches[2]) && $matches[2]) {
+                $content = $matches[2];
+                $caption = trim($matches[1]);
+            }
+        }
+
+        // if no caption is captured; create one.
+        // TODO: Capture the one from the toc
+        if (!$caption) {
+            $caption = str_replace(
                 array('-', '_'),
                 ' ',
                 ucfirst(ltrim(substr(htmlspecialchars($content), strrpos($content, '/')), '\\/'))
-            )
-        );
+            );
+        }
+
+        $link = $document->createElement('a', $caption);
         $root->appendChild($link);
         $link->setAttribute('href', str_replace('\\', '/', $content) . '.html');
     }
