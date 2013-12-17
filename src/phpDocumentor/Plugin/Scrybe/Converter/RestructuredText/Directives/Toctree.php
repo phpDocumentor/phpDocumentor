@@ -92,8 +92,9 @@ class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDi
             $list_item = $document->createElement('li');
             $list->appendChild($list_item);
 
-            $link_element = $document->createElement('a', $this->getCaption($link));
+            $link_element = $document->createElement('a');
             $list_item->appendChild($link_element);
+            $link_element->appendChild($document->createCDATASection($this->getCaption($link)));
             $link_element->setAttribute('href', str_replace('\\', '/', $link) . '.html');
         }
     }
