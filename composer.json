@@ -18,6 +18,8 @@
         "monolog/monolog":  "~1.6",
         "twig/twig":        "~1.3",
         "erusev/parsedown": "~0.7",
+        "symfony/process":  "~2.0",
+        "zetacomponents/document": "dev-master@dev",
 
         "symfony/event-dispatcher": "~2.1",
         "symfony/stopwatch":        "~2.3",

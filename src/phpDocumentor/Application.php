@@ -86,7 +86,7 @@ class Application extends Cilex
 
     /**
      * Instantiates plugin service providers and adds them to phpDocumentor's container.
-     * 
+     *
      * @return void
      */
     protected function addPlugins()
@@ -94,29 +94,25 @@ class Application extends Cilex
         $config = $this['config']->toArray();
 
         if (!isset($config['plugins']['plugin'][0]['path'])) {
-            return $this->register(new Plugin\Core\ServiceProvider());
+            $this->register(new Plugin\Core\ServiceProvider());
+            $this->register(new Plugin\Scrybe\ServiceProvider());
+            return;
         }
 
-        $that = $this;
+        $app = $this;
+
         array_walk(
             $config['plugins']['plugin'],
-            function ($plugin) use ($that) {
-                if (strpos($plugin['path'], '\\') === false) {
-                    $provider = sprintf(
-                        "phpDocumentor\Plugin\%s\ServiceProvider",
-                        $plugin['path']
-                    );
-                } else {
-                    $provider = $plugin['path'];
+            function ($plugin) use ($app) {
+                $provider = (strpos($plugin['path'], '\\') === false)
+                    ? sprintf("phpDocumentor\Plugin\%s\ServiceProvider", $plugin['path'])
+                    : $plugin['path'];
+                if (!class_exists($provider)) {
+                    throw new \RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
                 }
+
                 try {
-                    if (class_exists($provider)) {
-                        $that->register(new $provider);
-                    } else {
-                        throw new \RuntimeException(
-                            "Loading Service Provider for $provider failed."
-                        );
-                    }
+                    $app->register(new $provider);
                 } catch (\InvalidArgumentException $e) {
                     throw new \RuntimeException($e->getMessage());
                 }

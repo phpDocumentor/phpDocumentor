@@ -1,0 +1,41 @@
+{% raw %}
+\documentclass[11pt,titlepage,a4paper]{report}
+\usepackage{amssymb,amsmath}
+\usepackage{graphicx}
+% We will generate all images so they have a width \maxwidth. This means
+% that they will get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+\usepackage[breaklinks=true,unicode=true,pdfborder={0 0 0}]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setcounter{secnumdepth}{0}
+{% endraw %}
+
+\title{{'{'}}
+  {% if coverlogo %}\includegraphics{{'{'}}{{coverlogo}}}\\{% endif %}
+  {{title}}
+}
+\author{{'{'}}{{author}}}
+\date{\today}
+
+\begin{document}
+
+\sffamily
+
+{% if title or coverlogo %}
+\maketitle
+{% endif %}
+
+{% if toc %}
+\tableofcontents
+{% endif %}
+
+{{ contents }}
+
+\end{document}
