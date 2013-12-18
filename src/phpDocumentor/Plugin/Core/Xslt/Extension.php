@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin\Core\Xslt;
 /**
  * XSLT filters that can be used inside a template.
  */
-class Filter
+class Extension
 {
     /**
      * Markdown filter.
@@ -22,7 +22,7 @@ class Filter
      * Example usage inside template would be:
      * ```
      * <div class="long_description">
-     *     <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Filter::markdown', string(docblock/long-description))" disable-output-escaping="yes" />
+     *     <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" />
      * </div>
      * ```
      *
@@ -36,8 +36,8 @@ class Filter
             return $text;
         }
 
-        $parser = new \dflydev\markdown\MarkdownParser();
+        $markdown = \Parsedown::instance();
 
-        return $parser->transform($text);
+        return $markdown->parse($text);
     }
 }
