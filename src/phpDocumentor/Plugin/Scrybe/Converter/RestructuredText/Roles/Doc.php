@@ -62,8 +62,13 @@ class Doc extends \ezcDocumentRstTextRole implements \ezcDocumentRstXhtmlTextRol
             }
         }
 
+        // check the table of contents for a caption.
+        if (!$caption && $this->visitor) {
+            $toc = $this->visitor->getTableOfContents();
+            $caption = isset($toc[$content]) ? $toc[$content]->getName() : '';
+        }
+
         // if no caption is captured; create one.
-        // TODO: Capture the one from the toc
         if (!$caption) {
             $caption = str_replace(
                 array('-', '_'),
