@@ -14,6 +14,7 @@
 
         "cilex/cilex":       "~1.0",
         "symfony/validator": "~2.2",
+        "dompdf/dompdf":     "dev-master@dev",
 
         "monolog/monolog":  "~1.6",
         "twig/twig":        "~1.3",

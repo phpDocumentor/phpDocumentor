@@ -1,3 +1,10 @@
+2013/11/23: Version 2.3
+-----------------------
+
+```
+ADDED:     Support for writing PDF files using a Twig template by adding the PDF writer.
+```
+
 2013/11/23: Version 2.2
 -----------------------
 

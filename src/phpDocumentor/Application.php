@@ -33,6 +33,8 @@ use Zend\Config\Factory;
  * Finds and activates the autoloader.
  */
 require_once findAutoloader();
+define('DOMPDF_ENABLE_AUTOLOAD', false);
+require_once(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php');
 
 /**
  * Application class for phpDocumentor.
