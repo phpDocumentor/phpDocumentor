@@ -14,10 +14,6 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions\IsArgumentInDocblock;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions\IsArgumentInDocblockValidator;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions\DoesArgumentNameMatchParam;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions\DoesArgumentNameMatchParamValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -48,8 +44,8 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
             $element['argument'] = $argIter->current();
             $element['params'] = $params;
 
-            $isArgumentInDocblockValidator  = new IsArgumentInDocblockValidator;
-            $isArgumentInDocblockConstraint = new IsArgumentInDocblock;
+            $isArgumentInDocblockValidator  = new IsArgumentInDocBlockValidator;
+            $isArgumentInDocblockConstraint = new IsArgumentInDocBlock;
             $result = $isArgumentInDocblockValidator->validate($element, $isArgumentInDocblockConstraint);
             if (is_array($result)) {
                 $this->context->addViolationAt('argument', $isArgumentInDocblockConstraint->message, $result);
