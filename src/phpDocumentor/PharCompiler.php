@@ -102,13 +102,14 @@ class PharCompiler
      */
     protected function getFiles()
     {
-        $files = array('LICENSE', 'README.md', 'VERSION');
-
         $finder = new Finder();
         $iterator = $finder->files()
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(true)
             ->in(array('bin', 'data', 'src', 'vendor'))
             ->notName('*.rst')
             ->notName('*.md')
+            ->size('> 0k')
             ->exclude(
                 array(
                     'output',
@@ -128,9 +129,10 @@ class PharCompiler
                     'psr/log/Psr/Log/Test',
                     'twig/twig/test',
                 )
-            );
+            )
+            ->append(array('LICENSE', 'README.md', 'VERSION'));
 
-        return array_merge($files, iterator_to_array($iterator));
+        return iterator_to_array($iterator);
     }
 
     /**
@@ -149,7 +151,7 @@ class PharCompiler
         foreach ($files as $file) {
             echo '.';
             $counter++;
-            if ($counter % 70 == 0) {
+            if ($counter % 67 == 0) {
                 echo ' [' . $counter . '/' . count($files) . ']' . PHP_EOL;
             }
             $this->addFileToPharArchive($file, $phar);
@@ -172,14 +174,17 @@ class PharCompiler
     {
         $path = strtr(str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath()), '\\', '/');
         $handle = fopen($file, 'r');
-        $file_contents = @fread($handle, filesize($file));
+        $file_contents = fread($handle, filesize($file));
         fclose($handle);
 
         if ($path === 'bin/phpdoc' || $path === 'bin/phpdoc.php') {
             $file_contents = str_replace('#!/usr/bin/env php', '', $file_contents);
         }
 
-        $file_contents = $this->minifyFile($file_contents);
+        if (strpos($path, 'vendor') === 0 || strpos($path, 'src') === 0) {
+            $file_contents = $this->minifyFile($file_contents);
+        }
+
         $phar->addFromString($path, $file_contents);
     }
 
