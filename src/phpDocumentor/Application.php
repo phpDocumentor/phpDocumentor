@@ -49,8 +49,8 @@ class Application extends Cilex
      */
     public function __construct()
     {
-        ini_set('memory_limit', -1);
-
+        self::defineIniSettings();
+        
         self::$VERSION = file_get_contents(__DIR__ . '/../../VERSION');
 
         parent::__construct('phpDocumentor', self::$VERSION);
@@ -82,6 +82,19 @@ class Application extends Cilex
 
         $this->verifyWriterRequirementsAndExitIfBroken();
         $this->addCommandsForProjectNamespace();
+    }
+
+    /**
+     * Adjust php.ini settings.
+     */
+    protected static function defineIniSettings()
+    {
+        ini_set('memory_limit', -1);
+
+        if (extension_loaded('opcache')) {
+            ini_set('opcache.save_comments', 1);
+            ini_set('opcache.load_comments', 1);
+        }
     }
 
     /**
