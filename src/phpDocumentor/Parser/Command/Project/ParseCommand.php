@@ -138,6 +138,7 @@ class ParseCommand extends ConfigurableCommand
         parent::execute($input, $output);
 
         $target = $this->getOption($input, 'target', 'parser/target');
+        $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
         if (!$this->isAbsolute($target)) {
             $target = getcwd().DIRECTORY_SEPARATOR.$target;
         }
