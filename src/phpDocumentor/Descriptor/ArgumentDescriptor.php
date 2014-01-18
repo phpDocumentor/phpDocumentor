@@ -18,7 +18,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /** @var string[] $type an array of normalized types that should be in this Argument */
     protected $types = array();
 
-    /** @var bool $default the default value for an argument or null if none is provided */
+    /** @var string|null $default the default value for an argument or null if none is provided */
     protected $default;
 
     /** @var bool $byReference whether the argument passes the parameter by reference instead of by value */
