@@ -13,3 +13,4 @@ data/templates/*
 .vagrant
 composer.phar
 /nbproject/private/
+box.phar
