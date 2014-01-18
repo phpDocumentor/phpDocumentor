@@ -13,8 +13,10 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use phpDocumentor\Transformer\Writer\Translatable;
@@ -60,11 +62,17 @@ class Xml extends WriterAbstract implements Translatable
 
     protected $methodConverter;
 
+    protected $propertyConverter;
+
+    protected $constantConverter;
+
     public function __construct()
     {
         $this->docBlockConverter = new DocBlockConverter(new TagConverter());
         $this->argumentConverter = new ArgumentConverter();
         $this->methodConverter   = new MethodConverter($this->argumentConverter, $this->docBlockConverter);
+        $this->propertyConverter = new PropertyConverter($this->docBlockConverter);
+        $this->constantConverter = new ConstantConverter($this->docBlockConverter);
     }
 
     /**
@@ -159,7 +167,7 @@ class Xml extends WriterAbstract implements Translatable
 
         /** @var ConstantDescriptor $constant */
         foreach ($file->getConstants() as $constant) {
-            $this->buildConstant($child, $constant);
+            $this->constantConverter->convert($child, $property);
         }
 
         /** @var FunctionDescriptor $function */
@@ -242,49 +250,6 @@ class Xml extends WriterAbstract implements Translatable
     {
         return $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-    }
-
-    /**
-     * Exports the given constant to the parent XML element.
-     *
-     * This method creates a new child element on the given parent XML element
-     * and takes the properties of the Reflection argument and sets the
-     * elements and attributes on the child.
-     *
-     * If a child DOMElement is provided then the properties and attributes are
-     * set on this but the child element is not appended onto the parent. This
-     * is the responsibility of the invoker. Essentially this means that the
-     * $parent argument is ignored in this case.
-     *
-     * @param \DOMElement        $parent   The parent element to augment.
-     * @param ConstantDescriptor $constant The data source.
-     * @param \DOMElement        $child    Optional: child element to use instead of creating a new one on the $parent.
-     *
-     * @return void
-     */
-    public function buildConstant(\DOMElement $parent, ConstantDescriptor $constant, \DOMElement $child = null)
-    {
-        if (!$constant->getName()) {
-            return;
-        }
-
-        if (!$child) {
-            $child = new \DOMElement('constant');
-            $parent->appendChild($child);
-        }
-
-        $namespace = $constant->getNamespace()
-            ? $constant->getNamespace()
-            : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $constant->getLine());
-
-        $child->appendChild(new \DOMElement('name', $constant->getName()));
-        $child->appendChild(new \DOMElement('full_name', $constant->getFullyQualifiedStructuralElementName()));
-
-        $child->appendChild(new \DOMElement('value'))->appendChild(new \DOMText($constant->getValue()));
-
-        $this->docBlockConverter->convert($child, $constant);
     }
 
     /**
@@ -378,28 +343,28 @@ class Xml extends WriterAbstract implements Translatable
         foreach ($class->getConstants() as $constant) {
             // TODO #840: Workaround; for some reason there are NULLs in the constants array.
             if ($constant) {
-                $this->buildConstant($child, $constant);
+                $this->constantConverter->convert($child, $property);
             }
         }
 
         foreach ($class->getInheritedConstants() as $constant) {
             // TODO #840: Workaround; for some reason there are NULLs in the constants array.
             if ($constant) {
-                $this->buildConstant($child, $constant);
+                $this->constantConverter->convert($child, $property);
             }
         }
 
         foreach ($class->getProperties() as $property) {
             // TODO #840: Workaround; for some reason there are NULLs in the properties array.
             if ($property) {
-                $this->buildProperty($child, $property);
+                $this->propertyConverter->convert($child, $property);
             }
         }
 
         foreach ($class->getInheritedProperties() as $property) {
             // TODO #840: Workaround; for some reason there are NULLs in the properties array.
             if ($property) {
-                $this->buildProperty($child, $property);
+                $this->propertyConverter->convert($child, $property);
             }
         }
 
@@ -457,7 +422,7 @@ class Xml extends WriterAbstract implements Translatable
         $this->docBlockConverter->convert($child, $trait);
 
         foreach ($trait->getProperties() as $property) {
-            $this->buildProperty($child, $property);
+            $this->propertyConverter->convert($child, $property);
         }
 
         foreach ($trait->getMethods() as $method) {
@@ -509,42 +474,12 @@ class Xml extends WriterAbstract implements Translatable
         $this->docBlockConverter->convert($child, $interface);
 
         foreach ($interface->getConstants() as $constant) {
-            $this->buildConstant($child, $constant);
+            $this->constantConverter->convert($child, $property);
         }
 
         foreach ($interface->getMethods() as $method) {
             $this->methodConverter->convert($child, $method);
         }
-    }
-
-    /**
-     * Export the given property definition to the provided parent element.
-     *
-     * @param \DOMElement        $parent   Element to augment.
-     * @param PropertyDescriptor $property Element to export.
-     *
-     * @return void
-     */
-    public function buildProperty(\DOMElement $parent, PropertyDescriptor $property)
-    {
-        $child = new \DOMElement('property');
-        $parent->appendChild($child);
-
-        $child->setAttribute('static', $property->isStatic() ? 'true' : 'false');
-        $child->setAttribute('visibility', $property->getVisibility());
-
-        $child->setAttribute('line', $property->getLine());
-
-        $namespaceFqnn = $property->getNamespace()
-            ? $property->getNamespace()->getFullyQualifiedStructuralElementName()
-            : $parent->getAttribute('namespace');
-        $child->setAttribute('namespace', $namespaceFqnn);
-
-        $child->appendChild(new \DOMElement('name', '$' . $property->getName()));
-        $child->appendChild(new \DOMElement('default'))
-            ->appendChild(new \DOMText($property->getDefault()));
-
-        $this->docBlockConverter->convert($child, $property);
     }
 
     /**
