@@ -195,11 +195,13 @@ class PharCompiler
      */
     protected function getCliStub()
     {
-        return <<<'PHP'
+        return <<<"CLISTUB"
 #!/usr/bin/env php
 <?php
+{$this->getLicense()}
+
 require_once __DIR__.'/bin/phpdoc.php'; __HALT_COMPILER();
-PHP;
+CLISTUB;
     }
 
     /**
@@ -209,12 +211,14 @@ PHP;
      */
     protected function getWebStub()
     {
-        return <<<'PHP'
+        return <<<"WEBSTUB"
 #!/usr/bin/env php
-"<?php
+<?php
+{$this->getLicense()}
+
 throw new \LogicException('This PHAR file can only be used from the CLI.');
 __HALT_COMPILER();
-PHP;
+WEBSTUB;
     }
 
     /**
@@ -224,7 +228,7 @@ PHP;
      */
     protected function getLicense()
     {
-        return '
+        return <<<'DOCBLOCK'
 /**
  * phpDocumentor
  *
@@ -234,6 +238,7 @@ PHP;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
- */';
+ */
+DOCBLOCK;
     }
 }
