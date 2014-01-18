@@ -1,12 +1,23 @@
 <?php
 /**
- * phpDocumentor2
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 
+/**
+ * Converter used to create an XML Element representing a DocBlock and its tags.
+ *
+ * In order to convert the tags to their XML representation this class requires the respective converter.
+ */
 class DocBlockConverter
 {
     /** @var TagConverter Converter used to generate XML elements from TagDescriptors */
