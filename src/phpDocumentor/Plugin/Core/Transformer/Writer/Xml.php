@@ -179,7 +179,7 @@ class Xml extends WriterAbstract implements Translatable
 
         /** @var ConstantDescriptor $constant */
         foreach ($file->getConstants() as $constant) {
-            $this->constantConverter->convert($child, $property);
+            $this->constantConverter->convert($child, $constant);
         }
 
         /** @var FunctionDescriptor $function */
@@ -360,14 +360,14 @@ class Xml extends WriterAbstract implements Translatable
         foreach ($class->getConstants() as $constant) {
             // TODO #840: Workaround; for some reason there are NULLs in the constants array.
             if ($constant) {
-                $this->constantConverter->convert($child, $property);
+                $this->constantConverter->convert($child, $constant);
             }
         }
 
         foreach ($class->getInheritedConstants() as $constant) {
             // TODO #840: Workaround; for some reason there are NULLs in the constants array.
             if ($constant) {
-                $this->constantConverter->convert($child, $property);
+                $this->constantConverter->convert($child, $constant);
             }
         }
 
