@@ -15,6 +15,7 @@ use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\InterfaceConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter;
@@ -66,13 +67,20 @@ class Xml extends WriterAbstract implements Translatable
 
     protected $constantConverter;
 
+    protected $interfaceConverter;
+
     public function __construct()
     {
-        $this->docBlockConverter = new DocBlockConverter(new TagConverter());
-        $this->argumentConverter = new ArgumentConverter();
-        $this->methodConverter   = new MethodConverter($this->argumentConverter, $this->docBlockConverter);
-        $this->propertyConverter = new PropertyConverter($this->docBlockConverter);
-        $this->constantConverter = new ConstantConverter($this->docBlockConverter);
+        $this->docBlockConverter  = new DocBlockConverter(new TagConverter());
+        $this->argumentConverter  = new ArgumentConverter();
+        $this->methodConverter    = new MethodConverter($this->argumentConverter, $this->docBlockConverter);
+        $this->propertyConverter  = new PropertyConverter($this->docBlockConverter);
+        $this->constantConverter  = new ConstantConverter($this->docBlockConverter);
+        $this->interfaceConverter = new InterfaceConverter(
+            $this->docBlockConverter,
+            $this->methodConverter,
+            $this->constantConverter
+        );
     }
 
     /**
@@ -177,7 +185,7 @@ class Xml extends WriterAbstract implements Translatable
 
         /** @var InterfaceDescriptor $interface */
         foreach ($file->getInterfaces() as $interface) {
-            $this->buildInterface($child, $interface);
+            $this->interfaceConverter->convert($child, $interface);
         }
 
         /** @var ClassDescriptor $class */
@@ -426,58 +434,6 @@ class Xml extends WriterAbstract implements Translatable
         }
 
         foreach ($trait->getMethods() as $method) {
-            $this->methodConverter->convert($child, $method);
-        }
-    }
-
-    /**
-     * Exports the given reflection object to the parent XML element.
-     *
-     * This method creates a new child element on the given parent XML element
-     * and takes the properties of the Reflection argument and sets the
-     * elements and attributes on the child.
-     *
-     * If a child DOMElement is provided then the properties and attributes are
-     * set on this but the child element is not appended onto the parent. This
-     * is the responsibility of the invoker. Essentially this means that the
-     * $parent argument is ignored in this case.
-     *
-     * @param \DOMElement                         $parent The parent element to augment.
-     * @param InterfaceDescriptor $interface  The data source.
-     * @param \DOMElement                         $child  Optional: child element to use instead of creating a
-     *      new one on the $parent.
-     *
-     * @return void
-     */
-    public function buildInterface(\DOMElement $parent, InterfaceDescriptor $interface, \DOMElement $child = null)
-    {
-        if (!$child) {
-            $child = new \DOMElement('interface');
-            $parent->appendChild($child);
-        }
-
-        /** @var InterfaceDescriptor $parentInterface */
-        foreach ($interface->getParent() as $parentInterface) {
-            $parentFqcn = is_string($parentInterface) === false
-                ? $parentInterface->getFullyQualifiedStructuralElementName()
-                : $parentInterface;
-            $child->appendChild(new \DOMElement('extends', $parentFqcn));
-        }
-
-        $namespace = $interface->getNamespace()->getFullyQualifiedStructuralElementName();
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $interface->getLine());
-
-        $child->appendChild(new \DOMElement('name', $interface->getName()));
-        $child->appendChild(new \DOMElement('full_name', $interface->getFullyQualifiedStructuralElementName()));
-
-        $this->docBlockConverter->convert($child, $interface);
-
-        foreach ($interface->getConstants() as $constant) {
-            $this->constantConverter->convert($child, $property);
-        }
-
-        foreach ($interface->getMethods() as $method) {
             $this->methodConverter->convert($child, $method);
         }
     }
