@@ -11,14 +11,14 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
-use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\TraitDescriptor;
 
 /**
- * Converter used to create an XML Element representing the interface and its Constants, Methods and DocBlock.
+ * Converter used to create an XML Element representing the Trait and its Methods, Properties and DocBlock.
  *
  * In order to convert the DocBlock to its XML representation this class requires the respective converter.
  */
-class InterfaceConverter
+class TraitConverter
 {
     /** @var DocBlockConverter */
     protected $docBlockConverter;
@@ -26,8 +26,8 @@ class InterfaceConverter
     /** @var MethodConverter */
     protected $methodConverter;
 
-    /** @var ConstantConverter */
-    protected $constantConverter;
+    /** @var PropertyConverter */
+    protected $propertyConverter;
 
     /**
      * Initializes this converter with the DocBlock converter.
@@ -37,15 +37,15 @@ class InterfaceConverter
     public function __construct(
         DocBlockConverter $docBlockConverter,
         MethodConverter $methodConverter,
-        ConstantConverter $constantConverter
+        PropertyConverter $propertyConverter
     ) {
         $this->docBlockConverter = $docBlockConverter;
         $this->methodConverter   = $methodConverter;
-        $this->constantConverter = $constantConverter;
+        $this->propertyConverter = $propertyConverter;
     }
 
     /**
-     * Export the given reflected interface definition to the provided parent element.
+     * Export the given reflected Trait definition to the provided parent element.
      *
      * This method creates a new child element on the given parent XML element
      * and takes the properties of the Reflection argument and sets the
@@ -57,37 +57,29 @@ class InterfaceConverter
      * $parent argument is ignored in this case.
      *
      * @param \DOMElement        $parent Element to augment.
-     * @param InterfaceDescriptor $interface Element to export.
+     * @param TraitDescriptor $trait Element to export.
      *
      * @return \DOMElement
      */
-    public function convert(\DOMElement $parent, InterfaceDescriptor $interface)
+    public function convert(\DOMElement $parent, TraitDescriptor $trait)
     {
-        $child = new \DOMElement('interface');
+        $child = new \DOMElement('trait');
         $parent->appendChild($child);
 
-        /** @var InterfaceDescriptor $parentInterface */
-        foreach ($interface->getParent() as $parentInterface) {
-            $parentFqcn = is_string($parentInterface) === false
-                ? $parentInterface->getFullyQualifiedStructuralElementName()
-                : $parentInterface;
-            $child->appendChild(new \DOMElement('extends', $parentFqcn));
-        }
-
-        $namespace = $interface->getNamespace()->getFullyQualifiedStructuralElementName();
+        $namespace = $trait->getNamespace()->getFullyQualifiedStructuralElementName();
         $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $interface->getLine());
+        $child->setAttribute('line', $trait->getLine());
 
-        $child->appendChild(new \DOMElement('name', $interface->getName()));
-        $child->appendChild(new \DOMElement('full_name', $interface->getFullyQualifiedStructuralElementName()));
+        $child->appendChild(new \DOMElement('name', $trait->getName()));
+        $child->appendChild(new \DOMElement('full_name', $trait->getFullyQualifiedStructuralElementName()));
 
-        $this->docBlockConverter->convert($child, $interface);
+        $this->docBlockConverter->convert($child, $trait);
 
-        foreach ($interface->getConstants() as $constant) {
-            $this->constantConverter->convert($child, $constant);
+        foreach ($trait->getProperties() as $property) {
+            $this->propertyConverter->convert($child, $property);
         }
 
-        foreach ($interface->getMethods() as $method) {
+        foreach ($trait->getMethods() as $method) {
             $this->methodConverter->convert($child, $method);
         }
 

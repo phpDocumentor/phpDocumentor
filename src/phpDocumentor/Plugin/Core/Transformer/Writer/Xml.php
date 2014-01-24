@@ -19,6 +19,7 @@ use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\InterfaceConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Application;
@@ -28,7 +29,6 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\AuthorTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\CoversTag;
@@ -69,6 +69,8 @@ class Xml extends WriterAbstract implements Translatable
 
     protected $interfaceConverter;
 
+    protected $traitConverter;
+
     public function __construct()
     {
         $this->docBlockConverter  = new DocBlockConverter(new TagConverter());
@@ -80,6 +82,11 @@ class Xml extends WriterAbstract implements Translatable
             $this->docBlockConverter,
             $this->methodConverter,
             $this->constantConverter
+        );
+        $this->traitConverter = new TraitConverter(
+            $this->docBlockConverter,
+            $this->methodConverter,
+            $this->propertyConverter
         );
     }
 
@@ -148,11 +155,8 @@ class Xml extends WriterAbstract implements Translatable
         }
     }
 
-    protected function buildFile(
-        \DOMElement $parent,
-        FileDescriptor $file,
-        Transformer $transformer
-    ) {
+    protected function buildFile(\DOMElement $parent, FileDescriptor $file, Transformer $transformer)
+    {
         $child = new \DOMElement('file');
         $parent->appendChild($child);
 
@@ -191,6 +195,11 @@ class Xml extends WriterAbstract implements Translatable
         /** @var ClassDescriptor $class */
         foreach ($file->getClasses() as $class) {
             $this->buildClass($child, $class);
+        }
+
+        /** @var TraitDescriptor $class */
+        foreach ($file->getTraits() as $trait) {
+            $this->traitConverter->convert($child, $trait);
         }
 
         // add markers
@@ -388,53 +397,6 @@ class Xml extends WriterAbstract implements Translatable
             if ($method) {
                 $this->methodConverter->convert($child, $method);
             }
-        }
-    }
-
-    /**
-     * Exports the given reflection object to the parent XML element.
-     *
-     * This method creates a new child element on the given parent XML element
-     * and takes the properties of the Reflection argument and sets the
-     * elements and attributes on the child.
-     *
-     * If a child DOMElement is provided then the properties and attributes are
-     * set on this but the child element is not appended onto the parent. This
-     * is the responsibility of the invoker. Essentially this means that the
-     * $parent argument is ignored in this case.
-     *
-     * @param \DOMElement     $parent The parent element to augment.
-     * @param TraitDescriptor $trait  The data source.
-     * @param \DOMElement     $child  Optional: child element to use instead of creating a
-     *      new one on the $parent.
-     *
-     * @return void
-     */
-    public function buildTrait(\DOMElement $parent, TraitDescriptor $trait, \DOMElement $child = null)
-    {
-        if (!$child) {
-            $child = new \DOMElement('trait');
-            $parent->appendChild($child);
-        }
-
-        $child->setAttribute('final', $trait->isFinal() ? 'true' : 'false');
-        $child->setAttribute('abstract', $trait->isAbstract() ? 'true' : 'false');
-
-        $namespace = $trait->getNamespace();
-        $child->setAttribute('namespace', ltrim($namespace, '\\'));
-        $child->setAttribute('line', $trait->getLine());
-
-        $child->appendChild(new \DOMElement('name', $trait->getName()));
-        $child->appendChild(new \DOMElement('full_name', $trait->getFullyQualifiedStructuralElementName()));
-
-        $this->docBlockConverter->convert($child, $trait);
-
-        foreach ($trait->getProperties() as $property) {
-            $this->propertyConverter->convert($child, $property);
-        }
-
-        foreach ($trait->getMethods() as $method) {
-            $this->methodConverter->convert($child, $method);
         }
     }
 
