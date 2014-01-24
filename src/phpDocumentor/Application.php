@@ -49,7 +49,7 @@ class Application extends Cilex
      */
     public function __construct()
     {
-        self::defineIniSettings();
+        $this->defineIniSettings();
         
         self::$VERSION = file_get_contents(__DIR__ . '/../../VERSION');
 
@@ -86,8 +86,10 @@ class Application extends Cilex
 
     /**
      * Adjust php.ini settings.
+     * 
+     * @return void
      */
-    protected static function defineIniSettings()
+    protected function defineIniSettings()
     {
         ini_set('memory_limit', -1);
 
