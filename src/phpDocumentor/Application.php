@@ -107,7 +107,7 @@ class Application extends Cilex
             $config['plugins']['plugin'],
             function ($plugin) use ($app) {
                 $provider = (strpos($plugin['path'], '\\') === false)
-                    ? sprintf("phpDocumentor\Plugin\%s\ServiceProvider", $plugin['path'])
+                    ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin['path'])
                     : $plugin['path'];
                 if (!class_exists($provider)) {
                     throw new \RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
