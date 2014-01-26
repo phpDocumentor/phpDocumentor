@@ -11,6 +11,9 @@
  */
 namespace phpDocumentor\Parser;
 
+use \Mockery as m;
+use phpDocumentor\Fileset\Collection;
+
 /**
  * Test class for \phpDocumentor\Parser\Parser.
  *
@@ -67,6 +70,32 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $this->fixture->setEncoding('iso-8859-1');
         $this->assertEquals('iso-8859-1', $this->fixture->getEncoding());
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::setStopwatch
+     */
+    public function testSetStopWatch()
+    {
+        $stopwatch = m::mock('Symfony\Component\Stopwatch\Stopwatch');
+        $this->assertAttributeEquals(null, 'stopwatch', $this->fixture);
+
+        $this->fixture->setStopwatch($stopwatch);
+
+        $this->assertAttributeSame($stopwatch, 'stopwatch', $this->fixture);
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::setLogger
+     */
+    public function testSettingALogger()
+    {
+        $logger = m::mock('Psr\Log\LoggerInterface');
+        $this->assertAttributeEquals(null, 'logger', $this->fixture);
+
+        $this->fixture->setLogger($logger);
+
+        $this->assertAttributeSame($logger, 'logger', $this->fixture);
     }
 
     /**
@@ -154,28 +183,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests whether the exporter defaults to a predefined exporter if none is provided and whether one can be set
-     * using setExporter.
-     *
-     * @covers phpDocumentor\Parser\Parser::setExporter
-     * @covers phpDocumentor\Parser\Parser::getExporter
-     *
-     * @return void
-     */
-    public function testSetAndGetExporter()
-    {
-        $this->markTestIncomplete('Setter is temporary disabled');
-        $parser = new Parser();
-
-        $this->assertInstanceOf('phpDocumentor\Parser\Exporter\ExporterAbstract', $parser->getExporter());
-
-        $exporter_mock = $this->getMock('phpDocumentor\Parser\Exporter\ExporterAbstract', array(), array($parser));
-        $parser->setExporter($exporter_mock);
-
-        $this->assertSame($exporter_mock, $parser->getExporter());
-    }
-
-    /**
      * @covers phpDocumentor\Parser\Parser::setDefaultPackageName
      * @covers phpDocumentor\Parser\Parser::getDefaultPackageName
      */
@@ -188,43 +195,5 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser->setDefaultPackageName('test');
 
         $this->assertSame('test', $parser->getDefaultPackageName());
-    }
-
-    /**
-     * @covers phpDocumentor\Parser\Parser::parse
-     */
-    public function testCreateFileDescriptorFromFiles()
-    {
-
-    }
-
-    public function testForceCompleteParseIfProjectSettingsAreModified()
-    {
-
-    }
-
-    public function testParserFilePreHookIsDispatchedForEachFile()
-    {
-
-    }
-
-    public function testDescriptorIsReUsedWhenThereAreNoModifications()
-    {
-
-    }
-
-    public function testFileDescriptorIsBuildWithReflector()
-    {
-
-    }
-
-    public function testErrorsInFileDescriptorsAreLogged()
-    {
-
-    }
-
-    public function testLogMessageOnExceptionButNoError()
-    {
-
     }
 }

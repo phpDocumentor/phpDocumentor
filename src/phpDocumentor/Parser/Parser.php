@@ -101,7 +101,7 @@ class Parser implements LoggerAwareInterface
      *
      * @return void
      */
-    public function setStopwatch($stopwatch)
+    public function setStopwatch(Stopwatch $stopwatch)
     {
         $this->stopwatch = $stopwatch;
     }
@@ -328,6 +328,18 @@ class Parser implements LoggerAwareInterface
     }
 
     /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     *
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
      * Iterates through the given files feeds them to the builder.
      *
      * @param ProjectDescriptorBuilder $builder
@@ -514,17 +526,5 @@ class Parser implements LoggerAwareInterface
             'system.debug',
             DebugEvent::createInstance($this)->setMessage($message)
         );
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return null
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 }
