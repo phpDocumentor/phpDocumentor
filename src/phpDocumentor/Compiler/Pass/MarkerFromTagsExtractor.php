@@ -45,7 +45,7 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
             /** @var TagDescriptor $todo */
             foreach ($todos as $todo) {
                 $fileDescriptor = $this->getFileDescriptor($element);
-                $this->addTodoMarker($fileDescriptor, $todo, $element);
+                $this->addTodoMarkerToFile($fileDescriptor, $todo, $element->getLine());
             }
         }
     }
@@ -73,17 +73,21 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
     }
 
     /**
-     * @param $fileDescriptor
-     * @param $todo
-     * @param $element
+     * Adds a marker with the TO DO information to the file on a given line number.
+     *
+     * @param FileDescriptor $fileDescriptor
+     * @param TagDescriptor  $todo
+     * @param integer        $lineNumber
+     *
+     * @return void
      */
-    protected function addTodoMarker($fileDescriptor, $todo, $element)
+    protected function addTodoMarkerToFile($fileDescriptor, $todo, $lineNumber)
     {
         $fileDescriptor->getMarkers()->add(
             array(
-                'type' => 'TODO',
+                'type'    => 'TODO',
                 'message' => $todo->getDescription(),
-                'line' => $element->getLine(),
+                'line'    => $lineNumber,
             )
         );
     }

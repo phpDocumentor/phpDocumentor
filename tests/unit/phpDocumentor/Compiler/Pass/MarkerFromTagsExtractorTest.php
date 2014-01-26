@@ -46,7 +46,7 @@ class MarkerFromTagsExtractorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
      * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::addTodoMarker
+     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::addTodoMarkerToFile
      */
     public function testAddTodoMarkerForEachTodoTagInAnyElement()
     {
