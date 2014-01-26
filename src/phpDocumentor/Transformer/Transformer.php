@@ -39,9 +39,6 @@ class Transformer implements CompilerPassInterface
     /** @var Writer\Collection $writers */
     protected $writers;
 
-    /** @var Behaviour\Collection|null $behaviours */
-    protected $behaviours = null;
-
     /** @var Transformation[] $transformations */
     protected $transformations = array();
 
@@ -63,28 +60,6 @@ class Transformer implements CompilerPassInterface
     public function getDescription()
     {
         return 'Transform analyzed project into artifacts';
-    }
-
-    /**
-     * Sets the collection of behaviours that are applied before the actual transformation process.
-     *
-     * @param Behaviour\Collection $behaviours
-     *
-     * @return void
-     */
-    public function setBehaviours(Behaviour\Collection $behaviours)
-    {
-        $this->behaviours = $behaviours;
-    }
-
-    /**
-     * Retrieves the collection of behaviours that should occur before the transformation process.
-     *
-     * @return Behaviour\Collection|null
-     */
-    public function getBehaviours()
-    {
-        return $this->behaviours;
     }
 
     /**
@@ -151,11 +126,6 @@ class Transformer implements CompilerPassInterface
     public function execute(ProjectDescriptor $project)
     {
         Dispatcher::getInstance()->dispatch('transformer.transform.pre', PreTransformEvent::createInstance($this));
-
-        if ($this->getBehaviours() instanceof Behaviour\Collection) {
-            $this->log(sprintf('Applying %d behaviours', count($this->getBehaviours())));
-            $this->getBehaviours()->process($project);
-        }
 
         $transformations = $this->getTemplates()->getTransformations();
         $this->log(sprintf('Applying %d transformations', count($transformations)));
