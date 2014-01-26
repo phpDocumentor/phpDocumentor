@@ -77,6 +77,20 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Transformer\Transformer::setBehaviours
+     * @covers phpDocumentor\Transformer\Transformer::getBehaviours
+     */
+    public function testProvidingBehaviours()
+    {
+        $this->assertEquals(null, $this->fixture->getBehaviours());
+
+        $behaviours = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
+        $this->fixture->setBehaviours($behaviours);
+
+        $this->assertEquals($behaviours, $this->fixture->getBehaviours());
+    }
+
+    /**
      * @covers phpDocumentor\Transformer\Transformer::getTemplates
      */
     public function testRetrieveTemplateCollection()
@@ -100,6 +114,10 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $this->markTestIncomplete();
         $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
 
+        $behaviourCollection = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
+        $behaviourCollection ->shouldReceive('process')->with($project);
+        $behaviourCollection ->shouldReceive('count')->andReturn(0);
+
         $transformation = m::mock('phpDocumentor\Transformer\Transformation')
             ->shouldReceive('execute')->with($project)
             ->shouldReceive('getQuery')->andReturn('')
@@ -116,6 +134,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $writerCollectionMock->shouldIgnoreMissing();
 
         $fixture = new Transformer($templateCollection, $writerCollectionMock);
+        $fixture->setBehaviours($behaviourCollection);
 
         $this->assertNull($fixture->execute($project));
     }
