@@ -111,6 +111,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $fileDescriptor->shouldReceive('getFunctions')->andReturn(array());
         $fileDescriptor->shouldReceive('getInterfaces')->andReturn(array());
         $fileDescriptor->shouldReceive('getClasses')->andReturn(array());
+        $fileDescriptor->shouldReceive('getTraits')->andReturn(array());
         $fileDescriptor->shouldReceive('getMarkers')->andReturn(array());
         $fileDescriptor->shouldReceive('getErrors')->andReturn(array());
         $fileDescriptor->shouldReceive('getPartials')->andReturn(array());
