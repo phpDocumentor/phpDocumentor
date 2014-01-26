@@ -130,5 +130,4 @@ class Format
     {
         return substr($filename, 0, strrpos($filename, '.')).'.' . reset($this->extensions);
     }
-
 }

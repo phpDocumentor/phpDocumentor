@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Event;
 
-use phpDocumentor\Event\EventAbstract;
 use Psr\Log\LogLevel;
 
 /**

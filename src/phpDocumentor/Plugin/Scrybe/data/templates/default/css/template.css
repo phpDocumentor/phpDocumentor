@@ -116,11 +116,10 @@ h2:first-of-type
 
 .hero-unit h1
 {
-    text-align: center;
-    font-weight: normal;
     text-align:  center;
+    font-weight: normal;
     color:       white;
-    text-shadow: black 0px 0px 15px;
+    text-shadow: black 0 0 15px;
 }
 
 .hero-unit h2
@@ -308,7 +307,7 @@ ul.side-nav li.view-simple pre
 
 ul.side-nav li.view-simple a
 {
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 i.icon-custom

@@ -11,12 +11,50 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Template\Mock;
 
-class Template implements \phpDocumentor\Plugin\Scrybe\Template\TemplateInterface
+use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
+
+/**
+ * Mock object for templates.
+ */
+class Template implements TemplateInterface
 {
-    function __construct() { }
-    public function setName($name) { }
-    public function setPath($path) { }
-    public function setExtension($extension) { }
-    public function decorate($contents, array $options = array()) { }
-    public function getAssets() { }
+    /**
+     * @param string $templatePath
+     */
+    public function __construct($templatePath)
+    {
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+    }
+
+    /**
+     * @param string $extension
+     */
+    public function setExtension($extension)
+    {
+    }
+
+    /**
+     * @param string $contents
+     * @param array  $options
+     */
+    public function decorate($contents, array $options = array())
+    {
+    }
+
+    public function getAssets()
+    {
+    }
 }

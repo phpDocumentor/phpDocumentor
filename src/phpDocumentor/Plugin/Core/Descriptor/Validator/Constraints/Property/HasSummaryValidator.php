@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
- * Validates whether a property has a summary, or an @var tag with a description.
+ * Validates whether a property has a summary, or an `@var` tag with a description.
  */
 class HasSummaryValidator extends ConstraintValidator
 {

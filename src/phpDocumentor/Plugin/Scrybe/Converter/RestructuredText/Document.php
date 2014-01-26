@@ -133,4 +133,3 @@ class Document extends \ezcDocumentRst
         }
     }
 }
-

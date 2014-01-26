@@ -211,11 +211,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                             if ($aElem === $bElem) {
                                 return 0;
                             }
-                            if (
-                                $direction === 'asc' && $aElem > $bElem
-                                ||
-                                $direction === 'desc' && $aElem < $bElem
-                            ) {
+                            if ($direction === 'asc' && $aElem > $bElem || $direction === 'desc' && $aElem < $bElem) {
                                 return 1;
                             }
                             return -1;

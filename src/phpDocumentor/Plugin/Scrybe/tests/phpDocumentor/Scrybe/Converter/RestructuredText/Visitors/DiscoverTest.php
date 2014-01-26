@@ -41,15 +41,21 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
         if (!$this->document) {
 
             $file = $this->getMock(
-                '\phpDocumentor\Fileset\File', array('getFilename'),
-                array(), '', false
+                '\phpDocumentor\Fileset\File',
+                array('getFilename'),
+                array(),
+                '',
+                false
             );
             $file->expects($this->any())->method('getFilename')
                 ->will($this->returnValue(self::FILENAME));
 
             $this->document = $this->getMock(
                 '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Document',
-                array('getConverter', 'getFile'), array(), '', false
+                array('getConverter', 'getFile'),
+                array(),
+                '',
+                false
             );
             $this->document->expects($this->any())
                 ->method('getConverter')
@@ -66,7 +72,10 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
         if (!$this->converter) {
             $this->converter = $this->getMock(
                 '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml',
-                array('getTableOfContents'), array(), '', false
+                array('getTableOfContents'),
+                array(),
+                '',
+                false
             );
             $this->converter->expects($this->any())
                 ->method('getTableOfContents')
@@ -90,7 +99,8 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
     public function testRetrieveTableOfContents()
     {
         $this->assertSame(
-            $this->getTableOfContentsMock(), $this->object->getTableOfContents()
+            $this->getTableOfContentsMock(),
+            $this->object->getTableOfContents()
         );
     }
 
@@ -103,8 +113,8 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
     public function testRetrieveDocument()
     {
         $this->assertSame(
-            $this->getDocumentMock(), $this->object->getDocument()
+            $this->getDocumentMock(),
+            $this->object->getDocument()
         );
     }
-
 }

@@ -22,7 +22,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadAndWriteTemplateName()
     {
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $this->assertEquals('default', $fixture->getName());
         $fixture->setName('my_template-one');
         $this->assertEquals('my_template-one', $fixture->getName());
@@ -150,14 +150,14 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAssets()
     {
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $assets = $fixture->getAssets();
 
         $this->assertInternalType('array', $assets);
         $this->assertGreaterThan(0, count($assets));
         $this->assertInstanceOf('SplFileInfo', current($assets));
         $this->assertStringStartsWith($fixture->getPath(), key($assets));
-        foreach(array_keys($assets) as $filename) {
+        foreach (array_keys($assets) as $filename) {
             $this->assertStringEndsNotWith('.twig', $filename);
         }
     }

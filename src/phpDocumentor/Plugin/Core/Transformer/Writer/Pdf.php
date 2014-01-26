@@ -13,14 +13,8 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Plugin\Core\Twig\Extension;
-use phpDocumentor\Transformer\Router\ForFileProxy;
-use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\Routable;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator;
 
 /**
  */

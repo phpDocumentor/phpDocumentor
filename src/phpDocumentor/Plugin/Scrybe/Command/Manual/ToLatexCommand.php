@@ -42,16 +42,23 @@ class ToLatexCommand extends BaseConvertCommand
         );
 
         $this->addOption(
-            'author', null, InputOption::VALUE_OPTIONAL,
+            'author',
+            null,
+            InputOption::VALUE_OPTIONAL,
             'Name of the author'
         );
         $this->addOption(
-            'cover-logo', null, InputOption::VALUE_OPTIONAL,
+            'cover-logo',
+            null,
+            InputOption::VALUE_OPTIONAL,
             'Path to a cover logo relative to the source root'
         );
         $this->addOption(
-            'toc', null, InputOption::VALUE_OPTIONAL,
-            'Whether the document should have a table of contents', true
+            'toc',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Whether the document should have a table of contents',
+            true
         );
     }
 
@@ -89,8 +96,7 @@ class ToLatexCommand extends BaseConvertCommand
      */
     protected function configureConverterFromInputOptions($converter, $input)
     {
-        if (!$converter instanceof ToLatexInterface)
-        {
+        if (!$converter instanceof ToLatexInterface) {
             throw new \InvalidArgumentException(
                 'The converter used to process '
                 . $input->getOption('input-format') . ' should implement the '

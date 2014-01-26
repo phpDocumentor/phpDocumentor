@@ -11,7 +11,15 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 
-class BaseEntryStub extends BaseEntry {};
+use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
+
+/**
+ * Empty stub
+ */
+class BaseEntryStub extends BaseEntry
+{
+
+}
 
 /**
  * Test class for the BaseEntry object.
@@ -53,7 +61,7 @@ class BaseEntryTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddingAnInvalidParentEntry()
     {
-        $toc = new \phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents();
+        $toc = new TableOfContents();
         $this->object->setParent($toc);
     }
 
@@ -84,5 +92,4 @@ class BaseEntryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('name', $this->object->getName());
     }
-
 }

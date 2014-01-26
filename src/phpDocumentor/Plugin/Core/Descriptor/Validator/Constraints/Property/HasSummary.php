@@ -13,7 +13,7 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Property;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Detects whether a property has a summary, or an @var tag with a description.
+ * Detects whether a property has a summary, or an `@var` tag with a description.
  *
  * @Annotation
  */

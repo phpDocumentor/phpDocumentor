@@ -92,13 +92,6 @@ abstract class BaseConvertCommand extends ConfigurableCommand
                 'One or more files or directories to fetch files from'
             );
 
-        $supported_formats = '  * '.implode(
-            PHP_EOL.'  * ', array()
-//            $this->getConverterFactory()->getSupportedInputFormats(
-//                $this->output_format
-//            )
-        );
-
         $this->setHelp(
             <<<DESCRIPTION
 Generates reference documentation as {$this->output_format}.
@@ -106,9 +99,6 @@ Generates reference documentation as {$this->output_format}.
 You can define the type of files use as input using the <info>--input-format</info>
 of <info>-i</info> option.
 
-This specific command supports the following input formats:
-
-$supported_formats
 DESCRIPTION
         );
     }

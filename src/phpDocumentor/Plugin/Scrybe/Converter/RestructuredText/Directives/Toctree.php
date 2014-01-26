@@ -12,7 +12,6 @@
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Directives;
 
 use phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors\Discover;
-use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents\File;
 
 /**
  * Directive used to process `.. toctree::` and insert entries from the table of contents.

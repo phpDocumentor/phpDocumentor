@@ -241,7 +241,7 @@ class ParseCommand extends ConfigurableCommand
         $files->setIgnoreHidden($this->getOption($input, 'hidden', 'files/ignore-hidden', 'off') == 'on');
         $files->setFollowSymlinks($this->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on');
 
-        $file_options = $this->getOption($input, 'filename', 'files/file', array(), true);
+        $file_options = (array)$this->getOption($input, 'filename', 'files/file', array(), true);
         $added_files = array();
         foreach ($file_options as $glob) {
             if (!is_string($glob)) {
@@ -262,7 +262,7 @@ class ParseCommand extends ConfigurableCommand
         }
         $files->addFiles($added_files);
 
-        $directory_options = $this->getOption($input, 'directory', 'files/directory', array(), true);
+        $directory_options = (array)$this->getOption($input, 'directory', 'files/directory', array(), true);
         $added_directories = array();
         foreach ($directory_options as $glob) {
             if (!is_string($glob)) {

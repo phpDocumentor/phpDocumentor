@@ -75,5 +75,4 @@ class TableOfContentsTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->object->getModules());
         $this->assertSame(array($file3, $file4), $this->object->getModules());
     }
-
 }

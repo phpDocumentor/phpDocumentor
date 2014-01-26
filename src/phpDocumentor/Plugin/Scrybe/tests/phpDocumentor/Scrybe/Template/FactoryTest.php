@@ -30,7 +30,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(
-            '\phpDocumentor\Plugin\Scrybe\Template\Mock\Template', $factory->get('Mock')
+            '\phpDocumentor\Plugin\Scrybe\Template\Mock\Template',
+            $factory->get('Mock')
         );
     }
 
@@ -42,7 +43,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new Factory();
         $this->assertInstanceOf(
-            '\phpDocumentor\Plugin\Scrybe\Template\Twig', $factory->get('twig')
+            '\phpDocumentor\Plugin\Scrybe\Template\Twig',
+            $factory->get('twig')
         );
     }
 
@@ -56,7 +58,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new Factory();
         $factory->register('Mock', '\phpDocumentor\Plugin\Scrybe\Template\Mock\Template');
         $this->assertInstanceOf(
-            '\phpDocumentor\Plugin\Scrybe\Template\Mock\Template', $factory->get('Mock')
+            '\phpDocumentor\Plugin\Scrybe\Template\Mock\Template',
+            $factory->get('Mock')
         );
     }
 
@@ -101,4 +104,3 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $factory->get('Mock');
     }
 }
-

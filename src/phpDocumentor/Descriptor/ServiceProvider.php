@@ -202,8 +202,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         /** @var ClassMetadata $fileMetadata */
         $fileMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
-        /** @var ClassMetadata $constantMetadata */
-        $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
+        $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
         /** @var ClassMetadata $functionMetadata */
         $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
         /** @var ClassMetadata $classMetadata */
