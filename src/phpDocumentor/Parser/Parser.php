@@ -12,15 +12,11 @@
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Fileset\Collection;
-use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
-use phpDocumentor\Reflection\FileReflector;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -228,6 +224,16 @@ class Parser implements LoggerAwareInterface
     }
 
     /**
+     * Returns the absolute base path for all files.
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
      * Set the visibility of the methods/properties that should be documented
      *
      * @param string $visibility Comma seperated string of visibility modifiers
@@ -251,28 +257,6 @@ class Parser implements LoggerAwareInterface
     public function getVisibility()
     {
         return $this->visibility;
-    }
-
-    /**
-     * Returns the filename, relative to the root of the project directory.
-     *
-     * @param string $filename The filename to make relative.
-     *
-     * @throws \InvalidArgumentException if file is not in the project root.
-     *
-     * @return string
-     */
-    public function getRelativeFilename($filename)
-    {
-        // strip path from filename
-        $result = ltrim(substr($filename, strlen($this->path)), DIRECTORY_SEPARATOR);
-        if ($result === '') {
-            throw new \InvalidArgumentException(
-                'File is not present in the given project path: ' . $filename
-            );
-        }
-
-        return $result;
     }
 
     /**
@@ -426,71 +410,8 @@ class Parser implements LoggerAwareInterface
      */
     protected function parseFileIntoDescriptor(ProjectDescriptorBuilder $builder, $filename)
     {
-        if (class_exists('phpDocumentor\Event\Dispatcher')) {
-            Dispatcher::getInstance()->dispatch(
-                'parser.file.pre',
-                PreFileEvent::createInstance($this)->setFile($filename)
-            );
-        }
-        $this->log('Starting to parse file: ' . $filename);
-
-        try {
-            $file = $this->createFileReflector($builder, $filename);
-            if (!$file) {
-                $this->log('>> Skipped file ' . $filename . ' as no modifications were detected');
-                return;
-            }
-
-            $file->process();
-            $builder->buildFileUsingSourceData($file);
-            $this->logErrorsForDescriptor($builder->getProjectDescriptor()->getFiles()->get($file->getFilename()));
-        } catch (Exception $e) {
-            $this->log(
-                '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                LogLevel::ALERT
-            );
-        }
-    }
-
-    /**
-     * Creates a new FileReflector for the given filename or null if the file contains no modifications.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     * @param string                   $filename
-     *
-     * @return FileReflector|null Returns a new FileReflector or null if no modifications were detected for the given
-     *     filename.
-     */
-    protected function createFileReflector(ProjectDescriptorBuilder $builder, $filename)
-    {
-        $file = new FileReflector($filename, $this->doValidation(), $this->getEncoding());
-        $file->setDefaultPackageName($this->getDefaultPackageName());
-        $file->setMarkers($this->getMarkers());
-        $file->setFilename($this->getRelativeFilename($filename));
-
-        $cachedFiles = $builder->getProjectDescriptor()->getFiles();
-        $hash        = $cachedFiles->get($file->getFilename())
-            ? $cachedFiles->get($file->getFilename())->getHash()
-            : null;
-
-        return $hash === $file->getHash() && !$this->isForced()
-            ? null
-            : $file;
-    }
-
-    /**
-     * Writes the errors found in the Descriptor to the log.
-     *
-     * @param FileDescriptor $fileDescriptor
-     *
-     * @return void
-     */
-    protected function logErrorsForDescriptor($fileDescriptor)
-    {
-        $errors = $fileDescriptor->getAllErrors();
-        foreach ($errors as $error) {
-            $this->log($error->getCode(), $error->getSeverity(), $error->getContext());
-        }
+        $parser = new File($this);
+        $parser->parse($filename, $builder);
     }
 
     /**
@@ -507,24 +428,9 @@ class Parser implements LoggerAwareInterface
         Dispatcher::getInstance()->dispatch(
             'system.log',
             LogEvent::createInstance($this)
-            ->setContext($parameters)
-            ->setMessage($message)
-            ->setPriority($priority)
-        );
-    }
-
-    /**
-     * Dispatches a logging request to log a debug message.
-     *
-     * @param string $message The message to log.
-     *
-     * @return void
-     */
-    protected function debug($message)
-    {
-        Dispatcher::getInstance()->dispatch(
-            'system.debug',
-            DebugEvent::createInstance($this)->setMessage($message)
+                ->setContext($parameters)
+                ->setMessage($message)
+                ->setPriority($priority)
         );
     }
 }

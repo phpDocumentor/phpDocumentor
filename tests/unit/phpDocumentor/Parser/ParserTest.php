@@ -140,31 +140,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests whether the getRelativeFilename() and setPath() methods function
-     * properly.
-     *
-     * @covers phpDocumentor\Parser\Parser::setPath
-     * @covers phpDocumentor\Parser\Parser::getRelativeFilename
-     *
-     * @return void
-     */
-    public function testPathHandling()
-    {
-        // default is only stripping the opening slash
-        $this->assertEquals(ltrim(__FILE__, '/'), $this->fixture->getRelativeFilename(__FILE__));
-
-        // after setting the current directory as root folder; should strip all
-        // but filename
-        $this->fixture->setPath(dirname(__FILE__));
-        $this->assertEquals(basename(__FILE__), $this->fixture->getRelativeFilename(__FILE__));
-
-        // when providing a file in a lower directory it cannot parse and thus
-        // it is invalid
-        $this->setExpectedException('InvalidArgumentException');
-        $this->fixture->getRelativeFilename(realpath(dirname(__FILE__) . '/../phpunit.xml'));
-    }
-
-    /**
      * Make sure the setter can transform string to array and set correct attribute
      *
      * @covers phpDocumentor\Parser\Parser::setVisibility
