@@ -535,6 +535,23 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Then /^the AST has an expression "([^"]*)" with value:$/
+     */
+    public function theAstHasAnExpressionWithValue($arg1, PyStringNode $string)
+    {
+        $expression = new ExpressionLanguage();
+        $expressionResult = $expression->evaluate($arg1, array('project' => $this->getAst()));
+
+        if ($expressionResult === null) {
+            throw new Exception('Expression "' . $arg1 . '" does not match any content in the AST');
+        }
+
+        if ($expressionResult !== (string)$string) {
+            throw new Exception(var_export($expressionResult, true) . ' does not match \'' . $string . '\'');
+        }
+    }
+
+    /**
      * @return string
      */
     public function getOutput()
@@ -613,5 +630,13 @@ XML
         }
 
         rmdir($path);
+    }
+
+    /**
+     * @return ProjectDescriptor|null
+     */
+    protected function getAst()
+    {
+        return unserialize(file_get_contents(self::getTmpFolder() . '/ast.dump'));
     }
 }
