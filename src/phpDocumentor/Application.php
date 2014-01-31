@@ -15,6 +15,7 @@ use Cilex\Application as Cilex;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
@@ -63,6 +64,7 @@ class Application extends Cilex
 
         $this->setTimezone();
         $this->addAutoloader();
+        $this->addSerializer();
         $this->addConfiguration();
         $this->addLogging();
         $this->addEventDispatcher();
@@ -71,8 +73,6 @@ class Application extends Cilex
         /** @var ConsoleApplication $console */
         $console = $this['console'];
         $console->getHelperSet()->set(new LoggerHelper());
-
-        $this->addSerializer();
 
         $this->register(new ValidatorServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
