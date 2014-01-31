@@ -11,7 +11,9 @@
  */
 namespace phpDocumentor\Command\Project;
 
+use JMS\Serializer\Serializer;
 use phpDocumentor\Command\ConfigurableCommand;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -268,6 +270,12 @@ HELP
         $return_code = $transform_command->run($transform_input, $output);
         if ($return_code !== 0) {
             return $return_code;
+        }
+
+        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
+            /** @var ProjectDescriptorBuilder $descriptorBuilder */
+            $descriptorBuilder = $this->getService('descriptor.builder');
+            file_put_contents('ast.dump', serialize($descriptorBuilder->getProjectDescriptor()));
         }
 
         return 0;
