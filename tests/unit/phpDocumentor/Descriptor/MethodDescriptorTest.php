@@ -27,6 +27,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new MethodDescriptor();
+        $this->fixture->setName('method');
     }
 
     /**
@@ -118,5 +119,106 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->getTags()->set('return', new Collection(array($mock)));
 
         $this->assertSame($mock, $this->fixture->getResponse());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getFile
+     */
+    public function testRetrieveFileAssociatedWithAMethod()
+    {
+        // Arrange
+        $file = $this->whenFixtureIsRelatedToAClassWithFile();
+
+        // Act
+        $result = $this->fixture->getFile();
+
+        // Assert
+        $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
+        $this->assertSame($file, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getSummary
+     */
+    public function testSummaryInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $summary = 'This is a summary';
+        $this->fixture->setSummary(null);
+        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentMethod->setSummary($summary);
+
+        // Act
+        $result = $this->fixture->getSummary();
+
+        // Assert
+        $this->assertSame($summary, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getSummary
+     */
+    public function testDescriptionInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription(null);
+        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentMethod->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * Sets up mocks as such that the fixture has a file.
+     *
+     * @return m\MockInterface|FileDescriptor
+     */
+    protected function whenFixtureIsDirectlyRelatedToAFile()
+    {
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $this->fixture->setFile($file);
+        return $file;
+    }
+
+    /**
+     * Sets up mocks as such that the fixture has a parent class, with a file.
+     *
+     * @return m\MockInterface|FileDescriptor
+     */
+    protected function whenFixtureIsRelatedToAClassWithFile()
+    {
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $parent->shouldReceive('getFile')->andReturn($file);
+        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
+        $this->fixture->setParent($parent);
+
+        return $file;
+    }
+
+    /**
+     * @param string $name The name of the current method.
+     *
+     * @return MethodDescriptor
+     */
+    protected function whenFixtureHasMethodInParentClassWithSameName($name)
+    {
+        $result = new MethodDescriptor;
+        $result->setName($name);
+
+        $parent = new ClassDescriptor();
+        $parent->getMethods()->set($name, $result);
+
+        $class  = new ClassDescriptor();
+        $class->setParent($parent);
+
+        $this->fixture->setParent($class);
+
+        return $result;
     }
 }
