@@ -118,15 +118,6 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
-     */
-    public function testGetTypesUsingInheritanceWithInterfaceOfVarTag()
-    {
-        $this->markTestIncomplete('This functionality does not work yet');
-    }
-
-    /**
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::getValue
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::setValue
      */
@@ -144,11 +135,14 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrieveFileAssociatedWithAGlobalConstant()
     {
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        // Arrange
+        $file = $this->whenFixtureIsDirectlyRelatedToAFile();
 
-        $this->fixture->setFile($file);
+        // Act
+        $result = $this->fixture->getFile();
 
-        $this->assertSame($file, $this->fixture->getFile());
+        // Assert
+        $this->assertSame($file, $result);
     }
 
     /**
@@ -157,17 +151,13 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     public function testRetrieveFileAssociatedWithAClassConstant()
     {
         // Arrange
-        $file   = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $parent->shouldReceive('getFile')->andReturn($file);
-        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
-        $this->fixture->setParent($parent);
+        $file = $this->WhenFixtureIsRelatedToAClassWithFile();
 
         // Act
-        $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
+        $result = $this->fixture->getFile();
 
         // Assert
-        $result = $this->fixture->getFile();
+        $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
         $this->assertSame($file, $result);
     }
 
@@ -205,5 +195,33 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $parentClass->shouldReceive('getParent')->andReturn($superClass);
 
         return $parentClass;
+    }
+
+    /**
+     * Sets up mocks as such that the fixture has a file.
+     *
+     * @return m\MockInterface|FileDescriptor
+     */
+    protected function whenFixtureIsDirectlyRelatedToAFile()
+    {
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $this->fixture->setFile($file);
+        return $file;
+    }
+
+    /**
+     * Sets up mocks as such that the fixture has a parent class, with a file.
+     *
+     * @return m\MockInterface|FileDescriptor
+     */
+    protected function WhenFixtureIsRelatedToAClassWithFile()
+    {
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $parent->shouldReceive('getFile')->andReturn($file);
+        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
+        $this->fixture->setParent($parent);
+
+        return $file;
     }
 }
