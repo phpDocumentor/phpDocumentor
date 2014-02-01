@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 
 /**
@@ -152,6 +153,25 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($varCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getAuthor
+     */
+    public function testAuthorTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $authorTagDescriptor = new AuthorDescriptor('author');
+        $authorCollection = new Collection(array($authorTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('author', $authorCollection);
+
+        // Act
+        $result = $this->fixture->getAuthor();
+
+        // Assert
+        $this->assertSame($authorCollection, $result);
     }
 
     /**
