@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Descriptor;
 
+use \Mockery as m;
+
 /**
  * Tests the functionality for the PropertyDescriptor class.
  */
@@ -25,6 +27,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new PropertyDescriptor();
+        $this->fixture->setName('property');
     }
 
     /**
@@ -77,5 +80,106 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setDefault('a');
 
         $this->assertSame('a', $this->fixture->getDefault());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getFile
+     */
+    public function testRetrieveFileAssociatedWithAProperty()
+    {
+        // Arrange
+        $file = $this->whenFixtureIsRelatedToAClassWithFile();
+
+        // Act
+        $result = $this->fixture->getFile();
+
+        // Assert
+        $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
+        $this->assertSame($file, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getSummary
+     */
+    public function testSummaryInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $summary = 'This is a summary';
+        $this->fixture->setSummary(null);
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->setSummary($summary);
+
+        // Act
+        $result = $this->fixture->getSummary();
+
+        // Assert
+        $this->assertSame($summary, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getSummary
+     */
+    public function testDescriptionInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription(null);
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * Sets up mocks as such that the fixture has a file.
+     *
+     * @return m\MockInterface|FileDescriptor
+     */
+    protected function whenFixtureIsDirectlyRelatedToAFile()
+    {
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $this->fixture->setFile($file);
+        return $file;
+    }
+
+    /**
+     * Sets up mocks as such that the fixture has a parent class, with a file.
+     *
+     * @return m\MockInterface|FileDescriptor
+     */
+    protected function whenFixtureIsRelatedToAClassWithFile()
+    {
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $parent->shouldReceive('getFile')->andReturn($file);
+        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
+        $this->fixture->setParent($parent);
+
+        return $file;
+    }
+
+    /**
+     * @param string $name The name of the current property.
+     *
+     * @return PropertyDescriptor
+     */
+    protected function whenFixtureHasPropertyInParentClassWithSameName($name)
+    {
+        $result = new PropertyDescriptor;
+        $result->setName($name);
+
+        $parent = new ClassDescriptor();
+        $parent->getProperties()->set($name, $result);
+
+        $class  = new ClassDescriptor();
+        $class->setParent($parent);
+
+        $this->fixture->setParent($class);
+
+        return $result;
     }
 }
