@@ -222,6 +222,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::getAuthor
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
@@ -241,6 +242,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVersion
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
@@ -260,6 +262,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\ConstantDescriptor::getCopyright
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {

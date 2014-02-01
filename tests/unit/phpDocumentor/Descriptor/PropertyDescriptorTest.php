@@ -158,6 +158,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\PropertyDescriptor::getAuthor
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
@@ -177,6 +178,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVersion
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
@@ -196,6 +198,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\PropertyDescriptor::getCopyright
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {
