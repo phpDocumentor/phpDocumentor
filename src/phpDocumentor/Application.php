@@ -34,7 +34,13 @@ use Zend\Config\Factory;
  */
 require_once findAutoloader();
 define('DOMPDF_ENABLE_AUTOLOAD', false);
-require_once(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php');
+if (file_exists(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php')) {
+    // when normally installed, get it from the vendor folder
+    require_once(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php');
+} else {
+    // when installed using composer, include it from that location
+    require_once(__DIR__ . '/../../../dompdf/dompdf/dompdf_config.inc.php');
+}
 
 /**
  * Application class for phpDocumentor.
