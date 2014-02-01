@@ -27,6 +27,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new ConstantDescriptor();
+        $this->fixture->setName('CONSTANT');
     }
 
     /**
@@ -151,7 +152,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     public function testRetrieveFileAssociatedWithAClassConstant()
     {
         // Arrange
-        $file = $this->WhenFixtureIsRelatedToAClassWithFile();
+        $file = $this->whenFixtureIsRelatedToAClassWithFile();
 
         // Act
         $result = $this->fixture->getFile();
@@ -159,6 +160,42 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
         $this->assertSame($file, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getSummary
+     */
+    public function testSummaryInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $summary = 'This is a summary';
+        $this->fixture->setSummary(null);
+        $parentConstant = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentConstant->setSummary($summary);
+
+        // Act
+        $result = $this->fixture->getSummary();
+
+        // Assert
+        $this->assertSame($summary, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getSummary
+     */
+    public function testDescriptionInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription(null);
+        $parentConstant = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentConstant->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
     }
 
     /**
@@ -214,7 +251,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
      *
      * @return m\MockInterface|FileDescriptor
      */
-    protected function WhenFixtureIsRelatedToAClassWithFile()
+    protected function whenFixtureIsRelatedToAClassWithFile()
     {
         $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
@@ -223,5 +260,26 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setParent($parent);
 
         return $file;
+    }
+
+    /**
+     * @param string $name The name of the current constant.
+     *
+     * @return ConstantDescriptor
+     */
+    protected function whenFixtureHasConstantInParentClassWithSameName($name)
+    {
+        $result = new ConstantDescriptor;
+        $result->setName($name);
+
+        $parent = new ClassDescriptor();
+        $parent->getConstants()->set($name, $result);
+
+        $class  = new ClassDescriptor();
+        $class->setParent($parent);
+
+        $this->fixture->setParent($class);
+
+        return $result;
     }
 }

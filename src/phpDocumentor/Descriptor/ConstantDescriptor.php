@@ -29,6 +29,48 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     protected $value;
 
     /**
+     * Returns the summary which describes this element.
+     *
+     * This method will automatically attempt to inherit the parent's summary if this one has none.
+     *
+     * @return string
+     */
+    public function getSummary()
+    {
+        if ($this->summary && strtolower(trim($this->summary)) != '{@inheritdoc}') {
+            return parent::getSummary();
+        }
+
+        $parentConstant = $this->getInheritedElement();
+        if ($parentConstant) {
+            return $parentConstant->getSummary();
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns the description which describes this element.
+     *
+     * This method will automatically attempt to inherit the parent's description if this one has none.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        if ($this->description && strtolower(trim($this->description)) != '{@inheritdoc}') {
+            return parent::getDescription();
+        }
+
+        $parentConstant = $this->getInheritedElement();
+        if ($parentConstant) {
+            return $parentConstant->getDescription();
+        }
+
+        return '';
+    }
+
+    /**
      * Registers a parent class or interface with this constant.
      *
      * @param ClassDescriptor|InterfaceDescriptor|null $parent
@@ -132,5 +174,28 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     public function getFile()
     {
         return parent::getFile() ?: $this->getParent()->getFile();
+    }
+
+    /**
+     * Returns the Constant from which this one should inherit, if any.
+     *
+     * @return ConstantDescriptor|null
+     */
+    protected function getInheritedElement()
+    {
+        /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
+        $associatedClass = $this->getParent();
+
+        if (($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
+            && ($associatedClass->getParent() instanceof ClassDescriptor
+                || $associatedClass->getParent() instanceof InterfaceDescriptor
+            )
+        ) {
+            /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
+            $parentClass = $associatedClass->getParent();
+            return $parentClass->getConstants()->get($this->getName());
+        }
+
+        return null;
     }
 }
