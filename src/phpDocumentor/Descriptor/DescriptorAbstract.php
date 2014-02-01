@@ -358,13 +358,16 @@ abstract class DescriptorAbstract implements Filterable
     {
         /** @var Collection $version */
         $version = $this->getTags()->get('version', new Collection());
-
-        // if the version is not set, inherit it from the parent
-        if ($version->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
-            return $this->getParent()->getVersion();
+        if ($version->count() != 0) {
+            return $version;
         }
 
-        return $version;
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement) {
+            return $inheritedElement->getVersion();
+        }
+
+        return new Collection();
     }
 
     /**
@@ -376,13 +379,16 @@ abstract class DescriptorAbstract implements Filterable
     {
         /** @var Collection $copyright */
         $copyright = $this->getTags()->get('copyright', new Collection());
-
-        // if the copyright is not set, inherit it from the parent
-        if ($copyright->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
-            return $this->getParent()->getCopyright();
+        if ($copyright->count() != 0) {
+            return $copyright;
         }
 
-        return $copyright;
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement) {
+            return $inheritedElement->getCopyright();
+        }
+
+        return new Collection();
     }
 
     /**
