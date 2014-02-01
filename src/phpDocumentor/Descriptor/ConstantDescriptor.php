@@ -149,21 +149,16 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
-
-        if ($var->count() == 0
-            && ($this->getParent() instanceof ChildInterface)
-            && (
-                $this->getParent()->getParent() instanceof ClassDescriptor
-                || $this->getParent()->getParent() instanceof InterfaceDescriptor
-            )
-        ) {
-            $parentConstant = $this->getParent()->getParent()->getConstants()->get($this->getName());
-            if ($parentConstant) {
-                return $parentConstant->getVar();
-            }
+        if ($var->count() != 0) {
+            return $var;
         }
 
-        return $var;
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement) {
+            return $inheritedElement->getVar();
+        }
+
+        return new Collection();
     }
 
     /**

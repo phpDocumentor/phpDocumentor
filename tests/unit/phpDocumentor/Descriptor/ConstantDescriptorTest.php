@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
@@ -196,6 +197,25 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     */
+    public function testVarTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $varTagDescriptor = new VarDescriptor('var');
+        $varCollection = new Collection(array($varTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('var', $varCollection);
+
+        // Act
+        $result = $this->fixture->getVar();
+
+        // Assert
+        $this->assertSame($varCollection, $result);
     }
 
     /**

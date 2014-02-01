@@ -10,7 +10,7 @@ Feature: Properties inherit information from properties, with the same name, in 
          *
          * This is a constant description.
          *
-         * @var int This is the description
+         * @var \SimpleXMLElement This is the description.
          * @version 1.0
          * @author Mike van Riel
          * @copyright Copyright
