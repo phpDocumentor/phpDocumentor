@@ -39,7 +39,7 @@ if (file_exists(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php')) 
     require_once(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php');
 } else {
     // when installed using composer, include it from that location
-    require_once(__DIR__ . '/../../../dompdf/dompdf/dompdf_config.inc.php');
+    require_once(__DIR__ . '/../../../../dompdf/dompdf/dompdf_config.inc.php');
 }
 
 /**
