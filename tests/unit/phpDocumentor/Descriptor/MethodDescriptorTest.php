@@ -12,6 +12,8 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
+use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
@@ -171,6 +173,63 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getAuthor
+     */
+    public function testAuthorTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $authorTagDescriptor = new AuthorDescriptor('author');
+        $authorCollection = new Collection(array($authorTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('author', $authorCollection);
+
+        // Act
+        $result = $this->fixture->getAuthor();
+
+        // Assert
+        $this->assertSame($authorCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getVersion
+     */
+    public function testVersionTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $versionTagDescriptor = new VersionDescriptor('version');
+        $versionCollection = new Collection(array($versionTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('version', $versionCollection);
+
+        // Act
+        $result = $this->fixture->getVersion();
+
+        // Assert
+        $this->assertSame($versionCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getCopyright
+     */
+    public function testCopyrightTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $copyrightTagDescriptor = new TagDescriptor('copyright');
+        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('copyright', $copyrightCollection);
+
+        // Act
+        $result = $this->fixture->getCopyright();
+
+        // Assert
+        $this->assertSame($copyrightCollection, $result);
     }
 
     /**

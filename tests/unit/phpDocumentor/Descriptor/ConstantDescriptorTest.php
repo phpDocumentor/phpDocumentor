@@ -12,7 +12,9 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
@@ -216,6 +218,63 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($varCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getAuthor
+     */
+    public function testAuthorTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $authorTagDescriptor = new AuthorDescriptor('author');
+        $authorCollection = new Collection(array($authorTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('author', $authorCollection);
+
+        // Act
+        $result = $this->fixture->getAuthor();
+
+        // Assert
+        $this->assertSame($authorCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVersion
+     */
+    public function testVersionTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $versionTagDescriptor = new VersionDescriptor('version');
+        $versionCollection = new Collection(array($versionTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('version', $versionCollection);
+
+        // Act
+        $result = $this->fixture->getVersion();
+
+        // Assert
+        $this->assertSame($versionCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getCopyright
+     */
+    public function testCopyrightTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $copyrightTagDescriptor = new TagDescriptor('copyright');
+        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('copyright', $copyrightCollection);
+
+        // Act
+        $result = $this->fixture->getCopyright();
+
+        // Assert
+        $this->assertSame($copyrightCollection, $result);
     }
 
     /**

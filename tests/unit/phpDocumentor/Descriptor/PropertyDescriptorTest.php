@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor;
 use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
@@ -172,6 +173,44 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($authorCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVersion
+     */
+    public function testVersionTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $versionTagDescriptor = new VersionDescriptor('version');
+        $versionCollection = new Collection(array($versionTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('version', $versionCollection);
+
+        // Act
+        $result = $this->fixture->getVersion();
+
+        // Assert
+        $this->assertSame($versionCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getCopyright
+     */
+    public function testCopyrightTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $copyrightTagDescriptor = new TagDescriptor('copyright');
+        $copyrightCollection = new Collection(array($copyrightTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('copyright', $copyrightCollection);
+
+        // Act
+        $result = $this->fixture->getCopyright();
+
+        // Assert
+        $this->assertSame($copyrightCollection, $result);
     }
 
     /**
