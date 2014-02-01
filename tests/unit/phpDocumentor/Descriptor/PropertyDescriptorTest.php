@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
@@ -132,6 +133,25 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVar
+     */
+    public function testVarTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $varTagDescriptor = new VarDescriptor('var');
+        $varCollection = new Collection(array($varTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('var', $varCollection);
+
+        // Act
+        $result = $this->fixture->getVar();
+
+        // Assert
+        $this->assertSame($varCollection, $result);
     }
 
     /**

@@ -177,19 +177,16 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     {
         /** @var Collection $var */
         $var = $this->getTags()->get('var', new Collection());
-
-        if ($var->count() == 0
-            && ($this->getParent() instanceof ChildInterface)
-            && ($this->getParent()->getParent() instanceof ClassDescriptor)
-        ) {
-            /** @var PropertyDescriptor|null $parentProperty */
-            $parentProperty = $this->getParent()->getParent()->getProperties()->get($this->getName());
-            if ($parentProperty) {
-                return $parentProperty->getVar();
-            }
+        if ($var->count() != 0) {
+            return $var;
         }
 
-        return $var;
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement) {
+            return $inheritedElement->getVar();
+        }
+
+        return new Collection();
     }
 
     /**
