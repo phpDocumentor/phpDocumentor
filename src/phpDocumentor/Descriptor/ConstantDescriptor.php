@@ -131,6 +131,6 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      */
     public function getFile()
     {
-        return $this->getFile() ?: $this->getParent()->getFile();
+        return parent::getFile() ?: $this->getParent()->getFile();
     }
 }

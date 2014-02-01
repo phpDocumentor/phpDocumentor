@@ -140,6 +140,38 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     */
+    public function testRetrieveFileAssociatedWithAGlobalConstant()
+    {
+        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+
+        $this->fixture->setFile($file);
+
+        $this->assertSame($file, $this->fixture->getFile());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     */
+    public function testRetrieveFileAssociatedWithAClassConstant()
+    {
+        // Arrange
+        $file   = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $parent->shouldReceive('getFile')->andReturn($file);
+        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
+        $this->fixture->setParent($parent);
+
+        // Act
+        $this->assertAttributeSame(null, 'fileDescriptor', $this->fixture);
+
+        // Assert
+        $result = $this->fixture->getFile();
+        $this->assertSame($file, $result);
+    }
+
+    /**
      * Creates a parentClass for a Constant with a SuperClass, which in turn has a constant exposing the given types.
      *
      * The created ParentClass can be used to test the inheritance of properties of a constant descriptor, such as
