@@ -190,25 +190,6 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     }
 
     /**
-     * @return Collection
-     */
-    public function getAuthor()
-    {
-        /** @var Collection $author */
-        $author = $this->getTags()->get('author', new Collection());
-        if ($author->count() != 0) {
-            return $author;
-        }
-
-        $inheritedElement = $this->getInheritedElement();
-        if ($inheritedElement) {
-            return $inheritedElement->getAuthor();
-        }
-
-        return new Collection();
-    }
-
-    /**
      * Returns the file associated with the parent class or trait.
      *
      * @return FileDescriptor

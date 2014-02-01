@@ -331,21 +331,22 @@ abstract class DescriptorAbstract implements Filterable
     }
 
     /**
-     * Returns the authors for this element.
-     *
      * @return Collection
      */
     public function getAuthor()
     {
         /** @var Collection $author */
         $author = $this->getTags()->get('author', new Collection());
-
-        // if the author is not set, inherit it from the parent
-        if ($author->count() == 0 && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
-            return $this->getParent()->getAuthor();
+        if ($author->count() != 0) {
+            return $author;
         }
 
-        return $author;
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement) {
+            return $inheritedElement->getAuthor();
+        }
+
+        return new Collection();
     }
 
     /**
@@ -445,5 +446,10 @@ abstract class DescriptorAbstract implements Filterable
     public function __toString()
     {
         return $this->getFullyQualifiedStructuralElementName();
+    }
+
+    protected function getInheritedElement()
+    {
+        return null;
     }
 }
