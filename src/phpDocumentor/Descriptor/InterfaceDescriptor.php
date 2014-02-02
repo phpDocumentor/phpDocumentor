@@ -145,4 +145,11 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
             $method->setPackage($package);
         }
     }
+
+    protected function getInheritedElement()
+    {
+        return $this->getParent() && $this->getParent()->count() > 0
+            ? $this->getParent()->getIterator()->current()
+            : null;
+    }
 }

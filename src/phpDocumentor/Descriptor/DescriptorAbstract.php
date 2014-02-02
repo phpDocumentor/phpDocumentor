@@ -145,12 +145,13 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getSummary()
     {
-        // if the summary is not set, inherit it from the parent
-        if ((!$this->summary || strtolower(trim($this->summary)) == '{@inheritdoc}')
-            && ($this instanceof ChildInterface)
-            && ($this->getParent() instanceof self)
-        ) {
-            return $this->getParent()->getSummary();
+        if ($this->summary && strtolower(trim($this->summary)) != '{@inheritdoc}') {
+            return $this->summary;
+        }
+
+        $parent = $this->getInheritedElement();
+        if ($parent instanceof DescriptorAbstract) {
+            return $parent->getSummary();
         }
 
         return $this->summary;
@@ -182,7 +183,7 @@ abstract class DescriptorAbstract implements Filterable
         }
 
         $parentElement = $this->getInheritedElement();
-        if ($parentElement) {
+        if ($parentElement instanceof DescriptorAbstract) {
             $parentDescription = $parentElement->getDescription();
             return $this->description
                 ? str_ireplace('{@inheritdoc}', $parentDescription, $this->description)

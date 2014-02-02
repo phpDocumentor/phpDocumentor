@@ -20,6 +20,8 @@ Feature: Classes inherit information from parent classes and implemented interfa
       /**
        * This is a class summary
        *
+       * This is a class description.
+       *
        * @version 1.0
        */
       class A {
@@ -53,6 +55,15 @@ Feature: Classes inherit information from parent classes and implemented interfa
       """
 
   Scenario: Inherit description from a parent class
+    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getDescription()" with value:
+      """
+      This is a class description.
+      """
+    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\C'].getDescription()" with value:
+      """
+      This is a class description.
+      """
+
   Scenario: Current description is augmented with that of parent class when using {@inheritdoc}
   Scenario: Inherit constants from a parent class
   Scenario: Inherit constants from a implemented interface

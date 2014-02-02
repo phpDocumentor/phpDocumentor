@@ -389,4 +389,51 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->fixture->notexisting());
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getNotexisting());
     }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     */
+    public function testSummaryInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $summary = 'This is a summary';
+        $this->fixture->setSummary(null);
+        $parentInterface = $this->whenFixtureHasParentClass();
+        $parentInterface->setSummary($summary);
+
+        // Act
+        $result = $this->fixture->getSummary();
+
+        // Assert
+        $this->assertSame($summary, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription(null);
+        $parentInterface = $this->whenFixtureHasParentClass();
+        $parentInterface->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * @return ClassDescriptor
+     */
+    protected function whenFixtureHasParentClass()
+    {
+        $class = new ClassDescriptor();
+        $this->fixture->setParent($class);
+
+        return $class;
+    }
 }

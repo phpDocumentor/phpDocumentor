@@ -99,6 +99,42 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     */
+    public function testSummaryInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $summary = 'This is a summary';
+        $this->fixture->setSummary(null);
+        $parentInterface = $this->whenFixtureHasParentInterface();
+        $parentInterface->setSummary($summary);
+
+        // Act
+        $result = $this->fixture->getSummary();
+
+        // Assert
+        $this->assertSame($summary, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription(null);
+        $parentInterface = $this->whenFixtureHasParentInterface();
+        $parentInterface->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\InterfaceDescriptor::getInheritedConstants
      */
     public function testGetInheritedConstantsWithClassDescriptorParent()
@@ -175,4 +211,14 @@ class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array($parentDescriptor, $grandParentDescriptor), $result->getAll());
     }
 
+    /**
+     * @return InterfaceDescriptor
+     */
+    protected function whenFixtureHasParentInterface()
+    {
+        $interface = new InterfaceDescriptor();
+        $this->fixture->getParent()->set('IA', $interface);
+
+        return $interface;
+    }
 }

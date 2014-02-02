@@ -35,27 +35,6 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     protected $visibility = 'public';
 
     /**
-     * Returns the summary which describes this element.
-     *
-     * This method will automatically attempt to inherit the parent's summary if this one has none.
-     *
-     * @return string
-     */
-    public function getSummary()
-    {
-        if ($this->summary && strtolower(trim($this->summary)) != '{@inheritdoc}') {
-            return parent::getSummary();
-        }
-
-        $parentConstant = $this->getInheritedElement();
-        if ($parentConstant) {
-            return $parentConstant->getSummary();
-        }
-
-        return '';
-    }
-
-    /**
      * @param ClassDescriptor|TraitDescriptor $parent
      */
     public function setParent($parent)
