@@ -160,6 +160,24 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Descriptor\MethodDescriptor::getSummary
      */
+    public function testSummaryInheritsFromImplementedInterfaceWhenNoneIsPresent()
+    {
+        // Arrange
+        $summary = 'This is a summary';
+        $this->fixture->setSummary(null);
+        $parentMethod = $this->whenFixtureHasMethodInImplementedInterfaceWithSameName($this->fixture->getName());
+        $parentMethod->setSummary($summary);
+
+        // Act
+        $result = $this->fixture->getSummary();
+
+        // Assert
+        $this->assertSame($summary, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getSummary
+     */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
         // Arrange
@@ -278,6 +296,27 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $class  = new ClassDescriptor();
         $class->setParent($parent);
+
+        $this->fixture->setParent($class);
+
+        return $result;
+    }
+
+    /**
+     * @param string $name The name of the current method.
+     *
+     * @return MethodDescriptor
+     */
+    protected function whenFixtureHasMethodInImplementedInterfaceWithSameName($name)
+    {
+        $result = new MethodDescriptor;
+        $result->setName($name);
+
+        $parent = new InterfaceDescriptor();
+        $parent->getMethods()->set($name, $result);
+
+        $class  = new ClassDescriptor();
+        $class->getInterfaces()->set('Implemented', $parent);
 
         $this->fixture->setParent($class);
 
