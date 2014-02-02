@@ -15,7 +15,6 @@
         "cilex/cilex":        "~1.0",
         "symfony/validator":  "~2.2",
         "symfony/console":    "~2.4",
-        "phenx/php-font-lib": "dev-master@dev",
         "dompdf/dompdf":      "dev-master@dev",
 
         "monolog/monolog":  "~1.6",

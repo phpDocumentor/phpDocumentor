@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4d3853661c09c3cc6c9b6a349ebfab30",
+    "hash": "6cb04075a009ad7b9de09b4847f7fd10",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -252,16 +252,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "ffb51908cb6036a096b25c96a3f65dd30144f893"
+                "reference": "40a26ff154e6984baa0324d97d8040c269a1a03f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/ffb51908cb6036a096b25c96a3f65dd30144f893",
-                "reference": "ffb51908cb6036a096b25c96a3f65dd30144f893",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/40a26ff154e6984baa0324d97d8040c269a1a03f",
+                "reference": "40a26ff154e6984baa0324d97d8040c269a1a03f",
                 "shasum": ""
             },
             "require": {
-                "phenx/php-font-lib": "dev-master"
+                "phenx/php-font-lib": "0.2.*"
             },
             "type": "library",
             "autoload": {
@@ -285,7 +285,7 @@
             ],
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
-            "time": "2014-01-31 03:35:29"
+            "time": "2014-02-02 01:24:41"
         },
         {
             "name": "erusev/parsedown",
@@ -596,16 +596,16 @@
         },
         {
             "name": "phenx/php-font-lib",
-            "version": "dev-master",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-font-lib.git",
-                "reference": "be508091a99bdc1ba3b05e32a268e824a69b0d6c"
+                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/be508091a99bdc1ba3b05e32a268e824a69b0d6c",
-                "reference": "be508091a99bdc1ba3b05e32a268e824a69b0d6c",
+                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
+                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
                 "shasum": ""
             },
             "type": "library",
@@ -626,7 +626,7 @@
             ],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
-            "time": "2014-01-24 17:11:12"
+            "time": "2014-02-01 15:22:28"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3279,7 +3279,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phenx/php-font-lib": 20,
         "dompdf/dompdf": 20,
         "zetacomponents/document": 20
     },
