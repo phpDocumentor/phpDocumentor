@@ -194,6 +194,44 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getReturn
+     */
+    public function testReturnTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $returnTagDescriptor = new AuthorDescriptor('return');
+        $returnCollection = new Collection(array($returnTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('return', $returnCollection);
+
+        // Act
+        $result = $this->fixture->getReturn();
+
+        // Assert
+        $this->assertSame($returnCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getParam
+     */
+    public function testParamTagsInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $paramTagDescriptor = new AuthorDescriptor('param');
+        $paramCollection = new Collection(array($paramTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $parentProperty = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('param', $paramCollection);
+
+        // Act
+        $result = $this->fixture->getParam();
+
+        // Assert
+        $this->assertSame($paramCollection, $result);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\MethodDescriptor::getAuthor
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */

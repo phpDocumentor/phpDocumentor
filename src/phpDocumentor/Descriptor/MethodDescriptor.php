@@ -192,9 +192,11 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getResponse()
     {
         /** @var Collection|null $returnTags */
-        $returnTags = $this->getTags()->get('return');
+        $returnTags = $this->getReturn();
 
-        return $returnTags instanceof Collection ? current($returnTags->getAll()) : null;
+        return $returnTags instanceof Collection && $returnTags->count() > 0
+            ? current($returnTags->getAll())
+            : null;
     }
 
     /**
@@ -205,6 +207,44 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getFile()
     {
         return $this->getParent()->getFile();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getReturn()
+    {
+        /** @var Collection $var */
+        $var = $this->getTags()->get('return', new Collection());
+        if ($var->count() != 0) {
+            return $var;
+        }
+
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement) {
+            return $inheritedElement->getReturn();
+        }
+
+        return new Collection();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getParam()
+    {
+        /** @var Collection $var */
+        $var = $this->getTags()->get('param', new Collection());
+        if ($var instanceof Collection && $var->count() > 0) {
+            return $var;
+        }
+
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement) {
+            return $inheritedElement->getParam();
+        }
+
+        return new Collection();
     }
 
     /**
