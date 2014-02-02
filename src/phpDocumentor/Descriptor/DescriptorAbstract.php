@@ -177,9 +177,16 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getDescription()
     {
-        // if the description is not set, inherit it from the parent
-        if (!$this->description && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
-            return $this->getParent()->getDescription();
+        if ($this->description && strpos(strtolower($this->description), '{@inheritdoc}') === false) {
+            return $this->description;
+        }
+
+        $parentElement = $this->getInheritedElement();
+        if ($parentElement) {
+            $parentDescription = $parentElement->getDescription();
+            return $this->description
+                ? str_ireplace('{@inheritdoc}', $parentDescription, $this->description)
+                : $parentDescription;
         }
 
         return $this->description;
@@ -454,6 +461,9 @@ abstract class DescriptorAbstract implements Filterable
         return $this->getFullyQualifiedStructuralElementName();
     }
 
+    /**
+     * @return DescriptorAbstract|null
+     */
     protected function getInheritedElement()
     {
         return null;

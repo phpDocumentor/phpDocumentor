@@ -56,27 +56,6 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
     }
 
     /**
-     * Returns the description which describes this element.
-     *
-     * This method will automatically attempt to inherit the parent's description if this one has none.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        if ($this->description && strtolower(trim($this->description)) != '{@inheritdoc}') {
-            return parent::getDescription();
-        }
-
-        $parentConstant = $this->getInheritedElement();
-        if ($parentConstant) {
-            return $parentConstant->getDescription();
-        }
-
-        return '';
-    }
-
-    /**
      * @param ClassDescriptor|TraitDescriptor $parent
      */
     public function setParent($parent)

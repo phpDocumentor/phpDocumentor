@@ -120,7 +120,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getSummary
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -135,6 +135,42 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionInheritsWhenInheritDocIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription('{@inheritDoc}');
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription('Original description {@inheritDoc}');
+        $parentProperty = $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame('Original description ' . $description, $result);
     }
 
     /**

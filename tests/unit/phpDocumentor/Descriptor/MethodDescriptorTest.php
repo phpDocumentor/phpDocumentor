@@ -176,7 +176,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\MethodDescriptor::getSummary
+     * @covers phpDocumentor\Descriptor\MethodDescriptor::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -191,6 +191,42 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionInheritsWhenInheritDocIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription('{@inheritDoc}');
+        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentMethod->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription('Original description {@inheritDoc}');
+        $parentMethod = $this->whenFixtureHasMethodInParentClassWithSameName($this->fixture->getName());
+        $parentMethod->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame('Original description ' . $description, $result);
     }
 
     /**

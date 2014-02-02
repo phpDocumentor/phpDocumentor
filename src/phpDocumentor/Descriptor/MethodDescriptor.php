@@ -66,27 +66,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * Returns the description which describes this element.
-     *
-     * This method will automatically attempt to inherit the parent's description if this one has none.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        if ($this->description && strtolower(trim($this->description)) != '{@inheritdoc}') {
-            return parent::getDescription();
-        }
-
-        $parentConstant = $this->getInheritedElement();
-        if ($parentConstant) {
-            return $parentConstant->getDescription();
-        }
-
-        return '';
-    }
-
-    /**
      * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent
      */
     public function setParent($parent)

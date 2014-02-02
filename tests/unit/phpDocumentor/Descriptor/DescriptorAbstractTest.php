@@ -126,21 +126,6 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
-     */
-    public function testGetDescriptionFromParent()
-    {
-        $parent = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
-        $parent->shouldDeferMissing();
-        $parent->setDescription('inheritedDescription');
-
-        $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface');
-        $mock->shouldDeferMissing();
-        $mock->shouldReceive('getParent')->andReturn($parent);
-        $this->assertSame('inheritedDescription', $mock->getDescription());
-    }
-
-    /**
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::setPackage
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPackage
      */

@@ -184,7 +184,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getSummary
+     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -199,6 +199,42 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionInheritsWhenInheritDocIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription('{@inheritDoc}');
+        $parentConstant = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentConstant->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     */
+    public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription('Original description {@inheritDoc}');
+        $parentConstant = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentConstant->setDescription($description);
+
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame('Original description ' . $description, $result);
     }
 
     /**
