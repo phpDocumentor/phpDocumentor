@@ -42,9 +42,9 @@ Feature: Classes inherit information from parent classes and implemented interfa
         public function method() {}
       }
       """
+    When I run "phpdoc -f test.php"
 
   Scenario: Inherit summary from a parent class
-    When I run "phpdoc -f test.php"
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getSummary()" with value:
       """
       This is a class summary
