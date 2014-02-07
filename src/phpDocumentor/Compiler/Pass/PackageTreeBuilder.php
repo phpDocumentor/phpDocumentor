@@ -74,7 +74,12 @@ class PackageTreeBuilder implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            $packageTag = $element->getTags()->get('package')->getIterator()->current();
+            $packageTags = $element->getTags()->get('package');
+            if (!$packageTags instanceof Collection) {
+                continue;
+            }
+
+            $packageTag = $packageTags->getIterator()->current();
             if (!$packageTag instanceof TagDescriptor) {
                 continue;
             }
