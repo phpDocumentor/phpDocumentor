@@ -9,6 +9,7 @@ Feature: Generate information about one or more classes in a project
       <?php
       namespace MySpace;
 
+      trait TA {}
       interface IA { }
       interface IB { }
 
@@ -19,6 +20,7 @@ Feature: Generate information about one or more classes in a project
        * @version 1.0
        */
       class A extends B implements IA, IB, \DateTimeInterface {
+        use TA;
         const CONSTANT = 1;
         public $property;
         public function method() {}
@@ -56,6 +58,10 @@ Feature: Generate information about one or more classes in a project
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getParent()"
     And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getParent().getName()" with value: "B"
     And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\B'].getParent()" with value: "\DateTime"
+
+  Scenario: Class correctly links to traits
+    Then the AST has a "trait" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getUsedTraits()[0]"
+    And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getUsedTraits()[0].getName()" with value: "TA"
 
   Scenario: Class correctly links to namespace
     Then the AST has a "namespace" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getNamespace()"
