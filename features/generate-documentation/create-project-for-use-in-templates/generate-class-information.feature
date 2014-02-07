@@ -18,13 +18,13 @@ Feature: Generate information about one or more classes in a project
        * @package Test
        * @version 1.0
        */
-      class A extends B implements IA, IB {
+      class A extends B implements IA, IB, \DateTimeInterface {
         const CONSTANT = 1;
         public $property;
         public function method() {}
       }
 
-      class B { }
+      class B extends \DateTime {}
       """
     When I run "phpdoc -f test.php"
 
@@ -50,10 +50,12 @@ Feature: Generate information about one or more classes in a project
   Scenario: Class correctly links to implemented interfaces
     Then the AST has an "interface" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getInterfaces()['\\MySpace\\IA']"
     And the AST has an "interface" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getInterfaces()['\\MySpace\\IB']"
+    And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getInterfaces()['\\DateTimeInterface']" with value: "\DateTimeInterface"
 
   Scenario: Class correctly links to super classes
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getParent()"
     And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getParent().getName()" with value: "B"
+    And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\B'].getParent()" with value: "\DateTime"
 
   Scenario: Class correctly links to namespace
     Then the AST has a "namespace" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getNamespace()"
