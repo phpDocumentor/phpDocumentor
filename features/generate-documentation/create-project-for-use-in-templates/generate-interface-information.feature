@@ -1,7 +1,7 @@
-Feature: Generate information about one or more classes in a project
-  In order to present information on classes in a project
+Feature: Generate information about one or more interfaces in a project
+  In order to present information on interfaces in a project
   As a template author
-  I need to have all details concerning a class
+  I need to have all details concerning an interface
 
   Background:
     Given a file named "test.php" with:
