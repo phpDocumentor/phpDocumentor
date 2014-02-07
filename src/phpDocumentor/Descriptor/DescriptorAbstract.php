@@ -286,56 +286,32 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * Sets the name of the package to which this element belongs.
      *
-     * @param string $package
+     * @param PackageDescriptor $package
      *
      * @return void
      */
     public function setPackage($package)
     {
-        $this->package = trim($package);
+        $this->package = $package;
     }
 
     /**
-     * Returns the package to which this element belongs.
+     * Returns the package name for this element.
      *
-     * This method will automatically attempt to inherit the parent's package if this one has none.
-     *
-     * @return string
+     * @return PackageDescriptor
      */
     public function getPackage()
     {
-        // if the package is not set, inherit it from the parent
-        if (!$this->package && ($this instanceof ChildInterface) && ($this->getParent() instanceof self)) {
-            return $this->getParent()->getPackage();
+        if ($this->package instanceof PackageDescriptor) {
+            return $this->package;
         }
 
-        return $this->package;
-    }
-
-    /**
-     * Returns the subpackage for this element.
-     *
-     * This method will automatically attempt to inherit the parent's subpackage if this one has none.
-     *
-     * @return Collection
-     */
-    public function getSubPackage()
-    {
-        /** @var Collection $subpackage */
-        $subpackage = $this->getTags()->get('subpackage', new Collection());
-
-        // if the subpackage is not set, inherit it from the parent
-        if ($subpackage->count() == 0
-            && ($this instanceof ChildInterface)
-            && ($this->getParent() instanceof self)
-            && ($this->getParent()->getPackage() == $this->getPackage())
-        ) {
-            return $this->getParent()->getSubPackage();
+        $inheritedElement = $this->getInheritedElement();
+        if ($inheritedElement instanceof DescriptorAbstract) {
+            return $inheritedElement->getPackage();
         }
 
-        $subpackageDescriptor = current(current($subpackage));
-
-        return $subpackageDescriptor ? $subpackageDescriptor->getDescription() : '';
+        return null;
     }
 
     /**

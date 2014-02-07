@@ -78,12 +78,12 @@ Feature: Classes inherit information from parent classes and implemented interfa
   Scenario: Inherit @author tags from a parent class
   Scenario: Inherit @copyright tags from a parent class
   Scenario: Inherit @version tags from a parent class
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['property'].getVersion()[0].getVersion()" with value:
-    """
+    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getVersion()[0].getVersion()" with value:
+      """
       1.0
       """
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\C'].getProperties()['property'].getVersion()[0].getVersion()" with value:
-    """
+    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\C'].getVersion()[0].getVersion()" with value:
+      """
       1.0
       """
 

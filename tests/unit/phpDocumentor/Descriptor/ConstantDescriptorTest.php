@@ -257,7 +257,25 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getAuthor
+     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPackage
+     */
+    public function testPackageInheritWhenNoneArePresent()
+    {
+        // Arrange
+        $packageTagDescriptor = new PackageDescriptor();
+        $packageCollection = new Collection(array($packageTagDescriptor));
+        $this->fixture->setPackage('');
+        $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
+        $parentProperty->getTags()->set('package', $packageCollection);
+
+        // Act
+        $result = $this->fixture->getPackage();
+
+        // Assert
+        $this->assertSame($packageCollection, $result);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
@@ -277,7 +295,6 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVersion
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
@@ -297,7 +314,6 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getCopyright
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()

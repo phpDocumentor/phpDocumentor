@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Rebuilds the package tree from the elements found in files.
@@ -73,9 +74,18 @@ class PackageTreeBuilder implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            $packageName = (string) $element->getPackage();
-            if ($element->getSubPackage()) {
-                $packageName .= '\\' . $element->getSubPackage();
+            $packageTag = $element->getTags()->get('package')->getIterator()->current();
+            if (!$packageTag instanceof TagDescriptor) {
+                continue;
+            }
+            $packageName = $packageTag->getDescription();
+
+            $subpackageCollection = $element->getTags()->get('subpackage');
+            if ($subpackageCollection instanceof Collection && $subpackageCollection->count() > 0) {
+                $subpackageTag = $subpackageCollection->getIterator()->current();
+                if ($subpackageTag instanceof TagDescriptor) {
+                    $packageName .= '\\' . $subpackageTag->getDescription();
+                }
             }
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
