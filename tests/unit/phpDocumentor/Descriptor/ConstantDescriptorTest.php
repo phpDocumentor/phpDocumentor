@@ -263,16 +263,15 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $packageTagDescriptor = new PackageDescriptor();
-        $packageCollection = new Collection(array($packageTagDescriptor));
         $this->fixture->setPackage('');
         $parentProperty = $this->whenFixtureHasConstantInParentClassWithSameName($this->fixture->getName());
-        $parentProperty->getTags()->set('package', $packageCollection);
+        $parentProperty->setPackage($packageTagDescriptor);
 
         // Act
         $result = $this->fixture->getPackage();
 
         // Assert
-        $this->assertSame($packageCollection, $result);
+        $this->assertSame($packageTagDescriptor, $result);
     }
 
     /**

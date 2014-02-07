@@ -116,65 +116,12 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingAndGettingPackage()
     {
-        $this->assertSame('', $this->fixture->getPackage());
+        $package = new PackageDescriptor();
+        $this->assertSame(null, $this->fixture->getPackage());
 
-        $this->fixture->setPackage('Package');
+        $this->fixture->setPackage($package);
 
-        $this->assertSame('Package', $this->fixture->getPackage());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPackage
-     */
-    public function testGetPackageFromParent()
-    {
-        $parent = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
-        $parent->shouldDeferMissing();
-        $parent->setPackage('inheritedPackage');
-
-        $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface');
-        $mock->shouldDeferMissing();
-        $mock->shouldReceive('getParent')->andReturn($parent);
-        $this->assertSame('inheritedPackage', $mock->getPackage());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSubPackage
-     */
-    public function testGetSubPackage()
-    {
-        $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface');
-        $mock->shouldDeferMissing();
-
-        $subpackageMock = m::mock('phpDocumentor\Descriptor\TagDescriptor');
-        $subpackageMock->shouldReceive('getDescription')->andReturn('sub');
-        $subpackage = new Collection(array($subpackageMock));
-
-        $collection = new Collection();
-        $collection->offsetSet('subpackage', $subpackage);
-
-        $mock->shouldReceive('getTags')->andReturn($collection);
-        $this->assertSame('sub', $mock->getSubPackage());
-    }
-
-    /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSubPackage
-     */
-    public function testGetSubPackageFromParent()
-    {
-        $parentCollection = new Collection(array('parentSubpackage'));
-        $parent = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
-        $parent->shouldDeferMissing();
-        $parent->setPackage('Package');
-        $parent->shouldReceive('getSubPackage')->andReturn($parentCollection);
-
-        $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract, phpDocumentor\Descriptor\Interfaces\ChildInterface');
-        $mock->shouldDeferMissing();
-        $mock->shouldReceive('getTags')->andReturn(new Collection());
-        $mock->shouldReceive('getParent')->andReturn($parent);
-        $mock->shouldReceive('getPackage')->andReturn('Package');
-
-        $this->assertSame($parentCollection, $mock->getSubPackage());
+        $this->assertSame($package, $this->fixture->getPackage());
     }
 
     /**
