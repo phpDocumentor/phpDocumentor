@@ -552,6 +552,15 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Then /^the AST has an expression "([^"]*)" with value: "([^"]*)"$/
+     */
+    public function theAstHasAnExpressionWithValue2($arg1, $arg2)
+    {
+        $string = new PyStringNode($arg2);
+        $this->theAstHasAnExpressionWithValue($arg1, $string);
+    }
+
+    /**
      * @return string
      */
     public function getOutput()
@@ -638,5 +647,23 @@ XML
     protected function getAst()
     {
         return unserialize(file_get_contents(self::getTmpFolder() . '/ast.dump'));
+    }
+
+    /**
+     * @Then /^the AST has a[n]? "([^"]*)" at expression "([^"]*)"$/
+     */
+    public function theAstHasAAtExpression($arg1, $arg2)
+    {
+        $expression = new ExpressionLanguage();
+        $expressionResult = $expression->evaluate($arg2, array('project' => $this->getAst()));
+
+        if ($expressionResult === null) {
+            throw new Exception('Expression "' . $arg2 . '" does not match any content in the AST');
+        }
+
+        $descriptorClass = '\\phpDocumentor\\Descriptor\\' . ucfirst($arg1) . 'Descriptor';
+        if (!$expressionResult instanceof $descriptorClass) {
+            throw new Exception('The value at the given expression is not a \'' . $arg1. '\'');
+        }
     }
 }
