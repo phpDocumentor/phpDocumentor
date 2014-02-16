@@ -188,7 +188,7 @@ class Xsl extends WriterAbstract
      */
     public function setProcessorParameters(
         TransformationObject $transformation,
-        \XSLTProcessor $proc
+        $proc
     ) {
         foreach ($this->xsl_variables as $key => $variable) {
             // XSL does not allow both single and double quotes in a string
