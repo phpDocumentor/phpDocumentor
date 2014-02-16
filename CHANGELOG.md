@@ -17,6 +17,7 @@ FIXED:     Crash that occurred when building a tree of packages.
 FIXED:     Crash that occurred when an interface was not recognized.
 FIXED:     XSLTCache extension could not be used instead of XSLTProcessor due to a stray typehint.
 FIXED:     #1110: Crash on incomplete `define` definition.
+FIXED:     #949: `@inheritdoc` is not working with interfaces.
 ```
 
 2013/11/23: Version 2.2
