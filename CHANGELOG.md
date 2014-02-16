@@ -3,6 +3,7 @@
 
 ```
 ADDED:     Support for writing PDF files using a Twig template by adding the PDF writer.
+CHANGED:   Replaced custom phar building with the library from http://box-project.org
 FIXED:     #1090: GraphViz issues where the global namespace caused GraphViz not to generate
 ```
 
