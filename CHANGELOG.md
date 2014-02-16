@@ -15,6 +15,7 @@ FIXED:     Cleaned up code to remove warnings and errors.
 FIXED:     #1111: An infinite loop occurred during processing of global constants.
 FIXED:     Crash that occurred when building a tree of packages.
 FIXED:     Crash that occurred when an interface was not recognized.
+FIXED:     XSLTCache extension could not be used instead of XSLTProcessor due to a stray typehint.
 ```
 
 2013/11/23: Version 2.2
