@@ -185,7 +185,7 @@ class Graph extends WriterAbstract
         }
 
         $sub_graph = GraphVizGraph::create('cluster_' . $full_namespace_name)
-            ->setLabel($namespace->getName())
+            ->setLabel($namespace->getName() == '\\' ? 'Global' : $namespace->getName())
             ->setStyle('rounded')
             ->setColor('gray')
             ->setFontColor('gray')

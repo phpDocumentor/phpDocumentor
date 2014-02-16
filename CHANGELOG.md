@@ -3,6 +3,7 @@
 
 ```
 ADDED:     Support for writing PDF files using a Twig template by adding the PDF writer.
+FIXED:     #1090: GraphViz issues where the global namespace caused GraphViz not to generate
 ```
 
 2013/11/23: Version 2.2
