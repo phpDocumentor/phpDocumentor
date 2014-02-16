@@ -415,16 +415,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "0.14.0",
+            "version": "0.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "22daa254e54f4b69292bd8679d7a6f3a78dc85d4"
+                "reference": "4a49caf0a20babcf8040fb1cf84f26faff6e7d85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/22daa254e54f4b69292bd8679d7a6f3a78dc85d4",
-                "reference": "22daa254e54f4b69292bd8679d7a6f3a78dc85d4",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/4a49caf0a20babcf8040fb1cf84f26faff6e7d85",
+                "reference": "4a49caf0a20babcf8040fb1cf84f26faff6e7d85",
                 "shasum": ""
             },
             "require": {
@@ -440,7 +440,7 @@
                 "jackalope/jackalope-doctrine-dbal": "1.0.*",
                 "propel/propel1": "~1.7",
                 "symfony/filesystem": "2.*",
-                "symfony/form": ">=2.1,<2.2-dev",
+                "symfony/form": ">=2.1,<=2.4-dev",
                 "symfony/translation": ">=2.0,<2.2-dev",
                 "symfony/validator": ">=2.0,<2.2-dev",
                 "symfony/yaml": "2.*",
@@ -481,7 +481,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2013-12-04 16:46:05"
+            "time": "2014-02-10 11:00:05"
         },
         {
             "name": "monolog/monolog",
@@ -723,16 +723,16 @@
         },
         {
             "name": "phpdocumentor/graphviz",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/GraphViz.git",
-                "reference": "1.0.0"
+                "reference": "24e7d2f285a5972dbdce6a36f26d499b144eb1b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/1.0.0",
-                "reference": "1.0.0",
+                "url": "https://api.github.com/repos/phpDocumentor/GraphViz/zipball/24e7d2f285a5972dbdce6a36f26d499b144eb1b1",
+                "reference": "24e7d2f285a5972dbdce6a36f26d499b144eb1b1",
                 "shasum": ""
             },
             "require": {
@@ -760,20 +760,20 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2013-08-06 20:57:15"
+            "time": "2014-02-16 07:54:39"
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "ac90c626dc11005e31a166a5cb97fe54b0931378"
+                "reference": "7fa71b389e718ea5c33fa0cf0eb45280a4513b7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/ac90c626dc11005e31a166a5cb97fe54b0931378",
-                "reference": "ac90c626dc11005e31a166a5cb97fe54b0931378",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/7fa71b389e718ea5c33fa0cf0eb45280a4513b7d",
+                "reference": "7fa71b389e718ea5c33fa0cf0eb45280a4513b7d",
                 "shasum": ""
             },
             "require": {
@@ -809,7 +809,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2013-11-29 20:34:41"
+            "time": "2014-02-16 15:05:27"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
