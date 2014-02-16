@@ -53,6 +53,8 @@ ADDED:     Show which traits are consumed by a class
 ADDED:     Link to the traits that are consumed by a class
 ADDED:     Show traits with their methods and properties
 CHANGED:   phpDocumentor now checks for transformation requirements at the start of the application (#148)
+FIXED:     Fatal error with some of the old-style validations
+FIXED:     Template:list command errors due to an incorrect path
 FIXED:     Checkstyle error report only showed errors of the file itself and not subelements (#1046)
 FIXED:     Validation to check for validity of return types
 FIXED:     Validation to check for validity of parameters
