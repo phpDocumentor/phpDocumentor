@@ -1,10 +1,20 @@
-2013/11/23: Version 2.3
+2014/02/16: Version 2.3
 -----------------------
 
 ```
 ADDED:     Support for writing PDF files using a Twig template by adding the PDF writer.
-CHANGED:   Replaced custom phar building with the library from http://box-project.org
-FIXED:     #1090: GraphViz issues where the global namespace caused GraphViz not to generate
+ADDED:     More documentation on types, running phpDocumentor, the @var tag.
+ADDED:     Support for sorting lists with Twig and XSLT.
+ADDED:     Basic support for generating reference documentation with ReST documents.
+CHANGED:   Replaced custom phar building with the library from http://box-project.org.
+FIXED:     #1090: GraphViz issues where the global namespace caused GraphViz not to generate.
+FIXED:     #1037 by @siad007: if opcode cache is enabled for CLI then annotations are dropped.
+FIXED:     #1031: Fixed inheritance for the summary, description, tags and the way @inheritdoc works.
+FIXED:     Adding several unit tests.
+FIXED:     Cleaned up code to remove warnings and errors.
+FIXED:     #1111: An infinite loop occurred during processing of global constants.
+FIXED:     Crash that occurred when building a tree of packages.
+FIXED:     Crash that occurred when an interface was not recognized.
 ```
 
 2013/11/23: Version 2.2
