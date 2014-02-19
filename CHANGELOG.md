@@ -2,6 +2,7 @@
 -----------------------
 
 ```
+CHANGED:   #1128: Minimum Symfony/Console version was set at 2.3 to support LTS version
 ```
 
 2014/02/16: Version 2.3
