@@ -124,7 +124,7 @@ Glossary
         .. code-block:: php
            :linenos:
 
-            /** @type int This is a counter. */
+            /** @var int This is a counter. */
             $int = 0;
 
             // there should be no docblock here
@@ -140,7 +140,7 @@ Glossary
              */
             class Foo
             {
-                /** @type string|null Should contain a description if available */
+                /** @var string|null Should contain a description if available */
                 protected $description = null;
 
                 /**
@@ -163,7 +163,7 @@ Glossary
         .. code-block:: php
            :linenos:
 
-            /** @type \Sqlite3 $sqlite */
+            /** @var \Sqlite3 $sqlite */
             foreach($connections as $sqlite) {
                 // there should be no docblock here
                 $sqlite->open('/my/database/path');
