@@ -76,12 +76,6 @@ As hinted at in the opening text of this chapter each of the above will only be 
 not have the inherited element. So, for example, if the DocBlock of a subclass has a summary then it will not receive
 the superclass' summary.
 
-.. important::
-
-   In the case of interfaces it might get confusing as interfaces can extend from multiple parent interfaces; in this
-   case *no* information is inherited. The reason behind this is simple: if an interface extends multiple interfaces
-   then it is a composition and thus nobody's child.
-
 The ``@subpackage`` tag will only be inherited if the parent's ``@package`` matches the ``@package`` tag of the
 subclass; otherwise subpackages would 'bleed' through into other packages where they are not desired.
 
