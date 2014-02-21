@@ -33,7 +33,7 @@
         <exec executable="php" passthru="true">
             <arg value="composer.phar"/>
             <arg value="install"/>
-            <arg value="--prefer-dist"/>
+            <arg value="--prefer-source"/>
             <arg value="--dev"/>
         </exec>
     </target>
@@ -41,9 +41,7 @@
     <!-- Generate checkstyle.xml -->
     <target name="build:phpcs" description="Checks for Coding Standard violations">
         <echo message="Executing phpCodeSniffer, output is in 'build/logs/checkstyle.xml'"/>
-        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PSR2" haltonerror="false">
-            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
-        </phpcodesniffer>
+        <exec command="${project.basedir}/bin/phpcs --standard=PSR2 --report=checkstyle --report-file=${project.basedir}/build/logs/checkstyle.xml ${project.basedir}/src" passthru="true" checkreturn="false"/>
     </target>
 
     <!-- Generate API documentation with phpDocumentor -->
