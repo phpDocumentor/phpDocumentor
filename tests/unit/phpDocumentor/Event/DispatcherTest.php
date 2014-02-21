@@ -56,7 +56,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $fixture = Dispatcher::getInstance('mine');
         $this->assertSame($fixture, Dispatcher::getInstance('mine'));
 
-        $newObject = m::mock('phpDocumentor\Event\Dispatcher[]');
+        $newObject = m::mock('phpDocumentor\Event\Dispatcher');
         Dispatcher::setInstance('mine', $newObject);
         $this->assertSame($newObject, Dispatcher::getInstance('mine'));
     }
