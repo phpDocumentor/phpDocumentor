@@ -62,9 +62,7 @@
 
     <!-- Generate pmd-cpd.xml -->
     <target name="build:phpcpd" description="Search for duplicated code">
-        <!--<phpcpd file="${project.basedir}/src/phpDocumentor">-->
-            <!--<formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>-->
-        <!--</phpcpd>-->
+        <exec command="phpcpd ${project.basedir}/src/phpDocumentor --log-pmd=${project.basedir}/build/logs/pmd-cpd.xml" passthru="true" checkreturn="false"/>
     </target>
 
     <!-- Generate pmd.xml -->
