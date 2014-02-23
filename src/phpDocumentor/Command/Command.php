@@ -24,6 +24,11 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class Command extends \Cilex\Command\Command
 {
+    /**
+     * Registers the current command.
+     *
+     * @param HelperSet $helperSet
+     */
     public function setHelperSet(HelperSet $helperSet)
     {
         parent::setHelperSet($helperSet);
@@ -34,11 +39,11 @@ class Command extends \Cilex\Command\Command
     /**
      * Returns boolean based on whether given path is absolute or not.
      *
+     * This method was taken from the FileLocator class of the Symfony Config component.
+     *
      * @param string $path Given path
      *
-     * @author Michael Wallner <mike@php.net>
-     *
-     * @link http://pear.php.net/package/File_Util/docs/latest/File/File_Util/File_Util.html#methodisAbsolute
+     * @author Fabien Potencier <fabien@symfony.com>
      *
      * @todo consider moving this method to a more logical place
      *
@@ -46,16 +51,17 @@ class Command extends \Cilex\Command\Command
      */
     protected function isAbsolute($path)
     {
-        if (preg_match('/(?:\/|\\\)\.\.(?=\/|$)/', $path)) {
-            return false;
+        if ($path[0] == '/' || $path[0] == '\\'
+            || (strlen($path) > 3 && ctype_alpha($path[0])
+                && $path[1] == ':'
+                && ($path[2] == '\\' || $path[2] == '/')
+            )
+            || null !== parse_url($path, PHP_URL_SCHEME)
+        ) {
+            return true;
         }
 
-        // windows detection
-        if (defined('OS_WINDOWS') ? OS_WINDOWS : !strncasecmp(PHP_OS, 'win', 3)) {
-            return (($path[0] == '/') || preg_match('/^[a-zA-Z]:(\\\|\/)/', $path));
-        }
-
-        return ($path[0] == '/') || ($path[0] == '~');
+        return false;
     }
 
     /**
