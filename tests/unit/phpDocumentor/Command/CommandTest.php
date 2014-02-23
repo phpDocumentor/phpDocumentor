@@ -31,7 +31,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::getHelperSet
+     * @covers phpDocumentor\Command\Command::setHelperSet
      */
     public function testLoggerHelperReceivesCurrentCommand()
     {
