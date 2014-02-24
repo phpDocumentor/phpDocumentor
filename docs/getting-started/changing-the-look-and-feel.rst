@@ -97,12 +97,14 @@ It is also possible to create your own template using either XSL or Twig as temp
 extending, or re-using, parts of an existing template or by starting from scratch. phpDocumentor offers a lot of
 conveniences for template writers, which would go beyond the scope of this tutorial.
 
-See the guide on :doc:`creating templates<../guides/templates>` how to accomplish this.
+A tutorial for creating your own documentation with Twig is offered in the chapter
+:doc:`creating-your-own-template-using-twig`, for a complete overview of all options and possibilities see the guide
+on :doc:`creating templates<../guides/templates>` how to accomplish this.
 
 If you want to tweak one or two things it is also possible to define :term:`transformations` directly in your
 configuration file. This way you can override the index, copy files (such as PDFs) or generate additional documents.
 
-For example, here we see how a PDF (located at ``data/specification.pdf`` of the project) is copied to the
+For example, here we see how a PDF (located at ``data/specification.pdf`` of the template folder) is copied to the
 destination location (the target folder) so that it may be referred to, and linked to, in the documentation.
 
 .. code-block:: xml

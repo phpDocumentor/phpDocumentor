@@ -21,12 +21,22 @@ produce multiple types of output simultaneously.
    A theme however represents a consistent output (such as HTML documentation) whose styling can be altered by placing
    a layer on top of it.
 
-location
-transformations
-writers
+Location & Configuration
+------------------------
+
 template.xml
-routing
 phpdoc.xml
+
+Folder layout
+-------------
+
+routing
+
+Transformations
+---------------
+
+Writers
+-------
 
 More Than a Theme
 -----------------
