@@ -73,6 +73,22 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Parser\Parser::setPath
+     * @covers phpDocumentor\Parser\Parser::getPath
+     */
+    public function testSettingAndRetrievingTheBasePath()
+    {
+        // Arrange
+        $this->assertSame('', $this->fixture->getPath());
+
+        // Act
+        $this->fixture->setPath(sys_get_temp_dir());
+
+        // Assert
+        $this->assertSame(sys_get_temp_dir(), $this->fixture->getPath());
+    }
+
+    /**
      * @covers phpDocumentor\Parser\Parser::setStopwatch
      */
     public function testSetStopWatch()

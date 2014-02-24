@@ -55,7 +55,7 @@ class Parser implements LoggerAwareInterface
     protected $ignoredTags = array();
 
     /** @var string target location's root path */
-    protected $path = null;
+    protected $path = '';
 
     /** @var LoggerInterface $logger */
     protected $logger;
@@ -81,6 +81,8 @@ class Parser implements LoggerAwareInterface
      * is used as a default value for phpDocumentor to convert the source files that it receives.
      *
      * If no encoding is specified than 'utf-8' is assumed by default.
+     *
+     * @codeCoverageIgnore the ini_get call cannot be tested as setting it using ini_set has no effect.
      */
     public function __construct()
     {
@@ -337,45 +339,22 @@ class Parser implements LoggerAwareInterface
      */
     public function parse(ProjectDescriptorBuilder $builder, Collection $files)
     {
-        if ($this->stopwatch) {
-            $this->stopwatch->start('parser.parse');
-        }
+        $this->startTimingTheParsePhase();
+
+        $this->forceRebuildIfSettingsHaveModified($builder);
 
         $paths = $this->getFilenames($files);
 
         $this->log('  Project root is:  ' . $files->getProjectRoot());
         $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
 
-        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
-            $this->setForced(true);
-            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
-        }
-
         $memory = 0;
         foreach ($paths as $filename) {
             $this->parseFileIntoDescriptor($builder, $filename);
-
-            $lap       = $this->stopwatch->lap('parser.parse');
-            $oldMemory = $memory;
-            $periods   = $lap->getPeriods();
-            $memory    = end($periods)->getMemory();
-
-            $this->log(
-                '>> Memory after processing of file: ' . number_format($memory / 1024 / 1024, 2)
-                . ' megabytes (' . (($memory - $oldMemory >= 0)
-                    ? '+'
-                    : '-') . number_format(($memory - $oldMemory) / 1024)
-                . ' kilobytes)',
-                LogLevel::DEBUG
-            );
+            $memory = $this->logAfterParsingAFile($memory);
         }
 
-        if ($this->stopwatch) {
-            $event = $this->stopwatch->stop('parser.parse');
-
-            $this->log('Elapsed time to parse all files: ' . round($event->getDuration(), 2) . 's');
-            $this->log('Peak memory usage: '. round($event->getMemory() / 1024 / 1024, 2) . 'M');
-        }
+        $this->logAfterParsingAllFiles();
 
         return $builder->getProjectDescriptor();
     }
@@ -415,6 +394,68 @@ class Parser implements LoggerAwareInterface
     }
 
     /**
+     * Checks if the settings of the project have changed and forces a complete rebuild if they have.
+     *
+     * @param ProjectDescriptorBuilder $builder
+     *
+     * @return void
+     */
+    protected function forceRebuildIfSettingsHaveModified(ProjectDescriptorBuilder $builder)
+    {
+        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
+            $this->setForced(true);
+            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
+        }
+    }
+
+    /**
+     * Collects the time and duration of processing a file, logs it and returns the new amount of memory in use.
+     *
+     * @param integer $memory
+     *
+     * @return integer
+     */
+    protected function logAfterParsingAFile($memory)
+    {
+        if (!$this->stopwatch) {
+            return $memory;
+        }
+
+        $lap = $this->stopwatch->lap('parser.parse');
+        $oldMemory = $memory;
+        $periods = $lap->getPeriods();
+        $memory = end($periods)->getMemory();
+
+        $this->log(
+            '>> Memory after processing of file: ' . number_format($memory / 1024 / 1024, 2)
+            . ' megabytes (' . (($memory - $oldMemory >= 0)
+                ? '+'
+                : '-') . number_format(($memory - $oldMemory) / 1024)
+            . ' kilobytes)',
+            LogLevel::DEBUG
+        );
+
+        return $memory;
+    }
+
+    /**
+     * Writes the complete parsing cycle to log.
+     *
+     * @return void
+     */
+    protected function logAfterParsingAllFiles()
+    {
+        if (!$this->stopwatch) {
+            return;
+        }
+
+        $event = $this->stopwatch->stop('parser.parse');
+
+        $this->log('Elapsed time to parse all files: ' . round($event->getDuration(), 2) . 's');
+        $this->log('Peak memory usage: ' . round($event->getMemory() / 1024 / 1024, 2) . 'M');
+    }
+
+    /**
      * Dispatches a logging request.
      *
      * @param string   $message  The message to log.
@@ -432,5 +473,12 @@ class Parser implements LoggerAwareInterface
                 ->setMessage($message)
                 ->setPriority($priority)
         );
+    }
+
+    protected function startTimingTheParsePhase()
+    {
+        if ($this->stopwatch) {
+            $this->stopwatch->start('parser.parse');
+        }
     }
 }
