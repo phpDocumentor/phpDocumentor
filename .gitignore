@@ -14,3 +14,4 @@ data/templates/*
 composer.phar
 /nbproject/private/
 box.phar
+phpunit.xml
