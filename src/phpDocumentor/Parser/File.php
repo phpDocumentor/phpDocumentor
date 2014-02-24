@@ -43,6 +43,8 @@ class File
      *
      * @param string                   $filename
      * @param ProjectDescriptorBuilder $builder
+     *
+     * @return void
      */
     public function parse($filename, ProjectDescriptorBuilder $builder)
     {
