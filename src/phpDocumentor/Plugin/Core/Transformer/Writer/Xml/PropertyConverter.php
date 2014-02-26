@@ -43,7 +43,7 @@ class PropertyConverter
      */
     public function convert(\DOMElement $parent, PropertyDescriptor $property)
     {
-        $fullyQualifiedNamespaceName = $property->getNamespace()
+        $fullyQualifiedNamespaceName = $property->getNamespace() instanceof NamespaceDescriptor
             ? $property->getNamespace()->getFullyQualifiedStructuralElementName()
             : $parent->getAttribute('namespace');
 

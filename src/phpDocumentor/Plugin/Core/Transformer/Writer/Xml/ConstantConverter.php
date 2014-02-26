@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 
 /**
  * Converter used to create an XML Element representing the constant and its DocBlock.
@@ -43,7 +44,7 @@ class ConstantConverter
      */
     public function convert(\DOMElement $parent, ConstantDescriptor $constant)
     {
-        $fullyQualifiedNamespaceName = $constant->getNamespace()
+        $fullyQualifiedNamespaceName = $constant->getNamespace() instanceof NamespaceDescriptor
             ? $constant->getNamespace()->getFullyQualifiedStructuralElementName()
             : $parent->getAttribute('namespace');
 

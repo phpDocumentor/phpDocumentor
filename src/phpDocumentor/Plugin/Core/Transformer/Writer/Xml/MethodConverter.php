@@ -49,7 +49,7 @@ class MethodConverter
      */
     public function convert(\DOMElement $parent, MethodDescriptor $method)
     {
-        $fullyQualifiedNamespaceName = $method->getNamespace()
+        $fullyQualifiedNamespaceName = $method->getNamespace() instanceof NamespaceDescriptor
             ? $method->getNamespace()->getFullyQualifiedStructuralElementName()
             : $parent->getAttribute('namespace');
 
