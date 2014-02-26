@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 
 /**
  * Converter used to create an XML Element representing the method, its arguments and its DocBlock.

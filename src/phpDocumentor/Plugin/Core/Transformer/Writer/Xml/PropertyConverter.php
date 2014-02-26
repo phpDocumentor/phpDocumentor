@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 
 /**
