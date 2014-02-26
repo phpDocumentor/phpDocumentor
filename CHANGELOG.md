@@ -1,8 +1,10 @@
-2014/03/16: Version 2.4
------------------------
+2014/02/26: Version 2.3.1
+-------------------------
 
 ```
-CHANGED:   #1128: Minimum Symfony/Console version was set at 2.3 to support LTS version
+CHANGED:   #1128: Minimum Symfony/Console version was set at 2.3 to support LTS version.
+FIXED:     #1090: There were still GraphViz issues, these have now been fixed and confirmed.
+FIXED:     #1131: Fatal Error on ConstantConverter when using an XML-based template.
 ```
 
 2014/02/16: Version 2.3
