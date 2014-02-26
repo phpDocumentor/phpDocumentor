@@ -23,11 +23,11 @@ phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consu
   <email>ashnazg@php.net</email>
   <active>yes</active>
  </lead>
- <date>2014-02-16</date>
- <time>18:48:31</time>
+ <date>2014-02-26</date>
+ <time>21:50:13</time>
  <version>
-  <release>2.3.0</release>
-  <api>2.3.0</api>
+  <release>2.3.1</release>
+  <api>2.3.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -1395,6 +1395,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
     </dir> <!-- /docs/cookbook -->
     <dir name="getting-started">
      <file baseinstalldir="/phpDocumentor" name="changing-the-look-and-feel.rst" role="php">
+      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+     </file>
+     <file baseinstalldir="/phpDocumentor" name="creating-your-own-template-using-twig.rst" role="php">
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/phpDocumentor" name="extending-phpdocumentor.rst" role="php">
@@ -3295,6 +3298,11 @@ Please see the CHANGELOG in the root of the application for the latest changes
     </dir> <!-- /tests/data -->
     <dir name="unit">
      <dir name="phpDocumentor">
+      <dir name="Command">
+       <file baseinstalldir="/phpDocumentor" name="CommandTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
+      </dir> <!-- /tests/unit/phpDocumentor/Command -->
       <dir name="Compiler">
        <dir name="Linker">
         <file baseinstalldir="/phpDocumentor" name="LinkerTest.php" role="php">
@@ -3418,6 +3426,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
          <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
         </file>
        </dir> <!-- /tests/unit/phpDocumentor/Parser/Event -->
+       <file baseinstalldir="/phpDocumentor" name="FileTest.php" role="php">
+        <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+       </file>
        <file baseinstalldir="/phpDocumentor" name="ParserTest.php" role="php">
         <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
        </file>
@@ -31442,6 +31453,9 @@ Please see the CHANGELOG in the root of the application for the latest changes
    <file baseinstalldir="/phpDocumentor" name="phpdoc.dist.xml" role="php">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
+   <file baseinstalldir="/phpDocumentor" name="phpunit.xml" role="data">
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+   </file>
    <file baseinstalldir="/phpDocumentor" name="phpunit.xml.dist" role="php">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
    </file>
@@ -31486,14 +31500,14 @@ Please see the CHANGELOG in the root of the application for the latest changes
  <changelog>
   <release>
    <version>
-    <release>2.3.0</release>
-    <api>2.3.0</api>
+    <release>2.3.1</release>
+    <api>2.3.1</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2014-02-16</date>
+   <date>2014-02-26</date>
    <license uri="http://www.opensource.org/licenses/mit-license.html">MIT</license>
    <notes>
 Please see the CHANGELOG in the root of the application for the latest changes
