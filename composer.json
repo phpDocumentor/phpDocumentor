@@ -60,6 +60,10 @@
         "squizlabs/php_codesniffer": "~1.4",
         "symfony/expression-language": "~2.4"
     },
+    "suggest": {
+        "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
+        "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates."
+    },
     "config": {
         "bin-dir":"bin/"
     },
