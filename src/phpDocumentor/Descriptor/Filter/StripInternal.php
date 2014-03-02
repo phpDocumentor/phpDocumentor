@@ -53,13 +53,13 @@ class StripInternal extends AbstractFilter
     {
         $isInternalAllowed = $this->builder->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL);
         if ($isInternalAllowed) {
-            $value->setDescription(preg_replace('/{@internal\ (.+)}}/', '$1', $value->getDescription()));
+            $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '$1', $value->getDescription()));
 
             return $value;
         }
 
         // remove inline @internal tags
-        $value->setDescription(preg_replace('/{@internal\ .+}}/', '', $value->getDescription()));
+        $value->setDescription(preg_replace('/\{@internal\s(.+?)\}\}/', '', $value->getDescription()));
 
         // if internal elements are not allowed; filter this element
         if ($value->getTags()->get('internal')) {
