@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Represents the public interface for an interface descriptor.
  */
-interface InterfaceInterface extends BaseInterface, ChildInterface
+interface InterfaceInterface extends ElementInterface, ChildInterface, TypeInterface
 {
     /**
      * Sets the constants associated with this interface.

@@ -14,6 +14,6 @@ namespace phpDocumentor\Descriptor\Interfaces;
 /**
  * Describes the public interface for a package descriptor.
  */
-interface PackageInterface extends BaseInterface, ContainerInterface, NamespaceInterface
+interface PackageInterface extends ElementInterface, ContainerInterface, NamespaceInterface
 {
 }

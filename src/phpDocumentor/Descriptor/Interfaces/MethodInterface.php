@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Describes the public interface of the description for a method.
  */
-interface MethodInterface extends BaseInterface
+interface MethodInterface extends ElementInterface, TypeInterface
 {
     /**
      * @param boolean $abstract

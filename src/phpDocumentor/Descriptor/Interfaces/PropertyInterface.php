@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 /**
  * Descriptor representing a property on a class or trait.
  */
-interface PropertyInterface extends BaseInterface
+interface PropertyInterface extends ElementInterface, TypeInterface
 {
     /**
      * Stores a textual representation of the default value for a property.

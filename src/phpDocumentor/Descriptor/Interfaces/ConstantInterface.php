@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 /**
  * Descriptor representing a constant on a class, trait, property or file.
  */
-interface ConstantInterface extends BaseInterface
+interface ConstantInterface extends ElementInterface, TypeInterface
 {
     /**
      * Sets the types that this constant may contain.

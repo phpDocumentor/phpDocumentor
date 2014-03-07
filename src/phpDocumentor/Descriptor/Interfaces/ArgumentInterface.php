@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 /**
  * Describes the public interface for a descriptor of an Argument.
  */
-interface ArgumentInterface extends BaseInterface
+interface ArgumentInterface extends ElementInterface
 {
     /**
      * Sets a normalized list of types that the argument represents.
