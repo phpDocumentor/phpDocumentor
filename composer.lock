@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5f8c4aeb38f7d5438a7e1a7669184081",
+    "hash": "94a33cce81391819b4652941469b825a",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -248,7 +248,7 @@
         },
         {
             "name": "dompdf/dompdf",
-            "version": "dev-master",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
@@ -2456,7 +2456,7 @@
         },
         {
             "name": "zetacomponents/document",
-            "version": "dev-master",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zetacomponents/Document.git",
@@ -3324,10 +3324,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "dompdf/dompdf": 20,
-        "zetacomponents/document": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": {
         "php": ">=5.3.3"
     },
