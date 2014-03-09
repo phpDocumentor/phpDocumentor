@@ -1,13 +1,8 @@
 {
     "annotations": {
         "ignore": [
-            "Annotation",
-            "Attribute",
-            "Attributes",
-            "Required",
             "SuppressWarnings",
             "TODO",
-            "Target",
             "abstract",
             "access",
             "api",
@@ -64,7 +59,10 @@
     "compactors": [
         "Herrera\\Box\\Compactor\\Php"
     ],
-    "directories": ["src"],
+    "directories": [
+        "src",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test"
+    ],
     "directories-bin": ["data"],
     "files": [
         "vendor/autoload.php",
