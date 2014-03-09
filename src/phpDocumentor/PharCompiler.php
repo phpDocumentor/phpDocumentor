@@ -102,18 +102,23 @@ class PharCompiler
      */
     protected function getFiles()
     {
-        $files = array('LICENSE', 'README.md', 'VERSION');
-
         $finder = new Finder();
         $iterator = $finder->files()
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(true)
             ->in(array('bin', 'data', 'src', 'vendor'))
             ->notName('*.rst')
             ->notName('*.md')
+            ->size('> 0k')
             ->exclude(
                 array(
                     'output',
                     'behat',
                     'cilex/cilex/tests',
+                    'jms/metadata/tests',
+                    'jms/parser-lib/tests',
+                    'jms/serializer/tests',
+                    'monolog/monolog/tests',
                     'nikic/php-parser/doc',
                     'nikic/php-parser/test',
                     'nikic/php-parser/test_old',
@@ -121,11 +126,13 @@ class PharCompiler
                     'phpdocumentor/graphviz/tests',
                     'phpdocumentor/reflection-docblock/tests',
                     'pimple/pimple/tests',
+                    'psr/log/Psr/Log/Test',
                     'twig/twig/test',
                 )
-            );
+            )
+            ->append(array('LICENSE', 'README.md', 'VERSION'));
 
-        return array_merge($files, iterator_to_array($iterator));
+        return iterator_to_array($iterator);
     }
 
     /**
@@ -144,7 +151,7 @@ class PharCompiler
         foreach ($files as $file) {
             echo '.';
             $counter++;
-            if ($counter % 70 == 0) {
+            if ($counter % 67 == 0) {
                 echo ' [' . $counter . '/' . count($files) . ']' . PHP_EOL;
             }
             $this->addFileToPharArchive($file, $phar);
@@ -165,11 +172,47 @@ class PharCompiler
      */
     protected function addFileToPharArchive($file, \Phar $phar)
     {
-        $path = str_replace(__DIR__ . '/', '', $file);
-        $file_contents = file_get_contents($file);
-        $file_contents = str_replace('#!/usr/bin/env php', '', $file_contents);
+        $path = strtr(str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath()), '\\', '/');
+        $handle = fopen($file, 'r');
+        $file_contents = fread($handle, filesize($file));
+        fclose($handle);
+
+        if ($path === 'bin/phpdoc' || $path === 'bin/phpdoc.php') {
+            $file_contents = str_replace('#!/usr/bin/env php', '', $file_contents);
+        }
+
+        if (strpos($path, 'vendor') === 0 || strpos($path, 'src') === 0) {
+            $file_contents = $this->minifyFile($file_contents);
+        }
+
         $phar->addFromString($path, $file_contents);
     }
+
+    /**
+     * Reduce the filesize of the PHAR removing whitespace and comments.
+     * 
+     * @param string $fileContent
+     * 
+     * @return string
+     */
+    protected function minifyFile($fileContent)
+    {
+        $tokens = token_get_all($fileContent);
+        $cleanedCode = "";
+        foreach ($tokens as $token) {
+            if (is_array($token)) {
+                if ($token[0] != T_COMMENT && $token[0] != T_DOC_COMMENT) {
+                    $cleanedCode .= $token[1];
+                }
+            } else {
+                $cleanedCode .= $token;
+            }
+
+        }
+
+        return $cleanedCode;
+    }
+
 
     /**
      * Adds the stubs for the CLI and Web interaction to the PHAR archive.
