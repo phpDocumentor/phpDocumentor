@@ -22,7 +22,7 @@ class TagDescriptor implements Filterable
     protected $name;
 
     /** @var string $description A description line for this tag */
-    protected $description;
+    protected $description = '';
 
     /** @var Collection A collection of errors found during filtering. */
     protected $errors;
