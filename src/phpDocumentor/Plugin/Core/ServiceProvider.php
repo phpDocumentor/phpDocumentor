@@ -30,6 +30,9 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
+        $sourceDir = $app['config']['files']['directory'];
+        $exampleDir = isset($app['config']['examples']['directory']) ? $app['config']['examples']['directory'] : '';
+
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
 
@@ -45,5 +48,10 @@ class ServiceProvider implements ServiceProviderInterface
         $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
         $writerCollection['twig']->setTranslator($translator);
+        $writerCollection['twig']->setSourceDirectory($sourceDir);
+
+        if ($exampleDir !== '') {
+            $writerCollection['twig']->setExampleDirectory($exampleDir);
+        }
     }
 }
