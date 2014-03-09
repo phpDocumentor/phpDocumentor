@@ -85,6 +85,12 @@ class Twig extends WriterAbstract implements Routable
     /** @var Translator $translator */
     protected $translator;
 
+    /** @var string $sourceDir */
+    protected $sourceDir;
+
+    /** @var string $exampleDir */
+    protected $exampleDir;
+
     /**
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
@@ -252,6 +258,8 @@ class Twig extends WriterAbstract implements Routable
         );
         $base_extension->setRouters($this->routers);
         $base_extension->setTranslator($this->translator);
+        $base_extension->setSourceDirectory($this->sourceDir);
+        $base_extension->setExampleDirectory($this->exampleDir);
         $twigEnvironment->addExtension($base_extension);
     }
 
@@ -412,5 +420,21 @@ class Twig extends WriterAbstract implements Routable
     public function setTranslator($translator)
     {
         $this->translator = $translator;
+    }
+
+    /**
+     * @param string $sourceDir
+     */
+    public function setSourceDirectory($sourceDir)
+    {
+        $this->sourceDir = $sourceDir;
+    }
+
+    /**
+     * @param string $exampleDir
+     */
+    public function setExampleDirectory($exampleDir)
+    {
+        $this->exampleDir = $exampleDir;
     }
 }
