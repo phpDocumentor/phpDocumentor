@@ -70,7 +70,6 @@ class Application extends Cilex
             return new Stopwatch();
         };
 
-        $this->setTimezone();
         $this->addAutoloader();
         $this->addSerializer();
         $this->addConfiguration();
@@ -100,6 +99,7 @@ class Application extends Cilex
      */
     protected function defineIniSettings()
     {
+        $this->setTimezone();
         ini_set('memory_limit', -1);
 
         if (extension_loaded('opcache')) {
@@ -155,9 +155,7 @@ class Application extends Cilex
      */
     public function setTimezone()
     {
-        if (false === ini_get('date.timezone') || (version_compare(phpversion(), '5.4.0', '<')
-            && false === getenv('TZ'))
-        ) {
+        if (false === ini_get('date.timezone') && false === getenv('TZ')) {
             date_default_timezone_set('UTC');
         }
     }
