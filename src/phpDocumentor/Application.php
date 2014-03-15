@@ -151,11 +151,16 @@ class Application extends Cilex
      * date/time functions. What is checked is php.ini, and if the PHP version
      * is prior to 5.4, the TZ environment variable.
      *
+     * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
+     *     default timezone.
+     *
      * @return void
      */
     public function setTimezone()
     {
-        if (false === ini_get('date.timezone') && false === getenv('TZ')) {
+        if (false === ini_get('date.timezone')
+            || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
+        ) {
             date_default_timezone_set('UTC');
         }
     }
