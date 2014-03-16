@@ -38,12 +38,12 @@ class ServiceProvider implements ServiceProviderInterface
         $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['xml']        = new Writer\Xml();
         $writerCollection['xsl']        = new Writer\Xsl($app['monolog']);
-        $writerCollection['pdf']        = new Writer\Pdf();
 
         $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
 
         $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider());
         $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider());
+        $app->register(new \phpDocumentor\Plugin\Pdf\ServiceProvider());
     }
 }
