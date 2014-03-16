@@ -13,8 +13,22 @@ namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter;
+use phpDocumentor\Descriptor\Filter\Filter;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
+/**
+ * Converts all underscored class names into namespaces.
+ *
+ * This plugin will enable a non-namespaced application to be interpreted as being namespaced for documentation
+ * purposes by separating the Classes by underscore and converting the prefix to a series of namespaces.
+ *
+ * For example:
+ *
+ *     `My_Special_ClassName` will be transformed into the class `ClassName` with namespace `My\Special`.
+ *
+ * @author david0 <https://github.com/david0> this plugin was generously provided by `@david0`.
+ * @link   https://github.com/phpDocumentor/phpDocumentor2/pull/1135
+ */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
@@ -24,17 +38,18 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $filterManager = $app['descriptor.filter'];
-        $builder = $app['descriptor.builder'];
-
-        $this->addNamespaceFilter($builder, $filterManager);
+        $this->addNamespaceFilter($app['descriptor.builder'], $app['descriptor.filter']);
     }
 
     /**
-     * @param $builder
-     * @param $filterManager
+     * Attaches the filter responsible for the conversion to all structural elements.
+     *
+     * @param ProjectDescriptorBuilder $builder
+     * @param Filter                   $filterManager
+     *
+     * @return void
      */
-    private function addNamespaceFilter($builder, $filterManager)
+    private function addNamespaceFilter(ProjectDescriptorBuilder $builder, Filter $filterManager)
     {
         $filter = new LegacyNamespaceFilter($builder);
 
@@ -46,6 +61,4 @@ class ServiceProvider implements ServiceProviderInterface
         $filterManager->attach('phpDocumentor\Descriptor\FileDescriptor', $filter);
         $filterManager->attach('phpDocumentor\Descriptor\ClassDescriptor', $filter);
     }
-
-
 }

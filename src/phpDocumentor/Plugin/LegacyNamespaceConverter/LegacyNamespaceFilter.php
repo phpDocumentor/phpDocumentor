@@ -12,18 +12,22 @@
 namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Zend\Filter\AbstractFilter;
 
 /**
- * Converts legacy namespaces
+ * Converts elements with underscores into a namespaced version.
+ *
+ * This filter will examine the Name of an element and extract namespaces based on underscores in the
+ * name. Every underscore is treated as a namespace separator.
+ *
+ * @author david0 <https://github.com/david0> this plugin was generously provided by `@david0`.
+ * @link   https://github.com/phpDocumentor/phpDocumentor2/pull/1135
  */
 class LegacyNamespaceFilter extends AbstractFilter
 {
     /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
-
 
     /**
      * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
@@ -35,9 +39,11 @@ class LegacyNamespaceFilter extends AbstractFilter
         $this->builder = $builder;
     }
 
-
     /**
-     * Will extract the namespace from the Descriptors name 
+     * Overrides the name and namespace of an element with a separated version of the class name.
+     *
+     * If a class is separated by underscores than the last part is set as name and the first parts are set as
+     * namespace with the namespace separator instead of an underscore.
      *
      * @param DescriptorAbstract $value
      *
@@ -45,33 +51,49 @@ class LegacyNamespaceFilter extends AbstractFilter
      */
     public function filter($value)
     {
-        if($value) {
-          $className = $value->getName();
-          $value->setNamespace($this->namespaceFromLegacyNamespace($value->getNamespace(), $className));
-          $value->setName($this->classNameFromLegacyNamespace($className));
-
+        if ($value) {
+            $value->setNamespace($this->namespaceFromLegacyNamespace($value->getNamespace(), $value->getName()));
+            $value->setName($this->classNameFromLegacyNamespace($value->getName()));
         }
-  
+
         return $value;
     }
 
-
+    /**
+     * Extracts the namespace from the class name.
+     *
+     * @param string $namespace
+     * @param string $className
+     *
+     * @return string
+     */
     private function namespaceFromLegacyNamespace($namespace, $className)
     {
-          $qcn = str_replace('_', '\\', $className);
-          if($lastBackslash = strrpos($qcn, '\\')) {
-            $namespace = rtrim($namespace, '\\');
-            $namespace .= '\\' . substr($qcn, 0, $lastBackslash) ;
-          }
-          return $namespace;
+        $qcn = str_replace('_', '\\', $className);
+
+        $lastBackslash = strrpos($qcn, '\\');
+        if ($lastBackslash) {
+            $namespace = rtrim($namespace, '\\') . '\\' . substr($qcn, 0, $lastBackslash);
+        }
+
+        return $namespace;
     }
 
 
+    /**
+     * Extracts the class name without prefix from the full class name.
+     *
+     * @param string $className
+     *
+     * @return string
+     */
     private function classNameFromLegacyNamespace($className)
     {
-          if($lastUnderscore = strrpos($className, '_'))
-              return substr($className, $lastUnderscore+1) ;
-          else
-              return $className;
+        $lastUnderscore = strrpos($className, '_');
+        if ($lastUnderscore) {
+            $className = substr($className, $lastUnderscore + 1);
+        }
+
+        return $className;
     }
 }
