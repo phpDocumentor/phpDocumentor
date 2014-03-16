@@ -34,8 +34,6 @@ class ServiceProvider implements ServiceProviderInterface
         $writerCollection = $app['transformer.writer.collection'];
 
         $writerCollection['FileIo']     = new Writer\FileIo();
-        $writerCollection['twig']       = new Writer\Twig();
-        $writerCollection['Graph']      = new Writer\Graph();
         $writerCollection['checkstyle'] = new Writer\Checkstyle();
         $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['xml']        = new Writer\Xml();
@@ -44,6 +42,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
-        $writerCollection['twig']->setTranslator($translator);
+
+        $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider());
+        $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider());
     }
 }
