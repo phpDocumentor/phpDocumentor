@@ -48,6 +48,12 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      */
     protected $destination = '';
 
+    /** @var string $sourceDir */
+    protected $sourceDir = '';
+
+    /** @var string $exampleDir */
+    protected $exampleDir = '';
+
     /**
      * Registers the structure and transformation with this extension.
      *
@@ -119,6 +125,26 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     }
 
     /**
+     * @param string $sourceDir
+     *
+     * @return void
+     */
+    public function setSourceDirectory($sourceDir)
+    {
+        $this->sourceDir = $sourceDir;
+    }
+
+    /**
+     * @param string $sourceDir
+     *
+     * @return void
+     */
+    public function setExampleDirectory($exampleDir)
+    {
+        $this->exampleDir = $exampleDir;
+    }
+
+    /**
      * Returns a listing of all functions that this extension adds.
      *
      * This method is automatically used by Twig upon registering this
@@ -134,7 +160,39 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     {
         return array(
             'path' => new \Twig_Function_Method($this, 'convertToRootPath'),
+            'example' => new \Twig_Function_Method($this, 'getExampleCode')
         );
+    }
+
+    /**
+     * Get example code from parameter string.
+     *
+     * @param string $paramString
+     *
+     * @return string
+     */
+    public function getExampleCode($paramString)
+    {
+        $params = explode(' ', $paramString);
+
+        $filename = $params[0];
+        $offset = isset($params[1]) && is_numeric($params[1]) ? (int) $params[1] : 1;
+        $length = isset($params[2]) && is_numeric($params[2]) ? (int) $params[2] : null;
+
+        $example = getcwd().DIRECTORY_SEPARATOR.'examples'.DIRECTORY_SEPARATOR.$filename;
+        $exampleFromConfg = rtrim($this->exampleDir, '\\/') .DIRECTORY_SEPARATOR . $filename;
+        $source = sprintf('%s%s%s%s%s', getcwd(), DIRECTORY_SEPARATOR, trim($this->sourceDir, '\\/'), DIRECTORY_SEPARATOR, trim($filename, '"'));
+
+        $file = @file($exampleFromConfg) ?: @file($source) ?: @file($example) ?: @file($filename);
+
+        if (is_array($file)) {
+            $filepart = array_slice($file, $offset, $length);
+            $content = implode('', $filepart);
+        } else {
+            $content = "** File not found : {$filename} ** ";
+        }
+
+        return $content;
     }
 
     public function getFilters()
