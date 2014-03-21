@@ -7,7 +7,7 @@ php:
   - 5.6
 
 script:
- - bin/phpunit
+ - bin/phpunit --coverage-clover build/logs/clover.xml
 # - bin/behat --no-paths --format failed
 
 before_script:
@@ -19,6 +19,9 @@ before_script:
  - bin/phpunit
 # - bin/behat --no-paths --format failed
  - composer update -n --prefer-source --dev
+
+after_script:
+  - php vendor/bin/coveralls
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"
