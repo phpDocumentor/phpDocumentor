@@ -59,7 +59,7 @@
         "mikey179/vfsStream": "~1.2",
         "squizlabs/php_codesniffer": "~1.4",
         "symfony/expression-language": "~2.4",
-        "satooshi/php-coveralls": "dev-master"
+        "satooshi/php-coveralls": ">=0.6.1"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
