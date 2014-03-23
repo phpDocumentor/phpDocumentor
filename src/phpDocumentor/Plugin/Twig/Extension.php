@@ -118,25 +118,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
         return $this->destination;
     }
 
-    /**
-     * Returns a listing of all functions that this extension adds.
-     *
-     * This method is automatically used by Twig upon registering this
-     * extension (which is done automatically by phpDocumentor) to determine
-     * an additional list of functions.
-     *
-     * See the Class' DocBlock for a listing of functionality added by this
-     * Extension.
-     *
-     * @return \Twig_FunctionInterface[]
-     */
-    public function getFunctions()
-    {
-        return array(
-            'path' => new \Twig_Function_Method($this, 'convertToRootPath'),
-        );
-    }
-
     public function getFilters()
     {
         $extension = $this;
@@ -145,6 +126,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
         $translator = $this->translator;
 
         return array(
+            'path' => new \Twig_SimpleFilter('path', array($this, 'convertToRootPath')),
             'markdown' => new \Twig_SimpleFilter(
                 'markdown',
                 function ($value) use ($parser) {
