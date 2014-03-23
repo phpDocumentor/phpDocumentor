@@ -72,7 +72,8 @@ class Collection extends \ArrayObject
 
             // move the files to a cache location and then change the path
             // variable to match the new location
-            $this->copyRecursive($path, $cachePath);
+            $filesystem = new \Symfony\Component\Filesystem\Filesystem;
+            $filesystem->mirror($path, $cachePath);
             $path = $cachePath;
 
             // transform all directory separators to underscores and lowercase
@@ -114,46 +115,5 @@ class Collection extends \ArrayObject
     public function getSerializer()
     {
         return $this->serializer;
-    }
-
-    /**
-     * Copies a file or folder recursively to another location.
-     *
-     * @param string $src The source location to copy
-     * @param string $dst The destination location to copy to
-     *
-     * @throws \Exception if $src does not exist or $dst is not writable
-     *
-     * @return void
-     */
-    public function copyRecursive($src, $dst)
-    {
-        // if $src is a normal file we can do a regular copy action
-        if (is_file($src)) {
-            copy($src, $dst);
-
-            return;
-        }
-
-        $dir = opendir($src);
-        if (!$dir) {
-            throw new \Exception('Unable to locate path "' . $src . '"');
-        }
-
-        // check if the folder exists, otherwise create it
-        if ((!file_exists($dst)) && (false === mkdir($dst))) {
-            throw new \Exception('Unable to create folder "' . $dst . '"');
-        }
-
-        while (false !== ($file = readdir($dir))) {
-            if (($file != '.') && ($file != '..')) {
-                if (is_dir($src . DIRECTORY_SEPARATOR . $file)) {
-                    $this->copyRecursive($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
-                } else {
-                    copy($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
-                }
-            }
-        }
-        closedir($dir);
     }
 }
