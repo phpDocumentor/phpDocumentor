@@ -251,26 +251,46 @@ TEXT
         $transformations = $this->getConfigValueFromPath('transformations/transformation');
         if (is_array($transformations)) {
             if (isset($transformations['writer'])) {
-                $received[] = new Transformation(
-                    isset($transformations['query']) ? $transformations['query'] : '',
-                    $transformations['writer'],
-                    isset($transformations['source']) ? $transformations['source'] : '',
-                    isset($transformations['artifact']) ? $transformations['artifact'] : ''
-                );
+                $received[] = $this->createTransformation($transformations);
             } else {
                 foreach ($transformations as $transformation) {
                     if (is_array($transformation)) {
-                        $received[] = new Transformation(
-                            isset($transformations['query']) ? $transformations['query'] : '',
-                            $transformations['writer'],
-                            isset($transformations['source']) ? $transformations['source'] : '',
-                            isset($transformations['artifact']) ? $transformations['artifact'] : ''
-                        );
+                        $received[] = $this->createTransformation($transformations);
                     }
                 }
             }
         }
 
+        $this->appendReceivedTransformations($transformer, $received);
+    }
+    
+    /**
+     * Create Transformation instance.
+     * 
+     * @param array $transformations
+     * 
+     * @return \phpDocumentor\Transformer\Transformation
+     */
+    protected function createTransformation(array $transformations)
+    {
+        return new Transformation(
+            isset($transformations['query']) ? $transformations['query'] : '',
+            $transformations['writer'],
+            isset($transformations['source']) ? $transformations['source'] : '',
+            isset($transformations['artifact']) ? $transformations['artifact'] : ''
+        );
+    }
+    
+    /**
+     * Append received transformations.
+     * 
+     * @param Transformer $transformer
+     * @param array $received
+     * 
+     * @return void
+     */
+    protected function appendReceivedTransformations(Transformer $transformer, $received)
+    {
         if (!empty($received)) {
             $template = new Template('__');
             foreach ($received as $transformation) {
