@@ -75,47 +75,7 @@ class FileIo extends WriterAbstract
             throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
         }
 
-        $this->copyRecursive($path, $transformation->getArtifact());
-    }
-
-    /**
-     * Copies a file or folder recursively to another location.
-     *
-     * @param string $src The source location to copy
-     * @param string $dst The destination location to copy to
-     *
-     * @throws \Exception if $src does not exist or $dst is not writable
-     *
-     * @return void
-     */
-    public function copyRecursive($src, $dst)
-    {
-        // if $src is a normal file we can do a regular copy action
-        if (is_file($src)) {
-            copy($src, $dst);
-
-            return;
-        }
-
-        $dir = opendir($src);
-        if (!$dir) {
-            throw new \Exception('Unable to locate path "' . $src . '"');
-        }
-
-        // check if the folder exists, otherwise create it
-        if ((!file_exists($dst)) && (false === mkdir($dst))) {
-            throw new \Exception('Unable to create folder "' . $dst . '"');
-        }
-
-        while (false !== ($file = readdir($dir))) {
-            if (($file != '.') && ($file != '..')) {
-                if (is_dir($src . DIRECTORY_SEPARATOR . $file)) {
-                    $this->copyRecursive($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
-                } else {
-                    copy($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
-                }
-            }
-        }
-        closedir($dir);
+        $filesystem = new \Symfony\Component\Filesystem\Filesystem;
+        $filesystem->mirror($path, $transformation->getArtifact());
     }
 }
