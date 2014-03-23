@@ -43,9 +43,11 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
             throw new \InvalidArgumentException('Constants can only have an interface or class as parent');
         }
 
-        $this->setFullyQualifiedStructuralElementName(
-            $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
-        );
+        $fqsen = $parent !== null
+            ? $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
+            : $this->getName();
+
+        $this->setFullyQualifiedStructuralElementName($fqsen);
 
         $this->parent = $parent;
     }
