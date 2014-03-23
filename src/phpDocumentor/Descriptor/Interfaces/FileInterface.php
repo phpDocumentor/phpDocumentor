@@ -18,10 +18,19 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface FileInterface extends BaseInterface, ContainerInterface
 {
+    /**
+     * @return string
+     */
     public function getHash();
 
+    /**
+     * @return void
+     */
     public function setSource($source);
 
+    /**
+     * @return string|null
+     */
     public function getSource();
 
     /**

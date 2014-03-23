@@ -21,6 +21,9 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface ClassInterface extends BaseInterface, ChildInterface
 {
+    /**
+     * @return void
+     */
     public function setInterfaces(Collection $interfaces);
 
     /**
@@ -28,14 +31,23 @@ interface ClassInterface extends BaseInterface, ChildInterface
      */
     public function getInterfaces();
 
+    /**
+     * @return void
+     */
     public function setFinal($final);
 
     public function isFinal();
 
+    /**
+     * @return void
+     */
     public function setAbstract($abstract);
 
     public function isAbstract();
 
+    /**
+     * @return void
+     */
     public function setConstants(Collection $constants);
 
     /**
@@ -43,6 +55,9 @@ interface ClassInterface extends BaseInterface, ChildInterface
      */
     public function getConstants();
 
+    /**
+     * @return void
+     */
     public function setMethods(Collection $methods);
 
     /**
@@ -55,6 +70,9 @@ interface ClassInterface extends BaseInterface, ChildInterface
      */
     public function getInheritedMethods();
 
+    /**
+     * @return void
+     */
     public function setProperties(Collection $properties);
 
     /**
