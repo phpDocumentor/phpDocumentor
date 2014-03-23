@@ -2,8 +2,13 @@ before_commands:
     - "composer install --no-dev --prefer-source"
 
 tools:
-    php_code_coverage:
+    external_code_coverage:
         enabled: true
+        timeout: 300
+        filter:
+            excluded_paths: [".old-docs", ".puppet", "docs", "bin", "tests", "vendor", "data", "features"]
+    php_code_coverage:
+        enabled: false
         test_command: phpunit -c phpunit.xml.dist
     php_code_sniffer:
         enabled: true
