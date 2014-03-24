@@ -314,17 +314,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         $errors = $this->getErrors();
 
-        $clInTr = array_merge(
-            $this->getClasses(),
-            $this->getInterfaces(),
-            $this->getTraits()
-        );
+        $clInTr = $this->getClasses()->merge($this->getInterfaces())->merge($this->getTraits());
 
-        $elements = array_merge(
-            $this->getFunctions(),
-            $this->getConstants(),
-            $clInTr
-        );
+        $elements = $this->getFunctions()->merge($this->getConstants())->merge($clInTr);
 
         foreach ($elements as $element) {
             if (!$element) {
