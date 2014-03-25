@@ -69,10 +69,14 @@ class Output extends ConsoleOutput
      */
     public function write($message, $newline = false, $type = 0)
     {
+        $messages = (array) $message;
+
         if ($this->getLogger()) {
-            $this->getLogger()->info($this->getFormatter()->format(strip_tags($message)));
+            foreach ($messages as $message) {
+                $this->getLogger()->info($this->getFormatter()->format(strip_tags($message)));
+            }
         }
 
-        parent::write($message, $newline, $type);
+        parent::write($messages, $newline, $type);
     }
 }
