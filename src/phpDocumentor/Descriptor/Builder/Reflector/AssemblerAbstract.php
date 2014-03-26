@@ -19,8 +19,12 @@ use phpDocumentor\Reflection\DocBlock;
 abstract class AssemblerAbstract extends BaseAssembler
 {
     /**
-     * @param DocBlock           $docBlock
+     * Assemble DocBlock.
+     * 
+     * @param DocBlock|null      $docBlock
      * @param DescriptorAbstract $target
+     * 
+     * @return void
      */
     protected function assembleDocBlock($docBlock, $target)
     {

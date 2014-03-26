@@ -32,6 +32,9 @@ abstract class BaseConvertCommand extends ConfigurableCommand
     /** @var ConverterFactory */
     protected $converterFactory;
 
+    /** @var Factory */
+    protected $templateFactory;
+
     /** @var string The string representation of the output format */
     protected $output_format = Format\Format::HTML;
 
