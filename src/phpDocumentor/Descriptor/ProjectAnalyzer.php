@@ -47,17 +47,9 @@ class ProjectAnalyzer
         $this->unresolvedParentClassesCount = 0;
 
         $elementCounter = array();
-        foreach ($projectDescriptor->getIndexes()->elements as $element) {
-            if (!isset($elementCounter[get_class($element)])) {
-                $elementCounter[get_class($element)] = 0;
-            }
-            $elementCounter[get_class($element)]++;
-
-            if ($element instanceof ClassDescriptor) {
-                if (is_string($element->getParent())) {
-                    $this->unresolvedParentClassesCount++;
-                }
-            }
+        foreach ($this->findAllElements($projectDescriptor) as $element) {
+            $elementCounter = $this->addElementToCounter($elementCounter, $element);
+            $this->incrementUnresolvedParentCounter($element);
         }
 
         $this->descriptorCountByType  = $elementCounter;
@@ -89,5 +81,51 @@ TEXT;
             $this->topLevelNamespaceCount,
             $this->unresolvedParentClassesCount
         );
+    }
+
+    /**
+     * Increments the counter for element's class in the class counters.
+     *
+     * @param array              $classCounters
+     * @param DescriptorAbstract $element
+     *
+     * @return array
+     */
+    protected function addElementToCounter($classCounters, $element)
+    {
+        if (!isset($classCounters[get_class($element)])) {
+            $classCounters[get_class($element)] = 0;
+        }
+        $classCounters[get_class($element)]++;
+
+        return $classCounters;
+    }
+
+    /**
+     * Checks whether the given element is a class and if its parent could not be resolved; increment the counter.
+     *
+     * @param DescriptorAbstract $element
+     */
+    protected function incrementUnresolvedParentCounter($element)
+    {
+        if (!$element instanceof ClassDescriptor) {
+            return;
+        }
+
+        if (is_string($element->getParent())) {
+            $this->unresolvedParentClassesCount++;
+        }
+    }
+
+    /**
+     * Returns all elements from the project descriptor.
+     *
+     * @param ProjectDescriptor $projectDescriptor
+     *
+     * @return DescriptorAbstract[]
+     */
+    protected function findAllElements(ProjectDescriptor $projectDescriptor)
+    {
+        return $projectDescriptor->getIndexes()->get('elements', new Collection());
     }
 }

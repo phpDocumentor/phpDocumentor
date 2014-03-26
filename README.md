@@ -70,10 +70,14 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 ### Via Composer
 
-1. phpDocumentor is available on [Packagist](https://packagist.org).
+1. phpDocumentor is available on [Packagist](https://packagist.org/packages/phpdocumentor/phpdocumentor).
 2. It can be installed as a dependency of your project by running
 
-        $ composer require-dev phpdocumentor/phpdocumentor
+        $ composer require --dev phpdocumentor/phpdocumentor dev-master
+
+Afterwards you are able to run phpDocumentor directly from your `vendor` directory:
+
+    $ php vendor/bin/phpdoc.php
 
 ### Using the PHAR
 

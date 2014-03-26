@@ -1,3 +1,19 @@
+2014/03/07: Version 2.4.0
+-------------------------
+
+```
+FIXED:     #1141: Deprecated report was missing in Clean template.
+```
+
+
+2014/03/07: Version 2.3.2
+-------------------------
+
+```
+FIXED:     #1133: Fixed subpackage without package validation
+FIXED:     #1120: Set stable versions of DOMPDF and ezcDocument in Composer.json
+```
+
 2014/02/26: Version 2.3.1
 -------------------------
 

@@ -180,10 +180,11 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         foreach ($filtersOnAllDescriptors as $filter) {
-            $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
-            $filterManager->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\ClassDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\TraitDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\PropertyDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\MethodDescriptor', $filter);
         }

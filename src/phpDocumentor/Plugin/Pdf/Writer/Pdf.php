@@ -9,10 +9,11 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+namespace phpDocumentor\Plugin\Pdf\Writer;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Plugin\Twig\Writer\Twig;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 
