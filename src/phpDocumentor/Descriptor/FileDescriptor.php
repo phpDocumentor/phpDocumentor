@@ -314,9 +314,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         $errors = $this->getErrors();
 
-        $clInTr = $this->getClasses()->merge($this->getInterfaces())->merge($this->getTraits());
+        $types = $this->getClasses()->merge($this->getInterfaces())->merge($this->getTraits());
 
-        $elements = $this->getFunctions()->merge($this->getConstants())->merge($clInTr);
+        $elements = $this->getFunctions()->merge($this->getConstants())->merge($types);
 
         foreach ($elements as $element) {
             if (!$element) {
@@ -326,7 +326,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
             $errors = $errors->merge($element->getErrors());
         }
 
-        foreach ($clInTr as $element) {
+        foreach ($types as $element) {
             if (!$element) {
                 continue;
             }
