@@ -4,6 +4,10 @@
  * @filesource
  */
 
+namespace {
+    const GLOBAL_CONSTANT_DEFINE_WITH_ROOT_NAMESPACE = 'test';
+}
+
 namespace My\Space {
     define("GLOBAL_CONSTANT_DEFINE", 'test');
 
