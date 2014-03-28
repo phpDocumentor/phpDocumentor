@@ -119,9 +119,7 @@ class ConfigurableCommand extends Command
         $value = $input->getOption($name);
 
         // find value in config
-        if (($value === null || is_array($value) && empty($value))
-            && $config_path !== null
-        ) {
+        if ($this->valueIsEmpty($value) && $config_path !== null) {
             $value = $this->getConfigValueFromPath($config_path);
             if ($value === null) {
                 return $default;
@@ -129,13 +127,23 @@ class ConfigurableCommand extends Command
         }
 
         // use default if value is still null
-        if ($value === null || is_array($value) && empty($value)) {
-            return (is_array($value) && $default === null)
-                ? array()
-                : $default;
+        if ($this->valueIsEmpty($value)) {
+            return (is_array($value) && $default === null) ? array() : $default;
         }
 
-        // split comma separated values
+        return $this->splitCommaSeparatedValues($value, $comma_separated);
+    }
+    
+    /**
+     * Split comma separated values if needed.
+     * 
+     * @param mixed $value
+     * @param bool $comma_separated
+     * 
+     * @return mixed
+     */
+    protected function splitCommaSeparatedValues($value, $comma_separated)
+    {
         if ($comma_separated
             && (!is_array($value)
                 || (count($value) == 1) && is_string(current($value))
@@ -144,8 +152,20 @@ class ConfigurableCommand extends Command
             $value = (array) $value;
             $value = explode(',', $value[0]);
         }
-
+        
         return $value;
+    }
+    
+    /**
+     * Is value empty?
+     * 
+     * @param mixed $value
+     * 
+     * @return boolean
+     */
+    protected function valueIsEmpty($value)
+    {
+        return $value === null || is_array($value) && empty($value);
     }
 
     /**

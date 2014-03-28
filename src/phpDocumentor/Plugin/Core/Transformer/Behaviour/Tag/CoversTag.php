@@ -86,10 +86,10 @@ class CoversTag
             // if the query is wrong; output a Critical error and continue to
             // the next @covers
             if ($referral_nodes === false) {
-                $this->log(
-                    'An XPath error occurs while processing @covers, the query used was: ' . $qry,
-                    LogLevel::CRITICAL
-                );
+                // $this->log(
+                //    'An XPath error occurs while processing @covers, the query used was: ' . $qry,
+                //    LogLevel::CRITICAL
+                // );
                 continue;
             }
 
