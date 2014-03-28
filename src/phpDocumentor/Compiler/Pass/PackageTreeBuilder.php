@@ -158,7 +158,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             $interimPackageDescriptor->setFullyQualifiedStructuralElementName($fqnn);
 
             // add to the pointer's list of children
-            $pointer->getChildren()->set($part, $interimPackageDescriptor);
+            $pointer->getChildren()->set($part ?: 'UNKNOWN', $interimPackageDescriptor);
 
             // add to index
             $project->getIndexes()->packages[$fqnn] = $interimPackageDescriptor;
