@@ -120,6 +120,19 @@ namespace My\Space {
         {
         }
 
+        /**
+         * This is a method definition showcasing the variadic syntax pre-php5.6.
+         *
+         * @param string $first
+         * @param string ...$second
+         *
+         * @return void
+         */
+        public function variadicMethodWithOneExplicitParameter($first)
+        {
+
+        }
+
         static public function staticMethod()
         {
         }
