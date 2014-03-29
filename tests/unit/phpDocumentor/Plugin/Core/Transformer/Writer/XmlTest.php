@@ -73,6 +73,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0b8&#10;" title="project">
   <partials/>
+  <package name="global" full_name="global"/>
   <deprecated count="0"/>
 </project>');
 
@@ -136,6 +137,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
     <namespace-alias name="0">foo</namespace-alias>
     <namespace-alias name="1">bar</namespace-alias>
   </file>
+  <package name="global" full_name="global"/>
   <package name="myPackage" full_name="myPackage"/>
   <deprecated count="0"/>
 </project>');
