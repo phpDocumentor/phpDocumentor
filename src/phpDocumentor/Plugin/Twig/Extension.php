@@ -174,7 +174,13 @@ class Extension extends \Twig_Extension implements ExtensionInterface
 
                     foreach ($value as $path) {
                         $rule     = $routers->match($path);
-                        $url      = $rule ? ltrim($rule->generate($path), '/') : false;
+                        $generatedUrl = $rule->generate($path);
+
+                        if ($generatedUrl === false) {
+                            $url = false;
+                        } else {
+                            $url = $rule ? ltrim($generatedUrl, '/') : false;
+                        }
 
                         if ($url
                             && $url[0] != '/'
