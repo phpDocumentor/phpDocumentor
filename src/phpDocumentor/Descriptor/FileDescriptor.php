@@ -30,7 +30,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var string|null $source */
     protected $source = null;
 
-    /** @var Collection $namespace_aliases */
+    /** @var Collection $namespaceAliases */
     protected $namespaceAliases;
 
     /** @var Collection $includes */
@@ -51,7 +51,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var Collection $traits */
     protected $traits;
 
-    /** @var Collection $errors */
+    /** @var Collection $markers */
     protected $markers;
 
     /**
