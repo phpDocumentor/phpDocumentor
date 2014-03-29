@@ -56,7 +56,8 @@ class DocBlockConverter
         $parent->appendChild($child);
 
         $child->setAttribute('line', $element->getLine());
-        $parent->setAttribute('package', str_replace('&', '&amp;', ltrim($element->getPackage(), '\\')));
+        $package = str_replace('&', '&amp;', ltrim($element->getPackage(), '\\'));
+        $parent->setAttribute('package', $package ?: 'global');
 
         $this->addSummary($child, $element);
         $this->addDescription($child, $element);
