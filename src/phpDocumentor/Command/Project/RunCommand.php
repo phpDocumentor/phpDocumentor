@@ -11,7 +11,6 @@
  */
 namespace phpDocumentor\Command\Project;
 
-use JMS\Serializer\Serializer;
 use phpDocumentor\Command\ConfigurableCommand;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
