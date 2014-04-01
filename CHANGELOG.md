@@ -1,10 +1,24 @@
-2014/03/07: Version 2.4.0
+2014/04/01: Version 2.4.0
 -------------------------
 
 ```
 FIXED:     #1141: Deprecated report was missing in Clean template.
+FIXED:     #1191: Opcache comments were not disabled due to incorrect extension name
+FIXED:     #1184, #1181: @package tag on File was not recognized and not inherited on children
+FIXED:     #1180: phpDocumentor crashes if an `@subpackage` has no name set
+FIXED:     #1178: Generating a marker listing crashes sometimes
+FIXED:     #1176: DocBlocks were not overridden on subclasses
+FIXED:     #1163: Responsive and Responsive-twig templates do not work on HTTPS
+FIXED:     #1158: Clean and Responsive template shows empty namespace menu when there are no namespaces
+FIXED:     #1134, #1132: GraphViz reports can crash due to empty labels
+FIXED:     #1098: Re-added missing Javascript file
+FIXED:     #1037: IE did not like empty anchors
+FIXED:     #152:  @internal and @ignore did not behave as expected
+FIXED:     Javascript notices in Clean by upgrading jQuery
+ADDED:     #1141: Deprecated report to the Clean template
+ADDED:     #629:  Support for Variadics
+CHANGED:   #1099, #1101: Replaced custom PHAR compiling with box-project.org and fixing issues in the mean time
 ```
-
 
 2014/03/07: Version 2.3.2
 -------------------------
