@@ -4,11 +4,11 @@ namespace phpDocumentor\Descriptor\Type;
 
 use phpDocumentor\Descriptor\Interfaces\TypeInterface;
 
-class StringDescriptor implements TypeInterface
+class FloatDescriptor implements TypeInterface
 {
     public function getName()
     {
-        return 'string';
+        return 'float';
     }
 
     public function __toString()

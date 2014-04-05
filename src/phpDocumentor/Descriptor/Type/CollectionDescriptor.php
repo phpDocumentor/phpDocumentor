@@ -27,6 +27,11 @@ class CollectionDescriptor implements TypeInterface
     /** @var TypeInterface|null $type */
     protected $keyTypes;
 
+    public function __construct($baseType)
+    {
+        $this->baseType = $baseType;
+    }
+
     /**
      * Returns the name for this type.
      *
@@ -69,5 +74,20 @@ class CollectionDescriptor implements TypeInterface
     public function getKeyTypes()
     {
         return $this->keyTypes;
+    }
+
+    public function __toString()
+    {
+        $name = $this->getName();
+        $types = array();
+        foreach ($this->getTypes() as $key => $type) {
+            $types[] = (string)$type;
+        }
+
+        if (count($types) > 0) {
+            $name .= '<' . implode(',', $types) . '>';
+        }
+
+        return $name;
     }
 }

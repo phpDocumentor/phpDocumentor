@@ -4,11 +4,11 @@ namespace phpDocumentor\Descriptor\Type;
 
 use phpDocumentor\Descriptor\Interfaces\TypeInterface;
 
-class StringDescriptor implements TypeInterface
+class IntegerDescriptor implements TypeInterface
 {
     public function getName()
     {
-        return 'string';
+        return 'integer';
     }
 
     public function __toString()
