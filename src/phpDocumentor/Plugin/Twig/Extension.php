@@ -133,7 +133,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     public function getFunctions()
     {
         return array(
-            'path' => new \Twig_Function_Method($this, 'convertToRootPath'),
+            new \Twig_SimpleFunction('path', array($this, 'convertToRootPath'))
         );
     }
 
