@@ -11,6 +11,12 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Exception;
+use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Symfony\Component\Filesystem\Filesystem;
+
 /**
  * Writer containing file system operations.
  *
@@ -19,11 +25,6 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
  *
  * * copy, copies a file or directory to the destination given in $artifact
  */
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Exception;
-use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
-
 class FileIo extends WriterAbstract
 {
     /** @var \phpDocumentor\Transformer\Transformation */
@@ -75,7 +76,11 @@ class FileIo extends WriterAbstract
             throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
         }
 
-        $filesystem = new \Symfony\Component\Filesystem\Filesystem;
-        $filesystem->mirror($path, $transformation->getArtifact());
+        $filesystem = new Filesystem();
+        if (is_file($path)) {
+            $filesystem->copy($path, $transformation->getArtifact());
+        } else {
+            $filesystem->mirror($path, $transformation->getArtifact());
+        }
     }
 }
