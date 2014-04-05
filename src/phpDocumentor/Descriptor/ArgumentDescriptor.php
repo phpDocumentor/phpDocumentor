@@ -24,6 +24,9 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /** @var bool $byReference whether the argument passes the parameter by reference instead of by value */
     protected $byReference = false;
 
+    /** @var boolean Determines if this Argument represents a variadic argument */
+    protected $isVariadic = false;
+
     /**
      * {@inheritDoc}
      */
@@ -71,4 +74,27 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     {
         return $this->byReference;
     }
+
+    /**
+     * Sets whether this argument represents a variadic argument.
+     *
+     * @param boolean $isVariadic
+     *
+     * @return false
+     */
+    public function setVariadic($isVariadic)
+    {
+        $this->isVariadic = $isVariadic;
+    }
+
+    /**
+     * Returns whether this argument represents a variadic argument.
+     *
+     * @return boolean
+     */
+    public function isVariadic()
+    {
+        return $this->isVariadic;
+    }
+
 }

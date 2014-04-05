@@ -30,7 +30,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var string|null $source */
     protected $source = null;
 
-    /** @var Collection $namespace_aliases */
+    /** @var Collection $namespaceAliases */
     protected $namespaceAliases;
 
     /** @var Collection $includes */
@@ -51,7 +51,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /** @var Collection $traits */
     protected $traits;
 
-    /** @var Collection $errors */
+    /** @var Collection $markers */
     protected $markers;
 
     /**
@@ -314,71 +314,46 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         $errors = $this->getErrors();
 
-        foreach ($this->getFunctions() as $element) {
+        $types = $this->getClasses()->merge($this->getInterfaces())->merge($this->getTraits());
+
+        $elements = $this->getFunctions()->merge($this->getConstants())->merge($types);
+
+        foreach ($elements as $element) {
             if (!$element) {
                 continue;
             }
+            
             $errors = $errors->merge($element->getErrors());
         }
 
-        foreach ($this->getConstants() as $element) {
+        foreach ($types as $element) {
             if (!$element) {
                 continue;
             }
-            $errors = $errors->merge($element->getErrors());
-        }
 
-        foreach ($this->getClasses() as $element) {
-            $errors = $errors->merge($element->getErrors());
-            foreach ($element->getConstants() as $item) {
-                if (!$item) {
-                    continue;
-                }
-                $errors = $errors->merge($item->getErrors());
-            }
-            foreach ($element->getProperties() as $item) {
-                if (!$item) {
-                    continue;
-                }
-                $errors = $errors->merge($item->getErrors());
-            }
             foreach ($element->getMethods() as $item) {
                 if (!$item) {
                     continue;
                 }
                 $errors = $errors->merge($item->getErrors());
             }
-        }
-
-        foreach ($this->getInterfaces() as $element) {
-            $errors = $errors->merge($element->getErrors());
-            foreach ($element->getConstants() as $item) {
-                if (!$item) {
-                    continue;
+            
+            if (method_exists($element, 'getConstants')) {
+                foreach ($element->getConstants() as $item) {
+                    if (!$item) {
+                        continue;
+                    }
+                    $errors = $errors->merge($item->getErrors());
                 }
-                $errors = $errors->merge($item->getErrors());
             }
-            foreach ($element->getMethods() as $item) {
-                if (!$item) {
-                    continue;
+            
+            if (method_exists($element, 'getProperties')) {
+                foreach ($element->getProperties() as $item) {
+                    if (!$item) {
+                        continue;
+                    }
+                    $errors = $errors->merge($item->getErrors());
                 }
-                $errors = $errors->merge($item->getErrors());
-            }
-        }
-
-        foreach ($this->getTraits() as $element) {
-            $errors = $errors->merge($element->getErrors());
-            foreach ($element->getProperties() as $item) {
-                if (!$item) {
-                    continue;
-                }
-                $errors = $errors->merge($item->getErrors());
-            }
-            foreach ($element->getMethods() as $item) {
-                if (!$item) {
-                    continue;
-                }
-                $errors = $errors->merge($item->getErrors());
             }
         }
 

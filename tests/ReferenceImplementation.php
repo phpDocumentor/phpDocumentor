@@ -4,6 +4,10 @@
  * @filesource
  */
 
+namespace {
+    const GLOBAL_CONSTANT_DEFINE_WITH_ROOT_NAMESPACE = 'test';
+}
+
 namespace My\Space {
     define("GLOBAL_CONSTANT_DEFINE", 'test');
 
@@ -118,6 +122,19 @@ namespace My\Space {
          */
         public function publicMethod()
         {
+        }
+
+        /**
+         * This is a method definition showcasing the variadic syntax pre-php5.6.
+         *
+         * @param string $first
+         * @param string ...$second
+         *
+         * @return void
+         */
+        public function variadicMethodWithOneExplicitParameter($first)
+        {
+
         }
 
         static public function staticMethod()

@@ -173,10 +173,14 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                     $value = !is_array($value) ? array($value) : $value;
 
                     foreach ($value as $path) {
-                        $rule     = $routers->match($path);
-                        $url      = $rule ? ltrim($rule->generate($path), '/') : false;
+                        $url  = false;
+                        $rule = $routers->match($path);
+                        if ($rule) {
+                            $generatedUrl = $rule->generate($path);
+                            $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
+                        }
 
-                        if ($url
+                        if (is_string($url)
                             && $url[0] != '/'
                             && (strpos($url, 'http://') !== 0)
                             && (strpos($url, 'https://') !== 0)
@@ -186,7 +190,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
 
                         switch ($presentation) {
                             case 'url': // return the first url
-
                                 return $url;
                             case 'class:short':
                                 $parts = explode('\\', $path);

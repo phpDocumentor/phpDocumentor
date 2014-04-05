@@ -44,10 +44,13 @@ class PackageTreeBuilder implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project)
     {
+        $rootPackageDescriptor = new PackageDescriptor();
+        $rootPackageDescriptor->setName('\\');
         $project->getIndexes()->set('packages', new Collection());
-        $project->getIndexes()->packages['\\'] = new PackageDescriptor();
+        $project->getIndexes()->packages['\\'] = $rootPackageDescriptor;
 
         foreach ($project->getFiles() as $file) {
+            $this->addElementsOfTypeToPackage($project, array($file), 'files');
             $this->addElementsOfTypeToPackage($project, $file->getConstants()->getAll(), 'constants');
             $this->addElementsOfTypeToPackage($project, $file->getFunctions()->getAll(), 'functions');
             $this->addElementsOfTypeToPackage($project, $file->getClasses()->getAll(), 'classes');
@@ -74,16 +77,14 @@ class PackageTreeBuilder implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
+            $packageName = '';
             $packageTags = $element->getTags()->get('package');
-            if (!$packageTags instanceof Collection) {
-                continue;
+            if ($packageTags instanceof Collection) {
+                $packageTag = $packageTags->getIterator()->current();
+                if ($packageTag instanceof TagDescriptor) {
+                    $packageName = $packageTag->getDescription();
+                }
             }
-
-            $packageTag = $packageTags->getIterator()->current();
-            if (!$packageTag instanceof TagDescriptor) {
-                continue;
-            }
-            $packageName = $packageTag->getDescription();
 
             $subpackageCollection = $element->getTags()->get('subpackage');
             if ($subpackageCollection instanceof Collection && $subpackageCollection->count() > 0) {
@@ -95,7 +96,6 @@ class PackageTreeBuilder implements CompilerPassInterface
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
             $packageIndexName = '\\' . ltrim($packageName, '\\');
-
             if (!isset($project->getIndexes()->packages[$packageIndexName])) {
                 $this->createPackageDescriptorTree($project, $packageName);
             }
@@ -158,7 +158,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             $interimPackageDescriptor->setFullyQualifiedStructuralElementName($fqnn);
 
             // add to the pointer's list of children
-            $pointer->getChildren()->set($part, $interimPackageDescriptor);
+            $pointer->getChildren()->set($part ?: 'UNKNOWN', $interimPackageDescriptor);
 
             // add to index
             $project->getIndexes()->packages[$fqnn] = $interimPackageDescriptor;

@@ -272,6 +272,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $properties;
     }
 
+    /**
+     * @param string $package
+     */
     public function setPackage($package)
     {
         parent::setPackage($package);

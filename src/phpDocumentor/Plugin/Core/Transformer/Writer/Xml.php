@@ -460,7 +460,7 @@ class Xml extends WriterAbstract implements Translatable
     protected function buildPackageTree(\DOMDocument $dom)
     {
         $xpath = new \DOMXPath($dom);
-        $packages = array();
+        $packages = array('global' => true);
         $qry = $xpath->query('//@package');
         for ($i = 0; $i < $qry->length; $i++) {
             if (isset($packages[$qry->item($i)->nodeValue])) {

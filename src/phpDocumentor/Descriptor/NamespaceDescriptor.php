@@ -48,6 +48,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
         $this->setClasses(new Collection());
         $this->setInterfaces(new Collection());
         $this->setTraits(new Collection());
+        $this->setTags(new Collection());
     }
 
     /**

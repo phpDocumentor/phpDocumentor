@@ -20,6 +20,7 @@ interface MethodInterface extends ElementInterface, TypeInterface
 {
     /**
      * @param boolean $abstract
+     * @return void
      */
     public function setAbstract($abstract);
 
@@ -35,6 +36,7 @@ interface MethodInterface extends ElementInterface, TypeInterface
 
     /**
      * @param boolean $final
+     * @return void
      */
     public function setFinal($final);
 
@@ -45,6 +47,7 @@ interface MethodInterface extends ElementInterface, TypeInterface
 
     /**
      * @param boolean $static
+     * @return void
      */
     public function setStatic($static);
 
@@ -55,6 +58,7 @@ interface MethodInterface extends ElementInterface, TypeInterface
 
     /**
      * @param string $visibility
+     * @return void
      */
     public function setVisibility($visibility);
 

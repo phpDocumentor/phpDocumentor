@@ -104,6 +104,9 @@ class Collection extends \ArrayObject
         $this[$template->getName()] = $template;
     }
 
+    /**
+     * @return string
+     */
     public function getTemplatesPath()
     {
         return $this->templatesPath;

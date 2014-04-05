@@ -102,7 +102,7 @@ class Application extends Cilex
         $this->setTimezone();
         ini_set('memory_limit', -1);
 
-        if (extension_loaded('opcache')) {
+        if (extension_loaded('Zend OPcache')) {
             ini_set('opcache.save_comments', 1);
             ini_set('opcache.load_comments', 1);
         }
