@@ -33,6 +33,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\TypeCollectionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\VersionAssembler;
@@ -58,6 +59,7 @@ use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
 use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
 use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
@@ -132,6 +134,8 @@ class ServiceProvider implements ServiceProviderInterface
         $varMatcher         = function ($criteria) { return $criteria instanceof VarTag; };
         $versionMatcher     = function ($criteria) { return $criteria instanceof Tag\VersionTag; };
 
+        $typeCollectionMatcher = function ($criteria) { return $criteria instanceof Collection; };
+
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
         // @codingStandardsIgnoreEnd
 
@@ -158,6 +162,8 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($sinceMatcher, new SinceAssembler());
         $factory->register($varMatcher, new VarAssembler());
         $factory->register($versionMatcher, new VersionAssembler());
+
+        $factory->register($typeCollectionMatcher, new TypeCollectionAssembler());
 
         $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
 

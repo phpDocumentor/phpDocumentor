@@ -30,7 +30,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     /**
      * {@inheritDoc}
      */
-    public function setTypes(array $types)
+    public function setTypes($types)
     {
         $this->types = $types;
     }

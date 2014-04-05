@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Builder;
 
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
@@ -24,7 +25,7 @@ interface AssemblerInterface
      *
      * @param mixed $data
      *
-     * @return DescriptorAbstract
+     * @return DescriptorAbstract|Collection
      */
     public function create($data);
 

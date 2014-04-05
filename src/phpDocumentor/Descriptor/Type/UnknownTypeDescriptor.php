@@ -34,4 +34,9 @@ class UnknownTypeDescriptor implements TypeInterface
     {
         return $this->name;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
