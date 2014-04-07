@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
  */
 abstract class TypedAbstract extends TagDescriptor
 {
-    /** @var string[] $types */
+    /** @var Collection $types */
     protected $types;
 
     /**
@@ -29,7 +29,7 @@ abstract class TypedAbstract extends TagDescriptor
      *
      * @return void
      */
-    public function setTypes($types)
+    public function setTypes(Collection $types)
     {
         $this->types = $types;
     }

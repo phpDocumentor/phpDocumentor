@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\PropertyDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class PropertyAssembler extends AssemblerAbstract
 {
@@ -29,7 +30,8 @@ class PropertyAssembler extends AssemblerAbstract
         $descriptor = new PropertyDescriptor($data->getName());
         $descriptor->setVariableName($data->getVariableName());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setTypes($data->getTypes());
+        $types = $this->builder->buildDescriptor(new Collection($data->getTypes()));
+        $descriptor->setTypes($types);
 
         return $descriptor;
     }

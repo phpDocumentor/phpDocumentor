@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\ThrowsDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class ThrowsAssembler extends AssemblerAbstract
 {
@@ -28,7 +29,8 @@ class ThrowsAssembler extends AssemblerAbstract
     {
         $descriptor = new ThrowsDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setTypes($data->getTypes());
+        $types = $this->builder->buildDescriptor(new Collection($data->getTypes()));
+        $descriptor->setTypes($types);
 
         return $descriptor;
     }
