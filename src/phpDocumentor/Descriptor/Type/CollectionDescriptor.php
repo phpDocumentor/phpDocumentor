@@ -21,11 +21,11 @@ class CollectionDescriptor implements TypeInterface
     /** @var TypeInterface|string */
     protected $baseType = '';
 
-    /** @var TypeInterface|null $type */
-    protected $types;
+    /** @var TypeInterface[] $type */
+    protected $types = array();
 
-    /** @var TypeInterface|null $type */
-    protected $keyTypes;
+    /** @var TypeInterface[] $type */
+    protected $keyTypes = array();
 
     public function __construct($baseType)
     {
@@ -54,6 +54,11 @@ class CollectionDescriptor implements TypeInterface
     public function getBaseType()
     {
         return $this->baseType instanceof TypeInterface ? $this->baseType : null;
+    }
+
+    public function setBaseType($baseType)
+    {
+        $this->baseType = $baseType;
     }
 
     public function setTypes(array $types)

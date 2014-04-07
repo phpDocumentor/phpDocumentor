@@ -63,7 +63,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * {@inheritDoc}
      */
-    public function setTypes(array $types)
+    public function setTypes(Collection $types)
     {
         $this->types = $types;
     }
@@ -74,7 +74,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     public function getTypes()
     {
         if ($this->types === null) {
-            $this->types = array();
+            $this->types = new Collection();
 
             /** @var VarDescriptor $var */
             $var = $this->getVar()->get(0);
