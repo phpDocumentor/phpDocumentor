@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 
@@ -32,14 +33,19 @@ class ArgumentAssembler extends AssemblerAbstract
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());
-        $argumentDescriptor->setTypes($data->getType() ? array($data->getType()) : array());
+        $types = $this->builder->buildDescriptor(
+            $data->getType() ? new Collection(array($data->getType())) : new Collection()
+        );
+        $argumentDescriptor->setTypes($types);
 
         /** @var ParamDescriptor $tag */
         foreach ($params as $tag) {
             if ($tag->getVariableName() == $data->getName()) {
                 $argumentDescriptor->setDescription($tag->getDescription());
 
-                $types = $tag->getTypes() ?: array($data->getType() ?: 'mixed');
+                $types = $tag->getTypes()
+                    ?: $this->builder->buildDescriptor(new Collection(array($data->getType() ?: 'mixed')));
+
                 $argumentDescriptor->setTypes($types);
             }
         }

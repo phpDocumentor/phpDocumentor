@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class VarAssembler extends AssemblerAbstract
 {
@@ -28,7 +29,7 @@ class VarAssembler extends AssemblerAbstract
     {
         $descriptor = new VarDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setTypes($data->getTypes());
+        $descriptor->setTypes($this->builder->buildDescriptor(new Collection($data->getTypes())));
         $descriptor->setVariableName($data->getVariableName());
 
         return $descriptor;

@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\ClassReflector\MethodReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
@@ -107,9 +108,11 @@ class MethodAssembler extends AssemblerAbstract
         if ($lastParamTag->isVariadic()
             && !in_array($lastParamTag->getVariableName(), array_keys($methodDescriptor->getArguments()->getAll()))
         ) {
+            $types = $this->builder->buildDescriptor(new Collection($lastParamTag->getTypes()));
+
             $argument = new ArgumentDescriptor();
             $argument->setName($lastParamTag->getVariableName());
-            $argument->setTypes($lastParamTag->getTypes());
+            $argument->setTypes($types);
             $argument->setDescription($lastParamTag->getDescription());
             $argument->setLine($methodDescriptor->getLine());
             $argument->setVariadic(true);
