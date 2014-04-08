@@ -192,7 +192,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $variableName = 'variableName';
         $description  = 'description';
-        $types        = array('string');
+        $types        = new Collection(array('string'));
 
         $this->assertEquals(0, $this->fixture->getMagicProperties()->count());
 
