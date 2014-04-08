@@ -50,6 +50,9 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     /** @var Translator */
     protected $translator;
 
+    /** @var Renderer */
+    protected $routeRenderer;
+
     /**
      * Registers the structure and transformation with this extension.
      *
