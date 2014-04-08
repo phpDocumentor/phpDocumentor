@@ -59,7 +59,7 @@ use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
 use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
 use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\FunctionReflector;
 use phpDocumentor\Reflection\InterfaceReflector;
@@ -134,7 +134,7 @@ class ServiceProvider implements ServiceProviderInterface
         $varMatcher         = function ($criteria) { return $criteria instanceof VarTag; };
         $versionMatcher     = function ($criteria) { return $criteria instanceof Tag\VersionTag; };
 
-        $typeCollectionMatcher = function ($criteria) { return $criteria instanceof Collection; };
+        $typeCollectionMatcher = function ($criteria) { return $criteria instanceof TypeCollection; };
 
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
         // @codingStandardsIgnoreEnd
