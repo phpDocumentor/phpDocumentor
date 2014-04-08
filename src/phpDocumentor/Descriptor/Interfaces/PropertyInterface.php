@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Descriptor\Interfaces;
+
 use phpDocumentor\Descriptor\Collection;
 
 /**
