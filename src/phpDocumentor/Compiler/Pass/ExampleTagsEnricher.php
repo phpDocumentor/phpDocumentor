@@ -16,6 +16,8 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
 
 /**
  * This index builder collects all examples from tags and inserts them into the example index.
@@ -106,7 +108,10 @@ class ExampleTagsEnricher implements CompilerPassInterface
 
         if ($description !== '' && preg_match('/\{@example\s(.+?)\}/', $description, $params)) {
 
-            $example = $this->buildExampleDescriptor($params[1]);
+            $exampleAssembler = new ExampleAssembler();
+            $exampleReflector = new ExampleTag('example', $params[1]);
+
+            $example = $exampleAssembler->create($exampleReflector);
 
             $replacement = sprintf(
                 '<i>%s</i><pre>%s</pre>',
@@ -118,37 +123,6 @@ class ExampleTagsEnricher implements CompilerPassInterface
         }
 
         return $description;
-    }
-
-    /**
-     * @param array $params
-     *
-     * @return \phpDocumentor\Descriptor\Tag\ExampleDescriptor
-     */
-    protected function buildExampleDescriptor($paramString)
-    {
-        $params = explode(' ', $paramString);
-
-        $example = new ExampleDescriptor('example');
-        $example->setFilePath($params[0]);
-        $example->setStartingLine(isset($params[1]) && is_numeric($params[1]) ? (int) $params[1] : 1);
-        $example->setLineCount(isset($params[2]) && is_numeric($params[2]) ? (int) $params[2] : null);
-
-        if (isset($params[3])) {
-
-            $example->setDescription(strstr($paramString, $params[3]));
-
-        } elseif (isset($params[2]) && !is_numeric($params[2])) {
-
-            $example->setDescription(strstr($paramString, $params[2]));
-
-        } elseif (isset($params[1]) && !is_numeric($params[1])) {
-
-            $example->setDescription(strstr($paramString, $params[1]));
-
-        }
-
-        return $example;
     }
 
     /**
