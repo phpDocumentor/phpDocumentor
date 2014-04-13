@@ -39,7 +39,7 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
                 $types = $param->getTypes();
                 if (is_array($types)
                     && !empty($types)
-                    && (preg_grep('/^.*type$/', $types) || preg_grep('/^.*unknown$/', $types))
+                    && (preg_grep('/^type$/', $types) || preg_grep('/^unknown$/', $types))
                 ) {
                     $this->context->addViolationAt(
                         'params',
