@@ -18,9 +18,6 @@ use phpDocumentor\Descriptor\TagDescriptor;
  */
 class ExampleDescriptor extends TagDescriptor
 {
-    /** @var string $content the content of the example. */
-    protected $content;
-
     /** @var string $filePath the content of the example. */
     protected $filePath;
 
@@ -29,28 +26,6 @@ class ExampleDescriptor extends TagDescriptor
 
     /** @var int $startingLine the content of the example. */
     protected $startingLine;
-
-    /**
-     * Sets the location where the example points to.
-     *
-     * @param string $content
-     *
-     * @return void
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-    }
-
-    /**
-     * Returns the location where this example points to.
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
 
     /**
      * Sets the location where the example points to.
