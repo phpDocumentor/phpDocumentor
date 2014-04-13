@@ -94,9 +94,15 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         // services
         $app['compiler'] = $app->share(
             function ($container) {
+			    $sourceDir = is_array($container['config']['files']['directory'])
+				    ? $container['config']['files']['directory'][0]
+					: (string) $container['config']['files']['directory'];
+			    $exampleDir = is_array($container['config']['examples']['directory'])
+				    ? $container['config']['examples']['directory'][0]
+				    : (string) $container['config']['examples']['directory'];
                 $exampleExtractor = new ExampleTagsEnricher();
-                $exampleExtractor->setSourceDirectory($container['config']['files']['directory']);
-                $exampleExtractor->setExampleDirectory($container['config']['examples']['directory']);
+                $exampleExtractor->setSourceDirectory($sourceDir);
+                $exampleExtractor->setExampleDirectory($exampleDir);
                 $compiler = new Compiler();
                 $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
