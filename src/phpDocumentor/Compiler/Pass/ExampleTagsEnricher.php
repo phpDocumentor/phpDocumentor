@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
+use phpDocumentor\Descriptor\Collection;
 
 /**
  * This index builder collects all examples from tags and inserts them into the example index.
@@ -57,12 +58,16 @@ class ExampleTagsEnricher implements CompilerPassInterface
 
             $examples = $element->getTags()->get('example', array());
 
+            $exampleCollection = new Collection();
+
             /** @var ExampleDescriptor $example */
-            foreach ($examples as &$example) {
-                $example->setContent($this->getExampleContent($example));
+            foreach ($examples as $example) {
+                $exampleAssembler = new ExampleAssembler();
+                $exampleReflector = new ExampleTag('example', $this->getExampleContent($example));
+                $exampleCollection->add($exampleAssembler->create($exampleReflector));
             }
 
-            $element->getTags()->set('example', $examples);
+            $element->getTags()->set('example', $exampleCollection);
         }
     }
 
