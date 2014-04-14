@@ -123,7 +123,7 @@ HELP
                 'ignore',
                 'i',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported'
+                'Comma-separated list of file(s) and directories (relative to the source-code directory) that will be ignored. Wildcards * and ? are supported'
             )
             ->addOption(
                 'ignore-tags',
