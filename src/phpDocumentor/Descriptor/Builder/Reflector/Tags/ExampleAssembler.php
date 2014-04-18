@@ -28,7 +28,6 @@ class ExampleAssembler extends AssemblerAbstract
     public function create($data)
     {
         $descriptor = new ExampleDescriptor($data->getName());
-        $descriptor->setContent($data->getContent());
         $descriptor->setFilePath($data->getFilePath());
         $descriptor->setStartingLine($data->getStartingLine());
         $descriptor->setLineCount($data->getLineCount());
