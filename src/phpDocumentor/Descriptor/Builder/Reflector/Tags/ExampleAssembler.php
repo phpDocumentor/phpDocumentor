@@ -31,7 +31,7 @@ class ExampleAssembler extends AssemblerAbstract
         $descriptor->setFilePath($data->getFilePath());
         $descriptor->setStartingLine($data->getStartingLine());
         $descriptor->setLineCount($data->getLineCount());
-        $descriptor->setDescription($data->getDescription());
+        $descriptor->setDescription($data->getContent());
 
         return $descriptor;
     }
