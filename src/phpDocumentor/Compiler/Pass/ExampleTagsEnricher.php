@@ -98,7 +98,8 @@ class ExampleTagsEnricher implements CompilerPassInterface
         if (empty($file)) {
             $content = "** File not found : {$filename} ** ";
         } else {
-            $filepart = array_slice($file, $example->getStartingLine(), $example->getLineCount());
+            $offset = $example->getStartingLine() - 1;
+            $filepart = array_slice($file, $offset, $example->getLineCount());
             $content = implode('', $filepart);
         }
 
