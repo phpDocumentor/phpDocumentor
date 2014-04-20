@@ -56,15 +56,16 @@ class ExampleTagsEnricher implements CompilerPassInterface
         foreach ($elements as $element) {
             $element->setDescription($this->replaceInlineExamples($element));
 
-            $examples = $element->getTags()->get('example', array());
+            $examples = $element->getTags()->get('example');
+
+            if (!$examples) {
+                continue;
+            }
 
             $exampleCollection = new Collection();
 
             /** @var ExampleDescriptor $example */
             foreach ($examples as $example) {
-                if (!$example instanceof ExampleDescriptor) {
-                    continue;
-                }
                 $exampleAssembler = new ExampleAssembler();
                 $exampleReflector = new ExampleTag('example', $this->getExampleContent($example));
                 $exampleCollection->add($exampleAssembler->create($exampleReflector));
