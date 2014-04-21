@@ -28,11 +28,14 @@ class ExampleAssembler extends AssemblerAbstract
     public function create($data)
     {
         $descriptor = new ExampleDescriptor($data->getName());
-        $descriptor->setFilePath($data->getFilePath());
-        $descriptor->setStartingLine($data->getStartingLine());
-        $descriptor->setLineCount($data->getLineCount());
-        $descriptor->setDescription($data->getDescription());
-        $descriptor->setExample($data->getContent());
+
+        if ($data instanceof ExampleTag) {
+            $descriptor->setFilePath((string) $data->getFilePath());
+            $descriptor->setStartingLine($data->getStartingLine());
+            $descriptor->setLineCount($data->getLineCount());
+            $descriptor->setDescription($data->getDescription());
+            $descriptor->setExample($data->getExample());
+        }
 
         return $descriptor;
     }

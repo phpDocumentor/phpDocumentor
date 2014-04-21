@@ -26,7 +26,7 @@ class ExampleDescriptor extends TagDescriptor
 
     /** @var int $startingLine the content of the example. */
     protected $startingLine;
-	
+
     /** @var string $example the content of the example. */
     protected $example;
 
@@ -91,24 +91,24 @@ class ExampleDescriptor extends TagDescriptor
     {
         return $this->lineCount;
     }
-	
-	/**
+
+    /**
      * Returns the content of the example.
      *
      * @return void
      */
-	public function setExample($example)
-	{
-		$this->example = $example;
-	}
-	
-	/**
+    public function setExample($example)
+    {
+        $this->example = $example;
+    }
+
+    /**
      * Returns the content of the example.
      *
      * @return string
      */
-	public function getExample()
-	{
-		return $this->example;
-	}
+    public function getExample()
+    {
+        return $this->example;
+    }
 }
