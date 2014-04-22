@@ -79,7 +79,7 @@ class ExampleTagsEnricher implements CompilerPassInterface
                     $example = $exampleAssembler->create($exampleReflector);
 
                     $replacement = sprintf(
-                        '<i>%s</i><pre class="pre-scrollable">%s</pre>',
+                        '<i>%s</i><pre>%s</pre>',
                         $example->getDescription(),
                         $example->getExample()
                     );
