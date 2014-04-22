@@ -25,35 +25,34 @@ use phpDocumentor\Descriptor\Collection;
  */
 class ExampleTagsEnricher implements CompilerPassInterface
 {
-   const COMPILER_PRIORITY = 9002;
+    const COMPILER_PRIORITY = 9002;
 
-   
-   public function __construct($sourceDir = '', $exampleDir = '')
-   {
+    public function __construct($sourceDir = '', $exampleDir = '')
+    {
         ExampleAssembler::setSourceDirectory($sourceDir);
         ExampleAssembler::setExampleDirectory($exampleDir);
-   }
-   
-   /**
-    * {@inheritDoc}
-    */
-   public function getDescription()
-   {
-       return 'Enriches inline example tags with their sources';
-   }
+    }
 
-   /**
-    * {@inheritDoc}
-    */
-   public function execute(ProjectDescriptor $project)
-   {
-       $elements = $project->getIndexes()->get('elements');
+    /**
+     * {@inheritDoc}
+     */
+    public function getDescription()
+    {
+        return 'Enriches inline example tags with their sources';
+    }
 
-       /** @var DescriptorAbstract $element */
-       foreach ($elements as $element) {
-           $element->setDescription($this->replaceInlineExamples($element));
-       }
-   }
+    /**
+     * {@inheritDoc}
+     */
+    public function execute(ProjectDescriptor $project)
+    {
+        $elements = $project->getIndexes()->get('elements');
+
+        /** @var DescriptorAbstract $element */
+        foreach ($elements as $element) {
+            $element->setDescription($this->replaceInlineExamples($element));
+        }
+    }
 
     /**
      * @param DescriptorAbstract $element
@@ -64,14 +63,14 @@ class ExampleTagsEnricher implements CompilerPassInterface
     {
         $description = $element->getDescription();
 
-        if (!empty($description) && preg_match_all('/\{@example\s(.+?)\}/', $description, $matches) && count($matches[0]) >= 1)
-        {
+        if (!empty($description)
+            && preg_match_all('/\{@example\s(.+?)\}/', $description, $matches)
+            && count($matches[0]) >= 1) {
+
             $matched = array();
-           
-            foreach($matches[0] as $index => $match)
-            {
-                if(!isset($matched[$match]))
-                {
+
+            foreach ($matches[0] as $index => $match) {
+                if (!isset($matched[$match])) {
                     $matched[$match] = 1;
                     $exampleAssembler = new ExampleAssembler();
                     $exampleReflector = new ExampleTag('example', $matches[1][$index]);
@@ -91,5 +90,4 @@ class ExampleTagsEnricher implements CompilerPassInterface
 
         return $description;
     }
-
 }

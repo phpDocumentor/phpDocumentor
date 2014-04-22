@@ -100,11 +100,12 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 $compiler->insert(
                     new ExampleTagsEnricher(
                         is_array($container['config']['files']['directory'])
-                            ? $container['config']['files']['directory'][0]
-                            : (string) $container['config']['files']['directory'],
+                        ? $container['config']['files']['directory'][0]
+                        : (string) $container['config']['files']['directory'],
                         is_array($container['config']['examples']['directory'])
-                            ? $container['config']['examples']['directory'][0]
-                            : (string) $container['config']['examples']['directory']),
+                        ? $container['config']['examples']['directory'][0]
+                        : (string) $container['config']['examples']['directory']
+                    ),
                     ExampleTagsEnricher::COMPILER_PRIORITY
                 );
                 $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);

@@ -51,14 +51,12 @@ class ExampleAssembler extends AssemblerAbstract
         return $descriptor;
     }
 
-	/**
+    /**
      * @return string
      */
-    function getExample($data)
+    public function getExample($data)
     {
         $filename = $data->getFilePath();
-
-        $file = array();
 
         if (is_file($this->getExamplePathFromConfig($filename))) {
             $file = file($this->getExamplePathFromConfig($filename));
