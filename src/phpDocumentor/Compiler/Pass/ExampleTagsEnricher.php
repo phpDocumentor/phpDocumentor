@@ -30,8 +30,8 @@ class ExampleTagsEnricher implements CompilerPassInterface
    
    public function __construct($sourceDir = '', $exampleDir = '')
    {
-        ExampleTag::setSourceDirectory($sourceDir);
-        ExampleTag::setExampleDirectory($exampleDir);
+        ExampleAssembler::setSourceDirectory($sourceDir);
+        ExampleAssembler::setExampleDirectory($exampleDir);
    }
    
    /**
