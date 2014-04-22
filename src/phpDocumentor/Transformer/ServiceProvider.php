@@ -17,6 +17,7 @@ use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
+use phpDocumentor\Compiler\Pass\ExampleTagsEnricher;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
@@ -96,6 +97,16 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 $compiler = new Compiler();
                 $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
+                $compiler->insert(
+                    new ExampleTagsEnricher(
+                        is_array($container['config']['files']['directory'])
+                            ? $container['config']['files']['directory'][0]
+                            : (string) $container['config']['files']['directory'],
+                        is_array($container['config']['examples']['directory'])
+                            ? $container['config']['examples']['directory'][0]
+                            : (string) $container['config']['examples']['directory']),
+                    ExampleTagsEnricher::COMPILER_PRIORITY
+                );
                 $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);

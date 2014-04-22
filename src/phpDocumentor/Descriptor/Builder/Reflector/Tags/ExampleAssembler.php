@@ -39,4 +39,5 @@ class ExampleAssembler extends AssemblerAbstract
 
         return $descriptor;
     }
+
 }
