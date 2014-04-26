@@ -82,7 +82,7 @@ if (rand(0, 100) !== 42) {
 ```
 5. On the guest machine you can profile phpDocumentor using the docs of phpDocumentor itself. To do that
 ``` bash
-/vagrant/bin/phpdoc.php run -d /vagrant/vendor/phpdocumentor
+/vagrant/bin/phpdoc run -d /vagrant/vendor/phpdocumentor
 ```
 You should see PROFILING ENABLED when you run phpDocumentor.
 

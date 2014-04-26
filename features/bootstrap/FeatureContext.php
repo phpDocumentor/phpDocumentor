@@ -24,7 +24,7 @@ class FeatureContext extends BehatContext
     /** @var Process the process used to execute phpDocumentor */
     protected $process;
 
-    /** @var string path to the phpdoc binary file, including phpdoc.php */
+    /** @var string path to the phpdoc binary file, including phpdoc */
     protected $binaryPath;
 
     /**
@@ -47,7 +47,7 @@ class FeatureContext extends BehatContext
      */
     public function beforeScenario()
     {
-        $this->binaryPath = __DIR__ . '/../../bin/phpdoc.php';
+        $this->binaryPath = __DIR__ . '/../../bin/phpdoc';
         $this->process = new Process(null);
         $this->process->setWorkingDirectory($this->getTmpFolder());
     }

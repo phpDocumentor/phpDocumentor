@@ -46,7 +46,7 @@ function createPackager($original_file, $options = array())
                 'vendor/twig/twig/ext/*'
             ),
             'exceptions'        => array(
-                'bin/phpdoc.php'   => 'script',
+                'bin/phpdoc'       => 'script',
                 'bin/phpdoc.bat'   => 'script',
                 'phpdoc.dist.xml'  => 'php',
                 'LICENSE'          => 'php',
@@ -63,7 +63,7 @@ function createPackager($original_file, $options = array())
                 'vendor/phpunit/php-code-coverage/PHP/CodeCoverage/Autoload.php.in' => 'php',
             ),
             'installexceptions' => array(
-                'bin/phpdoc.php' => '/',
+                'bin/phpdoc' => '/',
                 'bin/phpdoc.bat' => '/'
             ),
             'dir_roles'         => array(
@@ -103,14 +103,14 @@ DESC
     $packagexml->setPhpDep('5.3.3');
     $packagexml->setPearinstallerDep('1.4.0');
     $packagexml->addReplacement(
-        'bin/phpdoc.php',
+        'bin/phpdoc',
         'pear-config',
         '/usr/bin/env php',
         'php_bin'
     );
     $packagexml->addGlobalReplacement('pear-config', '@php_bin@', 'php_bin');
     $packagexml->addReplacement(
-        'bin/phpdoc.php',
+        'bin/phpdoc',
         'pear-config',
         '@php_dir@',
         'php_dir'
@@ -137,10 +137,10 @@ DESC
     $packagexml->addRelease();
     $packagexml->setOSInstallCondition('windows');
     $packagexml->addInstallAs('bin/phpdoc.bat', 'phpdoc.bat');
-    $packagexml->addInstallAs('bin/phpdoc.php', 'phpdoc.php');
+    $packagexml->addInstallAs('bin/phpdoc',     'phpdoc');
 
     $packagexml->addRelease();
-    $packagexml->addInstallAs('bin/phpdoc.php', 'phpdoc');
+    $packagexml->addInstallAs('bin/phpdoc', 'phpdoc');
     $packagexml->addIgnoreToRelease('bin/phpdoc.bat');
 
     return $packagexml;

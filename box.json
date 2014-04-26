@@ -148,7 +148,7 @@
             ]
         }
     ],
-    "main": "bin/phpdoc.php",
+    "main": "bin/phpdoc",
     "output": "phpDocumentor.phar",
     "stub": true
 }

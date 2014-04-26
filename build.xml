@@ -46,7 +46,7 @@
 
     <!-- Generate API documentation with phpDocumentor -->
     <target name="build:phpdoc" description="Generates API documentation">
-        <exec executable="${project.basedir}/bin/phpdoc.php" passthru="true">
+        <exec executable="${project.basedir}/bin/phpdoc" passthru="true">
             <arg line="-d ${project.basedir}/src"/>
             <arg line="-t ${project.basedir}/build/api"/>
         </exec>
@@ -149,9 +149,9 @@
     <target name="deploy:publish-demo"
             description="Generate a demo and upload it to the server">
         <delete><fileset dir="/tmp/phpdoc-demo/responsive"><include name="*"/></fileset></delete>
-        <exec command="php bin/phpdoc.php -t /tmp/phpdoc-demo/responsive --template=responsive-twig" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="php bin/phpdoc -t /tmp/phpdoc-demo/responsive --template=responsive-twig" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r /tmp/phpdoc-demo/responsive/* ${server.username}@${server.demo}:${server.demo.path}/Responsive" passthru="true" checkreturn="true"/>
-        <exec command="php bin/phpdoc.php -t /tmp/phpdoc-demo/clean --template=clean" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="php bin/phpdoc -t /tmp/phpdoc-demo/clean --template=clean" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r /tmp/phpdoc-demo/clean/* ${server.username}@${server.demo}:${server.demo.path}/Clean" passthru="true" checkreturn="true"/>
     </target>
 
