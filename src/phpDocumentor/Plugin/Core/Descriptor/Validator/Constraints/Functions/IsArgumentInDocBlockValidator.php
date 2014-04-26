@@ -15,7 +15,6 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -30,26 +29,22 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!is_array($value)) {
-            throw new ConstraintDefinitionException(
-                'The Functions\IsArgumentInDocBlock subvalidator may only be used on '
-                . ' an array containing a parameter key, a fqsen and an argument object'
-            );
+        if (is_array($value)) {
+            $args = @$value[1];
+        } else {
+            $args = $value->getArguments();
         }
 
-        extract($value);
-
-        if (!is_int($key) && !is_string($fqsen) && !$argument instanceof ArgumentDescriptor) {
-            throw new ConstraintDefinitionException(
-                'The Functions\IsArgumentInDocBlock validator may only be used on a key, fqsen and an argument object'
-            );
-        }
-
-        if (!empty($params)) {
-            $iter = $params->getIterator();
-            foreach($iter as $param) {
-                if ($param instanceof ParamDescriptor && $param->getVariableName() === $key) {
-                    return $param;
+        if (count($args) > 0) {
+            $params = $args->getAll();
+            foreach ($params as $param) {
+                $type = $param->getTypes();
+                if (is_array($type) && empty($type)) {
+                    $this->context->addViolationAt(
+                        'argument',
+                        $constraint->message,
+                        array($param->getName(), $value->getFullyQualifiedStructuralElementName())
+                    );
                 }
             }
 
@@ -59,8 +54,6 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
                 array($argument->getName(), $value->getFullyQualifiedStructuralElementName())
             );
         }
-
-        return array($argument->getName(), $fqsen);
     }
 
     /**

@@ -33,6 +33,8 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
      */
     protected $validationValue = array();
 
+    protected $fqsen;
+
     /**
      * @see \Symfony\Component\Validator\ConstraintValidatorInterface::validate()
      */
@@ -51,7 +53,9 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
         $params = $value->getParam();
         $arguments  = $value->getArguments();
 
-        $violation = $this->processArgumentValidation();
+        $this->fqsen = $value->getFullyQualifiedStructuralElementName();
+
+        $violation = $this->processArgumentValidation($arguments, $params);
         if ($violation) {
             return $violation;
         }
@@ -62,27 +66,25 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
     /**
      * @param string $key
      * @param mixed $value
-     * 
-     * @return void
      */
     protected function addValidationValue($key, $value)
     {
         $this->validationValue[$key] = $value;
+
+        return $this;
     }
 
     /**
      * @param Collection $arguments
      * @param Collection $params
      */
-    protected function processArgumentValidation(Collection $arguments, Collection $params)
+    protected function processArgumentValidation($arguments, $params)
     {
-        $argIter = $arguments->getIterator();
+        $this->addValidationValue('fqsen', $this->fqsen);
 
-        $this->addValidationValue('fqsen', $value->getFullyQualifiedStructuralElementName());
-
-        foreach($argIter as $argument) {
-            $this->addValidationValue('key', $argIter->key());
-            $this->addValidationValue('argument', $argIter->current());
+        foreach($arguments as $key => $argument) {
+            $this->addValidationValue('key', $key);
+            $this->addValidationValue('argument', $argument);
             $this->addValidationValue('params', $params);
 
             $value = $this->checkArgumentInDocBlock();
@@ -91,7 +93,9 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
                 $this->context->addViolationAt(
                     'argument',
                     $this->isArgumentInDocblockConstraint->message,
-                    $value
+                    $value,
+                    null,
+                    $this->isArgumentInDocblockConstraint->code
                 );
 
                 continue;
@@ -142,7 +146,13 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
         $violation = null;
 
         if ($invalidValue) {
-            $violation = $this->context->addViolationAt('argument', $doesArgumentNameMatchParamConstraint->message, $invalidValue);
+            $violation = $this->context->addViolationAt(
+                'argument',
+                $doesArgumentNameMatchParamConstraint->message,
+                $invalidValue,
+                null,
+                $doesArgumentNameMatchParamConstraint->code
+            );
         }
 
         return $violation;
@@ -164,7 +174,13 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
         $violation = null;
 
         if ($invalidValue) {
-            $violation = $this->context->addViolationAt('argument', $doesArgumentTypehintMatchParamConstraint->message, $invalidValue);
+            $violation = $this->context->addViolationAt(
+                'argument',
+                $doesArgumentTypehintMatchParamConstraint->message,
+                $invalidValue,
+                null,
+                $doesArgumentTypehintMatchParamConstraint->code
+            );
         }
 
         return $violation;
@@ -176,23 +192,25 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
      * @param Collection $params
      * @param Collection $arguments
      */
-    protected function checkParamsExists(Collection $arguments, Collection $params)
+    protected function checkParamsExists($arguments, $params)
     {
-        foreach($params as $param) {
-            $paramName = $param->getVariableName();
+        if (count($arguments) > 0) {
+            foreach($params as $param) {
+                $param = $param->getVariableName();
 
-            if ($arguments->offsetGet($paramName)) {
-                continue;
+                if (!is_string($param) || $arguments->offsetExists($param)) {
+                    continue;
+                }
+
+                $this->context->addViolationAt(
+                    'argument',
+                    $this->constraint->message,
+                    array($paramName, $this->validationValue['fqsen']),
+                    null,
+                    null,
+                    50013
+                );
             }
-
-            $this->context->addViolationAt(
-                'argument',
-                $this->constraint->message,
-                array($paramName, $this->validationValue['fqsen']),
-                null,
-                null,
-                50013
-            );
         }
     }
 }

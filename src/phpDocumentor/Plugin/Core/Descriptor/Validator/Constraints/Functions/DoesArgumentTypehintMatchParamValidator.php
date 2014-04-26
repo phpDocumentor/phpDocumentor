@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 
 class DoesArgumentTypehintMatchParamValidator extends ConstraintValidator
 {
@@ -34,12 +35,15 @@ class DoesArgumentTypehintMatchParamValidator extends ConstraintValidator
 
         extract($value);
 
-        if (count($argument->getTypes()) === 0 || in_array(current($argument->getTypes()), $param->getTypes())) {
-            return null;
-        } elseif (current($argument->getTypes()) === 'array' && substr(current($param->getTypes()), -2) == '[]') {
-            return null;
-        }
+        if ($argument instanceof ArgumentDescriptor && $param instanceof ParamDescriptor ) {
 
-        return array($argument->getName(), $fqsen);
+            if (count($argument->getTypes()) === 0 || in_array(current($argument->getTypes()), $param->getTypes())) {
+                return null;
+            } elseif (current($argument->getTypes()) === 'array' && substr(current($param->getTypes()), -2) == '[]') {
+                return null;
+            }
+
+            return array($argument->getName(), $fqsen);
+        }
     }
 }

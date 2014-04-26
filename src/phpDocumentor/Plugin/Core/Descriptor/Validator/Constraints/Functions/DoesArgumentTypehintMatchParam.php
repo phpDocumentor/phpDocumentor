@@ -25,6 +25,8 @@ class DoesArgumentTypehintMatchParam extends Constraint
     /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
     public $message = 'PPC:ERR-50016';
 
+    public $code = 50016;
+
     /**
      * Returns that the constraint can be put onto classes.
      *
