@@ -208,7 +208,7 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
                     array($paramName, $this->validationValue['fqsen']),
                     null,
                     null,
-                    50013
+                    $this->constraint->code
                 );
             }
         }
