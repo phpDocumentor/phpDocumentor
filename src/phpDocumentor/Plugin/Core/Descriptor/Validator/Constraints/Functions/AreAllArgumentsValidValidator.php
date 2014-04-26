@@ -14,12 +14,25 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions\DoesArgumentNameMatchParam;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions\DoesArgumentNameMatchParamValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 class AreAllArgumentsValidValidator extends ConstraintValidator
 {
+    /**
+     * @var Constraint $constraint
+     */
+    protected $constraint;
+
+    /**
+     * Value to validate agains.
+     * @var array
+     */
+    protected $validationValue = array();
+
     /**
      * @see \Symfony\Component\Validator\ConstraintValidatorInterface::validate()
      */
@@ -33,42 +46,138 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
             );
         }
 
-        $params    = $value->getParam();
+        $this->constraint = $constraint;
+
+        $params = $value->getParam();
         $arguments  = $value->getArguments();
+
+        $violation = $this->processArgumentValidation();
+        if ($violation) {
+            return $violation;
+        }
+
+        $this->checkParamsExists($params, $arguments);
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * 
+     * @return void
+     */
+    protected function addValidationValue($key, $value)
+    {
+        $this->validationValue[$key] = $value;
+    }
+
+    /**
+     * @param Collection $arguments
+     * @param Collection $params
+     */
+    protected function processArgumentValidation(Collection $arguments, Collection $params)
+    {
         $argIter = $arguments->getIterator();
 
-        $element['fqsen'] = $value->getFullyQualifiedStructuralElementName();
+        $this->addValidationValue('fqsen', $value->getFullyQualifiedStructuralElementName());
 
         foreach($argIter as $argument) {
-            $element['key'] = $argIter->key();
-            $element['argument'] = $argIter->current();
-            $element['params'] = $params;
+            $this->addValidationValue('key', $argIter->key());
+            $this->addValidationValue('argument', $argIter->current());
+            $this->addValidationValue('params', $params);
 
-            $isArgumentInDocblockValidator  = new IsArgumentInDocBlockValidator;
-            $isArgumentInDocblockConstraint = new IsArgumentInDocBlock;
-            $result = $isArgumentInDocblockValidator->validate($element, $isArgumentInDocblockConstraint);
-            if (is_array($result)) {
-                $this->context->addViolationAt('argument', $isArgumentInDocblockConstraint->message, $result);
+            $value = $this->checkArgumentInDocBlock();
+
+            if (is_array($value)) {
+                $this->context->addViolationAt(
+                    'argument',
+                    $this->isArgumentInDocblockConstraint->message,
+                    $value
+                );
+
                 continue;
             }
+            $this->addValidationValue('param', $value);
 
-            $element['param'] = $result;
-
-            $doesArgumentNameMatchParamValidator  = new DoesArgumentNameMatchParamValidator;
-            $doesArgumentNameMatchParamConstraint = new DoesArgumentNameMatchParam;
-            $result = $doesArgumentNameMatchParamValidator->validate($element, $doesArgumentNameMatchParamConstraint);
-            if ($result) {
-                return $this->context->addViolationAt('argument', $doesArgumentNameMatchParamConstraint->message, $result);
+            $violation = $this->checkArgumentNameMatchParam();
+            if ($violation) {
+                return $violation;
             }
 
-            $doesArgumentTypehintMatchParamValidator  = new DoesArgumentTypehintMatchParamValidator;
-            $doesArgumentTypehintMatchParamConstraint = new DoesArgumentTypehintMatchParam;
-            $result = $doesArgumentTypehintMatchParamValidator->validate($element, $doesArgumentTypehintMatchParamConstraint);
-            if ($result) {
-                return $this->context->addViolationAt('argument', $doesArgumentTypehintMatchParamConstraint->message, $result);
+            $violation = $this->checkArgumentTypehintMatchParam();
+            if ($violation) {
+                return $violation;
             }
         }
 
+        return null;
+    }
+
+    /**
+     * Check if argument is inside docblock.
+     */
+    protected function checkArgumentInDocBlock()
+    {
+        $isArgumentInDocblockValidator  = new IsArgumentInDocBlockValidator();
+        $this->isArgumentInDocblockConstraint = new IsArgumentInDocBlock();
+
+        return $isArgumentInDocblockValidator->validate(
+            $this->validationValue,
+            $this->isArgumentInDocblockConstraint
+        );
+    }
+
+    /**
+     * Check if argument matches parameter.
+     */
+    protected function checkArgumentNameMatchParam()
+    {
+        $doesArgumentNameMatchParamValidator  = new DoesArgumentNameMatchParamValidator;
+        $doesArgumentNameMatchParamConstraint = new DoesArgumentNameMatchParam;
+
+        $invalidValue = $doesArgumentNameMatchParamValidator->validate(
+            $this->validationValue,
+            $doesArgumentNameMatchParamConstraint
+        );
+
+        $violation = null;
+
+        if ($invalidValue) {
+            $violation = $this->context->addViolationAt('argument', $doesArgumentNameMatchParamConstraint->message, $invalidValue);
+        }
+
+        return $violation;
+    }
+
+    /**
+     * Check if argument typehint matches parameter.
+     */
+    protected function checkArgumentTypehintMatchParam()
+    {
+        $doesArgumentTypehintMatchParamValidator  = new DoesArgumentTypehintMatchParamValidator;
+        $doesArgumentTypehintMatchParamConstraint = new DoesArgumentTypehintMatchParam;
+
+        $invalidValue = $doesArgumentTypehintMatchParamValidator->validate(
+            $this->validationValue,
+            $doesArgumentTypehintMatchParamConstraint
+        );
+
+        $violation = null;
+
+        if ($invalidValue) {
+            $violation = $this->context->addViolationAt('argument', $doesArgumentTypehintMatchParamConstraint->message, $invalidValue);
+        }
+
+        return $violation;
+    }
+
+    /**
+     * Check if parameter exists for argument.
+     *
+     * @param Collection $params
+     * @param Collection $arguments
+     */
+    protected function checkParamsExists(Collection $arguments, Collection $params)
+    {
         foreach($params as $param) {
             $paramName = $param->getVariableName();
 
@@ -76,7 +185,14 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
                 continue;
             }
 
-            $this->context->addViolationAt('argument', $constraint->message, array($paramName, $element['fqsen']), null, null, 50013);
+            $this->context->addViolationAt(
+                'argument',
+                $this->constraint->message,
+                array($paramName, $this->validationValue['fqsen']),
+                null,
+                null,
+                50013
+            );
         }
     }
 }
