@@ -74,7 +74,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         /** @var Tag\MethodDescriptor $methodTag */
         foreach ($methodTags as $methodTag) {
             $method = new MethodDescriptor();
-            $method->setName($methodTag->getVariableName());
+            $method->setName($methodTag->getMethodName());
             $method->setDescription($methodTag->getDescription());
 
             $methods->add($method);
