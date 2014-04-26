@@ -255,22 +255,10 @@ class ProjectDescriptorBuilder
      */
     protected function mapCodeToSeverity($code)
     {
-        switch ($code) {
-            case 50013:
-                $severity = LogLevel::NOTICE;
-                break;
-            case 50004:
-                $severity = LogLevel::WARNING;
-                break;
-            case 50006:
-            case 50020:
-                $severity = LogLevel::CRITICAL;
-                break;
-            case 50014:
-            case 50015:
-            case 50016:
-            default:
-                $severity = LogLevel::ERROR;
+        if (is_int($code) && $this->translator->translate("VAL:ERRLVL-{$code}")) {
+            $severity = $this->translator->translate("VAL:ERRLVL-{$code}");
+        } else {
+             $severity = LogLevel::ERROR;
         }
 
         return $severity;
