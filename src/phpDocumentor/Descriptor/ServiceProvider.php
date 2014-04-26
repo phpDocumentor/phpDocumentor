@@ -326,6 +326,7 @@ class ServiceProvider implements ServiceProviderInterface
                     $container['descriptor.filter'],
                     $container['validator']
                 );
+                $builder->setTranlator($container['translator']);
 
                 return $builder;
             }

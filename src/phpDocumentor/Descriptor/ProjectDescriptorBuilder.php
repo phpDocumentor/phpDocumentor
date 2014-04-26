@@ -41,6 +41,8 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
+    protected $translator;
+
     public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
     {
         $this->assemblerFactory = $assemblerFactory;
@@ -262,5 +264,10 @@ class ProjectDescriptorBuilder
         }
 
         return $severity;
+    }
+
+    public function setTranlator($translator)
+    {
+        $this->translator = $translator;
     }
 }
