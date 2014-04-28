@@ -29,30 +29,17 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (is_array($value)) {
-            $args = @$value[1];
-        } else {
-            $args = $value->getArguments();
-        }
+        if (is_array($value) && count($value['argument']) > 0) {
+            $argument = $value['argument'];
+            /* @var $params \phpDocumentor\Descriptor\Collection */
+            $params   = $value['params'];
+            $index    = $value['index'];
 
-        if (count($args) > 0) {
-            $params = $args->getAll();
-            foreach ($params as $param) {
-                $type = $param->getTypes();
-                if (is_array($type) && empty($type)) {
-                    $this->context->addViolationAt(
-                        'argument',
-                        $constraint->message,
-                        array($param->getName(), $value->getFullyQualifiedStructuralElementName())
-                    );
-                }
+            if ($params->offsetExists($index)) {
+                return null;
             }
 
-            $this->context->addViolationAt(
-                'argument',
-                $constraint->message,
-                array($argument->getName(), $value->getFullyQualifiedStructuralElementName())
-            );
+            return array($argument->getName(), $value['name']);
         }
     }
 

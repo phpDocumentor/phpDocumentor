@@ -34,7 +34,7 @@ class DoesArgumentNameMatchParamValidator extends ConstraintValidator
 
         extract($value);
 
-        if ($param === null) {
+        if (!isset($param) || empty($param)) {
             return null;
         }
 
@@ -46,7 +46,6 @@ class DoesArgumentNameMatchParamValidator extends ConstraintValidator
 
         if ($paramName == '') {
             $param->setVariableName($argument->getName());
-
             return null;
         }
 

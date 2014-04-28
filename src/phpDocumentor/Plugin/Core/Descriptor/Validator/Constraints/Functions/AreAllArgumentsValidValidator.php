@@ -53,7 +53,7 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
         $params = $value->getParam();
         $arguments  = $value->getArguments();
 
-        $this->fqsen = $value->getFullyQualifiedStructuralElementName();
+        $this->value = $value;
 
         $violation = $this->processArgumentValidation($arguments, $params);
         if ($violation) {
@@ -80,36 +80,43 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
      */
     protected function processArgumentValidation($arguments, $params)
     {
-        $this->addValidationValue('fqsen', $this->fqsen);
+        $this->addValidationValue('fqsen', $this->value->getFullyQualifiedStructuralElementName());
+        $this->addValidationValue('name', $this->value->getName());
 
-        foreach($arguments as $key => $argument) {
+        foreach(array_values($arguments->getAll()) as $key => $argument) {
             $this->addValidationValue('key', $key);
             $this->addValidationValue('argument', $argument);
             $this->addValidationValue('params', $params);
+            $this->addValidationValue('index', $key);
+            $this->addValidationValue('param', $params[$key]);
 
-            $value = $this->checkArgumentInDocBlock();
+            $isArgumentInDocblockValidator  = new IsArgumentInDocBlockValidator();
+            $isArgumentInDocblockConstraint = new IsArgumentInDocBlock();
+
+            $value = $isArgumentInDocblockValidator->validate(
+                $this->validationValue,
+                $isArgumentInDocblockConstraint
+            );
 
             if (is_array($value)) {
                 $this->context->addViolationAt(
                     'argument',
-                    $this->isArgumentInDocblockConstraint->message,
+                    $isArgumentInDocblockConstraint->message,
                     $value,
                     null,
-                    $this->isArgumentInDocblockConstraint->code
+                    null,
+                    $isArgumentInDocblockConstraint->code
                 );
 
                 continue;
             }
-            $this->addValidationValue('param', $value);
 
-            $violation = $this->checkArgumentNameMatchParam();
-            if ($violation) {
-                return $violation;
+            if ($this->checkArgumentNameMatchParam()) {
+                continue;
             }
 
-            $violation = $this->checkArgumentTypehintMatchParam();
-            if ($violation) {
-                return $violation;
+            if ($this->checkArgumentTypehintMatchParam()) {
+                continue;
             }
         }
 
@@ -121,13 +128,12 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
      */
     protected function checkArgumentInDocBlock()
     {
-        $isArgumentInDocblockValidator  = new IsArgumentInDocBlockValidator();
-        $this->isArgumentInDocblockConstraint = new IsArgumentInDocBlock();
-
-        return $isArgumentInDocblockValidator->validate(
+        $invalidValue = $isArgumentInDocblockValidator->validate(
             $this->validationValue,
-            $this->isArgumentInDocblockConstraint
+            $isArgumentInDocblockConstraint
         );
+
+        return $invalidValue;
     }
 
     /**
@@ -150,6 +156,7 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
                 'argument',
                 $doesArgumentNameMatchParamConstraint->message,
                 $invalidValue,
+                null,
                 null,
                 $doesArgumentNameMatchParamConstraint->code
             );
@@ -179,6 +186,7 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
                 $doesArgumentTypehintMatchParamConstraint->message,
                 $invalidValue,
                 null,
+                null,
                 $doesArgumentTypehintMatchParamConstraint->code
             );
         }
@@ -198,7 +206,15 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
             foreach($params as $param) {
                 $param = $param->getVariableName();
 
-                if (!is_string($param) || $arguments->offsetExists($param)) {
+                if (is_string($param) && $arguments->offsetExists($param)) {
+                    continue;
+                } elseif ($param instanceof Collection) {
+                    foreach ($param as $p) {
+                        if (is_string($p) && $arguments->offsetExists($p)) {
+                            continue;
+                        }
+                    }
+
                     continue;
                 }
 
