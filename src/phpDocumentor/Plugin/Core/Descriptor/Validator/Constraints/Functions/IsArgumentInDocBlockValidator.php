@@ -39,7 +39,14 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
                 return null;
             }
 
-            return array($argument->getName(), $value['name']);
+            $this->context->addViolationAt(
+                'argument',
+                $constraint->message,
+                array($argument->getName(), $value['name']),
+                null,
+                null,
+                $constraint->code
+            );
         }
     }
 

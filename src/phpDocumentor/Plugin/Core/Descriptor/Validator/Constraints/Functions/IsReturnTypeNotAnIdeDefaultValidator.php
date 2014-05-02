@@ -40,7 +40,10 @@ class IsReturnTypeNotAnIdeDefaultValidator extends ConstraintValidator
                 $this->context->addViolationAt(
                     'response',
                     $constraint->message,
-                    array($return->getName(), $value->getFullyQualifiedStructuralElementName())
+                    array($return->getName(), $value->getFullyQualifiedStructuralElementName()),
+                    null,
+                    null,
+                    $constraint->code
                 );
             }
         }

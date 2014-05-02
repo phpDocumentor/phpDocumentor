@@ -47,7 +47,7 @@ class HasSingleSubpackageValidator extends ConstraintValidator
         }
 
         if ($value->getTags()->get('subpackage', new Collection())->count() > 1) {
-            $this->context->addViolationAt('package', $constraint->message);
+            $this->context->addViolationAt('package', $constraint->message, array(), null, null, $constraint->code);
         }
     }
 }

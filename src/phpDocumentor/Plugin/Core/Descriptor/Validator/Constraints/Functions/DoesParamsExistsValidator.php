@@ -17,9 +17,8 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
-use phpDocumentor\Descriptor\ArgumentDescriptor;
 
-class DoesArgumentTypehintMatchParamValidator extends ConstraintValidator
+class DoesParamsExistsValidator extends ConstraintValidator
 {
     /**
      * @see \Symfony\Component\Validator\ConstraintValidatorInterface::validate()
@@ -28,29 +27,39 @@ class DoesArgumentTypehintMatchParamValidator extends ConstraintValidator
     {
         if (!is_array($value)) {
             throw new ConstraintDefinitionException(
-                'The Functions\DoesArgumentTypehintMatchParam subvalidator may only be used on '
+                'The Functions\DoesArgumentNameMatchParam subvalidator may only be used on '
                 . ' an array containing a parameter key, a fqsen and an argument object'
             );
         }
 
         extract($value);
+        if (count($arguments) > 0) {
+            foreach($params as $param) {
+                $param = $param->getVariableName();
 
-        if ($argument instanceof ArgumentDescriptor && $param instanceof ParamDescriptor ) {
+                if (is_string($param) && $arguments->offsetExists($param)) {
+                    continue;
+                } elseif ($param instanceof Collection) {
+                    foreach ($param as $p) {
+                        if (is_string($p) && $arguments->offsetExists($p)) {
+                            continue;
+                        }
+                    }
 
-            if (count($argument->getTypes()) === 0 || in_array(current($argument->getTypes()), $param->getTypes())) {
-                return null;
-            } elseif (current($argument->getTypes()) === 'array' && substr(current($param->getTypes()), -2) == '[]') {
-                return null;
+                    continue;
+                }
+
+                $this->context->addViolationAt(
+                    'argument',
+                    $constraint->message,
+                    array($paramName, $fqsen),
+                    null,
+                    null,
+                    $constraint->code
+                );
             }
-
-            $this->context->addViolationAt(
-                'argument',
-                $constraint->message,
-                array($argument->getName(), $fqsen),
-                null,
-                null,
-                $constraint->code
-            );
         }
+
+        return null;
     }
 }

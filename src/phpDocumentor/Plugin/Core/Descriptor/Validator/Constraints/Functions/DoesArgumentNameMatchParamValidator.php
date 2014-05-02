@@ -49,6 +49,13 @@ class DoesArgumentNameMatchParamValidator extends ConstraintValidator
             return null;
         }
 
-        return array($argument->getName(), $paramName, $fqsen);
+        $violation = $this->context->addViolationAt(
+            'argument',
+            $constraint->message,
+            array($argument->getName(), $paramName, $fqsen),
+            null,
+            null,
+            $constraint->code
+        );
     }
 }
