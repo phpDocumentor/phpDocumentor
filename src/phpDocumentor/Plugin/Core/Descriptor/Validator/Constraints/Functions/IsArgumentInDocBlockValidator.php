@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\FunctionDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidationValueObject;
 
 /**
  * Validates if a Method or Function's arguments all have an accompanying param tag in the DocBlock.
@@ -29,11 +30,11 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (is_array($value) && count($value['argument']) > 0) {
-            $argument = $value['argument'];
+        if ($value instanceof ValidationValueObject && count($value->argument) > 0) {
+            $argument = $value->argument;
             /* @var $params \phpDocumentor\Descriptor\Collection */
-            $params   = $value['params'];
-            $index    = $value['index'];
+            $params   = $value->parameters;
+            $index    = $value->index;
 
             if ($params->offsetExists($index)) {
                 return null;
@@ -42,7 +43,7 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
             $this->context->addViolationAt(
                 'argument',
                 $constraint->message,
-                array($argument->getName(), $value['name']),
+                array($argument->getName(), $value->name),
                 null,
                 null,
                 $constraint->code

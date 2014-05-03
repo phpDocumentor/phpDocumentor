@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidationValueObject;
 
 class DoesParamsExistsValidator extends ConstraintValidator
 {
@@ -25,34 +26,28 @@ class DoesParamsExistsValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!is_array($value)) {
+        if (!$value instanceof ValidationValueObject) {
             throw new ConstraintDefinitionException(
-                'The Functions\DoesArgumentNameMatchParam subvalidator may only be used on '
-                . ' an array containing a parameter key, a fqsen and an argument object'
+                'The Functions\DoesParamsExistsValidator subvalidator may only be used on '
+                . ' a ValidationValueObject containing a parameter key, a fqsen and an argument object'
             );
         }
 
-        extract($value);
+        $arguments  = $value->arguments;
+        $parameters = $value->parameters;
+
         if (count($arguments) > 0) {
-            foreach($params as $param) {
-                $param = $param->getVariableName();
+            foreach($parameters as $param) {
+                $paramVarName = $param->getVariableName();
 
-                if (is_string($param) && $arguments->offsetExists($param)) {
-                    continue;
-                } elseif ($param instanceof Collection) {
-                    foreach ($param as $p) {
-                        if (is_string($p) && $arguments->offsetExists($p)) {
-                            continue;
-                        }
-                    }
-
+                if (empty($paramVarName) || $arguments->offsetExists($paramVarName) ) {
                     continue;
                 }
 
                 $this->context->addViolationAt(
                     'argument',
                     $constraint->message,
-                    array($paramName, $fqsen),
+                    array($paramVarName, $value->fqsen),
                     null,
                     null,
                     $constraint->code

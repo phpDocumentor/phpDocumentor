@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidationValueObject;
 
 class DoesArgumentNameMatchParamValidator extends ConstraintValidator
 {
@@ -25,34 +26,33 @@ class DoesArgumentNameMatchParamValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!is_array($value)) {
+        if (!$value instanceof ValidationValueObject) {
             throw new ConstraintDefinitionException(
                 'The Functions\DoesArgumentNameMatchParam subvalidator may only be used on '
-                . ' an array containing a parameter key, a fqsen and an argument object'
+                . ' an ValidationValueObject containing a parameter key, a fqsen and an argument object'
             );
         }
 
-        extract($value);
-
-        if (!isset($param) || empty($param)) {
+        if (empty($value->parameter) || empty($value->argument)) {
             return null;
         }
 
-        $paramName = $param->getVariableName();
+        $parameterName = $value->parameter->getVariableName();
+        $argumentName  = $value->argument->getName();
 
-        if ($paramName == $argument->getName()) {
+        if ($parameterName == $argumentName) {
             return null;
         }
 
-        if ($paramName == '') {
-            $param->setVariableName($argument->getName());
+        if ($parameterName == '') {
+            $value->parameter->setVariableName($argumentName);
             return null;
         }
 
         $violation = $this->context->addViolationAt(
             'argument',
             $constraint->message,
-            array($argument->getName(), $paramName, $fqsen),
+            array($argumentName, $parameterName, $value->fqsen),
             null,
             null,
             $constraint->code

@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Translator;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator;
@@ -41,6 +42,7 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
+    /** @var Translator $translator */
     protected $translator;
 
     public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
@@ -257,8 +259,8 @@ class ProjectDescriptorBuilder
      */
     protected function mapCodeToSeverity($code)
     {
-        if (is_int($code) && $this->translator->translate("VAL:ERRLVL-{$code}")) {
-            $severity = $this->translator->translate("VAL:ERRLVL-{$code}");
+        if (is_int($code) && $this->translator->translate('VAL:ERRLVL-'.$code)) {
+            $severity = $this->translator->translate('VAL:ERRLVL-'.$code);
         } else {
              $severity = LogLevel::ERROR;
         }
@@ -266,7 +268,12 @@ class ProjectDescriptorBuilder
         return $severity;
     }
 
-    public function setTranlator($translator)
+    /**
+     * @param Translator $translator
+     *
+     * @return void
+     */
+    public function setTranlator(Translator $translator)
     {
         $this->translator = $translator;
     }

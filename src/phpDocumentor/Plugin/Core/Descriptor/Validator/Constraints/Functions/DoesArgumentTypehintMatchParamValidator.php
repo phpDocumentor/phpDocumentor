@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidationValueObject;
 
 class DoesArgumentTypehintMatchParamValidator extends ConstraintValidator
 {
@@ -26,27 +27,28 @@ class DoesArgumentTypehintMatchParamValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!is_array($value)) {
+        if (!$value instanceof ValidationValueObject) {
             throw new ConstraintDefinitionException(
                 'The Functions\DoesArgumentTypehintMatchParam subvalidator may only be used on '
                 . ' an array containing a parameter key, a fqsen and an argument object'
             );
         }
 
-        extract($value);
+        $argument  = $value->argument;
+        $parameter = $value->parameter;
 
-        if ($argument instanceof ArgumentDescriptor && $param instanceof ParamDescriptor ) {
+        if ($argument instanceof ArgumentDescriptor && $parameter instanceof ParamDescriptor ) {
 
-            if (count($argument->getTypes()) === 0 || in_array(current($argument->getTypes()), $param->getTypes())) {
+            if (count($argument->getTypes()) === 0 || in_array(current($argument->getTypes()), $parameter->getTypes())) {
                 return null;
-            } elseif (current($argument->getTypes()) === 'array' && substr(current($param->getTypes()), -2) == '[]') {
+            } elseif (current($argument->getTypes()) === 'array' && substr(current($parameter->getTypes()), -2) == '[]') {
                 return null;
             }
 
             $this->context->addViolationAt(
                 'argument',
                 $constraint->message,
-                array($argument->getName(), $fqsen),
+                array($argument->getName(), $value->fqsen),
                 null,
                 null,
                 $constraint->code
