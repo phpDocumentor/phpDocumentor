@@ -106,6 +106,10 @@ class Application extends Cilex
             ini_set('opcache.save_comments', 1);
             ini_set('opcache.load_comments', 1);
         }
+
+        if (extension_loaded('Zend Optimizer+')) {
+            ini_set('zend_optimizerplus.save_comments', 1);
+        }
     }
 
     /**
