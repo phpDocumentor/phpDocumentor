@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer\Command\Template;
 
 use Cilex\Command\Command;
+use phpDocumentor\Transformer\Template\Factory;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,6 +21,21 @@ use \Symfony\Component\Console\Output\OutputInterface;
  */
 class ListCommand extends Command
 {
+    /** @var Factory */
+    private $factory;
+
+    /**
+     * Initializes this command with its dependencies.
+     *
+     * @param Factory $factory
+     */
+    public function __construct(Factory $factory)
+    {
+        parent::__construct('template:list');
+
+        $this->factory = $factory;
+    }
+
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.
@@ -52,45 +68,9 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Available templates:');
-        foreach ($this->getTemplateNames() as $template_name) {
+        foreach ($this->factory->getAllNames() as $template_name) {
             $output->writeln('* '.$template_name);
         }
         $output->writeln('');
-
-        return 0;
-    }
-
-    /**
-     * Returns a list of all template names.
-     *
-     * @return string[]
-     */
-    protected function getTemplateNames()
-    {
-        // TODO: this directory needs to come from the parameter set in the DIC in the ServiceProvider
-        $template_dir = dirname(__FILE__) . '/../../../../../data/templates';
-        if (!file_exists($template_dir)) {
-            //Vendored installation
-            $template_dir = dirname(__FILE__) . '/../../../../../../templates';
-        }
-
-        /** @var \RecursiveDirectoryIterator $files */
-        $files = new \DirectoryIterator($template_dir);
-
-        $template_names = array();
-        while ($files->valid()) {
-            $name = $files->getBasename();
-
-            // skip abstract files
-            if (!$files->isDir() || in_array($name, array('.', '..'))) {
-                $files->next();
-                continue;
-            }
-
-            $template_names[] = $name;
-            $files->next();
-        }
-
-        return $template_names;
     }
 }
