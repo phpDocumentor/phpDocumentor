@@ -193,7 +193,7 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         foreach ($filtersOnAllDescriptors as $filter) {
-		    $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\TraitDescriptor', $filter);
@@ -219,7 +219,6 @@ class ServiceProvider implements ServiceProviderInterface
         /** @var ClassMetadata $fileMetadata */
         $fileMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
         /** @var ClassMetadata $constantMetadata */
-
         $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
         /** @var ClassMetadata $functionMetadata */
         $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
