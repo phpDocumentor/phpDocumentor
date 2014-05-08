@@ -273,7 +273,7 @@ class ProjectDescriptorBuilder
      *
      * @return void
      */
-    public function setTranlator(Translator $translator)
+    public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
     }
