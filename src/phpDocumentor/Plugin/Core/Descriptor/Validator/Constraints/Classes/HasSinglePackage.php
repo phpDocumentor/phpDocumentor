@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a file, class, interface or trait has not more than ! package tags.
- *
- * @Annotation
  */
 class HasSinglePackage extends Constraint
 {

@@ -17,8 +17,6 @@ use Symfony\Component\Validator\Constraint;
  *
  * If the argument has no typehint we do not check anything. When multiple
  * type are given then the typehint needs to be one of them.
- *
- * @Annotation
  */
 class DoesArgumentTypehintMatchParam extends Constraint
 {

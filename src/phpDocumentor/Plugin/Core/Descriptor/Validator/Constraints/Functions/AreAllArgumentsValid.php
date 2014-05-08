@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a function has a default return type in the docblock present.
- *
- * @Annotation
  */
 class AreAllArgumentsValid extends Constraint
 {

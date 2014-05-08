@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a file, class, interface or trait always has a package if there is a subpackage present.
- *
- * @Annotation
  */
 class HasPackageWithSubpackage extends Constraint
 {

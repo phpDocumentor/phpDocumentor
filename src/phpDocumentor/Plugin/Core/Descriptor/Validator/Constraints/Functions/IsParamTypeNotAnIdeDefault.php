@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a function has a default param type in the docblock present.
- *
- * @Annotation
  */
 class IsParamTypeNotAnIdeDefault extends Constraint
 {

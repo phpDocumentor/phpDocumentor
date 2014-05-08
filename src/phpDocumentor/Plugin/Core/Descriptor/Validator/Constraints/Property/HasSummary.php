@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Detects whether a property has a summary, or an `@var` tag with a description.
- *
- * @Annotation
  */
 class HasSummary extends Constraint
 {

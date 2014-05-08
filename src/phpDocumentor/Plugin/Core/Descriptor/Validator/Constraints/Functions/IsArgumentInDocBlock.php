@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a function has a missing argument in the docblock.
- *
- * @Annotation
  */
 class IsArgumentInDocBlock extends Constraint
 {
