@@ -19,9 +19,10 @@ use Mockery as m;
 class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForGlobalConstants()
     {
@@ -41,9 +42,10 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForGlobalConstantsAtRootNamespace()
     {
@@ -64,7 +66,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForClassConstants
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
      */
     public function testGenerateUrlForClassConstants()
     {

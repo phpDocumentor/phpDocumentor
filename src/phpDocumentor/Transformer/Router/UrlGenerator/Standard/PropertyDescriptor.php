@@ -28,21 +28,9 @@ class PropertyDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
+        $converter = new QualifiedNameToUrlConverter();
         $className = $node->getParent()->getFullyQualifiedStructuralElementName();
-        $name = $node->getName();
 
-        return '/classes/' . $this->convertFqcnToFilename($className) . '.html#property_' . $name;
-    }
-
-    /**
-     * Converts the provided FQCN into a file name by replacing all slashes with dots.
-     *
-     * @param string $fqcn
-     *
-     * @return string
-     */
-    private function convertFqcnToFilename($fqcn)
-    {
-        return str_replace('\\', '.', ltrim($fqcn, '\\'));
+        return '/classes/' . $converter->fromClass($className) . '.html#property_' . $node->getName();
     }
 }
