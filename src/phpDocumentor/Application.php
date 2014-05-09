@@ -124,6 +124,11 @@ class Application extends Cilex
     {
         $config = $this['config']->toArray();
 
+        // work around for Zend\Config if only one item is present in the plugins array.
+        if (isset($config['plugins']['plugin']['path'])) {
+            $config['plugins']['plugin'] = array($config['plugins']['plugin']);
+        }
+
         if (!isset($config['plugins']['plugin'][0]['path'])) {
             $this->register(new Plugin\Core\ServiceProvider());
             $this->register(new Plugin\Scrybe\ServiceProvider());
