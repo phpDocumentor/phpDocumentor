@@ -25,13 +25,26 @@ class PackageDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $name = str_replace(array('\\', '_'), '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\'));
+        return '/packages/' . $this->convertFqcnToFilename($node->getFullyQualifiedStructuralElementName()) .'.html';
+    }
+
+    /**
+     * Converts the provided FQCN into a file name by replacing all slashes with dots.
+     *
+     * @param string $fqcn
+     *
+     * @return string
+     */
+    private function convertFqcnToFilename($fqcn)
+    {
+        $name = str_replace(array('\\', '_'), '.', ltrim($fqcn, '\\'));
 
         // convert root namespace to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
             $name = 'default';
         }
 
-        return '/packages/' . $name .'.html';
+        return $name;
     }
+
 }

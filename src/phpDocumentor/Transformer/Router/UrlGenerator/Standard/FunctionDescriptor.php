@@ -29,8 +29,26 @@ class FunctionDescriptor implements UrlGeneratorInterface
     public function __invoke($node)
     {
         $namespaceName = $node->getNamespace();
-        $name          = $node->getName();
 
-        return '/namespaces/' . str_replace('\\', '.', ltrim($namespaceName, '\\')).'.html#function_' . $name;
+        return '/namespaces/' . $this->convertFqcnToFilename($namespaceName) . '.html#function_' . $node->getName();
+    }
+
+    /**
+     * Converts the provided FQCN into a file name by replacing all slashes with dots.
+     *
+     * @param string $fqcn
+     *
+     * @return string
+     */
+    private function convertFqcnToFilename($fqcn)
+    {
+        $name = str_replace('\\', '.', ltrim($fqcn, '\\'));
+
+        // convert root namespace to default; default is a keyword and no namespace CAN be named as such
+        if ($name === '') {
+            $name = 'default';
+        }
+
+        return $name;
     }
 }

@@ -25,8 +25,36 @@ class FileDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $name = str_replace(array('/', '\\'), '.', ltrim($node->getPath(), '/'));
+        return '/files/' . $this->convertFilePathToUrl($node->getPath()) .'.html';
+    }
 
-        return '/files/' . $name .'.html';
+    /**
+     * Converts the given path to a valid url.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    private function convertFilePathToUrl($path)
+    {
+        $path = $this->removeFileExtensionFromPath($path);
+
+        return str_replace(array('/', '\\'), '.', ltrim($path, '/'));
+    }
+
+    /**
+     * Removes the file extension from the provided path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    private function removeFileExtensionFromPath($path)
+    {
+        if (strrpos($path, '.') !== false) {
+            $path = substr($path, 0, strrpos($path, '.'));
+        }
+
+        return $path;
     }
 }
