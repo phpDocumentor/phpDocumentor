@@ -20,7 +20,7 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForFunctionDescriptor()
     {
@@ -39,7 +39,7 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace()
     {

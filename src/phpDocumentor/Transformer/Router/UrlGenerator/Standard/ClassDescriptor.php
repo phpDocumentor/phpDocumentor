@@ -25,20 +25,10 @@ class ClassDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        return ($node instanceof Descriptor\DescriptorAbstract)
-            ? '/classes/' . $this->convertFqcnToFilename($node->getFullyQualifiedStructuralElementName()) .'.html'
-            : false;
-    }
+        $converter = new QualifiedNameToUrlConverter();
 
-    /**
-     * Converts the provided FQCN into a file name by replacing all slashes with dots.
-     *
-     * @param string $fqcn
-     *
-     * @return string
-     */
-    private function convertFqcnToFilename($fqcn)
-    {
-        return str_replace('\\', '.', ltrim($fqcn, '\\'));
+        return ($node instanceof Descriptor\DescriptorAbstract)
+            ? '/classes/' . $converter->fromClass($node->getFullyQualifiedStructuralElementName()) .'.html'
+            : false;
     }
 }

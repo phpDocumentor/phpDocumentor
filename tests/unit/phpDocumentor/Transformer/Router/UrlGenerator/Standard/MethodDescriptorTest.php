@@ -20,7 +20,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\MethodDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\MethodDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
      */
     public function testGenerateUrlForMethodDescriptor()
     {

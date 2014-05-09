@@ -20,7 +20,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ClassDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ClassDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
      */
     public function testGenerateUrlForClassDescriptor()
     {

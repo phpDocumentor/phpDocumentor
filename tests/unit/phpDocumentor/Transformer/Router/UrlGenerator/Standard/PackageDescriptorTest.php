@@ -20,7 +20,7 @@ class PackageDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
      */
     public function testGenerateUrlForPackageDescriptor()
     {
@@ -38,7 +38,7 @@ class PackageDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
      */
     public function testGenerateUrlForPackageDescriptorWithGlobalNamespace()
     {

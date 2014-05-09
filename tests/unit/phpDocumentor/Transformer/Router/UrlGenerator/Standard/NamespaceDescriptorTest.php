@@ -20,7 +20,7 @@ class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForNamespaceDescriptor()
     {
@@ -38,7 +38,7 @@ class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::convertFqcnToFilename
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForNamespaceDescriptorWithGlobalNamespace()
     {

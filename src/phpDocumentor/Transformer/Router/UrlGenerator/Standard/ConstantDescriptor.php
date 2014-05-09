@@ -16,6 +16,17 @@ use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 class ConstantDescriptor implements UrlGeneratorInterface
 {
+    /** @var QualifiedNameToUrlConverter */
+    private $converter;
+
+    /**
+     * Initializes this generator.
+     */
+    public function __construct()
+    {
+        $this->converter = new QualifiedNameToUrlConverter();
+    }
+
     /**
      * Generates a URL from the given node or returns false if unable.
      *
@@ -36,18 +47,12 @@ class ConstantDescriptor implements UrlGeneratorInterface
      * Returns the first part of the URL path that is specific to global constants.
      *
      * @param Descriptor\ConstantDescriptor $node
+     *
      * @return string
      */
     private function getUrlPathPrefixForGlobalConstants($node)
     {
-        $namespaceName = $this->convertFqcnToFilename($node->getNamespace());
-
-        // convert root namespace to default; default is a keyword and no namespace CAN be named as such
-        if ($namespaceName === '') {
-            $namespaceName = 'default';
-        }
-
-        return '/namespaces/' . $namespaceName;
+        return '/namespaces/' . $this->converter->fromNamespace($node->getNamespace());
     }
 
     /**
@@ -59,20 +64,6 @@ class ConstantDescriptor implements UrlGeneratorInterface
      */
     private function getUrlPathPrefixForClassConstants($node)
     {
-        $className = $node->getParent()->getFullyQualifiedStructuralElementName();
-
-        return '/classes/' . $this->convertFqcnToFilename($className);
-    }
-
-    /**
-     * Converts the provided FQCN into a file name by replacing all slashes with dots.
-     *
-     * @param string $fqcn
-     *
-     * @return string
-     */
-    private function convertFqcnToFilename($fqcn)
-    {
-        return str_replace('\\', '.', ltrim($fqcn, '\\'));
+        return '/classes/' . $this->converter->fromClass($node->getParent()->getFullyQualifiedStructuralElementName());
     }
 }

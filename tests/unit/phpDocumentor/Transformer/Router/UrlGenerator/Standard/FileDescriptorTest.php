@@ -20,8 +20,8 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FileDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FileDescriptor::convertFilePathToUrl
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FileDescriptor::removeFileExtensionFromPath
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromFile
+     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::removeFileExtensionFromPath
      */
     public function testGenerateUrlForFileDescriptor()
     {
