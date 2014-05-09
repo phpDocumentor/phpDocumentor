@@ -25,13 +25,25 @@ class NamespaceDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $name = str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\'));
+        return '/namespaces/' . $this->convertFqcnToFilename($node->getFullyQualifiedStructuralElementName()) .'.html';
+    }
+
+    /**
+     * Converts the provided FQCN into a file name by replacing all slashes with dots.
+     *
+     * @param string $fqcn
+     *
+     * @return string
+     */
+    private function convertFqcnToFilename($fqcn)
+    {
+        $name = str_replace('\\', '.', ltrim($fqcn, '\\'));
 
         // convert root namespace to default; default is a keyword and no namespace CAN be named as such
         if ($name === '') {
             $name = 'default';
         }
 
-        return '/namespaces/' . $name .'.html';
+        return $name;
     }
 }

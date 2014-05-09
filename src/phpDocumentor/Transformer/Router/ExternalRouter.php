@@ -31,6 +31,7 @@ class ExternalRouter extends RouterAbstract
     public function __construct(Config $configuration)
     {
         $this->configuration = $configuration;
+
         parent::__construct();
     }
 
@@ -46,11 +47,14 @@ class ExternalRouter extends RouterAbstract
         }
 
         $docs = $this->configuration->transformer->{'external-class-documentation'};
+
+        // workaround to detect a single definition or an array of definitions; if the prefix property exists then this
+        // is a single definition and we make it an array with one item.
         if (isset($docs->prefix)) {
             $docs = array($docs);
         }
 
-        foreach ((array)$docs as $external) {
+        foreach ($docs as $external) {
             $prefix = (string)$external->prefix;
             $uri    = (string)$external->uri;
 

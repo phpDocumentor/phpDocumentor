@@ -25,18 +25,54 @@ class ConstantDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $name = $node->getName();
+        $prefix = ($node->getParent() instanceof Descriptor\FileDescriptor || ! $node->getParent())
+            ? $this->getUrlPathPrefixForGlobalConstants($node)
+            : $this->getUrlPathPrefixForClassConstants($node);
 
-        // global constant
-        if ($node->getParent() instanceof Descriptor\FileDescriptor || ! $node->getParent()) {
-            $namespaceName = $node->getNamespace();
+        return $prefix . '.html#constant_' . $node->getName();
+    }
 
-            return '/namespaces/' . str_replace('\\', '.', ltrim($namespaceName, '\\')).'.html#constant_' . $name;
+    /**
+     * Returns the first part of the URL path that is specific to global constants.
+     *
+     * @param Descriptor\ConstantDescriptor $node
+     * @return string
+     */
+    private function getUrlPathPrefixForGlobalConstants($node)
+    {
+        $namespaceName = $this->convertFqcnToFilename($node->getNamespace());
+
+        // convert root namespace to default; default is a keyword and no namespace CAN be named as such
+        if ($namespaceName === '') {
+            $namespaceName = 'default';
         }
 
-        // class constant
+        return '/namespaces/' . $namespaceName;
+    }
+
+    /**
+     * Returns the first part of the URL path that is specific to class constants.
+     *
+     * @param Descriptor\ConstantDescriptor $node
+     *
+     * @return string
+     */
+    private function getUrlPathPrefixForClassConstants($node)
+    {
         $className = $node->getParent()->getFullyQualifiedStructuralElementName();
 
-        return '/classes/' . str_replace('\\', '.', ltrim($className, '\\')).'.html#constant_' . $name;
+        return '/classes/' . $this->convertFqcnToFilename($className);
+    }
+
+    /**
+     * Converts the provided FQCN into a file name by replacing all slashes with dots.
+     *
+     * @param string $fqcn
+     *
+     * @return string
+     */
+    private function convertFqcnToFilename($fqcn)
+    {
+        return str_replace('\\', '.', ltrim($fqcn, '\\'));
     }
 }

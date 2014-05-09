@@ -18,12 +18,18 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 
 class Rule
 {
-    protected $matcher;
+    /** @var callable */
     protected $generator;
 
+    /** @var callable */
+    protected $matcher;
+
     /**
-     * @param callable $matcher
-     * @param callable $generator
+     * Initializes this rule.
+     *
+     * @param callable $matcher   A closure that returns a boolean indicating whether this rule applies to the
+     *     provided node.
+     * @param callable $generator A closure that returns a url or null for the given node.
      */
     public function __construct($matcher, $generator)
     {
@@ -32,9 +38,11 @@ class Rule
     }
 
     /**
+     * Returns true when this rule is applicable to the given node.
+     *
      * @param string|DescriptorAbstract $node
      *
-     * @return mixed
+     * @return boolean
      */
     public function match($node)
     {
