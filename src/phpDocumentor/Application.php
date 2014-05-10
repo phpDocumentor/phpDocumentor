@@ -110,7 +110,7 @@ class Application extends Cilex
             }
         }
 
-        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments')) {
+        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
             throw new \RuntimeException('Please disable zend_optimizerplus.save_comments in php.ini.');
         }
     }
