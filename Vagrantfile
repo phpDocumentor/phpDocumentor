@@ -13,10 +13,7 @@ Vagrant::Config.run do |config|
   config.vm.network :hostonly, "192.168.255.2"
   config.vm.host_name = "dev.app.phpdoc.org"
 
-  config.vm.provision :puppet do |puppet|
-     puppet.module_path    = ".puppet/modules"
-     puppet.manifests_path = ".puppet/manifests"
-     puppet.manifest_file  = "phpdoc.pp"
-     puppet.options        = [ '--verbose' ]
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/playbook.yml"
   end
 end

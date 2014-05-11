@@ -1,0 +1,4 @@
+<VirtualHost *:80>
+	ServerName profiling.phpdocumentor.local
+	DocumentRoot /var/www/xhgui/webroot
+</VirtualHost>
