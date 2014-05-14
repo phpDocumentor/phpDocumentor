@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Transformer\Router;
 
+use phpDocumentor\Configuration\Configuration;
 use Zend\Config\Config;
 
 /**
@@ -18,7 +19,7 @@ use Zend\Config\Config;
  */
 class ExternalRouter extends RouterAbstract
 {
-    /** @var Config */
+    /** @var Configuration */
     protected $configuration;
 
     /**
@@ -26,11 +27,12 @@ class ExternalRouter extends RouterAbstract
      *
      * The configuration is used to extract which external routes to add to the application.
      *
-     * @param Config $configuration
+     * @param Configuration $configuration
      */
-    public function __construct(Config $configuration)
+    public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
+
         parent::__construct();
     }
 
@@ -41,18 +43,10 @@ class ExternalRouter extends RouterAbstract
      */
     public function configure()
     {
-        if (!isset($this->configuration->transformer->{'external-class-documentation'})) {
-            return;
-        }
-
-        $docs = $this->configuration->transformer->{'external-class-documentation'};
-        if (isset($docs->prefix)) {
-            $docs = array($docs);
-        }
-
-        foreach ((array)$docs as $external) {
-            $prefix = (string)$external->prefix;
-            $uri    = (string)$external->uri;
+        $docs = $this->configuration->getTransformer()->getExternalClassDocumentation();
+        foreach ($docs as $external) {
+            $prefix = (string)$external->getPrefix();
+            $uri    = (string)$external->getUri();
 
             $this[] = new Rule(
                 function ($node) use ($prefix) {

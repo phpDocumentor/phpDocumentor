@@ -216,7 +216,7 @@ class ParseCommand extends ConfigurableCommand
         $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($this->getOption($input, 'encoding', 'parser/encoding'));
-        $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers/item', null, true));
+        $parser->setMarkers($this->getOption($input, 'markers', 'parser/markers', array(), true));
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
         $parser->setVisibility((string) $this->getOption($input, 'visibility', 'parser/visibility'));
@@ -235,13 +235,13 @@ class ParseCommand extends ConfigurableCommand
     {
         $files = new Collection();
         $files->setAllowedExtensions(
-            $this->getOption($input, 'extensions', 'parser/extensions/extension', array('php', 'php3', 'phtml'), true)
+            $this->getOption($input, 'extensions', 'parser/extensions', array('php', 'php3', 'phtml'), true)
         );
         $files->setIgnorePatterns($this->getOption($input, 'ignore', 'files/ignore', array(), true));
         $files->setIgnoreHidden($this->getOption($input, 'hidden', 'files/ignore-hidden', 'off') == 'on');
         $files->setFollowSymlinks($this->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on');
 
-        $file_options = (array)$this->getOption($input, 'filename', 'files/file', array(), true);
+        $file_options = (array)$this->getOption($input, 'filename', 'files/files', array(), true);
         $added_files = array();
         foreach ($file_options as $glob) {
             if (!is_string($glob)) {
@@ -262,7 +262,7 @@ class ParseCommand extends ConfigurableCommand
         }
         $files->addFiles($added_files);
 
-        $directory_options = (array)$this->getOption($input, 'directory', 'files/directory', array(), true);
+        $directory_options = (array)$this->getOption($input, 'directory', 'files/directories', array(), true);
         $added_directories = array();
         foreach ($directory_options as $glob) {
             if (!is_string($glob)) {

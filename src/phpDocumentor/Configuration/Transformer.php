@@ -18,6 +18,32 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class Transformer
 {
-    /** @var string destination location for the transformer's output */
+    /**
+     * @Serializer\Type("string")
+     * @var string destination location for the transformer's output
+     */
     protected $target;
+
+    /**
+     * @Serializer\Type("array<phpDocumentor\Configuration\Transformer\ExternalClassDocumentation>")
+     * @Serializer\SerializedName("external-class-documentation")
+     * @var Transformer\ExternalClassDocumentation[]
+     */
+    protected $externalClassDocumentation = array();
+
+    /**
+     * @return Transformer\ExternalClassDocumentation[]
+     */
+    public function getExternalClassDocumentation()
+    {
+        return $this->externalClassDocumentation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
 }

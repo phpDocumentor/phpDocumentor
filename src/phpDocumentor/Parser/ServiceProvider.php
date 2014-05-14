@@ -13,6 +13,8 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use phpDocumentor\Configuration\Configuration;
+use phpDocumentor\Configuration\Partial;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Partials\Collection as PartialsCollection;
@@ -48,6 +50,7 @@ class ServiceProvider implements ServiceProviderInterface
                 $parser = new Parser();
                 $parser->setStopwatch($app['kernel.stopwatch']);
                 $parser->setLogger($app['monolog']);
+
                 return $parser;
             }
         );
@@ -62,35 +65,36 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
-        $config = $app['config']->toArray();
+        /** @var Configuration $config */
+        $config = $app['config2'];
 
         $partialsCollection = new PartialsCollection($app['markdown']);
-        if (isset($config['partials'])) {
-            $partials = is_array(current($config['partials']['partial']))
-                ? $config['partials']['partial']
-                : array($config['partials']['partial']);
+        $app['partials'] = $partialsCollection;
 
+        /** @var Partial[] $partials */
+        $partials = $config->getPartials();
+        if ($partials) {
             foreach ($partials as $partial) {
-                if (!isset($partial['name'])) {
+                if (! $partial->getName()) {
                     throw new Exception\MissingNameForPartialException('The name of the partial to load is missing');
                 }
-                if (isset($partial['content'])) {
-                    $partialsCollection->set($partial['name'], $partial['content']);
-                } elseif (isset($partial['link'])) {
-                    if (!is_readable($partial['link'])) {
-                        $app['monolog']->error(
-                            sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial['link'])
-                        );
-                    } else {
-                        $partialsCollection->set($partial['name'], file_get_contents($partial['link']));
-                    }
-                } else {
-                    $partialsCollection->set($partial['name'], '');
-                }
-            }
 
+                $content = '';
+                if ($partial->getContent()) {
+                    $content = $partial->getContent();
+                } elseif ($partial->getLink()) {
+                    if (! is_readable($partial->getLink())) {
+                        $app['monolog']->error(
+                            sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial->getLink())
+                        );
+                        continue;
+                    }
+
+                    $content = file_get_contents($partial->getLink());
+                }
+                $partialsCollection->set($partial->getName(), $content);
+            }
         }
-        $app['partials'] = $partialsCollection;
 
         $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
     }

@@ -129,7 +129,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         );
         $app['transformer.routing.external'] = $app->share(
             function ($container) {
-                return new Router\ExternalRouter($container['config']);
+                return new Router\ExternalRouter($container['config2']);
             }
         );
 

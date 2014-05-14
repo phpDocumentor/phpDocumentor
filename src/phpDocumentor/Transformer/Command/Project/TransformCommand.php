@@ -215,7 +215,7 @@ TEXT
     {
         $templates = $input->getOption('template');
         if (!$templates) {
-            $value = $this->getConfigValueFromPath('transformations/template');
+            $value = $this->getConfigValueFromPath('transformations/templates');
             if (is_array($value)) {
                 if (isset($value['name'])) {
                     $templates[] = $value['name'];
@@ -248,7 +248,7 @@ TEXT
     public function loadTransformations(Transformer $transformer)
     {
         $received = array();
-        $transformations = $this->getConfigValueFromPath('transformations/transformation');
+        $transformations = $this->getConfigValueFromPath('transformations/transformations');
         if (is_array($transformations)) {
             if (isset($transformations['writer'])) {
                 $received[] = $this->createTransformation($transformations);

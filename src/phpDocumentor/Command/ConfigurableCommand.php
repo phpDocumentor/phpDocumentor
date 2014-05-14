@@ -75,21 +75,21 @@ class ConfigurableCommand extends Command
             chdir(dirname($configFile));
         }
 
-        $container = $this->getContainer();
-        if ($configFile) {
-            $container['config'] = $container->share(
-                function () use ($configFile) {
-                    $files = array(__DIR__ . '/../../../data/phpdoc.tpl.xml');
-                    if ($configFile !== 'none') {
-                        $files[] = $configFile;
-                    }
+//        $container = $this->getContainer();
+//        if ($configFile) {
+//            $container['config'] = $container->share(
+//                function () use ($configFile) {
+//                    $files = array(__DIR__ . '/../../../data/phpdoc.tpl.xml');
+//                    if ($configFile !== 'none') {
+//                        $files[] = $configFile;
+//                    }
+//
+//                    return Factory::fromFiles($files, true);
+//                }
+//            );
+//        }
 
-                    return Factory::fromFiles($files, true);
-                }
-            );
-        }
-
-        $this->getHelper('phpdocumentor_logger')->reconfigureLogger($input, $output, $this);
+//        $this->getHelper('phpdocumentor_logger')->reconfigureLogger($input, $output, $this);
     }
 
     /**
@@ -179,7 +179,7 @@ class ConfigurableCommand extends Command
     protected function getConfigValueFromPath($path)
     {
         /** @var Config $node  */
-        $node = $this->getService('config');
+        $node = $this->getService('config2');
 
         foreach (explode('/', $path) as $node_name) {
             // premature end of the cycle
@@ -187,7 +187,7 @@ class ConfigurableCommand extends Command
                 return null;
             }
 
-            $node = $node->get($node_name);
+            $node = $node->{'get' . ucfirst($node_name)}();
         }
 
         if ($node === null) {
@@ -196,6 +196,6 @@ class ConfigurableCommand extends Command
 
         return $node instanceof Config
             ? $node->toArray()
-            : trim((string)$node);
+            : $node;
     }
 }

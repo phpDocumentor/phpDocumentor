@@ -12,22 +12,21 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
+use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use JMS\Serializer\Serializer;
-use JMS\Serializer\SerializerBuilder;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use phpDocumentor\Command\Helper\LoggerHelper;
+use phpDocumentor\Configuration\Configuration;
+use phpDocumentor\Configuration\ServiceProvider;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Zend\Config\Factory;
 
 /**
  * Finds and activates the autoloader.
@@ -71,8 +70,8 @@ class Application extends Cilex
         };
 
         $this->addAutoloader();
-        $this->addSerializer();
-        $this->addConfiguration();
+        $this->register(new JmsSerializerServiceProvider());
+        $this->register(new ServiceProvider());
         $this->addLogging();
         $this->addEventDispatcher();
         $this->addTranslator();
@@ -115,9 +114,10 @@ class Application extends Cilex
      */
     protected function addPlugins()
     {
-        $config = $this['config']->toArray();
+        /** @var Configuration $config */
+        $config = $this['config2'];
 
-        if (!isset($config['plugins']['plugin'][0]['path'])) {
+        if (! $config->getPlugins()) {
             $this->register(new Plugin\Core\ServiceProvider());
             $this->register(new Plugin\Scrybe\ServiceProvider());
             return;
@@ -126,11 +126,12 @@ class Application extends Cilex
         $app = $this;
 
         array_walk(
-            $config['plugins']['plugin'],
+            $config->getPlugins(),
             function ($plugin) use ($app) {
-                $provider = (strpos($plugin['path'], '\\') === false)
-                    ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin['path'])
-                    : $plugin['path'];
+                /** @var Configuration\Plugin $plugin */
+                $provider = (strpos($plugin->getPath(), '\\') === false)
+                    ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getPath())
+                    : $plugin->getPath();
                 if (!class_exists($provider)) {
                     throw new \RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
                 }
@@ -195,19 +196,11 @@ class Application extends Cilex
         $app = $this;
         $this['monolog.configure'] = $this->protect(
             function ($log) use ($app) {
-                $level = (string)$app['config']->logging->level;
+                /** @var Configuration $config */
+                $config = $app['config2'];
+                $paths  = $config->getLogging()->getPaths();
 
-                // null means the default is used
-                $logPath = isset($app['config']->logging->paths->default)
-                    ? (string) $app['config']->logging->paths->default
-                    : null;
-
-                // null means the default is used
-                $debugPath = isset($app['config']->logging->paths->errors)
-                    ? (string) $app['config']->logging->paths->errors
-                    : null;
-
-                $app->configureLogger($log, $level, $logPath, $debugPath);
+                $app->configureLogger($log, $config->getLogging()->getLevel(), $paths['default'], $paths['errors']);
             }
         );
         ErrorHandler::register($this['monolog']);
@@ -292,35 +285,6 @@ class Application extends Cilex
     }
 
     /**
-     * Adds the Configuration object to the DIC.
-     *
-     * phpDocumentor first loads the template config file (/data/phpdoc.tpl.xml)
-     * and then the phpdoc.dist.xml, or the phpdoc.xml if it exists but not both,
-     * from the current working directory.
-     *
-     * The user config file (either phpdoc.dist.xml or phpdoc.xml) is merged
-     * with the template file.
-     *
-     * @return void
-     */
-    protected function addConfiguration()
-    {
-        $this['config'] = $this->share(
-            function () {
-                $user_config_file = (file_exists(getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'))
-                    ? getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'
-                    : getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.dist.xml';
-                $config_files     = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
-                if (is_readable($user_config_file)) {
-                    $config_files[] = $user_config_file;
-                }
-
-                return Factory::fromFiles($config_files, true);
-            }
-        );
-    }
-
-    /**
      * Adds the event dispatcher to phpDocumentor's container.
      *
      * @return void
@@ -341,9 +305,10 @@ class Application extends Cilex
      */
     protected function addTranslator()
     {
-        $config = $this['config']->toArray();
+        /** @var Configuration $config */
+        $config = $this['config2'];
 
-        $this['translator.locale'] = isset($config['translator']['locale']) ? $config['translator']['locale'] : 'en';
+        $this['translator.locale'] = $config->getTranslator()->getLocale();
 
         $this['translator'] = $this->share(
             function ($app) {
@@ -363,31 +328,6 @@ class Application extends Cilex
     protected function addCommandsForProjectNamespace()
     {
         $this->command(new Command\Project\RunCommand());
-    }
-
-    /**
-     * Adds the serializer to the container
-     *
-     * @return void
-     */
-    protected function addSerializer()
-    {
-        $this['serializer'] = $this->share(
-            function () {
-                $serializerPath = __DIR__ . '/../../vendor/jms/serializer/src';
-
-                if (!file_exists($serializerPath)) {
-                    $serializerPath = __DIR__ . '/../../../../jms/serializer/src';
-                }
-
-                AnnotationRegistry::registerAutoloadNamespace(
-                    'JMS\Serializer\Annotation',
-                    $serializerPath
-                );
-
-                return SerializerBuilder::create()->build();
-            }
-        );
     }
 
     /**

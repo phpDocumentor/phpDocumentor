@@ -6,7 +6,8 @@
     "license": "MIT",
     "autoload": {
         "psr-0":{
-            "phpDocumentor": ["src/", "tests/unit/"]
+            "phpDocumentor": ["src/", "tests/unit/"],
+            "Cilex\\Provider": ["src/"]
         }
     },
     "require": {
