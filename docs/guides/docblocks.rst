@@ -99,7 +99,7 @@ not need a length explanation.
 **Even worse**: proper methods are often so simple that a description could be considered overkill!
 
 The nice thing about this description is that you can format your text according to Markdown_, more specifically
-`Github-glavoured Markdown`_. Using this format it is easy to make your text bold, add inline code examples or
+`Github-flavoured Markdown`_. Using this format it is easy to make your text bold, add inline code examples or
 easily generate links to other sites.
 
 Another nifty feature is that you can use a series of :term:`Inline Tags` to refer to other parts of the documentation

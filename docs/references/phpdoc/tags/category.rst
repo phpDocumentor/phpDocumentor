@@ -22,7 +22,7 @@ The @category tag was meant in the original de-facto Standard to group several
 categories could then be used to aid in the generation of API documentation.
 
 This was necessary since the @package tag, as defined in the original Standard,
-did not contain more then one hierarchy level; since this has changed this tag
+did not contain more than one hierarchy level; since this has changed this tag
 SHOULD NOT be used.
 
 Please see the documentation for :doc:`package` for details of its usage.
