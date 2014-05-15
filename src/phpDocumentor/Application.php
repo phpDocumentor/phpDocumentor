@@ -72,13 +72,9 @@ class Application extends Cilex
         $this->addAutoloader();
         $this->register(new JmsSerializerServiceProvider());
         $this->register(new ServiceProvider());
-        $this->addLogging();
         $this->addEventDispatcher();
+        $this->addLogging();
         $this->addTranslator();
-
-        /** @var ConsoleApplication $console */
-        $console = $this['console'];
-        $console->getHelperSet()->set(new LoggerHelper());
 
         $this->register(new ValidatorServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
@@ -203,6 +199,15 @@ class Application extends Cilex
                 $app->configureLogger($log, $config->getLogging()->getLevel(), $paths['default'], $paths['errors']);
             }
         );
+
+        $this->extend('console',
+            function (ConsoleApplication $console){
+                $console->getHelperSet()->set(new LoggerHelper());
+
+                return $console;
+            }
+        );
+
         ErrorHandler::register($this['monolog']);
     }
 

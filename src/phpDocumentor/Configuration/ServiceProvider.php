@@ -6,6 +6,9 @@ use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 use JMS\Serializer\Serializer;
+use phpDocumentor\Console\Input\ArgvInput;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Input\InputOption;
 use Zend\Config\Factory;
 
 class ServiceProvider implements ServiceProviderInterface
@@ -31,6 +34,21 @@ class ServiceProvider implements ServiceProviderInterface
             );
         }
 
+        $app->extend('console',
+            function (ConsoleApplication $console){
+                $console->getDefinition()->addOption(
+                    new InputOption(
+                        'config',
+                        'c',
+                        InputOption::VALUE_OPTIONAL,
+                        'Location of a custom configuration file'
+                    )
+                );
+
+                return $console;
+            }
+        );
+
         // Add annotations to Jms Serializer
         $annotations = $app['serializer.annotations'];
         $annotations[] = array(
@@ -47,25 +65,39 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app['config2'] = $app->share(
             function ($app) {
+                /** @var ConsoleApplication $console */
+                $console = $app['console'];
+                $input = new ArgvInput(null, $console->getDefinition());
+                $userConfigFilePath = $input->getOption('config');
+                if ($userConfigFilePath && $userConfigFilePath != 'none' && is_readable($userConfigFilePath)) {
+                    chdir(dirname($userConfigFilePath));
+                } else {
+                    $userConfigFilePath = $userConfigFilePath != 'none' ? null : 'none';
+                }
+
                 /** @var Serializer $serializer */
                 $serializer = $app['serializer'];
 
-                $template = $serializer->deserialize(
+                $config = $serializer->deserialize(
                     file_get_contents($app['config.path.template']),
                     'phpDocumentor\Configuration\Configuration',
                     'xml'
                 );
 
-                $userConfigFile = $serializer->deserialize(
-                    file_get_contents($app['config.path.user']),
-                    'phpDocumentor\Configuration\Configuration',
-                    'xml'
-                );
+                if ($userConfigFilePath != 'none') {
+                    $userConfigFilePath = $userConfigFilePath ?: $app['config.path.user'];
+                    $userConfigFile = $serializer->deserialize(
+                        file_get_contents($userConfigFilePath),
+                        'phpDocumentor\Configuration\Configuration',
+                        'xml'
+                    );
 
-                /** @var Merger $merger */
-                $merger = $app['config.merger'];
+                    /** @var Merger $merger */
+                    $merger = $app['config.merger'];
+                    $config = $merger->run($config, $userConfigFile);
+                }
 
-                return $merger->run($template, $userConfigFile);
+                return $config;
             }
         );
 
