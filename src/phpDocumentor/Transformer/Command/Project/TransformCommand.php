@@ -147,9 +147,6 @@ TEXT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // invoke parent to load custom config
-        parent::execute($input, $output);
-
         $progress = $this->getProgressBar($input);
         if (!$progress) {
             $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);

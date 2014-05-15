@@ -27,12 +27,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        if (!isset($app['serializer.annotations'])) {
-            throw new \RuntimeException(
-                'The configuration service provider depends on the JmsSerializer Service Provider but the '
-                . '"serializer.annotations" key could not be found in the container.'
-            );
-        }
+        $this->addMerger($app);
 
         $app->extend('console',
             function (ConsoleApplication $console){
@@ -49,7 +44,35 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
 
-        // Add annotations to Jms Serializer
+        $app['config.path.template'] = __DIR__ . '/Resources/phpdoc.tpl.xml';
+        $app['config.path.user'] = getcwd()
+            . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
+        $app['config.class'] = 'phpDocumentor\Configuration';
+
+        $app['config2'] = $app->share(
+            function ($app) {
+                $loader = new Loader($app['serializer'], $app['config.merger']);
+
+                return $loader->load($app['config.path.template'], $app['config.path.user'], $app['config.class']);
+            }
+        );
+
+        $this->addOldConfiguration($app);
+    }
+
+    /**
+     * @param Application $app
+     * @return Application
+     */
+    private function addMerger(Application $app)
+    {
+        if (!isset($app['serializer.annotations'])) {
+            throw new \RuntimeException(
+                'The configuration service provider depends on the JmsSerializer Service Provider but the '
+                . '"serializer.annotations" key could not be found in the container.'
+            );
+        }
+
         $annotations = $app['serializer.annotations'];
         $annotations[] = array(
             'namespace' => 'phpDocumentor\Configuration\Merger\Annotation',
@@ -62,50 +85,13 @@ class ServiceProvider implements ServiceProviderInterface
                 return new Merger(new AnnotationReader());
             }
         );
+    }
 
-        $app['config.path.template'] = __DIR__ . '/Resources/phpdoc.tpl.xml';
-        $app['config.path.user'] = getcwd()
-            . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
-        $app['config.class'] = 'phpDocumentor\Configuration';
-
-        $app['config2'] = $app->share(
-            function ($app) {
-                /** @var ConsoleApplication $console */
-                $console = $app['console'];
-                $input = new ArgvInput(null, $console->getDefinition());
-                $userConfigFilePath = $input->getOption('config');
-                if ($userConfigFilePath && $userConfigFilePath != 'none' && is_readable($userConfigFilePath)) {
-                    chdir(dirname($userConfigFilePath));
-                } else {
-                    $userConfigFilePath = $userConfigFilePath != 'none' ? null : 'none';
-                }
-
-                /** @var Serializer $serializer */
-                $serializer = $app['serializer'];
-
-                $config = $serializer->deserialize(
-                    file_get_contents($app['config.path.template']),
-                    $app['config.class'],
-                    'xml'
-                );
-
-                if ($userConfigFilePath != 'none') {
-                    $userConfigFilePath = $userConfigFilePath ?: $app['config.path.user'];
-                    $userConfigFile = $serializer->deserialize(
-                        file_get_contents($userConfigFilePath),
-                        $app['config.class'],
-                        'xml'
-                    );
-
-                    /** @var Merger $merger */
-                    $merger = $app['config.merger'];
-                    $config = $merger->run($config, $userConfigFile);
-                }
-
-                return $config;
-            }
-        );
-
+    /**
+     * @param Application $app
+     */
+    private function addOldConfiguration(Application $app)
+    {
         $app['config'] = $app->share(
             function ($app) {
                 $config_files = array($app['config.path.template']);

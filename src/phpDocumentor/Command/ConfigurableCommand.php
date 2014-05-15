@@ -11,7 +11,7 @@
  */
 namespace phpDocumentor\Command;
 
-use phpDocumentor\Configuration\Configuration;
+use phpDocumentor\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**

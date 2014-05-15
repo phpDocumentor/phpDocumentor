@@ -134,9 +134,6 @@ class ParseCommand extends ConfigurableCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // invoke parent to load custom config
-        parent::execute($input, $output);
-
         $target = $this->getOption($input, 'target', 'parser/target');
         $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
         if (!$this->isAbsolute($target)) {

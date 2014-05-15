@@ -220,8 +220,6 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        parent::execute($input, $output);
-
         $parse_command     = $this->getApplication()->find('project:parse');
         $transform_command = $this->getApplication()->find('project:transform');
 
