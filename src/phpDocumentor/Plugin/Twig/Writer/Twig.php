@@ -20,7 +20,7 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * A specialized writer which uses the Twig templating engine to convert
@@ -407,7 +407,7 @@ class Twig extends WriterAbstract implements Routable
     }
 
     /**
-     * @param \phpDocumentor\Translator $translator
+     * @param Translator $translator
      */
     public function setTranslator($translator)
     {

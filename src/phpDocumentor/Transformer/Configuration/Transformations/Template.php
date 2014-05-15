@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mvriel
- * Date: 9-5-14
- * Time: 19:55
- */
 
-namespace phpDocumentor\Configuration\Transformations;
+namespace phpDocumentor\Transformer\Configuration\Transformations;
 
 use JMS\Serializer\Annotation as Serializer;
 

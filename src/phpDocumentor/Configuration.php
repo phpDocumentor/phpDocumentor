@@ -9,10 +9,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor;
 
 use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
+use phpDocumentor\Partials\Partial;
+use phpDocumentor\Plugin\Plugin;
 
 /**
  * The definition for the configuration of phpDocumentor.
@@ -27,7 +29,7 @@ class Configuration
 
     /**
      * @var Parser $parser
-     * @Serializer\Type("phpDocumentor\Configuration\Parser")
+     * @Serializer\Type("phpDocumentor\Parser\Configuration")
      */
     protected $parser;
 
@@ -39,19 +41,19 @@ class Configuration
 
     /**
      * @var Transformer $transformer
-     * @Serializer\Type("phpDocumentor\Configuration\Transformer")
+     * @Serializer\Type("phpDocumentor\Transformer\Configuration")
      */
     protected $transformer;
 
     /**
      * @var Files files
-     * @Serializer\Type("phpDocumentor\Configuration\Files")
+     * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
      */
     protected $files;
 
     /**
      * @var Plugin[] $plugins
-     * @Serializer\Type("array<phpDocumentor\Configuration\Plugin>")
+     * @Serializer\Type("array<phpDocumentor\Plugin\Plugin>")
      * @Serializer\XmlList(entry = "plugin")
      * @Merger\Replace
      */
@@ -59,19 +61,19 @@ class Configuration
 
     /**
      * @var (Transformation)[]
-     * @Serializer\Type("phpDocumentor\Configuration\Transformations")
+     * @Serializer\Type("phpDocumentor\Transformer\Configuration\Transformations")
      */
     protected $transformations;
 
     /**
      * @var Translator
-     * @Serializer\Type("phpDocumentor\Configuration\Translator")
+     * @Serializer\Type("phpDocumentor\Translator\Configuration")
      */
     protected $translator;
 
     /**
      * @var Partial[]
-     * @Serializer\Type("array<phpDocumentor\Configuration\Partial>")
+     * @Serializer\Type("array<phpDocumentor\Partials\Partial>")
      */
     protected $partials = array();
 

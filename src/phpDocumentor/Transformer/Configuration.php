@@ -9,14 +9,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor\Transformer;
 
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Configuration definition for the transformer.
  */
-class Transformer
+class Configuration
 {
     /**
      * @Serializer\Type("string")
@@ -25,14 +25,14 @@ class Transformer
     protected $target;
 
     /**
-     * @Serializer\Type("array<phpDocumentor\Configuration\Transformer\ExternalClassDocumentation>")
+     * @Serializer\Type("array<phpDocumentor\Transformer\Configuration\ExternalClassDocumentation>")
      * @Serializer\SerializedName("external-class-documentation")
-     * @var Transformer\ExternalClassDocumentation[]
+     * @var Configuration\ExternalClassDocumentation[]
      */
     protected $externalClassDocumentation = array();
 
     /**
-     * @return Transformer\ExternalClassDocumentation[]
+     * @return Configuration\ExternalClassDocumentation[]
      */
     public function getExternalClassDocumentation()
     {

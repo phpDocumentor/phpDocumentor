@@ -9,26 +9,27 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor\Plugin;
 
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Configuration definition for the translations.
+ * @Serializer\XmlRoot("plugin")
  */
-class Translator
+class Plugin
 {
     /**
-     * @var string
      * @Serializer\Type("string")
+     * @Serializer\XmlAttribute
+     * @var string
      */
-    protected $locale = 'en';
+    protected $path;
 
     /**
      * @return string
      */
-    public function getLocale()
+    public function getPath()
     {
-        return $this->locale;
+        return $this->path;
     }
-}
+} 

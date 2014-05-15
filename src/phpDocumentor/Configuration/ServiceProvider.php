@@ -63,6 +63,11 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['config.path.template'] = __DIR__ . '/Resources/phpdoc.tpl.xml';
+        $app['config.path.user'] = getcwd()
+            . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
+        $app['config.class'] = 'phpDocumentor\Configuration';
+
         $app['config2'] = $app->share(
             function ($app) {
                 /** @var ConsoleApplication $console */
@@ -80,7 +85,7 @@ class ServiceProvider implements ServiceProviderInterface
 
                 $config = $serializer->deserialize(
                     file_get_contents($app['config.path.template']),
-                    'phpDocumentor\Configuration\Configuration',
+                    $app['config.class'],
                     'xml'
                 );
 
@@ -88,7 +93,7 @@ class ServiceProvider implements ServiceProviderInterface
                     $userConfigFilePath = $userConfigFilePath ?: $app['config.path.user'];
                     $userConfigFile = $serializer->deserialize(
                         file_get_contents($userConfigFilePath),
-                        'phpDocumentor\Configuration\Configuration',
+                        $app['config.class'],
                         'xml'
                     );
 
@@ -100,10 +105,6 @@ class ServiceProvider implements ServiceProviderInterface
                 return $config;
             }
         );
-
-        $app['config.path.template'] = __DIR__ . '/Resources/phpdoc.tpl.xml';
-        $app['config.path.user'] = getcwd()
-            . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
 
         $app['config'] = $app->share(
             function ($app) {

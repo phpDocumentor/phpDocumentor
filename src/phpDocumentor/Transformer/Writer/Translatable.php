@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Transformer\Writer;
 
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * All writers that have items that should be translated should implement this interface

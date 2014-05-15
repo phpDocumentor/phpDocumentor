@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor\Parser;
 
 use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
@@ -17,7 +17,7 @@ use phpDocumentor\Configuration\Merger\Annotation as Merger;
 /**
  * Configuration definition for the parser.
  */
-class Parser
+class Configuration
 {
     /**
      * @var string name of the package when there is no @package tag defined

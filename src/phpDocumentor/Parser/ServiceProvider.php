@@ -13,14 +13,11 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Configuration\Configuration;
-use phpDocumentor\Configuration\Partial;
-use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Configuration as ApplicationConfiguration;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
-use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -33,7 +30,6 @@ class ServiceProvider implements ServiceProviderInterface
      * @param Application $app An Application instance
      *
      * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
-     * @throws Exception\MissingNameForPartialException if a partial has no name provided.
      *
      * @return void
      */
@@ -64,37 +60,6 @@ class ServiceProvider implements ServiceProviderInterface
         /** @var Translator $translator  */
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
-
-        /** @var Configuration $config */
-        $config = $app['config2'];
-
-        $partialsCollection = new PartialsCollection($app['markdown']);
-        $app['partials'] = $partialsCollection;
-
-        /** @var Partial[] $partials */
-        $partials = $config->getPartials();
-        if ($partials) {
-            foreach ($partials as $partial) {
-                if (! $partial->getName()) {
-                    throw new Exception\MissingNameForPartialException('The name of the partial to load is missing');
-                }
-
-                $content = '';
-                if ($partial->getContent()) {
-                    $content = $partial->getContent();
-                } elseif ($partial->getLink()) {
-                    if (! is_readable($partial->getLink())) {
-                        $app['monolog']->error(
-                            sprintf($translator->translate('PPCPP:EXC-NOPARTIAL'), $partial->getLink())
-                        );
-                        continue;
-                    }
-
-                    $content = file_get_contents($partial->getLink());
-                }
-                $partialsCollection->set($partial->getName(), $content);
-            }
-        }
 
         $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
     }

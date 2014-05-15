@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor\Transformer\Configuration;
 
 use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
@@ -22,7 +22,7 @@ class Transformations
 {
     /**
      * @var Transformations\Template[]
-     * @Serializer\Type("array<phpDocumentor\Configuration\Transformations\Template>")
+     * @Serializer\Type("array<phpDocumentor\Transformer\Configuration\Transformations\Template>")
      * @Serializer\XmlList(inline = true, entry = "template")
      * @Merger\Replace
      */

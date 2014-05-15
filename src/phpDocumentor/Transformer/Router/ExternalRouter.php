@@ -11,8 +11,7 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use phpDocumentor\Configuration\Configuration;
-use Zend\Config\Config;
+use phpDocumentor\Configuration;
 
 /**
  * Connects class, interface and traits to remote documentation sets.

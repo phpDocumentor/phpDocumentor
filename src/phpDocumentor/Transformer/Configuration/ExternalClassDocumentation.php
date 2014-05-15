@@ -1,6 +1,6 @@
 <?php
 
-namespace phpDocumentor\Configuration\Transformer;
+namespace phpDocumentor\Transformer\Configuration;
 
 use JMS\Serializer\Annotation as Serializer;
 

@@ -20,8 +20,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use phpDocumentor\Command\Helper\LoggerHelper;
-use phpDocumentor\Configuration\Configuration;
-use phpDocumentor\Configuration\ServiceProvider;
+use phpDocumentor\Configuration;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use Symfony\Component\Console\Application as ConsoleApplication;
@@ -70,18 +69,20 @@ class Application extends Cilex
         };
 
         $this->addAutoloader();
+
         $this->register(new JmsSerializerServiceProvider());
-        $this->register(new ServiceProvider());
+        $this->register(new Configuration\ServiceProvider());
+
         $this->addEventDispatcher();
         $this->addLogging();
-        $this->addTranslator();
 
         $this->register(new ValidatorServiceProvider());
+        $this->register(new Translator\ServiceProvider());
         $this->register(new Descriptor\ServiceProvider());
         $this->register(new Parser\ServiceProvider());
+        $this->register(new Partials\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());
-
-        $this->addPlugins();
+        $this->register(new Plugin\ServiceProvider());
 
         $this->verifyWriterRequirementsAndExitIfBroken();
         $this->addCommandsForProjectNamespace();
@@ -101,44 +102,6 @@ class Application extends Cilex
             ini_set('opcache.save_comments', 1);
             ini_set('opcache.load_comments', 1);
         }
-    }
-
-    /**
-     * Instantiates plugin service providers and adds them to phpDocumentor's container.
-     *
-     * @return void
-     */
-    protected function addPlugins()
-    {
-        /** @var Configuration $config */
-        $config = $this['config2'];
-
-        if (! $config->getPlugins()) {
-            $this->register(new Plugin\Core\ServiceProvider());
-            $this->register(new Plugin\Scrybe\ServiceProvider());
-            return;
-        }
-
-        $app = $this;
-
-        array_walk(
-            $config->getPlugins(),
-            function ($plugin) use ($app) {
-                /** @var Configuration\Plugin $plugin */
-                $provider = (strpos($plugin->getPath(), '\\') === false)
-                    ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getPath())
-                    : $plugin->getPath();
-                if (!class_exists($provider)) {
-                    throw new \RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
-                }
-
-                try {
-                    $app->register(new $provider);
-                } catch (\InvalidArgumentException $e) {
-                    throw new \RuntimeException($e->getMessage());
-                }
-            }
-        );
     }
 
     /**
@@ -299,28 +262,6 @@ class Application extends Cilex
         $this['event_dispatcher'] = $this->share(
             function () {
                 return Event\Dispatcher::getInstance();
-            }
-        );
-    }
-
-    /**
-     * Adds the message translator to phpDocumentor's container.
-     *
-     * @return void
-     */
-    protected function addTranslator()
-    {
-        /** @var Configuration $config */
-        $config = $this['config2'];
-
-        $this['translator.locale'] = $config->getTranslator()->getLocale();
-
-        $this['translator'] = $this->share(
-            function ($app) {
-                $translator = new Translator();
-                $translator->setLocale($app['translator.locale']);
-
-                return $translator;
             }
         );
     }

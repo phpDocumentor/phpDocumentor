@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor\Parser\Configuration;
 
 use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
