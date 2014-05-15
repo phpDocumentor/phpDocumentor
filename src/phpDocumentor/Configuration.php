@@ -28,25 +28,25 @@ class Configuration
     protected $title;
 
     /**
-     * @var Parser $parser
+     * @var Parser\Configuration $parser
      * @Serializer\Type("phpDocumentor\Parser\Configuration")
      */
     protected $parser;
 
     /**
-     * @var Logging $logging
+     * @var Configuration\Logging $logging
      * @Serializer\Type("phpDocumentor\Configuration\Logging")
      */
     protected $logging;
 
     /**
-     * @var Transformer $transformer
+     * @var Transformer\Configuration $transformer
      * @Serializer\Type("phpDocumentor\Transformer\Configuration")
      */
     protected $transformer;
 
     /**
-     * @var Files files
+     * @var Parser\Configuration\Files files
      * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
      */
     protected $files;
@@ -66,7 +66,7 @@ class Configuration
     protected $transformations;
 
     /**
-     * @var Translator
+     * @var Translator\Configuration
      * @Serializer\Type("phpDocumentor\Translator\Configuration")
      */
     protected $translator;
@@ -78,7 +78,7 @@ class Configuration
     protected $partials = array();
 
     /**
-     * @return Files
+     * @return Parser\Configuration\Files
      */
     public function getFiles()
     {
@@ -86,7 +86,7 @@ class Configuration
     }
 
     /**
-     * @return Logging
+     * @return Configuration\Logging
      */
     public function getLogging()
     {
@@ -94,7 +94,7 @@ class Configuration
     }
 
     /**
-     * @return Parser
+     * @return Parser\Configuration
      */
     public function getParser()
     {
@@ -102,7 +102,7 @@ class Configuration
     }
 
     /**
-     * @return \string[]
+     * @return Partials\Partial[]
      */
     public function getPartials()
     {
@@ -118,7 +118,7 @@ class Configuration
     }
 
     /**
-     * @return mixed
+     * @return Transformer\Configuration\Transformations
      */
     public function getTransformations()
     {
@@ -126,7 +126,7 @@ class Configuration
     }
 
     /**
-     * @return Transformer
+     * @return Transformer\Configuration
      */
     public function getTransformer()
     {
@@ -134,7 +134,7 @@ class Configuration
     }
 
     /**
-     * @return Translator
+     * @return Translator\Configuration
      */
     public function getTranslator()
     {
