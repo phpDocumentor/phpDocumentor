@@ -37,6 +37,8 @@ class ConfigurationHelper extends Helper
      *
      * @return string The canonical name
      *
+     * @codeCoverageIgnore it is not interesting to test a name.
+     *
      * @api
      */
     public function getName()
@@ -50,28 +52,25 @@ class ConfigurationHelper extends Helper
      *
      * @param InputInterface $input           Input interface to query for information
      * @param string         $name            Name of the option to retrieve from argv
-     * @param string|null    $config_path     Path to the config element(s) containing the value to be used when
+     * @param string|null    $configPath     Path to the config element(s) containing the value to be used when
      *     no option is provided.
      * @param mixed|null     $default         Default value used if there is no configuration option or path set
-     * @param bool           $comma_separated Could the value be a comma separated string requiring splitting
+     * @param bool           $commaSeparated Could the value be a comma separated string requiring splitting
      *
      * @return string|array
      */
     public function getOption(
         InputInterface $input,
         $name,
-        $config_path = null,
+        $configPath = null,
         $default = null,
-        $comma_separated = false
+        $commaSeparated = false
     ) {
         $value = $input->getOption($name);
 
         // find value in config
-        if ($this->valueIsEmpty($value) && $config_path !== null) {
-            $value = $this->getConfigValueFromPath($config_path);
-            if ($value === null) {
-                return $default;
-            }
+        if ($this->valueIsEmpty($value) && $configPath !== null) {
+            $value = $this->getConfigValueFromPath($configPath);
         }
 
         // use default if value is still null
@@ -79,24 +78,21 @@ class ConfigurationHelper extends Helper
             return (is_array($value) && $default === null) ? array() : $default;
         }
 
-        return $this->splitCommaSeparatedValues($value, $comma_separated);
+        return $commaSeparated
+            ? $this->splitCommaSeparatedValues($value)
+            : $value;
     }
 
     /**
-     * Split comma separated values if needed.
+     * Split comma separated values.
      *
      * @param mixed $value
-     * @param bool $comma_separated
      *
      * @return mixed
      */
-    protected function splitCommaSeparatedValues($value, $comma_separated)
+    protected function splitCommaSeparatedValues($value)
     {
-        if ($comma_separated
-            && (!is_array($value)
-                || (count($value) == 1) && is_string(current($value))
-            )
-        ) {
+        if (!is_array($value) || (count($value) == 1) && is_string(current($value))) {
             $value = (array) $value;
             $value = explode(',', $value[0]);
         }
