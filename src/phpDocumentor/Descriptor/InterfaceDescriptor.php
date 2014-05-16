@@ -146,7 +146,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         }
     }
 
-    protected function getInheritedElement()
+    public function getInheritedElement()
     {
         return $this->getParent() && $this->getParent()->count() > 0
             ? $this->getParent()->getIterator()->current()

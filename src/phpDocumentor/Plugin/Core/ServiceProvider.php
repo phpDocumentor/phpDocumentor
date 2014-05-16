@@ -36,7 +36,7 @@ class ServiceProvider implements ServiceProviderInterface
         $writerCollection['FileIo']     = new Writer\FileIo();
         $writerCollection['checkstyle'] = new Writer\Checkstyle();
         $writerCollection['sourcecode'] = new Writer\Sourcecode();
-        $writerCollection['xml']        = new Writer\Xml();
+        $writerCollection['xml']        = new Writer\Xml($app['transformer.routing.standard']);
         $writerCollection['xsl']        = new Writer\Xsl($app['monolog']);
 
         $writerCollection['checkstyle']->setTranslator($translator);

@@ -136,7 +136,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
      *
      * @return ConstantDescriptor|null
      */
-    protected function getInheritedElement()
+    public function getInheritedElement()
     {
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();

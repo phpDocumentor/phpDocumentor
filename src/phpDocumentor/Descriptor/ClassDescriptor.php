@@ -339,7 +339,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->usedTraits;
     }
 
-    protected function getInheritedElement()
+    public function getInheritedElement()
     {
         return $this->getParent();
     }
