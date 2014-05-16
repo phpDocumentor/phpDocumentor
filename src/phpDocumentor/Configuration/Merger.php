@@ -1,26 +1,55 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
 namespace phpDocumentor\Configuration;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 
+/**
+ * Deep-merges any variable.
+ *
+ * This class is capable of merging together arrays and objects of the same class; all other types of variables are
+ * replaced. In addition this merger also supports the `Replace` annotation; this annotation can be placed on a property
+ * of a class and will indicate that that property must not be merged but replaced in its entirety.
+ */
 class Merger
 {
-    /**
-     * @var AnnotationReader
-     */
+    /** @var AnnotationReader */
     private $reader;
 
+    /**
+     * Initializes this merger with the annotation reader.
+     *
+     * @param AnnotationReader $reader
+     */
     public function __construct(AnnotationReader $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * Merges the source on top of the destination and returns the result.
+     *
+     * @param mixed $destination The destination variable that will be overwritten with the data from the source.
+     * @param mixed $source      The source variable that should be merged over the destination.
+     * @param mixed $default     For normal variables; only replace that variable if the provided source does
+     *     not equal this value.
+     *
+     * @return mixed the merged variable.
+     */
     public function run($destination, $source, $default = null)
     {
         $result = null;
 
-        if (is_object($destination) && is_object($source)) {
+        if (is_object($destination) && is_object($source) && get_class($destination) == get_class($source)) {
             $result = $this->mergeObject($destination, $source);
         } elseif (is_array($source) && is_array($destination)) {
             $result = $this->mergeArray($destination, $source);
@@ -31,6 +60,14 @@ class Merger
         return $result;
     }
 
+    /**
+     * Deep-merge the source object over the destination object and return the results.
+     *
+     * @param object $destinationObject
+     * @param object $sourceObject
+     *
+     * @return object
+     */
     private function mergeObject($destinationObject, $sourceObject)
     {
         $reflectedDestination  = new \ReflectionObject($destinationObject);
@@ -50,6 +87,14 @@ class Merger
         return $destinationObject;
     }
 
+    /**
+     * Deep-merges the source array over the destination array.
+     *
+     * @param array $destinationArray
+     * @param array $sourceArray
+     *
+     * @return array
+     */
     private function mergeArray($destinationArray, $sourceArray)
     {
         $result = array();
@@ -73,6 +118,8 @@ class Merger
     }
 
     /**
+     * Merges the two properties over eachother.
+     *
      * @param object              $destinationObject
      * @param \ReflectionProperty $destinationProperty
      * @param object              $sourceObject
