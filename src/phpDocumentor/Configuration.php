@@ -16,6 +16,7 @@ use phpDocumentor\Configuration\Logging;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
 use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Plugin;
+use phpDocumentor\Transformer\Configuration\Transformations;
 
 /**
  * The definition for the configuration of phpDocumentor.
@@ -23,37 +24,37 @@ use phpDocumentor\Plugin\Plugin;
 class Configuration
 {
     /**
-     * @var string
+     * @var string The title for the generated documentation.
      * @Serializer\Type("string")
      */
     protected $title = '';
 
     /**
-     * @var Parser\Configuration $parser
+     * @var Parser\Configuration The settings used during the parsing phase.
      * @Serializer\Type("phpDocumentor\Parser\Configuration")
      */
     protected $parser;
 
     /**
-     * @var Configuration\Logging $logging
+     * @var Configuration\Logging The setting used for the logging of application messages and errors.
      * @Serializer\Type("phpDocumentor\Configuration\Logging")
      */
     protected $logging;
 
     /**
-     * @var Transformer\Configuration $transformer
+     * @var Transformer\Configuration The settings used during the transformation phase.
      * @Serializer\Type("phpDocumentor\Transformer\Configuration")
      */
     protected $transformer;
 
     /**
-     * @var Parser\Configuration\Files files
+     * @var Parser\Configuration\Files contains a list of all files and directories to parse and to ignore.
      * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
      */
     protected $files;
 
     /**
-     * @var Plugin[] $plugins
+     * @var Plugin[] $plugins contains a listing of all plugins that should be loaded during startup.
      * @Serializer\Type("array<phpDocumentor\Plugin\Plugin>")
      * @Serializer\XmlList(entry = "plugin")
      * @Merger\Replace
@@ -61,23 +62,27 @@ class Configuration
     protected $plugins = array();
 
     /**
-     * @var (Transformation)[]
+     * @var Transformations[] contains a list of all templates and custom transformations that are to be executed during
+     *     the transformation process.
      * @Serializer\Type("phpDocumentor\Transformer\Configuration\Transformations")
      */
     protected $transformations;
 
     /**
-     * @var Translator\Configuration
+     * @var Translator\Configuration The settings used during translation.
      * @Serializer\Type("phpDocumentor\Translator\Configuration")
      */
     protected $translator;
 
     /**
-     * @var Partial[]
+     * @var Partial[] A list of custom texts, or references thereto, that may be injected into templates.
      * @Serializer\Type("array<phpDocumentor\Partials\Partial>")
      */
     protected $partials = array();
 
+    /**
+     * Initializes all settings with their default values.
+     */
     public function __construct()
     {
         $this->transformer     = new Transformer\Configuration();
@@ -89,6 +94,18 @@ class Configuration
     }
 
     /**
+     * Returns the title for the generated documentation.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Returns the configuration related to which files are to be parsed.
+     *
      * @return Parser\Configuration\Files
      */
     public function getFiles()
@@ -97,6 +114,8 @@ class Configuration
     }
 
     /**
+     * Returns the settings related to logging.
+     *
      * @return Configuration\Logging
      */
     public function getLogging()
@@ -105,6 +124,8 @@ class Configuration
     }
 
     /**
+     * Returns the configuration used by the parser.
+     *
      * @return Parser\Configuration
      */
     public function getParser()
@@ -113,6 +134,8 @@ class Configuration
     }
 
     /**
+     * Returns all partials that can be imported in the application.
+     *
      * @return Partials\Partial[]
      */
     public function getPartials()
@@ -121,6 +144,8 @@ class Configuration
     }
 
     /**
+     * Returns a list of all plugins that should be loaded by the application.
+     *
      * @return Plugin[]
      */
     public function getPlugins()
@@ -129,6 +154,8 @@ class Configuration
     }
 
     /**
+     * Returns which templates and custom transformations need to be applied to the parsed data.
+     *
      * @return Transformer\Configuration\Transformations
      */
     public function getTransformations()
@@ -137,6 +164,8 @@ class Configuration
     }
 
     /**
+     * Returns the settings for the transformer.
+     *
      * @return Transformer\Configuration
      */
     public function getTransformer()
@@ -145,18 +174,12 @@ class Configuration
     }
 
     /**
+     * Returns the settings for the translator.
+     *
      * @return Translator\Configuration
      */
     public function getTranslator()
     {
         return $this->translator;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 }

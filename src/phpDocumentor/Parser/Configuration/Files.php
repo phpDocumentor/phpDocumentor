@@ -20,7 +20,8 @@ use phpDocumentor\Configuration\Merger\Annotation as Merger;
 class Files
 {
     /**
-     * @var string[]
+     * @var string[] a list of directories that will be recursively scanned for files to parse.
+     *
      * @Serializer\Type("array<string>")
      * @Serializer\XmlList(inline = true, entry = "directory")
      * @Merger\Replace
@@ -28,7 +29,8 @@ class Files
     protected $directories;
 
     /**
-     * @var string[]
+     * @var string[] a list of files that will be parsed individually.
+     *
      * @Serializer\Type("array<string>")
      * @Serializer\XmlList(inline = true, entry = "file")
      * @Merger\Replace
@@ -36,7 +38,8 @@ class Files
     protected $files;
 
     /**
-     * @var string[]
+     * @var string[] a list of 'globs' that will determine if a file matches the expression and then will be ignored.
+     *
      * @Serializer\Type("array<string>")
      * @Serializer\XmlList(inline = true, entry = "ignore")
      * @Merger\Replace
@@ -44,20 +47,38 @@ class Files
     protected $ignore;
 
     /**
-     * @var boolean
+     * @var boolean whether to ignore hidden files and directories.
+     *
      * @Serializer\Type("boolean")
      * @Serializer\SerializedName("ignore-hidden")
      */
     protected $ignoreHidden = true;
 
     /**
-     * @var boolean
+     * @var boolean whether to ignore symlinks and not follow them.
+     *
      * @Serializer\Type("boolean")
      * @Serializer\SerializedName("ignore-symlinks")
      */
     protected $ignoreSymlinks = true;
 
     /**
+     * Initializes this configuration directive with the required files and directories.
+     *
+     * @param string[] $directories
+     * @param string[] $files
+     * @param string[] $ignore
+     */
+    public function __construct(array $directories = array(), array $files = array(), array $ignore = array())
+    {
+        $this->directories = $directories;
+        $this->files       = $files;
+        $this->ignore      = $ignore;
+    }
+
+    /**
+     * Returns a list of directories to recursively scan for files to be parsed.
+     *
      * @return \string[]
      */
     public function getDirectories()
@@ -66,6 +87,8 @@ class Files
     }
 
     /**
+     * Returns a list of files to parse.
+     *
      * @return \string[]
      */
     public function getFiles()
@@ -74,6 +97,8 @@ class Files
     }
 
     /**
+     * Returns the 'glob' expression used to determine which files to ignore.
+     *
      * @return \string[]
      */
     public function getIgnore()
@@ -82,6 +107,8 @@ class Files
     }
 
     /**
+     * Returns whether to ignore hidden files and folders during parsing.
+     *
      * @return boolean
      */
     public function isIgnoreHidden()
@@ -90,6 +117,8 @@ class Files
     }
 
     /**
+     * Returns whether to ignore symlinks and not traverse them.
+     *
      * @return boolean
      */
     public function isIgnoreSymlinks()

@@ -12,6 +12,7 @@
 namespace phpDocumentor\Configuration;
 
 use JMS\Serializer\Annotation as Serializer;
+use Psr\Log\LogLevel;
 
 /**
  * Configuration definition for the logger.
@@ -19,13 +20,15 @@ use JMS\Serializer\Annotation as Serializer;
 class Logging
 {
     /**
-     * @var string the minimum output level for logging
+     * @var string the minimum output level for logging.
+     *
      * @Serializer\Type("string")
      */
-    protected $level;
+    protected $level = LogLevel::ERROR;
 
     /**
-     * @var string[]
+     * @var string[] the paths determining where to output log files.
+     *
      * @Serializer\Type("array<string>")
      */
     protected $paths = array(
@@ -34,6 +37,8 @@ class Logging
     );
 
     /**
+     * Returns the minimum output level for logging.
+     *
      * @return string
      */
     public function getLevel()
@@ -42,7 +47,14 @@ class Logging
     }
 
     /**
-     * @return mixed
+     * Returns the paths that determine where to store log files.
+     *
+     * phpDocumentor uses two types of log files to be able to sift through the logs more easily:
+     *
+     * - 'default', contains all logs as mentioned in the logging level in this object and
+     * - 'debug', contains debugging information that is exposed when debugging is enabled.
+     *
+     * @return string[]
      */
     public function getPaths()
     {

@@ -23,9 +23,9 @@ class ServiceProvider implements ServiceProviderInterface
             $config->getPlugins(),
             function ($plugin) use ($app) {
                 /** @var Plugin $plugin */
-                $provider = (strpos($plugin->getPath(), '\\') === false)
-                    ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getPath())
-                    : $plugin->getPath();
+                $provider = (strpos($plugin->getClassName(), '\\') === false)
+                    ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getClassName())
+                    : $plugin->getClassName();
                 if (!class_exists($provider)) {
                     throw new \RuntimeException('Loading Service Provider for ' . $provider . ' failed.');
                 }
@@ -38,4 +38,4 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
     }
-} 
+}

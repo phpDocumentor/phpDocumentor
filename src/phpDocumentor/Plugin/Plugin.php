@@ -19,17 +19,34 @@ use JMS\Serializer\Annotation as Serializer;
 class Plugin
 {
     /**
+     * @var string class name of the plugin.
+     *
+     * @todo this serialized name is misleading, the (old) docs should be reviewed for accuracy
+     *
      * @Serializer\Type("string")
      * @Serializer\XmlAttribute
-     * @var string
+     * @Serializer\SerializedName("path")
      */
-    protected $path;
+    protected $className;
 
     /**
+     * Initialize the plugin configuration definition with the given class name.
+     *
+     * @param string $className
+     */
+    public function __construct($className)
+    {
+        $this->className = $className;
+    }
+
+
+    /**
+     * Returns the class name for this plugin.
+     *
      * @return string
      */
-    public function getPath()
+    public function getClassName()
     {
-        return $this->path;
+        return $this->className;
     }
 } 
