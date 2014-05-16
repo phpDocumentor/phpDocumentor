@@ -22,6 +22,7 @@ use Monolog\Logger;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Configuration;
 use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
@@ -305,9 +306,13 @@ class Application extends Cilex
     protected function verifyWriterRequirementsAndExitIfBroken()
     {
         try {
-            $this['transformer.writer.collection']->checkRequirements();
+            /** @var Collection $writerCollection */
+            $writerCollection = $this['transformer.writer.collection'];
+            $writerCollection->checkRequirements();
         } catch (RequirementMissing $e) {
-            $this['monolog']->emerg(
+            /** @var Logger $logger */
+            $logger = $this['monolog'];
+            $logger->emerg(
                 'phpDocumentor detected that a requirement is missing in your system setup: ' . $e->getMessage()
             );
             exit(1);
