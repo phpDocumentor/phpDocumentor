@@ -28,9 +28,9 @@ class MethodDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
+        $converter = new QualifiedNameToUrlConverter();
         $className = $node->getParent()->getFullyQualifiedStructuralElementName();
-        $name = $node->getName();
 
-        return '/classes/' . str_replace('\\', '.', ltrim($className, '\\')).'.html#method_' . $name;
+        return '/classes/' . $converter->fromClass($className) . '.html#method_' . $node->getName();
     }
 }

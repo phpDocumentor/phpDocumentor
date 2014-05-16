@@ -98,9 +98,16 @@ class Application extends Cilex
         $this->setTimezone();
         ini_set('memory_limit', -1);
 
-        if (extension_loaded('Zend OPcache')) {
-            ini_set('opcache.save_comments', 1);
-            ini_set('opcache.load_comments', 1);
+        if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
+            if (ini_get('opcache.save_comments')) {
+                ini_set('opcache.load_comments', 1);
+            } else {
+                ini_set('opcache.enable', 0);
+            }
+        }
+
+        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
+            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
         }
     }
 

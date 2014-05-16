@@ -126,7 +126,10 @@ class FileAssembler extends AssemblerAbstract
             if ($classDescriptor) {
                 $classDescriptor->setLocation($fileDescriptor, $class->getLineNumber());
                 if (count($classDescriptor->getTags()->get('package', new Collection())) == 0) {
-                    $classDescriptor->setPackage($fileDescriptor->getTags()->get('package', new Collection()));
+                    $classDescriptor->getTags()->set(
+                        'package',
+                        $fileDescriptor->getTags()->get('package', new Collection())
+                    );
                 }
 
                 $fileDescriptor->getClasses()->set(

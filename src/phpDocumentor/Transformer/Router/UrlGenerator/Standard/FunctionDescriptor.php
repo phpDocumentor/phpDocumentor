@@ -28,9 +28,8 @@ class FunctionDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $namespaceName = $node->getNamespace();
-        $name          = $node->getName();
+        $converter = new QualifiedNameToUrlConverter();
 
-        return '/namespaces/' . str_replace('\\', '.', ltrim($namespaceName, '\\')).'.html#function_' . $name;
+        return '/namespaces/' . $converter->fromNamespace($node->getNamespace()) . '.html#function_' . $node->getName();
     }
 }

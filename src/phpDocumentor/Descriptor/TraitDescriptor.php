@@ -76,6 +76,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $method = new MethodDescriptor();
             $method->setName($methodTag->getMethodName());
             $method->setDescription($methodTag->getDescription());
+            $method->setParent($this);
 
             $methods->add($method);
         }
@@ -125,6 +126,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $property->setName($propertyTag->getVariableName());
             $property->setDescription($propertyTag->getDescription());
             $property->setTypes($propertyTag->getTypes());
+            $property->setParent($this);
 
             $properties->add($property);
         }

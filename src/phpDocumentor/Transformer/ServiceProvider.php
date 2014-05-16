@@ -22,6 +22,8 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
+use phpDocumentor\Transformer\Template\Factory;
+use phpDocumentor\Transformer\Template\PathResolver;
 
 /**
  * This provider is responsible for registering the transformer component with the given Application.
@@ -49,14 +51,8 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             );
         }
 
-        $templateDir = __DIR__ . '/../../../data/templates';
-        // vendored installation
-        if (file_exists(__DIR__ . '/../../../../templates')) {
-            $templateDir = __DIR__ . '/../../../../templates';
-        }
 
         // parameters
-        $app['transformer.template.location'] = $templateDir;
         $app['linker.substitutions'] = array(
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
             'phpDocumentor\Descriptor\FileDescriptor'         => array('tags', 'classes', 'interfaces', 'traits'),
@@ -121,7 +117,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             }
         );
 
-
         $app['transformer.routing.standard'] = $app->share(
             function () {
                 return new Router\StandardRouter();
@@ -151,14 +146,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             }
         );
 
-        $app['transformer.template.collection'] = $app->share(
-            function ($container) {
-                return new Template\Collection(
-                    $container['transformer.template.location'],
-                    $container['serializer']
-                );
-            }
-        );
+        $this->provideTemplatingSystem($app);
 
         $app['transformer'] = $app->share(
             function ($container) {
@@ -173,6 +161,49 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         );
 
         $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
-        $app->command(new ListCommand());
+        $app->command(new ListCommand($app['transformer.template.factory']));
+    }
+
+    /**
+     * Initializes the templating system in the container.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    protected function provideTemplatingSystem(Application $app)
+    {
+        $templateDir = __DIR__ . '/../../../data/templates';
+
+        // when installed using composer the templates are in a different folder
+        $composerTemplatePath = __DIR__ . '/../../../../templates';
+        if (file_exists($composerTemplatePath)) {
+            $templateDir = $composerTemplatePath;
+        }
+
+        // parameters
+        $app['transformer.template.location'] = $templateDir;
+
+        // services
+        $app['transformer.template.path_resolver'] = $app->share(
+            function ($container) {
+                return new PathResolver($container['transformer.template.location']);
+            }
+        );
+
+        $app['transformer.template.factory'] = $app->share(
+            function ($container) {
+                return new Factory(
+                    $container['transformer.template.path_resolver'],
+                    $container['serializer']
+                );
+            }
+        );
+
+        $app['transformer.template.collection'] = $app->share(
+            function ($container) {
+                return new Template\Collection($container['transformer.template.factory']);
+            }
+        );
     }
 }
