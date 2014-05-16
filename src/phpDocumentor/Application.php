@@ -255,7 +255,7 @@ class Application extends Cilex
 
         $app = $this;
         /** @var Configuration $configuration */
-        $configuration = $this['config2'];
+        $configuration = $this['config'];
         $this['monolog.configure'] = $this->protect(
             function ($log) use ($app, $configuration) {
                 $paths    = $configuration->getLogging()->getPaths();

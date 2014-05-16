@@ -63,8 +63,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfConfigurationIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['config2']));
-        $this->assertInstanceOf('phpDocumentor\Configuration', $this->fixture['config2']);
+        $this->assertTrue(isset($this->fixture['config']));
+        $this->assertInstanceOf('phpDocumentor\Configuration', $this->fixture['config']);
     }
 
     /**

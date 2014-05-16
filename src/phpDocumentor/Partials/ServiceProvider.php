@@ -38,7 +38,7 @@ class ServiceProvider implements ServiceProviderInterface
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         /** @var ApplicationConfiguration $config */
-        $config = $app['config2'];
+        $config = $app['config'];
 
         $partialsCollection = new PartialsCollection($app['markdown']);
         $app['partials'] = $partialsCollection;

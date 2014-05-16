@@ -49,15 +49,13 @@ class ServiceProvider implements ServiceProviderInterface
             . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
         $app['config.class'] = 'phpDocumentor\Configuration';
 
-        $app['config2'] = $app->share(
+        $app['config'] = $app->share(
             function ($app) {
                 $loader = new Loader($app['serializer'], $app['config.merger']);
 
                 return $loader->load($app['config.path.template'], $app['config.path.user'], $app['config.class']);
             }
         );
-
-        $this->addOldConfiguration($app);
     }
 
     /**
@@ -86,21 +84,4 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
     }
-
-    /**
-     * @param Application $app
-     */
-    private function addOldConfiguration(Application $app)
-    {
-        $app['config'] = $app->share(
-            function ($app) {
-                $config_files = array($app['config.path.template']);
-                if (is_readable($app['config.path.user'])) {
-                    $config_files[] = $app['config.path.user'];
-                }
-
-                return Factory::fromFiles($config_files, true);
-            }
-        );
-    }
-} 
+}
