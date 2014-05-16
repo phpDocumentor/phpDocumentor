@@ -40,6 +40,14 @@ class Configuration
     }
 
     /**
+     * @param Configuration\ExternalClassDocumentation[] $externalClassDocumentation
+     */
+    public function setExternalClassDocumentation($externalClassDocumentation)
+    {
+        $this->externalClassDocumentation = $externalClassDocumentation;
+    }
+
+    /**
      * @return string
      */
     public function getTarget()

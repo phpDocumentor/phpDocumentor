@@ -12,6 +12,7 @@
 namespace phpDocumentor;
 
 use JMS\Serializer\Annotation as Serializer;
+use phpDocumentor\Configuration\Logging;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
 use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Plugin;
@@ -25,7 +26,7 @@ class Configuration
      * @var string
      * @Serializer\Type("string")
      */
-    protected $title;
+    protected $title = '';
 
     /**
      * @var Parser\Configuration $parser
@@ -57,7 +58,7 @@ class Configuration
      * @Serializer\XmlList(entry = "plugin")
      * @Merger\Replace
      */
-    protected $plugins;
+    protected $plugins = array();
 
     /**
      * @var (Transformation)[]
@@ -76,6 +77,16 @@ class Configuration
      * @Serializer\Type("array<phpDocumentor\Partials\Partial>")
      */
     protected $partials = array();
+
+    public function __construct()
+    {
+        $this->transformer     = new Transformer\Configuration();
+        $this->transformations = new Transformer\Configuration\Transformations();
+        $this->files           = new Parser\Configuration\Files();
+        $this->parser          = new Parser\Configuration();
+        $this->logging         = new Logging();
+        $this->translator      = new Translator\Configuration();
+    }
 
     /**
      * @return Parser\Configuration\Files
