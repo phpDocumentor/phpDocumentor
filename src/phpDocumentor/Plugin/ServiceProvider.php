@@ -12,15 +12,16 @@ class ServiceProvider implements ServiceProviderInterface
     {
         /** @var ApplicationConfiguration $config */
         $config = $app['config'];
+        $plugins = $config->getPlugins();
 
-        if (! $config->getPlugins()) {
+        if (! $plugins) {
             $app->register(new Core\ServiceProvider());
             $app->register(new Scrybe\ServiceProvider());
             return;
         }
 
         array_walk(
-            $config->getPlugins(),
+            $plugins,
             function ($plugin) use ($app) {
                 /** @var Plugin $plugin */
                 $provider = (strpos($plugin->getClassName(), '\\') === false)

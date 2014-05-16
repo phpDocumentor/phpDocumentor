@@ -24,6 +24,7 @@ use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
 
@@ -129,26 +130,16 @@ TEXT
     }
 
     /**
-     * Returns the Cache.
-     *
-     * @return StorageInterface
-     */
-    protected function getCache()
-    {
-        return $this->getContainer()->offsetGet('descriptor.cache');
-    }
-
-    /**
      * Executes the business logic involved with this command.
      *
-     * @param InputInterface $input
-     * @param Output         $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      *
      * @throws \Exception if the provided source is not an existing file or a folder.
      *
      * @return int
      */
-    protected function execute(InputInterface $input, Output $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
@@ -206,6 +197,16 @@ TEXT
         }
 
         return 0;
+    }
+
+    /**
+     * Returns the Cache.
+     *
+     * @return StorageInterface
+     */
+    protected function getCache()
+    {
+        return $this->getContainer()->offsetGet('descriptor.cache');
     }
 
     /**
