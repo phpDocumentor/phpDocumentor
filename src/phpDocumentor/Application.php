@@ -19,6 +19,7 @@ use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Configuration;
 use phpDocumentor\Console\Input\ArgvInput;
@@ -253,19 +254,22 @@ class Application extends Cilex
         );
 
         $app = $this;
+        /** @var Configuration $configuration */
+        $configuration = $this['config2'];
         $this['monolog.configure'] = $this->protect(
-            function ($log) use ($app) {
-                /** @var Configuration $config */
-                $config = $app['config2'];
-                $paths  = $config->getLogging()->getPaths();
+            function ($log) use ($app, $configuration) {
+                $paths    = $configuration->getLogging()->getPaths();
+                $logLevel = $configuration->getLogging()->getLevel();
 
-                $app->configureLogger($log, $config->getLogging()->getLevel(), $paths['default'], $paths['errors']);
+                $app->configureLogger($log, $logLevel, $paths['default'], $paths['errors']);
             }
         );
 
-        $this->extend('console',
-            function (ConsoleApplication $console){
+        $this->extend(
+            'console',
+            function (ConsoleApplication $console) use ($configuration) {
                 $console->getHelperSet()->set(new LoggerHelper());
+                $console->getHelperSet()->set(new ConfigurationHelper($configuration));
 
                 return $console;
             }

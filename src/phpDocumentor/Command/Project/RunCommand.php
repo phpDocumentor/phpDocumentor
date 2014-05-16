@@ -11,7 +11,7 @@
  */
 namespace phpDocumentor\Command\Project;
 
-use phpDocumentor\Command\ConfigurableCommand;
+use phpDocumentor\Command\Command;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * present. In the configuration file can you specify the same settings (and
  * more) as the command line provides.
  */
-class RunCommand extends ConfigurableCommand
+class RunCommand extends Command
 {
     /**
      * Initializes this command and sets the name, description, options and

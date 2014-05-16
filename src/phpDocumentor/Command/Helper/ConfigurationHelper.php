@@ -4,24 +4,46 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius. (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-namespace phpDocumentor\Command;
+
+namespace phpDocumentor\Command\Helper;
 
 use phpDocumentor\Configuration;
+use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
 
-/**
- * Base class for commands that may make use of the configuration.
- *
- * Provides helper methods and a default argument to work with the configuration
- * files.
- */
-class ConfigurableCommand extends Command
+class ConfigurationHelper extends Helper
 {
+    /**
+     * @var \phpDocumentor\Configuration
+     */
+    private $configuration;
+
+    /**
+     * Initializes this helper and registers the application configuration on it.
+     *
+     * @param Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * Returns the canonical name of this helper.
+     *
+     * @return string The canonical name
+     *
+     * @api
+     */
+    public function getName()
+    {
+        return 'phpdocumentor_configuration';
+    }
+
     /**
      * Returns the value of an option from the command-line parameters,
      * configuration or given default.
@@ -33,7 +55,7 @@ class ConfigurableCommand extends Command
      * @param mixed|null     $default         Default value used if there is no configuration option or path set
      * @param bool           $comma_separated Could the value be a comma separated string requiring splitting
      *
-     * @return string
+     * @return string|array
      */
     public function getOption(
         InputInterface $input,
@@ -59,13 +81,13 @@ class ConfigurableCommand extends Command
 
         return $this->splitCommaSeparatedValues($value, $comma_separated);
     }
-    
+
     /**
      * Split comma separated values if needed.
-     * 
+     *
      * @param mixed $value
      * @param bool $comma_separated
-     * 
+     *
      * @return mixed
      */
     protected function splitCommaSeparatedValues($value, $comma_separated)
@@ -78,15 +100,15 @@ class ConfigurableCommand extends Command
             $value = (array) $value;
             $value = explode(',', $value[0]);
         }
-        
+
         return $value;
     }
-    
+
     /**
      * Is value empty?
-     * 
+     *
      * @param mixed $value
-     * 
+     *
      * @return boolean
      */
     protected function valueIsEmpty($value)
@@ -102,10 +124,10 @@ class ConfigurableCommand extends Command
      *
      * @return string|integer|boolean
      */
-    protected function getConfigValueFromPath($path)
+    public function getConfigValueFromPath($path)
     {
         /** @var Configuration $node */
-        $node = $this->getService('config2');
+        $node = $this->configuration;
 
         foreach (explode('/', $path) as $nodeName) {
             if (!is_object($node)) {

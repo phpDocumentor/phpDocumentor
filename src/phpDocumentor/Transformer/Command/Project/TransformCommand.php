@@ -4,24 +4,27 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Command\Project;
 
-use phpDocumentor\Command\ConfigurableCommand;
+use phpDocumentor\Command\Command;
+use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Console\Output\Output;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Zend\Cache\Storage\StorageInterface;
 
 /**
@@ -36,7 +39,7 @@ use Zend\Cache\Storage\StorageInterface;
  * verbose option or stop additional information using the quiet option. Please
  * take note that the quiet option also disables logging to file.
  */
-class TransformCommand extends ConfigurableCommand
+class TransformCommand extends Command
 {
     /** @var ProjectDescriptorBuilder $builder */
     protected $builder;
@@ -138,15 +141,18 @@ TEXT
     /**
      * Executes the business logic involved with this command.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param InputInterface $input
+     * @param Output         $output
      *
      * @throws \Exception if the provided source is not an existing file or a folder.
      *
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, Output $output)
     {
+        /** @var ConfigurationHelper $configurationHelper */
+        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
+
         $progress = $this->getProgressBar($input);
         if (!$progress) {
             $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
@@ -155,13 +161,14 @@ TEXT
         // initialize transformer
         $transformer = $this->getTransformer();
 
-        $target = $this->getOption($input, 'target', 'transformer/target');
-        if (!$this->isAbsolute($target)) {
+        $target = $configurationHelper->getOption($input, 'target', 'transformer/target');
+        $fileSystem = new Filesystem();
+        if (! $fileSystem->isAbsolutePath($target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
         $transformer->setTarget($target);
 
-        $source = realpath($this->getOption($input, 'source', 'parser/target'));
+        $source = realpath($configurationHelper->getOption($input, 'source', 'parser/target'));
         if (!file_exists($source) || !is_dir($source)) {
             throw new \Exception('Invalid source location provided, a path to an existing folder was expected');
         }
@@ -210,9 +217,12 @@ TEXT
      */
     protected function getTemplates(InputInterface $input)
     {
+        /** @var ConfigurationHelper $configurationHelper */
+        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
+
         $templates = $input->getOption('template');
         if (!$templates) {
-            $value = $this->getConfigValueFromPath('transformations/templates');
+            $value = $configurationHelper->getConfigValueFromPath('transformations/templates');
             if (is_array($value)) {
                 if (isset($value['name'])) {
                     $templates[] = $value['name'];
@@ -244,8 +254,11 @@ TEXT
      */
     public function loadTransformations(Transformer $transformer)
     {
+        /** @var ConfigurationHelper $configurationHelper */
+        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
+
         $received = array();
-        $transformations = $this->getConfigValueFromPath('transformations/transformations');
+        $transformations = $configurationHelper->getConfigValueFromPath('transformations/transformations');
         if (is_array($transformations)) {
             if (isset($transformations['writer'])) {
                 $received[] = $this->createTransformation($transformations);
@@ -311,7 +324,9 @@ TEXT
             return null;
         }
 
-        $this->getService('event_dispatcher')->addListener(
+        /** @var Dispatcher $eventDispatcher */
+        $eventDispatcher = $this->getService('event_dispatcher');
+        $eventDispatcher->addListener(
             'transformer.transformation.post',
             function () use ($progress) {
                 $progress->advance();
