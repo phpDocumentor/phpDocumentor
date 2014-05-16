@@ -136,7 +136,8 @@ HELP
                 'hidden',
                 null,
                 InputOption::VALUE_NONE,
-                'set to on to descend into hidden directories (directories starting with \'.\'), default is on'
+                'Use this option to tell phpDocumentor to parse files and directories that begin with a period (.), '
+                . 'by default these are ignored'
             )
             ->addOption(
                 'ignore-symlinks',

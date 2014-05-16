@@ -238,7 +238,11 @@ class ParseCommand extends ConfigurableCommand
             $this->getOption($input, 'extensions', 'parser/extensions/extension', array('php', 'php3', 'phtml'), true)
         );
         $files->setIgnorePatterns($this->getOption($input, 'ignore', 'files/ignore', array(), true));
-        $files->setIgnoreHidden($this->getOption($input, 'hidden', 'files/ignore-hidden', 'off') == 'on');
+        $ignoreHidden = $this->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
+        var_dump($ignoreHidden);
+        var_dump($ignoreHidden !== 'off');
+        var_dump($ignoreHidden === false);
+        $files->setIgnoreHidden($ignoreHidden !== 'off' && $ignoreHidden === false);
         $files->setFollowSymlinks($this->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on');
 
         $file_options = (array)$this->getOption($input, 'filename', 'files/file', array(), true);
