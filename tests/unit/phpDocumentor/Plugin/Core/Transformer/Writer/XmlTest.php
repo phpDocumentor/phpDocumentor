@@ -38,7 +38,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->translator = m::mock('phpDocumentor\Translator');
+        $this->translator = m::mock('phpDocumentor\Translator\Translator');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $this->xml = new Xml();
         $this->xml->setTranslator($this->translator);

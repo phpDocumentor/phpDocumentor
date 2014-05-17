@@ -1,20 +1,50 @@
 <?php
-/**
- * phpDocumentor
- *
- * PHP Version 5.3
- *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://phpdoc.org
- */
 
 namespace phpDocumentor\Partials;
 
-/**
- * Model representing a piece of text that can be injected into a template and can be set in the configuration.
- */
+use JMS\Serializer\Annotation as Serializer;
+
 class Partial
 {
-    protected $href;
+    /**
+     * @var string
+     * @Serializer\Type("string")
+     */
+    protected $name;
+
+    /**
+     * @var string
+     * @Serializer\Type("string")
+     */
+    protected $content;
+
+    /**
+     * @var string
+     * @Serializer\Type("string")
+     */
+    protected $link;
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

@@ -12,6 +12,8 @@
 namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
+use phpDocumentor\Configuration;
+use phpDocumentor\Transformer\Configuration\ExternalClassDocumentation;
 use Zend\Config\Config;
 
 class ExternalRouterTest extends \PHPUnit_Framework_TestCase
@@ -24,7 +26,7 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
     public function testIfNoUrlIsGeneratedWhenThereIsNoDefinition()
     {
         // Arrange
-        $config = new Config(array('transformer' => array()));
+        $config = new Configuration();
         $router = new ExternalRouter($config);
 
         // Act
@@ -42,13 +44,11 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
     public function testIfSingleDefinitionGeneratesAnUrl()
     {
         // Arrange
-        $config = new Config(
-            array(
-                'transformer' => array(
-                    'external-class-documentation' => array('prefix' => 'My_Space', 'uri' => 'http://abc/{CLASS}.html')
-                )
-            )
+        $config = new Configuration();
+        $config->getTransformer()->setExternalClassDocumentation(
+            array(new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html'))
         );
+
         $router = new ExternalRouter($config);
 
         // Act
@@ -66,14 +66,11 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
     public function testIfMultipleDefinitionsGenerateAnUrl()
     {
         // Arrange
-        $config = new Config(
+        $config = new Configuration();
+        $config->getTransformer()->setExternalClassDocumentation(
             array(
-                'transformer' => array(
-                    'external-class-documentation' => array(
-                        array('prefix' => 'My_Zen_Space', 'uri' => 'http://abc/zen/{CLASS}.html'),
-                        array('prefix' => 'My_Space', 'uri' => 'http://abc/{CLASS}.html')
-                    )
-                )
+                new ExternalClassDocumentation('My_Zen_Space', 'http://abc/zen/{CLASS}.html'),
+                new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html')
             )
         );
         $router = new ExternalRouter($config);

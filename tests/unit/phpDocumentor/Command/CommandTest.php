@@ -50,26 +50,6 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string  $path     The path to test.
-     * @param boolean $expected The expected response.
-     * @dataProvider provideForTestWhetherAnAbsolutePathIsCorrectlyDetected
-     * @covers phpDocumentor\Command\Command::isAbsolute
-     */
-    public function testWhetherAnAbsolutePathIsCorrectlyDetected($path, $expected)
-    {
-        // Arrange
-        $r = new \ReflectionObject($this->fixture);
-        $m = $r->getMethod('isAbsolute');
-        $m->setAccessible(true);
-
-        // Act
-        $result = $m->invoke($this->fixture, $path);
-
-        // Assert
-        $this->assertSame($expected, $result);
-    }
-
-    /**
      * @covers phpDocumentor\Command\Command::getProgressBar
      */
     public function testIfProgressBarIsReturnedWhenEnabledAsOption()
@@ -125,26 +105,5 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertNull($result);
-    }
-
-    /**
-     * Data provider supplying a path and a boolean that indicates whether we expect this to be absolute.
-     *
-     * @see testWhetherAnAbsolutePathIsCorrectlyDetected
-     * @return string[][]
-     */
-    public function provideForTestWhetherAnAbsolutePathIsCorrectlyDetected()
-    {
-        return array(
-            array('foo.xml', false),
-            array('myFolder/foo.xml', false),
-            array('myFolder\\foo.xml', false),
-            array('/foo.xml', true),
-            array('c:\\\\foo.xml', true),
-            array('c:/foo.xml', true),
-            array('\\server\\foo.xml', true),
-            array('https://server/foo.xml', true),
-            array('phar://server/foo.xml', true),
-        );
     }
 }
