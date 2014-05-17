@@ -29,7 +29,7 @@ class ParamAssembler extends AssemblerAbstract
         $descriptor = new ParamDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
         $descriptor->setVariableName($data->getVariableName());
-        $descriptor->setTypes($data->getTypes());
+        $descriptor->setTypes($data->getVariableName() == '$this' ? array('$this') : $data->getTypes());
 
         return $descriptor;
     }
