@@ -37,34 +37,6 @@ class Command extends \Cilex\Command\Command
     }
 
     /**
-     * Returns boolean based on whether given path is absolute or not.
-     *
-     * This method was taken from the FileLocator class of the Symfony Config component.
-     *
-     * @param string $path Given path
-     *
-     * @author Fabien Potencier <fabien@symfony.com>
-     *
-     * @todo consider moving this method to a more logical place
-     *
-     * @return boolean True if the path is absolute, false if it is not
-     */
-    protected function isAbsolute($path)
-    {
-        if ($path[0] == '/' || $path[0] == '\\'
-            || (strlen($path) > 3 && ctype_alpha($path[0])
-                && $path[1] == ':'
-                && ($path[2] == '\\' || $path[2] == '/')
-            )
-            || null !== parse_url($path, PHP_URL_SCHEME)
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Returns the Progress bar helper.
      *
      * With this helper it is possible to display a progress bar and make it fill.

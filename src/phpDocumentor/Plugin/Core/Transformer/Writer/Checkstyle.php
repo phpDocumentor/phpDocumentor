@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * Checkstyle transformation writer; generates checkstyle report

@@ -150,13 +150,13 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($linkMatcher, new LinkAssembler());
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
+        $factory->register($varMatcher, new VarAssembler());
         $factory->register($paramMatcher, new ParamAssembler());
         $factory->register($throwsMatcher, new ThrowsAssembler());
         $factory->register($returnMatcher, new ReturnAssembler());
         $factory->register($usesMatcher, new UsesAssembler());
         $factory->register($seeMatcher, new SeeAssembler());
         $factory->register($sinceMatcher, new SinceAssembler());
-        $factory->register($varMatcher, new VarAssembler());
         $factory->register($versionMatcher, new VersionAssembler());
 
         $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());

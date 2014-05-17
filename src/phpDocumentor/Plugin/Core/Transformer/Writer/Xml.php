@@ -44,7 +44,7 @@ use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\VarTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * Converts the structural information of phpDocumentor into an XML file.
