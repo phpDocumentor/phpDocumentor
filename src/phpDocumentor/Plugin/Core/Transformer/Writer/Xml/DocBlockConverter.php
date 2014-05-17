@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Transformer\Router\RouterAbstract;
 
 /**
  * Converter used to create an XML Element representing a DocBlock and its tags.
@@ -23,14 +24,19 @@ class DocBlockConverter
     /** @var TagConverter Converter used to generate XML elements from TagDescriptors */
     protected $tagConverter;
 
+    /** @var RouterAbstract */
+    private $router;
+
     /**
      * Stores the converter for tags on this converter.
      *
-     * @param TagConverter $tagConverter
+     * @param TagConverter   $tagConverter
+     * @param RouterAbstract $router
      */
-    public function __construct(TagConverter $tagConverter)
+    public function __construct(TagConverter $tagConverter, RouterAbstract $router)
     {
         $this->tagConverter = $tagConverter;
+        $this->router       = $router;
     }
 
     /**
@@ -62,6 +68,7 @@ class DocBlockConverter
         $this->addSummary($child, $element);
         $this->addDescription($child, $element);
         $this->addTags($child, $element);
+        $this->addInheritedFromTag($child, $element);
 
         return $child;
     }
@@ -117,5 +124,31 @@ class DocBlockConverter
                 $this->tagConverter->convert($docBlock, $tag);
             }
         }
+    }
+
+    /**
+     * Adds the 'inherited_from' tag when a Descriptor inherits from another Descriptor.
+     *
+     * @param \DOMElement        $docBlock
+     * @param DescriptorAbstract $descriptor
+     *
+     * @return void
+     */
+    protected function addInheritedFromTag(\DOMElement $docBlock, $descriptor)
+    {
+        $parentElement = $descriptor->getInheritedElement();
+        if (! $parentElement instanceof $descriptor) {
+            return;
+        }
+
+        $child = new \DOMElement('tag');
+        $docBlock->appendChild($child);
+
+        $rule = $this->router->match($parentElement);
+
+        $child->setAttribute('name', 'inherited_from');
+        $child->setAttribute('description', $parentElement->getFullyQualifiedStructuralElementName());
+        $child->setAttribute('refers', $parentElement->getFullyQualifiedStructuralElementName());
+        $child->setAttribute('link', $rule ? $rule->generate($parentElement) : '');
     }
 }

@@ -13,94 +13,133 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Transformer\Router\RouterAbstract;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter.
- *
- * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter
  */
 class DocBlockConverterTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var DocBlockConverter */
+    protected $fixture;
+
+    /** @var m\MockInterface|RouterAbstract */
+    protected $routerMock;
+
+    /** @var m\MockInterface|TagConverter */
+    protected $tagConverterMock;
+
+    /**
+     * Sets up the fixture with mocked dependencies.
+     */
+    public function setUp()
+    {
+        $this->tagConverterMock  = $this->givenATagConverter();
+        $this->routerMock        = $this->givenARouter();
+        $this->fixture           = new DocBlockConverter($this->tagConverterMock, $this->routerMock);
+    }
+
     /**
      * Tests whether the XML Element representing a DocBlock is properly created.
      *
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::__construct
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::convert
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::addSummary
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::addDescription
      *
      * @return void
      */
-    public function testArgumentXmlElementIsCreated()
+    public function testIfXmlElementForDocBlockIsCreated()
     {
         // Arrange
-        $parent           = $this->prepareParentXMLElement();
-        $tagConverterMock = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter');
-        $tagConverterMock->shouldIgnoreMissing();
-        $docBlockConverter = new DocBlockConverter($tagConverterMock);
-        $docBlock          = $this->createGenericDescriptorMock();
-        $docBlock->shouldReceive('getTags')->andReturn(array());
-        $docBlock->shouldReceive('getSummary')->andReturn('summary');
-        $docBlock->shouldReceive('getDescription')->andReturn('description');
+        $descriptor = $this->givenADescriptorWithSummaryDescriptionAndTags('summary', 'description', array());
 
         // Act
-        $convertedElement = $docBlockConverter->convert($parent, $docBlock);
+        $convertedElement = $this->fixture->convert($this->prepareParentXMLElement(), $descriptor);
 
         // Assert
         $this->assertSame('100', $convertedElement->getAttribute('line'));
         $this->assertSame('summary', $convertedElement->getElementsByTagName('description')->item(0)->nodeValue);
-        $this->assertSame(0, $convertedElement->getElementsByTagName('tag')->length);
         $this->assertSame(
             'description',
             $convertedElement->getElementsByTagName('long-description')->item(0)->nodeValue
         );
+        $this->assertSame(0, $convertedElement->getElementsByTagName('tag')->length);
     }
 
     /**
-     * Tests whether the package is added onto the parent element.
-     *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::convert
-     *
-     * @return void
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::addTags
      */
     public function testParentPackageIsSetByDocBlocksPackage()
     {
         // Arrange
-        $parent           = $this->prepareParentXMLElement();
-        $tagConverterMock = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter');
-        $tagConverterMock->shouldIgnoreMissing();
-        $docBlockConverter = new DocBlockConverter($tagConverterMock);
-        $docBlock          = $this->createGenericDescriptorMock();
-        $docBlock->shouldReceive('getTags')->andReturn(array());
+        $parent = $this->prepareParentXMLElement();
+        $descriptor = $this->givenADescriptorWithSummaryDescriptionAndTags('summary', 'description', array(null));
 
         // Act
-        $docBlockConverter->convert($parent, $docBlock);
+        $this->fixture->convert($parent, $descriptor);
 
         // Assert
         $this->assertSame('This\Is\A\Package', $parent->getAttribute('package'));
     }
 
     /**
-     * Tests whether tags are documented on the DocBlock.
-     *
      * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::convert
-     *
-     * @return void
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::addTags
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::addInheritedFromTag
      */
-    public function testIfTagsAreDocumented()
+    public function testConvertTagsOntoDocBlock()
     {
         // Arrange
-        $parent           = $this->prepareParentXMLElement();
-        $tag              = m::mock('phpDocumentor\Descriptor\TagDescriptor');
-        $tagConverterMock = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter');
-        $tagConverterMock->shouldReceive('convert')->with(m::type('DOMElement'), $tag);
-        $docBlockConverter = new DocBlockConverter($tagConverterMock);
-        $docBlock          = $this->createGenericDescriptorMock();
-        $docBlock->shouldReceive('getTags')->andReturn(array(array($tag)));
+        $parent = $this->prepareParentXMLElement();
+        $tag = m::mock('phpDocumentor\Descriptor\TagDescriptor');
+        $this->tagConverterMock->shouldReceive('convert')->with(m::type('DOMElement'), $tag);
+
+        $descriptor = $this->givenADescriptorWithSummaryDescriptionAndTags(
+            'summary',
+            'description',
+            array(array($tag))
+        );
 
         // Act
-        $docBlockConverter->convert($parent, $docBlock);
+        $this->fixture->convert($parent, $descriptor);
 
-        // Assert, no assertions needed as this is covered in the mocks above
+        // Assert
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::convert
+     * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter::addInheritedFromTag
+     */
+    public function testAddInheritedFromTag()
+    {
+        // Arrange
+        $fqcn   = 'fqcn';
+        $url    = 'url';
+        $parent = $this->prepareParentXMLElement();
+
+        $parentDescriptor = $this->givenADescriptor()
+            ->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn($fqcn)
+            ->getMock();
+
+        $descriptor = $this->givenADescriptorWithSummaryDescriptionAndTags('summary', 'description', array())
+            ->shouldReceive('getInheritedElement')->andReturn($parentDescriptor)
+            ->getMock();
+
+        $ruleMock = $this->givenARuleThatGeneratesTheGivenUrl($url);
+        $this->routerMock->shouldReceive('match')->with($parentDescriptor)->andReturn($ruleMock);
+
+        // Act
+        $this->fixture->convert($parent, $descriptor);
+
+        // Assert
+        $this->assertSame('inherited_from', $parent->getElementsByTagName('tag')->item(0)->getAttribute('name'));
+        $this->assertSame($fqcn, $parent->getElementsByTagName('tag')->item(0)->getAttribute('refers'));
+        $this->assertSame($fqcn, $parent->getElementsByTagName('tag')->item(0)->getAttribute('description'));
+        $this->assertSame($url, $parent->getElementsByTagName('tag')->item(0)->getAttribute('link'));
     }
 
     /**
@@ -122,7 +161,7 @@ class DocBlockConverterTest extends \PHPUnit_Framework_TestCase
      *
      * @return m\MockInterface|DescriptorAbstract
      */
-    protected function createGenericDescriptorMock()
+    protected function givenADescriptor()
     {
         $tag = m::mock('phpDocumentor\\Descriptor\\DescriptorAbstract');
         $tag->shouldReceive('getLine')->andReturn(100);
@@ -130,5 +169,98 @@ class DocBlockConverterTest extends \PHPUnit_Framework_TestCase
         $tag->shouldIgnoreMissing();
 
         return $tag;
+    }
+
+    /**
+     * Returns a tag converter mock.
+     *
+     * @return m\MockInterface|TagConverter
+     */
+    protected function givenATagConverter()
+    {
+        return m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter');
+    }
+
+    /**
+     * Returns a router mock.
+     *
+     * @return m\MockInterface|RouterAbstract
+     */
+    protected function givenARouter()
+    {
+        return m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
+    }
+
+    /**
+     * Returns a mock for a descriptor, including summary, description and tags.
+     *
+     * @param string $summary
+     * @param string $description
+     * @param array  $tags
+     *
+     * @return m\MockInterface|DescriptorAbstract
+     */
+    protected function givenADescriptorWithSummaryDescriptionAndTags($summary, $description, $tags)
+    {
+        $descriptor = $this->givenADescriptor();
+        $this->whenDescriptorHasTags($descriptor, $tags);
+        $this->whenDescriptorHasSummary($descriptor, $summary);
+        $this->whenDescriptorHasDescription($descriptor, $description);
+
+        return $descriptor;
+    }
+
+    /**
+     * Describes when a descriptor has a summary.
+     *
+     * @param DescriptorAbstract|m\MockInterface $descriptor
+     * @param string                             $summary
+     *
+     * @return void
+     */
+    protected function whenDescriptorHasSummary($descriptor, $summary)
+    {
+        $descriptor->shouldReceive('getSummary')->andReturn($summary);
+    }
+
+    /**
+     * Describes when a descriptor has a description.
+     *
+     * @param DescriptorAbstract|m\MockInterface $descriptor
+     * @param string                             $description
+     *
+     * @return void
+     */
+    protected function whenDescriptorHasDescription($descriptor, $description)
+    {
+        $descriptor->shouldReceive('getDescription')->andReturn($description);
+    }
+
+    /**
+     * Describes when a descriptor has tags.
+     *
+     * @param DescriptorAbstract|m\MockInterface $descriptor
+     * @param array                              $tags
+     *
+     * @return void
+     */
+    protected function whenDescriptorHasTags($descriptor, $tags)
+    {
+        $descriptor->shouldReceive('getTags')->andReturn($tags);
+    }
+
+    /**
+     * Returns a mock for a Rule and generates the given URL.
+     *
+     * @param string $url
+     *
+     * @return m\MockInterface
+     */
+    protected function givenARuleThatGeneratesTheGivenUrl($url)
+    {
+        $ruleMock = m::mock('phpDocumentor\Transformer\Router\Rule');
+        $ruleMock->shouldReceive('generate')->andReturn($url);
+
+        return $ruleMock;
     }
 }

@@ -210,7 +210,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      *
      * @return MethodDescriptor|null
      */
-    protected function getInheritedElement()
+    public function getInheritedElement()
     {
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();

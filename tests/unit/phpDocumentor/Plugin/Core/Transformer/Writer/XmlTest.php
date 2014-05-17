@@ -18,6 +18,8 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
+use phpDocumentor\Transformer\Router\RouterAbstract;
+use phpDocumentor\Translator;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml.
@@ -26,10 +28,20 @@ use org\bovigo\vfs\vfsStream;
  */
 class XmlTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var Xml $xml
-     */
+    /** @var Xml $xml */
     protected $xml;
+
+    /** @var m\MockInterface|RouterAbstract */
+    protected $routerMock;
+
+    /** @var m\MockInterface|Translator */
+    protected $translator;
+
+    /** @var m\MockInterface|ProjectDescriptor */
+    protected $projectDescriptor;
+
+    /** @var vfsStream */
+    protected $fs;
 
     /**
      * Sets up the test suite
@@ -38,11 +50,12 @@ class XmlTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->translator = m::mock('phpDocumentor\Translator\Translator');
+        $this->fs                = vfsStream::setup('XmlTest');
+        $this->translator        = m::mock('phpDocumentor\Translator\Translator');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $this->xml = new Xml();
+        $this->routerMock        = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
+        $this->xml               = new Xml($this->routerMock);
         $this->xml->setTranslator($this->translator);
-        $this->fs = vfsStream::setup('XmlTest');
     }
 
     /**
@@ -97,6 +110,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
 
         $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
         $fileDescriptor->shouldReceive('getPath')->andReturn('foo.php');
+        $fileDescriptor->shouldReceive('getInheritedElement')->andReturn(null);
         $transformer->shouldReceive('generateFilename')->with('foo.php')->andReturn('generated-foo.php');
         $fileDescriptor->shouldReceive('getHash')->andReturn('hash');
 
