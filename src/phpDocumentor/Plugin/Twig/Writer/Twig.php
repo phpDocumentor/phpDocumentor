@@ -359,10 +359,15 @@ class Twig extends WriterAbstract implements Routable
         }
 
         $destination = preg_replace_callback(
-            '/{{([^}]+)}}/u',
+            '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
             function ($query) use ($node, $writer) {
                 // strip any surrounding \ or /
-                return trim((string) $writer->walkObjectTree($node, $query[1]), '\\/');
+                $filepart = trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
+
+                // make it windows proof
+                $filepart = urlencode(iconv('UTF-8', 'ASCII//TRANSLIT', $filepart));
+
+                return $filepart;
             },
             $path
         );
