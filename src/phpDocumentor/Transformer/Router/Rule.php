@@ -86,6 +86,11 @@ class Rule
         $iso88591Path = explode('/', $generatedPathAsUtf8);
 
         foreach ($iso88591Path as &$part) {
+            // identify and skip schemes
+            if (substr($part, -1) == ':') {
+                continue;
+            }
+
             // only encode and transliterate that which comes before the anchor
             $subparts = explode('#', $part);
             $subparts[0] = urlencode(iconv('UTF-8', 'ASCII//TRANSLIT', $subparts[0]));
