@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Parser\Exception;
+namespace phpDocumentor\Partials\Exception;
 
 /**
  * This exception is thrown when a required name is not set.
