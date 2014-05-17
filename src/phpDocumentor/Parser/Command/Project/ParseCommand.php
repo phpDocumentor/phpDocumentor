@@ -248,9 +248,8 @@ class ParseCommand extends Command
             $configurationHelper->getOption($input, 'extensions', 'parser/extensions', array('php', 'php3', 'phtml'), true)
         );
         $files->setIgnorePatterns($configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true));
-        $files->setIgnoreHidden(
-            $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off') == 'on'
-        );
+        $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
+        $files->setIgnoreHidden($ignoreHidden !== 'off' && $ignoreHidden === false);
         $files->setFollowSymlinks(
             $configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on'
         );

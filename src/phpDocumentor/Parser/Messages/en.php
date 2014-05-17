@@ -27,8 +27,8 @@ HELP
         . 'Wildcards * and ? are supported',
     'PPCPP:OPT-IGNORETAGS'         => 'Comma-separated list of tags that will be ignored, defaults to none. package, '
         . 'subpackage and ignore may not be ignored.',
-    'PPCPP:OPT-HIDDEN'             => 'Set to on to descend into hidden directories (directories starting with \'.\'), '
-        . 'default is on',
+    'PPCPP:OPT-HIDDEN'             => 'Use this option to tell phpDocumentor to parse files and directories that begin '
+        . 'with a period (.), by default these are ignored',
     'PPCPP:OPT-IGNORESYMLINKS'     => 'Ignore symlinks to other files or directories, default is on',
     'PPCPP:OPT-MARKERS'            => 'Comma-separated list of markers/tags to filter',
     'PPCPP:OPT-TITLE'              => 'Sets the title for this project; default is the phpDocumentor logo',
