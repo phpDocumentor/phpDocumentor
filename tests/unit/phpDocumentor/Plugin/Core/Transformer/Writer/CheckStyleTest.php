@@ -35,7 +35,7 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->translator = m::mock('phpDocumentor\Translator');
+        $this->translator = m::mock('phpDocumentor\Translator\Translator');
         $this->checkStyle = new CheckStyle();
         $this->checkStyle->setTranslator($this->translator);
         $this->fs = vfsStream::setup('CheckStyleTest');

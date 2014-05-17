@@ -13,7 +13,7 @@ namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
 

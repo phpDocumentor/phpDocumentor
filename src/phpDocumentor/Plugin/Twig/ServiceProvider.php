@@ -13,7 +13,7 @@ namespace phpDocumentor\Plugin\Twig;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 use phpDocumentor\Transformer\Writer\Collection;
 
 class ServiceProvider implements ServiceProviderInterface

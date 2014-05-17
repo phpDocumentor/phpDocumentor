@@ -16,8 +16,8 @@
         <visibility></visibility>
     </parser>
     <files>
-        <ignore-hidden>on</ignore-hidden>
-        <ignore-symlinks>on</ignore-symlinks>
+        <ignore-hidden>true</ignore-hidden>
+        <ignore-symlinks>true</ignore-symlinks>
     </files>
     <transformer>
         <target>output</target>
@@ -28,4 +28,7 @@
     <transformations>
         <template name="clean"/>
     </transformations>
+    <translator>
+        <locale>en</locale>
+    </translator>
 </phpdocumentor>

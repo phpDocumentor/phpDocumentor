@@ -9,12 +9,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\Translator;
 
 /**
- * Test class for \phpDocumentor\Translator.
+ * Test class for \phpDocumentor\Translator\Translator.
  *
- * @covers phpDocumentor\Translator
+ * @covers phpDocumentor\Translator\Translator
  */
 class TranslatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -75,7 +75,7 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::translate
+     * @covers phpDocumentor\Translator\Translator::translate
      */
     public function testTranslationReturnsKeyForUnknownTranslation()
     {
@@ -83,8 +83,8 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslations
-     * @covers phpDocumentor\Translator::translate
+     * @covers phpDocumentor\Translator\Translator::addTranslations
+     * @covers phpDocumentor\Translator\Translator::translate
      */
     public function testCanUseTranslationFromIndividualFile()
     {
@@ -94,8 +94,8 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslations
-     * @covers phpDocumentor\Translator::translate
+     * @covers phpDocumentor\Translator\Translator::addTranslations
+     * @covers phpDocumentor\Translator\Translator::translate
      */
     public function testCanUseTranslationFromIndividualFileWithAlternateLocale()
     {
@@ -108,8 +108,8 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslations
-     * @covers phpDocumentor\Translator::translate
+     * @covers phpDocumentor\Translator\Translator::addTranslations
+     * @covers phpDocumentor\Translator\Translator::translate
      */
     public function testTranslateWithAlternateDefaultLocale()
     {
@@ -120,8 +120,8 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslations
-     * @covers phpDocumentor\Translator::translate
+     * @covers phpDocumentor\Translator\Translator::addTranslations
+     * @covers phpDocumentor\Translator\Translator::translate
      */
     public function testCanUseTranslationFromIndividualFileWithFallbackToEnglish()
     {
@@ -134,8 +134,8 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslationFolder
-     * @covers phpDocumentor\Translator::translate
+     * @covers phpDocumentor\Translator\Translator::addTranslationFolder
+     * @covers phpDocumentor\Translator\Translator::translate
      */
     public function testCanUseTranslationFromFolder()
     {
@@ -145,8 +145,8 @@ TRANSLATION_FILE
     }
 
     /**
-     * @covers phpDocumentor\Translator::addTranslationFolder
-     * @covers phpDocumentor\Translator::translate
+     * @covers phpDocumentor\Translator\Translator::addTranslationFolder
+     * @covers phpDocumentor\Translator\Translator::translate
      */
     public function testCanUseTranslationsFromASpecificDomainOrCatalogue()
     {
