@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
@@ -30,17 +31,31 @@ class SeeAssembler extends AssemblerAbstract
         $descriptor = new SeeDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
 
-        // TODO: move this to the ReflectionDocBlock component
-        // Expand FQCN part of the FQSEN
-        $referenceParts = explode('::', $data->getReference());
-        $type = current($referenceParts);
-        $type = new Collection(
-            array($type),
-            $data->getDocBlock() ? $data->getDocBlock()->getContext() : null
-        );
-        $referenceParts[0] = $type;
+        $reference = $data->getReference();
 
-        $descriptor->setReference(implode('::', $referenceParts));
+        if (substr($reference, 0, 7) !== 'http://'
+            && substr($reference, 0, 8) !== 'https://'
+            && $reference !== 'self'
+            && $reference !== '$this'
+        ) {
+            // TODO: move this to the ReflectionDocBlock component
+            // Expand FQCN part of the FQSEN
+            $referenceParts = explode('::', $reference);
+            if (count($referenceParts) > 1 && $reference[0] != '\\') {
+                $type = current($referenceParts);
+                $type = new Collection(
+                    array($type),
+                    $data->getDocBlock() ? $data->getDocBlock()->getContext() : null
+                );
+                $referenceParts[0] = $type;
+            } elseif($reference[0] != '\\') {
+                array_unshift($referenceParts, Linker::CONTEXT_MARKER);
+            }
+
+            $reference = implode('::', $referenceParts);
+        }
+
+        $descriptor->setReference($reference);
 
         return $descriptor;
     }

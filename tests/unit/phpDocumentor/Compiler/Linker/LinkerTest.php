@@ -12,6 +12,10 @@
 namespace phpDocumentor\Compiler\Linker;
 
 use Mockery as m;
+use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 
 /**
  * Tests the functionality for the Linker class.
@@ -294,5 +298,127 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         // mark test as successful due to asserts in Mockery
         $this->assertTrue(true);
+    }
+
+    /**
+     * @covers phpDocumentor\Compiler\Linker\Linker::execute
+     * @covers phpDocumentor\Compiler\Linker\Linker::replacePseudoTypes
+     */
+    public function testReplaceSelfWithCurrentClassInScope()
+    {
+        $fixture = new Linker(
+            array(
+                'phpDocumentor\Descriptor\ClassDescriptor'   => array('methods'),
+                'phpDocumentor\Descriptor\MethodDescriptor'  => array('tags'),
+                'phpDocumentor\Descriptor\Tag\SeeDescriptor' => array('reference'),
+            )
+        );
+
+        $methodName       = 'myMethod';
+        $fqnn             = '\My\Space';
+        $className        = 'MyClass';
+        $seeDescriptor    = $this->givenASeeDescriptorWithReference('self::' . $methodName . '()');
+        $classDescriptor  = $this->givenAClassWithNamespaceAndClassName($fqnn, $className);
+        $methodDescriptor = $this->givenAMethodWithClassAndName($classDescriptor, $methodName);
+
+        $methodDescriptor->getTags()->get($seeDescriptor->getName(), new Collection())->add($seeDescriptor);
+        $classDescriptor->getMethods()->add($methodDescriptor);
+
+        $fixture->setObjectAliasesList(
+            array(
+                $fqnn . '\\' . $className => $classDescriptor,
+                $fqnn . '\\' . $className . '::' . $methodName . '()' => $methodDescriptor,
+            )
+        );
+
+        $fixture->substitute($classDescriptor);
+
+        $this->assertSame($methodDescriptor, $seeDescriptor->getReference());
+    }
+
+    /**
+     * @covers phpDocumentor\Compiler\Linker\Linker::execute
+     * @covers phpDocumentor\Compiler\Linker\Linker::replacePseudoTypes
+     */
+    public function testReplaceThisWithCurrentClassInScope()
+    {
+        $fixture = new Linker(
+            array(
+                'phpDocumentor\Descriptor\ClassDescriptor'   => array('methods'),
+                'phpDocumentor\Descriptor\MethodDescriptor'  => array('tags'),
+                'phpDocumentor\Descriptor\Tag\SeeDescriptor' => array('reference'),
+            )
+        );
+
+        $methodName       = 'myMethod';
+        $fqnn             = '\My\Space';
+        $className        = 'MyClass';
+        $seeDescriptor    = $this->givenASeeDescriptorWithReference('$this::' . $methodName . '()');
+        $classDescriptor  = $this->givenAClassWithNamespaceAndClassName($fqnn, $className);
+        $methodDescriptor = $this->givenAMethodWithClassAndName($classDescriptor, $methodName);
+
+        $methodDescriptor->getTags()->get($seeDescriptor->getName(), new Collection())->add($seeDescriptor);
+        $classDescriptor->getMethods()->add($methodDescriptor);
+
+        $fixture->setObjectAliasesList(
+            array(
+                $fqnn . '\\' . $className => $classDescriptor,
+                $fqnn . '\\' . $className . '::' . $methodName . '()' => $methodDescriptor,
+            )
+        );
+
+        $fixture->substitute($classDescriptor);
+
+        $this->assertSame($methodDescriptor, $seeDescriptor->getReference());
+    }
+
+    /**
+     * Returns a ClassDescriptor whose namespace and name is set.
+     *
+     * @param string $fqnn
+     * @param string $className
+     *
+     * @return ClassDescriptor
+     */
+    private function givenAClassWithNamespaceAndClassName($fqnn, $className)
+    {
+        $classDescriptor = new ClassDescriptor();
+        $classDescriptor->setFullyQualifiedStructuralElementName($fqnn . '\\' . $className);
+        $classDescriptor->setNamespace($fqnn);
+        $classDescriptor->setName($className);
+
+        return $classDescriptor;
+    }
+
+    /**
+     * Returns a method whose name is set.
+     *
+     * @param ClassDescriptor $classDescriptor
+     * @param string          $methodName
+     *
+     * @return MethodDescriptor
+     */
+    private function givenAMethodWithClassAndName(ClassDescriptor $classDescriptor, $methodName)
+    {
+        $methodDescriptor = new MethodDescriptor();
+        $methodDescriptor->setName($methodName);
+        $methodDescriptor->setFullyQualifiedStructuralElementName($classDescriptor . '::' . $methodName . '()');
+
+        return $methodDescriptor;
+    }
+
+    /**
+     * Returns a SeeDescriptor with its reference set.
+     *
+     * @param $reference
+     *
+     * @return SeeDescriptor
+     */
+    private function givenASeeDescriptorWithReference($reference)
+    {
+        $seeDescriptor = new SeeDescriptor('see');
+        $seeDescriptor->setReference($reference);
+
+        return $seeDescriptor;
     }
 }

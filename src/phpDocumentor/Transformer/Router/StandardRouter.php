@@ -55,6 +55,14 @@ class StandardRouter extends RouterAbstract
         $this[] = new Rule(function ($node) { return ($node instanceof FunctionDescriptor); }, $functionGenerator);
         $this[] = new Rule( function ($node) { return ($node instanceof PropertyDescriptor); }, $propertyGenerator);
 
+        // if this is a link to an external page; return that URL
+        $this[] = new Rule(
+            function ($node) {
+                return is_string($node) && (substr($node, 0, 7) == 'http://' || substr($node, 0, 7) == 'https://');
+            },
+            function ($node) { return $node; }
+        );
+
         // do not generate a file for every unknown type
         $this[] = new Rule(function () { return true; }, function () { return false; });
         // @codingStandardsIgnoreEnd
