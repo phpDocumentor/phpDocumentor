@@ -167,11 +167,11 @@ class Xsl extends WriterAbstract
      */
     protected function getXsltUriFromFilename($filename)
     {
-        // Windows requires an additional / after the scheme.
-        // If not provided then errno 22 (I/O Error: Invalid Argument) will be
-        // raised. Thanks to @FnTmLV for finding the cause.
-        // See issue #284 for more information
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+        // Windows requires an additional / after the scheme. If not provided then errno 22 (I/O Error: Invalid
+        // Argument) will be raised. Thanks to @FnTmLV for finding the cause. See issue #284 for more information.
+        // An exception to the above is when running from a Phar file; in this case the stream is handled as if on
+        // linux; see issue #713 for more information on this exception.
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' && ! \Phar::running()) {
             $filename = '/' . $filename;
         }
 
