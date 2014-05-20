@@ -17,6 +17,9 @@ use phpDocumentor\Transformer\Transformation;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var m\MockInterface|\phpDocumentor\Transformer\Writer\Collection */
+    private $writerCollectionMock;
+
     /** @var m\MockInterface|Factory */
     private $factoryMock;
 
@@ -28,8 +31,9 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->factoryMock = m::mock('phpDocumentor\Transformer\Template\Factory');
-        $this->fixture     = new Collection($this->factoryMock);
+        $this->factoryMock          = m::mock('phpDocumentor\Transformer\Template\Factory');
+        $this->writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
+        $this->fixture              = new Collection($this->factoryMock, $this->writerCollectionMock);
     }
 
     /**
