@@ -202,7 +202,10 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $app['transformer.template.collection'] = $app->share(
             function ($container) {
-                return new Template\Collection($container['transformer.template.factory']);
+                return new Template\Collection(
+                    $container['transformer.template.factory'],
+                    $container['transformer.writer.collection']
+                );
             }
         );
     }
