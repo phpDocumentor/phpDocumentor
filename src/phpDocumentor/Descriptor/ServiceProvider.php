@@ -41,6 +41,7 @@ use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Descriptor\Filter\StripInternal;
+use phpDocumentor\Descriptor\Filter\StripOnVisibility;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ClassReflector;
@@ -174,6 +175,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function attachFiltersToManager(Filter $filterManager, Application $app)
     {
+        $stripOnVisibility = new StripOnVisibility($app['descriptor.builder']);
         $filtersOnAllDescriptors = array(
             new StripInternal($app['descriptor.builder']),
             new StripIgnore($app['descriptor.builder'])
@@ -188,6 +190,9 @@ class ServiceProvider implements ServiceProviderInterface
             $filterManager->attach('phpDocumentor\Descriptor\PropertyDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\MethodDescriptor', $filter);
         }
+
+        $filterManager->attach('phpDocumentor\Descriptor\PropertyDescriptor', $stripOnVisibility);
+        $filterManager->attach('phpDocumentor\Descriptor\MethodDescriptor', $stripOnVisibility);
 
         return $filterManager;
     }

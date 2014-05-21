@@ -72,11 +72,4 @@ interface PropertyInterface extends BaseInterface
      * @return string
      */
     public function setVisibility($visibility);
-
-    /**
-     * Sets whether this property is available from inside or outside its class and/or descendants.
-     *
-     * @return string May be either 'public', 'private' or 'protected'.
-     */
-    public function getVisibility();
 }
