@@ -37,18 +37,60 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setResponse($response);
 
         foreach ($data->getArguments() as $argument) {
-            if (count($argument) > 1) {
-                list($argumentType, $argumentName) = $argument;
-            } else {
-                $argumentName = current($argument);
-                $argumentType = 'mixed';
-            }
-            $argumentDescriptor = new ArgumentDescriptor();
-            $argumentDescriptor->setTypes(array($argumentType));
-            $argumentDescriptor->setName($argumentName);
-            $descriptor->getArguments()->set($argumentName, $argumentDescriptor);
+            $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod($argument);
+            $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 
         return $descriptor;
+    }
+
+    /**
+     * Construct an argument descriptor given the array representing an argument with a Method Tag in the Reflection
+     * component.
+     *
+     * @param string[] $argument
+     *
+     * @return ArgumentDescriptor
+     */
+    private function createArgumentDescriptorForMagicMethod($argument)
+    {
+        $argumentType = null;
+        $argumentName = null;
+        $argumentDefault = false; // false means we have not encountered the '=' yet.
+        foreach ($argument as $part) {
+            $part = trim($part);
+            if (!$part) {
+                continue;
+            }
+
+            if (!$argumentType && $part[0] != '$') {
+                $argumentType = $part;
+            } elseif (!$argumentName) {
+                $argumentName = $part;
+            } elseif ($argumentName && !$argumentType) {
+                $argumentType = $part;
+            } elseif ($part == '=') {
+                $argumentDefault = null;
+            } elseif ($argumentDefault === null) {
+                $argumentDefault = $part;
+            }
+        }
+
+        // if no name is set but a type is then the input is malformed and we correct for it
+        if ($argumentType && !$argumentName) {
+            $argumentName = $argumentType;
+            $argumentType = null;
+        }
+
+        // if there is no type then we assume it is 'mixed'
+        if (!$argumentType) {
+            $argumentType = 'mixed';
+        }
+
+        $argumentDescriptor = new ArgumentDescriptor();
+        $argumentDescriptor->setTypes(array($argumentType));
+        $argumentDescriptor->setName($argumentName[0] == '$' ? $argumentName : '$' . $argumentName);
+        $argumentDescriptor->setDefault($argumentDefault);
+        return $argumentDescriptor;
     }
 }
