@@ -10,7 +10,7 @@ Usage
 
 To use this plugin, all you need to do is invoke the correct command::
 
-    $ ./bin/phpdoc.php manual:to-html -t build/docs src
+    $ ./bin/phpdoc manual:to-html -t build/docs src
 
 The above command will generate HTML documentation from the markup files in the `src` folder into the `build/docs`
 folder.

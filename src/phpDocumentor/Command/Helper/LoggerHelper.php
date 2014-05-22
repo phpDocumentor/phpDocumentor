@@ -16,7 +16,7 @@ use phpDocumentor\Command\Command;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;

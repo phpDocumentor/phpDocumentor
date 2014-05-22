@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
+// check whether xhprof is loaded
+$profile   = (bool)(getenv('PHPDOC_PROFILE') === 'on');
+$xhguiPath = getenv('XHGUI_PATH');
+if ($profile && $xhguiPath && extension_loaded('xhprof')) {
+    echo 'PROFILING ENABLED' . PHP_EOL;
+    include($xhguiPath . '/external/header.php');
+}
+
+// determine base include folder, if @php_dir@ contains @php_dir then
+// we did not install via PEAR
+$bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
+    ? __DIR__ . '/../src'
+    : '@php_dir@/phpDocumentor/src';
+
+$autoloader_base_path = '/../vendor/autoload.php';
+
+// if the file does not exist from a base path it is included as vendor
+$autoloader_location = file_exists($bootstrap_folder . $autoloader_base_path)
+    ? $bootstrap_folder . $autoloader_base_path
+    : $bootstrap_folder . '/../../..' . $autoloader_base_path;
+
+if (! file_exists($autoloader_location) || ! is_readable($autoloader_location)) {
+    throw new \RuntimeException('Unable to find autoloader at ' . $autoloader_location);
+}
+
+$autoloader = require $autoloader_location;
+
+$app = new phpDocumentor\Application($autoloader);
+$app->run();
+
+// disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
+error_reporting(error_reporting() & ~E_STRICT);

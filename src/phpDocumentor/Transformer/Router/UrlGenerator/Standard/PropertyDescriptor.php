@@ -28,9 +28,9 @@ class PropertyDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
+        $converter = new QualifiedNameToUrlConverter();
         $className = $node->getParent()->getFullyQualifiedStructuralElementName();
-        $name = $node->getName();
 
-        return '/classes/' . str_replace('\\', '.', ltrim($className, '\\')).'.html#property_' . $name;
+        return '/classes/' . $converter->fromClass($className) . '.html#property_' . $node->getName();
     }
 }

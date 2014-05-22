@@ -12,7 +12,9 @@
 namespace phpDocumentor\Compiler\Linker;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
 
@@ -35,6 +37,9 @@ use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
 class Linker implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 10000;
+
+    /** @var ClassDescriptor|FileDescriptor|null */
+    private $lastContainer = null;
 
     /** @var DescriptorAbstract[] */
     protected $elementList = array();
@@ -94,6 +99,11 @@ class Linker implements CompilerPassInterface
      */
     public function findAlias($fqsen)
     {
+        // if the fqsen is 'self' or '$this' of this element is in a class then we use that container as reference
+        if (($fqsen == 'self' || $fqsen == '$this') && $this->lastContainer instanceof ClassDescriptor) {
+            return $this->lastContainer;
+        }
+
         return isset($this->elementList[$fqsen]) ? $this->elementList[$fqsen] : null;
     }
 
@@ -165,6 +175,11 @@ class Linker implements CompilerPassInterface
                 // if analyzed; just return
                 return null;
             }
+
+            if ($item instanceof FileDescriptor || $item instanceof ClassDescriptor) {
+                $this->lastContainer = $item;
+            }
+
             $this->processedObjects[$hash] = true;
 
             $objectClassName = get_class($item);
@@ -181,6 +196,10 @@ class Linker implements CompilerPassInterface
                     $setter = 'set'.ucfirst($fieldName);
                     $item->$setter($response);
                 }
+            }
+
+            if ($item instanceof FileDescriptor || $item instanceof ClassDescriptor) {
+                $this->lastContainer = null;
             }
         }
 

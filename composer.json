@@ -6,7 +6,8 @@
     "license": "MIT",
     "autoload": {
         "psr-0":{
-            "phpDocumentor": ["src/", "tests/unit/"]
+            "phpDocumentor": ["src/", "tests/unit/"],
+            "Cilex\\Provider": ["src/"]
         }
     },
     "require": {
@@ -68,7 +69,7 @@
     "config": {
         "bin-dir":"bin/"
     },
-    "bin": ["bin/phpdoc.php"],
+    "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "extra": {
         "branch-alias": {
             "dev-develop": "2.5-dev"

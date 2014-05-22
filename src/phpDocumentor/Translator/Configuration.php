@@ -9,24 +9,26 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor\Translator;
 
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Configuration definition for the parser.
+ * Configuration definition for the translations.
  */
-class Parser
+class Configuration
 {
     /**
-     * @var string name of the package when there is no @package tag defined
+     * @var string
      * @Serializer\Type("string")
      */
-    protected $defaultPackageName;
+    protected $locale = 'en';
 
     /**
-     * @var string destination location for the parser's output cache
-     * @Serializer\Type("string")
+     * @return string
      */
-    protected $target;
+    public function getLocale()
+    {
+        return $this->locale;
+    }
 }

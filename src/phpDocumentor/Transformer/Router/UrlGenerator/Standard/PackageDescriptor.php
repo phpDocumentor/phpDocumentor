@@ -25,13 +25,8 @@ class PackageDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $name = str_replace(array('\\', '_'), '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\'));
+        $converter = new QualifiedNameToUrlConverter();
 
-        // convert root namespace to default; default is a keyword and no namespace CAN be named as such
-        if ($name === '') {
-            $name = 'default';
-        }
-
-        return '/packages/' . $name .'.html';
+        return '/packages/' . $converter->fromPackage($node->getFullyQualifiedStructuralElementName()) .'.html';
     }
 }

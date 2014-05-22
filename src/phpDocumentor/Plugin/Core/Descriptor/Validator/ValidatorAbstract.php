@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator;
 
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
