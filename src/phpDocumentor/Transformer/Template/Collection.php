@@ -13,6 +13,8 @@ namespace phpDocumentor\Transformer\Template;
 
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * Contains a collection of Templates that may be queried.
@@ -22,14 +24,19 @@ class Collection extends \ArrayObject
     /** @var Factory */
     private $factory;
 
+    /** @var WriterCollection */
+    private $writerCollection;
+
     /**
      * Constructs this collection and requires a factory to load templates.
      *
-     * @param Factory $factory
+     * @param Factory          $factory
+     * @param WriterCollection $writerCollection
      */
-    public function __construct(Factory $factory)
+    public function __construct(Factory $factory, WriterCollection $writerCollection)
     {
-        $this->factory = $factory;
+        $this->factory          = $factory;
+        $this->writerCollection = $writerCollection;
     }
 
     /**
@@ -42,6 +49,15 @@ class Collection extends \ArrayObject
     public function load($nameOrPath)
     {
         $template = $this->factory->get($nameOrPath);
+
+        /** @var Transformation $transformation */
+        foreach ($template as $transformation) {
+            /** @var WriterAbstract $writer */
+            $writer = $this->writerCollection[$transformation->getWriter()];
+            if ($writer) {
+                $writer->checkRequirements();
+            }
+        }
 
         $this[$template->getName()] = $template;
     }
