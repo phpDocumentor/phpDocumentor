@@ -55,7 +55,14 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         // parameters
         $app['linker.substitutions'] = array(
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
-            'phpDocumentor\Descriptor\FileDescriptor'         => array('tags', 'classes', 'interfaces', 'traits'),
+            'phpDocumentor\Descriptor\FileDescriptor'         => array(
+                'tags',
+                'classes',
+                'interfaces',
+                'traits',
+                'functions',
+                'constants'
+            ),
             'phpDocumentor\Descriptor\ClassDescriptor'        => array(
                 'tags',
                 'parent',
@@ -77,6 +84,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'methods',
                 'usedTraits',
             ),
+            'phpDocumentor\Descriptor\FunctionDescriptor'     => array('tags', 'arguments'),
             'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags', 'arguments'),
             'phpDocumentor\Descriptor\ArgumentDescriptor'     => array('types'),
             'phpDocumentor\Descriptor\PropertyDescriptor'     => array('tags', 'types'),
@@ -202,7 +210,10 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $app['transformer.template.collection'] = $app->share(
             function ($container) {
-                return new Template\Collection($container['transformer.template.factory']);
+                return new Template\Collection(
+                    $container['transformer.template.factory'],
+                    $container['transformer.writer.collection']
+                );
             }
         );
     }
