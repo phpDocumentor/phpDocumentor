@@ -156,24 +156,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Make sure the setter can transform string to array and set correct attribute
-     *
-     * @covers phpDocumentor\Parser\Parser::setVisibility
-     * @covers phpDocumentor\Parser\Parser::getVisibility
-     *
-     * @return void
-     */
-    public function testSetVisibilityCorrectlySetsAttribute()
-    {
-        $visibility = array('public', 'protected', 'private');
-
-        $this->fixture->setVisibility(implode(',', $visibility));
-
-        $this->assertAttributeEquals($visibility, 'visibility', $this->fixture);
-        $this->assertEquals($visibility, $this->fixture->getVisibility());
-    }
-
-    /**
      * @covers phpDocumentor\Parser\Parser::setDefaultPackageName
      * @covers phpDocumentor\Parser\Parser::getDefaultPackageName
      */
