@@ -25,6 +25,7 @@ Feature: Interfaces inherit information from parent interfaces
       }
       """
     When I run "phpdoc -f test.php"
+    Then the application must have run successfully
 
   Scenario: Inherit summary from a parent interface
     Then the AST has an expression "project.getFiles()['test.php'].getInterfaces()['\\IB'].getSummary()" with value:

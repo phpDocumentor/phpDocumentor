@@ -467,6 +467,16 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Then /^the application must have run successfully$/
+     */
+    public function theApplicationMustHaveRunSuccessfully()
+    {
+        if ($this->process->getErrorOutput()) {
+            throw new \Exception($this->process->getErrorOutput());
+        }
+    }
+
+    /**
      * @Given /^a source file containing validation errors$/
      */
     public function aSourceFileContainingValidationErrors()
