@@ -51,6 +51,9 @@ abstract class DescriptorAbstract implements Filterable
     /** @var Collection $errors A list of errors found while building this element. */
     protected $errors;
 
+    /** @var DescriptorAbstract|null the element from which to inherit information in this element */
+    protected $inheritedElement = null;
+
     /**
      * Initializes this descriptor.
      */
@@ -444,6 +447,6 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getInheritedElement()
     {
-        return null;
+        return $this->inheritedElement;
     }
 }
