@@ -302,11 +302,12 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getPackage()
     {
-        if ($this->package instanceof PackageDescriptor) {
+        $inheritedElement = $this->getInheritedElement();
+        if ($this->package instanceof PackageDescriptor
+            && ! ($this->package->getName() === '\\' && $inheritedElement)) {
             return $this->package;
         }
 
-        $inheritedElement = $this->getInheritedElement();
         if ($inheritedElement instanceof DescriptorAbstract) {
             return $inheritedElement->getPackage();
         }
