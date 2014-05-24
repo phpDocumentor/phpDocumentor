@@ -14,7 +14,9 @@ namespace phpDocumentor\Descriptor;
 /**
  * Descriptor representing a Method in a Class, Interface or Trait.
  */
-class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface
+class MethodDescriptor
+    extends DescriptorAbstract
+    implements Interfaces\MethodInterface, Interfaces\VisibilityInterface
 {
     /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $parent */
     protected $parent;

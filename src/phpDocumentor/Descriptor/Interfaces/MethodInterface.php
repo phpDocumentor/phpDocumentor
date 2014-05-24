@@ -61,9 +61,4 @@ interface MethodInterface extends BaseInterface
      * @return void
      */
     public function setVisibility($visibility);
-
-    /**
-     * @return string
-     */
-    public function getVisibility();
 }
