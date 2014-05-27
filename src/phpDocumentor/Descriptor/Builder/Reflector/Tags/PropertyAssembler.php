@@ -30,8 +30,9 @@ class PropertyAssembler extends AssemblerAbstract
         $descriptor = new PropertyDescriptor($data->getName());
         $descriptor->setVariableName($data->getVariableName());
         $descriptor->setDescription($data->getDescription());
-        $types = $this->builder->buildDescriptor(new Collection($data->getTypes()));
-        $descriptor->setTypes($types);
+        $descriptor->setTypes(
+            $this->builder->buildDescriptor(new Collection($data->getTypes()))
+        );
 
         return $descriptor;
     }

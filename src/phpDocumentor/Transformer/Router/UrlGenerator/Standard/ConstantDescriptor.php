@@ -16,6 +16,17 @@ use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
 
 class ConstantDescriptor implements UrlGeneratorInterface
 {
+    /** @var QualifiedNameToUrlConverter */
+    private $converter;
+
+    /**
+     * Initializes this generator.
+     */
+    public function __construct()
+    {
+        $this->converter = new QualifiedNameToUrlConverter();
+    }
+
     /**
      * Generates a URL from the given node or returns false if unable.
      *
@@ -25,18 +36,34 @@ class ConstantDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $name = $node->getName();
+        $prefix = ($node->getParent() instanceof Descriptor\FileDescriptor || ! $node->getParent())
+            ? $this->getUrlPathPrefixForGlobalConstants($node)
+            : $this->getUrlPathPrefixForClassConstants($node);
 
-        // global constant
-        if ($node->getParent() instanceof Descriptor\FileDescriptor || ! $node->getParent()) {
-            $namespaceName = $node->getNamespace();
+        return $prefix . '.html#constant_' . $node->getName();
+    }
 
-            return '/namespaces/' . str_replace('\\', '.', ltrim($namespaceName, '\\')).'.html#constant_' . $name;
-        }
+    /**
+     * Returns the first part of the URL path that is specific to global constants.
+     *
+     * @param Descriptor\ConstantDescriptor $node
+     *
+     * @return string
+     */
+    private function getUrlPathPrefixForGlobalConstants($node)
+    {
+        return '/namespaces/' . $this->converter->fromNamespace($node->getNamespace());
+    }
 
-        // class constant
-        $className = $node->getParent()->getFullyQualifiedStructuralElementName();
-
-        return '/classes/' . str_replace('\\', '.', ltrim($className, '\\')).'.html#constant_' . $name;
+    /**
+     * Returns the first part of the URL path that is specific to class constants.
+     *
+     * @param Descriptor\ConstantDescriptor $node
+     *
+     * @return string
+     */
+    private function getUrlPathPrefixForClassConstants($node)
+    {
+        return '/classes/' . $this->converter->fromClass($node->getParent()->getFullyQualifiedStructuralElementName());
     }
 }

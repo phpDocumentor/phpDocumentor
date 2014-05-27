@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\Translator;
 
 use Zend\I18n\Translator\Translator as ZendTranslator;
 

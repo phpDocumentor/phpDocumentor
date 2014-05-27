@@ -441,7 +441,7 @@ abstract class DescriptorAbstract implements Filterable
     /**
      * @return DescriptorAbstract|null
      */
-    protected function getInheritedElement()
+    public function getInheritedElement()
     {
         return null;
     }

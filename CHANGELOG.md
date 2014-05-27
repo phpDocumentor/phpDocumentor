@@ -1,3 +1,17 @@
+2014/05/17: Version 2.5.0
+-------------------------
+
+```
+FIXED:     #1211: Loading a single plugin is not possible
+FIXED:     #1232: Routing crashes on magic property in trait
+FIXED:     #157: Classes do not inherit trait methods and props
+FIXED:     #1193: Package tags don't inherit to classes
+FIXED:     #1229: @method tag in a trait causes Exception
+FIXED:     #1196: Some files cannot be copied with FileIO
+CHANGED:   Better OPcache handling, annotations are not stripped anymore in PHP 5.5+
+CHANGED:   phpdoc.php was renamed to phpdoc; phpdoc.php is kept for backwards compatibility
+```
+
 2014/04/01: Version 2.4.0
 -------------------------
 

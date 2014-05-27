@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig

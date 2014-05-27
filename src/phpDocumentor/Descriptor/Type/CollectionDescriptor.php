@@ -14,7 +14,10 @@ namespace phpDocumentor\Descriptor\Type;
 use phpDocumentor\Descriptor\Interfaces\TypeInterface;
 
 /**
- * Descriptor representing a collection
+ * Descriptor representing a collection or compound type of collection object.
+ *
+ * This descriptor represents any type that is capable of containing other typed values. Examples of such
+ * types can be an array, DoctrineCollection or ArrayObject.
  */
 class CollectionDescriptor implements TypeInterface
 {
@@ -27,6 +30,11 @@ class CollectionDescriptor implements TypeInterface
     /** @var TypeInterface[] $type */
     protected $keyTypes = array();
 
+    /**
+     * Initializes this type collection with its base-type.
+     *
+     * @param TypeInterface $baseType
+     */
     public function __construct($baseType)
     {
         $this->baseType = $baseType;
@@ -56,41 +64,83 @@ class CollectionDescriptor implements TypeInterface
         return $this->baseType instanceof TypeInterface ? $this->baseType : null;
     }
 
+    /**
+     * Registers the base type for this collection type.
+     *
+     * @param string|TypeInterface $baseType
+     *
+     * @return void
+     */
     public function setBaseType($baseType)
     {
         $this->baseType = $baseType;
     }
 
+    /**
+     * Register the type, or set of types, to which a value in this type of collection can belong.
+     *
+     * @param TypeInterface[] $types
+     *
+     * @return void
+     */
     public function setTypes(array $types)
     {
         $this->types = $types;
     }
 
+    /**
+     * Returns the type, or set of types, to which a value in this type of collection can belong.
+     *
+     * @return TypeInterface[]
+     */
     public function getTypes()
     {
         return $this->types;
     }
 
+    /**
+     * Registers the type, or set of types, to which a *key* in this type of collection can belong.
+     *
+     * @param TypeInterface[] $types
+     *
+     * @return void
+     */
     public function setKeyTypes(array $types)
     {
         $this->keyTypes = $types;
     }
 
+    /**
+     * Registers the type, or set of types, to which a *key* in this type of collection can belong.
+     *
+     * @return TypeInterface[]
+     */
     public function getKeyTypes()
     {
         return $this->keyTypes;
     }
 
+    /**
+     * Returns a human-readable representation for this type.
+     *
+     * @return string
+     */
     public function __toString()
     {
         $name = $this->getName();
+
+        $keyTypes = array();
+        foreach ($this->getKeyTypes() as $type) {
+            $keyTypes[] = (string)$type;
+        }
+
         $types = array();
-        foreach ($this->getTypes() as $key => $type) {
+        foreach ($this->getTypes() as $type) {
             $types[] = (string)$type;
         }
 
         if (count($types) > 0) {
-            $name .= '<' . implode(',', $types) . '>';
+            $name .= '<' . ($keyTypes ? implode('|', $keyTypes) . ',' : '') . implode('|', $types) . '>';
         }
 
         return $name;

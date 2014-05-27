@@ -11,14 +11,13 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Command\Manual;
 
-use phpDocumentor\Command\ConfigurableCommand;
+use phpDocumentor\Command\Command;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface;
 use phpDocumentor\Plugin\Scrybe\Converter\Factory as ConverterFactory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format;
 use phpDocumentor\Plugin\Scrybe\Template\Factory;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -27,7 +26,7 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * Abstract Command class containing the scaffolding for the subsequent converting commands.
  */
-abstract class BaseConvertCommand extends ConfigurableCommand
+abstract class BaseConvertCommand extends Command
 {
     /** @var ConverterFactory */
     protected $converterFactory;

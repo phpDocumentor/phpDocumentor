@@ -20,7 +20,7 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 
 /**
  * A specialized writer which uses the Twig templating engine to convert
@@ -359,10 +359,15 @@ class Twig extends WriterAbstract implements Routable
         }
 
         $destination = preg_replace_callback(
-            '/{{([^}]+)}}/u',
+            '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
             function ($query) use ($node, $writer) {
                 // strip any surrounding \ or /
-                return trim((string) $writer->walkObjectTree($node, $query[1]), '\\/');
+                $filepart = trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
+
+                // make it windows proof
+                $filepart = urlencode(iconv('UTF-8', 'ASCII//TRANSLIT', $filepart));
+
+                return $filepart;
             },
             $path
         );
@@ -407,7 +412,7 @@ class Twig extends WriterAbstract implements Routable
     }
 
     /**
-     * @param \phpDocumentor\Translator $translator
+     * @param Translator $translator
      */
     public function setTranslator($translator)
     {

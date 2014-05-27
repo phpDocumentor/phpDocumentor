@@ -25,13 +25,8 @@ class NamespaceDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
-        $name = str_replace('\\', '.', ltrim($node->getFullyQualifiedStructuralElementName(), '\\'));
+        $converter = new QualifiedNameToUrlConverter();
 
-        // convert root namespace to default; default is a keyword and no namespace CAN be named as such
-        if ($name === '') {
-            $name = 'default';
-        }
-
-        return '/namespaces/' . $name .'.html';
+        return '/namespaces/' . $converter->fromNamespace($node->getFullyQualifiedStructuralElementName()) .'.html';
     }
 }

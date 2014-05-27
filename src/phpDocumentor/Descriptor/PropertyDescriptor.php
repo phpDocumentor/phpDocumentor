@@ -162,7 +162,7 @@ class PropertyDescriptor extends DescriptorAbstract implements Interfaces\Proper
      *
      * @return PropertyDescriptor|null
      */
-    protected function getInheritedElement()
+    public function getInheritedElement()
     {
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();

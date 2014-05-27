@@ -29,8 +29,9 @@ class ThrowsAssembler extends AssemblerAbstract
     {
         $descriptor = new ThrowsDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
-        $types = $this->builder->buildDescriptor(new Collection($data->getTypes()));
-        $descriptor->setTypes($types);
+        $descriptor->setTypes(
+            $this->builder->buildDescriptor(new Collection($data->getTypes()))
+        );
 
         return $descriptor;
     }

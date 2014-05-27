@@ -31,6 +31,7 @@ class ParamAssembler extends AssemblerAbstract
         $descriptor->setDescription($data->getDescription());
         $descriptor->setVariableName($data->getVariableName());
 
+        /** @var Collection $types */
         $types = $this->builder->buildDescriptor(new Collection($data->getTypes()));
         $descriptor->setTypes($types);
 

@@ -176,12 +176,12 @@ it would be in the following form::
 
 .. hint::
 
-    When you have installed a version via composer or manually you should invoke the ``phpdoc.php`` script in
+    When you have installed a version via composer or manually you should invoke the ``phpdoc`` script in
     the ``bin`` folder of your phpDocumentor installation.
 
     Under Linux / MacOSX that would be::
 
-        $ [PHPDOC_FOLDER]/bin/phpdoc.php
+        $ [PHPDOC_FOLDER]/bin/phpdoc
 
     And under Windows that would be::
 

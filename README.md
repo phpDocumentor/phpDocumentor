@@ -77,7 +77,7 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 
 Afterwards you are able to run phpDocumentor directly from your `vendor` directory:
 
-    $ php vendor/bin/phpdoc.php
+    $ php vendor/bin/phpdoc
 
 ### Using the PHAR
 
