@@ -16,13 +16,12 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
-
+use phpDocumentor\Reflection\ClassReflector\MethodReflector;
 use Mockery as m;
-use phpDocumentor\Reflection\FunctionReflector;
 
-class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
+class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var FunctionAssembler $fixture */
+    /** @var MethodAssembler $fixture */
     protected $fixture;
 
     /** @var ArgumentAssembler|m\MockInterface */
@@ -39,67 +38,73 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
 
-        $this->fixture = new FunctionAssembler($this->argumentAssemblerMock);
+        $this->fixture = new MethodAssembler($this->argumentAssemblerMock);
         $this->fixture->setBuilder($this->builderMock);
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::__construct
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::create
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::mapReflectorPropertiesOntoDescriptor
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::addArgumentsToFunctionDescriptor
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::createArgumentDescriptor
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::addArgumentDescriptorToFunction
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::getFullyQualifiedNamespaceName
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
      */
-    public function testCreateFunctionDescriptorFromReflector()
+    public function testCreateMethodDescriptorFromReflector()
     {
         // Arrange
         $namespace    = 'Namespace';
-        $functionName = 'goodbyeWorld';
+        $methodName   = 'goodbyeWorld';
         $argumentName = 'waveHand';
 
         $argumentDescriptorMock = $this->givenAnArgumentWithName($argumentName);
-        $functionReflectorMock = $this->givenAFunctionReflector(
+        $methodReflectorMock = $this->givenAMethodReflector(
             $namespace,
-            $functionName,
+            $methodName,
             $argumentDescriptorMock,
             $this->givenADocBlockObject()
         );
 
         // Act
-        $descriptor = $this->fixture->create($functionReflectorMock);
+        $descriptor = $this->fixture->create($methodReflectorMock);
 
         // Assert
-        $expectedFqsen = $namespace . '\\' . $functionName . '()';
+        $expectedFqsen = $namespace . '\\' . $methodName . '()';
         $this->assertSame($expectedFqsen, $descriptor->getFullyQualifiedStructuralElementName());
-        $this->assertSame($functionName, $descriptor->getName());
+        $this->assertSame($methodName, $descriptor->getName());
+        $this->assertSame('protected', $descriptor->getVisibility());
+        $this->assertSame(false, $descriptor->isFinal());
+        $this->assertSame(false, $descriptor->isAbstract());
+        $this->assertSame(false, $descriptor->isStatic());
 
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argument, $argumentDescriptorMock);
     }
 
     /**
-     * Creates a sample function reflector for the tests with the given data.
+     * Creates a sample method reflector for the tests with the given data.
      *
      * @param string                             $namespace
-     * @param string                             $functionName
+     * @param string                             $methodName
      * @param ArgumentDescriptor|m\MockInterface $argumentMock
      * @param DocBlock|m\MockInterface           $docBlockMock
      *
-     * @return FunctionReflector|m\MockInterface
+     * @return MethodReflector|m\MockInterface
      */
-    protected function givenAFunctionReflector($namespace, $functionName, $argumentMock, $docBlockMock)
+    protected function givenAMethodReflector($namespace, $methodName, $argumentMock, $docBlockMock)
     {
-        $functionReflectorMock = m::mock('phpDocumentor\Reflection\FunctionReflector');
-        $functionReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $functionName);
-        $functionReflectorMock->shouldReceive('getShortName')->andReturn($functionName);
-        $functionReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
-        $functionReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
-        $functionReflectorMock->shouldReceive('getLinenumber')->andReturn(128);
-        $functionReflectorMock->shouldReceive('getArguments')->andReturn(array($argumentMock));
+        $methodReflectorMock = m::mock('phpDocumentor\Reflection\MethodReflector');
+        $methodReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $methodName);
+        $methodReflectorMock->shouldReceive('getShortName')->andReturn($methodName);
+        $methodReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
+        $methodReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
+        $methodReflectorMock->shouldReceive('getLinenumber')->andReturn(128);
+        $methodReflectorMock->shouldReceive('getArguments')->andReturn(array($argumentMock));
+        $methodReflectorMock->shouldReceive('getVisibility')->andReturn('protected');
+        $methodReflectorMock->shouldReceive('isFinal')->andReturn(false);
+        $methodReflectorMock->shouldReceive('isAbstract')->andReturn(false);
+        $methodReflectorMock->shouldReceive('isStatic')->andReturn(false);
 
-        return $functionReflectorMock;
+        return $methodReflectorMock;
     }
 
     /**

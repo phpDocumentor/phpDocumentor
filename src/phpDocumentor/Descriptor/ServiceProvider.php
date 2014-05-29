@@ -146,8 +146,8 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($classMatcher, new ClassAssembler());
         $factory->register($interfaceMatcher, new InterfaceAssembler());
         $factory->register($propertyMatcher, new PropertyAssembler());
-        $factory->register($methodMatcher, new MethodAssembler());
         $factory->register($argumentMatcher, $argumentAssembler);
+        $factory->register($methodMatcher, new MethodAssembler($argumentAssembler));
         $factory->register($functionMatcher, new FunctionAssembler($argumentAssembler));
 
         $factory->register($authorMatcher, new AuthorAssembler());

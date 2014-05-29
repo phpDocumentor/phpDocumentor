@@ -23,6 +23,19 @@ use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
  */
 class MethodAssembler extends AssemblerAbstract
 {
+    /** @var ArgumentAssembler */
+    protected $argumentAssembler;
+
+    /**
+     * Initializes this assembler with its dependencies.
+     *
+     * @param ArgumentAssembler $argumentAssembler
+     */
+    public function __construct(ArgumentAssembler $argumentAssembler)
+    {
+        $this->argumentAssembler = $argumentAssembler;
+    }
+
     /**
      * Creates a Descriptor from the provided data.
      *
@@ -33,13 +46,7 @@ class MethodAssembler extends AssemblerAbstract
     public function create($data)
     {
         $methodDescriptor = new MethodDescriptor();
-        $methodDescriptor->setFullyQualifiedStructuralElementName($data->getName() . '()');
-        $methodDescriptor->setName($data->getShortName());
-        $methodDescriptor->setVisibility($data->getVisibility() ?: 'public');
-        $methodDescriptor->setFinal($data->isFinal());
-        $methodDescriptor->setAbstract($data->isAbstract());
-        $methodDescriptor->setStatic($data->isStatic());
-        $methodDescriptor->setLine($data->getLinenumber());
+        $this->mapReflectorToDescriptor($data, $methodDescriptor);
 
         $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);
         $this->addArguments($data, $methodDescriptor);
@@ -49,17 +56,36 @@ class MethodAssembler extends AssemblerAbstract
     }
 
     /**
-     * Adds the reflected Arguments to the Descriptor.
+     * Maps the fields to the reflector to the descriptor.
      *
-     * @param MethodReflector  $data
-     * @param MethodDescriptor $methodDescriptor
+     * @param MethodReflector  $reflector
+     * @param MethodDescriptor $descriptor
      *
      * @return void
      */
-    protected function addArguments($data, $methodDescriptor)
+    protected function mapReflectorToDescriptor($reflector, $descriptor)
     {
-        foreach ($data->getArguments() as $argument) {
-            $this->addArgument($argument, $methodDescriptor);
+        $descriptor->setFullyQualifiedStructuralElementName($reflector->getName() . '()');
+        $descriptor->setName($reflector->getShortName());
+        $descriptor->setVisibility($reflector->getVisibility() ? : 'public');
+        $descriptor->setFinal($reflector->isFinal());
+        $descriptor->setAbstract($reflector->isAbstract());
+        $descriptor->setStatic($reflector->isStatic());
+        $descriptor->setLine($reflector->getLinenumber());
+    }
+
+    /**
+     * Adds the reflected Arguments to the Descriptor.
+     *
+     * @param MethodReflector  $reflector
+     * @param MethodDescriptor $descriptor
+     *
+     * @return void
+     */
+    protected function addArguments($reflector, $descriptor)
+    {
+        foreach ($reflector->getArguments() as $argument) {
+            $this->addArgument($argument, $descriptor);
         }
     }
 
@@ -67,18 +93,16 @@ class MethodAssembler extends AssemblerAbstract
      * Adds a single reflected Argument to the Method Descriptor.
      *
      * @param ArgumentReflector $argument
-     * @param MethodDescriptor  $methodDescriptor
+     * @param MethodDescriptor  $descriptor
      *
      * @return void
      */
-    protected function addArgument($argument, $methodDescriptor)
+    protected function addArgument($argument, $descriptor)
     {
-        $argumentAssembler = new ArgumentAssembler();
-        $argumentDescriptor = $argumentAssembler->create(
-            $argument,
-            $methodDescriptor->getTags()->get('param', array())
-        );
-        $methodDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
+        $params = $descriptor->getTags()->get('param', array());
+        $argumentDescriptor = $this->argumentAssembler->create($argument, $params);
+
+        $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
 
     /**
@@ -100,7 +124,6 @@ class MethodAssembler extends AssemblerAbstract
 
         /** @var ParamTag $lastParamTag */
         $lastParamTag = end($paramTags);
-
         if (!$lastParamTag) {
             return;
         }
