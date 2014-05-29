@@ -194,7 +194,11 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
             'sort' => new \Twig_SimpleFilter(
                 'sort_*',
-                function ($direction, Collection $collection) {
+                function ($direction, $collection) {
+                    if (!$collection instanceof Collection) {
+                        return $collection;
+                    }
+
                     $iterator = $collection->getIterator();
                     $iterator->uasort(
                         function ($a, $b) use ($direction) {

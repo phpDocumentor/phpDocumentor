@@ -82,7 +82,6 @@ class Application extends Cilex
         $this->register(new Transformer\ServiceProvider());
         $this->register(new Plugin\ServiceProvider());
 
-        $this->verifyWriterRequirementsAndExitIfBroken();
         $this->addCommandsForProjectNamespace();
     }
 
@@ -300,26 +299,5 @@ class Application extends Cilex
     protected function addCommandsForProjectNamespace()
     {
         $this->command(new Command\Project\RunCommand());
-    }
-
-    /**
-     * Checks the requirements for all writers and exit the application with code 1 if something is wrong.
-     *
-     * @return void
-     */
-    protected function verifyWriterRequirementsAndExitIfBroken()
-    {
-        try {
-            /** @var Collection $writerCollection */
-            $writerCollection = $this['transformer.writer.collection'];
-            $writerCollection->checkRequirements();
-        } catch (RequirementMissing $e) {
-            /** @var Logger $logger */
-            $logger = $this['monolog'];
-            $logger->emerg(
-                'phpDocumentor detected that a requirement is missing in your system setup: ' . $e->getMessage()
-            );
-            exit(1);
-        }
     }
 }
