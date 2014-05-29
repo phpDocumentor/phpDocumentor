@@ -76,6 +76,9 @@ class MethodAssembler extends AssemblerAbstract
                 $argumentDefault = $part;
             }
         }
+        if ($argumentDefault === false) {
+            $argumentDefault = null;
+        }
 
         // if no name is set but a type is then the input is malformed and we correct for it
         if ($argumentType && !$argumentName) {
@@ -89,7 +92,7 @@ class MethodAssembler extends AssemblerAbstract
         }
 
         $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setTypes($this->builder->buildDescriptor(new Collection($argumentType)));
+        $argumentDescriptor->setTypes($this->builder->buildDescriptor(new Collection(array($argumentType))));
         $argumentDescriptor->setName($argumentName[0] == '$' ? $argumentName : '$' . $argumentName);
         $argumentDescriptor->setDefault($argumentDefault);
         return $argumentDescriptor;
