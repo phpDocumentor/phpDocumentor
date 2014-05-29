@@ -15,7 +15,7 @@ class IntegerDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\IntegerDescriptor::getName
-     * @covers phpDocumentor\Descriptor\Type\IntegerDescriptor::__toInteger
+     * @covers phpDocumentor\Descriptor\Type\IntegerDescriptor::__toString
      */
     public function testIfNameCanBeReturned()
     {

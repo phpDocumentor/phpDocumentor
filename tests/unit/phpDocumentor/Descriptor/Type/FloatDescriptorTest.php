@@ -15,7 +15,7 @@ class FloatDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\FloatDescriptor::getName
-     * @covers phpDocumentor\Descriptor\Type\FloatDescriptor::__toFloat
+     * @covers phpDocumentor\Descriptor\Type\FloatDescriptor::__toString
      */
     public function testIfNameCanBeReturned()
     {

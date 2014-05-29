@@ -15,7 +15,7 @@ class UnknownTypeDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::getName
-     * @covers phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::__toUnknowntype
+     * @covers phpDocumentor\Descriptor\Type\UnknownTypeDescriptor::__toString
      */
     public function testIfNameCanBeReturned()
     {
