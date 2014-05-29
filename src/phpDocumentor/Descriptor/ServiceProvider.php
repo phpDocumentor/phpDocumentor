@@ -139,6 +139,7 @@ class ServiceProvider implements ServiceProviderInterface
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
         // @codingStandardsIgnoreEnd
 
+        $argumentAssembler = new ArgumentAssembler();
         $factory->register($fileMatcher, new FileAssembler());
         $factory->register($constantMatcher, new ConstantAssembler());
         $factory->register($traitMatcher, new TraitAssembler());
@@ -146,8 +147,8 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($interfaceMatcher, new InterfaceAssembler());
         $factory->register($propertyMatcher, new PropertyAssembler());
         $factory->register($methodMatcher, new MethodAssembler());
-        $factory->register($argumentMatcher, new ArgumentAssembler());
-        $factory->register($functionMatcher, new FunctionAssembler());
+        $factory->register($argumentMatcher, $argumentAssembler);
+        $factory->register($functionMatcher, new FunctionAssembler($argumentAssembler));
 
         $factory->register($authorMatcher, new AuthorAssembler());
         $factory->register($deprecatedMatcher, new DeprecatedAssembler());

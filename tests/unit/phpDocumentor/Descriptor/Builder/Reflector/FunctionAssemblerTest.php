@@ -12,6 +12,9 @@
  */
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 
 use Mockery as m;
@@ -26,45 +29,63 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
     /** @var FunctionAssembler $fixture */
     protected $fixture;
 
+    /** @var ArgumentAssembler|m\MockInterface */
+    protected $argumentAssemblerMock;
+
+    /** @var ProjectDescriptorBuilder|m\MockInterface */
+    protected $builderMock;
+
     /**
      * Creates a new fixture to test with.
      */
     protected function setUp()
     {
-        $this->fixture = new FunctionAssembler();
+        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
+
+        $this->fixture = new FunctionAssembler($this->argumentAssemblerMock);
+        $this->fixture->setBuilder($this->builderMock);
     }
 
     /**
-     * Creates a Descriptor from a provided class.
-     *
-     * @return void
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::create
      */
     public function testCreateFunctionDescriptorFromReflector()
     {
-        $namespace = 'Namespace';
+        // Arrange
+        $namespace    = 'Namespace';
         $functionName = 'goodbyeWorld';
         $argumentName = 'waveHand';
-        $argumentType = 'boolean';
 
-        $docBlockDescriptionContent = trim('
-            /**
-             * This is a example description
-             */
-        ');
-        $docBlockDescription = new DocBlock\Description($docBlockDescriptionContent);
+        $argumentDescriptorMock = $this->givenAnArgumentWithName($argumentName);
+        $functionReflectorMock = $this->givenAFunctionReflector(
+            $namespace,
+            $functionName,
+            $argumentDescriptorMock,
+            $this->givenADocBlockObject()
+        );
 
-        $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
-        $docBlockMock->shouldReceive('getTags')->andReturn(array());
-        $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
-        $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
+        // Act
+        $descriptor = $this->fixture->create($functionReflectorMock);
 
-        $argumentMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
-        $argumentMock->shouldReceive('getName')->andReturn($argumentName);
-        $argumentMock->shouldReceive('getType')->andReturn($argumentType);
-        $argumentMock->shouldReceive('getDefault')->andReturn(true);
-        $argumentMock->shouldReceive('isByRef')->andReturn(false);
+        // Assert
+        $expectedFqsen = $namespace . '\\' . $functionName . '()';
+        $this->assertSame($expectedFqsen, $descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame($functionName, $descriptor->getName());
 
+        $argument = $descriptor->getArguments()->get($argumentName);
+        $this->assertSame($argument, $argumentDescriptorMock);
+    }
+
+    /**
+     * @param $namespace
+     * @param $functionName
+     * @param $argumentMock
+     * @param $docBlockMock
+     * @return m\MockInterface
+     */
+    protected function givenAFunctionReflector($namespace, $functionName, $argumentMock, $docBlockMock)
+    {
         $functionReflectorMock = m::mock('phpDocumentor\Reflection\FunctionReflector');
         $functionReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $functionName);
         $functionReflectorMock->shouldReceive('getShortName')->andReturn($functionName);
@@ -73,12 +94,38 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
         $functionReflectorMock->shouldReceive('getLinenumber')->andReturn(128);
         $functionReflectorMock->shouldReceive('getArguments')->andReturn(array($argumentMock));
 
-        $descriptor = $this->fixture->create($functionReflectorMock);
-        $argument = $descriptor->getArguments()->get($argumentName);
+        return $functionReflectorMock;
+    }
 
-        $this->assertSame($namespace . '\\' . $functionName . '()', $descriptor->getFullyQualifiedStructuralElementName());
-        $this->assertSame($functionName, $descriptor->getName());
-        $this->assertSame($argumentName, $argument->getName());
-        $this->assertSame($argumentType, current($argument->getTypes()));
+    /**
+     * @return m\MockInterface
+     */
+    protected function givenADocBlockObject()
+    {
+        $docBlockDescription = new DocBlock\Description('This is an example description');
+        $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
+        $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
+        $docBlockMock->shouldReceive('getTags')->andReturn(array());
+        $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
+        $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
+
+        return $docBlockMock;
+    }
+
+    /**
+     * Prepares a mock Argument with the given name.
+     *
+     * @param string $argumentName
+     *
+     * @return ArgumentDescriptor|m\MockInterface
+     */
+    protected function givenAnArgumentWithName($argumentName)
+    {
+        $argumentMock = m::mock('phpDocumentor\Descriptor\ArgumentDescriptor');
+        $argumentMock->shouldReceive('getName')->andReturn($argumentName);
+
+        $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentMock);
+
+        return $argumentMock;
     }
 }
