@@ -155,11 +155,6 @@ class ParseCommand extends Command
         $builder = $this->getBuilder();
         $builder->createProjectDescriptor();
         $projectDescriptor = $builder->getProjectDescriptor();
-        $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
-        if ($input->getOption('parseprivate')) {
-            $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
-        }
-        $projectDescriptor->getSettings()->setVisibility($visibility);
 
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
@@ -186,6 +181,12 @@ class ParseCommand extends Command
             $mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
+            $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
+            if ($input->getOption('parseprivate')) {
+                $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
+            }
+            $projectDescriptor->getSettings()->setVisibility($visibility);
+
             $this->getParser()->parse($builder, $files);
         } catch (FilesNotFoundException $e) {
             throw new \Exception($this->__('PPCPP:EXC-NOFILES'));
@@ -200,6 +201,7 @@ class ParseCommand extends Command
         $projectDescriptor->setPartials($this->getService('partials'));
 
         $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
+        $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
 
         $output->writeln($this->__('PPCPP:LOG-OK'));

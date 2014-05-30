@@ -105,7 +105,7 @@ class ProjectDescriptorMapper
         $cache->setItem(self::KEY_SETTINGS, $projectDescriptor->getSettings());
 
         // store cache items
-        $usedKeys = array();
+        $usedKeys = array(self::KEY_SETTINGS);
         foreach ($projectDescriptor->getFiles() as $file) {
             $key        = self::FILE_PREFIX . md5($file->getPath());
             $usedKeys[] = $key;
@@ -146,7 +146,7 @@ class ProjectDescriptorMapper
         // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
         if ($iteratorInterface->valid()) {
             foreach ($this->getCache() as $item) {
-                if (!in_array($item, $filenames)) {
+                if (substr($item, 0, strlen(self::FILE_PREFIX)) === self::FILE_PREFIX && !in_array($item, $filenames)) {
                     $this->getCache()->removeItem($item);
                 }
             }
