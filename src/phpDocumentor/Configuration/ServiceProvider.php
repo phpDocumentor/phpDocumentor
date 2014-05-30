@@ -38,8 +38,9 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->addMerger($app);
 
-        $app->extend('console',
-            function (ConsoleApplication $console){
+        $app->extend(
+            'console',
+            function (ConsoleApplication $console) {
                 $console->getDefinition()->addOption(
                     new InputOption(
                         'config',
