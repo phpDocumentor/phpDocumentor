@@ -70,7 +70,7 @@ class MethodDescriptor extends TagDescriptor
     }
 
     /**
-     * @return mixed
+     * @return ReturnDescriptor
      */
     public function getResponse()
     {

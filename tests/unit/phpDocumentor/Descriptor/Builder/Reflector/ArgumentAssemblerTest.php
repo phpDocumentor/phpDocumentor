@@ -13,45 +13,109 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use Mockery as m;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
- * Test class for \phpDocumentor\Descriptor\Builder
- *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
+ * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
  */
 class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var ArgumentAssembler $fixture */
     protected $fixture;
 
+    /** @var ProjectDescriptorBuilder|m\MockInterface */
+    protected $builderMock;
+
     /**
      * Creates a new fixture to test with.
      */
     protected function setUp()
     {
+        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ArgumentAssembler();
+        $this->fixture->setBuilder($this->builderMock);
     }
 
     /**
-     * Creates a Descriptor from a provided class.
-     *
-     * @return void
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
      */
     public function testCreateArgumentDescriptorFromReflector()
     {
+        $this->markTestIncomplete('Work in progress');
+        // Arrange
         $name = 'goodArgument';
         $type = 'boolean';
 
+        $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
+        $types = $this->thenProjectBuilderShouldSetCollectionOfExpectedTypes(array($type));
+
+        // Act
+        $descriptor = $this->fixture->create($argumentReflectorMock);
+
+        // Assert
+        $this->assertSame($name, $descriptor->getName());
+        $this->assertSame($types, $descriptor->getTypes());
+        $this->assertSame(false, $descriptor->getDefault());
+        $this->assertSame(false, $descriptor->isByReference());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::overwriteTypeAndDescriptionFromParamTag
+     */
+    public function testIfTypeAndDescriptionAreSetFromParamDescriptor()
+    {
+        $this->markTestIncomplete('Work in progress');
+        // Arrange
+        $name = 'goodArgument';
+        $type = 'boolean';
+
+        $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
+        $types = $this->thenProjectBuilderShouldSetCollectionOfExpectedTypes(array($type));
+        $params = array(); // TODO: replace with mocked ParamDescriptors to test functionality
+
+        // Act
+        $descriptor = $this->fixture->create($argumentReflectorMock, $params);
+
+        // Assert
+        $this->assertSame($name, $descriptor->getName());
+        $this->assertSame($types, $descriptor->getTypes());
+        $this->assertSame(false, $descriptor->getDefault());
+        $this->assertSame(false, $descriptor->isByReference());
+    }
+
+    /**
+     * @param $name
+     * @param $type
+     * @return m\MockInterface
+     */
+    protected function givenAnArgumentReflectorWithNameAndType($name, $type)
+    {
         $argumentReflectorMock = m::mock('phpDocumentor\Reflection\FunctionReflector\ArgumentReflector');
         $argumentReflectorMock->shouldReceive('getName')->andReturn($name);
         $argumentReflectorMock->shouldReceive('getType')->andReturn($type);
-        $argumentReflectorMock->shouldReceive('getDefault')->andReturn(false); // Turns out its a bad argument ;)
+        $argumentReflectorMock->shouldReceive('getDefault')->andReturn(false);
         $argumentReflectorMock->shouldReceive('isByRef')->andReturn(false);
+        return $argumentReflectorMock;
+    }
 
-        $descriptor = $this->fixture->create($argumentReflectorMock);
-
-        $this->assertSame($name, $descriptor->getName());
-        $this->assertSame(array($type), $descriptor->getTypes());
-        $this->assertSame(false, $descriptor->getDefault());
+    /**
+     * @param $expected
+     * @return Collection
+     */
+    protected function thenProjectBuilderShouldSetCollectionOfExpectedTypes($expected)
+    {
+        $types = new Collection($expected);
+        $this->builderMock->shouldReceive('buildDescriptor')
+            ->with(
+                m::on(
+                    function ($value) use ($expected) {
+                        return $value instanceof Collection && $value->getArrayCopy() == $expected;
+                    }
+                )
+            )
+            ->andReturn($types);
+        return $types;
     }
 }

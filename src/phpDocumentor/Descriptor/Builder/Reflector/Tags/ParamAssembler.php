@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class ParamAssembler extends AssemblerAbstract
 {
@@ -29,7 +30,10 @@ class ParamAssembler extends AssemblerAbstract
         $descriptor = new ParamDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
         $descriptor->setVariableName($data->getVariableName());
-        $descriptor->setTypes($data->getVariableName() == '$this' ? array('$this') : $data->getTypes());
+
+        /** @var Collection $types */
+        $types = $this->builder->buildDescriptor(new Collection($data->getTypes()));
+        $descriptor->setTypes($types);
 
         return $descriptor;
     }

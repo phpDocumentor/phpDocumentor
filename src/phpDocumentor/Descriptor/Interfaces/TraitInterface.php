@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Public interface definition for object representing traits.
  */
-interface TraitInterface extends BaseInterface
+interface TraitInterface extends ElementInterface, TypeInterface
 {
     /**
      * Sets the properties associated with this trait.

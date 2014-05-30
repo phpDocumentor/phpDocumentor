@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Descriptor representing a global function in a file.
  */
-interface FunctionInterface extends BaseInterface
+interface FunctionInterface extends ElementInterface, TypeInterface
 {
     /**
      * Sets the arguments related to this function.

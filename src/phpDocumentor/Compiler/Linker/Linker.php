@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
 
 /**
  * The linker contains all rules to replace FQSENs in the ProjectDescriptor with aliases to objects.
@@ -152,6 +153,9 @@ class Linker implements CompilerPassInterface
             if ($isModified) {
                 $result = $item;
             }
+        } elseif (is_object($item) && $item instanceof UnknownTypeDescriptor) {
+            $alias  = $this->findAlias($item->getName());
+            $result = $alias ?: $item;
         } elseif (is_object($item)) {
             $hash = spl_object_hash($item);
             if (isset($this->processedObjects[$hash])) {
