@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class ReturnAssembler extends AssemblerAbstract
 {
@@ -28,7 +29,9 @@ class ReturnAssembler extends AssemblerAbstract
     {
         $descriptor = new ReturnDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setTypes($data->getTypes());
+        $descriptor->setTypes(
+            $this->builder->buildDescriptor(new Collection($data->getTypes()))
+        );
 
         return $descriptor;
     }

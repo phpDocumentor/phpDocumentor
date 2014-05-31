@@ -11,10 +11,12 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+
 /**
  * Describes the public interface for a descriptor of an Argument.
  */
-interface ArgumentInterface extends BaseInterface
+interface ArgumentInterface extends ElementInterface
 {
     /**
      * Sets a normalized list of types that the argument represents.
@@ -26,7 +28,7 @@ interface ArgumentInterface extends BaseInterface
      * backslash. Types that do not represent a class/interface/trait should be written in lowercaps and should not be
      * preceded by a backslash.
      *
-     * @param string[] $types An array of normalized types that should be in this Argument
+     * @param Collection $types An Collection of normalized types that should be in this Argument
      *
      * @link https://github.com/phpDocumentor/phpDocumentor2/blob/develop/docs/PSR.md#appendix-a-types Definition of a
      *     type.
@@ -35,7 +37,7 @@ interface ArgumentInterface extends BaseInterface
      *
      * @return void
      */
-    public function setTypes(array $types);
+    public function setTypes($types);
 
     /**
      * Returns a normalized list of types.

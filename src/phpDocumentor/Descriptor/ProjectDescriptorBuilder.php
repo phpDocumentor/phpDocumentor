@@ -111,7 +111,7 @@ class ProjectDescriptorBuilder
      *
      * @throws \InvalidArgumentException if no Assembler could be found that matches the given data.
      *
-     * @return DescriptorAbstract|null
+     * @return DescriptorAbstract|Collection|null
      */
     public function buildDescriptor($data)
     {
@@ -132,14 +132,9 @@ class ProjectDescriptorBuilder
             return null;
         }
 
-        // filter the descriptor; this may result in the descriptor being removed!
-        $descriptor = $this->filter($descriptor);
-        if (!$descriptor) {
-            return null;
-        }
-
-        // Validate the descriptor and store any errors
-        $descriptor->setErrors($this->validate($descriptor));
+        $descriptor = (!is_array($descriptor) && (!$descriptor instanceof Collection))
+            ? $this->filterAndValidateDescriptor($descriptor)
+            : $this->filterAndValidateEachDescriptor($descriptor);
 
         return $descriptor;
     }
@@ -193,5 +188,54 @@ class ProjectDescriptorBuilder
         }
 
         return $errors;
+    }
+
+    /**
+     * Filters each descriptor, validates them, stores the validation results and returns a collection of transmuted
+     * objects.
+     *
+     * @param DescriptorAbstract[] $descriptor
+     *
+     * @return Collection
+     */
+    private function filterAndValidateEachDescriptor($descriptor)
+    {
+        $descriptors = new Collection();
+        foreach ($descriptor as $key => $item) {
+            $item = $this->filterAndValidateDescriptor($item);
+            if (!$item) {
+                continue;
+            }
+
+            $descriptors[$key] = $item;
+        }
+
+        return $descriptors;
+    }
+
+    /**
+     * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
+     * if it is supposed to be removed.
+     *
+     * @param DescriptorAbstract $descriptor
+     *
+     * @return DescriptorAbstract|null
+     */
+    protected function filterAndValidateDescriptor($descriptor)
+    {
+        if (!$descriptor instanceof Filterable) {
+            return $descriptor;
+        }
+
+        // filter the descriptor; this may result in the descriptor being removed!
+        $descriptor = $this->filter($descriptor);
+        if (!$descriptor) {
+            return null;
+        }
+
+        // Validate the descriptor and store any errors
+        $descriptor->setErrors($this->validate($descriptor));
+
+        return $descriptor;
     }
 }

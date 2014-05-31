@@ -65,6 +65,16 @@ class Settings
     }
 
     /**
+     * Resets the flag indicating whether the settings have changed.
+     *
+     * @return void
+     */
+    public function clearModifiedFlag()
+    {
+        $this->isModified = false;
+    }
+
+    /**
      * Sets a property's value and if it differs from the previous then mark these settings as modified.
      */
     protected function setValueAndCheckIfModified($propertyName, $value)

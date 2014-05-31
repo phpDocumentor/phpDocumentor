@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 class MethodAssembler extends AssemblerAbstract
 {
@@ -33,7 +34,7 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setMethodName($data->getMethodName());
 
         $response = new ReturnDescriptor('return');
-        $response->setTypes($data->getTypes());
+        $response->setTypes($this->builder->buildDescriptor(new Collection($data->getTypes())));
         $descriptor->setResponse($response);
 
         foreach ($data->getArguments() as $argument) {
@@ -75,6 +76,9 @@ class MethodAssembler extends AssemblerAbstract
                 $argumentDefault = $part;
             }
         }
+        if ($argumentDefault === false) {
+            $argumentDefault = null;
+        }
 
         // if no name is set but a type is then the input is malformed and we correct for it
         if ($argumentType && !$argumentName) {
@@ -88,7 +92,7 @@ class MethodAssembler extends AssemblerAbstract
         }
 
         $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setTypes(array($argumentType));
+        $argumentDescriptor->setTypes($this->builder->buildDescriptor(new Collection(array($argumentType))));
         $argumentDescriptor->setName($argumentName[0] == '$' ? $argumentName : '$' . $argumentName);
         $argumentDescriptor->setDefault($argumentDefault);
         return $argumentDescriptor;

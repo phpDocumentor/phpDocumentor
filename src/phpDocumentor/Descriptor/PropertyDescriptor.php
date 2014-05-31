@@ -91,7 +91,7 @@ class PropertyDescriptor
     /**
      * {@inheritDoc}
      */
-    public function setTypes(array $types)
+    public function setTypes(Collection $types)
     {
         $this->types = $types;
     }
@@ -102,7 +102,7 @@ class PropertyDescriptor
     public function getTypes()
     {
         if (!$this->types) {
-            $this->types = array();
+            $this->types = new Collection();
 
             /** @var VarDescriptor $var */
             $var = $this->getVar()->getIterator()->current();

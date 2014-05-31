@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\Collection;
  * @see NamespaceInterface Classes may be contained in namespaces.
  * @see FileInterface      Classes may be defined in a file.
  */
-interface ClassInterface extends BaseInterface, ChildInterface
+interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 {
     /**
      * @return void

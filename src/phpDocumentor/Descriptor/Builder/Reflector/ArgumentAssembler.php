@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 
@@ -32,21 +33,45 @@ class ArgumentAssembler extends AssemblerAbstract
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());
-        $argumentDescriptor->setTypes($data->getType() ? array($data->getType()) : array());
+        $argumentDescriptor->setTypes(
+            $this->builder->buildDescriptor(
+                $data->getType() ? new Collection(array($data->getType())) : new Collection()
+            )
+        );
 
-        /** @var ParamDescriptor $tag */
-        foreach ($params as $tag) {
-            if ($tag->getVariableName() == $data->getName()) {
-                $argumentDescriptor->setDescription($tag->getDescription());
-
-                $types = $tag->getTypes() ?: array($data->getType() ?: 'mixed');
-                $argumentDescriptor->setTypes($types);
-            }
+        foreach ($params as $paramDescriptor) {
+            $this->overwriteTypeAndDescriptionFromParamTag($data, $paramDescriptor, $argumentDescriptor);
         }
 
         $argumentDescriptor->setDefault($data->getDefault());
         $argumentDescriptor->setByReference($data->isByRef());
 
         return $argumentDescriptor;
+    }
+
+    /**
+     * Overwrites the type and description in the Argument Descriptor with that from the tag if the names match.
+     *
+     * @param ArgumentReflector  $argument
+     * @param ParamDescriptor    $paramDescriptor
+     * @param ArgumentDescriptor $argumentDescriptor
+     *
+     * @return void
+     */
+    protected function overwriteTypeAndDescriptionFromParamTag(
+        ArgumentReflector  $argument,
+        ParamDescriptor    $paramDescriptor,
+        ArgumentDescriptor $argumentDescriptor
+    ) {
+        if ($paramDescriptor->getVariableName() != $argument->getName()) {
+            return;
+        }
+
+        $argumentDescriptor->setDescription($paramDescriptor->getDescription());
+        $argumentDescriptor->setTypes(
+            $paramDescriptor->getTypes() ?: $this->builder->buildDescriptor(
+                new Collection(array($argument->getType() ?: 'mixed'))
+            )
+        );
     }
 }

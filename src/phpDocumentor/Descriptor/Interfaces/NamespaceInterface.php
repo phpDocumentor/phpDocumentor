@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Describes the public interface for the description of a namespace.
  */
-interface NamespaceInterface extends BaseInterface, ContainerInterface, ChildInterface
+interface NamespaceInterface extends ElementInterface, ContainerInterface, ChildInterface
 {
     /**
      * @return Collection

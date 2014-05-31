@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Describes the public interface for a description of a File.
  */
-interface FileInterface extends BaseInterface, ContainerInterface
+interface FileInterface extends ElementInterface, ContainerInterface
 {
     /**
      * @return string

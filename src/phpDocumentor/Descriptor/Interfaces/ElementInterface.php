@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 /**
  * Represents the public interface to which all descriptors should be held.
  */
-interface BaseInterface
+interface ElementInterface
 {
     /**
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
