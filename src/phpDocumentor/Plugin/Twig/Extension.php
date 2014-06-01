@@ -219,4 +219,34 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
         );
     }
+
+
+    /**
+     * Converts the given path to be relative to the root of the documentation
+     * target directory.
+     *
+     * It is not possible to use absolute paths in documentation templates since
+     * they may be used locally, or in a subfolder. As such we need to calculate
+     * the number of levels to go up from the current document's directory and
+     * then append the given path.
+     *
+     * For example:
+     *
+     *     Suppose you are in <root>/classes/my/class.html and you want open
+     *     <root>/my/index.html then you provide 'my/index.html' to this method
+     *     and it will convert it into ../../my/index.html (<root>/classes/my is
+     *     two nesting levels until the root).
+     *
+     * This method does not try to normalize or optimize the paths in order to
+     * save on development time and performance, and because it adds no real
+     * value.
+     *
+     * @param string $relative_path
+     *
+     * @return string
+     */
+    public function convertToRootPath($relative_path)
+    {
+        return $this->routeRenderer->convertToRootPath($relative_path);
+    }
 }
