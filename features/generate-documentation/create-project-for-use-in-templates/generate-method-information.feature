@@ -54,7 +54,7 @@ Feature: Generate information about one or more methods in a class of a project
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a'].getDescription()" with value: "This is an integer."
 
   Scenario: An argument has the correct type
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a'].getTypes()[0]" with value: "int"
+    Then the AST has an "Type\Integer" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a'].getTypes()[0]"
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$b'].getTypes()[0]" with value: "\DateTime"
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$c'].getTypes()[0]"
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$c'].getTypes()[0].getName()" with value: "B"
