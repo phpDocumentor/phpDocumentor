@@ -29,6 +29,7 @@ Feature: Generate information about one or more classes in a project
       class B extends \DateTime {}
       """
     When I run "phpdoc -f test.php"
+    Then the application must have run successfully
 
   Scenario: Class is present in the project
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A']"

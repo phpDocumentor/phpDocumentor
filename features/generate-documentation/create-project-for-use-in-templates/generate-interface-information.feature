@@ -24,6 +24,7 @@ Feature: Generate information about one or more interfaces in a project
       interface C { }
       """
     When I run "phpdoc -f test.php"
+    Then the application must have run successfully
 
   Scenario: Interface is present in the project
     Then the AST has a "interface" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A']"
