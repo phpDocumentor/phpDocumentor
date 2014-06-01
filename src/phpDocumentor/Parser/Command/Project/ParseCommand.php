@@ -156,27 +156,6 @@ class ParseCommand extends Command
         $builder->createProjectDescriptor();
         $projectDescriptor = $builder->getProjectDescriptor();
 
-        $visibility = $configurationHelper->getOption($input, 'visibility', 'parser/visibility');
-        $visibilities = array();
-        foreach ($visibility as $item) {
-            $visibilities = $visibilities + explode(',', $item);
-        }
-        $visibility = null;
-        foreach($visibilities as $item) {
-            switch ($item) {
-                case 'public'   : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC; break;
-                case 'protected': $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED; break;
-                case 'private'  : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE; break;
-            }
-        }
-        if ($visibility === null) {
-            $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
-        }
-        if ($input->getOption('parseprivate')) {
-            $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
-        }
-        $projectDescriptor->getSettings()->setVisibility($visibility);
-
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
         $output->writeln($this->__('PPCPP:LOG-OK'));
@@ -202,6 +181,27 @@ class ParseCommand extends Command
             $mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
+            $visibility = (array)$configurationHelper->getOption($input, 'visibility', 'parser/visibility');
+            $visibilities = array();
+            foreach ($visibility as $item) {
+                $visibilities = $visibilities + explode(',', $item);
+            }
+            $visibility = null;
+            foreach ($visibilities as $item) {
+                switch ($item) {
+                    case 'public'   : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC; break;
+                    case 'protected': $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED; break;
+                    case 'private'  : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE; break;
+                }
+            }
+            if ($visibility === null) {
+                $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
+            }
+            if ($input->getOption('parseprivate')) {
+                $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
+            }
+            $projectDescriptor->getSettings()->setVisibility($visibility);
+
             $this->getParser()->parse($builder, $files);
         } catch (FilesNotFoundException $e) {
             throw new \Exception($this->__('PPCPP:EXC-NOFILES'));
@@ -216,6 +216,7 @@ class ParseCommand extends Command
         $projectDescriptor->setPartials($this->getService('partials'));
 
         $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
+        $projectDescriptor->getSettings()->clearModifiedFlag();
         $mapper->save($projectDescriptor);
 
         $output->writeln($this->__('PPCPP:LOG-OK'));

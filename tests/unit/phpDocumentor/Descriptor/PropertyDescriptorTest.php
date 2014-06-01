@@ -65,11 +65,12 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetTypes()
     {
-        $this->assertSame(array(), $this->fixture->getTypes());
+        $this->assertEquals(new Collection(), $this->fixture->getTypes());
+        $expected = new Collection(array(1));
 
-        $this->fixture->setTypes(array(1));
+        $this->fixture->setTypes($expected);
 
-        $this->assertSame(array(1), $this->fixture->getTypes());
+        $this->assertSame($expected, $this->fixture->getTypes());
     }
 
     /**

@@ -11,10 +11,12 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+
 /**
  * Descriptor representing a property on a class or trait.
  */
-interface PropertyInterface extends BaseInterface
+interface PropertyInterface extends ElementInterface, TypeInterface
 {
     /**
      * Stores a textual representation of the default value for a property.
@@ -51,11 +53,11 @@ interface PropertyInterface extends BaseInterface
     /**
      * Sets the types associated with the value(s) for this property.
      *
-     * @param string[] $types
+     * @param Collection $types
      *
      * @return void
      */
-    public function setTypes(array $types);
+    public function setTypes(Collection $types);
 
     /**
      * Returns the types associated with the value(s) for this property.

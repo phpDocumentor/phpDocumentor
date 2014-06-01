@@ -13,7 +13,9 @@ namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Translator\Translator;
 
@@ -29,6 +31,14 @@ use phpDocumentor\Translator\Translator;
  *
  * - *path(string)*, converts the given relative path to be based of the projects
  *   root instead of the current directory
+ *
+ * Filters:
+ *
+ * - *markdown*, converts the associated text from Markdown formatting to HTML.
+ * - *trans*, translates the given string
+ * - *route*, attempts to generate a URL for a given Descriptor
+ * - *sort_desc*, sorts the given objects by their Name property/getter in a descending fashion
+ * - *sort_asc*, sorts the given objects by their Name property/getter in a ascending fashion
  */
 class Extension extends \Twig_Extension implements ExtensionInterface
 {
@@ -37,16 +47,11 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      */
     protected $data = null;
 
-    /** @var Queue $router */
-    protected $routers;
-
     /** @var Translator */
     protected $translator;
 
-    /**
-     * @var string
-     */
-    protected $destination = '';
+    /** @var Renderer */
+    protected $routeRenderer;
 
     /**
      * Registers the structure and transformation with this extension.
@@ -57,7 +62,8 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      */
     public function __construct(ProjectDescriptor $project, Transformation $transformation)
     {
-        $this->data = $project;
+        $this->data          = $project;
+        $this->routeRenderer = new Renderer(new Queue());
     }
 
     /**
@@ -71,15 +77,23 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     }
 
     /**
-     * @param Queue $router
+     * Sets the router used to render the URL where a Descriptor can be found.
+     *
+     * @param Queue $routers
+     *
+     * @return void
      */
-    public function setRouters($router)
+    public function setRouters($routers)
     {
-        $this->routers = $router;
+        $this->routeRenderer->setRouters($routers);
     }
 
     /**
+     * Sets the translation component.
+     *
      * @param Translator $translator
+     *
+     * @return void
      */
     public function setTranslator($translator)
     {
@@ -93,19 +107,15 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      * file. This destination is relative to the Project's root and can
      * be used for the calculation of nesting depths, etc.
      *
-     * For this specific extension the destination is provided in the
-     * Twig writer itself.
-     *
      * @param string $destination
      *
-     * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation
-     *     of this method.
+     * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation of this method.
      *
      * @return void
      */
     public function setDestination($destination)
     {
-        $this->destination = $destination;
+        $this->routeRenderer->setDestination($destination);
     }
 
     /**
@@ -115,7 +125,19 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      */
     public function getDestination()
     {
-        return $this->destination;
+        return $this->routeRenderer->getDestination();
+    }
+
+    /**
+     * Returns an array of global variables to inject into a Twig template.
+     *
+     * @return mixed[]
+     */
+    public function getGlobals()
+    {
+        return array(
+            'project' => $this->data
+        );
     }
 
     /**
@@ -133,14 +155,17 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('path', array($this, 'convertToRootPath'))
+            new \Twig_SimpleFunction('path', array($this->routeRenderer, 'convertToRootPath'))
         );
     }
 
+    /**
+     * Returns a list of all filters that are exposed by this extension.
+     *
+     * @return \Twig_SimpleFilter[]
+     */
     public function getFilters()
     {
-        $extension = $this;
-        $routers = $this->routers;
         $parser = \Parsedown::instance();
         $translator = $this->translator;
 
@@ -163,44 +188,8 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
             'route' => new \Twig_SimpleFilter(
                 'route',
-                function ($value, $presentation = 'normal') use ($extension, $routers) {
-                    // FIXME: this code is suboptimal and needs refactoring
-                    $result = array();
-                    if ($value instanceof Collection) {
-                        $value = $value->getAll();
-                    }
-                    $singleResult = !is_array($value);
-                    $value = !is_array($value) ? array($value) : $value;
-
-                    foreach ($value as $path) {
-                        $url  = false;
-                        $rule = $routers->match($path);
-                        if ($rule) {
-                            $generatedUrl = $rule->generate($path);
-                            $url = $generatedUrl ? ltrim($generatedUrl, '/') : false;
-                        }
-
-                        if (is_string($url)
-                            && $url[0] != '/'
-                            && (strpos($url, 'http://') !== 0)
-                            && (strpos($url, 'https://') !== 0)
-                        ) {
-                            $url = $extension->convertToRootPath($url);
-                        }
-
-                        switch ($presentation) {
-                            case 'url': // return the first url
-                                return $url;
-                            case 'class:short':
-                                $parts = explode('\\', $path);
-                                $path = end($parts);
-                                break;
-                        }
-
-                        $result[] = $url ? sprintf('<a href="%s">%s</a>', $url, $path) : $path;
-                    }
-
-                    return $singleResult ? reset($result) : $result;
+                function ($value, $presentation = 'normal') {
+                    return $this->routeRenderer->render($value, $presentation);
                 }
             ),
             'sort' => new \Twig_SimpleFilter(
@@ -229,66 +218,5 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                 }
             ),
         );
-    }
-
-    /**
-     * Returns an array of global variables to inject into a Twig template.
-     *
-     * @return mixed
-     */
-    public function getGlobals()
-    {
-        return array(
-            'project' => $this->data
-        );
-    }
-
-    /**
-     * Converts the given path to be relative to the root of the documentation
-     * target directory.
-     *
-     * It is not possible to use absolute paths in documentation templates since
-     * they may be used locally, or in a subfolder. As such we need to calculate
-     * the number of levels to go up from the current document's directory and
-     * then append the given path.
-     *
-     * For example:
-     *
-     *     Suppose you are in <root>/classes/my/class.html and you want open
-     *     <root>/my/index.html then you provide 'my/index.html' to this method
-     *     and it will convert it into ../../my/index.html (<root>/classes/my is
-     *     two nesting levels until the root).
-     *
-     * This method does not try to normalize or optimize the paths in order to
-     * save on development time and performance, and because it adds no real
-     * value.
-     *
-     * @param string $relative_path
-     *
-     * @return string
-     */
-    public function convertToRootPath($relative_path)
-    {
-        // get the path to the root directory
-        $path_parts = explode(DIRECTORY_SEPARATOR, $this->getDestination());
-        if (count($path_parts) > 1) {
-            $path_to_root = implode('/', array_fill(0, count($path_parts) -1, '..')).'/';
-        } else {
-            $path_to_root = '';
-        }
-
-        if (is_string($relative_path) && ($relative_path[0] != '@')) {
-            // append the relative path to the root
-            return $path_to_root.ltrim($relative_path, '/');
-        }
-
-        $rule = $this->routers->match($relative_path);
-        if (!$rule) {
-            return null;
-        }
-
-        $generatedPath = $rule->generate($relative_path);
-
-        return $generatedPath ? $path_to_root.ltrim($generatedPath, '/') : null;
     }
 }

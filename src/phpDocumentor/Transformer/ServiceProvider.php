@@ -72,26 +72,27 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'methods',
                 'usedTraits',
             ),
-            'phpDocumentor\Descriptor\InterfaceDescriptor'    => array(
+            'phpDocumentor\Descriptor\InterfaceDescriptor'       => array(
                 'tags',
                 'parent',
                 'constants',
                 'methods',
             ),
-            'phpDocumentor\Descriptor\TraitDescriptor'        => array(
+            'phpDocumentor\Descriptor\TraitDescriptor'           => array(
                 'tags',
                 'properties',
                 'methods',
                 'usedTraits',
             ),
-            'phpDocumentor\Descriptor\FunctionDescriptor'     => array('tags', 'arguments'),
-            'phpDocumentor\Descriptor\MethodDescriptor'       => array('tags', 'arguments'),
-            'phpDocumentor\Descriptor\ArgumentDescriptor'     => array('types'),
-            'phpDocumentor\Descriptor\PropertyDescriptor'     => array('tags', 'types'),
-            'phpDocumentor\Descriptor\ConstantDescriptor'     => array('tags', 'types'),
-            'phpDocumentor\Descriptor\Tag\ParamDescriptor'    => array('types'),
-            'phpDocumentor\Descriptor\Tag\ReturnDescriptor'   => array('types'),
-            'phpDocumentor\Descriptor\Tag\SeeDescriptor'      => array('reference'),
+            'phpDocumentor\Descriptor\FunctionDescriptor'        => array('tags', 'arguments'),
+            'phpDocumentor\Descriptor\MethodDescriptor'          => array('tags', 'arguments'),
+            'phpDocumentor\Descriptor\ArgumentDescriptor'        => array('types'),
+            'phpDocumentor\Descriptor\PropertyDescriptor'        => array('tags', 'types'),
+            'phpDocumentor\Descriptor\ConstantDescriptor'        => array('tags', 'types'),
+            'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => array('types'),
+            'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => array('types'),
+            'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => array('reference'),
+            'phpDocumentor\Descriptor\Type\CollectionDescriptor' => array('baseType', 'types', 'keyTypes'),
         );
 
         // services

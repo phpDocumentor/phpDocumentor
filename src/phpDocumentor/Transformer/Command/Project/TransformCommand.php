@@ -223,22 +223,15 @@ TEXT
 
         $templates = $input->getOption('template');
         if (!$templates) {
-            $value = $configurationHelper->getConfigValueFromPath('transformations/templates');
-            if (is_array($value)) {
-                if (isset($value['name'])) {
-                    $templates[] = $value['name'];
-                } else {
-                    foreach ($value as $template) {
-                        if (is_array($template)) {
-                            $templates[] = $template['name'];
-                        }
-                    }
-                }
+            /** @var Template[] $templatesFromConfig */
+            $templatesFromConfig = $configurationHelper->getConfigValueFromPath('transformations/templates');
+            foreach ($templatesFromConfig as $template) {
+                $templates[] = $template->getName();
             }
         }
 
         if (!$templates) {
-            $templates = array('responsive');
+            $templates = array('clean');
         }
 
         return $templates;

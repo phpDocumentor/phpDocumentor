@@ -24,8 +24,13 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        /** @var Translator $translator  */
+        $translator = $app['translator'];
+
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];
+
         $writerCollection['Pdf'] = new Writer\Pdf();
+        $writerCollection['Pdf']->setTranslator($translator);
     }
 }
