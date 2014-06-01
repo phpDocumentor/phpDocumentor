@@ -21,7 +21,7 @@ Feature: Omit specific elements based on their visibility
 
         abstract public function PublicMethod();
         abstract protected function ProtectedMethod();
-        abstract private function PrivateMethod();
+        private function PrivateMethod() { }
 
         /** @internal */
         abstract public function InternalMethod();
