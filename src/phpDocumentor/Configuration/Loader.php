@@ -46,7 +46,10 @@ class Loader
     public function load($templatePath, $userConfigurationPath, $class = 'phpDocumentor\Configuration')
     {
         $input = new ArgvInput();
-        $userConfigFilePath = $input->getParameterOption('config');
+        $userConfigFilePath = $input->getParameterOption('--config');
+        if (!$userConfigFilePath) {
+            $userConfigFilePath = $input->getParameterOption('-c');
+        }
 
         if ($userConfigFilePath && $userConfigFilePath != 'none' && is_readable($userConfigFilePath)) {
             chdir(dirname($userConfigFilePath));
