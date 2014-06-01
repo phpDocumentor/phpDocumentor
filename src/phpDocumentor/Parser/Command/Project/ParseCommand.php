@@ -181,7 +181,7 @@ class ParseCommand extends Command
             $mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
-            $visibility = $configurationHelper->getOption($input, 'visibility', 'parser/visibility');
+            $visibility = (array)$configurationHelper->getOption($input, 'visibility', 'parser/visibility');
             $visibilities = array();
             foreach ($visibility as $item) {
                 $visibilities = $visibilities + explode(',', $item);
