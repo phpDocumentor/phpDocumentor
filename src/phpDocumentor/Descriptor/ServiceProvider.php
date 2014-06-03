@@ -69,6 +69,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
+use Zend\Cache\Storage\Plugin\PluginOptions;
 
 /**
  * This provider is responsible for registering the Descriptor component with the given Application.
