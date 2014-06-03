@@ -277,7 +277,16 @@ class ServiceProvider implements ServiceProviderInterface
                          'cache_dir' => sys_get_temp_dir(),
                     )
                 );
-                $cache->addPlugin(new SerializerPlugin());
+                $plugin = new SerializerPlugin();
+
+                if (extension_loaded('igbinary')) {
+                    $options = new PluginOptions();
+                    $options->setSerializer('igbinary');
+
+                    $plugin->setOptions($options);
+                }
+
+                $cache->addPlugin($plugin);
 
                 return $cache;
             }
