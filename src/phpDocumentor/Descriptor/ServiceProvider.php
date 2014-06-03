@@ -296,7 +296,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     protected function addBuilder(Application $app)
     {
-        $app['descriptor.builder.serializer'] = 'PhpSerialize';
+        if (extension_loaded('igbinary')) {
+            $app['descriptor.builder.serializer'] = 'IgBinary';
+        } else {
+            $app['descriptor.builder.serializer'] = 'PhpSerialize';
+        }
 
         $app['descriptor.builder'] = $app->share(
             function ($container) {
