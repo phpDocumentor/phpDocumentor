@@ -66,13 +66,13 @@ there will be no info on this screen.
 
 2. ssh into the vagrant virtual machine with vagrant ssh.
 3. xhgui by default will only profile 1 out of 100 requests. To make it profile every request edit the following file on the guest machine
-   /var/www/xhgui/external/header.php
-   and remove the code below located on line 45
+   /var/www/xhgui/config/config.default.php
+   and change the code located on line 27 to
 ``` php
-// Obtain the answer to life, the universe, and your application one time out of a hundred
-if (rand(0, 100) !== 42) {
-    return;
-}
+    // Profile 1 in 100 requests.
+    'profiler.enable' => function() {
+        return true; //rand(0, 100) === 42;
+    },
 ```
 
 4. You need to let phpDocumentor know that you want to switch profiling on. Todo this you need to create two environment variables using the command below
