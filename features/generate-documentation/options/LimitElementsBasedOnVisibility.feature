@@ -21,7 +21,7 @@ Feature: Omit specific elements based on their visibility
 
         abstract public function PublicMethod();
         abstract protected function ProtectedMethod();
-        abstract private function PrivateMethod();
+        private function PrivateMethod() { }
 
         /** @internal */
         abstract public function InternalMethod();
@@ -74,10 +74,10 @@ Feature: Omit specific elements based on their visibility
   Scenario: Only show public elements if 'public' is provided using the `parser/visibility` configuration option
     Given a file named "custom-options.xml" with:
     """
-      <?xml version="1.0" encoding="UTF-8" ?>
-      <phpdocumentor>
-          <parser><visibility>public</visibility></parser>
-      </phpdocumentor>
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+    <parser><visibility>public</visibility></parser>
+</phpdocumentor>
     """
     When I run "phpdoc -f test.php -c custom-options.xml"
     Then the AST has a "property" at expression "project.getFiles()['test.php'].getClasses()['\\A'].getProperties()['public']"
@@ -89,10 +89,10 @@ Feature: Omit specific elements based on their visibility
   Scenario: Only show protected elements if 'protected' is provided using the `parser/visibility` configuration option
     Given a file named "custom-options.xml" with:
     """
-      <?xml version="1.0" encoding="UTF-8" ?>
-      <phpdocumentor>
-          <parser><visibility>protected</visibility></parser>
-      </phpdocumentor>
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+    <parser><visibility>protected</visibility></parser>
+</phpdocumentor>
     """
     When I run "phpdoc -f test.php -c custom-options.xml"
     Then the AST has no "property" at expression "project.getFiles()['test.php'].getClasses()['\\A'].getProperties()['public']"
@@ -104,10 +104,10 @@ Feature: Omit specific elements based on their visibility
   Scenario: Only show private elements if 'private' is provided using the `parser/visibility` configuration option
     Given a file named "custom-options.xml" with:
     """
-      <?xml version="1.0" encoding="UTF-8" ?>
-      <phpdocumentor>
-          <parser><visibility>private</visibility></parser>
-      </phpdocumentor>
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+    <parser><visibility>private</visibility></parser>
+</phpdocumentor>
     """
     When I run "phpdoc -f test.php -c custom-options.xml"
     Then the AST has no "property" at expression "project.getFiles()['test.php'].getClasses()['\\A'].getProperties()['public']"
@@ -119,10 +119,10 @@ Feature: Omit specific elements based on their visibility
   Scenario: Show public and protected elements if both 'public' and 'protected' is provided using the `parser/visibility` configuration option
     Given a file named "custom-options.xml" with:
     """
-      <?xml version="1.0" encoding="UTF-8" ?>
-      <phpdocumentor>
-          <parser><visibility>public,protected</visibility></parser>
-      </phpdocumentor>
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+    <parser><visibility>public,protected</visibility></parser>
+</phpdocumentor>
     """
     When I run "phpdoc -f test.php -c custom-options.xml"
     Then the AST has a "property" at expression "project.getFiles()['test.php'].getClasses()['\\A'].getProperties()['public']"

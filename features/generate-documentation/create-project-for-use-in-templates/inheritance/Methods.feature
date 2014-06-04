@@ -18,15 +18,15 @@ Feature: Methods inherit information from methods, with the same name, in a pare
          *
          * @return string This is the description.
          */
-        public function method() {}
+        public function method($a);
       }
 
       interface IB extends IA {
-        public function method() {}
+        public function method($a);
       }
 
       interface IC extends IB {
-        public function method() {}
+        public function method($a);
       }
 
       class A {
@@ -61,14 +61,15 @@ Feature: Methods inherit information from methods, with the same name, in a pare
          * This is a description specific to this class.
          * {@inheritDoc}
          */
-        public function method();
+        public function method($a);
       }
 
       class E implements IA {
-        public function method();
+        public function method($a) { }
       }
       """
     When I run "phpdoc -f test.php"
+    Then the application must have run successfully
 
   Scenario: Methods belonging to a class inherit the Summary
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getMethods()['method'].getSummary()" with value:

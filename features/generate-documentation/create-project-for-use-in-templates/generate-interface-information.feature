@@ -15,15 +15,16 @@ Feature: Generate information about one or more interfaces in a project
        * @package Test
        * @version 1.0
        */
-      interface A extends IB, IC, \DateTimeInterface {
+      interface A extends B, C, \DateTimeInterface {
         const CONSTANT = 1;
-        public function method() {}
+        public function method();
       }
 
       interface B { }
       interface C { }
       """
     When I run "phpdoc -f test.php"
+    Then the application must have run successfully
 
   Scenario: Interface is present in the project
     Then the AST has a "interface" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A']"
@@ -43,9 +44,9 @@ Feature: Generate information about one or more interfaces in a project
     Then the AST has a "method" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getMethods()['method']"
 
   Scenario: Interface correctly links to super interfaces
-    Then the AST has a "interface" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getParent()['\\MySpace\B']"
-    And the AST has a "interface" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getParent()['\\MySpace\C']"
-    And the AST has an expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getParent()[2]" with value: "\DateTime"
+    Then the AST has a "interface" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getParent()['\\MySpace\\B']"
+    And the AST has a "interface" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getParent()['\\MySpace\\C']"
+    And the AST has an expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getParent()['\\DateTimeInterface']" with value: "\DateTimeInterface"
 
   Scenario: Interface correctly links to namespace
     Then the AST has a "namespace" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\A'].getNamespace()"

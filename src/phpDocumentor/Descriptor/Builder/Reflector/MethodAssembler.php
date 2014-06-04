@@ -100,6 +100,10 @@ class MethodAssembler extends AssemblerAbstract
     protected function addArgument($argument, $descriptor)
     {
         $params = $descriptor->getTags()->get('param', array());
+
+        if (!$this->argumentAssembler->getBuilder()) {
+            $this->argumentAssembler->setBuilder($this->builder);
+        }
         $argumentDescriptor = $this->argumentAssembler->create($argument, $params);
 
         $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);

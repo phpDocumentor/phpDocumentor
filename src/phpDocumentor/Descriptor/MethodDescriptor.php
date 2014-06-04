@@ -55,6 +55,9 @@ class MethodDescriptor
             $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()'
         );
 
+        // reset cached inherited element so that it can be re-detected.
+        $this->inheritedElement = null;
+
         $this->parent = $parent;
     }
 
@@ -208,12 +211,26 @@ class MethodDescriptor
     }
 
     /**
-     * Returns the Method from which this one should inherit, if any.
+     * Returns the Method from which this method should inherit its information, if any.
+     *
+     * The inheritance scheme for a method is more complicated than for most elements; the following business rules
+     * apply:
+     *
+     * 1. if the parent class/interface extends another class or other interfaces (interfaces have multiple
+     *    inheritance!) then:
+     *    1. Check each parent class/interface's parent if they have a method with the exact same name
+     *    2. if a method is found with the same name; return the first one encountered.
+     * 2. if the parent is a class and implements interfaces, check each interface for a method with the exact same
+     *    name. If such a method is found, return the first hit.
      *
      * @return MethodDescriptor|null
      */
     public function getInheritedElement()
     {
+        if ($this->inheritedElement !== null) {
+            return $this->inheritedElement;
+        }
+
         /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
         $associatedClass = $this->getParent();
         if (!$associatedClass instanceof ClassDescriptor && !$associatedClass instanceof InterfaceDescriptor) {
@@ -222,27 +239,37 @@ class MethodDescriptor
 
         /** @var ClassDescriptor|InterfaceDescriptor $parentClass|null */
         $parentClass = $associatedClass->getParent();
-        if ($parentClass instanceof ClassDescriptor || $parentClass instanceof InterfaceDescriptor) {
-            $parentMethod = $parentClass->getMethods()->get($this->getName());
-            if ($parentMethod) {
-                return $parentMethod;
+        if ($parentClass) {
+            if (!$parentClass instanceof ClassDescriptor && !$parentClass instanceof Collection) {
+                return null;
+            }
+
+            // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
+            $parents = $parentClass instanceof ClassDescriptor ? array($parentClass) : $parentClass->getAll();
+            foreach ($parents as $parent) {
+                if ($parent instanceof ClassDescriptor || $parent instanceof InterfaceDescriptor) {
+                    $parentMethod = $parent->getMethods()->get($this->getName());
+                    if ($parentMethod) {
+                        $this->inheritedElement = $parentMethod;
+                        return $this->inheritedElement;
+                    }
+                }
             }
         }
 
         // also check all implemented interfaces next if the parent is a class and not an interface
-        if (!$associatedClass instanceof ClassDescriptor) {
-            return null;
-        }
+        if ($associatedClass instanceof ClassDescriptor) {
+            /** @var InterfaceDescriptor $interface */
+            foreach ($associatedClass->getInterfaces() as $interface) {
+                if (!$interface instanceof InterfaceDescriptor) {
+                    continue;
+                }
 
-        /** @var InterfaceDescriptor $interface */
-        foreach ($associatedClass->getInterfaces() as $interface) {
-            if (!$interface instanceof InterfaceDescriptor) {
-                continue;
-            }
-
-            $parentMethod = $interface->getMethods()->get($this->getName());
-            if ($parentMethod) {
-                return $parentMethod;
+                $parentMethod = $interface->getMethods()->get($this->getName());
+                if ($parentMethod) {
+                    $this->inheritedElement = $parentMethod;
+                    return $this->inheritedElement;
+                }
             }
         }
 

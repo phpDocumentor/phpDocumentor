@@ -37,6 +37,7 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
+        $this->argumentAssemblerMock->shouldReceive('getBuilder')->andReturn($this->builderMock);
 
         $this->fixture = new MethodAssembler($this->argumentAssemblerMock);
         $this->fixture->setBuilder($this->builderMock);

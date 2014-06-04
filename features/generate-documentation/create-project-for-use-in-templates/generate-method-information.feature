@@ -25,10 +25,15 @@ Feature: Generate information about one or more methods in a class of a project
         public function method($a, \DateTime $b, B $c) {}
       }
 
+      interface IA {
+        public function method();
+      }
+
       class B {}
 
       """
     When I run "phpdoc -f test.php"
+    Then the application must have run successfully
 
   Scenario: Method is present in the project
     Then the AST has a "method" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method']"
@@ -41,19 +46,23 @@ Feature: Generate information about one or more methods in a class of a project
 
   Scenario: Method has arguments
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments().count()" with value: "3"
-    And the AST has an "argument" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a']"
-    And the AST has an "argument" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$b']"
-    And the AST has an "argument" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$c']"
+     And the AST has an "argument" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a']"
+     And the AST has an "argument" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$b']"
+     And the AST has an "argument" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$c']"
 
   Scenario: An argument has a description
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a'].getDescription()" with value: "This is an integer."
 
   Scenario: An argument has the correct type
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a'].getTypes()[0]" with value: "int"
+    Then the AST has an "Type\Integer" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$a'].getTypes()[0]"
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$b'].getTypes()[0]" with value: "\DateTime"
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$c'].getTypes()[0]"
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getArguments()['$c'].getTypes()[0].getName()" with value: "B"
 
   Scenario: Method correctly links to the parent class
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getParent()"
-    And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getParent().getName()" with value: "A"
+     And the AST has an expression "project.getFiles()['test.php'].getClasses()['\\MySpace\\A'].getMethods()['method'].getParent().getName()" with value: "A"
+
+  Scenario: Method correctly links to the parent interface
+    Then the AST has a "interface" at expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\IA'].getMethods()['method'].getParent()"
+     And the AST has an expression "project.getFiles()['test.php'].getInterfaces()['\\MySpace\\IA'].getMethods()['method'].getParent().getName()" with value: "IA"

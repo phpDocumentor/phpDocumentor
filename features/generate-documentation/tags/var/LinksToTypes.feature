@@ -21,9 +21,6 @@ Feature: `@var` should link to types
 
           /** @var C */
           public $e;
-
-          /** @var (A|B)[] */
-          public $f;
       }
       """
     When I run "phpdoc -f test.php"
@@ -38,19 +35,12 @@ Feature: `@var` should link to types
     Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['e'].getVar()[0].getTypes()[0]" with value: "\C"
 
   Scenario:
-    Then the AST has a "collection" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['b'].getVar()[0].getTypes()[0]"
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['b'].getVar()[0].getBaseType()" with value: "array"
+    Then the AST has a "Type\Collection" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['b'].getVar()[0].getTypes()[0]"
+    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['b'].getVar()[0].getTypes()[0].getName()" with value: "array"
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['b'].getVar()[0].getTypes()[0].getTypes()[0]"
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['b'].getVar()[0].getKeyTypes()[0]" with value: "mixed"
+    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['b'].getVar()[0].getTypes()[0].getKeyTypes()[0]" with value: "mixed"
 
   Scenario:
     Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['c'].getVar()[0].getTypes()[0]"
-    Then the AST has a "collection" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['c'].getVar()[0].getTypes()[1]"
-
-  Scenario:
-    Then the AST has a "collection" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['f'].getVar()[0].getTypes()[0]"
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['f'].getVar()[0].getBaseType()" with value: "array"
-    Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['f'].getVar()[0].getTypes()[0].getTypes()[0]"
-    Then the AST has a "class" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['f'].getVar()[0].getTypes()[0].getTypes()[1]"
-    Then the AST has an expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['f'].getVar()[0].getKeyTypes()[0]" with value: "mixed"
+    Then the AST has a "Type\Collection" at expression "project.getFiles()['test.php'].getClasses()['\\B'].getProperties()['c'].getVar()[0].getTypes()[1]"
 
