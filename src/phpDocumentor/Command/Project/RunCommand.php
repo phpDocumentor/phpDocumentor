@@ -172,7 +172,7 @@ HELP
             ->addOption(
                 'visibility',
                 null,
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Specifies the parse visibility that should be displayed in the documentation (comma separated e.g. '
                 . '"public,protected")'
             )

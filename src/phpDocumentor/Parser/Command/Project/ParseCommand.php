@@ -108,7 +108,7 @@ class ParseCommand extends Command
             ->addOption('title', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TITLE'))
             ->addOption('force', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-FORCE'))
             ->addOption('validate', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-VALIDATE'))
-            ->addOption('visibility', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-VISIBILITY'))
+            ->addOption('visibility', null, $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-VISIBILITY'))
             ->addOption('sourcecode', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-SOURCECODE'))
             ->addOption('progressbar', 'p', InputOption::VALUE_NONE, $this->__('PPCPP:OPT-PROGRESSBAR'))
             ->addOption('parseprivate', null, InputOption::VALUE_NONE, 'PPCPP:OPT-PARSEPRIVATE')
@@ -181,7 +181,22 @@ class ParseCommand extends Command
             $mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
-            $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
+            $visibility = (array)$configurationHelper->getOption($input, 'visibility', 'parser/visibility');
+            $visibilities = array();
+            foreach ($visibility as $item) {
+                $visibilities = $visibilities + explode(',', $item);
+            }
+            $visibility = null;
+            foreach ($visibilities as $item) {
+                switch ($item) {
+                    case 'public'   : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC; break;
+                    case 'protected': $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED; break;
+                    case 'private'  : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE; break;
+                }
+            }
+            if ($visibility === null) {
+                $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
+            }
             if ($input->getOption('parseprivate')) {
                 $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
             }
@@ -226,7 +241,6 @@ class ParseCommand extends Command
         $parser->setMarkers($configurationHelper->getOption($input, 'markers', 'parser/markers', array(), true));
         $parser->setIgnoredTags($input->getOption('ignore-tags'));
         $parser->setValidate($input->getOption('validate'));
-        $parser->setVisibility((string) $configurationHelper->getOption($input, 'visibility', 'parser/visibility'));
         $parser->setDefaultPackageName(
             $configurationHelper->getOption($input, 'defaultpackagename', 'parser/default-package-name')
         );

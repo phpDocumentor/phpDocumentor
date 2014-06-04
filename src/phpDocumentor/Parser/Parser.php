@@ -60,14 +60,6 @@ class Parser implements LoggerAwareInterface
     /** @var LoggerInterface $logger */
     protected $logger;
 
-    /**
-     * Array of visibility modifiers that should be adhered to when generating
-     * the documentation
-     *
-     * @var array
-     */
-    protected $visibility = array('public', 'protected', 'private');
-
     /** @var string The encoding in which the files are encoded */
     protected $encoding = 'utf-8';
 
@@ -233,32 +225,6 @@ class Parser implements LoggerAwareInterface
     public function getPath()
     {
         return $this->path;
-    }
-
-    /**
-     * Set the visibility of the methods/properties that should be documented
-     *
-     * @param string $visibility Comma seperated string of visibility modifiers
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setVisibility($visibility)
-    {
-        if ('' != $visibility) {
-            $this->visibility = explode(',', $visibility);
-        }
-    }
-
-    /**
-     * Returns which elements' are allowed to be returned by visibility.
-     *
-     * @return string[]
-     */
-    public function getVisibility()
-    {
-        return $this->visibility;
     }
 
     /**

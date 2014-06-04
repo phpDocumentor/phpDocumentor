@@ -17,7 +17,9 @@ use phpDocumentor\Descriptor\Tag\VarDescriptor;
 /**
  * Descriptor representing a property.
  */
-class PropertyDescriptor extends DescriptorAbstract implements Interfaces\PropertyInterface
+class PropertyDescriptor
+    extends DescriptorAbstract
+    implements Interfaces\PropertyInterface, Interfaces\VisibilityInterface
 {
     /** @var ClassDescriptor|TraitDescriptor $parent */
     protected $parent;

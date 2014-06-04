@@ -15,6 +15,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -74,7 +75,8 @@ class ProjectDescriptorBuilder
      * to determine whether the visibility of that element is matches what the user has specified when it ran
      * phpDocumentor.
      *
-     * @param integer $visibility One of the visibility constants of the ProjectDescriptor class.
+     * @param string|integer $visibility One of the visibility constants of the ProjectDescriptor class or the words
+     *     'public', 'protected', 'private' or 'internal'.
      *
      * @see ProjectDescriptor where the visibility is stored and that declares the constants to use.
      *
@@ -82,6 +84,13 @@ class ProjectDescriptorBuilder
      */
     public function isVisibilityAllowed($visibility)
     {
+        switch($visibility) {
+            case 'public':    $visibility = Settings::VISIBILITY_PUBLIC; break;
+            case 'protected': $visibility = Settings::VISIBILITY_PROTECTED; break;
+            case 'private':   $visibility = Settings::VISIBILITY_PRIVATE; break;
+            case 'internal':  $visibility = Settings::VISIBILITY_INTERNAL; break;
+        }
+
         return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
     }
 
