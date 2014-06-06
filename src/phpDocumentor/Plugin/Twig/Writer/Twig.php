@@ -279,6 +279,7 @@ class Twig extends WriterAbstract implements Routable
             : false;
         if ($isDebug == 'true') {
             $twigEnvironment->enableDebug();
+            $twigEnvironment->enableAutoReload();
             $twigEnvironment->addExtension(new \Twig_Extension_Debug());
         }
 
