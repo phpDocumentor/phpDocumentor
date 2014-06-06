@@ -341,7 +341,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedPropertiess
+     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
      * @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307
      */
     public function testRetrievingInheritedPropertiesDoesNotCrashWhenUsedTraitIsNotInProject()
