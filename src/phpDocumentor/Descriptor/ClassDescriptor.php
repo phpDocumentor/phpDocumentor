@@ -171,8 +171,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     {
         $inheritedMethods = new Collection();
 
-        /** @var TraitDescriptor $trait */
-        foreach($this->getUsedTraits() as $trait) {
+        foreach ($this->getUsedTraits() as $trait) {
+            if (!$trait instanceof TraitDescriptor) {
+                continue;
+            }
+
             $inheritedMethods = $inheritedMethods->merge(clone $trait->getMethods());
         }
 
@@ -242,8 +245,11 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     {
         $inheritedProperties = new Collection();
 
-        /** @var TraitDescriptor $trait */
-        foreach($this->getUsedTraits() as $trait) {
+        foreach ($this->getUsedTraits() as $trait) {
+            if (!$trait instanceof TraitDescriptor) {
+                continue;
+            }
+
             $inheritedProperties = $inheritedProperties->merge(clone $trait->getProperties());
         }
 
