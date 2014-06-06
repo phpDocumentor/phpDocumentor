@@ -46,17 +46,20 @@ class Loader
     public function load($templatePath, $userConfigurationPath, $class = 'phpDocumentor\Configuration')
     {
         $input = new ArgvInput();
-        $userConfigFilePath = $input->getParameterOption('config');
+        $userConfigFilePath = $input->getParameterOption('--config');
+        if (!$userConfigFilePath) {
+            $userConfigFilePath = $input->getParameterOption('-c');
+        }
 
         if ($userConfigFilePath && $userConfigFilePath != 'none' && is_readable($userConfigFilePath)) {
             chdir(dirname($userConfigFilePath));
         } else {
-            $userConfigFilePath = $userConfigFilePath != 'none' ? null : 'none';
+            $userConfigFilePath = null;
         }
 
         $config = $this->serializer->deserialize(file_get_contents($templatePath), $class, 'xml');
 
-        if ($userConfigFilePath != 'none') {
+        if ($userConfigFilePath !== null) {
             $userConfigFilePath = $userConfigFilePath ?: $userConfigurationPath;
             $userConfigFile = $this->serializer->deserialize(file_get_contents($userConfigFilePath), $class, 'xml');
 

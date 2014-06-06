@@ -99,6 +99,7 @@ class TypeCollectionAssembler extends AssemblerAbstract
     {
         $arrayDescriptor = new CollectionDescriptor('array');
         $arrayDescriptor->setTypes(array($descriptor));
+        $arrayDescriptor->setKeyTypes(array('mixed'));
 
         return $arrayDescriptor;
     }

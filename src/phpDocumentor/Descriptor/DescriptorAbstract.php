@@ -51,6 +51,9 @@ abstract class DescriptorAbstract implements Filterable
     /** @var Collection $errors A list of errors found while building this element. */
     protected $errors;
 
+    /** @var DescriptorAbstract|null the element from which to inherit information in this element */
+    protected $inheritedElement = null;
+
     /**
      * Initializes this descriptor.
      */
@@ -302,11 +305,12 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getPackage()
     {
-        if ($this->package instanceof PackageDescriptor) {
+        $inheritedElement = $this->getInheritedElement();
+        if ($this->package instanceof PackageDescriptor
+            && ! ($this->package->getName() === '\\' && $inheritedElement)) {
             return $this->package;
         }
 
-        $inheritedElement = $this->getInheritedElement();
         if ($inheritedElement instanceof DescriptorAbstract) {
             return $inheritedElement->getPackage();
         }
@@ -443,6 +447,6 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function getInheritedElement()
     {
-        return null;
+        return $this->inheritedElement;
     }
 }
