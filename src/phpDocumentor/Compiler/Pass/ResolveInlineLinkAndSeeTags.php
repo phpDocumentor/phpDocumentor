@@ -97,8 +97,6 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
                 $descriptor->getDescription()
             )
         );
-
-        var_dump($descriptor->getDescription());
     }
 
     /**
