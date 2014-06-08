@@ -37,7 +37,7 @@
         "zendframework/zend-serializer":     "2.1.*",
         "zendframework/zend-cache":          "2.1.*",
         "zendframework/zend-filter":         "2.1.*",
-        "zendframework/zendpdf":             "2.*",
+        "zendframework/zendpdf":             "2.0.2",
 
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",
