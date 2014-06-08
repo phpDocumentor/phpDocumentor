@@ -17,7 +17,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 use ZendPdf\PdfDocument;
 
 /**
- * PdfMerger Writer.
+ * Writer respondable to merge several pdf documents.
  *
  * Usage in template.xml would be:
  * `<transformation writer="PdfMerger" source="markers.pdf,errors.pdf,deprecated.pdf" artifact="docu.pdf"/>`
@@ -40,12 +40,12 @@ class PdfMerger extends WriterAbstract
         $source = $transformation->getSource();
         $target = $transformation->getTransformer()->getTarget();
 
-        $pages = explode(',', $source);
+        $documents = explode(',', $source);
 
         $pdfMerged = new PdfDocument();
 
-        foreach ($pages as $page) {
-            $pdfDocument = PdfDocument::load($target . DIRECTORY_SEPARATOR . $page);
+        foreach ($documents as $document) {
+            $pdfDocument = PdfDocument::load($target . DIRECTORY_SEPARATOR . $document);
 
             foreach ($pdfDocument->pages as $page) {
                 $clonedPage = clone $page;
