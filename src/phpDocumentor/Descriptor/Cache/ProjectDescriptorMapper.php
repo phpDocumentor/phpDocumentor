@@ -17,6 +17,7 @@ use Zend\Cache\Storage\OptimizableInterface;
 use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Fileset\Collection;
 
 /**
@@ -63,7 +64,12 @@ class ProjectDescriptorMapper
         $iteratorInterface = $this->getCache()->getIterator();
 
         // load the settings object
-        $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
+        try {
+            $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
+        } catch (\Exception $e) {
+            $settings = $this->makeIgBinaryCompatible($projectDescriptor, self::KEY_SETTINGS, $e);
+        }
+
         if ($settings) {
             $projectDescriptor->setSettings($settings);
         }
@@ -71,11 +77,42 @@ class ProjectDescriptorMapper
         // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
         if ($iteratorInterface->valid()) {
             foreach ($this->getCache() as $key) {
-                $item = $this->getCache()->getItem($key);
+                try {
+                    $item = $this->getCache()->getItem($key);
+                } catch (\Exception $e) {
+                    $item = $this->makeIgBinaryCompatible($projectDescriptor, $key, $e);
+                }
+
                 if ($item instanceof FileDescriptor) {
                     $projectDescriptor->getFiles()->set($item->getPath(), $item);
                 }
             }
+        }
+    }
+
+    /**
+     * Reserialize files for igbinary support.
+     *
+     * @param ProjectDescriptor $projectDescriptor
+     * @param string $key
+     * @param \Exception $e
+     *
+     * @throws \Exception Rethrows exception if nessesary
+     *
+     * @return Settings|FileDescriptor
+     */
+    protected function makeIgBinaryCompatible($projectDescriptor, $key, $e)
+    {
+        if (extension_loaded('igbinary')) {
+            $item = $key === self::KEY_SETTINGS
+                ? $projectDescriptor->getSettings()
+                : $projectDescriptor->getFiles()->get($key);
+
+            $this->getCache()->setItem($key, igbinary_serialize($item));
+
+            return $item;
+        } else {
+            throw $e;
         }
     }
 
