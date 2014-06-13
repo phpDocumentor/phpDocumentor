@@ -11,11 +11,23 @@
 
 namespace phpDocumentor\Plugin\Core\Xslt;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Transformer\Router\Queue;
+
 /**
  * XSLT filters that can be used inside a template.
  */
 class Extension
 {
+    /** @var ProjectDescriptorBuilder */
+    public static $descriptorBuilder;
+
+    /**
+     * @var Queue
+     */
+    public static $routers;
+
     /**
      * Markdown filter.
      *
@@ -42,5 +54,19 @@ class Extension
         $markdown = \Parsedown::instance();
 
         return $markdown->parse($text);
+    }
+
+    public static function path($fqcn)
+    {
+        $projectDescriptor = self::$descriptorBuilder->getProjectDescriptor();
+        $elementList = $projectDescriptor->getIndexes('elements');
+        $node = $elementList[$fqcn] ?: $elementList['~\\' . $fqcn] ?: $fqcn;
+
+        $rule = self::$routers->match($node);
+        if (! $rule) {
+            return '';
+        }
+
+        return $rule->generate($node);
     }
 }
