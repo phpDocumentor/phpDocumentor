@@ -15,6 +15,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Symfony\Component\Process\PhpProcess;
 
 /**
  * Sourcecode transformation writer; generates syntax highlighted source files in a destination's subfolder.
@@ -48,9 +49,11 @@ class Sourcecode extends WriterAbstract
                 mkdir(dirname($path), 0755, true);
             }
             $source = htmlentities($source);
-            file_put_contents(
-                $path.'.html',
-                <<<HTML
+            $process = new PhpProcess(<<<EOF
+<?php
+  file_put_contents(
+      $path.'.html',
+      <<<HTML
 <html>
     <head>
         <script
@@ -97,7 +100,11 @@ class Sourcecode extends WriterAbstract
     </body>
 </html>
 HTML
+  );
+?>
+EOF
             );
+            $process->run();
 
         }
     }
