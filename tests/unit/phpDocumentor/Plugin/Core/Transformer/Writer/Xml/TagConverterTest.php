@@ -40,7 +40,7 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
     public function testConvertGenericTag($name, $description, $resultName, $resultDescription)
     {
         // Arrange
-        $tagConverter = new TagConverter();
+        $tagConverter = new TagConverter(m::mock('phpDocumentor\Transformer\Router\RouterAbstract'));
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock($name, $description);
 
@@ -63,7 +63,8 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
     public function testWhetherTypesAreAddedWhenPresent()
     {
         // Arrange
-        $tagConverter = new TagConverter();
+        $router = m::mock('phpDocumentor\Transformer\Router\RouterAbstract')->shouldIgnoreMissing();
+        $tagConverter = new TagConverter($router);
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
         $tag->shouldReceive('getTypes')->andReturn(array('string', 'integer', '\DateTime'));
@@ -91,7 +92,7 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
     public function testWhetherVariableNamesAreAddedWhenPresent()
     {
         // Arrange
-        $tagConverter = new TagConverter();
+        $tagConverter = new TagConverter(m::mock('phpDocumentor\Transformer\Router\RouterAbstract'));
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VarDescriptor');
         $tag->shouldReceive('getTypes')->andReturn(array());
@@ -118,7 +119,7 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
     public function testWhetherTheVersionIsPrependedToTheDescription()
     {
         // Arrange
-        $tagConverter = new TagConverter();
+        $tagConverter = new TagConverter(m::mock('phpDocumentor\Transformer\Router\RouterAbstract'));
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\VersionDescriptor');
         $tag->shouldReceive('getVersion')->andReturn('1.0');
@@ -141,7 +142,7 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $reference = '\DateTime::add()';
-        $tagConverter = new TagConverter();
+        $tagConverter = new TagConverter(m::mock('phpDocumentor\Transformer\Router\RouterAbstract'));
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\UsesDescriptor');
         $tag->shouldReceive('getReference')->andReturn($reference);
@@ -164,7 +165,7 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $link         = 'http://www.phpdoc.org';
-        $tagConverter = new TagConverter();
+        $tagConverter = new TagConverter(m::mock('phpDocumentor\Transformer\Router\RouterAbstract'));
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\LinkDescriptor');
         $tag->shouldReceive('getLink')->andReturn($link);
@@ -187,7 +188,7 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $methodName   = 'getMethod';
-        $tagConverter = new TagConverter();
+        $tagConverter = new TagConverter(m::mock('phpDocumentor\Transformer\Router\RouterAbstract'));
         $parent       = $this->prepareDocBlockXMLElement();
         $tag          = $this->createTagDescriptorMock('name', 'description', 'Tag\MethodDescriptor');
         $tag->shouldReceive('getMethodName')->andReturn($methodName);
