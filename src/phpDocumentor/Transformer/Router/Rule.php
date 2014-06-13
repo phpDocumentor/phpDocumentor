@@ -40,11 +40,15 @@ class Rule
     /**
      * Returns true when this rule is applicable to the given node.
      *
+     * The contents of $node MAY be changed so that later rules in a router can try to match the changed value. An
+     * example of this is a string matcher that converts a provided FQSEN to a Descriptor so that Descriptor matchers
+     * in subsequent rules can generate a URL for it.
+     *
      * @param string|DescriptorAbstract $node
      *
      * @return boolean
      */
-    public function match($node)
+    public function match(&$node)
     {
         $callable = $this->matcher;
 
