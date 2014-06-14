@@ -20,6 +20,7 @@ use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
+use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
@@ -104,6 +105,10 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
                 $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
+                $compiler->insert(
+                    new ResolveInlineLinkAndSeeTags($container['transformer.routing.queue']),
+                    ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY
+                );
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
                 $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
                 $compiler->insert(
