@@ -136,6 +136,9 @@ class Xsl extends WriterAbstract implements Routable
                     $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
                 }
 
+                $relativeFileName = substr($filename, strlen($transformation->getTransformer()->getTarget()) + 1);
+                $proc->setParameter('', 'root', str_repeat('../', substr_count($relativeFileName, '/')));
+
                 $this->writeToFile($filename, $proc, $structure);
             }
         } else {
@@ -144,6 +147,9 @@ class Xsl extends WriterAbstract implements Routable
                 $variable_name = substr($transformation->getArtifact(), 1);
                 $this->xsl_variables[$variable_name] = $proc->transformToXml($structure);
             } else {
+                $relativeFileName = substr($artifact, strlen($transformation->getTransformer()->getTarget()) + 1);
+                $proc->setParameter('', 'root', str_repeat('../', substr_count($relativeFileName, '/')));
+
                 $this->writeToFile($artifact, $proc, $structure);
             }
         }
@@ -276,7 +282,6 @@ class Xsl extends WriterAbstract implements Routable
     private function registerDefaultVariables(Transformation $transformation, $proc, $structure)
     {
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
-        $proc->setParameter('', 'root', str_repeat('../', substr_count($transformation->getArtifact(), '/')));
         $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
         $proc->setParameter('', 'version', Application::$VERSION);
         $proc->setParameter('', 'generated_datetime', date('r'));

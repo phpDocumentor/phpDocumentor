@@ -32,6 +32,7 @@ class Extension
      * Markdown filter.
      *
      * Example usage inside template would be:
+     *
      * ```
      * <div class="long_description">
      *     <xsl:value-of
@@ -56,17 +57,38 @@ class Extension
         return $markdown->parse($text);
     }
 
-    public static function path($fqcn)
+    /**
+     * Returns a relative URL from the webroot if the given FQSEN exists in the project.
+     *
+     * Example usage inside template would be (where @link is an attribute called link):
+     *
+     * ```
+     * <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::path', string(@link))" />
+     * ```
+     *
+     * @param string $fqsen
+     *
+     * @return bool|string
+     */
+    public static function path($fqsen)
     {
         $projectDescriptor = self::$descriptorBuilder->getProjectDescriptor();
-        $elementList = $projectDescriptor->getIndexes('elements');
-        $node = $elementList[$fqcn] ?: $elementList['~\\' . $fqcn] ?: $fqcn;
+        $elementList = $projectDescriptor->getIndexes()->get('elements');
+
+        $node = $fqsen;
+        if (isset($elementList[$fqsen])) {
+            $node = $elementList[$fqsen];
+        } elseif (isset($elementList['~\\' . $fqsen])) {
+            $node = $elementList['~\\' . $fqsen];
+        }
 
         $rule = self::$routers->match($node);
         if (! $rule) {
             return '';
         }
 
-        return $rule->generate($node);
+        $generatedUrl = $rule->generate($node);
+
+        return $generatedUrl ? ltrim($generatedUrl, '/') : false;
     }
 }
