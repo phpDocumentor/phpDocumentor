@@ -208,13 +208,13 @@ class Xml extends WriterAbstract implements Translatable
             $markers = new \DOMElement('markers');
             $child->appendChild($markers);
 
-//            foreach ($file->getMarkers() as $marker) {
-//                $marker_obj = new \DOMElement(strtolower($marker['type']));
-//                $markers->appendChild($marker_obj);
-//
-//                $marker_obj->appendChild(new \DOMText(trim($marker['message'])));
-//                $marker_obj->setAttribute('line', $marker['line']);
-//            }
+            foreach ($file->getMarkers() as $marker) {
+                $marker_obj = new \DOMElement(strtolower($marker['type']));
+                $markers->appendChild($marker_obj);
+
+                $marker_obj->appendChild(new \DOMText(trim($marker['message'])));
+                $marker_obj->setAttribute('line', $marker['line']);
+            }
         }
 
         if (count($file->getErrors()) > 0) {
