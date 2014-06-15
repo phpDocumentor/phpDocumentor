@@ -67,7 +67,7 @@ class ProjectDescriptorMapper
         try {
             $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
         } catch (\Exception $e) {
-            $settings = $this->makeIgBinaryCompatible($projectDescriptor, self::KEY_SETTINGS, $e);
+            $settings = $this->igBinaryCompatibleCacheClear(self::KEY_SETTINGS, $e);
         }
 
         if ($settings) {
@@ -80,7 +80,7 @@ class ProjectDescriptorMapper
                 try {
                     $item = $this->getCache()->getItem($key);
                 } catch (\Exception $e) {
-                    $item = $this->makeIgBinaryCompatible($projectDescriptor, $key, $e);
+                    $this->igBinaryCompatibleCacheClear($key, $e);
                 }
 
                 if ($item instanceof FileDescriptor) {
@@ -91,26 +91,23 @@ class ProjectDescriptorMapper
     }
 
     /**
-     * Reserialize files for igbinary support.
+     * Clears the cache if a serialization exception was thrown
      *
-     * @param ProjectDescriptor $projectDescriptor
      * @param string $key
      * @param \Exception $e
      *
      * @throws \Exception Rethrows exception if nessesary
      *
-     * @return Settings|FileDescriptor
+     * @return void
      */
-    protected function makeIgBinaryCompatible($projectDescriptor, $key, $e)
+    protected function igBinaryCompatibleCacheClear($key, $e)
     {
         if (extension_loaded('igbinary')) {
             $item = $key === self::KEY_SETTINGS
                 ? $projectDescriptor->getSettings()
                 : $projectDescriptor->getFiles()->get($key);
 
-            $this->getCache()->setItem($key, igbinary_serialize($item));
-
-            return $item;
+            $this->getCache()->removeItem($key);
         } else {
             throw $e;
         }
