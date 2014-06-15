@@ -103,10 +103,6 @@ class ProjectDescriptorMapper
     protected function igBinaryCompatibleCacheClear($key, $e)
     {
         if (extension_loaded('igbinary')) {
-            $item = $key === self::KEY_SETTINGS
-                ? $projectDescriptor->getSettings()
-                : $projectDescriptor->getFiles()->get($key);
-
             $this->getCache()->removeItem($key);
         } else {
             throw $e;
