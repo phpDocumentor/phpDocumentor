@@ -2,26 +2,24 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
-
 class Pathfinder
 {
     /**
-     * Combines the query and project to retrieve a list of nodes that are to be used as node-point in a template.
+     * Combines the query and an object to retrieve a list of nodes that are to be used as node-point in a template.
      *
-     * This method interprets the provided query string and walks through the project descriptor to find the correct
-     * element. This method will silently fail if an invalid query was provided; in such a case the project descriptor
+     * This method interprets the provided query string and walks through the given object to find the correct
+     * element. This method will silently fail if an invalid query was provided; in such a case the given object
      * is returned.
      *
-     * @param ProjectDescriptor $project
-     * @param string            $query
+     * @param object $object
+     * @param string $query
      *
      * @return \Traversable|mixed[]
      */
-    public function find(ProjectDescriptor $project, $query)
+    public function find($object, $query)
     {
         if ($query) {
-            $node = $this->walkObjectTree($project, $query);
+            $node = $this->walkObjectTree($object, $query);
 
             if (!is_array($node) && (!$node instanceof \Traversable)) {
                 $node = array($node);
@@ -30,7 +28,7 @@ class Pathfinder
             return $node;
         }
 
-        return array($project);
+        return array($object);
     }
 
     /**
