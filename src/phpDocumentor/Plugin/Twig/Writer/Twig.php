@@ -286,11 +286,12 @@ class Twig extends WriterAbstract implements Routable
                 . DIRECTORY_SEPARATOR . $transformation->getArtifact();
         }
 
+        $finder = new Pathfinder();
         $destination = preg_replace_callback(
             '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
-            function ($query) use ($node, $writer) {
+            function ($query) use ($node, $writer, $finder) {
                 // strip any surrounding \ or /
-                $filepart = trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
+                $filepart = trim((string)current($finder->find($node, $query[1])), '\\/');
 
                 // make it windows proof
                 $filepart = urlencode(iconv('UTF-8', 'ASCII//TRANSLIT', $filepart));
