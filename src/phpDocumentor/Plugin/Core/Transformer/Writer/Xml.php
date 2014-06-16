@@ -217,12 +217,13 @@ class Xml extends WriterAbstract implements Translatable
             }
         }
 
-        if (count($file->getErrors()) > 0) {
+        $errors = $file->getAllErrors();
+        if (count($errors) > 0) {
             $parse_errors = new \DOMElement('parse_markers');
             $child->appendChild($parse_errors);
 
             /** @var Error $error */
-            foreach ($file->getAllErrors() as $error) {
+            foreach ($errors as $error) {
                 $this->createErrorEntry($error, $parse_errors);
             }
         }
