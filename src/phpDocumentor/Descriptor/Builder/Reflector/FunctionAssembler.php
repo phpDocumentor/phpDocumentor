@@ -109,6 +109,10 @@ class FunctionAssembler extends AssemblerAbstract
     {
         $params = $functionDescriptor->getTags()->get('param', array());
 
+        if (!$this->argumentAssembler->getBuilder()) {
+            $this->argumentAssembler->setBuilder($this->builder);
+        }
+
         return $this->argumentAssembler->create($argument, $params);
     }
 

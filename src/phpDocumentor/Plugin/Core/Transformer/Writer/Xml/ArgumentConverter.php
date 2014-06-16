@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 
 class ArgumentConverter
 {
@@ -39,7 +40,14 @@ class ArgumentConverter
               ->appendChild(new \DOMText($argument->getDefault()));
 
         $types = $argument->getTypes();
-        $child->appendChild(new \DOMElement('type', implode('|', $types)));
+
+        $typeStrings = array();
+        foreach ($types as $type) {
+            $typeStrings[] = $type instanceof DescriptorAbstract
+                ? $type->getFullyQualifiedStructuralElementName()
+                : $type;
+        }
+        $child->appendChild(new \DOMElement('type', implode('|', $typeStrings)));
 
         return $child;
     }

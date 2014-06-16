@@ -13,6 +13,7 @@ namespace phpDocumentor\Plugin\Twig\Writer;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Pathfinder;
 use phpDocumentor\Plugin\Twig\Extension;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
@@ -98,7 +99,8 @@ class Twig extends WriterAbstract implements Routable
     {
         $template_path = $this->getTemplatePath($transformation);
 
-        $nodes = $this->getListOfNodes($transformation->getQuery(), $project);
+        $finder = new Pathfinder();
+        $nodes = $finder->find($project, $transformation->getQuery());
 
         foreach ($nodes as $node) {
             if (!$node) {
@@ -114,81 +116,6 @@ class Twig extends WriterAbstract implements Routable
             $html = $environment->render(substr($transformation->getSource(), strlen($template_path)));
             file_put_contents($destination, $html);
         }
-    }
-
-    /**
-     * Combines the query and project to retrieve a list of nodes that are to be used as node-point in a template.
-     *
-     * This method interprets the provided query string and walks through the project descriptor to find the correct
-     * element. This method will silently fail if an invalid query was provided; in such a case the project descriptor
-     * is returned.
-     *
-     * @param string            $query
-     * @param ProjectDescriptor $project
-     *
-     * @return \Traversable|mixed[]
-     */
-    protected function getListOfNodes($query, ProjectDescriptor $project)
-    {
-        if ($query) {
-            $node = $this->walkObjectTree($project, $query);
-
-            if (!is_array($node) && (!$node instanceof \Traversable)) {
-                $node = array($node);
-            }
-
-            return $node;
-        }
-
-        return array($project);
-    }
-
-    /**
-     * Walks an object graph and/or array using a twig query string.
-     *
-     * Note: this method is public because it is used in a closure in {{@see getDestinationPath()}}.
-     *
-     * @param \Traversable|mixed $objectOrArray
-     * @param string             $query         A path to walk separated by dots, i.e. `namespace.namespaces`.
-     *
-     * @todo move this to a separate class and make it more flexible.
-     *
-     * @return mixed
-     */
-    public function walkObjectTree($objectOrArray, $query)
-    {
-        $node = $objectOrArray;
-        $objectPath = explode('.', $query);
-
-        // walk through the tree
-        foreach ($objectPath as $pathNode) {
-            if (is_array($node)) {
-                if (isset($node[$pathNode])) {
-                    $node = $node[$pathNode];
-                    continue;
-                }
-            } elseif (is_object($node)) {
-                if (isset($node->$pathNode) || (method_exists($node, '__get') && $node->$pathNode)) {
-                    $node = $node->$pathNode;
-                    continue;
-                } elseif (method_exists($node, $pathNode)) {
-                    $node = $node->$pathNode();
-                    continue;
-                } elseif (method_exists($node, 'get' . $pathNode)) {
-                    $pathNode = 'get' . $pathNode;
-                    $node = $node->$pathNode();
-                    continue;
-                } elseif (method_exists($node, 'is' . $pathNode)) {
-                    $pathNode = 'is' . $pathNode;
-                    $node = $node->$pathNode();
-                    continue;
-                }
-            }
-
-            return null;
-        }
-
-        return $node;
     }
 
     /**
@@ -359,11 +286,12 @@ class Twig extends WriterAbstract implements Routable
                 . DIRECTORY_SEPARATOR . $transformation->getArtifact();
         }
 
+        $finder = new Pathfinder();
         $destination = preg_replace_callback(
             '/{{([^}]+)}}/', // explicitly do not use the unicode modifier; this breaks windows
-            function ($query) use ($node, $writer) {
+            function ($query) use ($node, $writer, $finder) {
                 // strip any surrounding \ or /
-                $filepart = trim((string)$writer->walkObjectTree($node, $query[1]), '\\/');
+                $filepart = trim((string)current($finder->find($node, $query[1])), '\\/');
 
                 // make it windows proof
                 $filepart = urlencode(iconv('UTF-8', 'ASCII//TRANSLIT', $filepart));

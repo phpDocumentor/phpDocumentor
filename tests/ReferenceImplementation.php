@@ -1,14 +1,25 @@
 <?php
 /**
+ * This is a file Summary.
+ *
+ * This is a file description
  * @package File
  * @filesource
  */
 
 namespace {
+
+    /**
+     * This is the summary of a constant in the global namespace.
+     *
+     * To check if the description is displayed correctly we *check* if it is handled correctly. And
+     * if it shows any [Markdown](http://daringfireball.net) formatting.
+     */
     const GLOBAL_CONSTANT_DEFINE_WITH_ROOT_NAMESPACE = 'test';
 }
 
 namespace My\Space {
+
     define("GLOBAL_CONSTANT_DEFINE", 'test');
 
     /**
