@@ -34,12 +34,8 @@ class Pathfinder
     /**
      * Walks an object graph and/or array using a twig query string.
      *
-     * Note: this method is public because it is used in a closure in {{@see getDestinationPath()}}.
-     *
      * @param \Traversable|mixed $objectOrArray
      * @param string             $query         A path to walk separated by dots, i.e. `namespace.namespaces`.
-     *
-     * @todo move this to a separate class and make it more flexible.
      *
      * @return mixed
      */
@@ -78,6 +74,4 @@ class Pathfinder
 
         return $node;
     }
-
-
-} 
+}
