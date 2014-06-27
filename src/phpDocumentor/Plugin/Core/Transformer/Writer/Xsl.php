@@ -264,9 +264,10 @@ class Xsl extends WriterAbstract implements Routable
 
         if (empty($structure->documentElement)) {
             $message = 'Specified DOMDocument lacks documentElement, cannot transform.';
-            if (libxml_get_last_error()) {
+            $error = libxml_get_last_error();
+            if ($error) {
                 $message .= PHP_EOL . 'Apparently an error occurred with reading the structure.xml file, the reported '
-                    . 'error was "' . trim(libxml_get_last_error()->message) . '" on line ' . libxml_get_last_error()->line;
+                    . 'error was "' . trim($error->message) . '" on line ' . $error->line;
             }
             throw new Exception($message);
         }
