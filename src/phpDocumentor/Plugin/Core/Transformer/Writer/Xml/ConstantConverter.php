@@ -51,7 +51,7 @@ class ConstantConverter
         $child = new \DOMElement('constant');
         $parent->appendChild($child);
 
-        $child->setAttribute('namespace', $fullyQualifiedNamespaceName);
+        $child->setAttribute('namespace', ltrim($fullyQualifiedNamespaceName, '\\'));
         $child->setAttribute('line', $constant->getLine());
 
         $child->appendChild(new \DOMElement('name', $constant->getName()));

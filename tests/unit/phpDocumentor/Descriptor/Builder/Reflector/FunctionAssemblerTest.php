@@ -132,6 +132,7 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
         $argumentMock->shouldReceive('getName')->andReturn($argumentName);
 
         $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentMock);
+        $this->argumentAssemblerMock->shouldReceive('getBuilder')->andReturn($this->builderMock);
 
         return $argumentMock;
     }

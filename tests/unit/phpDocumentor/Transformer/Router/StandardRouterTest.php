@@ -12,18 +12,30 @@
 namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
+use phpDocumentor\Descriptor\Collection;
 
 class StandardRouterTest extends \PHPUnit_Framework_TestCase
 {
     /** @var StandardRouter */
     private $fixture;
 
+    /** @var Collection */
+    private $elementCollection;
+
     /**
      * Sets up the fixture.
      */
     public function setUp()
     {
-        $this->fixture = new StandardRouter();
+        $this->elementCollection = new Collection();
+
+        $builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $builder
+            ->shouldReceive('getProjectDescriptor->getIndexes->get')
+            ->with('elements')
+            ->andReturn($this->elementCollection);
+
+        $this->fixture = new StandardRouter($builder);
     }
 
     /**
@@ -46,6 +58,30 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
         $this->assertAttributeInstanceOf(
             '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\' . $generatorName,
+            'generator',
+            $rule
+        );
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     */
+    public function testIfARouteForAFqsenCanBeGenerated()
+    {
+        // Arrange
+        $fqsen                           = '\My\ClassName::myMethod()';
+        $this->elementCollection[$fqsen] = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+
+        // Act
+        $rule = $this->fixture->match($fqsen);
+
+        // Assert
+        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertAttributeInstanceOf(
+            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\MethodDescriptor',
             'generator',
             $rule
         );

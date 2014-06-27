@@ -116,7 +116,7 @@ class DocBlockConverter
     protected function addTags(\DOMElement $docBlock, $descriptor)
     {
         foreach ($descriptor->getTags() as $tagGroup) {
-            if ($tagGroup === null) {
+            if (! $tagGroup) {
                 continue;
             }
 

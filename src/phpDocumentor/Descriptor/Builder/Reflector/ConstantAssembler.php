@@ -36,7 +36,8 @@ class ConstantAssembler extends AssemblerAbstract
             '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
         );
         $constantDescriptor->setFullyQualifiedStructuralElementName(
-            $constantDescriptor->getNamespace() . '\\' . $data->getShortName()
+            (trim($constantDescriptor->getNamespace(), '\\') ? $constantDescriptor->getNamespace() : '')
+            . '\\' . $data->getShortName()
         );
 
         $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);

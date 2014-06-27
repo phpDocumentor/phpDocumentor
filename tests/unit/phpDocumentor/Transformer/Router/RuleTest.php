@@ -24,8 +24,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         $fixture = new Rule(function() { return true; }, function(){});
         $fixture2 = new Rule(function() { return false; }, function(){});
 
-        $this->assertTrue($fixture->match('test'));
-        $this->assertFalse($fixture2->match('test'));
+        $node = 'test';
+        $this->assertTrue($fixture->match($node));
+        $this->assertFalse($fixture2->match($node));
     }
 
     /**

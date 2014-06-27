@@ -21,6 +21,7 @@ use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Template\Factory;
@@ -132,8 +133,11 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         );
 
         $app['transformer.routing.standard'] = $app->share(
-            function () {
-                return new Router\StandardRouter();
+            function ($container) {
+                /** @var ProjectDescriptorBuilder $projectDescriptorBuilder */
+                $projectDescriptorBuilder = $container['descriptor.builder'];
+
+                return new Router\StandardRouter($projectDescriptorBuilder);
             }
         );
         $app['transformer.routing.external'] = $app->share(
