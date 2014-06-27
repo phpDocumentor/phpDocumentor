@@ -1,0 +1,20 @@
+---
+- name: Set up our MOTD
+  copy: dest=/etc/motd content="Welcome to the Development Environment of phpDocumentor2"
+  sudo: True
+
+- name: Update our apt cache
+  apt: update_cache=yes
+  sudo: True
+
+- name: Install required packages
+  apt: name={{item}} state=latest
+  with_items:
+    - curl
+    - git
+    - graphviz
+    - make
+    - texlive-latex-recommended
+    - texlive-fonts-recommended
+    - openjdk-6-jre
+  sudo: True
