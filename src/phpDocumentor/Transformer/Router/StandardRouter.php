@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -27,6 +28,21 @@ use phpDocumentor\Descriptor\FileDescriptor;
  */
 class StandardRouter extends RouterAbstract
 {
+    /** @var ProjectDescriptorBuilder */
+    private $projectDescriptorBuilder;
+
+    /**
+     * Initializes this router with a list of all elements.
+     *
+     * @param ProjectDescriptorBuilder $projectDescriptorBuilder
+     */
+    public function __construct(ProjectDescriptorBuilder $projectDescriptorBuilder)
+    {
+        $this->projectDescriptorBuilder = $projectDescriptorBuilder;
+
+        parent::__construct();
+    }
+
     /**
      * Configuration function to add routing rules to a router.
      *
@@ -34,6 +50,8 @@ class StandardRouter extends RouterAbstract
      */
     public function configure()
     {
+        $projectDescriptorBuilder = $this->projectDescriptorBuilder;
+
         $fileGenerator      = new UrlGenerator\Standard\FileDescriptor();
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
         $packageGenerator   = new UrlGenerator\Standard\PackageDescriptor();
@@ -43,7 +61,19 @@ class StandardRouter extends RouterAbstract
         $functionGenerator  = new UrlGenerator\Standard\FunctionDescriptor();
         $propertyGenerator  = new UrlGenerator\Standard\PropertyDescriptor();
 
+        // Here we cheat! If a string element is passed to this rule then we try to transform it into a Descriptor
+        // if the node is translated we do not let it match and instead fall through to one of the other rules.
+        $stringRule = function (&$node) use ($projectDescriptorBuilder) {
+            $elements = $projectDescriptorBuilder->getProjectDescriptor()->getIndexes()->get('elements');
+            if (is_string($node) && isset($elements[$node])) {
+                $node = $elements[$node];
+            };
+
+            return false;
+        };
+
         // @codingStandardsIgnoreStart
+        $this[] = new Rule($stringRule, function(){ return false; });
         $this[] = new Rule(function ($node) { return ($node instanceof FileDescriptor); }, $fileGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof PackageDescriptor); }, $packageGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof TraitDescriptor); }, $classGenerator);

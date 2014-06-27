@@ -17,20 +17,27 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Plugin\Core\Exception;
 use phpDocumentor\Transformer\Event\PreXslWriterEvent;
+use phpDocumentor\Transformer\Router\ForFileProxy;
+use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformation as TransformationObject;
 use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
+use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.
  */
-class Xsl extends WriterAbstract
+class Xsl extends WriterAbstract implements Routable
 {
     /** @var \Monolog\Logger $logger */
     protected $logger;
 
+    /** @var string[] */
     protected $xsl_variables = array();
+
+    /** @var Queue */
+    private $routers;
 
     /**
      * Initialize this writer with the logger so that it can output logs.
@@ -62,6 +69,18 @@ class Xsl extends WriterAbstract
     }
 
     /**
+     * Sets the routers that can be used to determine the path of links.
+     *
+     * @param Queue $routers
+     *
+     * @return void
+     */
+    public function setRouters(Queue $routers)
+    {
+        $this->routers = $routers;
+    }
+
+    /**
      * This method combines the structure.xml and the given target template
      * and creates a static html page at the artifact location.
      *
@@ -76,43 +95,14 @@ class Xsl extends WriterAbstract
      */
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
-        $artifact = $transformation->getTransformer()->getTarget()
-            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-
-        $structureFilename = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';
-        if (!is_readable($structureFilename)) {
-            throw new \RuntimeException(
-                'Structure.xml file was not found in the target directory, is the XML writer missing from the '
-                . 'template definition?'
-            );
-        }
-
-        // load the structure file (ast)
-        $structure = new \DOMDocument('1.0', 'utf-8');
-        libxml_use_internal_errors(true);
-        $structure->load($structureFilename);
+        $structure = $this->loadAst($this->getAstPath($transformation));
 
         $proc = $this->getXslProcessor($transformation);
-        
         $proc->registerPHPFunctions();
-
-        if (empty($structure->documentElement)) {
-            $message = 'Specified DOMDocument lacks documentElement, cannot transform.';
-            if (libxml_get_last_error()) {
-                $message .= PHP_EOL . 'Apparently an error occurred with reading the structure.xml file, the reported '
-                . 'error was "' . trim(libxml_get_last_error()->message) . '" on line ' . libxml_get_last_error()->line;
-            }
-            throw new Exception($message);
-        }
-
-        $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
-        $proc->setParameter('', 'root', str_repeat('../', substr_count($transformation->getArtifact(), '/')));
-        $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
-        $proc->setParameter('', 'version', Application::$VERSION);
-        $proc->setParameter('', 'generated_datetime', date('r'));
-
-        // check parameters for variables and add them when found
+        $this->registerDefaultVariables($transformation, $proc, $structure);
         $this->setProcessorParameters($transformation, $proc);
+
+        $artifact = $this->getArtifactPath($transformation);
 
         // if a query is given, then apply a transformation to the artifact
         // location by replacing ($<var>} with the sluggified node-value of the
@@ -126,9 +116,7 @@ class Xsl extends WriterAbstract
             foreach ($qry as $key => $element) {
                 Dispatcher::getInstance()->dispatch(
                     'transformer.writer.xsl.pre',
-                    PreXslWriterEvent
-                    ::createInstance($this)->setElement($element)
-                    ->setProgress(array($key+1, $count))
+                    PreXslWriterEvent::createInstance($this)->setElement($element)->setProgress(array($key+1, $count))
                 );
 
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);
@@ -136,24 +124,33 @@ class Xsl extends WriterAbstract
                     $element->nodeValue
                 );
 
-                $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
+                if (! $artifact) {
+                    $url = $this->generateUrlForXmlElement($project, $element);
+                    if ($url === false || $url[0] !== DIRECTORY_SEPARATOR) {
+                        continue;
+                    }
 
-                if (!file_exists(dirname($filename))) {
-                    mkdir(dirname($filename), 0755, true);
+                    $filename = $transformation->getTransformer()->getTarget()
+                        . str_replace('/', DIRECTORY_SEPARATOR, $url);
+                } else {
+                    $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
                 }
-                $proc->transformToURI($structure, $this->getXsltUriFromFilename($filename));
+
+                $relativeFileName = substr($filename, strlen($transformation->getTransformer()->getTarget()) + 1);
+                $proc->setParameter('', 'root', str_repeat('../', substr_count($relativeFileName, '/')));
+
+                $this->writeToFile($filename, $proc, $structure);
             }
         } else {
             if (substr($transformation->getArtifact(), 0, 1) == '$') {
                 // not a file, it must become a variable!
                 $variable_name = substr($transformation->getArtifact(), 1);
-                $this->xsl_variables[$variable_name]
-                    = $proc->transformToXml($structure);
+                $this->xsl_variables[$variable_name] = $proc->transformToXml($structure);
             } else {
-                if (!file_exists(dirname($artifact))) {
-                    mkdir(dirname($artifact), 0755, true);
-                }
-                $proc->transformToURI($structure, $this->getXsltUriFromFilename($artifact));
+                $relativeFileName = substr($artifact, strlen($transformation->getTransformer()->getTarget()) + 1);
+                $proc->setParameter('', 'root', str_repeat('../', substr_count($relativeFileName, '/')));
+
+                $this->writeToFile($artifact, $proc, $structure);
             }
         }
     }
@@ -186,10 +183,8 @@ class Xsl extends WriterAbstract
      *
      * @return void
      */
-    public function setProcessorParameters(
-        TransformationObject $transformation,
-        $proc
-    ) {
+    public function setProcessorParameters(TransformationObject $transformation, $proc)
+    {
         foreach ($this->xsl_variables as $key => $variable) {
             // XSL does not allow both single and double quotes in a string
             if ((strpos($variable, '"') !== false)
@@ -248,5 +243,112 @@ class Xsl extends WriterAbstract
 
             return $proc;
         }
+    }
+
+    /**
+     * @param $structureFilename
+     * @return \DOMDocument
+     */
+    private function loadAst($structureFilename)
+    {
+        if (!is_readable($structureFilename)) {
+            throw new \RuntimeException(
+                'Structure.xml file was not found in the target directory, is the XML writer missing from the '
+                . 'template definition?'
+            );
+        }
+
+        $structure = new \DOMDocument('1.0', 'utf-8');
+        libxml_use_internal_errors(true);
+        $structure->load($structureFilename);
+
+        if (empty($structure->documentElement)) {
+            $message = 'Specified DOMDocument lacks documentElement, cannot transform.';
+            $error = libxml_get_last_error();
+            if ($error) {
+                $message .= PHP_EOL . 'Apparently an error occurred with reading the structure.xml file, the reported '
+                    . 'error was "' . trim($error->message) . '" on line ' . $error->line;
+            }
+            throw new Exception($message);
+        }
+
+        return $structure;
+    }
+
+    /**
+     * @param Transformation $transformation
+     * @param $proc
+     * @param $structure
+     */
+    private function registerDefaultVariables(Transformation $transformation, $proc, $structure)
+    {
+        $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
+        $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
+        $proc->setParameter('', 'version', Application::$VERSION);
+        $proc->setParameter('', 'generated_datetime', date('r'));
+    }
+
+    /**
+     * @param $filename
+     * @param $proc
+     * @param $structure
+     */
+    private function writeToFile($filename, $proc, $structure)
+    {
+        if (!file_exists(dirname($filename))) {
+            mkdir(dirname($filename), 0755, true);
+        }
+        $proc->transformToURI($structure, $this->getXsltUriFromFilename($filename));
+    }
+
+    /**
+     * @param Transformation $transformation
+     * @return string
+     */
+    private function getAstPath(Transformation $transformation)
+    {
+        return $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';
+    }
+
+    /**
+     * Returns the path to the location where the artifact should be written, or null to automatically detect the
+     * location using the router.
+     *
+     * @param Transformation $transformation
+     *
+     * @return string|null
+     */
+    private function getArtifactPath(Transformation $transformation)
+    {
+        return $transformation->getArtifact()
+            ? $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact()
+            : null;
+    }
+
+    /**
+     * @param ProjectDescriptor $project
+     * @param $element
+     * @return false|string
+     */
+    private function generateUrlForXmlElement(ProjectDescriptor $project, $element)
+    {
+        $elements = $project->getIndexes()->get('elements');
+
+        $elementFqcn = ($element->parentNode->nodeName === 'namespace' ? '~\\' : '') . $element->nodeValue;
+        $node = (isset($elements[$elementFqcn]))
+            ? $elements[$elementFqcn]
+            : $element->nodeValue; // do not use the normalized version if the element is not found!
+
+        $rule = $this->routers->match($node);
+        if (!$rule) {
+            throw new \InvalidArgumentException(
+                'No matching routing rule could be found for the given node, please provide an artifact location, '
+                . 'encountered: ' . ($node === null ? 'NULL' : get_class($node))
+            );
+        }
+
+        $rule = new ForFileProxy($rule);
+        $url = $rule->generate($node);
+        return $url;
     }
 }

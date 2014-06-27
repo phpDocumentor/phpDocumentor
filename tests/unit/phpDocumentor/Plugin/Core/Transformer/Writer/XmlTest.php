@@ -113,6 +113,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $fileDescriptor->shouldReceive('getInheritedElement')->andReturn(null);
         $transformer->shouldReceive('generateFilename')->with('foo.php')->andReturn('generated-foo.php');
         $fileDescriptor->shouldReceive('getHash')->andReturn('hash');
+        $fileDescriptor->shouldReceive('getAllErrors')->andReturn(array());
 
         $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array($fileDescriptor));
         $this->projectDescriptor->shouldReceive('getName')->andReturn('project');

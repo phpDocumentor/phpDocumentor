@@ -42,6 +42,9 @@ class ServiceProvider implements ServiceProviderInterface
         $writerCollection['checkstyle']->setTranslator($translator);
         $writerCollection['xml']->setTranslator($translator);
 
+        Xslt\Extension::$routers           = $app['transformer.routing.queue'];
+        Xslt\Extension::$descriptorBuilder = $app['descriptor.builder'];
+
         $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider());
         $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider());
         $app->register(new \phpDocumentor\Plugin\Pdf\ServiceProvider());
