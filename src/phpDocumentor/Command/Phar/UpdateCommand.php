@@ -46,6 +46,12 @@ class UpdateCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Allow major version update'
+            )
+            ->addOption(
+                'pre',
+                null,
+                InputOption::VALUE_NONE,
+                'Allow pre-release version update'
             );
     }
 
@@ -69,11 +75,12 @@ class UpdateCommand extends Command
              return 1;
          }
 
-         $currentVersion = $this->getApplication()->getVersion();
+         $currentVersion  = $this->getApplication()->getVersion();
 
-         $allowMajor = $input->getOption('major');
+         $allowMajor      = $input->getOption('major');
+         $allowPreRelease = $input->getOption('pre');
 
-         if ($manager->update($currentVersion, $allowMajor)) {
+         if ($manager->update($currentVersion, $allowMajor, $allowPreRelease)) {
              $output->writeln('Updated to latest version.');
          } else {
              $output->writeln('Already up-to-date.');
