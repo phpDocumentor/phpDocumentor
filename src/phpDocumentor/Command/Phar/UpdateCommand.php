@@ -11,11 +11,13 @@
  */
 namespace phpDocumentor\Command\Phar;
 
+use Herrera\Json\Exception\FileException;
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Updates phpDocumentor.phar to the latest version.
@@ -38,6 +40,12 @@ class UpdateCommand extends Command
             ->setAliases(array('selfupdate', 'self-update'))
             ->setDescription(
                 'Updates phpDocumentor.phar to the latest version'
+            )
+            ->addOption(
+                'major',
+                null,
+                InputOption::VALUE_NONE,
+                'Allow major version update'
             );
     }
 
@@ -51,7 +59,26 @@ class UpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
-        $manager->update($this->getApplication()->getVersion(), true);
+        $output->writeln('Looking for updates...');
+
+         try {
+             $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
+         } catch (FileException $e) {
+             $output->writeln('Unable to search for updates.');
+
+             return 1;
+         }
+
+         $currentVersion = $this->getApplication()->getVersion();
+
+         $allowMajor = $input->getOption('major');
+
+         if ($manager->update($currentVersion, $allowMajor)) {
+             $output->writeln('Updated to latest version.');
+         } else {
+             $output->writeln('Already up-to-date.');
+         }
+
+         return 0;
     }
 }
