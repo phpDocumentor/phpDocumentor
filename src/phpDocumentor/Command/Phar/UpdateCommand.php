@@ -94,7 +94,13 @@ class UpdateCommand extends Command
      *
      * @return void
      */
-    protected function updateCurrentVersion(Manager $manager, OutputInterface $output)
+    protected function updateCurrentVersion(
+        Manager $manager,
+        $currentVersion,
+        $allowMajor,
+        $allowPreRelease,
+        OutputInterface $output
+    )
     {
         if ($manager->update($currentVersion, $allowMajor, $allowPreRelease)) {
             $output->writeln('<info>Updated to latest version.</info>');
