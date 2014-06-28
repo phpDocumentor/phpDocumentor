@@ -57,7 +57,9 @@ class Application extends Cilex
     {
         $this->defineIniSettings();
         
-        self::$VERSION = trim(file_get_contents(__DIR__ . '/../../VERSION'));
+        self::$VERSION = strpos('@package_version@', '@') === 0
+            ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
+            : '@package_version@';
 
         parent::__construct('phpDocumentor', self::$VERSION);
 
@@ -83,6 +85,7 @@ class Application extends Cilex
         $this->register(new Plugin\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
+        $this->addCommandsForPharNamespace();
     }
 
     /**
@@ -299,5 +302,15 @@ class Application extends Cilex
     protected function addCommandsForProjectNamespace()
     {
         $this->command(new Command\Project\RunCommand());
+    }
+
+    /**
+     * Adds the command to phpDocumentor that belong to the Phar namespace.
+     *
+     * @return void
+     */
+    protected function addCommandsForPharNamespace()
+    {
+        $this->command(new Command\Phar\UpdateCommand());
     }
 }
