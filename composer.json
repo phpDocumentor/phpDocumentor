@@ -30,7 +30,7 @@
         "jms/serializer":           "~0.12",
         "knplabs/knp-menu":         "~1.1",
 
-        "herrera-io/phar-update":   "1.*",
+        "herrera-io/phar-update":   "~1.0",
 
         "zendframework/zend-stdlib":         "2.1.*",
         "zendframework/zend-servicemanager": "2.1.*",
