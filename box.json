@@ -148,6 +148,7 @@
             ]
         }
     ],
+    "git-version": "package_version",
     "main": "bin/phpdoc",
     "output": "phpDocumentor.phar",
     "stub": true
