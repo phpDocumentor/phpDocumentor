@@ -56,14 +56,13 @@ class UpdateCommand extends Command
     {
         $output->writeln('Looking for updates...');
 
-        $manager         = $this->createManager($output);
-
-        $currentVersion  = $this->getApplication()->getVersion();
-
-        $allowMajor      = $input->getOption('major');
-        $allowPreRelease = $input->getOption('pre');
-
-        $this->updateCurrentVersion($output);
+        $this->updateCurrentVersion(
+            $this->createManager($output),
+            $this->getApplication()->getVersion(),
+            $input->getOption('major')
+            $input->getOption('pre'),
+            $output
+        );
 
         return 0;
     }
