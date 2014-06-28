@@ -88,10 +88,13 @@ class UpdateCommand extends Command
 
     /**
      * Updates current version.
-     *
-     * @param Manager $manager
+     * 
+     * @param Manager         $manager
+     * @param string          $currentVersion
+     * @param bool|null       $allowMajor
+     * @param bool|null       $allowPreRelease
      * @param OutputInterface $output
-     *
+     * 
      * @return void
      */
     protected function updateCurrentVersion(
