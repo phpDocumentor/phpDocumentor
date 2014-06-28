@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Updates phpDocumentor.phar to the latest version.
  *
- *     $ phpdoc selfupdate
+ *     $ php phpDocumentor.phar self-update
  */
 class UpdateCommand extends Command
 {
