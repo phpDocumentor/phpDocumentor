@@ -66,6 +66,7 @@
     "directories-bin": ["data"],
     "files": [
         "vendor/autoload.php",
+        "vendor/herrera-io/phar-update/res/schema.json",
         "VERSION"
     ],
     "finder": [
