@@ -22,10 +22,11 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * Updates phpDocumentor.phar to the latest version.
  *
- *     $ php phpDocumentor.phar self-update
+ * $ php phpDocumentor.phar self-update [--major] [--pre]
  */
 class UpdateCommand extends Command
 {
+
     const MANIFEST_FILE = 'https://raw.githubusercontent.com/phpDocumentor/phpDocumentor2/develop/manifest.json';
 
     /**
@@ -38,27 +39,15 @@ class UpdateCommand extends Command
     {
         $this->setName('phar:update')
             ->setAliases(array('selfupdate', 'self-update'))
-            ->setDescription(
-                'Updates phpDocumentor.phar to the latest version'
-            )
-            ->addOption(
-                'major',
-                null,
-                InputOption::VALUE_NONE,
-                'Allow major version update'
-            )
-            ->addOption(
-                'pre',
-                null,
-                InputOption::VALUE_NONE,
-                'Allow pre-release version update'
-            );
+            ->setDescription('Updates phpDocumentor.phar to the latest version')
+            ->addOption('major', 'm', InputOption::VALUE_NONE, 'Lock to current major version')
+            ->addOption('pre', 'p', InputOption::VALUE_NONE, 'Allow pre-release version update');
     }
 
     /**
      * Executes the business logic involved with this command.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
      * @return int
@@ -67,25 +56,50 @@ class UpdateCommand extends Command
     {
         $output->writeln('Looking for updates...');
 
-         try {
-             $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
-         } catch (FileException $e) {
-             $output->writeln('Unable to search for updates.');
+        $manager         = $this->createManager($output);
 
-             return 1;
-         }
+        $currentVersion  = $this->getApplication()->getVersion();
 
-         $currentVersion  = $this->getApplication()->getVersion();
+        $allowMajor      = $input->getOption('major');
+        $allowPreRelease = $input->getOption('pre');
 
-         $allowMajor      = $input->getOption('major');
-         $allowPreRelease = $input->getOption('pre');
+        $this->updateCurrentVersion($output);
 
-         if ($manager->update($currentVersion, $allowMajor, $allowPreRelease)) {
-             $output->writeln('Updated to latest version.');
-         } else {
-             $output->writeln('Already up-to-date.');
-         }
+        return 0;
+    }
 
-         return 0;
+    /**
+     * Returns manager instance or exit with status code 1 on failure.
+     *
+     * @param OutputInterface $output
+     *
+     * @return \Herrera\Phar\Update\Manager
+     */
+    protected function createManager(OutputInterface $output)
+    {
+        try {
+            return new Manager(Manifest::loadFile(self::MANIFEST_FILE));
+        } catch (FileException $e) {
+            $output->writeln('<error>Unable to search for updates.</error>');
+
+            exit(1);
+        }
+    }
+
+    /**
+     * Updates current version.
+     *
+     * @param Manager $manager
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
+    protected function updateCurrentVersion(Manager $manager, OutputInterface $output)
+    {
+        if ($manager->update($currentVersion, $allowMajor, $allowPreRelease)) {
+            $output->writeln('<info>Updated to latest version.</info>');
+        } else {
+            $output->writeln('<comment>Already up-to-date.</comment>');
+        }
     }
 }
