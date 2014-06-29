@@ -99,6 +99,7 @@ class Statistics extends Checkstyle
         $stat->appendXML(<<<STAT
 <stat date="$date">
     <counters>
+        <files>{$this->getFilesCounter($project)}</files>
         <deprecated>{$this->getDeprecatedCounter($project)}</deprecated>
         <errors>{$this->getErrorCounter($project)}</errors>
         <markers>{$this->getMarkerCounter($project)}</markers>
@@ -109,6 +110,18 @@ STAT
         $document->documentElement->appendChild($stat);
 
         return $document;
+    }
+
+    /**
+     * Get number of files.
+     *
+     * @param ProjectDescriptor $project
+     *
+     * @return int
+     */
+    protected function getFilesCounter(ProjectDescriptor $project)
+    {
+        return $project->getFiles()->count();
     }
 
     /**
@@ -136,7 +149,7 @@ STAT
      *
      * @param ProjectDescriptor $project
      *
-     * @return number
+     * @return int
      */
     protected function getErrorCounter(ProjectDescriptor $project)
     {
