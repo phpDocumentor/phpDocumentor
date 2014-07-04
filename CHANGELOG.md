@@ -1,3 +1,39 @@
+2014/06/27: Version 2.6.0
+-------------------------
+
+```
+ADDED:     #1087: Fully support `@see`
+ADDED:     #1213: Resolve inline @see and @link to Markdown link
+CHANGED:   #1186: Move checking of writer requirements
+CHANGED:   #1267: XSL should use Router
+CHANGED:   Update contribution guide to match new XHGUI
+CHANGED:   #1248: Replace ZendConfig with Serializer-based config
+CHANGED:   #1017: Updated help output for --hidden to be more descriptive
+CHANGED:   #1264: Clean template no longer requires an internet connection
+CHANGED:   #1212: Plugin configuration can now be loaded from a config file
+CHANGED:   #1194: Add support for default parameter values in @method
+FIXED:     #1313: Namespace Aliases are not stored on FileDescriptor
+FIXED:     #1308: Multiple templates in configuration do not work
+FIXED:     #713: XSL Templates are not found in Windows
+FIXED:     #1253: Transformation crashes on typehint
+FIXED:     #1268: Restore handling of visibility
+FIXED:     #1130: Arrays not resolved in documentation
+FIXED:     #1278: Template is not read from configuration
+FIXED:     #1239: Parseprivate always triggers a complete parsing run
+FIXED:     Parsing crashes on visibility as string
+FIXED:     Routing crashes in Twig
+FIXED:     #1307: Parsing crashes on unknown trait
+FIXED:     #1114: Debug mode for Twig was not enabled
+FIXED:     Errors were not shown in XSL templates
+FIXED:     Remove duplicate namespace separator in constants defined by DEFINE
+FIXED:     #930: @see and @link did not resolve self
+FIXED:     #993: UTF-8 characters in filenames do not work in windows
+FIXED:     #790: Inheritance in XSL was incorrectly registered
+FIXED:     #713: Phar was sometimes not working on windows due to paths
+FIXED:     Restore Behat tests
+FIXED:     #1252: Namespaces are not shown on responsive template
+```
+
 2014/05/17: Version 2.5.0
 -------------------------
 
