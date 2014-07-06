@@ -124,6 +124,9 @@ class Xml extends WriterAbstract implements Translatable
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
+
+        $this->checkForSpacesInPath($artifact);
+
         $this->xml = new \DOMDocument('1.0', 'utf-8');
         $this->xml->formatOutput = true;
         $document_element = new \DOMElement('project');
