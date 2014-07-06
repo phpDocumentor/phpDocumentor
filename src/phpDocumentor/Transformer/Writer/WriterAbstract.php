@@ -41,12 +41,12 @@ abstract class WriterAbstract
      *
      * @return void
      *
-     * @throws \RuntimeException if path contains a space.
+     * @throws \InvalidArgumentException if path contains a space.
      */
     protected function checkForSpacesInPath($path)
     {
         if (strpos($path, ' ') !== false) {
-            throw new \RuntimeException('No spaces allowed in destination path: ' . $path);
+            throw new \InvalidArgumentException('No spaces allowed in destination path: ' . $path);
         }
     }
 
