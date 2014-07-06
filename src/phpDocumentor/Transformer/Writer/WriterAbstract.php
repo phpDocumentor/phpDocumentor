@@ -35,6 +35,22 @@ abstract class WriterAbstract
     }
 
     /**
+     * Checks if there is a space in the path.
+     *
+     * @param string $path
+     *
+     * @return void
+     *
+     * @throws \RuntimeException if path contains a space.
+     */
+    protected function checkForSpacesInPath($path)
+    {
+        if (strpos($path, ' ') !== false) {
+            throw new \RuntimeException('No spaces allowed in destination path: ' . $path);
+        }
+    }
+
+    /**
      * Abstract definition of the transformation method.
      *
      * @param ProjectDescriptor $project        Document containing the structure.
