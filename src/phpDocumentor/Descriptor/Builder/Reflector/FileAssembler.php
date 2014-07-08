@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\FileReflector;
@@ -36,12 +37,23 @@ class FileAssembler extends AssemblerAbstract
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
 
-        $fileDescriptor->setName(basename($data->getFilename()));
-        $fileDescriptor->setPath($data->getFilename());
-        $fileDescriptor->setSource($data->getContents());
         $fileDescriptor->setPackage(
             $this->extractPackageFromDocBlock($data->getDocBlock()) ?: $data->getDefaultPackageName()
         );
+
+        $packages = new Collection();
+        $package = $this->extractPackageFromDocBlock($data->getDocBlock());
+        if (! $package) {
+            $package = $data->getDefaultPackageName();
+        }
+        $tag = new TagDescriptor('package');
+        $tag->setDescription($package);
+        $packages->add($tag);
+        $fileDescriptor->getTags()->set('package', $packages);
+
+        $fileDescriptor->setName(basename($data->getFilename()));
+        $fileDescriptor->setPath($data->getFilename());
+        $fileDescriptor->setSource($data->getContents());
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
