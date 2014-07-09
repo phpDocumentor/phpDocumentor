@@ -168,6 +168,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     {
         $parser = \Parsedown::instance();
         $translator = $this->translator;
+        $routeRenderer = $this->routeRenderer;
 
         return array(
             'markdown' => new \Twig_SimpleFilter(
@@ -188,8 +189,8 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
             'route' => new \Twig_SimpleFilter(
                 'route',
-                function ($value, $presentation = 'normal') {
-                    return $this->routeRenderer->render($value, $presentation);
+                function ($value, $presentation = 'normal') use ($routeRenderer) {
+                    return $routeRenderer->render($value, $presentation);
                 }
             ),
             'sort' => new \Twig_SimpleFilter(
