@@ -1,3 +1,11 @@
+2014/07/09: Version 2.6.1
+-------------------------
+
+```
+FIXED:     #1330: Fix crash when assembling package tags
+FIXED:     #1326: Fix crash while generating routes in Twig templates
+```
+
 2014/06/27: Version 2.6.0
 -------------------------
 
