@@ -104,6 +104,8 @@ class Xsl extends WriterAbstract implements Routable
 
         $artifact = $this->getArtifactPath($transformation);
 
+        $this->checkForSpacesInPath($artifact);
+
         // if a query is given, then apply a transformation to the artifact
         // location by replacing ($<var>} with the sluggified node-value of the
         // search result
