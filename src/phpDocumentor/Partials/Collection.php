@@ -41,6 +41,6 @@ class Collection extends DescriptorCollection
      */
     public function set($index, $item)
     {
-        $this->offsetSet($index, $this->parser->parse($item));
+        $this->offsetSet($index, $this->parser->text($item));
     }
 }
