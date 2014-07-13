@@ -85,7 +85,10 @@ class Application extends Cilex
         $this->register(new Plugin\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
-        $this->addCommandsForPharNamespace();
+
+        if (\Phar::isRunning()) {
+            $this->addCommandsForPharNamespace();
+        }
     }
 
     /**
