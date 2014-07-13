@@ -18,11 +18,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Updates phpDocumentor.phar to the latest version.
  *
- * $ php phpDocumentor.phar self-update [--major] [--pre]
+ * ```
+ * $ php phpDocumentor.phar phar:update [-m|--major] [-p|--pre] [version]
+ * ```
  */
 class UpdateCommand extends Command
 {
@@ -40,6 +43,7 @@ class UpdateCommand extends Command
         $this->setName('phar:update')
             ->setAliases(array('selfupdate', 'self-update'))
             ->setDescription('Updates phpDocumentor.phar to the latest version')
+            ->addArgument('version', InputArgument::OPTIONAL, 'Updates to version-number. (i.e. 2.6.0)')
             ->addOption('major', 'm', InputOption::VALUE_NONE, 'Lock to current major version')
             ->addOption('pre', 'p', InputOption::VALUE_NONE, 'Allow pre-release version update');
     }
@@ -56,13 +60,12 @@ class UpdateCommand extends Command
     {
         $output->writeln('Looking for updates...');
 
-        $this->updateCurrentVersion(
-            $this->createManager($output),
-            $this->getApplication()->getVersion(),
-            $input->getOption('major')
-            $input->getOption('pre'),
-            $output
-        );
+        $manager         = $this->createManager($output);
+        $version         = $input->getArgument('version') ? $input->getArgument('version') : $this->getApplication()->getVersion();
+        $allowMajor      = $input->getOption('major');
+        $allowPreRelease = $input->getOption('pre');
+
+        $this->updateCurrentVersion($manager, $version, $allowMajor, $allowPreRelease, $output);
 
         return 0;
     }
@@ -85,26 +88,27 @@ class UpdateCommand extends Command
         }
     }
 
+
     /**
      * Updates current version.
-     * 
+     *
      * @param Manager         $manager
      * @param string          $currentVersion
      * @param bool|null       $allowMajor
      * @param bool|null       $allowPreRelease
      * @param OutputInterface $output
-     * 
+     *
      * @return void
      */
     protected function updateCurrentVersion(
         Manager $manager,
-        $currentVersion,
+        $version,
         $allowMajor,
         $allowPreRelease,
         OutputInterface $output
     )
     {
-        if ($manager->update($currentVersion, $allowMajor, $allowPreRelease)) {
+        if ($manager->update($version, $allowMajor, $allowPreRelease)) {
             $output->writeln('<info>Updated to latest version.</info>');
         } else {
             $output->writeln('<comment>Already up-to-date.</comment>');
