@@ -225,11 +225,7 @@ class Twig implements TemplateInterface
      */
     protected function getTwigEnvironment()
     {
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($this->path));
-
-        // we explicitly do not want to escape content; all escaping has been
-        // handled by the converter itself
-        $twig->removeExtension('escaper');
+        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($this->path), array('autoescape' => false));
 
         return $twig;
     }
