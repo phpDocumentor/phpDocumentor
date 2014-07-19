@@ -192,13 +192,11 @@ class Xsl extends WriterAbstract implements Routable
             if ((strpos($variable, '"') !== false)
                 && ((strpos($variable, "'") !== false))
             ) {
-                // TODO: inject the logger and use it here
-                //$this->log(
-                //    'XSLT does not allow both double and single quotes in '
-                //    . 'a variable; transforming single quotes to a character '
-                //    . 'encoded version in variable: ' . $key,
-                //    LogLevel::WARNING
-                //);
+                $this->logger->warning(
+                    'XSLT does not allow both double and single quotes in '
+                    . 'a variable; transforming single quotes to a character '
+                    . 'encoded version in variable: ' . $key
+                );
                 $variable = str_replace("'", "&#39;", $variable);
             }
 
