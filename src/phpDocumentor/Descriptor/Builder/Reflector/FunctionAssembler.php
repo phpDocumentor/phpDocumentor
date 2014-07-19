@@ -12,7 +12,9 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FunctionDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\FunctionReflector;
 
 /**
@@ -59,10 +61,18 @@ class FunctionAssembler extends AssemblerAbstract
      */
     protected function mapReflectorPropertiesOntoDescriptor($reflector, $descriptor)
     {
+        $packages = new Collection();
+        $package = $this->extractPackageFromDocBlock($reflector->getDocBlock());
+        if ($package) {
+            $tag = new TagDescriptor('package');
+            $tag->setDescription($package);
+            $packages->add($tag);
+        }
+        $descriptor->getTags()->set('package', $packages);
+
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getName() . '()');
         $descriptor->setName($reflector->getShortName());
         $descriptor->setLine($reflector->getLinenumber());
-        $descriptor->getTags()->set('package', $this->extractPackageFromDocBlock($reflector->getDocBlock()) ? : '');
         $descriptor->setNamespace($this->getFullyQualifiedNamespaceName($reflector));
     }
 
