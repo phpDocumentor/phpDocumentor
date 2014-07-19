@@ -28,6 +28,10 @@ class MethodDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
+        if (!($node instanceof Descriptor\MethodDescriptor)) {
+            return false;
+        }
+
         $converter = new QualifiedNameToUrlConverter();
         $className = $node->getParent()->getFullyQualifiedStructuralElementName();
 
