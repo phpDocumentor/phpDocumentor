@@ -79,8 +79,8 @@ description will be considered as part of the summary.
 
 .. NOTE::
 
-    A full stop means that the dot (`.`) needs to be succeeded by a new line. This way it is possible to mention,
-    for example, a version number without stopping the summary.
+    A full stop means that the dot (`.`) needs to be succeeded by a new line. This way it is possible to mention
+    abbreviations, such as e.g., a version number or other texts containing dots without stopping the summary.
 
 Description
 ~~~~~~~~~~~
@@ -115,7 +115,7 @@ In addition phpDocumentor is able to understand, and link to, the annotations of
 Inheritance
 -----------
 
-Docblocks automatically inherits the Short and Description of an overridden, extended or implemented element.
+Docblocks automatically inherit the Summary and Description of an overridden, extended or implemented element.
 
 For example: if Class B extends Class A and it has an empty DocBlock defined, then it will have the same Summary and
 Description as Class A. No DocBlock means that the 'parent' DocBlock will not be overridden and an error will be thrown
