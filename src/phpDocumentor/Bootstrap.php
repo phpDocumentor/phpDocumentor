@@ -11,13 +11,24 @@
 
 namespace phpDocumentor;
 
-require_once __DIR__.'/Application.php';
-
 /**
- * This class provides a bootstrap for all application who wish to interface
- * with phpDocumentor.
+ * This class provides a bootstrap for all application who wish to interface with phpDocumentor.
  *
- * The Bootstrapper is responsible for setting up the phpDocumentor application.
+ * The Bootstrapper is responsible for setting up the autoloader, profiling options and application, including
+ * dependency injection container.
+ *
+ * The simplest usage would be:
+ *
+ *     $app = Bootstap::createInstance()->initialize();
+ *
+ * This will setup the autoloader and application, including Service Container, and return an instance of the
+ * application ready to be ran using the `run` command.
+ *
+ * If you need more control you can do some of the steps manually:
+ *
+ *     $bootstrap = Bootstap::createInstance();
+ *     $autoloader = $bootstrap->createAutoloader();
+ *     $app = new Application($autoloader)
  */
 class Bootstrap
 {
@@ -38,14 +49,53 @@ class Bootstrap
     /**
      * Convenience method that does the complete initialization for phpDocumentor.
      *
-     * This method will register the application.
-     * The methods called can also be implemented separately, for example when
-     * you want to use your own autoloader.
-     *
      * @return Application
      */
     public function initialize()
     {
-        return new Application();
+        $autoloader = $this->createAutoloader();
+
+        return new Application($autoloader);
+    }
+
+    /**
+     * Sets up XHProf so that we can profile phpDocumentor using XHGUI.
+     *
+     * @return self
+     */
+    public function registerProfiler()
+    {
+        // check whether xhprof is loaded
+        $profile   = (bool)(getenv('PHPDOC_PROFILE') === 'on');
+        $xhguiPath = getenv('XHGUI_PATH');
+        if ($profile && $xhguiPath && extension_loaded('xhprof')) {
+            echo 'PROFILING ENABLED' . PHP_EOL;
+            include($xhguiPath . '/external/header.php');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Initializes and returns the autoloader.
+     *
+     * @throws \RuntimeException if no autoloader could be found.
+     *
+     * @return \Composer\Autoload\ClassLoader
+     */
+    public function createAutoloader()
+    {
+        $autoloader_base_path = '/../../vendor/autoload.php';
+
+        // if the file does not exist from a base path it is included as vendor
+        $autoloader_location = file_exists(__DIR__ . $autoloader_base_path)
+            ? __DIR__ . $autoloader_base_path
+            : __DIR__ . '/../../../..' . $autoloader_base_path;
+
+        if (! file_exists($autoloader_location) || ! is_readable($autoloader_location)) {
+            throw new \RuntimeException('Unable to find autoloader at ' . $autoloader_location);
+        }
+
+        return require $autoloader_location;
     }
 }
