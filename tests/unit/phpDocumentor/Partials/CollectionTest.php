@@ -37,7 +37,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $input  = 'This is a *Partial* text';
         $output = 'This is a <em>Partial</em> text';
-        $this->parser->shouldReceive('parse')->with($input)->andReturn($output);
+        $this->parser->shouldReceive('text')->with($input)->andReturn($output);
 
         // Act
         $this->fixture->set('test', $input);
