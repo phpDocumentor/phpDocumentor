@@ -1,8 +1,4 @@
 ---
-- name: Update our apt cache
-  apt: update_cache=yes
-  sudo: True
-
 - name: Install required packages
   apt: name={{item}} state=latest
   with_items:
