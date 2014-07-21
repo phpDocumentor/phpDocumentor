@@ -3,6 +3,10 @@
   template: dest=/etc/motd src=motd.j2 owner=root group=root mode=0644
   sudo: True
 
+- name: Update our apt cache
+  apt: update_cache=yes
+  sudo: True
+
 - name: Install Vim
   apt: name={{item}} state=latest
   with_items:
