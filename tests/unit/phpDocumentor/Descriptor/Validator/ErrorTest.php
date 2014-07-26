@@ -16,13 +16,19 @@ namespace phpDocumentor\Descriptor\Validator;
  */
 class ErrorTest extends \PHPUnit_Framework_TestCase
 {
+    const EXAMPLE_SEVERITY = 'severity';
+    const EXAMPLE_CODE     = 'code';
+    const EXAMPLE_LINE     = 0;
+
+    /** @var Error */
+    private $fixture;
+
     /**
-     * @covers phpDocumentor\Descriptor\Validator\Error::__construct
+     * Creates a fixture for this test.
      */
-    public function testIfCanBeInstantiated()
+    protected function setUp()
     {
-        $error = new Error('severity', 'code', 0, array());
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Validator\Error', $error);
+        $this->fixture = new Error(self::EXAMPLE_SEVERITY, self::EXAMPLE_CODE, self::EXAMPLE_LINE, array('context'));
     }
 
     /**
@@ -31,9 +37,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfSeverityCanBeReturned()
     {
-        $severity = 'severity';
-        $error = new Error($severity, 'code', 0, array());
-        $this->assertSame($severity, $error->getSeverity());
+        $this->assertSame(self::EXAMPLE_SEVERITY, $this->fixture->getSeverity());
     }
 
     /**
@@ -42,9 +46,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfCodeCanBeReturned()
     {
-        $code = 'foo';
-        $error = new Error('severity', $code, 0, array());
-        $this->assertSame($code, $error->getCode());
+        $this->assertSame(self::EXAMPLE_CODE, $this->fixture->getCode());
     }
 
     /**
@@ -53,9 +55,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfLineCanBeReturned()
     {
-        $line = 1337;
-        $error = new Error('severity', 'code', $line, array());
-        $this->assertSame($line, $error->getLine());
+        $this->assertSame(self::EXAMPLE_LINE, $this->fixture->getLine());
     }
 
     /**
@@ -64,8 +64,6 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfContextCanBeReturned()
     {
-        $context = array();
-        $error = new Error('severity', 'code', 0, $context);
-        $this->assertSame($context, $error->getContext());
+        $this->assertSame(array('context'), $this->fixture->getContext());
     }
 }
