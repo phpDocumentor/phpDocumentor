@@ -20,7 +20,7 @@ use Mockery as m;
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
  *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
+ * @covers \phpDocumentor\Descriptor\Builder\Reflector\FileAssembler
  */
 class FileAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,6 +33,7 @@ class FileAssemblerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new FileAssembler();
+        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
     }
 
     /**
@@ -46,6 +47,9 @@ class FileAssemblerTest extends \PHPUnit_Framework_TestCase
         $content = '<?php ... ?>';
         $hash = md5($content);
         $defaultPackageName = 'Package';
+
+        $abstractDescriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $abstractDescriptor->shouldReceive('getLineNumber')->andReturn(1337);
 
         $docBlockDescription = new DocBlock\Description('
             /**
@@ -67,19 +71,59 @@ class FileAssemblerTest extends \PHPUnit_Framework_TestCase
         $fileReflectorMock->shouldReceive('getDefaultPackageName')->andReturn($defaultPackageName);
         $fileReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
 
+        $fileReflectorMock->shouldReceive('getConstants')->once()->andReturn(
+            new Collection(array($abstractDescriptor))
+        );
+
+        $fileReflectorMock->shouldReceive('getFunctions')->once()->andReturn(
+            new Collection(array($abstractDescriptor))
+        );
+
+        $fileReflectorMock->shouldReceive('getClasses')->once()->andReturn(
+            new Collection(array($abstractDescriptor))
+        );
+
+        $fileReflectorMock->shouldReceive('getInterfaces')->once()->andReturn(
+            new Collection(array($abstractDescriptor))
+        );
+
+        $fileReflectorMock->shouldReceive('getTraits')->once()->andReturn(
+            new Collection(array($abstractDescriptor))
+        );
+
+        $fileReflectorMock->shouldReceive('getMarkers')->once()->andReturn(
+            array('type', 'message', 1337)
+        );
+
         $fileReflectorMock->shouldReceive('getIncludes')->andReturn(new Collection);
         $fileReflectorMock->shouldReceive('getNamespaceAliases')->andReturn(new Collection);
-        $fileReflectorMock->shouldReceive('getMarkers')->andReturn(new Collection);
-        $fileReflectorMock->shouldReceive('getConstants')->andReturn(new Collection);
-        $fileReflectorMock->shouldReceive('getFunctions')->andReturn(new Collection);
-        $fileReflectorMock->shouldReceive('getClasses')->andReturn(new Collection);
-        $fileReflectorMock->shouldReceive('getInterfaces')->andReturn(new Collection);
-        $fileReflectorMock->shouldReceive('getTraits')->andReturn(new Collection);
 
         $descriptor = $this->fixture->create($fileReflectorMock);
 
         $this->assertSame($filename, $descriptor->getName());
         $this->assertSame($hash, $descriptor->getHash());
         $this->assertSame($content, $descriptor->getSource());
+    }
+
+    /**
+     * Create a descriptor builder mock
+     *
+     * @return m\MockInterface
+     */
+    protected function getProjectDescriptorBuilderMock()
+    {
+        $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+
+        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
+            $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+            $mock->shouldReceive('setLocation')->atLeast()->once();
+            $mock->shouldReceive('getTags')->atLeast()->once()->andReturn(new Collection);
+            $mock->shouldReceive('getFullyQualifiedStructuralElementName')->once()->andReturn('Frank_is_een_eindbaas');
+
+            return $mock;
+        });
+
+
+        return $projectDescriptorBuilderMock;
     }
 }

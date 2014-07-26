@@ -42,7 +42,6 @@ class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateArgumentDescriptorFromReflector()
     {
-        $this->markTestIncomplete('Work in progress');
         // Arrange
         $name = 'goodArgument';
         $type = 'boolean';
@@ -66,17 +65,21 @@ class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfTypeAndDescriptionAreSetFromParamDescriptor()
     {
-        $this->markTestIncomplete('Work in progress');
         // Arrange
         $name = 'goodArgument';
         $type = 'boolean';
 
         $argumentReflectorMock = $this->givenAnArgumentReflectorWithNameAndType($name, $type);
         $types = $this->thenProjectBuilderShouldSetCollectionOfExpectedTypes(array($type));
-        $params = array(); // TODO: replace with mocked ParamDescriptors to test functionality
+
+        // Mock a paramDescriptor
+        $paramDescriptorTagMock = m::mock('phpDocumentor\Descriptor\Tag\ParamDescriptor');
+        $paramDescriptorTagMock->shouldReceive('getVariableName')->once()->andReturn($name);
+        $paramDescriptorTagMock->shouldReceive('getDescription')->once()->andReturn('Is this a good argument, or nah?');
+        $paramDescriptorTagMock->shouldReceive('getTypes')->once()->andReturn($types);
 
         // Act
-        $descriptor = $this->fixture->create($argumentReflectorMock, $params);
+        $descriptor = $this->fixture->create($argumentReflectorMock, array($paramDescriptorTagMock));
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
@@ -97,6 +100,7 @@ class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
         $argumentReflectorMock->shouldReceive('getType')->andReturn($type);
         $argumentReflectorMock->shouldReceive('getDefault')->andReturn(false);
         $argumentReflectorMock->shouldReceive('isByRef')->andReturn(false);
+
         return $argumentReflectorMock;
     }
 
