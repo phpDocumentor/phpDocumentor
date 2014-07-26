@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Validator\Error;
@@ -125,7 +126,7 @@ STAT
     }
 
     /**
-     * Get number of deprecated elemnts.
+     * Get number of deprecated elements.
      *
      * @param ProjectDescriptor $project
      *
@@ -135,6 +136,7 @@ STAT
     {
         $deprecatedCounter = 0;
 
+        /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->get('elements') as $element) {
             if ($element->isDeprecated()) {
                 $deprecatedCounter += 1;
