@@ -22,7 +22,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     protected $fixture;
 
     /**
-     * Creates a new (emoty) fixture object.
+     * Creates a new (empty) fixture object.
      */
     protected function setUp()
     {
@@ -68,5 +68,133 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setMethods($mock);
 
         $this->assertSame($mock, $this->fixture->getMethods());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::getInheritedMethods
+     */
+    public function testGetInheritedMethods()
+    {
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInheritedMethods());
+
+        $collection = $this->fixture->getInheritedMethods();
+
+        $this->assertEquals(0, $collection->count());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
+     */
+    public function testMagicMethodsReturnsEmptyCollectionWhenNoTags()
+    {
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicMethods());
+
+        $collection = $this->fixture->getMagicMethods();
+
+        $this->assertEquals(0, $collection->count());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
+     */
+    public function testMagicMethodsReturnsExpectedCollectionWithTags()
+    {
+        $mockMethodDescriptor = m::mock('phpDocumentor\Descriptor\Tag\MethodDescriptor');
+        $mockMethodDescriptor->shouldReceive('getMethodName')->andReturn('Sample');
+        $mockMethodDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
+
+        $methodCollection = new Collection(array($mockMethodDescriptor));
+        $this->fixture->getTags()->set('method', $methodCollection);
+
+        $magicMethodsCollection = $this->fixture->getMagicMethods();
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $magicMethodsCollection);
+        $this->assertSame(1, $magicMethodsCollection->count());
+        $this->assertSame('Sample', $magicMethodsCollection[0]->getName());
+        $this->assertSame('Sample description', $magicMethodsCollection[0]->getDescription());
+        $this->assertSame($this->fixture, $magicMethodsCollection[0]->getParent());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::getInheritedProperties
+     */
+    public function testGetInheritedProperties()
+    {
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getInheritedProperties());
+
+        $collection = $this->fixture->getInheritedProperties();
+
+        $this->assertEquals(0, $collection->count());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
+     */
+    public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags()
+    {
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicProperties());
+
+        $collection = $this->fixture->getMagicProperties();
+
+        $this->assertEquals(0, $collection->count());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
+     */
+    public function testMagicPropertiesReturnsExpectedCollectionWithTags()
+    {
+        $mockTagPropertyDescriptor = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
+        $mockTagPropertyDescriptor->shouldReceive('getVariableName')->andReturn('Sample');
+        $mockTagPropertyDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
+        $mockTagPropertyDescriptor->shouldReceive('getTypes')->andReturn(new Collection);
+
+        $propertyCollection = new Collection(array($mockTagPropertyDescriptor));
+        $this->fixture->getTags()->set('property',$propertyCollection);
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection',$this->fixture->getMagicProperties());
+
+        $magicPropertiesCollection = $this->fixture->getMagicProperties();
+        $this->assertSame(1,$magicPropertiesCollection->count());
+        $this->assertSame('Sample',$magicPropertiesCollection[0]->getName());
+        $this->assertSame('Sample description',$magicPropertiesCollection[0]->getDescription());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection',$magicPropertiesCollection[0]->getTypes());
+        $this->assertSame(0,$magicPropertiesCollection[0]->getTypes()->count());
+        $this->assertSame($this->fixture,$magicPropertiesCollection[0]->getParent());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::setPackage
+     */
+    public function testSettingAndGettingPackage()
+    {
+        $package = new \phpDocumentor\Descriptor\PackageDescriptor;
+        $mockTagPropertyDescriptor = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
+        $mockTagPropertyDescriptor->shouldReceive('setPackage')->with($package);
+
+        $mockTagMethodDescriptor = m::mock('phpDocumentor\Descriptor\Tag\MethodDescriptor');
+        $mockTagMethodDescriptor->shouldReceive('setPackage')->with($package);
+
+        $propertyCollection = new Collection(array($mockTagPropertyDescriptor));
+        $methodCollection = new Collection(array($mockTagMethodDescriptor));
+        $this->fixture->setProperties($propertyCollection);
+        $this->fixture->setMethods($methodCollection);
+
+        $this->fixture->setPackage($package);
+
+        $this->assertSame($package, $this->fixture->getPackage());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::getUsedTraits
+     * @covers phpDocumentor\Descriptor\TraitDescriptor::setUsedTraits
+     */
+    public function testSettingAndGettingUsedTraits()
+    {
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection',$this->fixture->getUsedTraits());
+
+        $usedTraitsCollection = new Collection;
+        $this->fixture->setUsedTraits($usedTraitsCollection);
+
+        $this->assertSame($usedTraitsCollection, $this->fixture->getUsedTraits());
     }
 }
