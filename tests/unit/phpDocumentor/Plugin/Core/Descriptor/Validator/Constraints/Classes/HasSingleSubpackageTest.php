@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpDocumentor
  *
@@ -13,18 +12,18 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes;
 
-
 /**
  * Test class for \phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSingleSubpackage.
- *
- * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSingleSubpackage
  */
 class HasSingleSubpackageTest extends \PHPUnit_Framework_TestCase
 {
-	public function testGetTargetsClassConstraint()
-	{
-		$constraint = new HasSingleSubpackage();
-		
-		$this->assertEquals(array(HasSingleSubpackage::CLASS_CONSTRAINT), $constraint->getTargets());
-	}
+    /**
+     * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSingleSubpackage::getTargets
+     */
+    public function testGetTargetsClassConstraint()
+    {
+        $constraint = new HasSingleSubpackage();
+
+        $this->assertEquals(array(HasSingleSubpackage::CLASS_CONSTRAINT), $constraint->getTargets());
+    }
 }

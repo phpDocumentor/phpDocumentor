@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpDocumentor
  *
@@ -21,79 +20,66 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSinglePackageValidator.
- *
- * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSinglePackageValidator
  */
 class HasSinglePackageValidatorTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var HasSinglePackageValidator
-	 */
-	protected $validator;
-	
-	/**
-	 * 
-	 * @var HasSinglePackage
-	 */
-	protected $constraint;
-	
-	/**
-	 * @var MockInterface | FileDescriptor
-	 */
-	protected $fileDescriptor;
-	
-	/**
-	 * 
-	 * @var MockInterface | ExecutionContextInterface
-	 */
-	protected $context;
-	
-	public function setUp()
-	{
-		
-		$this->constraint = new HasSinglePackage();
-		$this->fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-		$this->context = m::mock('Symfony\Component\Validator\ExecutionContextInterface');
-		
-		$this->validator = new HasSinglePackageValidator();
-		$this->validator->initialize($this->context);
-	}
-	
-	
-	/**
-	 * @expectedException Symfony\Component\Validator\Exception\ConstraintDefinitionException
-	 */
-	public function testValidateWithBadInput()
-	{
-	
-		$this->validator->validate(new \stdClass(), $this->constraint);
-		
-	}
-	
-	public function testValidateHappyPath()
-	{
-		$packageCollection = new Collection(array('x', 'y'));
-		$tagCollection = new Collection(array('package' => $packageCollection));
-		
-		$this->fileDescriptor->shouldReceive('getTags')->andReturn($tagCollection)->once();
-		
-		$this->context->shouldReceive('addViolationAt')->once()->with('package', $this->constraint->message);
-		
-		$this->validator->validate($this->fileDescriptor, $this->constraint);
+    /** @var HasSinglePackageValidator */
+    protected $validator;
 
-		$this->assertTrue(true);
-	}
-	
-	public function testValidateSinglePackage()
-	{
-		$packageCollection = new Collection(array('x'));
-		$tagCollection = new Collection(array('package' => $packageCollection));
-		
-		$this->fileDescriptor->shouldReceive('getTags')->andReturn($tagCollection)->once();
-	
-		$this->context->shouldReceive('addViolationAt')->never();
+    /** @var HasSinglePackage */
+    protected $constraint;
 
-		$this->validator->validate($this->fileDescriptor, $this->constraint);
-		$this->assertTrue(true);
-	}
+    /** @var MockInterface|FileDescriptor */
+    protected $fileDescriptor;
+
+    /** @var MockInterface|ExecutionContextInterface */
+    protected $context;
+
+    /**
+     * Initializes the fixture and dependencies for this testcase.
+     */
+    public function setUp()
+    {
+        $this->constraint = new HasSinglePackage();
+        $this->fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $this->context = m::mock('Symfony\Component\Validator\ExecutionContextInterface');
+
+        $this->validator = new HasSinglePackageValidator();
+        $this->validator->initialize($this->context);
+    }
+
+    /**
+     * @expectedException Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSinglePackageValidator::validate
+     */
+    public function testValidateWithBadInput()
+    {
+        $this->validator->validate(new \stdClass(), $this->constraint);
+    }
+
+    /**
+     * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSinglePackageValidator::validate
+     */
+    public function testValidateHappyPath()
+    {
+        $packageCollection = new Collection(array('x', 'y'));
+        $tagCollection     = new Collection(array('package' => $packageCollection));
+        $this->fileDescriptor->shouldReceive('getTags')->andReturn($tagCollection)->once();
+        $this->context->shouldReceive('addViolationAt')->once()->with('package', $this->constraint->message);
+
+        $this->validator->validate($this->fileDescriptor, $this->constraint);
+    }
+
+    /**
+     * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSinglePackageValidator::validate
+     */
+    public function testValidateSinglePackage()
+    {
+        $packageCollection = new Collection(array('x'));
+        $tagCollection     = new Collection(array('package' => $packageCollection));
+        $this->fileDescriptor->shouldReceive('getTags')->andReturn($tagCollection)->once();
+        $this->context->shouldReceive('addViolationAt')->never();
+
+        $this->validator->validate($this->fileDescriptor, $this->constraint);
+    }
 }
