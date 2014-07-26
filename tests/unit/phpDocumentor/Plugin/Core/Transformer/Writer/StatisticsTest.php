@@ -39,7 +39,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $this->fs = vfsStream::setup('StatisticsTest');
     }
 
-    public function testTransformWithArtifactAsString()
+    public function testTransformWithStartingArtifactAsString()
     {
         $transformer = m::mock('phpDocumentor\Transformer\Transformation');
         $transformer->shouldReceive('getTransformer->getTarget')->andReturn(vfsStream::url('StatisticsTest'));
@@ -75,6 +75,57 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         <deprecated>1</deprecated>
         <errors>1</errors>
         <markers>1</markers>
+    </counters>
+</stat>
+</phpdoc-stats>');
+
+        $actualXml = new \DOMDocument;
+        $actualXml->load(vfsStream::url('StatisticsTest/artifact.xml'));
+
+        $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
+        $this->assertSame($expectedXml->saveXML(), $actualXml->saveXML());
+    }
+
+    public function testTransformWithStartingArtifactAsFile()
+    {
+        $statsXml = '<?xml version="1.0"?><phpdoc-stats version="2.6.1"><test></test></phpdoc-stats>';
+        vfsStream::create(array('artifact.xml' => $statsXml));
+
+        $transformer = m::mock('phpDocumentor\Transformer\Transformation');
+        $transformer->shouldReceive('getTransformer->getTarget')->andReturn(vfsStream::url('StatisticsTest'));
+        $transformer->shouldReceive('getArtifact')->andReturn('artifact.xml');
+
+        $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
+
+        $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $fileDescriptor->shouldReceive('isDeprecated')->andReturn(true);
+        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn(array($error, $error));
+        $fileDescriptor->shouldReceive('getMarkers->count')->andReturn(12);
+
+        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
+        $projectDescriptor->shouldReceive('getFiles->count')->andReturn(1);
+        $projectDescriptor->shouldReceive('getIndexes->get')->andReturn(array($fileDescriptor));
+
+        $this->statistics->transform($projectDescriptor, $transformer);
+
+        // Assert file exists
+        $this->assertTrue($this->fs->hasChild('artifact.xml'));
+
+        // Inspect XML
+        $now = new \DateTime('now');
+        $date = $now->format(DATE_ATOM);
+
+        $expectedXml = new \DOMDocument;
+        $expectedXml->loadXML('<?xml version="1.0"?>
+<phpdoc-stats version="2.6.1">
+  <test></test>
+  <stat date="'.$date.'">
+    <counters>
+        <files>1</files>
+        <deprecated>1</deprecated>
+        <errors>2</errors>
+        <markers>12</markers>
     </counters>
 </stat>
 </phpdoc-stats>');
