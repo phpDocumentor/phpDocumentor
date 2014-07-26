@@ -436,8 +436,6 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $methodDescriptor->shouldReceive('setPackage')->with($package);
 
         $mock->setPackage($package);
-
-        $this->assertTrue(true);
     }
 
     /**
