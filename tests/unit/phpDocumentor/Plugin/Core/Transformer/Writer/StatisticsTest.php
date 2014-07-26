@@ -67,7 +67,8 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $date = $now->format(DATE_ATOM);
 
         $expectedXml = new \DOMDocument;
-        $expectedXml->loadXML('<?xml version="1.0"?>
+        $expectedXml->loadXML(
+            '<?xml version="1.0"?>
 <phpdoc-stats version="2.6.1">
   <stat date="'.$date.'">
     <counters>
@@ -77,7 +78,8 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         <markers>1</markers>
     </counters>
 </stat>
-</phpdoc-stats>');
+</phpdoc-stats>'
+        );
 
         $actualXml = new \DOMDocument;
         $actualXml->load(vfsStream::url('StatisticsTest/artifact.xml'));
@@ -117,7 +119,8 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $date = $now->format(DATE_ATOM);
 
         $expectedXml = new \DOMDocument;
-        $expectedXml->loadXML('<?xml version="1.0"?>
+        $expectedXml->loadXML(
+            '<?xml version="1.0"?>
 <phpdoc-stats version="2.6.1">
   <test></test>
   <stat date="'.$date.'">
@@ -128,7 +131,8 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         <markers>12</markers>
     </counters>
 </stat>
-</phpdoc-stats>');
+</phpdoc-stats>'
+        );
 
         $actualXml = new \DOMDocument;
         $actualXml->load(vfsStream::url('StatisticsTest/artifact.xml'));
