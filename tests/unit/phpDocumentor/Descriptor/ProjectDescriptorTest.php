@@ -20,101 +20,108 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
  */
 class ProjectDescriptorTest extends \PHPUnit_Framework_TestCase
 {
+    const EXAMPLE_NAME = 'Initial name';
+
+    /** @var ProjectDescriptor */
+    private $fixture;
 
     /**
+     * Initializes the fixture object.
+     */
+    protected function setUp()
+    {
+        $this->fixture = new ProjectDescriptor(self::EXAMPLE_NAME);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::setName
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::getName
      */
     public function testGetSetName()
     {
-        $projectName = 'Initial name';
-        $descriptor = new ProjectDescriptor($projectName);
-        $result = $descriptor->getName();
-        $this->assertEquals($projectName, $result);
+        $this->assertEquals(self::EXAMPLE_NAME, $this->fixture->getName());
 
-        $projectName = 'Renamed';
-        $descriptor->setName($projectName);
-        $result = $descriptor->getName();
-        $this->assertEquals($projectName, $result);
+        $newProjectName = 'Renamed';
+        $this->fixture->setName($newProjectName);
+
+        $this->assertEquals($newProjectName, $this->fixture->getName());
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::setFiles
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::getFiles
      */
     public function testGetSetFiles()
     {
-        $descriptor = new ProjectDescriptor('Project name');
-        $result = $descriptor->getFiles();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getFiles());
 
         $filesCollection = new Collection();
-        $descriptor->setFiles($filesCollection);
+        $this->fixture->setFiles($filesCollection);
 
-        $result = $descriptor->getFiles();
-        $this->assertSame($filesCollection, $result);
+        $this->assertSame($filesCollection, $this->fixture->getFiles());
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::setIndexes
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::getIndexes
      */
     public function testGetSetIndexes()
     {
-        $descriptor = new ProjectDescriptor('Project name');
-        $result = $descriptor->getIndexes();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getIndexes());
 
         $indexCollection = new Collection();
-        $descriptor->setIndexes($indexCollection);
-        $result = $descriptor->getIndexes();
-        $this->assertSame($indexCollection, $result);
+        $this->fixture->setIndexes($indexCollection);
+
+        $this->assertSame($indexCollection, $this->fixture->getIndexes());
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::setNamespace
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::getNamespace
      */
     public function testGetSetNamespace()
     {
-        $descriptor = new ProjectDescriptor('Project name');
-        $result = $descriptor->getNamespace();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\NamespaceDescriptor', $result);
+        $this->assertInstanceOf('phpDocumentor\Descriptor\NamespaceDescriptor', $this->fixture->getNamespace());
+
         $namespaceDescriptor = new NamespaceDescriptor();
-        $descriptor->setNamespace($namespaceDescriptor);
-        $result = $descriptor->getNamespace();
-        $this->assertSame($namespaceDescriptor, $result);
+        $this->fixture->setNamespace($namespaceDescriptor);
+
+        $this->assertSame($namespaceDescriptor, $this->fixture->getNamespace());
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::setSettings
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::getSettings
      */
     public function testGetSetSettings()
     {
-        $descriptor = new ProjectDescriptor('Project name');
-        $result = $descriptor->getSettings();
-        $this->assertInstanceOf('phpDocumentor\Descriptor\ProjectDescriptor\Settings', $result);
+        $this->assertInstanceOf('phpDocumentor\Descriptor\ProjectDescriptor\Settings', $this->fixture->getSettings());
+
         $settings = new Settings();
-        $descriptor->setSettings($settings);
-        $result = $descriptor->getSettings();
-        $this->assertSame($settings, $result);
+        $this->fixture->setSettings($settings);
+
+        $this->assertSame($settings, $this->fixture->getSettings());
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptor::__construct
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::setPartials
      * @covers phpDocumentor\Descriptor\ProjectDescriptor::getPartials
      */
     public function testGetSetPartials()
     {
-        $descriptor = new ProjectDescriptor('Project name');
-        $result = $descriptor->getPartials();
+        $result = $this->fixture->getPartials();
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $result);
 
         $partialsCollection = new Collection();
-        $descriptor->setPartials($partialsCollection);
+        $this->fixture->setPartials($partialsCollection);
 
-        $result = $descriptor->getPartials();
+        $result = $this->fixture->getPartials();
         $this->assertSame($partialsCollection, $result);
     }
 
@@ -123,27 +130,26 @@ class ProjectDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsVisibilityAllowed()
     {
-        $descriptor = new ProjectDescriptor('Project name');
-        $this->assertTrue($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertTrue($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
-        $this->assertTrue($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
-        $this->assertFalse($descriptor->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
+        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
+        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
 
-        $Settings = new Settings();
-        $Settings->setVisibility(Settings::VISIBILITY_PROTECTED);
-        $descriptor->setSettings($Settings);
+        $settings = new Settings();
+        $settings->setVisibility(Settings::VISIBILITY_PROTECTED);
+        $this->fixture->setSettings($settings);
 
-        $this->assertFalse($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertTrue($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
-        $this->assertFalse($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
-        $this->assertFalse($descriptor->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
+        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
+        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
+        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
 
-        $Settings->setVisibility(Settings::VISIBILITY_PROTECTED | Settings::VISIBILITY_INTERNAL);
-        $descriptor->setSettings($Settings);
+        $settings->setVisibility(Settings::VISIBILITY_PROTECTED | Settings::VISIBILITY_INTERNAL);
+        $this->fixture->setSettings($settings);
 
-        $this->assertFalse($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
-        $this->assertTrue($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
-        $this->assertFalse($descriptor->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
-        $this->assertTrue($descriptor->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
+        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PROTECTED));
+        $this->assertFalse($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->fixture->isVisibilityAllowed(Settings::VISIBILITY_INTERNAL));
     }
 }
