@@ -22,7 +22,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     protected $fixture;
 
     /**
-     * Creates a new (emoty) fixture object.
+     * Creates a new (empty) fixture object.
      */
     protected function setUp()
     {
