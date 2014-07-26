@@ -47,4 +47,28 @@ class Partial
     {
         return $this->name;
     }
+
+    /**
+     * @param $content Set the content for tests
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @param $link Set the link for tests
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
+
+    /**
+     * @param $name Set the name for tests
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 }
