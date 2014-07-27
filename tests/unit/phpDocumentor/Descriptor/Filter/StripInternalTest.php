@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
  */
 class StripInternalTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var  ProjectDescriptorBuilder|m\Mock */
+    /** @var ProjectDescriptorBuilder|m\Mock */
     protected $builderMock;
 
     /** @var StripInternal $fixture */
@@ -39,7 +39,7 @@ class StripInternalTest extends \PHPUnit_Framework_TestCase
      */
     public function testProjectDescriptorBuilderIsSetUponConstruction()
     {
-        $this->assertAttributeEquals($this->builderMock, 'builder', $this->fixture);
+        $this->assertAttributeSame($this->builderMock, 'builder', $this->fixture);
     }
 
     /**
