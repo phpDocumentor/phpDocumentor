@@ -3,11 +3,10 @@ Feature: Validate whether a Function's DocBlock is valid
   As a documentation generating user
   I want to see if there are any errors specifically regarding my DocBlocks for global functions
 
-#  FIXME
-#  Scenario: Show an error when a DocBlock is missing for a function.
-#    Given I am in the phpDocumentor root directory
-#    When I run phpDocumentor against the file "tests/data/NoFunctionDocBlock.php"
-#    Then I should get a log entry "No summary for function \noFunctionDocBlock()"
+  Scenario: Show an error when a DocBlock is missing for a function.
+    Given I am in the phpDocumentor root directory
+    When I run phpDocumentor against the file "tests/data/NoFunctionDocBlock.php"
+    Then I should get a log entry "No summary for function \noFunctionDocBlock()"
 
 #  FIXME
 #  Scenario: Show an error when an argument typehint mismatches with an @param tag.
