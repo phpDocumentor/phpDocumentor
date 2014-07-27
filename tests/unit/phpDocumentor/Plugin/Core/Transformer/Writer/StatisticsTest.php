@@ -19,7 +19,6 @@ use org\bovigo\vfs\vfsStream;
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Statistics.
  *
- * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Statistics
  */
 class StatisticsTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,21 +40,11 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
 
     public function testTransformWithStartingArtifactAsString()
     {
-        $transformer = m::mock('phpDocumentor\Transformer\Transformation');
-        $transformer->shouldReceive('getTransformer->getTarget')->andReturn(vfsStream::url('StatisticsTest'));
-        $transformer->shouldReceive('getArtifact')->andReturn('artifact.xml');
-
-        $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
-
-        $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-        $fileDescriptor->shouldReceive('isDeprecated')->andReturn(true);
-        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn(array($error));
-        $fileDescriptor->shouldReceive('getMarkers->count')->andReturn(1);
-
-        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
-        $projectDescriptor->shouldReceive('getFiles->count')->andReturn(1);
-        $projectDescriptor->shouldReceive('getIndexes->get')->andReturn(array($fileDescriptor));
+        $markerCount = 1;
+        $transformer = $this->givenATransformer();
+        $error = $this->givenAnError();
+        $fileDescriptor = $this->givenAFileDescriptor(array($error), $markerCount);
+        $projectDescriptor = $this->givenAProjectDescriptor($fileDescriptor);
 
         $this->statistics->transform($projectDescriptor, $transformer);
 
@@ -66,48 +55,19 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $now = new \DateTime('now');
         $date = $now->format(DATE_ATOM);
 
-        $expectedXml = new \DOMDocument;
-        $expectedXml->loadXML(
-            '<?xml version="1.0"?>
-<phpdoc-stats version="2.6.1">
-  <stat date="'.$date.'">
-    <counters>
-        <files>1</files>
-        <deprecated>1</deprecated>
-        <errors>1</errors>
-        <markers>1</markers>
-    </counters>
-</stat>
-</phpdoc-stats>'
-        );
-
-        $actualXml = new \DOMDocument;
-        $actualXml->load(vfsStream::url('StatisticsTest/artifact.xml'));
-
-        $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
-        $this->assertSame($expectedXml->saveXML(), $actualXml->saveXML());
+        $this->thenTheXmlReportShouldContain($date, 1, 1, 1, $markerCount);
     }
 
     public function testTransformWithStartingArtifactAsFile()
     {
-        $statsXml = '<?xml version="1.0"?><phpdoc-stats version="2.6.1"><test></test></phpdoc-stats>';
+        $statsXml = '<?xml version="1.0"?><phpdoc-stats version="2.6.1"></phpdoc-stats>';
         vfsStream::create(array('artifact.xml' => $statsXml));
 
-        $transformer = m::mock('phpDocumentor\Transformer\Transformation');
-        $transformer->shouldReceive('getTransformer->getTarget')->andReturn(vfsStream::url('StatisticsTest'));
-        $transformer->shouldReceive('getArtifact')->andReturn('artifact.xml');
-
-        $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
-
-        $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-        $fileDescriptor->shouldReceive('isDeprecated')->andReturn(true);
-        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn(array($error, $error));
-        $fileDescriptor->shouldReceive('getMarkers->count')->andReturn(12);
-
-        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
-        $projectDescriptor->shouldReceive('getFiles->count')->andReturn(1);
-        $projectDescriptor->shouldReceive('getIndexes->get')->andReturn(array($fileDescriptor));
+        $markerCount = 12;
+        $transformer = $this->givenATransformer();
+        $error = $this->givenAnError();
+        $fileDescriptor = $this->givenAFileDescriptor(array($error, $error), $markerCount);
+        $projectDescriptor = $this->givenAProjectDescriptor($fileDescriptor);
 
         $this->statistics->transform($projectDescriptor, $transformer);
 
@@ -118,17 +78,73 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $now = new \DateTime('now');
         $date = $now->format(DATE_ATOM);
 
+        $this->thenTheXmlReportShouldContain($date, 1, 1, 2, $markerCount);
+    }
+
+    /**
+     * @param $fileDescriptor
+     * @return m\MockInterface
+     */
+    private function givenAProjectDescriptor($fileDescriptor)
+    {
+        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
+        $projectDescriptor->shouldReceive('getFiles->count')->andReturn(1);
+        $projectDescriptor->shouldReceive('getIndexes->get')->andReturn(array($fileDescriptor));
+        return $projectDescriptor;
+    }
+
+    /**
+     * @param array $errors
+     * @param int   $markerCount
+     * @return m\MockInterface
+     */
+    private function givenAFileDescriptor(array $errors, $markerCount)
+    {
+        $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $fileDescriptor->shouldReceive('isDeprecated')->andReturn(true);
+        $fileDescriptor->shouldReceive('getAllErrors->getAll')->andReturn($errors);
+        $fileDescriptor->shouldReceive('getMarkers->count')->andReturn($markerCount);
+        return $fileDescriptor;
+    }
+
+    /**
+     * @return m\MockInterface
+     */
+    private function givenATransformer()
+    {
+        $transformer = m::mock('phpDocumentor\Transformer\Transformation');
+        $transformer->shouldReceive('getTransformer->getTarget')->andReturn(vfsStream::url('StatisticsTest'));
+        $transformer->shouldReceive('getArtifact')->andReturn('artifact.xml');
+        return $transformer;
+    }
+
+    /**
+     * @return m\MockInterface
+     */
+    private function givenAnError()
+    {
+        $error = m::mock('phpDocumentor\Descriptor\Validator\Error');
+        return $error;
+    }
+
+    private function thenTheXmlReportShouldContain(
+        $date,
+        $numberOfFiles,
+        $numberOfDeprecated,
+        $numberOfErrors,
+        $numberOfMarkers
+    ) {
         $expectedXml = new \DOMDocument;
         $expectedXml->loadXML(
             '<?xml version="1.0"?>
 <phpdoc-stats version="2.6.1">
-  <test></test>
   <stat date="'.$date.'">
     <counters>
-        <files>1</files>
-        <deprecated>1</deprecated>
-        <errors>2</errors>
-        <markers>12</markers>
+        <files>'.$numberOfFiles.'</files>
+        <deprecated>'.$numberOfDeprecated.'</deprecated>
+        <errors>'.$numberOfErrors.'</errors>
+        <markers>'.$numberOfMarkers.'</markers>
     </counters>
 </stat>
 </phpdoc-stats>'
