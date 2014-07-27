@@ -1,11 +1,22 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
 namespace phpDocumentor\Descriptor\Tag;
 
 /**
  * Tests the functionality for the SinceDescriptor class.
  */
-class SinceDescriptorTest extends \PHPUnit_Framework_TestCase {
+class SinceDescriptorTest extends \PHPUnit_Framework_TestCase
+{
+    const EXAMPLE_VERSION = 'version';
 
     /** @var SinceDescriptor $fixture */
     protected $fixture;
@@ -26,8 +37,9 @@ class SinceDescriptorTest extends \PHPUnit_Framework_TestCase {
     {
         $this->assertEmpty($this->fixture->getVersion());
 
-        $expected = 'version';
-        $this->fixture->setVersion($expected);
-        $this->assertEquals($expected, $this->fixture->getVersion());
+        $this->fixture->setVersion(self::EXAMPLE_VERSION);
+        $result = $this->fixture->getVersion();
+
+        $this->assertEquals(self::EXAMPLE_VERSION, $result);
     }
-} 
+}

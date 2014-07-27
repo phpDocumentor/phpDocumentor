@@ -1,11 +1,22 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
 namespace phpDocumentor\Descriptor\Tag;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
  */
-class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase {
+class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
+{
+    const EXAMPLE_NAME = 'variableName';
 
     /** @var PropertyDescriptor $fixture */
     protected $fixture;
@@ -26,9 +37,9 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase {
     {
         $this->assertEmpty($this->fixture->getVariableName());
 
-        $expected = 'variableName';
-        $this->fixture->setVariableName($expected);
-        $this->assertEquals($expected, $this->fixture->getVariableName());
+        $this->fixture->setVariableName(self::EXAMPLE_NAME);
+        $result = $this->fixture->getVariableName();
 
+        $this->assertSame(self::EXAMPLE_NAME, $result);
     }
-} 
+}
