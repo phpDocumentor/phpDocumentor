@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -149,17 +149,17 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
         $mockTagPropertyDescriptor->shouldReceive('getTypes')->andReturn(new Collection);
 
         $propertyCollection = new Collection(array($mockTagPropertyDescriptor));
-        $this->fixture->getTags()->set('property',$propertyCollection);
+        $this->fixture->getTags()->set('property', $propertyCollection);
 
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection',$this->fixture->getMagicProperties());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getMagicProperties());
 
         $magicPropertiesCollection = $this->fixture->getMagicProperties();
-        $this->assertSame(1,$magicPropertiesCollection->count());
-        $this->assertSame('Sample',$magicPropertiesCollection[0]->getName());
-        $this->assertSame('Sample description',$magicPropertiesCollection[0]->getDescription());
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection',$magicPropertiesCollection[0]->getTypes());
-        $this->assertSame(0,$magicPropertiesCollection[0]->getTypes()->count());
-        $this->assertSame($this->fixture,$magicPropertiesCollection[0]->getParent());
+        $this->assertSame(1, $magicPropertiesCollection->count());
+        $this->assertSame('Sample', $magicPropertiesCollection[0]->getName());
+        $this->assertSame('Sample description', $magicPropertiesCollection[0]->getDescription());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $magicPropertiesCollection[0]->getTypes());
+        $this->assertSame(0, $magicPropertiesCollection[0]->getTypes()->count());
+        $this->assertSame($this->fixture, $magicPropertiesCollection[0]->getParent());
     }
 
     /**
@@ -167,15 +167,15 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingAndGettingPackage()
     {
-        $package = new \phpDocumentor\Descriptor\PackageDescriptor;
-        $mockTagPropertyDescriptor = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
-        $mockTagPropertyDescriptor->shouldReceive('setPackage')->with($package);
+        $package = new \phpDocumentor\Descriptor\PackageDescriptor();
+        $mockPropertyDescriptor = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
+        $mockPropertyDescriptor->shouldReceive('setPackage')->with($package);
 
-        $mockTagMethodDescriptor = m::mock('phpDocumentor\Descriptor\Tag\MethodDescriptor');
-        $mockTagMethodDescriptor->shouldReceive('setPackage')->with($package);
+        $mockMethodDescriptor = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+        $mockMethodDescriptor->shouldReceive('setPackage')->with($package);
 
-        $propertyCollection = new Collection(array($mockTagPropertyDescriptor));
-        $methodCollection = new Collection(array($mockTagMethodDescriptor));
+        $propertyCollection = new Collection(array($mockPropertyDescriptor));
+        $methodCollection = new Collection(array($mockMethodDescriptor));
         $this->fixture->setProperties($propertyCollection);
         $this->fixture->setMethods($methodCollection);
 
@@ -190,7 +190,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingAndGettingUsedTraits()
     {
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection',$this->fixture->getUsedTraits());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getUsedTraits());
 
         $usedTraitsCollection = new Collection;
         $this->fixture->setUsedTraits($usedTraitsCollection);
