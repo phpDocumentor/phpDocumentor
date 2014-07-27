@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<phpunit bootstrap="tests/common/bootstrap.php" colors="true" strict="true" beStrictAboutTestsThatDoNotTestAnything="false">
+<phpunit bootstrap="tests/common/bootstrap.php" colors="true" strict="true">
     <testsuites>
         <testsuite name="phpDocumentor">
             <directory>./tests/unit/</directory>

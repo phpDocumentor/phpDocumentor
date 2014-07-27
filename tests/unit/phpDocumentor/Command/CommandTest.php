@@ -44,6 +44,9 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->setHelperSet($helperSet);
+
+        // Assert; Mockery does all assertions. For PHPUnit we must have an assertion
+        $this->assertTrue(true);
     }
 
     /**

@@ -52,6 +52,8 @@ class DebugTest extends \PHPUnit_Framework_TestCase
 
         $fixture = new Debug($loggerMock, $analyzerMock);
         $fixture->execute($projectDescriptorMock);
+
+        $this->assertTrue(true);
     }
 
     /**
