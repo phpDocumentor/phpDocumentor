@@ -10,6 +10,13 @@
  * @link      http://phpdoc.org
  */
 
+// determine custom vendor dir if vendor-dir is added/changed
+$composerFile = file_get_contents(__DIR__ . '/../../composer.json');
+$composerJson = json_decode($composerFile, true);
+$vendorDir    = isset($composerJson['config']['vendor-dir']) ? $composerJson['config']['vendor-dir'] : 'vendor';
+
+define('PHPDOC_VENDOR_DIR', $vendorDir);
+
 // determine base include folder, if @php_dir@ contains @php_dir then
 // we did not install via PEAR
 $bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
