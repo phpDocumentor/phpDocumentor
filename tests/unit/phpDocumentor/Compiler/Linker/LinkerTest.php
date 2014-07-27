@@ -97,9 +97,6 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         // execute test.
         $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
     }
 
     /**
@@ -149,9 +146,6 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         // execute test.
         $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
     }
 
     /**
@@ -185,9 +179,6 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         // execute test.
         $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
     }
 
     /**
@@ -221,9 +212,6 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         // execute test.
         $linker->substitute($object);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
     }
 
     /**
@@ -264,9 +252,6 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         //findFieldvalue() should NOT be called
         $result = $mock->substitute($item);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
     }
 
     /**
@@ -295,9 +280,6 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $mock->shouldDeferMissing();
         $mock->shouldReceive('substitute')->with($descriptor);
         $mock->execute($descriptor);
-
-        // mark test as successful due to asserts in Mockery
-        $this->assertTrue(true);
     }
 
     /**
