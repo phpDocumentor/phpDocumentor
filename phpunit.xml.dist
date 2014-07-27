@@ -23,6 +23,7 @@
         <!--<const name="phpDocumentor\PHPUnit\TEMP_DIR" value="/tmp" />-->
         <!-- A folder guaranteed not to exist during the test run. -->
         <const name="phpDocumentor\PHPUnit\UNKNOWN_DIR" value="/tmpa" />
+        <const name="PHPDOC_VENDOR_DIR" value="vendor"/>
     </php>
     <logging>
         <log type="coverage-html"
