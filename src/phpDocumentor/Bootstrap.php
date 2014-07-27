@@ -85,7 +85,7 @@ class Bootstrap
      */
     public function createAutoloader()
     {
-        $autoloader_base_path = '/../../vendor/autoload.php';
+        $autoloader_base_path = '/../../' . PHPDOC_VENDOR_DIR . '/autoload.php';
 
         // if the file does not exist from a base path it is included as vendor
         $autoloader_location = file_exists(__DIR__ . $autoloader_base_path)
