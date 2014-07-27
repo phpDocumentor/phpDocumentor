@@ -42,8 +42,6 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
         $descriptor->shouldReceive('setNamespace')->with('\LegacyNamespace')->once();
 
         $this->filter->filter($descriptor);
-
-        $this->assertTrue(true);
     }
 
     /**
@@ -59,8 +57,6 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
         $descriptor->shouldReceive('setNamespace')->with('\LegacyNamespace\Sub')->once();
 
         $this->filter->filter($descriptor);
-
-        $this->assertTrue(true);
     }
 
     /**
@@ -76,8 +72,6 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
         $descriptor->shouldReceive('setNamespace')->with('\\NewNamespace\\LegacyNamespace')->once();
 
         $this->filter->filter($descriptor);
-
-        $this->assertTrue(true);
     }
 
     /**
@@ -93,8 +87,6 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
         $descriptor->shouldReceive('setNamespace')->with('\\NewNamespace')->once();
 
         $this->filter->filter($descriptor);
-
-        $this->assertTrue(true);
     }
 
     /**
@@ -110,8 +102,6 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
         $descriptor->shouldReceive('setNamespace')->with('\\')->once();
 
         $this->filter->filter($descriptor);
-
-        $this->assertTrue(true);
     }
 
     /**
