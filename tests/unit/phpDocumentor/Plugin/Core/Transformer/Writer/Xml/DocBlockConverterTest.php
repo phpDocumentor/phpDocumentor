@@ -104,6 +104,9 @@ class DocBlockConverterTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->convert($parent, $descriptor);
+
+        // Assert
+        $this->assertTrue(true);
     }
 
     /**

@@ -67,6 +67,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->parse(__FILE__, $builder);
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -85,6 +87,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->parse(__FILE__, $builder);
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -104,6 +108,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->parse(__FILE__, $builder);
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -123,6 +129,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->parse(__FILE__, $builder);
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -142,6 +150,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->parse(__FILE__, $builder);
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -162,6 +172,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $this->fixture->parse(__FILE__, $builder);
+
+        $this->assertTrue(true);
     }
 
     /**
