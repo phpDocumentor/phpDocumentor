@@ -1,0 +1,22 @@
+box: wercker/php
+build:
+  steps:
+    - script:
+        name: Update apt
+        code: sudo apt-get update
+    - script:
+        name: Install extensions
+        code: |-
+          pecl install xsl
+    - script:
+        name: install GraphViz
+        code: sudo apt-get install graphviz php5-xsl
+    - script:
+        name: install dependencies
+        code: composer install --no-interaction
+    - script:
+        name: unit tests
+        code: ./bin/phpunit
+    - script:
+        name: check Coding Standards (PSR-2)
+        code: ./bin/phpcs --standard=PSR2 --report=checkstyle --ignore='*/data/templates/*' --report-file=build/logs/checkstyle.xml src tests
