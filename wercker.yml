@@ -5,10 +5,6 @@ build:
         name: Update apt
         code: sudo apt-get update
     - script:
-        name: Install extensions
-        code: |-
-          pecl install xsl
-    - script:
         name: install GraphViz
         code: sudo apt-get install graphviz php5-xsl
     - script:
