@@ -19,7 +19,7 @@ use Mockery as m;
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
  *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
+ * @covers \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
  */
 class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,6 +36,8 @@ class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Creates a Descriptor from a provided class.
+     *
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler::create
      *
      * @return void
      */
