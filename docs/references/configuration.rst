@@ -148,6 +148,7 @@ The following fields are supported:
    also used as source location for the transformer. This can be either a
    relative or absolute folder.
    Relative folders are relative to the location of the configuration file.
+-  *encoding*, optional element which defines the file encoding to use.
 -  *markers*, contains a listing of prefixes used in single line comments to
    mark a segment of code using a single word (by default FIXME and TODO
    are supported).
@@ -167,6 +168,7 @@ The following fields are supported:
 
     <parser>
       <target>output</target>
+      <encoding>utf8</encoding>
       <markers>
         <item>TODO</item>
         <item>FIXME</item>
@@ -348,6 +350,7 @@ Appendix B: complete configuration example
         <title>My project</title>
         <parser>
             <target>output</target>
+            <encoding>utf8</encoding>
             <markers>
                 <item>TODO</item>
                 <item>FIXME</item>
