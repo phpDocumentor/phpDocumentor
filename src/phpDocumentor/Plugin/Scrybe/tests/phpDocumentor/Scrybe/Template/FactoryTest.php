@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Template;
 
-require_once 'Mock/Template.php';
-
 /**
  * Test for the Template\Factory class of phpDocumentor Scrybe.
  */

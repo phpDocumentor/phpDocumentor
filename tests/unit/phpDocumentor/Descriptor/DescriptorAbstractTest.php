@@ -275,5 +275,4 @@ class DescriptorAbstractTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setFullyQualifiedStructuralElementName('fqn');
         $this->assertSame('fqn', (string) $this->fixture);
     }
-
 }

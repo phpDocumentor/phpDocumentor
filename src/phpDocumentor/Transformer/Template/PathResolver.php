@@ -72,4 +72,4 @@ class PathResolver
     {
         return $this->templatePath;
     }
-} 
+}

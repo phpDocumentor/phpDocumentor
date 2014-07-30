@@ -50,8 +50,10 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
 
 
     /**
+     * @codingStandardsIgnoreStart
      * @expectedException Symfony\Component\Validator\Exception\ConstraintDefinitionException
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackageValidator::validate
+     * @codingStandardsIgnoreEnd
      */
     public function testValidateWithBadInput()
     {
@@ -59,13 +61,17 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackageValidator::validate
+     * @codingStandardsIgnoreEnd
      */
     public function testValidateHappyPath()
     {
         $packageCollection = new Collection(array());
         $subpackageCollection = new Collection(array('x'));
-        $tagPackageCollection = new Collection(array('package' => $packageCollection, 'subpackage' => $subpackageCollection));
+        $tagPackageCollection = new Collection(
+            array('package' => $packageCollection, 'subpackage' => $subpackageCollection)
+        );
 
         $this->fileDescriptor->shouldReceive('getTags')->andReturn($tagPackageCollection)->twice();
 
@@ -77,13 +83,17 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackageValidator::validate
+     * @codingStandardsIgnoreEnd
      */
     public function testValidateSubpackageWithPackage()
     {
         $packageCollection = new Collection(array('x'));
         $subpackageCollection = new Collection(array('y'));
-        $tagPackageCollection = new Collection(array('package' => $packageCollection, 'subpackage' => $subpackageCollection));
+        $tagPackageCollection = new Collection(
+            array('package' => $packageCollection, 'subpackage' => $subpackageCollection)
+        );
 
         $this->fileDescriptor->shouldReceive('getTags')->andReturn($tagPackageCollection)->twice();
 

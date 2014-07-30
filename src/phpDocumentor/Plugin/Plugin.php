@@ -49,4 +49,4 @@ class Plugin
     {
         return $this->className;
     }
-} 
+}

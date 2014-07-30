@@ -11,8 +11,8 @@
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-interface VisibilityInterface {
-
+interface VisibilityInterface
+{
     /**
      * Returns the visibility for this element.
      *
@@ -24,5 +24,5 @@ interface VisibilityInterface {
      *
      * @return string
      */
-    function getVisibility();
-} 
+    public function getVisibility();
+}

@@ -189,9 +189,15 @@ class ParseCommand extends Command
             $visibility = null;
             foreach ($visibilities as $item) {
                 switch ($item) {
-                    case 'public'   : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC; break;
-                    case 'protected': $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED; break;
-                    case 'private'  : $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE; break;
+                    case 'public':
+                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
+                        break;
+                    case 'protected':
+                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED;
+                        break;
+                    case 'private':
+                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
+                        break;
                 }
             }
             if ($visibility === null) {
@@ -261,7 +267,13 @@ class ParseCommand extends Command
 
         $files = new Collection();
         $files->setAllowedExtensions(
-            $configurationHelper->getOption($input, 'extensions', 'parser/extensions', array('php', 'php3', 'phtml'), true)
+            $configurationHelper->getOption(
+                $input,
+                'extensions',
+                'parser/extensions',
+                array('php', 'php3', 'phtml'),
+                true
+            )
         );
         $files->setIgnorePatterns($configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true));
         $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');

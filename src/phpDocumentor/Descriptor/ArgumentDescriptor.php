@@ -96,5 +96,4 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     {
         return $this->isVariadic;
     }
-
 }

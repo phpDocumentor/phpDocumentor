@@ -44,11 +44,11 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $name = 'ClassName';
         $namespace = 'Namespace';
-        $docBlockDescriptionContent = trim('
-            /**
-             * This is a example description
-             */
-        ');
+        $docBlockDescriptionContent = <<<DOCBLOCK
+/**
+ * This is a example description
+ */
+DOCBLOCK;
         $docBlockDescription = new DocBlock\Description($docBlockDescriptionContent);
 
         $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');

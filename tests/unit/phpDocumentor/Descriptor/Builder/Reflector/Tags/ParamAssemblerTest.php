@@ -34,7 +34,13 @@ class ParamAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $types = new Collection();
         $this->builder->shouldReceive('buildDescriptor')
-            ->with(m::on(function ($value) { return $value instanceof TypeCollection && $value[0] == 'string'; }))
+            ->with(
+                m::on(
+                    function ($value) {
+                        return $value instanceof TypeCollection && $value[0] == 'string';
+                    }
+                )
+            )
             ->andReturn($types);
         $reflector = new ParamTag('param', 'string $myParameter This is a description');
 
@@ -46,4 +52,3 @@ class ParamAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($types, $descriptor->getTypes());
     }
 }
- 

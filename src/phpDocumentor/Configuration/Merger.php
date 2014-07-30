@@ -74,7 +74,7 @@ class Merger
         $reflectedSource       = new \ReflectionObject($sourceObject);
         $defaultPropertyValues = $reflectedDestination->getDefaultProperties();
 
-        foreach($reflectedSource->getProperties() as $sourceProperty) {
+        foreach ($reflectedSource->getProperties() as $sourceProperty) {
             $destinationObject = $this->mergeProperty(
                 $destinationObject,
                 $reflectedDestination->getProperty($sourceProperty->getName()),
@@ -185,4 +185,4 @@ class Merger
             'phpDocumentor\Configuration\Merger\Annotation\Replace'
         );
     }
-} 
+}

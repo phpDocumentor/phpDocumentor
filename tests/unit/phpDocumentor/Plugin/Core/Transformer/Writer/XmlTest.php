@@ -82,13 +82,16 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->fs->hasChild('artifact.xml'));
 
         // Inspect XML
-        $expectedXml = new \DOMDocument;
-        $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
+        $xml = <<<XML
+<?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0b8&#10;" title="project">
   <partials/>
   <package name="global" full_name="global"/>
   <deprecated count="0"/>
-</project>');
+</project>
+XML;
+        $expectedXml = new \DOMDocument;
+        $expectedXml->loadXML($xml);
 
         $actualXml = new \DOMDocument;
         $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));
@@ -140,9 +143,9 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->fs->hasChild('artifact.xml'));
 
         // Inspect XML
-        $expectedXml = new \DOMDocument;
-        $expectedXml->loadXML('<?xml version="1.0" encoding="utf-8"?>
-<project version="2.0.0b8&#10;" title="project">
+        $xml = <<<XML
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0b8" title="project">
   <partials/>
   <file path="foo.php" generated-path="generated-foo.php" hash="hash" package="myPackage">
     <docblock line="666">
@@ -155,7 +158,10 @@ class XmlTest extends \PHPUnit_Framework_TestCase
   <package name="global" full_name="global"/>
   <package name="myPackage" full_name="myPackage"/>
   <deprecated count="0"/>
-</project>');
+</project>
+XML;
+        $expectedXml = new \DOMDocument;
+        $expectedXml->loadXML($xml);
 
         $actualXml = new \DOMDocument;
         $actualXml->load(vfsStream::url('XmlTest/artifact.xml'));

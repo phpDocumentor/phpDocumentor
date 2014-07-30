@@ -24,4 +24,4 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
     }
-} 
+}

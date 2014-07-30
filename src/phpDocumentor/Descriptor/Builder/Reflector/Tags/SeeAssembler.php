@@ -48,7 +48,7 @@ class SeeAssembler extends AssemblerAbstract
                     $data->getDocBlock() ? $data->getDocBlock()->getContext() : null
                 );
                 $referenceParts[0] = $type;
-            } elseif(isset($reference[0]) && $reference[0] != '\\') {
+            } elseif (isset($reference[0]) && $reference[0] != '\\') {
                 array_unshift($referenceParts, Linker::CONTEXT_MARKER);
             }
 

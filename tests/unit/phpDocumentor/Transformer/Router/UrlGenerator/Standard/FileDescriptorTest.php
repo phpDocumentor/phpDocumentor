@@ -19,9 +19,11 @@ use Mockery as m;
 class FileDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FileDescriptor::__invoke
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromFile
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::removeFileExtensionFromPath
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForFileDescriptor()
     {
@@ -37,4 +39,3 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/files/My.Space.Class.html', $result);
     }
 }
- 

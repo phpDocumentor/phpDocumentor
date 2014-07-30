@@ -45,11 +45,13 @@ class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
         $name = 'constPI';
         $namespace = 'Namespace';
 
-        $docBlockDescription = new DocBlock\Description('
-            /**
-             * This is a example description
-             */
-         ');
+        $docBlockDescription = new DocBlock\Description(
+<<<DOCBLOCK
+/**
+ * This is a example description
+ */
+DOCBLOCK
+        );
 
         $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
         $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());

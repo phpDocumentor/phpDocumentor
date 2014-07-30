@@ -96,7 +96,8 @@ class Statistics extends Checkstyle
     protected function appendStatElement(\DOMDocument $document, ProjectDescriptor $project, $date)
     {
         $stat = $document->createDocumentFragment();
-        $stat->appendXML(<<<STAT
+        $stat->appendXML(
+<<<STAT
 <stat date="$date">
     <counters>
         <files>{$this->getFilesCounter($project)}</files>
@@ -106,7 +107,7 @@ class Statistics extends Checkstyle
     </counters>
 </stat>
 STAT
-);
+        );
         $document->documentElement->appendChild($stat);
 
         return $document;

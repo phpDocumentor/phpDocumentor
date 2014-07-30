@@ -15,4 +15,4 @@ build:
         code: ./bin/phpunit
     - script:
         name: check Coding Standards (PSR-2)
-        code: ./bin/phpcs --standard=PSR2 --report=checkstyle --ignore='*/data/templates/*' --report-file=build/logs/checkstyle.xml src tests
+        code: ./bin/phpcs --standard=PSR2 --report=checkstyle --ignore='*/tests/data/*,*/data/templates/*,*/ReferenceImplementation.php' --report-file=build/logs/checkstyle.xml src tests

@@ -69,4 +69,4 @@ class Loader
 
         return $config;
     }
-} 
+}

@@ -25,4 +25,3 @@ class BooleanDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('boolean', (string)$fixture);
     }
 }
- 

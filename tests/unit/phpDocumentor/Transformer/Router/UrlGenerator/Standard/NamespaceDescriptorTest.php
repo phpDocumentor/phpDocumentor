@@ -54,4 +54,3 @@ class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/namespaces/default.html', $result);
     }
 }
- 
