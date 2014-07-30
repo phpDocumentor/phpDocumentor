@@ -36,6 +36,8 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
+
         $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
         $this->argumentAssemblerMock->shouldReceive('getBuilder')->andReturn($this->builderMock);
 
@@ -49,6 +51,7 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
      * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
      * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
      * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
      */
     public function testCreateMethodDescriptorFromReflector()
     {
@@ -116,11 +119,22 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
     protected function givenADocBlockObject()
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
+
         $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
         $docBlockMock->shouldReceive('getTags')->andReturn(array());
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
+
+        $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function ($param) {
+            $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
+
+            $tag->shouldReceive('isVariadic')->once()->andReturn(true);
+            $tag->shouldReceive('getVariableName')->atLeast()->once()->andReturn('variableName');
+            $tag->shouldReceive('getTypes')->once()->andReturn(array('string'));
+            $tag->shouldReceive('getDescription')->once()->andReturn('I am a tag');
+
+            return array($tag);
+        });
 
         return $docBlockMock;
     }

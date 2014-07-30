@@ -111,10 +111,20 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
         $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
         $docBlockMock->shouldReceive('getTags')->andReturn(array());
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
+
+        $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function($name) {
+            if ($name === 'package') {
+                $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
+                $tag->shouldReceive('getContent')->andReturn('PackageName');
+
+                return array($tag);
+            }
+
+            return null;
+        });
 
         return $docBlockMock;
     }
@@ -129,7 +139,7 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
     protected function givenAnArgumentWithName($argumentName)
     {
         $argumentMock = m::mock('phpDocumentor\Descriptor\ArgumentDescriptor');
-        $argumentMock->shouldReceive('getName')->andReturn($argumentName);
+        $argumentMock->shouldReceive('getName')->once()->andReturn($argumentName);
 
         $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentMock);
         $this->argumentAssemblerMock->shouldReceive('getBuilder')->andReturn($this->builderMock);

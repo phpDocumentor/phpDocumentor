@@ -50,7 +50,10 @@ class Loader
         if (!$userConfigFilePath) {
             $userConfigFilePath = $input->getParameterOption('-c');
         }
-        $userConfigFilePath = realpath($userConfigFilePath);
+        
+        if ($userConfigFilePath !== false) {
+            $userConfigFilePath = realpath($userConfigFilePath);
+        }
 
         if ($userConfigFilePath && $userConfigFilePath != 'none' && is_readable($userConfigFilePath)) {
             chdir(dirname($userConfigFilePath));
