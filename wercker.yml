@@ -19,6 +19,3 @@ build:
     - script:
         name: Upload code coverage report to Scrutinizer
         code: php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
-    - script:
-        name: check Coding Standards (PSR-2)
-        code: ./bin/phpcs --standard=PSR2 --report=checkstyle --ignore='*/tests/data/*,*/data/templates/*,*/ReferenceImplementation.php' --report-file=build/logs/checkstyle.xml src tests

@@ -16,6 +16,7 @@ tools:
             standard: PSR2
         filter:
             paths: ["src/*", "tests/*"]
+            excluded_paths: ["tests/data/*","data/templates/*","tests/ReferenceImplementation.php]
     php_cpd:
         enabled: true
         excluded_dirs: [".old-docs", ".puppet", "docs", "bin", "tests", "vendor", "data", "features"]
