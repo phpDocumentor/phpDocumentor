@@ -12,5 +12,12 @@
         <!-- eval is needed to generate runtime classes -->
         <exclude name="EvalExpression"/>
     </rule>
-    <rule ref="rulesets/naming.xml"/>
+    <rule ref="rulesets/naming.xml">
+        <exclude name="LongVariable"/>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <properties>
+            <property name="minimum">40</property>
+        </properties>
+    </rule>
 </ruleset>

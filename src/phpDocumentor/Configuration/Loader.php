@@ -87,7 +87,7 @@ class Loader
     /**
      * Verifies if the given path is valid and readable.
      *
-     * @param string $path
+     * @param bool|string $path
      *
      * @return bool
      */
@@ -99,10 +99,11 @@ class Loader
     /**
      * Combines the given configuration files and serializes a new Configuration object from them.
      *
-     * @param string $templatePath          Path to the template configuration file.
-     * @param string $defaultUserConfigPath Path to the phpdoc.xml or phpdoc,dist.xml in the current working folder.
-     * @param string $customUserConfigPath  Path to the user-defined config file given using the command-line.
-     * @param string $class                 Base Configuration class name to construct and populate.
+     * @param string           $templatePath          Path to the template configuration file.
+     * @param string           $defaultUserConfigPath Path to the phpdoc.xml or phpdoc,dist.xml in the current working
+     *     directory.
+     * @param null|bool|string $customUserConfigPath  Path to the user-defined config file given using the command-line.
+     * @param string           $class                 Base Configuration class name to construct and populate.
      *
      * @return null|object
      */
