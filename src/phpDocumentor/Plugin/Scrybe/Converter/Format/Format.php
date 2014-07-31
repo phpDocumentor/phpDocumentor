@@ -24,13 +24,13 @@ class Format
     const PDF      = 'pdf';
     const DOCBOOK  = 'docbook';
 
-    /** @var string */
+    /** @var string the name for this format, usually any of the constants in this class */
     protected $name;
 
-    /** @var string */
+    /** @var string the mime-type used for this format, i.e. application/json */
     protected $mime_type;
 
-    /** @var string[] */
+    /** @var string[] a series of file extensions that are commonly associated with this type of file */
     protected $extensions;
 
     /**

@@ -15,6 +15,12 @@ use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@deprecated` tag.
+ *
+ * This object will read the reflected information for the `@deprecated` tag and create a {@see DeprecatedDescriptor}
+ * object that can be used in the rest of the application and templates.
+ */
 class DeprecatedAssembler extends AssemblerAbstract
 {
     /**

@@ -14,6 +14,9 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 
+/**
+ * Converter used to create an XML Element representing a method or function argument.
+ */
 class ArgumentConverter
 {
     /**

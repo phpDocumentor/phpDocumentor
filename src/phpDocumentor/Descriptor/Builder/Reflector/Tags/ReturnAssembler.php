@@ -16,6 +16,12 @@ use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@return` tag.
+ *
+ * This object will read the reflected information for the `@return` tag and create a {@see ReturnDescriptor} object
+ * that can be used in the rest of the application and templates.
+ */
 class ReturnAssembler extends AssemblerAbstract
 {
     /**

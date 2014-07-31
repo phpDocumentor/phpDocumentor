@@ -16,6 +16,12 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@param` tag.
+ *
+ * This object will read the reflected information for the `@param` tag and create a {@see ParamDescriptor} object that
+ * can be used in the rest of the application and templates.
+ */
 class ParamAssembler extends AssemblerAbstract
 {
     /**

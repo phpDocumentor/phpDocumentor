@@ -19,12 +19,14 @@ use JMS\Serializer\Annotation as Serializer;
 class Configuration
 {
     /**
-     * @var string
+     * @var string the locale in which to display translated text.
      * @Serializer\Type("string")
      */
     protected $locale = 'en';
 
     /**
+     * Returns the currently active locale.
+     *
      * @return string
      */
     public function getLocale()

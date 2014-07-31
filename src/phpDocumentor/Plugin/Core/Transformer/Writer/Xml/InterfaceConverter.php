@@ -20,19 +20,21 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
  */
 class InterfaceConverter
 {
-    /** @var DocBlockConverter */
+    /** @var DocBlockConverter object used to convert DocBlocks into their XML counterpart */
     protected $docBlockConverter;
 
-    /** @var MethodConverter */
+    /** @var MethodConverter object used to convert methods into their XML counterpart */
     protected $methodConverter;
 
-    /** @var ConstantConverter */
+    /** @var ConstantConverter object used to convert constants into their XML counterpart */
     protected $constantConverter;
 
     /**
      * Initializes this converter with the DocBlock converter.
      *
      * @param DocBlockConverter $docBlockConverter
+     * @param MethodConverter   $methodConverter
+     * @param ConstantConverter $constantConverter
      */
     public function __construct(
         DocBlockConverter $docBlockConverter,

@@ -17,6 +17,13 @@ use phpDocumentor\Translator\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
 
+/**
+ * Register all services and subservices necessary to get phpDocumentor up and running.
+ *
+ * This provider exposes no services of its own but populates the Writer Collection with the basic writers for
+ * phpDocumentor and, for backwards compatibility, registers the service providers for Graphs, Twig and PDF to
+ * the container.
+ */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**

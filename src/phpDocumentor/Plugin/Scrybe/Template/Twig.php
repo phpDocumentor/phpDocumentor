@@ -29,6 +29,8 @@ class Twig implements TemplateInterface
 
     /**
      * Constructs the twig template and sets the default values.
+     *
+     * @param string $templatePath the base location for templates.
      */
     public function __construct($templatePath)
     {

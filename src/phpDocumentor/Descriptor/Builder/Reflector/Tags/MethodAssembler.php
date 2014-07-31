@@ -18,6 +18,12 @@ use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@method` tag.
+ *
+ * This object will read the reflected information for the `@method` tag and create a {@see MethodDescriptor} object
+ * that can be used in the rest of the application and templates.
+ */
 class MethodAssembler extends AssemblerAbstract
 {
     /**

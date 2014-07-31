@@ -23,7 +23,7 @@ class Assets extends \ArrayObject
     /** @var string The root directory of the source documentation. */
     protected $project_root;
 
-    /** @var Logger */
+    /** @var Logger A logging object used to write informational and debug messages to */
     protected $logger;
 
     /**

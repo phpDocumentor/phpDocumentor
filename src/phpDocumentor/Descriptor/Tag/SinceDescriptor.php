@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
  */
 class SinceDescriptor extends TagDescriptor
 {
-    /** @return string $version represents the version since when the associated element was introduced */
+    /** @var string $version represents the version since when the associated element was introduced */
     protected $version;
 
     /**

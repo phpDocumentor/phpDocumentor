@@ -40,7 +40,11 @@ class PackageTreeBuilder implements CompilerPassInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Compiles a 'packages' index on the project and create all Package Descriptors necessary.
+     *
+     * @param ProjectDescriptor $project
+     *
+     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {

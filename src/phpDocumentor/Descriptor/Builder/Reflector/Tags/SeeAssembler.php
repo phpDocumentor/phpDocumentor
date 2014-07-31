@@ -17,6 +17,12 @@ use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
+/**
+ * Constructs a new Descriptor from a Reflector object for the `@see` tag.
+ *
+ * This class will gather the properties that were parsed by the Reflection mechanism for, specifically, an `@see` tag
+ * and use that to create a SeeDescriptor that describes all properties that an `@see` tag may have.
+ */
 class SeeAssembler extends AssemblerAbstract
 {
     /**
