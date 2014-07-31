@@ -22,6 +22,7 @@ use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,16 +43,23 @@ use Zend\Cache\Storage\StorageInterface;
  */
 class TransformCommand extends Command
 {
-    /** @var ProjectDescriptorBuilder $builder */
+    /** @var ProjectDescriptorBuilder $builder Object containing the project meta-data and AST */
     protected $builder;
 
-    /** @var Transformer $transformer */
+    /** @var Transformer $transformer Principal object for guiding the transformation process */
     protected $transformer;
 
-    /** @var Compiler $compiler */
+    /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
     protected $compiler;
 
-    public function __construct($builder, $transformer, $compiler)
+    /**
+     * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
+     *
+     * @param ProjectDescriptorBuilder $builder
+     * @param Transformer              $transformer
+     * @param Compiler                 $compiler
+     */
+    public function __construct(ProjectDescriptorBuilder $builder, Transformer $transformer, Compiler $compiler)
     {
         parent::__construct('project:transform');
 
@@ -114,6 +122,8 @@ TEXT
     }
 
     /**
+     * Returns the builder object containing the AST and other meta-data.
+     *
      * @return ProjectDescriptorBuilder
      */
     public function getBuilder()
@@ -122,7 +132,9 @@ TEXT
     }
 
     /**
-     * @return \phpDocumentor\Transformer\Transformer
+     * Returns the transformer used to guide the transformation process from AST to output.
+     *
+     * @return Transformer
      */
     public function getTransformer()
     {
@@ -289,7 +301,7 @@ TEXT
      * Append received transformations.
      * 
      * @param Transformer $transformer
-     * @param array $received
+     * @param array       $received
      * 
      * @return void
      */
@@ -309,7 +321,7 @@ TEXT
      *
      * @param InputInterface $input
      *
-     * @return \Symfony\Component\Console\Helper\HelperInterface|null
+     * @return HelperInterface|null
      */
     protected function getProgressBar(InputInterface $input)
     {

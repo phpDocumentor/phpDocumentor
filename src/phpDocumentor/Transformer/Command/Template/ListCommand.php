@@ -4,11 +4,11 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Command\Template;
 
 use Cilex\Command\Command;
@@ -17,11 +17,11 @@ use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Generates a skeleton template.
+ * Lists all templates known to phpDocumentor.
  */
 class ListCommand extends Command
 {
-    /** @var Factory */
+    /** @var Factory Template factory providing all known template definitions */
     private $factory;
 
     /**
@@ -37,8 +37,7 @@ class ListCommand extends Command
     }
 
     /**
-     * Initializes this command and sets the name, description, options and
-     * arguments.
+     * Initializes this command and sets the name, description, options and arguments.
      *
      * @return void
      */
@@ -58,12 +57,12 @@ HELP
     }
 
     /**
-     * Executes the business logic involved with this command.
+     * Retrieves all template names from the Template Factory and sends those to stdout.
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

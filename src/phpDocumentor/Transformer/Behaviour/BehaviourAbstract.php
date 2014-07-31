@@ -18,7 +18,10 @@ use phpDocumentor\Transformer\Transformer;
  */
 abstract class BehaviourAbstract
 {
-    /** @var Transformer $transformer */
+    /**
+     * @var Transformer $transformer The base transformer object from which the transformation parameters can
+     *   be retrieved.
+     */
     protected $transformer = null;
 
     /**

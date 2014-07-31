@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  */
 class Collection extends BehaviourAbstract implements \Countable
 {
-    /** @var BehaviourAbstract[] */
+    /** @var BehaviourAbstract[] the list of behaviours that can be exposed using this collection */
     protected $behaviours = array();
 
     /**
@@ -62,7 +62,7 @@ class Collection extends BehaviourAbstract implements \Countable
     /**
      * Executes the behaviour on the given object model,
      *
-     * @param ProjectDescriptor $project.
+     * @param ProjectDescriptor $project
      *
      * @return ProjectDescriptor
      */

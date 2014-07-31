@@ -22,7 +22,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
  */
 class Merger
 {
-    /** @var AnnotationReader */
+    /** @var AnnotationReader Object used to fetch all annotations for structural elements in a given piece of code */
     private $reader;
 
     /**
