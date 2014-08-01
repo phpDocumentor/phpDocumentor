@@ -70,6 +70,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
+use Zend\Cache\Storage\Plugin\PluginOptions;
 
 /**
  * This provider is responsible for registering the Descriptor component with the given Application.
@@ -282,7 +283,16 @@ class ServiceProvider implements ServiceProviderInterface
                          'cache_dir' => sys_get_temp_dir(),
                     )
                 );
-                $cache->addPlugin(new SerializerPlugin());
+                $plugin = new SerializerPlugin();
+
+                if (extension_loaded('igbinary')) {
+                    $options = new PluginOptions();
+                    $options->setSerializer('igbinary');
+
+                    $plugin->setOptions($options);
+                }
+
+                $cache->addPlugin($plugin);
 
                 return $cache;
             }
@@ -301,7 +311,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     protected function addBuilder(Application $app)
     {
-        $app['descriptor.builder.serializer'] = 'PhpSerialize';
+        if (extension_loaded('igbinary')) {
+            $app['descriptor.builder.serializer'] = 'IgBinary';
+        } else {
+            $app['descriptor.builder.serializer'] = 'PhpSerialize';
+        }
 
         $app['descriptor.builder'] = $app->share(
             function ($container) {
