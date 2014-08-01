@@ -2,20 +2,17 @@ Basic Syntax
 ============
 
 This chapter gives an overview of the syntax of "DocBlocks".
-The precise effect of a tag including examples are
-provided in different chapters which are accessible via this
+The precise effect of a tag including examples are provided in different chapters which are accessible via this
 document.
 
 What is a DocBlock?
 -------------------
 
-A DocBlock is a special type of comment that can provide verbose
-information about an element in your code.
+A DocBlock is a special type of comment that can provide verbose information about an element in your code.
 
-The information provided in this type of comment can be used by
-developers to gain understanding of the function of a given
-element; but it is also used by IDEs to provide (among others)
-auto-completion and by phpDocumentor to generate API documentation.
+The information provided in this type of comment can be used by developers to gain understanding of the function of a
+given element; but it is also used by IDEs to provide (among others) auto-completion and by phpDocumentor to generate
+API documentation.
 
 This is an example of a DocBlock as it can be encountered:
 
@@ -23,18 +20,18 @@ This is an example of a DocBlock as it can be encountered:
    :linenos:
 
     /**
-     * This is the short description for a DocBlock.
+     * This is the summary for a DocBlock.
      *
-     * This is the long description for a DocBlock. This text may contain
+     * This is the description for a DocBlock. This text may contain
      * multiple lines and even some _markdown_.
      *
      * * Markdown style lists function too
      * * Just try this out once
      *
-     * The section after the long description contains the tags; which provide
+     * The section after the description contains the tags; which provide
      * structured meta-data concerning the given element.
      *
-     * @author  Mike van Riel <mike.vanriel@naenius.com>
+     * @author  Mike van Riel <me@mikevanriel.com>
      *
      * @since 1.0
      *
@@ -45,8 +42,7 @@ This is an example of a DocBlock as it can be encountered:
 Which elements can have a DocBlock
 ----------------------------------
 
-:term:`Structural Elements` can all be preceeded by a DocBlock. The following
-elements are counted as such:
+:term:`Structural Elements` can all be preceded by a DocBlock. The following elements are counted as such:
 
     * namespace
     * require(_once)
@@ -59,8 +55,8 @@ elements are counted as such:
     * constant
     * variables, both local and global scope.
 
-A more detailed description of what :term:`Structural Elements` are and how
-DocBlocks apply to them can be found in the :doc:`definitions`.
+A more detailed description of what :term:`Structural Elements` are and how DocBlocks apply to them can be found in
+the :doc:`definitions`.
 
 Sections
 --------
@@ -68,39 +64,31 @@ Sections
 A DocBlock roughly exists of 3 sections:
 
 
-1. Short Description; a one-liner which globally states the
-   function of the documented element.
-2. Long Description; an extended description of the function of the
-   documented element; may contain markup and inline tags.
-3. Tags; a series of descriptors for properties of this element;
-   such as @param and @return.
+1. Summary; a one-liner which globally states the function of the documented element.
+2. Description; an extended description of the function of the documented element; may contain markup and inline tags.
+3. Tags; a series of descriptors for properties of this element; such as @param and @return.
 
-Short Description
-~~~~~~~~~~~~~~~~~
+Summary
+~~~~~~~
 
-The short description is used to give an impression of the function of the
-documented element. This can be used in overviews to allow the user to skim
-the documentation in search of the required template.
+The summary is used to give an impression of the function of the documented element. This can be used in overviews to
+allow the user to skim the documentation in search of the required template.
 
-Short descriptions should always end in either a full stop, or 2 consecutive new
-lines. If it is not closed like this then any long description will be
-considered as part of the short description.
+Summaries should always end in either a full stop, or 2 consecutive new lines. If it is not closed like this then any
+description will be considered as part of the summary.
 
 .. NOTE::
 
-    A full stop means that the dot needs to be succeeded by a new line or other
-    type of whitespace. This way it is possible to mention a version number,
-    for example, without stopping the short description.
+    A full stop means that the dot (`.`) needs to be succeeded by a new line. This way it is possible to mention
+    abbreviations as "e.g.", version numbers or other texts containing dots without ending the summary.
 
-Long Description
-~~~~~~~~~~~~~~~~
+Description
+~~~~~~~~~~~
 
-The long description contains concise information about the function of the
-documented element. It is allowed, and encouraged, to use Markdown markup to
-apply styling.
+The description contains concise information about the function of the documented element. It is allowed, and
+encouraged, to use Markdown markup to apply styling.
 
-The following list has examples of types of information that can be contained
-in a long description:
+The following list has examples of types of information that can be contained in a description:
 
 * Explanation of algorithms
 * Code examples
@@ -108,46 +96,38 @@ in a long description:
 * Relation to other elements
 * License information (in the case of file DocBlocks)
 
-Long descriptions can also contain inline tags. These are special annotations
-that can be substituted for a specialized type of information (such as {@link}).
-Inline tags are always surrounded by braces.
+Descriptions can also contain inline tags. These are special annotations that can be substituted for a specialized type
+of information (such as {@link}). Inline tags are always surrounded by braces.
 
 A complete listing is provided in :doc:`inline-tags/index`.
 
 Tags
 ~~~~
 
-Tags represent meta-data with which IDEs, external tooling or even the
-application itself know how to interpret an element.
+Tags represent meta-data with which IDEs, external tooling or even the application itself know how to interpret an
+element.
 
 phpDocumentor understands and uses (almost) all types supported by phpDocumentor.
 A complete listing is provided in :doc:`tags/index`.
 
-In addition phpDocumentor is able to understand, and link to, the annotations of
-Doctrine2.
+In addition phpDocumentor is able to understand, and link to, the annotations of Doctrine2.
 
 Inheritance
 -----------
 
-Docblocks automatically inherits the Short and Long description of
-an overridden, extended or implemented element.
+Docblocks automatically inherit the Summary and Description of an overridden, extended or implemented element.
 
-For example: if Class B extends Class A and it has an empty
-DocBlock defined, then it will have the same Short description and
-Long description as Class A. No DocBlock means that the 'parent'
-DocBlock will not be overridden and an error will be thrown during
-parsing.
+For example: if Class B extends Class A and it has an empty DocBlock defined, then it will have the same Summary and
+Description as Class A. No DocBlock means that the 'parent' DocBlock will not be overridden and an error will be thrown
+during parsing.
 
-This form of inheritance applies to any element that can be
-overridden, such as Classes, Interfaces, Methods and Properties.
-Constants and Functions can not be overridden in and thus do not
-have this behavior.
+This form of inheritance applies to any element that can be overridden, such as Classes, Interfaces, Methods and
+Properties. Constants and Functions can not be overridden in and thus do not have this behavior.
 
-Please note that you can also augment a Long Description with its
-parent's Long Description using the {:doc:`inline-tags/inheritdoc`} inline tag.
+Please note that you can also augment a Description with its parent's Description using the
+{:doc:`inline-tags/inheritdoc`} inline tag.
 
-Each element also inherits a specific set of tags; which ones
-depend on the type of element.
+Each element also inherits a specific set of tags; which ones depend on the type of element.
 
 The following applies:
 
@@ -160,7 +140,5 @@ Elements                 Inherited tags
 *Properties*             :doc:`tags/var`
 ======================== ============================================================================
 
-Please note that @subpackage tags are only inherited if the parent
-class has the same @package. Otherwise it is assumed that the
-parent class is part of a library which might have a different
-structure.
+Please note that @subpackage tags are only inherited if the parent class has the same @package. Otherwise it is assumed
+that the parent class is part of a library which might have a different structure.
