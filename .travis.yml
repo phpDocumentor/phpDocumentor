@@ -5,7 +5,6 @@ php:
   - 5.4
   - 5.5
   - 5.6
-  - hhvm
 
 script:
  - bin/phpunit
@@ -26,7 +25,3 @@ notifications:
   email:
     - me@mikevanriel.com
     - ashnazg@php.net
-
-matrix:
-  allow_failures:
-    - hhvm
