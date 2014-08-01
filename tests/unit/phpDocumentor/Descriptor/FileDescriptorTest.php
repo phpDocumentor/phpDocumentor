@@ -33,7 +33,6 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture = new FileDescriptor(self::EXAMPLE_HASH);
     }
 
-
     /**
      * Tests whether all collection objects and hash are properly initialized
      *
@@ -305,7 +304,7 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // setup interface check
         $mockInterfaces = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mockInterfaces->shouldReceive('getProperties');
+        $mockInterfaces->shouldReceive('getProperties')->andReturn(array());
         $mockInterfaces->shouldReceive('getConstants')->andReturn(new Collection(array($mockInterfaceConstants)));
         $mockInterfaces->shouldReceive('getMethods')->andReturn(new Collection(array($mockInterfaceMethods)));
         $mockInterfaces->shouldReceive('getErrors')->andReturn(new Collection($errorInterfaces));
@@ -323,7 +322,7 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // setup traits check
         $mockTraits = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
-        $mockTraits->shouldReceive('getConstants');
+        $mockTraits->shouldReceive('getConstants')->andReturn(array());
         $mockTraits->shouldReceive('getProperties')->andReturn(new Collection(array($mockTraitsProperties)));
         $mockTraits->shouldReceive('getMethods')->andReturn(new Collection(array($mockTraitsMethods)));
         $mockTraits->shouldReceive('getErrors')->andReturn(new Collection($errorTraits));
@@ -334,13 +333,12 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
         $mockFunctions = m::mock('phpDocumentor\Descriptor\FunctionDescriptor');
 
         // create dummy instances of constants/methods
-        $mockFunctions->shouldReceive('getConstants');
-        $mockFunctions->shouldReceive('getProperties');
-        $mockFunctions->shouldReceive('getMethods');
+        $mockFunctions->shouldReceive('getConstants')->andReturn(array());
+        $mockFunctions->shouldReceive('getProperties')->andReturn(array());
+        $mockFunctions->shouldReceive('getMethods')->andReturn(array());
         $mockFunctions->shouldReceive('getErrors')->andReturn(new Collection($errorFunctions));
 
         $this->fixture->getClasses()->set('my-test-function', $mockFunctions);
-
 
         // final merge and check
         $expectedErrors = array_merge(
