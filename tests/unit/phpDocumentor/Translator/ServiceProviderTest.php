@@ -1,12 +1,29 @@
 <?php
+/**
+* phpDocumentor
+*
+* PHP Version 5.3
+*
+* @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+* @license http://www.opensource.org/licenses/mit-license.php MIT
+* @link http://phpdoc.org
+*/
 
 namespace phpDocumentor\Translator;
 
 use Cilex\Application;
 use Mockery as m;
 
+/**
+ * Tests for phpDocumentor\Translator\ServiceProvider
+ */
 class ServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Dummy locale.
+     *
+     * @var string $locale
+     */
     protected $locale = 'foobar';
 
     /** @var ServiceProvider $fixture */
@@ -15,6 +32,9 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     /** @var Cilex\Application $application */
     protected $application = null;
 
+    /**
+     * Setup test fixture and mocks used in this TestCase
+     */
     protected function setUp()
     {
         $this->application = new Application('test');
