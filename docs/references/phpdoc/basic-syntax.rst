@@ -42,7 +42,7 @@ This is an example of a DocBlock as it can be encountered:
 Which elements can have a DocBlock
 ----------------------------------
 
-:term:`Structural Elements` can all be preceeded by a DocBlock. The following elements are counted as such:
+:term:`Structural Elements` can all be preceded by a DocBlock. The following elements are counted as such:
 
     * namespace
     * require(_once)
@@ -80,7 +80,7 @@ description will be considered as part of the summary.
 .. NOTE::
 
     A full stop means that the dot (`.`) needs to be succeeded by a new line. This way it is possible to mention
-    abbreviations, such as e.g., a version number or other texts containing dots without stopping the summary.
+    abbreviations as "e.g.", version numbers or other texts containing dots without ending the summary.
 
 Description
 ~~~~~~~~~~~
