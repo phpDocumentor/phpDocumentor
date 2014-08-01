@@ -112,7 +112,7 @@ class Loader
         $config = $this->serializer->deserialize(file_get_contents($templatePath), $class, 'xml');
         $customUserConfigPath = $customUserConfigPath ? : $defaultUserConfigPath;
 
-        if ($customUserConfigPath !== null) {
+        if ($customUserConfigPath !== null && is_readable($customUserConfigPath)) {
             $userConfigFile = $this->serializer->deserialize(file_get_contents($customUserConfigPath), $class, 'xml');
 
             $config = $this->merger->run($config, $userConfigFile);
