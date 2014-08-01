@@ -7,6 +7,8 @@ use Mockery as m;
 
 class ServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
+    protected $locale = 'foobar';
+
     /** @var ServiceProvider $fixture */
     protected $fixture = null;
 
@@ -17,11 +19,9 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->application = new Application('test');
         $this->application['config'] = m::mock('phpDocumentor\Configuration');
-        $translatorConfiguration = m::mock('phpDocumentor\Translator\Configuration');
-        $translatorConfiguration->shouldReceive('getLocale')->andReturn('foobar');
 
-        $this->application['config']->shouldReceive('getTranslator')
-        ->andReturn($translatorConfiguration);
+        $this->application['config']->shouldReceive('getTranslator->getLocale')
+        ->andReturn($this->locale);
         $this->fixture = new ServiceProvider();
     }
 
@@ -33,7 +33,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->fixture->register($this->application);
         $translator = $this->application['translator'];
 
-        $this->assertSame('foobar', $this->application['translator.locale']);
+        $this->assertSame($this->locale, $this->application['translator.locale']);
         $this->assertInstanceOf('phpDocumentor\Translator\Translator', $translator);
         $this->assertSame($this->application['translator.locale'], $translator->getLocale());
     }
