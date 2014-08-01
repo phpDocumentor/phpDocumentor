@@ -2,31 +2,19 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
 /**
  * Behaviour that adds support for the @param tags.
- *
- * @category   phpDocumentor
- * @package    Transformer
- * @subpackage Behaviours
- * @author     Mike van Riel <mike.vanriel@naenius.com>
- * @copyright  2010-2011 Mike van Riel / Naenius. (http://www.naenius.com)
- * @license    http://www.opensource.org/licenses/mit-license.php MIT
- * @link       http://phpdoc.org
  */
-class ParamTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
+class ParamTag
 {
     /** @var string Make element name overrideable. */
     protected $element_name = 'param';
@@ -52,8 +40,8 @@ class ParamTag extends \phpDocumentor\Transformer\Behaviour\BehaviourAbstract
             // other than word characters, whitespaces and punctuation characters.
             // This is because Markdown is a huge performance hit on the system
             if (!preg_match('/^[\w|\s|\.|,|;|\:|\&|\#]+$/', $node->nodeValue)) {
-                $md = new \dflydev\markdown\MarkdownExtraParser();
-                $node->nodeValue =  $md->transformMarkdown($node->nodeValue);
+                $md = \Parsedown::instance();
+                $node->nodeValue =  $md->parse($node->nodeValue);
             } else {
                 // markdown will always surround the element with a paragraph;
                 // we do the same here to make it consistent

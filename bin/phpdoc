@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+
+// determine base include folder, if @php_dir@ contains @php_dir then
+// we did not install via PEAR
+$bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
+    ? __DIR__ . '/../src'
+    : '@php_dir@/phpDocumentor/src';
+
+include $bootstrap_folder . '/phpDocumentor/Bootstrap.php';
+
+$app = \phpDocumentor\Bootstrap::createInstance()
+    ->registerProfiler()
+    ->initialize();
+$app->run();
+
+// disable E_STRICT reporting on the end to prevent PEAR from throwing Strict warnings.
+error_reporting(error_reporting() & ~E_STRICT);

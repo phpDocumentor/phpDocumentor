@@ -2,89 +2,80 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @category  phpDocumentor
- * @package   Transformer
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer;
 
+use JMS\Serializer\Annotation as Serializer;
+use phpDocumentor\Transformer\Template\Parameter;
+
 /**
  * Class representing a single Transformation.
- *
- * @category phpDocumentor
- * @package  Transformer
- * @author   Mike van Riel <mike.vanriel@naenius.com>
- * @license  http://www.opensource.org/licenses/mit-license.php MIT
- * @link     http://phpdoc.org
  */
-class Transformation extends TransformerAbstract
+class Transformation
 {
-    /** @var string */
-    protected $query = '';
-
-    /** @var Writer\WriterAbstract */
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string Reference to an object containing the business logic used to execute this transformation.
+     */
     protected $writer = null;
 
-    /** @var string */
-    protected $source = '';
-
-    /** @var string */
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string the location where the output should be sent to; the exact function differs per writer.
+     */
     protected $artifact = '';
 
-    /** @var string[] */
-    protected $parameters = array();
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string the location where input for a writer should come from; the exact function differs per writer.
+     */
+    protected $source = '';
 
-    /** @var Transformer */
-    protected $transformer = null;
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string a filter or other form of limitation on what information of the AST is used; the exact function
+     *     differs per writer.
+     */
+    protected $query = '';
+
+    /**
+     * @Serializer\Exclude
+     * @var Transformer $transformer The object guiding the transformation process and having meta-data of it.
+     */
+    protected $transformer;
+
+    /**
+     * @Serializer\XmlList(entry = "parameter")
+     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
+     * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
+     *     per writer.
+     */
+    protected $parameters = array();
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
-     * @param Transformer $transformer The parent transformer.
-     * @param string      $query       What information to use as datasource for
-     *     the writer's source.
-     * @param string      $writer      What type of transformation to apply
-     *     (XSLT, PDF, Checkstyle etc).
-     * @param string      $source      Which template or type of source to use.
-     * @param string      $artifact    What is the filename of the result
-     *     (relative to the generated root)
+     * @param string $query       What information to use as datasource for the writer's source.
+     * @param string $writer      What type of transformation to apply (XSLT, PDF, Checkstyle etc).
+     * @param string $source      Which template or type of source to use.
+     * @param string $artifact    What is the filename of the result (relative to the generated root)
      */
-    public function __construct(Transformer $transformer, $query, $writer, $source, $artifact)
+    public function __construct($query, $writer, $source, $artifact)
     {
-        $this->setTransformer($transformer);
         $this->setQuery($query);
         $this->setWriter($writer);
         $this->setSource($source);
         $this->setArtifact($artifact);
-    }
-
-    /**
-     * Sets the transformer object responsible for maintaining the transformations.
-     *
-     * @param Transformer $transformer Responsible transformer object.
-     *
-     * @return void
-     */
-    public function setTransformer(Transformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
-
-    /**
-     * Returns the transformer object which is responsible for maintaining this
-     * transformation.
-     *
-     * @return Transformer
-     */
-    public function getTransformer()
-    {
-        return $this->transformer;
     }
 
     /**
@@ -118,7 +109,7 @@ class Transformation extends TransformerAbstract
      */
     public function setWriter($writer)
     {
-        $this->writer = Writer\WriterAbstract::getInstanceOf($writer);
+        $this->writer = $writer;
     }
 
     /**
@@ -180,9 +171,25 @@ class Transformation extends TransformerAbstract
             }
         }
 
+        // counter a BC break that we introduced in 2.0 stable; we removed the notion of global assets
+        // to be able to provide composer integration
+        // TODO: remove in version 3.0
+        if (strpos($this->source, 'templates/') !== 0) {
+            $this->source = 'templates/abstract/' . $this->source;
+            trigger_error(
+                'Using shared assets in a template is deprecated and will be removed in version 3.0',
+                E_USER_DEPRECATED
+            );
+        }
+
         // check whether the file exists in the phpDocumentor project directory
         if (file_exists(__DIR__.'/../../../'.$this->source)) {
             return __DIR__ . '/../../../' .$this->source;
+        }
+
+        // in case of a composer installation
+        if (file_exists(__DIR__ . '/../../../../templates')) {
+            return __DIR__ . '/../../../../' . $this->source;
         }
 
         // TODO: replace this as it breaks the component stuff
@@ -227,7 +234,7 @@ class Transformation extends TransformerAbstract
     /**
      * Sets an array of parameters (key => value).
      *
-     * @param string[] $parameters Associative multidimensional array containing
+     * @param Parameter[] $parameters Associative multidimensional array containing
      *     parameters for the Writer.
      *
      * @return void
@@ -238,42 +245,9 @@ class Transformation extends TransformerAbstract
     }
 
     /**
-     * Recursive function to convert a SimpleXMLElement to an associative array.
-     *
-     * @param \SimpleXMLElement $sxml object to convert to a flat array.
-     *
-     * @return (string|string[])[]
-     */
-    protected function convertSimpleXmlToArray(\SimpleXMLElement $sxml)
-    {
-        $result = array();
-
-        /** @var \SimpleXMLElement $value */
-        foreach ($sxml->children() as $key => $value) {
-            $result[$key] = count($value->children()) > 1
-                ? $this->convertSimpleXmlToArray($value)
-                : (string)$value;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Imports the parameters from a SimpleXMLElement array.
-     *
-     * @param \SimpleXMLElement $parameters Object to import
-     *
-     * @return void
-     */
-    public function importParameters(\SimpleXMLElement $parameters)
-    {
-        $this->parameters = $this->convertSimpleXmlToArray($parameters);
-    }
-
-    /**
      * Returns all parameters for this transformation.
      *
-     * @return string[]
+     * @return Parameter[]
      */
     public function getParameters()
     {
@@ -283,81 +257,60 @@ class Transformation extends TransformerAbstract
     /**
      * Returns a specific parameter, or $default if none exists.
      *
-     * @param string $name    Name of the parameter to return.
-     * @param mixed  $default Default value is parameter does not exist.
+     * @param string $name Name of the parameter to return.
      *
-     * @return string
+     * @return Parameter
      */
-    public function getParameter($name, $default = null)
+    public function getParameter($name)
     {
-        return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+        /** @var Parameter $parameter */
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->getKey() == $name) {
+                return $parameter;
+            }
+        }
+
+        return null;
     }
 
     /**
-     * Executes the transformation.
+     * Returns a specific parameter, or $default if none exists.
      *
-     * @param string $structure_file The location of the structure file.
+     * @param string $name Name of the parameter to return.
      *
-     * @return void
+     * @return Parameter
      */
-    public function execute($structure_file)
+    public function getParametersWithKey($name)
     {
-        $this->getWriter()->transform($structure_file, $this);
+        $parameters = array();
+
+        /** @var Parameter $parameter */
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->getKey() == $name) {
+                $parameters[] = $parameter;
+            }
+        }
+
+        return $parameters;
     }
 
     /**
-     * Factory method to create a new transformation based on a array containing
-     * transformation parameters.
+     * Sets the transformer on this transformation.
      *
-     * The array format is:
-     *
-     * <code>
-     * array(
-     *   'query'      => 'Query string',
-     *   'writer'     => 'WriterName',
-     *   'source'     => 'source location',
-     *   'artifact'   => 'path',
-     *   'parameters' => array()
-     * )
-     * </code>
-     *
-     * The parameter array is optional.
-     *
-     * @param Transformer $transformer    Responsible transformer object.
-     * @param mixed[]     $transformation Transformation array, see long
-     *     description for the format.
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return Transformation
+     * @param \phpDocumentor\Transformer\Transformer $transformer
      */
-    public static function createFromArray(Transformer $transformer, array $transformation)
+    public function setTransformer($transformer)
     {
-        // check if all required items are present
-        if (!array_key_exists('query', $transformation)
-            || !array_key_exists('writer', $transformation)
-            || !array_key_exists('source', $transformation)
-            || !array_key_exists('artifact', $transformation)
-        ) {
-            throw new \InvalidArgumentException(
-                'Transformation array is missing elements, received: '
-                . var_export($transformation, true)
-            );
-        }
+        $this->transformer = $transformer;
+    }
 
-        $transformation_obj = new Transformation(
-            $transformer,
-            $transformation['query'],
-            $transformation['writer'],
-            $transformation['source'],
-            $transformation['artifact']
-        );
-        if (isset($transformation['parameters'])
-            && is_array($transformation['parameters'])
-        ) {
-            $transformation_obj->setParameters($transformation['parameters']);
-        }
-
-        return $transformation_obj;
+    /**
+     * Returns the transformer for this transformation.
+     *
+     * @return \phpDocumentor\Transformer\Transformer
+     */
+    public function getTransformer()
+    {
+        return $this->transformer;
     }
 }

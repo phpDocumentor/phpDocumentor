@@ -1,0 +1,51 @@
+---
+
+- name: Install MongoDb, PECL prerequisites and Apache
+  apt: name={{item}} state=latest
+  with_items:
+    - mongodb
+    - php5-dev
+    - php5-mcrypt
+    - apache2
+  sudo: True
+
+# Annoyingly, the pecl install is interactive so let's hack around it by
+# repeatedly piping '' into it. This *will* break when the path to mongo.so changes
+# but if we don't do it we get "mongo already installed" errors
+- name: Install the Mongo extension from PECL
+  shell: yes '' | pecl install mongo creates=/usr/lib/php5/20090626/mongo.so
+  sudo: True
+
+- name: Make sure the mongo driver is loaded
+  copy: dest=/etc/php5/conf.d/mongo.ini content="extension=mongo.so" mode=0644
+  sudo: True
+
+- name: Install the Xhprof extension from PECL
+  shell: pecl install xhprof-beta creates=/usr/lib/php5/20090626/xhprof.so
+  sudo: True
+
+- name: Make sure that Xhprof is loaded
+  copy: dest=/etc/php5/conf.d/xhprof.ini content="extension=xhprof.so" mode=0644
+  sudo: True
+
+- name: Clone Xhprof GUI
+  git: repo=https://github.com/preinheimer/xhgui dest=/var/www/xhgui
+  sudo: True
+
+- name: Install dependencies for Xhprof GUI
+  shell: cd /var/www/xhgui && composer update --prefer-dist
+  sudo: True
+
+- name: Enable mod_rewrite
+  apache2_module: state=present name=rewrite
+  sudo: True
+
+- name: Set up vhost
+  copy: src=profiling.phpdocumentor.local.vhost dest=/etc/apache2/sites-enabled/profiling.phpdocumentor.local
+  sudo: True
+  notify:
+    - restart apache
+
+- name: Create xhgui cache directory
+  file: path=/var/www/xhgui/cache owner=www-data group=www-data mode=0740
+  sudo: True

@@ -1,0 +1,271 @@
+{%- block doctype -%}
+<!DOCTYPE html>
+{%- endblock %}
+{%- set reldelim1 = reldelim1 is not defined and ' &raquo;' or reldelim1 %}
+{%- set reldelim2 = reldelim2 is not defined and ' |' or reldelim2 %}
+{%- set url_root = pathto('', 1) %}
+{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
+
+{%- macro relbar() %}
+<div class="related">
+    <h3>{{ _('Navigation') }}</h3>
+    <ul>
+        {%- for rellink in rellinks %}
+        <li class="right" style="margin-right: 10px; margin-top: 6px;">
+            <a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags }}" {{ accesskey(rellink[2]) }}>
+                {{ rellink[3] }}
+            </a>
+            {%- if not loop.first %}{{ reldelim2 }}{% endif %}
+        </li>
+        {%- endfor %}
+        {%- block rootrellink %}
+        <li>
+            <a href="http://www.phpdoc.org">Homepage</a> {{ reldelim1 }}
+        </li>
+        <li>
+            <a href="{{ pathto(master_doc) }}">Documentation</a> {{ reldelim1 }}
+        </li>
+        {%- endblock %}
+        {%- for parent in parents %}
+        <li>
+            <a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>
+                {{ parent.title }}
+            </a> {{ reldelim1 }}
+        </li>
+        {%- endfor %}
+        {%- block relbaritems %} {% endblock %}
+    </ul>
+</div>
+{%- endmacro %}
+
+{%- macro sidebar() %}
+{%- if not embedded %}{% if not theme_nosidebar|tobool %}
+        {%- block sidebarlogo %}
+        {%- if logo %}
+        <p class="logo"><a href="{{ pathto(master_doc) }}">
+            <img class="logo" src="{{ pathto('_static/' + logo, 1) }}"
+                 alt="Logo"/>
+        </a></p>
+        {%- endif %}
+        {%- endblock %}
+        {%- block sidebartoc %}
+        {%- if display_toc %}
+        <h3><a href="{{ pathto(master_doc) }}">{{ _('Table Of Contents') }}</a>
+        </h3>
+        {{ toc }}
+        {%- endif %}
+        {%- endblock %}
+        {%- block sidebarrel %}
+        {%- if prev %}
+        <h4>{{ _('Previous topic') }}</h4>
+
+        <p class="topless"><a href="{{ prev.link|e }}"
+                              title="{{ _('previous chapter') }}">{{ prev.title
+            }}</a></p>
+        {%- endif %}
+        {%- if next %}
+        <h4>{{ _('Next topic') }}</h4>
+
+        <p class="topless"><a href="{{ next.link|e }}"
+                              title="{{ _('next chapter') }}">{{ next.title
+            }}</a></p>
+        {%- endif %}
+        {%- endblock %}
+        {%- if customsidebar %}
+        {% include customsidebar %}
+        {%- endif %}
+        {%- block sidebarsearch %}
+        {%- if pagename != "search" %}
+        <div id="searchbox" style="display: none">
+            <h3>{{ _('Search') }}</h3>
+
+            <form class="search" action="{{ pathto('search') }}" method="get">
+                <input type="text" name="q" size="18"/>
+                <input type="submit" value="{{ _('Go') }}"/>
+                <input type="hidden" name="check_keywords" value="yes"/>
+                <input type="hidden" name="area" value="default"/>
+            </form>
+        </div>
+        <script type="text/javascript">$('#searchbox').show(0);</script>
+        {%- endif %}
+        {%- endblock %}
+{%- endif %}{% endif %}
+{%- endmacro %}
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{ metatags }}
+    {%- if not embedded and docstitle %}
+    {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+    {%- else %}
+    {%- set titlesuffix = "" %}
+    {%- endif %}
+    <title>{{ title|striptags }}{{ titlesuffix }}</title>
+
+    <link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css"/>
+    <!--<link rel="stylesheet" href="{{ pathto('_static/configurationblock.css', 1) }}" type="text/css"/>-->
+
+    <link href="{{ pathto('_static/css/template.css', 1) }}" rel="stylesheet" media="all">
+    <style>
+        h1 {
+            font-family: serif;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+        h2:first-of-type {
+            margin-top: 25px;
+        }
+        h2 {
+            font-family: serif;
+            color: #333;
+            border: none;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        .well table.docutils {
+            width: 100%;
+        }
+    </style>
+
+    <script src="{{ pathto('_static/js/jquery-1.7.1.min.js', 1) }}" type="text/javascript"></script>
+    <script src="{{ pathto('_static/js/jquery-ui-1.8.2.custom.min.js', 1) }}" type="text/javascript"></script>
+    <script src="{{ pathto('_static/js/bootstrap.js', 1) }}" type="text/javascript"></script>
+    <script src="{{ pathto('_static/js/prettify/prettify.min.js', 1) }}" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function equalHeight(group) {
+            var tallest = 0;
+
+            group.each(function() {
+                var thisHeight = $(this).height();
+                if(thisHeight > tallest) {
+                    tallest = thisHeight;
+                }
+            });
+
+            group.height(tallest);
+        }
+
+        $(document).ready(function() {
+            $('.contents .row').each(function() {
+                equalHeight(jQuery(this).find('.well'));
+            });
+
+            // remove the classes added by Sphinx; the container class is
+            // used in Twitter bootstrap and this collides
+            $('.container .container').removeClass('container');
+        });
+    </script>
+
+    <link rel="shortcut icon" href="http://demo.phpdoc.org/Responsive/img/favicon.ico">
+    <link rel="apple-touch-icon" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://demo.phpdoc.org/Responsive/img/apple-touch-icon-114x114.png">
+    {%- block linktags %}
+        {%- if hasdoc('about') %}
+        <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}"/>
+        {%- endif %}
+        {%- if hasdoc('genindex') %}
+        <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}"/>
+        {%- endif %}
+        {%- if hasdoc('search') %}
+        <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}"/>
+        {%- endif %}
+        {%- if hasdoc('copyright') %}
+        <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}"/>
+        {%- endif %}
+        <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}"/>
+        {%- if parents %}
+        <link rel="up" title="{{ parents[-1].title|striptags }}" href="{{ parents[-1].link|e }}"/>
+        {%- endif %}
+        {%- if next %}
+        <link rel="next" title="{{ next.title|striptags }}" href="{{ next.link|e }}"/>
+        {%- endif %}
+        {%- if prev %}
+        <link rel="prev" title="{{ prev.title|striptags }}" href="{{ prev.link|e }}"/>
+        {%- endif %}
+    {%- endblock %}
+    {%- block extrahead %} {% endblock %}
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="/">phpDocumentor</a>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="dropdown">
+                        <a href="#documentation" class="dropdown-toggle" data-toggle="dropdown"> Documentation<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/docs"><i class="icon-th"></i> phpDocumentor 2</a></li>
+                            <li><a href="http://manual.phpdoc.org"><i class="icon-th"></i> phpDocumentor 1</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#demo" class="dropdown-toggle" data-toggle="dropdown"> Demo<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="http://demo.phpdoc.org/Responsive/"><i class="icon-list-alt"></i> Responsive</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/templates"><i class="icon-list-alt"></i> Templates</a></li>
+                    <li><a href="/contact"><i class="icon-list-alt"></i> Contact</a></li>
+                    <li><a href="/about"><i class="icon-list-alt"></i> About</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="go_to_top"><a href="#___" style="color: inherit">Back to top <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+    <noscript>
+        <div class="alert alert-warning">
+            Javascript is disabled; several features are only available if Javascript is enabled.
+        </div>
+    </noscript>
+
+    <div class="row">
+        <div class="span3">
+            {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
+        </div>
+        <div class="span9 contents">
+            <div class="breadcrumb">
+            {%- block header %}{% endblock %}
+            {%- block relbar1 %}{{ relbar() }}{% endblock %}
+            </div>
+
+            {% if pagename != 'index' %}
+            <div class="well">
+            {% endif %}
+
+            {% block body %} {% endblock %}
+
+            {% if pagename != 'index' %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+  <div class="row">
+    <footer class="span12">
+        <p>
+            {% trans sphinx_version=sphinx_version|e %}Created using <a
+                href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version
+            }}.{% endtrans %}
+        </p>
+    </footer>
+  </div>
+</div>
+
+</body>
+</html>

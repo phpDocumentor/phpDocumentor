@@ -4,8 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,6 +12,7 @@
 namespace phpDocumentor\Event;
 
 use Symfony\Component\EventDispatcher as Symfony;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Event Dispatching class.
@@ -23,18 +23,15 @@ use Symfony\Component\EventDispatcher as Symfony;
  *
  * The class is implemented as (mockable) Singleton as this was the best
  * solution to make the functionality available in every class of the project.
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 class Dispatcher extends Symfony\EventDispatcher
 {
     /** @var Dispatcher[] Keep track of an array of instances. */
-    static protected $instances = array();
+    protected static $instances = array();
 
     /**
      * Override constructor to make this singleton.
+     * @codeCoverageIgnore For some reason
      */
     protected function __construct()
     {
@@ -77,11 +74,13 @@ class Dispatcher extends Symfony\EventDispatcher
      * and that the dispatch signature must remain intact.
      *
      * @param string $eventName
-     * @param EventAbstract $event
+     * @param Event  $event
+     *
+     * @codeCoverageIgnore Untestable and not really necessary
      *
      * @return EventAbstract
      */
-    public function dispatch($eventName, Symfony\Event $event = null)
+    public function dispatch($eventName, Event $event = null)
     {
         return parent::dispatch($eventName, $event);
     }
@@ -93,27 +92,12 @@ class Dispatcher extends Symfony\EventDispatcher
      * @param callable $listener
      * @param int      $priority
      *
+     * @codeCoverageIgnore Untestable and not really necessary
+     *
      * @return void
      */
     public function addListener($eventName, $listener, $priority = 0)
     {
         parent::addListener($eventName, $listener, $priority);
-    }
-
-    /**
-     * Alias of addListener() provided for backwards-compatiblity.
-     *
-     * @param string                                 $eventName
-     * @param \phpDocumentor\Plugin\ListenerAbstract $listener
-     *
-     * @deprecated provided for BC compatibility; use addListener instead.
-     *     Will be removed in 2.0.0 Beta or RC
-     *
-     * @return void
-     */
-    public function connect($eventName, $listener)
-    {
-        trigger_error('The method "connect" will be removed in 2.0.0', E_USER_DEPRECATED);
-        $this->addListener($eventName, $listener);
     }
 }

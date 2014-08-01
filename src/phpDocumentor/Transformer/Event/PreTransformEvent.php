@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Event\EventAbstract;
+
 /**
  * Event that happens prior to the execution of all transformations.
  *
@@ -19,7 +21,7 @@ namespace phpDocumentor\Transformer\Event;
  * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PreTransformEvent extends \phpDocumentor\Event\EventAbstract
+class PreTransformEvent extends EventAbstract
 {
     /** @var \DOMDocument */
     protected $source;
@@ -37,6 +39,7 @@ class PreTransformEvent extends \phpDocumentor\Event\EventAbstract
     public function setSource($source)
     {
         $this->source = $source;
+
         return $this;
     }
 

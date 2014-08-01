@@ -2,59 +2,165 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor;
 
-/**
- * Finds and activates the autoloader.
- */
-require_once findAutoloader();
-
-use Symfony\Component\Console\Input\InputInterface;
 use Cilex\Application as Cilex;
+use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
+use Cilex\Provider\ValidatorServiceProvider;
+use Monolog\ErrorHandler;
+use Monolog\Handler\NullHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use phpDocumentor\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Command\Helper\LoggerHelper;
+use phpDocumentor\Configuration;
+use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Shell;
+use Symfony\Component\Stopwatch\Stopwatch;
+
+if (!\Phar::running()) {
+    define('DOMPDF_ENABLE_AUTOLOAD', false);
+    if (file_exists(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php')) {
+        // when normally installed, get it from the vendor folder
+        require_once(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php');
+    } else {
+        // when installed using composer, include it from that location
+        require_once(__DIR__ . '/../../../../dompdf/dompdf/dompdf_config.inc.php');
+    }
+}
 
 /**
  * Application class for phpDocumentor.
  *
  * Can be used as bootstrap when the run method is not invoked.
- *
- * @author  Mike van Riel <mike.vanriel@naenius.com>
- * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link    http://phpdoc.org
  */
 class Application extends Cilex
 {
-    const VERSION = '2.0.0a13';
+    /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
+    public static $VERSION;
 
     /**
      * Initializes all components used by phpDocumentor.
      */
-    public function __construct()
+    public function __construct($autoloader = null)
     {
-        parent::__construct('phpDocumentor', self::VERSION);
+        $this->defineIniSettings();
+        
+        self::$VERSION = trim(file_get_contents(__DIR__ . '/../../VERSION'));
 
-        $this->addAutoloader();
-        $this->addLogging();
-        $this->setTimezone();
-        $this->addConfiguration();
+        parent::__construct('phpDocumentor', self::$VERSION);
+
+        $this['kernel.timer.start'] = time();
+        $this['kernel.stopwatch'] = function () {
+            return new Stopwatch();
+        };
+
+        $this['autoloader'] = $autoloader;
+
+        $this->register(new JmsSerializerServiceProvider());
+        $this->register(new Configuration\ServiceProvider());
+
         $this->addEventDispatcher();
-        $this->loadPlugins();
+        $this->addLogging();
 
-        $this['console']->getHelperSet()->set(
-            new \phpDocumentor\Console\Helper\ProgressHelper()
-        );
+        $this->register(new ValidatorServiceProvider());
+        $this->register(new Translator\ServiceProvider());
+        $this->register(new Descriptor\ServiceProvider());
+        $this->register(new Parser\ServiceProvider());
+        $this->register(new Partials\ServiceProvider());
+        $this->register(new Transformer\ServiceProvider());
+        $this->register(new Plugin\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
-        $this->addCommandsForTemplateNamespace();
-        $this->addCommandsForTemplateNamespace();
+    }
+
+    /**
+     * Removes all logging handlers and replaces them with handlers that can write to the given logPath and level.
+     *
+     * @param Logger  $logger       The logger instance that needs to be configured.
+     * @param integer $level        The minimum level that will be written to the normal logfile; matches one of the
+     *                              constants in {@see \Monolog\Logger}.
+     * @param string  $logPath      The full path where the normal log file needs to be written.
+     *
+     * @return void
+     */
+    public function configureLogger($logger, $level, $logPath = null)
+    {
+        /** @var Logger $monolog */
+        $monolog = $logger;
+
+        switch($level) {
+            case 'emergency':
+            case 'emerg':
+                $level = Logger::EMERGENCY;
+                break;
+            case 'alert':
+                $level = Logger::ALERT;
+                break;
+            case 'critical':
+            case 'crit':
+                $level = Logger::CRITICAL;
+                break;
+            case 'error':
+            case 'err':
+                $level = Logger::ERROR;
+                break;
+            case 'warning':
+            case 'warn':
+                $level = Logger::WARNING;
+                break;
+            case 'notice':
+                $level = Logger::NOTICE;
+                break;
+            case 'info':
+                $level = Logger::INFO;
+                break;
+            case 'debug':
+                $level = Logger::DEBUG;
+                break;
+        }
+
+        $this['monolog.level']   = $level;
+        if ($logPath) {
+            $logPath = str_replace(
+                array('{APP_ROOT}', '{DATE}'),
+                array(realpath(__DIR__.'/../..'), $this['kernel.timer.start']),
+                $logPath
+            );
+            $this['monolog.logfile'] = $logPath;
+        }
+
+        // remove all handlers from the stack
+        try {
+            while ($monolog->popHandler()) {
+            }
+        } catch (\LogicException $e) {
+            // popHandler throws an exception when you try to pop the empty stack; to us this is not an
+            // error but an indication that the handler stack is empty.
+        }
+
+        if ($level === 'quiet') {
+            $monolog->pushHandler(new NullHandler());
+            return;
+        }
+
+        // set our new handlers
+        if ($logPath) {
+            $monolog->pushHandler(new StreamHandler($logPath, $level));
+        } else {
+            $monolog->pushHandler(new StreamHandler('php://stdout', $level));
+        }
     }
 
     /**
@@ -66,56 +172,67 @@ class Application extends Cilex
      */
     public function run($interactive = false)
     {
+        /** @var ConsoleApplication $app  */
         $app = $this['console'];
+        $app->setAutoExit(false);
+
         if ($interactive) {
-            $app = new \Symfony\Component\Console\Shell($app);
+            $app = new Shell($app);
         }
 
-        $app->run(new \phpDocumentor\Console\Input\ArgvInput());
+        $output = new Console\Output\Output();
+        $output->setLogger($this['monolog']);
+
+        $app->run(new ArgvInput(), $output);
     }
 
     /**
-     * Adds the command to phpDocumentor that belong to the Project namespace.
+     * Adjust php.ini settings.
      *
      * @return void
      */
-    protected function addCommandsForProjectNamespace()
+    protected function defineIniSettings()
     {
-        $this->command(new \phpDocumentor\Command\Project\ParseCommand());
-        $this->command(new \phpDocumentor\Command\Project\RunCommand());
-        $this->command(new \phpDocumentor\Command\Project\TransformCommand());
+        $this->setTimezone();
+        ini_set('memory_limit', -1);
+
+        // this code cannot be tested because we cannot control the system settings in unit tests
+        // @codeCoverageIgnoreStart
+        if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
+            if (ini_get('opcache.save_comments')) {
+                ini_set('opcache.load_comments', 1);
+            } else {
+                ini_set('opcache.enable', 0);
+            }
+        }
+
+        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
+            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
-     * Adds the command to phpDocumentor that belong to the plugin namespace.
+     * If the timezone is not set anywhere, set it to UTC.
+     *
+     * This is done to prevent any warnings being outputted in relation to using
+     * date/time functions. What is checked is php.ini, and if the PHP version
+     * is prior to 5.4, the TZ environment variable.
+     *
+     * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
+     *     default timezone.
+     *
+     * @codeCoverageIgnore this method is very hard, if not impossible, to unit test and not critical.
      *
      * @return void
      */
-    protected function addCommandsForPluginNamespace()
+    protected function setTimezone()
     {
-        $this->command(new \phpDocumentor\Command\Plugin\GenerateCommand());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Template namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForTemplateNamespace()
-    {
-        $this->command(new \phpDocumentor\Command\Template\GenerateCommand());
-        $this->command(new \phpDocumentor\Command\Template\ListCommand());
-        $this->command(new \phpDocumentor\Command\Template\PackageCommand());
-    }
-
-    /**
-     * Instantiates the autoloader and adds it to phpDocumentor's container.
-     *
-     * @return void
-     */
-    protected function addAutoloader()
-    {
-        $this['autoloader'] = include findAutoloader();
+        if (false === ini_get('date.timezone')
+            || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
+        ) {
+            date_default_timezone_set('UTC');
+        }
     }
 
     /**
@@ -128,58 +245,36 @@ class Application extends Cilex
         $this->register(
             new MonologServiceProvider(),
             array(
-                'monolog.name'    => 'phpDocumentor',
-                'monolog.logfile' => sys_get_temp_dir().'/phpdoc.log'
+                'monolog.name'      => 'phpDocumentor',
+                'monolog.logfile'   => sys_get_temp_dir() . '/phpdoc.log',
+                'monolog.debugfile' => sys_get_temp_dir() . '/phpdoc.debug.log',
+                'monolog.level'     => Logger::INFO,
             )
         );
-    }
 
-    /**
-     * If the timezone is not set anywhere, set it to UTC.
-     *
-     * This is done to prevent any warnings being outputted in relation to using
-     * date/time functions. What is checked is php.ini, and if the PHP version
-     * is prior to 5.4, the TZ environment variable.
-     *
-     * @return void
-     */
-    public function setTimezone()
-    {
-        if (false === ini_get('date.timezone')
-            || (version_compare(phpversion(), '5.4.0', '<')
-            && false === getenv('TZ'))
-        ) {
-            date_default_timezone_set('UTC');
-        }
-    }
+        $app = $this;
+        /** @var Configuration $configuration */
+        $configuration = $this['config'];
+        $this['monolog.configure'] = $this->protect(
+            function ($log) use ($app, $configuration) {
+                $paths    = $configuration->getLogging()->getPaths();
+                $logLevel = $configuration->getLogging()->getLevel();
 
-    /**
-     * Adds the Configuration object to the DIC.
-     *
-     * phpDocumentor first loads the template config file (/data/phpdoc.tpl.xml)
-     * and then the phpdoc.dist.xml, or the phpdoc.xml if it exists but not both,
-     * from the current working directory.
-     *
-     * The user config file (either phpdox.dist.xml or phpdoc.xml) is merged
-     * with the template file.
-     *
-     * @return void
-     */
-    protected function addConfiguration()
-    {
-        $this['config'] = $this->share(
-            function () {
-                $user_config_file = (file_exists('phpdoc.xml'))
-                    ? 'phpdoc.xml'
-                    : 'phpdoc.dist.xml';
-                $config_files = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
-                if (is_readable($user_config_file)) {
-                    $config_files[] = $user_config_file;
-                }
-
-                return \Zend\Config\Factory::fromFiles($config_files, true);
+                $app->configureLogger($log, $logLevel, $paths['default'], $paths['errors']);
             }
         );
+
+        $this->extend(
+            'console',
+            function (ConsoleApplication $console) use ($configuration) {
+                $console->getHelperSet()->set(new LoggerHelper());
+                $console->getHelperSet()->set(new ConfigurationHelper($configuration));
+
+                return $console;
+            }
+        );
+
+        ErrorHandler::register($this['monolog']);
     }
 
     /**
@@ -197,53 +292,12 @@ class Application extends Cilex
     }
 
     /**
-     * Load the plugins.
-     *
-     * phpDocumentor instantiates the plugin manager given the Event Dispatcher,
-     * Configuration and autoloader.
-     * Using this manager it will read the configuration and load the required
-     * plugins.
+     * Adds the command to phpDocumentor that belong to the Project namespace.
      *
      * @return void
      */
-    protected function loadPlugins()
+    protected function addCommandsForProjectNamespace()
     {
-        $app = $this;
-        $this['plugin_manager'] = $this->share(
-            function () use ($app) {
-                $manager = new \phpDocumentor\Plugin\Manager(
-                    $app['event_dispatcher'],
-                    $app['config'],
-                    $app['autoloader']
-                );
-                return $manager;
-            }
-        );
-        $this['plugin_manager']->loadFromConfiguration();
+        $this->command(new Command\Project\RunCommand());
     }
-}
-
-/**
- * Tries to find the autoloader relative to ththis file and return its path.
- *
- * @throws \RuntimeException if the autoloader could not be found.
- *
- * @return string the path of the autoloader.
- */
-function findAutoloader()
-{
-    $autoloader_base_path = '/../../vendor/autoload.php';
-
-    // if the file does not exist from a base path it is included as vendor
-    $autoloader_location = file_exists(__DIR__ . $autoloader_base_path)
-        ? __DIR__ . $autoloader_base_path
-        : __DIR__ . '/../../..' . $autoloader_base_path;
-
-    if (!file_exists($autoloader_location)) {
-        throw new \RuntimeException(
-            'Unable to find autoloader at ' . $autoloader_location
-        );
-    }
-
-    return $autoloader_location;
 }

@@ -11,8 +11,13 @@
  */
 namespace phpDocumentor\Parser;
 
+use \Mockery as m;
+use phpDocumentor\Fileset\Collection;
+
 /**
  * Test class for \phpDocumentor\Parser\Parser.
+ *
+ * @covers phpDocumentor\Parser\Parser
  */
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,44 +31,87 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        ini_set('zend.script_encoding', null);
         $this->fixture = new Parser();
     }
 
     /**
-     * Tests whether the isForced method correctly functions.
-     *
+     * @covers phpDocumentor\Parser\Parser::getIgnoredTags
+     * @covers phpDocumentor\Parser\Parser::setIgnoredTags
+     */
+    public function testSetAndGetIgnoredTags()
+    {
+        $parser = new Parser();
+        $this->assertEquals(array(), $parser->getIgnoredTags());
+
+        $parser->setIgnoredTags(array('param'));
+        $this->assertEquals(array('param'), $parser->getIgnoredTags());
+    }
+
+    /**
      * @covers phpDocumentor\Parser\Parser::setForced
      * @covers phpDocumentor\Parser\Parser::isForced
-     *
-     * @return void
      */
-    public function testForced()
+    public function testSetAndCheckWhetherParsingIsForced()
     {
-        // defaults to false
         $this->assertEquals(false, $this->fixture->isForced());
 
-        $xml = new \SimpleXMLElement('<project></project>');
-        $xml->addAttribute('version', \phpDocumentor\Application::VERSION);
-
-        $this->fixture->setExistingXml($xml->asXML());
-        $this->assertEquals(false, $this->fixture->isForced());
-
-        // if version differs, we force a rebuild
-        $xml['version'] = \phpDocumentor\Application::VERSION . 'a';
-        $this->fixture->setExistingXml($xml->asXML());
-        $this->assertEquals(true, $this->fixture->isForced());
-
-        // switching back should undo the force
-        $xml['version'] = \phpDocumentor\Application::VERSION;
-        $this->fixture->setExistingXml($xml->asXML());
-        $this->assertEquals(false, $this->fixture->isForced());
-
-        // manually setting forced should result in a force
         $this->fixture->setForced(true);
         $this->assertEquals(true, $this->fixture->isForced());
+    }
 
-        $this->fixture->setForced(false);
-        $this->assertEquals(false, $this->fixture->isForced());
+    /**
+     * @covers phpDocumentor\Parser\Parser::setEncoding
+     * @covers phpDocumentor\Parser\Parser::getEncoding
+     */
+    public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles()
+    {
+        $this->assertEquals('utf-8', $this->fixture->getEncoding());
+
+        $this->fixture->setEncoding('iso-8859-1');
+        $this->assertEquals('iso-8859-1', $this->fixture->getEncoding());
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::setPath
+     * @covers phpDocumentor\Parser\Parser::getPath
+     */
+    public function testSettingAndRetrievingTheBasePath()
+    {
+        // Arrange
+        $this->assertSame('', $this->fixture->getPath());
+
+        // Act
+        $this->fixture->setPath(sys_get_temp_dir());
+
+        // Assert
+        $this->assertSame(sys_get_temp_dir(), $this->fixture->getPath());
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::setStopwatch
+     */
+    public function testSetStopWatch()
+    {
+        $stopwatch = m::mock('Symfony\Component\Stopwatch\Stopwatch');
+        $this->assertAttributeEquals(null, 'stopwatch', $this->fixture);
+
+        $this->fixture->setStopwatch($stopwatch);
+
+        $this->assertAttributeSame($stopwatch, 'stopwatch', $this->fixture);
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Parser::setLogger
+     */
+    public function testSettingALogger()
+    {
+        $logger = m::mock('Psr\Log\LoggerInterface');
+        $this->assertAttributeEquals(null, 'logger', $this->fixture);
+
+        $this->fixture->setLogger($logger);
+
+        $this->assertAttributeSame($logger, 'logger', $this->fixture);
     }
 
     /**
@@ -108,74 +156,17 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests whether the getExistingXml() and setExistingXml() methods function
-     * properly.
-     *
-     * @covers phpDocumentor\Parser\Parser::setExistingXml
-     * @covers phpDocumentor\Parser\Parser::getExistingXml
-     *
-     * @return void
+     * @covers phpDocumentor\Parser\Parser::setDefaultPackageName
+     * @covers phpDocumentor\Parser\Parser::getDefaultPackageName
      */
-    public function testExistingXml()
+    public function testSetAndGetDefaultPackageName()
     {
-        $this->assertEquals(null, $this->fixture->getExistingXml());
+        $parser = new Parser();
 
-        $this->fixture->setExistingXml(
-            '<?xml version="1.0" ?><project version="1.0"></project>'
-        );
+        $this->assertEquals('Default', $parser->getDefaultPackageName());
 
-        $this->assertInstanceOf('DOMDocument', $this->fixture->getExistingXml());
-        $this->assertEquals(
-            '1.0',
-            $this->fixture->getExistingXml()->documentElement
-                ->getAttribute('version')
-        );
-    }
+        $parser->setDefaultPackageName('test');
 
-    /**
-     * Tests whether the getRelativeFilename() and setPath() methods function
-     * properly.
-     *
-     * @covers phpDocumentor\Parser\Parser::setPath
-     * @covers phpDocumentor\Parser\Parser::getRelativeFilename
-     *
-     * @return void
-     */
-    public function testPathHandling()
-    {
-        // default is only stripping the opening slash
-        $this->assertEquals(
-            ltrim(__FILE__, '/'), $this->fixture->getRelativeFilename(__FILE__)
-        );
-
-        // after setting the current directory as root folder; should strip all
-        // but filename
-        $this->fixture->setPath(dirname(__FILE__));
-        $this->assertEquals(
-            basename(__FILE__), $this->fixture->getRelativeFilename(__FILE__)
-        );
-
-        // when providing a file in a lower directory it cannot parse and thus
-        // it is invalid
-        $this->setExpectedException('InvalidArgumentException');
-        $this->fixture->getRelativeFilename(
-            realpath(dirname(__FILE__) . '/../phpunit.xml')
-        );
-    }
-
-    /**
-     * Make sure the setter can transform string to array and set correct attribute
-     *
-     * @covers \phpDocumentor\Parser\Parser::setVisibility
-     *
-     * @return void
-     */
-    public function testSetVisibilityCorrectlySetsAttribute()
-    {
-        $this->fixture->setVisibility('public,protected,private');
-
-        $this->assertAttributeEquals(
-            array('public', 'protected', 'private'), 'visibility', $this->fixture
-        );
+        $this->assertSame('test', $parser->getDefaultPackageName());
     }
 }
