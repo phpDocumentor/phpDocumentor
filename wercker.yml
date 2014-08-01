@@ -2,6 +2,9 @@ box: wercker/php
 build:
   steps:
     - script:
+        name: set timezone in PHP
+        code: echo 'date.timezone = "Europe/Amsterdam"' >> $HOME/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - script:
         name: Update apt
         code: sudo apt-get update
     - script:
