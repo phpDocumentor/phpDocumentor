@@ -110,9 +110,9 @@ class Loader
     private function createConfigurationObject($templatePath, $defaultUserConfigPath, $customUserConfigPath, $class)
     {
         $config = $this->serializer->deserialize(file_get_contents($templatePath), $class, 'xml');
+        $customUserConfigPath = $customUserConfigPath ? : $defaultUserConfigPath;
 
         if ($customUserConfigPath !== null) {
-            $customUserConfigPath = $customUserConfigPath ? : $defaultUserConfigPath;
             $userConfigFile = $this->serializer->deserialize(file_get_contents($customUserConfigPath), $class, 'xml');
 
             $config = $this->merger->run($config, $userConfigFile);
