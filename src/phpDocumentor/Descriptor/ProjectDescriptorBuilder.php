@@ -249,6 +249,7 @@ class ProjectDescriptorBuilder
         $descriptor->setErrors($this->validate($descriptor));
 
         return $descriptor;
+	}
 
     /**
      * Map error code to severity.
