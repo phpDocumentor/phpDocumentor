@@ -58,7 +58,7 @@ class Bootstrap
         $autoloader = $this->createAutoloader($vendorDir);
 		$this->addDompdfConfig($vendorDir);
 
-        return new Application($autoloader);
+        return new Application($autoloader, $vendorDir);
     }
 
     /**
