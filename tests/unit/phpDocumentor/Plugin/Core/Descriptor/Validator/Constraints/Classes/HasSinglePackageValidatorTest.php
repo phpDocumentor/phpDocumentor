@@ -65,7 +65,7 @@ class HasSinglePackageValidatorTest extends \PHPUnit_Framework_TestCase
         $packageCollection = new Collection(array('x', 'y'));
         $tagCollection     = new Collection(array('package' => $packageCollection));
         $this->fileDescriptor->shouldReceive('getTags')->andReturn($tagCollection)->once();
-        $this->context->shouldReceive('addViolationAt')->once()->with('package', $this->constraint->message);
+        $this->context->shouldReceive('addViolationAt')->once()->with('package', $this->constraint->message, array(), null, null, $constraint->code);
 
         $this->validator->validate($this->fileDescriptor, $this->constraint);
     }

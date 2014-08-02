@@ -67,7 +67,7 @@ class HasSingleSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->fileDescriptor->shouldReceive('getTags')->andReturn($tagCollection)->once();
 
-        $this->context->shouldReceive('addViolationAt')->once()->with('package', $this->constraint->message);
+        $this->context->shouldReceive('addViolationAt')->once()->with('package', $this->constraint->message, array(), null, null, $constraint->code);
 
         $this->validator->validate($this->fileDescriptor, $this->constraint);
 
