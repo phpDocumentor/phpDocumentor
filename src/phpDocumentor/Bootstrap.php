@@ -106,7 +106,7 @@ class Bootstrap
 	{
 	    $vendorDir = 'vendor';
 
-	    if (strpos('@php_dir@', '@php_dir') === 0) {
+	    if (strpos('@php_dir@', '@php_dir') !== 0) {
 		    $vendorDir = $this->getVendorPath('@php_dir@/phpDocumentor/composer.json');
 		} elseif (file_exists(__DIR__ . '/../../../../../../composer.json')) {
 		    $vendorDir = $this->getVendorPath(__DIR__ . '/../../../../../../composer.json');
