@@ -42,10 +42,7 @@ use phpDocumentor\Descriptor\Filter\ClassFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Descriptor\Filter\StripInternal;
-<<<<<<< HEAD
 use phpDocumentor\Descriptor\Filter\StripOnVisibility;
-=======
->>>>>>> clean up
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
 use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
 use phpDocumentor\Reflection\ClassReflector;
