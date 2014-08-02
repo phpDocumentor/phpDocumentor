@@ -126,7 +126,7 @@ class Bootstrap
 	protected function addDompdfConfig($vendorDir)
 	{	    
 		if (!\Phar::running()) {
-			define('DOMPDF_ENABLE_AUTOLOAD', false);
+			defined('DOMPDF_ENABLE_AUTOLOAD') or define('DOMPDF_ENABLE_AUTOLOAD', false);
 			if (file_exists(__DIR__ . '/../../' . $vendorDir . '/dompdf/dompdf/dompdf_config.inc.php')) {
 				// when normally installed, get it from the vendor folder
 				require_once(__DIR__ . '/../../' . $vendorDir . '/dompdf/dompdf/dompdf_config.inc.php');
