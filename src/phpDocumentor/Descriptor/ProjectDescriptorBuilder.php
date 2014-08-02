@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Translator;
+use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator;
