@@ -35,11 +35,37 @@ class Parameter
     protected $value;
 
     /**
+     * Sets an XML attribute
+     * 
+     * @param string $key
+     * @return Parameter for a fluent interface
+     */
+    public function setKey($key)
+    {
+        $this->key =  $key;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getKey()
     {
         return $this->key;
+    }
+
+    /**
+     * Sets an XML value
+     * 
+     * @param string $value
+     * @return Parameter for a fluent interface
+     */
+    public function setValue($value)
+    {
+        $this->value =  $value;
+
+        return $this;
     }
 
     /**
