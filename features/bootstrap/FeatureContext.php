@@ -16,8 +16,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Process\Process;
 
-defined('PHPDOC_VENDOR_DIR') or define('PHPDOC_VENDOR_DIR', 'vendor');
-
 /**
  * Context class for the phpDocumentor Features.
  */
