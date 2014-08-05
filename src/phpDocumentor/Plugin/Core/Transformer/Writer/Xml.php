@@ -212,6 +212,10 @@ class Xml extends WriterAbstract implements Translatable
             $child->appendChild($markers);
 
             foreach ($file->getMarkers() as $marker) {
+                if (! $marker['type']) {
+                    continue;
+                }
+
                 $marker_obj = new \DOMElement(strtolower($marker['type']));
                 $markers->appendChild($marker_obj);
 
@@ -400,7 +404,13 @@ class Xml extends WriterAbstract implements Translatable
         foreach ($class->getInheritedMethods() as $method) {
             // TODO #840: Workaround; for some reason there are NULLs in the methods array.
             if ($method) {
-                $this->methodConverter->convert($child, $method);
+                $methodElement = $this->methodConverter->convert($child, $method);
+                $methodElement->appendChild(
+                    new \DOMElement(
+                        'inherited_from',
+                        $method->getParent()->getFullyQualifiedStructuralElementName()
+                    )
+                );
             }
         }
     }
