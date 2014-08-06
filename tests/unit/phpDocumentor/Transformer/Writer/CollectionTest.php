@@ -14,6 +14,8 @@ namespace phpDocumentor\Transformer\Writer;
 
 use Mockery\MockInterface;
 use Mockery as m;
+use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xsl;
 
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
@@ -26,6 +28,8 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /** @var MockInterface|Xsl */
     protected $writer;
     
+    /** @var Collection $fixture */
+    protected $fixture;
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
