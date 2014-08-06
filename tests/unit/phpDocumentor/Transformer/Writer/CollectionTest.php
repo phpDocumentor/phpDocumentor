@@ -35,6 +35,15 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->writer = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xsl');
         $this->fixture = new Collection($this->routers);
     }
+    
+    /**
+     * Registers a writer for tests that need a collection item
+     */
+    private function registerWriter()
+    {
+        $this->writer->shouldReceive('setRouters')->with($this->routers);
+        $this->fixture->offsetSet('index', $this->writer);
+    }
 
     /**
      * @covers phpDocumentor\Transformer\Writer\Collection::__construct
@@ -87,8 +96,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetGetWithExistingIndex()
     {
-        //first we need a registered writer: the index is 'index'
-        $this->testOffsetSetWriterReceivesRouterQueue();
+        $this->registerWriter();
         
         $this->assertSame($this->writer, $this->fixture->offsetGet('index'));
     }
@@ -98,8 +106,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     */
     public function testCheckRequirements()
     {
-        //in order to test if the requirements are checked, we need a registered writer
-        $this->testOffsetSetWriterReceivesRouterQueue();
+        $this->registerWriter();
 
         $this->writer->shouldReceive('checkRequirements')->once();
         $this->fixture->checkRequirements();
