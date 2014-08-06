@@ -61,6 +61,17 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->fixture->offsetSet('i', $this->writer);
     }
+    
+    /**
+     * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
+     */
+    public function testOffsetSetWriterReceivesRouterQueue()
+    {
+        $this->writer->shouldReceive('setRouters')->once()->with($this->routers);
+        $this->fixture->offsetSet('index', $this->writer);
+        
+        $this->assertTrue(true);
+    }
 
     /**
      * @expectedException \InvalidArgumentException
@@ -71,14 +82,25 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->fixture->offsetGet('nonExistingIndex');
     }
     
+    /**
+     * @covers phpDocumentor\Transformer\Writer\Collection::offsetGet
+     */
+    public function testOffsetGetWithExistingIndex()
+    {
+        //first we need a registered writer: the index is 'index'
+        $this->testOffsetSetWriterReceivesRouterQueue();
+        
+        $this->assertSame($this->writer, $this->fixture->offsetGet('index'));
+    }
+    
    /**
-    * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
     * @covers phpDocumentor\Transformer\Writer\Collection::checkRequirements
     */
-    public function testOffsetSetAndCheckRequirements()
+    public function testCheckRequirements()
     {
-        $this->writer->shouldReceive('setRouters')->once()->with($this->routers);
-        $this->fixture->offsetSet('index', $this->writer);
+        //in order to test if the requirements are checked, we need a registered writer
+        $this->testOffsetSetWriterReceivesRouterQueue();
+
         $this->writer->shouldReceive('checkRequirements')->once();
         $this->fixture->checkRequirements();
 

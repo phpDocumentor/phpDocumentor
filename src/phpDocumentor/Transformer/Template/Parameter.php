@@ -38,7 +38,7 @@ class Parameter
      * Sets an XML attribute
      * 
      * @param string $key
-     * @return Parameter for a fluent interface
+     * @return $this for a fluent interface
      */
     public function setKey($key)
     {
@@ -59,7 +59,7 @@ class Parameter
      * Sets an XML value
      * 
      * @param string $value
-     * @return Parameter for a fluent interface
+     * @return $this for a fluent interface
      */
     public function setValue($value)
     {

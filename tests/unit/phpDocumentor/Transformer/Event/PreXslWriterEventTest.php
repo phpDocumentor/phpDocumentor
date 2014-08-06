@@ -19,7 +19,7 @@ class PreXslWriterEventTest extends \PHPUnit_Framework_TestCase
     /** @var PreXslWriterEvent $fixture */
     protected $fixture;
 
-    /** @var \DOMDocument */
+    /** @var \DOMElement */
     protected $element;
 
     /** @var int[] */
@@ -27,12 +27,12 @@ class PreXslWriterEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Creates a new (empty) fixture object.
-     * Creates a new DOMDocument object.
+     * Creates a new DOMElement object.
      */
     protected function setUp()
     {
         $this->fixture = new PreXslWriterEvent(new \stdClass());
-        $this->element = new \DOMDocument('1.0', 'UTF-8');
+        $this->element = new \DOMElement('root');
     }
 
     /**
