@@ -28,7 +28,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /** @var MockInterface|Xsl */
     protected $writer;
     
-    /** @var Collection $fixture */
+    /** @var Collection */
     protected $fixture;
     /**
      * Initializes the fixture and dependencies for this testcase.
