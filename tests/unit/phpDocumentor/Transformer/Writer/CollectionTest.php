@@ -41,15 +41,6 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * Registers a writer for tests that need a collection item
-     */
-    private function registerWriter()
-    {
-        $this->writer->shouldReceive('setRouters')->with($this->routers);
-        $this->fixture->offsetSet('index', $this->writer);
-    }
-
-    /**
      * @covers phpDocumentor\Transformer\Writer\Collection::__construct
      */
     public function testIfDependenciesAreCorrectlyRegisteredOnInitialization()
@@ -116,5 +107,14 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->fixture->checkRequirements();
 
         $this->assertTrue(true);
+    }
+    
+    /**
+     * Registers a writer for tests that need a collection item
+     */
+    private function registerWriter()
+    {
+        $this->writer->shouldReceive('setRouters')->with($this->routers);
+        $this->fixture->offsetSet('index', $this->writer);
     }
 }
