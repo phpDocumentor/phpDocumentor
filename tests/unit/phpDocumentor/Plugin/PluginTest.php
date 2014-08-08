@@ -38,4 +38,12 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(self::EXAMPLE_CLASS_NAME, $this->fixture->getClassName());
     }
+
+    /**
+     * @covers phpDocumentor\Plugin\Plugin::getParameters
+     */
+    public function testNoParametersByDefault()
+    {
+        $this->assertEmpty($this->fixture->getParameters());
+    }
 }
