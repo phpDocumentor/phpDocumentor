@@ -11,11 +11,16 @@
 
 namespace phpDocumentor\Plugin;
 
+use Mockery as m;
+
 /**
  * Tests the functionality for the Parameter class.
  */
 class ParameterTest extends \PHPUnit_Framework_TestCase
 {
+    const EXAMPLE_KEY = 'key123';
+    const EXAMPLE_VALUE = 'value123';
+
     /** @var Parameter $fixture */
     protected $fixture;
 
@@ -30,16 +35,30 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Plugin\Parameter::getKey
      */
-    public function testSetAndGetKey()
+    public function testGetKey()
     {
         $this->assertNull($this->fixture->getKey());
+
+        $property = new \ReflectionProperty('phpDocumentor\Plugin\Parameter', 'key');
+        $property->setAccessible(true);
+        $property->setValue($this->fixture, self::EXAMPLE_KEY);
+        $property->setAccessible(false);
+
+        $this->assertSame(self::EXAMPLE_KEY, $this->fixture->getKey());
     }
 
     /**
      * @covers phpDocumentor\Plugin\Parameter::getValue
      */
-    public function testSetAndGetValue()
+    public function testGetValue()
     {
         $this->assertNull($this->fixture->getValue());
+
+        $property = new \ReflectionProperty('phpDocumentor\Plugin\Parameter', 'value');
+        $property->setAccessible(true);
+        $property->setValue($this->fixture, self::EXAMPLE_VALUE);
+        $property->setAccessible(false);
+
+        $this->assertSame(self::EXAMPLE_VALUE, $this->fixture->getValue());
     }
 }
