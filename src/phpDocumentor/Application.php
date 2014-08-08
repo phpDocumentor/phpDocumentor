@@ -29,17 +29,6 @@ use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-if (!\Phar::running()) {
-    define('DOMPDF_ENABLE_AUTOLOAD', false);
-    if (file_exists(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php')) {
-        // when normally installed, get it from the vendor folder
-        require_once(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php');
-    } else {
-        // when installed using composer, include it from that location
-        require_once(__DIR__ . '/../../../../dompdf/dompdf/dompdf_config.inc.php');
-    }
-}
-
 /**
  * Application class for phpDocumentor.
  *
@@ -53,13 +42,15 @@ class Application extends Cilex
     /**
      * Initializes all components used by phpDocumentor.
      */
-    public function __construct($autoloader = null)
+    public function __construct($autoloader = null, $vendorDir = 'vendor')
     {
         $this->defineIniSettings();
         
         self::$VERSION = trim(file_get_contents(__DIR__ . '/../../VERSION'));
 
         parent::__construct('phpDocumentor', self::$VERSION);
+
+		$this['options.vendor.dir'] = $vendorDir;
 
         $this['kernel.timer.start'] = time();
         $this['kernel.stopwatch'] = function () {

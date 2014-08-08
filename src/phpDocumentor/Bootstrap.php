@@ -53,9 +53,12 @@ class Bootstrap
      */
     public function initialize()
     {
-        $autoloader = $this->createAutoloader();
+	    $vendorDir = $this->determineVendorDir();
 
-        return new Application($autoloader);
+        $autoloader = $this->createAutoloader($vendorDir);
+		$this->addDompdfConfig($vendorDir);
+
+        return new Application($autoloader, $vendorDir);
     }
 
     /**
@@ -83,9 +86,9 @@ class Bootstrap
      *
      * @return \Composer\Autoload\ClassLoader
      */
-    public function createAutoloader()
+    public function createAutoloader($vendorDir = 'vendor')
     {
-        $autoloader_base_path = '/../../vendor/autoload.php';
+        $autoloader_base_path = '/../../' . $vendorDir . '/autoload.php';
 
         // if the file does not exist from a base path it is included as vendor
         $autoloader_location = file_exists(__DIR__ . $autoloader_base_path)
@@ -98,4 +101,39 @@ class Bootstrap
 
         return require $autoloader_location;
     }
+	
+	protected function determineVendorDir()
+	{
+	    $vendorDir = 'vendor';
+
+	    if (strpos('@php_dir@', '@php_dir') !== 0) {
+		    $vendorDir = $this->getVendorPath('@php_dir@/phpDocumentor/composer.json');
+		} elseif (file_exists(__DIR__ . '/../../../../../../composer.json')) {
+		    $vendorDir = $this->getVendorPath(__DIR__ . '/../../../../../../composer.json');
+		}
+
+		return $vendorDir;
+	}
+	
+	protected function getVendorPath($path)
+	{
+	    $composerFile = file_get_contents($path);
+		$composerJson = json_decode($composerFile, true);
+
+		return isset($composerJson['config']['vendor-dir']) ? $composerJson['config']['vendor-dir'] : 'vendor';
+	}
+	
+	protected function addDompdfConfig($vendorDir)
+	{	    
+		if (!\Phar::running()) {
+			defined('DOMPDF_ENABLE_AUTOLOAD') or define('DOMPDF_ENABLE_AUTOLOAD', false);
+			if (file_exists(__DIR__ . '/../../' . $vendorDir . '/dompdf/dompdf/dompdf_config.inc.php')) {
+				// when normally installed, get it from the vendor folder
+				require_once(__DIR__ . '/../../' . $vendorDir . '/dompdf/dompdf/dompdf_config.inc.php');
+			} else {
+				// when installed using composer, include it from that location
+				require_once(__DIR__ . '/../../../../dompdf/dompdf/dompdf_config.inc.php');
+			}
+		}
+	}
 }
