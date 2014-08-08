@@ -32,7 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
                 }
 
                 try {
-                    $app->register(new $provider);
+                    $app->register(new $provider($plugin));
                 } catch (\InvalidArgumentException $e) {
                     throw new \RuntimeException($e->getMessage());
                 }
