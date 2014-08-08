@@ -15,6 +15,7 @@ use Cilex\Application as Cilex;
 use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
+use Composer\Autoload\ClassLoader;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
@@ -41,16 +42,17 @@ class Application extends Cilex
 
     /**
      * Initializes all components used by phpDocumentor.
+     *
+     * @param ClassLoader $autoloader
+     * @param array       $values
      */
-    public function __construct($autoloader = null, $vendorDir = 'vendor')
+    public function __construct($autoloader = null, array $values = array())
     {
         $this->defineIniSettings();
         
         self::$VERSION = trim(file_get_contents(__DIR__ . '/../../VERSION'));
 
-        parent::__construct('phpDocumentor', self::$VERSION);
-
-		$this['options.vendor.dir'] = $vendorDir;
+        parent::__construct('phpDocumentor', self::$VERSION, $values);
 
         $this['kernel.timer.start'] = time();
         $this['kernel.stopwatch'] = function () {

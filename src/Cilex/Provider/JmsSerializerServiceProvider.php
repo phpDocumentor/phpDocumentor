@@ -28,7 +28,11 @@ class JmsSerializerServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $serializerPath = __DIR__ . '/../../../' . $app['options.vendor.dir'] . '/jms/serializer/src';
+        $vendorPath = isset($app['composer.vendor_path'])
+            ? $app['composer.vendor_path']
+            : __DIR__ . '/../../../vendor';
+
+        $serializerPath = $vendorPath . '/jms/serializer/src';
         if (!file_exists($serializerPath)) {
             $serializerPath = __DIR__ . '/../../../../../jms/serializer/src';
         }

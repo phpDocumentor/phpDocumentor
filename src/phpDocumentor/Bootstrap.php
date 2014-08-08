@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor;
+use Composer\Autoload\ClassLoader;
 
 /**
  * This class provides a bootstrap for all application who wish to interface with phpDocumentor.
@@ -53,12 +54,12 @@ class Bootstrap
      */
     public function initialize()
     {
-	    $vendorDir = $this->determineVendorDir();
+        $vendorPath = $this->findVendorPath();
 
-        $autoloader = $this->createAutoloader($vendorDir);
-		$this->addDompdfConfig($vendorDir);
+        $autoloader = $this->createAutoloader($vendorPath);
+        $this->addDomPdfConfig($vendorPath);
 
-        return new Application($autoloader, $vendorDir);
+        return new Application($autoloader, array('composer.vendor_path' => $vendorPath));
     }
 
     /**
@@ -69,7 +70,7 @@ class Bootstrap
     public function registerProfiler()
     {
         // check whether xhprof is loaded
-        $profile   = (bool)(getenv('PHPDOC_PROFILE') === 'on');
+        $profile = (bool)(getenv('PHPDOC_PROFILE') === 'on');
         $xhguiPath = getenv('XHGUI_PATH');
         if ($profile && $xhguiPath && extension_loaded('xhprof')) {
             echo 'PROFILING ENABLED' . PHP_EOL;
@@ -82,58 +83,94 @@ class Bootstrap
     /**
      * Initializes and returns the autoloader.
      *
+     * @param string|null $vendorDir A path (either absolute or relative to the current working directory) leading to
+     *     the vendor folder where composer installed the dependencies.
+     *
      * @throws \RuntimeException if no autoloader could be found.
      *
-     * @return \Composer\Autoload\ClassLoader
+     * @return ClassLoader
      */
-    public function createAutoloader($vendorDir = 'vendor')
+    public function createAutoloader($vendorDir = null)
     {
-        $autoloader_base_path = '/../../' . $vendorDir . '/autoload.php';
+        if (! $vendorDir) {
+            $vendorDir = __DIR__ . '/../../vendor';
+        }
 
-        // if the file does not exist from a base path it is included as vendor
-        $autoloader_location = file_exists(__DIR__ . $autoloader_base_path)
-            ? __DIR__ . $autoloader_base_path
-            : __DIR__ . '/../../../..' . $autoloader_base_path;
-
+        $autoloader_location = $vendorDir . '/autoload.php';
         if (! file_exists($autoloader_location) || ! is_readable($autoloader_location)) {
-            throw new \RuntimeException('Unable to find autoloader at ' . $autoloader_location);
+            throw new \RuntimeException(
+                'phpDocumentor expected to find an autoloader at "' . $autoloader_location . '" but it was not there. '
+                . 'Usually this is because the "composer install" command has not been ran yet. If this is not the '
+                . 'case, please open an issue at http://github.com/phpDocumentor/phpDocumentor2 detailing what '
+                . 'installation method you used, which path is mentioned in this error message and any other relevant '
+                . 'information.'
+            );
         }
 
         return require $autoloader_location;
     }
-	
-	protected function determineVendorDir()
-	{
-	    $vendorDir = 'vendor';
 
-	    if (strpos('@php_dir@', '@php_dir') !== 0) {
-		    $vendorDir = $this->getVendorPath('@php_dir@/phpDocumentor/composer.json');
-		} elseif (file_exists(__DIR__ . '/../../../../../../composer.json')) {
-		    $vendorDir = $this->getVendorPath(__DIR__ . '/../../../../../../composer.json');
-		}
+    /**
+     * Attempts to find the location of the vendor folder.
+     *
+     * This method tries to check for a composer.json in a directory 5 levels below the folder of this Bootstrap file.
+     * This is the expected location if phpDocumentor is installed using composer because the current directory for
+     * this file is expected to be 'vendor/phpdocumentor/phpdocumentor/src/phpDocumentor'.
+     *
+     * If a composer.json is found we will try to extract the vendor folder name using the 'vendor-dir' configuration
+     * option of composer or assume it is vendor if that option is not set.
+     *
+     *
+     * If no custom composer.json can be found, then we assume that the vendor folder is that of phpDocumentor itself,
+     * which is `../../vendor` starting from this folder.
+     *
+     * If neither locations exist, then this method returns null because no vendor path could be found.
+     *
+     * @return string|null
+     */
+    public function findVendorPath()
+    {
+        // default installation
+        $vendorDir = __DIR__ . '/../../vendor';
 
-		return $vendorDir;
-	}
-	
-	protected function getVendorPath($path)
-	{
-	    $composerFile = file_get_contents($path);
-		$composerJson = json_decode($composerFile, true);
+        // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
+        $rootFolderWhenInstalledWithComposer = __DIR__ . '/../../../../../';
+        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';
+        if (file_exists($composerConfigurationPath)) {
+            $vendorDir = $rootFolderWhenInstalledWithComposer
+                . $this->getCustomVendorPathFromComposer($composerConfigurationPath);
+        }
 
-		return isset($composerJson['config']['vendor-dir']) ? $composerJson['config']['vendor-dir'] : 'vendor';
-	}
-	
-	protected function addDompdfConfig($vendorDir)
-	{	    
-		if (!\Phar::running()) {
-			defined('DOMPDF_ENABLE_AUTOLOAD') or define('DOMPDF_ENABLE_AUTOLOAD', false);
-			if (file_exists(__DIR__ . '/../../' . $vendorDir . '/dompdf/dompdf/dompdf_config.inc.php')) {
-				// when normally installed, get it from the vendor folder
-				require_once(__DIR__ . '/../../' . $vendorDir . '/dompdf/dompdf/dompdf_config.inc.php');
-			} else {
-				// when installed using composer, include it from that location
-				require_once(__DIR__ . '/../../../../dompdf/dompdf/dompdf_config.inc.php');
-			}
-		}
-	}
+        return file_exists($vendorDir) ? $vendorDir : null;
+    }
+
+    /**
+     * Retrieves the custom vendor-dir from the given composer.json or returns 'vendor'.
+     *
+     * @param string $composerConfigurationPath the path pointing to the composer.json
+     *
+     * @return string
+     */
+    protected function getCustomVendorPathFromComposer($composerConfigurationPath)
+    {
+        $composerFile = file_get_contents($composerConfigurationPath);
+        $composerJson = json_decode($composerFile, true);
+
+        return isset($composerJson['config']['vendor-dir']) ? $composerJson['config']['vendor-dir'] : 'vendor';
+    }
+
+    /**
+     * Loads the configuration for the DOMPdf library from the given vendor folder.
+     *
+     * @param string $vendorPath
+     *
+     * @return void
+     */
+    protected function addDomPdfConfig($vendorPath)
+    {
+        if (! \Phar::running()) {
+            defined('DOMPDF_ENABLE_AUTOLOAD') or define('DOMPDF_ENABLE_AUTOLOAD', false);
+            require_once($vendorPath . '/dompdf/dompdf/dompdf_config.inc.php');
+        }
+    }
 }
