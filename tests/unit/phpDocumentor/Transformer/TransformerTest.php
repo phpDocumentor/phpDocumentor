@@ -21,6 +21,13 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  */
 class TransformerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Max length of description printed.
+     *
+     * @var int
+     */
+    protected static $MAX_DESCRIPTION_LENGTH = 68;
+
     /** @var Transformer $fixture */
     protected $fixture = null;
 
@@ -74,6 +81,17 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     public function testExceptionWhenSettingFileAsTarget()
     {
         $this->fixture->setTarget(__FILE__);
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Transformer::setTarget
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Target directory (vfs://myroot) does not exist and could not be created
+     */
+    public function testExceptionWhenSettingExistingDirAsTarget()
+    {
+        $fileSystem = \org\bovigo\vfs\vfsStream::setup('myroot');
+        $this->fixture->setTarget(\org\bovigo\vfs\vfsStream::url('myroot'));
     }
 
     /**
@@ -164,5 +182,15 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         // separate the directories with the DIRECTORY_SEPARATOR constant to prevent failing tests on windows
         $filename = 'directory' . DIRECTORY_SEPARATOR . 'directory2' . DIRECTORY_SEPARATOR . 'file.php';
         $this->assertEquals('directory.directory2.file.html', $this->fixture->generateFilename($filename));
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Transformer::getDescription
+     */
+    public function testGetDescription()
+    {
+        $description = $this->fixture->getDescription();
+        $this->assertNotNull($description);
+        $this->assertLessThanOrEqual(static::$MAX_DESCRIPTION_LENGTH, strlen($description));
     }
 }
