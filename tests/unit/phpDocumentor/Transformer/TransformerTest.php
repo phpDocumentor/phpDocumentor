@@ -9,10 +9,10 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
@@ -110,33 +110,45 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute()
     {
-        // FIXME
-        $this->markTestIncomplete();
-        $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-
-        $behaviourCollection = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
-        $behaviourCollection ->shouldReceive('process')->with($project);
-        $behaviourCollection ->shouldReceive('count')->andReturn(0);
-
-        $transformation = m::mock('phpDocumentor\Transformer\Transformation')
-            ->shouldReceive('execute')->with($project)
-            ->shouldReceive('getQuery')->andReturn('')
-            ->shouldReceive('getWriter')->andReturn(new \stdClass())
-            ->shouldReceive('getArtifact')->andReturn('')
-            ->getMock();
+        $myTestWritter = 'myTestWriter';
 
         $templateCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
-        $templateCollection->shouldReceive('getTransformations')->andReturn(
-            array($transformation)
-        );
 
-        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
-        $writerCollectionMock->shouldIgnoreMissing();
+        $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $behaviourCollection = $this->buildEmptyBehaviorCollection($project);
+
+        $myTestWritterMock = m::mock('phpDocumentor\Transformer\Writer\WriterAbstract')
+            ->shouldReceive('transform')->getMock();
+
+        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection')
+                ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
+                ->getMock();
 
         $fixture = new Transformer($templateCollection, $writerCollectionMock);
         $fixture->setBehaviours($behaviourCollection);
 
+        $transformation = m::mock('phpDocumentor\Transformer\Transformation')
+            ->shouldReceive('execute')->with($project)
+            ->shouldReceive('getQuery')->andReturn('')
+            ->shouldReceive('getWriter')->andReturn($myTestWritter)
+            ->shouldReceive('getArtifact')->andReturn('')
+            ->shouldReceive('setTransformer')->with($fixture)
+            ->getMock();
+
+        $templateCollection->shouldReceive('getTransformations')->andReturn(
+            array($transformation)
+        );
+
         $this->assertNull($fixture->execute($project));
+    }
+
+    protected function buildEmptyBehaviorCollection(ProjectDescriptor $project)
+    {
+        $behaviourCollection = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
+        $behaviourCollection->shouldReceive('process')->with($project);
+        $behaviourCollection->shouldReceive('count')->andReturn(0);
+
+        return $behaviourCollection;
     }
 
     /**
