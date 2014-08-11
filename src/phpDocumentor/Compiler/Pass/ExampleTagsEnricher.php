@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,13 +12,11 @@
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
-use phpDocumentor\Descriptor\Collection;
 
 /**
  * This index builder collects all examples from tags and inserts them into the example index.
@@ -27,10 +25,17 @@ class ExampleTagsEnricher implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 9002;
 
-    public function __construct($sourceDir = '', $exampleDir = '')
+    /** @var ExampleAssembler */
+    private $exampleAssembler;
+
+    /**
+     * Initializes this compiler pass with its dependencies.
+     *
+     * @param Finder $finder Finds examples in several directories.
+     */
+    public function __construct(Finder $finder)
     {
-        ExampleAssembler::setSourceDirectory($sourceDir);
-        ExampleAssembler::setExampleDirectory($exampleDir);
+        $this->exampleAssembler = new ExampleAssembler($finder);
     }
 
     /**
@@ -55,37 +60,41 @@ class ExampleTagsEnricher implements CompilerPassInterface
     }
 
     /**
+     * Replaces the example tags in the description with the contents of the found example.
+     *
      * @param DescriptorAbstract $element
      *
-     * @return Ambigous <mixed, string>
+     * @return string
      */
     protected function replaceInlineExamples(DescriptorAbstract $element)
     {
         $description = $element->getDescription();
+        $matches     = array();
 
-        if (!empty($description)
-            && preg_match_all('/\{@example\s(.+?)\}/', $description, $matches)
-            && count($matches[0]) >= 1) {
+        if (! $description
+            || ! preg_match_all('/\{@example\s(.+?)\}/', $description, $matches)
+            || count($matches[0]) < 1
+        ) {
+            return $description;
+        }
 
-            $matched = array();
-
-            foreach ($matches[0] as $index => $match) {
-                if (!isset($matched[$match])) {
-                    $matched[$match] = 1;
-                    $exampleAssembler = new ExampleAssembler();
-                    $exampleReflector = new ExampleTag('example', $matches[1][$index]);
-
-                    $example = $exampleAssembler->create($exampleReflector);
-
-                    $replacement = sprintf(
-                        '<i>%s</i><pre>%s</pre>',
-                        $example->getDescription(),
-                        $example->getExample()
-                    );
-
-                    $description = str_replace($match, $replacement, $description);
-                }
+        $matched = array();
+        foreach ($matches[0] as $index => $match) {
+            if (isset($matched[$match])) {
+                continue;
             }
+
+            $matched[$match] = true;
+            $exampleReflector = new ExampleTag('example', $matches[1][$index]);
+
+            $example = $this->exampleAssembler->create($exampleReflector);
+
+            $replacement = '`'.$example->getExample().'`';
+            if ($example->getDescription()) {
+                $replacement = '*' . $example->getDescription() . '*' . $replacement;
+            }
+
+            $description = str_replace($match, $replacement, $description);
         }
 
         return $description;

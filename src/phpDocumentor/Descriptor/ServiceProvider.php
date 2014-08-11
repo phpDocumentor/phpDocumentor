@@ -88,6 +88,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['parser.example.finder'] = new Example\Finder();
+
         $this->addCache($app);
         $this->addAssemblers($app);
         $this->addFilters($app);
@@ -105,11 +107,12 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers the Assemblers used to convert Reflection objects to Descriptors.
      *
-     * @param AssemblerFactory $factory
+     * @param AssemblerFactory   $factory
+     * @param \Cilex\Application $app
      *
      * @return AssemblerFactory
      */
-    public function attachAssemblersToFactory(AssemblerFactory $factory)
+    public function attachAssemblersToFactory(AssemblerFactory $factory, Application $app)
     {
         // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
         $fileMatcher      = function ($criteria) { return $criteria instanceof FileReflector; };
@@ -157,7 +160,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $factory->register($authorMatcher, new AuthorAssembler());
         $factory->register($deprecatedMatcher, new DeprecatedAssembler());
-        $factory->register($exampleMatcher, new ExampleAssembler());
+        $factory->register($exampleMatcher, new ExampleAssembler($app['parser.example.finder']));
         $factory->register($linkMatcher, new LinkAssembler());
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
@@ -353,8 +356,8 @@ class ServiceProvider implements ServiceProviderInterface
         $app['descriptor.builder.assembler.factory'] = $app->share(
             $app->extend(
                 'descriptor.builder.assembler.factory',
-                function ($factory) use ($provider) {
-                    return $provider->attachAssemblersToFactory($factory);
+                function ($factory) use ($provider, $app) {
+                    return $provider->attachAssemblersToFactory($factory, $app);
                 }
             )
         );

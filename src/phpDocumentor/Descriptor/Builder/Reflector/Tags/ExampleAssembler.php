@@ -12,153 +12,54 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
+use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
-use phpDocumentor\Configuration\Files;
 
+/**
+ * This class collects data from the example tag definition of the Reflection library, tries to find the correlating
+ * example file on disk and creates a complete Descriptor from that.
+ */
 class ExampleAssembler extends AssemblerAbstract
 {
+    /** @var Finder */
+    private $finder;
 
     /**
-     * @var string
+     * Initializes this assembler with the means to find the example file on disk.
+     *
+     * @param Finder $finder
      */
-    protected static $sourceDirectory = '';
-
-    /**
-     * @var string
-     */
-    protected static $exampleDirectory = '';
+    public function __construct(Finder $finder)
+    {
+        $this->finder = $finder;
+    }
 
     /**
      * Creates a new Descriptor from the given Reflector.
      *
      * @param ExampleTag $data
      *
+     * @throws \InvalidArgumentException if the provided parameter is not of type ExampleTag; the interface won't let
+     *   up typehint the signature.
+     *
      * @return ExampleDescriptor
      */
     public function create($data)
     {
-        $descriptor = new ExampleDescriptor($data->getName());
-
-        if ($data instanceof ExampleTag) {
-            $descriptor->setFilePath((string) $data->getFilePath());
-            $descriptor->setStartingLine($data->getStartingLine());
-            $descriptor->setLineCount($data->getLineCount());
-            $descriptor->setDescription($data->getDescription());
-            $descriptor->setExample($this->getExample($data));
+        if (! $data instanceof ExampleTag) {
+            throw new \InvalidArgumentException(
+                'The ExampleAssembler expected an ExampleTag object to base the descriptor on'
+            );
         }
+
+        $descriptor = new ExampleDescriptor($data->getName());
+        $descriptor->setFilePath((string) $data->getFilePath());
+        $descriptor->setStartingLine($data->getStartingLine());
+        $descriptor->setLineCount($data->getLineCount());
+        $descriptor->setDescription($data->getDescription());
+        $descriptor->setExample($this->finder->find($descriptor));
 
         return $descriptor;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExample($data)
-    {
-        $filename = $data->getFilePath();
-
-        if (is_file($this->getExamplePathFromConfig($filename))) {
-            $file = file($this->getExamplePathFromConfig($filename));
-        } elseif (is_file($this->getExamplePathFromSource($filename))) {
-            $file = file($this->getExamplePathFromSource($filename));
-        } elseif (is_file($this->getExamplePath($filename))) {
-            $file = file($this->getExamplePath($filename));
-        } else {
-            $file = @file($filename);
-        }
-
-        if (empty($file)) {
-            $content = "** File not found : {$filename} ** ";
-        } else {
-            $offset = $data->getStartingLine() - 1;
-            $filepart = array_slice($file, $offset, $data->getLineCount());
-            $content = implode('', $filepart);
-        }
-
-        return $content;
-    }
-    
-    /**
-     * Set the Source Directory
-     *
-     * @param string $directory
-     */
-    public static function setSourceDirectory($directory = '')
-    {
-        self::$sourceDirectory = $directory;
-    }
-    
-    /**
-     * Get the Source Directory
-     *
-     * @return string
-     */
-    public static function getSourceDirectory()
-    {
-        return self::$sourceDirectory;
-    }
-    
-    /**
-     * Set the Examples Directory
-     *
-     * @param string $directory
-     */
-    public static function setExampleDirectory($directory = '')
-    {
-        self::$exampleDirectory = $directory;
-    }
-    
-    /**
-     * Get the Examples Directory
-     *
-     * @return string
-     */
-    public static function getExampleDirectory()
-    {
-        return self::$exampleDirectory;
-    }
-    
-    /**
-     * Get example filepath based on the example directory inside your project.
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    protected function getExamplePath($file)
-    {
-        return getcwd() . DIRECTORY_SEPARATOR . 'examples' . DIRECTORY_SEPARATOR . $file;
-    }
-
-    /**
-     * Get example filepath based on config.
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    protected function getExamplePathFromConfig($file)
-    {
-        return rtrim(self::getExampleDirectory(), '\\/') . DIRECTORY_SEPARATOR . $file;
-    }
-
-    /**
-     * Get example filepath based on sourcecode.
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    protected function getExamplePathFromSource($file)
-    {
-        return sprintf(
-            '%s%s%s%s%s',
-            getcwd(),
-            DIRECTORY_SEPARATOR,
-            trim(self::getSourceDirectory(), '\\/'),
-            DIRECTORY_SEPARATOR,
-            trim($file, '"')
-        );
     }
 }

@@ -23,6 +23,7 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Template\Factory;
@@ -105,14 +106,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
                 $compiler->insert(
-                    new ExampleTagsEnricher(
-                        is_array($container['config']['files']['directory'])
-                        ? $container['config']['files']['directory'][0]
-                        : (string) $container['config']['files']['directory'],
-                        is_array($container['config']['examples']['directory'])
-                        ? $container['config']['examples']['directory'][0]
-                        : (string) $container['config']['examples']['directory']
-                    ),
+                    new ExampleTagsEnricher($container['parser.example.finder']),
                     ExampleTagsEnricher::COMPILER_PRIORITY
                 );
                 $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);

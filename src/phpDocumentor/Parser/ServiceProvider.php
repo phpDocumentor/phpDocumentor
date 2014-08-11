@@ -14,6 +14,7 @@ namespace phpDocumentor\Parser;
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Configuration as ApplicationConfiguration;
+use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
@@ -61,7 +62,8 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
-        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
+        $app['parser.files'] = new Collection();
+        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator, $app['parser.files']));
     }
 
     /**
