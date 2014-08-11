@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\GenericTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
@@ -49,6 +50,7 @@ use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
 use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
+use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
 use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
@@ -86,6 +88,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['parser.example.finder'] = new Example\Finder();
+
         $this->addCache($app);
         $this->addAssemblers($app);
         $this->addFilters($app);
@@ -103,11 +107,12 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers the Assemblers used to convert Reflection objects to Descriptors.
      *
-     * @param AssemblerFactory $factory
+     * @param AssemblerFactory   $factory
+     * @param \Cilex\Application $app
      *
      * @return AssemblerFactory
      */
-    public function attachAssemblersToFactory(AssemblerFactory $factory)
+    public function attachAssemblersToFactory(AssemblerFactory $factory, Application $app)
     {
         // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
         $fileMatcher      = function ($criteria) { return $criteria instanceof FileReflector; };
@@ -124,6 +129,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $authorMatcher      = function ($criteria) { return $criteria instanceof AuthorTag; };
         $deprecatedMatcher  = function ($criteria) { return $criteria instanceof DeprecatedTag; };
+        $exampleMatcher     = function ($criteria) { return $criteria instanceof ExampleTag; };
         $linkMatcher        = function ($criteria) { return $criteria instanceof LinkTag; };
         $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
         $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
@@ -154,6 +160,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $factory->register($authorMatcher, new AuthorAssembler());
         $factory->register($deprecatedMatcher, new DeprecatedAssembler());
+        $factory->register($exampleMatcher, new ExampleAssembler($app['parser.example.finder']));
         $factory->register($linkMatcher, new LinkAssembler());
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
@@ -349,8 +356,8 @@ class ServiceProvider implements ServiceProviderInterface
         $app['descriptor.builder.assembler.factory'] = $app->share(
             $app->extend(
                 'descriptor.builder.assembler.factory',
-                function ($factory) use ($provider) {
-                    return $provider->attachAssemblersToFactory($factory);
+                function ($factory) use ($provider, $app) {
+                    return $provider->attachAssemblersToFactory($factory, $app);
                 }
             )
         );
