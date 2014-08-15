@@ -13,6 +13,8 @@ namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use phpDocumentor\Configuration;
+use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
@@ -31,6 +33,21 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
+
+    /** @var Plugin */
+    private $plugin;
+
+    /**
+     * Construct plugin with a the relevant configuration
+     *
+     * @param Plugin $plugin
+     **/
+    public function __construct(Plugin $plugin)
+    {
+        $this->plugin = $plugin;
+    }
+
+
     /**
      * Registers services on the given app.
      *
@@ -52,6 +69,13 @@ class ServiceProvider implements ServiceProviderInterface
     private function addNamespaceFilter(ProjectDescriptorBuilder $builder, Filter $filterManager)
     {
         $filter = new LegacyNamespaceFilter($builder);
+
+        // parse parameters
+        foreach ($this->plugin->getParameters() as $param) {
+            if ($param->getKey() == 'NamespacePrefix') {
+                $filter->setNamespacePrefix($param->getValue());
+            }
+        }
 
         $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
         $filterManager->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);

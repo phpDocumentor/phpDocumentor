@@ -20,13 +20,21 @@ use phpDocumentor\Configuration\Merger\Annotation as Merger;
 class Files
 {
     /**
+     * @var string[] a list of directories that contain example files
+     *
+     * @Serializer\Type("array<string>")
+     * @Serializer\XmlList(inline = true, entry = "examples")
+     */
+    protected $examples = array();
+
+    /**
      * @var string[] a list of directories that will be recursively scanned for files to parse.
      *
      * @Serializer\Type("array<string>")
      * @Serializer\XmlList(inline = true, entry = "directory")
      * @Merger\Replace
      */
-    protected $directories;
+    protected $directories = array();
 
     /**
      * @var string[] a list of files that will be parsed individually.
@@ -35,7 +43,7 @@ class Files
      * @Serializer\XmlList(inline = true, entry = "file")
      * @Merger\Replace
      */
-    protected $files;
+    protected $files = array();
 
     /**
      * @var string[] a list of 'globs' that will determine if a file matches the expression and then will be ignored.
@@ -44,7 +52,7 @@ class Files
      * @Serializer\XmlList(inline = true, entry = "ignore")
      * @Merger\Replace
      */
-    protected $ignore;
+    protected $ignore = array();
 
     /**
      * @var boolean whether to ignore hidden files and directories.
@@ -68,12 +76,18 @@ class Files
      * @param string[] $directories
      * @param string[] $files
      * @param string[] $ignore
+     * @param string[] $examples
      */
-    public function __construct(array $directories = array(), array $files = array(), array $ignore = array())
-    {
+    public function __construct(
+        array $directories = array(),
+        array $files = array(),
+        array $ignore = array(),
+        array $examples = array()
+    ) {
         $this->directories = $directories;
         $this->files       = $files;
         $this->ignore      = $ignore;
+        $this->examples    = $examples;
     }
 
     /**
@@ -124,5 +138,15 @@ class Files
     public function isIgnoreSymlinks()
     {
         return $this->ignoreSymlinks;
+    }
+
+    /**
+     * Returns all folders that may contain example files as referenced using the `@example` tag.
+     *
+     * @return \string[]
+     */
+    public function getExamples()
+    {
+        return $this->examples;
     }
 }

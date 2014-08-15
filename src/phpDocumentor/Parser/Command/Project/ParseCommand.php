@@ -14,6 +14,7 @@ namespace phpDocumentor\Parser\Command\Project;
 use phpDocumentor\Command\Command;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Fileset\Collection;
@@ -37,6 +38,9 @@ use Zend\I18n\Translator\Translator;
  */
 class ParseCommand extends Command
 {
+    /** @var Collection */
+    private $files;
+
     /** @var ProjectDescriptorBuilder $builder*/
     protected $builder;
 
@@ -46,11 +50,12 @@ class ParseCommand extends Command
     /** @var Translator */
     protected $translator;
 
-    public function __construct($builder, $parser, $translator)
+    public function __construct($builder, $parser, $translator, $files)
     {
         $this->builder    = $builder;
         $this->parser     = $parser;
         $this->translator = $translator;
+        $this->files      = $files;
 
         parent::__construct('project:parse');
     }
@@ -158,6 +163,11 @@ class ParseCommand extends Command
 
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
+
+        /** @var Finder $exampleFinder */
+        $exampleFinder = $this->getContainer()->offsetGet('parser.example.finder');
+        $exampleFinder->setSourceDirectory($files->getProjectRoot());
+        $exampleFinder->setExampleDirectories($configurationHelper->getConfigValueFromPath('files/examples'));
         $output->writeln($this->__('PPCPP:LOG-OK'));
 
         /** @var ProgressHelper $progress  */
@@ -265,8 +275,7 @@ class ParseCommand extends Command
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
-        $files = new Collection();
-        $files->setAllowedExtensions(
+        $this->files->setAllowedExtensions(
             $configurationHelper->getOption(
                 $input,
                 'extensions',
@@ -275,10 +284,10 @@ class ParseCommand extends Command
                 true
             )
         );
-        $files->setIgnorePatterns($configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true));
+        $this->files->setIgnorePatterns($configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true));
         $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
-        $files->setIgnoreHidden($ignoreHidden !== 'off' && $ignoreHidden === false);
-        $files->setFollowSymlinks(
+        $this->files->setIgnoreHidden($ignoreHidden !== 'off' && $ignoreHidden === false);
+        $this->files->setFollowSymlinks(
             $configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on'
         );
 
@@ -301,7 +310,7 @@ class ParseCommand extends Command
                 }
             }
         }
-        $files->addFiles($added_files);
+        $this->files->addFiles($added_files);
 
         $directory_options = $configurationHelper->getOption($input, 'directory', 'files/directories', array(), true);
         $added_directories = array();
@@ -322,9 +331,9 @@ class ParseCommand extends Command
                 }
             }
         }
-        $files->addDirectories($added_directories);
+        $this->files->addDirectories($added_directories);
 
-        return $files;
+        return $this->files;
     }
 
     /**
