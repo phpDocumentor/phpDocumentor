@@ -11,45 +11,61 @@
 
 namespace phpDocumentor\Partials;
 
+/**
+ * Tests for the phpDocumentor\Partials\Partial class.
+ */
 class PartialTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Partial */
+    private $fixture;
+
+    /**
+     * Initializes the fixture.
+     */
+    protected function setUp()
+    {
+        $this->fixture = new Partial;
+    }
+
     /**
      * @covers phpDocumentor\Partials\Partial::getContent
      * @covers phpDocumentor\Partials\Partial::setContent
      */
-    public function testGetContent(){
+    public function testGetContent()
+    {
+        $this->assertSame(null, $this->fixture->getContent());
+        $this->fixture->setContent('Foo bar');
 
-        $expect = new Partial;
-        $expect->setContent('Foo bar');
-        $expectContent = $expect->getContent();
+        $result = $this->fixture->getContent();
 
-        $this->assertEquals($expectContent, 'Foo bar');
+        $this->assertSame('Foo bar', $result);
     }
 
     /**
      * @covers phpDocumentor\Partials\Partial::getLink
      * @covers phpDocumentor\Partials\Partial::setLink
      */
-    public function testGetLink(){
+    public function testGetLink()
+    {
+        $this->assertSame(null, $this->fixture->getLink());
+        $this->fixture->setLink('http://www.phpdoc.org/');
 
-        $expect = new Partial;
-        $expect->setLink('http://www.phpdoc.org/');
-        $expectContent = $expect->getLink();
+        $result = $this->fixture->getLink();
 
-        $this->assertEquals($expectContent, 'http://www.phpdoc.org/');
+        $this->assertSame('http://www.phpdoc.org/', $result);
     }
 
     /**
      * @covers phpDocumentor\Partials\Partial::getName
      * @covers phpDocumentor\Partials\Partial::setName
      */
-    public function testGetName(){
+    public function testGetName()
+    {
+        $this->assertSame(null, $this->fixture->getName());
+        $this->fixture->setName('My name');
 
-        $expect = new Partial;
-        $expect->setName('My name');
-        $expectContent = $expect->getName();
+        $result = $this->fixture->getName();
 
-        $this->assertEquals($expectContent, 'My name');
+        $this->assertSame('My name', $result);
     }
 }
-?>
