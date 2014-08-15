@@ -36,7 +36,7 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
             $params   = $value->parameters;
             $index    = $value->index;
 
-            if ($params->offsetExists($index)) {
+            if ($params && $params->offsetExists($index)) {
                 return null;
             }
 

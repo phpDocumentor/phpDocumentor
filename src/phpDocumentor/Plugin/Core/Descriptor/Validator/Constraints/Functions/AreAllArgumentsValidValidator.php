@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions;
 
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions\DoesArgumentNameMatchParam;
@@ -29,9 +30,9 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
     protected $constraint;
 
     /**
-     * Value to validate agains.
+     * Value to validate against.
      *
-     * @var Collection
+     * @var Collection|null
      */
     protected $validationValue = null;
 
@@ -83,7 +84,8 @@ class AreAllArgumentsValidValidator extends ConstraintValidator
             $this->validationValue->key = $key;
             $this->validationValue->argument = $argument;
             $this->validationValue->index = $key;
-            $this->validationValue->parameter = $this->validationValue->parameters[$key];
+            $this->validationValue->parameter = isset($this->validationValue->parameters[$key])
+                ? $this->validationValue->parameters[$key] : null;
 
             if ($this->checkArgumentInDocBlock()) {
                 continue;

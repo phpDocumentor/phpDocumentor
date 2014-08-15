@@ -44,7 +44,7 @@ interface ArgumentInterface extends ElementInterface
      *
      * @see self::setTypes() for details on what types represent.
      *
-     * @return string[]
+     * @return Collection
      */
     public function getTypes();
 
