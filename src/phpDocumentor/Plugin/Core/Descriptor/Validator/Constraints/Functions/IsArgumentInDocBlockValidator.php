@@ -15,10 +15,10 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidationValueObject;
 
 /**
  * Validates if a Method or Function's arguments all have an accompanying param tag in the DocBlock.
@@ -30,25 +30,23 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (! $value instanceof MethodDescriptor && ! $value instanceof FunctionDescriptor) {
-            throw new ConstraintDefinitionException(
-                'The Functions\IsArgumentInDocBlock validator may only be used on function or method objects'
-            );
-        }
+        if ($value instanceof ValidationValueObject && count($value->argument) > 0) {
+            $argument = $value->argument;
+            /* @var $params \phpDocumentor\Descriptor\Collection */
+            $params   = $value->parameters;
+            $index    = $value->index;
 
-        /** @var Collection|ArgumentDescriptor[] $arguments */
-        $arguments  = $value->getArguments();
-        $parameters = $value->getTags()->get('param');
-
-        foreach ($arguments as $argument) {
-            if ($this->existsParamTagWithArgument($parameters, $argument)) {
-                continue;
+            if ($params->offsetExists($index)) {
+                return null;
             }
 
             $this->context->addViolationAt(
                 'argument',
                 $constraint->message,
-                array($argument->getName(), $value->getFullyQualifiedStructuralElementName())
+                array($argument->getName(), $value->name),
+                null,
+                null,
+                $constraint->code
             );
         }
     }

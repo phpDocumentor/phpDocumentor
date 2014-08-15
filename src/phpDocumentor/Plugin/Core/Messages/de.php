@@ -31,4 +31,23 @@ return array(
     'PPC:ERR-50018' => 'Der Typ für das param Tag %s in %s ist entweder "type" oder "unknown"; ist das nicht ein '
         . 'IDE default?',
     'PPC:ERR-50020' => 'Benötigtes Tag "%s" wurde nicht in %s gefunden',
+
+    'VAL:ERRLVL-50000' => 'error',
+    'VAL:ERRLVL-50001' => 'error',
+    'VAL:ERRLVL-50002' => 'error',
+    'VAL:ERRLVL-50004' => 'warning',
+    'VAL:ERRLVL-50005' => 'error',
+    'VAL:ERRLVL-50006' => 'critical',
+    'VAL:ERRLVL-50007' => 'error',
+    'VAL:ERRLVL-50008' => 'error',
+    'VAL:ERRLVL-50009' => 'error',
+    'VAL:ERRLVL-50010' => 'error',
+    'VAL:ERRLVL-50011' => 'error',
+    'VAL:ERRLVL-50013' => 'notice',
+    'VAL:ERRLVL-50014' => 'error',
+    'VAL:ERRLVL-50015' => 'error',
+    'VAL:ERRLVL-50016' => 'error',
+    'VAL:ERRLVL-50017' => 'error',
+    'VAL:ERRLVL-50018' => 'error',
+    'VAL:ERRLVL-50020' => 'critical',
 );

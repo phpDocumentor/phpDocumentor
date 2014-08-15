@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,39 +13,48 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Functions;
 
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidationValueObject;
 
-class IsReturnTypeNotAnIdeDefaultValidator extends ConstraintValidator
+class DoesParamsExistsValidator extends ConstraintValidator
 {
     /**
      * @see \Symfony\Component\Validator\ConstraintValidatorInterface::validate()
      */
     public function validate($value, Constraint $constraint)
     {
-        if (! $value instanceof MethodDescriptor
-            && ! $value instanceof FunctionDescriptor
-        ) {
+        if (!$value instanceof ValidationValueObject) {
             throw new ConstraintDefinitionException(
-                'The Functions\IsReturnTypeNotAnIdeDefault validator may only be used on function or method objects'
+                'The Functions\DoesParamsExistsValidator subvalidator may only be used on '
+                . ' a ValidationValueObject containing a parameter key, a fqsen and an argument object'
             );
         }
 
-        $return = $value->getResponse();
-        if ($return instanceof ReturnDescriptor) {
-            $types = $return->getTypes();
-            if (is_array($types) && !empty($types) && preg_grep('/^.*type$/', $types)) {
+        $arguments  = $value->arguments;
+        $parameters = $value->parameters;
+
+        if (count($arguments) > 0) {
+            foreach($parameters as $param) {
+                $paramVarName = $param->getVariableName();
+
+                if (empty($paramVarName) || $arguments->offsetExists($paramVarName) ) {
+                    continue;
+                }
+
                 $this->context->addViolationAt(
-                    'response',
+                    'argument',
                     $constraint->message,
-                    array($return->getName(), $value->getFullyQualifiedStructuralElementName()),
+                    array($paramVarName, $value->fqsen),
                     null,
                     null,
                     $constraint->code
                 );
             }
         }
+
+        return null;
     }
 }

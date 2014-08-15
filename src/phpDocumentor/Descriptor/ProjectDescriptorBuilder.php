@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator;
@@ -40,6 +41,9 @@ class ProjectDescriptorBuilder
 
     /** @var ProjectDescriptor $project */
     protected $project;
+
+    /** @var Translator $translator */
+    protected $translator;
 
     public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
     {
@@ -187,7 +191,7 @@ class ProjectDescriptorBuilder
         foreach ($violations as $violation) {
             $errors->add(
                 new Error(
-                    LogLevel::ERROR, // TODO: Make configurable
+                    $this->mapCodeToSeverity($violation->getCode()),
                     $violation->getMessageTemplate(),
                     $descriptor->getLine(),
                     $violation->getMessageParameters() + array($descriptor->getFullyQualifiedStructuralElementName())
@@ -245,5 +249,33 @@ class ProjectDescriptorBuilder
         $descriptor->setErrors($this->validate($descriptor));
 
         return $descriptor;
+	}
+
+    /**
+     * Map error code to severity.
+     *
+     * @param int $code
+     *
+     * @return string
+     */
+    protected function mapCodeToSeverity($code)
+    {
+        if (is_int($code) && $this->translator->translate('VAL:ERRLVL-'.$code)) {
+            $severity = $this->translator->translate('VAL:ERRLVL-'.$code);
+        } else {
+             $severity = LogLevel::ERROR;
+        }
+
+        return $severity;
+    }
+
+    /**
+     * @param Translator $translator
+     *
+     * @return void
+     */
+    public function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
     }
 }

@@ -41,6 +41,7 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
         }
 
         $params = $value->getParam();
+
         foreach ($params as $param) {
             if (! $param instanceof ParamDescriptor) {
                 continue;
@@ -56,7 +57,10 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
                 $this->context->addViolationAt(
                     'params',
                     $constraint->message,
-                    array($param->getVariableName(), $value->getFullyQualifiedStructuralElementName())
+                    array($param->getVariableName(), $value->getFullyQualifiedStructuralElementName()),
+                    null,
+                    null,
+                    $constraint->code
                 );
             }
         }

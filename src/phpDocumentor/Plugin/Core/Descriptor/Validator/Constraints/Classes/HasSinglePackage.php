@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a file, class, interface or trait has not more than ! package tags.
- *
- * @Annotation
  */
 class HasSinglePackage extends Constraint
 {
     /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
     public $message = 'PPC:ERR-50001';
+
+    public $code = 50001;
 
     /**
      * Returns that the constraint can be put onto classes.
