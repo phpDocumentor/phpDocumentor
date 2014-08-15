@@ -115,6 +115,44 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter::filter
+     */
+    public function testPrefixedNamespace()
+    {
+        $this->filter->setNamespacePrefix('Vendor');
+
+        $descriptor = $this->createDescriptorMock();
+        $descriptor->shouldReceive('getName')->andReturn('ClassName');
+        $descriptor->shouldReceive('getNamespace')->andReturn('');
+
+        $descriptor->shouldReceive('setName')->with('ClassName')->once();
+        $descriptor->shouldReceive('setNamespace')->with('\\Vendor')->once();
+
+        $this->filter->filter($descriptor);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @covers phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter::filter
+     */
+    public function testPrefixedNamespaceWithNamespacedClassWillNotBeModified()
+    {
+        $this->filter->setNamespacePrefix('Vendor');
+
+        $descriptor = $this->createDescriptorMock();
+        $descriptor->shouldReceive('getName')->andReturn('ClassName');
+        $descriptor->shouldReceive('getNamespace')->andReturn('\\');
+
+        $descriptor->shouldReceive('setName')->with('ClassName')->once();
+        $descriptor->shouldReceive('setNamespace')->with('\\')->once();
+
+        $this->filter->filter($descriptor);
+
+        $this->assertTrue(true);
+    }
+
+    /**
      * Creates a mocked Descriptor.
      *
      * @return m\MockInterface|DescriptorAbstract
