@@ -70,10 +70,10 @@ class RuleTest extends \PHPUnit_Framework_TestCase
                 return true;
             },
             function () {
-                return 'httö://www.exämple.örg/foo.html#bär';
+                return 'httö://www.€xample.org/foo.html#bär';
             }
         );
         
-        $this->assertSame('httö://www.ex%22ample.%22org/foo.html#bär', $fixture->generate('test'));
+        $this->assertSame('httö://www.EURxample.org/foo.html#bär', $fixture->generate('test'));
     }
 }
