@@ -6,3 +6,4 @@
     - { role: phpdocumentor.php, tags: [vagrant] }
     - { role: phpdocumentor.sphinx, tags: [documentation] }
     - { role: phpdocumentor.profiling, tags: [profiling] }
+    - { role: phpdocumentor.release, tags: [release] }
