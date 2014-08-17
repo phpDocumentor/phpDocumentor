@@ -7,7 +7,11 @@
   args: { chdir: release }
 
 - name: Increment version number and register number
-  shell: versioner increment VERSION
+  shell: "{{ item }}"
+  with_items:
+      - wget -nc https://github.com/mvriel/Versioner/releases/download/1.0.0/versioner.phar
+      - php versioner.phar increment VERSION
+      - rm versioner.phar
   args: { chdir: release }
 
 - name: Retrieve new version number
@@ -15,19 +19,28 @@
   register: VERSION
   args: { chdir: release }
 
+- name: Retrieve new version number
+  shell: git commit VERSION -m "Upped version number to {{VERSION.stdout}}" --author="phpDocumentor <info@phpdoc.org>"
+  args: { chdir: release }
+
 - name: Update master with develop branch
-  shell: git $item
-  with_items:
-      - checkout master
-      - merge develop
-      - push origin master
+  shell: git checkout master
+  args: { chdir: release }
+
+- name: Update master with develop branch
+  shell: git merge develop
+  args: { chdir: release }
+
+- name: Update master with develop branch
+  shell: git push origin master
   args: { chdir: release }
 
 - name: Tag new version
-  shell: git $item
-  with_items:
-      - tag v{{ VERSION.stdout }}
-      - push origin --tags
+  shell: git tag v{{ VERSION.stdout }}
+  args: { chdir: release }
+
+- name: Tag new version
+  shell: git push origin --tags
   args: { chdir: release }
 
 - name: Create PEAR package
@@ -43,7 +56,11 @@
   args: { chdir: /var/www/pear.phpdoc.org }
 
 - name: Create PHAR file
-  shell: box build
+  shell: "{{ item }}"
+  with_items:
+      - wget -nc https://github.com/box-project/box2/releases/download/2.4.4/box-2.4.4.phar
+      - php box-2.4.4.phar build
+      - rm box-2.4.4.phar
   args: { chdir: release }
 
 - name: Deploy phar to website
@@ -51,5 +68,8 @@
   args: { chdir: release }
 
 - name: Archive new phar to archive folder
-  shell: cp /var/www/phpdoc.org/web/phpDocumentor.phar /opt/artifacts/?/phpDocumentor-{{ VERSION.stdout }}.phar
+  shell: cp /var/www/phpdoc.org/web/phpDocumentor.phar /opt/artifacts/phpdoc.org/phar/phpDocumentor-{{ VERSION.stdout }}.phar
+
+- name:  Remove 'release' folder
+  shell: rm -rf release
 
