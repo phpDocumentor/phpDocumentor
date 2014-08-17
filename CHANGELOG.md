@@ -1,3 +1,33 @@
+2014/08/18: Version 2.7.0
+-------------------------
+
+```
+ADDED:     A new writer that outputs a statistical extract from the collected data
+ADDED:     Windows support for Ansible playbooks
+ADDED:     8% to 10% Code Coverage thanks to #testfest 2014
+ADDED:     #1347: Support for custom Vendor folders
+ADDED:     Plugins can now be configured using parameters.
+ADDED:     Complete support for @example
+ADDED:     NamespacePrefix to LegacyNamespaceConverter plugin
+FIXED:     Fatal error in MethodDescriptor when a parent was incorrectly called
+FIXED:     Notice in '@see' handling
+FIXED:     #1349: Configuration file was not found in working directory
+FIXED:     Phing integration by re-instating the bootstrap class
+FIXED:     Fixing type inference and variable length issues
+FIXED:     Whether a method is inherited is shown again in XSL-based templates
+FIXED:     Various minor bugs that became visible during the writing of tests
+FIXED:     #1390: Source code paths were incorrect if the source was in folder
+FIXED:     #1341: Icons in clean template were shown incorrectly
+FIXED:     #1331: Not all validations were properly shown
+FIXED:     #1077: Spaces in a path won't trip up libxml anymore
+CHANGED:   Changed reference to deprecated Parsedown method parse() to text()
+CHANGED:   Completely replaced Puppet with Ansible to provision contributor VMs
+CHANGED:   Simpler provisioning for generic contributors; to do profiling
+           another task is now needed
+CHANGED:   Docs no longer refer to Short Description or Long Description but to
+           Summary and Description per PSR-5
+```
+
 2014/07/09: Version 2.6.1
 -------------------------
 
