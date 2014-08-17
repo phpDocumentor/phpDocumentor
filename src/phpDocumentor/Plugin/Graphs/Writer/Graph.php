@@ -75,7 +75,7 @@ class Graph extends WriterAbstract
             return;
         }
 
-        $this->nodeFont = $transformation->getParameter('font', 'Courier');
+        $this->nodeFont = $transformation->getParameter('font')->getValue();
 
         $filename = $this->getDestinationPath($transformation);
 

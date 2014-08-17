@@ -165,7 +165,7 @@ class Transformation
         // externally loaded templates set this parameter so that template
         // resources may be placed in the same folder as the template.
         if ($this->getParameter('template_path') !== null) {
-            $path = rtrim($this->getParameter('template_path'), '/\\');
+            $path = rtrim($this->getParameter('template_path')->getValue(), '/\\');
             if (file_exists($path . DIRECTORY_SEPARATOR . $this->source)) {
                 return $path . DIRECTORY_SEPARATOR . $this->source;
             }
