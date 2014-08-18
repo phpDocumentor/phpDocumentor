@@ -75,15 +75,12 @@ class Graph extends WriterAbstract
             return;
         }
 
-        if ($transformation->getParameter('font') !== null) {
-            $this->nodeFont = $transformation->getParameter('font')->getValue() ?
-            $transformation->getParameter('font')->getValue() :
-            'Courier';
+        if ($transformation->getParameter('font') !== null && $transformation->getParameter('font')->getValue()) {
+            $this->nodeFont = $transformation->getParameter('font')->getValue();
         } else {
             $this->nodeFont = 'Courier';
         }
         
-
         $filename = $this->getDestinationPath($transformation);
 
         $graph = GraphVizGraph::create()

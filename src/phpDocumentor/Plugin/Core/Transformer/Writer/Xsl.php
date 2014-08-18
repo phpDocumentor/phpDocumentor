@@ -284,14 +284,8 @@ class Xsl extends WriterAbstract implements Routable
     {
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
 
-        if ($transformation->getParameter('search') !== null) {
-            $proc->setParameter(
-                '',
-                'search_template',
-                $transformation->getParameter('search')->getValue() ?
-                $transformation->getParameter('search')->getValue() :
-                'none'
-            );
+        if ($transformation->getParameter('search') !== null && $transformation->getParameter('search')->getValue()) {
+            $proc->setParameter('', 'search_template', $transformation->getParameter('search')->getValue());
         } else {
             $proc->setParameter('', 'search_template', 'none');
         }
