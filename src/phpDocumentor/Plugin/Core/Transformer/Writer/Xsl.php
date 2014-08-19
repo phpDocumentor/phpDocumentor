@@ -283,7 +283,13 @@ class Xsl extends WriterAbstract implements Routable
     private function registerDefaultVariables(Transformation $transformation, $proc, $structure)
     {
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
-        $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
+
+        if ($transformation->getParameter('search') !== null && $transformation->getParameter('search')->getValue()) {
+            $proc->setParameter('', 'search_template', $transformation->getParameter('search')->getValue());
+        } else {
+            $proc->setParameter('', 'search_template', 'none');
+        }
+        
         $proc->setParameter('', 'version', Application::$VERSION);
         $proc->setParameter('', 'generated_datetime', date('r'));
     }
