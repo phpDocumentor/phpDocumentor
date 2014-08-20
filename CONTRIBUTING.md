@@ -8,12 +8,12 @@ phpDocumentor aims to be a high quality Documentation Generation Application (DG
 contributors freedom when submitting fixes or improvements.
 
 As such we want to *encourage* but not obligate you, the contributor, to follow these guidelines. The only exception to
-this are the guidelines regarding *Github Usage & Branching* to prevent `merge-hell`.
+this are the guidelines regarding *GitHub Usage & Branching* to prevent `merge-hell`.
 
 Having said that: we really appreciate it when you apply the guidelines in part or wholly as that will save us time
 which, in turn, we can spend on bugfixes and new features.
 
-Github Usage & Branching
+GitHub Usage & Branching
 ------------------------
 
 Once you decide you want to contribute to phpDocumentor (which we really appreciate!) you can fork the project from
@@ -25,8 +25,8 @@ the `develop` branch, for each feature that you want to contribute.
 > Not doing so means that if you decide to work on two separate features and place a pull request for one of them, that
 > the changes of the other issue that you are working on is also submitted. Even if it is not completely finished.
 
-To get more information about the usage of Git, please refer to the [ProGit online book][PROGIT] written
-by Scott Chacon and/or [this help page of Github][GITHUB_HELP_PR].
+To get more information about the usage of Git, please refer to the [Pro Git book][PROGIT] written
+by Scott Chacon and/or [this help page of GitHub][GITHUB_HELP_PR].
 
 Setting Up Your Development Environment
 ---------------------------------------
@@ -153,11 +153,11 @@ If you want to see profiling output for phpDocumentor the following manual steps
    ```
    You should see the text *PROFILING ENABLED* on screen when you run phpDocumentor.
 
-6. Now browse to http://profiling.phpdocumentor.local url and you should see profiling output. If you click on the
-   date you should be able to see the profile output for phpDocumentor. Clicking on the url does work as it expects a
-   url and we are profiling a command line application.
+6. Now browse to http://profiling.phpdocumentor.local URL and you should see profiling output. If you click on the
+   date you should be able to see the profile output for phpDocumentor. Clicking on the URL does work as it expects a
+   URL and we are profiling a command line application.
 
-[PROGIT]:             http://progit.org/book
+[PROGIT]:             http://git-scm.com/book
 [GITHUB_HELP_PR]:     https://help.github.com/articles/using-pull-requests
 [VAGRANT]:            http://vagrantup.com
 [ANSIBLE_INSTALL]:    http://docs.ansible.com/intro_installation.html
