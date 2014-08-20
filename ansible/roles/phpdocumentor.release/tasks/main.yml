@@ -1,6 +1,6 @@
 ---
 - name:  Clone clean repository into 'release' folder
-  shell: git clone https://github.com/phpDocumentor/phpDocumentor2 release
+  shell: git clone git@github.com:phpDocumentor/phpDocumentor2.git release
 
 - name: Install all dependencies using Composer
   shell: composer install -o --no-dev --prefer-dist -n
