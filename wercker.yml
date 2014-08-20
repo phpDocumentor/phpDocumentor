@@ -1,4 +1,5 @@
 box: wercker/php
+no-response-timeout: 15
 build:
   steps:
     - script:
