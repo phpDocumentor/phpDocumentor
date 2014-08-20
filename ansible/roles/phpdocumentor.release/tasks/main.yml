@@ -48,7 +48,7 @@
   args: { chdir: release }
 
 - name: Move PEAR package to channel folder
-  shell: mv phpDocumentor-{{ VERSION.stdout }}.tgz /var/www/pear.phpdoc.org/web/
+  shell: mv phpDocumentor-{{ VERSION.stdout }}.tgz ~ # /var/www/pear.phpdoc.org/web/
   args: { chdir: release }
 
 - name: Register new PEAR package with channel
@@ -64,11 +64,11 @@
   args: { chdir: release }
 
 - name: Deploy phar to website
-  shell: mv phpDocumentor.phar /var/www/phpdoc.org/web/phpDocumentor.phar
+  shell: mv phpDocumentor.phar ~ # /var/www/phpdoc.org/web/phpDocumentor.phar
   args: { chdir: release }
 
-- name: Archive new phar to archive folder
-  shell: cp /var/www/phpdoc.org/web/phpDocumentor.phar /opt/artifacts/phpdoc.org/phar/phpDocumentor-{{ VERSION.stdout }}.phar
+#- name: Archive new phar to archive folder
+#  shell: cp /var/www/phpdoc.org/web/phpDocumentor.phar /opt/artifacts/phpdoc.org/phar/phpDocumentor-{{ VERSION.stdout }}.phar
 
 - name:  Remove 'release' folder
   shell: rm -rf release
