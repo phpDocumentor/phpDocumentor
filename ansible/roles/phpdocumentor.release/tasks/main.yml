@@ -26,6 +26,7 @@
 - name: Update master with develop branch
   shell: "{{ item }}"
   with_items:
+#      - git push origin develop
       - git checkout master
 #      - git merge develop
 #      - git push origin master
