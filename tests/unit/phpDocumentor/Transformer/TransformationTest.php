@@ -21,6 +21,9 @@ use phpDocumentor\Transformer\Template\Parameter;
  */
 class TransformationTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Transformation $fixture */
+    protected $fixture;
+    
     /** @var string */
     protected $query = 'queryString';
     
