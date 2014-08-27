@@ -24,8 +24,6 @@ use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Configuration;
 use phpDocumentor\Console\Input\ArgvInput;
-use phpDocumentor\Transformer\Writer\Collection;
-use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
