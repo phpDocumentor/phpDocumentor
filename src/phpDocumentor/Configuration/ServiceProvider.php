@@ -15,10 +15,8 @@ use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 use JMS\Serializer\Serializer;
-use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
-use Zend\Config\Factory;
 
 /**
  * Provides a series of services in order to handle the configuration for phpDocumentor.

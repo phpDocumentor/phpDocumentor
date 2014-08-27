@@ -180,7 +180,7 @@ class Merger
      */
     private function shouldPropertyBeReplaced(\ReflectionProperty $destinationProperty)
     {
-        return (bool)$this->reader->getPropertyAnnotation(
+        return (bool) $this->reader->getPropertyAnnotation(
             $destinationProperty,
             'phpDocumentor\Configuration\Merger\Annotation\Replace'
         );
