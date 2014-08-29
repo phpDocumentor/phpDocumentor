@@ -11,7 +11,6 @@
 
 namespace phpDocumentor;
 
-use Mockery as m;
 use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Plugin;
 

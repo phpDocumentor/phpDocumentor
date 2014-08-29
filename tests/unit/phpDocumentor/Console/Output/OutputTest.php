@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Console\Output;
 
-use Symfony\Component\Console\Output\ConsoleOutput;
-
 use Mockery as m;
 
 /**

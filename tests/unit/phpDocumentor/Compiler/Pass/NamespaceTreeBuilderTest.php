@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Mockery as m;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
