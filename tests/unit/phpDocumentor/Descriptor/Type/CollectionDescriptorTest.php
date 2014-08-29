@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-use Mockery as m;
-
 class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var CollectionDescriptor */
