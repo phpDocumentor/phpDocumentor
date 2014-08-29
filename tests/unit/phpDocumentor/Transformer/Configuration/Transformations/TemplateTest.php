@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Transformer\Configuration\Transformations;
 
-use Mockery as m;
-
 /**
  * Test for a template configuration definition.
  */

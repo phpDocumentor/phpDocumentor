@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\Transformer;
 
-use Mockery\MockInterface;
 use Mockery as m;
 use phpDocumentor\Transformer\Template\Parameter;
 

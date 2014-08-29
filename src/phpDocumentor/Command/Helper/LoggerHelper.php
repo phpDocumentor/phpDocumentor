@@ -161,7 +161,7 @@ class LoggerHelper extends Helper
         $container = $command->getContainer();
         if (isset($container['config']->logging)) {
             if ($output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $logLevel = (string)$container['config']->logging->level;
+                $logLevel = (string) $container['config']->logging->level;
             }
 
             // null means the default is used

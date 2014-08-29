@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Parser\Configuration;
 
-use Mockery as m;
-
 /**
  * Tests for the configuration directive related to file selection.
  */

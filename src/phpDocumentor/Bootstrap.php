@@ -70,7 +70,7 @@ class Bootstrap
     public function registerProfiler()
     {
         // check whether xhprof is loaded
-        $profile = (bool)(getenv('PHPDOC_PROFILE') === 'on');
+        $profile = (bool) (getenv('PHPDOC_PROFILE') === 'on');
         $xhguiPath = getenv('XHGUI_PATH');
         if ($profile && $xhguiPath && extension_loaded('xhprof')) {
             echo 'PROFILING ENABLED' . PHP_EOL;

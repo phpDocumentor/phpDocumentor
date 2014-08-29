@@ -15,7 +15,6 @@ use Monolog\Logger;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Fileset\File;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
-use \phpDocumentor\Plugin\Scrybe\Converter\Metadata;
 use Symfony\Component\Finder\SplFileInfo;
 
 abstract class BaseConverter implements ConverterInterface

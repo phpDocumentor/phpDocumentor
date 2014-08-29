@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-use \Mockery as m;
-
 /**
  * Tests the functionality for the Collection class.
  */

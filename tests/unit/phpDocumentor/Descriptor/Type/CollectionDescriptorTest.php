@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-use Mockery as m;
-
 class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var CollectionDescriptor */
@@ -96,7 +94,7 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->fixture->setKeyTypes(array(new StringDescriptor()));
         $this->fixture->setTypes(array(new FloatDescriptor(), new IntegerDescriptor()));
 
-        $this->assertSame('array<string,float|integer>', (string)$this->fixture);
+        $this->assertSame('array<string,float|integer>', (string) $this->fixture);
     }
 
     /**
@@ -106,6 +104,6 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
     {
         $this->fixture->setTypes(array(new FloatDescriptor(), new IntegerDescriptor()));
 
-        $this->assertSame('array<float|integer>', (string)$this->fixture);
+        $this->assertSame('array<float|integer>', (string) $this->fixture);
     }
 }

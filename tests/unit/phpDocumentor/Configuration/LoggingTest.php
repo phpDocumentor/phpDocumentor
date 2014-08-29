@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Configuration;
 
-use Mockery as m;
 use Psr\Log\LogLevel;
 
 class LoggingTest extends \PHPUnit_Framework_TestCase

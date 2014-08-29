@@ -12,7 +12,6 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Filter\Filterable;
-use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 
 /**
  * Base class for descriptors containing the most used options.

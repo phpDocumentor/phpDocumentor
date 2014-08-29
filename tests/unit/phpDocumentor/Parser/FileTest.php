@@ -12,7 +12,6 @@
 namespace phpDocumentor\Parser;
 
 use Mockery as m;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Event\Dispatcher;
