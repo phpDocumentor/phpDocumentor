@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Transformer\Configuration;
 
-use Mockery as m;
-
 class ExternalClassDocumentationTest extends \PHPUnit_Framework_TestCase
 {
     const EXAMPLE_PREFIX       = 'prefix';

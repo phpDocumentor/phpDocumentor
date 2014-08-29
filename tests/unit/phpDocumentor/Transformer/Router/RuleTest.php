@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use Mockery as m;
-
 class RuleTest extends \PHPUnit_Framework_TestCase
 {
     /**

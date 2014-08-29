@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use \Mockery as m;
-
 /**
  * Tests the functionality for the ClassFactory class.
  */

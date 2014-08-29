@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin;
 
-use Mockery as m;
-
 /**
  * Tests the functionality for the Parameter class.
  */
