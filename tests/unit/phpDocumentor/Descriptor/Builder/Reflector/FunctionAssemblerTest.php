@@ -113,7 +113,7 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
 
-        $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function($name) {
+        $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function ($name) {
             if ($name === 'package') {
                 $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
                 $tag->shouldReceive('getContent')->andReturn('PackageName');
