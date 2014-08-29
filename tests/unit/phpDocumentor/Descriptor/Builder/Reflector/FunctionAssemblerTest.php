@@ -13,10 +13,8 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
-
 use Mockery as m;
 use phpDocumentor\Reflection\FunctionReflector;
 
