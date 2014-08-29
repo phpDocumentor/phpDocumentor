@@ -13,7 +13,6 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Configuration as ApplicationConfiguration;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;

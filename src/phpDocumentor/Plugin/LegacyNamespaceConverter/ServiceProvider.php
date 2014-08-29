@@ -13,7 +13,6 @@ namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Configuration;
 use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
