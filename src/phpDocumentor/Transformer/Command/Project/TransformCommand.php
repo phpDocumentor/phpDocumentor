@@ -15,7 +15,6 @@ use phpDocumentor\Command\Command;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Console\Output\Output;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
@@ -167,7 +166,7 @@ TEXT
         // initialize transformer
         $transformer = $this->getTransformer();
 
-        $target = (string)$configurationHelper->getOption($input, 'target', 'transformer/target');
+        $target = (string) $configurationHelper->getOption($input, 'target', 'transformer/target');
         $fileSystem = new Filesystem();
         if (! $fileSystem->isAbsolutePath($target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
