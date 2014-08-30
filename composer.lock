@@ -1,10 +1,9 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
-        "This file is @generated automatically"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e70455f459864b1e7d88edf583a2d140",
+    "hash": "4dc58e1337e8bceaf4cd30d3e42f7c9d",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -2678,12 +2677,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "1b3b265a904cab6f28b72684d7d62abade836e25"
+                "reference": "deb75302acd737e1efa4a975fbe8257798c9ddb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/217e04f061861c88ce56677225f8b0cf1eac9e79",
-                "reference": "1b3b265a904cab6f28b72684d7d62abade836e25",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/deb75302acd737e1efa4a975fbe8257798c9ddb0",
+                "reference": "deb75302acd737e1efa4a975fbe8257798c9ddb0",
                 "shasum": ""
             },
             "require": {
@@ -2736,7 +2735,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2014-07-23 18:59:52"
+            "time": "2014-08-28 11:39:03"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3338,7 +3337,6 @@
     "stability-flags": {
         "mockery/mockery": 20
     },
-    "prefer-stable": false,
     "platform": {
         "php": ">=5.3.3"
     },
