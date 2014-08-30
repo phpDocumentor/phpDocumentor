@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor;
+
 use Composer\Autoload\ClassLoader;
 
 /**
