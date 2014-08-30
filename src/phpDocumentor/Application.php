@@ -91,7 +91,7 @@ class Application extends Cilex
         /** @var Logger $monolog */
         $monolog = $logger;
 
-        switch($level) {
+        switch ($level) {
             case 'emergency':
             case 'emerg':
                 $level = Logger::EMERGENCY;
