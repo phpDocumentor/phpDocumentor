@@ -136,7 +136,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function isUrl($link)
     {
-        return (bool)preg_match('/^[\w]+:\/\/.+$/', $link);
+        return (bool) preg_match('/^[\w]+:\/\/.+$/', $link);
     }
 
     /**
