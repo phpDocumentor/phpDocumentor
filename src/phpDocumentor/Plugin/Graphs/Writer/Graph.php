@@ -80,7 +80,7 @@ class Graph extends WriterAbstract
         } else {
             $this->nodeFont = 'Courier';
         }
-        
+
         $filename = $this->getDestinationPath($transformation);
 
         $graph = GraphVizGraph::create()

@@ -147,7 +147,7 @@ In the ProjectDescriptor are:
 TEXT;
 
         // Act
-        $result = (string)$this->fixture;
+        $result = (string) $this->fixture;
 
         // Assert
         $this->assertSame($expected, $result);

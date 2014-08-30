@@ -281,12 +281,12 @@ TEXT
 
         $this->appendReceivedTransformations($transformer, $received);
     }
-    
+
     /**
      * Create Transformation instance.
-     * 
+     *
      * @param array $transformations
-     * 
+     *
      * @return \phpDocumentor\Transformer\Transformation
      */
     protected function createTransformation(array $transformations)
@@ -298,13 +298,13 @@ TEXT
             isset($transformations['artifact']) ? $transformations['artifact'] : ''
         );
     }
-    
+
     /**
      * Append received transformations.
-     * 
+     *
      * @param Transformer $transformer
      * @param array       $received
-     * 
+     *
      * @return void
      */
     protected function appendReceivedTransformations(Transformer $transformer, $received)

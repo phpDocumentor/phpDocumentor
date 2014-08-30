@@ -9,7 +9,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Application */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */

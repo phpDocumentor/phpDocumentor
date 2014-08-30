@@ -18,7 +18,7 @@ class ExternalClassDocumentationTest extends \PHPUnit_Framework_TestCase
 
     /** @var ExternalClassDocumentation */
     private $fixture;
-    
+   
     /**
      * Initializes the fixture for this test.
      */

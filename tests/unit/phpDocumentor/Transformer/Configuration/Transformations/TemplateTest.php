@@ -20,7 +20,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
     /** @var Template */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */

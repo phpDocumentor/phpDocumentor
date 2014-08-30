@@ -29,7 +29,7 @@ use phpDocumentor\Translator\Translator;
  *
  * Functions:
  *
- * - *path(string)*, converts the given relative path to be based of the projects
+ * - *path(string) *, converts the given relative path to be based of the projects
  *   root instead of the current directory
  *
  * Filters:
@@ -220,7 +220,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
         );
     }
-
 
     /**
      * Converts the given path to be relative to the root of the documentation

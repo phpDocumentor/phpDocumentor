@@ -125,7 +125,6 @@ DOCBLOCK
             return $mock;
         });
 
-
         return $projectDescriptorBuilderMock;
     }
 }

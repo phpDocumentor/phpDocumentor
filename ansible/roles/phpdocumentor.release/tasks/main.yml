@@ -69,4 +69,3 @@
 
 - name:  Remove 'release' folder
   shell: rm -rf release
-

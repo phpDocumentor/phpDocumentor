@@ -17,7 +17,7 @@ class LoggingTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Logging */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */

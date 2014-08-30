@@ -15,7 +15,7 @@ class CollectionDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var CollectionDescriptor */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */

@@ -46,7 +46,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->plugin = $plugin;
     }
 
-
     /**
      * Registers services on the given app.
      *
