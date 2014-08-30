@@ -22,6 +22,6 @@ class BooleanDescriptorTest extends \PHPUnit_Framework_TestCase
         $fixture = new BooleanDescriptor();
 
         $this->assertSame('boolean', $fixture->getName());
-        $this->assertSame('boolean', (string)$fixture);
+        $this->assertSame('boolean', (string) $fixture);
     }
 }

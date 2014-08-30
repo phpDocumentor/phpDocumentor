@@ -102,7 +102,6 @@ class DocBlocTest
     /** @var string $a */
     public $a = '';
 
-
     /**
     * This is a multi-line test where
     * we want to see if it works.

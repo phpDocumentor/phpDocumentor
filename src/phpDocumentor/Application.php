@@ -47,7 +47,7 @@ class Application extends Cilex
     public function __construct($autoloader = null, array $values = array())
     {
         $this->defineIniSettings();
-        
+
         self::$VERSION = trim(file_get_contents(__DIR__ . '/../../VERSION'));
 
         parent::__construct('phpDocumentor', self::$VERSION, $values);

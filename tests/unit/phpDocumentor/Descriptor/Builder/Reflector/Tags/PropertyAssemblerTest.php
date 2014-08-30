@@ -2,7 +2,6 @@
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-
 use Mockery as m;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;

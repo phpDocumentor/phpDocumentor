@@ -22,6 +22,6 @@ class IntegerDescriptorTest extends \PHPUnit_Framework_TestCase
         $fixture = new IntegerDescriptor();
 
         $this->assertSame('integer', $fixture->getName());
-        $this->assertSame('integer', (string)$fixture);
+        $this->assertSame('integer', (string) $fixture);
     }
 }

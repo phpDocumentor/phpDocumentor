@@ -36,7 +36,6 @@ class Plugin
      */
     protected $parameters = array();
 
-
     /**
      * Initialize the plugin configuration definition with the given class name.
      *
@@ -47,7 +46,6 @@ class Plugin
         $this->className = $className;
     }
 
-
     /**
      * Returns the class name for this plugin.
      *
@@ -57,7 +55,6 @@ class Plugin
     {
         return $this->className;
     }
-
 
     /**
      * Returns the parameters associated with this plugin.

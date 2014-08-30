@@ -22,19 +22,19 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Transformation $fixture */
     protected $fixture;
-    
+
     /** @var string */
     protected $query = 'queryString';
-    
+
     /** @var string */
     protected $writer = 'writerString';
-    
+
     /** @var string */
     protected $source = 'sourceString';
-    
+
     /** @var string */
     protected $artifact = 'artifactString';
-    
+
     /**
      * Initializes the fixture and dependencies for this testcase.
      */
@@ -42,7 +42,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     {
         $this->fixture = new Transformation($this->query, $this->writer, $this->source, $this->artifact);
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::__construct
      * @covers phpDocumentor\Transformer\Transformation::setQuery
@@ -57,7 +57,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeSame($this->source, 'source', $this->fixture);
         $this->assertAttributeSame($this->artifact, 'artifact', $this->fixture);
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getQuery
      */
@@ -81,7 +81,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($this->source, $this->fixture->getSource());
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getArtifact
      */
@@ -89,7 +89,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($this->artifact, $this->fixture->getArtifact());
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getParameters
      * @covers phpDocumentor\Transformer\Transformation::setParameters
@@ -97,12 +97,12 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetParameters()
     {
         $this->assertSame(array(), $this->fixture->getParameters());
-    
+
         $parameters = $this->givenAParameter();
-    
+
         $this->assertSame($parameters, $this->fixture->getParameters());
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getParameter
      */
@@ -111,7 +111,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
         $parameters = $this->givenAParameter();
         $this->assertSame($parameters["firstKey"], $this->fixture->getParameter('name'));
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getParameter
      */
@@ -119,7 +119,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(null, $this->fixture->getParameter('somethingElse'));
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
@@ -128,7 +128,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
         $parameters = $this->givenAParameter();
         $this->assertSame(array($parameters["firstKey"]), $this->fixture->getParametersWithKey('name'));
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getParametersWithKey
      */
@@ -136,7 +136,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(array(), $this->fixture->getParametersWithKey('somethingElse'));
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Transformation::getTransformer
      * @covers phpDocumentor\Transformer\Transformation::setTransformer
@@ -153,8 +153,8 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets a parameter in the fixture for tests that need to get parameters and 
-     * returns the parameter array used to set this parameter for comparison 
+     * Sets a parameter in the fixture for tests that need to get parameters and
+     * returns the parameter array used to set this parameter for comparison
      */
     private function givenAParameter()
     {
@@ -162,7 +162,7 @@ class TransformationTest extends \PHPUnit_Framework_TestCase
         $parameterMock->shouldReceive('getKey')->andReturn('name');
         $parameters = array("firstKey" => $parameterMock);
         $this->fixture->setParameters($parameters);
-        
+
         return $parameters;
     }
 }

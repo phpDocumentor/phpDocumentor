@@ -55,7 +55,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('url', $fixture->generate('test'));
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Router\Rule::__construct
      * @covers phpDocumentor\Transformer\Router\Rule::generate
@@ -71,7 +71,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
                 return 'httö://www.€xample.org/foo.html#bär';
             }
         );
-        
+
         $this->assertSame('httö://www.EURxample.org/foo.html#bär', $fixture->generate('test'));
     }
 }

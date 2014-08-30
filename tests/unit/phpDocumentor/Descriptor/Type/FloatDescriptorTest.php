@@ -22,6 +22,6 @@ class FloatDescriptorTest extends \PHPUnit_Framework_TestCase
         $fixture = new FloatDescriptor();
 
         $this->assertSame('float', $fixture->getName());
-        $this->assertSame('float', (string)$fixture);
+        $this->assertSame('float', (string) $fixture);
     }
 }

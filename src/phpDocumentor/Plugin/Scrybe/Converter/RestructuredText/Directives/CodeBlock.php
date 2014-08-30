@@ -20,7 +20,7 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Directives;
  *
  * This directive is inspired by {@link http://sphinx.pocoo.org/concepts.html#the-toc-tree Sphinx' toctree} directive.
  */
-class Codeblock extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDirective
+class CodeBlock extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDirective
 {
     /**
      * Transform directive to Docbook.
