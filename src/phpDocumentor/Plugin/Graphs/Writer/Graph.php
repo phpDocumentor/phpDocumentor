@@ -72,6 +72,7 @@ class Graph extends WriterAbstract
             $this->checkIfGraphVizIsInstalled();
         } catch (\Exception $e) {
             echo $e->getMessage();
+
             return;
         }
 
