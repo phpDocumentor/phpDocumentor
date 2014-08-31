@@ -23,9 +23,11 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
+use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Template\PathResolver;
 
@@ -54,7 +56,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 'The serializer object that is used to read the template configuration with is missing'
             );
         }
-
 
         // parameters
         $app['linker.substitutions'] = array(
@@ -178,7 +179,15 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                     $container['transformer.template.collection'],
                     $container['transformer.writer.collection']
                 );
-                $transformer->setBehaviours($container['transformer.behaviour.collection']);
+
+                /** @var Behaviour\Collection $behaviourCollection */
+                $behaviourCollection = $container['transformer.behaviour.collection'];
+                Dispatcher::getInstance()->addListener(
+                    Transformer::EVENT_PRE_TRANSFORM,
+                    function (PreTransformEvent $event) use ($behaviourCollection) {
+                        $behaviourCollection->process($event->getProject());
+                    }
+                );
 
                 return $transformer;
             }

@@ -15,10 +15,12 @@ use phpDocumentor\Command\Command;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Console\Output\Output;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Transformer\Event\PreTransformationEvent;
+use phpDocumentor\Transformer\Event\PreTransformEvent;
+use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
@@ -157,14 +159,14 @@ TEXT
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
         $progress = $this->getProgressBar($input);
-        if (!$progress) {
-            $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
+        if (! $progress) {
+            $this->connectOutputToEvents($output);
         }
 
         // initialize transformer
         $transformer = $this->getTransformer();
 
-        $target = $configurationHelper->getOption($input, 'target', 'transformer/target');
+        $target = (string) $configurationHelper->getOption($input, 'target', 'transformer/target');
         $fileSystem = new Filesystem();
         if (! $fileSystem->isAbsolutePath($target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
@@ -279,12 +281,12 @@ TEXT
 
         $this->appendReceivedTransformations($transformer, $received);
     }
-    
+
     /**
      * Create Transformation instance.
-     * 
+     *
      * @param array $transformations
-     * 
+     *
      * @return \phpDocumentor\Transformer\Transformation
      */
     protected function createTransformation(array $transformations)
@@ -296,13 +298,13 @@ TEXT
             isset($transformations['artifact']) ? $transformations['artifact'] : ''
         );
     }
-    
+
     /**
      * Append received transformations.
-     * 
+     *
      * @param Transformer $transformer
      * @param array       $received
-     * 
+     *
      * @return void
      */
     protected function appendReceivedTransformations(Transformer $transformer, $received)
@@ -340,5 +342,39 @@ TEXT
         );
 
         return $progress;
+    }
+
+    /**
+     * Connect a series of output messages to various events to display progress.
+     *
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
+    private function connectOutputToEvents(OutputInterface $output)
+    {
+        $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
+
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORM,
+            function (PreTransformEvent $event) use ($output) {
+                $transformations = $event->getSubject()->getTemplates()->getTransformations();
+                $output->writeln(sprintf("\nApplying %d transformations", count($transformations)));
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_INITIALIZATION,
+            function (WriterInitializationEvent $event) use ($output) {
+                $output->writeln('  Initialize writer "' . get_class($event->getWriter()) . '"');
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORMATION,
+            function (PreTransformationEvent $event) use ($output) {
+                $output->writeln(
+                    '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
+                );
+            }
+        );
     }
 }

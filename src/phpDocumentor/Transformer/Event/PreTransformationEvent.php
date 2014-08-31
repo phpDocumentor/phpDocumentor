@@ -21,6 +21,8 @@ class PreTransformationEvent extends EventAbstract
     /** @var \DOMDocument remembers the XML-based AST so that it can be used from the listener */
     protected $source;
 
+    protected $transformation;
+
     /**
      * Sets the Abstract Syntax Tree as DOMDocument.
      *
@@ -43,5 +45,23 @@ class PreTransformationEvent extends EventAbstract
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTransformation()
+    {
+        return $this->transformation;
+    }
+
+    /**
+     * @param mixed $transformation
+     */
+    public function setTransformation($transformation)
+    {
+        $this->transformation = $transformation;
+
+        return $this;
     }
 }

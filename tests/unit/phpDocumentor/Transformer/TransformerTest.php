@@ -95,20 +95,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Transformer::setBehaviours
-     * @covers phpDocumentor\Transformer\Transformer::getBehaviours
-     */
-    public function testProvidingBehaviours()
-    {
-        $this->assertEquals(null, $this->fixture->getBehaviours());
-
-        $behaviours = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
-        $this->fixture->setBehaviours($behaviours);
-
-        $this->assertEquals($behaviours, $this->fixture->getBehaviours());
-    }
-
-    /**
      * @covers phpDocumentor\Transformer\Transformer::getTemplates
      */
     public function testRetrieveTemplateCollection()
@@ -133,7 +119,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         $templateCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
 
         $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
-        $behaviourCollection = $this->buildEmptyBehaviorCollection($project);
 
         $myTestWritterMock = m::mock('phpDocumentor\Transformer\Writer\WriterAbstract')
             ->shouldReceive('transform')->getMock();
@@ -143,7 +128,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
 
         $fixture = new Transformer($templateCollection, $writerCollectionMock);
-        $fixture->setBehaviours($behaviourCollection);
 
         $transformation = m::mock('phpDocumentor\Transformer\Transformation')
             ->shouldReceive('execute')->with($project)
@@ -158,15 +142,6 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertNull($fixture->execute($project));
-    }
-
-    protected function buildEmptyBehaviorCollection(ProjectDescriptor $project)
-    {
-        $behaviourCollection = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
-        $behaviourCollection->shouldReceive('process')->with($project);
-        $behaviourCollection->shouldReceive('count')->andReturn(0);
-
-        return $behaviourCollection;
     }
 
     /**

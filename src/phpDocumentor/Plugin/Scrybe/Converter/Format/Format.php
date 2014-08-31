@@ -43,7 +43,7 @@ class Format
     public function __construct($name, $mime_type, $extensions)
     {
         if (!is_array($extensions)) {
-            $extensions = (array)$extensions;
+            $extensions = (array) $extensions;
         }
 
         $this->setName($name);

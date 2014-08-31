@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use Mockery as m;
-
 class RuleTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -56,5 +54,24 @@ class RuleTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame('url', $fixture->generate('test'));
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Router\Rule::__construct
+     * @covers phpDocumentor\Transformer\Router\Rule::generate
+     * @covers phpDocumentor\Transformer\Router\Rule::translateToUrlEncodedPath
+     */
+    public function testTranslateToUrlEncodedPath()
+    {
+        $fixture = new Rule(
+            function () {
+                return true;
+            },
+            function () {
+                return 'httö://www.€xample.org/foo.html#bär';
+            }
+        );
+
+        $this->assertSame('httö://www.EURxample.org/foo.html#bär', $fixture->generate('test'));
     }
 }

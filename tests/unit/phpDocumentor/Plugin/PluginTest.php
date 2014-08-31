@@ -22,7 +22,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     /** @var Plugin */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */
@@ -47,7 +47,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->fixture->getParameters());
 
         $expectedParameters = array(m::mock('phpDocumentor\Plugin\Plugin'));
- 
+
         $property = new \ReflectionProperty('phpDocumentor\Plugin\Plugin', 'parameters');
         $property->setAccessible(true);
         $property->setValue($this->fixture, $expectedParameters);

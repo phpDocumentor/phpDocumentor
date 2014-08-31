@@ -146,7 +146,6 @@ DESC
     return $packagexml;
 }
 
-
 echo 'phpDocumentor PEAR Packager v1.0'.PHP_EOL;
 
 if ($argc < 4) {

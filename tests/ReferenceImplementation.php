@@ -100,7 +100,7 @@ namespace My\Space {
          *
          * ```
          * <?php
-         * echo (string)$class->publicMethod();
+         * echo (string) $class->publicMethod();
          * if (true) {
          *     echo 'indented string';
          * }

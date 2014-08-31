@@ -24,8 +24,6 @@ use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Configuration;
 use phpDocumentor\Console\Input\ArgvInput;
-use phpDocumentor\Transformer\Writer\Collection;
-use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -49,7 +47,7 @@ class Application extends Cilex
     public function __construct($autoloader = null, array $values = array())
     {
         $this->defineIniSettings();
-        
+
         self::$VERSION = trim(file_get_contents(__DIR__ . '/../../VERSION'));
 
         parent::__construct('phpDocumentor', self::$VERSION, $values);
@@ -93,7 +91,7 @@ class Application extends Cilex
         /** @var Logger $monolog */
         $monolog = $logger;
 
-        switch($level) {
+        switch ($level) {
             case 'emergency':
             case 'emerg':
                 $level = Logger::EMERGENCY;

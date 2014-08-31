@@ -11,11 +11,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Interfaces\ClassInterface;
-use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
-use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
-use phpDocumentor\Descriptor\Interfaces\TraitInterface;
-
 /**
  * Represents a file in the project.
  */
@@ -322,7 +317,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
             if (!$element) {
                 continue;
             }
-            
+
             $errors = $errors->merge($element->getErrors());
         }
 
@@ -337,7 +332,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
                 }
                 $errors = $errors->merge($item->getErrors());
             }
-            
+
             if (method_exists($element, 'getConstants')) {
                 foreach ($element->getConstants() as $item) {
                     if (!$item) {
@@ -346,7 +341,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
                     $errors = $errors->merge($item->getErrors());
                 }
             }
-            
+
             if (method_exists($element, 'getProperties')) {
                 foreach ($element->getProperties() as $item) {
                     if (!$item) {

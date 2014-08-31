@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Model representing a plugin parameter 
+ * Model representing a plugin parameter
  *
  * @Serializer\XmlRoot("parameter")
  */

@@ -42,7 +42,6 @@ use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\PropertyTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\ReturnTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\UsesTag;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\VarTag;
-use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Translator\Translator;

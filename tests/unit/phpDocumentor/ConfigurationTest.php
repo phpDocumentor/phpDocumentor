@@ -11,7 +11,6 @@
 
 namespace phpDocumentor;
 
-use Mockery as m;
 use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Plugin;
 
@@ -19,7 +18,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Configuration */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */

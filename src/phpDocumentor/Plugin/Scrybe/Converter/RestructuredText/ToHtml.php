@@ -13,7 +13,6 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText;
 
 use phpDocumentor\Plugin\Scrybe\Converter\ToHtmlInterface;
 use phpDocumentor\Fileset\File;
-use phpDocumentor\Plugin\Scrybe\Converter\Definition;
 use phpDocumentor\Plugin\Scrybe\Converter\BaseConverter;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
 

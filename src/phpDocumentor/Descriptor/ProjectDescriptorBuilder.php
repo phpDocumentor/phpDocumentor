@@ -84,7 +84,7 @@ class ProjectDescriptorBuilder
      */
     public function isVisibilityAllowed($visibility)
     {
-        switch($visibility) {
+        switch ($visibility) {
             case 'public':
                 $visibility = Settings::VISIBILITY_PUBLIC;
                 break;

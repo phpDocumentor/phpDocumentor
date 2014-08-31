@@ -17,7 +17,7 @@ class TransformationsTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Transformations */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */
