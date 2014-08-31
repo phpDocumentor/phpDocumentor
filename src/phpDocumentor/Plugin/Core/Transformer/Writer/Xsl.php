@@ -355,6 +355,7 @@ class Xsl extends WriterAbstract implements Routable
 
         $rule = new ForFileProxy($rule);
         $url = $rule->generate($node);
+
         return $url;
     }
 }

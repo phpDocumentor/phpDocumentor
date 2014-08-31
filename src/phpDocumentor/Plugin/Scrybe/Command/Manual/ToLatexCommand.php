@@ -80,6 +80,7 @@ class ToLatexCommand extends BaseConvertCommand
         /** @var ToLatexInterface $converter  */
         $converter = parent::getConverter($input);
         $this->configureConverterFromInputOptions($converter, $input);
+
         return $converter;
     }
 

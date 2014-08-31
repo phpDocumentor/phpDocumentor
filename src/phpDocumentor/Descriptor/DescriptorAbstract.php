@@ -187,6 +187,7 @@ abstract class DescriptorAbstract implements Filterable
         $parentElement = $this->getInheritedElement();
         if ($parentElement instanceof DescriptorAbstract) {
             $parentDescription = $parentElement->getDescription();
+
             return $this->description
                 ? str_ireplace('{@inheritdoc}', $parentDescription, $this->description)
                 : $parentDescription;

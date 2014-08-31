@@ -13,7 +13,6 @@ namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
@@ -211,6 +210,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                             if ($direction === 'asc' && $aElem > $bElem || $direction === 'desc' && $aElem < $bElem) {
                                 return 1;
                             }
+
                             return -1;
                         }
                     );

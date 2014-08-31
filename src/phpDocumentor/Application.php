@@ -142,6 +142,7 @@ class Application extends Cilex
 
         if ($level === 'quiet') {
             $monolog->pushHandler(new NullHandler());
+
             return;
         }
 
