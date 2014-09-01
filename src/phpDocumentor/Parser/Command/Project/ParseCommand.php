@@ -143,9 +143,10 @@ class ParseCommand extends Command
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
         $target = $configurationHelper->getOption($input, 'target', 'parser/target');
-        if( strpos( $target, '/tmp/' ) === 0 )
+        if (strpos($target, '/tmp/') === 0) {
             $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
-
+        }
+        
         $fileSystem = new Filesystem();
         if (! $fileSystem->isAbsolutePath($target)) {
             $target = getcwd().DIRECTORY_SEPARATOR.$target;
