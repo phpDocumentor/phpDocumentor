@@ -98,4 +98,33 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
             , $bootstrap->findVendorPath($baseDir)
         );
     }
+
+    /**
+     * Tests if exception is thrown when no autoloader is present
+     *
+     * @expectedException \RuntimeException
+     * @covers phpDocumentor\Bootstrap::createAutoloader
+     */
+    public function testCreateAutoloaderNoAutoloader()
+    {
+        vfsStream::setup('root', null, $this->standaloneStructure);
+        $bootstrap = Bootstrap::createInstance();
+        $bootstrap->createAutoloader(vfsStream::url('root/dummy/vendor'));
+    }
+
+    /**
+     * checks autoload.php is required and returned by createAutoloader
+     *
+     * @covers phpDocumentor\Bootstrap::createAutoloader
+     */
+    public function testCreateAutoloader()
+    {
+        $root = vfsStream::setup('root', null, $this->standaloneStructure);
+        vfsStream::newFile('autoload.php')->withContent('<?php return true;')
+            ->at($root->getChild('dummy')->getChild('vendor'));
+
+        $bootstrap = Bootstrap::createInstance();
+        $this->assertTrue($bootstrap->createAutoloader(vfsStream::url('root/dummy/vendor')));
+    }
+
 }
