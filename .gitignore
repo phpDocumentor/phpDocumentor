@@ -11,6 +11,7 @@ vendor/*
 composer.phar
 data/templates/*
 .vagrant
+composer.lock
 composer.phar
 /nbproject/private/
 box.phar
