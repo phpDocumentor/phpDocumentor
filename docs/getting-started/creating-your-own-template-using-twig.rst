@@ -4,25 +4,24 @@ Creating your own template using Twig
 Overview
 --------
 
-With this tutorial I want to provide an short tutorial on how to build templates in phpDocumentor using the Twig
-templating engine.
+In this tutorial we will guide you on how to build templates in phpDocumentor using the Twig templating engine.
 
 phpDocumentor's templating system is powerful and flexible enough to produce any kind of output or even multiple types
-of output combined into one template. During this tutorial we will guide you how to create a simple template that will
+of output combined into one template. During this tutorial we will guide you on how to create a simple template that will
 produce HTML files that you can serve from your website.
 
-While building a template there are three steps that are important:
+While building a template there are three important steps:
 
 1. Creating a template definition file.
 2. Defining all :term:`transformations` that your template must do.
-3. Writing your twig templates and providing assets.
+3. Writing your Twig templates and providing assets.
 
 Each of these steps is covered in the following subchapters, so if you want to make your own template you can just read
 on and follow along with the text.
 
 .. important::
 
-   In this tutorial I assume that you have worked with Twig before and know how it works. If you are unclear on how
+   This tutorial assumes that you have worked with Twig before and know how it works. If you are unclear on how
    some things work, please consult the Twig documentation.
 
 Create your template definition
@@ -54,19 +53,19 @@ Let's look at a very simple example:
 
 The meta-data of this template is rather straight-forward but we will shortly describe them here for context:
 
-1. author, defines the name of the author of this template. This field may be repeated if there are several authors.
-2. email, the e-mail address of the maintainer for this template (only one is expected).
-3. description, a short piece of text that will inform the person who wants to use this template what to expect.
-4. version, a version number according to Semantic Versioning that will describe at what the current version of the
+1. author - defines the name of the author of this template. This field may be repeated if there are several authors.
+2. email - email address of the maintainer for this template (only one is expected).
+3. description - a short piece of text that will inform the person who wants to use this template what to expect.
+4. version - a version number according to Semantic Versioning that will describe what the current version of the
    template is.
 
-The transformations collection is far more interesting and worth going into more detail. The next chapter will go into
+The transformations collection is far more interesting and the next chapter will go into
 much more detail on how transformations work.
 
 Defining transformations
 ------------------------
 
-In the previous chapter I had shown an example of what a simple template could look like. In that example you could see
+The previous chapter shows an example of what a simple template could look like. There you could see
 a ``transformations`` element with two transformations. Let's continue from there and see what a transformation is and
 how to create one.
 
@@ -106,23 +105,23 @@ the behaviour of said transformations.
 
    **Artifact folder**
 
-   A with the source folder, the artifact folder may differ per writer. But a common pattern is that this location is
+   As with the source folder, the artifact folder may differ per writer. But a common pattern is that this location is
    relative to the target location that you provided phpDocumentor using the ``-t`` or ``--target`` option.
 
-If we look closely at the first transformation than we can distinguish four properties:
+If we look closely at the first transformation then we can distinguish four properties:
 
-1. Writer, which is a reference to a specialized class that will actually perform the transformation.
-2. Query, an attribute which allows you to guide the transformation or limit it to a subset of the provided data.
-3. Source, which is a reference to the input. This can be a template file, origin location (in case of a copying
+1. Writer - reference to a specialized class that will actually perform the transformation.
+2. Query - an attribute which allows you to guide the transformation or limit it to a subset of the provided data.
+3. Source - reference to the input. This can be a template file, origin location (in case of a copying
    action) or any other data location.
-4. Artifact, the destination folder, file or object where the output for this transformation is written to.
+4. Artifact - the destination folder, file or object where the output for this transformation is written to.
 
 So. What does this transformation do?
 
     It uses the "FileIO" writer, which is used for disk operations, to "copy" the contents of the
     "templates/responsive/css" source folder to the "css" destination folder.
 
-How the query, source and artifact attribute exactly function differs per Writer but this is the general use for them.
+How the query, source and artifact attribute functions exactly differs per Writer, but this is the general use for them.
 
 As another excercise, let's look at the second transformation in our example.
 
@@ -139,10 +138,10 @@ For example: the Twig writer can use the query attribute to only sent a bit of t
 Writing template files
 ----------------------
 
-If I have done my job well then by now you know how to create a template, which meta-data to add to the template and
+Hopefully by now you know how to create a template, which meta-data to add to the template and
 how to define transformation steps.
 
-This is just one side of the coin. Because now we have to create the actual Twig template files which we can use to
+This is just one side of the coin. Now we have to create the actual Twig template files which we can use to
 generate HTML documents. Please note that this is a tutorial, we won't cover every bit in detail. If you want to know
 in-depth what options are supported, please read the guide and browse through existing templates.
 
