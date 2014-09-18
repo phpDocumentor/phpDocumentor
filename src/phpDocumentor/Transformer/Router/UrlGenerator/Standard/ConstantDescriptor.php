@@ -36,6 +36,10 @@ class ConstantDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
+        if (!($node instanceof Descriptor\ConstantDescriptor)) {
+            return false;
+        }
+
         $prefix = ($node->getParent() instanceof Descriptor\FileDescriptor || ! $node->getParent())
             ? $this->getUrlPathPrefixForGlobalConstants($node)
             : $this->getUrlPathPrefixForClassConstants($node);
