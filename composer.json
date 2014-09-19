@@ -52,11 +52,10 @@
         "phpdocumentor/template-checkstyle":      "~1.2",
         "phpdocumentor/template-xml":             "~1.0"
     },
-    "minimum-stability": "stable",
     "require-dev": {
         "behat/behat":        "~2.4",
-        "phpunit/phpunit":    "~3.7",
-        "mockery/mockery":    "dev-master",
+        "phpunit/phpunit":    "~4.0",
+        "mockery/mockery":    "~0.9@dev",
         "mikey179/vfsStream": "~1.2",
         "squizlabs/php_codesniffer": "~1.4",
         "symfony/expression-language": "~2.4"
