@@ -175,6 +175,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         ) {
             /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
             $parentClass = $associatedClass->getParent();
+
             return $parentClass->getProperties()->get($this->getName());
         }
 

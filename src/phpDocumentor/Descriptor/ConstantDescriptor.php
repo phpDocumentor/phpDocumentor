@@ -147,6 +147,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         ) {
             /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
             $parentClass = $associatedClass->getParent();
+
             return $parentClass->getConstants()->get($this->getName());
         }
 

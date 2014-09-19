@@ -22,7 +22,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
-use phpDocumentor\Configuration;
 use phpDocumentor\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
@@ -143,6 +142,7 @@ class Application extends Cilex
 
         if ($level === 'quiet') {
             $monolog->pushHandler(new NullHandler());
+
             return;
         }
 

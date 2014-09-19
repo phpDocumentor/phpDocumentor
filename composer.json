@@ -28,7 +28,6 @@
         "symfony/stopwatch":        "~2.3",
         "symfony/config":           "~2.3",
         "jms/serializer":           "~0.12",
-        "knplabs/knp-menu":         "~1.1",
 
         "zendframework/zend-stdlib":         "2.1.*",
         "zendframework/zend-servicemanager": "2.1.*",

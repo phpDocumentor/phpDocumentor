@@ -28,6 +28,10 @@ class PropertyDescriptor implements UrlGeneratorInterface
      */
     public function __invoke($node)
     {
+        if (!($node instanceof Descriptor\PropertyDescriptor)) {
+            return false;
+        }
+
         $converter = new QualifiedNameToUrlConverter();
         $className = $node->getParent()->getFullyQualifiedStructuralElementName();
 
