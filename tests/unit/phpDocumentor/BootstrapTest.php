@@ -72,7 +72,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Bootstrap::findVendorPath();
+     * @covers phpDocumentor\Bootstrap::findVendorPath
      */
     public function testFindVendorPathStandAloneInstall()
     {
@@ -84,7 +84,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Bootstrap::findVendorPath();
+     * @covers phpDocumentor\Bootstrap::findVendorPath
      */
     public function testFindVendorPathComposerInstalled()
     {
