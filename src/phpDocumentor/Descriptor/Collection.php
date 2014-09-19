@@ -16,6 +16,9 @@ namespace phpDocumentor\Descriptor;
  *
  * The goal for this class is to allow Descriptors to be easily retrieved and set so that interaction in
  * templates becomes easier.
+ *
+ * @property mixed elements
+ * @property mixed packages
  */
 class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 {
