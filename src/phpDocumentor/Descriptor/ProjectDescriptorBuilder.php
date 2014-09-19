@@ -17,6 +17,8 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Descriptor\Validator\Rule;
+use phpDocumentor\Descriptor\Validator\Ruleset;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator;
@@ -41,11 +43,19 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
-    {
+    /** @var Ruleset */
+    private $ruleset;
+
+    public function __construct(
+        AssemblerFactory $assemblerFactory,
+        Filter $filterManager,
+        Validator $validator,
+        Ruleset $ruleset
+    ) {
         $this->assemblerFactory = $assemblerFactory;
         $this->validator        = $validator;
         $this->filter           = $filterManager;
+        $this->ruleset          = $ruleset;
     }
 
     public function createProjectDescriptor()
@@ -185,14 +195,17 @@ class ProjectDescriptorBuilder
 
         /** @var ConstraintViolation $violation */
         foreach ($violations as $violation) {
-            $errors->add(
-                new Error(
-                    LogLevel::ERROR, // TODO: Make configurable
-                    $violation->getMessageTemplate(),
-                    $descriptor->getLine(),
-                    $violation->getMessageParameters() + array($descriptor->getFullyQualifiedStructuralElementName())
-                )
-            );
+            $message  = $violation->getMessageTemplate();
+            $severity = LogLevel::ERROR;
+            $rule     = $this->ruleset->getRule($message);
+            if ($rule) {
+                $message  = $rule->getMessage();
+                $severity = $rule->getSeverityAsLogLevel();
+            }
+
+            $parameters = $violation->getMessageParameters()
+                + array($descriptor->getFullyQualifiedStructuralElementName());
+            $errors->add(new Error($severity, $message, $descriptor->getLine(), $parameters));
         }
 
         return $errors;
