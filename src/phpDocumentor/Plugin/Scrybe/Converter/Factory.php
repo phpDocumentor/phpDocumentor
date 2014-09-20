@@ -85,6 +85,7 @@ class Factory
                 /** @var ConverterInterface $converter */
                 $converter = new $class($definition, $assets, $toc, $glossary);
                 $converter->setLogger($this->logger);
+
                 return $converter;
             }
         }

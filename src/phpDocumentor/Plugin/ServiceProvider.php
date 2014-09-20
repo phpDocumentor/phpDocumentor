@@ -17,6 +17,7 @@ class ServiceProvider implements ServiceProviderInterface
         if (! $plugins) {
             $app->register(new Core\ServiceProvider());
             $app->register(new Scrybe\ServiceProvider());
+
             return;
         }
 
