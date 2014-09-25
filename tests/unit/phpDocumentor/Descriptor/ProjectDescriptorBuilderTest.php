@@ -13,12 +13,19 @@ namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Plugin\Standards\Rule;
+use Psr\Log\LogLevel;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
  */
 class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var m\MockInterface */
+    private $validatorMock;
+
     /** @var \phpDocumentor\Descriptor\ProjectDescriptorBuilder $fixture */
     protected $fixture;
 
@@ -36,9 +43,9 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
         $filterMock = m::mock('phpDocumentor\Descriptor\Filter\Filter');
-        $validatorMock = m::mock('Symfony\Component\Validator\Validator');
+        $this->validatorMock = m::mock('Symfony\Component\Validator\Validator');
 
-        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock, $validatorMock);
+        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock, $this->validatorMock);
     }
 
     /**
@@ -103,6 +110,18 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::setRuleset
+     */
+    public function testSettingARuleset()
+    {
+        $rulesetMock = m::mock('phpDocumentor\Plugin\Standards\Ruleset');
+
+        $this->fixture->setRuleset($rulesetMock);
+
+        $this->assertAttributeSame($rulesetMock, 'ruleset', $this->fixture);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::isVisibilityAllowed
      */
     public function testDeterminesWhetherASpecificVisibilityIsAllowedToBeIncluded()
@@ -117,6 +136,77 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::validate
+     */
+    public function testValidatingADescriptorWithoutErrors()
+    {
+        $descriptorMock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $violations = array();
+        $this->validatorMock->shouldReceive('validate')->once()->with($descriptorMock)->andReturn($violations);
+
+        $errors = $this->fixture->validate($descriptorMock);
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $errors);
+        $this->assertCount(0, $errors->getAll());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::validate
+     */
+    public function testValidatingADescriptorWithErrorsButWithoutRuleset()
+    {
+        $fqsen = 'FQSEN';
+        $line       = 1;
+        $parameters = array('parameter');
+        $message    = 'template';
+
+        $descriptorMock = $this->givenDescriptorWithFqsenAndLinenumber($fqsen, $line);
+        $this->thenDescriptorShouldBeValidatedAndAViolationIsEncountered(
+            $descriptorMock,
+            $this->givenAViolationWithMessageAndParameters($message, $parameters)
+        );
+
+        $errors = $this->fixture->validate($descriptorMock);
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $errors);
+        $this->assertCount(1, $errors->getAll());
+
+        /** @var Error $error */
+        $error = $errors[0];
+        $this->assertSame($message, $error->getCode());
+        $this->assertSame($line, $error->getLine());
+        $this->assertSame(LogLevel::ERROR, $error->getSeverity());
+        $this->assertSame($parameters, $error->getContext());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ProjectDescriptorBuilder::validate
+     */
+    public function testValidatingADescriptorWithErrorsWithRuleset()
+    {
+        $message     = 'template';
+        $ruleMessage = 'message';
+
+        $ruleMock = $this->givenARuleWithMessageAndSeverity($ruleMessage, Rule::SEVERITY_ALERT);
+        $descriptorMock = $this->givenDescriptorWithFqsenAndLinenumber('FQSEN', 1);
+        $this->thenDescriptorShouldBeValidatedAndAViolationIsEncountered(
+            $descriptorMock,
+            $this->givenAViolationWithMessageAndParameters($message, array('parameter'))
+        );
+        $this->fixture->setRuleset($this->givenARulesetWithRuleAndRuleName($ruleMock, $message));
+
+        $errors = $this->fixture->validate($descriptorMock);
+
+        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $errors);
+        $this->assertCount(1, $errors->getAll());
+
+        /** @var Error $error */
+        $error = $errors[0];
+        $this->assertSame($ruleMessage, $error->getCode());
+        $this->assertSame(LogLevel::ALERT, $error->getSeverity());
+    }
+
+    /**
      * Creates a new FileReflector mock that can be used as input for the builder.
      *
      * @return m\MockInterface|\phpDocumentor\Reflection\FileReflector
@@ -126,6 +216,11 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
         return m::mock('phpDocumentor\Reflection\FileReflector');
     }
 
+    /**
+     * Creates a mocked FileDescriptor and register it so that it is returned by a mocked Assembler.
+     *
+     * @return void
+     */
     protected function createFileDescriptorCreationMock()
     {
         $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
@@ -154,5 +249,60 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
     protected function createAssemblerFactoryMock()
     {
         return m::mock('phpDocumentor\Descriptor\Builder\AssemblerFactory');
+    }
+
+    /**
+     * @param $fqsen
+     * @param $line
+     * @return m\MockInterface
+     */
+    private function givenDescriptorWithFqsenAndLinenumber($fqsen, $line)
+    {
+        $descriptorMock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
+        $descriptorMock->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn($fqsen);
+        $descriptorMock->shouldReceive('getLine')->andReturn($line);
+        return $descriptorMock;
+    }
+
+    /**
+     * @param $message
+     * @param $parameters
+     * @return ConstraintViolation
+     */
+    private function givenAViolationWithMessageAndParameters($message, $parameters)
+    {
+        $violation = new ConstraintViolation('', $message, $parameters, null, '', '');
+        return $violation;
+    }
+
+    /**
+     * @param $descriptorMock
+     * @param $violation
+     */
+    private function thenDescriptorShouldBeValidatedAndAViolationIsEncountered($descriptorMock, $violation)
+    {
+        $this->validatorMock->shouldReceive('validate')->once()->with($descriptorMock)->andReturn(array($violation));
+    }
+
+    /**
+     * @param $ruleMessage
+     * @param $ruleSeverity
+     * @return m\MockInterface
+     */
+    private function givenARuleWithMessageAndSeverity($ruleMessage, $ruleSeverity)
+    {
+        return new Rule('ref', $ruleMessage, $ruleSeverity);
+    }
+
+    /**
+     * @param $ruleMock
+     * @param $message
+     * @return m\MockInterface
+     */
+    private function givenARulesetWithRuleAndRuleName($ruleMock, $message)
+    {
+        $rulesetMock = m::mock('phpDocumentor\Plugin\Standards\Ruleset');
+        $rulesetMock->shouldReceive('getRule')->with($message)->andReturn($ruleMock);
+        return $rulesetMock;
     }
 }

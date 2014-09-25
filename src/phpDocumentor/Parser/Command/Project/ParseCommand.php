@@ -21,6 +21,7 @@ use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use phpDocumentor\Parser\Parser;
+use phpDocumentor\Plugin\Standards\RulesetLoader;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -50,12 +51,16 @@ class ParseCommand extends Command
     /** @var Translator */
     protected $translator;
 
-    public function __construct($builder, $parser, $translator, $files)
+    /** @var RulesetLoader|null */
+    private $rulesetLoader;
+
+    public function __construct($builder, $parser, $translator, $files, RulesetLoader $rulesetLoader = null)
     {
-        $this->builder    = $builder;
-        $this->parser     = $parser;
-        $this->translator = $translator;
-        $this->files      = $files;
+        $this->builder       = $builder;
+        $this->parser        = $parser;
+        $this->translator    = $translator;
+        $this->files         = $files;
+        $this->rulesetLoader = $rulesetLoader;
 
         parent::__construct('project:parse');
     }
@@ -160,6 +165,7 @@ class ParseCommand extends Command
         $this->getCache()->getOptions()->setCacheDir($target);
 
         $builder = $this->getBuilder();
+        $this->registerDocumentationStandard($builder);
         $builder->createProjectDescriptor();
         $projectDescriptor = $builder->getProjectDescriptor();
 
@@ -375,5 +381,17 @@ class ParseCommand extends Command
     // @codingStandardsIgnoreEnd
     {
         return vsprintf($this->translator->translate($text), $parameters);
+    }
+
+    /**
+     * @param $builder
+     */
+    private function registerDocumentationStandard($builder)
+    {
+// load the documentation standard if provided
+        if ($this->rulesetLoader) {
+            $ruleset = $this->rulesetLoader->load('phpDocumentor');
+            $builder->setRuleset($ruleset);
+        }
     }
 }

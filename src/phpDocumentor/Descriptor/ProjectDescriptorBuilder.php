@@ -17,8 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Descriptor\Validator\Rule;
-use phpDocumentor\Descriptor\Validator\Ruleset;
+use phpDocumentor\Plugin\Standards\Ruleset;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator;
@@ -46,23 +45,40 @@ class ProjectDescriptorBuilder
     /** @var Ruleset */
     private $ruleset;
 
+    /**
+     * Initializes this object and registers its dependencies.
+     *
+     * @param AssemblerFactory $assemblerFactory
+     * @param Filter           $filterManager
+     * @param Validator        $validator
+     */
     public function __construct(
         AssemblerFactory $assemblerFactory,
         Filter $filterManager,
-        Validator $validator,
-        Ruleset $ruleset
+        Validator $validator
     ) {
         $this->assemblerFactory = $assemblerFactory;
         $this->validator        = $validator;
         $this->filter           = $filterManager;
-        $this->ruleset          = $ruleset;
     }
 
+    /**
+     * Creates a new ProjectDescriptor with the default project name.
+     *
+     * @return void
+     */
     public function createProjectDescriptor()
     {
-        $this->project = new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
+        $this->setProjectDescriptor(new ProjectDescriptor(self::DEFAULT_PROJECT_NAME));
     }
 
+    /**
+     * Registers a project descriptor to build child Descriptors on.
+     *
+     * @param ProjectDescriptor $projectDescriptor
+     *
+     * @return void
+     */
     public function setProjectDescriptor(ProjectDescriptor $projectDescriptor)
     {
         $this->project = $projectDescriptor;
@@ -76,6 +92,20 @@ class ProjectDescriptorBuilder
     public function getProjectDescriptor()
     {
         return $this->project;
+    }
+
+    /**
+     * Registers a ruleset containing the validation rules that are to be applied.
+     *
+     * @param Ruleset $ruleset
+     *
+     * @see Ruleset for more information on what Rulesets are and what they do.
+     *
+     * @return void
+     */
+    public function setRuleset(Ruleset $ruleset)
+    {
+        $this->ruleset = $ruleset;
     }
 
     /**
@@ -112,9 +142,17 @@ class ProjectDescriptorBuilder
         return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
     }
 
-    public function buildFileUsingSourceData($data)
+    /**
+     * Accepts a value representing a File, tries to create a series of Descriptors matching the contents of that File
+     * and registers the assembled File Descriptor on the Project Descriptor.
+     *
+     * @param mixed $fileData Can be of any type as long as a FileDescriptor Assembler recognizes it.
+     *
+     * @return void
+     */
+    public function buildFileUsingSourceData($fileData)
     {
-        $descriptor = $this->buildDescriptor($data);
+        $descriptor = $this->buildDescriptor($fileData);
         if (!$descriptor) {
             return;
         }
@@ -197,10 +235,13 @@ class ProjectDescriptorBuilder
         foreach ($violations as $violation) {
             $message  = $violation->getMessageTemplate();
             $severity = LogLevel::ERROR;
-            $rule     = $this->ruleset->getRule($message);
-            if ($rule) {
-                $message  = $rule->getMessage();
-                $severity = $rule->getSeverityAsLogLevel();
+
+            if ($this->ruleset !== null) {
+                $rule = $this->ruleset->getRule($message);
+                if ($rule) {
+                    $message  = $rule->getMessage();
+                    $severity = $rule->getSeverityAsLogLevel();
+                }
             }
 
             $parameters = $violation->getMessageParameters()
