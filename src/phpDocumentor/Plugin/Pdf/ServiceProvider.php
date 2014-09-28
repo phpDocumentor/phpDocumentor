@@ -14,6 +14,7 @@ namespace phpDocumentor\Plugin\Pdf;
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Transformer\Writer\Collection;
+use phpDocumentor\Plugin\Pdf\Writer\PdfMerger;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -32,5 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $writerCollection['Pdf'] = new Writer\Pdf();
         $writerCollection['Pdf']->setTranslator($translator);
+
+        $writerCollection['PdfMerger'] = new Writer\PdfMerger();
     }
 }

@@ -57,6 +57,7 @@ class Application extends Cilex
         };
 
         $this['autoloader'] = $autoloader;
+        spl_autoload_register(array($this, 'zendPdfLoader'));
 
         $this->register(new JmsSerializerServiceProvider());
         $this->register(new Configuration\ServiceProvider());
@@ -290,5 +291,27 @@ class Application extends Cilex
     protected function addCommandsForProjectNamespace()
     {
         $this->command(new Command\Project\RunCommand());
+    }
+
+    /**
+     * Callback function needed to have ZendPdf loaded as stand alone.
+     *
+     * More informations on stackoverflow {@link http://stackoverflow.com/a/14721150}
+     *
+     * @param string $stack
+     *
+     * @return void
+     */
+    public function zendPdfLoader($stack)
+    {
+        if (strpos($stack, 'Zend\\Memory') === 0) {
+            require_once __DIR__ . '/../../vendor/zendframework/zend-memory/' .
+                str_replace( '\\', DIRECTORY_SEPARATOR, $stack ) .
+                '.php';
+        } else {
+            require_once __DIR__ . '/../../vendor/zendframework/zendpdf/library/' .
+                str_replace( '\\', DIRECTORY_SEPARATOR, $stack ) .
+                '.php';
+        }
     }
 }
