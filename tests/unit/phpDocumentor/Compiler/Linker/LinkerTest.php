@@ -421,4 +421,21 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         return $seeDescriptor;
     }
+
+    /**
+     * @covers phpDocumentor\Compiler\Linker\Linker::findAlias
+     * @covers phpDocumentor\Compiler\Linker\Linker::isContextMarkerInFqsen
+     * @covers phpDocumentor\Compiler\Linker\Linker::getTypeWithClassAsContext
+     */
+    public function testFindAliasUnDocumented()
+    {
+        $linker = new Linker(array());
+        $linker->setObjectAliasesList(
+            array(
+                'My\Class' => $this->givenAClassWithNamespaceAndClassName('My', 'Class')
+            )
+        );
+
+        $this->assertSame('My\element', $linker->findAlias('@context::element', $this->givenAClassWithNamespaceAndClassName('My', 'Class')));
+    }
 }
