@@ -14,12 +14,18 @@ namespace phpDocumentor\Configuration;
 use JMS\Serializer\Serializer;
 use phpDocumentor\Console\Input\ArgvInput;
 
+/**
+ * Loads the template and user-defined configuration file from disk and creates a Configuration object from it.
+ *
+ * This class will merge the template file and the user-defined configuration file together and serialize it into a
+ * configuration object (defaults to `phpDocumentor\Configuration`).
+ */
 class Loader
 {
-    /** @var \JMS\Serializer\Serializer */
+    /** @var Serializer Object used to serialize configuration files to objects. */
     private $serializer;
 
-    /** @var Merger */
+    /** @var Merger Object that merges variables, including objects. */
     private $merger;
 
     /**
@@ -45,27 +51,73 @@ class Loader
      */
     public function load($templatePath, $userConfigurationPath, $class = 'phpDocumentor\Configuration')
     {
-        $input = new ArgvInput();
-        $userConfigFilePath = $input->getParameterOption('--config');
-        if (!$userConfigFilePath) {
-            $userConfigFilePath = $input->getParameterOption('-c');
-        }
+        $userConfigFilePath = $this->fetchUserConfigFileFromCommandLineOptions();
 
-        if ($userConfigFilePath && $userConfigFilePath != 'none' && is_readable($userConfigFilePath)) {
+        if ($this->isValidFile($userConfigFilePath)) {
             chdir(dirname($userConfigFilePath));
         } else {
             $userConfigFilePath = null;
         }
 
-        $config = $this->serializer->deserialize(file_get_contents($templatePath), $class, 'xml');
+        return $this->createConfigurationObject($templatePath, $userConfigurationPath, $userConfigFilePath, $class);
+    }
 
-        if ($userConfigFilePath !== null) {
-            $userConfigFilePath = $userConfigFilePath ?: $userConfigurationPath;
-            $userConfigFile = $this->serializer->deserialize(file_get_contents($userConfigFilePath), $class, 'xml');
+    /**
+     * Reads the `--config`, or `-c`, command line option and returns a path to the configuration file from those
+     * options or false if no existing path was given.
+     *
+     * @return bool|string
+     */
+    private function fetchUserConfigFileFromCommandLineOptions()
+    {
+        $input = new ArgvInput();
+        $userConfigFilePath = $input->getParameterOption('--config');
+
+        if (!$userConfigFilePath) {
+            $userConfigFilePath = $input->getParameterOption('-c');
+        }
+
+        if ($userConfigFilePath !== false) {
+            $userConfigFilePath = realpath($userConfigFilePath);
+        }
+
+        return $userConfigFilePath;
+    }
+
+    /**
+     * Verifies if the given path is valid and readable.
+     *
+     * @param bool|string $path
+     *
+     * @return bool
+     */
+    private function isValidFile($path)
+    {
+        return $path && $path != 'none' && is_readable($path);
+    }
+
+    /**
+     * Combines the given configuration files and serializes a new Configuration object from them.
+     *
+     * @param string           $templatePath          Path to the template configuration file.
+     * @param string           $defaultUserConfigPath Path to the phpdoc.xml or phpdoc,dist.xml in the current working
+     *     directory.
+     * @param null|bool|string $customUserConfigPath  Path to the user-defined config file given using the command-line.
+     * @param string           $class                 Base Configuration class name to construct and populate.
+     *
+     * @return null|object
+     */
+    private function createConfigurationObject($templatePath, $defaultUserConfigPath, $customUserConfigPath, $class)
+    {
+        $config = $this->serializer->deserialize(file_get_contents($templatePath), $class, 'xml');
+        $customUserConfigPath = $customUserConfigPath ? : $defaultUserConfigPath;
+
+        if ($customUserConfigPath !== null && is_readable($customUserConfigPath)) {
+            $userConfigFile = $this->serializer->deserialize(file_get_contents($customUserConfigPath), $class, 'xml');
 
             $config = $this->merger->run($config, $userConfigFile);
         }
 
         return $config;
     }
-} 
+}

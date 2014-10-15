@@ -65,7 +65,7 @@ class Configuration
      */
     public function setSource($source)
     {
-       $this->source = $source;
+        $this->source = $source;
     }
 
     /**

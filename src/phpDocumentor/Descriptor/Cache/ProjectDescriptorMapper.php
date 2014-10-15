@@ -17,6 +17,7 @@ use Zend\Cache\Storage\OptimizableInterface;
 use Zend\Cache\Storage\StorageInterface;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Fileset\Collection;
 
 /**
@@ -63,7 +64,12 @@ class ProjectDescriptorMapper
         $iteratorInterface = $this->getCache()->getIterator();
 
         // load the settings object
-        $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
+        try {
+            $settings = $this->getCache()->getItem(self::KEY_SETTINGS);
+        } catch (\Exception $e) {
+            $settings = $this->igBinaryCompatibleCacheClear(self::KEY_SETTINGS, $e);
+        }
+
         if ($settings) {
             $projectDescriptor->setSettings($settings);
         }
@@ -71,11 +77,35 @@ class ProjectDescriptorMapper
         // FIXME: Workaround for: https://github.com/zendframework/zf2/pull/4154
         if ($iteratorInterface->valid()) {
             foreach ($this->getCache() as $key) {
-                $item = $this->getCache()->getItem($key);
+                try {
+                    $item = $this->getCache()->getItem($key);
+                } catch (\Exception $e) {
+                    $this->igBinaryCompatibleCacheClear($key, $e);
+                }
+
                 if ($item instanceof FileDescriptor) {
                     $projectDescriptor->getFiles()->set($item->getPath(), $item);
                 }
             }
+        }
+    }
+
+    /**
+     * Clears the cache if a serialization exception was thrown
+     *
+     * @param string $key
+     * @param \Exception $e
+     *
+     * @throws \Exception Rethrows exception if nessesary
+     *
+     * @return void
+     */
+    protected function igBinaryCompatibleCacheClear($key, $e)
+    {
+        if (extension_loaded('igbinary')) {
+            $this->getCache()->removeItem($key);
+        } else {
+            throw $e;
         }
     }
 

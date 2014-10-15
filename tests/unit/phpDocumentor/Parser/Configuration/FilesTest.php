@@ -26,7 +26,16 @@ class FilesTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->fixture = new Files(array('directory'), array('file'), array('ignore'));
+        $this->fixture = new Files(array('directory'), array('file'), array('ignore'), array('examples'));
+    }
+
+    /**
+     * @covers phpDocumentor\Parser\Configuration\Files::__construct
+     * @covers phpDocumentor\Parser\Configuration\Files::getExamples
+     */
+    public function testIfExamplesCanBeRetrieved()
+    {
+        $this->assertSame(array('examples'), $this->fixture->getExamples());
     }
 
     /**
@@ -72,4 +81,3 @@ class FilesTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(true, $this->fixture->isIgnoreSymlinks());
     }
 }
- 

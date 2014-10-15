@@ -216,4 +216,3 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
         $inputMock->shouldReceive('getOption')->with($optionName)->andReturn($expected);
     }
 }
- 

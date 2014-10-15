@@ -33,10 +33,13 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new ClassAssembler();
+        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
     }
 
     /**
      * Creates a Descriptor from a provided class.
+     *
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
      *
      * @return void
      */
@@ -44,11 +47,35 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $name = 'ClassName';
         $namespace = 'Namespace';
-        $docBlockDescriptionContent = trim('
-            /**
-             * This is a example description
-             */
-        ');
+        $docBlockDescriptionContent = <<<DOCBLOCK
+/**
+ * This is a example description
+ */
+DOCBLOCK;
+
+        $classReflectorMock = $this->getClassReflectorDescriptor();
+
+        $descriptor = $this->fixture->create($classReflectorMock);
+
+        $this->assertSame($namespace . '\\' . $name, $descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame($name, $descriptor->getName());
+        $this->assertSame((string) $descriptor->getDescription(), $docBlockDescriptionContent);
+    }
+
+    /**
+     * Create a ClassReflector mock
+     *
+     * @return MockInterface
+     */
+    protected function getClassReflectorDescriptor()
+    {
+        $name = 'ClassName';
+        $namespace = 'Namespace';
+        $docBlockDescriptionContent = <<<DOCBLOCK
+/**
+ * This is a example description
+ */
+DOCBLOCK;
         $docBlockDescription = new DocBlock\Description($docBlockDescriptionContent);
 
         $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
@@ -58,24 +85,60 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
 
         $classReflectorMock = m::mock('phpDocumentor\Reflection\ClassReflector');
-        $classReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $name);
-        $classReflectorMock->shouldReceive('getShortName')->andReturn($name);
-        $classReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
-        $classReflectorMock->shouldReceive('getLinenumber')->andReturn(1);
-        $classReflectorMock->shouldReceive('getParentClass')->andReturn('');
-        $classReflectorMock->shouldReceive('isAbstract')->andReturn(false);
-        $classReflectorMock->shouldReceive('isFinal')->andReturn(false);
-        $classReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
-        $classReflectorMock->shouldReceive('getInterfaces')->andReturn(array());
-        $classReflectorMock->shouldReceive('getConstants')->andReturn(array());
-        $classReflectorMock->shouldReceive('getProperties')->andReturn(array());
-        $classReflectorMock->shouldReceive('getMethods')->andReturn(array());
-        $classReflectorMock->shouldReceive('getTraits')->andReturn(array());
+        $classReflectorMock->shouldReceive('getName')->once()->andReturn($namespace . '\\' . $name);
+        $classReflectorMock->shouldReceive('getShortName')->once()->andReturn($name);
+        $classReflectorMock->shouldReceive('getDocBlock')->atLeast()->once()->andReturn($docBlockMock);
+        $classReflectorMock->shouldReceive('getLinenumber')->once()->andReturn(1);
+        $classReflectorMock->shouldReceive('getParentClass')->once()->andReturn('');
+        $classReflectorMock->shouldReceive('isAbstract')->once()->andReturn(false);
+        $classReflectorMock->shouldReceive('isFinal')->once()->andReturn(false);
+        $classReflectorMock->shouldReceive('getNamespace')->atLeast()->once()->andReturn($namespace);
+        $classReflectorMock->shouldReceive('getInterfaces')->atLeast()->once()->andReturn(array('TestInterface'));
+        $classReflectorMock->shouldReceive('getConstants')->once()->andReturn(array('Constant'));
+        $classReflectorMock->shouldReceive('getProperties')->once()->andReturn(array('Properties'));
+        $classReflectorMock->shouldReceive('getMethods')->once()->andReturn(array('Method'));
+        $classReflectorMock->shouldReceive('getTraits')->once()->andReturn(array());
 
-        $descriptor = $this->fixture->create($classReflectorMock);
-
-        $this->assertSame($namespace . '\\' . $name, $descriptor->getFullyQualifiedStructuralElementName());
-        $this->assertSame($name, $descriptor->getName());
-        $this->assertSame((string) $descriptor->getDescription(), $docBlockDescriptionContent);
+        return $classReflectorMock;
     }
+
+    /**
+     * Create a descriptor builder mock
+     *
+     * @return m\MockInterface
+     */
+    protected function getProjectDescriptorBuilderMock()
+    {
+        $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+
+        $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
+            $mock = null;
+
+            switch ($param) {
+                case 'Properties':
+                    $mock = m::mock('phpDocumentor\Descriptor\PropertiesDescriptor');
+                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                    $mock->shouldReceive('setParent')->once()->andReturn();
+                    break;
+
+                case 'Method':
+                    $mock = m::mock('phpDocumentor\Descriptor\MethodDescriptor');
+                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                    $mock->shouldReceive('setParent')->once()->andReturn();
+                    break;
+
+                case 'Constant':
+                    $mock = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+                    $mock->shouldReceive('getName')->once()->andReturn('Mock');
+                    $mock->shouldReceive('setParent')->once()->andReturn();
+                    break;
+            }
+
+            return $mock;
+        });
+
+
+        return $projectDescriptorBuilderMock;
+    }
+
 }

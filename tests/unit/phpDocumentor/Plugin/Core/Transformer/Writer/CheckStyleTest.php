@@ -15,6 +15,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
+use phpDocumentor\Translator\Translator;
 
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\CheckStyle.
@@ -27,6 +28,9 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
      * @var CheckStyle $checkstyle
      */
     protected $checkStyle;
+
+    /** @var Translator|m\MockInterface */
+    private $translator;
 
     /**
      * Sets up the test suite
@@ -72,13 +76,16 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->fs->hasChild('artifact.xml'));
 
         // Inspect XML
-        $expectedXml = new \DOMDocument;
-        $expectedXml->loadXML('<?xml version="1.0"?>
+        $xml = <<<XML
+<?xml version="1.0"?>
 <checkstyle version="1.3.0">
   <file name="/foo/bar/baz">
     <error line="1234" severity="error" message="5678 myContext" source="phpDocumentor.file.5678"/>
   </file>
-</checkstyle>');
+</checkstyle>
+XML;
+        $expectedXml = new \DOMDocument;
+        $expectedXml->loadXML($xml);
 
         $actualXml = new \DOMDocument;
         $actualXml->load(vfsStream::url('CheckStyleTest/artifact.xml'));

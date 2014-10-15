@@ -11,16 +11,26 @@
 
 namespace phpDocumentor\Transformer\Writer;
 
-/**
- * Collection object for a set of Writers.
- */
-
 use phpDocumentor\Transformer\Router\Queue;
 
+/**
+ * A collection of Writer objects.
+ *
+ * In this collection we can receive writers, and if they implement the Routable interface assign the router queue that
+ * was provided to this class so that those writers can generate urls for various Descriptors.
+ *
+ * In addition this class can also verify if all requirements for the various writers in it are met.
+ */
 class Collection extends \ArrayObject
 {
+    /** @var Queue A series of routers, in order of importance, that are used to generate urls with */
     protected $routers;
 
+    /**
+     * Initializes this writer collection with the necessary requirements.
+     *
+     * @param Queue $routers A series of routers, in order of importance, that are used to generate urls with.
+     */
     public function __construct(Queue $routers)
     {
         $this->routers = $routers;

@@ -104,6 +104,8 @@ class Xsl extends WriterAbstract implements Routable
 
         $artifact = $this->getArtifactPath($transformation);
 
+        $this->checkForSpacesInPath($artifact);
+
         // if a query is given, then apply a transformation to the artifact
         // location by replacing ($<var>} with the sluggified node-value of the
         // search result
@@ -190,13 +192,11 @@ class Xsl extends WriterAbstract implements Routable
             if ((strpos($variable, '"') !== false)
                 && ((strpos($variable, "'") !== false))
             ) {
-                // TODO: inject the logger and use it here
-                //$this->log(
-                //    'XSLT does not allow both double and single quotes in '
-                //    . 'a variable; transforming single quotes to a character '
-                //    . 'encoded version in variable: ' . $key,
-                //    LogLevel::WARNING
-                //);
+                $this->logger->warning(
+                    'XSLT does not allow both double and single quotes in '
+                    . 'a variable; transforming single quotes to a character '
+                    . 'encoded version in variable: ' . $key
+                );
                 $variable = str_replace("'", "&#39;", $variable);
             }
 
@@ -283,7 +283,13 @@ class Xsl extends WriterAbstract implements Routable
     private function registerDefaultVariables(Transformation $transformation, $proc, $structure)
     {
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
-        $proc->setParameter('', 'search_template', $transformation->getParameter('search', 'none'));
+
+        if ($transformation->getParameter('search') !== null && $transformation->getParameter('search')->getValue()) {
+            $proc->setParameter('', 'search_template', $transformation->getParameter('search')->getValue());
+        } else {
+            $proc->setParameter('', 'search_template', 'none');
+        }
+        
         $proc->setParameter('', 'version', Application::$VERSION);
         $proc->setParameter('', 'generated_datetime', date('r'));
     }

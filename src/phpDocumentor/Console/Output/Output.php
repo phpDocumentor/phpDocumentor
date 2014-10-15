@@ -14,9 +14,12 @@ namespace phpDocumentor\Console\Output;
 use Monolog\Logger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+/**
+ * A custom output class for our Console object that supports writing to the log.
+ */
 class Output extends ConsoleOutput
 {
-    /** @var Logger */
+    /** @var Logger Object used to log system and debug messages to. */
     protected $logger;
 
     /**

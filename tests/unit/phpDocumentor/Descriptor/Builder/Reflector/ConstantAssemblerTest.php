@@ -19,7 +19,7 @@ use Mockery as m;
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
  *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
+ * @covers \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
  */
 class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,6 +37,8 @@ class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
     /**
      * Creates a Descriptor from a provided class.
      *
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler::create
+     *
      * @return void
      */
     public function testCreateConstantDescriptorFromReflector()
@@ -45,11 +47,13 @@ class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
         $name = 'constPI';
         $namespace = 'Namespace';
 
-        $docBlockDescription = new DocBlock\Description('
-            /**
-             * This is a example description
-             */
-         ');
+        $docBlockDescription = new DocBlock\Description(
+<<<DOCBLOCK
+/**
+ * This is a example description
+ */
+DOCBLOCK
+        );
 
         $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
         $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());

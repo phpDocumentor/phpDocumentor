@@ -85,10 +85,18 @@ class ProjectDescriptorBuilder
     public function isVisibilityAllowed($visibility)
     {
         switch($visibility) {
-            case 'public':    $visibility = Settings::VISIBILITY_PUBLIC; break;
-            case 'protected': $visibility = Settings::VISIBILITY_PROTECTED; break;
-            case 'private':   $visibility = Settings::VISIBILITY_PRIVATE; break;
-            case 'internal':  $visibility = Settings::VISIBILITY_INTERNAL; break;
+            case 'public':
+                $visibility = Settings::VISIBILITY_PUBLIC;
+                break;
+            case 'protected':
+                $visibility = Settings::VISIBILITY_PROTECTED;
+                break;
+            case 'private':
+                $visibility = Settings::VISIBILITY_PRIVATE;
+                break;
+            case 'internal':
+                $visibility = Settings::VISIBILITY_INTERNAL;
+                break;
         }
 
         return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);

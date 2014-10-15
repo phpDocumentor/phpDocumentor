@@ -38,4 +38,21 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(self::EXAMPLE_CLASS_NAME, $this->fixture->getClassName());
     }
+
+    /**
+     * @covers phpDocumentor\Plugin\Plugin::getParameters
+     */
+    public function testGetParameters()
+    {
+        $this->assertEmpty($this->fixture->getParameters());
+
+        $expectedParameters = array(m::mock('phpDocumentor\Plugin\Plugin'));
+ 
+        $property = new \ReflectionProperty('phpDocumentor\Plugin\Plugin', 'parameters');
+        $property->setAccessible(true);
+        $property->setValue($this->fixture, $expectedParameters);
+        $property->setAccessible(false);
+
+        $this->assertSame($expectedParameters, $this->fixture->getParameters());
+    }
 }

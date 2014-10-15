@@ -12,14 +12,7 @@
 namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
-
-/**
- * Empty stub
- */
-class BaseEntryStub extends BaseEntry
-{
-
-}
+use Mockery as m;
 
 /**
  * Test class for the BaseEntry object.
@@ -37,7 +30,7 @@ class BaseEntryTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new BaseEntryStub();
+        $this->object = m::mock('phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents\BaseEntry[]');
     }
 
     /**

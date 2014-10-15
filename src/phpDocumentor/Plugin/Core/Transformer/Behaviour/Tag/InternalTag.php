@@ -16,9 +16,14 @@ namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
  */
 class InternalTag
 {
-    /** @var boolean $internalAllowed */
+    /** @var boolean $internalAllowed true if the `@internal` tags should be rendered */
     protected $internalAllowed;
 
+    /**
+     * Initializes this tag and describes whether it should be rendered in the output.
+     *
+     * @param boolean $internalAllowed
+     */
     public function __construct($internalAllowed)
     {
         $this->internalAllowed = $internalAllowed;

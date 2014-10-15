@@ -25,4 +25,3 @@ class StringDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('string', (string)$fixture);
     }
 }
- 

@@ -29,6 +29,8 @@ class Twig implements TemplateInterface
 
     /**
      * Constructs the twig template and sets the default values.
+     *
+     * @param string $templatePath the base location for templates.
      */
     public function __construct($templatePath)
     {
@@ -225,11 +227,7 @@ class Twig implements TemplateInterface
      */
     protected function getTwigEnvironment()
     {
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($this->path));
-
-        // we explicitly do not want to escape content; all escaping has been
-        // handled by the converter itself
-        $twig->removeExtension('escaper');
+        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($this->path), array('autoescape' => false));
 
         return $twig;
     }

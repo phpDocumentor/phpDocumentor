@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
 class Template
 {
     /**
-     * @var string
+     * @var string the configured name of the current template.
      *
      * @Serializer\XmlAttribute
      * @Serializer\Type("string")

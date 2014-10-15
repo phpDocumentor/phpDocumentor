@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\GenericTagAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\LinkAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler as MethodTagAssembler;
@@ -49,6 +50,7 @@ use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
 use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
+use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
 use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
@@ -70,6 +72,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator;
 use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
+use Zend\Cache\Storage\Plugin\PluginOptions;
 
 /**
  * This provider is responsible for registering the Descriptor component with the given Application.
@@ -85,6 +88,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['parser.example.finder'] = new Example\Finder();
+
         $this->addCache($app);
         $this->addAssemblers($app);
         $this->addFilters($app);
@@ -102,11 +107,12 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers the Assemblers used to convert Reflection objects to Descriptors.
      *
-     * @param AssemblerFactory $factory
+     * @param AssemblerFactory   $factory
+     * @param \Cilex\Application $app
      *
      * @return AssemblerFactory
      */
-    public function attachAssemblersToFactory(AssemblerFactory $factory)
+    public function attachAssemblersToFactory(AssemblerFactory $factory, Application $app)
     {
         // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
         $fileMatcher      = function ($criteria) { return $criteria instanceof FileReflector; };
@@ -123,6 +129,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $authorMatcher      = function ($criteria) { return $criteria instanceof AuthorTag; };
         $deprecatedMatcher  = function ($criteria) { return $criteria instanceof DeprecatedTag; };
+        $exampleMatcher     = function ($criteria) { return $criteria instanceof ExampleTag; };
         $linkMatcher        = function ($criteria) { return $criteria instanceof LinkTag; };
         $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
         $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
@@ -153,6 +160,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         $factory->register($authorMatcher, new AuthorAssembler());
         $factory->register($deprecatedMatcher, new DeprecatedAssembler());
+        $factory->register($exampleMatcher, new ExampleAssembler($app['parser.example.finder']));
         $factory->register($linkMatcher, new LinkAssembler());
         $factory->register($methodTagMatcher, new MethodTagAssembler());
         $factory->register($propertyTagMatcher, new PropertyTagAssembler());
@@ -282,7 +290,16 @@ class ServiceProvider implements ServiceProviderInterface
                          'cache_dir' => sys_get_temp_dir(),
                     )
                 );
-                $cache->addPlugin(new SerializerPlugin());
+                $plugin = new SerializerPlugin();
+
+                if (extension_loaded('igbinary')) {
+                    $options = new PluginOptions();
+                    $options->setSerializer('igbinary');
+
+                    $plugin->setOptions($options);
+                }
+
+                $cache->addPlugin($plugin);
 
                 return $cache;
             }
@@ -301,7 +318,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     protected function addBuilder(Application $app)
     {
-        $app['descriptor.builder.serializer'] = 'PhpSerialize';
+        if (extension_loaded('igbinary')) {
+            $app['descriptor.builder.serializer'] = 'IgBinary';
+        } else {
+            $app['descriptor.builder.serializer'] = 'PhpSerialize';
+        }
 
         $app['descriptor.builder'] = $app->share(
             function ($container) {
@@ -335,8 +356,8 @@ class ServiceProvider implements ServiceProviderInterface
         $app['descriptor.builder.assembler.factory'] = $app->share(
             $app->extend(
                 'descriptor.builder.assembler.factory',
-                function ($factory) use ($provider) {
-                    return $provider->attachAssemblersToFactory($factory);
+                function ($factory) use ($provider, $app) {
+                    return $provider->attachAssemblersToFactory($factory, $app);
                 }
             )
         );

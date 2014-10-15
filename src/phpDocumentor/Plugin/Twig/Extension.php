@@ -174,7 +174,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             'markdown' => new \Twig_SimpleFilter(
                 'markdown',
                 function ($value) use ($parser) {
-                    return $parser->parse($value);
+                    return $parser->text($value);
                 }
             ),
             'trans' => new \Twig_SimpleFilter(

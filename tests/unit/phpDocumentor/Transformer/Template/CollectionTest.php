@@ -120,10 +120,9 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     protected function whenThereIsATemplateWithNameAndTransformations($name, array $transformations)
     {
         $template = new Template($name);
-        foreach($transformations as $transformation) {
+        foreach ($transformations as $transformation) {
             $template[] = $transformation;
         }
         $this->fixture[$name] = $template;
     }
 }
- 

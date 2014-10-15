@@ -64,7 +64,7 @@ class Linker implements CompilerPassInterface
     /**
      * Initializes the linker with a series of Descriptors to link to.
      *
-     * @param string[] $substitutions
+     * @param array|string[][] $substitutions
      */
     public function __construct(array $substitutions)
     {

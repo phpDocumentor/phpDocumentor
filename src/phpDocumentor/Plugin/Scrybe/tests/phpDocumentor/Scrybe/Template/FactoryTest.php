@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Template;
 
-require_once 'Mock/Template.php';
-
 /**
  * Test for the Template\Factory class of phpDocumentor Scrybe.
  */
@@ -37,6 +35,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests whether this factory registers the twig template engine by default.
+     *
      * @covers \phpDocumentor\Plugin\Scrybe\Template\Factory
      */
     public function testHasTwigTemplateEngine()
@@ -64,7 +63,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * \phpDocumentor\Plugin\Scrybe\Template\Factory::register
+     * @covers \phpDocumentor\Plugin\Scrybe\Template\Factory::register
      * @expectedException \InvalidArgumentException
      */
     public function testRegisterInvalidName()
@@ -74,7 +73,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * \phpDocumentor\Plugin\Scrybe\Template\Factory::register
+     * @covers \phpDocumentor\Plugin\Scrybe\Template\Factory::register
      * @expectedException \InvalidArgumentException
      */
     public function testRegisterInvalidClassName()

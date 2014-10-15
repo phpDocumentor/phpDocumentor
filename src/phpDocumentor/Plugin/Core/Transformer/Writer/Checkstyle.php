@@ -61,6 +61,8 @@ class Checkstyle extends WriterAbstract implements Translatable
     {
         $artifact = $this->getDestinationPath($transformation);
 
+        $this->checkForSpacesInPath($artifact);
+
         $document = new \DOMDocument();
         $document->formatOutput = true;
         $report = $document->createElement('checkstyle');

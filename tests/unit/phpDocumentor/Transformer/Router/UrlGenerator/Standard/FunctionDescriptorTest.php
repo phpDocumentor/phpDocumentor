@@ -56,4 +56,3 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/namespaces/default.html#function_myFunction', $result);
     }
 }
- 

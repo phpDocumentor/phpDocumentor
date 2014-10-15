@@ -68,4 +68,4 @@ class ExternalClassDocumentation
     {
         return $this->uri;
     }
-} 
+}

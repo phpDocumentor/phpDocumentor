@@ -26,10 +26,10 @@ class Debug implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 1000;
 
-    /** @var \Psr\Log\LoggerInterface $log */
+    /** @var LoggerInterface $log the logger to write the debug results to */
     protected $log;
 
-    /** @var ProjectAnalyzer $analyzer */
+    /** @var ProjectAnalyzer $analyzer service that compiles a summary of the project */
     protected $analyzer;
 
     /**
@@ -53,7 +53,11 @@ class Debug implements CompilerPassInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Analyzes the given project and returns the results to the logger.
+     *
+     * @param ProjectDescriptor $project
+     *
+     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {

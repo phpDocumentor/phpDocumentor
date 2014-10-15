@@ -272,7 +272,8 @@ class FeatureContext extends BehatContext
     public function iRunPhpDocumentorAgainstTheFile($file_path)
     {
         $tmp = self::getTmpFolder();
-        $this->iRunPhpdoc("-f $file_path -t $tmp --config='{$this->getTempXmlConfigurationPath()}' --force");
+        $fullPath = __DIR__ . '/../../' . $file_path;
+        $this->iRunPhpdoc("-f $fullPath -t $tmp --config='{$this->getTempXmlConfigurationPath()}' --force");
     }
 
     /**

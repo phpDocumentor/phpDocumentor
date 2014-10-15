@@ -95,4 +95,4 @@ class QualifiedNameToUrlConverter
 
         return $path;
     }
-} 
+}

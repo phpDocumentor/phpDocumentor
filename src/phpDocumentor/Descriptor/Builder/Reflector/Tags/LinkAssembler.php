@@ -15,6 +15,12 @@ use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@link` tag.
+ *
+ * This object will read the reflected information for the `@link` tag and create a {@see LinkDescriptor} object that
+ * can be used in the rest of the application and templates.
+ */
 class LinkAssembler extends AssemblerAbstract
 {
     /**

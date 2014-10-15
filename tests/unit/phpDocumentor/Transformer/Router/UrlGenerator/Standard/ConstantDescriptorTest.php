@@ -19,10 +19,12 @@ use Mockery as m;
 class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForGlobalConstants()
     {
@@ -42,10 +44,12 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForGlobalConstantsAtRootNamespace()
     {
@@ -64,9 +68,11 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForClassConstants
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromClass
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForClassConstants()
     {
@@ -87,4 +93,3 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/classes/My.Space.Class.html#constant_myConstant', $result);
     }
 }
- 

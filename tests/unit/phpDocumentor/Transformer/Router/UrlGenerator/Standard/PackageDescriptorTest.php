@@ -54,4 +54,3 @@ class PackageDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/packages/default.html', $result);
     }
 }
- 

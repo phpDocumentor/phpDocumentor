@@ -34,7 +34,13 @@ class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $types = new Collection();
         $this->builder->shouldReceive('buildDescriptor')
-            ->with(m::on(function ($value) { return $value instanceof TypeCollection && $value[0] == 'string'; }))
+            ->with(
+                m::on(
+                    function ($value) {
+                        return $value instanceof TypeCollection && $value[0] == 'string';
+                    }
+                )
+            )
             ->andReturn($types);
         $reflector = new PropertyTag('property', 'string $myProperty This is a description');
 

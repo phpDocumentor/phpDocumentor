@@ -44,4 +44,3 @@ class TransformationsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('transformation'), $this->fixture->getTransformations());
     }
 }
- 

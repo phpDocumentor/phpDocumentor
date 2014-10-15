@@ -16,6 +16,12 @@ use phpDocumentor\Descriptor\Tag\PropertyDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@property` tag.
+ *
+ * This object will read the reflected information for the `@property` tag and create a {@see PropertyDescriptor}
+ * object that can be used in the rest of the application and templates.
+ */
 class PropertyAssembler extends AssemblerAbstract
 {
     /**

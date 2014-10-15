@@ -136,4 +136,3 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('phpDocumentor\Translator\Configuration', $this->fixture->getTranslator());
     }
 }
- 

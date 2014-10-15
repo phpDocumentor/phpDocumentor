@@ -30,6 +30,14 @@ class Plugin
     protected $className;
 
     /**
+     * @Serializer\XmlList(entry = "parameter")
+     * @Serializer\Type("array<phpDocumentor\Plugin\Parameter>")
+     * @var Parameter[] parameters that are configured by the user
+     */
+    protected $parameters = array();
+
+
+    /**
      * Initialize the plugin configuration definition with the given class name.
      *
      * @param string $className
@@ -49,4 +57,15 @@ class Plugin
     {
         return $this->className;
     }
-} 
+
+
+    /**
+     * Returns the parameters associated with this plugin.
+     *
+     * @return Parameter[]
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+}

@@ -10,14 +10,26 @@
  */
 
 namespace phpDocumentor;
-
-require_once __DIR__.'/Application.php';
+use Composer\Autoload\ClassLoader;
 
 /**
- * This class provides a bootstrap for all application who wish to interface
- * with phpDocumentor.
+ * This class provides a bootstrap for all application who wish to interface with phpDocumentor.
  *
- * The Bootstrapper is responsible for setting up the phpDocumentor application.
+ * The Bootstrapper is responsible for setting up the autoloader, profiling options and application, including
+ * dependency injection container.
+ *
+ * The simplest usage would be:
+ *
+ *     $app = Bootstap::createInstance()->initialize();
+ *
+ * This will setup the autoloader and application, including Service Container, and return an instance of the
+ * application ready to be ran using the `run` command.
+ *
+ * If you need more control you can do some of the steps manually:
+ *
+ *     $bootstrap = Bootstap::createInstance();
+ *     $autoloader = $bootstrap->createAutoloader();
+ *     $app = new Application($autoloader)
  */
 class Bootstrap
 {
@@ -38,14 +50,127 @@ class Bootstrap
     /**
      * Convenience method that does the complete initialization for phpDocumentor.
      *
-     * This method will register the application.
-     * The methods called can also be implemented separately, for example when
-     * you want to use your own autoloader.
-     *
      * @return Application
      */
     public function initialize()
     {
-        return new Application();
+        $vendorPath = $this->findVendorPath();
+
+        $autoloader = $this->createAutoloader($vendorPath);
+        $this->addDomPdfConfig($vendorPath);
+
+        return new Application($autoloader, array('composer.vendor_path' => $vendorPath));
+    }
+
+    /**
+     * Sets up XHProf so that we can profile phpDocumentor using XHGUI.
+     *
+     * @return self
+     */
+    public function registerProfiler()
+    {
+        // check whether xhprof is loaded
+        $profile = (bool)(getenv('PHPDOC_PROFILE') === 'on');
+        $xhguiPath = getenv('XHGUI_PATH');
+        if ($profile && $xhguiPath && extension_loaded('xhprof')) {
+            echo 'PROFILING ENABLED' . PHP_EOL;
+            include($xhguiPath . '/external/header.php');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Initializes and returns the autoloader.
+     *
+     * @param string|null $vendorDir A path (either absolute or relative to the current working directory) leading to
+     *     the vendor folder where composer installed the dependencies.
+     *
+     * @throws \RuntimeException if no autoloader could be found.
+     *
+     * @return ClassLoader
+     */
+    public function createAutoloader($vendorDir = null)
+    {
+        if (! $vendorDir) {
+            $vendorDir = __DIR__ . '/../../vendor';
+        }
+
+        $autoloader_location = $vendorDir . '/autoload.php';
+        if (! file_exists($autoloader_location) || ! is_readable($autoloader_location)) {
+            throw new \RuntimeException(
+                'phpDocumentor expected to find an autoloader at "' . $autoloader_location . '" but it was not there. '
+                . 'Usually this is because the "composer install" command has not been ran yet. If this is not the '
+                . 'case, please open an issue at http://github.com/phpDocumentor/phpDocumentor2 detailing what '
+                . 'installation method you used, which path is mentioned in this error message and any other relevant '
+                . 'information.'
+            );
+        }
+
+        return require $autoloader_location;
+    }
+
+    /**
+     * Attempts to find the location of the vendor folder.
+     *
+     * This method tries to check for a composer.json in a directory 5 levels below the folder of this Bootstrap file.
+     * This is the expected location if phpDocumentor is installed using composer because the current directory for
+     * this file is expected to be 'vendor/phpdocumentor/phpdocumentor/src/phpDocumentor'.
+     *
+     * If a composer.json is found we will try to extract the vendor folder name using the 'vendor-dir' configuration
+     * option of composer or assume it is vendor if that option is not set.
+     *
+     *
+     * If no custom composer.json can be found, then we assume that the vendor folder is that of phpDocumentor itself,
+     * which is `../../vendor` starting from this folder.
+     *
+     * If neither locations exist, then this method returns null because no vendor path could be found.
+     *
+     * @return string|null
+     */
+    public function findVendorPath()
+    {
+        // default installation
+        $vendorDir = __DIR__ . '/../../vendor';
+
+        // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
+        $rootFolderWhenInstalledWithComposer = __DIR__ . '/../../../../../';
+        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';
+        if (file_exists($composerConfigurationPath)) {
+            $vendorDir = $rootFolderWhenInstalledWithComposer
+                . $this->getCustomVendorPathFromComposer($composerConfigurationPath);
+        }
+
+        return file_exists($vendorDir) ? $vendorDir : null;
+    }
+
+    /**
+     * Retrieves the custom vendor-dir from the given composer.json or returns 'vendor'.
+     *
+     * @param string $composerConfigurationPath the path pointing to the composer.json
+     *
+     * @return string
+     */
+    protected function getCustomVendorPathFromComposer($composerConfigurationPath)
+    {
+        $composerFile = file_get_contents($composerConfigurationPath);
+        $composerJson = json_decode($composerFile, true);
+
+        return isset($composerJson['config']['vendor-dir']) ? $composerJson['config']['vendor-dir'] : 'vendor';
+    }
+
+    /**
+     * Loads the configuration for the DOMPdf library from the given vendor folder.
+     *
+     * @param string $vendorPath
+     *
+     * @return void
+     */
+    protected function addDomPdfConfig($vendorPath)
+    {
+        if (! \Phar::running()) {
+            defined('DOMPDF_ENABLE_AUTOLOAD') or define('DOMPDF_ENABLE_AUTOLOAD', false);
+            require_once($vendorPath . '/dompdf/dompdf/dompdf_config.inc.php');
+        }
     }
 }

@@ -15,6 +15,12 @@ use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\SinceDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@since` tag.
+ *
+ * This object will read the reflected information for the `@since` tag and create a {@see SinceDescriptor} object that
+ * can be used in the rest of the application and templates.
+ */
 class SinceAssembler extends AssemblerAbstract
 {
     /**

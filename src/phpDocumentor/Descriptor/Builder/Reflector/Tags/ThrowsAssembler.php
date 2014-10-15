@@ -16,6 +16,12 @@ use phpDocumentor\Descriptor\Tag\ThrowsDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@throws` tag.
+ *
+ * This object will read the reflected information for the `@throws` tag and create a {@see ThrowsDescriptor} object
+ * that can be used in the rest of the application and templates.
+ */
 class ThrowsAssembler extends AssemblerAbstract
 {
     /**

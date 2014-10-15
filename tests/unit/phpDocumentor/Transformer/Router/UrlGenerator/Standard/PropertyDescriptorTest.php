@@ -39,4 +39,3 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/classes/My.Space.Class.html#property_myProperty', $result);
     }
 }
- 

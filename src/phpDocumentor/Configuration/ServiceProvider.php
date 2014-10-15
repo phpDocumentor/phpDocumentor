@@ -20,6 +20,24 @@ use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Zend\Config\Factory;
 
+/**
+ * Provides a series of services in order to handle the configuration for phpDocumentor.
+ *
+ * This class is responsible for registering a 'Merger' service that is used to combine several configuration
+ * definitions into one and will add a new option `config` to all commands of phpDocumentor.
+ *
+ * Exposed services:
+ *
+ * - 'config', the configuration service containing all options and parameters for phpDocumentor.
+ * - 'config.merger', a service used to combine the configuration template with the user configuration file (phpdoc.xml
+ *   of phpdoc.dist.xml).
+ *
+ * The following variables are exposed:
+ *
+ * - 'config.path.template', the location of the configuration template with defaults.
+ * - 'config.path.user', the location of the user configuration file that will be merged with the template.
+ * - 'config.class', the class name of the root configuration object.
+ */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
@@ -69,29 +87,47 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param Application $app
-     * @return Application
+     * Initializes and adds the configuration merger object as the 'config.merger' service to the container.
+     *
+     * @param Application $container
+     *
+     * @return void
      */
-    private function addMerger(Application $app)
+    private function addMerger(Application $container)
     {
-        if (!isset($app['serializer.annotations'])) {
+        $this->addMergerAnnotations($container);
+
+        $container['config.merger'] = $container->share(
+            function () {
+                return new Merger(new AnnotationReader());
+            }
+        );
+    }
+
+    /**
+     * Adds the annotations for the Merger component to the Serializer.
+     *
+     * @param Application $container
+     *
+     * @throws \RuntimeException if the annotation handler for Jms Serializer is not added to the container as
+     *   'serializer.annotations' service.
+     *
+     * @return void
+     */
+    private function addMergerAnnotations(Application $container)
+    {
+        if (!isset($container['serializer.annotations'])) {
             throw new \RuntimeException(
                 'The configuration service provider depends on the JmsSerializer Service Provider but the '
                 . '"serializer.annotations" key could not be found in the container.'
             );
         }
 
-        $annotations = $app['serializer.annotations'];
+        $annotations = $container['serializer.annotations'];
         $annotations[] = array(
             'namespace' => 'phpDocumentor\Configuration\Merger\Annotation',
             'path' => __DIR__ . '/../../'
         );
-        $app['serializer.annotations'] = $annotations;
-
-        $app['config.merger'] = $app->share(
-            function () {
-                return new Merger(new AnnotationReader());
-            }
-        );
+        $container['serializer.annotations'] = $annotations;
     }
 }

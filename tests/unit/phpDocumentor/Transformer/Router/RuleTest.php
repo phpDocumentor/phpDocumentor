@@ -21,8 +21,20 @@ class RuleTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfRuleCanBeMatched()
     {
-        $fixture = new Rule(function() { return true; }, function(){});
-        $fixture2 = new Rule(function() { return false; }, function(){});
+        $fixture = new Rule(
+            function () {
+                return true;
+            },
+            function () {
+            }
+        );
+        $fixture2 = new Rule(
+            function () {
+                return false;
+            },
+            function () {
+            }
+        );
 
         $node = 'test';
         $this->assertTrue($fixture->match($node));
@@ -35,9 +47,14 @@ class RuleTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfUrlCanBeGenerated()
     {
-        $fixture = new Rule(function() { }, function(){ return 'url'; });
+        $fixture = new Rule(
+            function () {
+            },
+            function () {
+                return 'url';
+            }
+        );
 
         $this->assertSame('url', $fixture->generate('test'));
     }
 }
- 

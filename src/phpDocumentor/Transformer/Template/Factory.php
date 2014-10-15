@@ -37,7 +37,8 @@ class Factory
     }
 
     /**
-     * Attempts to find, construct and return a template object with the given template name or (relative/absolute) path.
+     * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
+     * path.
      *
      * @param string $nameOrPath
      *

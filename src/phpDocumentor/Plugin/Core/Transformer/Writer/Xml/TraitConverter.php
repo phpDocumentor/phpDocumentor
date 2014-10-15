@@ -20,19 +20,21 @@ use phpDocumentor\Descriptor\TraitDescriptor;
  */
 class TraitConverter
 {
-    /** @var DocBlockConverter */
+    /** @var DocBlockConverter object used to convert DocBlocks into their XML counterpart */
     protected $docBlockConverter;
 
-    /** @var MethodConverter */
+    /** @var MethodConverter object used to convert methods into their XML counterpart */
     protected $methodConverter;
 
-    /** @var PropertyConverter */
+    /** @var PropertyConverter object used to convert properties into their XML counterpart */
     protected $propertyConverter;
 
     /**
      * Initializes this converter with the DocBlock converter.
      *
      * @param DocBlockConverter $docBlockConverter
+     * @param MethodConverter   $methodConverter
+     * @param PropertyConverter $propertyConverter
      */
     public function __construct(
         DocBlockConverter $docBlockConverter,

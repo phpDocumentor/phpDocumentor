@@ -16,11 +16,32 @@ namespace phpDocumentor\Descriptor\Validator;
  */
 class Error
 {
+    /**
+     * @var string $severity
+     */
     protected $severity;
+
+    /**
+     * @var string $code
+     */
     protected $code;
+
+    /**
+     * @var int $line
+     */
     protected $line = 0;
+
+    /**
+     * @var array $context
+     */
     protected $context = array();
 
+    /**
+     * @param string $severity
+     * @param string $code
+     * @param int $line
+     * @param array $context
+     */
     public function __construct($severity, $code, $line, array $context = array())
     {
         $this->severity = $severity;
@@ -29,21 +50,33 @@ class Error
         $this->context  = $context;
     }
 
+    /**
+     * @return string $code
+     */
     public function getCode()
     {
         return $this->code;
     }
 
+    /**
+     * @return int $line
+     */
     public function getLine()
     {
         return $this->line;
     }
 
+    /**
+     * @return string $severity
+     */
     public function getSeverity()
     {
         return $this->severity;
     }
 
+    /**
+     * @return array $context
+     */
     public function getContext()
     {
         return $this->context;

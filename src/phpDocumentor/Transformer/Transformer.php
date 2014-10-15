@@ -101,7 +101,7 @@ class Transformer implements CompilerPassInterface
     {
         $path = realpath($target);
         if (false === $path) {
-            if (mkdir($target, 0755, true)) {
+            if (@mkdir($target, 0755, true)) {
                 $path = realpath($target);
             } else {
                 throw new \InvalidArgumentException(

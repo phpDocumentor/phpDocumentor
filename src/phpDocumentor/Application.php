@@ -15,6 +15,7 @@ use Cilex\Application as Cilex;
 use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
+use Composer\Autoload\ClassLoader;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
@@ -29,17 +30,6 @@ use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-if (!\Phar::running()) {
-    define('DOMPDF_ENABLE_AUTOLOAD', false);
-    if (file_exists(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php')) {
-        // when normally installed, get it from the vendor folder
-        require_once(__DIR__ . '/../../vendor/dompdf/dompdf/dompdf_config.inc.php');
-    } else {
-        // when installed using composer, include it from that location
-        require_once(__DIR__ . '/../../../../dompdf/dompdf/dompdf_config.inc.php');
-    }
-}
-
 /**
  * Application class for phpDocumentor.
  *
@@ -52,14 +42,17 @@ class Application extends Cilex
 
     /**
      * Initializes all components used by phpDocumentor.
+     *
+     * @param ClassLoader $autoloader
+     * @param array       $values
      */
-    public function __construct($autoloader = null)
+    public function __construct($autoloader = null, array $values = array())
     {
         $this->defineIniSettings();
         
         self::$VERSION = trim(file_get_contents(__DIR__ . '/../../VERSION'));
 
-        parent::__construct('phpDocumentor', self::$VERSION);
+        parent::__construct('phpDocumentor', self::$VERSION, $values);
 
         $this['kernel.timer.start'] = time();
         $this['kernel.stopwatch'] = function () {

@@ -25,4 +25,3 @@ class UnknownTypeDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('unknowntype', (string)$fixture);
     }
 }
- 

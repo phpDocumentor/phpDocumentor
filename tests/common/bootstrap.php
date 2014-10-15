@@ -10,12 +10,11 @@
  * @link      http://phpdoc.org
  */
 
-/**
- * @uses \phpDocumentor\Bootstrap
- */
+// @codingStandardsIgnoreFile
 require_once __DIR__ . '/../../src/phpDocumentor/Bootstrap.php';
-\phpDocumentor\Bootstrap::createInstance()->initialize();
 
 if (!defined('phpDocumentor\PHPUnit\TEMP_DIR')) {
     define('phpDocumentor\PHPUnit\TEMP_DIR', realpath(sys_get_temp_dir()));
 }
+
+\phpDocumentor\Bootstrap::createInstance()->initialize();

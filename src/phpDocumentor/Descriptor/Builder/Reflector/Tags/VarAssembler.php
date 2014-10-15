@@ -16,6 +16,12 @@ use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
+/**
+ * Constructs a new descriptor from the Reflector for an `@var` tag.
+ *
+ * This object will read the reflected information for the `@var` tag and create a {@see VarDescriptor} object that
+ * can be used in the rest of the application and templates.
+ */
 class VarAssembler extends AssemblerAbstract
 {
     /**

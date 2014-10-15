@@ -124,6 +124,9 @@ class Xml extends WriterAbstract implements Translatable
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
+
+        $this->checkForSpacesInPath($artifact);
+
         $this->xml = new \DOMDocument('1.0', 'utf-8');
         $this->xml->formatOutput = true;
         $document_element = new \DOMElement('project');
@@ -209,6 +212,10 @@ class Xml extends WriterAbstract implements Translatable
             $child->appendChild($markers);
 
             foreach ($file->getMarkers() as $marker) {
+                if (! $marker['type']) {
+                    continue;
+                }
+
                 $marker_obj = new \DOMElement(strtolower($marker['type']));
                 $markers->appendChild($marker_obj);
 
@@ -397,7 +404,13 @@ class Xml extends WriterAbstract implements Translatable
         foreach ($class->getInheritedMethods() as $method) {
             // TODO #840: Workaround; for some reason there are NULLs in the methods array.
             if ($method) {
-                $this->methodConverter->convert($child, $method);
+                $methodElement = $this->methodConverter->convert($child, $method);
+                $methodElement->appendChild(
+                    new \DOMElement(
+                        'inherited_from',
+                        $method->getParent()->getFullyQualifiedStructuralElementName()
+                    )
+                );
             }
         }
     }
