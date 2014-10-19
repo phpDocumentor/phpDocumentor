@@ -39,6 +39,8 @@ final class ServiceProvider implements ServiceProviderInterface
         $this->registerWriters($app);
         $this->registerDependenciesOnXsltExtension($app);
 
+        $app->register(new \phpDocumentor\Plugin\Standards\ServiceProvider());
+        $app->register(new \phpDocumentor\Plugin\Standards\phpDocumentor\ServiceProvider());
         $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider());
         $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider());
         $app->register(new \phpDocumentor\Plugin\Pdf\ServiceProvider());

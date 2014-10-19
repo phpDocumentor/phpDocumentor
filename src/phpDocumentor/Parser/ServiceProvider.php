@@ -12,6 +12,7 @@
 namespace phpDocumentor\Parser;
 
 use Cilex\Application;
+use Cilex\CommandProviderInterface;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
@@ -22,7 +23,7 @@ use phpDocumentor\Translator\Translator;
 /**
  * This provider is responsible for registering the parser component with the given Application.
  */
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProvider implements ServiceProviderInterface, CommandProviderInterface
 {
     /**
      * Registers services on the given app.
@@ -62,7 +63,26 @@ class ServiceProvider implements ServiceProviderInterface
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $app['parser.files'] = new Collection();
-        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator, $app['parser.files']));
+    }
+
+    /**
+     * Initializes all commands that are related to this service provider.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    public function registerCommands($app)
+    {
+        $app->command(
+            new ParseCommand(
+                $app['descriptor.builder'],
+                $app['parser'],
+                $app['translator'],
+                $app['parser.files'],
+                $app['standards.ruleset.loader']
+            )
+        );
     }
 
     /**

@@ -12,9 +12,11 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
+use Cilex\CommandProviderInterface;
 use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
+use Cilex\ServiceProviderInterface;
 use Composer\Autoload\ClassLoader;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
@@ -36,6 +38,9 @@ class Application extends Cilex
 {
     /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
     public static $VERSION;
+
+    /** @var ServiceProviderInterface */
+    private $providers;
 
     /**
      * Initializes all components used by phpDocumentor.
@@ -73,6 +78,37 @@ class Application extends Cilex
         $this->register(new Plugin\ServiceProvider());
 
         $this->addCommandsForProjectNamespace();
+        $this->registerCommands();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function register($provider, array $values = array())
+    {
+        $this->providers[] = $provider;
+
+        parent::register($provider, $values);
+    }
+
+    /**
+     * Scans all previously registered Service Providers and register any commands that they may expose.
+     *
+     * Commands generally consume services, which causes them to initialize. If we do this in the
+     * {@see self::register()} method then it might become impossible for other Service Providers to extend services
+     * that are already initialized.
+     *
+     * Using this method we delay the registration of Commands until all services are registered.
+     *
+     * @return void
+     */
+    public function registerCommands()
+    {
+        foreach ($this->providers as $provider) {
+            if ($provider instanceof CommandProviderInterface) {
+                $provider->registerCommands($this);
+            }
+        }
     }
 
     /**
