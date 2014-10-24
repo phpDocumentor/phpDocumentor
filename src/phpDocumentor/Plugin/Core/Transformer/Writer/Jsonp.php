@@ -57,7 +57,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  *     member `type` that can be either 'class', 'interface' or 'trait' to distinguish between the three types
  *     of 'classes'.
  */
-class Jsonp extends WriterAbstract
+final class Jsonp extends WriterAbstract
 {
     /**
      * Generate a series of JSONP files based on the ProjectDescriptor's structure in the target directory.
@@ -89,12 +89,15 @@ class Jsonp extends WriterAbstract
         foreach ($project->getIndexes()->get('elements') as $element) {
             if ($element instanceof ClassDescriptor) {
                 $this->writeClassToDisk($folder, $element, $this->transformClass($element));
+                continue;
             }
             if ($element instanceof InterfaceDescriptor) {
                 $this->writeClassToDisk($folder, $element, $this->transformInterface($element));
+                continue;
             }
             if ($element instanceof TraitDescriptor) {
                 $this->writeClassToDisk($folder, $element, $this->transformTrait($element));
+                continue;
             }
         }
 
@@ -111,7 +114,7 @@ class Jsonp extends WriterAbstract
      *
      * @return string[]
      */
-    public function transformFile(FileDescriptor $element)
+    private function transformFile(FileDescriptor $element)
     {
         $file = array(
             'name' => $element->getName(),
@@ -198,7 +201,7 @@ class Jsonp extends WriterAbstract
 
         /** @var TraitDescriptor|string $trait */
         foreach ($element->getUsedTraits() as $trait) {
-            $trait['uses'][] = $trait instanceof TraitDescriptor
+            $class['uses'][] = $trait instanceof TraitDescriptor
                 ? $trait->getFullyQualifiedStructuralElementName()
                 : $trait;
         }
@@ -560,8 +563,7 @@ class Jsonp extends WriterAbstract
         // TODO: make the tests below configurable from the outside so that more could be added using plugins
         if (method_exists($tag, 'getTypes')) {
             $tagArray['type'] = $this->transformTypes($tag->getTypes());
-        }
-        if (method_exists($tag, 'getType')) {
+        } elseif (method_exists($tag, 'getType')) {
             $tagArray['type'] = $this->transformTypes($tag->getType());
         }
         if (method_exists($tag, 'getVariableName')) {
@@ -569,8 +571,7 @@ class Jsonp extends WriterAbstract
         }
         if (method_exists($tag, 'getReference')) {
             $tagArray['link'] = $tag->getReference();
-        }
-        if (method_exists($tag, 'getLink')) {
+        } elseif (method_exists($tag, 'getLink')) {
             $tagArray['link'] = $tag->getLink();
         }
         if (method_exists($tag, 'getMethodName')) {
