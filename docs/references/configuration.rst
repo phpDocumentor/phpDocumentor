@@ -27,7 +27,7 @@ defaults.
 
     When present, the file 'phpdoc.xml' is used instead of 'phpdoc.dist.xml' and thus does not supplement it.
 
-Another option is to use the ``-c`` or ``--configuration`` arguments to tell phpDocumentor the location of your
+Another option is to use the ``-c`` or ``--config`` arguments to tell phpDocumentor the location of your
 configuration file. This can be convenient for centralized configuration management or using different settings per
 environment.
 
