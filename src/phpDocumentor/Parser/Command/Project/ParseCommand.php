@@ -143,8 +143,10 @@ class ParseCommand extends Command
         /** @var ConfigurationHelper $configurationHelper */
         $configurationHelper = $this->getHelper('phpdocumentor_configuration');
         $target = $configurationHelper->getOption($input, 'target', 'parser/target');
-        $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
-
+        if (strpos($target, '/tmp/') === 0) {
+            $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
+        }
+        
         $fileSystem = new Filesystem();
         if (! $fileSystem->isAbsolutePath($target)) {
             $target = getcwd().DIRECTORY_SEPARATOR.$target;
@@ -191,7 +193,7 @@ class ParseCommand extends Command
             $mapper->garbageCollect($files);
             $mapper->populate($projectDescriptor);
 
-            $visibility = (array)$configurationHelper->getOption($input, 'visibility', 'parser/visibility');
+            $visibility = (array) $configurationHelper->getOption($input, 'visibility', 'parser/visibility');
             $visibilities = array();
             foreach ($visibility as $item) {
                 $visibilities = $visibilities + explode(',', $item);
@@ -291,7 +293,7 @@ class ParseCommand extends Command
             $configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on'
         );
 
-        $file_options = (array)$configurationHelper->getOption($input, 'filename', 'files/files', array(), true);
+        $file_options = (array) $configurationHelper->getOption($input, 'filename', 'files/files', array(), true);
         $added_files = array();
         foreach ($file_options as $glob) {
             if (!is_string($glob)) {

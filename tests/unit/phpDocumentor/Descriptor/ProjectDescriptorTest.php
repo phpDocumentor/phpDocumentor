@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-use \Mockery as m;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 /**

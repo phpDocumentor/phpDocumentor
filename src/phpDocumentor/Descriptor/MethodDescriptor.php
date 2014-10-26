@@ -249,6 +249,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
                     $parentMethod = $parent->getMethods()->get($this->getName());
                     if ($parentMethod) {
                         $this->inheritedElement = $parentMethod;
+
                         return $this->inheritedElement;
                     }
                 }
@@ -266,6 +267,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
                 $parentMethod = $interface->getMethods()->get($this->getName());
                 if ($parentMethod) {
                     $this->inheritedElement = $parentMethod;
+
                     return $this->inheritedElement;
                 }
             }

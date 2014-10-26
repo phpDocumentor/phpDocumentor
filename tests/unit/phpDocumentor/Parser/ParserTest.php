@@ -12,7 +12,6 @@
 namespace phpDocumentor\Parser;
 
 use \Mockery as m;
-use phpDocumentor\Fileset\Collection;
 
 /**
  * Test class for \phpDocumentor\Parser\Parser.

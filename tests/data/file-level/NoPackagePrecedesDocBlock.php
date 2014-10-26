@@ -4,7 +4,7 @@
  */
 /**
  * This is a normal class-level DocBlock
- * 
+ *
  * this DocBlock will attach to the class statement
  * @package SomePackage
  */

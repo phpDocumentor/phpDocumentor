@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 
 /**
@@ -148,6 +147,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
         ) {
             /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
             $parentClass = $associatedClass->getParent();
+
             return $parentClass->getConstants()->get($this->getName());
         }
 

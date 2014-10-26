@@ -44,8 +44,8 @@ class ExternalRouter extends RouterAbstract
     {
         $docs = $this->configuration->getTransformer()->getExternalClassDocumentation();
         foreach ($docs as $external) {
-            $prefix = (string)$external->getPrefix();
-            $uri    = (string)$external->getUri();
+            $prefix = (string) $external->getPrefix();
+            $uri    = (string) $external->getUri();
 
             $this[] = new Rule(
                 function ($node) use ($prefix) {

@@ -5,6 +5,7 @@ Internals
    :maxdepth: 2
 
    qa.rst
+   flow
    contructing-the-ast
    tags
    versioning

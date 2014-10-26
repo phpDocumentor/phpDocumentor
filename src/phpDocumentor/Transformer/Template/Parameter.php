@@ -36,7 +36,7 @@ class Parameter
 
     /**
      * Sets an XML attribute
-     * 
+     *
      * @param string $key
      * @return $this for a fluent interface
      */
@@ -57,7 +57,7 @@ class Parameter
 
     /**
      * Sets an XML value
-     * 
+     *
      * @param string $value
      * @return $this for a fluent interface
      */

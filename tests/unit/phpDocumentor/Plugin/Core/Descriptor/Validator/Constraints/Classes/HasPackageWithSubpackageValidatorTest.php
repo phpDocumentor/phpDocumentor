@@ -48,7 +48,6 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->initialize($this->context);
     }
 
-
     /**
      * @codingStandardsIgnoreStart
      * @expectedException Symfony\Component\Validator\Exception\ConstraintDefinitionException

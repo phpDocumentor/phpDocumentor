@@ -60,7 +60,8 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
 
     public function testTransformWithStartingArtifactAsFile()
     {
-        $statsXml = '<?xml version="1.0"?><phpdoc-stats version="2.6.1"></phpdoc-stats>';
+        $version = file_get_contents(__DIR__ . '/../../../../../../../VERSION');
+        $statsXml = '<?xml version="1.0"?><phpdoc-stats version="' . $version . '"></phpdoc-stats>';
         vfsStream::create(array('artifact.xml' => $statsXml));
 
         $markerCount = 12;
@@ -135,10 +136,12 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $numberOfErrors,
         $numberOfMarkers
     ) {
+        $version = file_get_contents(__DIR__ . '/../../../../../../../VERSION');
+
         $expectedXml = new \DOMDocument;
         $expectedXml->loadXML(
             '<?xml version="1.0"?>
-<phpdoc-stats version="2.6.1">
+<phpdoc-stats version="' . $version . '">
   <stat date="'.$date.'">
     <counters>
         <files>'.$numberOfFiles.'</files>
@@ -153,7 +156,39 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $actualXml = new \DOMDocument;
         $actualXml->load(vfsStream::url('StatisticsTest/artifact.xml'));
 
+        $actualTime   = $this->getGeneratedDateTime($actualXml);
+        $expectedTime = $this->getGeneratedDateTime($expectedXml);
+        $diff = $actualTime->diff($expectedTime, true);
+
+        // overwrite to prevent timing issues, otherwise the test might fail due to a second difference
+        $this->setGeneratedDateTime($actualXml, $expectedTime);
+
+        // time could have switch a second in between; verify within a range of 2 seconds
+        $this->assertLessThanOrEqual(2, $diff->s);
         $this->assertEqualXMLStructure($expectedXml->firstChild, $actualXml->firstChild, true);
         $this->assertSame($expectedXml->saveXML(), $actualXml->saveXML());
+    }
+
+    /**
+     * @param $actualXml
+     *
+     * @return \DateTime
+     */
+    private function getGeneratedDateTime($actualXml)
+    {
+        return new \DateTime(
+            $actualXml->getElementsByTagName('stat')->item(0)->attributes->getNamedItem('date')->nodeValue
+        );
+    }
+
+    /**
+     * @param $actualXml
+     *
+     * @return \DateTime
+     */
+    private function setGeneratedDateTime($actualXml, \DateTime $dateTime)
+    {
+        $actualXml->getElementsByTagName('stat')->item(0)->attributes->getNamedItem('date')->nodeValue
+            = $dateTime->format(DATE_ATOM);
     }
 }

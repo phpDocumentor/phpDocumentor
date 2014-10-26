@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Xslt;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Transformer\Router\Queue;
 

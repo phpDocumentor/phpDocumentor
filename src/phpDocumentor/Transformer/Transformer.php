@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Transformer;
 
+use phpDocumentor\Transformer\Event\WriterInitializationEvent;
+use phpDocumentor\Transformer\Writer\Initializable;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LogLevel;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -27,6 +30,13 @@ use phpDocumentor\Transformer\Event\PreTransformationEvent;
  */
 class Transformer implements CompilerPassInterface
 {
+    const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
+    const EVENT_POST_TRANSFORMATION = 'transformer.transformation.post';
+    const EVENT_PRE_INITIALIZATION = 'transformer.writer.initialization.pre';
+    const EVENT_POST_INITIALIZATION = 'transformer.writer.initialization.post';
+    const EVENT_PRE_TRANSFORM = 'transformer.transform.pre';
+    const EVENT_POST_TRANSFORM = 'transformer.transform.post';
+
     /** @var integer represents the priority in the Compiler queue. */
     const COMPILER_PRIORITY = 5000;
 
@@ -36,11 +46,8 @@ class Transformer implements CompilerPassInterface
     /** @var Template\Collection $templates */
     protected $templates;
 
-    /** @var Writer\Collection $writers */
+    /** @var Writer\Collection|WriterAbstract[] $writers */
     protected $writers;
-
-    /** @var Behaviour\Collection|null $behaviours */
-    protected $behaviours = null;
 
     /** @var Transformation[] $transformations */
     protected $transformations = array();
@@ -66,28 +73,6 @@ class Transformer implements CompilerPassInterface
     }
 
     /**
-     * Sets the collection of behaviours that are applied before the actual transformation process.
-     *
-     * @param Behaviour\Collection $behaviours
-     *
-     * @return void
-     */
-    public function setBehaviours(Behaviour\Collection $behaviours)
-    {
-        $this->behaviours = $behaviours;
-    }
-
-    /**
-     * Retrieves the collection of behaviours that should occur before the transformation process.
-     *
-     * @return Behaviour\Collection|null
-     */
-    public function getBehaviours()
-    {
-        return $this->behaviours;
-    }
-
-    /**
      * Sets the target location where to output the artifacts.
      *
      * @param string $target The target location where to output the artifacts.
@@ -101,21 +86,17 @@ class Transformer implements CompilerPassInterface
     {
         $path = realpath($target);
         if (false === $path) {
-            if (mkdir($target, 0755, true)) {
+            if (@mkdir($target, 0755, true)) {
                 $path = realpath($target);
             } else {
                 throw new \InvalidArgumentException(
-                    'Target directory ('
-                    . $target .
-                    ') does not exist and could not be created'
+                    'Target directory (' . $target . ') does not exist and could not be created'
                 );
             }
         }
 
         if (!is_dir($path) || !is_writable($path)) {
-            throw new \InvalidArgumentException(
-                'Given target (' . $target . ') is not a writable directory'
-            );
+            throw new \InvalidArgumentException('Given target (' . $target . ') is not a writable directory');
         }
 
         $this->target = $path;
@@ -150,39 +131,16 @@ class Transformer implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project)
     {
-        Dispatcher::getInstance()->dispatch('transformer.transform.pre', PreTransformEvent::createInstance($this));
-
-        if ($this->getBehaviours() instanceof Behaviour\Collection) {
-            $this->log(sprintf('Applying %d behaviours', count($this->getBehaviours())));
-            $this->getBehaviours()->process($project);
-        }
+        Dispatcher::getInstance()->dispatch(
+            self::EVENT_PRE_TRANSFORM,
+            PreTransformEvent::createInstance($this)->setProject($project)
+        );
 
         $transformations = $this->getTemplates()->getTransformations();
-        $this->log(sprintf('Applying %d transformations', count($transformations)));
-        foreach ($transformations as $transformation) {
-            $this->log(
-                '  Writer ' . $transformation->getWriter()
-                . ($transformation->getQuery() ? (' using query "' . $transformation->getQuery() . '"') : '')
-                . ' on '.$transformation->getArtifact()
-            );
+        $this->initializeWriters($project, $transformations);
+        $this->transformProject($project, $transformations);
 
-            $transformation->setTransformer($this);
-
-            /** @var Writer\WriterAbstract $writer  */
-            $writer = $this->writers[$transformation->getWriter()];
-
-            Dispatcher::getInstance()->dispatch(
-                'transformer.transformation.pre',
-                PreTransformationEvent::createInstance($this)
-            );
-            $writer->transform($project, $transformation);
-            Dispatcher::getInstance()->dispatch(
-                'transformer.transformation.post',
-                PostTransformationEvent::createInstance($this)
-            );
-        }
-
-        Dispatcher::getInstance()->dispatch('transformer.transform.post', PostTransformEvent::createInstance($this));
+        Dispatcher::getInstance()->dispatch(self::EVENT_POST_TRANSFORM, PostTransformEvent::createInstance($this));
 
         $this->log('Finished transformation process');
     }
@@ -243,5 +201,117 @@ class Transformer implements CompilerPassInterface
             DebugEvent::createInstance($this)
                 ->setMessage($message)
         );
+    }
+
+    /**
+     * Initializes all writers that are used during this transformation.
+     *
+     * @param ProjectDescriptor $project
+     * @param Transformation[]  $transformations
+     *
+     * @return void
+     */
+    private function initializeWriters(ProjectDescriptor $project, $transformations)
+    {
+        $isInitialized = array();
+        foreach ($transformations as $transformation) {
+            $writerName = $transformation->getWriter();
+
+            if (in_array($writerName, $isInitialized)) {
+                continue;
+            }
+
+            $isInitialized[] = $writerName;
+            $writer = $this->writers[$writerName];
+            $this->initializeWriter($writer, $project);
+        }
+    }
+
+    /**
+     * Initializes the given writer using the provided project meta-data.
+     *
+     * This method wil call for the initialization of each writer that supports an initialization routine (as defined by
+     * the `Initializable` interface).
+     *
+     * In addition to this, the following events emitted for each writer that is present in the collected list of
+     * transformations, even those that do not implement the `Initializable` interface.
+     *
+     * Emitted events:
+     *
+     * - transformer.writer.initialization.pre, before the initialization of a single writer.
+     * - transformer.writer.initialization.post, after the initialization of a single writer.
+     *
+     * @param WriterAbstract    $writer
+     * @param ProjectDescriptor $project
+     *
+     * @uses Dispatcher to emit the events surrounding an initialization.
+     *
+     * @return void
+     */
+    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project)
+    {
+        $event = WriterInitializationEvent::createInstance($this)->setWriter($writer);
+        Dispatcher::getInstance()->dispatch(self::EVENT_PRE_INITIALIZATION, $event);
+
+        if ($writer instanceof Initializable) {
+            $writer->initialize($project);
+        }
+
+        Dispatcher::getInstance()->dispatch(self::EVENT_POST_INITIALIZATION, $event);
+    }
+
+    /**
+     * Applies all given transformations to the provided project.
+     *
+     * @param ProjectDescriptor $project
+     * @param Transformation[]  $transformations
+     *
+     * @return void
+     */
+    private function transformProject(ProjectDescriptor $project, $transformations)
+    {
+        foreach ($transformations as $transformation) {
+            $transformation->setTransformer($this);
+            $this->applyTransformationToProject($transformation, $project);
+        }
+    }
+
+    /**
+     * Applies the given transformation to the provided project.
+     *
+     * This method will attempt to find an appropriate writer for the given transformation and invoke that with the
+     * transformation and project so that an artifact can be generated that matches the intended transformation.
+     *
+     * In addition this method will emit the following events:
+     *
+     * - transformer.transformation.pre, before the project has been transformed with this transformation.
+     * - transformer.transformation.post, after the project has been transformed with this transformation
+     *
+     * @param Transformation $transformation
+     * @param ProjectDescriptor $project
+     *
+     * @uses Dispatcher to emit the events surrounding a transformation.
+     *
+     * @return void
+     */
+    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project)
+    {
+        $this->log(
+            sprintf(
+                '  Writer %s %s on %s',
+                $transformation->getWriter(),
+                ($transformation->getQuery() ? ' using query "' . $transformation->getQuery() . '"' : ''),
+                $transformation->getArtifact()
+            )
+        );
+
+        $preTransformationEvent = PreTransformationEvent::createInstance($this)->setTransformation($transformation);
+        Dispatcher::getInstance()->dispatch(self::EVENT_PRE_TRANSFORMATION, $preTransformationEvent);
+
+        $writer = $this->writers[$transformation->getWriter()];
+        $writer->transform($project, $transformation);
+
+        $postTransformationEvent = PostTransformationEvent::createInstance($this);
+        Dispatcher::getInstance()->dispatch(self::EVENT_POST_TRANSFORMATION, $postTransformationEvent);
     }
 }

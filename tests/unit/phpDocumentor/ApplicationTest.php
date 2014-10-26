@@ -3,13 +3,14 @@
 namespace phpDocumentor;
 
 use Mockery as m;
+use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleApplication;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Application */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */
@@ -151,5 +152,85 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testIfMemoryLimitIsDisabled()
     {
         $this->assertSame('-1', ini_get('memory_limit'));
+    }
+
+    /**
+     * Test setting loglevel to logger.
+     *
+     * @param string $loglevel
+     * @param string $expectedLogLevel
+     *
+     * @dataProvider loglevelProvider
+     * @covers phpDocumentor\Application::configureLogger
+     */
+    public function testSetLogLevel($loglevel, $expectedLogLevel)
+    {
+        $logger = m::Mock('Monolog\Logger')
+            ->shouldReceive('pushHandler')->with(m::On(function($stream) use($expectedLogLevel) {
+               if (!$stream instanceof \Monolog\Handler\StreamHandler) {
+                   return false;
+               }
+
+               return $stream->getLevel() == $expectedLogLevel;
+            }))
+            ->shouldReceive('popHandler')
+            ->getMock();
+        $this->fixture->configureLogger($logger, $loglevel);
+        $this->assertSame($expectedLogLevel, $this->fixture['monolog.level']);
+    }
+
+    /**
+     * Data provider for testSetLogLevel
+     *
+     * @return array[] 
+     */
+    public function loglevelProvider()
+    {
+        return array(
+            array(
+                'emergency',
+                Logger::EMERGENCY,
+            ),
+            array(
+                'emerg',
+                Logger::EMERGENCY,
+            ),
+            array(
+                'alert',
+                Logger::ALERT,
+            ),
+            array(
+                'critical',
+                Logger::CRITICAL,
+            ),
+            array(
+                'error',
+                Logger::ERROR,
+            ),
+            array(
+                'err',
+                Logger::ERROR,
+            ),
+            array(
+                'warning',
+                Logger::WARNING,
+            ),
+            array(
+                'warn',
+                Logger::WARNING,
+            ),
+            array(
+                'notice',
+                Logger::NOTICE,
+            ),
+            array(
+                'info',
+                Logger::INFO,
+            ),
+            array(
+                'debug',
+                Logger::DEBUG,
+            ),
+        );
     }
 }

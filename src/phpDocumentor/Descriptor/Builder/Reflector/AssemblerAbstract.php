@@ -20,10 +20,10 @@ abstract class AssemblerAbstract extends BaseAssembler
 {
     /**
      * Assemble DocBlock.
-     * 
+     *
      * @param DocBlock|null      $docBlock
      * @param DescriptorAbstract $target
-     * 
+     *
      * @return void
      */
     protected function assembleDocBlock($docBlock, $target)

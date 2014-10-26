@@ -72,10 +72,15 @@ class Graph extends WriterAbstract
             $this->checkIfGraphVizIsInstalled();
         } catch (\Exception $e) {
             echo $e->getMessage();
+
             return;
         }
 
-        $this->nodeFont = $transformation->getParameter('font', 'Courier');
+        if ($transformation->getParameter('font') !== null && $transformation->getParameter('font')->getValue()) {
+            $this->nodeFont = $transformation->getParameter('font')->getValue();
+        } else {
+            $this->nodeFont = 'Courier';
+        }
 
         $filename = $this->getDestinationPath($transformation);
 
