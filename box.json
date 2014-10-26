@@ -56,9 +56,6 @@
         ]
     },
     "chmod": "0755",
-    "compactors": [
-        "Herrera\\Box\\Compactor\\Php"
-    ],
     "directories": [
         "src",
         "vendor/twig/twig/lib/Twig/Node/Expression/Test"
