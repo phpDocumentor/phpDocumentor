@@ -55,18 +55,18 @@ Configuration
 -------------
 
 Before we continue to discuss the other options that phpDocumentor offers we would like to mention that phpDocumentor
-supports the use of a configuration file. All you need to do is add a file called 'phpdoc.xml' to the root of your
+supports the use of a configuration file. All you need to do is add a file called 'phpdoc.dist.xml' to the root of your
 project, add your options and the invoke the ``phpdoc`` command without arguments.
 
 phpDocumentor will look in the current working directory for the configuration file and use its contents to determine
-options such as where your project files are and where to output your documentation.You can even override the settings
-in the configuration on a per user basis using another file called 'phpdoc.dist.xml'; please note however that this
-file completely overrides the 'phpdoc.xml' and does not merge individual options.
+options such as where your project files are and where to output your documentation. You can even override the settings
+in the configuration on a per user basis using another file called 'phpdoc.xml'; please note however that this
+file completely overrides the 'phpdoc.dist.xml' and does not merge individual options.
 
 .. hint::
 
-   It is recommended to add the 'phpdoc.dist.xml' to your revision control's ignore list if you intend on using it. This
-   way you can have a canonical configuration in the 'phpdoc.xml' file and allow each individual user to override it.
+   It is recommended to add the 'phpdoc.xml' to your version control's ignore list if you intend on using it. This way
+   you can have a canonical configuration in the 'phpdoc.dist.xml' file and allow each individual user to override it.
 
 And last but not least, you can even specify an alternate location for your 'phpdoc.xml' using the '--config'
 command-line option.
