@@ -49,8 +49,8 @@
   args: { chdir: release }
 
 - name: Register new PEAR package with channel
-   shell: ./pirum add web web/phpDocumentor-{{ VERSION.stdout }}.tgz
-   args: { chdir: /var/www/pear.phpdoc.org }
+  shell: ./pirum add web web/phpDocumentor-{{ VERSION.stdout }}.tgz
+  args: { chdir: /var/www/pear.phpdoc.org }
 
 - name: Create PHAR file
   shell: "{{ item }}"
