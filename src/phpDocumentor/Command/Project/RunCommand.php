@@ -96,6 +96,12 @@ HELP
                 'Path where to store the generated output'
             )
             ->addOption(
+                'cache-folder',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Path where to store the cache files'
+            )
+            ->addOption(
                 'filename',
                 'f',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
@@ -238,7 +244,7 @@ HELP
                  '--ignore-symlinks'    => $input->getOption('ignore-symlinks'),
                  '--markers'            => $input->getOption('markers'),
                  '--title'              => $input->getOption('title'),
-                 '--target'             => $input->getOption('target'),
+                 '--target'             => $input->getOption('cache-folder') ?: $input->getOption('target'),
                  '--force'              => $input->getOption('force'),
                  '--validate'           => $input->getOption('validate'),
                  '--visibility'         => $input->getOption('visibility'),
@@ -259,7 +265,7 @@ HELP
         $transform_input = new ArrayInput(
             array(
                  'command'       => 'project:transform',
-                 '--source'      => $input->getOption('target'),
+                 '--source'      => $input->getOption('cache-folder') ?: $input->getOption('target'),
                  '--target'      => $input->getOption('target'),
                  '--template'    => $input->getOption('template'),
                  '--progressbar' => $input->getOption('progressbar'),
