@@ -60,7 +60,6 @@ class File
             $file = $this->createFileReflector($builder, $filename);
             if (!$file) {
                 $this->log('>> Skipped file ' . $filename . ' as no modifications were detected');
-
                 return;
             }
 

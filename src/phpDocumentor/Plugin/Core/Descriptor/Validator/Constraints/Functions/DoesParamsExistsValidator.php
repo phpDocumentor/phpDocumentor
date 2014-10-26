@@ -36,11 +36,11 @@ class DoesParamsExistsValidator extends ConstraintValidator
         $arguments  = $value->arguments;
         $parameters = $value->parameters;
 
-        if (count($arguments) > 0) {
-            foreach($parameters as $param) {
+        if (count($arguments) > 0 && is_array($parameters)) {
+            foreach ($parameters as $param) {
                 $paramVarName = $param->getVariableName();
 
-                if (empty($paramVarName) || $arguments->offsetExists($paramVarName) ) {
+                if (empty($paramVarName) || $arguments->offsetExists($paramVarName)) {
                     continue;
                 }
 
