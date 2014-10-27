@@ -4,11 +4,11 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Command\Phar;
 
 use Herrera\Json\Exception\FileException;
@@ -29,12 +29,10 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 class UpdateCommand extends Command
 {
-
-    const MANIFEST_FILE = 'https://raw.githubusercontent.com/phpDocumentor/phpDocumentor2/develop/manifest.json';
+    const MANIFEST_FILE = 'http://www.phpdoc.org/get/manifest.json';
 
     /**
-     * Initializes this command and sets the name, description, options and
-     * arguments.
+     * Initializes this command and sets the name, description, options and arguments.
      *
      * @return void
      */
@@ -42,8 +40,12 @@ class UpdateCommand extends Command
     {
         $this->setName('phar:update')
             ->setAliases(array('selfupdate', 'self-update'))
-            ->setDescription('Updates phpDocumentor.phar to the latest version')
-            ->addArgument('version', InputArgument::OPTIONAL, 'Updates to version-number. (i.e. 2.6.0)')
+            ->setDescription('Updates phpDocumentor.phar to the indicated version or the latest if none is specified')
+            ->addArgument(
+                'version',
+                InputArgument::OPTIONAL,
+                'Updates to version-number (i.e. 2.6.0). When omitted phpDocumentor will update to the latest version'
+            )
             ->addOption('major', 'm', InputOption::VALUE_NONE, 'Lock to current major version')
             ->addOption('pre', 'p', InputOption::VALUE_NONE, 'Allow pre-release version update');
     }
@@ -61,7 +63,9 @@ class UpdateCommand extends Command
         $output->writeln('Looking for updates...');
 
         $manager         = $this->createManager($output);
-        $version         = $input->getArgument('version') ? $input->getArgument('version') : $this->getApplication()->getVersion();
+        $version         = $input->getArgument('version')
+            ? $input->getArgument('version')
+            : $this->getApplication()->getVersion();
         $allowMajor      = $input->getOption('major');
         $allowPreRelease = $input->getOption('pre');
 
@@ -77,7 +81,7 @@ class UpdateCommand extends Command
      *
      * @return \Herrera\Phar\Update\Manager
      */
-    protected function createManager(OutputInterface $output)
+    private function createManager(OutputInterface $output)
     {
         try {
             return new Manager(Manifest::loadFile(self::MANIFEST_FILE));
@@ -88,26 +92,24 @@ class UpdateCommand extends Command
         }
     }
 
-
     /**
      * Updates current version.
      *
      * @param Manager         $manager
-     * @param string          $currentVersion
+     * @param string          $version
      * @param bool|null       $allowMajor
      * @param bool|null       $allowPreRelease
      * @param OutputInterface $output
      *
      * @return void
      */
-    protected function updateCurrentVersion(
+    private function updateCurrentVersion(
         Manager $manager,
         $version,
         $allowMajor,
         $allowPreRelease,
         OutputInterface $output
-    )
-    {
+    ) {
         if ($manager->update($version, $allowMajor, $allowPreRelease)) {
             $output->writeln('<info>Updated to latest version.</info>');
         } else {
