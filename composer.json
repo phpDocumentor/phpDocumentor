@@ -29,6 +29,8 @@
         "symfony/config":           "~2.3",
         "jms/serializer":           "~0.12",
 
+        "herrera-io/phar-update":   "~1.0",
+
         "zendframework/zend-stdlib":         "~2.1",
         "zendframework/zend-servicemanager": "~2.1",
         "zendframework/zend-config":         "~2.1",
@@ -52,6 +54,7 @@
         "phpdocumentor/template-checkstyle":      "~1.2",
         "phpdocumentor/template-xml":             "~1.0"
     },
+    "minimum-stability": "stable",
     "require-dev": {
         "behat/behat":        "~2.4",
         "phpunit/phpunit":    "~4.0",
