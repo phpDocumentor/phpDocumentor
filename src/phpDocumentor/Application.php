@@ -76,7 +76,7 @@ class Application extends Cilex
 
         $this->addCommandsForProjectNamespace();
 
-        if (\Phar::isRunning()) {
+        if (\Phar::running()) {
             $this->addCommandsForPharNamespace();
         }
     }
