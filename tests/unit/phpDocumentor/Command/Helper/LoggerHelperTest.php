@@ -14,6 +14,7 @@ namespace phpDocumentor\Command\Helper;
 use Closure;
 use Mockery as m;
 use Monolog\Logger;
+use phpDocumentor\Configuration;
 use phpDocumentor\Event\LogEvent;
 use PHPUnit_Framework_TestCase;
 use Psr\Log\LogLevel;
@@ -45,11 +46,9 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new LoggerHelper();
-        $this->config = new stdClass;
-        $this->config->logging = new stdClass;
-        $this->config->logging->level = static::MY_LOGLEVEL;
-        $this->config->logging->paths = new stdClass;
-        $this->config->logging->paths->default = static::MY_DEFAULT_LOG_PATH;
+        $this->config = new Configuration();
+        $this->config->getLogging()->setLevel(static::MY_LOGLEVEL);
+        $this->config->getLogging()->setPaths(array('default' => static::MY_DEFAULT_LOG_PATH));
     }
 
     /**
@@ -113,14 +112,14 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             );
 
         $this->fixture->connectOutputToLogging(
-             m::mock('Symfony\Component\Console\Output\OutputInterface'),
-             $commandMock
+            m::mock('Symfony\Component\Console\Output\OutputInterface'),
+            $commandMock
         );
 
-        //call for a second time. 
+        // call for a second time.
         $this->fixture->connectOutputToLogging(
-             m::mock('Symfony\Component\Console\Output\OutputInterface'),
-             $commandMock
+            m::mock('Symfony\Component\Console\Output\OutputInterface'),
+            $commandMock
         );
 
         //test passes by mockery assertion
@@ -134,7 +133,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
      * @return bool
      */
     public function assertClosure($closure)
-    {       
+    {
         return $closure instanceof Closure;
     }
 
@@ -153,14 +152,14 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $command = m::mock('phpDocumentor\Command\Command')
-            ->shouldReceive('getContainer')
-            ->andReturnSelf()
-            ->shouldReceive('offsetGet')
-            ->andReturnSelf()
+            ->shouldReceive('getContainer')->andReturnSelf()
+            ->shouldReceive('offsetGet')->andReturnSelf()
             ->shouldReceive('translate')
-            ->andReturnUsing(function($message) {
-                return $message;
-            })
+            ->andReturnUsing(
+                function ($message) {
+                    return $message;
+                }
+            )
             ->getMock();
 
         $event = new LogEvent($this);
@@ -204,7 +203,6 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
      */
     public function testReconfigureLoggerVerbosity($verbosity, $expectedLogLevel)
     {
-        
         $input = m::mock('Symfony\Component\Console\Input\InputInterface')
             ->shouldReceive('getOption')
             ->andReturnNull()
@@ -216,14 +214,9 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $application = m::mock('phpDocumentor\Application')
-            ->shouldReceive('configureLogger')
-            ->withArgs(array(
-                null,
-                $expectedLogLevel,
-                null,
-            ))
-            ->shouldReceive('offsetGet')
-            ->andReturnNull()
+            ->shouldReceive('configureLogger')->withArgs(array("", $expectedLogLevel, "defaultPath",))
+            ->shouldReceive('offsetGet')->with('config')->andReturn($this->config)
+            ->shouldReceive('offsetGet')->andReturnNull()
             ->getMock();
 
         $command = m::mock('phpDocumentor\Command\Command')
@@ -248,7 +241,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 OutputInterface::VERBOSITY_NORMAL,
-                Logger::ERROR
+                self::MY_LOGLEVEL
             ),
             array(
                 OutputInterface::VERBOSITY_VERBOSE,
@@ -282,18 +275,9 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $application = m::mock('phpDocumentor\Application')
-            ->shouldReceive('configureLogger')
-            ->withArgs(array(
-                null,
-                Logger::ERROR,
-                static::MY_DEFAULT_LOG_PATH
-            ))
-            ->shouldReceive('offsetGet')
-            ->with('config')
-            ->andReturn($this->config)
-            ->shouldReceive('offsetGet')
-            ->with(m::any())
-            ->andReturnNull()
+            ->shouldReceive('configureLogger')->withArgs(array(null, Logger::ERROR, static::MY_DEFAULT_LOG_PATH))
+            ->shouldReceive('offsetGet')->with('config')->andReturn($this->config)
+            ->shouldReceive('offsetGet')->with(m::any())->andReturnNull()
             ->getMock();
 
         $command = m::mock('phpDocumentor\Command\Command')

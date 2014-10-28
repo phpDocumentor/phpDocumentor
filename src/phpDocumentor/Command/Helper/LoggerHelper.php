@@ -13,6 +13,7 @@ namespace phpDocumentor\Command\Helper;
 
 use Monolog\Logger;
 use phpDocumentor\Command\Command;
+use phpDocumentor\Configuration;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Event\PreFileEvent;
@@ -159,17 +160,18 @@ class LoggerHelper extends Helper
         }
 
         $container = $command->getContainer();
-        if (isset($container['config']->logging)) {
-            if ($output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $logLevel = (string) $container['config']->logging->level;
-            }
 
-            // null means the default is used
-            if (!$logPath) {
-                $logPath = isset($container['config']->logging->paths->default)
-                    ? (string) $container['config']->logging->paths->default
-                    : null;
-            }
+        /** @var Configuration $configuration */
+        $configuration = $container['config'];
+
+        if ($output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
+            $logLevel = (string) $configuration->getLogging()->getLevel();
+        }
+
+        // null means the default is used
+        if (! $logPath) {
+            $paths = $configuration->getLogging()->getPaths();
+            $logPath = isset($paths['default']) ? (string) $paths['default'] : null;
         }
 
         $container->configureLogger($container['monolog'], $logLevel, $logPath);
