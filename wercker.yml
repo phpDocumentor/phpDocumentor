@@ -57,4 +57,4 @@ deploy:
         hide-from-log: true
     - script:
         name: Run ansible
-        code: ansible-playbook --tags=release -i $INVENTORY_PATH -u mvriel --private-key=$PRIVATEKEY_PATH ansible/playbook.yml
+        code: ansible-playbook --tags=release -i $INVENTORY_PATH -u mvriel --private-key=$PRIVATEKEY_PATH ansible/playbook.yml --extra-vars "release_type=minor"
