@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
-use Psr\Log\LogLevel;
-
 /**
  * Behaviour that adds support for the @covers tag
  */

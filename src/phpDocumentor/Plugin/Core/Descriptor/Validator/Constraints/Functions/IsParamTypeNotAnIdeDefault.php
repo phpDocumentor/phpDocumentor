@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a function has a default param type in the docblock present.
- *
- * @Annotation
  */
 class IsParamTypeNotAnIdeDefault extends Constraint
 {
     /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
     public $message = 'PPC:ERR-50018';
+
+    public $code = 50018;
 
     /**
      * Returns that the constraint can be put onto classes.

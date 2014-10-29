@@ -14,7 +14,6 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Application;
 

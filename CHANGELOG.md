@@ -1,3 +1,12 @@
+Unreleased
+----------
+
+```
+FIXED:     #423: Error report in responsive and responsive-twig template should hide empty results and update error
+           counter next to the filename.
+FIXED:     #573: Visibility filters in 'responsive' and 'responsive-twig' do not function properly
+```
+
 2014/08/18: Version 2.7.0
 -------------------------
 

@@ -4,7 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -197,11 +197,10 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         foreach ($filtersOnAllDescriptors as $filter) {
-            $filterManager->attach('phpDocumentor\Descriptor\ClassDescriptor', $filter);
-            $filterManager->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $filter);
-            $filterManager->attach('phpDocumentor\Descriptor\TraitDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\ConstantDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\FunctionDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\InterfaceDescriptor', $filter);
+            $filterManager->attach('phpDocumentor\Descriptor\TraitDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\PropertyDescriptor', $filter);
             $filterManager->attach('phpDocumentor\Descriptor\MethodDescriptor', $filter);
         }
@@ -223,7 +222,8 @@ class ServiceProvider implements ServiceProviderInterface
     {
         /** @var ClassMetadata $fileMetadata */
         $fileMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FileDescriptor');
-        $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
+        /** @var ClassMetadata $constantMetadata */
+        $constantMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\ConstantDescriptor');
         /** @var ClassMetadata $functionMetadata */
         $functionMetadata  = $validator->getMetadataFor('phpDocumentor\Descriptor\FunctionDescriptor');
         /** @var ClassMetadata $classMetadata */
@@ -250,9 +250,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsParamTypeNotAnIdeDefault());
-
-        $functionMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
-        $methodMetadata->addConstraint(new phpDocAssert\Functions\IsArgumentInDocBlock());
+        $functionMetadata->addConstraint(new phpDocAssert\Functions\AreAllArgumentsValid());
+        $methodMetadata->addConstraint(new phpDocAssert\Functions\AreAllArgumentsValid());
 
         $classMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
         $interfaceMetadata->addConstraint(new phpDocAssert\Classes\HasSinglePackage());
@@ -331,6 +330,7 @@ class ServiceProvider implements ServiceProviderInterface
                     $container['descriptor.filter'],
                     $container['validator']
                 );
+                $builder->setTranslator($container['translator']);
 
                 return $builder;
             }

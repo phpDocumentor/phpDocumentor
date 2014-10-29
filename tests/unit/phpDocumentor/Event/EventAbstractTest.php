@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Event;
 
-use Mockery as m;
 use phpDocumentor\Event\Mock\EventAbstract as EventAbstractMock;
 
 /**

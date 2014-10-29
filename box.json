@@ -56,9 +56,6 @@
         ]
     },
     "chmod": "0755",
-    "compactors": [
-        "Herrera\\Box\\Compactor\\Php"
-    ],
     "directories": [
         "src",
         "vendor/twig/twig/lib/Twig/Node/Expression/Test"
@@ -66,6 +63,7 @@
     "directories-bin": ["data"],
     "files": [
         "vendor/autoload.php",
+        "vendor/herrera-io/phar-update/res/schema.json",
         "VERSION"
     ],
     "finder": [
@@ -148,6 +146,7 @@
             ]
         }
     ],
+    "git-version": "package_version",
     "main": "bin/phpdoc",
     "output": "phpDocumentor.phar",
     "stub": true

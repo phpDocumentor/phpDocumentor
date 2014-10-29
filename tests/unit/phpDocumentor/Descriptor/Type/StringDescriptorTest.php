@@ -22,6 +22,6 @@ class StringDescriptorTest extends \PHPUnit_Framework_TestCase
         $fixture = new StringDescriptor();
 
         $this->assertSame('string', $fixture->getName());
-        $this->assertSame('string', (string)$fixture);
+        $this->assertSame('string', (string) $fixture);
     }
 }

@@ -48,7 +48,7 @@ abstract class EventAbstract extends Event
      *
      * @param object $subject
      *
-     * @return EventAbstract
+     * @return static
      */
     public static function createInstance($subject)
     {

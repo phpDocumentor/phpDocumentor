@@ -461,7 +461,7 @@ class FeatureContext extends BehatContext
         }
 
         $f = $config->createDocumentFragment();
-        $f->appendXML((string)$string);
+        $f->appendXML((string) $string);
         $el->appendChild($f);
 
         $config->save($this->getTempXmlConfigurationPath());
@@ -557,7 +557,7 @@ class FeatureContext extends BehatContext
             throw new Exception('Expression "' . $arg1 . '" does not match any content in the AST');
         }
 
-        if ($expressionResult != (string)$string) {
+        if ($expressionResult != (string) $string) {
             throw new Exception(var_export($expressionResult, true) . ' does not match \'' . $string . '\'');
         }
     }

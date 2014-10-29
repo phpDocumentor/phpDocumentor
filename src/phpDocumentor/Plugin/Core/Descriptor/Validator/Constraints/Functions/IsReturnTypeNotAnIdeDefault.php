@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a function has a default return type in the docblock present.
- *
- * @Annotation
  */
 class IsReturnTypeNotAnIdeDefault extends Constraint
 {
     /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
     public $message = 'PPC:ERR-50017';
+
+    public $code = 50017;
 
     /**
      * Returns that the constraint can be put onto classes.

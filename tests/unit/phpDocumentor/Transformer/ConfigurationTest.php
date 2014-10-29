@@ -11,14 +11,13 @@
 
 namespace phpDocumentor\Transformer;
 
-use Mockery as m;
 use phpDocumentor\Transformer\Configuration\ExternalClassDocumentation;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Configuration */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */

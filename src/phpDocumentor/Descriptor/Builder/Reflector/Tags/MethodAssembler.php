@@ -101,6 +101,7 @@ class MethodAssembler extends AssemblerAbstract
         $argumentDescriptor->setTypes($this->builder->buildDescriptor(new Collection(array($argumentType))));
         $argumentDescriptor->setName($argumentName[0] == '$' ? $argumentName : '$' . $argumentName);
         $argumentDescriptor->setDefault($argumentDefault);
+
         return $argumentDescriptor;
     }
 }

@@ -51,6 +51,7 @@ class Creator extends \ezcDocumentRstXhtmlBodyVisitor
     public function getFilenameWithoutExtension()
     {
         $filename = $this->getDocument()->getFile()->getFilename();
+
         return substr($filename, 0, strrpos($filename, '.'));
     }
 

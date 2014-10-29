@@ -1,6 +1,5 @@
 <?php
 
-
 namespace phpDocumentor\Transformer\Router;
 
 use phpDocumentor\Descriptor\Collection;

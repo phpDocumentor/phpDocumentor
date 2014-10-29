@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Console\Input;
 
-use Mockery as m;
-
 /**
  * Tests the functionality for the InputStream class for phpDocumentor.
  */

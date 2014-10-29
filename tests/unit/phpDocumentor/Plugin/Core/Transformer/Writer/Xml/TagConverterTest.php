@@ -50,7 +50,7 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertSame($resultName, $convertedElement->getAttribute('name'));
         $this->assertSame($resultDescription, $convertedElement->getAttribute('description'));
-        $this->assertSame((string)self::TEST_LINENUMBER, $convertedElement->getAttribute('line'));
+        $this->assertSame((string) self::TEST_LINENUMBER, $convertedElement->getAttribute('line'));
     }
 
     /**

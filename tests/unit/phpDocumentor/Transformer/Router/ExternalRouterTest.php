@@ -11,10 +11,8 @@
 
 namespace phpDocumentor\Transformer\Router;
 
-use Mockery as m;
 use phpDocumentor\Configuration;
 use phpDocumentor\Transformer\Configuration\ExternalClassDocumentation;
-use Zend\Config\Config;
 
 class ExternalRouterTest extends \PHPUnit_Framework_TestCase
 {

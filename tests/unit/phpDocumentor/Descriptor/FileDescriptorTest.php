@@ -266,11 +266,9 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
         $errorTraitsMethods       = array('error-traits-method');
         $errorFunctions           = array('error-functions');
 
-
         // setup global check
         $collection = new Collection($errorGlobal);
         $this->fixture->setErrors($collection);
-
 
         // setup class-property check
         $mockClassProperties = m::mock('phpDocumentor\Descriptor\PropertyDescriptor');
@@ -293,7 +291,6 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $this->fixture->getClasses()->set('my-test-class', $mockClasses);
 
-
         // setup interface-constant check
         $mockInterfaceConstants = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
         $mockInterfaceConstants->shouldReceive('getErrors')->andReturn(new Collection($errorInterfacesConstants));
@@ -310,7 +307,6 @@ class FileDescriptorTest extends \PHPUnit_Framework_TestCase
         $mockInterfaces->shouldReceive('getErrors')->andReturn(new Collection($errorInterfaces));
 
         $this->fixture->getClasses()->set('my-test-interface', $mockInterfaces);
-
 
         // setup traits-constant check
         $mockTraitsProperties = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');

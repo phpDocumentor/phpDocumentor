@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor;
+
 use Composer\Autoload\ClassLoader;
 
 /**
@@ -70,7 +71,7 @@ class Bootstrap
     public function registerProfiler()
     {
         // check whether xhprof is loaded
-        $profile = (bool)(getenv('PHPDOC_PROFILE') === 'on');
+        $profile = (bool) (getenv('PHPDOC_PROFILE') === 'on');
         $xhguiPath = getenv('XHGUI_PATH');
         if ($profile && $xhguiPath && extension_loaded('xhprof')) {
             echo 'PROFILING ENABLED' . PHP_EOL;
@@ -126,19 +127,23 @@ class Bootstrap
      *
      * If neither locations exist, then this method returns null because no vendor path could be found.
      *
+     * @param $baseDir parameter for test purposes only.
      * @return string|null
      */
-    public function findVendorPath()
+    public function findVendorPath($baseDir = __DIR__)
     {
         // default installation
-        $vendorDir = __DIR__ . '/../../vendor';
-
+        $vendorDir = $baseDir . '/../../vendor';
+        
         // Composerised installation, vendor/phpdocumentor/phpdocumentor/src/phpDocumentor is __DIR__
-        $rootFolderWhenInstalledWithComposer = __DIR__ . '/../../../../../';
-        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';
+        $rootFolderWhenInstalledWithComposer = $baseDir . '/../../../../../';
+        $composerConfigurationPath           = $rootFolderWhenInstalledWithComposer .'composer.json';        
         if (file_exists($composerConfigurationPath)) {
             $vendorDir = $rootFolderWhenInstalledWithComposer
                 . $this->getCustomVendorPathFromComposer($composerConfigurationPath);
+        } elseif (file_exists(getcwd() . DIRECTORY_SEPARATOR  . 'composer.json')) {
+            $vendorDir = getcwd() . DIRECTORY_SEPARATOR
+                . $this->getCustomVendorPathFromComposer(getcwd() . DIRECTORY_SEPARATOR  . 'composer.json');
         }
 
         return file_exists($vendorDir) ? $vendorDir : null;

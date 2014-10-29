@@ -133,6 +133,7 @@ class Toctree extends \ezcDocumentRstDirective implements \ezcDocumentRstXhtmlDi
     {
         $toc = $this->visitor->getTableOfContents();
         $name = $toc[$file_name]->getName();
+
         return $name ? $name : $file_name;
     }
 }

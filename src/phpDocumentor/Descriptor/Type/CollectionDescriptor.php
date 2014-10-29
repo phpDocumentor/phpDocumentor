@@ -131,12 +131,12 @@ class CollectionDescriptor implements TypeInterface
 
         $keyTypes = array();
         foreach ($this->getKeyTypes() as $type) {
-            $keyTypes[] = (string)$type;
+            $keyTypes[] = (string) $type;
         }
 
         $types = array();
         foreach ($this->getTypes() as $type) {
-            $types[] = (string)$type;
+            $types[] = (string) $type;
         }
 
         if (count($types) > 0) {

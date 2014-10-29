@@ -13,7 +13,6 @@ namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
@@ -29,7 +28,7 @@ use phpDocumentor\Translator\Translator;
  *
  * Functions:
  *
- * - *path(string)*, converts the given relative path to be based of the projects
+ * - *path(string) *, converts the given relative path to be based of the projects
  *   root instead of the current directory
  *
  * Filters:
@@ -211,6 +210,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                             if ($direction === 'asc' && $aElem > $bElem || $direction === 'desc' && $aElem < $bElem) {
                                 return 1;
                             }
+
                             return -1;
                         }
                     );
@@ -220,7 +220,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
             ),
         );
     }
-
 
     /**
      * Converts the given path to be relative to the root of the documentation

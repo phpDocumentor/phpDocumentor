@@ -47,6 +47,18 @@ class Logging
     }
 
     /**
+     * Sets the minimum output level for the logger.
+     *
+     * @param string $level
+     *
+     * @return void
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    /**
      * Returns the paths that determine where to store log files.
      *
      * phpDocumentor uses two types of log files to be able to sift through the logs more easily:
@@ -59,5 +71,19 @@ class Logging
     public function getPaths()
     {
         return $this->paths;
+    }
+
+    /**
+     * Registers the paths that determine where to store log files.
+     *
+     * @param \string[] $paths
+     *
+     * @see getPaths() for more information.
+     *
+     * @return void
+     */
+    public function setPaths($paths)
+    {
+        $this->paths = $paths;
     }
 }

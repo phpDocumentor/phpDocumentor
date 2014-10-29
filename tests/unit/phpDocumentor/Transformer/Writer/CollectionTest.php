@@ -27,7 +27,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
     /** @var MockInterface|Xsl */
     protected $writer;
-    
+
     /** @var Collection */
     protected $fixture;
     /**
@@ -39,7 +39,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->writer = m::mock('phpDocumentor\Plugin\Core\Transformer\Writer\Xsl');
         $this->fixture = new Collection($this->routers);
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Writer\Collection::__construct
      */
@@ -47,7 +47,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertAttributeSame($this->routers, 'routers', $this->fixture);
     }
-    
+
     /**
      * @expectedException \InvalidArgumentException
      * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
@@ -65,7 +65,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->fixture->offsetSet('i', $this->writer);
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Writer\Collection::offsetSet
      */
@@ -73,7 +73,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->writer->shouldReceive('setRouters')->once()->with($this->routers);
         $this->fixture->offsetSet('index', $this->writer);
-        
+
         $this->assertTrue(true);
     }
 
@@ -85,17 +85,17 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->fixture->offsetGet('nonExistingIndex');
     }
-    
+
     /**
      * @covers phpDocumentor\Transformer\Writer\Collection::offsetGet
      */
     public function testOffsetGetWithExistingIndex()
     {
         $this->registerWriter();
-        
+
         $this->assertSame($this->writer, $this->fixture->offsetGet('index'));
     }
-    
+
    /**
     * @covers phpDocumentor\Transformer\Writer\Collection::checkRequirements
     */
@@ -108,7 +108,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(true);
     }
-    
+
     /**
      * Registers a writer for tests that need a collection item
      */

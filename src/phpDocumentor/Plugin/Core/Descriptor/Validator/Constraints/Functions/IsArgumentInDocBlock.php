@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Validates whether a function has a missing argument in the docblock.
- *
- * @Annotation
  */
 class IsArgumentInDocBlock extends Constraint
 {
     /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
     public $message = 'PPC:ERR-50015';
+
+    public $code = 50015;
 
     /**
      * Returns that the constraint can be put onto classes.

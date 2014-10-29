@@ -83,7 +83,6 @@ class LegacyNamespaceFilter extends AbstractFilter
         return $namespace;
     }
 
-
     /**
      * Extracts the class name without prefix from the full class name.
      *

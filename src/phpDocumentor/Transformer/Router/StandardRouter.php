@@ -73,7 +73,7 @@ class StandardRouter extends RouterAbstract
         };
 
         // @codingStandardsIgnoreStart
-        $this[] = new Rule($stringRule, function(){ return false; });
+        $this[] = new Rule($stringRule, function () { return false; });
         $this[] = new Rule(function ($node) { return ($node instanceof FileDescriptor); }, $fileGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof PackageDescriptor); }, $packageGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof TraitDescriptor); }, $classGenerator);

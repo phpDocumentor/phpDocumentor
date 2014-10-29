@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 
 /**
@@ -176,6 +175,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         ) {
             /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
             $parentClass = $associatedClass->getParent();
+
             return $parentClass->getProperties()->get($this->getName());
         }
 

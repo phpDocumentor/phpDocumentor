@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Descriptor\Example;
 
-use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use Symfony\Component\Filesystem\Filesystem;

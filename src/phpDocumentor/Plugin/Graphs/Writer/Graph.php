@@ -72,6 +72,7 @@ class Graph extends WriterAbstract
             $this->checkIfGraphVizIsInstalled();
         } catch (\Exception $e) {
             echo $e->getMessage();
+
             return;
         }
 
@@ -80,7 +81,7 @@ class Graph extends WriterAbstract
         } else {
             $this->nodeFont = 'Courier';
         }
-        
+
         $filename = $this->getDestinationPath($transformation);
 
         $graph = GraphVizGraph::create()

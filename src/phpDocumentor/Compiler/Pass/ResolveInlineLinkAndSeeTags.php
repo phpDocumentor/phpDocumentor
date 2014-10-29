@@ -18,9 +18,7 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\RouterAbstract;
-use Psr\Log\LoggerInterface;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 
 /**
@@ -138,7 +136,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function isUrl($link)
     {
-        return (bool)preg_match('/^[\w]+:\/\/.+$/', $link);
+        return (bool) preg_match('/^[\w]+:\/\/.+$/', $link);
     }
 
     /**

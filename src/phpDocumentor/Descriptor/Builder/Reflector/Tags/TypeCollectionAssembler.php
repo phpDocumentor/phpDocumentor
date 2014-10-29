@@ -53,6 +53,7 @@ class TypeCollectionAssembler extends AssemblerAbstract
     {
         if (!$this->isArrayNotation($type)) {
             $className = $this->findClassNameForType($type);
+
             return $className ? new $className() : new UnknownTypeDescriptor($type);
         }
 

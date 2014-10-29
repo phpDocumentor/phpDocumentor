@@ -11,13 +11,11 @@
 
 namespace phpDocumentor\Parser;
 
-use Mockery as m;
-
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Configuration */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */
