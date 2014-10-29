@@ -24,6 +24,8 @@ use Symfony\Component\Filesystem\Filesystem;
  * supported is:
  *
  * * copy, copies a file or directory to the destination given in $artifact
+ * * append, copies a file or directory and appends it to the destination given in $artifact; if $artifact does not
+ *   exist yet it is created.
  */
 class FileIo extends WriterAbstract
 {
@@ -49,7 +51,8 @@ class FileIo extends WriterAbstract
         $method = 'executeQuery' . ucfirst($transformation->getQuery());
         if (!method_exists($this, $method)) {
             throw new \InvalidArgumentException(
-                'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
+                'The query ' . $method . ' is not supported by the FileIo writer, '
+                . 'supported operations are "copy" and "append"'
             );
         }
 
@@ -61,7 +64,8 @@ class FileIo extends WriterAbstract
      *
      * @param Transformation $transformation Transformation to use as data source.
      *
-     * @throws Exception
+     * @throws Exception if the source location cannot be read
+     * @throws Exception if the target location is not writable
      *
      * @return void
      */
@@ -82,5 +86,31 @@ class FileIo extends WriterAbstract
         } else {
             $filesystem->mirror($path, $transformation->getArtifact());
         }
+    }
+
+    /**
+     * Appends the contents of the source file to the target file.
+     *
+     * @param Transformation $transformation
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    public function executeQueryAppend(Transformation $transformation)
+    {
+        $target = $transformation->getArtifact();
+        $path = $transformation->getSourceAsPath();
+
+        if (!is_readable($path)) {
+            throw new Exception('Unable to read the source file: ' . $path);
+        }
+        if (!is_file($target)) {
+            throw new Exception(
+                'Unable to write to "' . $target . '", expected a file but received a folder'
+            );
+        }
+
+        file_put_contents($target, file_get_contents($path), FILE_APPEND);
     }
 }
