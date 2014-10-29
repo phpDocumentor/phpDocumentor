@@ -67,6 +67,7 @@ class PathResolverTest extends \PHPUnit_Framework_TestCase
             vfsStream::url('root/templatePath') . DIRECTORY_SEPARATOR . 'myTemplate',
             $this->fixture->resolve('vfs://root/myFolder/myTemplate')
         );
+        $this->assertTrue(file_exists('vfs://root/templatePath/myTemplate/template.xml'));
     }
 
     /**
