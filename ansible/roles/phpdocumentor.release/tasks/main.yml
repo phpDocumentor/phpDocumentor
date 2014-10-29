@@ -10,7 +10,7 @@
   shell: "{{ item }}"
   with_items:
       - wget -nc https://github.com/mvriel/Versioner/releases/download/1.0.0/versioner.phar
-      - php versioner.phar increment -p={{ release_type }} VERSION
+      - php versioner.phar increment -p {{ release_type }} VERSION
       - rm versioner.phar
   args: { chdir: release }
 
