@@ -72,7 +72,7 @@
   args: { chdir: release }
 
 - name: Archive new phar to archive folder
-  shell: mv phpDocumentor.phar /opt/artifacts/phpdoc.org/phar/phpDocumentor-{{ VERSION.stdout }}.phar
+  shell: cp /var/www/phpdoc.org/web/phpDocumentor.phar /opt/artifacts/phpdoc.org/phar/phpDocumentor-{{ VERSION.stdout }}.phar
   args: { chdir: release }
 
 - name: Update symlink to latest phar file
