@@ -2,6 +2,9 @@ Unreleased
 ----------
 
 ```
+ADDED:     JSONP writer; this enabled template authors to output a JSONP representation of a project
+ADDED:     'append' query action to the FileIO writer; using this template authors can combine multiple files into one
+FIXED:     HHVM compatibility
 ```
 
 2014-10-29: Version 2.8.0
