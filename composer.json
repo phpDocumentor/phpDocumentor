@@ -29,7 +29,7 @@
         "symfony/config":           "~2.3",
         "jms/serializer":           "~0.12",
 
-        "herrera-io/phar-update":   "~1.0",
+        "herrera-io/phar-update": "1.0.3",
 
         "zendframework/zend-stdlib":         "~2.1",
         "zendframework/zend-servicemanager": "~2.1",
@@ -73,7 +73,7 @@
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "extra": {
         "branch-alias": {
-            "dev-develop": "2.6-dev"
+            "dev-develop": "2.9-dev"
         }
     }
 }
