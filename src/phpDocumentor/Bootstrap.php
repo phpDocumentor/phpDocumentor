@@ -173,7 +173,7 @@ class Bootstrap
      */
     protected function addDomPdfConfig($vendorPath)
     {
-        if (! \Phar::running()) {
+        if (! method_exists('Phar', 'running') || ! \Phar::running()) {
             defined('DOMPDF_ENABLE_AUTOLOAD') or define('DOMPDF_ENABLE_AUTOLOAD', false);
             require_once($vendorPath . '/dompdf/dompdf/dompdf_config.inc.php');
         }
