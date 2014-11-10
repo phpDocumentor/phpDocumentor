@@ -124,6 +124,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->thenWriterWasRegistered($mockCollection, 'statistics', $writerNamespace . 'Statistics');
         $this->thenWriterWasRegistered($mockCollection, 'xml', $writerNamespace . 'Xml');
         $this->thenWriterWasRegistered($mockCollection, 'xsl', $writerNamespace . 'Xsl');
+        $this->thenWriterWasRegistered($mockCollection, 'jsonp', $writerNamespace . 'Jsonp');
     }
 
     /**
