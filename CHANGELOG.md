@@ -2,9 +2,24 @@ Unreleased
 ----------
 
 ```
+```
+
+2014-10-29: Version 2.8.0
+-------------------------
+
+```
+ADDED:     Argument "--cache-folder" to indicate where the cache is stored
+ADDED:     `phpdoc self-update` command to the PHAR archive to update phpDocumentor with a single command
 FIXED:     #423: Error report in responsive and responsive-twig template should hide empty results and update error
            counter next to the filename.
 FIXED:     #573: Visibility filters in 'responsive' and 'responsive-twig' do not function properly
+FIXED:     Several scrutinizer reported clean ups
+FIXED:     If tmp was somewhere in path it would be incorrectly replaced
+FIXED:     Several tests were added
+FIXED:     It is now possible to install phpDocumentor using composer in a project using ZF 2.3 or higher
+FIXED:     Fatal error: Call to a member function getParent() on a non-object in ConstantDescriptor.php
+FIXED:     Fatal error: Call to a member function getParent() on a non-object in PropertyDescriptor.php
+REMOVED:   Knp menu from composer.json because it was not used
 ```
 
 2014/08/18: Version 2.7.0
