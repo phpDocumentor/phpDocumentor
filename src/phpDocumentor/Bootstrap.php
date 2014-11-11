@@ -141,9 +141,6 @@ class Bootstrap
         if (file_exists($composerConfigurationPath)) {
             $vendorDir = $rootFolderWhenInstalledWithComposer
                 . $this->getCustomVendorPathFromComposer($composerConfigurationPath);
-        } elseif (file_exists(getcwd() . DIRECTORY_SEPARATOR  . 'composer.json')) {
-            $vendorDir = getcwd() . DIRECTORY_SEPARATOR
-                . $this->getCustomVendorPathFromComposer(getcwd() . DIRECTORY_SEPARATOR  . 'composer.json');
         }
 
         return file_exists($vendorDir) ? $vendorDir : null;
