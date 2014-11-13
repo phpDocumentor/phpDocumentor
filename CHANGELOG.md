@@ -4,6 +4,13 @@ Unreleased
 ```
 ```
 
+2014-11-13: Version 2.8.1
+-------------------------
+
+```
+FIXED:     Fatal error in phar file when used from a folder containing a composer.json
+```
+
 2014-10-29: Version 2.8.0
 -------------------------
 
