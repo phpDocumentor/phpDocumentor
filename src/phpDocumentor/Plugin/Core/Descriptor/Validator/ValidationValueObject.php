@@ -21,8 +21,8 @@ class ValidationValueObject extends \ArrayObject
         'parameters' => '',
         'fqsen' => '',
         'name' => '',
-        'index' => '',
-        'key' => '',
+        'index' => 0,
+        'key' => 0,
     );
 
     public function __get($name)
