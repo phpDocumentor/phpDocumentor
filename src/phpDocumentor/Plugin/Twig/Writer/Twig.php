@@ -148,7 +148,7 @@ class Twig extends WriterAbstract implements Routable
 
         $env = new \Twig_Environment(
             new \Twig_Loader_Filesystem($templateFolders),
-            array('cache' => sys_get_temp_dir() . '/phpdoc-twig-cache')
+            array('cache' => sys_get_temp_dir() . '/phpdoc-twig-cache', 'auto_reload' => true)
         );
 
         $this->addPhpDocumentorExtension($project, $transformation, $destination, $env);
