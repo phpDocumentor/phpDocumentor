@@ -97,7 +97,12 @@ class Rule
 
             // only encode and transliterate that which comes before the anchor
             $subparts = explode('#', $part);
-            $subparts[0] = urlencode(iconv('UTF-8', 'ASCII//TRANSLIT', $subparts[0]));
+            
+            if (extension_loaded('iconv')) {
+                $subparts[0] = iconv('UTF-8', 'ASCII//TRANSLIT', $subparts[0]);
+            }
+            $subparts[0] = urlencode($subparts[0]);
+            
             $part = implode('#', $subparts);
         }
 
