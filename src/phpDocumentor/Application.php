@@ -23,6 +23,7 @@ use Monolog\Logger;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -74,6 +75,9 @@ class Application extends Cilex
         $this->register(new Transformer\ServiceProvider());
         $this->register(new Plugin\ServiceProvider());
 
+        $this['descriptor.builder.initializers']->addInitializer(
+            new DefaultValidators($this['descriptor.analyzer']->getValidator())
+        );
         $this['descriptor.builder.initializers']->initialize($this['descriptor.analyzer']);
 
         $this->addCommandsForProjectNamespace();
