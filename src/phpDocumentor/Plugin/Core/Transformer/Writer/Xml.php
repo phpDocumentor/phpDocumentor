@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter;
@@ -338,7 +339,7 @@ class Xml extends WriterAbstract implements Translatable
         $child->setAttribute('final', $class->isFinal() ? 'true' : 'false');
         $child->setAttribute('abstract', $class->isAbstract() ? 'true' : 'false');
 
-        $parentFqcn = is_string($class->getParent())
+        $parentFqcn = !$class->getParent() instanceof DescriptorAbstract
             ? $class->getParent()
             : $class->getParent()->getFullyQualifiedStructuralElementName();
         $child->appendChild(new \DOMElement('extends', $parentFqcn));

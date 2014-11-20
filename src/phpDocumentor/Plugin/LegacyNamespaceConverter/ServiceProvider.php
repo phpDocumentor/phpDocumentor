@@ -15,7 +15,7 @@ use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Descriptor\Filter\Filter;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 
 /**
  * Converts all underscored class names into namespaces.
@@ -53,20 +53,20 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $this->addNamespaceFilter($app['descriptor.builder'], $app['descriptor.filter']);
+        $this->addNamespaceFilter($app['descriptor.analyzer'], $app['descriptor.filter']);
     }
 
     /**
      * Attaches the filter responsible for the conversion to all structural elements.
      *
-     * @param ProjectDescriptorBuilder $builder
-     * @param Filter                   $filterManager
+     * @param Analyzer $analyzer
+     * @param Filter   $filterManager
      *
      * @return void
      */
-    private function addNamespaceFilter(ProjectDescriptorBuilder $builder, Filter $filterManager)
+    private function addNamespaceFilter(Analyzer $analyzer, Filter $filterManager)
     {
-        $filter = new LegacyNamespaceFilter($builder);
+        $filter = new LegacyNamespaceFilter($analyzer);
 
         // parse parameters
         foreach ($this->plugin->getParameters() as $param) {

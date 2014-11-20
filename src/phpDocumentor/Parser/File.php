@@ -12,7 +12,7 @@
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
@@ -21,7 +21,7 @@ use phpDocumentor\Reflection\FileReflector;
 use Psr\Log\LogLevel;
 
 /**
- * Parses a single file into a FileDescriptor and adds it to the given ProjectBuilder.
+ * Parses a single file into a FileDescriptor and adds it to the given Analyzer.
  */
 class File
 {
@@ -39,14 +39,14 @@ class File
     }
 
     /**
-     * Parses the file identified by the given filename and passes the resulting FileDescriptor to the ProjectBuilder.
+     * Parses the file identified by the given filename and passes the resulting FileDescriptor to the Analyzer.
      *
-     * @param string                   $filename
-     * @param ProjectDescriptorBuilder $builder
+     * @param string   $filename
+     * @param Analyzer $analyzer
      *
      * @return void
      */
-    public function parse($filename, ProjectDescriptorBuilder $builder)
+    public function parse($filename, Analyzer $analyzer)
     {
         if (class_exists('phpDocumentor\Event\Dispatcher')) {
             Dispatcher::getInstance()->dispatch(
@@ -57,15 +57,15 @@ class File
         $this->log('Starting to parse file: ' . $filename);
 
         try {
-            $file = $this->createFileReflector($builder, $filename);
+            $file = $this->createFileReflector($analyzer, $filename);
             if (!$file) {
                 $this->log('>> Skipped file ' . $filename . ' as no modifications were detected');
                 return;
             }
 
             $file->process();
-            $builder->buildFileUsingSourceData($file);
-            $this->logErrorsForDescriptor($builder->getProjectDescriptor()->getFiles()->get($file->getFilename()));
+            $analyzer->analyze($file);
+            $this->logErrorsForDescriptor($analyzer->getProjectDescriptor()->getFiles()->get($file->getFilename()));
         } catch (Exception $e) {
             $this->log(
                 '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
@@ -77,20 +77,20 @@ class File
     /**
      * Creates a new FileReflector for the given filename or null if the file contains no modifications.
      *
-     * @param ProjectDescriptorBuilder $builder
-     * @param string                   $filename
+     * @param Analyzer $analyzer
+     * @param string   $filename
      *
      * @return FileReflector|null Returns a new FileReflector or null if no modifications were detected for the given
      *     filename.
      */
-    protected function createFileReflector(ProjectDescriptorBuilder $builder, $filename)
+    protected function createFileReflector(Analyzer $analyzer, $filename)
     {
         $file = new FileReflector($filename, $this->parser->doValidation(), $this->parser->getEncoding());
         $file->setDefaultPackageName($this->parser->getDefaultPackageName());
         $file->setMarkers($this->parser->getMarkers());
         $file->setFilename($this->getRelativeFilename($filename));
 
-        $cachedFiles = $builder->getProjectDescriptor()->getFiles();
+        $cachedFiles = $analyzer->getProjectDescriptor()->getFiles();
         $hash        = $cachedFiles->get($file->getFilename())
             ? $cachedFiles->get($file->getFilename())->getHash()
             : null;

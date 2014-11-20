@@ -82,7 +82,7 @@ final class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * Registers the Routing Queue and Descriptor Builder objects on the XSLT Extension class.
+     * Registers the Routing Queue and Descriptor Analyzer objects on the XSLT Extension class.
      *
      * In every template we use PHP helpers in order to be able to have routing that is universal between templates and
      * convert Markdown text into HTML (for example). The only way for XSL to do this is by having global functions or
@@ -97,7 +97,7 @@ final class ServiceProvider implements ServiceProviderInterface
     private function registerDependenciesOnXsltExtension(Application $app)
     {
         Xslt\Extension::$routers = $app['transformer.routing.queue'];
-        Xslt\Extension::$descriptorBuilder = $app['descriptor.builder'];
+        Xslt\Extension::$analyzer = $app['descriptor.analyzer'];
     }
 
     /**

@@ -74,6 +74,8 @@ class Application extends Cilex
         $this->register(new Transformer\ServiceProvider());
         $this->register(new Plugin\ServiceProvider());
 
+        $this['descriptor.builder.initializers']->initialize($this['descriptor.analyzer']);
+
         $this->addCommandsForProjectNamespace();
 
         if (\Phar::running()) {

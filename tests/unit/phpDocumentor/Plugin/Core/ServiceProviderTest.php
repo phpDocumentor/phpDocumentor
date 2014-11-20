@@ -61,7 +61,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->fixture->register($mockApplication);
 
         $this->assertSame($mockRouterQueue, Xslt\Extension::$routers);
-        $this->assertSame($mockDescriptorBuilder, Xslt\Extension::$descriptorBuilder);
+        $this->assertSame($mockDescriptorBuilder, Xslt\Extension::$analyzer);
     }
 
     /**

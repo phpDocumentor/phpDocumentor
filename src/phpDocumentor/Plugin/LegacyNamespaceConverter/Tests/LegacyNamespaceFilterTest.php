@@ -4,7 +4,7 @@ namespace phpDocumentor\Plugin\LegacyNamespaceConverter\Tests;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Plugin\LegacyNamespaceConverter\LegacyNamespaceFilter;
 
 /**
@@ -15,8 +15,8 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
     /** @var LegacyNamespaceFilter */
     private $filter;
 
-    /** @var ProjectDescriptorBuilder|m\MockInterface $builder */
-    protected $builderMock;
+    /** @var Analyzer|m\MockInterface $analyzer */
+    protected $analyzerMock;
 
     /**
      * Initializes the fixture and mocks any dependencies.
@@ -25,8 +25,8 @@ class LegacyNamespaceFilterTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->filter      = new LegacyNamespaceFilter($this->builderMock);
+        $this->analyzerMock = m::mock('phpDocumentor\Descriptor\Analyzer');
+        $this->filter       = new LegacyNamespaceFilter($this->analyzerMock);
     }
 
     /**
