@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d9ad7d25caaff952e9ce55079deb0518",
+    "hash": "f83ebee7d2b91c0d6a2b837d652d9d70",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -1000,12 +1000,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "73703c23f1e883a89c7bf2b5bd9c1a8e7290df95"
+                "reference": "713a851c053e23f11c84d117e4c66b04e6318140"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/73703c23f1e883a89c7bf2b5bd9c1a8e7290df95",
-                "reference": "73703c23f1e883a89c7bf2b5bd9c1a8e7290df95",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/713a851c053e23f11c84d117e4c66b04e6318140",
+                "reference": "713a851c053e23f11c84d117e4c66b04e6318140",
                 "shasum": ""
             },
             "require": {
@@ -1050,7 +1050,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2014-11-20 05:48:15"
+            "time": "2014-11-20 07:32:07"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -3937,7 +3937,7 @@
     },
     "prefer-stable": false,
     "platform": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.0"
     },
     "platform-dev": []
 }
