@@ -193,7 +193,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
      */
     protected function givenABuilderMock()
     {
-        return m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder')->shouldIgnoreMissing();
+        return m::mock('phpDocumentor\Descriptor\Analyzer')->shouldIgnoreMissing();
     }
 
     /**

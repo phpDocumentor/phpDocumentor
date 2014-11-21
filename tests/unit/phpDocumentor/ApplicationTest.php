@@ -97,9 +97,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Application::__construct
      */
-    public function testIfDescriptorBuilderIsRegistered()
+    public function testIfAnalyzerIsRegistered()
     {
-        $this->assertTrue(isset($this->fixture['descriptor.builder']));
+        $this->assertTrue(isset($this->fixture['descriptor.analyzer']));
     }
 
     /**
