@@ -29,16 +29,16 @@ use phpDocumentor\Descriptor\FileDescriptor;
 class StandardRouter extends RouterAbstract
 {
     /** @var Analyzer */
-    private $Analyzer;
+    private $analyzer;
 
     /**
      * Initializes this router with a list of all elements.
      *
-     * @param Analyzer $Analyzer
+     * @param Analyzer $analyzer
      */
-    public function __construct(Analyzer $Analyzer)
+    public function __construct(Analyzer $analyzer)
     {
-        $this->Analyzer = $Analyzer;
+        $this->analyzer = $analyzer;
 
         parent::__construct();
     }
@@ -50,7 +50,7 @@ class StandardRouter extends RouterAbstract
      */
     public function configure()
     {
-        $Analyzer = $this->Analyzer;
+        $analyzer = $this->analyzer;
 
         $fileGenerator      = new UrlGenerator\Standard\FileDescriptor();
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
@@ -63,8 +63,8 @@ class StandardRouter extends RouterAbstract
 
         // Here we cheat! If a string element is passed to this rule then we try to transform it into a Descriptor
         // if the node is translated we do not let it match and instead fall through to one of the other rules.
-        $stringRule = function (&$node) use ($Analyzer) {
-            $elements = $Analyzer->getProjectDescriptor()->getIndexes()->get('elements');
+        $stringRule = function (&$node) use ($analyzer) {
+            $elements = $analyzer->getProjectDescriptor()->getIndexes()->get('elements');
             if (is_string($node) && isset($elements[$node])) {
                 $node = $elements[$node];
             };
