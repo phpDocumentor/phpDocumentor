@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -28,17 +28,17 @@ use phpDocumentor\Descriptor\FileDescriptor;
  */
 class StandardRouter extends RouterAbstract
 {
-    /** @var ProjectDescriptorBuilder */
-    private $projectDescriptorBuilder;
+    /** @var Analyzer */
+    private $analyzer;
 
     /**
      * Initializes this router with a list of all elements.
      *
-     * @param ProjectDescriptorBuilder $projectDescriptorBuilder
+     * @param Analyzer $analyzer
      */
-    public function __construct(ProjectDescriptorBuilder $projectDescriptorBuilder)
+    public function __construct(Analyzer $analyzer)
     {
-        $this->projectDescriptorBuilder = $projectDescriptorBuilder;
+        $this->analyzer = $analyzer;
 
         parent::__construct();
     }
@@ -50,7 +50,7 @@ class StandardRouter extends RouterAbstract
      */
     public function configure()
     {
-        $projectDescriptorBuilder = $this->projectDescriptorBuilder;
+        $analyzer = $this->analyzer;
 
         $fileGenerator      = new UrlGenerator\Standard\FileDescriptor();
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
@@ -63,8 +63,8 @@ class StandardRouter extends RouterAbstract
 
         // Here we cheat! If a string element is passed to this rule then we try to transform it into a Descriptor
         // if the node is translated we do not let it match and instead fall through to one of the other rules.
-        $stringRule = function (&$node) use ($projectDescriptorBuilder) {
-            $elements = $projectDescriptorBuilder->getProjectDescriptor()->getIndexes()->get('elements');
+        $stringRule = function (&$node) use ($analyzer) {
+            $elements = $analyzer->getProjectDescriptor()->getIndexes()->get('elements');
             if (is_string($node) && isset($elements[$node])) {
                 $node = $elements[$node];
             };

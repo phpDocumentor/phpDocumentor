@@ -13,10 +13,10 @@ namespace phpDocumentor\Parser\Command\Project;
 
 use phpDocumentor\Command\Command;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
@@ -41,8 +41,8 @@ class ParseCommand extends Command
     /** @var Collection */
     private $files;
 
-    /** @var ProjectDescriptorBuilder $builder*/
-    protected $builder;
+    /** @var Analyzer $analyzer*/
+    protected $analyzer;
 
     /** @var Parser $parser */
     protected $parser;
@@ -50,9 +50,9 @@ class ParseCommand extends Command
     /** @var Translator */
     protected $translator;
 
-    public function __construct($builder, $parser, $translator, $files)
+    public function __construct($analyzer, $parser, $translator, $files)
     {
-        $this->builder    = $builder;
+        $this->analyzer    = $analyzer;
         $this->parser     = $parser;
         $this->translator = $translator;
         $this->files      = $files;
@@ -61,15 +61,15 @@ class ParseCommand extends Command
     }
 
     /**
-     * @return ProjectDescriptorBuilder
+     * @return Analyzer
      */
-    public function getBuilder()
+    public function getAnalyzer()
     {
-        return $this->builder;
+        return $this->analyzer;
     }
 
     /**
-     * @return \phpDocumentor\Parser\Parser
+     * @return Parser
      */
     public function getParser()
     {
@@ -159,9 +159,9 @@ class ParseCommand extends Command
         }
         $this->getCache()->getOptions()->setCacheDir($target);
 
-        $builder = $this->getBuilder();
-        $builder->createProjectDescriptor();
-        $projectDescriptor = $builder->getProjectDescriptor();
+        $analyzer = $this->getAnalyzer();
+        $analyzer->createProjectDescriptor();
+        $projectDescriptor = $analyzer->getProjectDescriptor();
 
         $output->write($this->__('PPCPP:LOG-COLLECTING'));
         $files = $this->getFileCollection($input);
@@ -220,7 +220,7 @@ class ParseCommand extends Command
             }
             $projectDescriptor->getSettings()->setVisibility($visibility);
 
-            $this->getParser()->parse($builder, $files);
+            $this->getParser()->parse($analyzer, $files);
         } catch (FilesNotFoundException $e) {
             throw new \Exception($this->__('PPCPP:EXC-NOFILES'));
         } catch (\Exception $e) {
@@ -253,7 +253,7 @@ class ParseCommand extends Command
 
         $parser = $this->getParser();
         $title = (string) $configurationHelper->getOption($input, 'title', 'title');
-        $this->getBuilder()->getProjectDescriptor()->setName($title ?: 'API Documentation');
+        $this->getAnalyzer()->getProjectDescriptor()->setName($title ?: 'API Documentation');
         $parser->setForced($input->getOption('force'));
         $parser->setEncoding($configurationHelper->getOption($input, 'encoding', 'parser/encoding'));
         $parser->setMarkers($configurationHelper->getOption($input, 'markers', 'parser/markers', array(), true));

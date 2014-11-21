@@ -11,10 +11,9 @@
         }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4.0",
 
         "cilex/cilex":        "~1.0",
-        "symfony/validator":  "~2.2",
         "symfony/console":    "~2.3",
         "dompdf/dompdf":      "~0.6",
 
@@ -41,8 +40,7 @@
 
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",
-        "phpdocumentor/reflection":          "~1.0",
-        "phpdocumentor/reflection-docblock": "~2.0",
+        "phpdocumentor/reflection":          "dev-develop",
 
         "phpdocumentor/template-abstract":        "~1.2",
         "phpdocumentor/template-clean":           "~1.0",
@@ -73,7 +71,7 @@
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "extra": {
         "branch-alias": {
-            "dev-develop": "2.9-dev"
+            "dev-develop": "3.0-dev"
         }
     }
 }

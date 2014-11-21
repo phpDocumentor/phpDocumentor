@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Xslt;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Transformer\Router\Queue;
 
 /**
@@ -19,8 +19,8 @@ use phpDocumentor\Transformer\Router\Queue;
  */
 class Extension
 {
-    /** @var ProjectDescriptorBuilder */
-    public static $descriptorBuilder;
+    /** @var Analyzer */
+    public static $analyzer;
 
     /**
      * @var Queue
@@ -71,7 +71,7 @@ class Extension
      */
     public static function path($fqsen)
     {
-        $projectDescriptor = self::$descriptorBuilder->getProjectDescriptor();
+        $projectDescriptor = self::$analyzer->getProjectDescriptor();
         $elementList = $projectDescriptor->getIndexes()->get('elements');
 
         $node = $fqsen;

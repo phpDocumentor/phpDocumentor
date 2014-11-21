@@ -45,7 +45,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $mockApplication       = $this->givenAnApplication($mockCollection, $mockLogger);
         $mockRouterQueue       = $this->givenARouterQueue($mockApplication);
         $mockTranslator        = $this->givenATranslator($mockApplication);
-        $mockDescriptorBuilder = $this->givenAProjectDescriptorBuilder($mockApplication);
+        $mockDescriptorBuilder = $this->givenAnAnalyzer($mockApplication);
 
         $this->thenATranslationFolderIsAdded($mockTranslator);
 
@@ -61,7 +61,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->fixture->register($mockApplication);
 
         $this->assertSame($mockRouterQueue, Xslt\Extension::$routers);
-        $this->assertSame($mockDescriptorBuilder, Xslt\Extension::$descriptorBuilder);
+        $this->assertSame($mockDescriptorBuilder, Xslt\Extension::$analyzer);
     }
 
     /**
@@ -161,19 +161,19 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates and returns a mock of the ProjectDescriptorBuilder and instructs the Service Locator to return it on
+     * Creates and returns a mock of the Analyzer and instructs the Service Locator to return it on
      * request.
      *
      * @param m\MockInterface $mockApplication
      *
      * @return m\MockInterface
      */
-    private function givenAProjectDescriptorBuilder($mockApplication)
+    private function givenAnAnalyzer($mockApplication)
     {
-        $mockDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $mockDescriptorBuilder = m::mock('phpDocumentor\Descriptor\Analyzer');
         $mockApplication
             ->shouldReceive('offsetGet')
-            ->with('descriptor.builder')
+            ->with('descriptor.analyzer')
             ->once()
             ->andReturn($mockDescriptorBuilder);
 

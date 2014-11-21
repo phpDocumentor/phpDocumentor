@@ -12,7 +12,7 @@
 namespace phpDocumentor\Command\Project;
 
 use phpDocumentor\Command\Command;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -278,9 +278,9 @@ HELP
         }
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            /** @var ProjectDescriptorBuilder $descriptorBuilder */
-            $descriptorBuilder = $this->getService('descriptor.builder');
-            file_put_contents('ast.dump', serialize($descriptorBuilder->getProjectDescriptor()));
+            /** @var Analyzer $analyzer */
+            $analyzer = $this->getService('descriptor.analyzer');
+            file_put_contents('ast.dump', serialize($analyzer->getProjectDescriptor()));
         }
 
         return 0;

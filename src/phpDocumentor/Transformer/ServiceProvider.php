@@ -22,7 +22,7 @@ use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
@@ -41,14 +41,14 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
      *
      * @param Application $app An Application instance.
      *
-     * @throws Exception\MissingDependencyException if the application does not have a descriptor.builder service.
+     * @throws Exception\MissingDependencyException if the application does not have a descriptor.analyzer service.
      * @throws Exception\MissingDependencyException if the application does not have a serializer service.
      */
     public function register(Application $app)
     {
-        if (!isset($app['descriptor.builder'])) {
+        if (!isset($app['descriptor.analyzer'])) {
             throw new Exception\MissingDependencyException(
-                'The builder object that is used to construct the ProjectDescriptor is missing'
+                'The analyzer object that is used to construct the ProjectDescriptor is missing'
             );
         }
         if (!isset($app['serializer'])) {
@@ -119,7 +119,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
                 $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
                 $compiler->insert(
-                    new Debug($container['monolog'], $container['descriptor.analyzer']),
+                    new Debug($container['monolog'], $container['descriptor.project.analyzer']),
                     Debug::COMPILER_PRIORITY
                 );
 
@@ -141,10 +141,10 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $app['transformer.routing.standard'] = $app->share(
             function ($container) {
-                /** @var ProjectDescriptorBuilder $projectDescriptorBuilder */
-                $projectDescriptorBuilder = $container['descriptor.builder'];
+                /** @var Analyzer $analyzer */
+                $analyzer = $container['descriptor.analyzer'];
 
-                return new Router\StandardRouter($projectDescriptorBuilder);
+                return new Router\StandardRouter($analyzer);
             }
         );
         $app['transformer.routing.external'] = $app->share(
@@ -193,7 +193,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             }
         );
 
-        $app->command(new TransformCommand($app['descriptor.builder'], $app['transformer'], $app['compiler']));
+        $app->command(new TransformCommand($app['descriptor.analyzer'], $app['transformer'], $app['compiler']));
         $app->command(new ListCommand($app['transformer.template.factory']));
     }
 

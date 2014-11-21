@@ -16,7 +16,7 @@ use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -45,8 +45,8 @@ use Zend\Cache\Storage\StorageInterface;
  */
 class TransformCommand extends Command
 {
-    /** @var ProjectDescriptorBuilder $builder Object containing the project meta-data and AST */
-    protected $builder;
+    /** @var Analyzer $analyzer Object containing the project meta-data and AST */
+    protected $analyzer;
 
     /** @var Transformer $transformer Principal object for guiding the transformation process */
     protected $transformer;
@@ -57,15 +57,15 @@ class TransformCommand extends Command
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      *
-     * @param ProjectDescriptorBuilder $builder
-     * @param Transformer              $transformer
-     * @param Compiler                 $compiler
+     * @param Analyzer    $analyzer
+     * @param Transformer $transformer
+     * @param Compiler    $compiler
      */
-    public function __construct(ProjectDescriptorBuilder $builder, Transformer $transformer, Compiler $compiler)
+    public function __construct(Analyzer $analyzer, Transformer $transformer, Compiler $compiler)
     {
         parent::__construct('project:transform');
 
-        $this->builder     = $builder;
+        $this->analyzer    = $analyzer;
         $this->transformer = $transformer;
         $this->compiler    = $compiler;
     }
@@ -124,13 +124,13 @@ TEXT
     }
 
     /**
-     * Returns the builder object containing the AST and other meta-data.
+     * Returns the analyzer object containing the AST and other meta-data.
      *
-     * @return ProjectDescriptorBuilder
+     * @return Analyzer
      */
-    public function getBuilder()
+    public function getAnalyzer()
     {
-        return $this->builder;
+        return $this->analyzer;
     }
 
     /**
@@ -180,7 +180,7 @@ TEXT
 
         $this->getCache()->getOptions()->setCacheDir($source);
 
-        $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
+        $projectDescriptor = $this->getAnalyzer()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
         $output->writeTimedLog('Load cache', array($mapper, 'populate'), array($projectDescriptor));
 

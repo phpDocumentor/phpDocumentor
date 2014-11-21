@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Fileset\Collection;
@@ -292,10 +292,10 @@ class Parser implements LoggerAwareInterface
     }
 
     /**
-     * Iterates through the given files feeds them to the builder.
+     * Iterates through the given files feeds them to the analyzer.
      *
-     * @param ProjectDescriptorBuilder $builder
-     * @param Collection               $files   A files container to parse.
+     * @param Analyzer   $analyzer
+     * @param Collection $files   A files container to parse.
      *
      * @api
      *
@@ -303,11 +303,11 @@ class Parser implements LoggerAwareInterface
      *
      * @return bool|string
      */
-    public function parse(ProjectDescriptorBuilder $builder, Collection $files)
+    public function parse(Analyzer $analyzer, Collection $files)
     {
         $this->startTimingTheParsePhase();
 
-        $this->forceRebuildIfSettingsHaveModified($builder);
+        $this->forceRebuildIfSettingsHaveModified($analyzer);
 
         $paths = $this->getFilenames($files);
 
@@ -316,13 +316,13 @@ class Parser implements LoggerAwareInterface
 
         $memory = 0;
         foreach ($paths as $filename) {
-            $this->parseFileIntoDescriptor($builder, $filename);
+            $this->parseFileIntoDescriptor($analyzer, $filename);
             $memory = $this->logAfterParsingAFile($memory);
         }
 
         $this->logAfterParsingAllFiles();
 
-        return $builder->getProjectDescriptor();
+        return $analyzer->getProjectDescriptor();
     }
 
     /**
@@ -348,27 +348,27 @@ class Parser implements LoggerAwareInterface
     /**
      * Parses a file and creates a Descriptor for it in the project.
      *
-     * @param ProjectDescriptorBuilder $builder
-     * @param string                   $filename
+     * @param Analyzer $analyzer
+     * @param string   $filename
      *
      * @return void
      */
-    protected function parseFileIntoDescriptor(ProjectDescriptorBuilder $builder, $filename)
+    protected function parseFileIntoDescriptor(Analyzer $analyzer, $filename)
     {
         $parser = new File($this);
-        $parser->parse($filename, $builder);
+        $parser->parse($filename, $analyzer);
     }
 
     /**
      * Checks if the settings of the project have changed and forces a complete rebuild if they have.
      *
-     * @param ProjectDescriptorBuilder $builder
+     * @param Analyzer $analyzer
      *
      * @return void
      */
-    protected function forceRebuildIfSettingsHaveModified(ProjectDescriptorBuilder $builder)
+    protected function forceRebuildIfSettingsHaveModified(Analyzer $analyzer)
     {
-        if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
+        if ($analyzer->getProjectDescriptor()->getSettings()->isModified()) {
             $this->setForced(true);
             $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
         }

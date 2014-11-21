@@ -12,7 +12,7 @@
 namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\Analyzer;
 use Zend\Filter\AbstractFilter;
 
 /**
@@ -26,20 +26,20 @@ use Zend\Filter\AbstractFilter;
  */
 class LegacyNamespaceFilter extends AbstractFilter
 {
-    /** @var ProjectDescriptorBuilder $builder */
-    protected $builder;
+    /** @var Analyzer $analyzer */
+    protected $analyzer;
 
     /** @var string */
     private $namespacePrefix='';
 
     /**
-     * Initializes this filter with an instance of the builder to retrieve the latest ProjectDescriptor from.
+     * Initializes this filter with an instance of the analyzer to retrieve the latest ProjectDescriptor from.
      *
-     * @param ProjectDescriptorBuilder $builder
+     * @param Analyzer $analyzer
      */
-    public function __construct(ProjectDescriptorBuilder $builder)
+    public function __construct(Analyzer $analyzer)
     {
-        $this->builder = $builder;
+        $this->analyzer = $analyzer;
     }
 
     /**

@@ -29,15 +29,15 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @param Application $app An Application instance
      *
-     * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
+     * @throws Exception\MissingDependencyException if the Descriptor Analyzer is not present.
      *
      * @return void
      */
     public function register(Application $app)
     {
-        if (!isset($app['descriptor.builder'])) {
+        if (!isset($app['descriptor.analyzer'])) {
             throw new Exception\MissingDependencyException(
-                'The builder object that is used to construct the ProjectDescriptor is missing'
+                'The analyzer object that is used to construct the ProjectDescriptor is missing'
             );
         }
 
@@ -62,7 +62,7 @@ class ServiceProvider implements ServiceProviderInterface
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $app['parser.files'] = new Collection();
-        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator, $app['parser.files']));
+        $app->command(new ParseCommand($app['descriptor.analyzer'], $app['parser'], $translator, $app['parser.files']));
     }
 
     /**
