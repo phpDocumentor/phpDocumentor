@@ -32,7 +32,7 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new MethodAssembler();
-        $this->fixture->setBuilder($this->builder);
+        $this->fixture->setAnalyzer($this->builder);
     }
 
     /**

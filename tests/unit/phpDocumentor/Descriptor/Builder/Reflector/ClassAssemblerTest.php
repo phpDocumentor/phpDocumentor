@@ -31,7 +31,7 @@ class ClassAssemblerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new ClassAssembler();
-        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
+        $this->fixture->setAnalyzer($this->getProjectDescriptorBuilderMock());
     }
 
     /**

@@ -133,7 +133,7 @@ class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
         $fileDescriptor->shouldReceive('getPath')->andReturn('abc');
 
         $fileAssembler = m::mock('stdClass');
-        $fileAssembler->shouldReceive('setBuilder')->withAnyArgs();
+        $fileAssembler->shouldReceive('setAnalyzer')->withAnyArgs();
         $fileAssembler->shouldReceive('create')
             ->with('phpDocumentor\Reflection\FileReflector')
             ->andReturn($fileDescriptor);

@@ -23,7 +23,7 @@ class ThrowsAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ThrowsAssembler();
-        $this->fixture->setBuilder($this->builder);
+        $this->fixture->setAnalyzer($this->builder);
     }
 
     /**

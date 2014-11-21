@@ -33,7 +33,7 @@ class FileAssemblerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fixture = new FileAssembler();
-        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock());
+        $this->fixture->setAnalyzer($this->getProjectDescriptorBuilderMock());
     }
 
     /**

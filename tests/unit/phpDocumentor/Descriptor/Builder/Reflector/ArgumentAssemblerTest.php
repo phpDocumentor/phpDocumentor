@@ -34,7 +34,7 @@ class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $this->builderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
         $this->fixture = new ArgumentAssembler();
-        $this->fixture->setBuilder($this->builderMock);
+        $this->fixture->setAnalyzer($this->builderMock);
     }
 
     /**

@@ -38,7 +38,7 @@ class FunctionAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
 
         $this->fixture = new FunctionAssembler($this->argumentAssemblerMock);
-        $this->fixture->setBuilder($this->builderMock);
+        $this->fixture->setAnalyzer($this->builderMock);
     }
 
     /**
