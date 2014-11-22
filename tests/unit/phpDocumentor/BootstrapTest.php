@@ -74,13 +74,13 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Bootstrap::findVendorPath
      */
-    public function testFindVendorPathStandAloneInstallIfThereIsAVendorInCurrentDirectory()
+    public function testFindVendorPathStandAloneInstall()
     {
         vfsStream::setup('root', null, $this->standaloneStructure);
         $bootstrap = Bootstrap::createInstance();
 
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
-        $this->assertSame(getcwd() . '/vendor', $bootstrap->findVendorPath($baseDir));
+        $this->assertSame('vfs://root/dummy/src/phpDocumentor/../../vendor', $bootstrap->findVendorPath($baseDir));
     }
 
     /**
