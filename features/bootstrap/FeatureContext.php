@@ -9,8 +9,8 @@
  * @link      http://phpdoc.org
  */
 
-use Behat\Behat\Context\BehatContext;
-use Behat\Behat\Exception\PendingException;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -19,7 +19,7 @@ use Symfony\Component\Process\Process;
 /**
  * Context class for the phpDocumentor Features.
  */
-class FeatureContext extends BehatContext
+class FeatureContext implements Context
 {
     /** @var Process the process used to execute phpDocumentor */
     protected $process;
@@ -548,27 +548,26 @@ class FeatureContext extends BehatContext
     /**
      * @Then /^the AST has an expression "([^"]*)" with value:$/
      */
-    public function theAstHasAnExpressionWithValue($arg1, PyStringNode $string)
+    public function theAstHasAnExpressionWithValuePyString($expression, PyStringNode $value)
     {
-        $expression = new ExpressionLanguage();
-        $expressionResult = $expression->evaluate($arg1, array('project' => $this->getAst()));
-
-        if ($expressionResult === null) {
-            throw new Exception('Expression "' . $arg1 . '" does not match any content in the AST');
-        }
-
-        if ($expressionResult != (string) $string) {
-            throw new Exception(var_export($expressionResult, true) . ' does not match \'' . $string . '\'');
-        }
+        $this->theAstHasAnExpressionWithValue($expression, $value->getRaw());
     }
 
     /**
      * @Then /^the AST has an expression "([^"]*)" with value: "([^"]*)"$/
      */
-    public function theAstHasAnExpressionWithValue2($arg1, $arg2)
+    public function theAstHasAnExpressionWithValue($expression, $value)
     {
-        $string = new PyStringNode($arg2);
-        $this->theAstHasAnExpressionWithValue($arg1, $string);
+        $expressionLanguage = new ExpressionLanguage();
+        $expressionResult = $expressionLanguage->evaluate($expression, array('project' => $this->getAst()));
+
+        if ($expressionResult === null) {
+            throw new Exception('Expression "' . $expression . '" does not match any content in the AST');
+        }
+
+        if ($expressionResult != (string) $value) {
+            throw new Exception(var_export($expressionResult, true) . ' does not match \'' . $value . '\'');
+        }
     }
 
     /**

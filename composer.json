@@ -56,7 +56,7 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "behat/behat":        "~2.4",
+        "behat/behat":        "~3.0",
         "phpunit/phpunit":    "~4.0",
         "mockery/mockery":    "~0.9@dev",
         "mikey179/vfsStream": "~1.2",
