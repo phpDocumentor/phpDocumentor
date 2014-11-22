@@ -15,7 +15,7 @@ matrix:
 
 script:
  - bin/phpunit
-# - bin/behat --no-paths --format failed
+ - bin/behat --no-paths --format failed
 
 before_script:
  - sudo apt-get -qq update > /dev/null
@@ -24,7 +24,7 @@ before_script:
  - composer selfupdate --quiet
  - composer install --no-interaction --prefer-source --dev
  - bin/phpunit
-# - bin/behat --no-paths --format failed
+ - bin/behat --no-paths --format failed
  - composer update --no-interaction --prefer-source --dev
 
 notifications:

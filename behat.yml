@@ -1,0 +1,4 @@
+default:
+    gherkin:
+        filters:
+            tags: ~@todo
