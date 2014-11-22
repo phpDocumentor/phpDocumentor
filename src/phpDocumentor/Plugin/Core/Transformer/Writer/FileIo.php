@@ -78,9 +78,9 @@ class FileIo extends WriterAbstract
 
         $filesystem = new Filesystem();
         if (is_file($path)) {
-            $filesystem->copy($path, $transformation->getArtifact());
+            $filesystem->copy($path, $transformation->getArtifact(), true);
         } else {
-            $filesystem->mirror($path, $transformation->getArtifact());
+            $filesystem->mirror($path, $transformation->getArtifact(), null, array('override' => true));
         }
     }
 }
