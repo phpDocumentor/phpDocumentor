@@ -2,6 +2,8 @@
 bin/behat
 bin/phpcs
 bin/phpunit
+bin/jsonlint
+bin/validate-json
 build.properties
 build/*
 .buildpath
