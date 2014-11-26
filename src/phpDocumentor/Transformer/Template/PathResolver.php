@@ -42,11 +42,6 @@ class PathResolver
             $filesystem = new Filesystem();
             $filesystem->mirror($path, $cachePath);
             $path = $cachePath;
-
-            // transform all directory separators to underscores and lowercase
-            $nameOrPath = strtolower(
-                str_replace(DIRECTORY_SEPARATOR, '_', rtrim($nameOrPath, DIRECTORY_SEPARATOR))
-            );
         }
 
         // if we load a default template
