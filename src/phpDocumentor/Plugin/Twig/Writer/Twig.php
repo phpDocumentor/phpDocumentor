@@ -297,13 +297,16 @@ class Twig extends WriterAbstract implements Routable
                 if (extension_loaded('iconv')) {
                     $filepart = iconv('UTF-8', 'ASCII//TRANSLIT', $filepart);
                 }
-                $filepart = urlencode($filepart);
+                $filepart = strpos($filepart, '/') !== false
+                    ? implode('/', array_map('urlencode', explode('/', $filepart)))
+                    : implode('\\', array_map('urlencode', explode('\\', $filepart)));
 
                 return $filepart;
             },
             $path
         );
 
+        var_dump($destination);
         // replace any \ with the directory separator to be compatible with the
         // current filesystem and allow the next file_exists to do its work
         $destination = str_replace(array('/','\\'), DIRECTORY_SEPARATOR, $destination);
