@@ -17,7 +17,7 @@ use phpDocumentor\Configuration\Merger\Annotation as Merger;
 /**
  * Configuration definition for the parser.
  */
-class Configuration
+final class Configuration
 {
     /**
      * @var string name of the package when there is no @package tag defined.
@@ -25,28 +25,28 @@ class Configuration
      * @Serializer\Type("string")
      * @Serializer\SerializedName("default-package-name")
      */
-    protected $defaultPackageName = 'global';
+    private $defaultPackageName = 'global';
 
     /**
      * @var string destination location for the parser's output cache
      *
      * @Serializer\Type("string")
      */
-    protected $target;
+    private $target;
 
     /**
-     * @var string which visibilities to include in the docs, May be public, protected, private
+     * @var string which visibilities to include in the docs, May be public, private, private
      *
      * @Serializer\Type("string")
      */
-    protected $visibility = 'public,protected,private';
+    private $visibility = 'public,private,private';
 
     /**
      * @var string default encoding of the files that are parsed.
      *
      * @Serializer\Type("string")
      */
-    protected $encoding = 'utf-8';
+    private $encoding = 'utf-8';
 
     /**
      * @var string[] $markers a list of codes that can be used at the beginning of a comment to have it mentioned in
@@ -56,7 +56,7 @@ class Configuration
      * @Serializer\XmlList(entry = "item")
      * @Merger\Replace
      */
-    protected $markers = array('TODO', 'FIXME');
+    private $markers = array('TODO', 'FIXME');
 
     /**
      * @var string[] $extensions A list of supported file extensions used to limit the number of files to be
@@ -66,7 +66,7 @@ class Configuration
      * @Serializer\XmlList(entry = "extension")
      * @Merger\Replace
      */
-    protected $extensions = array('php', 'php3', 'phtml');
+    private $extensions = array('php', 'php3', 'phtml');
 
     /**
      * Returns the package name that will be given to elements when there is no `@package` tag defined or inherited.
@@ -139,7 +139,7 @@ class Configuration
      * Returns a comma-separated list of visibilities that can be used to restrict which elements are included in the
      * documentation.
      *
-     * The following values are supported: public, protected and private.
+     * The following values are supported: public, private and private.
      *
      * @return string
      */

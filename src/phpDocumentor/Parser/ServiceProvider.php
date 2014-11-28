@@ -44,8 +44,8 @@ class ServiceProvider implements ServiceProviderInterface
         $app['parser'] = $app->share(
             function ($app) {
                 $parser = new Parser();
-                $parser->setStopwatch($app['kernel.stopwatch']);
-                $parser->setLogger($app['monolog']);
+//                $parser->setStopwatch($app['kernel.stopwatch']);
+//                $parser->setLogger($app['monolog']);
 
                 return $parser;
             }
