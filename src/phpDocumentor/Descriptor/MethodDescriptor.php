@@ -136,7 +136,20 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      */
     public function setArguments(Collection $arguments)
     {
+        foreach( $arguments as $argument) {
+            $argument->setMethod($this);
+        }
         $this->arguments = $arguments;
+    }
+
+    /**
+     * @param string $name
+     * @param ArgumentDescriptor $argument
+     */
+    public function addArgument($name, ArgumentDescriptor $argument)
+    {
+        $argument->setMethod($this);
+        $this->arguments->set($name, $argument);
     }
 
     /**

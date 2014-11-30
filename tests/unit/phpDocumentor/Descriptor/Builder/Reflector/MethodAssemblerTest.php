@@ -149,7 +149,7 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $argumentMock = m::mock('phpDocumentor\Descriptor\ArgumentDescriptor');
         $argumentMock->shouldReceive('getName')->andReturn($argumentName);
-
+        $argumentMock->shouldReceive('setMethod');
         $this->argumentAssemblerMock->shouldReceive('create')->andReturn($argumentMock);
 
         return $argumentMock;

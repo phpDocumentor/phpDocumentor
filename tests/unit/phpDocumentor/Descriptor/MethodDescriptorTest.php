@@ -51,6 +51,7 @@ class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $this->fixture->getArguments());
 
         $mock = m::mock('phpDocumentor\Descriptor\Collection');
+        $mock->shouldReceive('getIterator')->andReturn(new \ArrayIterator(array()));
 
         $this->fixture->setArguments($mock);
 
