@@ -100,6 +100,9 @@ class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($description, $result);
     }
 
+    /**
+     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getTypes
+     */
     public function testTypeIsInheritedWhenNoneIsPresent()
     {
         // Arrange
