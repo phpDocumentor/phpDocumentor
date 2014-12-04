@@ -151,7 +151,7 @@ class Merger
         // if a property is annotated with the 'Replace' annotation then we null the destination location,
         // causing the value from source to be copied as-is to the destination object instead of merging it.
         // but only if the value that is to-be-copied is actually copied
-        if ($this->shouldPropertyBeReplaced($destinationProperty)) {
+        if ($this->shouldPropertyBeReplaced($destinationProperty) && $sourceValue) {
             $destinationValue = null;
         }
 
