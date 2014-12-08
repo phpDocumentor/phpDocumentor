@@ -35,11 +35,11 @@ final class Configuration
     private $target;
 
     /**
-     * @var string which visibilities to include in the docs, May be public, private, private
+     * @var string which visibilities to include in the docs, May be public, protected, private
      *
      * @Serializer\Type("string")
      */
-    private $visibility = 'public,private,private';
+    private $visibility = 'public,protected,private';
 
     /**
      * @var string default encoding of the files that are parsed.
