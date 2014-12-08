@@ -1,6 +1,6 @@
 <?php
 
-namespace phpDocumentor\Parser\Backend;
+namespace phpDocumentor\Plugin\Scrybe\Parser\Backend;
 
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Parser\Backend;

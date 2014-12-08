@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Plugin\Scrybe\Converter\Definition\Factory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
 use phpDocumentor\Plugin\Scrybe\Descriptor\Builder\DocbookAssembler;
+use phpDocumentor\Plugin\Scrybe\Parser\Backend\Document;
 
 /**
  * Creates and binds the components for the generation of manuals.
@@ -42,6 +43,13 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $this->registerAssemblers($app);
+
+        $app['parser'] = $app->extend(
+            'parser',
+            function ($parser) use ($app) {
+                return $parser->registerBackend(new Document($app['descriptor.analyzer']));
+            }
+        );
 
         $app[self::TEMPLATE_FOLDER] = realpath(__DIR__ . '/data/templates/');
         $app[self::CONVERTERS] = array(
