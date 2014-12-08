@@ -145,7 +145,7 @@ final class Configuration
      * Returns a comma-separated list of visibilities that can be used to restrict which elements are included in the
      * documentation.
      *
-     * The following values are supported: public, private and private.
+     * The following values are supported: public, protected and private.
      *
      * @return string
      */
