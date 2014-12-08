@@ -106,13 +106,14 @@ final class ParseCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $configuration = $this->populateConfiguration($input);
-        $this->parser->boot($configuration);
+        $this->parser->boot($configuration->getParser());
 
         $this->exampleFinder->setSourceDirectory($this->parser->getFiles()->getProjectRoot());
         $this->exampleFinder->setExampleDirectories($configuration->getFiles()->getExamples());
 
         $progress = $this->startProgressbar($input, $output, $this->parser->getFiles()->count());
         $projectDescriptor = $this->parser->parse($this->parser->getFiles());
+        $projectDescriptor->setName($configuration->getTitle());
         $this->finishProgressbar($progress);
 
         $projectDescriptor->setPartials($this->getService('partials'));
@@ -172,6 +173,11 @@ final class ParseCommand extends Command
         if ($input->getOption('force')) {
             $configuration->getParser()->setShouldRebuildCache(true);
         }
+
+        // We add the files configuration because it should actually belong there, simplifies the interface but
+        // removing it is a rather serious BC break. By using a non-serialized setter/property in the parser config
+        // and setting the files config on it we can simplify this interface.
+        $configuration->getParser()->setFiles($configuration->getFiles());
 
         return $configuration;
     }

@@ -58,8 +58,8 @@ class Cache
         $files         = $event->getArgument('files');
         $configuration = $event->getArgument('configuration');
 
-        $this->setLocation($configuration->getParser()->getTarget());
-        if ($configuration->getParser()->shouldRebuildCache()) {
+        $this->setLocation($configuration->getTarget());
+        if ($configuration->shouldRebuildCache()) {
             $this->clear();
         }
         $this->load($files, $event->getSubject());

@@ -99,11 +99,11 @@ final class Parser
     /**
      * Initializes this parser and its backends using the provided configuration.
      *
-     * @param \phpDocumentor\Configuration $configuration
+     * @param Configuration $configuration
      *
      * @return $this
      */
-    public function boot(\phpDocumentor\Configuration $configuration)
+    public function boot(Configuration $configuration)
     {
         $projectDescriptor = $this->createProject($configuration);
         $this->files = $this->scanForFiles($configuration);
@@ -185,14 +185,14 @@ final class Parser
     }
 
     /**
-     * @param \phpDocumentor\Configuration $configuration
+     * @param Configuration $configuration
+     *
      * @return ProjectDescriptor
      */
-    private function createProject(\phpDocumentor\Configuration $configuration)
+    private function createProject(Configuration $configuration)
     {
         $this->getAnalyzer()->createProjectDescriptor();
         $projectDescriptor = $this->getAnalyzer()->getProjectDescriptor();
-        $projectDescriptor->setName($configuration->getTitle());
 
         $map = array(
             'public' => ProjectDescriptor\Settings::VISIBILITY_PUBLIC,
@@ -202,7 +202,7 @@ final class Parser
             'internal' => ProjectDescriptor\Settings::VISIBILITY_INTERNAL
         );
 
-        $visibilities = explode(',', $configuration->getParser()->getVisibility());
+        $visibilities = explode(',', $configuration->getVisibility());
         $visibility = null;
         foreach ($visibilities as $item) {
             if (!$item) {
@@ -217,11 +217,11 @@ final class Parser
     }
 
     /**
-     * @param \phpDocumentor\Configuration $configuration
+     * @param Configuration $configuration
      * @return Collection
      * @throws \Exception
      */
-    private function scanForFiles(\phpDocumentor\Configuration $configuration)
+    private function scanForFiles(Configuration $configuration)
     {
         $fileset = $this->fileset ?: new Fileset();
         try {

@@ -75,6 +75,12 @@ final class Configuration
     private $shouldRebuildCache = false;
 
     /**
+     * @Serializer\Exclude
+     * @var Configuration\Files $files
+     */
+    private $files;
+
+    /**
      * Returns the package name that will be given to elements when there is no `@package` tag defined or inherited.
      *
      * @return string
@@ -216,5 +222,21 @@ final class Configuration
     public function setShouldRebuildCache($shouldRebuildCache)
     {
         $this->shouldRebuildCache = $shouldRebuildCache;
+    }
+
+    /**
+     * @return Configuration\Files
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param Configuration\Files $files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
     }
 }

@@ -6,6 +6,7 @@ use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Builder\PhpParser\FileAssembler;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Parser\Backend;
+use phpDocumentor\Parser\Configuration;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -36,9 +37,9 @@ final class Php implements Backend
         $this->dispatcher = $dispatcher;
     }
 
-    public function boot(\phpDocumentor\Configuration $configuration)
+    public function boot(Configuration $configuration)
     {
-        $this->extensions = $configuration->getParser()->getExtensions();
+        $this->extensions = array('php', 'phtml', 'php3');
 
         $this->setAssemblerConfiguration($configuration);
     }
@@ -79,15 +80,15 @@ final class Php implements Backend
     }
 
     /**
-     * @param \phpDocumentor\Configuration $configuration
+     * @param Configuration $configuration
      */
-    private function setAssemblerConfiguration(\phpDocumentor\Configuration $configuration)
+    private function setAssemblerConfiguration(Configuration $configuration)
     {
         $fileAssembler = $this->analyzer->getAssemblerFactory(new \SplFileObject(__FILE__));
         if ($fileAssembler instanceof FileAssembler) {
-            $fileAssembler->setDefaultPackageName($configuration->getParser()->getDefaultPackageName());
-            $fileAssembler->setEncoding($configuration->getParser()->getEncoding());
-            $fileAssembler->setMarkerTerms($configuration->getParser()->getMarkers());
+            $fileAssembler->setDefaultPackageName($configuration->getDefaultPackageName());
+            $fileAssembler->setEncoding($configuration->getEncoding());
+            $fileAssembler->setMarkerTerms($configuration->getMarkers());
         }
     }
 }

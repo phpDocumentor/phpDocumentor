@@ -4,6 +4,7 @@ namespace phpDocumentor\Plugin\Scrybe\Parser\Backend;
 
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Parser\Backend;
+use phpDocumentor\Parser\Configuration;
 
 final class Document implements Backend
 {
@@ -18,7 +19,7 @@ final class Document implements Backend
         $this->analyzer = $analyzer;
     }
 
-    public function boot(\phpDocumentor\Configuration $configuration)
+    public function boot(Configuration $configuration)
     {
     }
 

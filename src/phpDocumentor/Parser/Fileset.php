@@ -19,13 +19,13 @@ class Fileset
      * Populates the given file collection based on the configuration and returns it.
      *
      * @param Collection $collection
-     * @param \phpDocumentor\Configuration $configuration
+     * @param Configuration $configuration
      *
      * @return Collection
      */
-    public function populate(Collection $collection, \phpDocumentor\Configuration $configuration)
+    public function populate(Collection $collection, Configuration $configuration)
     {
-        $collection->setAllowedExtensions($configuration->getParser()->getExtensions());
+        $collection->setAllowedExtensions($configuration->getExtensions());
         $collection->setIgnorePatterns($configuration->getFiles()->getIgnore());
         $collection->setIgnoreHidden($configuration->getFiles()->isIgnoreHidden());
         $collection->setFollowSymlinks(! $configuration->getFiles()->isIgnoreSymlinks());
