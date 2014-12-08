@@ -23,6 +23,7 @@ use Zend\Filter\AbstractFilter;
  *
  * @author david0 <https://github.com/david0> this plugin was generously provided by `@david0`.
  * @link   https://github.com/phpDocumentor/phpDocumentor2/pull/1135
+ * @TODO   Zend Filter is gone; change this class into a normal filter
  */
 class LegacyNamespaceFilter extends AbstractFilter
 {

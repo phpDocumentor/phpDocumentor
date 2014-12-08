@@ -207,7 +207,7 @@ abstract class ValidatorAbstract
     /**
      * Returns the configuration for this object.
      *
-     * @return \Zend\Config\Config
+     * @return \phpDocumentor\Configuration
      */
     public function getConfiguration()
     {

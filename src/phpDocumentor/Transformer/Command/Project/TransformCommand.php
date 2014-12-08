@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Transformer\Command\Project;
 
+use Desarrolla2\Cache\Adapter\AdapterInterface;
+use Desarrolla2\Cache\Adapter\File;
+use Desarrolla2\Cache\CacheInterface;
 use phpDocumentor\Command\Command;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
@@ -29,7 +32,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Transforms the structure file into the specified output format
@@ -178,7 +180,7 @@ TEXT
             throw new \Exception('Invalid source location provided, a path to an existing folder was expected');
         }
 
-        $this->getCache()->getOptions()->setCacheDir($source);
+        $this->getCache()->setAdapter(new File($source));
 
         $projectDescriptor = $this->getAnalyzer()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
@@ -216,7 +218,7 @@ TEXT
     /**
      * Returns the Cache.
      *
-     * @return StorageInterface
+     * @return CacheInterface
      */
     protected function getCache()
     {
