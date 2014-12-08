@@ -104,6 +104,18 @@ class Configuration
     }
 
     /**
+     * Registers the title for the generated documentation.
+     *
+     * @param string $title
+     *
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
      * Returns the configuration related to which files are to be parsed.
      *
      * @return Parser\Configuration\Files
