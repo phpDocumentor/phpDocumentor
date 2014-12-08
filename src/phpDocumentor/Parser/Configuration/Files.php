@@ -149,4 +149,52 @@ class Files
     {
         return $this->examples;
     }
+
+    /**
+     * @param \string[] $directories
+     */
+    public function setDirectories($directories)
+    {
+        $this->directories = $directories;
+    }
+
+    /**
+     * @param \string[] $examples
+     */
+    public function setExamples($examples)
+    {
+        $this->examples = $examples;
+    }
+
+    /**
+     * @param \string[] $files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
+    }
+
+    /**
+     * @param \string[] $ignore
+     */
+    public function setIgnore($ignore)
+    {
+        $this->ignore = $ignore;
+    }
+
+    /**
+     * @param boolean $ignoreHidden
+     */
+    public function setIgnoreHidden($ignoreHidden)
+    {
+        $this->ignoreHidden = $ignoreHidden;
+    }
+
+    /**
+     * @param boolean $ignoreSymlinks
+     */
+    public function setIgnoreSymlinks($ignoreSymlinks)
+    {
+        $this->ignoreSymlinks = $ignoreSymlinks;
+    }
 }

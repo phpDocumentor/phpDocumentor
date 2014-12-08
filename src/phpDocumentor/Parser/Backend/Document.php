@@ -5,7 +5,7 @@ namespace phpDocumentor\Parser\Backend;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Parser\Backend;
 
-final class Document implements Handler
+final class Document implements Backend
 {
     /** @var string[] */
     private $extensions = array('md', 'rst');
@@ -58,7 +58,7 @@ final class Document implements Handler
             default:
                 throw new \RuntimeException(
                     'The file extension ' . $file->getExtension() . ' is currently not supported by the Document Parser'
-                    . ' Handler'
+                    . ' Backend'
                 );
         }
         return $document;

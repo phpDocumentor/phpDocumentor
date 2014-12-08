@@ -1,57 +1,235 @@
 <?php
+/**
+ * phpDocumentor
+ *
+ * PHP Version 5.3
+ *
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
 
 namespace phpDocumentor\Parser;
 
+use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Fileset\Collection;
-use Psr\Log\LoggerAwareTrait;
+use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class Parser
 {
-    /** @var Handler[] */
-    private $handlers;
+    const EVENT_FILES_COLLECTED       = 'parser.files.collected';
+    const EVENT_BACKEND_BOOTED        = 'parser.backend.booted';
+    const EVENT_BOOTED                = 'parser.booted';
+    const EVENT_PARSE_FILE_BEFORE     = 'parser.file.pre';
+    const EVENT_PARSE_FILE_AFTER      = 'parser.file.post';
+    const EVENT_PARSE_FILE_NO_BACKEND = 'parser.file.noBackend';
+    const EVENT_COMPLETED             = 'parser.completed';
 
-    public function registerHandler(Handler $handler)
-    {
-        $this->handlers[] = $handler;
-    }
+    /** @var Fileset|null */
+    private $fileset;
 
-    public function parse(Collection $files, \phpDocumentor\Configuration $configuration)
+    /** @var Backend[] */
+    private $backend;
+
+    /** @var EventDispatcherInterface|null */
+    private $dispatcher;
+
+    /** @var Analyzer */
+    private $analyzer;
+
+    /** @var \phpDocumentor\Fileset\Collection */
+    private $files;
+
+    public function __construct(Analyzer $analyzer, Fileset $fileset = null)
     {
-        $this->bootHandlers($configuration);
-        $this->parseFiles($files);
+        $this->analyzer = $analyzer;
+        $this->fileset = $fileset;
     }
 
     /**
-     * @param Configuration $configuration
+     * Registers the mediator that will inform any attached listeners of events occurring in this parser.
+     *
+     * @param EventDispatcherInterface $dispatcher
+     *
+     * @return $this
      */
-    private function bootHandlers(\phpDocumentor\Configuration $configuration)
+    public function registerEventDispatcher(EventDispatcherInterface $dispatcher)
     {
-        foreach ($this->handlers as $handler) {
-            $handler->boot($configuration);
+        $this->dispatcher = $dispatcher;
+
+        return $this;
+    }
+
+    /**
+     * Registers a single parser backend to process a specific type of file with.
+     *
+     * The backend for a parser is able to handle a specific file type, interpret its contents and register the analyzed
+     * output in a central location. phpDocumentor's backends write the analyzed output to the Project Descriptor using
+     * the Analyzer in the Reflection component.
+     *
+     * Custom backends may be able to write to their own collectors and analyzers. This parser was explicitly designed
+     * to allow that.
+     *
+     * @see \phpDocumentor\Descriptor\Analyzer
+     * @see \phpDocumentor\Descriptor\ProjectDescriptor
+     *
+     * @param Backend $backend
+     *
+     * @return $this
+     */
+    public function registerBackend(Backend $backend)
+    {
+        $this->backend[] = $backend;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * Initializes this parser and its backends using the provided configuration.
+     *
+     * @param \phpDocumentor\Configuration $configuration
+     *
+     * @return $this
+     */
+    public function boot(\phpDocumentor\Configuration $configuration)
+    {
+        $projectDescriptor = $this->createProject($configuration);
+        $this->files = $this->scanForFiles($configuration);
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(self::EVENT_FILES_COLLECTED, new GenericEvent($this->files));
         }
-    }
 
-    /**
-     * @param Collection $files
-     */
-    private function parseFiles(Collection $files)
-    {
-        /** @var \SplFileInfo $file */
-        foreach ($files as $file) {
-            $this->parseFile($file);
-        }
-    }
+        foreach ($this->backend as $backend) {
+            $backend->boot($configuration);
 
-    /**
-     * @param $file
-     */
-    private function parseFile($file)
-    {
-        foreach ($this->handlers as $handler) {
-            if ($handler->matches($file)) {
-                $handler->parse($file->openFile());
-                continue;
+            if ($this->dispatcher) {
+                $this->dispatcher->dispatch(self::EVENT_BACKEND_BOOTED, new GenericEvent($backend));
             }
         }
+
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(
+                self::EVENT_BOOTED,
+                new GenericEvent($projectDescriptor, array('files' => $this->files, 'configuration' => $configuration))
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \SplFileInfo[] $files
+     */
+    public function parse()
+    {
+        foreach ($this->files as $file) {
+            $this->parseFile($file);
+        }
+
+        $projectDescriptor = $this->analyzer->getProjectDescriptor();
+        $projectDescriptor->getSettings()->clearModifiedFlag();
+
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(self::EVENT_COMPLETED, new GenericEvent($projectDescriptor));
+        }
+
+        return $projectDescriptor;
+    }
+
+    /**
+     * @return Analyzer
+     */
+    private function getAnalyzer()
+    {
+        return $this->analyzer;
+    }
+
+    /**
+     * @param \SplFileInfo $file
+     */
+    private function parseFile(\SplFileInfo $file)
+    {
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(
+                self::EVENT_PARSE_FILE_BEFORE,
+                (new PreFileEvent($this))->setFile($file->getPath())
+            );
+        }
+
+        foreach ($this->backend as $backend) {
+            if ($backend->matches($file)) {
+                $backend->parse($file->openFile());
+
+                if ($this->dispatcher) {
+                    $this->dispatcher->dispatch(self::EVENT_PARSE_FILE_AFTER, new GenericEvent($file));
+                }
+                return;
+            }
+        }
+
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(self::EVENT_PARSE_FILE_NO_BACKEND, new GenericEvent($file));
+        }
+    }
+
+    /**
+     * @param \phpDocumentor\Configuration $configuration
+     * @return ProjectDescriptor
+     */
+    private function createProject(\phpDocumentor\Configuration $configuration)
+    {
+        $this->getAnalyzer()->createProjectDescriptor();
+        $projectDescriptor = $this->getAnalyzer()->getProjectDescriptor();
+        $projectDescriptor->setName($configuration->getTitle());
+
+        $map = array(
+            'public' => ProjectDescriptor\Settings::VISIBILITY_PUBLIC,
+            'protected' => ProjectDescriptor\Settings::VISIBILITY_PROTECTED,
+            'private' => ProjectDescriptor\Settings::VISIBILITY_PRIVATE,
+            'default' => ProjectDescriptor\Settings::VISIBILITY_DEFAULT,
+            'internal' => ProjectDescriptor\Settings::VISIBILITY_INTERNAL
+        );
+
+        $visibilities = explode(',', $configuration->getParser()->getVisibility());
+        $visibility = null;
+        foreach ($visibilities as $item) {
+            if (!$item) {
+                continue;
+            }
+
+            $visibility |= $map[$item];
+        }
+        $projectDescriptor->getSettings()->setVisibility($visibility);
+
+        return $projectDescriptor;
+    }
+
+    /**
+     * @param \phpDocumentor\Configuration $configuration
+     * @return Collection
+     * @throws \Exception
+     */
+    private function scanForFiles(\phpDocumentor\Configuration $configuration)
+    {
+        $fileset = $this->fileset ?: new Fileset();
+        try {
+            $files = $fileset->populate(new Collection(), $configuration);
+        } catch (FilesNotFoundException $e) {
+            throw new \Exception('PPCPP:EXC-NOFILES');
+        }
+
+        return $files;
     }
 }

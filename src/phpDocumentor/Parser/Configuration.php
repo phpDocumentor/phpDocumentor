@@ -69,6 +69,12 @@ final class Configuration
     private $extensions = array('php', 'php3', 'phtml');
 
     /**
+     * @Serializer\Exclude
+     * @var bool
+     */
+    private $shouldRebuildCache = false;
+
+    /**
      * Returns the package name that will be given to elements when there is no `@package` tag defined or inherited.
      *
      * @return string
@@ -146,5 +152,69 @@ final class Configuration
     public function getVisibility()
     {
         return $this->visibility;
+    }
+
+    /**
+     * @param string $defaultPackageName
+     */
+    public function setDefaultPackageName($defaultPackageName)
+    {
+        $this->defaultPackageName = $defaultPackageName;
+    }
+
+    /**
+     * @param string $encoding
+     */
+    public function setEncoding($encoding)
+    {
+        $this->encoding = $encoding;
+    }
+
+    /**
+     * @param \string[] $extensions
+     */
+    public function setExtensions($extensions)
+    {
+        $this->extensions = $extensions;
+    }
+
+    /**
+     * @param \string[] $markers
+     */
+    public function setMarkers($markers)
+    {
+        $this->markers = $markers;
+    }
+
+    /**
+     * @param string $target
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+    }
+
+    /**
+     * @param string $visibility
+     */
+    public function setVisibility($visibility)
+    {
+        $this->visibility = $visibility;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function shouldRebuildCache()
+    {
+        return $this->shouldRebuildCache;
+    }
+
+    /**
+     * @param boolean $shouldRebuildCache
+     */
+    public function setShouldRebuildCache($shouldRebuildCache)
+    {
+        $this->shouldRebuildCache = $shouldRebuildCache;
     }
 }

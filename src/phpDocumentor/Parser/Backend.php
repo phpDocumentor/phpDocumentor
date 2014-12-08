@@ -2,7 +2,7 @@
 
 namespace phpDocumentor\Parser;
 
-interface Handler
+interface Backend
 {
     public function matches(\SplFileInfo $file);
     public function boot(\phpDocumentor\Configuration $configuration);
