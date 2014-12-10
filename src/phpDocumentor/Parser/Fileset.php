@@ -13,7 +13,11 @@ namespace phpDocumentor\Parser;
 
 use phpDocumentor\Fileset\Collection;
 
-class Fileset
+/**
+ * Service that is helps with populating a Fileset Collection object with the options in the parser configuration so
+ * that it can scan for all files and folders that should be included when parsing.
+ */
+final class Fileset
 {
     /**
      * Populates the given file collection based on the configuration and returns it.
@@ -36,14 +40,19 @@ class Fileset
     }
 
     /**
-     * @param $files
-     * @param $flags
-     * @return array
+     * Finds all files (or directories if GLOB_ONLYDIR is passed as flag) that match the glob strings passed in
+     * the paths argument.
+     *
+     * @param string[]     $paths
+     * @param integer|null $flags an optional set of flags that will be passed to the glob function that assists with
+     *     finding files and directories.
+     *
+     * @return string[]
      */
-    private function getFileListing($files, $flags = null)
+    private function getFileListing(array $paths, $flags = null)
     {
         $result = array();
-        foreach ($files as $glob) {
+        foreach ($paths as $glob) {
             if (!is_string($glob)) {
                 continue;
             }
@@ -69,5 +78,4 @@ class Fileset
 
         return $result;
     }
-
 }

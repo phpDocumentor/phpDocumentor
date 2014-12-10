@@ -133,7 +133,7 @@ HELP
                 . 'ignored. Wildcards * and ? are supported'
             )
             ->addOption(
-                'hidden',
+                'ignore-hidden',
                 null,
                 InputOption::VALUE_NONE,
                 'Use this option to tell phpDocumentor to parse files and directories that begin with a period (.), '
@@ -226,7 +226,7 @@ HELP
                  '--encoding'           => $input->getOption('encoding'),
                  '--extensions'         => $input->getOption('extensions'),
                  '--ignore'             => $input->getOption('ignore'),
-                 '--hidden'             => $input->getOption('hidden'),
+                 '--ignore-hidden'      => $input->getOption('ignore-hidden'),
                  '--ignore-symlinks'    => $input->getOption('ignore-symlinks'),
                  '--markers'            => $input->getOption('markers'),
                  '--title'              => $input->getOption('title'),

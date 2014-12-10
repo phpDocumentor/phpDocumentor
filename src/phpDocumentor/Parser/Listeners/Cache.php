@@ -22,6 +22,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Listener that will add caching capabilities to the parser.
+ */
 class Cache
 {
     const EVENT_CACHE_LOADED = 'parser.cache.loaded';
@@ -38,6 +41,12 @@ class Cache
     /** @var EventDispatcherInterface */
     private $dispatcher;
 
+    /**
+     * Initializes this listener with the caching service and a translator.
+     *
+     * @param CacheInterface $cacheModel
+     * @param Translator $translator
+     */
     public function __construct(CacheInterface $cacheModel, Translator $translator)
     {
         $this->cacheModel = $cacheModel;
@@ -45,6 +54,13 @@ class Cache
         $this->mapper     = new ProjectDescriptorMapper($cacheModel);
     }
 
+    /**
+     * Registers the events to which this listener is listening to the given event dispatcher.
+     *
+     * @param EventDispatcherInterface $dispatcher
+     *
+     * @return void
+     */
     public function register(EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addListener(Parser::EVENT_BOOTED, array($this, 'onBooted'));
@@ -53,6 +69,17 @@ class Cache
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * When the parser is finished booting we load the cache into the given ProjectDescriptor (the subject of the
+     * event).
+     *
+     * When the cache is finished loading this event will fire another event to indicate that. Should the configuration
+     * indicate that no caching should be done we clear the cache before loading it.
+     *
+     * @param GenericEvent $event
+     *
+     * @return void
+     */
     public function onBooted(GenericEvent $event)
     {
         $files         = $event->getArgument('files');
@@ -69,15 +96,29 @@ class Cache
         }
     }
 
+    /**
+     * When the parser is finished we store the cache.
+     *
+     * @param GenericEvent $event
+     *
+     * @return void
+     */
     public function onCompleted(GenericEvent $event)
     {
         $this->save($event->getSubject());
     }
 
     /**
-     * @param Collection $files
+     * Populates the ProjectDescriptor with the cache and removes any file from the project descriptor that we do not
+     * intend to parse.
+     *
+     * By removing all files that we do not want to parse we automatically clean up the cached information by removing
+     * deleted entries and making sure no unwanted elements are loaded.
+     *
+     * @param Collection        $files
      * @param ProjectDescriptor $projectDescriptor
-     * @return ProjectDescriptorMapper
+     *
+     * @return void
      */
     private function load(Collection $files, ProjectDescriptor $projectDescriptor)
     {
@@ -105,14 +146,26 @@ class Cache
         $this->getCache()->delete(ProjectDescriptorMapper::KEY_FILES);
     }
 
+    /**
+     * Stores the project descriptor in the cache.
+     *
+     * @param ProjectDescriptor $projectDescriptor
+     *
+     * @return void
+     */
     private function save(ProjectDescriptor $projectDescriptor)
     {
         $this->mapper->save($projectDescriptor);
     }
 
     /**
-     * @param $target
-     * @throws \Exception
+     * Sets the location for the cache based on the given target.
+     *
+     * @param string $target
+     *
+     * @throws \Exception if no valid target location was found.
+     *
+     * @return void
      */
     private function setLocation($target)
     {
@@ -127,12 +180,14 @@ class Cache
             mkdir($target, 0777, true);
         }
         if (!is_dir($target)) {
-            throw new \Exception($this->translator->_('PPCPP:EXC-BADTARGET'));
+            throw new \Exception($this->translator->translate('PPCPP:EXC-BADTARGET'));
         }
         $this->getCache()->setAdapter(new File($target));
     }
 
     /**
+     * Returns the cache manager that will persist the project descriptor.
+     *
      * @return CacheInterface
      */
     private function getCache()

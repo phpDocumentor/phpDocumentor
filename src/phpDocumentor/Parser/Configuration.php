@@ -75,8 +75,9 @@ final class Configuration
     private $shouldRebuildCache = false;
 
     /**
-     * @Serializer\Exclude
-     * @var Configuration\Files $files
+    /**
+     * @var Configuration\Files contains a list of all files and directories to parse and to ignore.
+     * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
      */
     private $files;
 
@@ -91,6 +92,18 @@ final class Configuration
     }
 
     /**
+     * Registers the name of the package that is implied when an element does not feature the package tag.
+     *
+     * @param string $defaultPackageName
+     *
+     * @return void
+     */
+    public function setDefaultPackageName($defaultPackageName)
+    {
+        $this->defaultPackageName = $defaultPackageName;
+    }
+
+    /**
      * Returns the character encoding in which the files that are to be parsed should be encoded with.
      *
      * @return string
@@ -101,6 +114,21 @@ final class Configuration
     }
 
     /**
+     * Registers the encoding for all files in the project, by default this is utf-8.
+     *
+     * Please note that changing the encoding will have a negative impact on the performance of phpDocumentor because
+     * all file contents will be converted to UTF-8 before parsing commences.
+     *
+     * @param string $encoding
+     *
+     * @return void
+     */
+    public function setEncoding($encoding)
+    {
+        $this->encoding = $encoding;
+    }
+
+    /**
      * Returns the file extensions which are to be interpreted by the parser.
      *
      * @return string[]
@@ -108,6 +136,18 @@ final class Configuration
     public function getExtensions()
     {
         return $this->extensions;
+    }
+
+    /**
+     * Registers which file extensions are parsed.
+     *
+     * @param \string[] $extensions
+     *
+     * @return void
+     */
+    public function setExtensions($extensions)
+    {
+        $this->extensions = $extensions;
     }
 
     /**
@@ -131,6 +171,20 @@ final class Configuration
     }
 
     /**
+     * Registers which markers to scan for and to collect.
+     *
+     * @param \string[] $markers
+     *
+     * @see self::getMarkers() for more information on what markers are and how they work,
+     *
+     * @return void
+     */
+    public function setMarkers($markers)
+    {
+        $this->markers = $markers;
+    }
+
+    /**
      * Returns the path where the product of the parsing process should be written to.
      *
      * The parsing process will output a product, usually cache, consisting of settings and the descriptors that are
@@ -148,10 +202,22 @@ final class Configuration
     }
 
     /**
+     * Registers the target folder where to store the cache files.
+     *
+     * @param string $target
+     *
+     * @return void
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+    }
+
+    /**
      * Returns a comma-separated list of visibilities that can be used to restrict which elements are included in the
      * documentation.
      *
-     * The following values are supported: public, protected and private.
+     * The following values are supported: default, public, protected and private.
      *
      * @return string
      */
@@ -161,47 +227,14 @@ final class Configuration
     }
 
     /**
-     * @param string $defaultPackageName
-     */
-    public function setDefaultPackageName($defaultPackageName)
-    {
-        $this->defaultPackageName = $defaultPackageName;
-    }
-
-    /**
-     * @param string $encoding
-     */
-    public function setEncoding($encoding)
-    {
-        $this->encoding = $encoding;
-    }
-
-    /**
-     * @param \string[] $extensions
-     */
-    public function setExtensions($extensions)
-    {
-        $this->extensions = $extensions;
-    }
-
-    /**
-     * @param \string[] $markers
-     */
-    public function setMarkers($markers)
-    {
-        $this->markers = $markers;
-    }
-
-    /**
-     * @param string $target
-     */
-    public function setTarget($target)
-    {
-        $this->target = $target;
-    }
-
-    /**
+     * Registers a comma-separated list of visibilities that can be used to restrict which elements are included in the
+     * documentation.
+     *
+     * The following values are supported: default, public, protected and private.
+     *
      * @param string $visibility
+     *
+     * @return void
      */
     public function setVisibility($visibility)
     {
@@ -209,6 +242,8 @@ final class Configuration
     }
 
     /**
+     * Returns whether we expect the parser to ignore previously parsed files and re-parse them all.
+     *
      * @return boolean
      */
     public function shouldRebuildCache()
@@ -217,7 +252,11 @@ final class Configuration
     }
 
     /**
+     * Registers whether we expect the parser to ignore previously parsed files and re-parse them all.
+     *
      * @param boolean $shouldRebuildCache
+     *
+     * @return void
      */
     public function setShouldRebuildCache($shouldRebuildCache)
     {
@@ -225,6 +264,8 @@ final class Configuration
     }
 
     /**
+     * Returns the configuration related to which files are to be parsed.
+     *
      * @return Configuration\Files
      */
     public function getFiles()
@@ -233,6 +274,8 @@ final class Configuration
     }
 
     /**
+     * Registers the configuration related to which files are to be parsed.
+     *
      * @param Configuration\Files $files
      */
     public function setFiles($files)
