@@ -226,6 +226,7 @@ final class Parser
         $fileset = $this->fileset ?: new Fileset();
         try {
             $files = $fileset->populate(new Collection(), $configuration);
+            $configuration->setProjectRoot($files->getProjectRoot());
         } catch (FilesNotFoundException $e) {
             throw new \Exception('PPCPP:EXC-NOFILES');
         }

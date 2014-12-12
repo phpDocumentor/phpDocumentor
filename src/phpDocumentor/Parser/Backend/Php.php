@@ -128,11 +128,12 @@ final class Php implements Backend
      */
     private function setAssemblerConfiguration(Configuration $configuration)
     {
-        $fileAssembler = $this->analyzer->getAssemblerFactory(new \SplFileObject(__FILE__));
+        $fileAssembler = $this->analyzer->getAssembler(new \SplFileObject(__FILE__));
         if ($fileAssembler instanceof FileAssembler) {
             $fileAssembler->setDefaultPackageName($configuration->getDefaultPackageName());
             $fileAssembler->setEncoding($configuration->getEncoding());
             $fileAssembler->setMarkerTerms($configuration->getMarkers());
+            $fileAssembler->setProjectRoot($configuration->getProjectRoot());
         }
     }
 

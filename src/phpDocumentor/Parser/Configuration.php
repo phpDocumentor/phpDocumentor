@@ -75,11 +75,18 @@ final class Configuration
     private $shouldRebuildCache = false;
 
     /**
-    /**
      * @var Configuration\Files contains a list of all files and directories to parse and to ignore.
      * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
      */
     private $files;
+
+    /**
+     * @Serializer\Exclude
+     * @var string
+     *
+     * @see \phpDocumentor\Parser\Parser::scanForFiles() where the project root is set.
+     */
+    private $projectRoot = '';
 
     /**
      * Returns the package name that will be given to elements when there is no `@package` tag defined or inherited.
@@ -281,5 +288,33 @@ final class Configuration
     public function setFiles($files)
     {
         $this->files = $files;
+    }
+
+    /**
+     * Returns the root path of the project that is to be parsed.
+     *
+     * This value is used to strip the path of the path that is specific to this computer and as such transforms all
+     * files to a relative filename instead of an absolute filename.
+     *
+     * @return string
+     */
+    public function getProjectRoot()
+    {
+        return $this->projectRoot;
+    }
+
+    /**
+     * Registers the root path of the project that is to be parsed.
+     *
+     * This value is used to strip the path of the path that is specific to this computer and as such transforms all
+     * files to a relative filename instead of an absolute filename.
+     *
+     * @param string $projectRoot
+     *
+     * @return void
+     */
+    public function setProjectRoot($projectRoot)
+    {
+        $this->projectRoot = $projectRoot;
     }
 }
