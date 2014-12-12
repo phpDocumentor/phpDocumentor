@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Parser\Configuration\Files;
 use phpDocumentor\Parser\Parser;
 use Symfony\Component\Console\Helper\ProgressHelper;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -95,6 +96,12 @@ final class ParseCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 $this->__('PPCPP:OPT-DEFAULTPACKAGENAME'),
                 'Default'
+            )
+            ->addArgument(
+                'paths',
+                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                'One or more files and folders to process',
+                array()
             );
 
         parent::configure();
@@ -165,6 +172,10 @@ final class ParseCommand extends Command
         }
 
         $this->fixFilesConfiguration($configuration);
+
+        foreach ($input->getArgument('paths') as $path) {
+            $this->addPathToConfiguration($path, $configuration);
+        }
 
         return $configuration;
     }
@@ -325,6 +336,29 @@ final class ParseCommand extends Command
 
             $configuration->getParser()->setFiles($configuration->getFiles());
             $configuration->setFiles(null);
+        }
+    }
+
+    /**
+     * Adds the given path to the Files or Directories section of the configuration depending on whether it is a file
+     * or folder.
+     *
+     * @param string        $path
+     * @param Configuration $configuration
+     *
+     * @return void
+     */
+    private function addPathToConfiguration($path, $configuration)
+    {
+        $fileInfo = new \SplFileInfo($path);
+        if ($fileInfo->isDir()) {
+            $directories   = $configuration->getParser()->getFiles()->getDirectories();
+            $directories[] = $path;
+            $configuration->getParser()->getFiles()->setDirectories($directories);
+        } else {
+            $files   = $configuration->getParser()->getFiles()->getFiles();
+            $files[] = $path;
+            $configuration->getParser()->getFiles()->setFiles($files);
         }
     }
 }
