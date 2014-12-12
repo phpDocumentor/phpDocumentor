@@ -109,9 +109,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerAssemblers(Application $app)
     {
-        $app->extend('descriptor.builder.initializers', function ($app) {
+        $app->extend('descriptor.builder.initializers', function ($chain) {
             /** @var InitializerChain $chain */
-            $chain = $app['descriptor.builder.initializers'];
             $chain->addInitializer(function (Analyzer $analyzer) {
                 $factory = $analyzer->getAssemblerFactory();
                 $factory->register(
@@ -121,6 +120,8 @@ class ServiceProvider implements ServiceProviderInterface
                     new DocbookAssembler()
                 );
             });
+
+            return $chain;
         });
     }
 }
