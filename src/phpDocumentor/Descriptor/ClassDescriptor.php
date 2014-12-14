@@ -209,7 +209,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $returnTags->add($methodTag->getResponse());
 
             foreach ($methodTag->getArguments() as $name => $argument) {
-                $method->getArguments()->set($name, $argument);
+                $method->addArgument($name, $argument);
             }
 
             $methods->add($method);

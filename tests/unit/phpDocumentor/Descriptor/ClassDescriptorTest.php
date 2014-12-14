@@ -367,7 +367,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $methodName  = 'methodName';
         $description = 'description';
         $response    = array('string');
-        $arguments   = array('name' => 'argument');
+        $arguments   = m::mock('phpDocumentor\Descriptor\Tag\ArgumentDescriptor');
+        $arguments->shouldReceive('setMethod');
 
         $this->assertEquals(0, $this->fixture->getMagicMethods()->count());
 

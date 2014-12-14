@@ -65,4 +65,88 @@ class ArgumentDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(true, $this->fixture->isByReference());
     }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDescription
+     */
+    public function testDescriptionInheritsWhenNoneIsPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription(null);
+        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
+        $parentArgument->setDescription($description);
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getDescription
+     */
+    public function testDescriptionIsNotInheritedWhenPresent()
+    {
+        // Arrange
+        $description = 'This is a description';
+        $this->fixture->setDescription($description);
+        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
+        $parentArgument->setDescription('some random text');
+        // Act
+        $result = $this->fixture->getDescription();
+
+        // Assert
+        $this->assertSame($description, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\ArgumentDescriptor::getTypes
+     */
+    public function testTypeIsInheritedWhenNoneIsPresent()
+    {
+        // Arrange
+        $types = array('string');
+        $this->fixture->setTypes(null);
+        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName('same_argument');
+        $parentArgument->setTypes($types);
+        // Act
+        $result = $this->fixture->getTypes();
+
+        // Assert
+        $this->assertSame($types, $result);
+    }
+
+    /**
+     * @param string $argumentName The name of the current method.
+     *
+     * @return ArgumentDescriptor
+     */
+    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName($argumentName)
+    {
+        $this->fixture->setName($argumentName);
+
+        $parentArgument = new ArgumentDescriptor();
+        $parentArgument->setName($argumentName);
+
+        $parentMethod = new MethodDescriptor();
+        $parentMethod->setName('same');
+        $parentMethod->addArgument($argumentName, $parentArgument);
+
+        $method = new MethodDescriptor;
+        $method->setName('same');
+        $method->addArgument($argumentName, $this->fixture);
+
+        $parent = new ClassDescriptor();
+        $parent->getMethods()->set('same', $parentMethod);
+        $parentMethod->setParent($parent);
+
+        $class  = new ClassDescriptor();
+        $class->setParent($parent);
+        $class->getMethods()->set('same', $method);
+        $method->setParent($class);
+
+        return $parentArgument;
+
+    }
 }
