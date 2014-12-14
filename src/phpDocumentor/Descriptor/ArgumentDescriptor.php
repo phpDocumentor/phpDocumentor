@@ -67,7 +67,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
      */
     public function getInheritedElement()
     {
-        if ($this->method !== null &&
+        if ($this->method instanceof MethodDescriptor &&
             $this->method->getInheritedElement() instanceof MethodDescriptor) {
             $parents = $this->method->getInheritedElement()->getArguments();
             foreach($parents as $parentArgument)
@@ -76,7 +76,6 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
                     return $parentArgument;
                 }
             }
-            return $this->method->getInheritedElement();
         }
         return null;
     }
