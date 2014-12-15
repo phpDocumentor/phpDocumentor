@@ -14,6 +14,7 @@ namespace phpDocumentor\Command\Project;
 use phpDocumentor\Command\Command;
 use phpDocumentor\Descriptor\Analyzer;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -200,6 +201,12 @@ HELP
                 null,
                 InputOption::VALUE_NONE,
                 'Whether to parse DocBlocks marked with @internal tag'
+            )
+            ->addArgument(
+                'paths',
+                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                'One or more files and folders to process',
+                array()
             );
 
         parent::configure();
@@ -237,7 +244,8 @@ HELP
                  '--sourcecode'         => $input->getOption('sourcecode'),
                  '--parseprivate'       => $input->getOption('parseprivate'),
                  '--progressbar'        => $input->getOption('progressbar'),
-                 '--log'                => $input->getOption('log')
+                 '--log'                => $input->getOption('log'),
+                 'paths'                => $input->getArgument('paths')
             ),
             $this->getDefinition()
         );
