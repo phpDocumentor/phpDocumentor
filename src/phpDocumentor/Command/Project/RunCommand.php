@@ -133,14 +133,7 @@ HELP
                 . 'ignored. Wildcards * and ? are supported'
             )
             ->addOption(
-                'ignore-tags',
-                null,
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of tags that will be ignored, defaults to none. package, subpackage and ignore '
-                . 'may not be ignored.'
-            )
-            ->addOption(
-                'hidden',
+                'ignore-hidden',
                 null,
                 InputOption::VALUE_NONE,
                 'Use this option to tell phpDocumentor to parse files and directories that begin with a period (.), '
@@ -169,12 +162,6 @@ HELP
                 null,
                 InputOption::VALUE_NONE,
                 'Forces a full build of the documentation, does not increment existing documentation'
-            )
-            ->addOption(
-                'validate',
-                null,
-                InputOption::VALUE_NONE,
-                'Validates every processed file using PHP Lint, costs a lot of performance'
             )
             ->addOption(
                 'visibility',
@@ -239,14 +226,12 @@ HELP
                  '--encoding'           => $input->getOption('encoding'),
                  '--extensions'         => $input->getOption('extensions'),
                  '--ignore'             => $input->getOption('ignore'),
-                 '--ignore-tags'        => $input->getOption('ignore-tags'),
-                 '--hidden'             => $input->getOption('hidden'),
+                 '--ignore-hidden'      => $input->getOption('ignore-hidden'),
                  '--ignore-symlinks'    => $input->getOption('ignore-symlinks'),
                  '--markers'            => $input->getOption('markers'),
                  '--title'              => $input->getOption('title'),
                  '--target'             => $input->getOption('cache-folder') ?: $input->getOption('target'),
                  '--force'              => $input->getOption('force'),
-                 '--validate'           => $input->getOption('validate'),
                  '--visibility'         => $input->getOption('visibility'),
                  '--defaultpackagename' => $input->getOption('defaultpackagename'),
                  '--sourcecode'         => $input->getOption('sourcecode'),

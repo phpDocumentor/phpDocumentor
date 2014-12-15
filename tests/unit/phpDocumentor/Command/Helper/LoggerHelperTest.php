@@ -97,7 +97,16 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->once()
             ->withArgs(
                 array(
-                    'parser.file.pre',
+                    'parser.file.isCached',
+                    m::on(array($this, 'assertClosure'))
+                )
+            );
+
+        $commandMock->shouldReceive('addListener')
+            ->once()
+            ->withArgs(
+                array(
+                    'parser.file.analyzed',
                     m::on(array($this, 'assertClosure'))
                 )
             );

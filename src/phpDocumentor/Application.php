@@ -46,6 +46,7 @@ class Application extends Cilex
      */
     public function __construct($autoloader = null, array $values = array())
     {
+        gc_disable();
         $this->defineIniSettings();
         
         self::$VERSION = strpos('@package_version@', '@') === 0

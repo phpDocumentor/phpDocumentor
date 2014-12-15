@@ -50,6 +50,7 @@ class Configuration
     /**
      * @var Parser\Configuration\Files contains a list of all files and directories to parse and to ignore.
      * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
+     * @deprecated to be removed in phpDocumentor 4
      */
     protected $files;
 
@@ -104,13 +105,41 @@ class Configuration
     }
 
     /**
+     * Registers the title for the generated documentation.
+     *
+     * @param string $title
+     *
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
      * Returns the configuration related to which files are to be parsed.
+     *
+     * @deprecated to be removed in phpDocumentor 4
+     * @see Parser\Configuration::setFiles() for the new location.
      *
      * @return Parser\Configuration\Files
      */
     public function getFiles()
     {
-        return $this->files;
+        return $this->files ?: $this->getParser()->getFiles();
+    }
+
+    /**
+     * Registers the configuration related to which files are to be parsed.
+     *
+     * @deprecated to be removed in phpDocumentor 4
+     * @see Parser\Configuration::setFiles() for the new location.
+     *
+     * @return Parser\Configuration\Files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
     }
 
     /**

@@ -4,8 +4,7 @@
  *
  * PHP Version 5.3
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,438 +12,225 @@
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\Analyzer;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
-use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
-/**
- * Class responsible for parsing the given file or files to the intermediate
- * structure file.
- *
- * This class can be used to parse one or more files to the intermediate file
- * format for further processing.
- *
- * Example of use:
- *
- *     $files = new \phpDocumentor\File\Collection();
- *     $ files->addDirectories(getcwd());
- *     $parser = new \phpDocumentor\Parser\Parser();
- *     $parser->setPath($files->getProjectRoot());
- *     echo $parser->parseFiles($files);
- */
-class Parser implements LoggerAwareInterface
+final class Parser
 {
-    /** @var string the name of the default package */
-    protected $defaultPackageName = 'Default';
+    const EVENT_FILES_COLLECTED       = 'parser.files.collected';
+    const EVENT_BACKEND_BOOTED        = 'parser.backend.booted';
+    const EVENT_BOOTED                = 'parser.booted';
+    const EVENT_PARSE_FILE_BEFORE     = 'parser.file.pre';
+    const EVENT_PARSE_FILE_AFTER      = 'parser.file.post';
+    const EVENT_PARSE_FILE_NO_BACKEND = 'parser.file.noBackend';
+    const EVENT_COMPLETED             = 'parser.completed';
 
-    /** @var bool whether we force a full re-parse */
-    protected $force = false;
+    /** @var Fileset|null */
+    private $fileset;
 
-    /** @var bool whether to execute a PHPLint on every file */
-    protected $validate = false;
+    /** @var Backend[] */
+    private $backend;
 
-    /** @var string[] which markers (i.e. TODO or FIXME) to collect */
-    protected $markers = array('TODO', 'FIXME');
+    /** @var EventDispatcherInterface|null */
+    private $dispatcher;
 
-    /** @var string[] which tags to ignore */
-    protected $ignoredTags = array();
+    /** @var Analyzer */
+    private $analyzer;
 
-    /** @var string target location's root path */
-    protected $path = '';
+    /** @var \phpDocumentor\Fileset\Collection */
+    private $files;
 
-    /** @var LoggerInterface $logger */
-    protected $logger;
-
-    /** @var string The encoding in which the files are encoded */
-    protected $encoding = 'utf-8';
-
-    /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
-    protected $stopwatch = null;
+    public function __construct(Analyzer $analyzer, Fileset $fileset = null)
+    {
+        $this->analyzer = $analyzer;
+        $this->fileset = $fileset;
+    }
 
     /**
-     * Initializes the parser.
+     * Registers the mediator that will inform any attached listeners of events occurring in this parser.
      *
-     * This constructor checks the user's PHP ini settings to detect which encoding is used by default. This encoding
-     * is used as a default value for phpDocumentor to convert the source files that it receives.
+     * @param EventDispatcherInterface $dispatcher
      *
-     * If no encoding is specified than 'utf-8' is assumed by default.
-     *
-     * @codeCoverageIgnore the ini_get call cannot be tested as setting it using ini_set has no effect.
+     * @return $this
      */
-    public function __construct()
+    public function registerEventDispatcher(EventDispatcherInterface $dispatcher)
     {
-        $defaultEncoding = ini_get('zend.script_encoding');
-        if ($defaultEncoding) {
-            $this->encoding = $defaultEncoding;
+        $this->dispatcher = $dispatcher;
+
+        return $this;
+    }
+
+    /**
+     * Registers a single parser backend to process a specific type of file with.
+     *
+     * The backend for a parser is able to handle a specific file type, interpret its contents and register the analyzed
+     * output in a central location. phpDocumentor's backends write the analyzed output to the Project Descriptor using
+     * the Analyzer in the Reflection component.
+     *
+     * Custom backends may be able to write to their own collectors and analyzers. This parser was explicitly designed
+     * to allow that.
+     *
+     * @see \phpDocumentor\Descriptor\Analyzer
+     * @see \phpDocumentor\Descriptor\ProjectDescriptor
+     *
+     * @param Backend $backend
+     *
+     * @return $this
+     */
+    public function registerBackend(Backend $backend)
+    {
+        $this->backend[] = $backend;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * Initializes this parser and its backends using the provided configuration.
+     *
+     * @param Configuration $configuration
+     *
+     * @return $this
+     */
+    public function boot(Configuration $configuration)
+    {
+        $projectDescriptor = $this->createProject($configuration);
+        $this->files = $this->scanForFiles($configuration);
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(self::EVENT_FILES_COLLECTED, new GenericEvent($this->files));
+        }
+
+        foreach ($this->backend as $backend) {
+            $backend->boot($configuration);
+
+            if ($this->dispatcher) {
+                $this->dispatcher->dispatch(self::EVENT_BACKEND_BOOTED, new GenericEvent($backend));
+            }
+        }
+
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(
+                self::EVENT_BOOTED,
+                new GenericEvent($projectDescriptor, array('files' => $this->files, 'configuration' => $configuration))
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param \SplFileInfo[] $files
+     */
+    public function parse()
+    {
+        foreach ($this->files as $file) {
+            $this->parseFile($file);
+        }
+
+        $projectDescriptor = $this->analyzer->getProjectDescriptor();
+        $projectDescriptor->getSettings()->clearModifiedFlag();
+
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(self::EVENT_COMPLETED, new GenericEvent($projectDescriptor));
+        }
+
+        return $projectDescriptor;
+    }
+
+    /**
+     * @return Analyzer
+     */
+    private function getAnalyzer()
+    {
+        return $this->analyzer;
+    }
+
+    /**
+     * @param \SplFileInfo $file
+     */
+    private function parseFile(\SplFileInfo $file)
+    {
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(
+                self::EVENT_PARSE_FILE_BEFORE,
+                (new PreFileEvent($this))->setFile($file->getPath())
+            );
+        }
+
+        foreach ($this->backend as $backend) {
+            if ($backend->matches($file)) {
+                $backend->parse($file->openFile());
+
+                if ($this->dispatcher) {
+                    $this->dispatcher->dispatch(self::EVENT_PARSE_FILE_AFTER, new GenericEvent($file));
+                }
+                return;
+            }
+        }
+
+        if ($this->dispatcher) {
+            $this->dispatcher->dispatch(self::EVENT_PARSE_FILE_NO_BACKEND, new GenericEvent($file));
         }
     }
 
     /**
-     * Registers the component that profiles the execution of the parser.
+     * @param Configuration $configuration
      *
-     * @param Stopwatch $stopwatch
-     *
-     * @return void
+     * @return ProjectDescriptor
      */
-    public function setStopwatch(Stopwatch $stopwatch)
+    private function createProject(Configuration $configuration)
     {
-        $this->stopwatch = $stopwatch;
-    }
+        $this->getAnalyzer()->createProjectDescriptor();
+        $projectDescriptor = $this->getAnalyzer()->getProjectDescriptor();
 
-    /**
-     * Sets whether to force a full parse run of all files.
-     *
-     * @param bool $forced Forces a full parse.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setForced($forced)
-    {
-        $this->force = $forced;
-    }
-
-    /**
-     * Returns whether a full rebuild is required.
-     *
-     * @api
-     *
-     * @return bool
-     */
-    public function isForced()
-    {
-        return $this->force;
-    }
-
-    /**
-     * Sets whether to run PHPLint on every file.
-     *
-     * PHPLint has a huge performance impact on the execution of phpDocumentor and
-     * is thus disabled by default.
-     *
-     * @param bool $validate when true this file will be checked.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setValidate($validate)
-    {
-        $this->validate = $validate;
-    }
-
-    /**
-     * Returns whether we want to run PHPLint on every file.
-     *
-     * @api
-     *
-     * @return bool
-     */
-    public function doValidation()
-    {
-        return $this->validate;
-    }
-
-    /**
-     * Sets a list of markers to gather (i.e. TODO, FIXME).
-     *
-     * @param string[] $markers A list or markers to gather.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setMarkers(array $markers)
-    {
-        $this->markers = $markers;
-    }
-
-    /**
-     * Returns the list of markers.
-     *
-     * @api
-     *
-     * @return string[]
-     */
-    public function getMarkers()
-    {
-        return $this->markers;
-    }
-
-    /**
-     * Sets a list of tags to ignore.
-     *
-     * @param string[] $ignoredTags A list of tags to ignore.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setIgnoredTags(array $ignoredTags)
-    {
-        $this->ignoredTags = $ignoredTags;
-    }
-
-    /**
-     * Returns the list of ignored tags.
-     *
-     * @api
-     *
-     * @return string[]
-     */
-    public function getIgnoredTags()
-    {
-        return $this->ignoredTags;
-    }
-
-    /**
-     * Sets the base path of the files that will be parsed.
-     *
-     * @param string $path Must be an absolute path.
-     *
-     * @api
-     *
-     * @return void
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-    }
-
-    /**
-     * Returns the absolute base path for all files.
-     *
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * Sets the name of the default package.
-     *
-     * @param string $defaultPackageName Name used to categorize elements
-     *  without an @package tag.
-     *
-     * @return void
-     */
-    public function setDefaultPackageName($defaultPackageName)
-    {
-        $this->defaultPackageName = $defaultPackageName;
-    }
-
-    /**
-     * Returns the name of the default package.
-     *
-     * @return string
-     */
-    public function getDefaultPackageName()
-    {
-        return $this->defaultPackageName;
-    }
-
-    /**
-     * Sets the encoding of the files.
-     *
-     * With this option it is possible to tell the parser to use a specific encoding to interpret the provided files.
-     * By default this is set to UTF-8, in which case no action is taken. Any other encoding will result in the output
-     * being converted to UTF-8 using `iconv`.
-     *
-     * Please note that it is recommended to provide files in UTF-8 format; this will ensure a faster performance since
-     * no transformation is required.
-     *
-     * @param string $encoding
-     *
-     * @return void
-     */
-    public function setEncoding($encoding)
-    {
-        $this->encoding = $encoding;
-    }
-
-    /**
-     * Returns the currently active encoding.
-     *
-     * @return string
-     */
-    public function getEncoding()
-    {
-        return $this->encoding;
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return null
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
-    /**
-     * Iterates through the given files feeds them to the analyzer.
-     *
-     * @param Analyzer   $analyzer
-     * @param Collection $files   A files container to parse.
-     *
-     * @api
-     *
-     * @throws Exception if no files were found.
-     *
-     * @return bool|string
-     */
-    public function parse(Analyzer $analyzer, Collection $files)
-    {
-        $this->startTimingTheParsePhase();
-
-        $this->forceRebuildIfSettingsHaveModified($analyzer);
-
-        $paths = $this->getFilenames($files);
-
-        $this->log('  Project root is:  ' . $files->getProjectRoot());
-        $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
-
-        $memory = 0;
-        foreach ($paths as $filename) {
-            $this->parseFileIntoDescriptor($analyzer, $filename);
-            $memory = $this->logAfterParsingAFile($memory);
-        }
-
-        $this->logAfterParsingAllFiles();
-
-        return $analyzer->getProjectDescriptor();
-    }
-
-    /**
-     * Extract all filenames from the given collection and output the amount of files.
-     *
-     * @param Collection $files
-     *
-     * @throws FilesNotFoundException if no files were found.
-     *
-     * @return string[]
-     */
-    protected function getFilenames(Collection $files)
-    {
-        $paths = $files->getFilenames();
-        if (count($paths) < 1) {
-            throw new FilesNotFoundException();
-        }
-        $this->log('Starting to process ' . count($paths) . ' files');
-
-        return $paths;
-    }
-
-    /**
-     * Parses a file and creates a Descriptor for it in the project.
-     *
-     * @param Analyzer $analyzer
-     * @param string   $filename
-     *
-     * @return void
-     */
-    protected function parseFileIntoDescriptor(Analyzer $analyzer, $filename)
-    {
-        $parser = new File($this);
-        $parser->parse($filename, $analyzer);
-    }
-
-    /**
-     * Checks if the settings of the project have changed and forces a complete rebuild if they have.
-     *
-     * @param Analyzer $analyzer
-     *
-     * @return void
-     */
-    protected function forceRebuildIfSettingsHaveModified(Analyzer $analyzer)
-    {
-        if ($analyzer->getProjectDescriptor()->getSettings()->isModified()) {
-            $this->setForced(true);
-            $this->log('One of the project\'s settings have changed, forcing a complete rebuild');
-        }
-    }
-
-    /**
-     * Collects the time and duration of processing a file, logs it and returns the new amount of memory in use.
-     *
-     * @param integer $memory
-     *
-     * @return integer
-     */
-    protected function logAfterParsingAFile($memory)
-    {
-        if (!$this->stopwatch) {
-            return $memory;
-        }
-
-        $lap = $this->stopwatch->lap('parser.parse');
-        $oldMemory = $memory;
-        $periods = $lap->getPeriods();
-        $memory = end($periods)->getMemory();
-
-        $this->log(
-            '>> Memory after processing of file: ' . number_format($memory / 1024 / 1024, 2)
-            . ' megabytes (' . (($memory - $oldMemory >= 0)
-                ? '+'
-                : '-') . number_format(($memory - $oldMemory) / 1024)
-            . ' kilobytes)',
-            LogLevel::DEBUG
+        $map = array(
+            'public' => ProjectDescriptor\Settings::VISIBILITY_PUBLIC,
+            'protected' => ProjectDescriptor\Settings::VISIBILITY_PROTECTED,
+            'private' => ProjectDescriptor\Settings::VISIBILITY_PRIVATE,
+            'default' => ProjectDescriptor\Settings::VISIBILITY_DEFAULT,
+            'internal' => ProjectDescriptor\Settings::VISIBILITY_INTERNAL
         );
 
-        return $memory;
+        $visibilities = explode(',', $configuration->getVisibility());
+        $visibility = null;
+        foreach ($visibilities as $item) {
+            if (!$item) {
+                continue;
+            }
+
+            $visibility |= $map[$item];
+        }
+        $projectDescriptor->getSettings()->setVisibility($visibility);
+
+        return $projectDescriptor;
     }
 
     /**
-     * Writes the complete parsing cycle to log.
-     *
-     * @return void
+     * @param Configuration $configuration
+     * @return Collection
+     * @throws \Exception
      */
-    protected function logAfterParsingAllFiles()
+    private function scanForFiles(Configuration $configuration)
     {
-        if (!$this->stopwatch) {
-            return;
+        $fileset = $this->fileset ?: new Fileset();
+        try {
+            $files = $fileset->populate(new Collection(), $configuration);
+            $configuration->setProjectRoot($files->getProjectRoot());
+        } catch (FilesNotFoundException $e) {
+            throw new \Exception('PPCPP:EXC-NOFILES');
         }
 
-        $event = $this->stopwatch->stop('parser.parse');
-
-        $this->log('Elapsed time to parse all files: ' . round($event->getDuration(), 2) . 's');
-        $this->log('Peak memory usage: ' . round($event->getMemory() / 1024 / 1024, 2) . 'M');
-    }
-
-    /**
-     * Dispatches a logging request.
-     *
-     * @param string   $message  The message to log.
-     * @param string   $priority The logging priority as declared in the LogLevel PSR-3 class.
-     * @param string[] $parameters
-     *
-     * @return void
-     */
-    protected function log($message, $priority = LogLevel::INFO, $parameters = array())
-    {
-        Dispatcher::getInstance()->dispatch(
-            'system.log',
-            LogEvent::createInstance($this)
-                ->setContext($parameters)
-                ->setMessage($message)
-                ->setPriority($priority)
-        );
-    }
-
-    protected function startTimingTheParsePhase()
-    {
-        if ($this->stopwatch) {
-            $this->stopwatch->start('parser.parse');
-        }
+        return $files;
     }
 }

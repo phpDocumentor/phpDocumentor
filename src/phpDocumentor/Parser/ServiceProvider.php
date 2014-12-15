@@ -13,11 +13,16 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
+use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
 use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
+use phpDocumentor\Parser\Listeners\Cache;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
 use phpDocumentor\Translator\Translator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -43,13 +48,27 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app['parser'] = $app->share(
             function ($app) {
-                $parser = new Parser();
-                $parser->setStopwatch($app['kernel.stopwatch']);
-                $parser->setLogger($app['monolog']);
+                /** @var EventDispatcherInterface $dispatcher */
+                $dispatcher = $app['event_dispatcher'];
 
-                return $parser;
+                $cacheListener = new Cache($app['descriptor.cache'], $app['translator']);
+                $cacheListener->register($dispatcher);
+
+                $phpBackend = new Php($app['descriptor.analyzer']);
+                $phpBackend->setEventDispatcher($dispatcher);
+
+                return (new Parser($app['descriptor.analyzer']))
+                    ->registerEventDispatcher($dispatcher)
+                    ->registerBackend($phpBackend);
             }
         );
+
+        $app->extend('descriptor.builder.initializers', function ($chain) use ($app) {
+            /** @var InitializerChain $chain */
+            $chain->addInitializer(new PhpParserAssemblers($app['parser.example.finder']));
+
+            return $chain;
+        });
 
         $app['markdown'] = $app->share(
             function () {
@@ -62,7 +81,7 @@ class ServiceProvider implements ServiceProviderInterface
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $app['parser.files'] = new Collection();
-        $app->command(new ParseCommand($app['descriptor.analyzer'], $app['parser'], $translator, $app['parser.files']));
+        $app->command(new ParseCommand($app['parser'], $translator, $app['parser.example.finder']));
     }
 
     /**

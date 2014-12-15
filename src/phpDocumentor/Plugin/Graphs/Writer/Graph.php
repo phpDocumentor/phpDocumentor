@@ -22,7 +22,6 @@ use phpDocumentor\GraphViz\Graph as GraphVizGraph;
 use phpDocumentor\GraphViz\Node;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use Zend\Stdlib\Exception\ExtensionNotLoadedException;
 
 /**
  * Writer responsible for generating various graphs.
@@ -244,7 +243,7 @@ class Graph extends WriterAbstract
     /**
      * Checks whether GraphViz is installed and throws an Exception otherwise.
      *
-     * @throws ExtensionNotLoadedException if graphviz is not found.
+     * @throws \RuntimeException if graphviz is not found.
      *
      * @return void
      */
@@ -253,7 +252,7 @@ class Graph extends WriterAbstract
         // NOTE: the -V flag sends output using STDERR and STDOUT
         exec('dot -V 2>&1', $output, $error);
         if ($error != 0) {
-            throw new ExtensionNotLoadedException(
+            throw new \RuntimeException(
                 'Unable to find the `dot` command of the GraphViz package. '
                 . 'Is GraphViz correctly installed and present in your path?'
             );

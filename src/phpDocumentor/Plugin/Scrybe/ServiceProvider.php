@@ -13,8 +13,12 @@ namespace phpDocumentor\Plugin\Scrybe;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Plugin\Scrybe\Converter\Definition\Factory;
 use phpDocumentor\Plugin\Scrybe\Converter\Format\Format;
+use phpDocumentor\Plugin\Scrybe\Descriptor\Builder\DocbookAssembler;
+use phpDocumentor\Plugin\Scrybe\Parser\Backend\Document;
 
 /**
  * Creates and binds the components for the generation of manuals.
@@ -38,6 +42,15 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $this->registerAssemblers($app);
+
+        $app['parser'] = $app->extend(
+            'parser',
+            function ($parser) use ($app) {
+                return $parser->registerBackend(new Document($app['descriptor.analyzer']));
+            }
+        );
+
         $app[self::TEMPLATE_FOLDER] = realpath(__DIR__ . '/data/templates/');
         $app[self::CONVERTERS] = array(
             '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml' => array(Format::RST, Format::HTML),
@@ -89,5 +102,26 @@ class ServiceProvider implements ServiceProviderInterface
         // FIXME: Disabled the ToLatex and ToPdf commands for now to prevent confusion of users.
         // $this->command(new \phpDocumentor\Plugin\Scrybe\Command\Manual\ToLatexCommand());
         // $this->command(new \phpDocumentor\Plugin\Scrybe\Command\Manual\ToPdfCommand());
+    }
+
+    /**
+     * @param Application $app
+     */
+    private function registerAssemblers(Application $app)
+    {
+        $app->extend('descriptor.builder.initializers', function ($chain) {
+            /** @var InitializerChain $chain */
+            $chain->addInitializer(function (Analyzer $analyzer) {
+                $factory = $analyzer->getAssemblerFactory();
+                $factory->register(
+                    function ($criteria) {
+                        return $criteria instanceof \ezcDocumentDocbook;
+                    },
+                    new DocbookAssembler()
+                );
+            });
+
+            return $chain;
+        });
     }
 }

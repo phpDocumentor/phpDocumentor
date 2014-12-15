@@ -17,7 +17,7 @@ use phpDocumentor\Configuration\Merger\Annotation as Merger;
 /**
  * Configuration definition for the parser.
  */
-class Configuration
+final class Configuration
 {
     /**
      * @var string name of the package when there is no @package tag defined.
@@ -25,28 +25,28 @@ class Configuration
      * @Serializer\Type("string")
      * @Serializer\SerializedName("default-package-name")
      */
-    protected $defaultPackageName = 'global';
+    private $defaultPackageName = 'global';
 
     /**
      * @var string destination location for the parser's output cache
      *
      * @Serializer\Type("string")
      */
-    protected $target;
+    private $target;
 
     /**
      * @var string which visibilities to include in the docs, May be public, protected, private
      *
      * @Serializer\Type("string")
      */
-    protected $visibility = 'public,protected,private';
+    private $visibility = 'public,protected,private';
 
     /**
      * @var string default encoding of the files that are parsed.
      *
      * @Serializer\Type("string")
      */
-    protected $encoding = 'utf-8';
+    private $encoding = 'utf-8';
 
     /**
      * @var string[] $markers a list of codes that can be used at the beginning of a comment to have it mentioned in
@@ -56,7 +56,7 @@ class Configuration
      * @Serializer\XmlList(entry = "item")
      * @Merger\Replace
      */
-    protected $markers = array('TODO', 'FIXME');
+    private $markers = array('TODO', 'FIXME');
 
     /**
      * @var string[] $extensions A list of supported file extensions used to limit the number of files to be
@@ -66,7 +66,27 @@ class Configuration
      * @Serializer\XmlList(entry = "extension")
      * @Merger\Replace
      */
-    protected $extensions = array('php', 'php3', 'phtml');
+    private $extensions = array('php', 'php3', 'phtml');
+
+    /**
+     * @Serializer\Exclude
+     * @var bool
+     */
+    private $shouldRebuildCache = false;
+
+    /**
+     * @var Configuration\Files contains a list of all files and directories to parse and to ignore.
+     * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
+     */
+    private $files;
+
+    /**
+     * @Serializer\Exclude
+     * @var string
+     *
+     * @see \phpDocumentor\Parser\Parser::scanForFiles() where the project root is set.
+     */
+    private $projectRoot = '';
 
     /**
      * Returns the package name that will be given to elements when there is no `@package` tag defined or inherited.
@@ -76,6 +96,18 @@ class Configuration
     public function getDefaultPackageName()
     {
         return $this->defaultPackageName;
+    }
+
+    /**
+     * Registers the name of the package that is implied when an element does not feature the package tag.
+     *
+     * @param string $defaultPackageName
+     *
+     * @return void
+     */
+    public function setDefaultPackageName($defaultPackageName)
+    {
+        $this->defaultPackageName = $defaultPackageName;
     }
 
     /**
@@ -89,6 +121,21 @@ class Configuration
     }
 
     /**
+     * Registers the encoding for all files in the project, by default this is utf-8.
+     *
+     * Please note that changing the encoding will have a negative impact on the performance of phpDocumentor because
+     * all file contents will be converted to UTF-8 before parsing commences.
+     *
+     * @param string $encoding
+     *
+     * @return void
+     */
+    public function setEncoding($encoding)
+    {
+        $this->encoding = $encoding;
+    }
+
+    /**
      * Returns the file extensions which are to be interpreted by the parser.
      *
      * @return string[]
@@ -96,6 +143,18 @@ class Configuration
     public function getExtensions()
     {
         return $this->extensions;
+    }
+
+    /**
+     * Registers which file extensions are parsed.
+     *
+     * @param \string[] $extensions
+     *
+     * @return void
+     */
+    public function setExtensions($extensions)
+    {
+        $this->extensions = $extensions;
     }
 
     /**
@@ -119,6 +178,20 @@ class Configuration
     }
 
     /**
+     * Registers which markers to scan for and to collect.
+     *
+     * @param \string[] $markers
+     *
+     * @see self::getMarkers() for more information on what markers are and how they work,
+     *
+     * @return void
+     */
+    public function setMarkers($markers)
+    {
+        $this->markers = $markers;
+    }
+
+    /**
      * Returns the path where the product of the parsing process should be written to.
      *
      * The parsing process will output a product, usually cache, consisting of settings and the descriptors that are
@@ -136,15 +209,112 @@ class Configuration
     }
 
     /**
+     * Registers the target folder where to store the cache files.
+     *
+     * @param string $target
+     *
+     * @return void
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+    }
+
+    /**
      * Returns a comma-separated list of visibilities that can be used to restrict which elements are included in the
      * documentation.
      *
-     * The following values are supported: public, protected and private.
+     * The following values are supported: default, public, protected and private.
      *
      * @return string
      */
     public function getVisibility()
     {
         return $this->visibility;
+    }
+
+    /**
+     * Registers a comma-separated list of visibilities that can be used to restrict which elements are included in the
+     * documentation.
+     *
+     * The following values are supported: default, public, protected and private.
+     *
+     * @param string $visibility
+     *
+     * @return void
+     */
+    public function setVisibility($visibility)
+    {
+        $this->visibility = $visibility;
+    }
+
+    /**
+     * Returns whether we expect the parser to ignore previously parsed files and re-parse them all.
+     *
+     * @return boolean
+     */
+    public function shouldRebuildCache()
+    {
+        return $this->shouldRebuildCache;
+    }
+
+    /**
+     * Registers whether we expect the parser to ignore previously parsed files and re-parse them all.
+     *
+     * @param boolean $shouldRebuildCache
+     *
+     * @return void
+     */
+    public function setShouldRebuildCache($shouldRebuildCache)
+    {
+        $this->shouldRebuildCache = $shouldRebuildCache;
+    }
+
+    /**
+     * Returns the configuration related to which files are to be parsed.
+     *
+     * @return Configuration\Files
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * Registers the configuration related to which files are to be parsed.
+     *
+     * @param Configuration\Files $files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
+    }
+
+    /**
+     * Returns the root path of the project that is to be parsed.
+     *
+     * This value is used to strip the path of the path that is specific to this computer and as such transforms all
+     * files to a relative filename instead of an absolute filename.
+     *
+     * @return string
+     */
+    public function getProjectRoot()
+    {
+        return $this->projectRoot;
+    }
+
+    /**
+     * Registers the root path of the project that is to be parsed.
+     *
+     * This value is used to strip the path of the path that is specific to this computer and as such transforms all
+     * files to a relative filename instead of an absolute filename.
+     *
+     * @param string $projectRoot
+     *
+     * @return void
+     */
+    public function setProjectRoot($projectRoot)
+    {
+        $this->projectRoot = $projectRoot;
     }
 }

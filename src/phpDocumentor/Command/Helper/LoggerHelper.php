@@ -14,15 +14,18 @@ namespace phpDocumentor\Command\Helper;
 use Monolog\Logger;
 use phpDocumentor\Command\Command;
 use phpDocumentor\Configuration;
+use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
-use phpDocumentor\Parser\Event\PreFileEvent;
+use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class LoggerHelper extends Helper
 {
@@ -75,9 +78,41 @@ class LoggerHelper extends Helper
         $eventDispatcher = $command->getService('event_dispatcher');
 
         $eventDispatcher->addListener(
-            'parser.file.pre',
-            function (PreFileEvent $event) use ($output) {
-                $output->writeln('Parsing <info>'.$event->getFile().'</info>');
+            Php::EVENT_FILE_IS_CACHED,
+            function (GenericEvent $event) use ($output, $eventDispatcher) {
+                $fileDescriptor = $event->getSubject();
+                $output->writeln('Found cached file <info>'.$fileDescriptor->getPath().'</info>');
+
+                /** @var Error $error */
+                foreach ($fileDescriptor->getAllErrors() as $error) {
+                    $eventDispatcher->dispatch(
+                        'system.log',
+                        LogEvent::createInstance($this)
+                            ->setContext($error->getContext())
+                            ->setMessage($error->getCode())
+                            ->setPriority($error->getSeverity())
+                    );
+                }
+            }
+        );
+
+        $eventDispatcher->addListener(
+            Php::EVENT_ANALYZED_FILE,
+            function (GenericEvent $event) use ($output, $eventDispatcher) {
+                /** @var FileDescriptor $fileDescriptor */
+                $fileDescriptor = $event->getSubject();
+                $output->writeln('Parsed modified file <info>'. $fileDescriptor->getPath().'</info>');
+
+                /** @var Error $error */
+                foreach ($fileDescriptor->getAllErrors() as $error) {
+                    $eventDispatcher->dispatch(
+                        'system.log',
+                        LogEvent::createInstance($this)
+                            ->setContext($error->getContext())
+                            ->setMessage($error->getCode())
+                            ->setPriority($error->getSeverity())
+                    );
+                }
             }
         );
 

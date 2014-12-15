@@ -80,7 +80,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
         $bootstrap = Bootstrap::createInstance();
 
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
-        $this->assertSame(getcwd() . '/vendor', $bootstrap->findVendorPath($baseDir));
+        $this->assertSame($baseDir . '/../../vendor', $bootstrap->findVendorPath($baseDir));
     }
 
     /**

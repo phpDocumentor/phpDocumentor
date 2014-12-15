@@ -14,11 +14,11 @@
             <extension>phtml</extension>
         </extensions>
         <visibility></visibility>
+        <files>
+            <ignore-hidden>true</ignore-hidden>
+            <ignore-symlinks>true</ignore-symlinks>
+        </files>
     </parser>
-    <files>
-        <ignore-hidden>true</ignore-hidden>
-        <ignore-symlinks>true</ignore-symlinks>
-    </files>
     <transformer>
         <target>output</target>
     </transformer>

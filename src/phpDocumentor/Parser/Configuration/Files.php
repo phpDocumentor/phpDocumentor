@@ -101,6 +101,18 @@ class Files
     }
 
     /**
+     * Registers which directories should be scanned for files to be parsed.
+     *
+     * @param \string[] $directories
+     *
+     * @return void
+     */
+    public function setDirectories($directories)
+    {
+        $this->directories = $directories;
+    }
+
+    /**
      * Returns a list of files to parse.
      *
      * @return \string[]
@@ -108,6 +120,20 @@ class Files
     public function getFiles()
     {
         return $this->files;
+    }
+
+    /**
+     * Registers files that are to be parsed by the parser.
+     *
+     * Please note that if the extension does not match what is allowed that it will be rejected nonetheless.
+     *
+     * @param \string[] $files
+     *
+     * @return void
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
     }
 
     /**
@@ -121,6 +147,18 @@ class Files
     }
 
     /**
+     * Registers a list of files and folders (in the form of a glob) to ignore during parsing.
+     *
+     * @param \string[] $ignore
+     *
+     * @return void
+     */
+    public function setIgnore($ignore)
+    {
+        $this->ignore = $ignore;
+    }
+
+    /**
      * Returns whether to ignore hidden files and folders during parsing.
      *
      * @return boolean
@@ -128,6 +166,18 @@ class Files
     public function isIgnoreHidden()
     {
         return $this->ignoreHidden;
+    }
+
+    /**
+     * Registers whether to ignore hidden files and folders during parsing.
+     *
+     * @param boolean $ignoreHidden
+     *
+     * @return void
+     */
+    public function setIgnoreHidden($ignoreHidden)
+    {
+        $this->ignoreHidden = $ignoreHidden;
     }
 
     /**
@@ -141,6 +191,18 @@ class Files
     }
 
     /**
+     * Registers whether to prevent traversing into paths that are symbolic links.
+     *
+     * @param boolean $ignoreSymlinks
+     *
+     * @return void
+     */
+    public function setIgnoreSymlinks($ignoreSymlinks)
+    {
+        $this->ignoreSymlinks = $ignoreSymlinks;
+    }
+
+    /**
      * Returns all folders that may contain example files as referenced using the `@example` tag.
      *
      * @return \string[]
@@ -148,5 +210,17 @@ class Files
     public function getExamples()
     {
         return $this->examples;
+    }
+
+    /**
+     * Registers all folders that may contain example files as referenced using the `@example` tag.
+     *
+     * @param \string[] $examples
+     *
+     * @return void
+     */
+    public function setExamples($examples)
+    {
+        $this->examples = $examples;
     }
 }

@@ -344,11 +344,11 @@ final class Jsonp extends WriterAbstract
             'methods' => array(),
         );
 
-        /** @var TraitDescriptor|string $trait */
-        foreach ($element->getUsedTraits() as $trait) {
-            $trait['uses'][] = $trait instanceof TraitDescriptor
-                ? $trait->getFullyQualifiedStructuralElementName()
-                : $trait;
+        /** @var TraitDescriptor|string $usedTrait */
+        foreach ($element->getUsedTraits() as $usedTrait) {
+            $trait['uses'][] = $usedTrait instanceof TraitDescriptor
+                ? $usedTrait->getFullyQualifiedStructuralElementName()
+                : $usedTrait;
         }
 
         /** @var PropertyDescriptor $property */

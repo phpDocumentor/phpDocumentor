@@ -12,12 +12,12 @@
 
 namespace phpDocumentor\Parser\Event;
 
-use phpDocumentor\Event\EventAbstract;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Event thrown before the parsing of an individual file.
  */
-class PreFileEvent extends EventAbstract
+class PreFileEvent extends GenericEvent
 {
     /** @var string */
     protected $file;

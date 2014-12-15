@@ -20,23 +20,16 @@
         "monolog/monolog":  "~1.6",
         "twig/twig":        "~1.3",
         "erusev/parsedown": "~1.0",
-        "symfony/process":  "~2.0",
         "zetacomponents/document": ">=1.3.1",
+        "jms/serializer":           "~0.12",
+        "desarrolla2/cache":        "~1.8",
 
         "symfony/event-dispatcher": "~2.1",
         "symfony/stopwatch":        "~2.3",
-        "symfony/config":           "~2.3",
-        "jms/serializer":           "~0.12",
+        "symfony/process":          "~2.0",
 
-        "herrera-io/phar-update": "1.0.3",
-
-        "zendframework/zend-stdlib":         "~2.1",
         "zendframework/zend-servicemanager": "~2.1",
-        "zendframework/zend-config":         "~2.1",
         "zendframework/zend-i18n":           "~2.1",
-        "zendframework/zend-serializer":     "~2.1",
-        "zendframework/zend-cache":          "~2.1",
-        "zendframework/zend-filter":         "~2.1",
 
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",
@@ -54,6 +47,7 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
+        "herrera-io/phar-update": "1.0.3",
         "behat/behat":        "~2.4",
         "phpunit/phpunit":    "~4.0",
         "mockery/mockery":    "~0.9@dev",

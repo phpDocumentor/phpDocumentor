@@ -12,108 +12,80 @@
 namespace phpDocumentor\Parser\Command\Project;
 
 use phpDocumentor\Command\Command;
-use phpDocumentor\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Configuration;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Fileset\Collection;
-use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Parser\Configuration\Files;
 use phpDocumentor\Parser\Parser;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Zend\Cache\Storage\StorageInterface;
-use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Parses the given source code and creates a structure file.
  *
- * The parse task uses the source files defined either by -f or -d options and
- * generates a structure file (structure.xml) at the target location (which is
- * the folder 'output' unless the option -t is provided).
+ * The parse task uses the source files defined either by -f or -d options and generates a structure file
+ * (structure.xml) at the target location (which is the folder 'output' unless the option -t is provided).
  */
-class ParseCommand extends Command
+final class ParseCommand extends Command
 {
-    /** @var Collection */
-    private $files;
-
-    /** @var Analyzer $analyzer*/
-    protected $analyzer;
-
     /** @var Parser $parser */
     protected $parser;
 
-    /** @var Translator */
+    /** @var TranslatorInterface $translator */
     protected $translator;
 
-    public function __construct($analyzer, $parser, $translator, $files)
+    /** @var Finder $exampleFinder */
+    private $exampleFinder;
+
+    /**
+     * Initializes this command with the dependencies used to parse files.
+     *
+     * @param Parser              $parser
+     * @param TranslatorInterface $translator
+     * @param Finder              $exampleFinder
+     */
+    public function __construct(Parser $parser, TranslatorInterface $translator, Finder $exampleFinder)
     {
-        $this->analyzer    = $analyzer;
-        $this->parser     = $parser;
-        $this->translator = $translator;
-        $this->files      = $files;
+        $this->parser        = $parser;
+        $this->translator    = $translator;
+        $this->exampleFinder = $exampleFinder;
 
         parent::__construct('project:parse');
     }
 
     /**
-     * @return Analyzer
-     */
-    public function getAnalyzer()
-    {
-        return $this->analyzer;
-    }
-
-    /**
-     * @return Parser
-     */
-    public function getParser()
-    {
-        return $this->parser;
-    }
-
-    /**
-     * Returns the Cache.
-     *
-     * @return StorageInterface
-     */
-    protected function getCache()
-    {
-        return $this->getContainer()->offsetGet('descriptor.cache');
-    }
-
-    /**
-     * Initializes this command and sets the name, description, options and
-     * arguments.
+     * Initializes this command and sets the name, description, options and arguments.
      *
      * @return void
      */
     protected function configure()
     {
         // minimization of the following expression
-        $VALUE_OPTIONAL_ARRAY = InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY;
+        $optionalArrayFlag = InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY;
 
         $this->setAliases(array('parse'))
             ->setDescription($this->__('PPCPP-DESCRIPTION'))
             ->setHelp($this->__('PPCPP-HELPTEXT'))
-            ->addOption('filename', 'f', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-FILENAME'))
-            ->addOption('directory', 'd', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-DIRECTORY'))
+            ->addOption('filename', 'f', $optionalArrayFlag, $this->__('PPCPP:OPT-FILENAME'))
+            ->addOption('directory', 'd', $optionalArrayFlag, $this->__('PPCPP:OPT-DIRECTORY'))
             ->addOption('target', 't', InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TARGET'))
             ->addOption('encoding', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-ENCODING'))
-            ->addOption('extensions', 'e', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-EXTENSIONS'))
-            ->addOption('ignore', 'i', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-IGNORE'))
-            ->addOption('ignore-tags', null, $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-IGNORETAGS'))
-            ->addOption('hidden', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-HIDDEN'))
+            ->addOption('extensions', 'e', $optionalArrayFlag, $this->__('PPCPP:OPT-EXTENSIONS'))
+            ->addOption('ignore', 'i', $optionalArrayFlag, $this->__('PPCPP:OPT-IGNORE'))
+            ->addOption('ignore-tags', null, $optionalArrayFlag, $this->__('PPCPP:OPT-IGNORETAGS'))
+            ->addOption('ignore-hidden', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-HIDDEN'))
             ->addOption('ignore-symlinks', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-IGNORESYMLINKS'))
-            ->addOption('markers', 'm', $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-MARKERS'), array('TODO', 'FIXME'))
+            ->addOption('markers', 'm', $optionalArrayFlag, $this->__('PPCPP:OPT-MARKERS'))
             ->addOption('title', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TITLE'))
             ->addOption('force', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-FORCE'))
-            ->addOption('validate', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-VALIDATE'))
-            ->addOption('visibility', null, $VALUE_OPTIONAL_ARRAY, $this->__('PPCPP:OPT-VISIBILITY'))
+            ->addOption('visibility', null, $optionalArrayFlag, $this->__('PPCPP:OPT-VISIBILITY'))
             ->addOption('sourcecode', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-SOURCECODE'))
             ->addOption('progressbar', 'p', InputOption::VALUE_NONE, $this->__('PPCPP:OPT-PROGRESSBAR'))
             ->addOption('parseprivate', null, InputOption::VALUE_NONE, 'PPCPP:OPT-PARSEPRIVATE')
@@ -129,237 +101,168 @@ class ParseCommand extends Command
     }
 
     /**
-     * Executes the business logic involved with this command.
+     * Overwrites the loaded configuration with any of the command line options, boots the parser and analyzes each file
+     * provided using the `-t` or `-d` argument.
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
-     *
-     * @throws \Exception if the target location is not a folder.
      *
      * @return integer
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var ConfigurationHelper $configurationHelper */
-        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
-        $target = $configurationHelper->getOption($input, 'target', 'parser/target');
-        if (strpos($target, '/tmp/') === 0) {
-            $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
-        }
-        
-        $fileSystem = new Filesystem();
-        if (! $fileSystem->isAbsolutePath($target)) {
-            $target = getcwd().DIRECTORY_SEPARATOR.$target;
-        }
-        if (!file_exists($target)) {
-            mkdir($target, 0777, true);
-        }
-        if (!is_dir($target)) {
-            throw new \Exception($this->__('PPCPP:EXC-BADTARGET'));
-        }
-        $this->getCache()->getOptions()->setCacheDir($target);
+        $configuration = $this->populateConfiguration($input);
+        $this->parser->boot($configuration->getParser());
+        $this->configureExampleFinder($configuration);
 
-        $analyzer = $this->getAnalyzer();
-        $analyzer->createProjectDescriptor();
-        $projectDescriptor = $analyzer->getProjectDescriptor();
-
-        $output->write($this->__('PPCPP:LOG-COLLECTING'));
-        $files = $this->getFileCollection($input);
-
-        /** @var Finder $exampleFinder */
-        $exampleFinder = $this->getContainer()->offsetGet('parser.example.finder');
-        $exampleFinder->setSourceDirectory($files->getProjectRoot());
-        $exampleFinder->setExampleDirectories($configurationHelper->getConfigValueFromPath('files/examples'));
-        $output->writeln($this->__('PPCPP:LOG-OK'));
-
-        /** @var ProgressHelper $progress  */
-        $progress = $this->getProgressBar($input);
-        if (!$progress) {
-            $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
-        }
-
-        $output->write($this->__('PPCPP:LOG-INITIALIZING'));
-        $this->populateParser($input, $files);
-
-        if ($progress) {
-            $progress->start($output, $files->count());
-        }
-
-        try {
-            $output->writeln($this->__('PPCPP:LOG-OK'));
-            $output->writeln($this->__('PPCPP:LOG-PARSING'));
-
-            $mapper = new ProjectDescriptorMapper($this->getCache());
-            $mapper->garbageCollect($files);
-            $mapper->populate($projectDescriptor);
-
-            $visibility = (array) $configurationHelper->getOption($input, 'visibility', 'parser/visibility');
-            $visibilities = array();
-            foreach ($visibility as $item) {
-                $visibilities = $visibilities + explode(',', $item);
-            }
-            $visibility = null;
-            foreach ($visibilities as $item) {
-                switch ($item) {
-                    case 'public':
-                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PUBLIC;
-                        break;
-                    case 'protected':
-                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PROTECTED;
-                        break;
-                    case 'private':
-                        $visibility |= ProjectDescriptor\Settings::VISIBILITY_PRIVATE;
-                        break;
-                }
-            }
-            if ($visibility === null) {
-                $visibility = ProjectDescriptor\Settings::VISIBILITY_DEFAULT;
-            }
-            if ($input->getOption('parseprivate')) {
-                $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
-            }
-            $projectDescriptor->getSettings()->setVisibility($visibility);
-
-            $this->getParser()->parse($analyzer, $files);
-        } catch (FilesNotFoundException $e) {
-            throw new \Exception($this->__('PPCPP:EXC-NOFILES'));
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), 0, $e);
-        }
-
-        if ($progress) {
-            $progress->finish();
-        }
-
-        $projectDescriptor->setPartials($this->getService('partials'));
-
-        $output->write($this->__('PPCPP:LOG-STORECACHE', (array) $this->getCache()->getOptions()->getCacheDir()));
-        $projectDescriptor->getSettings()->clearModifiedFlag();
-        $mapper->save($projectDescriptor);
-
-        $output->writeln($this->__('PPCPP:LOG-OK'));
+        $progress = $this->startProgressbar($input, $output, $this->parser->getFiles()->count());
+        $this->parse($configuration);
+        $this->finishProgressbar($progress);
 
         return 0;
     }
 
     /**
+     * For each given option in this command we (over)write a section of the configuration that matches that option.
+     *
      * @param InputInterface $input
-     * @param Collection     $files
+     *
+     * @return Configuration
      */
-    protected function populateParser(InputInterface $input, Collection $files)
+    private function populateConfiguration(InputInterface $input)
     {
-        /** @var ConfigurationHelper $configurationHelper */
-        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
+        $configuration = $this->getConfiguration();
 
-        $parser = $this->getParser();
-        $title = (string) $configurationHelper->getOption($input, 'title', 'title');
-        $this->getAnalyzer()->getProjectDescriptor()->setName($title ?: 'API Documentation');
-        $parser->setForced($input->getOption('force'));
-        $parser->setEncoding($configurationHelper->getOption($input, 'encoding', 'parser/encoding'));
-        $parser->setMarkers($configurationHelper->getOption($input, 'markers', 'parser/markers', array(), true));
-        $parser->setIgnoredTags($input->getOption('ignore-tags'));
-        $parser->setValidate($input->getOption('validate'));
-        $parser->setDefaultPackageName(
-            $configurationHelper->getOption($input, 'defaultpackagename', 'parser/default-package-name')
+        $this->overwriteConfigurationSetting($input, $configuration->getFiles(), 'filename', 'Files');
+        $this->overwriteConfigurationSetting($input, $configuration->getFiles(), 'directory', 'Directories');
+        $this->overwriteConfigurationSetting($input, $configuration->getParser(), 'target');
+        $this->overwriteConfigurationSetting($input, $configuration->getParser(), 'encoding');
+        $this->overwriteConfigurationSetting($input, $configuration->getParser(), 'extensions');
+        $this->overwriteConfigurationSetting($input, $configuration->getFiles(), 'ignore');
+        $this->overwriteConfigurationSetting($input, $configuration->getFiles(), 'ignore-hidden', 'IgnoreHidden');
+        $this->overwriteConfigurationSetting($input, $configuration->getFiles(), 'ignore-symlinks', 'IgnoreSymlinks');
+        $this->overwriteConfigurationSetting($input, $configuration->getParser(), 'markers');
+        $this->overwriteConfigurationSetting($input, $configuration, 'title');
+        $this->overwriteConfigurationSetting($input, $configuration->getParser(), 'force', 'ShouldRebuildCache');
+        $this->overwriteConfigurationSetting(
+            $input,
+            $configuration->getParser(),
+            'defaultpackagename',
+            'DefaultPackageName'
         );
-        $parser->setPath($files->getProjectRoot());
+
+        $this->overwriteConfigurationSetting($input, $configuration->getParser(), 'visibility');
+        if ($input->getOption('parseprivate')) {
+            $configuration->getParser()->setVisibility($configuration->getParser()->getVisibility() . ',internal');
+        }
+        if (! $configuration->getParser()->getVisibility()) {
+            $configuration->getParser()->setVisibility('default');
+        }
+
+        // TODO: Add handling of this option
+        if ($input->getOption('sourcecode')) {
+            // $configuration->getParser()->setMarkers($input->getOption('visibility'));
+        }
+
+        $this->fixFilesConfiguration($configuration);
+
+        return $configuration;
     }
 
     /**
-     * Returns the collection of files based on the input and configuration.
+     * Overwrites a configuration option with the given option from the input if it was passed.
      *
      * @param InputInterface $input
+     * @param object         $section               The configuration (sub)object to modify
+     * @param string         $optionName            The name of the option to read from the input.
+     * @param string|null    $configurationItemName when omitted the optionName is used where the first letter
+     *     is uppercased.
      *
-     * @return Collection
+     * @return void
      */
-    protected function getFileCollection($input)
+    private function overwriteConfigurationSetting($input, $section, $optionName, $configurationItemName = null)
     {
-        /** @var ConfigurationHelper $configurationHelper */
-        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
-
-        $this->files->setAllowedExtensions(
-            $configurationHelper->getOption(
-                $input,
-                'extensions',
-                'parser/extensions',
-                array('php', 'php3', 'phtml'),
-                true
-            )
-        );
-        $this->files->setIgnorePatterns($configurationHelper->getOption($input, 'ignore', 'files/ignore', array(), true));
-        $ignoreHidden = $configurationHelper->getOption($input, 'hidden', 'files/ignore-hidden', 'off');
-        $this->files->setIgnoreHidden($ignoreHidden !== 'off' && $ignoreHidden === false);
-        $this->files->setFollowSymlinks(
-            $configurationHelper->getOption($input, 'ignore-symlinks', 'files/ignore-symlinks', 'off') == 'on'
-        );
-
-        $file_options = (array) $configurationHelper->getOption($input, 'filename', 'files/files', array(), true);
-        $added_files = array();
-        foreach ($file_options as $glob) {
-            if (!is_string($glob)) {
-                continue;
-            }
-
-            $matches = glob($glob);
-            if (is_array($matches)) {
-                foreach ($matches as $file) {
-                    if (!empty($file)) {
-                        $file = realpath($file);
-                        if (!empty($file)) {
-                            $added_files[] = $file;
-                        }
-                    }
-                }
-            }
+        if ($configurationItemName === null) {
+            $configurationItemName = ucfirst($optionName);
         }
-        $this->files->addFiles($added_files);
 
-        $directory_options = $configurationHelper->getOption($input, 'directory', 'files/directories', array(), true);
-        $added_directories = array();
-        foreach ($directory_options as $glob) {
-            if (!is_string($glob)) {
-                continue;
-            }
-
-            $matches = glob($glob, GLOB_ONLYDIR);
-            if (is_array($matches)) {
-                foreach ($matches as $dir) {
-                    if (!empty($dir)) {
-                        $dir = realpath($dir);
-                        if (!empty($dir)) {
-                            $added_directories[] = $dir;
-                        }
-                    }
-                }
-            }
+        if ($input->getOption($optionName)) {
+            $section->{'set' . $configurationItemName}($input->getOption($optionName));
         }
-        $this->files->addDirectories($added_directories);
-
-        return $this->files;
     }
 
     /**
-     * Adds the parser.file.pre event to the advance the progressbar.
+     * Configures the paths of the example finder to match the configuration.
      *
-     * @param InputInterface $input
+     * @param Configuration $configuration
      *
-     * @return \Symfony\Component\Console\Helper\HelperInterface|null
+     * @return void
      */
-    protected function getProgressBar(InputInterface $input)
+    private function configureExampleFinder(Configuration $configuration)
     {
-        $progress = parent::getProgressBar($input);
+        $this->exampleFinder->setSourceDirectory($this->parser->getFiles()->getProjectRoot());
+        $this->exampleFinder->setExampleDirectories($configuration->getFiles()->getExamples());
+    }
+
+    /**
+     * Parses the files collected by the parser, stores the title and applies the partials.
+     *
+     * @param Configuration $configuration
+     *
+     * @return void
+     */
+    private function parse(Configuration $configuration)
+    {
+        $projectDescriptor = $this->parser->parse();
+        $projectDescriptor->setName($configuration->getTitle());
+        $projectDescriptor->setPartials($this->getService('partials'));
+    }
+
+    /**
+     * Initializes the progress bar component and register a listener that will increment the progressbar.
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param integer         $numberOfFiles
+     *
+     * @return ProgressHelper
+     */
+    private function startProgressbar(InputInterface $input, OutputInterface $output, $numberOfFiles)
+    {
+        /** @var ProgressHelper $progress */
+        $progress = $this->getProgressBar($input);
         if (!$progress) {
-            return null;
+            $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
         }
 
-        $this->getService('event_dispatcher')->addListener(
-            'parser.file.pre',
-            function (PreFileEvent $event) use ($progress) {
-                $progress->advance();
-            }
-        );
+        if ($progress) {
+            $this->getEventDispatcher()->addListener(
+                'parser.file.pre',
+                function () use ($progress) {
+                    $progress->advance();
+                }
+            );
+
+            $progress->start($output, $numberOfFiles);
+        }
 
         return $progress;
+    }
+
+    /**
+     * Finalizes the progress bar after all handling is complete.
+     *
+     * @param ProgressHelper|null $progress
+     *
+     * @return void
+     */
+    private function finishProgressbar($progress)
+    {
+        if (! $progress) {
+            return;
+        }
+
+        $progress->finish();
     }
 
     /**
@@ -371,9 +274,57 @@ class ParseCommand extends Command
      * @return string
      */
     // @codingStandardsIgnoreStart
-    protected function __($text, $parameters = array())
+    private function __($text, $parameters = array())
     // @codingStandardsIgnoreEnd
     {
         return vsprintf($this->translator->translate($text), $parameters);
+    }
+
+    /**
+     * Returns the configuration for the application.
+     *
+     * @return Configuration
+     */
+    private function getConfiguration()
+    {
+        return $this->getService('config');
+    }
+
+    /**
+     * Returns the Event Dispatcher.
+     *
+     * @return EventDispatcherInterface|null
+     */
+    private function getEventDispatcher()
+    {
+        return $this->getService('event_dispatcher');
+    }
+
+    /**
+     * The files configuration node has moved, this method provides backwards compatibility for phpDocumentor 3.
+     *
+     * We add the files configuration because it should actually belong there, simplifies the interface but
+     * removing it is a rather serious BC break. By using a non-serialized setter/property in the parser config
+     * and setting the files config on it we can simplify this interface.
+     *
+     * @param Configuration $configuration
+     *
+     * @deprecated to be removed in phpDocumentor 4
+     *
+     * @return void
+     */
+    private function fixFilesConfiguration(Configuration $configuration)
+    {
+        if (! $configuration->getParser()->getFiles() && $configuration->getFiles()) {
+            trigger_error(
+                'Your source files and directories should be declared in the "parser" node of your configuration but '
+                . 'was found in the root of your configuration. This is deprecated starting with phpDocumentor 3 and '
+                . 'will be removed with phpDocumentor 4.',
+                E_USER_DEPRECATED
+            );
+
+            $configuration->getParser()->setFiles($configuration->getFiles());
+            $configuration->setFiles(null);
+        }
     }
 }
