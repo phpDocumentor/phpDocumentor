@@ -29,8 +29,8 @@ final class Parser
     const EVENT_PARSE_FILE_NO_BACKEND = 'parser.file.noBackend';
     const EVENT_COMPLETED             = 'parser.completed';
 
-    /** @var Fileset|null */
-    private $fileset;
+    /** @var Loader|null */
+    private $loader;
 
     /** @var Backend[] */
     private $backend;
@@ -44,10 +44,10 @@ final class Parser
     /** @var \phpDocumentor\Fileset\Collection */
     private $files;
 
-    public function __construct(Analyzer $analyzer, Fileset $fileset = null)
+    public function __construct(Analyzer $analyzer, Loader $loader = null)
     {
         $this->analyzer = $analyzer;
-        $this->fileset = $fileset;
+        $this->loader   = $loader;
     }
 
     /**
@@ -223,9 +223,9 @@ final class Parser
      */
     private function scanForFiles(Configuration $configuration)
     {
-        $fileset = $this->fileset ?: new Fileset();
+        $loader = $this->loader ?: new Loader();
         try {
-            $files = $fileset->populate(new Collection(), $configuration);
+            $files = $loader->load(new Collection(), $configuration);
             $configuration->setProjectRoot($files->getProjectRoot());
         } catch (FilesNotFoundException $e) {
             throw new \Exception('PPCPP:EXC-NOFILES');
