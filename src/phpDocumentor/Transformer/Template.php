@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer;
 
 use JMS\Serializer\Annotation as Serializer;
+use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * Model representing a template.
@@ -28,34 +29,41 @@ class Template implements \ArrayAccess, \Countable, \Iterator
 
     /**
      * @Serializer\Type("string")
-     * @var string
+     * @var string The name and optionally mail address of the author, i.e. `Mike van Riel <me@mikevanriel.com>`.
      */
     protected $author = '';
 
     /**
      * @Serializer\Type("string")
-     * @var string
+     * @var string The version of the template according to semantic versioning, i.e. 1.2.0
      */
     protected $version = '';
 
     /**
      * @Serializer\Type("string")
-     * @var string
+     * @var string A free-form copyright notice.
      */
     protected $copyright = '';
 
     /**
      * @Serializer\Type("string")
-     * @var string
+     * @var string a text providing more information on this template.
      */
     protected $description = '';
 
     /**
      * @Serializer\XmlList(entry = "transformation")
      * @Serializer\Type("array<phpDocumentor\Transformer\Transformation>")
-     * @var Transformation
+     * @var Transformation[] A series of transformations to execute in sequence during transformation.
      */
     protected $transformations = array();
+
+    /**
+     * @Serializer\XmlList(entry = "parameter")
+     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
+     * @var Parameter[] Global parameters that are passed to each transformation.
+     */
+    protected $parameters = array();
 
     /**
      * Initializes this object with a name and optionally with contents.
@@ -174,7 +182,6 @@ class Template implements \ArrayAccess, \Countable, \Iterator
     {
         return $this->description;
     }
-
 
     /**
      * Sets a transformation at the given offset.
@@ -309,5 +316,40 @@ class Template implements \ArrayAccess, \Countable, \Iterator
     public function current()
     {
         return current($this->transformations);
+    }
+
+    /**
+     * Returns the parameters associated with this template.
+     *
+     * @return Parameter[]
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Sets a new parameter in the collection.
+     *
+     * @param string|integer $key
+     * @param Parameter      $value
+     *
+     * @return void
+     */
+    public function setParameter($key, $value)
+    {
+        $this->parameters[$key] = $value;
+    }
+
+    /**
+     * Pushes the parameters of this template into the transformations.
+     *
+     * @return void
+     */
+    public function propagateParameters()
+    {
+        foreach ($this->transformations as $transformation) {
+            $transformation->setParameters(array_merge($transformation->getParameters(), $this->getParameters()));
+        }
     }
 }

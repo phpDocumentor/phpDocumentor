@@ -2,14 +2,20 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Transformer\Exception;
+use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Writer containing file system operations.
@@ -18,12 +24,10 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
  * supported is:
  *
  * * copy, copies a file or directory to the destination given in $artifact
+ * * append, copies a file or directory and appends it to the destination given in $artifact; if $artifact does not
+ *   exist yet it is created.
  */
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Transformer\Exception;
-use phpDocumentor\Transformer\Transformation;
-
-class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
+class FileIo extends WriterAbstract
 {
     /** @var \phpDocumentor\Transformer\Transformation */
     protected $transformation = null;
@@ -47,7 +51,8 @@ class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
         $method = 'executeQuery' . ucfirst($transformation->getQuery());
         if (!method_exists($this, $method)) {
             throw new \InvalidArgumentException(
-                'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
+                'The query ' . $method . ' is not supported by the FileIo writer, '
+                . 'supported operations are "copy" and "append"'
             );
         }
 
@@ -59,7 +64,8 @@ class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
      *
      * @param Transformation $transformation Transformation to use as data source.
      *
-     * @throws Exception
+     * @throws Exception if the source location cannot be read
+     * @throws Exception if the target location is not writable
      *
      * @return void
      */
@@ -74,46 +80,37 @@ class FileIo extends \phpDocumentor\Transformer\Writer\WriterAbstract
             throw new Exception('Unable to write to: ' . dirname($transformation->getArtifact()));
         }
 
-        $this->copyRecursive($path, $transformation->getArtifact());
+        $filesystem = new Filesystem();
+        if (is_file($path)) {
+            $filesystem->copy($path, $transformation->getArtifact());
+        } else {
+            $filesystem->mirror($path, $transformation->getArtifact());
+        }
     }
 
     /**
-     * Copies a file or folder recursively to another location.
+     * Appends the contents of the source file to the target file.
      *
-     * @param string $src The source location to copy
-     * @param string $dst The destination location to copy to
+     * @param Transformation $transformation
      *
-     * @throws \Exception if $src does not exist or $dst is not writable
+     * @throws Exception
      *
      * @return void
      */
-    public function copyRecursive($src, $dst)
+    public function executeQueryAppend(Transformation $transformation)
     {
-        // if $src is a normal file we can do a regular copy action
-        if (is_file($src)) {
-            copy($src, $dst);
-            return;
+        $target = $transformation->getArtifact();
+        $path = $transformation->getSourceAsPath();
+
+        if (!is_readable($path)) {
+            throw new Exception('Unable to read the source file: ' . $path);
+        }
+        if (!is_file($target)) {
+            throw new Exception(
+                'Unable to write to "' . $target . '", expected a file but received a folder'
+            );
         }
 
-        $dir = opendir($src);
-        if (!$dir) {
-            throw new \Exception('Unable to locate path "' . $src . '"');
-        }
-
-        // check if the folder exists, otherwise create it
-        if ((!file_exists($dst)) && (false === mkdir($dst))) {
-            throw new \Exception('Unable to create folder "' . $dst . '"');
-        }
-
-        while (false !== ($file = readdir($dir))) {
-            if (($file != '.') && ($file != '..')) {
-                if (is_dir($src . DIRECTORY_SEPARATOR . $file)) {
-                    $this->copyRecursive($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
-                } else {
-                    copy($src . DIRECTORY_SEPARATOR . $file, $dst . DIRECTORY_SEPARATOR . $file);
-                }
-            }
-        }
-        closedir($dir);
+        file_put_contents($target, file_get_contents($path), FILE_APPEND);
     }
 }

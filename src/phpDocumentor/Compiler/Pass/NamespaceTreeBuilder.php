@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -44,7 +44,8 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      */
     public function execute(ProjectDescriptor $project)
     {
-        $project->getIndexes()->elements['~\\'] = $project->getNamespace();
+        $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
+        $project->getIndexes()->get('namespaces', new Collection())->add($project->getNamespace());
 
         foreach ($project->getFiles() as $file) {
             $this->addElementsOfTypeToNamespace($project, $file->getConstants()->getAll(), 'constants');
@@ -73,9 +74,9 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            $namespaceName = (string)$element->getNamespace();
+            $namespaceName = (string) $element->getNamespace();
 
-            // ensure consistency by trimming the slash prefix and then reappending it.
+            // ensure consistency by trimming the slash prefix and then re-appending it.
             $namespaceIndexName = '~\\' . ltrim($namespaceName, '\\');
 
             if (!isset($project->getIndexes()->elements[$namespaceIndexName])) {

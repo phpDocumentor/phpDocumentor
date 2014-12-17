@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,11 +13,16 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
-use phpDocumentor\Translator;
-use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
+use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
+use phpDocumentor\Fileset\Collection;
+use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
-use phpDocumentor\Plugin\Core\Parser\DocBlock\Validator\ValidatorAbstract;
+use phpDocumentor\Parser\Listeners\Cache;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
+use phpDocumentor\Translator\Translator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -29,21 +34,45 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @param Application $app An Application instance
      *
-     * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
+     * @throws Exception\MissingDependencyException if the Descriptor Analyzer is not present.
      *
      * @return void
      */
     public function register(Application $app)
     {
-        if (!isset($app['descriptor.builder'])) {
+        if (!isset($app['descriptor.analyzer'])) {
             throw new Exception\MissingDependencyException(
-                'The builder object that is used to construct the ProjectDescriptor is missing'
+                'The analyzer object that is used to construct the ProjectDescriptor is missing'
             );
         }
 
         $app['parser'] = $app->share(
+            function ($app) {
+                /** @var EventDispatcherInterface $dispatcher */
+                $dispatcher = $app['event_dispatcher'];
+
+                $cacheListener = new Cache($app['descriptor.cache'], $app['translator']);
+                $cacheListener->register($dispatcher);
+
+                $phpBackend = new Php($app['descriptor.analyzer']);
+                $phpBackend->setEventDispatcher($dispatcher);
+
+                return (new Parser($app['descriptor.analyzer']))
+                    ->registerEventDispatcher($dispatcher)
+                    ->registerBackend($phpBackend);
+            }
+        );
+
+        $app->extend('descriptor.builder.initializers', function ($chain) use ($app) {
+            /** @var InitializerChain $chain */
+            $chain->addInitializer(new PhpParserAssemblers($app['parser.example.finder']));
+
+            return $chain;
+        });
+
+        $app['markdown'] = $app->share(
             function () {
-                return new Parser();
+                return \Parsedown::instance();
             }
         );
 
@@ -51,17 +80,16 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $app['translator'];
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
-        $app->command(new ParseCommand($app['descriptor.builder'], $app['parser'], $translator));
-
-        /** @var Dispatcher $dispatcher  */
-        $dispatcher = $app['event_dispatcher'];
-        $dispatcher->addListener('reflection.docblock-extraction.post', array($this, 'validateDocBlocks'));
+        $app['parser.files'] = new Collection();
+        $app->command(new ParseCommand($app['parser'], $translator, $app['parser.example.finder']));
     }
 
     /**
      * Checks all phpDocumentor whether they match the given rules.
      *
      * @param PostDocBlockExtractionEvent $data Event object containing the parameters.
+     *
+     * @todo convert this method to the new style validators; this method is not invoked anymore
      *
      * @return void
      */
@@ -95,7 +123,7 @@ class ServiceProvider implements ServiceProviderInterface
                 /** @var ValidatorAbstract $val */
                 $val = new $class($element->getName(), $docblock, $element);
                 $val->setOptions($validatorOptions);
-                $val->isValid();
+                $val->isValid($element);
             }
         }
     }
@@ -134,11 +162,11 @@ class ServiceProvider implements ServiceProviderInterface
         if (isset($configOptions[$configType]->tag)) {
 
             foreach ($configOptions[$configType]->tag as $tag) {
-                $tagName = (string)$tag['name'];
+                $tagName = (string) $tag['name'];
 
                 if (isset($tag->element)) {
                     foreach ($tag->element as $type) {
-                        $typeName = (string)$type;
+                        $typeName = (string) $type;
                         $validatorOptions[$typeName][] = $tagName;
                     }
                 } else {

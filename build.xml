@@ -33,7 +33,7 @@
         <exec executable="php" passthru="true">
             <arg value="composer.phar"/>
             <arg value="install"/>
-            <arg value="--prefer-dist"/>
+            <arg value="--prefer-source"/>
             <arg value="--dev"/>
         </exec>
     </target>
@@ -41,14 +41,13 @@
     <!-- Generate checkstyle.xml -->
     <target name="build:phpcs" description="Checks for Coding Standard violations">
         <echo message="Executing phpCodeSniffer, output is in 'build/logs/checkstyle.xml'"/>
-        <phpcodesniffer file="${project.basedir}/src/phpDocumentor" format="checkstyle" standard="PSR2" haltonerror="false">
-            <formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
-        </phpcodesniffer>
+        <exec command="${project.basedir}/bin/phpcs --standard=PSR2 --report=checkstyle --ignore='*/data/templates/*' --report-file=${project.basedir}/build/logs/checkstyle.xml ${project.basedir}/src" passthru="true" checkreturn="false"/>
     </target>
 
     <!-- Generate API documentation with phpDocumentor -->
     <target name="build:phpdoc" description="Generates API documentation">
-        <exec executable="phpdoc" passthru="true">
+        <exec executable="${project.basedir}/bin/phpdoc" passthru="true">
+            <arg line="-d ${project.basedir}/src"/>
             <arg line="-t ${project.basedir}/build/api"/>
         </exec>
     </target>
@@ -63,9 +62,7 @@
 
     <!-- Generate pmd-cpd.xml -->
     <target name="build:phpcpd" description="Search for duplicated code">
-        <!--<phpcpd file="${project.basedir}/src/phpDocumentor">-->
-            <!--<formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>-->
-        <!--</phpcpd>-->
+        <exec command="phpcpd ${project.basedir}/src/phpDocumentor --log-pmd=${project.basedir}/build/logs/pmd-cpd.xml" passthru="true" checkreturn="false"/>
     </target>
 
     <!-- Generate pmd.xml -->
@@ -113,12 +110,12 @@
     </target>
 
     <!-- Asks for the post-deployment version number -->
-    <target name="deploy:get-version-number"
-            description="Ask the user for the new version">
-        <exec
-            command="grep -Pom1 &quot;[\d]\.[\d][^']*&quot; src/phpDocumentor/Application.php"
-            dir="${project.basedir}" outputProperty="version.number"
-        />
+    <target name="deploy:get-version-number" description="Ask the user for the new version">
+        <loadfile property="version.number" file="${project.basedir}/VERSION">
+            <filterchain>
+                <striplinebreaks />
+            </filterchain>
+        </loadfile>
     </target>
 
     <!-- Creates a PEAR package from this project -->
@@ -131,7 +128,7 @@
                         promptText="Enter the stability of the new version (alpha, beta or stable)"
                         useExistingValue="true"/>
         <exec
-            command="php bin/utils/package.php ${version.number} ${version.number} ${version.stability} make"
+            command="php bin/utils/package.php '${version.number}' '${version.number}' '${version.stability}' make"
             passthru="true" dir="${project.basedir}" checkreturn="true"
         />
         <exec
@@ -144,22 +141,27 @@
             depends="deploy:get-version-number"
             description="Uploads the PEAR package to the distribution server and update pirum">
         <exec command="scp ${project.basedir}/phpDocumentor-${version.number}.tgz ${server.username}@${server.pear}:${server.pear.path}" passthru="true" checkreturn="true"/>
-        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
+        <exec command="ssh ${server.username}@${server.pear} 'cd ${server.pear.path}; ../pirum add . phpDocumentor-${version.number}.tgz'" passthru="true" checkreturn="true"/>
         <delete file="${project.basedir}/phpDocumentor-${version.number}.tgz" />
     </target>
 
     <!-- Builds a new demo and publishes it -->
     <target name="deploy:publish-demo"
             description="Generate a demo and upload it to the server">
-        <delete><fileset dir="${project.basedir}/data/output"><include name="*"/></fileset></delete>
-        <exec command="php bin/phpdoc.php -t data/output" dir="${project.basedir}" passthru="true" checkreturn="true"/>
-        <exec command="scp -r ${project.basedir}/data/output/* ${server.username}@${server.demo}:${server.demo.path}" passthru="true" checkreturn="true"/>
+        <delete><fileset dir="/tmp/phpdoc-demo/responsive"><include name="*"/></fileset></delete>
+        <exec command="php bin/phpdoc -t /tmp/phpdoc-demo/responsive --template=responsive-twig" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r /tmp/phpdoc-demo/responsive/* ${server.username}@${server.demo}:${server.demo.path}/Responsive" passthru="true" checkreturn="true"/>
+        <exec command="php bin/phpdoc -t /tmp/phpdoc-demo/clean --template=clean" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r /tmp/phpdoc-demo/clean/* ${server.username}@${server.demo}:${server.demo.path}/Clean" passthru="true" checkreturn="true"/>
     </target>
 
     <!-- Builds a new demo and publishes it -->
     <target name="deploy:publish-phar" description="Generate a phar and upload it to the server">
         <exec command="php bin/compile" dir="${project.basedir}" passthru="true" checkreturn="true"/>
         <exec command="scp -r ${project.basedir}/phpDocumentor.phar ${server.username}@${server.phar}:${server.phar.path}" passthru="true" checkreturn="true"/>
+        <exec command="scp -r ${project.basedir}/phpDocumentor.phar ${server.username}@${server.phar}:${server.phar.path}/get/phpDocumentor-${version.number}.phar" passthru="true" checkreturn="true"/>
+        <exec command="openssl sha1 phpDocumentor.phar" passthru="true" />
+        <echo msg="Update https://github.com/josegonzalez/homebrew-php/blob/master/Formula/phpdocumentor.rb with the latest version number and the SHA1 that is shown above with the path /get/phpDocumentor-${version.number}.phar" />
         <delete><fileset dir="${project.basedir}"><include name="phpDocumentor.phar"/></fileset></delete>
     </target>
 

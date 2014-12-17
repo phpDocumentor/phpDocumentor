@@ -1,0 +1,21 @@
+---
+- name: Install PHP
+  apt: name=php5 state=latest
+  sudo: True
+
+- name: Install Pear
+  apt: name=php-pear state=latest
+  sudo: True
+
+- name: Install PHP Modules
+  apt: name={{item}} state=latest
+  with_items:
+    - php5-xsl
+    - php5-intl
+    - php5-xdebug
+  sudo: True
+
+# Note: This isn't the safest way to do this, but it *is* the easiest
+- name: Install composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer creates=/usr/local/bin/composer
+  sudo: True

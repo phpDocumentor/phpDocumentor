@@ -1,0 +1,60 @@
+box: wercker/php
+no-response-timeout: 15
+build:
+  steps:
+    - script:
+        name: set timezone in PHP
+        code: echo 'date.timezone = "Europe/Amsterdam"' >> $HOME/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - script:
+        name: Update apt
+        code: sudo apt-get update
+    - script:
+        name: install GraphViz
+        code: sudo apt-get install graphviz php5-xsl
+    - script:
+        name: install dependencies
+        code: composer install --no-interaction
+    - script:
+        name: download ocular
+        code: wget https://scrutinizer-ci.com/ocular.phar
+    - script:
+        name: unit tests
+        code: ./bin/phpunit
+    - script:
+        name: Upload code coverage report to Scrutinizer
+        code: php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+
+deploy:
+  steps:
+    - script:
+        name: Update apt
+        code: sudo apt-get update
+    - script:
+        name: install python pip
+        code: sudo apt-get install python-pip
+    - script:
+        name: install ansible
+        code: sudo pip install ansible
+    - add-to-known_hosts:
+        hostname: staging.phpdoc.org
+    - add-to-known_hosts:
+        hostname: phpdoc.org
+    - mktemp:
+        envvar: PRIVATEKEY_PATH
+    - create-file:
+        name: Write private key to file
+        filename: $PRIVATEKEY_PATH
+        content: $DEPLOY_KEY_PRIVATE
+        overwrite: true
+        hide-from-log: true
+    - mktemp:
+        envvar: INVENTORY_PATH
+    - create-file:
+        name: Generate ansible inventory
+        filename: $INVENTORY_PATH
+        content: $HOSTS
+        overwrite: true
+        hide-from-log: true
+    - script:
+        name: Run ansible
+        code: ansible-playbook --tags=release -i $INVENTORY_PATH -u mvriel --private-key=$PRIVATEKEY_PATH ansible/playbook.yml --extra-vars "release_type=minor"

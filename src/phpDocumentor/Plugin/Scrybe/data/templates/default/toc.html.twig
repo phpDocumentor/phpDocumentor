@@ -1,0 +1,8 @@
+<li>
+    <a href="{{ entry.filename }}.html#{{ entry.slug }}"><i class="icon-th"></i> {{ entry.name }}</a>
+    <ul>
+    {% for entry in entry.children %}
+        {% include 'default/toc.html.twig' %}
+    {% endfor %}
+    </ul>
+</li>

@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,24 +12,21 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
+use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use JMS\Serializer\SerializerBuilder;
+use Cilex\Provider\ValidatorServiceProvider;
+use Composer\Autoload\ClassLoader;
+use Monolog\ErrorHandler;
+use Monolog\Handler\NullHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use phpDocumentor\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Command\Helper\LoggerHelper;
+use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
-use Zend\Cache\Storage\Adapter\Filesystem;
-use Zend\Cache\Storage\Plugin\Serializer as SerializerPlugin;
-use Zend\Config\Factory;
-use phpDocumentor\Console\Input\ArgvInput;
-use phpDocumentor\Descriptor\ProjectAnalyzer;
-use phpDocumentor\Descriptor\Validation;
-use phpDocumentor\Parser;
-use phpDocumentor\Plugin\Core;
-
-/**
- * Finds and activates the autoloader.
- */
-require_once findAutoloader();
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Application class for phpDocumentor.
@@ -38,57 +35,208 @@ require_once findAutoloader();
  */
 class Application extends Cilex
 {
+    /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
     public static $VERSION;
 
     /**
      * Initializes all components used by phpDocumentor.
+     *
+     * @param ClassLoader $autoloader
+     * @param array       $values
      */
-    public function __construct()
+    public function __construct($autoloader = null, array $values = array())
     {
-        self::$VERSION = file_get_contents(__DIR__ . '/../../VERSION');
+        gc_disable();
+        $this->defineIniSettings();
+        
+        self::$VERSION = strpos('@package_version@', '@') === 0
+            ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
+            : '@package_version@';
 
-        parent::__construct('phpDocumentor', self::$VERSION);
+        parent::__construct('phpDocumentor', self::$VERSION, $values);
 
-        $this->addAutoloader();
-        $this->addLogging();
-        $this->setTimezone();
-        $this->addConfiguration();
+        $this['kernel.timer.start'] = time();
+        $this['kernel.stopwatch'] = function () {
+            return new Stopwatch();
+        };
+
+        $this['autoloader'] = $autoloader;
+
+        $this->register(new JmsSerializerServiceProvider());
+        $this->register(new Configuration\ServiceProvider());
+
         $this->addEventDispatcher();
+        $this->addLogging();
 
-        $this['console']->getHelperSet()->set(
-            new Console\Helper\ProgressHelper()
-        );
-
-        $this['translator.locale'] = 'en';
-        $this['translator'] = $this->share(
-            function ($app) {
-                $translator = new Translator();
-                $translator->setLocale($app['translator.locale']);
-                return $translator;
-            }
-        );
-
-        $this->addSerializer();
-
-        $this->addDescriptorServices();
-
+        $this->register(new ValidatorServiceProvider());
+        $this->register(new Translator\ServiceProvider());
+        $this->register(new Descriptor\ServiceProvider());
         $this->register(new Parser\ServiceProvider());
+        $this->register(new Partials\ServiceProvider());
         $this->register(new Transformer\ServiceProvider());
+        $this->register(new Plugin\ServiceProvider());
 
-        // TODO: make plugin service provider calls registrable from config
-        $this->register(new Core\ServiceProvider());
+        $this['descriptor.builder.initializers']->addInitializer(
+            new DefaultValidators($this['descriptor.analyzer']->getValidator())
+        );
+        $this['descriptor.builder.initializers']->initialize($this['descriptor.analyzer']);
 
         $this->addCommandsForProjectNamespace();
+
+        if (\Phar::running()) {
+            $this->addCommandsForPharNamespace();
+        }
     }
 
     /**
-     * Instantiates the autoloader and adds it to phpDocumentor's container.
+     * Removes all logging handlers and replaces them with handlers that can write to the given logPath and level.
+     *
+     * @param Logger  $logger       The logger instance that needs to be configured.
+     * @param integer $level        The minimum level that will be written to the normal logfile; matches one of the
+     *                              constants in {@see \Monolog\Logger}.
+     * @param string  $logPath      The full path where the normal log file needs to be written.
      *
      * @return void
      */
-    protected function addAutoloader()
+    public function configureLogger($logger, $level, $logPath = null)
     {
-        $this['autoloader'] = include findAutoloader();
+        /** @var Logger $monolog */
+        $monolog = $logger;
+
+        switch ($level) {
+            case 'emergency':
+            case 'emerg':
+                $level = Logger::EMERGENCY;
+                break;
+            case 'alert':
+                $level = Logger::ALERT;
+                break;
+            case 'critical':
+            case 'crit':
+                $level = Logger::CRITICAL;
+                break;
+            case 'error':
+            case 'err':
+                $level = Logger::ERROR;
+                break;
+            case 'warning':
+            case 'warn':
+                $level = Logger::WARNING;
+                break;
+            case 'notice':
+                $level = Logger::NOTICE;
+                break;
+            case 'info':
+                $level = Logger::INFO;
+                break;
+            case 'debug':
+                $level = Logger::DEBUG;
+                break;
+        }
+
+        $this['monolog.level']   = $level;
+        if ($logPath) {
+            $logPath = str_replace(
+                array('{APP_ROOT}', '{DATE}'),
+                array(realpath(__DIR__.'/../..'), $this['kernel.timer.start']),
+                $logPath
+            );
+            $this['monolog.logfile'] = $logPath;
+        }
+
+        // remove all handlers from the stack
+        try {
+            while ($monolog->popHandler()) {
+            }
+        } catch (\LogicException $e) {
+            // popHandler throws an exception when you try to pop the empty stack; to us this is not an
+            // error but an indication that the handler stack is empty.
+        }
+
+        if ($level === 'quiet') {
+            $monolog->pushHandler(new NullHandler());
+
+            return;
+        }
+
+        // set our new handlers
+        if ($logPath) {
+            $monolog->pushHandler(new StreamHandler($logPath, $level));
+        } else {
+            $monolog->pushHandler(new StreamHandler('php://stdout', $level));
+        }
+    }
+
+    /**
+     * Run the application and if no command is provided, use project:run.
+     *
+     * @param bool $interactive Whether to run in interactive mode.
+     *
+     * @return void
+     */
+    public function run($interactive = false)
+    {
+        /** @var ConsoleApplication $app  */
+        $app = $this['console'];
+        $app->setAutoExit(false);
+
+        if ($interactive) {
+            $app = new Shell($app);
+        }
+
+        $output = new Console\Output\Output();
+        $output->setLogger($this['monolog']);
+
+        $app->run(new ArgvInput(), $output);
+    }
+
+    /**
+     * Adjust php.ini settings.
+     *
+     * @return void
+     */
+    protected function defineIniSettings()
+    {
+        $this->setTimezone();
+        ini_set('memory_limit', -1);
+
+        // this code cannot be tested because we cannot control the system settings in unit tests
+        // @codeCoverageIgnoreStart
+        if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
+            if (ini_get('opcache.save_comments')) {
+                ini_set('opcache.load_comments', 1);
+            } else {
+                ini_set('opcache.enable', 0);
+            }
+        }
+
+        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
+            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * If the timezone is not set anywhere, set it to UTC.
+     *
+     * This is done to prevent any warnings being outputted in relation to using
+     * date/time functions. What is checked is php.ini, and if the PHP version
+     * is prior to 5.4, the TZ environment variable.
+     *
+     * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
+     *     default timezone.
+     *
+     * @codeCoverageIgnore this method is very hard, if not impossible, to unit test and not critical.
+     *
+     * @return void
+     */
+    protected function setTimezone()
+    {
+        if (false === ini_get('date.timezone')
+            || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
+        ) {
+            date_default_timezone_set('UTC');
+        }
     }
 
     /**
@@ -101,57 +249,36 @@ class Application extends Cilex
         $this->register(
             new MonologServiceProvider(),
             array(
-                 'monolog.name'    => 'phpDocumentor',
-                 'monolog.logfile' => sys_get_temp_dir() . '/phpdoc.log'
+                'monolog.name'      => 'phpDocumentor',
+                'monolog.logfile'   => sys_get_temp_dir() . '/phpdoc.log',
+                'monolog.debugfile' => sys_get_temp_dir() . '/phpdoc.debug.log',
+                'monolog.level'     => Logger::INFO,
             )
         );
-    }
 
-    /**
-     * If the timezone is not set anywhere, set it to UTC.
-     *
-     * This is done to prevent any warnings being outputted in relation to using
-     * date/time functions. What is checked is php.ini, and if the PHP version
-     * is prior to 5.4, the TZ environment variable.
-     *
-     * @return void
-     */
-    public function setTimezone()
-    {
-        if (false === ini_get('date.timezone') || (version_compare(phpversion(), '5.4.0', '<')
-            && false === getenv('TZ'))
-        ) {
-            date_default_timezone_set('UTC');
-        }
-    }
+        $app = $this;
+        /** @var Configuration $configuration */
+        $configuration = $this['config'];
+        $this['monolog.configure'] = $this->protect(
+            function ($log) use ($app, $configuration) {
+                $paths    = $configuration->getLogging()->getPaths();
+                $logLevel = $configuration->getLogging()->getLevel();
 
-    /**
-     * Adds the Configuration object to the DIC.
-     *
-     * phpDocumentor first loads the template config file (/data/phpdoc.tpl.xml)
-     * and then the phpdoc.dist.xml, or the phpdoc.xml if it exists but not both,
-     * from the current working directory.
-     *
-     * The user config file (either phpdox.dist.xml or phpdoc.xml) is merged
-     * with the template file.
-     *
-     * @return void
-     */
-    protected function addConfiguration()
-    {
-        $this['config'] = $this->share(
-            function () {
-                $user_config_file = (file_exists(getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'))
-                    ? getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.xml'
-                    : getcwd() . DIRECTORY_SEPARATOR . 'phpdoc.dist.xml';
-                $config_files     = array(__DIR__ . '/../../data/phpdoc.tpl.xml');
-                if (is_readable($user_config_file)) {
-                    $config_files[] = $user_config_file;
-                }
-
-                return Factory::fromFiles($config_files, true);
+                $app->configureLogger($log, $logLevel, $paths['default'], $paths['errors']);
             }
         );
+
+        $this->extend(
+            'console',
+            function (ConsoleApplication $console) use ($configuration) {
+                $console->getHelperSet()->set(new LoggerHelper());
+                $console->getHelperSet()->set(new ConfigurationHelper($configuration));
+
+                return $console;
+            }
+        );
+
+        ErrorHandler::register($this['monolog']);
     }
 
     /**
@@ -169,55 +296,6 @@ class Application extends Cilex
     }
 
     /**
-     * Adds the services to build the descriptors.
-     *
-     * This method injects the following services into the Dependency Injection Container:
-     *
-     * * descriptor.serializer, the serializer used to generate the cache
-     * * descriptor.builder, the builder used to transform the Reflected information into a series of Descriptors.
-     *
-     * It is possible to override which serializer is used by overriding the parameter `descriptor.serializer.class`.
-     *
-     * @return void
-     */
-    protected function addDescriptorServices()
-    {
-        $this['descriptor.builder.serializer'] = 'PhpSerialize';
-
-        $this['descriptor.cache'] = $this->share(
-            function () {
-                $cache = new Filesystem();
-                $cache->setOptions(
-                    array(
-                        'namespace' => 'phpdoc-cache',
-                        'cache_dir' => sys_get_temp_dir(),
-                    )
-                );
-                $cache->addPlugin(new SerializerPlugin());
-                return $cache;
-            }
-        );
-
-        $this['descriptor.builder.validator'] = $this->share(
-            function ($container) {
-                return new Validation($container['translator']);
-            }
-        );
-
-        $this['descriptor.builder'] = $this->share(
-            function ($container) {
-                $builder = new Descriptor\Builder\Reflector();
-                $builder->setValidation($container['descriptor.builder.validator']);
-                return $builder;
-            }
-        );
-
-        $this['descriptor.analyzer'] = function () {
-            return new ProjectAnalyzer();
-        };
-    }
-
-    /**
      * Adds the command to phpDocumentor that belong to the Project namespace.
      *
      * @return void
@@ -228,74 +306,12 @@ class Application extends Cilex
     }
 
     /**
-     * Adds the serializer to the container
+     * Adds the command to phpDocumentor that belong to the Phar namespace.
      *
      * @return void
      */
-    protected function addSerializer()
+    protected function addCommandsForPharNamespace()
     {
-        $this['serializer'] = $this->share(
-            function () {
-                $serializerPath = __DIR__ . '/../../vendor/jms/serializer/src';
-
-                if (!file_exists($serializerPath)) {
-                    $serializerPath = __DIR__ . '/../../../../jms/serializer/src';
-                }
-
-                AnnotationRegistry::registerAutoloadNamespace(
-                    'JMS\Serializer\Annotation',
-                    $serializerPath
-                );
-
-                return SerializerBuilder::create()->build();
-            }
-        );
+        $this->command(new Command\Phar\UpdateCommand());
     }
-
-    /**
-     * Run the application and if no command is provided, use project:run.
-     *
-     * @param bool $interactive Whether to run in interactive mode.
-     *
-     * @return void
-     */
-    public function run($interactive = false)
-    {
-        /** @var ConsoleApplication $app  */
-        $app = $this['console'];
-
-        if ($interactive) {
-            $app = new Shell($app);
-        }
-
-        $output = new Console\Output\Output();
-        $output->setLogger($this['monolog']);
-
-        $app->run(new ArgvInput(), $output);
-    }
-}
-
-/**
- * Tries to find the autoloader relative to this file and return its path.
- *
- * @throws \RuntimeException if the autoloader could not be found.
- *
- * @return string the path of the autoloader.
- */
-function findAutoloader()
-{
-    $autoloader_base_path = '/../../vendor/autoload.php';
-
-    // if the file does not exist from a base path it is included as vendor
-    $autoloader_location = file_exists(__DIR__ . $autoloader_base_path)
-        ? __DIR__ . $autoloader_base_path
-        : __DIR__ . '/../../..' . $autoloader_base_path;
-
-    if (!file_exists($autoloader_location)) {
-        throw new \RuntimeException(
-            'Unable to find autoloader at ' . $autoloader_location
-        );
-    }
-
-    return $autoloader_location;
 }

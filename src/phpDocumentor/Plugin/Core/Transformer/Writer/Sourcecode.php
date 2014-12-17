@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -14,11 +14,12 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * Sourcecode transformation writer; generates syntax highlighted source files in a destination's subfolder.
  */
-class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
+class Sourcecode extends WriterAbstract
 {
     /**
      * This method writes every source code entry in the structure file to a highlighted file.
@@ -88,7 +89,7 @@ class Sourcecode extends \phpDocumentor\Transformer\Writer\WriterAbstract
     <body>
         <pre class="brush: php">$source</pre>
         <script type="text/javascript">
-             SyntaxHighlighter.all()
+             SyntaxHighlighter.all();
              jQuery('.gutter div').each(function(key, data){
                 jQuery(data).prepend('<a name="L'+jQuery(data).text()+'"/>');
              });

@@ -2,29 +2,37 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Functions;
 
-use Psr\Log\LogLevel;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Descriptor\Validator\ValidatorInterface;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 use phpDocumentor\Reflection\FunctionReflector;
+use Psr\Log\LogLevel;
 
 /**
  * @todo break this validator up in subvalidators for each Error
  */
-class AreAllArgumentsValid implements ValidatorInterface
+class AreAllArgumentsValid
 {
+    /**
+     * Validates whether the given Reflector's arguments match the business rules of phpDocumentor.
+     *
+     * @param BaseReflector $element
+     *
+     * @throws \UnexpectedValueException if no DocBlock is associated with the given Reflector.
+     *
+     * @return Error|null
+     */
     public function validate($element)
     {
         $docBlock = $element->getDocBlock();
@@ -37,13 +45,20 @@ class AreAllArgumentsValid implements ValidatorInterface
         if ($docBlock->hasTag('return')) {
             $returnTag = current($docBlock->getTagsByName('return'));
             if ($returnTag->getType() == 'type') {
-                return new Error(LogLevel::WARNING, 'PPC:ERR-50004', $element->getLinenumber());
+                return new Error(LogLevel::WARNING, 'PPC:ERR-50017', $element->getLinenumber());
             }
         }
 
         return null;
     }
 
+    /**
+     * Returns an error if the given Reflector's arguments do not match expectations.
+     *
+     * @param FunctionReflector $element
+     *
+     * @return Error|null
+     */
     protected function validateArguments($element)
     {
         $params = $element->getDocBlock()->getTagsByName('param');
@@ -65,6 +80,7 @@ class AreAllArgumentsValid implements ValidatorInterface
             }
         }
 
+        /** @var ParamTag $param */
         foreach ($params as $param) {
             $param_name = $param->getVariableName();
 
@@ -79,6 +95,8 @@ class AreAllArgumentsValid implements ValidatorInterface
                 array($param_name, $element->getName())
             );
         }
+
+        return null;
     }
 
     /**
@@ -86,11 +104,12 @@ class AreAllArgumentsValid implements ValidatorInterface
      *
      * @param integer           $index    The position in the argument listing.
      * @param ArgumentReflector $argument The argument itself.
+     * @param BaseReflector     $element
      * @param Tag[]             $params   The list of param tags to validate against.
      *
      * @return bool whether an issue occurred.
      */
-    protected function isArgumentInDocBlock($index, ArgumentReflector $argument, $element, array $params)
+    protected function isArgumentInDocBlock($index, ArgumentReflector $argument, BaseReflector $element, array $params)
     {
         if (isset($params[$index])) {
             return null;
@@ -113,10 +132,11 @@ class AreAllArgumentsValid implements ValidatorInterface
      *
      * @param ParamTag          $param    param to validate with.
      * @param ArgumentReflector $argument Argument to validate against.
+     * @param BaseReflector     $element
      *
      * @return Error|null whether an issue occurred
      */
-    protected function doesArgumentNameMatchParam(ParamTag $param, ArgumentReflector $argument, $element)
+    protected function doesArgumentNameMatchParam(ParamTag $param, ArgumentReflector $argument, BaseReflector $element)
     {
         $param_name = $param->getVariableName();
         if ($param_name == $argument->getName()) {
@@ -125,6 +145,7 @@ class AreAllArgumentsValid implements ValidatorInterface
 
         if ($param_name == '') {
             $param->setVariableName($argument->getName());
+
             return null;
         }
 
@@ -144,11 +165,15 @@ class AreAllArgumentsValid implements ValidatorInterface
      *
      * @param ParamTag          $param
      * @param ArgumentReflector $argument
+     * @param BaseReflector     $element
      *
      * @return Error|null
      */
-    protected function doesArgumentTypehintMatchParam(ParamTag $param, ArgumentReflector $argument, $element)
-    {
+    protected function doesArgumentTypehintMatchParam(
+        ParamTag $param,
+        ArgumentReflector $argument,
+        BaseReflector $element
+    ) {
         if (!$argument->getType() || in_array($argument->getType(), $param->getTypes())) {
             return null;
         } elseif ($argument->getType() == 'array' && substr($param->getType(), -2) == '[]') {

@@ -1,0 +1,17 @@
+---
+- name: Install python-setuptools
+  apt: name=python-setuptools state=latest
+  sudo: True
+
+- name: Install Sphinx
+  easy_install: name=sphinx
+  sudo: True
+
+- name: Install required packages
+  apt: name={{item}} state=latest
+  with_items:
+    - texlive-latex-recommended
+    - texlive-fonts-recommended
+    - openjdk-6-jre
+    - make
+  sudo: True

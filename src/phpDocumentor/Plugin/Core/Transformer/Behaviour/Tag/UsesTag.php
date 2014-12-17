@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -45,7 +45,7 @@ class UsesTag
                 $type = substr($refers_array[1], -2) == '()' ? 'method' : $type;
             }
 
-            switch($type) {
+            switch ($type) {
                 case 'class':
                     // escape single quotes in the class name
                     $xpath_refers = 'concat(\''.str_replace(
@@ -78,8 +78,7 @@ class UsesTag
                     break;
             }
 
-            // get the nodes; we are unable to work around the
-            // shut up operator as there is no pre-validation possible.
+            /** @noinspection PhpUsageOfSilenceOperatorInspection as there is no pre-validation possible */
             $referral_nodes = @$xpath->query($qry);
 
             // if the query is wrong; output a Critical error and continue to

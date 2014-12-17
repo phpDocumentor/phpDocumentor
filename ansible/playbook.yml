@@ -1,0 +1,9 @@
+---
+- hosts: all
+  roles:
+    - { role: phpdocumentor.vagrant, tags: [vagrant] }
+    - { role: phpdocumentor.environment, tags: [vagrant] }
+    - { role: phpdocumentor.php, tags: [vagrant] }
+    - { role: phpdocumentor.sphinx, tags: [documentation] }
+    - { role: phpdocumentor.profiling, tags: [profiling] }
+    - { role: phpdocumentor.release, tags: [release] }

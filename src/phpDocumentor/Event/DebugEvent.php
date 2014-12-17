@@ -1,15 +1,14 @@
 <?php
-
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Event;
 
 use Psr\Log\LogLevel;
@@ -19,12 +18,8 @@ use Psr\Log\LogLevel;
  *
  * The information logged by this event will only be visible if the verbose
  * option is provided to phpDocumentor.
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class DebugEvent extends \phpDocumentor\Event\EventAbstract
+class DebugEvent extends EventAbstract
 {
     /** @var string Message to display with the debugging event */
     protected $message;
@@ -45,6 +40,7 @@ class DebugEvent extends \phpDocumentor\Event\EventAbstract
     public function setMessage($message)
     {
         $this->message = $message;
+
         return $this;
     }
 

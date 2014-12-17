@@ -2,10 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -17,10 +16,6 @@ use Psr\Log\LogLevel;
 /**
  * Logging event for phpDocumentor where information is output to the log or
  * stdout.
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
 class LogEvent extends DebugEvent
 {
@@ -39,6 +34,7 @@ class LogEvent extends DebugEvent
     public function setPriority($priority)
     {
         $this->priority = $priority;
+
         return $this;
     }
 }

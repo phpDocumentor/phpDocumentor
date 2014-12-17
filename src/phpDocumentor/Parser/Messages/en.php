@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -27,8 +27,8 @@ HELP
         . 'Wildcards * and ? are supported',
     'PPCPP:OPT-IGNORETAGS'         => 'Comma-separated list of tags that will be ignored, defaults to none. package, '
         . 'subpackage and ignore may not be ignored.',
-    'PPCPP:OPT-HIDDEN'             => 'Set to on to descend into hidden directories (directories starting with \'.\'), '
-        . 'default is on',
+    'PPCPP:OPT-HIDDEN'             => 'Use this option to tell phpDocumentor whether to ignore files and directories'
+        .' that begin with a period (.), by default this is true and thus these are ignored',
     'PPCPP:OPT-IGNORESYMLINKS'     => 'Ignore symlinks to other files or directories, default is on',
     'PPCPP:OPT-MARKERS'            => 'Comma-separated list of markers/tags to filter',
     'PPCPP:OPT-TITLE'              => 'Sets the title for this project; default is the phpDocumentor logo',
@@ -50,4 +50,5 @@ HELP
     'PPCPP:LOG-STORECACHE'   => 'Storing cache in "%s" .. ',
     'PPCPP:EXC-NOFILES'      => 'No parsable files were found, did you specify any using the -f or -d parameter?',
     'PPCPP:EXC-BADTARGET'    => 'The provided target location must be a directory',
+    'PPCPP:EXC-NOPARTIAL'    => 'Partial "%s" not readable or found.',
 );

@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,14 +13,42 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Translatable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use phpDocumentor\Translator\Translator;
 
 /**
  * Checkstyle transformation writer; generates checkstyle report
  */
-class Checkstyle extends WriterAbstract
+class Checkstyle extends WriterAbstract implements Translatable
 {
+    /** @var Translator $translator */
+    protected $translator;
+
+    /**
+     * Returns an instance of the object responsible for translating content.
+     *
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    /**
+     * Sets a new object capable of translating strings on this writer.
+     *
+     * @param Translator $translator
+     *
+     * @return void
+     */
+    public function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * This method generates the checkstyle.xml report
      *
@@ -32,6 +60,8 @@ class Checkstyle extends WriterAbstract
     public function transform(ProjectDescriptor $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
+
+        $this->checkForSpacesInPath($artifact);
 
         $document = new \DOMDocument();
         $document->formatOutput = true;
@@ -45,12 +75,16 @@ class Checkstyle extends WriterAbstract
             $file->setAttribute('name', $fileDescriptor->getPath());
             $report->appendChild($file);
 
-            foreach ($fileDescriptor->getErrors()->getAll() as $error) {
+            /** @var Error $error */
+            foreach ($fileDescriptor->getAllErrors()->getAll() as $error) {
                 $item = $document->createElement('error');
-                $item->setAttribute('line', $error['line']);
-                $item->setAttribute('severity', $error['type']);
-                $item->setAttribute('message', $error['message']);
-                $item->setAttribute('source', 'phpDocumentor.file.'.$error['code']);
+                $item->setAttribute('line', $error->getLine());
+                $item->setAttribute('severity', $error->getSeverity());
+                $item->setAttribute(
+                    'message',
+                    vsprintf($this->getTranslator()->translate($error->getCode()), $error->getContext())
+                );
+                $item->setAttribute('source', 'phpDocumentor.file.'.$error->getCode());
                 $file->appendChild($item);
             }
         }
@@ -69,13 +103,14 @@ class Checkstyle extends WriterAbstract
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+
         return $artifact;
     }
 
     /**
      * Save the checkstyle report to the artifact
      *
-     * @param string      $artifact Target name for the report
+     * @param string       $artifact Target name for the report
      * @param \DOMDocument $document The actual xml document being saved
      *
      * @return void

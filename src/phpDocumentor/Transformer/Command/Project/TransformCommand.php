@@ -2,28 +2,36 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Command\Project;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Zend\Cache\Storage\StorageInterface;
-use phpDocumentor\Command\ConfigurableCommand;
+use Desarrolla2\Cache\Adapter\AdapterInterface;
+use Desarrolla2\Cache\Adapter\File;
+use Desarrolla2\Cache\CacheInterface;
+use phpDocumentor\Command\Command;
+use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\BuilderAbstract;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Transformer\Event\PreTransformationEvent;
+use phpDocumentor\Transformer\Event\PreTransformEvent;
+use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
+use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Transforms the structure file into the specified output format
@@ -37,22 +45,29 @@ use phpDocumentor\Transformer\Transformer;
  * verbose option or stop additional information using the quiet option. Please
  * take note that the quiet option also disables logging to file.
  */
-class TransformCommand extends ConfigurableCommand
+class TransformCommand extends Command
 {
-    /** @var BuilderAbstract $builder */
-    protected $builder;
+    /** @var Analyzer $analyzer Object containing the project meta-data and AST */
+    protected $analyzer;
 
-    /** @var Transformer $transformer */
+    /** @var Transformer $transformer Principal object for guiding the transformation process */
     protected $transformer;
 
-    /** @var Compiler $compiler */
+    /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
     protected $compiler;
 
-    public function __construct($builder, $transformer, $compiler)
+    /**
+     * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
+     *
+     * @param Analyzer    $analyzer
+     * @param Transformer $transformer
+     * @param Compiler    $compiler
+     */
+    public function __construct(Analyzer $analyzer, Transformer $transformer, Compiler $compiler)
     {
         parent::__construct('project:transform');
 
-        $this->builder     = $builder;
+        $this->analyzer    = $analyzer;
         $this->transformer = $transformer;
         $this->compiler    = $compiler;
     }
@@ -111,15 +126,19 @@ TEXT
     }
 
     /**
-     * @return \phpDocumentor\Descriptor\BuilderAbstract
+     * Returns the analyzer object containing the AST and other meta-data.
+     *
+     * @return Analyzer
      */
-    public function getBuilder()
+    public function getAnalyzer()
     {
-        return $this->builder;
+        return $this->analyzer;
     }
 
     /**
-     * @return \phpDocumentor\Transformer\Transformer
+     * Returns the transformer used to guide the transformation process from AST to output.
+     *
+     * @return Transformer
      */
     public function getTransformer()
     {
@@ -127,49 +146,43 @@ TEXT
     }
 
     /**
-     * Returns the Cache.
-     *
-     * @return StorageInterface
-     */
-    protected function getCache()
-    {
-        return $this->getContainer()->offsetGet('descriptor.cache');
-    }
-
-    /**
      * Executes the business logic involved with this command.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @throws \Exception if the provided source is not an existing file or a folder.
      *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // invoke parent to load custom config
-        parent::execute($input, $output);
+        /** @var ConfigurationHelper $configurationHelper */
+        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
 
-        /** @var \phpDocumentor\Console\Helper\ProgressHelper $progress  */
         $progress = $this->getProgressBar($input);
-        if (!$progress) {
-            $this->connectOutputToLogging($output);
+        if (! $progress) {
+            $this->connectOutputToEvents($output);
         }
 
         // initialize transformer
         $transformer = $this->getTransformer();
 
-        $target = $this->getOption($input, 'target', 'transformer/target');
-        if (!$this->isAbsolute($target)) {
-            $target = getcwd().DIRECTORY_SEPARATOR.$target;
+        $target = (string) $configurationHelper->getOption($input, 'target', 'transformer/target');
+        $fileSystem = new Filesystem();
+        if (! $fileSystem->isAbsolutePath($target)) {
+            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
         $transformer->setTarget($target);
 
-        // $source = realpath($this->getOption($input, 'source', 'parser/target'));
-        // if (file_exists($source) && is_dir($source)) {
-        //     $source .= DIRECTORY_SEPARATOR . 'structure.xml';
-        // }
+        $source = realpath($configurationHelper->getOption($input, 'source', 'parser/target'));
+        if (!file_exists($source) || !is_dir($source)) {
+            throw new \Exception('Invalid source location provided, a path to an existing folder was expected');
+        }
 
-        $projectDescriptor = $this->getBuilder()->getProjectDescriptor();
+        $this->getCache()->setAdapter(new File($source));
+
+        $projectDescriptor = $this->getAnalyzer()->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->getCache());
         $output->writeTimedLog('Load cache', array($mapper, 'populate'), array($projectDescriptor));
 
@@ -203,32 +216,38 @@ TEXT
     }
 
     /**
+     * Returns the Cache.
+     *
+     * @return CacheInterface
+     */
+    protected function getCache()
+    {
+        return $this->getContainer()->offsetGet('descriptor.cache');
+    }
+
+    /**
      * Retrieves the templates to be used by analyzing the options and the configuration.
      *
-     * @param \Symfony\Component\Console\Input\ArgvInput $input
+     * @param InputInterface $input
      *
      * @return string[]
      */
-    protected function getTemplates(\Symfony\Component\Console\Input\InputInterface $input)
+    protected function getTemplates(InputInterface $input)
     {
+        /** @var ConfigurationHelper $configurationHelper */
+        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
+
         $templates = $input->getOption('template');
         if (!$templates) {
-            $value = $this->getConfigValueFromPath('transformations/template');
-            if (is_array($value)) {
-                if (isset($value['name'])) {
-                    $templates[] = $value['name'];
-                } else {
-                    foreach ($value as $template) {
-                        if (is_array($template)) {
-                            $templates[] = $template['name'];
-                        }
-                    }
-                }
+            /** @var Template[] $templatesFromConfig */
+            $templatesFromConfig = $configurationHelper->getConfigValueFromPath('transformations/templates');
+            foreach ($templatesFromConfig as $template) {
+                $templates[] = $template->getName();
             }
         }
 
         if (!$templates) {
-            $templates = array('responsive');
+            $templates = array('clean');
         }
 
         return $templates;
@@ -245,30 +264,53 @@ TEXT
      */
     public function loadTransformations(Transformer $transformer)
     {
+        /** @var ConfigurationHelper $configurationHelper */
+        $configurationHelper = $this->getHelper('phpdocumentor_configuration');
+
         $received = array();
-        $transformations = $this->getConfigValueFromPath('transformations/transformation');
+        $transformations = $configurationHelper->getConfigValueFromPath('transformations/transformations');
         if (is_array($transformations)) {
             if (isset($transformations['writer'])) {
-                $received[] = new Transformation(
-                    isset($transformations['query']) ? $transformations['query'] : '',
-                    $transformations['writer'],
-                    isset($transformations['source']) ? $transformations['source'] : '',
-                    isset($transformations['artifact']) ? $transformations['artifact'] : ''
-                );
+                $received[] = $this->createTransformation($transformations);
             } else {
                 foreach ($transformations as $transformation) {
                     if (is_array($transformation)) {
-                        $received[] = new Transformation(
-                            isset($transformations['query']) ? $transformations['query'] : '',
-                            $transformations['writer'],
-                            isset($transformations['source']) ? $transformations['source'] : '',
-                            isset($transformations['artifact']) ? $transformations['artifact'] : ''
-                        );
+                        $received[] = $this->createTransformation($transformations);
                     }
                 }
             }
         }
 
+        $this->appendReceivedTransformations($transformer, $received);
+    }
+
+    /**
+     * Create Transformation instance.
+     *
+     * @param array $transformations
+     *
+     * @return \phpDocumentor\Transformer\Transformation
+     */
+    protected function createTransformation(array $transformations)
+    {
+        return new Transformation(
+            isset($transformations['query']) ? $transformations['query'] : '',
+            $transformations['writer'],
+            isset($transformations['source']) ? $transformations['source'] : '',
+            isset($transformations['artifact']) ? $transformations['artifact'] : ''
+        );
+    }
+
+    /**
+     * Append received transformations.
+     *
+     * @param Transformer $transformer
+     * @param array       $received
+     *
+     * @return void
+     */
+    protected function appendReceivedTransformations(Transformer $transformer, $received)
+    {
         if (!empty($received)) {
             $template = new Template('__');
             foreach ($received as $transformation) {
@@ -281,9 +323,9 @@ TEXT
     /**
      * Adds the transformer.transformation.post event to advance the progressbar.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
      *
-     * @return \Symfony\Component\Console\Helper\HelperInterface|null
+     * @return HelperInterface|null
      */
     protected function getProgressBar(InputInterface $input)
     {
@@ -292,7 +334,9 @@ TEXT
             return null;
         }
 
-        $this->getService('event_dispatcher')->addListener(
+        /** @var Dispatcher $eventDispatcher */
+        $eventDispatcher = $this->getService('event_dispatcher');
+        $eventDispatcher->addListener(
             'transformer.transformation.post',
             function () use ($progress) {
                 $progress->advance();
@@ -300,5 +344,39 @@ TEXT
         );
 
         return $progress;
+    }
+
+    /**
+     * Connect a series of output messages to various events to display progress.
+     *
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
+    private function connectOutputToEvents(OutputInterface $output)
+    {
+        $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
+
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORM,
+            function (PreTransformEvent $event) use ($output) {
+                $transformations = $event->getSubject()->getTemplates()->getTransformations();
+                $output->writeln(sprintf("\nApplying %d transformations", count($transformations)));
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_INITIALIZATION,
+            function (WriterInitializationEvent $event) use ($output) {
+                $output->writeln('  Initialize writer "' . get_class($event->getWriter()) . '"');
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORMATION,
+            function (PreTransformationEvent $event) use ($output) {
+                $output->writeln(
+                    '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
+                );
+            }
+        );
     }
 }

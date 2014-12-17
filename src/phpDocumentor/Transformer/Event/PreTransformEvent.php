@@ -2,51 +2,47 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Event\EventAbstract;
+
 /**
  * Event that happens prior to the execution of all transformations.
- *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  */
-class PreTransformEvent extends \phpDocumentor\Event\EventAbstract
+class PreTransformEvent extends EventAbstract
 {
-    /** @var \DOMDocument */
-    protected $source;
+    /** @var ProjectDescriptor */
+    private $project;
 
     /**
-     * Sets the source DOMDocument into this event.
+     * Returns the descriptor describing the project.
      *
-     * This DOMDocument contains the entire Abstract Syntax Tree and may be used
-     * to extract information from or alter information in.
-     *
-     * @param \DOMDocument $source
-     *
-     * @return PreTransformEvent for a fluent interface
+     * @return ProjectDescriptor
      */
-    public function setSource($source)
+    public function getProject()
     {
-        $this->source = $source;
-        return $this;
+        return $this->project;
     }
 
     /**
-     * Returns the Abstract Syntax Tree.
+     * Returns the descriptor describing the project.
      *
-     * @return \DOMDocument
+     * @param ProjectDescriptor $project
+     *
+     * @return $this
      */
-    public function getSource()
+    public function setProject($project)
     {
-        return $this->source;
+        $this->project = $project;
+
+        return $this;
     }
 }

@@ -1,0 +1,40 @@
+@startuml
+
+package phpDocumentor {
+    class Analyzer
+    class Configuration
+    class Fileset\Collection
+
+    package Parser {
+        class Parser {
+            - $strategies
+            + __construct(Analyzer $analyzer)
+            + parse(Fileset\Collection $files, Configuration $configuration)
+        }
+
+        interface Handler {
+          + matches(SplFileInfo $file)
+          + boot(Configuration $configuration)
+          + parse(SplFileObject $file)
+        }
+
+        class Handler\Php {
+            + __construct(Analyzer $analyzer)
+        }
+
+        class Handler\ReferenceDocumentation {
+            + __construct(Analyzer $analyzer)
+        }
+
+        "Analyzer" --> "Parser"
+        "Configuration" --> "Parser"
+        "Fileset\Collection" --> "Parser"
+        "Parser" --> "Handler"
+        "Handler" <|.. "Handler\Php"
+        "Handler" <|.. "Handler\ReferenceDocumentation"
+        "Analyzer" -----> "Handler\Php"
+        "Analyzer" -----> "Handler\ReferenceDocumentation"
+    }
+}
+
+@enduml

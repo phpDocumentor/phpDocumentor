@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
  * Rebuilds the package tree from the elements found in files.
@@ -39,14 +40,21 @@ class PackageTreeBuilder implements CompilerPassInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Compiles a 'packages' index on the project and create all Package Descriptors necessary.
+     *
+     * @param ProjectDescriptor $project
+     *
+     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {
+        $rootPackageDescriptor = new PackageDescriptor();
+        $rootPackageDescriptor->setName('\\');
         $project->getIndexes()->set('packages', new Collection());
-        $project->getIndexes()->packages['\\'] = new PackageDescriptor();
+        $project->getIndexes()->packages['\\'] = $rootPackageDescriptor;
 
         foreach ($project->getFiles() as $file) {
+            $this->addElementsOfTypeToPackage($project, array($file), 'files');
             $this->addElementsOfTypeToPackage($project, $file->getConstants()->getAll(), 'constants');
             $this->addElementsOfTypeToPackage($project, $file->getFunctions()->getAll(), 'functions');
             $this->addElementsOfTypeToPackage($project, $file->getClasses()->getAll(), 'classes');
@@ -73,11 +81,25 @@ class PackageTreeBuilder implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            $packageName = (string)$element->getPackage();
+            $packageName = '';
+            $packageTags = $element->getTags()->get('package');
+            if ($packageTags instanceof Collection) {
+                $packageTag = $packageTags->getIterator()->current();
+                if ($packageTag instanceof TagDescriptor) {
+                    $packageName = $packageTag->getDescription();
+                }
+            }
 
-            // ensure consistency by trimming the slash prefix and then reappending it.
+            $subpackageCollection = $element->getTags()->get('subpackage');
+            if ($subpackageCollection instanceof Collection && $subpackageCollection->count() > 0) {
+                $subpackageTag = $subpackageCollection->getIterator()->current();
+                if ($subpackageTag instanceof TagDescriptor) {
+                    $packageName .= '\\' . $subpackageTag->getDescription();
+                }
+            }
+
+            // ensure consistency by trimming the slash prefix and then re-appending it.
             $packageIndexName = '\\' . ltrim($packageName, '\\');
-
             if (!isset($project->getIndexes()->packages[$packageIndexName])) {
                 $this->createPackageDescriptorTree($project, $packageName);
             }
@@ -140,7 +162,7 @@ class PackageTreeBuilder implements CompilerPassInterface
             $interimPackageDescriptor->setFullyQualifiedStructuralElementName($fqnn);
 
             // add to the pointer's list of children
-            $pointer->getChildren()->set($part, $interimPackageDescriptor);
+            $pointer->getChildren()->set($part ?: 'UNKNOWN', $interimPackageDescriptor);
 
             // add to index
             $project->getIndexes()->packages[$fqnn] = $interimPackageDescriptor;

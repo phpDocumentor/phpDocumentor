@@ -2,25 +2,28 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
 
-use phpDocumentor\Transformer\Transformer;
-
 /**
  * Behaviour that adds support for @internal inline tag.
  */
 class InternalTag
 {
-    /** @var boolean $internalAllowed */
+    /** @var boolean $internalAllowed true if the `@internal` tags should be rendered */
     protected $internalAllowed;
 
+    /**
+     * Initializes this tag and describes whether it should be rendered in the output.
+     *
+     * @param boolean $internalAllowed
+     */
     public function __construct($internalAllowed)
     {
         $this->internalAllowed = $internalAllowed;

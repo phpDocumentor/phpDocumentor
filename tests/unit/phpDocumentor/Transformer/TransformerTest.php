@@ -2,17 +2,16 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-
 namespace phpDocumentor\Transformer;
 
 use Mockery as m;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 
 /**
  * Test class for \phpDocumentor\Transformer\Transformer.
@@ -21,6 +20,13 @@ use Mockery as m;
  */
 class TransformerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Max length of description printed.
+     *
+     * @var int
+     */
+    protected static $MAX_DESCRIPTION_LENGTH = 68;
+
     /** @var Transformer $fixture */
     protected $fixture = null;
 
@@ -79,24 +85,12 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Transformer\Transformer::setTarget
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Target directory (vfs://myroot) does not exist and could not be created
      */
-    public function testExceptionWhenUnknownDirectoryIsProvided()
+    public function testExceptionWhenSettingExistingDirAsTarget()
     {
-        $this->fixture->setTarget(__DIR__ . '_make_this_unknown');
-    }
-
-    /**
-     * @covers phpDocumentor\Transformer\Transformer::setBehaviours
-     * @covers phpDocumentor\Transformer\Transformer::getBehaviours
-     */
-    public function testProvidingBehaviours()
-    {
-        $this->assertEquals(null, $this->fixture->getBehaviours());
-
-        $behaviours = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
-        $this->fixture->setBehaviours($behaviours);
-
-        $this->assertEquals($behaviours, $this->fixture->getBehaviours());
+        $fileSystem = \org\bovigo\vfs\vfsStream::setup('myroot');
+        $this->fixture->setTarget(\org\bovigo\vfs\vfsStream::url('myroot'));
     }
 
     /**
@@ -119,31 +113,32 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute()
     {
-        // FIXME
-        $this->markTestIncomplete();
+        $myTestWritter = 'myTestWriter';
+
+        $templateCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
+
         $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
 
-        $behaviourCollection = m::mock('phpDocumentor\Transformer\Behaviour\Collection');
-        $behaviourCollection ->shouldReceive('process')->with($project);
-        $behaviourCollection ->shouldReceive('count')->andReturn(0);
+        $myTestWritterMock = m::mock('phpDocumentor\Transformer\Writer\WriterAbstract')
+            ->shouldReceive('transform')->getMock();
+
+        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection')
+                ->shouldReceive('offsetGet')->with($myTestWritter)->andReturn($myTestWritterMock)
+                ->getMock();
+
+        $fixture = new Transformer($templateCollection, $writerCollectionMock);
 
         $transformation = m::mock('phpDocumentor\Transformer\Transformation')
             ->shouldReceive('execute')->with($project)
             ->shouldReceive('getQuery')->andReturn('')
-            ->shouldReceive('getWriter')->andReturn(new \stdClass())
+            ->shouldReceive('getWriter')->andReturn($myTestWritter)
             ->shouldReceive('getArtifact')->andReturn('')
+            ->shouldReceive('setTransformer')->with($fixture)
             ->getMock();
 
-        $templateCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
         $templateCollection->shouldReceive('getTransformations')->andReturn(
             array($transformation)
         );
-
-        $writerCollectionMock = m::mock('phpDocumentor\Transformer\Writer\Collection');
-        $writerCollectionMock->shouldIgnoreMissing();
-
-        $fixture = new Transformer($templateCollection, $writerCollectionMock);
-        $fixture->setBehaviours($behaviourCollection);
 
         $this->assertNull($fixture->execute($project));
     }
@@ -161,5 +156,15 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
         // separate the directories with the DIRECTORY_SEPARATOR constant to prevent failing tests on windows
         $filename = 'directory' . DIRECTORY_SEPARATOR . 'directory2' . DIRECTORY_SEPARATOR . 'file.php';
         $this->assertEquals('directory.directory2.file.html', $this->fixture->generateFilename($filename));
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Transformer::getDescription
+     */
+    public function testGetDescription()
+    {
+        $description = $this->fixture->getDescription();
+        $this->assertNotNull($description);
+        $this->assertLessThanOrEqual(static::$MAX_DESCRIPTION_LENGTH, strlen($description));
     }
 }

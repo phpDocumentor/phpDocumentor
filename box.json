@@ -1,0 +1,101 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src",
+        "vendor/twig/twig/lib/Twig/Node/Expression/Test"
+    ],
+    "directories-bin": ["data"],
+    "files": [
+        "vendor/autoload.php",
+        "vendor/herrera-io/phar-update/res/schema.json",
+        "VERSION"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "Test",
+                "Tests",
+                "test",
+                "tests"
+            ],
+            "in": [
+                "vendor/cilex/cilex/src",
+                "vendor/cilex/console-service-provider/src",
+                "vendor/composer",
+                "vendor/herrera-io",
+                "vendor/seld/jsonlint",
+                "vendor/justinrainbow/json-schema",
+                "vendor/kherge/version",
+                "vendor/doctrine/annotations/lib",
+                "vendor/doctrine/lexer/lib",
+                "vendor/dompdf/dompdf",
+                "vendor/erusev/parsedown",
+                "vendor/jms/metadata/src",
+                "vendor/jms/parser-lib/src",
+                "vendor/jms/serializer/src",
+                "vendor/monolog/monolog/src",
+                "vendor/nikic/php-parser/lib",
+                "vendor/nikic/php-parser/grammar",
+                "vendor/phenx/php-font-lib",
+                "vendor/phpcollection/phpcollection/src",
+                "vendor/phpdocumentor/fileset/src",
+                "vendor/phpdocumentor/graphviz/src",
+                "vendor/phpdocumentor/reflection/src",
+                "vendor/phpdocumentor/reflection-docblock/src",
+                "vendor/phpoption/phpoption/src",
+                "vendor/pimple/pimple/lib",
+                "vendor/psr/log/Psr",
+                "vendor/symfony",
+                "vendor/twig/twig/lib",
+                "vendor/zendframework/",
+                "vendor/zetacomponents/base/src",
+                "vendor/zetacomponents/document/src"
+            ]
+        }
+    ],
+    "finder-bin": [
+        {
+            "notName": "*.php",
+            "exclude": [
+                "Test",
+                "Tests",
+                "test",
+                "tests"
+            ],
+            "in": [
+                "vendor/cilex/cilex/src",
+                "vendor/cilex/console-service-provider/src",
+                "vendor/composer",
+                "vendor/doctrine/annotations/lib",
+                "vendor/doctrine/lexer/lib",
+                "vendor/dompdf/dompdf",
+                "vendor/erusev/parsedown",
+                "vendor/jms/metadata/src",
+                "vendor/jms/parser-lib/src",
+                "vendor/jms/serializer/src",
+                "vendor/monolog/monolog/src",
+                "vendor/nikic/php-parser/lib",
+                "vendor/nikic/php-parser/grammar",
+                "vendor/phenx/php-font-lib",
+                "vendor/phpcollection/phpcollection/src",
+                "vendor/phpdocumentor/fileset/src",
+                "vendor/phpdocumentor/graphviz/src",
+                "vendor/phpdocumentor/reflection/src",
+                "vendor/phpdocumentor/reflection-docblock/src",
+                "vendor/phpoption/phpoption/src",
+                "vendor/pimple/pimple/lib",
+                "vendor/psr/log/Psr",
+                "vendor/symfony",
+                "vendor/twig/twig/lib",
+                "vendor/zendframework/",
+                "vendor/zetacomponents/base/src",
+                "vendor/zetacomponents/document/src"
+            ]
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/phpdoc",
+    "output": "phpDocumentor.phar",
+    "stub": true
+}

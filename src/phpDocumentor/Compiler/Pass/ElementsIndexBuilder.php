@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 
 /**
  * This class constructs the index 'elements' and populates it with all Structural Elements.
@@ -45,49 +46,30 @@ class ElementsIndexBuilder implements CompilerPassInterface
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);
 
+        $constantsIndex  = $project->getIndexes()->get('constants', new Collection());
+        $functionsIndex  = $project->getIndexes()->get('functions', new Collection());
+        $classesIndex    = $project->getIndexes()->get('classes', new Collection());
+        $interfacesIndex = $project->getIndexes()->get('interfaces', new Collection());
+        $traitsIndex     = $project->getIndexes()->get('traits', new Collection());
+
         foreach ($project->getFiles() as $file) {
-            /** @var DescriptorAbstract $element */
-            foreach ($file->getConstants()->getAll() as $element) {
-                $project->getIndexes()->get('constants', new Collection())->add($element);
-                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
-            }
+            $this->addElementsToIndexes($file->getConstants()->getAll(), array($constantsIndex, $elementCollection));
+            $this->addElementsToIndexes($file->getFunctions()->getAll(), array($functionsIndex, $elementCollection));
 
-            /** @var DescriptorAbstract $element */
-            foreach ($file->getFunctions()->getAll() as $element) {
-                $project->getIndexes()->get('functions', new Collection())->add($element);
-                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
-            }
-
-            /** @var DescriptorAbstract $element */
             foreach ($file->getClasses()->getAll() as $element) {
-                $project->getIndexes()->get('classes', new Collection())->add($element);
-                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
-
-                foreach ($this->getSubElements($element) as $subElement) {
-                    $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
-                }
+                $this->addElementsToIndexes($element, array($classesIndex, $elementCollection));
+                $this->addElementsToIndexes($this->getSubElements($element), array($elementCollection));
             }
 
-            /** @var DescriptorAbstract $element */
             foreach ($file->getInterfaces()->getAll() as $element) {
-                $project->getIndexes()->get('interfaces', new Collection())->add($element);
-                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
-
-                foreach ($this->getSubElements($element) as $subElement) {
-                    $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
-                }
+                $this->addElementsToIndexes($element, array($interfacesIndex, $elementCollection));
+                $this->addElementsToIndexes($this->getSubElements($element), array($elementCollection));
             }
 
-            /** @var DescriptorAbstract $element */
             foreach ($file->getTraits()->getAll() as $element) {
-                $project->getIndexes()->get('traits', new Collection())->add($element);
-                $elementCollection->set($element->getFullyQualifiedStructuralElementName(), $element);
-
-                foreach ($this->getSubElements($element) as $subElement) {
-                    $elementCollection->set($subElement->getFullyQualifiedStructuralElementName(), $subElement);
-                }
+                $this->addElementsToIndexes($element, array($traitsIndex, $elementCollection));
+                $this->addElementsToIndexes($this->getSubElements($element), array($elementCollection));
             }
-
         }
     }
 
@@ -129,5 +111,48 @@ class ElementsIndexBuilder implements CompilerPassInterface
         }
 
         return $subElements;
+    }
+
+    /**
+     * Adds a series of descriptors to the given list of collections.
+     *
+     * @param DescriptorAbstract|DescriptorAbstract[] $elements
+     * @param Collection[]                            $indexes
+     *
+     * @return void
+     */
+    protected function addElementsToIndexes($elements, $indexes)
+    {
+        if (!is_array($elements)) {
+            $elements = array($elements);
+        }
+
+        /** @var DescriptorAbstract $element */
+        foreach ($elements as $element) {
+            /** @var Collection $collection */
+            foreach ($indexes as $collection) {
+                $collection->set($this->getIndexKey($element), $element);
+            }
+        }
+    }
+
+    /**
+     * Retrieves a key for the index for the provided element.
+     *
+     * @param DescriptorAbstract $element
+     *
+     * @return string
+     */
+    protected function getIndexKey($element)
+    {
+        $key = $element->getFullyQualifiedStructuralElementName();
+
+        // properties should have an additional $ before the property name
+        if ($element instanceof PropertyInterface) {
+            list($fqcn, $propertyName) = explode('::', $key);
+            $key = $fqcn . '::$' . $propertyName;
+        }
+
+        return $key;
     }
 }

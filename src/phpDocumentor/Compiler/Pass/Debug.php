@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -26,10 +26,10 @@ class Debug implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 1000;
 
-    /** @var \Psr\Log\LoggerInterface $log */
+    /** @var LoggerInterface $log the logger to write the debug results to */
     protected $log;
 
-    /** @var ProjectAnalyzer $analyzer */
+    /** @var ProjectAnalyzer $analyzer service that compiles a summary of the project */
     protected $analyzer;
 
     /**
@@ -53,11 +53,15 @@ class Debug implements CompilerPassInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Analyzes the given project and returns the results to the logger.
+     *
+     * @param ProjectDescriptor $project
+     *
+     * @return void
      */
     public function execute(ProjectDescriptor $project)
     {
         $this->analyzer->analyze($project);
-        $this->log->debug((string)$this->analyzer);
+        $this->log->debug((string) $this->analyzer);
     }
 }

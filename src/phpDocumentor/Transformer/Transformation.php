@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,6 +12,7 @@
 namespace phpDocumentor\Transformer;
 
 use JMS\Serializer\Annotation as Serializer;
+use phpDocumentor\Transformer\Template\Parameter;
 
 /**
  * Class representing a single Transformation.
@@ -21,40 +22,43 @@ class Transformation
     /**
      * @Serializer\XmlAttribute
      * @Serializer\Type("string")
-     * @var string
-     */
-    protected $query = '';
-
-    /**
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
-     * @var string
+     * @var string Reference to an object containing the business logic used to execute this transformation.
      */
     protected $writer = null;
 
     /**
      * @Serializer\XmlAttribute
      * @Serializer\Type("string")
-     * @var string
+     * @var string the location where the output should be sent to; the exact function differs per writer.
+     */
+    protected $artifact = '';
+
+    /**
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @var string the location where input for a writer should come from; the exact function differs per writer.
      */
     protected $source = '';
 
     /**
      * @Serializer\XmlAttribute
      * @Serializer\Type("string")
-     * @var string
+     * @var string a filter or other form of limitation on what information of the AST is used; the exact function
+     *     differs per writer.
      */
-    protected $artifact = '';
+    protected $query = '';
 
     /**
      * @Serializer\Exclude
-     * @var Transformer $transformer
+     * @var Transformer $transformer The object guiding the transformation process and having meta-data of it.
      */
     protected $transformer;
 
     /**
-     * @Serializer\Type("array")
-     * @var string[]
+     * @Serializer\XmlList(entry = "parameter")
+     * @Serializer\Type("array<phpDocumentor\Transformer\Template\Parameter>")
+     * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
+     *     per writer.
      */
     protected $parameters = array();
 
@@ -161,15 +165,31 @@ class Transformation
         // externally loaded templates set this parameter so that template
         // resources may be placed in the same folder as the template.
         if ($this->getParameter('template_path') !== null) {
-            $path = rtrim($this->getParameter('template_path'), '/\\');
+            $path = rtrim($this->getParameter('template_path')->getValue(), '/\\');
             if (file_exists($path . DIRECTORY_SEPARATOR . $this->source)) {
                 return $path . DIRECTORY_SEPARATOR . $this->source;
             }
         }
 
-        // check whether the file exists in the phpDocumentor project directory
+        // counter a BC break that we introduced in 2.0 stable; we removed the notion of global assets
+        // to be able to provide composer integration
+        // TODO: remove in version 3.0
+        if (strpos($this->source, 'templates/') !== 0) {
+            $this->source = 'templates/abstract/' . $this->source;
+            trigger_error(
+                'Using shared assets in a template is deprecated and will be removed in version 3.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        // check whether the file exists in the phpDocumentor project directory.
         if (file_exists(__DIR__.'/../../../'.$this->source)) {
             return __DIR__ . '/../../../' .$this->source;
+        }
+
+        // in case of a composer installation
+        if (file_exists(__DIR__ . '/../../../../templates')) {
+            return __DIR__ . '/../../../../' . $this->source;
         }
 
         // TODO: replace this as it breaks the component stuff
@@ -214,7 +234,7 @@ class Transformation
     /**
      * Sets an array of parameters (key => value).
      *
-     * @param string[] $parameters Associative multidimensional array containing
+     * @param Parameter[] $parameters Associative multidimensional array containing
      *     parameters for the Writer.
      *
      * @return void
@@ -227,7 +247,7 @@ class Transformation
     /**
      * Returns all parameters for this transformation.
      *
-     * @return string[]
+     * @return Parameter[]
      */
     public function getParameters()
     {
@@ -237,14 +257,41 @@ class Transformation
     /**
      * Returns a specific parameter, or $default if none exists.
      *
-     * @param string $name    Name of the parameter to return.
-     * @param mixed  $default Default value is parameter does not exist.
+     * @param string $name Name of the parameter to return.
      *
-     * @return string
+     * @return Parameter
      */
-    public function getParameter($name, $default = null)
+    public function getParameter($name)
     {
-        return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+        /** @var Parameter $parameter */
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->getKey() == $name) {
+                return $parameter;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a specific parameter, or $default if none exists.
+     *
+     * @param string $name Name of the parameter to return.
+     *
+     * @return Parameter
+     */
+    public function getParametersWithKey($name)
+    {
+        $parameters = array();
+
+        /** @var Parameter $parameter */
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->getKey() == $name) {
+                $parameters[] = $parameter;
+            }
+        }
+
+        return $parameters;
     }
 
     /**

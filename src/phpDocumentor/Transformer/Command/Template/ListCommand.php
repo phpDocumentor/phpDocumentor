@@ -2,27 +2,42 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Transformer\Command\Template;
 
+use Cilex\Command\Command;
+use phpDocumentor\Transformer\Template\Factory;
 use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Generates a skeleton template.
+ * Lists all templates known to phpDocumentor.
  */
-class ListCommand extends \Cilex\Command\Command
+class ListCommand extends Command
 {
+    /** @var Factory Template factory providing all known template definitions */
+    private $factory;
+
     /**
-     * Initializes this command and sets the name, description, options and
-     * arguments.
+     * Initializes this command with its dependencies.
+     *
+     * @param Factory $factory
+     */
+    public function __construct(Factory $factory)
+    {
+        parent::__construct('template:list');
+
+        $this->factory = $factory;
+    }
+
+    /**
+     * Initializes this command and sets the name, description, options and arguments.
      *
      * @return void
      */
@@ -42,52 +57,19 @@ HELP
     }
 
     /**
-     * Executes the business logic involved with this command.
+     * Retrieves all template names from the Template Factory and sends those to stdout.
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Available templates:');
-        foreach ($this->getTemplateNames() as $template_name) {
+        foreach ($this->factory->getAllNames() as $template_name) {
             $output->writeln('* '.$template_name);
         }
         $output->writeln('');
-
-        return 0;
-    }
-
-    /**
-     * Returns a list of all template names.
-     *
-     * @return string[]
-     */
-    protected function getTemplateNames()
-    {
-        $template_dir = dirname(__FILE__) . '/../../../../data/templates';
-        if (!file_exists($template_dir)) {
-            $template_dir = dirname(__FILE__) . '/../../../../../data/templates';
-        }
-
-        /** @var \RecursiveDirectoryIterator $files */
-        $files = new \DirectoryIterator($template_dir);
-
-        $template_names = array();
-        while ($files->valid()) {
-            $name = $files->getBasename();
-
-            // skip abstract files
-            if (!$files->isDir() || in_array($name, array('.', '..'))) {
-                $files->next();
-                continue;
-            }
-
-            $template_names[] = $name;
-            $files->next();
-        }
-        return $template_names;
     }
 }

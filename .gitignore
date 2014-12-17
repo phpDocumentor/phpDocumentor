@@ -1,6 +1,9 @@
 .idea
 bin/behat
+bin/jsonlint
+bin/phpcs
 bin/phpunit
+bin/validate-json
 build.properties
 build/*
 .buildpath
@@ -10,4 +13,6 @@ vendor/*
 composer.phar
 data/templates/*
 .vagrant
-composer.phar
+/nbproject/private/
+box.phar
+phpunit.xml
