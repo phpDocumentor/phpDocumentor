@@ -91,7 +91,7 @@ class Cache
         }
         $this->load($files, $event->getSubject());
 
-        if ($this->dispatcher) {
+        if ($this->dispatcher instanceof EventDispatcherInterface) {
             $this->dispatcher->dispatch(self::EVENT_CACHE_LOADED, new GenericEvent($event->getSubject()));
         }
     }

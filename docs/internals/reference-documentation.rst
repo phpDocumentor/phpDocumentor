@@ -20,7 +20,7 @@ Features
 Workings
 --------
 
-As with the interpretation of PHP source code files should phpDocumentor process reference documentation files
+As with the interpretation of PHP source code files, phpDocumentor should process reference documentation files
 in two phases: parsing and transformation.
 
 The parsing phase normalizes the given input formats into DocBook and the transformation phase transforms the DocBook
@@ -41,7 +41,7 @@ and store the DocBook representation in the ProjectDescriptor using a specialize
 
 For reST we have additional requirements: try to simulate Sphinx as much as possible.
 
-A with normal PHP source file handling should these entries be stored in the cache and incremental processing applied
+As with normal PHP source file handling, these entries should be stored in the cache and incremental processing applied
 by storing the hash of the file.
 
 Transformation phase
