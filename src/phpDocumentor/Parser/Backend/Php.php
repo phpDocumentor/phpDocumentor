@@ -219,7 +219,7 @@ final class Php implements Backend
      */
     private function dispatchIsAnalyzedEvent(FileDescriptor $descriptor)
     {
-        if ($this->dispatcher && $descriptor instanceof FileDescriptor) {
+        if ($this->dispatcher) {
             $this->dispatcher->dispatch(self::EVENT_ANALYZED_FILE, new GenericEvent($descriptor));
         }
     }

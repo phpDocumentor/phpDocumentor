@@ -26,6 +26,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LoggerHelper extends Helper
 {
@@ -80,39 +81,16 @@ class LoggerHelper extends Helper
         $eventDispatcher->addListener(
             Php::EVENT_FILE_IS_CACHED,
             function (GenericEvent $event) use ($output, $eventDispatcher) {
-                $fileDescriptor = $event->getSubject();
-                $output->writeln('Found cached file <info>'.$fileDescriptor->getPath().'</info>');
-
-                /** @var Error $error */
-                foreach ($fileDescriptor->getAllErrors() as $error) {
-                    $eventDispatcher->dispatch(
-                        'system.log',
-                        LogEvent::createInstance($this)
-                            ->setContext($error->getContext())
-                            ->setMessage($error->getCode())
-                            ->setPriority($error->getSeverity())
-                    );
-                }
+                $message = 'Found cached file <info>%1s</info>';
+                $this->logFileWithErrors($event->getSubject(), $output, $eventDispatcher, $message);
             }
         );
 
         $eventDispatcher->addListener(
             Php::EVENT_ANALYZED_FILE,
             function (GenericEvent $event) use ($output, $eventDispatcher) {
-                /** @var FileDescriptor $fileDescriptor */
-                $fileDescriptor = $event->getSubject();
-                $output->writeln('Parsed modified file <info>'. $fileDescriptor->getPath().'</info>');
-
-                /** @var Error $error */
-                foreach ($fileDescriptor->getAllErrors() as $error) {
-                    $eventDispatcher->dispatch(
-                        'system.log',
-                        LogEvent::createInstance($this)
-                            ->setContext($error->getContext())
-                            ->setMessage($error->getCode())
-                            ->setPriority($error->getSeverity())
-                    );
-                }
+                $message = 'Parsed modified file <info>%1s</info>';
+                $this->logFileWithErrors($event->getSubject(), $output, $eventDispatcher, $message);
             }
         );
 
@@ -124,6 +102,25 @@ class LoggerHelper extends Helper
         );
 
         $alreadyConnected = true;
+    }
+
+    private function logFileWithErrors(
+        FileDescriptor $fileDescriptor,
+        OutputInterface $output,
+        EventDispatcherInterface $eventDispatcher,
+        $message
+    ) {
+        $output->writeln(sprintf($message, $fileDescriptor->getPath()));
+
+        /** @var Error $error */
+        foreach ($fileDescriptor->getAllErrors() as $error) {
+            $event = LogEvent::createInstance($this)
+                ->setContext($error->getContext())
+                ->setMessage($error->getCode())
+                ->setPriority($error->getSeverity());
+
+            $eventDispatcher->dispatch('system.log', $event);
+        }
     }
 
     /**

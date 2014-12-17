@@ -107,24 +107,17 @@ final class Parser
     {
         $projectDescriptor = $this->createProject($configuration);
         $this->files = $this->scanForFiles($configuration);
-        if ($this->dispatcher) {
-            $this->dispatcher->dispatch(self::EVENT_FILES_COLLECTED, new GenericEvent($this->files));
-        }
+        $this->dispatch(self::EVENT_FILES_COLLECTED, new GenericEvent($this->files));
 
         foreach ($this->backend as $backend) {
             $backend->boot($configuration);
-
-            if ($this->dispatcher) {
-                $this->dispatcher->dispatch(self::EVENT_BACKEND_BOOTED, new GenericEvent($backend));
-            }
+            $this->dispatch(self::EVENT_BACKEND_BOOTED, new GenericEvent($backend));
         }
 
-        if ($this->dispatcher) {
-            $this->dispatcher->dispatch(
-                self::EVENT_BOOTED,
-                new GenericEvent($projectDescriptor, array('files' => $this->files, 'configuration' => $configuration))
-            );
-        }
+        $this->dispatch(
+            self::EVENT_BOOTED,
+            new GenericEvent($projectDescriptor, array('files' => $this->files, 'configuration' => $configuration))
+        );
 
         return $this;
     }
@@ -232,5 +225,16 @@ final class Parser
         }
 
         return $files;
+    }
+
+    /**
+     * @param $eventName
+     * @param $event
+     */
+    private function dispatch($eventName, $event)
+    {
+        if ($this->dispatcher instanceof EventDispatcherInterface) {
+            $this->dispatcher->dispatch($eventName, $event);
+        }
     }
 }
