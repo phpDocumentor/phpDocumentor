@@ -3,7 +3,7 @@
  * File contains the
  * \phpDocumentor\Plugin\Core\Descriptor\Validator\DeprecatedValidator class.
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
  * @copyright  2010-2014 Mike van Riel / Naenius. (http://www.naenius.com)
  * @license    http://www.opensource.org/licenses/mit-license.php MIT

@@ -7,7 +7,7 @@ System Requirements
 phpDocumentor has several dependencies on other software packages. Please make sure that you have these
 installed before installing phpDocumentor.
 
--  `PHP 5.3.3`_
+-  `PHP 5.4.0`_
 -  `intl extension for PHP`_
 -  Graphviz_
 
@@ -65,7 +65,7 @@ This command can also be used to add phpDocumentor to your existing composer-bas
    own project it is advised to use one of the other installation methods.
 
 .. _Composer:               http:/getcomposer.org
-.. _`PHP 5.3.3`:            http://www.php.net
+.. _`PHP 5.4.0`:            http://www.php.net
 .. _Graphviz:               http://graphviz.org/Download..php
 .. _intl extension for PHP: http://www.php.net/intl
 .. _XSL extension for PHP:  http://www.php.net/xsl
