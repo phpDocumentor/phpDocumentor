@@ -2,12 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5
+ * PHP Version 5.4
  *
- * @category  phpDocumentor
- * @package   Core
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @copyright 2010-2011 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -82,7 +79,7 @@ function createPackager($original_file, $options = array())
 
     $packagexml->setPackage('phpDocumentor');
     $packagexml->setSummary(
-        'PHP 5.3 compatible API Documentation generator aimed at projects of '
+        'PHP 5.4 compatible API Documentation generator aimed at projects of '
         .'all sizes and Continuous Integration'
     );
     $packagexml->setDescription(
@@ -91,7 +88,7 @@ phpDocumentor is a Documentation Generation Application (DGA) for use with PHP a
 
 It is capable of transforming the comments in your source code into a full API reference document.
 
-phpDocumentor is build to be PHP 5.3 compatible, fast, having a low memory consumption and easily integratable into Continuous Integration.
+phpDocumentor is build to be PHP 5.4 compatible, fast, having a low memory consumption and easily integratable into Continuous Integration.
 DESC
     );
     $packagexml->setChannel('pear.phpdoc.org');
@@ -100,7 +97,7 @@ DESC
         .'latest changes'
     );
 
-    $packagexml->setPhpDep('5.3.3');
+    $packagexml->setPhpDep('5.4.0');
     $packagexml->setPearinstallerDep('1.4.0');
     $packagexml->addReplacement(
         'bin/phpdoc',
