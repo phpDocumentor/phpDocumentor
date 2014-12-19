@@ -1,5 +1,9 @@
 @startuml
 
+skinparam classBorderColor #516f42
+skinparam classBackgroundColor #a3dc7f
+skinparam shadowing false
+
 package phpDocumentor {
     class Analyzer
     class Configuration

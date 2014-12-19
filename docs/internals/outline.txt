@@ -1,0 +1,54 @@
+Outline
+=======
+
+This is an outline design for the internal documentation of phpDocumentor.
+
+The story that we want to tell is about the different layers that phpDocumentor has; phpdocumentor can be seen from
+an architectural position and from a program flow.
+
+Architecturally we can have the static information such as a Component Diagram, Class Diagram and/or State diagram.
+
+In the program flow department it might be prudent to start with Activity diagrams that go deeper and deeper into
+the program flow
+
+
+- Introduction
+- Conventions
+- Installation Methods
+  - Phar
+  - PEAR
+  - Github Download
+  - Composer
+- Fundamentals
+  - Overview
+  - The Flow In More Detail
+  - Framework and Libraries
+  - Dependency Injection
+  - Configuration
+  - Commands
+  - Eventing
+  - Translating
+  - Analyzing a Project
+    - What Is a Project?
+    - Dealing with Different Sources
+    - Parsing
+    - Boosting Performance using Caching
+  - How Descriptors are Built
+    - Assembling Descriptors
+    - Filter Unwanted Information
+    - Validate the Documentation
+  - Creating the output
+    - Compiler
+      - Building Namespaces
+      - Building Packages
+      - Linker
+    - Transform Using Templates
+      - Transformations
+      - Writers
+  - Plugins
+- PHP Projects
+- Reference Documentation
+- Quality Assurance
+- Build and Release Process
+- Appendix
+  - List of events

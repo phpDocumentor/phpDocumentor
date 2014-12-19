@@ -1,0 +1,15 @@
+@startuml
+    skinparam activityBorderColor #516f42
+    skinparam activityBackgroundColor #a3dc7f
+    skinparam shadowing false
+
+    start
+
+    :Boot the application;
+
+    :Parse files into an AST;
+
+    :Transform AST into artifacts;
+
+    stop
+@enduml

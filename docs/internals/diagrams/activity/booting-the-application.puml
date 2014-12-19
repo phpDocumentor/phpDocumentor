@@ -1,0 +1,11 @@
+@startuml
+    skinparam activityBorderColor #516f42
+    skinparam activityBackgroundColor #a3dc7f
+    skinparam shadowing false
+
+    :Initialize dependencies using Application;
+    :Load configuration;
+    :Add logging;
+    :Register phpDocumentor's Service Providers;
+    :Load Third-Party Service Providers (plugins);
+@enduml
