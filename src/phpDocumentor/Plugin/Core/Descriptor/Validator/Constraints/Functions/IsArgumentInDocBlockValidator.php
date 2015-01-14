@@ -34,7 +34,7 @@ class IsArgumentInDocBlockValidator extends ConstraintValidator
             $argument = $value->argument;
             /* @var $params \phpDocumentor\Descriptor\Collection */
             $params   = $value->parameters;
-            $index    = $value->index;
+            $index    = (int) $value->index;
 
             if ($params && $params->offsetExists($index)) {
                 return null;
