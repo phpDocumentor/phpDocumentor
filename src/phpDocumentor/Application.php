@@ -26,7 +26,6 @@ use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Shell;
-use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Application class for phpDocumentor.
@@ -54,11 +53,6 @@ class Application extends Cilex
             : '@package_version@';
 
         parent::__construct('phpDocumentor', self::$VERSION, $values);
-
-        $this['kernel.timer.start'] = time();
-        $this['kernel.stopwatch'] = function () {
-            return new Stopwatch();
-        };
 
         $this['autoloader'] = $autoloader;
 

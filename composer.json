@@ -25,11 +25,7 @@
         "desarrolla2/cache":        "~1.8",
 
         "symfony/event-dispatcher": "~2.1",
-        "symfony/stopwatch":        "~2.3",
         "symfony/process":          "~2.0",
-
-        "zendframework/zend-servicemanager": "~2.1",
-        "zendframework/zend-i18n":           "~2.1",
 
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",

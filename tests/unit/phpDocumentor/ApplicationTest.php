@@ -22,15 +22,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers phpDocumentor\Application::__construct
      */
-    public function testIfStopwatchIsStarted()
-    {
-        $this->assertTrue(isset($this->fixture['kernel.timer.start']));
-        $this->assertTrue(isset($this->fixture['kernel.stopwatch']));
-    }
-
-    /**
-     * @covers phpDocumentor\Application::__construct
-     */
     public function testIfVersionIsPopulated()
     {
         $this->assertRegExp('/^[\d]+\.[\d]+\.[\d]+(\-[\w]+)?$/', Application::$VERSION);
