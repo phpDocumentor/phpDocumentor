@@ -133,12 +133,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             }
         );
 
-        $app['transformer.behaviour.collection'] = $app->share(
-            function () {
-                return new Behaviour\Collection();
-            }
-        );
-
         $app['transformer.routing.standard'] = $app->share(
             function ($container) {
                 /** @var Analyzer $analyzer */
@@ -175,21 +169,10 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $app['transformer'] = $app->share(
             function ($container) {
-                $transformer = new Transformer(
+                return new Transformer(
                     $container['transformer.template.collection'],
                     $container['transformer.writer.collection']
                 );
-
-                /** @var Behaviour\Collection $behaviourCollection */
-                $behaviourCollection = $container['transformer.behaviour.collection'];
-                Dispatcher::getInstance()->addListener(
-                    Transformer::EVENT_PRE_TRANSFORM,
-                    function (PreTransformEvent $event) use ($behaviourCollection) {
-                        $behaviourCollection->process($event->getProject());
-                    }
-                );
-
-                return $transformer;
             }
         );
 
