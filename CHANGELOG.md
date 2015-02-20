@@ -5,6 +5,11 @@ Unreleased
 ADDED:     JSONP writer; this enabled template authors to output a JSONP representation of a project
 ADDED:     'append' query action to the FileIO writer; using this template authors can combine multiple files into one
 FIXED:     HHVM compatibility
+CHANGED:   Moved Descriptors to the Reflection component
+REMOVED:   Stopwatch component
+BC-BREAK:  Experimental PDF Writer to remove non-used dependencies
+BC-BREAK:  phpDocumentor\Transformer\Behaviour namespace and classes; this was a piece of legacy that we do not expect 
+           people to use.
 ```
 
 2014-11-13: Version 2.8.1

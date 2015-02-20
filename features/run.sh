@@ -1,0 +1,1 @@
+./bin/behat -fprogress --tags="~installation"
