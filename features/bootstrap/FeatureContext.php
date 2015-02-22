@@ -2,9 +2,9 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.3
+ * PHP Version 5.4
  *
- * @copyright 2010-2013 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -47,6 +47,7 @@ class FeatureContext implements Context
      */
     public function beforeScenario()
     {
+        self::cleanTestFolders();
         $this->binaryPath = __DIR__ . '/../../bin/phpdoc';
         $this->process = new Process(null);
         $this->process->setWorkingDirectory($this->getTmpFolder());
@@ -233,6 +234,7 @@ class FeatureContext implements Context
      */
     public function iRunPhpdoc($argumentsString = '')
     {
+        $argumentsString .= ' --template=xml';
         $argumentsString = strtr($argumentsString, array('\'' => '"'));
 
         // the app is always run in debug mode to catch debug information and collect the AST that is written to disk
@@ -310,7 +312,7 @@ class FeatureContext implements Context
     {
         $tmp = self::getTmpFolder();
         $this->iRunPhpdoc(
-            "-f $file_path -t $tmp --config=--config='{$this->getTempXmlConfigurationPath()}' --force $options"
+            "-f $file_path -t $tmp --config='{$this->getTempXmlConfigurationPath()}' --force $options"
         );
     }
 
@@ -327,7 +329,7 @@ class FeatureContext implements Context
     {
         $tmp = self::getTmpFolder();
         $this->iRunPhpdoc(
-            "-d $folder_path -t $tmp --config=--config='{$this->getTempXmlConfigurationPath()}' --force"
+            "-d $folder_path -t $tmp --config='{$this->getTempXmlConfigurationPath()}' --force --template=xml"
         );
     }
 
@@ -762,5 +764,23 @@ XML
         if (! file_exists($arg1)) {
             throw new \Exception('File with name "' . $arg1 . '" does not exist');
         }
+    }
+
+    /**
+     * @Given /^a directory "([^"]*)"$/
+     */
+    public function aDirectory($arg1)
+    {
+        if (! file_exists($arg1)) {
+            mkdir($arg1, 0777, true);
+        }
+    }
+
+    /**
+     * @Then /^the project has the title "([^"]*)"$/
+     */
+    public function theProjectHasTheTitle($arg1)
+    {
+        $this->theAstHasAnExpressionWithValue('project.getName()', $arg1);
     }
 }
