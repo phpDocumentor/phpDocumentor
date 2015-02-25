@@ -52,6 +52,7 @@ Feature: Interfaces inherit information from super-interfaces
   Scenario: Inherit constants from a parent interface
   Scenario: Inherit methods from a parent interface
 
+  @todo
   Scenario: Inherit @package tags from a parent interface
     Then the AST has an expression "project.getFiles()['test.php'].getInterfaces()['\\IB'].getPackage().getFullyQualifiedStructuralElementName()" with value:
       """

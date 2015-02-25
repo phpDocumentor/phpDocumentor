@@ -34,7 +34,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
 
     /**
      * Fake config class.
-     * 
+     *
      * @var stdClass
      */
     protected $config;
@@ -63,7 +63,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->once()
             ->withAnyArgs()
             ->getMock();
-        
+
         $this->fixture->addOptions($commandMock);
 
         //test passes by mockery assertion
@@ -87,7 +87,11 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
      */
     public function testConnectOutputToLoggingExecutedOnce()
     {
-        $commandMock = m::mock('phpDocumentor\Commmand\Command')
+        $assertClosure = function ($closure) {
+            return $closure instanceof Closure;
+        };
+
+        $commandMock = m::mock('phpDocumentor\Command\Command')
             ->shouldReceive('getService')
             ->with('event_dispatcher')
             ->andReturnSelf()
@@ -116,7 +120,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->withArgs(
                 array(
                     'system.log',
-                    m::on(array($this, 'assertClosure'))
+                    m::on($assertClosure)
                 )
             );
 
@@ -136,19 +140,8 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Checks argument is instance of Closure
-     *
-     * @param Closure $closure
-     * @return bool
-     */
-    public function assertClosure($closure)
-    {
-        return $closure instanceof Closure;
-    }
-
-    /**
      * test replacement of placeholders in log message
-     * 
+     *
      * @covers phpDocumentor\Command\Helper\LoggerHelper::logEvent
      */
     public function testLogEventPlaceHoldersAreReplaced()
@@ -178,7 +171,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             'first',
             2,
         ));
-        
+
         $this->fixture->logEvent($output, $event, $command);
     }
 
@@ -195,7 +188,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->shouldReceive('getVerbosity')
             ->andReturn(LogLevel::ERROR)
             ->getMock();
-        
+
         $command = m::mock('phpDocumentor\Command\Command');
 
         $event = new LogEvent($this);
@@ -238,7 +231,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
 
     /**
      * Dataprovider for verbosity tests
-     * 
+     *
      * @return array
      */
     public function verbosityDataProvider()
@@ -268,7 +261,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * 
+     *
      * @covers phpDocumentor\Command\Helper\LoggerHelper::reconfigureLogger
      */
     public function testLogPathDefaultIsUsed()

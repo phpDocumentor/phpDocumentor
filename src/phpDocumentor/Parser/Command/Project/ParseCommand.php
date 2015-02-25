@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Parser\Configuration\Files;
 use phpDocumentor\Parser\Parser;
+use phpDocumentor\Parser\Util\ParserPopulator;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,8 +1,8 @@
 .idea
 bin/behat
-bin/jsonlint
 bin/phpcs
 bin/phpunit
+bin/jsonlint
 bin/validate-json
 build.properties
 build/*
