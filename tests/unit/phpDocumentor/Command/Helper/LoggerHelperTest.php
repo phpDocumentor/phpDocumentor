@@ -88,7 +88,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     public function testConnectOutputToLoggingExecutedOnce()
     {
         $assertClosure = function ($closure) {
-            return $closure instanceof Closure;
+            return $closure instanceof \Closure;
         };
 
         $commandMock = m::mock('phpDocumentor\Command\Command')
@@ -99,30 +99,17 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
 
         $commandMock->shouldReceive('addListener')
             ->once()
-            ->withArgs(
-                array(
-                    'parser.file.isCached',
-                    m::on(array($this, 'assertClosure'))
-                )
-            );
+            ->withArgs(array('parser.file.isCached', m::on($assertClosure)));
 
         $commandMock->shouldReceive('addListener')
             ->once()
             ->withArgs(
-                array(
-                    'parser.file.analyzed',
-                    m::on(array($this, 'assertClosure'))
-                )
+                array('parser.file.analyzed', m::on($assertClosure))
             );
 
         $commandMock->shouldReceive('addListener')
             ->once()
-            ->withArgs(
-                array(
-                    'system.log',
-                    m::on($assertClosure)
-                )
-            );
+            ->withArgs(array('system.log', m::on($assertClosure)));
 
         $this->fixture->connectOutputToLogging(
             m::mock('Symfony\Component\Console\Output\OutputInterface'),

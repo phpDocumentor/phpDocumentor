@@ -767,56 +767,6 @@ XML
     }
 
     /**
-     * @When /^I download "([^"]*)" to "([^"]*)"$/
-     */
-    public function iDownloadTo($arg1, $arg2)
-    {
-        file_put_contents($arg2, file_get_contents($arg1));
-    }
-
-    /**
-     * @When /^I execute "([^"]*)"$/
-     */
-    public function iExecute($arg1)
-    {
-        $this->process->setCommandLine($arg1);
-        $this->process->start();
-        $this->process->wait();
-    }
-
-    /**
-     * Prints last command output string.
-     *
-     * @Then display last command output
-     */
-    public function displayLastCommandOutput()
-    {
-        $this->printDebug("`" . $this->process->getCommandLine() . "`:\n" . $this->process->getOutput());
-    }
-
-    /**
-     * @Given /^the output should contain:$/
-     */
-    public function theOutputShouldContain(PyStringNode $string)
-    {
-        if (strpos($this->process->getOutput(), $string->getRaw()) === false) {
-            throw new \Exception(
-                'Expected to find string "' . $string->getRaw() . '" in output: ' . $this->process->getOutput()
-            );
-        }
-    }
-
-    /**
-     * @Given /^file "([^"]*)" should exist$/
-     */
-    public function fileShouldExist($arg1)
-    {
-        if (! file_exists($arg1)) {
-            throw new \Exception('File with name "' . $arg1 . '" does not exist');
-        }
-    }
-
-    /**
      * @Given /^a directory "([^"]*)"$/
      */
     public function aDirectory($arg1)
