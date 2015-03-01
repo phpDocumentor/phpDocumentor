@@ -31,38 +31,16 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::setHelperSet
-     */
-    public function testLoggerHelperReceivesCurrentCommand()
-    {
-        // Arrange
-        $loggerHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
-        $loggerHelperMock->shouldReceive('addOptions')->with($this->fixture);
-        $loggerHelperMock->shouldReceive('getName')->andReturn('phpdocumentor_logger');
-        $loggerHelperMock->shouldIgnoreMissing();
-        $helperSet = new HelperSet(array('phpdocumentor_logger' => $loggerHelperMock));
-
-        // Act
-        $this->fixture->setHelperSet($helperSet);
-
-        // Assert; Mockery does all assertions. For PHPUnit we must have an assertion
-        $this->assertTrue(true);
-    }
-
-    /**
      * @covers phpDocumentor\Command\Command::getProgressBar
      */
     public function testIfProgressBarIsReturnedWhenEnabledAsOption()
     {
         // Arrange
-        $loggerHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
-        $loggerHelperMock->shouldReceive('getName')->andReturn('phpdocumentor_logger');
-        $loggerHelperMock->shouldIgnoreMissing();
         $progressBarHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
         $progressBarHelperMock->shouldReceive('getName')->andReturn('progress');
         $progressBarHelperMock->shouldIgnoreMissing();
         $this->fixture->setHelperSet(
-            new HelperSet(array('progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock))
+            new HelperSet(array('progress' => $progressBarHelperMock))
         );
 
         $inputInterface = m::mock('Symfony\Component\Console\Input\InputInterface');
@@ -84,14 +62,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testIfProgressBarIsNotReturnedWhenDisabledAsOption()
     {
         // Arrange
-        $loggerHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
-        $loggerHelperMock->shouldReceive('getName')->andReturn('phpdocumentor_logger');
-        $loggerHelperMock->shouldIgnoreMissing();
         $progressBarHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
         $progressBarHelperMock->shouldReceive('getName')->andReturn('progress');
         $progressBarHelperMock->shouldIgnoreMissing();
         $this->fixture->setHelperSet(
-            new HelperSet(array('progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock))
+            new HelperSet(array('progress' => $progressBarHelperMock))
         );
 
         $inputInterface = m::mock('Symfony\Component\Console\Input\InputInterface');

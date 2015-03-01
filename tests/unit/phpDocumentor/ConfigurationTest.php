@@ -89,15 +89,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Configuration::__construct
-     * @covers phpDocumentor\Configuration::getLogging
-     */
-    public function testIfLoggingConfigurationIsReturned()
-    {
-        $this->assertInstanceOf('phpDocumentor\Configuration\Logging', $this->fixture->getLogging());
-    }
-
-    /**
-     * @covers phpDocumentor\Configuration::__construct
      * @covers phpDocumentor\Configuration::getParser
      */
     public function testIfParserConfigurationIsReturned()
