@@ -14,7 +14,6 @@ namespace phpDocumentor\Transformer;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use Psr\Log\LogLevel;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\DebugEvent;
@@ -177,7 +176,7 @@ class Transformer implements CompilerPassInterface
      *
      * @return void
      */
-    public function log($message, $priority = LogLevel::INFO)
+    public function log($message, $priority = 'info')
     {
         Dispatcher::getInstance()->dispatch(
             'system.log',

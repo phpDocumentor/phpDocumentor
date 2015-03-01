@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata;
 
-use Monolog\Logger;
-
 /**
  * This collection manages which assets were found during the discovery phase.
  *
@@ -22,9 +20,6 @@ class Assets extends \ArrayObject
 {
     /** @var string The root directory of the source documentation. */
     protected $project_root;
-
-    /** @var Logger A logging object used to write informational and debug messages to */
-    protected $logger;
 
     /**
      * Sets the project root for the given assets.
@@ -68,18 +63,6 @@ class Assets extends \ArrayObject
     }
 
     /**
-     * Sets a logger with which to record warnings.
-     *
-     * @param Logger $logger
-     *
-     * @return void
-     */
-    public function setLogger(Logger $logger)
-    {
-        $this->logger = $logger;
-    }
-
-    /**
      * Copies all assets in this collection to their given destination location.
      *
      * @param string $destination
@@ -90,10 +73,6 @@ class Assets extends \ArrayObject
     {
         foreach ($this as $source_path => $asset_path) {
             if (!is_readable($source_path)) {
-                if ($this->logger) {
-                    $this->logger->error('Asset "' . $source_path . '" could not be found or is not readable');
-                }
-
                 continue;
             }
 

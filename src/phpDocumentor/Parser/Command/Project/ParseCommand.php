@@ -243,9 +243,6 @@ final class ParseCommand extends Command
     {
         /** @var ProgressHelper $progress */
         $progress = $this->getProgressBar($input);
-        if (!$progress) {
-            $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
-        }
 
         if ($progress) {
             $this->getEventDispatcher()->addListener(

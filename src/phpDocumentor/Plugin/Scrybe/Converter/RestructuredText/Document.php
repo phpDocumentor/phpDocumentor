@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText;
 
-use Monolog\Logger;
 use phpDocumentor\Fileset\File;
 use phpDocumentor\Plugin\Scrybe\Converter\ConverterInterface;
 
@@ -106,30 +105,5 @@ class Document extends \ezcDocumentRst
     public function getFile()
     {
         return $this->file;
-    }
-
-    /**
-     * Sends the errors of the given Rst document to the logger as a block.
-     *
-     * If a fatal error occurred then this can be passed as the $fatal argument and is shown as such.
-     *
-     * @param \Exception|null $fatal
-     * @param Logger $logger
-     *
-     * @return void
-     */
-    public function logStats($fatal, Logger $logger)
-    {
-        if (!$this->getErrors() && !$fatal) {
-            return;
-        }
-
-        /** @var \Exception $error */
-        foreach ($this->getErrors() as $error) {
-            $logger->warning('  ' . $error->getMessage());
-        }
-        if ($fatal) {
-            $logger->error('  ' . $fatal->getMessage());
-        }
     }
 }

@@ -12,7 +12,6 @@
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator;
 
 use phpDocumentor\Translator\Translator;
-use Psr\Log\LogLevel;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\EventAbstract;
@@ -135,7 +134,7 @@ abstract class ValidatorAbstract
      *
      * @return void
      */
-    public function log($message, $priority = LogLevel::INFO)
+    public function log($message, $priority = 'info')
     {
         $this->dispatch(
             'system.log',
@@ -158,7 +157,7 @@ abstract class ValidatorAbstract
     public function logParserError($type, $code, $line, $variables = array())
     {
         $message = $this->__($code, $variables);
-        $this->log($message, LogLevel::ERROR);
+        $this->log($message, 'error');
         $this->dispatch(
             'parser.log',
             LogEvent::createInstance($this)

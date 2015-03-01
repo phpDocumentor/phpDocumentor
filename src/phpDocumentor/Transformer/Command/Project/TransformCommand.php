@@ -355,8 +355,6 @@ TEXT
      */
     private function connectOutputToEvents(OutputInterface $output)
     {
-        $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
-
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) use ($output) {

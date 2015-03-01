@@ -46,10 +46,6 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
             $rst = new Document($this, $file);
             $rst->options->xhtmlVisitor = 'phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors\Discover';
 
-            if ($this->getLogger()) {
-                $this->getLogger()->info('Scanning file "' . $file->getRealPath() . '"');
-            }
-
             try {
                 $rst->getAsXhtml();
             } catch (\Exception $e) {
@@ -82,16 +78,10 @@ class ToHtml extends BaseConverter implements ToHtmlInterface
             $destination = $this->getDestinationFilenameRelativeToProjectRoot($file);
             $this->setDestinationRoot($destination);
 
-            if ($this->getLogger()) {
-                $this->getLogger()->info('Parsing file "' . $file->getRealPath() . '"');
-            }
-
             try {
                 $xhtml_document = $rst->getAsXhtml();
                 $converted_contents = $template->decorate($xhtml_document->save(), $this->options);
-                $rst->logStats(null, $this->getLogger());
             } catch (\Exception $e) {
-                $rst->logStats($e, $this->getLogger());
                 continue;
             }
 

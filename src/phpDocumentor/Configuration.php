@@ -12,7 +12,6 @@
 namespace phpDocumentor;
 
 use JMS\Serializer\Annotation as Serializer;
-use phpDocumentor\Configuration\Logging;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
 use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Plugin;
@@ -34,12 +33,6 @@ class Configuration
      * @Serializer\Type("phpDocumentor\Parser\Configuration")
      */
     protected $parser;
-
-    /**
-     * @var Configuration\Logging The setting used for the logging of application messages and errors.
-     * @Serializer\Type("phpDocumentor\Configuration\Logging")
-     */
-    protected $logging;
 
     /**
      * @var Transformer\Configuration The settings used during the transformation phase.
@@ -90,7 +83,6 @@ class Configuration
         $this->transformations = new Transformer\Configuration\Transformations();
         $this->files           = new Parser\Configuration\Files();
         $this->parser          = new Parser\Configuration();
-        $this->logging         = new Logging();
         $this->translator      = new Translator\Configuration();
     }
 
@@ -140,16 +132,6 @@ class Configuration
     public function setFiles($files)
     {
         $this->files = $files;
-    }
-
-    /**
-     * Returns the settings related to logging.
-     *
-     * @return Configuration\Logging
-     */
-    public function getLogging()
-    {
-        return $this->logging;
     }
 
     /**

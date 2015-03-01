@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter;
 
-use Monolog\Logger;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\Assets;
 use phpDocumentor\Plugin\Scrybe\Converter\Metadata\Glossary;
@@ -85,13 +84,4 @@ interface ConverterInterface
      * @return Glossary
      */
     public function getGlossary();
-
-    /**
-     * Optionally set a logger for this converter.
-     *
-     * @param Logger $logger
-     *
-     * @return void
-     */
-    public function setLogger(Logger $logger);
 }

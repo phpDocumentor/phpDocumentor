@@ -61,7 +61,7 @@ final class ServiceProvider implements ServiceProviderInterface
         $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['statistics'] = new Writer\Statistics();
         $writerCollection['xml'] = new Writer\Xml($app['transformer.routing.standard']);
-        $writerCollection['xsl'] = new Writer\Xsl($app['monolog']);
+        $writerCollection['xsl'] = new Writer\Xsl();
         $writerCollection['jsonp'] = new Writer\Jsonp();
 
         $writerCollection['checkstyle']->setTranslator($this->getTranslator($app));
