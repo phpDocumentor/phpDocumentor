@@ -49,15 +49,28 @@ The phar file can be used by simply invoking php and providing the phar file as 
 
   $ php phpDocumentor.phar -d . -t docs/api
 
-Using Composer
---------------
+Global installation with Composer
+---------------------------------
 
-Installing phpDocumentor using Composer_ is a matter of creating a directory to host your files and executing the
-following command::
+To install phpDocumentor with Composer_ globally, execute the following command::
 
-    $ composer require "phpdocumentor/phpdocumentor:2.*"
+    $ composer global require "phpdocumentor/phpdocumentor:2.*"
 
-This command can also be used to add phpDocumentor to your existing composer-based project
+Then, make sure you have ``~/.composer/vendor/bin`` in your ``PATH``:
+
+    $ export PATH="$PATH:$HOME/.composer/vendor/bin"
+
+Now you should be able to run phpDocumentor by calling ``phpdoc`` in your terminal.
+
+Adding phpDocumentor into your project
+--------------------------------------
+
+If you want to add phpDocumentor to an existing Composer-based project, require it with this command::
+
+    $ composer require --dev "phpdocumentor/phpdocumentor:2.*"
+
+Note that this way the requirement is added to ``require-dev`` block of your ``composer.json``. If you want to use
+phpDocumentor in your production environment, remove the ``--dev`` parameter.
 
 .. hint::
 
