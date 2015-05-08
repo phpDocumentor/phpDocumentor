@@ -12,7 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 
@@ -24,12 +24,12 @@ class Sourcecode extends WriterAbstract
     /**
      * This method writes every source code entry in the structure file to a highlighted file.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface  $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR

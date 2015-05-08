@@ -13,7 +13,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use Monolog\Logger;
 use phpDocumentor\Application;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Plugin\Core\Exception;
 use phpDocumentor\Transformer\Event\PreXslWriterEvent;
@@ -84,7 +84,7 @@ class Xsl extends WriterAbstract implements Routable
      * This method combines the structure.xml and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface  $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @throws \RuntimeException if the structure.xml file could not be found.
@@ -93,7 +93,7 @@ class Xsl extends WriterAbstract implements Routable
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $structure = $this->loadAst($this->getAstPath($transformation));
 
@@ -332,11 +332,11 @@ class Xsl extends WriterAbstract implements Routable
     }
 
     /**
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      * @param $element
      * @return false|string
      */
-    private function generateUrlForXmlElement(ProjectDescriptor $project, $element)
+    private function generateUrlForXmlElement(ProjectInterface $project, $element)
     {
         $elements = $project->getIndexes()->get('elements');
 

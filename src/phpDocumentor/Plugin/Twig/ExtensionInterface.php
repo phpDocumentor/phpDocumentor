@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Plugin\Twig;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Transformer\Transformation;
 
 /**
@@ -25,9 +25,9 @@ interface ExtensionInterface
      * The Structure and Transformation object can be used to get context from
      * and to provide additional information.
      *
-     * @param ProjectDescriptor $project        Represents the complete Abstract Syntax Tree.
+     * @param ProjectInterface  $project        Represents the complete Abstract Syntax Tree.
      * @param Transformation    $transformation Represents the transformation meta data used in the current generation
      *     cycle.
      */
-    public function __construct(ProjectDescriptor $project, Transformation $transformation);
+    public function __construct(ProjectInterface $project, Transformation $transformation);
 }

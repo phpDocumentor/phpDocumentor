@@ -30,6 +30,7 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag\AuthorTag;
@@ -116,12 +117,12 @@ class Xml extends WriterAbstract implements Translatable
     /**
      * This method generates the AST output
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
 
@@ -147,7 +148,7 @@ class Xml extends WriterAbstract implements Translatable
         file_put_contents($artifact, $this->xml->saveXML());
     }
 
-    protected function buildPartials(\DOMElement $parent, ProjectDescriptor $project)
+    protected function buildPartials(\DOMElement $parent, ProjectInterface $project)
     {
         $child = new \DOMElement('partials');
         $parent->appendChild($child);
@@ -427,11 +428,11 @@ class Xml extends WriterAbstract implements Translatable
      * - Deprecated elements listing
      * - Removal of objects related to visibility
      *
-     * @param ProjectDescriptor $projectDescriptor
+     * @param ProjectInterface $projectDescriptor
      *
      * @return void
      */
-    protected function finalize(ProjectDescriptor $projectDescriptor)
+    protected function finalize(ProjectInterface $projectDescriptor)
     {
         // TODO: move all these behaviours to a central location for all template parsers
         $behaviour = new AuthorTag();

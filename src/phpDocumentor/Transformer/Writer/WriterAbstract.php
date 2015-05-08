@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Transformer\Writer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Transformation;
 
 /**
@@ -53,10 +53,10 @@ abstract class WriterAbstract
     /**
      * Abstract definition of the transformation method.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface  $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    abstract public function transform(ProjectDescriptor $project, Transformation $transformation);
+    abstract public function transform(ProjectInterface $project, Transformation $transformation);
 }

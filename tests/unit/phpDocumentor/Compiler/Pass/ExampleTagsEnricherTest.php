@@ -141,7 +141,7 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAProjectDescriptorWithChildDescriptors($descriptors)
     {
-        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $projectDescriptor->shouldReceive('getIndexes->get')->with('elements')->andReturn($descriptors);
 
         return $projectDescriptor;

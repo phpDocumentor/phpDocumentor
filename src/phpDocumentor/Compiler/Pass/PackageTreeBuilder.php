@@ -15,7 +15,7 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 
 /**
@@ -42,11 +42,10 @@ class PackageTreeBuilder implements CompilerPassInterface
     /**
      * Compiles a 'packages' index on the project and create all Package Descriptors necessary.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
-     * @return void
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         $rootPackageDescriptor = new PackageDescriptor();
         $rootPackageDescriptor->setName('\\');
@@ -69,7 +68,7 @@ class PackageTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the package as registered in the package field of that
      * element. If a package does not exist yet it will automatically be created.
      *
-     * @param ProjectDescriptor    $project
+     * @param ProjectInterface    $project
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective package.
      * @param string               $type     Declares which field of the package will be populated with the given
      * series of elements. This name will be transformed to a getter which must exist. Out of performance
@@ -77,7 +76,7 @@ class PackageTreeBuilder implements CompilerPassInterface
      *
      * @return void
      */
-    protected function addElementsOfTypeToPackage(ProjectDescriptor $project, array $elements, $type)
+    protected function addElementsOfTypeToPackage(ProjectInterface $project, array $elements, $type)
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -126,19 +125,19 @@ class PackageTreeBuilder implements CompilerPassInterface
      * the FQNN if it doesn't exist in the packages field of the current package (starting with the root
      * Package in the Project Descriptor),
      *
-     * As an intended side effect this method also populates the *elements* index of the ProjectDescriptor with all
+     * As an intended side effect this method also populates the *elements* index of the ProjectInterface with all
      * created PackageDescriptors. Each index key is prefixed with a tilde (~) so that it will not conflict with
      * other FQSEN's, such as classes or interfaces.
      *
-     * @param ProjectDescriptor $project
-     * @param string            $packageName A FQNN of the package (and parents) to create.
+     * @param ProjectInterface $project
+     * @param string           $packageName A FQNN of the package (and parents) to create.
      *
-     * @see ProjectDescriptor::getPackage() for the root package.
+     * @see ProjectInterface::getPackage() for the root package.
      * @see PackageDescriptor::getChildren() for the child packages of a given package.
      *
      * @return void
      */
-    protected function createPackageDescriptorTree(ProjectDescriptor $project, $packageName)
+    protected function createPackageDescriptorTree(ProjectInterface $project, $packageName)
     {
         $parts   = explode('\\', ltrim($packageName, '\\'));
         $fqnn    = '';
