@@ -1,0 +1,121 @@
+{% block method %}
+    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_{{ method.name }}" name="method_{{ method.name }}" class="anchor"></a>
+            <article class="method">
+                <h3 class="{{ method.visibility }} {% if method.deprecated %}deprecated{% endif %}">{{ method.name }}()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|')~' ' }} <span class="argument">{{ argument.isVariadic ? '...' }}{{ argument.name }}{{ argument.default ? ' = '~argument.default }}</span>{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('|') }}</pre>
+                <p><em>{{ method.summary }}</em></p>
+                {{ method.description|markdown|raw }}
+
+                {% if method.arguments|length > 0 %}
+                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                        {% for argument in method.arguments %}
+                            <tr>
+                                <td>{{ argument.types|route|join('|')|raw }}</td>
+                                <td>{{ argument.name }} {{ argument.isVariadic ? '<small style="color: gray">variadic</small>' }}</td>
+                                <td>{{ argument.description|markdown|raw }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+
+                {% if method.tags.throws|length > 0 or method.tags.throw|length > 0 %}
+                    <h4>Throws</h4>
+                    <dl>
+                        {% for exception in method.tags.throws %}
+                            <dt>{{ exception.types|route|join('|')|raw }}</dt>
+                            <dd>{{ exception.description|markdown|raw }}</dd>
+                        {% endfor %}
+                        {% for exception in method.tags.throw %}
+                            <dt>{{ exception.types|route|join('|')|raw }}</dt>
+                            <dd>{{ exception.description|markdown|raw }}</dd>
+                        {% endfor %}
+                    </dl>
+                {% endif %}
+
+                {% if method.response and method.response.types|join() != 'void' %}
+                    <h4>Returns</h4>
+                    {{ method.response.types|route|join('|')|raw }}
+                    {% if method.response.description %}
+                        &mdash; {{ method.response.description|markdown|raw }}
+                    {% endif %}
+                {% endif %}
+				
+                {% for tagName,tags in method.tags if tagName in ['example'] %}
+                    {% if loop.first %}
+                        <h4>Examples</h4>
+                    {% endif %}
+                    {% for tag in tags %}
+                        <h5>{{ tag.description|escape }}</h5>
+                        <pre class="pre-scrollable">{{ tag.example|escape }}</pre>
+                    {% endfor %}
+                {% endfor %}
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+            {% if method.static %}
+                <span class="label label-info">static</span>
+            {% endif %}
+            {% if method.abstract %}
+                <span class="label label-info">abstract</span>
+            {% endif %}
+            {% if method.final %}
+                <span class="label label-info">final</span>
+            {% endif %}
+            {% if method.deprecated %}
+                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated{% if method.tags.deprecated[0].version %} since {{ method.tags.deprecated[0].version }}{% endif %}</h4>
+                    {{ method.tags.deprecated[0].description }}
+                </aside>
+            {% endif %}
+            <dl>
+                {% if (node.parent is null) %}
+                    <dt>File</dt>
+                    <dd><a href="{{ node.file|route('url') }}"><div class="path-wrapper">{{ node.path }}</div></a></dd>
+                {% endif %}
+                {% if (node.parent is not null and method.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+                    <dt>Inherited from</dt>
+                    <dd><a href="{{ method.parent|route('url') }}"><div class="path-wrapper">{{ method.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
+                {% endif %}
+                {% for tagName,tags in method.tags if tagName in ['link', 'see'] %}
+                    {% if loop.first %}
+                        <dt>See also</dt>
+                    {% endif %}
+                    {% for tag in tags %}
+                        <dd><a href="{{ (tag.reference|route('url')) ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description }}</span></a></dd>
+                    {% endfor %}
+                {% endfor %}
+                {% for tagName,tags in method.tags if tagName in ['uses'] %}
+                    {% if loop.first %}
+                        <dt>Uses</dt>
+                    {% endif %}
+                    {% for tag in tags %}
+                        <dd>{{ tag.reference|route|raw }}</dd>
+                    {% endfor %}
+                {% endfor %}
+            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                {% for tagName,tags in method.tags if tagName not in ['link', 'see', 'abstract', 'example', 'param', 'return', 'access', 'deprecated', 'throws', 'throw', 'uses'] %}
+                    <tr>
+                        <th>
+                            {{ tagName }}
+                        </th>
+                        <td>
+                            {% for tag in tags %}
+                                {% if tag.version %}{{ tag.version }}{% endif %}
+                                {{ tag.description|markdown|raw }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="2"><em>None found</em></td></tr>
+                {% endfor %}
+            </table>
+        </aside>
+    </div>
+{% endblock %}

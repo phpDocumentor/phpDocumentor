@@ -1,0 +1,162 @@
+{% extends 'layout.html.twig' %}
+
+{% import 'base/macros.html.twig' as macros %}
+{% use 'base/class.sidebar.html.twig' %}
+
+{% block title %}
+    {{ parent() }} &raquo; {{ node.FullyQualifiedStructuralElementName }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .deprecated h2 {
+            text-decoration: line-through;
+        }
+    </style>
+    <div class="row">
+        <div class="span4">
+            {{ block('sidebar') }}
+        </div>
+
+        <div class="span8">
+            <div class="element class">
+                <h1>{{ node.name }}</h1>
+                <small style="display: block; text-align: right">
+                    {% if node.parent %}
+                        Extends {{ node.parent|route|join(', ')|raw }}
+                    {% endif %}
+                    {% if node.interfaces|length %}
+                        Implements {{ node.interfaces|route|join(', ')|raw }}
+                    {% endif %}
+                </small>
+                <p class="short_description">{{ node.summary }}</p>
+                <div class="details">
+                    <div class="long_description">
+                        {{ node.description|markdown|raw }}
+                    </div>
+                    <table class="table table-bordered">
+                        {% for tagList in node.tags %}
+                            {% for tag in tagList if tag.name not in ['method', 'property']%}
+                                <tr>
+                                    <th>
+                                        {{ tag.name }}
+                                        {% if tag.type %}
+                                            {{ tag.type|route|join('|')|raw }}
+                                        {% endif %}
+                                    </th>
+                                    <td>
+                                        {% if (tag.name == "since" or "deprecated") %}
+                                            {{ tag.version }}
+                                        {% endif %}
+                                        {{ tag.description|markdown|raw }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </table>
+
+                    <h3><i class="icon-custom icon-method"></i> Methods</h3>
+                    {% set specialMethods = node.magicMethods ? node.inheritedMethods.merge(node.magicMethods) : node.inheritedMethods %}
+                    {% for method in node.methods.merge(specialMethods)|sort_asc %}
+                        <a id="method_{{ method.name }}"></a>
+                        <div class="element clickable method {{ method.visibility }} {{ method.deprecated ? 'deprecated' }} method_{{ method.name }}{{ method.parent.name != node.name ? ' inherited' : '' }}" data-toggle="collapse" data-target=".method_{{ method.name }} .collapse">
+                            <h2>{{ method.summary ?: method.name }}</h2>
+                            <pre>{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|')~' ' }}{{ argument.byReference ? '&' }}{{ argument.name }}{{ argument.default ? ' = '~argument.default }}{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('|') }}</pre>
+                            <div class="labels">
+                                {% if method.parent.name != node.name %}<span class="label">inherited</span>{% endif %}
+                                {% if method.static %}<span class="label">static</span>{% endif %}
+                                {% if method.final %}<span class="label">final</span>{% endif %}
+                                {% if method.abstract %}<span class="label">abstract</span>{% endif %}
+                                {% if method.tags.api is defined %}<span class="label label-info">api</span>{% endif %}
+                            </div>
+
+                            {% include 'method.html.twig' with {'method': method} %}
+
+                        </div>
+                    {% endfor %}
+
+                    {% if node.constants.merge(node.inheritedConstants)|length > 0 %}
+                        <h3><i class="icon-custom icon-constant"></i> Constants</h3>
+                        {% for constant in node.constants.merge(node.inheritedConstants) %}
+                            <a id="constant_{{ constant.name }}"> </a>
+                            <div class="element clickable constant {{ constant.deprecated ? 'deprecated' }} constant_{{ constant.name }}{{ constant.parent.name != node.name ? ' inherited' : '' }}" data-toggle="collapse" data-target=".constant_{{ constant.name }} .collapse">
+                                <h2>{{ constant.summary ?: constant.name }}</h2>
+                                <pre>{{ constant.name }}</pre>
+                                <div class="labels">
+                                    {% if constant.parent.name != node.name %}<span class="label">inherited</span>{% endif %}
+                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description">{{ constant.description|markdown|raw }}</div>
+                                        <table class="table">
+                                            {% for tagList in constant.tags %}
+                                                <tr>
+                                                    <th>
+                                                        {{ tagList.0.name }}
+                                                    </th>
+                                                    <td>
+                                                        {% for tag in tagList %}
+                                                            {{ tag.description|markdown|raw }}
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% set specialProperties = node.magicProperties ? node.inheritedProperties.merge(node.magicProperties) : node.inheritedProperties %}
+                    {% if node.properties.merge(specialProperties)|length > 0 %}
+                        <h3><i class="icon-custom icon-property"></i> Properties</h3>
+                        {% for property in node.properties.merge(specialProperties) %}
+                            <a id="property_{{ property.name }}"> </a>
+                            <div class="element clickable property {{ property.deprecated ? 'deprecated' }} {{ property.visibility }} property_{{ property.name }}{{ property.parent.name != node.name ? ' inherited' : '' }}" data-toggle="collapse" data-target=".property_{{ property.name }} .collapse">
+                                <h2>{{ property.summary ?: property.var.0.description ?: property.name }}</h2>
+                                <pre>{{ property.name }} : {{ property.types|join('|') }}</pre>
+                                <div class="labels">
+                                    {% if property.parent.name != node.name %}<span class="label">inherited</span>{% endif %}
+                                    {% if property.static %}<span class="label">static</span>{% endif %}
+                                </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description">{{ property.description|markdown|raw }}</div>
+
+                                        <table class="table">
+                                            {% for tagList in property.tags %}
+                                                <tr>
+                                                    <th>
+                                                        {{ tagList.0.name }}
+                                                    </th>
+                                                    <td>
+                                                        {% for tag in tagList %}
+                                                            {{ tag.description|markdown|raw }}
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+
+                                        {% if property.types and property.types|join() != 'void' %}
+                                            <h3>Type(s)</h3>
+                                            <code>{{ property.types|route|join('|')|raw }}</code>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <a id="{{ node.fullyQualifiedStructuralElementName }}"></a>
+            <ul class="breadcrumb">
+                <li><a href="{{ path('index.html') }}"><i class="icon-custom icon-class"></i></a></li>
+                {{ macros.buildBreadcrumb(node.namespace) }}
+                <li class="active"><span class="divider">\</span><a href="{{ path(node) }}">{{ node.name }}</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

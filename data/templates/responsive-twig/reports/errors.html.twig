@@ -1,0 +1,75 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    {{ project.title }} &raquo; Compilation errors
+{% endblock %}
+
+{% block content %}
+<div class="row">
+        <div class="span4">
+
+            <ul class="side-nav nav nav-list">
+                <li class="nav-header">Filter type</li>
+                <li>
+                    <div class="btn-group type-filter" data-toggle="buttons-checkbox">
+                        <button class="btn critical">Critical</button>
+                        <button class="btn error">Error</button>
+                        <button class="btn notice">Notice</button>
+                    </div>
+                </li>
+                <li class="nav-header">Navigation</li>
+                {% set errorCount = 0 %}
+                {% for file in project.files %}
+                    {% if file.allerrors|length > 0 %}
+                        <li><a href="#{{ file.path }}"><i class="icon-file"></i> {{ file.path }}</a></li>
+                    {% endif %}
+                    {% set errorCount = errorCount + file.allerrors|length %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="span8">
+            <ul class="breadcrumb">
+                <li><a href="{% if path('/') == '' %}?{% else %}{{ path('/') }}{% endif %}"><i class="icon-remove-sign"></i></a><span class="divider">\</span></li>
+                <li>Compilation Errors</li>
+            </ul>
+
+            {% if errorCount <= 0 %}
+                <div class="alert alert-info">No errors have been found in this project.</div>
+            {% endif %}
+
+            {% for file in project.files %}
+                <div class="package-contents">
+                    {% if file.allerrors|length > 0 %}
+                        <a name="{{ file.path }}" id="{{ file.path }}"></a>
+                        <h3>
+                            <i class="icon-file"></i>
+                            {{ file.path }}
+                            <span class="pull-right badge badge-info">{{ file.allerrors|length }}</span>
+                        </h3>
+                        <div>
+                            <table class="table markers table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Line</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for error in file.allerrors %}
+                                    <tr class="{{ error.severity }}">
+                                        <td>{{ error.severity }}</td>
+                                        <td>{{ error.line }}</td>
+                                        <td>{{ error.code|trans(error.context) }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

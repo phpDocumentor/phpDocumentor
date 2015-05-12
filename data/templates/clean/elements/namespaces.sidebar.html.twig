@@ -1,0 +1,33 @@
+{% block sidebarNamespaces %}
+    {% set code = random() %}
+    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                {% if namespace.children|length > 0 or namespace.classes|length > 0 or namespace.interfaces|length > 0 or namespace.traits|length > 0 %}
+                    <a class="accordion-toggle {{ namespace.name != '\\' ? 'collapsed' }}" data-toggle="collapse" data-target="#namespace-{{ code }}"></a>
+                {% endif %}
+                <a href="{{ namespace|route("url")|raw }}" style="margin-left: 30px; padding-left: 0">{{ namespace.name }}</a>
+            </div>
+            <div id="namespace-{{ code }}" class="accordion-body collapse {{ namespace.name == '\\' ? 'in' }}">
+                <div class="accordion-inner">
+
+                    {% for namespace in namespace.children|sort_asc %}
+                        {{ block('sidebarNamespaces') }}
+                    {% endfor %}
+
+                    <ul>
+                        {% for class in namespace.interfaces|sort_asc %}
+                            <li class="interface">{{ class|route('class:short')|raw }}</li>
+                        {% endfor %}
+                        {% for class in namespace.traits|sort_asc %}
+                            <li class="trait">{{ class|route('class:short')|raw }}</li>
+                        {% endfor %}
+                        {% for class in namespace.classes|sort_asc %}
+                            <li class="class">{{ class|route('class:short')|raw }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

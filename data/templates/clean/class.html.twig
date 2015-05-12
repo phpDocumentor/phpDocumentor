@@ -1,0 +1,324 @@
+{% extends 'layout.html.twig' %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+{% endblock %}
+
+{% block content %}
+    <section class="row-fluid">
+        <div class="span2 sidebar">
+            {% set namespace = project.namespace %}
+            {{ block('sidebarNamespaces') }}
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                        {#<a href="" class="pull-left">&laquo; NamespaceAssembler</a>#}
+                        {{ node.namespace|route|raw }} <i class="icon-level-up"></i>
+                        {#<a href="" class="pull-right">ClassAssembler &raquo;</a>#}
+                    </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>{{ node.namespace }}</small>{{ node.name }}</h1>
+                    <p><em>{{ node.summary }}</em></p>
+                    {{ node.description|markdown|raw }}
+                    
+                    {% for tagName,tags in node.tags if tagName in ['example'] %}
+                        {% if loop.first %}
+                            <h3>Examples</h3>
+                        {% endif %}
+                        {% for tag in tags %}
+                            <h4>{{ tag.description|escape }}</h4>
+                            <pre class="pre-scrollable">{{ tag.example|escape }}</pre>
+                        {% endfor %}
+                    {% endfor %}
+                    
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                {% for method in node.inheritedMethods.merge(node.methods.merge(node.magicMethods)) if method.visibility == 'public' %}
+                                    <a href="{{ method|route('url')}}" class="{{ method.deprecated ? 'deprecated' }}">{{ method.name }}()</a><br />
+                                {% else %}
+                                    <em>No public methods found</em>
+                                {% endfor %}
+                            </section>
+                            <section class="span4">
+                                {% for property in node.inheritedProperties.merge(node.properties.merge(node.magicProperties)) if property.visibility == 'public' %}
+                                    <a href="{{ property|route('url')}}" class="{{ property.deprecated ? 'deprecated' }}">${{ property.name }}</a><br />
+                                {% else %}
+                                    <em>No public properties found</em>
+                                {% endfor %}
+                            </section>
+                            <section class="span4">
+                                {% for constant in node.inheritedConstants.merge(node.constants) %}
+                                    <a href="{{ constant|route('url')}}" class="{{ constant.deprecated ? 'deprecated' }}">{{ constant.name }}</a><br />
+                                {% else %}
+                                    <em>No constants found</em>
+                                {% endfor %}
+                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                {% for method in node.inheritedMethods.merge(node.methods.merge(node.magicMethods)) if method.visibility == 'protected' %}
+                                    <a href="{{ method|route('url')}}" class="{{ method.deprecated ? 'deprecated' }}">{{ method.name }}()</a><br />
+                                {% else %}
+                                    <em>No protected methods found</em>
+                                {% endfor %}
+                            </section>
+                            <section class="span4">
+                                {% for property in node.inheritedProperties.merge(node.properties.merge(node.magicProperties)) if property.visibility == 'protected' %}
+                                    <a href="{{ property|route('url')}}" class="{{ property.deprecated ? 'deprecated' }}">${{ property.name }}</a><br />
+                                {% else %}
+                                    <em>No protected properties found</em>
+                                {% endfor %}
+                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                {% for method in node.inheritedMethods.merge(node.methods.merge(node.magicMethods)) if method.visibility == 'private' %}
+                                    <a href="{{ method|route('url')}}" class="{{ method.deprecated ? 'deprecated' }}">{{ method.name }}()</a><br />
+                                {% else %}
+                                    <em>No private methods found</em>
+                                {% endfor %}
+                            </section>
+                            <section class="span4">
+                                {% for property in node.inheritedProperties.merge(node.properties.merge(node.magicProperties)) if property.visibility == 'private' %}
+                                    <a href="{{ property|route('url')}}" class="{{ property.deprecated ? 'deprecated' }}">${{ property.name }}</a><br />
+                                {% else %}
+                                    <em>No private properties found</em>
+                                {% endfor %}
+                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                    {% if node.abstract %}
+                        <span class="label label-info">abstract</span>
+                    {% endif %}
+                    {% if node.final %}
+                        <span class="label label-info">final</span>
+                    {% endif %}
+
+                    {% if method.deprecated %}
+                        <aside class="alert alert-block alert-error">
+                            <h4>Deprecated</h4>
+                            {{ method.tags.deprecated[0].description }}
+                        </aside>
+                    {% endif %}
+
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="{{ node.file|route('url') }}"><div class="path-wrapper">{{ node.path }}</div></a></dd>
+                        {% if node.package.name is not empty and node.package.name != '\\' %}
+                        <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">{{ node.package.parent.name != '\\' ? (node.package.parent.name ~ '\\' ~ node.package.name) : node.package.name }}</div></dd>
+                        {% endif %}
+                        <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                {% set class = node.parent %}
+                                {% block hierarchy_element %}
+                                    {% if class %}
+                                        {% set child = class %}
+                                        {% set class = class.parent %}
+                                        {{ block('hierarchy_element') }}
+                                        <div class="namespace-wrapper">{{ child|route|raw }}</div>
+                                    {% endif %}
+                                {% endblock %}
+                                <div class="namespace-wrapper">{{ node.fullyQualifiedStructuralElementName}}</div>
+                            </dd>
+
+                        {% for interface in node.interfaces %}
+                            {% if loop.first %}
+                        <dt>Implements</dt>
+                            {% endif %}
+                            <dd><a href="{{ interface|route('url') }}"><div class="namespace-wrapper">{{ interface.fullyQualifiedStructuralElementName }}</div></a></dd>
+                        {% endfor %}
+
+                        {% for trait in node.usedTraits %}
+                            {% if loop.first %}
+                                <dt>Uses traits</dt>
+                            {% endif %}
+                            <dd>
+                                {% if trait.fullyQualifiedStructuralElementName %}<a href="{{ trait|route('url') }}">{% endif %}
+                                    <div class="namespace-wrapper">{{ trait.fullyQualifiedStructuralElementName ?: trait }}</div>
+                                {% if trait.fullyQualifiedStructuralElementName %}</a>{% endif %}
+                            </dd>
+                        {% endfor %}
+
+                        {# TODO: expensive action; replace with an index or precompiled list in descriptors #}
+{#
+                        {% for child in project.indexes.elements if child.parent.fullyQualifiedStructuralElementName == node.fullyQualifiedStructuralElementName %}
+                            {% if loop.first %}
+                        <dt>Children</dt>
+                            {% endif %}
+                            <dd><a href="{{ child|route('url') }}"><div class="namespace-wrapper">{{ child.fullyQualifiedStructuralElementName }}</div></a></dd>
+                        {% endfor %}
+#}
+
+                        {% for tagName,tags in node.tags if tagName in ['link', 'see'] %}
+                            {% if loop.first %}
+                        <dt>See also</dt>
+                            {% endif %}
+                            {% for tag in tags %}
+                            <dd><a href="{{ tag.link }}"><div class="namespace-wrapper">{{ tag.description }}</div></a></dd>
+                            {% endfor %}
+                        {% endfor %}
+
+                        {#<dt>Categories</dt>#}
+                            {#<dd><a href="">Assemblers</a></dd>#}
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                    {% for tagName,tags in node.tags if tagName not in ['link', 'see', 'abstract', 'example', 'method', 'property', 'property-read', 'property-write', 'package', 'subpackage'] %}
+                        <tr>
+                            <th>
+                                {{ tagName }}
+                            </th>
+                            <td>
+                                {% for tag in tags %}
+                                    {{ tag.description|markdown|raw }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="2"><em>None found</em></td></tr>
+                    {% endfor %}
+                    </table>
+                </aside>
+            </div>
+
+            {% set constants = node.inheritedConstants.merge(node.constants) %}
+            {% if constants|length > 0 %}
+            <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+            {% for constant in constants %}
+                {{ block('constant') }}
+                {% endfor %}
+            {% endif %}
+
+            {% set properties = node.inheritedProperties.merge(node.properties.merge(node.magicProperties)) %}
+            {% if properties|length > 0 %}
+            <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                {% for property in properties if property.visibility == 'public' %}
+                {{ block('property') }}
+                {% endfor %}
+                {% for property in properties if property.visibility == 'protected' %}
+                {{ block('property') }}
+                {% endfor %}
+                {% for property in properties if property.visibility == 'private' %}
+                {{ block('property') }}
+                {% endfor %}
+            {% endif %}
+
+            {% set methods = node.inheritedMethods.merge(node.methods.merge(node.magicMethods)) %}
+            {% if methods|length > 0 %}
+            <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                {% for method in methods if method.visibility == 'public' %}
+                {{ block('method') }}
+                {% endfor %}
+                {% for method in methods if method.visibility == 'protected' %}
+                {{ block('method') }}
+                {% endfor %}
+                {% for method in methods if method.visibility == 'private' %}
+                {{ block('method') }}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">{{ node.file.name }}</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="{{ path('files/' ~ node.path ~ '.txt')|raw }}" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+{% endblock %}

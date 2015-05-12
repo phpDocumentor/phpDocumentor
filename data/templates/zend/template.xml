@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <author>Mike van Riel</author>
+    <email>mike.vanriel@naenius.com</email>
+    <version>1.1.0</version>
+    <copyright>Mike van Riel / Naenius 2011</copyright>
+    <description>This is the look and feel for Zend Framework</description>
+    <dependencies>
+      <template name="abstract" version="1.0.3" />
+    </dependencies>
+    <transformations>
+        <transformation query="copy" writer="FileIo" source="templates/abstract/images" artifact="images" />
+        <transformation query="copy" writer="FileIo" source="templates/abstract/css" artifact="css" />
+        <transformation query="copy" writer="FileIo" source="templates/abstract/js" artifact="js" />
+        <transformation query="copy" writer="FileIo" source="templates/zend/images" artifact="images" />
+        <transformation query="copy" writer="FileIo" source="templates/zend/css" artifact="css" />
+        <transformation query="copy" writer="FileIo" source="templates/zend/js" artifact="js" />
+        <transformation writer="xml" artifact="structure.xml" />
+        <transformation writer="xsl" source="templates/zend/index.xsl" artifact="index.html" />
+        <transformation writer="xsl" source="templates/abstract/sidebar.xsl" artifact="nav.html">
+            <parameters>
+                <variables>
+                    <section.dashboard.show>false</section.dashboard.show>
+                    <section.api.show />
+                    <section.namespaces.show />
+                    <section.packages.show />
+                    <section.files.show />
+                    <section.files.show-elements>false</section.files.show-elements>
+                    <section.reports.show>false</section.reports.show>
+                    <section.charts.show>false</section.charts.show>
+                </variables>
+            </parameters>
+        </transformation>
+        <transformation writer="xsl" source="templates/abstract/report_markers.xsl" artifact="report_markers.html" />
+        <transformation writer="xsl" source="templates/abstract/report_parse_markers.xsl" artifact="report_parse_markers.html" />
+        <transformation writer="xsl" source="templates/abstract/report_deprecated.xsl" artifact="report_deprecated.html" />
+        <transformation writer="xsl" source="templates/abstract/content.xsl" artifact="content.html" />
+        <transformation query="/project/file/@path" writer="xsl" source="templates/abstract/api-doc.xsl" artifact="files/{$path}" />
+        <transformation writer="sourcecode" />
+        <transformation writer="xsl" source="templates/abstract/graph_class.xsl" artifact="graph.html" />
+        <transformation writer="Graph" source="Class" artifact="classes.svg" />
+    </transformations>
+</template>

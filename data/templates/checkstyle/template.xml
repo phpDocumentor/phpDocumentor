@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <author>Ben Selby</author>
+  <version>1.0.0</version>
+  <description>This template allows users to produce checkstyle output</description>
+  <transformations>
+    <transformation query="" writer="checkstyle" source="" artifact="checkstyle.xml" />
+  </transformations>
+</template>
