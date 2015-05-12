@@ -166,29 +166,52 @@ Glossary
 
     Template
     Templates
-       .. note:: Here a text must be added
+        Templates are configuration files that change how phpDocumentor renders the generated documentation.
+        For an overview of templates, see :doc:`guides/templates`.
 
     Transformation
     Transformations
-       .. note:: Here a text must be added
+        Action definitions that are part of :term:`Templates` and are used to determine what the template does.
 
     Summary
-       .. note:: Here a text must be added
+      Sometimes called a short description, provides a brief introduction into the function of the associated element.
+      A Summary ends
+      in one of these situations:
+
+        1. A dot is following by a line break, or
+        2. Two subsequent line breaks are encountered.
 
     Description
-       .. note:: Here a text must be added
+        Sometimes called the long description, it can provide more information than the :term:`Summary`. Examples of
+        additional information are a description of a function's algorithm, a usage example, or a description of how a
+        class fits in the whole of the application's architecture. The description ends when the first :term:`Tag`
+        is encountered, or when the DocBlock is closed.
 
     Tag
     Tags
-       .. note:: Here a text must be added
+        These provide a way to succinctly and uniformly provide meta-information about the associated element. This could,
+        for example, describe the type of information that is returned by a method or function. Each tag is preceded by an
+        at-sign (`@`) and starts on a new line.
 
     Inline Tag
     Inline Tags
-       .. note:: Here a text must be added
+        Some tags can also be used within text such as descriptions, such as the :doc:`references/phpdoc/tags/link` tag.
+        Inline tags are surrounded by braces to set them apart from the surrounding text.
 
     Annotation
     Annotations
-       .. note:: Here a text must be added
+        An annotation is a specialized form of tag, that not only documents a specific aspect of the associated element,
+        but also influences the way the application behaves.  Specific functionality depends on the library that is
+        using them, for instance in Doctrine you can specify that a class represents a database entity as follows:
+
+        .. code-block:: php
+            :linenos:
+
+            /**
+             * @ORM\Entity(repositoryClass="MyProject\UserRepository")
+             */
+
+        For more on annotations, see Rafael Dohms' `video presentation <http://protalk.me/annotating-with-annotations>`_ or `slides <http://www.slideshare.net/rdohms/annotations-in-php-they-exist>`_ on annotations.
 
     Plugin
     Service Provider
