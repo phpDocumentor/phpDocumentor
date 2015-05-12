@@ -1,0 +1,65 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    {{ project.title }} &raquo; Markers
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="span4">
+            <ul class="side-nav nav nav-list">
+                <li class="nav-header">Navigation</li>
+                {% set markerCount = 0 %}
+                {% for file in project.files %}
+                    {% if file.markers|length > 0 %}
+                    <li><a href="#{{ file.path }}"><i class="icon-file"></i> {{ file.path }}</a></li>
+                    {% endif %}
+                    {% set markerCount = markerCount + file.markers|length %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="span8">
+
+            <ul class="breadcrumb">
+                <li><a href="{% if path('/') == '' %}?{% else %}{{ path('/') }}{% endif %}"><i class="icon-map-marker"></i></a><span class="divider">\</span></li>
+                <li>Markers</li>
+            </ul>
+
+            {% if markerCount <= 0 %}
+                <div class="alert alert-info">No markers have been found in this project.</div>
+            {% endif %}
+
+            <div id="marker-accordion">
+                {% for file in project.files %}
+                    {% if file.markers|length > 0 %}
+                        <div class="package-contents">
+                            <a name="{{ file.path }}" id="{{ file.path }}"></a>
+                            <h3>
+                            <i class="icon-file"></i>
+                                {{ file.path }}
+                                <span class="pull-right badge badge-info">{{ file.markers|length }}</span>
+                            </h3>
+                            <div>
+                                <table class="table markers table-bordered">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Line</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    {% for marker in file.markers %}
+                                        <tr>
+                                            <td>{{ marker.type }}</td>
+                                            <td>{{ marker.line }}</td>
+                                            <td>{{ marker.message }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

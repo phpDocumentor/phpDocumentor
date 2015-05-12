@@ -1,0 +1,33 @@
+{% macro renderMarkerCounter(files) %}
+    {% set count = 0 %}
+    {% for file in files %}
+        {% set count = count + file.markers|length %}
+    {% endfor %}
+    <span class="label label-info">{{ count }}</span>
+{% endmacro %}
+
+{% macro renderDeprecatedCounter(elements) %}
+    {% set count = 0 %}
+    {% for element in elements if element.deprecated %}
+        {% set count = count + 1 %}
+    {% endfor %}
+    <span class="label label-info">{{ count }}</span>
+{% endmacro %}
+
+{% macro renderErrorCounter(files) %}
+    {% set count = 0 %}
+    {% for file in files %}
+        {% set count = count + file.allerrors|length %}
+    {% endfor %}
+    <span class="label label-info">{{ count }}</span>
+{% endmacro %}
+
+{% macro buildBreadcrumb(element) %}
+    {% import _self as self %}
+
+    {% if element.parentNamespace and element.parentNamespace.name != '\\' %}
+        {{ self.buildBreadcrumb(element.parentNamespace) }}
+    {% endif %}
+
+    <li><span class="divider">\</span><a href="{{ path(element) }}">{{ element.name }}</a></li>
+{% endmacro %}

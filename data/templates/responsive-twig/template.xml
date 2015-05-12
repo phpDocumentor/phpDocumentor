@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <author>Mike van Riel</author>
+  <email>mike.vanriel@naenius.com</email>
+  <version>1.0.1</version>
+  <copyright>Mike van Riel 2012</copyright>
+  <description><![CDATA[
+      This is the 'Responsive' look and feel for phpDocumentor.
+
+      This is a responsive template that is optimized to make the user's
+      experience paramount.
+
+      To improve performance you can add the following to your .htaccess:
+
+      <ifModule mod_deflate.c>
+          <filesMatch "\.(js|css|html)$">
+              SetOutputFilter DEFLATE
+          </filesMatch>
+      </ifModule>
+  ]]></description>
+  <transformations>
+    <transformation query="copy" writer="FileIo" source="templates/responsive/img" artifact="img"/>
+    <transformation query="copy" writer="FileIo" source="templates/responsive/css" artifact="css"/>
+    <transformation query="copy" writer="FileIo" source="templates/responsive/js" artifact="js"/>
+    <transformation writer="twig" source="templates/responsive-twig/index.html.twig" artifact="index.html"/>
+    <transformation query="indexes.namespaces" writer="twig" source="templates/responsive-twig/namespace.html.twig" />
+    <transformation query="indexes.packages" writer="twig" source="templates/responsive-twig/package.html.twig" />
+    <transformation query="indexes.classes" writer="twig" source="templates/responsive-twig/class.html.twig" />
+    <transformation query="indexes.interfaces" writer="twig" source="templates/responsive-twig/class.html.twig" />
+    <transformation query="indexes.traits" writer="twig" source="templates/responsive-twig/class.html.twig" />
+    <transformation writer="twig" source="templates/responsive-twig/reports/markers.html.twig" artifact="markers.html"/>
+    <transformation writer="twig" source="templates/responsive-twig/reports/errors.html.twig" artifact="errors.html"/>
+    <transformation writer="twig" source="templates/responsive-twig/reports/deprecated.html.twig" artifact="deprecated.html"/>
+    <transformation writer="twig" source="templates/responsive-twig/graphs/class.html.twig" artifact="graph_class.html"/>
+    <transformation writer="Graph" source="Class" artifact="classes.svg" />
+  </transformations>
+</template>

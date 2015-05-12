@@ -1,0 +1,7 @@
+{% block sidebar_buttons %}{% endblock %}
+{% block sidebar_content %}{% endblock %}
+
+{% block sidebar %}
+    {{ block('sidebar_buttons') }}
+    {{ block('sidebar_content') }}
+{% endblock %}
