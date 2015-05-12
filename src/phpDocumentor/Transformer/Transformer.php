@@ -16,7 +16,7 @@ use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LogLevel;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
@@ -125,11 +125,10 @@ class Transformer implements CompilerPassInterface
     /**
      * Transforms the given project into a series of artifacts as provided by the templates.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
-     * @return void
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         Dispatcher::getInstance()->dispatch(
             self::EVENT_PRE_TRANSFORM,
@@ -206,12 +205,12 @@ class Transformer implements CompilerPassInterface
     /**
      * Initializes all writers that are used during this transformation.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      * @param Transformation[]  $transformations
      *
      * @return void
      */
-    private function initializeWriters(ProjectDescriptor $project, $transformations)
+    private function initializeWriters(ProjectInterface $project, $transformations)
     {
         $isInitialized = array();
         foreach ($transformations as $transformation) {
@@ -242,13 +241,13 @@ class Transformer implements CompilerPassInterface
      * - transformer.writer.initialization.post, after the initialization of a single writer.
      *
      * @param WriterAbstract    $writer
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
      * @uses Dispatcher to emit the events surrounding an initialization.
      *
      * @return void
      */
-    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project)
+    private function initializeWriter(WriterAbstract $writer, ProjectInterface $project)
     {
         $event = WriterInitializationEvent::createInstance($this)->setWriter($writer);
         Dispatcher::getInstance()->dispatch(self::EVENT_PRE_INITIALIZATION, $event);
@@ -263,12 +262,12 @@ class Transformer implements CompilerPassInterface
     /**
      * Applies all given transformations to the provided project.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      * @param Transformation[]  $transformations
      *
      * @return void
      */
-    private function transformProject(ProjectDescriptor $project, $transformations)
+    private function transformProject(ProjectInterface $project, $transformations)
     {
         foreach ($transformations as $transformation) {
             $transformation->setTransformer($this);
@@ -288,13 +287,13 @@ class Transformer implements CompilerPassInterface
      * - transformer.transformation.post, after the project has been transformed with this transformation
      *
      * @param Transformation $transformation
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
      * @uses Dispatcher to emit the events surrounding a transformation.
      *
      * @return void
      */
-    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project)
+    private function applyTransformationToProject(Transformation $transformation, ProjectInterface $project)
     {
         $this->log(
             sprintf(

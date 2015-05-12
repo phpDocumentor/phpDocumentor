@@ -117,7 +117,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
 
         $templateCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
 
-        $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $project = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
 
         $myTestWritterMock = m::mock('phpDocumentor\Transformer\Writer\WriterAbstract')
             ->shouldReceive('transform')->getMock();

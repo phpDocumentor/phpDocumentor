@@ -15,7 +15,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\GraphViz\Edge;
 use phpDocumentor\GraphViz\Graph as GraphVizGraph;
@@ -46,12 +46,12 @@ class Graph extends WriterAbstract
     /**
      * Invokes the query method contained in this class.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface  $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $type_method = 'process' . ucfirst($transformation->getSource());
         $this->$type_method($project, $transformation);
@@ -60,12 +60,12 @@ class Graph extends WriterAbstract
     /**
      * Creates a class inheritance diagram.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface  $project
      * @param Transformation    $transformation
      *
      * @return void
      */
-    public function processClass(ProjectDescriptor $project, Transformation $transformation)
+    public function processClass(ProjectInterface $project, Transformation $transformation)
     {
         try {
             $this->checkIfGraphVizIsInstalled();

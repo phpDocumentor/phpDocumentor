@@ -36,7 +36,7 @@ class PreTransformEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetProject()
     {
-        $project = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $project = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $this->assertSame(null, $this->fixture->getProject());
 
         $this->fixture->setProject($project);

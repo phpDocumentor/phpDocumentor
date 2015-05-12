@@ -15,7 +15,7 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 /**
  * Rebuilds the namespace tree from the elements found in files.
@@ -42,7 +42,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->get('namespaces', new Collection())->add($project->getNamespace());
@@ -62,7 +62,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the namespace as registered in the namespace field of that
      * element. If a namespace does not exist yet it will automatically be created.
      *
-     * @param ProjectDescriptor    $project
+     * @param ProjectInterface     $project
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective namespace.
      * @param string               $type     Declares which field of the namespace will be populated with the given
      * series of elements. This name will be transformed to a getter which must exist. Out of performance
@@ -70,7 +70,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      *
      * @return void
      */
-    protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, $type)
+    protected function addElementsOfTypeToNamespace(ProjectInterface $project, array $elements, $type)
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
@@ -105,19 +105,19 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      * the FQNN if it doesn't exist in the namespaces field of the current namespace (starting with the root
      * Namespace in the Project Descriptor),
      *
-     * As an intended side effect this method also populates the *elements* index of the ProjectDescriptor with all
+     * As an intended side effect this method also populates the *elements* index of the ProjectInterface with all
      * created NamespaceDescriptors. Each index key is prefixed with a tilde (~) so that it will not conflict with
      * other FQSEN's, such as classes or interfaces.
      *
-     * @param ProjectDescriptor $project
-     * @param string            $namespaceName A FQNN of the namespace (and parents) to create.
+     * @param ProjectInterface $project
+     * @param string           $namespaceName A FQNN of the namespace (and parents) to create.
      *
-     * @see ProjectDescriptor::getNamespace() for the root namespace.
+     * @see ProjectInterface::getNamespace() for the root namespace.
      * @see NamespaceDescriptor::getNamespaces() for the child namespaces of a given namespace.
      *
      * @return void
      */
-    protected function createNamespaceDescriptorTree(ProjectDescriptor $project, $namespaceName)
+    protected function createNamespaceDescriptorTree(ProjectInterface $project, $namespaceName)
     {
         $parts   = explode('\\', ltrim($namespaceName, '\\'));
         $fqnn    = '';

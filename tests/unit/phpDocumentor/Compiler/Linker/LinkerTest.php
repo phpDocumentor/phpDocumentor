@@ -288,7 +288,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $std->shouldReceive('getAll')->andReturn(array());
         $indexes = new \stdClass();
         $indexes->elements = $std;
-        $descriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $descriptor = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $descriptor->shouldReceive('getIndexes')->andReturn($indexes);
 
         $mock = m::mock('phpDocumentor\Compiler\Linker\Linker');

@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Exception;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
@@ -35,14 +35,14 @@ class FileIo extends WriterAbstract
     /**
      * Invokes the query method contained in this class.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @throws \InvalidArgumentException if the query is not supported.
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $artifact = $transformation->getTransformer()->getTarget()
             . DIRECTORY_SEPARATOR . $transformation->getArtifact();

@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Compiler;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 /**
  * Represents a single pass / business rule to be executed by the Compiler.
@@ -32,11 +32,10 @@ interface CompilerPassInterface
      * Executes a compiler pass.
      *
      * This method will execute the business logic associated with a given compiler pass and allow it to manipulate
-     * or consumer the Object Graph using the ProjectDescriptor object.
+     * or consumer the Object Graph using the ProjectInterface object.
      *
-     * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
-     *
+     * @param ProjectInterface $project Representation of the Object Graph that can be manipulated.
      * @return mixed
      */
-    public function execute(ProjectDescriptor $project);
+    public function execute(ProjectInterface $project);
 }

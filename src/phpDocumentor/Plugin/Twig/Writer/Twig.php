@@ -12,7 +12,7 @@
 namespace phpDocumentor\Plugin\Twig\Writer;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Pathfinder;
 use phpDocumentor\Plugin\Twig\Extension;
 use phpDocumentor\Transformer\Router\ForFileProxy;
@@ -90,12 +90,12 @@ class Twig extends WriterAbstract implements Routable
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param ProjectInterface $project        Document containing the structure.
+     * @param Transformation   $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $template_path = $this->getTemplatePath($transformation);
 
@@ -121,13 +121,13 @@ class Twig extends WriterAbstract implements Routable
     /**
      * Initializes the Twig environment with the template, base extension and additionally defined extensions.
      *
-     * @param ProjectDescriptor $project
-     * @param Transformation    $transformation
-     * @param string            $destination
+     * @param ProjectInterface $project
+     * @param Transformation   $transformation
+     * @param string           $destination
      *
      * @return \Twig_Environment
      */
-    protected function initializeEnvironment(ProjectDescriptor $project, Transformation $transformation, $destination)
+    protected function initializeEnvironment(ProjectInterface $project, Transformation $transformation, $destination)
     {
         $callingTemplatePath = $this->getTemplatePath($transformation);
 
@@ -160,7 +160,7 @@ class Twig extends WriterAbstract implements Routable
     /**
      * Adds the phpDocumentor base extension to the Twig Environment.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface  $project
      * @param Transformation    $transformation
      * @param string            $destination
      * @param \Twig_Environment $twigEnvironment
@@ -168,7 +168,7 @@ class Twig extends WriterAbstract implements Routable
      * @return void
      */
     protected function addPhpDocumentorExtension(
-        ProjectDescriptor $project,
+        ProjectInterface $project,
         Transformation $transformation,
         $destination,
         \Twig_Environment $twigEnvironment
@@ -189,7 +189,7 @@ class Twig extends WriterAbstract implements Routable
      * parameter set) and try to add those extensions to the environment.
      *
      * @param Transformation    $transformation
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface  $project
      * @param \Twig_Environment $twigEnvironment
      *
      * @throws \InvalidArgumentException if a twig-extension should be loaded but it could not be found.
@@ -198,7 +198,7 @@ class Twig extends WriterAbstract implements Routable
      */
     protected function addExtensionsFromTemplateConfiguration(
         Transformation $transformation,
-        ProjectDescriptor $project,
+        ProjectInterface $project,
         \Twig_Environment $twigEnvironment
     ) {
         $isDebug = $transformation->getParameter('twig-debug')

@@ -2,9 +2,9 @@
 
 namespace phpDocumentor\Transformer\Writer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 interface Initializable
 {
-    public function initialize(ProjectDescriptor $projectDescriptor);
+    public function initialize(ProjectInterface $projectDescriptor);
 }
