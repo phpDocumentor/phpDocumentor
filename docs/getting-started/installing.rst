@@ -55,7 +55,7 @@ Using Composer
 Installing phpDocumentor using Composer_ is a matter of creating a directory to host your files and executing the
 following command::
 
-    $ composer require "phpdocumentor/phpdocumentor:2.*"
+    $ composer require phpdocumentor/phpdocumentor
 
 This command can also be used to add phpDocumentor to your existing composer-based project
 
