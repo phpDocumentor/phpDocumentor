@@ -1,0 +1,67 @@
+{% block property %}
+    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_{{ property.name }}" name="property_{{ property.name }}" class="anchor"></a>
+            <article class="property">
+                <h3 class="{{ property.visibility }} {% if property.deprecated %}deprecated{% endif %}">${{ property.name }}</h3>
+                <pre class="signature">${{ property.name }}{% if property.types %} : {{ property.types|join('|') }}{% endif %}</pre>
+                <p><em>{{ property.summary }}</em></p>
+                {{ property.description|markdown|raw }}
+
+                {% if property.types %}
+                <h4>Type</h4>
+                {{ property.types|route|join('|')|raw }}
+                {% if property.var.0.description %}&mdash; {{ property.var.0.description }}{% endif %}
+                {% endif %}
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+            {% if property.deprecated %}
+                <aside class="alert alert-block alert-error">
+                    <h4>Deprecated</h4>
+                    {{ property.tags.deprecated[0].description }}
+                </aside>
+            {% endif %}
+            <dl>
+                {% if (node.parent is not null and property.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+                    <dt>Inherited from</dt>
+                    <dd><a href="{{ property.parent|route('url') }}"><div class="path-wrapper">{{ property.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
+                {% endif %}
+                {% for tagName,tags in property.tags if tagName in ['link', 'see'] %}
+                    {% if loop.first %}
+                        <dt>See also</dt>
+                    {% endif %}
+                    {% for tag in tags %}
+                        <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description }}</span></a></dd>
+                    {% endfor %}
+                {% endfor %}
+                {% for tagName,tags in method.tags if tagName in ['uses'] %}
+                    {% if loop.first %}
+                        <dt>Uses</dt>
+                    {% endif %}
+                    {% for tag in tags %}
+                        <dd>{{ tag.reference|route|raw }}</dd>
+                    {% endfor %}
+                {% endfor %}
+            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                {% for tagName,tags in property.tags if tagName not in ['link', 'see', 'access', 'var', 'deprecated', 'uses'] %}
+                    <tr>
+                        <th>
+                            {{ tagName }}
+                        </th>
+                        <td>
+                            {% for tag in tags %}
+                                {{ tag.description|markdown|raw }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="2"><em>None found</em></td></tr>
+                {% endfor %}
+            </table>
+        </aside>
+    </div>
+{% endblock %}

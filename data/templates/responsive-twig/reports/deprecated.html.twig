@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    {{ project.title }} &raquo; Deprecated elements
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="span4">
+            <ul class="side-nav nav nav-list">
+                <li class="nav-header">Navigation</li>
+                {% for element in project.indexes.elements if element.deprecated %}
+                    {% if element.file.path != previousPath %}
+                        <li><a href="#{{ element.file.path }}"><i class="icon-file"></i> {{ element.file.path }}</a></li>
+                    {% endif %}
+                    {% set previousPath = element.file.path %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="span8">
+            <ul class="breadcrumb">
+                <li><a href="{% if path('/') == '' %}?{% else %}{{ path('/') }}{% endif %}"><i class="icon-stop"></i></a><span class="divider">\</span></li>
+                <li>Deprecated elements</li>
+            </ul>
+
+            <div id="marker-accordion">
+                {% for element in project.indexes.elements if element.deprecated %}
+                    <a name="{{ element.file.path }}" id="{{ element.file.path }}"></a>
+                    <h3>
+                        <i class="icon-file"></i> {{ element.file.path }}
+                        <span class="pull-right badge badge-info">{{ element.tags.deprecated.count }}</span>
+                    </h3>
+                    <div>
+                        <table class="table markers table-bordered">
+                            <tr>
+                                <th>Type</th>
+                                <th>Line</th>
+                                <th>Description</th>
+                            </tr>
+                            {% for tag in element.tags.deprecated %}
+                                <tr>
+                                    <td>{{ element.name }}</td>
+                                    <td>{{ element.line }}</td>
+                                    <td>{{ element.description }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">No deprecated elements have been found in this project.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

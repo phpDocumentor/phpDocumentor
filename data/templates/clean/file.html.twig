@@ -1,0 +1,188 @@
+{% extends 'layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section class="row-fluid">
+        <div class="span2 sidebar">
+            {% set namespace = project.namespace %}
+            {{ block('sidebarNamespaces') }}
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content file">
+                    <nav>
+                        {#<a href="" class="pull-left">&laquo; NamespaceAssembler</a>#}
+                        {#<a href="" class="pull-right">ClassAssembler &raquo;</a>#}
+                    </nav>
+
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>{{ node.path|split('/')|slice(0,-1)|join('/') }}</small>{{ node.name }}</h1>
+                    <p><em>{{ node.summary }}</em></p>
+                    {{ node.description|markdown|raw }}
+
+                    {% if node.traits|length > 0 %}
+                    <h2>Traits</h2>
+                    <table class="table table-hover">
+                        {% for trait in node.traits %}
+                            <tr>
+                                <td>{{ trait|route('class:short')|raw }}</td>
+                                <td><em>{{ trait.summary }}</em></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+
+                    {% if node.interfaces|length > 0 %}
+                    <h2>Interfaces</h2>
+                    <table class="table table-hover">
+                        {% for interface in node.interfaces %}
+                            <tr>
+                                <td>{{ interface|route('class:short')|raw }}</td>
+                                <td><em>{{ interface.summary }}</em></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+
+                    {% if node.classes|length > 0 %}
+                    <h2>Classes</h2>
+                    <table class="table table-hover">
+                    {% for class in node.classes %}
+                        <tr>
+                            <td>{{ class|route('class:short')|raw }}</td>
+                            <td><em>{{ class.summary }}</em></td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                    {% endif %}
+                </div>
+
+                <aside class="span4 detailsbar">
+                    <dl>
+                        {% if node.package is not empty and node.package != '\\' %}
+                            <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">{{ node.subpackage ? (node.package ~ '\\' ~ node.subpackage) : node.package }}</div></dd>
+                        {% endif %}
+
+                        {% for tagName,tags in node.tags if tagName in ['link', 'see'] %}
+                            {% if loop.first %}
+                                <dt>See also</dt>
+                            {% endif %}
+                            {% for tag in tags %}
+                                <dd><a href="{{ tag.link }}"><div class="namespace-wrapper">{{ tag.description }}</div></a></dd>
+                            {% endfor %}
+                        {% endfor %}
+
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                        {% for tagName,tags in node.tags if tagName not in ['link', 'see', 'package', 'subpackage'] %}
+                            <tr>
+                                <th>
+                                    {{ tagName }}
+                                </th>
+                                <td>
+                                    {% for tag in tags %}
+                                        {{ tag.description|markdown|raw }}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="2"><em>None found</em></td></tr>
+                        {% endfor %}
+                    </table>
+
+                </aside>
+            </div>
+
+            {% if node.constants|length > 0 %}
+            <div class="row-fluid">
+                <section class="span8 content file">
+                    <h2>Constants</h2>
+                </section>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                {% for constant in node.constants %}
+                    {{ block('constant') }}
+                {% endfor %}
+            {% endif %}
+
+            {% if node.functions|length > 0 %}
+            <div class="row-fluid">
+                <section class="span8 content file">
+                    <h2>Functions</h2>
+                </section>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                {% for method in node.functions %}
+                    {{ block('method') }}
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">{{ node.file.name }}</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="{{ path('files/' ~ node.path ~ '.txt')|raw }}" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+{% endblock %}

@@ -30,11 +30,6 @@
         "phpdocumentor/fileset":             "~1.0",
         "phpdocumentor/reflection":          "dev-develop",
 
-        "phpdocumentor/template-abstract":        "~1.2",
-        "phpdocumentor/template-clean":           "~1.0",
-        "phpdocumentor/template-responsive-twig": "~1.2",
-        "phpdocumentor/template-checkstyle":      "~1.2",
-        "phpdocumentor/template-xml":             "~1.0",
         "zendframework/zend-i18n": "~2.3",
         "zendframework/zend-servicemanager": "~2.3"
     },

@@ -1,0 +1,123 @@
+{% extends 'layout.html.twig' %}
+
+{% macro elementSummary(element, type) %}
+    <div id="{{ element.name }}" class="element ajax clickable {{ type }}">
+        <h1>{{ element.name }}<a href="{{ path(element) }}">¶</a></h1>
+        <p class="short_description">{{ element.summary }}</p>
+        <div class="details collapse">{{ element.description }}</div>
+        <a href="{{ path(element) }}" class="more">« More »</a>
+    </div>
+{% endmacro %}
+
+{% macro buildBreadcrumb(element) %}
+    {% import _self as self %}
+
+    {% if element.parent and element.parent.name != '\\' %}
+        {{ self.buildBreadcrumb(element.parent) }}
+    {% endif %}
+
+    <li>
+        <span class="divider">\</span><a href="{{ path(element) }}">{{ element.name }}</a>
+    </li>
+{% endmacro %}
+
+{% macro renderPackageDetails(node) %}
+    {% import _self as self %}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ path('index.html') }}"><i class="icon-th"></i></a></li>
+        {{ self.buildBreadcrumb(node) }}
+    </ul>
+
+    {% if node.classes|length > 0 or node.interfaces|length > 0 or node.traits|length > 0 or node.functions|length > 0 or node.constants|length > 0 %}
+
+        {% if node.functions|length > 0 %}
+            <div class="package-indent">
+                <h3><i class="icon-custom icon-function"></i> Functions</h3>
+                {% for function in node.functions %}
+                    {{ self.elementSummary(function, 'function') }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if node.constants|length > 0 %}
+            <div class="package-indent">
+                <h3><i class="icon-custom icon-constant"></i> Constants</h3>
+                {% for constant in node.constants %}
+                    {{ self.elementSummary(constant, 'constant') }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if node.classes|length > 0 or node.interfaces|length > 0 or node.traits|length > 0 %}
+            <div class="package-indent">
+                <h3><i class="icon-custom icon-class"></i> Classes, interfaces and traits</h3>
+                {% for trait in node.traits|sort_asc %}
+                    {{ self.elementSummary(trait, 'trait') }}
+                {% endfor %}
+
+                {% for interface in node.interfaces|sort_asc %}
+                    {{ self.elementSummary(interface, 'interface') }}
+                {% endfor %}
+
+                {% for class in node.classes|sort_asc %}
+                    {{ self.elementSummary(class, 'class') }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% for package in node.children %}
+        {{ self.renderPackageDetails(package) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro renderPackageSidebar(node) %}
+    {% import _self as self %}
+
+    {% for package in node.children|sort_asc %}
+    <li>
+        <a href="{{ path(package) }}" title="{{ package.name }}">
+            <i class="icon-th"></i> {{ package.name }}
+        </a>
+        <ul class="nav nav-list nav-packages">
+            {{ self.renderPackageSidebar(package) }}
+        </ul>
+    </li>
+    {% endfor %}
+{% endmacro %}
+
+{% block title %}
+    {{ project.title }} &raquo; {{ node.FullyQualifiedStructuralElementName }}
+{% endblock %}
+
+{% block content %}
+    {% import _self as self %}
+
+    <div class="row">
+
+        <div class="span4">
+            <div class="btn-group view pull-right" data-toggle="buttons-radio">
+                <button class="btn details" title="Show descriptions and method names">
+                    <i class="icon-list"></i></button><button class="btn simple" title="Show only method names">
+                    <i class="icon-align-justify"></i>
+                </button>
+            </div>
+            <ul class="side-nav nav nav-list">
+                <li class="nav-header">
+                    <i class="icon-map-marker"></i> Packages
+                </li>
+                <a href="{{ path(node) }}" title="{{ node.name }}">
+                    <i class="icon-th"></i> {{ node.name }}
+                </a>
+                <ul class="nav nav-list nav-packages">
+                    {{ self.renderPackageSidebar(node) }}
+                </ul>
+            </ul>
+        </div>
+
+        <div class="span8 package-contents">
+            {{ self.renderPackageDetails(node) }}
+        </div>
+    </div>
+{% endblock %}

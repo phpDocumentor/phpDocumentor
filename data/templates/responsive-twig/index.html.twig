@@ -1,0 +1,77 @@
+{% extends 'layout.html.twig' %}
+
+{% import 'base/macros.html.twig' as macros %}
+
+{% block heroUnit %}
+    <div class="hero-unit">
+        <h1>{{ project.name|raw }}</h1>
+        <h2>Documentation</h2>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="span7">
+            {% if project.indexes.namespaces|length > 0 or not project.indexes.packages %}
+                <div class="well">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">Namespaces</li>
+                        {% block listRootNamespaces %}
+                            <li><a href="{{ path(project.namespace) }}">Global ({{ project.namespace.name }})</a></li>
+                            {% for namespace in project.namespace.children|sort_asc %}
+                                <li><a href="{{ path(namespace) }}">{{ namespace.name }}</a></li>
+                            {% endfor %}
+                        {% endblock %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if project.indexes.packages|length > 0 %}
+                <div class="well">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">Packages</li>
+                        {% block listRootPackages %}
+                            <li><a href="{{ path(project.indexes.packages|first) }}">Global ({{ (project.indexes.packages|first).name }})</a></li>
+                            {% for package in (project.indexes.packages|first).children|sort_asc %}
+                                <li><a href="{{ path(package) }}">{{ package.name }}</a></li>
+                            {% endfor %}
+                        {% endblock %}
+                    </ul>
+                </div>
+            {% endif %}
+
+        </div>
+        <div class="span5">
+            <div class="well">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Charts</li>
+                    {% block listCharts %}
+                        <li><a href="{{ path('graph_class.html') }}"><i class="icon-list-alt"></i> Class inheritance diagram</a></li>
+                    {% endblock %}
+                </ul>
+            </div>
+            <div class="well">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Reports</li>
+                    {% block listReports %}
+                        <li>
+                            <a href="{{ path('errors.html') }}">
+                                <i class="icon-list-alt"></i> Errors {{ macros.renderErrorCounter(project.files) }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('deprecated.html') }}">
+                                <i class="icon-list-alt"></i> Deprecated {{ macros.renderDeprecatedCounter(project.indexes.elements) }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('markers.html') }}">
+                                <i class="icon-list-alt"></i> Markers {{ macros.renderMarkerCounter(project.files) }}
+                            </a>
+                        </li>
+                    {% endblock %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
