@@ -39,7 +39,7 @@ class DebugTest extends \PHPUnit_Framework_TestCase
     public function testLogDebugAnalysis()
     {
         $testString            = 'test';
-        $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptorMock = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
 
         $loggerMock = m::mock('Psr\Log\LoggerInterface')
             ->shouldReceive('debug')->with($testString)

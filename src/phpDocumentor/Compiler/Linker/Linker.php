@@ -19,12 +19,11 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
 
 /**
- * The linker contains all rules to replace FQSENs in the ProjectDescriptor with aliases to objects.
+ * The linker contains all rules to replace FQSENs in the ProjectInterface with aliases to objects.
  *
  * This object contains a list of class FQCNs for Descriptors and their associated linker rules.
  *
@@ -75,11 +74,10 @@ class Linker implements CompilerPassInterface
     /**
      * Executes the linker.
      *
-     * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
+     * @param ProjectInterface $project Representation of the Object Graph that can be manipulated.
      *
-     * @return void
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         $this->setObjectAliasesList($project->getIndexes()->elements->getAll());
         $this->substitute($project);

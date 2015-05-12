@@ -12,7 +12,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Translatable;
@@ -52,12 +52,12 @@ class Checkstyle extends WriterAbstract implements Translatable
     /**
      * This method generates the checkstyle.xml report
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
 

@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 /**
  * This index builder collects all markers from tags and inserts them into the marker index.
@@ -36,7 +36,7 @@ class MarkerFromTagsExtractor implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         /** @var DescriptorAbstract $element */
         foreach ($project->getIndexes()->get('elements', new Collection()) as $element) {

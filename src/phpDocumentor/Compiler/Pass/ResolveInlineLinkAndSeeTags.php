@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\RouterAbstract;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 /**
  * This step in the compilation process iterates through all elements and scans their descriptions for an inline `@see`
@@ -60,11 +60,10 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Iterates through each element in the project and replaces its inline @see and @link tag with a markdown
      * representation.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
-     * @return void
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         /** @var Collection|DescriptorAbstract[] $elementCollection */
         $this->elementCollection = $project->getIndexes()->get('elements');

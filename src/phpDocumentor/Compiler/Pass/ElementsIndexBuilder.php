@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 
 /**
@@ -41,7 +41,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);

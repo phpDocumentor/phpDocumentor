@@ -13,6 +13,7 @@
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 
 use Mockery as m;
@@ -36,7 +37,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
     /** @var m\MockInterface|Translator */
     protected $translator;
 
-    /** @var m\MockInterface|ProjectDescriptor */
+    /** @var m\MockInterface|ProjectInterface */
     protected $projectDescriptor;
 
     /** @var vfsStream */
@@ -51,7 +52,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
     {
         $this->fs                = vfsStream::setup('XmlTest');
         $this->translator        = m::mock('phpDocumentor\Translator\Translator');
-        $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $this->routerMock        = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
         $this->xml               = new Xml($this->routerMock);
         $this->xml->setTranslator($this->translator);
@@ -171,10 +172,10 @@ XML;
     /**
      * This implements testing of the protected finalize method.
      *
-     * @param ProjectDescriptor $projectDescriptor
+     * @param ProjectInterface $projectDescriptor
      * @return void
      */
-    protected function implementProtectedFinalize(ProjectDescriptor $projectDescriptor)
+    protected function implementProtectedFinalize(ProjectInterface $projectDescriptor)
     {
         $this->projectDescriptor->shouldReceive('isVisibilityAllowed')
             ->with(ProjectDescriptor\Settings::VISIBILITY_INTERNAL)

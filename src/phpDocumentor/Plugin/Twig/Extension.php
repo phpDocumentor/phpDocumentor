@@ -12,7 +12,7 @@
 namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
@@ -42,7 +42,7 @@ use phpDocumentor\Translator\Translator;
 class Extension extends \Twig_Extension implements ExtensionInterface
 {
     /**
-     * @var ProjectDescriptor
+     * @var ProjectInterface
      */
     protected $data = null;
 
@@ -55,11 +55,11 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     /**
      * Registers the structure and transformation with this extension.
      *
-     * @param ProjectDescriptor $project        Represents the complete Abstract Syntax Tree.
+     * @param ProjectInterface $project        Represents the complete Abstract Syntax Tree.
      * @param Transformation    $transformation Represents the transformation meta data used in the current generation
      *     cycle.
      */
-    public function __construct(ProjectDescriptor $project, Transformation $transformation)
+    public function __construct(ProjectInterface $project, Transformation $transformation)
     {
         $this->data          = $project;
         $this->routeRenderer = new Renderer(new Queue());

@@ -13,7 +13,7 @@ namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Application;
 
@@ -41,12 +41,12 @@ class Statistics extends Checkstyle
     /**
      * This method generates the checkstyle.xml report
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface $project        Document containing the structure.
      * @param Transformation    $transformation Transformation to execute.
      *
      * @return void
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation)
+    public function transform(ProjectInterface $project, Transformation $transformation)
     {
         $artifact = $this->getDestinationPath($transformation);
 
@@ -88,12 +88,12 @@ class Statistics extends Checkstyle
      * Appends a stat fragment.
      *
      * @param \DOMDocument $document
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      * @param string $date
      *
      * @return \DOMDocument
      */
-    protected function appendStatElement(\DOMDocument $document, ProjectDescriptor $project, $date)
+    protected function appendStatElement(\DOMDocument $document, ProjectInterface $project, $date)
     {
         $stat = $document->createDocumentFragment();
         $stat->appendXML(
@@ -116,11 +116,11 @@ STAT
     /**
      * Get number of files.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
      * @return int
      */
-    protected function getFilesCounter(ProjectDescriptor $project)
+    protected function getFilesCounter(ProjectInterface $project)
     {
         return $project->getFiles()->count();
     }
@@ -128,11 +128,11 @@ STAT
     /**
      * Get number of deprecated elements.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
      * @return int
      */
-    protected function getDeprecatedCounter(ProjectDescriptor $project)
+    protected function getDeprecatedCounter(ProjectInterface $project)
     {
         $deprecatedCounter = 0;
 
@@ -149,11 +149,11 @@ STAT
     /**
      * Get number of errors.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
      * @return int
      */
-    protected function getErrorCounter(ProjectDescriptor $project)
+    protected function getErrorCounter(ProjectInterface $project)
     {
         $errorCounter = 0;
 
@@ -168,11 +168,11 @@ STAT
     /**
      * Get number of markers.
      *
-     * @param ProjectDescriptor $project
+     * @param ProjectInterface $project
      *
      * @return int
      */
-    protected function getMarkerCounter(ProjectDescriptor $project)
+    protected function getMarkerCounter(ProjectInterface $project)
     {
         $markerCounter = 0;
 

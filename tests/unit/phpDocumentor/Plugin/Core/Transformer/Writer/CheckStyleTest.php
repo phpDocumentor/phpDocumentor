@@ -54,7 +54,7 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
         $transformer->shouldReceive('getArtifact')->andReturn('artifact.xml');
 
         $fileDescriptor = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
 
         $error = m::mock('phpDocumentor\Descriptor\Validator\Error');

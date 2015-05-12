@@ -14,7 +14,7 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
 
@@ -49,7 +49,7 @@ class ExampleTagsEnricher implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function execute(ProjectDescriptor $project)
+    public function execute(ProjectInterface $project)
     {
         $elements = $project->getIndexes()->get('elements');
 

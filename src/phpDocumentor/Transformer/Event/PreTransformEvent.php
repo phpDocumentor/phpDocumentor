@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Transformer\Event;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\EventAbstract;
 
 /**

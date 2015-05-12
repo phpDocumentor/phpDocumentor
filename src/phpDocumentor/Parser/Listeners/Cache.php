@@ -15,6 +15,7 @@ use Desarrolla2\Cache\Adapter\File;
 use Desarrolla2\Cache\CacheInterface;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Translator\Translator;
@@ -116,11 +117,11 @@ class Cache
      * deleted entries and making sure no unwanted elements are loaded.
      *
      * @param Collection        $files
-     * @param ProjectDescriptor $projectDescriptor
+     * @param ProjectInterface $projectDescriptor
      *
      * @return void
      */
-    private function load(Collection $files, ProjectDescriptor $projectDescriptor)
+    private function load(Collection $files, ProjectInterface $projectDescriptor)
     {
         $this->mapper->populate($projectDescriptor);
 
@@ -149,11 +150,11 @@ class Cache
     /**
      * Stores the project descriptor in the cache.
      *
-     * @param ProjectDescriptor $projectDescriptor
+     * @param ProjectInterface $projectDescriptor
      *
      * @return void
      */
-    private function save(ProjectDescriptor $projectDescriptor)
+    private function save(ProjectInterface $projectDescriptor)
     {
         $this->mapper->save($projectDescriptor);
     }

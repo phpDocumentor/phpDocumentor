@@ -86,7 +86,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAProjectDescriptor($fileDescriptor)
     {
-        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
+        $projectDescriptor = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $projectDescriptor->shouldReceive('getFiles->getAll')->andReturn(array($fileDescriptor));
         $projectDescriptor->shouldReceive('getFiles->count')->andReturn(1);
         $projectDescriptor->shouldReceive('getIndexes->get')->andReturn(array($fileDescriptor));
