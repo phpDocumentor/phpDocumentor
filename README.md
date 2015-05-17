@@ -71,9 +71,11 @@ contain spaces. This is a requirement imposed by an external library (libxml)_
 ### Via Composer
 
 1. phpDocumentor is available on [Packagist](https://packagist.org/packages/phpdocumentor/phpdocumentor).
-2. It can be installed as a dependency of your project by running
+2. It can be installed as a dependency of your project by running the following command. 
 
         $ composer require --dev phpdocumentor/phpdocumentor
+        
+**WINDOWS USERS** you may encounter an error ``ZipArchive::extractTo(): Full extraction path exceed MAXPATHLEN (260)`` when trying to run the above command. If you do simply add ``--prefer-source`` at the end of the command.
 
 Afterwards you are able to run phpDocumentor directly from your `vendor` directory:
 
