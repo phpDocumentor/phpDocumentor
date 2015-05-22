@@ -12,6 +12,7 @@
 namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Descriptor\Interfaces;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Transformation;
 
 /**
