@@ -11,13 +11,12 @@
 
 namespace phpDocumentor\Compiler\Pass;
 
-use Psr\Log\LoggerInterface;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 /**
- * This class is responsible for sending statistical information to the log.
+ * This class is responsible for sending statistical information to the standard output.
  *
  * For debugging purposes it can be convenient to send statistical information about the
  * ProjectInterface to the log of phpDocumentor.
@@ -26,21 +25,16 @@ class Debug implements CompilerPassInterface
 {
     const COMPILER_PRIORITY = 1000;
 
-    /** @var LoggerInterface $log the logger to write the debug results to */
-    protected $log;
-
     /** @var ProjectAnalyzer $analyzer service that compiles a summary of the project */
     protected $analyzer;
 
     /**
-     * Registers the logger with this Compiler Pass.
+     * Registers the analyzer with this Compiler Pass.
      *
-     * @param LoggerInterface $log
      * @param ProjectAnalyzer $analyzer
      */
-    public function __construct(LoggerInterface $log, ProjectAnalyzer $analyzer)
+    public function __construct(ProjectAnalyzer $analyzer)
     {
-        $this->log      = $log;
         $this->analyzer = $analyzer;
     }
 
@@ -49,11 +43,11 @@ class Debug implements CompilerPassInterface
      */
     public function getDescription()
     {
-        return 'Analyze results and write report to log';
+        return 'Analyze results and write report to stdout';
     }
 
     /**
-     * Analyzes the given project and returns the results to the logger.
+     * Analyzes the given project and returns the results to the stdout.
      *
      * @param ProjectInterface $project
      *
@@ -61,6 +55,6 @@ class Debug implements CompilerPassInterface
     public function execute(ProjectInterface $project)
     {
         $this->analyzer->analyze($project);
-        $this->log->debug((string) $this->analyzer);
+        echo (string) $this->analyzer;
     }
 }

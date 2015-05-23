@@ -24,18 +24,6 @@ use Symfony\Component\Console\Input\InputInterface;
 class Command extends \Cilex\Command\Command
 {
     /**
-     * Registers the current command.
-     *
-     * @param HelperSet $helperSet
-     */
-    public function setHelperSet(HelperSet $helperSet)
-    {
-        parent::setHelperSet($helperSet);
-
-        $this->getHelper('phpdocumentor_logger')->addOptions($this);
-    }
-
-    /**
      * Returns the Progress bar helper.
      *
      * With this helper it is possible to display a progress bar and make it fill.

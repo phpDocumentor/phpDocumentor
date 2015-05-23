@@ -21,7 +21,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     /** @var ServiceProvider */
     private $fixture;
-    
+
     /**
      * Initializes the fixture for this test.
      */
@@ -29,7 +29,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fixture = new ServiceProvider();
     }
-    
+
     /**
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::register
      * @covers phpDocumentor\Plugin\Core\ServiceProvider::registerWriters
@@ -41,8 +41,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testRegister()
     {
         $mockCollection        = $this->givenAWriterCollection();
-        $mockLogger            = $this->givenALogger();
-        $mockApplication       = $this->givenAnApplication($mockCollection, $mockLogger);
+        $mockApplication       = $this->givenAnApplication($mockCollection);
         $mockRouterQueue       = $this->givenARouterQueue($mockApplication);
         $mockTranslator        = $this->givenATranslator($mockApplication);
         $mockDescriptorBuilder = $this->givenAnAnalyzer($mockApplication);
@@ -68,7 +67,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
      *
      * @return m\MockInterface
      */
-    private function givenAnApplication($mockCollection, $mockLogger)
+    private function givenAnApplication($mockCollection)
     {
         $mockApplication = m::mock('Cilex\Application');
 
@@ -76,8 +75,6 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->with('transformer.writer.collection')
             ->andReturn($mockCollection);
-
-        $mockApplication->shouldReceive('offsetGet')->once()->with('monolog')->andReturn($mockLogger);
 
         return $mockApplication;
     }
@@ -190,16 +187,6 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     private function thenProviderIsRegistered($mockApplication, $serviceProviderMock)
     {
         $mockApplication->shouldReceive('register')->with(m::type($serviceProviderMock))->once();
-    }
-
-    /**
-     * Creates and returns a mock of the Logger.
-     *
-     * @return m\MockInterface
-     */
-    private function givenALogger()
-    {
-        return m::mock('Monolog\Logger');
     }
 
     /**

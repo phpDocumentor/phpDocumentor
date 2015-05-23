@@ -17,7 +17,6 @@ use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 use phpDocumentor\Reflection\FunctionReflector;
-use Psr\Log\LogLevel;
 
 /**
  * @todo break this validator up in subvalidators for each Error
@@ -45,7 +44,7 @@ class AreAllArgumentsValid
         if ($docBlock->hasTag('return')) {
             $returnTag = current($docBlock->getTagsByName('return'));
             if ($returnTag->getType() == 'type') {
-                return new Error(LogLevel::WARNING, 'PPC:ERR-50017', $element->getLinenumber());
+                return new Error('warning', 'PPC:ERR-50017', $element->getLinenumber());
             }
         }
 
@@ -89,7 +88,7 @@ class AreAllArgumentsValid
             }
 
             return new Error(
-                LogLevel::NOTICE,
+                'notice',
                 'PPC:ERR-50013',
                 $element->getLinenumber(),
                 array($param_name, $element->getName())
@@ -116,7 +115,7 @@ class AreAllArgumentsValid
         }
 
         return new Error(
-            LogLevel::ERROR,
+            'error',
             'PPC:ERR-50015',
             $argument->getLinenumber(),
             array($argument->getName(), $element->getName())
@@ -150,7 +149,7 @@ class AreAllArgumentsValid
         }
 
         return new Error(
-            LogLevel::ERROR,
+            'error',
             'PPC:ERR-50014',
             $argument->getLinenumber(),
             array($argument->getName(), $param_name, $element->getName())
@@ -181,7 +180,7 @@ class AreAllArgumentsValid
         }
 
         return new Error(
-            LogLevel::ERROR,
+            'error',
             'PPC:ERR-50016',
             $argument->getLinenumber(),
             array($argument->getName(), $element->getName())

@@ -118,8 +118,6 @@ DESCRIPTION
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getHelper('phpdocumentor_logger')->connectOutputToLogging($output, $this);
-
         $converter = $this->getConverter($input);
         $converter->setOption('title', $input->getOption('title'));
 

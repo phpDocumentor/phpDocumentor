@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter;
 
-use Monolog\Logger;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Fileset\File;
 use phpDocumentor\Plugin\Scrybe\Template\TemplateInterface;
@@ -37,9 +36,6 @@ abstract class BaseConverter implements ConverterInterface
     /** @var Metadata\Glossary */
     protected $glossary;
 
-    /** @var Logger */
-    protected $logger;
-
     /**
      * Initializes this converter and sets the definition.
      *
@@ -55,18 +51,6 @@ abstract class BaseConverter implements ConverterInterface
         $this->assets     = $assets;
         $this->toc        = $tableOfContents;
         $this->glossary   = $glossary;
-    }
-
-    /**
-     * Set a logger for this converter.
-     *
-     * @param Logger $logger
-     *
-     * @return void
-     */
-    public function setLogger(Logger $logger)
-    {
-        $this->logger = $logger;
     }
 
     /**
@@ -248,15 +232,5 @@ abstract class BaseConverter implements ConverterInterface
     public function getDestinationFilenameRelativeToProjectRoot(File $file)
     {
         return substr($this->getDestinationFilename($file), strlen($this->fileset->getProjectRoot()));
-    }
-
-    /**
-     * Returns the logger for this converter.
-     *
-     * @return \Monolog\Logger
-     */
-    protected function getLogger()
-    {
-        return $this->logger;
     }
 }

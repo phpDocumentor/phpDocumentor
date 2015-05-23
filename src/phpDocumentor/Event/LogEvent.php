@@ -11,16 +11,13 @@
 
 namespace phpDocumentor\Event;
 
-use Psr\Log\LogLevel;
-
 /**
- * Logging event for phpDocumentor where information is output to the log or
- * stdout.
+ * Logging event for phpDocumentor where information is output to stdout.
  */
 class LogEvent extends DebugEvent
 {
     /** @var int Default priority level for these events is INFO */
-    protected $priority = LogLevel::INFO;
+    protected $priority = 'info';
 
     /**
      * Set the priority level for this event.
