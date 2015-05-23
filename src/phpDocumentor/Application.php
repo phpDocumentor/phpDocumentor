@@ -12,10 +12,10 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
-use Cilex\Provider\JmsSerializerServiceProvider;
 use Cilex\Provider\MonologServiceProvider;
 use Cilex\Provider\ValidatorServiceProvider;
 use Composer\Autoload\ClassLoader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Monolog\ErrorHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
@@ -25,6 +25,7 @@ use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Shell;
 
 /**
@@ -45,9 +46,17 @@ class Application extends Cilex
      */
     public function __construct($autoloader = null, array $values = array())
     {
+        $builder = new \DI\ContainerBuilder();
+        $builder->setDefinitionCache(new \Doctrine\Common\Cache\ArrayCache());
+        // propagate the provided options into the container such as ''
+        $builder->addDefinitions($values);
+        $builder->addDefinitions(__DIR__ . '/ContainerDefinitions.php');
+        $builder->useAnnotations(false);
+        $phpDiContainer = $builder->build();
+
         gc_disable();
         $this->defineIniSettings();
-        
+
         self::$VERSION = strpos('@package_version@', '@') === 0
             ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
             : '@package_version@';
@@ -56,19 +65,31 @@ class Application extends Cilex
 
         $this['autoloader'] = $autoloader;
 
-        $this->register(new JmsSerializerServiceProvider());
-        $this->register(new Configuration\ServiceProvider());
+        $this->extend(
+            'console',
+            function (ConsoleApplication $console) {
+                $console->getDefinition()->addOption(
+                    new InputOption(
+                        'config',
+                        'c',
+                        InputOption::VALUE_OPTIONAL,
+                        'Location of a custom configuration file'
+                    )
+                );
 
-        $this->addEventDispatcher();
-        $this->addLogging();
+                return $console;
+            }
+        );
 
-        $this->register(new ValidatorServiceProvider());
-        $this->register(new Translator\ServiceProvider());
-        $this->register(new Descriptor\ServiceProvider());
-        $this->register(new Parser\ServiceProvider());
-        $this->register(new Partials\ServiceProvider());
-        $this->register(new Transformer\ServiceProvider());
-        $this->register(new Plugin\ServiceProvider());
+        $this->addLogging($phpDiContainer);
+
+        $this->register(new ValidatorServiceProvider($phpDiContainer));
+        $this->register(new \phpDocumentor\Translator\ServiceProvider($phpDiContainer));
+        $this->register(new Descriptor\ServiceProvider($phpDiContainer));
+        $this->register(new Parser\ServiceProvider($phpDiContainer));
+        $this->register(new Partials\ServiceProvider($phpDiContainer));
+        $this->register(new Transformer\ServiceProvider($phpDiContainer));
+        $this->register(new Plugin\ServiceProvider($phpDiContainer));
 
         $this['descriptor.builder.initializers']->addInitializer(
             new DefaultValidators($this['descriptor.analyzer']->getValidator())
@@ -238,7 +259,7 @@ class Application extends Cilex
      *
      * @return void
      */
-    protected function addLogging()
+    protected function addLogging(\DI\Container $container)
     {
         $this->register(
             new MonologServiceProvider(),
@@ -252,7 +273,7 @@ class Application extends Cilex
 
         $app = $this;
         /** @var Configuration $configuration */
-        $configuration = $this['config'];
+        $configuration = $container->get('config');
         $this['monolog.configure'] = $this->protect(
             function ($log) use ($app, $configuration) {
                 $paths    = $configuration->getLogging()->getPaths();
@@ -264,8 +285,8 @@ class Application extends Cilex
 
         $this->extend(
             'console',
-            function (ConsoleApplication $console) use ($configuration) {
-                $console->getHelperSet()->set(new LoggerHelper());
+            function (ConsoleApplication $console) use ($configuration, $container) {
+                $console->getHelperSet()->set(new LoggerHelper($container));
                 $console->getHelperSet()->set(new ConfigurationHelper($configuration));
 
                 return $console;
@@ -273,20 +294,6 @@ class Application extends Cilex
         );
 
         ErrorHandler::register($this['monolog']);
-    }
-
-    /**
-     * Adds the event dispatcher to phpDocumentor's container.
-     *
-     * @return void
-     */
-    protected function addEventDispatcher()
-    {
-        $this['event_dispatcher'] = $this->share(
-            function () {
-                return Event\Dispatcher::getInstance();
-            }
-        );
     }
 
     /**

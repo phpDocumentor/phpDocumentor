@@ -8,10 +8,18 @@ use phpDocumentor\Configuration as ApplicationConfiguration;
 
 class ServiceProvider implements ServiceProviderInterface
 {
+    /** @var \DI\Container */
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
     public function register(Application $app)
     {
         /** @var ApplicationConfiguration $config */
-        $config = $app['config'];
+        $config = $this->container->get('config');
         $plugins = $config->getPlugins();
 
         if (! $plugins) {

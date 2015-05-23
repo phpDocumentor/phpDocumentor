@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Configuration\Files;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Parser\Util\ParserPopulator;
@@ -47,17 +48,32 @@ final class ParseCommand extends Command
     private $exampleFinder;
 
     /**
+     * Evil!
+     *
+     * Because we need to configuration from the container but cannot inject the configuration because it needs to be
+     * postponed as late as possible, later we should find a way to remove this dependency.
+     *
+     * @var \DI\Container
+     */
+    private $container;
+
+    /**
      * Initializes this command with the dependencies used to parse files.
      *
      * @param Parser              $parser
      * @param TranslatorInterface $translator
      * @param Finder              $exampleFinder
      */
-    public function __construct(Parser $parser, TranslatorInterface $translator, Finder $exampleFinder)
-    {
+    public function __construct(
+        Parser $parser,
+        TranslatorInterface $translator,
+        Finder $exampleFinder,
+        \DI\Container $container
+    ) {
         $this->parser        = $parser;
         $this->translator    = $translator;
         $this->exampleFinder = $exampleFinder;
+        $this->container     = $container;
 
         parent::__construct('project:parse');
     }
@@ -299,7 +315,7 @@ final class ParseCommand extends Command
      */
     private function getConfiguration()
     {
-        return $this->getService('config');
+        return $this->container->get('config');
     }
 
     /**
@@ -309,7 +325,7 @@ final class ParseCommand extends Command
      */
     private function getEventDispatcher()
     {
-        return $this->getService('event_dispatcher');
+        return $this->container->get(Dispatcher::class);
     }
 
     /**

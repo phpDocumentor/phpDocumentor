@@ -23,6 +23,16 @@ use phpDocumentor\Translator\Translator;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @var \DI\Container
+     */
+    private $container;
+
+    public function __construct(\DI\Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * Registers services on the given app.
      *
      * @param Application $app An Application instance
@@ -34,13 +44,13 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         /** @var Translator $translator  */
-        $translator = $app['translator'];
+        $translator = $this->container->get(Translator::class);
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         /** @var ApplicationConfiguration $config */
-        $config = $app['config'];
+        $config = $this->container->get('config');
 
-        $partialsCollection = new PartialsCollection($app['markdown']);
+        $partialsCollection = $this->container->get(PartialsCollection::class);
         $app['partials'] = $partialsCollection;
 
         /** @var Partial[] $partials */

@@ -15,6 +15,7 @@ use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
@@ -30,6 +31,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @var \DI\Container
+     */
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * Registers services on the given app.
      *
      * @param Application $app An Application instance
@@ -40,25 +51,16 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        if (!isset($app['descriptor.analyzer'])) {
-            throw new Exception\MissingDependencyException(
-                'The analyzer object that is used to construct the ProjectDescriptor is missing'
-            );
-        }
-
         $app['parser'] = $app->share(
             function ($app) {
-                /** @var EventDispatcherInterface $dispatcher */
-                $dispatcher = $app['event_dispatcher'];
-
-                $cacheListener = new Cache($app['descriptor.cache'], $app['translator']);
-                $cacheListener->register($dispatcher);
+                $cacheListener = new Cache($app['descriptor.cache'], $this->container->get(Translator::class));
+                $cacheListener->register($this->container->get(Dispatcher::class));
 
                 $phpBackend = new Php($app['descriptor.analyzer']);
-                $phpBackend->setEventDispatcher($dispatcher);
+                $phpBackend->setEventDispatcher($this->container->get(Dispatcher::class));
 
                 return (new Parser($app['descriptor.analyzer']))
-                    ->registerEventDispatcher($dispatcher)
+                    ->registerEventDispatcher($this->container->get(Dispatcher::class))
                     ->registerBackend($phpBackend);
             }
         );
@@ -70,18 +72,12 @@ class ServiceProvider implements ServiceProviderInterface
             return $chain;
         });
 
-        $app['markdown'] = $app->share(
-            function () {
-                return \Parsedown::instance();
-            }
-        );
-
         /** @var Translator $translator  */
-        $translator = $app['translator'];
+        $translator = $this->container->get(Translator::class);
         $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
 
         $app['parser.files'] = new Collection();
-        $app->command(new ParseCommand($app['parser'], $translator, $app['parser.example.finder']));
+        $app->command(new ParseCommand($app['parser'], $translator, $app['parser.example.finder'], $this->container));
     }
 
     /**

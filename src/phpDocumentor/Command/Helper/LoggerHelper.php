@@ -30,6 +30,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LoggerHelper extends Helper
 {
+    /** @var \DI\Container */
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Initializes the given command to accept logging options.
@@ -76,7 +83,7 @@ class LoggerHelper extends Helper
         }
 
         /** @var Dispatcher $eventDispatcher  */
-        $eventDispatcher = $command->getService('event_dispatcher');
+        $eventDispatcher = $this->container->get(Dispatcher::class);
 
         $eventDispatcher->addListener(
             Php::EVENT_FILE_IS_CACHED,
@@ -194,7 +201,7 @@ class LoggerHelper extends Helper
         $container = $command->getContainer();
 
         /** @var Configuration $configuration */
-        $configuration = $container['config'];
+        $configuration = $this->container->get('config');
 
         if ($output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
             $logLevel = (string) $configuration->getLogging()->getLevel();

@@ -28,6 +28,14 @@ use phpDocumentor\Configuration as ApplicationConfiguration;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
+    /** @var \DI\Container */
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Registers the translator using the currently active locale.
      *
@@ -36,7 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         /** @var ApplicationConfiguration $config */
-        $config = $app['config'];
+        $config = $this->container->get('config');
 
         $app['translator.locale'] = $config->getTranslator()->getLocale();
 

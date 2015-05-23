@@ -56,20 +56,33 @@ class TransformCommand extends Command
     /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
     protected $compiler;
 
+    /** @var Dispatcher */
+    private $eventDispatcher;
+    /**
+     * @var Dispatcher
+     */
+    private $dispatcher;
+
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      *
-     * @param Analyzer    $analyzer
+     * @param Analyzer $analyzer
      * @param Transformer $transformer
-     * @param Compiler    $compiler
+     * @param Compiler $compiler
+     * @param Dispatcher $dispatcher
      */
-    public function __construct(Analyzer $analyzer, Transformer $transformer, Compiler $compiler)
-    {
+    public function __construct(
+        Analyzer $analyzer,
+        Transformer $transformer,
+        Compiler $compiler,
+        Dispatcher $dispatcher
+    ) {
         parent::__construct('project:transform');
 
         $this->analyzer    = $analyzer;
         $this->transformer = $transformer;
         $this->compiler    = $compiler;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -335,7 +348,7 @@ TEXT
         }
 
         /** @var Dispatcher $eventDispatcher */
-        $eventDispatcher = $this->getService('event_dispatcher');
+        $eventDispatcher = $this->eventDispatcher;
         $eventDispatcher->addListener(
             'transformer.transformation.post',
             function () use ($progress) {

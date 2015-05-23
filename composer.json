@@ -11,7 +11,7 @@
         }
     },
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
 
         "cilex/cilex":        "~1.0",
         "symfony/console":    "~2.3",
@@ -31,7 +31,8 @@
         "phpdocumentor/reflection":          "dev-develop",
 
         "zendframework/zend-i18n": "~2.3",
-        "zendframework/zend-servicemanager": "~2.3"
+        "zendframework/zend-servicemanager": "~2.3",
+        "mnapoli/php-di": " 5.0.0-RC1@dev"
     },
     "minimum-stability": "stable",
     "require-dev": {

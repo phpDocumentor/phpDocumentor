@@ -13,6 +13,7 @@ namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use JMS\Serializer\Serializer;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\Debug;
@@ -37,6 +38,16 @@ use phpDocumentor\Transformer\Template\PathResolver;
 class ServiceProvider extends \stdClass implements ServiceProviderInterface
 {
     /**
+     * @var \DI\Container
+     */
+    private $container;
+
+    public function __construct(\DI\Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * Registers services on the given app.
      *
      * @param Application $app An Application instance.
@@ -49,11 +60,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
         if (!isset($app['descriptor.analyzer'])) {
             throw new Exception\MissingDependencyException(
                 'The analyzer object that is used to construct the ProjectDescriptor is missing'
-            );
-        }
-        if (!isset($app['serializer'])) {
-            throw new Exception\MissingDependencyException(
-                'The serializer object that is used to read the template configuration with is missing'
             );
         }
 
@@ -142,8 +148,8 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             }
         );
         $app['transformer.routing.external'] = $app->share(
-            function ($container) {
-                return new Router\ExternalRouter($container['config']);
+            function () {
+                return new Router\ExternalRouter($this->container->get('config'));
             }
         );
 
@@ -176,7 +182,14 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             }
         );
 
-        $app->command(new TransformCommand($app['descriptor.analyzer'], $app['transformer'], $app['compiler']));
+        $app->command(
+            new TransformCommand(
+                $app['descriptor.analyzer'],
+                $app['transformer'],
+                $app['compiler'],
+                $this->container->get(Dispatcher::class)
+            )
+        );
         $app->command(new ListCommand($app['transformer.template.factory']));
     }
 
@@ -211,7 +224,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             function ($container) {
                 return new Factory(
                     $container['transformer.template.path_resolver'],
-                    $container['serializer']
+                    $this->container->get(Serializer::class)
                 );
             }
         );
