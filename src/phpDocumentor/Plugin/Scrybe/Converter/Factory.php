@@ -11,8 +11,6 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter;
 
-use Monolog\Logger;
-
 /**
  * This factory attempts to create a converter given an input and output format and return that.
  *
@@ -36,9 +34,6 @@ class Factory
     /** @var ConverterInterface[] */
     protected $converters         = array();
 
-    /** @var Logger */
-    protected $logger;
-
     /**
      * Constructs a new factory.
      *
@@ -47,9 +42,8 @@ class Factory
      *
      * @param string[]                $converters
      * @param Definition\Factory|null $definition_factory
-     * @param Logger                  $logger
      */
-    public function __construct(array $converters, Definition\Factory $definition_factory, Logger $logger)
+    public function __construct(array $converters, Definition\Factory $definition_factory)
     {
         if ($definition_factory === null) {
             $definition_factory = $this->getDefaultDefinitionFactory();
@@ -57,7 +51,6 @@ class Factory
 
         $this->converters = $converters;
         $this->setDefinitionFactory($definition_factory);
-        $this->logger = $logger;
     }
 
     /**
@@ -77,14 +70,12 @@ class Factory
         foreach ($this->converters as $class => $formats) {
             if (array($input_format, $output_format) == $formats) {
                 $assets = new Metadata\Assets();
-                $assets->setLogger($this->logger);
 
                 $toc      = new Metadata\TableOfContents();
                 $glossary = new Metadata\Glossary();
 
                 /** @var ConverterInterface $converter */
                 $converter = new $class($definition, $assets, $toc, $glossary);
-                $converter->setLogger($this->logger);
 
                 return $converter;
             }

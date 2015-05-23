@@ -70,8 +70,7 @@ class ServiceProvider implements ServiceProviderInterface
             function ($container) {
                 return new Converter\Factory(
                     $container['converters'],
-                    $container['converter_definition_factory'],
-                    $container['monolog']
+                    $container['converter_definition_factory']
                 );
             }
         );

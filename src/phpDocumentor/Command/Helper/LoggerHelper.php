@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Command\Helper;
 
-use Monolog\Logger;
 use phpDocumentor\Command\Command;
 use phpDocumentor\Configuration;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -36,20 +35,6 @@ class LoggerHelper extends Helper
     public function __construct($container)
     {
         $this->container = $container;
-    }
-
-    /**
-     * Initializes the given command to accept logging options.
-     *
-     * This method is intended to be executed once in the Constructor of the given Command as it
-     * adds a new option `log`.
-     *
-     * @param Command $command
-     * @return void
-     */
-    public function addOptions($command)
-    {
-        $command->addOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to');
     }
 
     /**
@@ -178,41 +163,5 @@ class LoggerHelper extends Helper
             }
             $output->writeln('  ' . $message);
         }
-    }
-
-    public function reconfigureLogger(InputInterface $input, OutputInterface $output, $command)
-    {
-        $logPath = $input->getOption('log');
-
-        switch ($output->getVerbosity()) {
-            case OutputInterface::VERBOSITY_VERBOSE:
-                $logLevel = Logger::WARNING;
-                break;
-            case OutputInterface::VERBOSITY_VERY_VERBOSE:
-                $logLevel = Logger::INFO;
-                break;
-            case OutputInterface::VERBOSITY_DEBUG:
-                $logLevel = Logger::DEBUG;
-                break;
-            default:
-                $logLevel = Logger::ERROR;
-        }
-
-        $container = $command->getContainer();
-
-        /** @var Configuration $configuration */
-        $configuration = $this->container->get('config');
-
-        if ($output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-            $logLevel = (string) $configuration->getLogging()->getLevel();
-        }
-
-        // null means the default is used
-        if (! $logPath) {
-            $paths = $configuration->getLogging()->getPaths();
-            $logPath = isset($paths['default']) ? (string) $paths['default'] : null;
-        }
-
-        $container->configureLogger($container['monolog'], $logLevel, $logPath);
     }
 }

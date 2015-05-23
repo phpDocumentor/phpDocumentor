@@ -124,10 +124,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 );
                 $compiler->insert($container['linker'], Linker::COMPILER_PRIORITY);
                 $compiler->insert($container['transformer'], Transformer::COMPILER_PRIORITY);
-                $compiler->insert(
-                    new Debug($container['monolog'], $container['descriptor.project.analyzer']),
-                    Debug::COMPILER_PRIORITY
-                );
 
                 return $compiler;
             }

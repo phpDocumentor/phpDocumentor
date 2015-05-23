@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Transformer\Writer;
 
-use Monolog\Logger;
 use phpDocumentor\Application;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Event\Dispatcher;
@@ -30,24 +29,11 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  */
 class Xsl extends WriterAbstract implements Routable
 {
-    /** @var \Monolog\Logger $logger */
-    protected $logger;
-
     /** @var string[] */
     protected $xsl_variables = array();
 
     /** @var Queue */
     private $routers;
-
-    /**
-     * Initialize this writer with the logger so that it can output logs.
-     *
-     * @param Logger $logger
-     */
-    public function __construct(Logger $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * Checks whether XSL handling is enabled with PHP as that is not enabled by default.
@@ -192,10 +178,11 @@ class Xsl extends WriterAbstract implements Routable
             if ((strpos($variable, '"') !== false)
                 && ((strpos($variable, "'") !== false))
             ) {
-                $this->logger->warning(
+                trigger_error(
                     'XSLT does not allow both double and single quotes in '
                     . 'a variable; transforming single quotes to a character '
-                    . 'encoded version in variable: ' . $key
+                    . 'encoded version in variable: ' . $key,
+                    E_USER_WARNING
                 );
                 $variable = str_replace("'", "&#39;", $variable);
             }
@@ -224,7 +211,6 @@ class Xsl extends WriterAbstract implements Routable
     protected function getXslProcessor(Transformation $transformation)
     {
         $xslTemplatePath = $transformation->getSourceAsPath();
-        $this->logger->debug('Loading XSL template: ' . $xslTemplatePath);
         if (!file_exists($xslTemplatePath)) {
             throw new Exception('Unable to find XSL template "' . $xslTemplatePath . '"');
         }

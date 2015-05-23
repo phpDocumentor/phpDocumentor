@@ -244,7 +244,6 @@ HELP
                  '--sourcecode'         => $input->getOption('sourcecode'),
                  '--parseprivate'       => $input->getOption('parseprivate'),
                  '--progressbar'        => $input->getOption('progressbar'),
-                 '--log'                => $input->getOption('log'),
                  'paths'                => $input->getArgument('paths')
             ),
             $this->getDefinition()
@@ -262,7 +261,6 @@ HELP
                  '--target'      => $input->getOption('target'),
                  '--template'    => $input->getOption('template'),
                  '--progressbar' => $input->getOption('progressbar'),
-                 '--log'         => $input->getOption('log')
             )
         );
         $return_code = $transform_command->run($transform_input, $output);
