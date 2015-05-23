@@ -147,7 +147,7 @@ class LoggerHelper extends Helper
 
         if ($numericErrors[$event->getPriority()] >= $numericErrors[$threshold]) {
             /** @var Translator $translator  */
-            $translator = $command->getContainer()->offsetGet('translator');
+            $translator = $this->container->get(Translator::class);
             $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
 
             switch ($event->getPriority()) {

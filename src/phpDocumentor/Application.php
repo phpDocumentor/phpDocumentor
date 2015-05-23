@@ -12,7 +12,6 @@
 namespace phpDocumentor;
 
 use Cilex\Application as Cilex;
-use Cilex\Provider\ValidatorServiceProvider;
 use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
@@ -22,6 +21,7 @@ use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Shell;
+use Symfony\Component\Validator\Validator;
 
 /**
  * Application class for phpDocumentor.
@@ -62,7 +62,7 @@ class Application extends Cilex
 
         $this->extend(
             'console',
-            function (ConsoleApplication $console) {
+            function (ConsoleApplication $console) use ($phpDiContainer) {
                 $console->getDefinition()->addOption(
                     new InputOption(
                         'config',
@@ -72,14 +72,17 @@ class Application extends Cilex
                     )
                 );
 
+                $configuration = $phpDiContainer->get('config');
+                $console->getHelperSet()->set(new LoggerHelper($phpDiContainer));
+                $console->getHelperSet()->set(new ConfigurationHelper($configuration));
+
                 return $console;
             }
         );
 
-        $this->addLogging($phpDiContainer);
-
-        $this->register(new ValidatorServiceProvider($phpDiContainer));
-        $this->register(new \phpDocumentor\Translator\ServiceProvider($phpDiContainer));
+        $this['validator'] = $this->share(function () use ($phpDiContainer) {
+            $phpDiContainer->get(Validator::class);
+        });
         $this->register(new Descriptor\ServiceProvider($phpDiContainer));
         $this->register(new Parser\ServiceProvider($phpDiContainer));
         $this->register(new Partials\ServiceProvider($phpDiContainer));
@@ -165,25 +168,6 @@ class Application extends Cilex
         ) {
             date_default_timezone_set('UTC');
         }
-    }
-
-    /**
-     * Adds a logging provider to the container of phpDocumentor.
-     *
-     * @return void
-     */
-    protected function addLogging(\DI\Container $container)
-    {
-        $this->extend(
-            'console',
-            function (ConsoleApplication $console) use ($container) {
-                $configuration = $container->get('config');
-                $console->getHelperSet()->set(new LoggerHelper($container));
-                $console->getHelperSet()->set(new ConfigurationHelper($configuration));
-
-                return $console;
-            }
-        );
     }
 
     /**

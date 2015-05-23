@@ -26,6 +26,14 @@ use phpDocumentor\Transformer\Writer\Collection;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
+    /** @var \DI\Container */
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Registers services on the given app.
      *
@@ -34,7 +42,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         /** @var Translator $translator  */
-        $translator = $app['translator'];
+        $translator = $this->container->get(Translator::class);
 
         /** @var Collection $writerCollection */
         $writerCollection = $app['transformer.writer.collection'];

@@ -6,6 +6,13 @@ use JMS\Serializer\SerializerBuilder;
 use phpDocumentor\Configuration\Loader;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Translator\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ConstraintValidatorFactory;
+use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
+use Symfony\Component\Validator\DefaultTranslator;
+use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
+use Symfony\Component\Validator\MetadataFactoryInterface;
+use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 
 return [
     'config' => function (ContainerInterface $c) {
@@ -17,15 +24,21 @@ return [
 
         return $loader->load($configTemplate, $userPath);
     },
+
+    // Dispatcher
     Dispatcher::class => function () {
         return Dispatcher::getInstance();
     },
+
+    // Translation
     Translator::class => function (ContainerInterface $c) {
         $translator = new Translator();
         $translator->setLocale($c->get('config')->getTranslator()->getLocale());
 
         return $translator;
     },
+
+    // Serializer
     Serializer::class => function (ContainerInterface $c) {
         $vendorPath     = $c->get('composer.vendor_path') ?: __DIR__ . '/../vendor';
         $serializerPath = $vendorPath . '/jms/serializer/src';
@@ -37,5 +50,11 @@ return [
         );
 
         return SerializerBuilder::create()->build();
-    }
+    },
+
+    // Validator
+    MetadataFactoryInterface::class => \DI\object(LazyLoadingMetadataFactory::class)
+        ->constructorParameter('loader', \DI\object(StaticMethodLoader::class)),
+    ConstraintValidatorFactoryInterface::class => \DI\object(ConstraintValidatorFactory::class),
+    TranslatorInterface::class => \DI\object(DefaultTranslator::class)
 ];

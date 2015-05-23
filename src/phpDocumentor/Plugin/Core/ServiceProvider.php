@@ -26,6 +26,14 @@ use phpDocumentor\Transformer\Writer\Collection;
  */
 final class ServiceProvider implements ServiceProviderInterface
 {
+    /** @var \DI\Container */
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Registers services on the given app.
      *
@@ -39,8 +47,8 @@ final class ServiceProvider implements ServiceProviderInterface
         $this->registerWriters($app);
         $this->registerDependenciesOnXsltExtension($app);
 
-        $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider());
-        $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider());
+        $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider($this->container));
+        $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider($this->container));
     }
 
     /**
@@ -64,8 +72,8 @@ final class ServiceProvider implements ServiceProviderInterface
         $writerCollection['xsl'] = new Writer\Xsl();
         $writerCollection['jsonp'] = new Writer\Jsonp();
 
-        $writerCollection['checkstyle']->setTranslator($this->getTranslator($app));
-        $writerCollection['xml']->setTranslator($this->getTranslator($app));
+        $writerCollection['checkstyle']->setTranslator($this->getTranslator());
+        $writerCollection['xml']->setTranslator($this->getTranslator());
     }
 
     /**
@@ -77,7 +85,7 @@ final class ServiceProvider implements ServiceProviderInterface
      */
     private function registerTranslationMessages(Application $app)
     {
-        $this->getTranslator($app)->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
+        $this->getTranslator()->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
     }
 
     /**
@@ -102,13 +110,11 @@ final class ServiceProvider implements ServiceProviderInterface
     /**
      * Returns the Translator service from the Service Locator.
      *
-     * @param Application $app
-     *
      * @return Translator
      */
-    private function getTranslator(Application $app)
+    private function getTranslator()
     {
-        return $app['translator'];
+        return $this->container->get(Translator::class);
     }
 
     /**
