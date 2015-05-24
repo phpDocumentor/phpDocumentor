@@ -19,12 +19,12 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         /** @var ApplicationConfiguration $config */
-        $config = $this->container->get('config');
+        $config = $this->container->get(ApplicationConfiguration::class);
         $plugins = $config->getPlugins();
 
         if (! $plugins) {
-            $app->register(new Core\ServiceProvider($this->container));
-            $app->register(new Scrybe\ServiceProvider($this->container));
+            $app->register(new Core\ServiceProvider(null, $this->container));
+            $app->register(new Scrybe\ServiceProvider(null, $this->container));
 
             return;
         }

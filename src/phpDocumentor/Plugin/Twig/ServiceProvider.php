@@ -45,7 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
         $translator = $this->container->get(Translator::class);
 
         /** @var Collection $writerCollection */
-        $writerCollection = $app['transformer.writer.collection'];
+        $writerCollection = $this->container->get(Collection::class);
 
         $writerCollection['twig'] = new Writer\Twig();
         $writerCollection['twig']->setTranslator($translator);

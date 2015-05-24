@@ -6,6 +6,14 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Interop\Container\ContainerInterface;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
+use phpDocumentor\Compiler\Compiler;
+use phpDocumentor\Compiler\Linker\Linker;
+use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
+use phpDocumentor\Compiler\Pass\ExampleTagsEnricher;
+use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
+use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
+use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
+use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Configuration;
 use phpDocumentor\Configuration\Loader;
 use phpDocumentor\Descriptor\Analyzer;
@@ -21,6 +29,11 @@ use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Partials\Exception\MissingNameForPartialException;
 use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
+use phpDocumentor\Transformer\Router\ExternalRouter;
+use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Transformer\Router\StandardRouter;
+use phpDocumentor\Transformer\Template\PathResolver;
+use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Translator\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
@@ -43,6 +56,7 @@ return [
 
         return $loader->load($configTemplate, $userPath);
     },
+    Configuration::class => \DI\link('config'),
 
     // Dispatcher
     Dispatcher::class => function () {
@@ -94,6 +108,7 @@ return [
         return $cache;
     },
 
+    // Parser
     Php::class => \DI\object()
         ->method('setEventDispatcher', \DI\link(Dispatcher::class)),
     CacheListener::class => \DI\object()
@@ -102,6 +117,7 @@ return [
         ->method('registerEventDispatcher', \DI\link(Dispatcher::class))
         ->method('registerBackend', \DI\link(Php::class)),
 
+    // Partials
     PartialsCollection::class => function (ContainerInterface $c) {
         $partialsCollection = new PartialsCollection($c->get(\Parsedown::class));
 
@@ -133,5 +149,75 @@ return [
         }
 
         return $partialsCollection;
-    }
+    },
+
+    // Transformer
+    'linker.substitutions' => [
+        'phpDocumentor\Descriptor\ProjectDescriptor' => ['files'],
+        'phpDocumentor\Descriptor\FileDescriptor'    => [
+            'tags',
+            'classes',
+            'interfaces',
+            'traits',
+            'functions',
+            'constants'
+        ],
+        'phpDocumentor\Descriptor\ClassDescriptor' => [
+            'tags',
+            'parent',
+            'interfaces',
+            'constants',
+            'properties',
+            'methods',
+            'usedTraits',
+        ],
+        'phpDocumentor\Descriptor\InterfaceDescriptor' => [
+            'tags',
+            'parent',
+            'constants',
+            'methods',
+        ],
+        'phpDocumentor\Descriptor\TraitDescriptor' => [
+            'tags',
+            'properties',
+            'methods',
+            'usedTraits',
+        ],
+        'phpDocumentor\Descriptor\FunctionDescriptor'        => ['tags', 'arguments'],
+        'phpDocumentor\Descriptor\MethodDescriptor'          => ['tags', 'arguments'],
+        'phpDocumentor\Descriptor\ArgumentDescriptor'        => ['types'],
+        'phpDocumentor\Descriptor\PropertyDescriptor'        => ['tags', 'types'],
+        'phpDocumentor\Descriptor\ConstantDescriptor'        => ['tags', 'types'],
+        'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => ['types'],
+        'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => ['types'],
+        'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => ['reference'],
+        'phpDocumentor\Descriptor\Type\CollectionDescriptor' => ['baseType', 'types', 'keyTypes'],
+    ],
+    Linker::class => \DI\object()->constructorParameter('substitutions', \DI\link('linker.substitutions')),
+    Compiler::class => \DI\object()
+        ->method('insert', \DI\link(ElementsIndexBuilder::class), ElementsIndexBuilder::COMPILER_PRIORITY)
+        ->method('insert', \DI\link(MarkerFromTagsExtractor::class), MarkerFromTagsExtractor::COMPILER_PRIORITY)
+        ->method('insert', \DI\link(ExampleTagsEnricher::class), ExampleTagsEnricher::COMPILER_PRIORITY)
+        ->method('insert', \DI\link(PackageTreeBuilder::class), PackageTreeBuilder::COMPILER_PRIORITY)
+        ->method('insert', \DI\link(NamespaceTreeBuilder::class), NamespaceTreeBuilder::COMPILER_PRIORITY)
+        ->method('insert', \DI\link(ResolveInlineLinkAndSeeTags::class), ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY)
+        ->method('insert', \DI\link(Linker::class), Linker::COMPILER_PRIORITY)
+        ->method('insert', \DI\link(Transformer::class), Transformer::COMPILER_PRIORITY),
+
+    Queue::class => \DI\object()
+        ->method('insert', \DI\link(ExternalRouter::class), 10500)
+        ->method('insert', \DI\link(StandardRouter::class), 10000),
+
+    // Templates
+    'template.localDirectory'    => __DIR__ . '/../../data/templates',
+    'template.composerDirectory' => __DIR__ . '/../../../templates',
+    'template.directory'         => function (ContainerInterface $c) {
+        if (file_exists($c->get('template.composerDirectory'))) {
+            return $c->get('template.composerDirectory');
+        }
+
+        return $c->get('template.localDirectory');
+    },
+    PathResolver::class => \DI\object()
+        ->constructorParameter('templatePath', \DI\link('template.directory')),
 ];

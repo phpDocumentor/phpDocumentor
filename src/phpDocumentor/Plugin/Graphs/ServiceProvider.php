@@ -18,6 +18,13 @@ use phpDocumentor\Transformer\Writer\Collection;
 
 class ServiceProvider implements ServiceProviderInterface
 {
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Registers services on the given app.
      *
@@ -26,7 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         /** @var Collection $writerCollection */
-        $writerCollection = $app['transformer.writer.collection'];
-        $writerCollection['Graph'] = new Graph();
+        $writerCollection = $this->container->get(Collection::class);
+        $writerCollection['Graph'] = $this->container->get(Graph::class);
     }
 }

@@ -14,6 +14,8 @@ namespace phpDocumentor\Plugin\Core;
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Transformer\Router\StandardRouter;
 use phpDocumentor\Translator\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
@@ -69,7 +71,7 @@ final class ServiceProvider implements ServiceProviderInterface
         $writerCollection['checkstyle'] = new Writer\Checkstyle();
         $writerCollection['sourcecode'] = new Writer\Sourcecode();
         $writerCollection['statistics'] = new Writer\Statistics();
-        $writerCollection['xml'] = new Writer\Xml($app['transformer.routing.standard']);
+        $writerCollection['xml'] = new Writer\Xml($this->container->get(StandardRouter::class));
         $writerCollection['xsl'] = new Writer\Xsl();
         $writerCollection['jsonp'] = new Writer\Jsonp();
 
@@ -104,7 +106,7 @@ final class ServiceProvider implements ServiceProviderInterface
      */
     private function registerDependenciesOnXsltExtension(Application $app)
     {
-        Xslt\Extension::$routers = $app['transformer.routing.queue'];
+        Xslt\Extension::$routers = $this->container->get(Queue::class);
         Xslt\Extension::$analyzer = $this->container->get(Analyzer::class);
     }
 
@@ -127,6 +129,6 @@ final class ServiceProvider implements ServiceProviderInterface
      */
     private function getWriterCollection(Application $app)
     {
-        return $app['transformer.writer.collection'];
+        return $this->container->get(Collection::class);
     }
 }

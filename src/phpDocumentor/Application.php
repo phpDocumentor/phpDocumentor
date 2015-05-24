@@ -21,7 +21,9 @@ use phpDocumentor\Command\Project\RunCommand;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
+use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Shell;
 use Symfony\Component\Validator\Validator;
@@ -83,14 +85,14 @@ class Application extends Cilex
             }
         );
 
-        $this->command($phpDiContainer->get(ParseCommand::class));
-        $this->register(new Transformer\ServiceProvider($phpDiContainer));
         $this->register(new Plugin\ServiceProvider($phpDiContainer));
 
-        $this->addCommandsForProjectNamespace($phpDiContainer);
-
+        $this->command($phpDiContainer->get(ParseCommand::class));
+        $this->command($phpDiContainer->get(RunCommand::class));
+        $this->command($phpDiContainer->get(TransformCommand::class));
+        $this->command($phpDiContainer->get(ListCommand::class));
         if (\Phar::running()) {
-            $this->addCommandsForPharNamespace($phpDiContainer);
+            $this->command($phpDiContainer->get(UpdateCommand::class));
         }
     }
 
@@ -161,25 +163,5 @@ class Application extends Cilex
         ) {
             date_default_timezone_set('UTC');
         }
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Project namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForProjectNamespace($phpDiContainer)
-    {
-        $this->command($phpDiContainer->get(RunCommand::class));
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Phar namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForPharNamespace($phpDiContainer)
-    {
-        $this->command($phpDiContainer->get(UpdateCommand::class));
     }
 }
