@@ -29,6 +29,9 @@ use phpDocumentor\Partials\Collection as PartialsCollection;
 use phpDocumentor\Partials\Exception\MissingNameForPartialException;
 use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle;
+use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
+use phpDocumentor\Plugin\Twig\Writer\Twig;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
@@ -56,7 +59,7 @@ return [
 
         return $loader->load($configTemplate, $userPath);
     },
-    Configuration::class => \DI\link('config'),
+    Configuration::class => \DI\get('config'),
 
     // Dispatcher
     Dispatcher::class => function () {
@@ -68,10 +71,11 @@ return [
         $translator = new Translator();
         $translator->setLocale($c->get('config')->getTranslator()->getLocale());
         $translator->addTranslationFolder(__DIR__ . '/Parser/Messages');
+        $translator->addTranslationFolder(__DIR__ . '/Plugin/Core/Messages');
 
         return $translator;
     },
-    ZendTranslatorInterface::class => \DI\link(Translator::class),
+    ZendTranslatorInterface::class => \DI\get(Translator::class),
 
     // Serializer
     Serializer::class => function (ContainerInterface $c) {
@@ -96,10 +100,10 @@ return [
 
     // Descriptors
     InitializerChain::class => \DI\object()
-        ->method('addInitializer', \DI\link(DefaultFilters::class))
-        ->method('addInitializer', \DI\link(PhpParserAssemblers::class))
-        ->method('addInitializer', \DI\link(ReflectionAssemblers::class))
-        ->method('addInitializer', \DI\link(DefaultValidators::class)),
+        ->method('addInitializer', \DI\get(DefaultFilters::class))
+        ->method('addInitializer', \DI\get(PhpParserAssemblers::class))
+        ->method('addInitializer', \DI\get(ReflectionAssemblers::class))
+        ->method('addInitializer', \DI\get(DefaultValidators::class)),
 
     CacheInterface::class => function () {
         $adapter = new File(sys_get_temp_dir());
@@ -110,12 +114,12 @@ return [
 
     // Parser
     Php::class => \DI\object()
-        ->method('setEventDispatcher', \DI\link(Dispatcher::class)),
+        ->method('setEventDispatcher', \DI\get(Dispatcher::class)),
     CacheListener::class => \DI\object()
-        ->method('register', \DI\link(Dispatcher::class)),
+        ->method('register', \DI\get(Dispatcher::class)),
     Parser::class => \DI\object()
-        ->method('registerEventDispatcher', \DI\link(Dispatcher::class))
-        ->method('registerBackend', \DI\link(Php::class)),
+        ->method('registerEventDispatcher', \DI\get(Dispatcher::class))
+        ->method('registerBackend', \DI\get(Php::class)),
 
     // Partials
     PartialsCollection::class => function (ContainerInterface $c) {
@@ -193,20 +197,20 @@ return [
         'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => ['reference'],
         'phpDocumentor\Descriptor\Type\CollectionDescriptor' => ['baseType', 'types', 'keyTypes'],
     ],
-    Linker::class => \DI\object()->constructorParameter('substitutions', \DI\link('linker.substitutions')),
+    Linker::class => \DI\object()->constructorParameter('substitutions', \DI\get('linker.substitutions')),
     Compiler::class => \DI\object()
-        ->method('insert', \DI\link(ElementsIndexBuilder::class), ElementsIndexBuilder::COMPILER_PRIORITY)
-        ->method('insert', \DI\link(MarkerFromTagsExtractor::class), MarkerFromTagsExtractor::COMPILER_PRIORITY)
-        ->method('insert', \DI\link(ExampleTagsEnricher::class), ExampleTagsEnricher::COMPILER_PRIORITY)
-        ->method('insert', \DI\link(PackageTreeBuilder::class), PackageTreeBuilder::COMPILER_PRIORITY)
-        ->method('insert', \DI\link(NamespaceTreeBuilder::class), NamespaceTreeBuilder::COMPILER_PRIORITY)
-        ->method('insert', \DI\link(ResolveInlineLinkAndSeeTags::class), ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY)
-        ->method('insert', \DI\link(Linker::class), Linker::COMPILER_PRIORITY)
-        ->method('insert', \DI\link(Transformer::class), Transformer::COMPILER_PRIORITY),
+        ->method('insert', \DI\get(ElementsIndexBuilder::class), ElementsIndexBuilder::COMPILER_PRIORITY)
+        ->method('insert', \DI\get(MarkerFromTagsExtractor::class), MarkerFromTagsExtractor::COMPILER_PRIORITY)
+        ->method('insert', \DI\get(ExampleTagsEnricher::class), ExampleTagsEnricher::COMPILER_PRIORITY)
+        ->method('insert', \DI\get(PackageTreeBuilder::class), PackageTreeBuilder::COMPILER_PRIORITY)
+        ->method('insert', \DI\get(NamespaceTreeBuilder::class), NamespaceTreeBuilder::COMPILER_PRIORITY)
+        ->method('insert', \DI\get(ResolveInlineLinkAndSeeTags::class), ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY)
+        ->method('insert', \DI\get(Linker::class), Linker::COMPILER_PRIORITY)
+        ->method('insert', \DI\get(Transformer::class), Transformer::COMPILER_PRIORITY),
 
     Queue::class => \DI\object()
-        ->method('insert', \DI\link(ExternalRouter::class), 10500)
-        ->method('insert', \DI\link(StandardRouter::class), 10000),
+        ->method('insert', \DI\get(ExternalRouter::class), 10500)
+        ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Templates
     'template.localDirectory'    => __DIR__ . '/../../data/templates',
@@ -219,5 +223,11 @@ return [
         return $c->get('template.localDirectory');
     },
     PathResolver::class => \DI\object()
-        ->constructorParameter('templatePath', \DI\link('template.directory')),
+        ->constructorParameter('templatePath', \DI\get('template.directory')),
+
+    Twig::class => \DI\object()->method('setTranslator', \DI\get(Translator::class)),
+    Checkstyle::class => \DI\object()->method('setTranslator', \DI\get(Translator::class)),
+    Xml::class => \DI\object()
+        ->constructorParameter('router', \DI\get(StandardRouter::class))
+        ->method('setTranslator', \DI\get(Translator::class)),
 ];

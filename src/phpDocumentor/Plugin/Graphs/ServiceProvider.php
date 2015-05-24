@@ -11,29 +11,28 @@
 
 namespace phpDocumentor\Plugin\Graphs;
 
-use Cilex\Application;
-use Cilex\ServiceProviderInterface;
 use phpDocumentor\Plugin\Graphs\Writer\Graph;
 use phpDocumentor\Transformer\Writer\Collection;
 
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProvider
 {
-    private $container;
+    /** @var Collection */
+    private $collection;
 
-    public function __construct($container)
+    /** @var Graph */
+    private $graphWriter;
+
+    public function __construct(Collection $collection, Graph $graphWriter)
     {
-        $this->container = $container;
+        $this->collection = $collection;
+        $this->graphWriter = $graphWriter;
     }
 
     /**
      * Registers services on the given app.
-     *
-     * @param Application $app An Application instance.
      */
-    public function register(Application $app)
+    public function __invoke()
     {
-        /** @var Collection $writerCollection */
-        $writerCollection = $this->container->get(Collection::class);
-        $writerCollection['Graph'] = $this->container->get(Graph::class);
+        $this->collection['Graph'] = $this->graphWriter;
     }
 }

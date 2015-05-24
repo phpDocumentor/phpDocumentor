@@ -11,9 +11,6 @@
 
 namespace phpDocumentor\Plugin\Twig;
 
-use Cilex\Application;
-use Cilex\ServiceProviderInterface;
-use phpDocumentor\Translator\Translator;
 use phpDocumentor\Transformer\Writer\Collection;
 
 /**
@@ -24,30 +21,25 @@ use phpDocumentor\Transformer\Writer\Collection;
  *
  * @see Writer\Twig for more information on using this.
  */
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProvider
 {
-    /** @var \DI\Container */
-    private $container;
+    /** @var Collection */
+    private $collection;
 
-    public function __construct($container)
+    /** @var Writer\Twig */
+    private $twigWriter;
+
+    public function __construct(Collection $collection, Writer\Twig $twigWriter)
     {
-        $this->container = $container;
+        $this->collection = $collection;
+        $this->twigWriter = $twigWriter;
     }
 
     /**
      * Registers services on the given app.
-     *
-     * @param Application $app An Application instance.
      */
-    public function register(Application $app)
+    public function __invoke()
     {
-        /** @var Translator $translator  */
-        $translator = $this->container->get(Translator::class);
-
-        /** @var Collection $writerCollection */
-        $writerCollection = $this->container->get(Collection::class);
-
-        $writerCollection['twig'] = new Writer\Twig();
-        $writerCollection['twig']->setTranslator($translator);
+        $this->collection['twig'] = $this->twigWriter;
     }
 }

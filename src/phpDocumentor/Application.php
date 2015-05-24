@@ -21,6 +21,7 @@ use phpDocumentor\Command\Project\RunCommand;
 use phpDocumentor\Console\Input\ArgvInput;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
+use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Command\ListCommand;
@@ -63,8 +64,6 @@ class Application extends Cilex
 
         parent::__construct('phpDocumentor', self::$VERSION, $values);
 
-        $this['autoloader'] = $autoloader;
-
         $this->extend(
             'console',
             function (ConsoleApplication $console) use ($phpDiContainer) {
@@ -85,7 +84,7 @@ class Application extends Cilex
             }
         );
 
-        $this->register(new Plugin\ServiceProvider($phpDiContainer));
+        $this->registerPlugins($phpDiContainer);
 
         $this->command($phpDiContainer->get(ParseCommand::class));
         $this->command($phpDiContainer->get(RunCommand::class));
@@ -93,6 +92,27 @@ class Application extends Cilex
         $this->command($phpDiContainer->get(ListCommand::class));
         if (\Phar::running()) {
             $this->command($phpDiContainer->get(UpdateCommand::class));
+        }
+    }
+
+    // TODO: Change this; plugins are not read from a config file provided on runtime
+    private function registerPlugins($container)
+    {
+        /** @var Configuration $config */
+        $config = $container->get(Configuration::class);
+
+        /** @var Plugin $plugin */
+        foreach ($config->getPlugins() as $plugin) {
+            $provider = (strpos($plugin->getClassName(), '\\') === false)
+                ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getClassName())
+                : $plugin->getClassName();
+
+            try {
+                $pluginObject = $container->get($provider);
+                call_user_func($pluginObject);
+            } catch (\InvalidArgumentException $e) {
+                throw new \RuntimeException($e->getMessage());
+            }
         }
     }
 
