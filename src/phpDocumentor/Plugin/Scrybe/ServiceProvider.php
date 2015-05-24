@@ -35,6 +35,14 @@ class ServiceProvider implements ServiceProviderInterface
     const CONVERTERS                   = 'converters';
     const TEMPLATE_FOLDER              = 'template_folder';
 
+    /** @var \DI\Container */
+    private $container;
+
+    public function __construct($plugin, $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Registers services on the given app.
      *
@@ -47,7 +55,7 @@ class ServiceProvider implements ServiceProviderInterface
         $app['parser'] = $app->extend(
             'parser',
             function ($parser) use ($app) {
-                return $parser->registerBackend(new Document($app['descriptor.analyzer']));
+                return $parser->registerBackend(new Document($this->container->get(Analyzer::class)));
             }
         );
 

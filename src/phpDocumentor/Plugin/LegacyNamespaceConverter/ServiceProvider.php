@@ -32,18 +32,21 @@ use phpDocumentor\Descriptor\Analyzer;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
-
     /** @var Plugin */
     private $plugin;
+
+    /** @var \DI\Container */
+    private $container;
 
     /**
      * Construct plugin with a the relevant configuration
      *
      * @param Plugin $plugin
      **/
-    public function __construct(Plugin $plugin)
+    public function __construct(Plugin $plugin, \DI\Container $container)
     {
         $this->plugin = $plugin;
+        $this->container = $container;
     }
 
     /**
@@ -53,7 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $this->addNamespaceFilter($app['descriptor.analyzer'], $app['descriptor.filter']);
+        $this->addNamespaceFilter($this->container->get(Analyzer::class), $this->container->get(Filter::class));
     }
 
     /**

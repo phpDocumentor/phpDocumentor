@@ -23,8 +23,8 @@ class ServiceProvider implements ServiceProviderInterface
         $plugins = $config->getPlugins();
 
         if (! $plugins) {
-            $app->register(new Core\ServiceProvider());
-            $app->register(new Scrybe\ServiceProvider());
+            $app->register(new Core\ServiceProvider($this->container));
+            $app->register(new Scrybe\ServiceProvider($this->container));
 
             return;
         }
@@ -41,7 +41,7 @@ class ServiceProvider implements ServiceProviderInterface
                 }
 
                 try {
-                    $app->register(new $provider($plugin));
+                    $app->register(new $provider($plugin, $this->container));
                 } catch (\InvalidArgumentException $e) {
                     throw new \RuntimeException($e->getMessage());
                 }

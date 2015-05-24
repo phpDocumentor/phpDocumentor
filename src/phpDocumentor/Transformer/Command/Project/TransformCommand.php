@@ -62,6 +62,10 @@ class TransformCommand extends Command
      * @var Dispatcher
      */
     private $dispatcher;
+    /**
+     * @var CacheInterface
+     */
+    private $cache;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
@@ -70,19 +74,22 @@ class TransformCommand extends Command
      * @param Transformer $transformer
      * @param Compiler $compiler
      * @param Dispatcher $dispatcher
+     * @param CacheInterface $cache
      */
     public function __construct(
         Analyzer $analyzer,
         Transformer $transformer,
         Compiler $compiler,
-        Dispatcher $dispatcher
+        Dispatcher $dispatcher,
+        CacheInterface $cache
     ) {
         parent::__construct('project:transform');
 
         $this->analyzer    = $analyzer;
         $this->transformer = $transformer;
         $this->compiler    = $compiler;
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher  = $dispatcher;
+        $this->cache       = $cache;
     }
 
     /**
@@ -235,7 +242,7 @@ TEXT
      */
     protected function getCache()
     {
-        return $this->getContainer()->offsetGet('descriptor.cache');
+        return $this->cache;
     }
 
     /**

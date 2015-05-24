@@ -13,6 +13,7 @@ namespace phpDocumentor\Plugin\Core;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Translator\Translator;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
@@ -29,7 +30,7 @@ final class ServiceProvider implements ServiceProviderInterface
     /** @var \DI\Container */
     private $container;
 
-    public function __construct($container)
+    public function __construct($plugin, $container)
     {
         $this->container = $container;
     }
@@ -104,7 +105,7 @@ final class ServiceProvider implements ServiceProviderInterface
     private function registerDependenciesOnXsltExtension(Application $app)
     {
         Xslt\Extension::$routers = $app['transformer.routing.queue'];
-        Xslt\Extension::$analyzer = $app['descriptor.analyzer'];
+        Xslt\Extension::$analyzer = $this->container->get(Analyzer::class);
     }
 
     /**

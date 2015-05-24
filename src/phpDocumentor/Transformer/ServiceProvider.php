@@ -13,10 +13,10 @@ namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use Desarrolla2\Cache\CacheInterface;
 use JMS\Serializer\Serializer;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
-use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 use phpDocumentor\Compiler\Pass\ExampleTagsEnricher;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
@@ -24,6 +24,7 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Transformer\Command\Project\TransformCommand;
@@ -57,12 +58,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        if (!isset($app['descriptor.analyzer'])) {
-            throw new Exception\MissingDependencyException(
-                'The analyzer object that is used to construct the ProjectDescriptor is missing'
-            );
-        }
-
         // parameters
         $app['linker.substitutions'] = array(
             'phpDocumentor\Descriptor\ProjectDescriptor'      => array('files'),
@@ -113,7 +108,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 $compiler->insert(new ElementsIndexBuilder(), ElementsIndexBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new MarkerFromTagsExtractor(), MarkerFromTagsExtractor::COMPILER_PRIORITY);
                 $compiler->insert(
-                    new ExampleTagsEnricher($container['parser.example.finder']),
+                    new ExampleTagsEnricher($this->container->get(Finder::class)),
                     ExampleTagsEnricher::COMPILER_PRIORITY
                 );
                 $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
@@ -137,10 +132,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $app['transformer.routing.standard'] = $app->share(
             function ($container) {
-                /** @var Analyzer $analyzer */
-                $analyzer = $container['descriptor.analyzer'];
-
-                return new Router\StandardRouter($analyzer);
+                return new Router\StandardRouter($this->container->get(Analyzer::class));
             }
         );
         $app['transformer.routing.external'] = $app->share(
@@ -180,10 +172,11 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
 
         $app->command(
             new TransformCommand(
-                $app['descriptor.analyzer'],
+                $this->container->get(Analyzer::class),
                 $app['transformer'],
                 $app['compiler'],
-                $this->container->get(Dispatcher::class)
+                $this->container->get(Dispatcher::class),
+                $this->container->get(CacheInterface::class)
             )
         );
         $app->command(new ListCommand($app['transformer.template.factory']));

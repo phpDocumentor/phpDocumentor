@@ -13,6 +13,9 @@ namespace phpDocumentor\Parser;
 
 use Cilex\Application;
 use Cilex\ServiceProviderInterface;
+use Desarrolla2\Cache\CacheInterface;
+use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
 use phpDocumentor\Event\Dispatcher;
@@ -23,7 +26,6 @@ use phpDocumentor\Parser\Listeners\Cache;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
 use phpDocumentor\Translator\Translator;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -51,33 +53,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['parser'] = $app->share(
-            function ($app) {
-                $cacheListener = new Cache($app['descriptor.cache'], $this->container->get(Translator::class));
-                $cacheListener->register($this->container->get(Dispatcher::class));
 
-                $phpBackend = new Php($app['descriptor.analyzer']);
-                $phpBackend->setEventDispatcher($this->container->get(Dispatcher::class));
 
-                return (new Parser($app['descriptor.analyzer']))
-                    ->registerEventDispatcher($this->container->get(Dispatcher::class))
-                    ->registerBackend($phpBackend);
-            }
-        );
-
-        $app->extend('descriptor.builder.initializers', function ($chain) use ($app) {
-            /** @var InitializerChain $chain */
-            $chain->addInitializer(new PhpParserAssemblers($app['parser.example.finder']));
-
-            return $chain;
-        });
-
-        /** @var Translator $translator  */
-        $translator = $this->container->get(Translator::class);
-        $translator->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
-
-        $app['parser.files'] = new Collection();
-        $app->command(new ParseCommand($app['parser'], $translator, $app['parser.example.finder'], $this->container));
     }
 
     /**

@@ -16,8 +16,11 @@ use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
+use phpDocumentor\Command\Phar\UpdateCommand;
+use phpDocumentor\Command\Project\RunCommand;
 use phpDocumentor\Console\Input\ArgvInput;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
+use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Parser\Command\Project\ParseCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Shell;
@@ -80,24 +83,14 @@ class Application extends Cilex
             }
         );
 
-        $this['validator'] = $this->share(function () use ($phpDiContainer) {
-            $phpDiContainer->get(Validator::class);
-        });
-        $this->register(new Descriptor\ServiceProvider($phpDiContainer));
-        $this->register(new Parser\ServiceProvider($phpDiContainer));
-        $this->register(new Partials\ServiceProvider($phpDiContainer));
+        $this->command($phpDiContainer->get(ParseCommand::class));
         $this->register(new Transformer\ServiceProvider($phpDiContainer));
         $this->register(new Plugin\ServiceProvider($phpDiContainer));
 
-        $this['descriptor.builder.initializers']->addInitializer(
-            new DefaultValidators($this['descriptor.analyzer']->getValidator())
-        );
-        $this['descriptor.builder.initializers']->initialize($this['descriptor.analyzer']);
-
-        $this->addCommandsForProjectNamespace();
+        $this->addCommandsForProjectNamespace($phpDiContainer);
 
         if (\Phar::running()) {
-            $this->addCommandsForPharNamespace();
+            $this->addCommandsForPharNamespace($phpDiContainer);
         }
     }
 
@@ -175,9 +168,9 @@ class Application extends Cilex
      *
      * @return void
      */
-    protected function addCommandsForProjectNamespace()
+    protected function addCommandsForProjectNamespace($phpDiContainer)
     {
-        $this->command(new Command\Project\RunCommand());
+        $this->command($phpDiContainer->get(RunCommand::class));
     }
 
     /**
@@ -185,8 +178,8 @@ class Application extends Cilex
      *
      * @return void
      */
-    protected function addCommandsForPharNamespace()
+    protected function addCommandsForPharNamespace($phpDiContainer)
     {
-        $this->command(new Command\Phar\UpdateCommand());
+        $this->command($phpDiContainer->get(UpdateCommand::class));
     }
 }
