@@ -6,6 +6,10 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Interop\Container\ContainerInterface;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
+use phpDocumentor\Command\Helper\ConfigurationHelper;
+use phpDocumentor\Command\Helper\LoggerHelper;
+use phpDocumentor\Command\Phar\UpdateCommand;
+use phpDocumentor\Command\Project\RunCommand;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
@@ -23,6 +27,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssem
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\ReflectionAssemblers;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Backend\Php;
+use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Partials\Collection as PartialsCollection;
@@ -32,12 +37,16 @@ use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use phpDocumentor\Plugin\Twig\Writer\Twig;
+use phpDocumentor\Transformer\Command\Project\TransformCommand;
+use phpDocumentor\Transformer\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
 use phpDocumentor\Transformer\Template\PathResolver;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Translator\Translator;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
@@ -50,7 +59,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Zend\I18n\Translator\TranslatorInterface as ZendTranslatorInterface;
 
 return [
-    'config' => function (ContainerInterface $c) {
+    Configuration::class => function (ContainerInterface $c) {
         /** @var Loader $loader */
         $loader = $c->get(Loader::class);
 
@@ -59,7 +68,40 @@ return [
 
         return $loader->load($configTemplate, $userPath);
     },
-    Configuration::class => \DI\get('config'),
+    'config' => \DI\get(Configuration::class),
+
+    'application.version' => function () {
+        return strpos('@package_version@', '@') === 0
+            ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
+            : '@package_version@';
+    },
+
+    // Console
+    Application::class => function (ContainerInterface $c) {
+        $application = new Application('phpDocumentor', $c->get('application.version'));
+
+        $application->getDefinition()->addOption(
+            new InputOption(
+                'config',
+                'c',
+                InputOption::VALUE_OPTIONAL,
+                'Location of a custom configuration file'
+            )
+        );
+
+        $application->getHelperSet()->set($c->get(LoggerHelper::class));
+        $application->getHelperSet()->set($c->get(ConfigurationHelper::class));
+
+        $application->add($c->get(ParseCommand::class));
+        $application->add($c->get(RunCommand::class));
+        $application->add($c->get(TransformCommand::class));
+        $application->add($c->get(ListCommand::class));
+        if (\Phar::running()) {
+            $this->add($c->get(UpdateCommand::class));
+        }
+
+        return $application;
+    },
 
     // Dispatcher
     Dispatcher::class => function () {
@@ -69,7 +111,7 @@ return [
     // Translation
     Translator::class => function (ContainerInterface $c) {
         $translator = new Translator();
-        $translator->setLocale($c->get('config')->getTranslator()->getLocale());
+        $translator->setLocale($c->get(Configuration::class)->getTranslator()->getLocale());
         $translator->addTranslationFolder(__DIR__ . '/Parser/Messages');
         $translator->addTranslationFolder(__DIR__ . '/Plugin/Core/Messages');
 

@@ -29,12 +29,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LoggerHelper extends Helper
 {
-    /** @var \DI\Container */
-    private $container;
+    /** @var Dispatcher */
+    private $dispatcher;
 
-    public function __construct($container)
+    /** @var Translator */
+    private $translator;
+
+    public function __construct(Dispatcher $dispatcher, Translator $translator)
     {
-        $this->container = $container;
+        $this->dispatcher = $dispatcher;
+        $this->translator = $translator;
     }
 
     /**
@@ -67,8 +71,7 @@ class LoggerHelper extends Helper
             return;
         }
 
-        /** @var Dispatcher $eventDispatcher  */
-        $eventDispatcher = $this->container->get(Dispatcher::class);
+        $eventDispatcher = $this->dispatcher;
 
         $eventDispatcher->addListener(
             Php::EVENT_FILE_IS_CACHED,
@@ -146,9 +149,7 @@ class LoggerHelper extends Helper
         }
 
         if ($numericErrors[$event->getPriority()] >= $numericErrors[$threshold]) {
-            /** @var Translator $translator  */
-            $translator = $this->container->get(Translator::class);
-            $message    = vsprintf($translator->translate($event->getMessage()), $event->getContext());
+            $message = vsprintf($this->translator->translate($event->getMessage()), $event->getContext());
 
             switch ($event->getPriority()) {
                 case LogLevel::WARNING:

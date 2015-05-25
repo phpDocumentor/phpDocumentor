@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
  * Includes additional methods to forward the output to the logging events
  * of phpDocumentor.
  */
-class Command extends \Cilex\Command\Command
+class Command extends \Symfony\Component\Console\Command\Command
 {
     /**
      * Returns the Progress bar helper.

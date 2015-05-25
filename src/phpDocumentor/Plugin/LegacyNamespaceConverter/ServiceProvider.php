@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
+use phpDocumentor\Plugin\Parameter;
 use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Analyzer;
@@ -53,31 +54,32 @@ class ServiceProvider
     /**
      * Registers services on the given app.
      *
-     * @param Plugin $plugin
+     * @param Parameter[] $options
      *
      * @return void
      */
-    public function __invoke(Plugin $plugin)
+    public function __invoke($options)
     {
-        $this->addNamespaceFilter($this->analyzer, $this->filter, $plugin);
+        $this->addNamespaceFilter($this->analyzer, $this->filter, $options);
     }
 
     /**
      * Attaches the filter responsible for the conversion to all structural elements.
      *
-     * @param Analyzer $analyzer
-     * @param Filter   $filterManager
+     * @param Analyzer    $analyzer
+     * @param Filter      $filterManager
+     * @param Parameter[] $options
      *
      * @return void
      */
-    private function addNamespaceFilter(Analyzer $analyzer, Filter $filterManager, Plugin $plugin)
+    private function addNamespaceFilter(Analyzer $analyzer, Filter $filterManager, array $options)
     {
         $filter = new LegacyNamespaceFilter($analyzer);
 
         // parse parameters
-        foreach ($plugin->getParameters() as $param) {
-            if ($param->getKey() == 'NamespacePrefix') {
-                $filter->setNamespacePrefix($param->getValue());
+        foreach ($options as $option) {
+            if ($option->getKey() == 'NamespacePrefix') {
+                $filter->setNamespacePrefix($option->getValue());
             }
         }
 

@@ -6,33 +6,27 @@
     "license": "MIT",
     "autoload": {
         "psr-0":{
-            "phpDocumentor": ["src/", "tests/unit/"],
-            "Cilex\\Provider": ["src/"]
+            "phpDocumentor": ["src/", "tests/unit/"]
         }
     },
     "require": {
-        "php": ">=5.5.0",
+        "php":               ">=5.5.0",
+        "mnapoli/php-di":    "5.0.0-RC1@dev",
+        "symfony/console":   "^2.6",
 
-        "cilex/cilex":        "~1.0",
-        "symfony/console":    "~2.3",
-
-        "monolog/monolog":  "~1.6",
-        "twig/twig":        "~1.3",
-        "erusev/parsedown": "~1.0",
-        "zetacomponents/document": ">=1.3.1",
-        "jms/serializer":           "~0.12",
-        "desarrolla2/cache":        "~1.8",
+        "twig/twig":         "~1.3",
+        "erusev/parsedown":  "~1.0",
+        "jms/serializer":    "~0.12",
+        "desarrolla2/cache": "~1.8",
 
         "symfony/event-dispatcher": "~2.1",
-        "symfony/process":          "~2.0",
 
-        "phpdocumentor/graphviz":            "~1.0",
-        "phpdocumentor/fileset":             "~1.0",
-        "phpdocumentor/reflection":          "dev-develop",
+        "phpdocumentor/graphviz":   "~1.0",
+        "phpdocumentor/fileset":    "~1.0",
+        "phpdocumentor/reflection": "dev-develop",
 
-        "zendframework/zend-i18n": "~2.3",
-        "zendframework/zend-servicemanager": "~2.3",
-        "mnapoli/php-di": " 5.0.0-RC1@dev"
+        "zendframework/zend-i18n": "~2.4",
+        "zendframework/zend-servicemanager": "^2.4"
     },
     "minimum-stability": "stable",
     "require-dev": {
