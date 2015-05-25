@@ -19,7 +19,7 @@ use phpDocumentor\Parser\Exception\FilesNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-final class Parser
+class Parser
 {
     const EVENT_FILES_COLLECTED       = 'parser.files.collected';
     const EVENT_BACKEND_BOOTED        = 'parser.backend.booted';
