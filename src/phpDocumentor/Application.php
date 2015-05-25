@@ -109,7 +109,7 @@ class Application extends Cilex
 
             try {
                 $pluginObject = $container->get($provider);
-                call_user_func($pluginObject);
+                call_user_func($pluginObject, $plugin);
             } catch (\InvalidArgumentException $e) {
                 throw new \RuntimeException($e->getMessage());
             }
