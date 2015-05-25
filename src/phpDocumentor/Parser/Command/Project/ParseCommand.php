@@ -316,7 +316,7 @@ final class ParseCommand extends Command
      */
     private function getConfiguration()
     {
-        return $this->container->get('config');
+        return $this->container->get(Configuration::class);
     }
 
     /**

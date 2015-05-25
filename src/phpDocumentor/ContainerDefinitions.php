@@ -1,4 +1,5 @@
 <?php
+use Desarrolla2\Cache\Adapter\AdapterInterface;
 use Desarrolla2\Cache\Adapter\File;
 use Desarrolla2\Cache\Cache;
 use Desarrolla2\Cache\CacheInterface;
@@ -59,21 +60,72 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Zend\I18n\Translator\TranslatorInterface as ZendTranslatorInterface;
 
 return [
-    Configuration::class => function (ContainerInterface $c) {
-        /** @var Loader $loader */
-        $loader = $c->get(Loader::class);
-
-        $configTemplate = __DIR__ . '/Configuration/Resources/phpdoc.tpl.xml';
-        $userPath = getcwd() . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml');
-
-        return $loader->load($configTemplate, $userPath);
-    },
-    'config' => \DI\get(Configuration::class),
-
+    // -- Parameters
     'application.version' => function () {
         return strpos('@package_version@', '@') === 0
             ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
             : '@package_version@';
+    },
+    'cache.directory' => sys_get_temp_dir(),
+    'linker.substitutions' => [
+        'phpDocumentor\Descriptor\ProjectDescriptor' => ['files'],
+        'phpDocumentor\Descriptor\FileDescriptor'    => [
+            'tags',
+            'classes',
+            'interfaces',
+            'traits',
+            'functions',
+            'constants'
+        ],
+        'phpDocumentor\Descriptor\ClassDescriptor' => [
+            'tags',
+            'parent',
+            'interfaces',
+            'constants',
+            'properties',
+            'methods',
+            'usedTraits',
+        ],
+        'phpDocumentor\Descriptor\InterfaceDescriptor' => [
+            'tags',
+            'parent',
+            'constants',
+            'methods',
+        ],
+        'phpDocumentor\Descriptor\TraitDescriptor' => [
+            'tags',
+            'properties',
+            'methods',
+            'usedTraits',
+        ],
+        'phpDocumentor\Descriptor\FunctionDescriptor'        => ['tags', 'arguments'],
+        'phpDocumentor\Descriptor\MethodDescriptor'          => ['tags', 'arguments'],
+        'phpDocumentor\Descriptor\ArgumentDescriptor'        => ['types'],
+        'phpDocumentor\Descriptor\PropertyDescriptor'        => ['tags', 'types'],
+        'phpDocumentor\Descriptor\ConstantDescriptor'        => ['tags', 'types'],
+        'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => ['types'],
+        'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => ['types'],
+        'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => ['reference'],
+        'phpDocumentor\Descriptor\Type\CollectionDescriptor' => ['baseType', 'types', 'keyTypes'],
+    ],
+    'template.localDirectory'    => __DIR__ . '/../../data/templates',
+    'template.composerDirectory' => __DIR__ . '/../../../templates',
+    'template.directory'         => function (ContainerInterface $c) {
+        if (file_exists($c->get('template.composerDirectory'))) {
+            return $c->get('template.composerDirectory');
+        }
+
+        return $c->get('template.localDirectory');
+    },
+    'config.template.path' => __DIR__ . '/Configuration/Resources/phpdoc.tpl.xml',
+    'config.user.path'     => getcwd() . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml'),
+
+    // -- Services
+    Configuration::class => function (ContainerInterface $c) {
+        /** @var Loader $loader */
+        $loader = $c->get(Loader::class);
+
+        return $loader->load($c->get('config.template.path'), $c->get('config.user.path'));
     },
 
     // Console
@@ -147,12 +199,9 @@ return [
         ->method('addInitializer', \DI\get(ReflectionAssemblers::class))
         ->method('addInitializer', \DI\get(DefaultValidators::class)),
 
-    CacheInterface::class => function () {
-        $adapter = new File(sys_get_temp_dir());
-        $cache = new Cache($adapter);
-
-        return $cache;
-    },
+    // Cache
+    AdapterInterface::class => \DI\Object(File::class)->constructor(\DI\get('cache.directory')),
+    CacheInterface::class => \DI\object(Cache::class),
 
     // Parser
     Php::class => \DI\object()
@@ -168,7 +217,7 @@ return [
         $partialsCollection = new PartialsCollection($c->get(\Parsedown::class));
 
         /** @var Configuration $config */
-        $config = $c->get('config');
+        $config = $c->get(Configuration::class);
 
         // TODO: Move to factory!
 
@@ -198,47 +247,6 @@ return [
     },
 
     // Transformer
-    'linker.substitutions' => [
-        'phpDocumentor\Descriptor\ProjectDescriptor' => ['files'],
-        'phpDocumentor\Descriptor\FileDescriptor'    => [
-            'tags',
-            'classes',
-            'interfaces',
-            'traits',
-            'functions',
-            'constants'
-        ],
-        'phpDocumentor\Descriptor\ClassDescriptor' => [
-            'tags',
-            'parent',
-            'interfaces',
-            'constants',
-            'properties',
-            'methods',
-            'usedTraits',
-        ],
-        'phpDocumentor\Descriptor\InterfaceDescriptor' => [
-            'tags',
-            'parent',
-            'constants',
-            'methods',
-        ],
-        'phpDocumentor\Descriptor\TraitDescriptor' => [
-            'tags',
-            'properties',
-            'methods',
-            'usedTraits',
-        ],
-        'phpDocumentor\Descriptor\FunctionDescriptor'        => ['tags', 'arguments'],
-        'phpDocumentor\Descriptor\MethodDescriptor'          => ['tags', 'arguments'],
-        'phpDocumentor\Descriptor\ArgumentDescriptor'        => ['types'],
-        'phpDocumentor\Descriptor\PropertyDescriptor'        => ['tags', 'types'],
-        'phpDocumentor\Descriptor\ConstantDescriptor'        => ['tags', 'types'],
-        'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => ['types'],
-        'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => ['types'],
-        'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => ['reference'],
-        'phpDocumentor\Descriptor\Type\CollectionDescriptor' => ['baseType', 'types', 'keyTypes'],
-    ],
     Linker::class => \DI\object()->constructorParameter('substitutions', \DI\get('linker.substitutions')),
     Compiler::class => \DI\object()
         ->method('insert', \DI\get(ElementsIndexBuilder::class), ElementsIndexBuilder::COMPILER_PRIORITY)
@@ -255,15 +263,6 @@ return [
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Templates
-    'template.localDirectory'    => __DIR__ . '/../../data/templates',
-    'template.composerDirectory' => __DIR__ . '/../../../templates',
-    'template.directory'         => function (ContainerInterface $c) {
-        if (file_exists($c->get('template.composerDirectory'))) {
-            return $c->get('template.composerDirectory');
-        }
-
-        return $c->get('template.localDirectory');
-    },
     PathResolver::class => \DI\object()
         ->constructorParameter('templatePath', \DI\get('template.directory')),
 
