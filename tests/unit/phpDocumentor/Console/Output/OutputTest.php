@@ -19,20 +19,6 @@ use Mockery as m;
 class OutputTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers phpDocumentor\Console\Output\Output::setLogger
-     * @covers phpDocumentor\Console\Output\Output::getLogger
-     */
-    public function testSetAndGetLoggerWithString()
-    {
-        $output = new Output();
-        $logger = m::mock('Monolog\Logger');
-
-        $output->setLogger($logger);
-
-        $this->assertEquals($logger, $output->getLogger());
-    }
-
-    /**
      * @covers phpDocumentor\Console\Output\Output::writeTimedLog
      */
     public function testWriteTimedLog()
@@ -59,28 +45,5 @@ class OutputTest extends \PHPUnit_Framework_TestCase
 
         rewind($stream);
         $this->assertRegExp('/^[1]{66} .. [\ 0-9\.]{8}s\n$/', stream_get_contents($stream));
-    }
-
-    public function testWriteLogger()
-    {
-        $output = new Output();
-        $stream = fopen('php://memory', 'a', false);
-
-        // because the ConsoleOutput base class disables injecting the stream and uses php://stdout we need to crack
-        // open the class and inject our own stream.(php://stdout cannot be captured with output buffering)
-        $reflectedStream = new \ReflectionProperty('Symfony\Component\Console\Output\StreamOutput', 'stream');
-        $reflectedStream->setAccessible(true);
-        $reflectedStream->setValue($output, $stream);
-
-        // provided error messages should be logged
-        $logger = m::mock('Monolog\Logger')->shouldReceive('info')->with('test')->getMock();
-        $output->setLogger($logger);
-
-        $suite = $this;
-
-        $output->write('test');
-
-        rewind($stream);
-        $this->assertRegExp('/^test$/', stream_get_contents($stream));
     }
 }
