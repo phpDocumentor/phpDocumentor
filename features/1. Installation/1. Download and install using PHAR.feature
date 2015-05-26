@@ -10,6 +10,6 @@ Feature:
     Then the application must have run successfully
 
   Scenario: Downloading from Github should work
-    When I download "http://github.com/phpDocumentor/phpDocumentor2/releases/download/v2.8.1/phpDocumentor.phar" to "phpDocumentor.phar"
+    When I download the latest phar from github to "phpDocumentor.phar"
      And I execute "php phpDocumentor.phar --help"
     Then the application must have run successfully
