@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a52a02ff079f3eef72a7a5c2d5e65088",
+    "hash": "0666a062a1934a9d9c0bf97bf9b0567b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -475,16 +475,16 @@
         },
         {
             "name": "mnapoli/php-di",
-            "version": "5.0.0-RC1",
+            "version": "5.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mnapoli/PHP-DI.git",
-                "reference": "7afd2574c3f4c23814a43dbca23d7cd1741aa489"
+                "reference": "2edeea7e3cc36357c73fc20aad66fe1d919316b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mnapoli/PHP-DI/zipball/7afd2574c3f4c23814a43dbca23d7cd1741aa489",
-                "reference": "7afd2574c3f4c23814a43dbca23d7cd1741aa489",
+                "url": "https://api.github.com/repos/mnapoli/PHP-DI/zipball/2edeea7e3cc36357c73fc20aad66fe1d919316b5",
+                "reference": "2edeea7e3cc36357c73fc20aad66fe1d919316b5",
                 "shasum": ""
             },
             "require": {
@@ -521,14 +521,14 @@
             "license": [
                 "MIT"
             ],
-            "description": "PHP-DI is a Container that makes Dependency Injection as practical as possible in PHP",
-            "homepage": "http://mnapoli.github.com/PHP-DI/",
+            "description": "The dependency injection container for humans",
+            "homepage": "http://php-di.org/",
             "keywords": [
                 "container",
                 "dependency injection",
                 "di"
             ],
-            "time": "2015-05-15 14:29:13"
+            "time": "2015-05-24 21:18:58"
         },
         {
             "name": "mnapoli/phpdocreader",
@@ -3424,7 +3424,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.0"
+        "php": "^5.5"
     },
     "platform-dev": []
 }
