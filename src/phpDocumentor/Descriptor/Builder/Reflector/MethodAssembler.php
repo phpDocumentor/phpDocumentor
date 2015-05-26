@@ -106,7 +106,7 @@ class MethodAssembler extends AssemblerAbstract
         }
         $argumentDescriptor = $this->argumentAssembler->create($argument, $params);
 
-        $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
+        $descriptor->addArgument($argumentDescriptor->getName(), $argumentDescriptor);
     }
 
     /**

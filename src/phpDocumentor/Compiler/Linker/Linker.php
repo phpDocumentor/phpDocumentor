@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -140,7 +141,7 @@ class Linker implements CompilerPassInterface
 
         if (is_string($item)) {
             $result = $this->findAlias($item, $container);
-        } elseif (is_array($item) || $item instanceof \Traversable) {
+        } elseif (is_array($item) || ($item instanceof \Traversable && ! $item instanceof ProjectInterface)) {
             $isModified = false;
             foreach ($item as $key => $element) {
                 $isModified = true;

@@ -1,0 +1,129 @@
+{% extends 'layout.html.twig' %}
+
+{% macro elementSummary(element, type) %}
+    <div id="{{ type }}_{{ element.name }}" class="element ajax clickable {{ type }}" data-toggle="collapse" data-target="#{{ type }}_{{ element.name }} .collapse">
+        <h1>{{ element.name }}{% if path(element) %}<a href="{{ path(element) }}">¶</a>{% endif %}</h1>
+        <p class="short_description">{{ element.summary }}</p>
+        <div class="details collapse">
+            {% if type == 'function' %}
+                {% include 'method.html.twig' with {'method': element} %}
+            {% else %}
+                {{ element.description|markdown|raw }}
+            {% endif %}
+        </div>
+        {% if path(element) %}<a href="{{ path(element) }}" class="more">« More »</a>{% endif %}
+    </div>
+{% endmacro %}
+
+{% macro buildBreadcrumb(element) %}
+    {% import _self as self %}
+
+    {% if element.parent and element.parent.name != '\\' %}
+        {{ self.buildBreadcrumb(element.parent) }}
+    {% endif %}
+
+    <li>
+        <span class="divider">\</span><a href="{{ path(element) }}">{{ element.name }}</a>
+    </li>
+{% endmacro %}
+
+{% macro renderNamespaceDetails(node) %}
+    {% import _self as self %}
+
+    {% if node.classes|length > 0 or node.interfaces|length > 0 or node.traits|length > 0 or node.functions|length > 0 or node.constants|length > 0 %}
+
+        <ul class="breadcrumb">
+            <li><a href="{{ path('index.html') }}"><i class="icon-th"></i></a></li>
+            {{ self.buildBreadcrumb(node) }}
+        </ul>
+
+        {% if node.functions|length > 0 %}
+            <div class="namespace-indent">
+                <h3><i class="icon-custom icon-function"></i> Functions</h3>
+                {% for function in node.functions|sort_asc %}
+                    {{ self.elementSummary(function, 'function') }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if node.constants|length > 0 %}
+            <div class="namespace-indent">
+                <h3><i class="icon-custom icon-constant"></i> Constants</h3>
+                {% for constant in node.constants %}
+                    {{ self.elementSummary(constant, 'constant') }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if node.classes|length > 0 or node.interfaces|length > 0 or node.traits|length > 0 %}
+            <div class="namespace-indent">
+                <h3><i class="icon-custom icon-class"></i> Classes, interfaces and traits</h3>
+                {% for trait in node.traits|sort_asc %}
+                    {{ self.elementSummary(trait, 'trait') }}
+                {% endfor %}
+
+                {% for interface in node.interfaces|sort_asc %}
+                    {{ self.elementSummary(interface, 'interface') }}
+                {% endfor %}
+
+                {% for class in node.classes|sort_asc %}
+                    {{ self.elementSummary(class, 'class') }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% for namespace in node.children %}
+        {{ self.renderNamespaceDetails(namespace) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro renderNamespaceSidebar(node) %}
+    {% import _self as self %}
+
+    {% for namespace in node.children|sort_asc %}
+    <li>
+        <a href="{{ path(namespace) }}" title="{{ namespace.name }}">
+            <i class="icon-th"></i> {{ namespace.name }}
+        </a>
+        <ul class="nav nav-list nav-namespaces">
+            {{ self.renderNamespaceSidebar(namespace) }}
+        </ul>
+    </li>
+    {% endfor %}
+{% endmacro %}
+
+{% block title %}
+    {{ project.title }} &raquo; {{ node.FullyQualifiedStructuralElementName }}
+{% endblock %}
+
+{% block content %}
+    {% import _self as self %}
+
+    <div class="row">
+
+        <div class="span4">
+            <div class="btn-group view pull-right" data-toggle="buttons-radio">
+                <button class="btn details" title="Show descriptions and method names">
+                    <i class="icon-list"></i></button><button class="btn simple" title="Show only method names">
+                    <i class="icon-align-justify"></i>
+                </button>
+            </div>
+            <ul class="side-nav nav nav-list">
+                <li class="nav-header">
+                    <i class="icon-map-marker"></i> Namespaces
+                </li>
+                <a href="{{ path(node) }}" title="{{ node.name }}">
+                    <i class="icon-th"></i> {{ node.name }}
+                </a>
+                <ul class="nav nav-list nav-namespaces">
+                    {{ self.renderNamespaceSidebar(node) }}
+                </ul>
+            </ul>
+        </div>
+
+        <div class="span8 namespace-contents">
+            {{ self.renderNamespaceDetails(node) }}
+        </div>
+    </div>
+{% endblock %}

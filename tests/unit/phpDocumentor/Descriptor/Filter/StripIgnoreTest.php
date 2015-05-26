@@ -61,9 +61,7 @@ class StripIgnoreTest extends \PHPUnit_Framework_TestCase
         $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getTags->get')->with('ignore')->andReturn(false);
 
-        // we clone the descriptor so its references differ; if something changes in the descriptor then
-        // the $descriptor variable and the returned clone will differ
-        $this->assertEquals($descriptor, $this->fixture->filter(clone $descriptor));
+        $this->assertEquals($descriptor, $this->fixture->filter($descriptor));
     }
 
     /**

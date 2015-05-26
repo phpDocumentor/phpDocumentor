@@ -15,6 +15,9 @@ namespace phpDocumentor\Descriptor;
  */
 class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\ArgumentInterface
 {
+    /** @var MethodDescriptor $method */
+    protected $method;
+
     /** @var string[] $type an array of normalized types that should be in this Argument */
     protected $types = array();
 
@@ -26,6 +29,16 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
 
     /** @var boolean Determines if this Argument represents a variadic argument */
     protected $isVariadic = false;
+
+    /**
+     * To which method does this argument belong to
+     *
+     * @param MethodDescriptor $method
+     */
+    public function setMethod(MethodDescriptor $method)
+    {
+        $this->method = $method;
+    }
 
     /**
      * {@inheritDoc}
@@ -40,7 +53,31 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
      */
     public function getTypes()
     {
+        if (count($this->types)==0 &&
+            $this->getInheritedElement() !== null
+            ) {
+                $this->setTypes($this->getInheritedElement()->getTypes());
+        }
+
         return $this->types;
+    }
+
+    /**
+     * @return null|ArgumentDescriptor
+     */
+    public function getInheritedElement()
+    {
+        if ($this->method instanceof MethodDescriptor &&
+            $this->method->getInheritedElement() instanceof MethodDescriptor) {
+            $parents = $this->method->getInheritedElement()->getArguments();
+            foreach($parents as $parentArgument)
+            {
+                if ($parentArgument->getName() === $this->getName()) {
+                    return $parentArgument;
+                }
+            }
+        }
+        return null;
     }
 
     /**

@@ -42,17 +42,7 @@
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",
         "phpdocumentor/reflection":          "~1.0",
-        "phpdocumentor/reflection-docblock": "~2.0",
-
-        "phpdocumentor/template-abstract":        "~1.2",
-        "phpdocumentor/template-clean":           "~1.0",
-        "phpdocumentor/template-responsive-twig": "~1.2",
-        "phpdocumentor/template-responsive":      "~1.3",
-        "phpdocumentor/template-new-black":       "~1.3",
-        "phpdocumentor/template-zend":            "~1.3",
-        "phpdocumentor/template-old-ocean":       "~1.3",
-        "phpdocumentor/template-checkstyle":      "~1.2",
-        "phpdocumentor/template-xml":             "~1.0"
+        "phpdocumentor/reflection-docblock": "~2.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
