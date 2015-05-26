@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class DoesParamsExists extends Constraint
 {
-    /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50013';
+    /** @var string message */
+    public $message = 'Parameter %s could not be found in %s';
 
     public $code = 50013;
 

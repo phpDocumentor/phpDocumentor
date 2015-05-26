@@ -28,7 +28,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Parses the given source code and creates a structure file.
@@ -40,9 +39,6 @@ final class ParseCommand extends Command
 {
     /** @var Parser $parser */
     protected $parser;
-
-    /** @var TranslatorInterface $translator */
-    protected $translator;
 
     /** @var Finder $exampleFinder */
     private $exampleFinder;
@@ -63,17 +59,14 @@ final class ParseCommand extends Command
      * Initializes this command with the dependencies used to parse files.
      *
      * @param Parser              $parser
-     * @param TranslatorInterface $translator
      * @param Finder              $exampleFinder
      */
     public function __construct(
         Parser $parser,
-        TranslatorInterface $translator,
         Finder $exampleFinder,
         \DI\Container $container
     ) {
         $this->parser        = $parser;
-        $this->translator    = $translator;
         $this->exampleFinder = $exampleFinder;
         $this->container     = $container;
 
@@ -88,32 +81,116 @@ final class ParseCommand extends Command
     protected function configure()
     {
         // minimization of the following expression
-        $optionalArrayFlag = InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY;
-
         $this->setAliases(array('parse'))
-            ->setDescription($this->__('PPCPP-DESCRIPTION'))
-            ->setHelp($this->__('PPCPP-HELPTEXT'))
-            ->addOption('filename', 'f', $optionalArrayFlag, $this->__('PPCPP:OPT-FILENAME'))
-            ->addOption('directory', 'd', $optionalArrayFlag, $this->__('PPCPP:OPT-DIRECTORY'))
-            ->addOption('target', 't', InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TARGET'))
-            ->addOption('encoding', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-ENCODING'))
-            ->addOption('extensions', 'e', $optionalArrayFlag, $this->__('PPCPP:OPT-EXTENSIONS'))
-            ->addOption('ignore', 'i', $optionalArrayFlag, $this->__('PPCPP:OPT-IGNORE'))
-            ->addOption('ignore-tags', null, $optionalArrayFlag, $this->__('PPCPP:OPT-IGNORETAGS'))
-            ->addOption('ignore-hidden', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-HIDDEN'))
-            ->addOption('ignore-symlinks', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-IGNORESYMLINKS'))
-            ->addOption('markers', 'm', $optionalArrayFlag, $this->__('PPCPP:OPT-MARKERS'))
-            ->addOption('title', null, InputOption::VALUE_OPTIONAL, $this->__('PPCPP:OPT-TITLE'))
-            ->addOption('force', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-FORCE'))
-            ->addOption('visibility', null, $optionalArrayFlag, $this->__('PPCPP:OPT-VISIBILITY'))
-            ->addOption('sourcecode', null, InputOption::VALUE_NONE, $this->__('PPCPP:OPT-SOURCECODE'))
-            ->addOption('progressbar', 'p', InputOption::VALUE_NONE, $this->__('PPCPP:OPT-PROGRESSBAR'))
-            ->addOption('parseprivate', null, InputOption::VALUE_NONE, 'PPCPP:OPT-PARSEPRIVATE')
+            ->setDescription('Creates a structure file from your source code')
+            ->setHelp(
+                'The parse task uses the source files defined either by -f or -d options and generates cache '
+                . 'files at the target location.'
+            )
+            ->addOption(
+                'filename',
+                'f',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of files to parse. The wildcards ? and * are supported'
+            )
+            ->addOption(
+                'directory',
+                'd',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of directories to (recursively) parse'
+            )
+            ->addOption(
+                'target',
+                't',
+                InputOption::VALUE_OPTIONAL,
+                'Path where to store the cache (optional)'
+            )
+            ->addOption(
+                'encoding',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Encoding to be used to interpret source files with'
+            )
+            ->addOption(
+                'extensions',
+                'e',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of extensions to parse, defaults to php, php3 and phtml'
+            )
+            ->addOption(
+                'ignore',
+                'i',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of file(s) and directories that will be ignored. Wildcards * and ? are supported'
+            )
+            ->addOption(
+                'ignore-tags',
+                null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of tags that will be ignored, defaults to none. package, subpackage and ignore '
+                . 'may not be ignored.'
+            )
+            ->addOption(
+                'ignore-hidden',
+                null,
+                InputOption::VALUE_NONE,
+                'Use this option to tell phpDocumentor whether to ignore files and directories that begin with a '
+                . 'period (.), by default this is true and thus these are ignored'
+            )
+            ->addOption(
+                'ignore-symlinks',
+                null,
+                InputOption::VALUE_NONE,
+                'Ignore symlinks to other files or directories, default is on'
+            )
+            ->addOption(
+                'markers',
+                'm',
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Comma-separated list of markers/tags to filter'
+            )
+            ->addOption(
+                'title',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Sets the title for this project; default is the phpDocumentor logo'
+            )
+            ->addOption(
+                'force',
+                null,
+                InputOption::VALUE_NONE,
+                'Forces a full build of the documentation, does not increment existing documentation'
+            )
+            ->addOption(
+                'visibility',
+                null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Specifies the parse visibility that should be displayed in the documentation (comma separated e.g. '
+                . '"public,protected")'
+            )
+            ->addOption(
+                'sourcecode',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether to include syntax highlighted source code'
+            )
+            ->addOption(
+                'progressbar',
+                'p',
+                InputOption::VALUE_NONE,
+                'Whether to show a progress bar; will automatically quiet logging to stdout'
+            )
+            ->addOption(
+                'parseprivate',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether to parse DocBlocks marked with @internal tag'
+            )
             ->addOption(
                 'defaultpackagename',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                $this->__('PPCPP:OPT-DEFAULTPACKAGENAME'),
+                'Name to use for the default package.',
                 'Default'
             )
             ->addArgument(
@@ -296,20 +373,6 @@ final class ParseCommand extends Command
         $progress->finish();
     }
 
-    /**
-     * Translates the provided text and replaces any contained parameters using printf notation.
-     *
-     * @param string   $text
-     * @param string[] $parameters
-     *
-     * @return string
-     */
-    // @codingStandardsIgnoreStart
-    private function __($text, $parameters = array())
-    // @codingStandardsIgnoreEnd
-    {
-        return vsprintf($this->translator->translate($text), $parameters);
-    }
 
     /**
      * Returns the configuration for the application.

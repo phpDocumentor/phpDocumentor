@@ -18,7 +18,6 @@ use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Backend\Php;
-use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,19 +31,14 @@ class LoggerHelper extends Helper
     /** @var Dispatcher */
     private $dispatcher;
 
-    /** @var Translator */
-    private $translator;
-
     /**
-     * Initializes this helper with the event dispatcher and a translator.
+     * Initializes this helper with the event dispatcher.
      *
      * @param Dispatcher $dispatcher
-     * @param Translator $translator
      */
-    public function __construct(Dispatcher $dispatcher, Translator $translator)
+    public function __construct(Dispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
-        $this->translator = $translator;
     }
 
     /**
@@ -165,7 +159,7 @@ class LoggerHelper extends Helper
         }
 
         if ($numericErrors[$event->getPriority()] >= $numericErrors[$threshold]) {
-            $message = vsprintf($this->translator->translate($event->getMessage()), $event->getContext());
+            $message = vsprintf($event->getMessage(), $event->getContext());
 
             switch ($event->getPriority()) {
                 case LogLevel::WARNING:

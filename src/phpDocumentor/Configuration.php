@@ -70,12 +70,6 @@ class Configuration
     protected $transformations;
 
     /**
-     * @var Translator\Configuration The settings used during translation.
-     * @Serializer\Type("phpDocumentor\Translator\Configuration")
-     */
-    protected $translator;
-
-    /**
      * @var Partial[] A list of custom texts, or references thereto, that may be injected into templates.
      * @Serializer\Type("array<phpDocumentor\Partials\Partial>")
      */
@@ -91,7 +85,6 @@ class Configuration
         $this->files           = new Parser\Configuration\Files();
         $this->parser          = new Parser\Configuration();
         $this->logging         = new Logging();
-        $this->translator      = new Translator\Configuration();
     }
 
     /**
@@ -200,15 +193,5 @@ class Configuration
     public function getTransformer()
     {
         return $this->transformer;
-    }
-
-    /**
-     * Returns the settings for the translator.
-     *
-     * @return Translator\Configuration
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
     }
 }

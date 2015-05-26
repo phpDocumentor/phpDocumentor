@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsReturnTypeNotAnIdeDefault extends Constraint
 {
-    /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50017';
+    /** @var string message */
+    public $message = 'The type for the %s tag in %s is "type"; isn\'t this an IDE default?';
 
     public $code = 50017;
 

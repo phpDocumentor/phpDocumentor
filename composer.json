@@ -24,10 +24,7 @@
 
         "phpdocumentor/graphviz":   "^1.0",
         "phpdocumentor/fileset":    "^1.0",
-        "phpdocumentor/reflection": "dev-develop",
-
-        "zendframework/zend-servicemanager": "^2.3",
-        "zendframework/zend-i18n":           "^2.3"
+        "phpdocumentor/reflection": "dev-develop"
     },
     "minimum-stability": "stable",
     "require-dev": {

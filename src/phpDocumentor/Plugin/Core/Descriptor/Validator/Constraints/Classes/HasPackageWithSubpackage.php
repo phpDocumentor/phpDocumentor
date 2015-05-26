@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class HasPackageWithSubpackage extends Constraint
 {
-    /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50004';
+    /** @var string message */
+    public $message = 'Cannot have a @subpackage when a @package tag is not present';
 
     public $code = 50004;
 

@@ -45,7 +45,6 @@ use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
 use phpDocumentor\Transformer\Template\PathResolver;
 use phpDocumentor\Transformer\Transformer;
-use phpDocumentor\Translator\Translator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -57,7 +56,6 @@ use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\ValidatorInterface;
-use Zend\I18n\Translator\TranslatorInterface as ZendTranslatorInterface;
 use phpDocumentor\Descriptor;
 
 return [
@@ -143,17 +141,6 @@ return [
     Dispatcher::class => function () {
         return Dispatcher::getInstance();
     },
-
-    // Translation
-    Translator::class => function (ContainerInterface $c) {
-        $translator = new Translator();
-        $translator->setLocale($c->get(Configuration::class)->getTranslator()->getLocale());
-        $translator->addTranslationFolder(__DIR__ . '/Parser/Messages');
-        $translator->addTranslationFolder(__DIR__ . '/Plugin/Core/Messages');
-
-        return $translator;
-    },
-    ZendTranslatorInterface::class => \DI\get(Translator::class),
 
     // Serializer
     Serializer::class => function (ContainerInterface $c) {
@@ -250,9 +237,5 @@ return [
     PathResolver::class => \DI\object()
         ->constructorParameter('templatePath', \DI\get('template.directory')),
 
-    Twig::class => \DI\object()->method('setTranslator', \DI\get(Translator::class)),
-    Checkstyle::class => \DI\object()->method('setTranslator', \DI\get(Translator::class)),
-    Xml::class => \DI\object()
-        ->constructorParameter('router', \DI\get(StandardRouter::class))
-        ->method('setTranslator', \DI\get(Translator::class)),
+    Xml::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class))
 ];

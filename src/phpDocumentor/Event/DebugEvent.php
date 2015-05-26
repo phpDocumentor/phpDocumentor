@@ -27,7 +27,7 @@ class DebugEvent extends EventAbstract
     /** @var int Default priority level for these events is DEBUG */
     protected $priority = LogLevel::DEBUG;
 
-    /** @var string[] Extra parameters to insert into the message after translation */
+    /** @var string[] Extra parameters to insert into the message */
     protected $context = array();
 
     /**
@@ -65,7 +65,7 @@ class DebugEvent extends EventAbstract
     }
 
     /**
-     * Sets additional context (parameters) to use when translating messages.
+     * Sets additional context (parameters) to use when composing messages.
      *
      * @param string[] $context
      *

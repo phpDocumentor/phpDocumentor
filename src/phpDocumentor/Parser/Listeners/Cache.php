@@ -18,7 +18,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Parser;
-use phpDocumentor\Translator\Translator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Filesystem;
@@ -33,9 +32,6 @@ class Cache
     /** @var CacheInterface */
     private $cacheModel;
 
-    /** @var Translator */
-    private $translator;
-
     /** @var ProjectDescriptorMapper */
     private $mapper;
 
@@ -43,15 +39,13 @@ class Cache
     private $dispatcher;
 
     /**
-     * Initializes this listener with the caching service and a translator.
+     * Initializes this listener with the caching service.
      *
      * @param CacheInterface $cacheModel
-     * @param Translator $translator
      */
-    public function __construct(CacheInterface $cacheModel, Translator $translator)
+    public function __construct(CacheInterface $cacheModel)
     {
         $this->cacheModel = $cacheModel;
-        $this->translator = $translator;
         $this->mapper     = new ProjectDescriptorMapper($cacheModel);
     }
 
@@ -181,7 +175,7 @@ class Cache
             mkdir($target, 0777, true);
         }
         if (!is_dir($target)) {
-            throw new \Exception($this->translator->translate('PPCPP:EXC-BADTARGET'));
+            throw new \Exception('The provided target location must be a directory');
         }
         $this->getCache()->setAdapter(new File($target));
     }
