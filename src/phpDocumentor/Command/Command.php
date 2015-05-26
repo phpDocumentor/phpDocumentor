@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Command;
 
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
  * Includes additional methods to forward the output to the logging events
  * of phpDocumentor.
  */
-class Command extends \Symfony\Component\Console\Command\Command
+class Command extends SymfonyCommand
 {
     /**
      * Returns the Progress bar helper.

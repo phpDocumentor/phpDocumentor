@@ -53,6 +53,8 @@ final class ParseCommand extends Command
      * Because we need to configuration from the container but cannot inject the configuration because it needs to be
      * postponed as late as possible, later we should find a way to remove this dependency.
      *
+     * @todo fight the evil.
+     *
      * @var \DI\Container
      */
     private $container;

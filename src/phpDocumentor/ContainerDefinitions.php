@@ -58,6 +58,7 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\ValidatorInterface;
 use Zend\I18n\Translator\TranslatorInterface as ZendTranslatorInterface;
+use phpDocumentor\Descriptor;
 
 return [
     // -- Parameters
@@ -68,16 +69,9 @@ return [
     },
     'cache.directory' => sys_get_temp_dir(),
     'linker.substitutions' => [
-        'phpDocumentor\Descriptor\ProjectDescriptor' => ['files'],
-        'phpDocumentor\Descriptor\FileDescriptor'    => [
-            'tags',
-            'classes',
-            'interfaces',
-            'traits',
-            'functions',
-            'constants'
-        ],
-        'phpDocumentor\Descriptor\ClassDescriptor' => [
+        Descriptor\ProjectDescriptor::class => [ 'files' ],
+        Descriptor\FileDescriptor::class    => [ 'tags', 'classes', 'interfaces', 'traits', 'functions', 'constants' ],
+        Descriptor\ClassDescriptor::class   => [
             'tags',
             'parent',
             'interfaces',
@@ -86,27 +80,17 @@ return [
             'methods',
             'usedTraits',
         ],
-        'phpDocumentor\Descriptor\InterfaceDescriptor' => [
-            'tags',
-            'parent',
-            'constants',
-            'methods',
-        ],
-        'phpDocumentor\Descriptor\TraitDescriptor' => [
-            'tags',
-            'properties',
-            'methods',
-            'usedTraits',
-        ],
-        'phpDocumentor\Descriptor\FunctionDescriptor'        => ['tags', 'arguments'],
-        'phpDocumentor\Descriptor\MethodDescriptor'          => ['tags', 'arguments'],
-        'phpDocumentor\Descriptor\ArgumentDescriptor'        => ['types'],
-        'phpDocumentor\Descriptor\PropertyDescriptor'        => ['tags', 'types'],
-        'phpDocumentor\Descriptor\ConstantDescriptor'        => ['tags', 'types'],
-        'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => ['types'],
-        'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => ['types'],
-        'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => ['reference'],
-        'phpDocumentor\Descriptor\Type\CollectionDescriptor' => ['baseType', 'types', 'keyTypes'],
+        Descriptor\InterfaceDescriptor::class       => [ 'tags', 'parent', 'constants', 'methods' ],
+        Descriptor\TraitDescriptor::class           => [ 'tags', 'properties', 'methods', 'usedTraits' ],
+        Descriptor\FunctionDescriptor::class        => ['tags', 'arguments'],
+        Descriptor\MethodDescriptor::class          => ['tags', 'arguments'],
+        Descriptor\ArgumentDescriptor::class        => ['types'],
+        Descriptor\PropertyDescriptor::class        => ['tags', 'types'],
+        Descriptor\ConstantDescriptor::class        => ['tags', 'types'],
+        Descriptor\Tag\ParamDescriptor::class       => ['types'],
+        Descriptor\Tag\ReturnDescriptor::class      => ['types'],
+        Descriptor\Tag\SeeDescriptor::class         => ['reference'],
+        Descriptor\Type\CollectionDescriptor::class => ['baseType', 'types', 'keyTypes'],
     ],
     'template.localDirectory'    => __DIR__ . '/../../data/templates',
     'template.composerDirectory' => __DIR__ . '/../../../templates',

@@ -35,6 +35,12 @@ class LoggerHelper extends Helper
     /** @var Translator */
     private $translator;
 
+    /**
+     * Initializes this helper with the event dispatcher and a translator.
+     *
+     * @param Dispatcher $dispatcher
+     * @param Translator $translator
+     */
     public function __construct(Dispatcher $dispatcher, Translator $translator)
     {
         $this->dispatcher = $dispatcher;
@@ -99,6 +105,16 @@ class LoggerHelper extends Helper
         $alreadyConnected = true;
     }
 
+    /**
+     * Log all errors discovered after parsing a file to the listening loggers.
+     *
+     * @param FileDescriptor           $fileDescriptor
+     * @param OutputInterface          $output
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $message
+     *
+     * @return void
+     */
     private function logFileWithErrors(
         FileDescriptor $fileDescriptor,
         OutputInterface $output,
