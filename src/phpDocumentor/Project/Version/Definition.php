@@ -11,13 +11,14 @@
 
 namespace phpDocumentor\Project\Version;
 
+use phpDocumentor\Definition as DefinitionInterface;
 use phpDocumentor\Project\DocumentGroup\Definition as DocumentGroupDefinition;
 use phpDocumentor\Project\VersionNumber;
 
 /**
  * An aggregate of documentGroupDefinitions that belong to a version.
  */
-final class Definition
+final class Definition implements DefinitionInterface
 {
 
     /**
@@ -34,7 +35,7 @@ final class Definition
      * Initializes the object with passed values.
      *
      * @param VersionNumber $versionNumber
-     * @param array $documentGroupDefinition
+     * @param DocumentGroupDefinition[] $documentGroupDefinition
      */
     public function __construct(VersionNumber $versionNumber, array $documentGroupDefinition = array())
     {

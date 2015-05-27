@@ -11,8 +11,9 @@
 
 namespace phpDocumentor\Project\DocumentGroup;
 
+use phpDocumentor\Definition as DefinitionInterface;
 
-class Definition
+final class Definition implements DefinitionInterface
 {
 
 }
