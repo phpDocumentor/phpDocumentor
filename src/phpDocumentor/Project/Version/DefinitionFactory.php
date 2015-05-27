@@ -13,6 +13,7 @@ namespace phpDocumentor\Project\Version;
 
 use phpDocumentor\DocumentGroupDefinitionFactory;
 use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\Exception\Exception;
 use phpDocumentor\Project\DocumentGroup\Definition as DocumentGroupDefinition;
 use phpDocumentor\Project\VersionNumber;
 
@@ -48,6 +49,7 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
      *
      * @param array $options
      * @return DocumentGroupDefinition[]
+     * @throws Exception
      */
     private function createDocumentGroupDefinitions(array $options)
     {
@@ -56,18 +58,18 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
         foreach ($options as $documentGroupType => $documentGroupOptions) {
             if(is_array($documentGroupOptions)) {
                 $factory = $this->findFactory($documentGroupType, $documentGroupOptions['format']);
-                if ($factory !== null) {
-                    $documentGroups[] = $factory->create($documentGroupOptions);
-                }
+                $documentGroups[] = $factory->create($documentGroupOptions);
             }
         }
+
         return $documentGroups;
     }
 
     /**
      * @param string $type
      * @param string $format
-     * @return null|DocumentGroupDefinitionFactory
+     * @return DocumentGroupDefinitionFactory
+     * @throws Exception
      */
     private function findFactory($type, $format)
     {
@@ -75,7 +77,11 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
             return $this->documentGroupDefinitionFactories[$type][$format];
         }
 
-        return null;
+        throw new Exception(sprintf(
+            'No factory registered for document group %s with format %s',
+            $type,
+            $format
+        ));
     }
 
     /**

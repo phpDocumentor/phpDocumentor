@@ -65,4 +65,19 @@ class DefinitionFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Definition::class, $versionDefinition);
         $this->assertCount(1, $versionDefinition->getDocumentGroupDefinitions());
     }
+
+    /**
+     * @expectedException phpDocumentor\Exception\Exception
+     */
+    public function testCreateThrowsExceptionWhenTypeDoesnotExist()
+    {
+        $versionConfig = [
+            'version' => '1.0.0',
+            'someRandomName' => [
+                'format' => 'php',
+            ]
+        ];
+
+        $this->fixture->create($versionConfig);
+    }
 }
