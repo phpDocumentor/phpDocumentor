@@ -36,11 +36,6 @@ Tools
 Our user documentation is written using the `RestructuredText`_ markup style and converted to HTML and PDF
 using Sphinx_. For more information on installing Sphinx_ we would like to refer you to their website.
 
-.. note::
-
-   In the future we will migrate towards Scrybe_ but given the current state of that project it is currently
-   not possible.
-
 For our API Documentation we eat our own dogfood and generate it using phpDocumentor2.
 
 Style Guide
@@ -121,4 +116,3 @@ Outline
 
 .. _RestructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx:           http://sphinx-doc.org
-.. _Scrybe:           http://github.com/phpDocumentor/Scrybe

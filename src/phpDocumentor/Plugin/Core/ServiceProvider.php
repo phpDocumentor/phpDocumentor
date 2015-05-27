@@ -11,9 +11,10 @@
 
 namespace phpDocumentor\Plugin\Core;
 
-use Cilex\Application;
-use Cilex\ServiceProviderInterface;
-use phpDocumentor\Translator\Translator;
+use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Plugin\Graphs\ServiceProvider as GraphServiceProvider;
+use phpDocumentor\Plugin\Twig\ServiceProvider as TwigServiceProvider;
+use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
 
@@ -24,102 +25,91 @@ use phpDocumentor\Transformer\Writer\Collection;
  * phpDocumentor and, for backwards compatibility, registers the service providers for Graphs, Twig and PDF to
  * the container.
  */
-final class ServiceProvider implements ServiceProviderInterface
+final class ServiceProvider
 {
+    /** @var Collection */
+    private $writerCollection;
+
+    /** @var GraphServiceProvider */
+    private $graphProvider;
+
+    /** @var TwigServiceProvider */
+    private $twigProvider;
+
+    /** @var Writer\FileIo */
+    private $fileIoWriter;
+
+    /** @var Writer\Checkstyle */
+    private $checkstyleWriter;
+
+    /** @var Writer\Sourcecode */
+    private $sourcecodeWriter;
+
+    /** @var Writer\Statistics */
+    private $statisticsWriter;
+
+    /** @var Writer\Xml */
+    private $xmlWriter;
+
+    /** @var Writer\Xsl */
+    private $xslWriter;
+
+    /** @var Writer\Jsonp */
+    private $jsonpWriter;
+
+    /** @var Queue */
+    private $queue;
+
+    /** @var Analyzer */
+    private $analyzer;
+
+    public function __construct(
+        Collection           $writerCollection,
+        GraphServiceProvider $graphProvider,
+        TwigServiceProvider  $twigProvider,
+        Writer\FileIo        $fileIoWriter,
+        Writer\Checkstyle    $checkstyleWriter,
+        Writer\Sourcecode    $sourcecodeWriter,
+        Writer\Statistics    $statisticsWriter,
+        Writer\Xml           $xmlWriter,
+        Writer\Xsl           $xslWriter,
+        Writer\Jsonp         $jsonpWriter,
+        Queue                $queue,
+        Analyzer             $analyzer
+    ) {
+        $this->writerCollection = $writerCollection;
+        $this->graphProvider    = $graphProvider;
+        $this->twigProvider     = $twigProvider;
+        $this->fileIoWriter     = $fileIoWriter;
+        $this->checkstyleWriter = $checkstyleWriter;
+        $this->sourcecodeWriter = $sourcecodeWriter;
+        $this->statisticsWriter = $statisticsWriter;
+        $this->xmlWriter        = $xmlWriter;
+        $this->xslWriter        = $xslWriter;
+        $this->jsonpWriter      = $jsonpWriter;
+        $this->queue            = $queue;
+        $this->analyzer         = $analyzer;
+    }
+
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance.
-     *
      * @return void
      */
-    public function register(Application $app)
+    public function __invoke()
     {
-        $this->registerTranslationMessages($app);
-        $this->registerWriters($app);
-        $this->registerDependenciesOnXsltExtension($app);
+        $this->writerCollection['FileIo']     = $this->fileIoWriter;
+        $this->writerCollection['checkstyle'] = $this->checkstyleWriter;
+        $this->writerCollection['sourcecode'] = $this->sourcecodeWriter;
+        $this->writerCollection['statistics'] = $this->statisticsWriter;
+        $this->writerCollection['xml']        = $this->xmlWriter;
+        $this->writerCollection['xsl']        = $this->xslWriter;
+        $this->writerCollection['jsonp']      = $this->jsonpWriter;
 
-        $app->register(new \phpDocumentor\Plugin\Graphs\ServiceProvider());
-        $app->register(new \phpDocumentor\Plugin\Twig\ServiceProvider());
-    }
+        Xslt\Extension::$routers = $this->queue;
+        Xslt\Extension::$analyzer = $this->analyzer;
 
-    /**
-     * Creates all writers for this plugin and adds them to the WriterCollection object.
-     *
-     * This action will enable transformations in templates to make use of these writers.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    private function registerWriters(Application $app)
-    {
-        $writerCollection = $this->getWriterCollection($app);
-
-        $writerCollection['FileIo'] = new Writer\FileIo();
-        $writerCollection['checkstyle'] = new Writer\Checkstyle();
-        $writerCollection['sourcecode'] = new Writer\Sourcecode();
-        $writerCollection['statistics'] = new Writer\Statistics();
-        $writerCollection['xml'] = new Writer\Xml($app['transformer.routing.standard']);
-        $writerCollection['xsl'] = new Writer\Xsl($app['monolog']);
-        $writerCollection['jsonp'] = new Writer\Jsonp();
-
-        $writerCollection['checkstyle']->setTranslator($this->getTranslator($app));
-        $writerCollection['xml']->setTranslator($this->getTranslator($app));
-    }
-
-    /**
-     * Registers the Messages folder in this plugin as a source of translations.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    private function registerTranslationMessages(Application $app)
-    {
-        $this->getTranslator($app)->addTranslationFolder(__DIR__ . DIRECTORY_SEPARATOR . 'Messages');
-    }
-
-    /**
-     * Registers the Routing Queue and Descriptor Analyzer objects on the XSLT Extension class.
-     *
-     * In every template we use PHP helpers in order to be able to have routing that is universal between templates and
-     * convert Markdown text into HTML (for example). The only way for XSL to do this is by having global functions or
-     * static methods in a class because you cannot inject an object into an XSL processor.
-     *
-     * With this method we make sure that all dependencies used by the static methods are injected as static properties.
-     *
-     * @param Application $app
-     *
-     * @return void
-     */
-    private function registerDependenciesOnXsltExtension(Application $app)
-    {
-        Xslt\Extension::$routers = $app['transformer.routing.queue'];
-        Xslt\Extension::$analyzer = $app['descriptor.analyzer'];
-    }
-
-    /**
-     * Returns the Translator service from the Service Locator.
-     *
-     * @param Application $app
-     *
-     * @return Translator
-     */
-    private function getTranslator(Application $app)
-    {
-        return $app['translator'];
-    }
-
-    /**
-     * Returns the WriterCollection service from the Service Locator.
-     *
-     * @param Application $app
-     *
-     * @return Collection
-     */
-    private function getWriterCollection(Application $app)
-    {
-        return $app['transformer.writer.collection'];
+        call_user_func($this->twigProvider);
+        call_user_func($this->graphProvider);
     }
 }

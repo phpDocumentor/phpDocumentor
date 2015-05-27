@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class DefaultValidators
 {
@@ -23,7 +23,7 @@ class DefaultValidators
      */
     private $validator;
 
-    public function __construct($validator)
+    public function __construct(ValidatorInterface $validator)
     {
         $this->validator = $validator;
     }

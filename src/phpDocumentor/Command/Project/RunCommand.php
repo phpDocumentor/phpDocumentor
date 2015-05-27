@@ -39,6 +39,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RunCommand extends Command
 {
     /**
+     * @var Analyzer
+     */
+    private $analyzer;
+
+    public function __construct(Analyzer $analyzer)
+    {
+        $this->analyzer = $analyzer;
+
+        parent::__construct();
+    }
+
+    /**
      * Initializes this command and sets the name, description, options and
      * arguments.
      *
@@ -244,7 +256,6 @@ HELP
                  '--sourcecode'         => $input->getOption('sourcecode'),
                  '--parseprivate'       => $input->getOption('parseprivate'),
                  '--progressbar'        => $input->getOption('progressbar'),
-                 '--log'                => $input->getOption('log'),
                  'paths'                => $input->getArgument('paths')
             ),
             $this->getDefinition()
@@ -262,7 +273,6 @@ HELP
                  '--target'      => $input->getOption('target'),
                  '--template'    => $input->getOption('template'),
                  '--progressbar' => $input->getOption('progressbar'),
-                 '--log'         => $input->getOption('log')
             )
         );
         $return_code = $transform_command->run($transform_input, $output);
@@ -271,9 +281,7 @@ HELP
         }
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            /** @var Analyzer $analyzer */
-            $analyzer = $this->getService('descriptor.analyzer');
-            file_put_contents('ast.dump', serialize($analyzer->getProjectDescriptor()));
+            file_put_contents('ast.dump', serialize($this->analyzer->getProjectDescriptor()));
         }
 
         return 0;

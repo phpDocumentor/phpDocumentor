@@ -17,9 +17,10 @@ use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Parser\Configuration\Files;
+use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
+use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Parser;
-use phpDocumentor\Parser\Util\ParserPopulator;
+use phpDocumentor\Partials\Collection;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,17 +48,34 @@ final class ParseCommand extends Command
     private $exampleFinder;
 
     /**
+     * Evil!
+     *
+     * Because we need to configuration from the container but cannot inject the configuration because it needs to be
+     * postponed as late as possible, later we should find a way to remove this dependency.
+     *
+     * @todo fight the evil.
+     *
+     * @var \DI\Container
+     */
+    private $container;
+
+    /**
      * Initializes this command with the dependencies used to parse files.
      *
      * @param Parser              $parser
      * @param TranslatorInterface $translator
      * @param Finder              $exampleFinder
      */
-    public function __construct(Parser $parser, TranslatorInterface $translator, Finder $exampleFinder)
-    {
+    public function __construct(
+        Parser $parser,
+        TranslatorInterface $translator,
+        Finder $exampleFinder,
+        \DI\Container $container
+    ) {
         $this->parser        = $parser;
         $this->translator    = $translator;
         $this->exampleFinder = $exampleFinder;
+        $this->container     = $container;
 
         parent::__construct('project:parse');
     }
@@ -120,6 +138,7 @@ final class ParseCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $configuration = $this->populateConfiguration($input);
+        $this->container->get(InitializerChain::class)->initialize($this->container->get(Analyzer::class));
         $this->parser->boot($configuration->getParser());
         $this->configureExampleFinder($configuration);
 
@@ -227,7 +246,7 @@ final class ParseCommand extends Command
     {
         $projectDescriptor = $this->parser->parse();
         $projectDescriptor->setName($configuration->getTitle());
-        $projectDescriptor->setPartials($this->getService('partials'));
+        $projectDescriptor->setPartials($this->container->get(Collection::class));
     }
 
     /**
@@ -299,7 +318,7 @@ final class ParseCommand extends Command
      */
     private function getConfiguration()
     {
-        return $this->getService('config');
+        return $this->container->get(Configuration::class);
     }
 
     /**
@@ -309,7 +328,7 @@ final class ParseCommand extends Command
      */
     private function getEventDispatcher()
     {
-        return $this->getService('event_dispatcher');
+        return $this->container->get(Dispatcher::class);
     }
 
     /**
