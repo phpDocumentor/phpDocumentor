@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator;
 
-use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
@@ -25,9 +24,6 @@ use phpDocumentor\Reflection\DocBlock;
  */
 abstract class ValidatorAbstract
 {
-    /** @var Translator $translate */
-    protected $translate;
-
     /**
      * Name of the "entity" being validated.
      *
@@ -157,7 +153,7 @@ abstract class ValidatorAbstract
      */
     public function logParserError($type, $code, $line, $variables = array())
     {
-        $message = $this->__($code, $variables);
+        $message = sprintf($code, $variables);
         $this->log($message, LogLevel::ERROR);
         $this->dispatch(
             'parser.log',
@@ -182,29 +178,6 @@ abstract class ValidatorAbstract
     }
 
     /**
-     * Translates the ID or message in the given language.
-     *
-     * Translation messages may contain any formatting as used by the php
-     * vsprintf function.
-     *
-     * @param string $message   ID or message to translate.
-     * @param array  $variables Variables to use for substitution.
-     * @codingStandardsIgnoreStart
-     *
-     * @return string
-     */
-    public function __($message, $variables = array())
-    {
-        if (!$this->translate) {
-            return vsprintf($message, $variables);
-        }
-
-        $translator = $this->translate;
-
-        return vsprintf($translator->translate($message), $variables);
-    }
-
-    /**
      * Returns the configuration for this object.
      *
      * @return \phpDocumentor\Configuration
@@ -222,15 +195,5 @@ abstract class ValidatorAbstract
     public function getEventDispatcher()
     {
         return $this->event_dispatcher;
-    }
-
-    /**
-     * Returns the translation component.
-     *
-     * @return Translator|null
-     */
-    public function getTranslator()
-    {
-        return $this->translate;
     }
 }

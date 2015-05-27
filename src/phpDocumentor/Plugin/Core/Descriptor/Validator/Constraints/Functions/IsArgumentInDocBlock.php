@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 class IsArgumentInDocBlock extends Constraint
 {
     /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50015';
+    public $message = 'Argument %s is missing from the Docblock of %s';
 
     public $code = 50015;
 

@@ -46,13 +46,31 @@ class DefaultValidators
         /** @var ClassMetadata $methodMetadata */
         $methodMetadata    = $this->validator->getMetadataFor('phpDocumentor\Descriptor\MethodDescriptor');
 
-        $fileMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50000')));
-        $classMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50005')));
+        $fileMetadata->addPropertyConstraint(
+            'summary',
+            new Assert\NotBlank(array('message' => 'No summary was found for this file'))
+        );
+        $classMetadata->addPropertyConstraint(
+            'summary',
+            new Assert\NotBlank(array('message' => 'No summary for class %2$s'))
+        );
         $propertyMetadata->addConstraint(new phpDocAssert\Property\HasSummary());
-        $methodMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50008')));
-        $interfaceMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50009')));
-        $traitMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50010')));
-        $functionMetadata->addPropertyConstraint('summary', new Assert\NotBlank(array('message' => 'PPC:ERR-50011')));
+        $methodMetadata->addPropertyConstraint(
+            'summary',
+            new Assert\NotBlank(array('message' => 'No summary for method %2$s'))
+        );
+        $interfaceMetadata->addPropertyConstraint(
+            'summary',
+            new Assert\NotBlank(array('message' => 'No summary for interface %s'))
+        );
+        $traitMetadata->addPropertyConstraint(
+            'summary',
+            new Assert\NotBlank(array('message' => 'No summary for trait %s'))
+        );
+        $functionMetadata->addPropertyConstraint(
+            'summary',
+            new Assert\NotBlank(array('message' => 'No summary for function %2$s'))
+        );
 
         $functionMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());
         $methodMetadata->addConstraint(new phpDocAssert\Functions\IsReturnTypeNotAnIdeDefault());

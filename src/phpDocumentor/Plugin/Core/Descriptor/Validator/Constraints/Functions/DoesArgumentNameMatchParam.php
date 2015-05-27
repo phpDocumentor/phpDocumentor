@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class DoesArgumentNameMatchParam extends Constraint
 {
-    /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50014';
+    /** @var string message  */
+    public $message = 'Name of argument %s does not match with the DocBlock\'s name %s in %s';
 
     public $code = 50014;
 
