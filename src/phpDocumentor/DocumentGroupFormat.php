@@ -14,7 +14,7 @@ namespace phpDocumentor;
 /**
  * Object describing the format of a DocumentGroup
  */
-final class DocumentGuideFormat
+final class DocumentGroupFormat
 {
     /**
      * format name.

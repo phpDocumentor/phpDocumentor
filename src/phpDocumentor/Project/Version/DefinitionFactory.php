@@ -12,7 +12,7 @@
 namespace phpDocumentor\Project\Version;
 
 use phpDocumentor\DocumentGroupDefinitionFactory;
-use phpDocumentor\DocumentGuideFormat;
+use phpDocumentor\DocumentGroupFormat;
 use phpDocumentor\Project\DocumentGroup\Definition as DocumentGroupDefinition;
 use phpDocumentor\Project\VersionNumber;
 
@@ -49,10 +49,10 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
      * The combination of type and format will identify a certain documentGroup
      *
      * @param string $type
-     * @param DocumentGuideFormat $format
+     * @param DocumentGroupFormat $format
      * @param DocumentGroupDefinitionFactory $factory
      */
-    public function registerDocumentGroupDefinitionFactory($type, DocumentGuideFormat $format, DocumentGroupDefinitionFactory $factory)
+    public function registerDocumentGroupDefinitionFactory($type, DocumentGroupFormat $format, DocumentGroupDefinitionFactory $factory)
     {
         $this->documentGroupDefinitionFactories[$type][(string)$format] = $factory;
     }

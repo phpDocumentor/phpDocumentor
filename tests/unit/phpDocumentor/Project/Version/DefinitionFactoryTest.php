@@ -13,7 +13,7 @@ namespace phpDocumentor\Project\Version;
 
 use Mockery as m;
 use phpDocumentor\DocumentGroupDefinitionFactory;
-use phpDocumentor\DocumentGuideFormat;
+use phpDocumentor\DocumentGroupFormat;
 
 /**
  * Test case for DefinitionFactory
@@ -40,7 +40,7 @@ class DefinitionFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fixture = new DefinitionFactory();
         $this->fixture->registerDocumentGroupDefinitionFactory(
             'api',
-            new DocumentGuideFormat('php'),
+            new DocumentGroupFormat('php'),
             $this->apiPHPDocumentGroupDefinitionFactoryMock
         );
     }
