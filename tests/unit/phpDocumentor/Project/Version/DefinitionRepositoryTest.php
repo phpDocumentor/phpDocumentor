@@ -12,6 +12,7 @@
 namespace phpDocumentor\Project\Version;
 
 use Mockery as m;
+use phpDocumentor\Project\VersionNumber;
 
 class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,8 +34,10 @@ class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->configurationFactoryMock->shouldReceive('get')
             ->andReturn(
                 [
-                    'version' => [
-                        '1.0.0' => [],
+                    'versions' => [
+                        '1.0.0' => [
+                            'api' => []
+                        ],
                         '1.1.0' => [],
                     ],
                 ]
@@ -53,7 +56,8 @@ class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->definitionFactoryMock->shouldReceive('create')
             ->once()
-            ->andReturn(new Definition());
+            ->with(['version' => '1.0.0', 'api' => []])
+            ->andReturn(new Definition(new VersionNumber(null)));
         $this->assertInstanceOf(Definition::class, $this->fixture->fetch('1.0.0'));
     }
 
@@ -61,7 +65,7 @@ class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->definitionFactoryMock->shouldReceive('create')
             ->times(2)
-            ->andReturn(new Definition());
+            ->andReturn(new Definition(new VersionNumber(null)));
 
         $definitions = $this->fixture->fetchAll();
         $this->assertCount(2, $definitions);

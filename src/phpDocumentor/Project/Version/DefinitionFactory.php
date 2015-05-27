@@ -11,11 +11,82 @@
 
 namespace phpDocumentor\Project\Version;
 
+use phpDocumentor\DocumentGroupDefinitionFactory;
+use phpDocumentor\DocumentGuideFormat;
+use phpDocumentor\Project\DocumentGroup\Definition as DocumentGroupDefinition;
+use phpDocumentor\Project\VersionNumber;
 
-class DefinitionFactory
+/**
+ * Factory for Version definition.
+ * Will use the registered factories to create the configured DocumentGroup\Definitions.
+ */
+class DefinitionFactory implements \phpDocumentor\DefinitionFactory
 {
+    /**
+     * @var DocumentGroupDefinitionFactory[]
+     */
+    private $documentGroupDefinitionFactories;
+
+    /**
+     * Creates a full provisioned version definition
+     *
+     * @param array $options
+     * @return Definition
+     */
     public function create(array $options)
     {
+        $documentGroups = $this->createDocumentGroupDefinitions($options);
 
+        return new Definition(
+            new VersionNumber($options['version']),
+            $documentGroups
+        );
+    }
+
+    /**
+     * Register a factory for later usage for a given type and format.
+     * Will override registered factories.
+     * The combination of type and format will identify a certain documentGroup
+     *
+     * @param string $type
+     * @param DocumentGuideFormat $format
+     * @param DocumentGroupDefinitionFactory $factory
+     */
+    public function registerDocumentGroupDefinitionFactory($type, DocumentGuideFormat $format, DocumentGroupDefinitionFactory $factory)
+    {
+        $this->documentGroupDefinitionFactories[$type][(string)$format] = $factory;
+    }
+
+    /**
+     * @param string $type
+     * @param string $format
+     * @return null|DocumentGroupDefinitionFactory
+     */
+    private function findFactory($type, $format)
+    {
+        if (isset($this->documentGroupDefinitionFactories[$type][$format])) {
+            return $this->documentGroupDefinitionFactories[$type][$format];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $options
+     * @return DocumentGroupDefinition[]
+     */
+    private function createDocumentGroupDefinitions(array $options)
+    {
+        $documentGroups = array();
+
+        foreach ($options as $documentGroupType => $documentGroupOptions) {
+            if(is_array($documentGroupOptions)) {
+                $factory = $this->findFactory($documentGroupType, $documentGroupOptions['format']);
+                if ($factory !== null) {
+                    $documentGroups[] = $factory->create($documentGroupOptions);
+                }
+            }
+        }
+        return $documentGroups;
     }
 }

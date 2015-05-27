@@ -44,9 +44,13 @@ final class DefinitionRepository
     public function fetch($versionNumber)
     {
         $config = $this->configurationFactory->get();
-        //@todo determin how config array looks
-        if (isset($config['version'][$versionNumber])) {
-            return $this->definitionFactory->create($config['version'][$versionNumber]);
+        if (isset($config['versions'][$versionNumber])) {
+            return $this->definitionFactory->create(
+                array_merge(
+                    ['version' => $versionNumber],
+                    $config['versions'][$versionNumber]
+                )
+            );
         }
 
         return null;
@@ -61,9 +65,8 @@ final class DefinitionRepository
     {
         $definitions = array();
         $config = $this->configurationFactory->get();
-        //@todo determin how config array looks
-        if (isset($config['version'])) {
-            foreach ($config['version'] as $version => $options ) {
+        if (isset($config['versions'])) {
+            foreach ($config['versions'] as $version => $options ) {
                 $definitions[] = $this->fetch($version);
             }
         }
