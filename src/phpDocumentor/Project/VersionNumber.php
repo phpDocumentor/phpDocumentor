@@ -2,7 +2,7 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.4
+ * PHP Version 5.5
  *
  * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
@@ -11,7 +11,9 @@
 
 namespace phpDocumentor\Project;
 
-
+/**
+ * A value object for versionNumbers
+ */
 final class VersionNumber
 {
     /**
@@ -20,11 +22,21 @@ final class VersionNumber
      */
     private $version;
 
+    /**
+     * Initializes the object.
+     *
+     * @param string $version
+     */
     public function __construct($version)
     {
         $this->version = $version;
     }
 
+    /**
+     * Returns the string representation of this version.
+     *
+     * @return string
+     */
     public function getVersion()
     {
         return $this->version;

@@ -11,9 +11,16 @@
 
 namespace phpDocumentor\Project;
 
-
+/**
+ * Test case for VersionNumber
+ * @coversDefaultClass phpDocumentor\Project\VersionNumber
+ */
 class VersionNumberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::getVersion
+     */
     public function testGetVersion()
     {
         $versionNumber = new VersionNumber('1.0.0');

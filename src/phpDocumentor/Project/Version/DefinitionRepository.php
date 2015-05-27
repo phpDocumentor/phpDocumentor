@@ -2,18 +2,23 @@
 /**
  * phpDocumentor
  *
- * PHP Version 5.4
+ * PHP Version 5.5
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Project\Version;
 
-
+/**
+ * Repository providing version definitions.
+ */
 final class DefinitionRepository
 {
+    /**
+     * @todo missing docblock here. Since the configuration factory is not in place yet
+     */
     private $configurationFactory;
 
     /**
@@ -38,7 +43,7 @@ final class DefinitionRepository
     /**
      * Fetch one specific version. Will return null when version doesn't exist
      *
-     * @param $versionNumber
+     * @param string $versionNumber
      * @return null|Definition
      */
     public function fetch($versionNumber)

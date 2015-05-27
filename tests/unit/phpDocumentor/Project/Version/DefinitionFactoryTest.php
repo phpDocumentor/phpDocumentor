@@ -47,6 +47,7 @@ class DefinitionFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::create
+     * @covers ::<private>
      */
     public function testCreate()
     {

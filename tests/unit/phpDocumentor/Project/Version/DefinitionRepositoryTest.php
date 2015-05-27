@@ -14,6 +14,11 @@ namespace phpDocumentor\Project\Version;
 use Mockery as m;
 use phpDocumentor\Project\VersionNumber;
 
+/**
+ * Test case for DefinitionRepository
+ *
+ * @coversDefaultClass phpDocumentor\Project\Version\DefinitionRepository
+ */
 class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -21,6 +26,9 @@ class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     private $fixture;
 
+    /**
+     * @var m\Mock
+     */
     private $configurationFactoryMock;
 
     /**
