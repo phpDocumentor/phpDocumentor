@@ -11,8 +11,7 @@
 
 namespace phpDocumentor\Plugin\LegacyNamespaceConverter;
 
-use Cilex\Application;
-use Cilex\ServiceProviderInterface;
+use phpDocumentor\Plugin\Parameter;
 use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Analyzer;
@@ -30,48 +29,57 @@ use phpDocumentor\Descriptor\Analyzer;
  * @author david0 <https://github.com/david0> this plugin was generously provided by `@david0`.
  * @link   https://github.com/phpDocumentor/phpDocumentor2/pull/1135
  */
-class ServiceProvider implements ServiceProviderInterface
+class ServiceProvider
 {
-
-    /** @var Plugin */
-    private $plugin;
+    /**
+     * @var Analyzer
+     */
+    private $analyzer;
+    /**
+     * @var Filter
+     */
+    private $filter;
 
     /**
      * Construct plugin with a the relevant configuration
      *
      * @param Plugin $plugin
-     **/
-    public function __construct(Plugin $plugin)
+     */
+    public function __construct(Analyzer $analyzer, Filter $filter)
     {
-        $this->plugin = $plugin;
+        $this->analyzer = $analyzer;
+        $this->filter   = $filter;
     }
 
     /**
      * Registers services on the given app.
      *
-     * @param Application $app An Application instance.
+     * @param Parameter[] $options
+     *
+     * @return void
      */
-    public function register(Application $app)
+    public function __invoke($options)
     {
-        $this->addNamespaceFilter($app['descriptor.analyzer'], $app['descriptor.filter']);
+        $this->addNamespaceFilter($this->analyzer, $this->filter, $options);
     }
 
     /**
      * Attaches the filter responsible for the conversion to all structural elements.
      *
-     * @param Analyzer $analyzer
-     * @param Filter   $filterManager
+     * @param Analyzer    $analyzer
+     * @param Filter      $filterManager
+     * @param Parameter[] $options
      *
      * @return void
      */
-    private function addNamespaceFilter(Analyzer $analyzer, Filter $filterManager)
+    private function addNamespaceFilter(Analyzer $analyzer, Filter $filterManager, array $options)
     {
         $filter = new LegacyNamespaceFilter($analyzer);
 
         // parse parameters
-        foreach ($this->plugin->getParameters() as $param) {
-            if ($param->getKey() == 'NamespacePrefix') {
-                $filter->setNamespacePrefix($param->getValue());
+        foreach ($options as $option) {
+            if ($option->getKey() == 'NamespacePrefix') {
+                $filter->setNamespacePrefix($option->getValue());
             }
         }
 

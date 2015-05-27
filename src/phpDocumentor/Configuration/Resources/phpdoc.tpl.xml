@@ -28,7 +28,4 @@
     <transformations>
         <template name="clean"/>
     </transformations>
-    <translator>
-        <locale>en</locale>
-    </translator>
 </phpdocumentor>

@@ -80,7 +80,7 @@
 //            if (count($this->docblock->getTagsByName($tag)) == 0) {
 //                $this->logParserError(
 //                    'CRITICAL',
-//                    'PPC:ERR-50020',
+//                    'Not found required tag "%s" in %s',
 //                    $this->lineNumber,
 //                    array($tag, $this->entityName)
 //                );

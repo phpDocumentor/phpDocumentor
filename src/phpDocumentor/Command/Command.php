@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Command;
 
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,20 +22,8 @@ use Symfony\Component\Console\Input\InputInterface;
  * Includes additional methods to forward the output to the logging events
  * of phpDocumentor.
  */
-class Command extends \Cilex\Command\Command
+class Command extends SymfonyCommand
 {
-    /**
-     * Registers the current command.
-     *
-     * @param HelperSet $helperSet
-     */
-    public function setHelperSet(HelperSet $helperSet)
-    {
-        parent::setHelperSet($helperSet);
-
-        $this->getHelper('phpdocumentor_logger')->addOptions($this);
-    }
-
     /**
      * Returns the Progress bar helper.
      *

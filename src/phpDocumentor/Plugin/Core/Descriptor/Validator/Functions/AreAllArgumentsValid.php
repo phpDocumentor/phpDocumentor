@@ -45,7 +45,11 @@ class AreAllArgumentsValid
         if ($docBlock->hasTag('return')) {
             $returnTag = current($docBlock->getTagsByName('return'));
             if ($returnTag->getType() == 'type') {
-                return new Error(LogLevel::WARNING, 'PPC:ERR-50017', $element->getLinenumber());
+                return new Error(
+                    LogLevel::WARNING,
+                    'The type for the %s tag in %s is "type"; isn\'t this an IDE default?',
+                    $element->getLinenumber()
+                );
             }
         }
 
@@ -90,7 +94,7 @@ class AreAllArgumentsValid
 
             return new Error(
                 LogLevel::NOTICE,
-                'PPC:ERR-50013',
+                'Parameter %s could not be found in %s',
                 $element->getLinenumber(),
                 array($param_name, $element->getName())
             );
@@ -117,7 +121,7 @@ class AreAllArgumentsValid
 
         return new Error(
             LogLevel::ERROR,
-            'PPC:ERR-50015',
+            'Argument %s is missing from the Docblock of %s',
             $argument->getLinenumber(),
             array($argument->getName(), $element->getName())
         );
@@ -151,7 +155,7 @@ class AreAllArgumentsValid
 
         return new Error(
             LogLevel::ERROR,
-            'PPC:ERR-50014',
+            'Name of argument %s does not match with the DocBlock\'s name %s in %s',
             $argument->getLinenumber(),
             array($argument->getName(), $param_name, $element->getName())
         );
@@ -182,7 +186,8 @@ class AreAllArgumentsValid
 
         return new Error(
             LogLevel::ERROR,
-            'PPC:ERR-50016',
+            'The type hint of the argument is incorrect for the type definition of the @param tag with argument %s '
+            . 'in %s',
             $argument->getLinenumber(),
             array($argument->getName(), $element->getName())
         );

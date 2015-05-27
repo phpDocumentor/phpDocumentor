@@ -11,28 +11,16 @@
 
 namespace phpDocumentor;
 
-use Cilex\Application as Cilex;
-use Cilex\Provider\JmsSerializerServiceProvider;
-use Cilex\Provider\MonologServiceProvider;
-use Cilex\Provider\ValidatorServiceProvider;
 use Composer\Autoload\ClassLoader;
-use Monolog\ErrorHandler;
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use phpDocumentor\Command\Helper\ConfigurationHelper;
-use phpDocumentor\Command\Helper\LoggerHelper;
-use phpDocumentor\Console\Input\ArgvInput;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\Console\Shell;
+use phpDocumentor\Plugin\Plugin;
 
 /**
  * Application class for phpDocumentor.
  *
  * Can be used as bootstrap when the run method is not invoked.
  */
-class Application extends Cilex
+final class Application
 {
     /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
     public static $VERSION;
@@ -45,169 +33,51 @@ class Application extends Cilex
      */
     public function __construct($autoloader = null, array $values = array())
     {
+        $container = $this->createContainer($values);
+
         gc_disable();
-        $this->defineIniSettings();
-        
-        self::$VERSION = strpos('@package_version@', '@') === 0
-            ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
-            : '@package_version@';
+        $this->setTimezone();
+        $this->removePhpMemoryLimit();
+        $this->ensureAnnotationsAreCached();
 
-        parent::__construct('phpDocumentor', self::$VERSION, $values);
+        self::$VERSION = $container->get('application.version');
+        $this->console = $container->get(ConsoleApplication::class);
 
-        $this['autoloader'] = $autoloader;
-
-        $this->register(new JmsSerializerServiceProvider());
-        $this->register(new Configuration\ServiceProvider());
-
-        $this->addEventDispatcher();
-        $this->addLogging();
-
-        $this->register(new ValidatorServiceProvider());
-        $this->register(new Translator\ServiceProvider());
-        $this->register(new Descriptor\ServiceProvider());
-        $this->register(new Parser\ServiceProvider());
-        $this->register(new Partials\ServiceProvider());
-        $this->register(new Transformer\ServiceProvider());
-        $this->register(new Plugin\ServiceProvider());
-
-        $this['descriptor.builder.initializers']->addInitializer(
-            new DefaultValidators($this['descriptor.analyzer']->getValidator())
-        );
-        $this['descriptor.builder.initializers']->initialize($this['descriptor.analyzer']);
-
-        $this->addCommandsForProjectNamespace();
-
-        if (\Phar::running()) {
-            $this->addCommandsForPharNamespace();
-        }
-    }
-
-    /**
-     * Removes all logging handlers and replaces them with handlers that can write to the given logPath and level.
-     *
-     * @param Logger  $logger       The logger instance that needs to be configured.
-     * @param integer $level        The minimum level that will be written to the normal logfile; matches one of the
-     *                              constants in {@see \Monolog\Logger}.
-     * @param string  $logPath      The full path where the normal log file needs to be written.
-     *
-     * @return void
-     */
-    public function configureLogger($logger, $level, $logPath = null)
-    {
-        /** @var Logger $monolog */
-        $monolog = $logger;
-
-        switch ($level) {
-            case 'emergency':
-            case 'emerg':
-                $level = Logger::EMERGENCY;
-                break;
-            case 'alert':
-                $level = Logger::ALERT;
-                break;
-            case 'critical':
-            case 'crit':
-                $level = Logger::CRITICAL;
-                break;
-            case 'error':
-            case 'err':
-                $level = Logger::ERROR;
-                break;
-            case 'warning':
-            case 'warn':
-                $level = Logger::WARNING;
-                break;
-            case 'notice':
-                $level = Logger::NOTICE;
-                break;
-            case 'info':
-                $level = Logger::INFO;
-                break;
-            case 'debug':
-                $level = Logger::DEBUG;
-                break;
-        }
-
-        $this['monolog.level']   = $level;
-        if ($logPath) {
-            $logPath = str_replace(
-                array('{APP_ROOT}', '{DATE}'),
-                array(realpath(__DIR__.'/../..'), $this['kernel.timer.start']),
-                $logPath
-            );
-            $this['monolog.logfile'] = $logPath;
-        }
-
-        // remove all handlers from the stack
-        try {
-            while ($monolog->popHandler()) {
-            }
-        } catch (\LogicException $e) {
-            // popHandler throws an exception when you try to pop the empty stack; to us this is not an
-            // error but an indication that the handler stack is empty.
-        }
-
-        if ($level === 'quiet') {
-            $monolog->pushHandler(new NullHandler());
-
-            return;
-        }
-
-        // set our new handlers
-        if ($logPath) {
-            $monolog->pushHandler(new StreamHandler($logPath, $level));
-        } else {
-            $monolog->pushHandler(new StreamHandler('php://stdout', $level));
-        }
+        $this->registerPlugins($container);
     }
 
     /**
      * Run the application and if no command is provided, use project:run.
      *
-     * @param bool $interactive Whether to run in interactive mode.
-     *
-     * @return void
+     * @return integer The exit code for this application
      */
-    public function run($interactive = false)
+    public function run()
     {
-        /** @var ConsoleApplication $app  */
-        $app = $this['console'];
-        $app->setAutoExit(false);
+        $this->console->setAutoExit(false);
 
-        if ($interactive) {
-            $app = new Shell($app);
-        }
-
-        $output = new Console\Output\Output();
-        $output->setLogger($this['monolog']);
-
-        $app->run(new ArgvInput(), $output);
+        return $this->console->run(new Console\Input\ArgvInput(), new Console\Output\Output());
     }
 
-    /**
-     * Adjust php.ini settings.
-     *
-     * @return void
-     */
-    protected function defineIniSettings()
+    // TODO: Change this; plugins are not read from a config file provided on runtime
+    private function registerPlugins($container)
     {
-        $this->setTimezone();
-        ini_set('memory_limit', -1);
+        /** @var Configuration $config */
+        $config = $container->get(Configuration::class);
 
-        // this code cannot be tested because we cannot control the system settings in unit tests
-        // @codeCoverageIgnoreStart
-        if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
-            if (ini_get('opcache.save_comments')) {
-                ini_set('opcache.load_comments', 1);
-            } else {
-                ini_set('opcache.enable', 0);
+        /** @var Plugin $plugin */
+        foreach ($config->getPlugins() as $plugin) {
+            // TODO: Retrieving the Plugin should be in a Repository class
+            $provider = (strpos($plugin->getClassName(), '\\') === false)
+                ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getClassName())
+                : $plugin->getClassName();
+
+            try {
+                $pluginObject = $container->get($provider);
+                call_user_func($pluginObject, $plugin->getParameters());
+            } catch (\InvalidArgumentException $e) {
+                throw new \RuntimeException($e->getMessage());
             }
         }
-
-        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
-            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
-        }
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -224,7 +94,7 @@ class Application extends Cilex
      *
      * @return void
      */
-    protected function setTimezone()
+    private function setTimezone()
     {
         if (false === ini_get('date.timezone')
             || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
@@ -233,79 +103,40 @@ class Application extends Cilex
         }
     }
 
-    /**
-     * Adds a logging provider to the container of phpDocumentor.
-     *
-     * @return void
-     */
-    protected function addLogging()
+    private function ensureAnnotationsAreCached()
     {
-        $this->register(
-            new MonologServiceProvider(),
-            array(
-                'monolog.name'      => 'phpDocumentor',
-                'monolog.logfile'   => sys_get_temp_dir() . '/phpdoc.log',
-                'monolog.debugfile' => sys_get_temp_dir() . '/phpdoc.debug.log',
-                'monolog.level'     => Logger::INFO,
-            )
-        );
-
-        $app = $this;
-        /** @var Configuration $configuration */
-        $configuration = $this['config'];
-        $this['monolog.configure'] = $this->protect(
-            function ($log) use ($app, $configuration) {
-                $paths    = $configuration->getLogging()->getPaths();
-                $logLevel = $configuration->getLogging()->getLevel();
-
-                $app->configureLogger($log, $logLevel, $paths['default'], $paths['errors']);
+        // this code cannot be tested because we cannot control the system settings in unit tests
+        // @codeCoverageIgnoreStart
+        if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
+            if (ini_get('opcache.save_comments')) {
+                ini_set('opcache.load_comments', 1);
+            } else {
+                ini_set('opcache.enable', 0);
             }
-        );
+        }
 
-        $this->extend(
-            'console',
-            function (ConsoleApplication $console) use ($configuration) {
-                $console->getHelperSet()->set(new LoggerHelper());
-                $console->getHelperSet()->set(new ConfigurationHelper($configuration));
+        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
+            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
+        }
+        // @codeCoverageIgnoreEnd
+    }
 
-                return $console;
-            }
-        );
-
-        ErrorHandler::register($this['monolog']);
+    private function removePhpMemoryLimit()
+    {
+        ini_set('memory_limit', -1);
     }
 
     /**
-     * Adds the event dispatcher to phpDocumentor's container.
-     *
-     * @return void
+     * @param array $values
+     * @return \DI\Container
      */
-    protected function addEventDispatcher()
+    private function createContainer(array $values)
     {
-        $this['event_dispatcher'] = $this->share(
-            function () {
-                return Event\Dispatcher::getInstance();
-            }
-        );
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Project namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForProjectNamespace()
-    {
-        $this->command(new Command\Project\RunCommand());
-    }
-
-    /**
-     * Adds the command to phpDocumentor that belong to the Phar namespace.
-     *
-     * @return void
-     */
-    protected function addCommandsForPharNamespace()
-    {
-        $this->command(new Command\Phar\UpdateCommand());
+        $builder = new \DI\ContainerBuilder();
+        $builder->addDefinitions($values);
+        $builder->addDefinitions(__DIR__ . '/ContainerDefinitions.php');
+        $builder->useAnnotations(false);
+        $phpDiContainer = $builder->build();
+        return $phpDiContainer;
     }
 }

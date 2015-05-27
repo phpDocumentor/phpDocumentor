@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsParamTypeNotAnIdeDefault extends Constraint
 {
-    /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50018';
+    /** @var string message */
+    public $message = 'The type for the param tag %s in %s is either "type" or "unknown"; isn\'t this an IDE default?';
 
     public $code = 50018;
 

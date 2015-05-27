@@ -16,7 +16,6 @@ use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Translator\Translator;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -34,7 +33,6 @@ use phpDocumentor\Translator\Translator;
  * Filters:
  *
  * - *markdown*, converts the associated text from Markdown formatting to HTML.
- * - *trans*, translates the given string
  * - *route*, attempts to generate a URL for a given Descriptor
  * - *sort_desc*, sorts the given objects by their Name property/getter in a descending fashion
  * - *sort_asc*, sorts the given objects by their Name property/getter in a ascending fashion
@@ -45,9 +43,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      * @var ProjectInterface
      */
     protected $data = null;
-
-    /** @var Translator */
-    protected $translator;
 
     /** @var Renderer */
     protected $routeRenderer;
@@ -85,18 +80,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     public function setRouters($routers)
     {
         $this->routeRenderer->setRouters($routers);
-    }
-
-    /**
-     * Sets the translation component.
-     *
-     * @param Translator $translator
-     *
-     * @return void
-     */
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
     }
 
     /**
@@ -166,7 +149,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     public function getFilters()
     {
         $parser = \Parsedown::instance();
-        $translator = $this->translator;
         $routeRenderer = $this->routeRenderer;
 
         return array(
@@ -174,16 +156,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
                 'markdown',
                 function ($value) use ($parser) {
                     return $parser->text($value);
-                }
-            ),
-            'trans' => new \Twig_SimpleFilter(
-                'trans',
-                function ($value, $context) use ($translator) {
-                    if (!$context) {
-                        $context = array();
-                    }
-
-                    return vsprintf($translator->translate($value), $context);
                 }
             ),
             'route' => new \Twig_SimpleFilter(

@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class HasSingleSubpackage extends Constraint
 {
-    /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50002';
+    /** @var string message */
+    public $message = 'Only one @subpackage tag is allowed';
 
     public $code = 50002;
 

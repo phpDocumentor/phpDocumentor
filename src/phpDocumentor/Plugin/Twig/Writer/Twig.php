@@ -21,7 +21,6 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Routable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
-use phpDocumentor\Translator\Translator;
 
 /**
  * A specialized writer which uses the Twig templating engine to convert
@@ -82,9 +81,6 @@ class Twig extends WriterAbstract implements Routable
 {
     /** @var Queue $routers */
     protected $routers;
-
-    /** @var Translator $translator */
-    protected $translator;
 
     /**
      * This method combines the ProjectDescriptor and the given target template
@@ -178,7 +174,6 @@ class Twig extends WriterAbstract implements Routable
             substr($destination, strlen($transformation->getTransformer()->getTarget()) + 1)
         );
         $base_extension->setRouters($this->routers);
-        $base_extension->setTranslator($this->translator);
         $twigEnvironment->addExtension($base_extension);
     }
 
@@ -343,13 +338,5 @@ class Twig extends WriterAbstract implements Routable
     public function setRouters(Queue $routers)
     {
         $this->routers = $routers;
-    }
-
-    /**
-     * @param Translator $translator
-     */
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
     }
 }

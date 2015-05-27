@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 class HasSummary extends Constraint
 {
     /** @var string message phpDocumentor uses codes that are defined in a messages.[lang].php file in the a plugin. */
-    public $message = 'PPC:ERR-50007';
+    public $message = 'No summary for property %s';
 
     public $code = 50007;
 
