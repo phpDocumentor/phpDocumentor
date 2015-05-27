@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Exception;
+namespace phpDocumentor;
 
 use Exception as BaseException;
 

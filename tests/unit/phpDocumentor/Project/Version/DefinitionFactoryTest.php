@@ -67,7 +67,7 @@ class DefinitionFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException phpDocumentor\Exception\Exception
+     * @expectedException phpDocumentor\Exception
      */
     public function testCreateThrowsExceptionWhenTypeDoesnotExist()
     {
