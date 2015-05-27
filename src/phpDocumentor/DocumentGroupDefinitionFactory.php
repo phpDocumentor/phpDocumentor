@@ -11,7 +11,10 @@
 
 namespace phpDocumentor;
 
-
+/**
+ * Interface for factories creating DocumentGroupDefinitions.
+ * These factories shall be registered on phpDocumentor\Project\Version\DefinitionFactory
+ */
 interface DocumentGroupDefinitionFactory extends DefinitionFactory
 {
 
