@@ -69,6 +69,11 @@ class UpdateCommand extends Command
         $allowMajor      = $input->getOption('major');
         $allowPreRelease = $input->getOption('pre');
 
+        if (strpos($version, 'v') === 0) {
+            // strip v tag from phar version for self-update
+            $version = str_replace('v', '', $version);
+        }
+
         $this->updateCurrentVersion($manager, $version, $allowMajor, $allowPreRelease, $output);
 
         return 0;
