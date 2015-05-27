@@ -811,6 +811,6 @@ XML
      */
     private function getLatestVersion()
     {
-        return trim(file_get_contents('https://raw.githubusercontent.com/phpDocumentor/phpDocumentor2/master/VERSION'));
+        return file_get_contents('https://raw.githubusercontent.com/phpDocumentor/phpDocumentor2/master/VERSION');
     }
 }
