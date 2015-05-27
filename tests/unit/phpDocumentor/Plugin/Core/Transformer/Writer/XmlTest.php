@@ -34,9 +34,6 @@ class XmlTest extends \PHPUnit_Framework_TestCase
     /** @var m\MockInterface|RouterAbstract */
     protected $routerMock;
 
-    /** @var m\MockInterface|Translator */
-    protected $translator;
-
     /** @var m\MockInterface|ProjectInterface */
     protected $projectDescriptor;
 
@@ -51,11 +48,9 @@ class XmlTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->fs                = vfsStream::setup('XmlTest');
-        $this->translator        = m::mock('phpDocumentor\Translator\Translator');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $this->routerMock        = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
         $this->xml               = new Xml($this->routerMock);
-        $this->xml->setTranslator($this->translator);
     }
 
     /**
