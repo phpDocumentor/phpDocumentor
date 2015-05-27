@@ -24,11 +24,11 @@
 
         "phpdocumentor/graphviz":   "^1.0",
         "phpdocumentor/fileset":    "^1.0",
-        "phpdocumentor/reflection": "dev-develop"
+        "phpdocumentor/reflection": "dev-develop",
+        "herrera-io/phar-update": "^2.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "herrera-io/phar-update":      "^1.0.3",
         "behat/behat":                 "^3.0",
         "phpunit/phpunit":             "^4.0",
         "mockery/mockery":             "~0.9@dev",
