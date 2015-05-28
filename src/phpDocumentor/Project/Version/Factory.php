@@ -19,6 +19,8 @@ use phpDocumentor\Project\Version;
 final class Factory
 {
     /**
+     * Create a version entity from the given definition.
+     *
      * @param Definition $definition
      * @return Version
      */
