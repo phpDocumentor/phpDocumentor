@@ -18,9 +18,14 @@ use Stash\Pool;
  */
 final class DocumentationRepository
 {
+    /**
+     * Cache namespace used for this repository.
+     */
     const CACHE_NAMESPACE = 'Documentation';
 
     /**
+     * Datastore used to cache Documentation
+     *
      * @var Pool
      */
     private $dataStore;
@@ -36,6 +41,8 @@ final class DocumentationRepository
     }
 
     /**
+     * Find documentation by versionNumber.
+     *
      * @param VersionNumber $versionNumber
      * @return Documentation|null
      */
