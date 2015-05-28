@@ -12,7 +12,7 @@
 namespace phpDocumentor\Project\Version;
 
 use phpDocumentor\Definition as DefinitionInterface;
-use phpDocumentor\Project\DocumentGroup\Definition as DocumentGroupDefinition;
+use phpDocumentor\DocumentGroupDefinition;
 use phpDocumentor\Project\VersionNumber;
 
 /**

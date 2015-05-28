@@ -14,7 +14,7 @@ namespace phpDocumentor\Project\Version;
 use phpDocumentor\DocumentGroupDefinitionFactory;
 use phpDocumentor\DocumentGroupFormat;
 use phpDocumentor\Exception;
-use phpDocumentor\Project\DocumentGroup\Definition as DocumentGroupDefinition;
+use phpDocumentor\DocumentGroupDefinition;
 use phpDocumentor\Project\VersionNumber;
 
 /**
