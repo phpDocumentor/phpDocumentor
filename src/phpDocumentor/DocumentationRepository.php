@@ -50,7 +50,7 @@ final class DocumentationRepository
     {
         $item = $this->dataStore->getItem($this->getItemName($versionNumber));
 
-        if($item->isMiss()) {
+        if ($item->isMiss()) {
             return null;
         }
 
