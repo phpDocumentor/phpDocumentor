@@ -23,4 +23,12 @@ interface DocumentGroupFactory
      * @return DocumentGroup
      */
     public function create(DocumentGroupDefinition $definition);
+
+    /**
+     * Will return true when this factory can handle the provided definition.
+     *
+     * @param DocumentGroupDefinition $definition
+     * @return boolean
+     */
+    public function matches(DocumentGroupDefinition $definition);
 }
