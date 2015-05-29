@@ -18,13 +18,6 @@ use phpDocumentor\Project\VersionNumber;
 final class Documentation
 {
     /**
-     * Title of the documentation.
-     *
-     * @var string
-     */
-    private $title;
-
-    /**
      * Version number of the documentation.
      *
      * @var VersionNumber
@@ -39,13 +32,11 @@ final class Documentation
     /**
      * Initializes the documentation object.
      *
-     * @param string $title
      * @param VersionNumber $versionNumber
      * @param DocumentGroup[] $documentGroups
      */
-    public function __construct($title, VersionNumber $versionNumber, array $documentGroups = array())
+    public function __construct(VersionNumber $versionNumber, array $documentGroups = array())
     {
-        $this->title = $title;
         $this->versionNumber = $versionNumber;
         $this->documentGroups = $documentGroups;
     }
@@ -58,16 +49,6 @@ final class Documentation
     public function getVersionNumber()
     {
         return $this->versionNumber;
-    }
-
-    /**
-     * Returns the title of the documentation.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**

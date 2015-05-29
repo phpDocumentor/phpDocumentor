@@ -55,7 +55,7 @@ class DocumentationRepositoryTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->andReturn(false);
 
-        $documentation = new Documentation('MyTitle', new VersionNumber('1.0.0'));
+        $documentation = new Documentation(new VersionNumber('1.0.0'));
         $this->cacheMock->shouldReceive('getItem->get')
             ->once()
             ->andReturn($documentation);
@@ -94,7 +94,7 @@ class DocumentationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSave()
     {
-        $documentation = new Documentation('MyTitle', new VersionNumber('1.0.2'));
+        $documentation = new Documentation(new VersionNumber('1.0.2'));
 
         $this->cacheMock->shouldReceive('getItem')
             ->once()

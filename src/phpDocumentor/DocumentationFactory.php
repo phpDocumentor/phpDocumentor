@@ -40,7 +40,7 @@ final class DocumentationFactory
             $documentGroups[] = $this->createDocumentGroup($definition);
         }
 
-        return new Documentation(null, $versionDefinition->getVersionNumber(), $documentGroups);
+        return new Documentation($versionDefinition->getVersionNumber(), $documentGroups);
     }
 
     /**
