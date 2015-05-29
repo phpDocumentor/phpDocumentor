@@ -11,7 +11,7 @@
 
 namespace phpDocumentor;
 
-use phpDocumentor\Project\Version\Definition;
+use phpDocumentor\Project\Version\Definition as VersionDefinition;
 
 /**
  * Factory to create Documentation objects out of Project\Version\Definition.
@@ -30,11 +30,11 @@ final class DocumentationFactory
     /**
      * Creates Documentation object.
      *
-     * @param Definition $versionDefinition
+     * @param VersionDefinition $versionDefinition
      * @return Documentation
      * @throws FactoryNotFoundException when a DocumentGroupDefinition did not match any of the registered factories.
      */
-    public function create(Definition $versionDefinition)
+    public function create(VersionDefinition $versionDefinition)
     {
         $documentGroups = array();
 
