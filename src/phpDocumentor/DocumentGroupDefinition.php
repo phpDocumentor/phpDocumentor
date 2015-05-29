@@ -9,14 +9,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Project\DocumentGroup;
-
-use phpDocumentor\Definition as DefinitionInterface;
+namespace phpDocumentor;
 
 /**
- * Definition representing a DocumentGroup
+ * Interface for document groups
  */
-final class Definition implements DefinitionInterface
+interface DocumentGroupDefinition extends Definition
 {
 
 }

@@ -41,4 +41,14 @@ final class VersionNumber
     {
         return $this->version;
     }
+
+    /**
+     * Returns the string representation of this version.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getVersion();
+    }
 }

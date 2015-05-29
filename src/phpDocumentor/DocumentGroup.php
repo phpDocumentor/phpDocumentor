@@ -11,12 +11,15 @@
 
 namespace phpDocumentor;
 
-use Exception as BaseException;
-
 /**
- * Default exception for all kind of exceptions in phpdocumentor
+ * Interface for document groups
  */
-class Exception extends BaseException
+interface DocumentGroup
 {
-
+    /**
+     * Returns format of this group.
+     *
+     * @return DocumentGroupFormat
+     */
+    public function getFormat();
 }

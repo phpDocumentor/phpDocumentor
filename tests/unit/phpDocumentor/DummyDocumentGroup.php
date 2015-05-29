@@ -11,12 +11,19 @@
 
 namespace phpDocumentor;
 
-use Exception as BaseException;
-
 /**
- * Default exception for all kind of exceptions in phpdocumentor
+ * Dummy class for test purpose only
  */
-class Exception extends BaseException
+class DummyDocumentGroup implements DocumentGroup
 {
 
+    /**
+     * Returns format of this group.
+     *
+     * @return DocumentGroupFormat
+     */
+    public function getFormat()
+    {
+        return null;
+    }
 }

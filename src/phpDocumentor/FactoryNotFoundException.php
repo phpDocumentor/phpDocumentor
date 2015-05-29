@@ -11,12 +11,10 @@
 
 namespace phpDocumentor;
 
-use Exception as BaseException;
-
 /**
- * Default exception for all kind of exceptions in phpdocumentor
+ * Exception thrown when Factory was not available for a certain service or entity.
  */
-class Exception extends BaseException
+final class FactoryNotFoundException extends Exception
 {
 
 }
