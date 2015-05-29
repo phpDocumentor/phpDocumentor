@@ -28,9 +28,6 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
      */
     protected $checkStyle;
 
-    /** @var Translator|m\MockInterface */
-    private $translator;
-
     /**
      * Sets up the test suite
      *
@@ -38,9 +35,7 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->translator = m::mock('phpDocumentor\Translator\Translator');
         $this->checkStyle = new CheckStyle();
-        $this->checkStyle->setTranslator($this->translator);
         $this->fs = vfsStream::setup('CheckStyleTest');
     }
 
@@ -65,8 +60,6 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
         $error->shouldReceive('getCode')->andReturn(5678);
         $error->shouldReceive('getSeverity')->andReturn('error');
         $error->shouldReceive('getContext')->andReturn('myContext');
-
-        $this->translator->shouldReceive('translate')->with('5678')->andReturn('5678 %s');
 
         // Call the actual method
         $this->checkStyle->transform($projectDescriptor, $transformer);

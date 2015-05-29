@@ -131,7 +131,7 @@ return [
         $application->add($c->get(TransformCommand::class));
         $application->add($c->get(ListCommand::class));
         if (\Phar::running()) {
-            $this->add($c->get(UpdateCommand::class));
+            $application->add($c->get(UpdateCommand::class));
         }
 
         return $application;

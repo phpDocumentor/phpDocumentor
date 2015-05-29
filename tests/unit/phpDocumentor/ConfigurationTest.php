@@ -125,13 +125,4 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Transformer\Configuration', $this->fixture->getTransformer());
     }
-
-    /**
-     * @covers phpDocumentor\Configuration::__construct
-     * @covers phpDocumentor\Configuration::getTranslator
-     */
-    public function testIfTranslatorConfigurationIsReturned()
-    {
-        $this->assertInstanceOf('phpDocumentor\Translator\Configuration', $this->fixture->getTranslator());
-    }
 }
