@@ -13,7 +13,7 @@ matrix:
 
 script:
  - bin/phpunit
- - bin/behat --format progress
+# - bin/behat --format progress
 
 before_script:
  - sudo apt-get -qq update > /dev/null
@@ -21,9 +21,6 @@ before_script:
  - phpenv rehash > /dev/null
  - composer selfupdate --quiet
  - composer install --no-interaction --prefer-source --dev
- - bin/phpunit
- - bin/behat --format progress
- - composer update --no-interaction --prefer-source --dev
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"
