@@ -17,9 +17,14 @@ use DI\Container;
 
 /**
  * Tests the functionality for the ActionHandlerLocator class.
+ * @coversDefaultClass phpDocumentor\Renderer\ActionHandlerLocator
  */
 class ActionHandlerLocatorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::locate
+     */
     public function testIfLocatorRetrievesAnActionWithHanderAppendedToClassName()
     {
         $action        = m::mock(Action::class);
