@@ -482,7 +482,7 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then /^the application returns an error containing '([^']*)'$/
+     * @Then /^the application returns an error containing "([^']*)"$/
      */
     public function theApplicationReturnsAnErrorContaining($arg1)
     {
@@ -782,5 +782,35 @@ XML
     public function theProjectHasTheTitle($arg1)
     {
         $this->theAstHasAnExpressionWithValue('project.getName()', $arg1);
+    }
+
+    /**
+     * @When /^I download the latest phar from github to "([^"]*)"$/
+     */
+    public function iDownloadTheLatestPharFromGithubTo($arg1)
+    {
+        $version = $this->getLatestVersion();
+        $phar    = 'http://github.com/phpDocumentor/phpDocumentor2/releases/download/v' . $version . '/phpDocumentor.phar';
+
+        $this->iDownloadTo($phar, $arg1);
+    }
+
+    /**
+     * @When /^I download and unpack the latest phpDocumentor\.tgz$/
+     */
+    public function iDownloadAndUnpackTheLatestPhpDocumentorTgz()
+    {
+        $version = $this->getLatestVersion();
+        $tgz     = 'https://github.com/phpDocumentor/phpDocumentor2/archive/v' . $version .'.tar.gz';
+
+        $this->iDownloadTo($tgz, 'phpDocumentor-' . $version .'.tgz');
+    }
+
+    /**
+     * @return string e.g. 2.8.2
+     */
+    private function getLatestVersion()
+    {
+        return file_get_contents('https://raw.githubusercontent.com/phpDocumentor/phpDocumentor2/master/VERSION');
     }
 }
