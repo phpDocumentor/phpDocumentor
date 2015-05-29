@@ -12,7 +12,9 @@
 namespace phpDocumentor\ApiReference;
 
 /**
- * Class Fqsen
+ * Value Object for Fqsen.
+ *
+ * @link https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc-meta.md
  */
 final class Fqsen
 {
@@ -22,7 +24,11 @@ final class Fqsen
     private $fqsen;
 
     /**
+     * Initializes the object.
+     *
      * @param string $fqsen
+     *
+     * @throws \InvalidArgumentException when $fqsen is not matching the format.
      */
     public function __construct($fqsen)
     {
