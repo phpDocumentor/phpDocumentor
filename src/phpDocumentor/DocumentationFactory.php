@@ -21,6 +21,8 @@ use phpDocumentor\Project\Version\Definition;
 final class DocumentationFactory
 {
     /**
+     * Registered factories to create DocumentGroup objects.
+     *
      * @var DocumentGroupFactory[]
      */
     private $documentGroupFactories;
@@ -30,7 +32,7 @@ final class DocumentationFactory
      *
      * @param Definition $versionDefinition
      * @return Documentation
-     * @throws Exception
+     * @throws FactoryNotFoundException when a DocumentGroupDefinition did not match any of the registered factories.
      */
     public function create(Definition $versionDefinition)
     {
@@ -48,7 +50,7 @@ final class DocumentationFactory
      *
      * @param DocumentGroupDefinition $definition
      * @return DocumentGroup
-     * @throws Exception
+     * @throws FactoryNotFoundException when a DocumentGroupDefinition did not match any of the registered factories.
      */
     private function createDocumentGroup(DocumentGroupDefinition $definition)
     {
@@ -58,13 +60,14 @@ final class DocumentationFactory
             }
         }
 
-        throw new Exception('No factory matches document group');
+        throw new FactoryNotFoundException('No factory matches document group');
     }
 
     /**
      * Add DocumentGroupFactory to internal register for use during creation of Documentation object.
      *
      * @param $documentGroupFactory
+     * @return void
      */
     public function addDocumentGroupFactory(DocumentGroupFactory $documentGroupFactory)
     {

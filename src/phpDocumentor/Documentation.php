@@ -25,6 +25,8 @@ final class Documentation
     private $versionNumber;
 
     /**
+     * Document groups of this documentation.
+     *
      * @var DocumentGroup[]
      */
     private $documentGroups;

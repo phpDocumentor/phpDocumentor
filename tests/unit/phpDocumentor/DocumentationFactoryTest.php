@@ -83,7 +83,7 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
      * @covers ::create
      * @covers ::<private>
      * @covers ::addDocumentGroupFactory
-     * @expectedException Exception
+     * @expectedException phpDocumentor\FactoryNotFoundException
      */
     public function testDocumentGroupFactoryShouldHaveMatch()
     {

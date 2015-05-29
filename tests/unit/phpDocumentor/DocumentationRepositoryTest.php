@@ -31,9 +31,6 @@ class DocumentationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     private $cacheMock;
 
-    /**
-     *
-     */
     protected function setUp()
     {
         $this->cacheMock = m::mock(Pool::class);
