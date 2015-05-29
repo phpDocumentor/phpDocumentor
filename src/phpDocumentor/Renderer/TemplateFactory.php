@@ -18,7 +18,7 @@ use phpDocumentor\Renderer\Template\Parameter;
 /**
  * Creates a new Template based on an array with a Template definition.
  */
-class TemplateFactory
+final class TemplateFactory
 {
     /**
      * Creates a new Template entity with the given name, parameters and options.
