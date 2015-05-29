@@ -26,6 +26,13 @@ final class Fqsen
      */
     public function __construct($fqsen)
     {
+        $result = preg_match('/^\\\\([A-Za-z_\\\\]+)(::\\$?[a-zA-Z_]+)?(\\(\\))?$/', $fqsen);
+        if ($result === 0) {
+            throw new \InvalidArgumentException(
+                sprintf('"%s" is not a valid Fqsen.', $fqsen)
+            );
+        }
+
         $this->fqsen = $fqsen;
     }
 
