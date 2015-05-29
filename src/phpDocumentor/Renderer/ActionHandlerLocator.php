@@ -17,9 +17,15 @@ use Interop\Container\ContainerInterface;
 /**
  * Service that attempts to locate an ActionHandler object based on the class name of a given Action.
  */
-class ActionHandlerLocator
+final class ActionHandlerLocator
 {
     /**
+     * The Dependency Injection Container for the application.
+     *
+     * The container is used as locator to retrieve a Handler for the Action provided with the locate method. We
+     * choose this method because that enabled Handlers to have their own set of dependencies and use the Container
+     * to instantiate the Handler and inject its dependencies.
+     *
      * @var ContainerInterface
      */
     private $container;

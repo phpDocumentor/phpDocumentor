@@ -13,6 +13,7 @@
 namespace phpDocumentor\Renderer;
 
 use Mockery as m;
+use DI\Container;
 
 /**
  * Tests the functionality for the ActionHandlerLocator class.
@@ -21,13 +22,14 @@ class ActionHandlerLocatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testIfLocatorRetrievesAnActionWithHanderAppendedToClassName()
     {
-        $action = m::mock('phpDocumentor\Renderer\Action');
-        $containerMock = m::mock('\DI\Container');
-        $handlerMock = new \stdClass();
+        $action        = m::mock(Action::class);
+        $containerMock = m::mock(Container::class);
+        $handlerMock   = new \stdClass();
+
         $containerMock->shouldReceive('get')->with(get_class($action) . 'Handler')->andReturn($handlerMock);
 
         $fixture = new ActionHandlerLocator($containerMock);
-        $result = $fixture->locate($action);
+        $result  = $fixture->locate($action);
 
         $this->assertSame($handlerMock, $result);
     }

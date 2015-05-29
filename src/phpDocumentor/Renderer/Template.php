@@ -26,15 +26,17 @@ namespace phpDocumentor\Renderer;
  * With a template you can provide a series of parameters that can be passed to every Action
  * so that a default piece of information is provided, such as the target location.
  */
-class Template
+final class Template
 {
-    /** @var string */
+    /** @var string The name with which this template is identified */
     private $name;
 
-    /** @var Template\Parameter[] */
+    /** @var Template\Parameter[] A series of parameters that should be merged with the actions and act as defaults */
     private $parameters = [];
 
-    /** @var Action[] */
+    /**
+     * @var Action[] A series of commands/action definitions that determine how the renderer renders the documentation.
+     */
     private $actions = [];
 
     /**
