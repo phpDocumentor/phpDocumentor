@@ -12,16 +12,20 @@
 namespace phpDocumentor\Guides;
 
 /**
- * Class to define the content type of a document
+ * Class to define the content type of a document.
  */
 final class ContentType
 {
     /**
+     * The actual content type.
+     *
      * @var string $contentType
      */
     private $contentType;
 
     /**
+     * Initializes the object.
+     *
      * @param string $contentType
      */
     public function __construct($contentType)
@@ -29,6 +33,10 @@ final class ContentType
         $this->contentType = (string)$contentType;
     }
 
+    /**
+     * Returns a string representation of content type.
+     * @return string
+     */
     public function __toString()
     {
         return $this->contentType;
