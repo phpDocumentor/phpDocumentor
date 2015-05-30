@@ -11,7 +11,7 @@
         "psr-0": { "phpDocumentor": ["tests/unit/"] }
     },
     "require": {
-        "php":               "^5.5",
+        "php":               ">=5.5",
         "mnapoli/php-di":    "^5.0@dev",
         "symfony/console":   "^2.3",
 
