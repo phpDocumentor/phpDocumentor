@@ -1,0 +1,149 @@
+@startuml
+
+namespace Reflection {
+    class Fqsen
+    interface Element {
+        + getFqsen() : Fqsen
+        + getName() : string
+    }
+    Element o-> Fqsen
+
+    namespace Php {
+        class DocBlock
+        note bottom
+            The DocBlock and related classes are
+            described in the Class Diagram for the
+            DocBlock Reflection component.
+        end note
+        class Visibility {
+            + __construct(string $visibility)
+            + __toString()
+        }
+
+        class Project<<Aggregate Root>> {
+            + getFiles() : File[]
+            + addFile(File $file)
+            + getRootNamespace() : Namespace
+            + getNamespaces() : Namespace[]
+            + addNamespace(Namespace $namespace)
+        }
+        interface ProjectFactoryStrategy {
+            + matches(object $data) : boolean
+            + create(object $data, ProjectFactory $factory) : Reflection.Element
+        }
+        note left
+            The ProjectFactory is provided with the create method
+            because we are building a tree and this means that
+            this is a recursive process. For example: a Class factory
+            strategy will invoke the factory to create its members.
+        end note
+        class ProjectFactory {
+            + __construct($strategies)
+            + create(string[] $files) : Project
+            + update(Project $project, string[] $files) : Project
+        }
+
+        class File implements Reflection.Element {
+        }
+        class Namespace_ implements Reflection.Element {
+        }
+        class Constant implements Reflection.Element {
+        }
+        class Function_ implements Reflection.Element {
+        }
+        class Class_ implements Reflection.Element {
+        }
+        class Interface_ implements Reflection.Element {
+        }
+        class Trait_ implements Reflection.Element {
+        }
+        class ClassConstant implements Reflection.Element {
+        }
+        class Property implements Reflection.Element {
+        }
+        class Method implements Reflection.Element {
+        }
+        class Argument {
+        }
+
+        namespace Factory {
+            class File {
+            }
+            class Namespace_ {
+            }
+            class Constant {
+            }
+            class Function_ {
+            }
+            class Class_ {
+            }
+            class Interface_ {
+            }
+            class Trait_ {
+            }
+            class ClassConstant {
+            }
+            class Property {
+            }
+            class Method {
+            }
+            class Argument {
+            }
+        }
+        Project - ProjectFactory
+        Project o--> File
+        Project o--> Namespace_
+
+        ProjectFactory o--> ProjectFactoryStrategy
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.File
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Namespace_
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Constant
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Function_
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Class_
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Interface_
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Trait_
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.ClassConstant
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Property
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Method
+        ProjectFactoryStrategy <|-- .Reflection.Php.Factory.Argument
+
+        File o--> Function_
+        File o--> Constant
+        File o--> Class_
+        File o--> Interface_
+        File o--> Trait_
+
+        Namespace_ o--> Function_
+        Namespace_ o--> Constant
+        Namespace_ o--> Class_
+        Namespace_ o--> Interface_
+        Namespace_ o--> Trait_
+
+        Class_ o--> Method
+        Class_ o--> Property
+        Class_ o--> ClassConstant
+
+        Interface_ o--> Method
+        Interface_ o--> ClassConstant
+
+        Trait_ o--> Method
+        Trait_ o--> Property
+
+        Function_ o--> Argument
+        Method o--> Argument
+
+        Class_ o--> .Reflection.Php.DocBlock
+        Interface_ o--> .Reflection.Php.DocBlock
+        Trait_ o--> .Reflection.Php.DocBlock
+        Function_ o--> .Reflection.Php.DocBlock
+        Constant o--> .Reflection.Php.DocBlock
+        ClassConstant o--> .Reflection.Php.DocBlock
+        Property o--> .Reflection.Php.DocBlock
+        Method o--> .Reflection.Php.DocBlock
+
+        Method o--> .Reflection.Php.Visibility
+        Property o--> .Reflection.Php.Visibility
+    }
+}
+
+@enduml

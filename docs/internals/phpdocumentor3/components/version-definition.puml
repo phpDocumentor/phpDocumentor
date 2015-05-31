@@ -1,0 +1,55 @@
+@startuml
+
+interface Definition
+interface DefinitionFactory {
+    + create(options : string[]) : Definition
+}
+interface DocumentGroupDefinitionFactory {
+}
+
+class Project.Version.DefinitionRepository {
+    + __construct(ConfigurationFactory, DefinitionFactory)
+    + fetch(VersionNumber) : Project.Version.Definition
+    + fetchAll() : Project.Version.Definition[]
+}
+class Project.Version.DefinitionFactory {
+    + registerDocumentGroupDefinitionFactory(string $type, DocumentGuideFormat $format, DocumentGroupDefinitionFactory $factory)
+    + create(options : string[]) : Project.Version.Definition
+}
+note top
+    As a Version Definition contains several
+    other Definitions for DocumentGroups
+    we need to register a DocumentGroupDefinition
+    for each type of a DocumentGroup.
+
+    The type of a DocumentGroup is identified by
+    a combination of which subset (type) it is (i.e.
+    Api or Guide) and which format the source of
+    the DocumentGroup has (i.e. ReST or PHP). This
+    information is available in the options array
+    with each DocumentGroup.
+endnote
+class Project.Version.Definition <<Aggregate Root>> {
+    - versionNumber : Project.VersionNumber
+    - documentGroupDefinitions : DocumentGroupDefinition[]
+
+    + getVersionNumber() : Project.VersionNumber
+    + getDocumentGroupDefinitions() : DocumentGroupDefinition[]
+}
+
+ConfigurationFactory ()-- Project.Version.DefinitionRepository
+Project.Version.DefinitionRepository -() VersionNumber
+VersionNumber ()- Project.Version.Definition
+Project.Version.DefinitionRepository ..> Project.Version.Definition : Provides
+Project.Version.DefinitionRepository <.. Project.Version.DefinitionFactory : Reconstitutes on fetch
+Project.Version.DefinitionFactory -|> DefinitionFactory
+DefinitionFactory <|-- DocumentGroupDefinitionFactory
+DocumentGuideFormat ().. Project.Version.DefinitionFactory
+Project.Version.Definition -|> Definition
+Project.Version.Definition "1" o--> "*" Definition : Contains
+Definition ..() Api.Php.Definition
+Definition .() Guides.ReST.Definition
+DocumentGroupDefinitionFactory ..() Api.Php.DefinitionFactory
+DocumentGroupDefinitionFactory .() Guides.ReST.DefinitionFactory
+
+@enduml

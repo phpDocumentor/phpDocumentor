@@ -1,0 +1,12 @@
+@startuml
+
+class ConfigurationFactory {
+    + __construct(Uri $locationUri)
+    + replaceLocation(Uri $uri)
+    + get() : string[]
+}
+note right : get() should cache results in memory\nas long as URI is unchanged
+
+Uri ()- ConfigurationFactory
+
+@enduml

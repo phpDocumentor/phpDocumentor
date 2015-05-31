@@ -1,0 +1,124 @@
+@startuml
+
+class DocumentationFactory {
+    + create(Project.Version.Definition $definition) : Documentation
+    + addDocumentGroupFactory(DocumentGroupFactory $factory)
+}
+class DocumentationRepository {
+    + __construct(Stash.Interfaces.DriverInterface $cache)
+    + findByVersionNumber(VersionNumber $versionNumber)
+    + save(Documentation $documentation)
+}
+class Documentation <<Aggregate Root>> {
+    + getTitle() : string
+    + getVersion() : Project.Version
+    + addDocumentGroup(DocumentGroup $documentGroup)
+    + getDocumentGroups() : DocumentGroup[]
+}
+class Project.Version <<Entity>> {
+    + getVersionNumber() : VersionNumber
+}
+class Project.Version.Factory {
+    + create(Project.Version.Definition) : Project.Version
+}
+interface DocumentGroup {
+    + getFormat() : DocumentGroupFormat
+}
+interface DocumentGroupFactory {
+    + create(DocumentGroupDefinition $definition) : DocumentGroup
+}
+class DocumentGroupFormat <<Value Object>> {
+    - $format : string
+    + __construct(string $format)
+    + __toString() : string
+}
+class Project.VersionNumber <<Value Object>> {
+    - $versionNumber : string
+    + __construct(string $versionNumber)
+    + __toString() : string
+}
+
+Project.Version.Definition ().. DocumentationFactory
+DocumentationFactory .. Documentation
+Stash.Interfaces.DriverInterface ()-- DocumentationRepository
+DocumentationRepository .. Project.VersionNumber
+DocumentationRepository .. Documentation
+Project.Version.Factory . Project.Version
+Project.Version "1" *--> "1" Project.VersionNumber
+Documentation "1" o--> "1" Project.Version
+Documentation "1" o-> "*" DocumentGroup
+DocumentGroup <|. Guides.Guide
+DocumentGroup <|.. ApiReference.Api
+DocumentGroup *-- DocumentGroupFormat
+DocumentGroupFactory .. DocumentGroup
+DocumentGroupDefinition ().. DocumentGroupFactory
+
+namespace Guides {
+    class Guide <<Value Object>> {
+        + __construct(DocumentGroupFormat $format)
+        + getFormat() : DocumentGroupFormat
+        + addDocument(Document $document)
+        + getDocuments() : Document[]
+        + findDocumentByPath() : Document|null
+    }
+    class ContentType <<ValueObject>> {
+        - $contentType : string
+        + __construct(string $contentType)
+        + __toString() : string
+    }
+    abstract class Document {
+        + __construct(Path $path, string $content)
+        + {abstract} getContentType() : ContentType
+        + getTitle() : string
+        + getPath() : Path
+        + getContent() : string
+    }
+    note bottom
+        Path should be relative and not
+        absolute due to caching and
+        because the project location or
+        cache may be moved
+    end note
+
+    namespace Document {
+        class Html {
+            + getContentType() : ContentType
+        }
+        note bottom
+            The HTML class should return content
+            type text/html and indicates that the
+            content is formatted using HTML.
+        end note
+        .Guides.Document <|-- .Guides.Document.Html
+    }
+
+    Guides.Guide o--> Guides.Document
+    Guides.Document -() Path
+    Guides.Guide *--> .DocumentGroupFormat
+    ContentType - Guides.Document
+}
+
+namespace ApiReference {
+    class Api <<Value Object>> {
+        + __construct(DocumentGroupFormat $format)
+        + getFormat() : DocumentGroupFormat
+        + addElement(Element $element)
+        + getElements() : Element[]
+        + findElementByFqsen() : Element|null
+    }
+    interface Element <<Entity>> {
+        + getFqsen() : Fqsen
+        + getName() : string
+    }
+    class Fqsen <<Value Object>> {
+        - $fqsen : string
+        + __construct(string $fqsen)
+        + __toString() : string
+    }
+
+    Api "1" o--> "*" Element
+    Api "1" *-> "1" .DocumentGroupFormat
+    Element *--> Fqsen
+}
+
+@enduml

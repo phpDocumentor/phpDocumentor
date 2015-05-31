@@ -1,0 +1,115 @@
+@startuml
+
+namespace Renderer {
+    interface Action {
+        {static} create(Parameter[] $parameters) : Action
+    }
+    note left
+        use a static factory method
+        to instantiate it using the
+        parameters of the template
+        and action so that the
+        TemplateFactory can locate
+        the right action and apply
+        this Factory method
+    end note
+    interface ActionHandler {
+        __invoke(Action $action)
+    }
+    class ActionHandlerLocator {
+        + locate(Action $action) : ActionHandler|null
+    }
+    class Template {
+        + getName()
+        + getParameters() : Parameter[]
+        + getActions() : Action[]
+    }
+    class TemplateFactory {
+        + create($options : string[]) : Template
+    }
+    note bottom
+        Important: the Factory
+        should merge the template
+        parameters into the
+        Action parameters when
+        creating Actions.
+    end note
+    class TemplateRepository {
+        + fetch($name : string) : Template
+        + fetchAllNative() : Template[]
+    }
+    namespace Template {
+        class Parameter {
+            + getName()
+            + getValue()
+        }
+    }
+    namespace Actions {
+        class Xml
+        class XmlHandler {
+            + __invoke(Xml $action)
+        }
+        class Copy
+        class CopyHandler {
+            + __invoke(Copy $action)
+        }
+        class Twig
+        class TwigHandler {
+            + __invoke(Twig $action)
+        }
+        class Xsl
+        class XslHandler {
+            + __invoke(Xsl $action)
+        }
+        class Checkstyle
+        class CheckstyleHandler {
+            + __invoke(Checkstyle $action)
+        }
+        class ClassDiagram
+        class ClassDiagramHandler {
+            + __invoke(ClassDiagram $action)
+        }
+        class Sourcecode
+        class SourcecodeHandler {
+            + __invoke(Sourcecode $action)
+        }
+    }
+
+    .Renderer.Template "1" *--> "*" Action
+    .Renderer.Template "1" *-> "*" .Renderer.Template.Parameter
+    .Renderer.Template.Parameter "*" <--* "1" Action
+    TemplateRepository -- .Renderer.Template
+    TemplateFactory -- .Renderer.Template
+    TemplateRepository o-> TemplateFactory
+
+    Action --> ActionHandler : Uses Action to\nretrieve parameters\nwith which to run\nactions
+    Action --> ActionHandlerLocator : Uses Action to\nlocate handler
+    ActionHandlerLocator - ActionHandler : Returns handler\nto caller
+
+    ActionHandler --() Renderer
+    ActionHandlerLocator --() Renderer
+
+    Action <|. .Renderer.Actions.Xml
+    Action <|. .Renderer.Actions.Copy
+    Action <|. .Renderer.Actions.Twig
+    Action <|. .Renderer.Actions.Xsl
+    Action <|. .Renderer.Actions.ClassDiagram
+    Action <|. .Renderer.Actions.Checkstyle
+    Action <|. .Renderer.Actions.Sourcecode
+    ActionHandler <|. .Renderer.Actions.XmlHandler
+    ActionHandler <|. .Renderer.Actions.CopyHandler
+    ActionHandler <|. .Renderer.Actions.TwigHandler
+    ActionHandler <|. .Renderer.Actions.XslHandler
+    ActionHandler <|. .Renderer.Actions.CheckstyleHandler
+    ActionHandler <|. .Renderer.Actions.ClassDiagramHandler
+    ActionHandler <|. .Renderer.Actions.SourcecodeHandler
+
+    .Renderer.Actions.Xml -- .Renderer.Actions.XmlHandler
+    .Renderer.Actions.Copy -- .Renderer.Actions.CopyHandler
+    .Renderer.Actions.Twig -- .Renderer.Actions.TwigHandler
+    .Renderer.Actions.Xsl -- .Renderer.Actions.XslHandler
+    .Renderer.Actions.ClassDiagram -- .Renderer.Actions.ClassDiagramHandler
+    .Renderer.Actions.Checkstyle -- .Renderer.Actions.CheckstyleHandler
+    .Renderer.Actions.Sourcecode -- .Renderer.Actions.SourcecodeHandler
+}
+@enduml

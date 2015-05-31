@@ -1,0 +1,65 @@
+@startuml
+
+|Application|
+start
+    :Start Dependency Injection\nContainer and load definitions;
+    :Read Command line arguments\nand options;
+    :Load Configuration;
+    :Start 'Run' Command;
+    |Domain|
+    :Load Templates;
+    note right : We load the templates here\nbecause if something goes wrong\nwe fail early and not after parsing
+    |Infrastructure|
+    :Open Destination Location;
+
+    |Domain|
+    while (for each version)
+        :Get Version Definition;
+        :Override parts of Version Definition\nwith command line option values;
+
+        if (Documentation in Cache for Version) then (No)
+            :Create Documentation for Version;
+        else (Yes)
+            |Infrastructure|
+            :Load Documentation from Cache;
+            |#AntiqueWhite|Domain|
+        endif
+
+        while (for each DocumentGroup)
+            :Determine DocumentGroupBuilder to use;
+            |Infrastructure|
+            :Open source location;
+            :Gather list of files;
+            |Domain|
+            while (for each file)
+                |Infrastructure|
+                :Read file;
+                |Domain|
+                if (is file in cache and not changed?) then
+                    :Re-use file in\nCache with DocumentGroup;
+                else (Yes)
+                    :Pass file to\nDocumentGroupBuilder;
+                endif
+            endwhile
+            :Add generated DocumentGroup\nto Documentation;
+        endwhile
+
+        |Infrastructure|
+        :Write Documentation to Cache;
+        |Domain|
+    endwhile
+
+    while (for each Template)
+        :Call Renderer;
+        while (for each Action)
+            :Render view;
+            |Infrastructure|
+            :Output to Destination;
+            |Domain|
+        endwhile
+    endwhile
+
+    |Application|
+stop
+
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+
+class Path {
+    + __construct($path : string)
+    + __toString() : string
+}
+class FilesystemFactory {
+    + __construct(MountManager $mountManager, DI.Container $container)
+    + create(Dsn $dsn) : Filesystem
+}
+class Dsn {
+    + __construct($dsn : string)
+    + getScheme() : string
+    + getHost() : string
+    + getPort() : integer
+    + getUsername() : string
+    + getPassword() : string
+    + getPath() : Path
+    + getQuery() : string[]
+    + getParameters() : string[]
+}
+namespace File.Specification {
+    class HasExtension {
+        + __construct(string[] $extensions)
+        + isSatisfiedBy($value)
+    }
+    class InPath {
+        + __construct($path)
+        + isSatisfiedBy($value)
+    }
+    class IsHidden {
+        + isSatisfiedBy($value)
+    }
+    class IsSymlink {
+        + isSatisfiedBy($value)
+    }
+
+    CompositeSpecification ()-- HasExtension
+    CompositeSpecification ()-- InPath
+    CompositeSpecification ()-- IsHidden
+    CompositeSpecification ()-- IsSymlink
+    InPath *-- Path
+}
+
+namespace Flysystem {
+    class Finder {
+        + getMethod()
+        + setFilesystem(Filesystem $filesystem)
+        + handle(SpecificationInterface $specification)
+    }
+    Filesystem ()-- Finder
+    Finder --() SpecificationInterface
+}
+
+MountManager ()-- FilesystemFactory
+FilesystemFactory --() DI.Container
+FilesystemFactory -() Filesystem
+FilesystemFactory -- Dsn
+Dsn *-- Path
+@enduml

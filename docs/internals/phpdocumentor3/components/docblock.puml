@@ -1,0 +1,165 @@
+@startuml
+
+class DocBlock {
+    + __construct(Summary $summary, Description $description = null, Tag[] $tags = [])
+    + getSummary() : DocBlocks.Summary
+    + getDescription() : DocBlocks.Description
+    + getTags() : Tag[]
+    + fetchTagByName(string $name) : Tag[]
+}
+
+class DocBlockFactory {
+    + __construct(string[] tagToClassMapping)
+    + create(string $docBlock)
+}
+
+namespace DocBlocks {
+    class Summary {
+        + __construct(string $summary)
+        + __toString() : string
+    }
+    class Description {
+        + __construct(string $summary)
+        + getTags() : Tag[]
+        + __toString() : string
+    }
+    interface Tag {
+        + {static} create($tagString) : static
+        + getName() : string
+    }
+
+    class Api implements Tag {
+        + {static} create($tagString) : Api
+        + getName() : string
+    }
+    class Author implements Tag {
+        + {static} create($tagString) : Author
+        + getName() : string
+    }
+    class Category implements Tag {
+        + {static} create($tagString) : Category
+        + getName() : string
+    }
+    class Copyright implements Tag {
+        + {static} create($tagString) : Copyright
+        + getName() : string
+    }
+    class Deprecated implements Tag {
+        + {static} create($tagString) : Deprecated
+        + getName() : string
+    }
+    class Example implements Tag {
+        + {static} create($tagString) : Example
+        + getName() : string
+    }
+    class Filesource implements Tag {
+        + {static} create($tagString) : Filesource
+        + getName() : string
+    }
+    class Global implements Tag {
+        + {static} create($tagString) : Global
+        + getName() : string
+    }
+    class Ignore implements Tag {
+        + {static} create($tagString) : Ignore
+        + getName() : string
+    }
+    class Internal implements Tag {
+        + {static} create($tagString) : Internal
+        + getName() : string
+    }
+    class License implements Tag {
+        + {static} create($tagString) : License
+        + getName() : string
+    }
+    class Link implements Tag {
+        + {static} create($tagString) : Link
+        + getName() : string
+    }
+    class Method implements Tag {
+        + {static} create($tagString) : Method
+        + getName() : string
+    }
+    class Package implements Tag {
+        + {static} create($tagString) : Package
+        + getName() : string
+    }
+    class Param implements Tag {
+        + {static} create($tagString) : Param
+        + getName() : string
+    }
+    class Property implements Tag {
+        + {static} create($tagString) : Property
+        + getName() : string
+    }
+    class PropertyRead implements Tag {
+        + {static} create($tagString) : PropertyRead
+        + getName() : string
+    }
+    class PropertyWrite implements Tag {
+        + {static} create($tagString) : PropertyWrite
+        + getName() : string
+    }
+    class Return implements Tag {
+        + {static} create($tagString) : Return
+        + getName() : string
+    }
+    class See implements Tag {
+        + {static} create($tagString) : See
+        + getName() : string
+    }
+    class Since implements Tag {
+        + {static} create($tagString) : Since
+        + getName() : string
+    }
+    class Source implements Tag {
+        + {static} create($tagString) : Source
+        + getName() : string
+    }
+    class Subpackage implements Tag {
+        + {static} create($tagString) : Subpackage
+        + getName() : string
+    }
+    class Throws implements Tag {
+        + {static} create($tagString) : Throws
+        + getName() : string
+    }
+    class Todo implements Tag {
+        + {static} create($tagString) : Todo
+        + getName() : string
+    }
+    class Uses implements Tag {
+        + {static} create($tagString) : Uses
+        + getName() : string
+    }
+    class Var implements Tag {
+        + {static} create($tagString) : Var
+        + getName() : string
+    }
+    class Version implements Tag {
+        + {static} create($tagString) : Version
+        + getName() : string
+    }
+
+    interface Type {
+    }
+
+    namespace Types {
+        class Composite implements Type
+        class String_ implements Type
+        class Integer_ implements Type
+        class Float_ implements Type
+        class Resource_ implements Type
+        class Array_ implements Type
+        class Null_ implements Type
+        class Object_ implements Type
+        class Mixed_ implements Type
+    }
+}
+
+DocBlockFactory -- DocBlock
+DocBlock o-- DocBlocks.Summary
+DocBlock o-- DocBlocks.Description
+DocBlock o-- DocBlocks.Tag
+
+@enduml
