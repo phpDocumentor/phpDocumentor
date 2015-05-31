@@ -10,7 +10,7 @@ use JMS\Serializer\SerializerBuilder;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Command\Phar\UpdateCommand;
-use phpDocumentor\Command\Project\RunCommand;
+use phpDocumentor\Application\Cli\Command\RunCommand;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
@@ -28,7 +28,6 @@ use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssem
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\ReflectionAssemblers;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Backend\Php;
-use phpDocumentor\Parser\Command\Project\ParseCommand;
 use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Partials\Collection as PartialsCollection;
@@ -38,7 +37,6 @@ use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Checkstyle;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use phpDocumentor\Plugin\Twig\Writer\Twig;
-use phpDocumentor\Transformer\Command\Project\TransformCommand;
 use phpDocumentor\Transformer\Command\Template\ListCommand;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
@@ -126,9 +124,7 @@ return [
         $application->getHelperSet()->set($c->get(LoggerHelper::class));
         $application->getHelperSet()->set($c->get(ConfigurationHelper::class));
 
-        $application->add($c->get(ParseCommand::class));
         $application->add($c->get(RunCommand::class));
-        $application->add($c->get(TransformCommand::class));
         $application->add($c->get(ListCommand::class));
         if (\Phar::running()) {
             $application->add($c->get(UpdateCommand::class));
