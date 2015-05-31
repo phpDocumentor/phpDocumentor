@@ -52,7 +52,7 @@ abstract class Document
      *
      * @return ContentType
      */
-    abstract function getContentType();
+    abstract public function getContentType();
 
     /**
      * Returns the title of the document.

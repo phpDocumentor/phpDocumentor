@@ -24,7 +24,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $contenType = new ContentType('text/html');
-        $this->assertEquals('text/html', (string)$contenType);
+        $contentType = new ContentType('text/html');
+        $this->assertEquals('text/html', (string)$contentType);
     }
 }

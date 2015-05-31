@@ -43,7 +43,7 @@ final class Html extends Document
      *
      * @return ContentType
      */
-    function getContentType()
+    public function getContentType()
     {
         return $this->contentType;
     }
