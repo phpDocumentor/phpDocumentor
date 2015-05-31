@@ -1,0 +1,21 @@
+@startuml
+    skinparam activityBorderColor #516f42
+    skinparam activityBackgroundColor #a3dc7f
+    skinparam shadowing false
+
+    start
+
+    :Reflect file;
+    :Create File representation as FileDescriptor;
+
+    while (For each Structural Element in File)
+       :Map reflected information onto new Descriptor;
+       :Filter Descriptor;
+       :Validate Descriptor;
+       :Add Element Descriptor to File;
+    endwhile;
+
+    :Add File representation to Project;
+
+    stop
+@enduml

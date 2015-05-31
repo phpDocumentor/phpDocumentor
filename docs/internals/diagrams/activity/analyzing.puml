@@ -1,0 +1,21 @@
+@startuml
+    skinparam activityBorderColor #516f42
+    skinparam activityBackgroundColor #a3dc7f
+    skinparam shadowing false
+
+    :Set parsing parameters;
+    :Find project files;
+    :Load Descriptor Cache;
+    :Remove stale items from Descriptor Cache;
+
+    while (There are unprocessed files?) is (Yes)
+       if (File is cached and cache is valid) then (Yes)
+           :Load Cached File;
+       else (No)
+           :Add File Representation to Project|
+       endif;
+    endwhile (No);
+
+    :Write partial texts to Project;
+    :Save Cache to Disk;
+@enduml

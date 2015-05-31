@@ -1,0 +1,40 @@
+@startuml
+    skinparam activityBorderColor #516f42
+    skinparam activityBackgroundColor #a3dc7f
+    skinparam shadowing false
+
+    start
+
+    partition "Commit phase" {
+       :Clone the release-branch into a deployment folder;
+       :Run a composer install command with the arguments `--no-dev --optimize-autoloader --prefer-dist`;
+       :Run Unit tests of the deployment folder;
+       :Run Behat tests of the deployment folder;
+    }
+    partition "Analysis phase" {
+       :Run phpCodeSniffer and aggregate results;
+    }
+    partition "Packaging phase" {
+       :Build PEAR package;
+       :Build PHAR package;
+       :Build documentation;
+       :Store PEAR and PHAR packages in artifact repository;
+    }
+    partition "Release phase" {
+       :Commit generated artifacts (package.xml);
+       :Deploy PEAR package to channel;
+       :Upload PHAR to phpdoc.org/phpDocumentor.phar;
+       :Upload PHAR to phpdoc.org/archives/phpDocumentor-[version].phar;
+       :Create new issue with https://github.com/josegonzalez/homebrew-php using the SHA1 of the phar file and the version
+          number to request an update of the homebrew files (see https://github.com/phpDocumentor/phpDocumentor2/issues/909);
+       :Upload documentation to http://www.phpdoc.org/docs/[major].[minor];
+       :Set Symlink for latest documentation (http://www.phpdoc.org/docs/latest) to http://www.phpdoc.org/docs/[major].[minor];
+    }
+    partition "Announcements" {
+       :Send a mail to the mailing list with the change log contents and title;
+       :Send a tweet with the new release and a link to the Github release information;
+       :Update release information on github with Release title (taken from changelog), Changelog, PEAR archive file and Phar archive file;
+    }
+
+    stop
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+   skinparam activityBorderColor #516f42
+   skinparam activityBackgroundColor #a3dc7f
+   skinparam shadowing false
+
+   start
+
+   #f9f9f9:Emit event "transformer.transform.pre">
+   #f9f9f9:Emit event "transformer.writer.initialization.pre">
+   :Boot involved writers;
+   #f9f9f9:Emit event "transformer.writer.initialization.post">
+
+   while (For each Transformation)
+       #f9f9f9:Emit event "transformer.transformation.pre">
+       :Execute associated Writer and pass Transformation;
+       #f9f9f9:Emit event "transformer.transformation.pre">
+   endwhile;
+
+   #f9f9f9:Emit event "transformer.transform.post">
+
+   stop
+@enduml
