@@ -151,6 +151,6 @@ final class Dsn
         $query = array_key_exists('query', $locationParts) ? $locationParts['query'] : "";
         $this->query = !empty($query) ? explode('?', $query) : [];
 
-        $this->parameters = array_key_exists('branch', $options) ? $options : [];
+        $this->parameters = !empty($options) ? $options : [];
     }
 }
