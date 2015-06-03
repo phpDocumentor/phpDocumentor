@@ -131,10 +131,9 @@ final class Dsn
             $options[$option[0]] = $option[1];
         }
 
-        $this->scheme = array_key_exists('scheme', $locationParts) ? $locationParts['scheme'] : "";
+        $this->scheme = array_key_exists('scheme', $locationParts) ? $locationParts['scheme'] : 'file';
 
         if (array_key_exists('scheme', $locationParts) && $locationParts['scheme'] === 'file') {
-
             $path = array_key_exists('path', $locationParts) ? $locationParts['path'] : "";
             $this->path = $locationParts['host'] . $path;
         } else {
