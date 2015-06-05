@@ -7,6 +7,14 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Interop\Container\ContainerInterface;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
+use League\Tactician\CommandBus;
+use League\Tactician\Handler\CommandHandlerMiddleware;
+use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
+use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
+use League\Tactician\Handler\Locator\HandlerLocator;
+use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
+use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
+use phpDocumentor\Application\Commands\ContainerLocator;
 use phpDocumentor\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Command\Helper\LoggerHelper;
 use phpDocumentor\Command\Phar\UpdateCommand;
@@ -63,6 +71,9 @@ return [
             ? trim(file_get_contents(__DIR__ . '/../../VERSION'))
             : '@package_version@';
     },
+    'command.middlewares' => [
+        \DI\link(CommandHandlerMiddleware::class)
+    ],
     'cache.directory' => sys_get_temp_dir(),
     'linker.substitutions' => [
         Descriptor\ProjectDescriptor::class => [ 'files' ],
@@ -101,6 +112,17 @@ return [
     'config.user.path'     => getcwd() . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml'),
 
     // -- Services
+    ContainerInterface::class => function (ContainerInterface $c) {
+        return $c;
+    },
+
+    // Command Bus
+    CommandBus::class           => \DI\object()->constructor(\DI\get('command.middlewares')),
+    CommandNameExtractor::class => \DI\object(ClassNameExtractor::class),
+    HandlerLocator::class       => \DI\object(ContainerLocator::class),
+    MethodNameInflector::class  => \DI\object(InvokeInflector::class),
+
+    // Configuration
     Configuration::class => function (ContainerInterface $c) {
         /** @var Loader $loader */
         $loader = $c->get(Loader::class);
