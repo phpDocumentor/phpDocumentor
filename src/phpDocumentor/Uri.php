@@ -13,9 +13,8 @@
 namespace phpDocumentor;
 
 /**
- * Class Uri
- *
- * @package phpDocumentor
+ * Value object for uri.
+ * Uri can be either local or remote.
  */
 final class Uri
 {
@@ -31,7 +30,7 @@ final class Uri
     {
         $this->validateString($uri);
 
-        $uri = $this->checkScheme($uri);
+        $uri = $this->addFileSchemeWhenSchemeIsAbsent($uri);
 
         $this->validateUri($uri);
 
@@ -39,6 +38,8 @@ final class Uri
     }
 
     /**
+     * Returns a string representation of the uri.
+     *
      * @return string
      */
     public function __toString()
@@ -49,8 +50,9 @@ final class Uri
     /**
      * Checks if $uri is of type string.
      *
-     * @param  mixed $uri
-     * @throws \InvalidArgumentException
+     * @param  string $uri
+     * @throws \InvalidArgumentException if $uri is not a string
+     * @return void
      */
     private function validateString($uri)
     {
@@ -60,8 +62,11 @@ final class Uri
     }
 
     /**
+     * Checks if $uri is valid.
+     *
      * @param  string $uri
-     * @throws \InvalidArgumentException
+     * @throws \InvalidArgumentException if $uri is not a valid uri
+     * @return void
      */
     private function validateUri($uri)
     {
@@ -77,7 +82,7 @@ final class Uri
      * @param  string $uri
      * @return string
      */
-    private function checkScheme($uri)
+    private function addFileSchemeWhenSchemeIsAbsent($uri)
     {
         if (!parse_url($uri, PHP_URL_SCHEME)) {
             $uri = 'file://' . $uri;

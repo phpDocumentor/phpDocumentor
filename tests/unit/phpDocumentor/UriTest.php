@@ -21,39 +21,8 @@ final class UriTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::__construct
-     * @covers ::validateString
-     * @covers ::validateUri
-     */
-    public function testItShouldBuildAUri()
-    {
-        $uri = new Uri('file://foo');
-
-        $this->assertInstanceOf(Uri::class, $uri);
-        $this->assertObjectHasAttribute('uri', $uri);
-    }
-
-    /**
-     * @covers ::validateString
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage String required, array given
-     */
-    public function testItShouldOnlyAcceptStrings()
-    {
-        new Uri([]);
-    }
-
-    /**
-     * @covers ::validateUri
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage http://foo,bar is not a valid uri
-     */
-    public function testItShouldDiscardAnInvalidUri()
-    {
-        new Uri('http://foo,bar');
-    }
-
-    /**
      * @covers ::__toString
+     * @covers ::<private>
      */
     public function testItShouldReturnTheUriAsAString()
     {
@@ -63,9 +32,29 @@ final class UriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::checkScheme
+     * @covers ::<private>
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage String required, array given
      */
-    public function testItShouldRecogniseALocalPath()
+    public function testItShouldOnlyAcceptStrings()
+    {
+        new Uri([]);
+    }
+
+    /**
+     * @covers ::<private>
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage http://foo,bar is not a valid uri
+     */
+    public function testItShouldDiscardAnInvalidUri()
+    {
+        new Uri('http://foo,bar');
+    }
+
+    /**
+     * @covers ::<private>
+     */
+    public function testItShouldAddAFileSchemeWhenSchemeIsAbsent()
     {
         $uri = new Uri('foo/phpdoc.xml');
 
