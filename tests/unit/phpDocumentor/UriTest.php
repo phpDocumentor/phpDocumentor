@@ -18,21 +18,39 @@ final class UriTest extends \PHPUnit_Framework_TestCase
     {
         $uri = new Uri('file://foo');
 
-        $this->assertInstanceOf('phpDocumentor\Uri', $uri);
+        $this->assertInstanceOf(Uri::class, $uri);
         $this->assertObjectHasAttribute('uri', $uri);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage String required, array given
+     */
+    public function testItShouldOnlyAcceptStrings()
+    {
+        new Uri([]);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage http://foo,bar is not a valid uri
+     */
     public function testItShouldDiscardAnInvalidUri()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Invalid uri');
-
-        new Uri('foo');
+        new Uri('http://foo,bar');
     }
 
     public function testItShouldReturnTheUriAsAString()
     {
-        $uri = new Uri('file://foo');
+        $uri = new Uri('http://foo.bar/phpdoc.xml');
 
-        $this->assertSame('file://foo', (string)$uri);
+        $this->assertSame('http://foo.bar/phpdoc.xml', (string) $uri);
+    }
+
+    public function testItShouldRecogniseALocalPath()
+    {
+        $uri = new Uri('foo/phpdoc.xml');
+
+        $this->assertSame('file://foo/phpdoc.xml', (string) $uri);
     }
 }
