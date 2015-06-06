@@ -12,8 +12,18 @@
 
 namespace phpDocumentor;
 
+/**
+ * Test case for Uri
+ *
+ * @coversDefaultClass phpDocumentor\Uri
+ */
 final class UriTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::validateString
+     * @covers ::validateUri
+     */
     public function testItShouldBuildAUri()
     {
         $uri = new Uri('file://foo');
@@ -23,6 +33,7 @@ final class UriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::validateString
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage String required, array given
      */
@@ -32,6 +43,7 @@ final class UriTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::validateUri
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage http://foo,bar is not a valid uri
      */
@@ -40,6 +52,9 @@ final class UriTest extends \PHPUnit_Framework_TestCase
         new Uri('http://foo,bar');
     }
 
+    /**
+     * @covers ::__toString
+     */
     public function testItShouldReturnTheUriAsAString()
     {
         $uri = new Uri('http://foo.bar/phpdoc.xml');
@@ -47,6 +62,9 @@ final class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('http://foo.bar/phpdoc.xml', (string) $uri);
     }
 
+    /**
+     * @covers ::checkScheme
+     */
     public function testItShouldRecogniseALocalPath()
     {
         $uri = new Uri('foo/phpdoc.xml');
