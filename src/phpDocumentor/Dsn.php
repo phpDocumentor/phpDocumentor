@@ -135,12 +135,13 @@ final class Dsn
      * Parses the given DSN
      *
      * @param string $dsn
+     * @return void
      */
     private function parse($dsn)
     {
         if (! is_string($dsn)) {
             throw new \InvalidArgumentException(
-                sprintf('"%s" is not a valid DSN.', $dsn)
+                sprintf('"%s" is not a valid DSN.', var_export($dsn, true))
             );
         }
 
@@ -164,13 +165,13 @@ final class Dsn
 
         $this->parseHostAndPath($locationParts);
 
-        $this->port = isset($locationParts['port']) ? $locationParts['port'] : "";
+        $this->parsePort($locationParts);
 
         $this->user = isset($locationParts['user']) ? $locationParts['user'] : "";
 
         $this->password = isset($locationParts['pass']) ? $locationParts['pass'] : "";
 
-        $this->query = isset($locationParts['query']) ? explode('?', $locationParts['query']) : "";
+        $this->parseQuery($locationParts);
 
         $this->parseParameters($dsnParts);
     }
@@ -178,6 +179,7 @@ final class Dsn
     /**
      * validates and sets the scheme property
      *
+     * @param string $locationParts
      * @return void
      */
     private function parseScheme($locationParts)
@@ -194,6 +196,7 @@ final class Dsn
     /**
      * Validates and sets the host and path properties
      *
+     * @param string $locationParts
      * @return void
      */
     private function parseHostAndPath($locationParts)
@@ -210,23 +213,76 @@ final class Dsn
     }
 
     /**
+     * Validates and sets the port property
+     *
+     * @param string $locationParts
+     * @return void
+     */
+    private function parsePort($locationParts)
+    {
+        if (! isset($locationParts['port'])) {
+            if ($this->getScheme() === 'git+http') {
+                $this->port = 80;
+            } elseif ($this->getScheme() === 'git+https') {
+                $this->port = 443;
+            } else {
+                $this->port = 0;
+            }
+        } else {
+            $this->port = $locationParts['port'];
+        }
+    }
+
+    /**
+     * validates and sets the query property
+     *
+     * @param string $locationParts
+     * @return void
+     */
+    private function parseQuery($locationParts)
+    {
+        if (isset($locationParts['query'])) {
+            $queryParts = explode('&', $locationParts['query']);
+            foreach ($queryParts as $part) {
+                $option = $this->splitKeyValuePair($part);
+
+                $this->query[$option[0]] = $option[1];
+            }
+        }
+    }
+
+    /**
      * validates and sets the parameters property
      *
+     * @param string $dsnParts
      * @return void
      */
     private function parseParameters($dsnParts)
     {
         if (!empty($dsnParts)) {
             foreach ($dsnParts as $part) {
-                if (! strpos($part, '=')) {
-                    throw new \InvalidArgumentException(
-                        sprintf('"%s" is not a valid parameter.', $part)
-                    );
-                }
+                $option = $this->splitKeyValuePair($part);
 
-                $option = explode('=', $part);
                 $this->parameters[$option[0]] = $option[1];
             }
         }
+    }
+
+    /**
+     * Splits a key-value pair
+     *
+     * @param string $pair
+     * @return string[] $option
+     */
+    private function splitKeyValuePair($pair)
+    {
+        $option = explode('=', $pair);
+        if (count($option) != 2) {
+            throw new \InvalidArgumentException(
+                sprintf('"%s" is not a valid query or parameter.', $pair)
+            );
+        }
+
+        return $option;
     }
 }
