@@ -27,7 +27,8 @@
         "phpdocumentor/reflection": "dev-develop",
         "tedivm/stash": "^0.12.3",
         "league/tactician": "^0.6.0",
-        "webmozart/assert": "^1.0"
+        "webmozart/assert": "^1.0",
+        "league/flysystem": "~1.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
