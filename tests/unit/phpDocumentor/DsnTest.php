@@ -1,10 +1,11 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.5
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -30,7 +31,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::parse
+     * @covers ::<private>
      * @expectedException \InvalidArgumentException
      */
     public function testInvalidDsn()
@@ -41,8 +42,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::parse
-     * @covers ::parseScheme
+     * @covers ::<private>
      * @expectedException \InvalidArgumentException
      */
     public function testInvalidScheme()
@@ -54,12 +54,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::getScheme
-     * @covers ::parse
-     * @covers ::parseScheme
-     * @covers ::parseHostAndPath
-     * @covers ::parsePort
-     * @covers ::parseQuery
-     * @covers ::splitKeyValuePair
+     * @covers ::<private>
      * @expectedException \InvalidArgumentException
      */
     public function testInvalidKeyValuePair()
@@ -78,13 +73,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
      * @covers ::getPath
      * @covers ::getQuery
      * @covers ::getParameters
-     * @covers ::parse
-     * @covers ::parseScheme
-     * @covers ::parseHostAndPath
-     * @covers ::parsePort
-     * @covers ::parseQuery
-     * @covers ::parseParameters
-     * @covers ::splitKeyValuePair
+     * @covers ::<private>
      * @uses phpDocumentor\Path
      */
     public function testValidDsnWithScheme()
@@ -117,12 +106,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
      * @covers ::getHost
      * @covers ::getPort
      * @covers ::getPath
-     * @covers ::parse
-     * @covers ::parseScheme
-     * @covers ::parseHostAndPath
-     * @covers ::parsePort
-     * @covers ::parseQuery
-     * @covers ::parseParameters
+     * @covers ::<private>
      * @uses phpDocumentor\Path
      */
     public function testValidDsnWithoutScheme()
@@ -140,12 +124,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::getScheme
      * @covers ::getPort
-     * @covers ::parse
-     * @covers ::parseScheme
-     * @covers ::parseHostAndPath
-     * @covers ::parsePort
-     * @covers ::parseQuery
-     * @covers ::parseParameters
+     * @covers ::<private>
      */
     public function testCorrectDefaultPorts()
     {
