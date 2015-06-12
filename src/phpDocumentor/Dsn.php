@@ -179,10 +179,10 @@ final class Dsn
     /**
      * validates and sets the scheme property
      *
-     * @param string $locationParts
+     * @param string[] $locationParts
      * @return void
      */
-    private function parseScheme($locationParts)
+    private function parseScheme(array $locationParts)
     {
         $validSchemes = ['file', 'git+http', 'git+https'];
         if (! in_array(strtolower($locationParts['scheme']), $validSchemes)) {
@@ -196,10 +196,10 @@ final class Dsn
     /**
      * Validates and sets the host and path properties
      *
-     * @param string $locationParts
+     * @param string[] $locationParts
      * @return void
      */
-    private function parseHostAndPath($locationParts)
+    private function parseHostAndPath(array $locationParts)
     {
         $path = isset($locationParts['path']) ? $locationParts['path'] : "";
         $host = isset($locationParts['host']) ? $locationParts['host'] : "";
@@ -215,10 +215,10 @@ final class Dsn
     /**
      * Validates and sets the port property
      *
-     * @param string $locationParts
+     * @param string[] $locationParts
      * @return void
      */
-    private function parsePort($locationParts)
+    private function parsePort(array $locationParts)
     {
         if (! isset($locationParts['port'])) {
             if ($this->getScheme() === 'git+http') {
@@ -236,10 +236,10 @@ final class Dsn
     /**
      * validates and sets the query property
      *
-     * @param string $locationParts
+     * @param string[] $locationParts
      * @return void
      */
-    private function parseQuery($locationParts)
+    private function parseQuery(array $locationParts)
     {
         if (isset($locationParts['query'])) {
             $queryParts = explode('&', $locationParts['query']);
@@ -254,17 +254,15 @@ final class Dsn
     /**
      * validates and sets the parameters property
      *
-     * @param string $dsnParts
+     * @param string[] $dsnParts
      * @return void
      */
-    private function parseParameters($dsnParts)
+    private function parseParameters(array $dsnParts)
     {
-        if (!empty($dsnParts)) {
-            foreach ($dsnParts as $part) {
-                $option = $this->splitKeyValuePair($part);
+        foreach ($dsnParts as $part) {
+            $option = $this->splitKeyValuePair($part);
 
-                $this->parameters[$option[0]] = $option[1];
-            }
+            $this->parameters[$option[0]] = $option[1];
         }
     }
 
@@ -277,7 +275,7 @@ final class Dsn
     private function splitKeyValuePair($pair)
     {
         $option = explode('=', $pair);
-        if (count($option) != 2) {
+        if (count($option) !== 2) {
             throw new \InvalidArgumentException(
                 sprintf('"%s" is not a valid query or parameter.', $pair)
             );
