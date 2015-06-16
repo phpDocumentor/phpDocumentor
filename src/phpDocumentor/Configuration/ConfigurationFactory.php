@@ -54,11 +54,81 @@ final class ConfigurationFactory
 
     private function convertPhpdoc2XmlToArray(\SimpleXMLElement $xml)
     {
-        $array = [];
-        foreach ($xml->children() as $children) {
-            $array[] = $children;
+        $extensions = [];
+        foreach ($xml->parser->extensions->children() as $extension) {
+            $extensions[] = (string) $extension;
         }
 
-        return $array;
+        $markers = [];
+        foreach ($xml->parser->markers->children() as $marker) {
+            $markers[] = (string) $marker;
+        }
+
+        $visibility         = ((string) $xml->parser->visibility) ?: 'public';
+        $defaultPackageName = ((string) $xml->parser->{'default-package-name'}) ?: 'Default';
+        $template           = ((string) $xml->transformations->template->attributes()->name) ?: 'clean';
+
+        $ignoreHidden = true;
+        if (isset($xml->parser->files->{'ignore-hidden'})) {
+            $ignoreHidden = filter_var($xml->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        $ignoreSymlinks = true;
+        if (isset($xml->parser->files->{'ignore-symlinks'})) {
+            $ignoreSymlinks = filter_var($xml->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        $phpdoc2Array = [
+            'phpdocumentor' => [
+                'paths'     => [
+                    'output' => 'file://build/docs',
+                    'cache'  => '/tmp/phpdoc-doc-cache'
+                ],
+                'versions'  => [
+                    '1.0.0' => [
+                        'folder' => 'latest',
+                        'api'    => [
+                            'format'               => 'php',
+                            'source'               => [
+                                'dsn'   => 'file://.',
+                                'paths' => [
+                                    0 => 'src'
+                                ]
+                            ],
+                            'ignore'               => [
+                                'hidden'   => $ignoreHidden,
+                                'symlinks' => $ignoreSymlinks,
+                                'paths'    => [
+                                    0 => 'src/ServiceDefinitions.php'
+                                ]
+                            ],
+                            'extensions'           => $extensions,
+                            'visibility'           => $visibility,
+                            'default-package-name' => $defaultPackageName,
+                            'markers'              => $markers,
+                        ],
+                        'guide'  => [
+                            'format' => 'rst',
+                            'source' => [
+                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
+                                'paths' => [
+                                    0 => 'docs'
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'templates' => [
+                    0 => [
+                        'name' => $template
+                    ],
+                    1 => [
+                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/' . $template
+                    ]
+                ]
+            ]
+        ];
+
+        return $phpdoc2Array;
     }
 }
