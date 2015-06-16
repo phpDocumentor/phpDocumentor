@@ -12,8 +12,8 @@ use phpDocumentor\Uri;
 final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Uri is not readable
+     * @expectedException \Exception
+     * @expectedExceptionMessage String could not be parsed as XML
      */
     public function testItOnlyAcceptsAReadableUri()
     {
@@ -23,8 +23,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Uri is not a file
+     * @expectedException \Exception
+     * @expectedExceptionMessage String could not be parsed as XML
      */
     public function testItOnlyAcceptsAUriThatIsAFile()
     {
@@ -33,8 +33,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Uri has empty content
+     * @expectedException \Exception
+     * @expectedExceptionMessage String could not be parsed as XML
      */
     public function testItOnlyAcceptsAUriWithContent()
     {
@@ -43,8 +43,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Uri does not contain well-formed xml
+     * @expectedException \Exception
+     * @expectedExceptionMessage String could not be parsed as XML
      */
     public function testItOnlyAcceptsValidXml()
     {
@@ -54,7 +54,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Exception
      * @expectedExceptionMessage Root element name should be phpdocumentor, foo found
      */
     public function testItOnlyAcceptsAllowedXmlStructure()
@@ -78,53 +78,54 @@ XML;
         file_put_contents($path, $this->phpDocumentor2XML());
 
         $uri = new Uri($path);
-        $array = new ConfigurationFactory($uri);
+        $xml = new ConfigurationFactory($uri);
+        $array = $xml->convert();
 
-        $this->assertSame($this->expectedArray(), $array);
+        $this->assertEquals($this->expectedArray(), $array);
     }
 
     private function expectedArray()
     {
         return [
             'phpdocumentor' => [
-                'paths'     => [
+                'paths' => [
                     'output' => 'file://build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache'
+                    'cache' => '/tmp/phpdoc-doc-cache'
                 ],
-                'versions'  => [
+                'versions' => [
                     '1.0.0' => [
                         'folder' => 'latest',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
+                        'api' => [
+                            'format' => 'php',
+                            'source' => [
+                                'dsn' => 'file://.',
                                 'paths' => [
                                     0 => 'src'
                                 ]
                             ],
-                            'ignore'               => [
-                                'hidden'   => true,
+                            'ignore' => [
+                                'hidden' => true,
                                 'symlinks' => true,
-                                'paths'    => [
+                                'paths' => [
                                     0 => 'src/ServiceDefinitions.php'
                                 ]
                             ],
-                            'extensions'           => [
+                            'extensions' => [
                                 0 => 'php',
                                 1 => 'php3',
                                 2 => 'phtml'
                             ],
-                            'visibility'           => 'public',
+                            'visibility' => 'public',
                             'default-package-name' => 'Default',
-                            'markers'              => [
+                            'markers' => [
                                 0 => 'TODO',
                                 1 => 'FIXME'
                             ]
                         ],
-                        'guide'  => [
+                        'guide' => [
                             'format' => 'rst',
                             'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
+                                'dsn' => 'file://../phpDocumentor/phpDocumentor2',
                                 'paths' => [
                                     0 => 'docs'
                                 ]
@@ -146,42 +147,8 @@ XML;
 
     private function phpDocumentor2XML()
     {
-        return <<<XML
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpdocumentor>
-    <parser>
-        <default-package-name>Default</default-package-name>
-        <encoding>utf-8</encoding>
-        <target>output/build</target>
-        <markers>
-            <item>TODO</item>
-            <item>FIXME</item>
-        </markers>
-        <extensions>
-            <extension>php</extension>
-            <extension>php3</extension>
-            <extension>phtml</extension>
-        </extensions>
-        <visibility></visibility>
-        <files>
-            <ignore-hidden>true</ignore-hidden>
-            <ignore-symlinks>true</ignore-symlinks>
-        </files>
-    </parser>
-    <transformer>
-        <target>output</target>
-    </transformer>
-    <logging>
-        <level>error</level>
-    </logging>
-    <transformations>
-        <template name="clean"/>
-    </transformations>
-    <translator>
-        <locale>en</locale>
-    </translator>
-</phpdocumentor>
-XML;
+        $path = realpath(__DIR__ . '/../../../../tests/data/phpdoc.tpl.xml');
+        return file_get_contents($path);
     }
 
     private function phpDocumentor3XML()
