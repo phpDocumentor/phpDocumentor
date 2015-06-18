@@ -54,28 +54,40 @@ final class ConfigurationFactory
 
     private function convertPhpdoc2XmlToArray(\SimpleXMLElement $xml)
     {
-        $extensions = [];
-        foreach ($xml->parser->extensions->children() as $extension) {
-            $extensions[] = (string) $extension;
-        }
+        $extensions         = [];
+        $markers            = [];
+        $visibility         = 'public';
+        $defaultPackageName = 'Default';
+        $template           = 'clean';
+        $ignoreHidden       = true;
+        $ignoreSymlinks     = true;
 
-        $markers = [];
-        foreach ($xml->parser->markers->children() as $marker) {
-            $markers[] = (string) $marker;
-        }
+        if (isset($xml->parser)) {
+            if (isset($xml->parser->extensions)) {
+                foreach ($xml->parser->extensions->children() as $extension) {
+                    $extensions[] = (string) $extension;
+                }
+            }
 
-        $visibility         = ((string) $xml->parser->visibility) ?: 'public';
-        $defaultPackageName = ((string) $xml->parser->{'default-package-name'}) ?: 'Default';
-        $template           = ((string) $xml->transformations->template->attributes()->name) ?: 'clean';
+            if (isset($xml->parser->markers)) {
+                foreach ($xml->parser->markers->children() as $marker) {
+                    $markers[] = (string) $marker;
+                }
+            }
 
-        $ignoreHidden = true;
-        if (isset($xml->parser->files->{'ignore-hidden'})) {
-            $ignoreHidden = filter_var($xml->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
-        }
+            $visibility         = ((string) $xml->parser->visibility) ?: $visibility;
+            $defaultPackageName = ((string) $xml->parser->{'default-package-name'}) ?: $defaultPackageName;
+            $template           = ((string) $xml->transformations->template->attributes()->name) ?: $template;
 
-        $ignoreSymlinks = true;
-        if (isset($xml->parser->files->{'ignore-symlinks'})) {
-            $ignoreSymlinks = filter_var($xml->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+            if (isset($xml->parser->files)) {
+                if (isset($xml->parser->files->{'ignore-hidden'})) {
+                    $ignoreHidden = filter_var($xml->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
+                }
+
+                if (isset($xml->parser->files->{'ignore-symlinks'})) {
+                    $ignoreSymlinks = filter_var($xml->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+                }
+            }
         }
 
         $phpdoc2Array = [
