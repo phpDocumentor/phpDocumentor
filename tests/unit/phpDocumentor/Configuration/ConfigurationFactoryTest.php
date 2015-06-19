@@ -340,9 +340,10 @@ XML;
 <?xml version="1.0" encoding="utf-8"?>
 
 <phpdocumentor
-    version="3"
-    xmlns="http://www.phpdoc.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.phpdoc.org phpdoc.xsd">
+        version="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="phpdoc.xsd"
+        >
     <paths>
         <output>file://build/docs</output>
         <cache>/tmp/phpdoc-doc-cache</cache>
@@ -356,15 +357,15 @@ XML;
             <ignore hidden="true" symlinks="true">
                 <path>src/ServiceDefinitions.php</path>
             </ignore>
-     <extensions>
-         <extension>php</extension>
-     </extensions>
-     <visibility>public</visibility>
-     <default-package-name>Default</default-package-name>
-     <markers>
-         <marker>TODO</marker>
-         <marker>FIXME</marker>
-     </markers>
+            <extensions>
+                <extension>php</extension>
+            </extensions>
+            <visibility>public</visibility>
+            <default-package-name>Default</default-package-name>
+            <markers>
+                <marker>TODO</marker>
+                <marker>FIXME</marker>
+            </markers>
         </api>
         <guide format="rst">
             <source dsn="file://../phpDocumentor/phpDocumentor2">
@@ -372,8 +373,8 @@ XML;
             </source>
         </guide>
     </version>
-    <template name="clean"/>
-    <template location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean"/>
+        <template name="clean"/>
+        <template location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean"/>
 </phpdocumentor>
 XML;
     }
