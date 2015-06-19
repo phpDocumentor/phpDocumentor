@@ -156,6 +156,108 @@ XML;
      * @covers ::__construct
      * @covers ::convert
      * @covers ::<private>
+     * @expectedException \Exception
+     * @expectedExceptionMessage bla
+     */
+    public function testItConvertsPhpdoc3XmlToAnArray()
+    {
+        $path = tempnam(sys_get_temp_dir(), 'foo');
+        file_put_contents($path, $this->getPhpDocumentor3XML());
+
+        $uri   = new Uri($path);
+        $xml   = new ConfigurationFactory($uri);
+        $array = $xml->convert();
+
+        $expectedArray = [
+            'phpdocumentor' => [
+                'paths'     => [
+                    'output' => 'file://build/docs',
+                    'cache'  => '/tmp/phpdoc-doc-cache'
+                ],
+                'versions'  => [
+                    '1.0.0' => [
+                        'folder' => 'latest',
+                        'api'    => [
+                            'format'               => 'php',
+                            'source'               => [
+                                'dsn'   => 'file://.',
+                                'paths' => [
+                                    0 => 'src'
+                                ]
+                            ],
+                            'ignore'               => [
+                                'hidden'   => true,
+                                'symlinks' => true,
+                                'paths'    => [
+                                    0 => 'src/ServiceDefinitions.php'
+                                ]
+                            ],
+                            'extensions'           => [
+                                0 => 'php',
+                                1 => 'php3',
+                                2 => 'phtml'
+                            ],
+                            'visibility'           => 'public',
+                            'default-package-name' => 'Default',
+                            'markers'              => [
+                                0 => 'TODO',
+                                1 => 'FIXME'
+                            ]
+                        ],
+                        'guide'  => [
+                            'format' => 'rst',
+                            'source' => [
+                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
+                                'paths' => [
+                                    0 => 'docs'
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'templates' => [
+                    0 => [
+                        'name' => 'clean'
+                    ],
+                    1 => [
+                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expectedArray, $array);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::convert
+     * @covers ::<private>
+     * @expectedException \Exception
+     * @expectedExceptionMessage Element '{http://www.phpdoc.org}phpdocumentor': Missing child element(s). Expected is
+     *                           ( {http://www.phpdoc.org}paths ).
+     */
+    public function testItOnlyAcceptsAValidPhpdoc3XmlStructure()
+    {
+        $xml  = <<<XML
+<phpdocumentor
+    version="3"
+    xmlns="http://www.phpdoc.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.phpdoc.org phpdoc.xsd">
+</phpdocumentor>
+XML;
+        $path = tempnam(sys_get_temp_dir(), 'foo');
+        file_put_contents($path, $xml);
+
+        $uri = new Uri($path);
+        $xml = new ConfigurationFactory($uri);
+        $xml->convert();
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::convert
+     * @covers ::<private>
      */
     public function testItSetsDefaultValuesIfNoneAreFoundInThePhpdoc2Xml()
     {
@@ -246,7 +348,7 @@ XML;
         <cache>/tmp/phpdoc-doc-cache</cache>
     </paths>
     <version number="1.0.0">
-        <output>latest</output>
+        <folder>latest</folder>
         <api format="php">
             <source dsn="file://.">
                 <path>src</path>

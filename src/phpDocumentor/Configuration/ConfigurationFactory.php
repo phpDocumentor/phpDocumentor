@@ -143,4 +143,28 @@ final class ConfigurationFactory
 
         return $phpdoc2Array;
     }
+
+    /**
+     * Validates the xml structure against the phpdoc.xsd
+     *
+     * @param $xml
+     */
+    private function validateXmlStructure($xml)
+    {
+        libxml_clear_errors();
+        libxml_use_internal_errors(true);
+
+        $dom        = new \DOMDocument();
+        $domElement = dom_import_simplexml($xml);
+        $domElement = $dom->importNode($domElement, true);
+        $dom->appendChild($domElement);
+
+        $dom->schemaValidate(__DIR__ . '/phpdoc.xsd');
+
+        $error = libxml_get_last_error();
+
+        if ($error) {
+            throw new \InvalidArgumentException($error->message);
+        }
+    }
 }
