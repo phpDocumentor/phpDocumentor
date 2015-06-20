@@ -28,9 +28,6 @@ class FilesystemFactoryTest extends \PHPUnit_Framework_TestCase
     private $mountManagerMock;
 
     /** @var m\Mock */
-    private $containerMock;
-
-    /** @var m\Mock */
     private $filesystemMock;
 
     /** @var Dsn */
@@ -39,20 +36,9 @@ class FilesystemFactoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->mountManagerMock = m::mock('League\Flysystem\MountManager');
-        $this->containerMock = m::mock('\DI\Container');
         $this->filesystemMock = m::mock('League\Flysystem\Filesystem');
-        $this->dsn = new Dsn('testPath');
-
-        $this->fixture = new FilesystemFactory($this->mountManagerMock, $this->containerMock);
-    }
-
-    /**
-     * @covers ::__construct
-     * @uses phpDocumentor\Dsn
-     */
-    public function testIfContainerIsRegisteredUponInstantiation()
-    {
-        $this->assertAttributeSame($this->containerMock, 'container', $this->fixture);
+        $this->dsn = new Dsn('file:///tmp');
+        $this->fixture = new FilesystemFactory($this->mountManagerMock);
     }
 
     /**
@@ -70,6 +56,10 @@ class FilesystemFactoryTest extends \PHPUnit_Framework_TestCase
         $result = $this->fixture->create($this->dsn);
 
         $this->assertInstanceOf('League\Flysystem\Filesystem', $result);
+
+        $adapter = $result->getAdapter();
+        $pathPrefix = $adapter->getPathPrefix();
+        $this->assertEquals("/tmp/", $pathPrefix);
     }
 
     /**

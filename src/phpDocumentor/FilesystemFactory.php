@@ -16,7 +16,6 @@ use \LogicException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
-use \DI\Container;
 
 /**
  * Class FilesystemFactory
@@ -26,20 +25,12 @@ final class FilesystemFactory
     /** @var MountManager */
     private $mountManager;
 
-    /** @var Container */
-    private $container;
-
-    /** @var Filesystem */
-    private $filesystem;
-
     /**
      * @param MountManager $mountManager
-     * @param Container $container
      */
-    public function __construct(MountManager $mountManager, Container $container)
+    public function __construct(MountManager $mountManager)
     {
         $this->mountManager = $mountManager;
-        $this->container = $container;
     }
 
     /**
@@ -50,40 +41,24 @@ final class FilesystemFactory
      */
     public function create(Dsn $dsn)
     {
-        $dsnId = spl_object_hash($dsn);
+        $dsnId = hash('md5', (string)$dsn);
 
-        if (! $this->setFilesystemWhenCached($dsnId)) {
+        try {
+            $filesystem = $this->mountManager->getFilesystem($dsnId);
+        } catch (LogicException $e) {
             if ($dsn->getScheme() === 'file') {
 
                 $path = $dsn->getPath();
-                $this->filesystem = new Filesystem(new Local(__DIR__. "/" . $path));
+                $filesystem = new Filesystem(new Local($path));
 
             } else {
                 //This will be implemented as soon as the CloneRemoteGitToLocal adapter is finished
                 throw new \InvalidArgumentException('http and https are not supported yet');
             }
 
-            $this->mountManager->mountFilesystem($dsnId, $this->filesystem);
+            $this->mountManager->mountFilesystem($dsnId, $filesystem);
         }
 
-
-        return $this->filesystem;
-    }
-
-    /**
-     * If the requested filesystem is available in MountManager
-     * set the filesystem property to this filesystem
-     *
-     * @param string $dsnId
-     * @return bool
-     */
-    private function setFilesystemWhenCached($dsnId)
-    {
-        try {
-            $this->filesystem = $this->mountManager->getFilesystem($dsnId);
-            return true;
-        } catch (LogicException $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
+        return $filesystem;
     }
 }
