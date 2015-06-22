@@ -38,8 +38,8 @@
     <xs:complexType name="versionType" mixed="true">
         <xs:sequence>
             <xs:element name="folder" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="api" type="pd:phpApiType" minOccurs="0"/>
-            <xs:element name="guide" type="pd:rstGuideType" minOccurs="0"/>
+            <xs:element name="api" type="pd:phpApiType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="guide" type="pd:rstGuideType" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
         <xs:attribute name="number" type="pd:version" use="required"/>
     </xs:complexType>

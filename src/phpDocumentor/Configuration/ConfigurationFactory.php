@@ -16,11 +16,17 @@ final class ConfigurationFactory
         $this->xml = $this->validate($uri);
     }
 
+    /**
+     * Convert the phpDocumentor configuration xml to an array.
+     *
+     * @return array
+     */
     public function convert()
     {
         $version = $this->checkIfVersionAttributeIsPresent($this->xml);
         if ($version) {
             $this->validateXmlStructure($this->xml);
+            $array = $this->convertPhpdoc3XmlToArray($this->xml);
         } else {
             $array = $this->convertPhpdoc2XmlToArray($this->xml);
         }
@@ -28,7 +34,14 @@ final class ConfigurationFactory
         return $array;
     }
 
-    private function validate($uri)
+    /**
+     * Validates if the Uri contains an xml that has a root element which name is phpdocumentor.
+     *
+     * @param Uri $uri
+     *
+     * @return \SimpleXMLElement
+     */
+    private function validate(Uri $uri)
     {
         $xml = new \SimpleXMLElement($uri, 0, true);
 
@@ -43,16 +56,23 @@ final class ConfigurationFactory
      * Checks if version attribute is present. If found, it is phpDocumentor3 configuration.
      * If no version attribute is found, it is assumed that it is phpDocumentor2 configuration.
      *
-     * @param \SimpleXMLElement $xml
+     * @param \SimpleXMLElement $phpDocumentor
      *
      * @return bool
      */
-    private function checkIfVersionAttributeIsPresent($xml)
+    private function checkIfVersionAttributeIsPresent(\SimpleXMLElement $phpDocumentor)
     {
-        return isset($xml->attributes()->version);
+        return isset($phpDocumentor->attributes()->version);
     }
 
-    private function convertPhpdoc2XmlToArray(\SimpleXMLElement $xml)
+    /**
+     * Converts the phpDocumentor2 configuration xml to an array
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return array
+     */
+    private function convertPhpdoc2XmlToArray(\SimpleXMLElement $phpDocumentor)
     {
         $extensions         = [];
         $markers            = [];
@@ -62,30 +82,30 @@ final class ConfigurationFactory
         $ignoreHidden       = true;
         $ignoreSymlinks     = true;
 
-        if (isset($xml->parser)) {
-            if (isset($xml->parser->extensions)) {
-                foreach ($xml->parser->extensions->children() as $extension) {
+        if (isset($phpDocumentor->parser)) {
+            if (isset($phpDocumentor->parser->extensions)) {
+                foreach ($phpDocumentor->parser->extensions->children() as $extension) {
                     $extensions[] = (string) $extension;
                 }
             }
 
-            if (isset($xml->parser->markers)) {
-                foreach ($xml->parser->markers->children() as $marker) {
+            if (isset($phpDocumentor->parser->markers)) {
+                foreach ($phpDocumentor->parser->markers->children() as $marker) {
                     $markers[] = (string) $marker;
                 }
             }
 
-            $visibility         = ((string) $xml->parser->visibility) ?: $visibility;
-            $defaultPackageName = ((string) $xml->parser->{'default-package-name'}) ?: $defaultPackageName;
-            $template           = ((string) $xml->transformations->template->attributes()->name) ?: $template;
+            $visibility         = ((string) $phpDocumentor->parser->visibility) ?: $visibility;
+            $defaultPackageName = ((string) $phpDocumentor->parser->{'default-package-name'}) ?: $defaultPackageName;
+            $template           = ((string) $phpDocumentor->transformations->template->attributes()->name) ?: $template;
 
-            if (isset($xml->parser->files)) {
-                if (isset($xml->parser->files->{'ignore-hidden'})) {
-                    $ignoreHidden = filter_var($xml->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
+            if (isset($phpDocumentor->parser->files)) {
+                if (isset($phpDocumentor->parser->files->{'ignore-hidden'})) {
+                    $ignoreHidden = filter_var($phpDocumentor->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
                 }
 
-                if (isset($xml->parser->files->{'ignore-symlinks'})) {
-                    $ignoreSymlinks = filter_var($xml->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+                if (isset($phpDocumentor->parser->files->{'ignore-symlinks'})) {
+                    $ignoreSymlinks = filter_var($phpDocumentor->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
                 }
             }
         }
@@ -145,17 +165,17 @@ final class ConfigurationFactory
     }
 
     /**
-     * Validates the xml structure against the phpdoc.xsd
+     * Validates the phpDocumentor3 xml structure against phpdoc.xsd
      *
-     * @param $xml
+     * @param $phpDocumentor
      */
-    private function validateXmlStructure($xml)
+    private function validateXmlStructure(\SimpleXMLElement $phpDocumentor)
     {
         libxml_clear_errors();
         libxml_use_internal_errors(true);
 
         $dom        = new \DOMDocument();
-        $domElement = dom_import_simplexml($xml);
+        $domElement = dom_import_simplexml($phpDocumentor);
         $domElement = $dom->importNode($domElement, true);
         $dom->appendChild($domElement);
 
@@ -166,5 +186,118 @@ final class ConfigurationFactory
         if ($error) {
             throw new \InvalidArgumentException($error->message);
         }
+    }
+
+    /**
+     * Converts the phpDocumentor3 configuration xml to an array
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return array
+     */
+    private function convertPhpdoc3XmlToArray(\SimpleXMLElement $phpDocumentor)
+    {
+        $versions = [];
+        $template = [];
+
+        foreach ($phpDocumentor->children() as $key => $value) {
+            switch ((string) $key) {
+                case 'version':
+                    $versions[(string) $value->attributes()->number] = $this->buildVersions($value);
+                    break;
+                case 'template':
+                    $template = $this->buildTemplate($value);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $phpdoc3Array = [
+            'phpdocumentor' => [
+                'paths'     => [
+                    'output' => (string) $phpDocumentor->paths->output,
+                    'cache'  => (string) $phpDocumentor->paths->cache,
+                ],
+                'versions'  => $versions,
+                'templates' => $template,
+            ]
+        ];
+
+        return $phpdoc3Array;
+    }
+
+    /**
+     * * Builds the versions part of the array from the phpDocumentor3 configuration xml
+     *
+     * @param \SimpleXMLElement $version
+     *
+     * @return array
+     */
+    private function buildVersions(\SimpleXMLElement $version)
+    {
+        return [
+            'folder' => (string) $version->folder,
+            'api'    => [
+                'format'               => 'php',
+                'source'               => [
+                    'dsn'   => 'file://.',
+                    'paths' => [
+                        0 => 'src'
+                    ]
+                ],
+                'ignore'               => [
+                    'hidden'   => filter_var($version->api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN),
+                    'symlinks' => filter_var($version->api->ignore->attributes()->symlinks, FILTER_VALIDATE_BOOLEAN),
+                    'paths'    => (array) $version->api->ignore->path,
+                ],
+                'extensions'           => [
+                    0 => 'php',
+                    1 => 'php3',
+                    2 => 'phtml'
+                ],
+                'visibility'           => 'public',
+                'default-package-name' => 'Default',
+                'markers'              => (array) $version->api->markers->children()->marker,
+            ],
+            'guide'  => [
+                'format' => (string) $version->guide->attributes()->format,
+                'source' => [
+                    'dsn'   => (string) $version->guide->source->attributes()->dsn,
+                    'paths' => (array) $version->guide->source->path,
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Builds the template part of the array from the phpDocumentor3 configuration xml
+     *
+     * @param \SimpleXMLElement $template
+     *
+     * @return array
+     */
+    private function buildTemplate(\SimpleXMLElement $template)
+    {
+        if (!$template) {
+            // Use default template if none is found in the configuration
+            return [
+                0 => [
+                    'name' => 'clean'
+                ],
+                1 => [
+                    'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
+                ]
+            ];
+        }
+
+        $array = [];
+        foreach ($template->attributes() as $key => $value) {
+            $array[] = [
+                (string) $key => (string) $value,
+            ];
+        }
+
+        return $array;
     }
 }
