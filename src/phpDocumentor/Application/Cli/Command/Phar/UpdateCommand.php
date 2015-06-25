@@ -15,10 +15,10 @@ use Herrera\Json\Exception\FileException;
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Updates phpDocumentor.phar to the latest version.
@@ -39,7 +39,7 @@ class UpdateCommand extends Command
     protected function configure()
     {
         $this->setName('phar:update')
-            ->setAliases(array('selfupdate', 'self-update'))
+            ->setAliases(['selfupdate', 'self-update'])
             ->setDescription('Updates phpDocumentor.phar to the indicated version or the latest if none is specified')
             ->addArgument(
                 'version',
@@ -53,8 +53,8 @@ class UpdateCommand extends Command
     /**
      * Executes the business logic involved with this command.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      *
      * @return int
      */
@@ -84,7 +84,7 @@ class UpdateCommand extends Command
      *
      * @param OutputInterface $output
      *
-     * @return \Herrera\Phar\Update\Manager
+     * @return Manager
      */
     private function createManager(OutputInterface $output)
     {
@@ -114,7 +114,8 @@ class UpdateCommand extends Command
         $allowMajor,
         $allowPreRelease,
         OutputInterface $output
-    ) {
+    )
+    {
         if ($manager->update($version, $allowMajor, $allowPreRelease)) {
             $output->writeln('<info>Updated to latest version.</info>');
         } else {

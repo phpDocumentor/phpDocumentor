@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 class ConfigurationHelper extends Helper
 {
     /**
-     * @var \phpDocumentor\Configuration
+     * @var Configuration
      */
     private $configuration;
 
@@ -47,15 +47,14 @@ class ConfigurationHelper extends Helper
     }
 
     /**
-     * Returns the value of an option from the command-line parameters,
-     * configuration or given default.
+     * Returns the value of an option from the command-line parameters, configuration or given default.
      *
-     * @param InputInterface $input           Input interface to query for information
-     * @param string         $name            Name of the option to retrieve from argv
+     * @param InputInterface $input          Input interface to query for information.
+     * @param string         $name           Name of the option to retrieve from argv.
      * @param string|null    $configPath     Path to the config element(s) containing the value to be used when
-     *     no option is provided.
-     * @param mixed|null     $default         Default value used if there is no configuration option or path set
-     * @param bool           $commaSeparated Could the value be a comma separated string requiring splitting
+     *                                       no option is provided.
+     * @param mixed|null     $default        Default value used if there is no configuration option or path set.
+     * @param bool           $commaSeparated Could the value be a comma separated string requiring splitting.
      *
      * @return string|array
      */
@@ -65,7 +64,8 @@ class ConfigurationHelper extends Helper
         $configPath = null,
         $default = null,
         $commaSeparated = false
-    ) {
+    )
+    {
         $value = $input->getOption($name);
 
         // find value in config
@@ -75,7 +75,7 @@ class ConfigurationHelper extends Helper
 
         // use default if value is still null
         if ($this->valueIsEmpty($value)) {
-            return (is_array($value) && $default === null) ? array() : $default;
+            return (is_array($value) && $default === null) ? [] : $default;
         }
 
         return $commaSeparated
@@ -113,8 +113,7 @@ class ConfigurationHelper extends Helper
     }
 
     /**
-     * Returns a value by traversing the configuration tree as if it was a file
-     * path.
+     * Returns a value by traversing the configuration tree as if it was a file path.
      *
      * @param string $path Path to the config value separated by '/'.
      *

@@ -20,11 +20,9 @@ use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Backend\Php;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class LoggerHelper extends Helper
 {
@@ -57,7 +55,7 @@ class LoggerHelper extends Helper
      * Connect the logging events to the output object of Symfony Console.
      *
      * @param OutputInterface $output
-     * @param Command $command
+     * @param Command         $command
      *
      * @return void
      */
@@ -114,7 +112,8 @@ class LoggerHelper extends Helper
         OutputInterface $output,
         EventDispatcherInterface $eventDispatcher,
         $message
-    ) {
+    )
+    {
         $output->writeln(sprintf($message, $fileDescriptor->getPath()));
 
         /** @var Error $error */
@@ -142,7 +141,7 @@ class LoggerHelper extends Helper
      */
     public function logEvent(OutputInterface $output, LogEvent $event, Command $command)
     {
-        $numericErrors = array(
+        $numericErrors = [
             LogLevel::DEBUG     => 0,
             LogLevel::NOTICE    => 1,
             LogLevel::INFO      => 2,
@@ -151,7 +150,7 @@ class LoggerHelper extends Helper
             LogLevel::ALERT     => 5,
             LogLevel::CRITICAL  => 6,
             LogLevel::EMERGENCY => 7,
-        );
+        ];
 
         $threshold = LogLevel::ERROR;
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {

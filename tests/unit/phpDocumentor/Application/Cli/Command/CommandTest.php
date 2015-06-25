@@ -11,8 +11,10 @@
 
 namespace phpDocumentor\Application\Cli\Command;
 
-use Symfony\Component\Console\Helper\HelperSet;
 use Mockery as m;
+use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Tests for the phpDocumentor Command class.
@@ -38,11 +40,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testLoggerHelperReceivesCurrentCommand()
     {
         // Arrange
-        $loggerHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
+        $loggerHelperMock = m::mock(HelperInterface::class);
         $loggerHelperMock->shouldReceive('addOptions')->with($this->fixture);
         $loggerHelperMock->shouldReceive('getName')->andReturn('phpdocumentor_logger');
         $loggerHelperMock->shouldIgnoreMissing();
-        $helperSet = new HelperSet(array('phpdocumentor_logger' => $loggerHelperMock));
+        $helperSet = new HelperSet(['phpdocumentor_logger' => $loggerHelperMock]);
 
         // Act
         $this->fixture->setHelperSet($helperSet);
@@ -57,17 +59,17 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testIfProgressBarIsReturnedWhenEnabledAsOption()
     {
         // Arrange
-        $loggerHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
+        $loggerHelperMock = m::mock(HelperInterface::class);
         $loggerHelperMock->shouldReceive('getName')->andReturn('phpdocumentor_logger');
         $loggerHelperMock->shouldIgnoreMissing();
-        $progressBarHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
+        $progressBarHelperMock = m::mock(HelperInterface::class);
         $progressBarHelperMock->shouldReceive('getName')->andReturn('progress');
         $progressBarHelperMock->shouldIgnoreMissing();
         $this->fixture->setHelperSet(
-            new HelperSet(array('progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock))
+            new HelperSet(['progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock])
         );
 
-        $inputInterface = m::mock('Symfony\Component\Console\Input\InputInterface');
+        $inputInterface = m::mock(InputInterface::class);
         $inputInterface->shouldReceive('getOption')->with('progressbar')->andReturn(true);
         $r = new \ReflectionObject($this->fixture);
         $m = $r->getMethod('getProgressBar');
@@ -86,17 +88,17 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testIfProgressBarIsNotReturnedWhenDisabledAsOption()
     {
         // Arrange
-        $loggerHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
+        $loggerHelperMock = m::mock(HelperInterface::class);
         $loggerHelperMock->shouldReceive('getName')->andReturn('phpdocumentor_logger');
         $loggerHelperMock->shouldIgnoreMissing();
-        $progressBarHelperMock = m::mock('Symfony\Component\Console\Helper\HelperInterface');
+        $progressBarHelperMock = m::mock(HelperInterface::class);
         $progressBarHelperMock->shouldReceive('getName')->andReturn('progress');
         $progressBarHelperMock->shouldIgnoreMissing();
         $this->fixture->setHelperSet(
-            new HelperSet(array('progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock))
+            new HelperSet(['progress' => $progressBarHelperMock, 'phpdocumentor_logger' => $loggerHelperMock])
         );
 
-        $inputInterface = m::mock('Symfony\Component\Console\Input\InputInterface');
+        $inputInterface = m::mock(InputInterface::class);
         $inputInterface->shouldReceive('getOption')->with('progressbar')->andReturn(false);
         $r = new \ReflectionObject($this->fixture);
         $m = $r->getMethod('getProgressBar');

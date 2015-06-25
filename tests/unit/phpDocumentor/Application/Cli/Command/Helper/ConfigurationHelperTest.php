@@ -16,7 +16,7 @@ use phpDocumentor\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * Class ConfigurationHelperTest
+ * Tests for the phpDocumentor ConfigurationHelper class.
  *
  * @coversDefaultClass phpDocumentor\Application\Cli\Command\Helper\ConfigurationHelper
  */
@@ -34,7 +34,7 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->configuration = new Configuration();
-        $this->fixture = new ConfigurationHelper($this->configuration);
+        $this->fixture       = new ConfigurationHelper($this->configuration);
     }
 
     /**
@@ -204,7 +204,7 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAnInputObject()
     {
-        return m::mock('Symfony\Component\Console\Input\InputInterface');
+        return m::mock(InputInterface::class);
     }
 
     /**

@@ -16,19 +16,17 @@ use phpDocumentor\Application\Cli\Command\Command;
 use phpDocumentor\Configuration;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
-use phpDocumentor\Translator\Translator;
 use PHPUnit_Framework_TestCase;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Testcase for LoggerHelper
+ * Tests for the phpDocumentor LoggerHelper class.
  *
  * @coversDefaultClass phpDocumentor\Application\Cli\Command\Helper\LoggerHelper
  */
 class LoggerHelperTest extends PHPUnit_Framework_TestCase
 {
-    private $translatorMock;
     /** @var Dispatcher */
     private $dispatcherMock;
 
@@ -42,8 +40,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->dispatcherMock = m::mock(Dispatcher::class);
-        $this->translatorMock = m::mock(Translator::class);
-        $this->fixture = new LoggerHelper($this->dispatcherMock, $this->translatorMock);
+        $this->fixture        = new LoggerHelper($this->dispatcherMock);
     }
 
     /**
@@ -67,7 +64,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             return $closure instanceof \Closure;
         };
 
-        $commandMock = m::mock('phpDocumentor\Command\Command')
+        $commandMock = m::mock(Command::class)
             ->shouldReceive('getService')
             ->with('event_dispatcher')
             ->andReturnSelf()
@@ -85,16 +82,10 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->once()
             ->withArgs(['system.log', m::on($assertClosure)]);
 
-        $this->fixture->connectOutputToLogging(
-            m::mock('Symfony\Component\Console\Output\OutputInterface'),
-            $commandMock
-        );
+        $this->fixture->connectOutputToLogging(m::mock(OutputInterface::class), $commandMock);
 
         // call for a second time.
-        $this->fixture->connectOutputToLogging(
-            m::mock('Symfony\Component\Console\Output\OutputInterface'),
-            $commandMock
-        );
+        $this->fixture->connectOutputToLogging(m::mock(OutputInterface::class), $commandMock);
 
         //test passes by mockery assertion
         $this->assertTrue(true);
@@ -107,7 +98,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
      */
     public function testLogEventPlaceHoldersAreReplaced()
     {
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface')
+        $output = m::mock(OutputInterface::class)
             ->shouldReceive('writeln')
             ->with('  <error>my first message with 2 replacements</error>')
             ->shouldReceive('getVerbosity')
@@ -118,15 +109,6 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->shouldReceive('getContainer')->andReturnSelf()
             ->shouldReceive('offsetGet')->andReturnSelf()
             ->getMock();
-
-        $this->translatorMock
-            ->shouldReceive('translate')
-            ->andReturnUsing(
-                function ($message) {
-                    return $message;
-                }
-            );
-
 
         $event = new LogEvent($this);
         $event->setPriority(LogLevel::ERROR);
@@ -146,7 +128,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
      */
     public function testLogPriorityIsChecked()
     {
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface')
+        $output = m::mock(OutputInterface::class)
             ->shouldReceive('writeln')
             ->never()
             ->shouldReceive('getVerbosity')
