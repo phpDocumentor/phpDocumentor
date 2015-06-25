@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Phar;
+namespace phpDocumentor\Application\Cli\Command\Phar;
 
 use Herrera\Json\Exception\FileException;
 use Herrera\Phar\Update\Manager;

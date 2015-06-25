@@ -9,9 +9,10 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Helper;
+namespace phpDocumentor\Application\Cli\Command\Helper;
 
 use Mockery as m;
+use phpDocumentor\Application\Cli\Command\Command;
 use phpDocumentor\Configuration;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
@@ -22,6 +23,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Testcase for LoggerHelper
+ *
+ * @coversDefaultClass phpDocumentor\Application\Cli\Command\Helper\LoggerHelper
  */
 class LoggerHelperTest extends PHPUnit_Framework_TestCase
 {
@@ -46,7 +49,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     /**
      * Assure that name of the helper isn't changed
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::getName
+     * @covers ::getName
      */
     public function testGetName()
     {
@@ -56,7 +59,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     /**
      * Assure that name of the helper isn't changed
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::connectOutputToLogging
+     * @covers ::connectOutputToLogging
      */
     public function testConnectOutputToLoggingExecutedOnce()
     {
@@ -72,15 +75,15 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
 
         $this->dispatcherMock->shouldReceive('addListener')
             ->once()
-            ->withArgs(array('parser.file.isCached', m::on($assertClosure)));
+            ->withArgs(['parser.file.isCached', m::on($assertClosure)]);
 
         $this->dispatcherMock->shouldReceive('addListener')
             ->once()
-            ->withArgs(array('parser.file.analyzed', m::on($assertClosure)));
+            ->withArgs(['parser.file.analyzed', m::on($assertClosure)]);
 
         $this->dispatcherMock->shouldReceive('addListener')
             ->once()
-            ->withArgs(array('system.log', m::on($assertClosure)));
+            ->withArgs(['system.log', m::on($assertClosure)]);
 
         $this->fixture->connectOutputToLogging(
             m::mock('Symfony\Component\Console\Output\OutputInterface'),
@@ -100,7 +103,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     /**
      * test replacement of placeholders in log message
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::logEvent
+     * @covers ::logEvent
      */
     public function testLogEventPlaceHoldersAreReplaced()
     {
@@ -111,7 +114,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->andReturn(LogLevel::ERROR)
             ->getMock();
 
-        $command = m::mock('phpDocumentor\Command\Command')
+        $command = m::mock(Command::class)
             ->shouldReceive('getContainer')->andReturnSelf()
             ->shouldReceive('offsetGet')->andReturnSelf()
             ->getMock();
@@ -128,10 +131,10 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
         $event = new LogEvent($this);
         $event->setPriority(LogLevel::ERROR);
         $event->setMessage('my %s message with %d replacements');
-        $event->setContext(array(
+        $event->setContext([
             'first',
             2,
-        ));
+        ]);
 
         $this->fixture->logEvent($output, $event, $command);
     }
@@ -139,7 +142,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
     /**
      * Assure nothing is logged when priority is not matching
      *
-     * @covers phpDocumentor\Command\Helper\LoggerHelper::logEvent
+     * @covers ::logEvent
      */
     public function testLogPriorityIsChecked()
     {
@@ -150,7 +153,7 @@ class LoggerHelperTest extends PHPUnit_Framework_TestCase
             ->andReturn(LogLevel::ERROR)
             ->getMock();
 
-        $command = m::mock('phpDocumentor\Command\Command');
+        $command = m::mock(Command::class);
 
         $event = new LogEvent($this);
         $event->setPriority(LogLevel::DEBUG);

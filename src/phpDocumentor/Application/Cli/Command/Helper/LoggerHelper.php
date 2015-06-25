@@ -9,9 +9,9 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Helper;
+namespace phpDocumentor\Application\Cli\Command\Helper;
 
-use phpDocumentor\Command\Command;
+use phpDocumentor\Application\Cli\Command\Command;
 use phpDocumentor\Configuration;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Validator\Error;

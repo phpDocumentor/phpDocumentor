@@ -9,13 +9,15 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command;
+namespace phpDocumentor\Application\Cli\Command;
 
 use Symfony\Component\Console\Helper\HelperSet;
 use Mockery as m;
 
 /**
  * Tests for the phpDocumentor Command class.
+ *
+ * @coversDefaultClass phpDocumentor\Application\Cli\Command\Command
  */
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,7 +33,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::setHelperSet
+     * @covers ::setHelperSet
      */
     public function testLoggerHelperReceivesCurrentCommand()
     {
@@ -50,7 +52,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::getProgressBar
+     * @covers ::getProgressBar
      */
     public function testIfProgressBarIsReturnedWhenEnabledAsOption()
     {
@@ -79,7 +81,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Command::getProgressBar
+     * @covers ::getProgressBar
      */
     public function testIfProgressBarIsNotReturnedWhenDisabledAsOption()
     {

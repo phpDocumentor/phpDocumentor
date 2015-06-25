@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Helper;
+namespace phpDocumentor\Application\Cli\Command\Helper;
 
 use phpDocumentor\Configuration;
 use Symfony\Component\Console\Helper\Helper;
