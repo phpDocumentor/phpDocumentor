@@ -11,7 +11,7 @@ final class ConfigurationFactory
      */
     private $xml;
 
-    function __construct(Uri $uri)
+    public function __construct(Uri $uri)
     {
         $this->xml = $this->validate($uri);
     }
