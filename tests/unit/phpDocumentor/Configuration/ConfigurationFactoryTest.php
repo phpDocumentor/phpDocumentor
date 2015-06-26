@@ -4,6 +4,9 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Uri;
 
+require_once(__DIR__ . '/../../../../tests/data/phpDocumentor2ExpectedArray.php');
+require_once(__DIR__ . '/../../../../tests/data/phpDocumentor3ExpectedArrays.php');
+
 /**
  * Test case for ConfigurationFactory
  *
@@ -84,69 +87,11 @@ XML;
      */
     public function testItConvertsPhpdoc2XmlToAnArray()
     {
-        $uri   = new Uri($this->getPhpDocumentor2XML());
+        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpdoc.tpl.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
-        $expectedArray = [
-            'phpdocumentor' => [
-                'paths'     => [
-                    'output' => 'file://build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache'
-                ],
-                'versions'  => [
-                    '1.0.0' => [
-                        'folder' => 'latest',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src'
-                                ]
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
-                            ],
-                            'extensions'           => [
-                                0 => 'php',
-                                1 => 'php3',
-                                2 => 'phtml'
-                            ],
-                            'visibility'           => 'public',
-                            'default-package-name' => 'Default',
-                            'markers'              => [
-                                0 => 'TODO',
-                                1 => 'FIXME'
-                            ]
-                        ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                'templates' => [
-                    0 => [
-                        'name' => 'clean'
-                    ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
-                ]
-            ]
-        ];
-
-        $this->assertEquals($expectedArray, $array);
+        $this->assertEquals(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
     }
 
     /**
@@ -156,72 +101,11 @@ XML;
      */
     public function testItConvertsPhpdoc3XmlToAnArray()
     {
-        $path = tempnam(sys_get_temp_dir(), 'foo');
-        file_put_contents($path, $this->getPhpDocumentor3XML());
-
-        $uri   = new Uri($path);
+        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpDocumentor3XML.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
-        $expectedArray = [
-            'phpdocumentor' => [
-                'paths'     => [
-                    'output' => 'file://build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache'
-                ],
-                'versions'  => [
-                    '1.0.0' => [
-                        'folder' => 'latest',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src'
-                                ]
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
-                            ],
-                            'extensions'           => [
-                                0 => 'php',
-                                1 => 'php3',
-                                2 => 'phtml'
-                            ],
-                            'visibility'           => 'public',
-                            'default-package-name' => 'Default',
-                            'markers'              => [
-                                0 => 'TODO',
-                                1 => 'FIXME'
-                            ]
-                        ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                'templates' => [
-                    0 => [
-                        'name' => 'clean'
-                    ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
-                ]
-            ]
-        ];
-
-        $this->assertEquals($expectedArray, $array);
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
@@ -231,72 +115,11 @@ XML;
      */
     public function testItUsesTheDefaultTemplateIfNoneIsFoundInThePhpdoc3Xml()
     {
-        $path = tempnam(sys_get_temp_dir(), 'foo');
-        file_put_contents($path, $this->getPhpDocumentor3XMLWithoutTemplate());
-
-        $uri   = new Uri($path);
+        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithoutTemplate.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
-        $expectedArray = [
-            'phpdocumentor' => [
-                'paths'     => [
-                    'output' => 'file://build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache'
-                ],
-                'versions'  => [
-                    '1.0.0' => [
-                        'folder' => 'latest',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src'
-                                ]
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
-                            ],
-                            'extensions'           => [
-                                0 => 'php',
-                                1 => 'php3',
-                                2 => 'phtml'
-                            ],
-                            'visibility'           => 'public',
-                            'default-package-name' => 'Default',
-                            'markers'              => [
-                                0 => 'TODO',
-                                1 => 'FIXME'
-                            ]
-                        ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                'templates' => [
-                    0 => [
-                        'name' => 'clean'
-                    ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
-                ]
-            ]
-        ];
-
-        $this->assertEquals($expectedArray, $array);
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
@@ -338,58 +161,7 @@ XML;
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
-        $expectedArray = [
-            'phpdocumentor' => [
-                'paths'     => [
-                    'output' => 'file://build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache'
-                ],
-                'versions'  => [
-                    '1.0.0' => [
-                        'folder' => 'latest',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src'
-                                ]
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
-                            ],
-                            'extensions'           => [],
-                            'visibility'           => 'public',
-                            'default-package-name' => 'Default',
-                            'markers'              => []
-                        ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                'templates' => [
-                    0 => [
-                        'name' => 'clean'
-                    ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
-                ]
-            ]
-        ];
-
-        $this->assertEquals($expectedArray, $array);
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
     }
 
     /**
@@ -399,277 +171,10 @@ XML;
      */
     public function testItAcceptsMultipleVersionsInThePhpdoc3Xml()
     {
-        $path = tempnam(sys_get_temp_dir(), 'foo');
-        file_put_contents($path, $this->getPhpDocumentor3XMLWithMultipleVersions());
-
-        $uri   = new Uri($path);
+        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
-        $expectedArray = [
-            'phpdocumentor' => [
-                'paths'     => [
-                    'output' => 'file://build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache'
-                ],
-                'versions'  => [
-                    '1.0.0' => [
-                        'folder' => 'latest',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src'
-                                ]
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
-                            ],
-                            'extensions'           => [
-                                0 => 'php',
-                                1 => 'php3',
-                                2 => 'phtml'
-                            ],
-                            'visibility'           => 'public',
-                            'default-package-name' => 'Default',
-                            'markers'              => [
-                                0 => 'TODO',
-                                1 => 'FIXME'
-                            ]
-                        ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
-                    ],
-                    '2.0.0' => [
-                        'folder' => 'latest',
-                        'api'    => [
-                            'format'               => 'php',
-                            'source'               => [
-                                'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => 'src'
-                                ]
-                            ],
-                            'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
-                            ],
-                            'extensions'           => [
-                                0 => 'php',
-                                1 => 'php3',
-                                2 => 'phtml'
-                            ],
-                            'visibility'           => 'public',
-                            'default-package-name' => 'Default',
-                            'markers'              => [
-                                0 => 'TODO',
-                                1 => 'FIXME'
-                            ]
-                        ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                'templates' => [
-                    0 => [
-                        'name' => 'clean'
-                    ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
-                ]
-            ]
-        ];
-
-        $this->assertEquals($expectedArray, $array);
-    }
-
-    /**
-     * Gets the phpDocumentor2 configuration template xml
-     *
-     * @return string Contents of phpdoc.tpl.xml
-     */
-    private function getPhpDocumentor2XML()
-    {
-        return realpath(__DIR__ . '/../../../../tests/data/phpdoc.tpl.xml');
-    }
-
-    private function getPhpDocumentor3XML()
-    {
-        return <<<XML
-<?xml version="1.0" encoding="utf-8"?>
-
-<phpdocumentor
-        version="3"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpdoc.org"
-        xsi:noNamespaceSchemaLocation="phpdoc.xsd"
-        >
-    <paths>
-        <output>file://build/docs</output>
-        <cache>/tmp/phpdoc-doc-cache</cache>
-    </paths>
-    <version number="1.0.0">
-        <folder>latest</folder>
-        <api format="php">
-            <source dsn="file://.">
-                <path>src</path>
-            </source>
-            <ignore hidden="true" symlinks="true">
-                <path>src/ServiceDefinitions.php</path>
-            </ignore>
-            <extensions>
-                <extension>php</extension>
-            </extensions>
-            <visibility>public</visibility>
-            <default-package-name>Default</default-package-name>
-            <markers>
-                <marker>TODO</marker>
-                <marker>FIXME</marker>
-            </markers>
-        </api>
-        <guide format="rst">
-            <source dsn="file://../phpDocumentor/phpDocumentor2">
-                <path>docs</path>
-            </source>
-        </guide>
-    </version>
-    <template name="clean" location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean"/>
-</phpdocumentor>
-XML;
-    }
-
-    private function getPhpDocumentor3XMLWithMultipleVersions()
-    {
-        return <<<XML
-<?xml version="1.0" encoding="utf-8"?>
-
-<phpdocumentor
-        version="3"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpdoc.org"
-        xsi:noNamespaceSchemaLocation="phpdoc.xsd"
-        >
-    <paths>
-        <output>file://build/docs</output>
-        <cache>/tmp/phpdoc-doc-cache</cache>
-    </paths>
-    <version number="1.0.0">
-        <folder>latest</folder>
-        <api format="php">
-            <source dsn="file://.">
-                <path>src</path>
-            </source>
-            <ignore hidden="true" symlinks="true">
-                <path>src/ServiceDefinitions.php</path>
-            </ignore>
-            <extensions>
-                <extension>php</extension>
-            </extensions>
-            <visibility>public</visibility>
-            <default-package-name>Default</default-package-name>
-            <markers>
-                <marker>TODO</marker>
-                <marker>FIXME</marker>
-            </markers>
-        </api>
-        <guide format="rst">
-            <source dsn="file://../phpDocumentor/phpDocumentor2">
-                <path>docs</path>
-            </source>
-        </guide>
-    </version>
-    <version number="2.0.0">
-        <folder>latest</folder>
-        <api format="php">
-            <source dsn="file://.">
-                <path>src</path>
-            </source>
-            <ignore hidden="true" symlinks="true">
-                <path>src/ServiceDefinitions.php</path>
-            </ignore>
-            <extensions>
-                <extension>php</extension>
-            </extensions>
-            <visibility>public</visibility>
-            <default-package-name>Default</default-package-name>
-            <markers>
-                <marker>TODO</marker>
-                <marker>FIXME</marker>
-            </markers>
-        </api>
-        <guide format="rst">
-            <source dsn="file://../phpDocumentor/phpDocumentor2">
-                <path>docs</path>
-            </source>
-        </guide>
-    </version>
-    <template name="clean" location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean"/>
-</phpdocumentor>
-XML;
-    }
-
-    private function getPhpDocumentor3XMLWithoutTemplate()
-    {
-        return <<<XML
-<?xml version="1.0" encoding="utf-8"?>
-
-<phpdocumentor
-        version="3"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpdoc.org"
-        xsi:noNamespaceSchemaLocation="phpdoc.xsd"
-        >
-    <paths>
-        <output>file://build/docs</output>
-        <cache>/tmp/phpdoc-doc-cache</cache>
-    </paths>
-    <version number="1.0.0">
-        <folder>latest</folder>
-        <api format="php">
-            <source dsn="file://.">
-                <path>src</path>
-            </source>
-            <ignore hidden="true" symlinks="true">
-                <path>src/ServiceDefinitions.php</path>
-            </ignore>
-            <extensions>
-                <extension>php</extension>
-            </extensions>
-            <visibility>public</visibility>
-            <default-package-name>Default</default-package-name>
-            <markers>
-                <marker>TODO</marker>
-                <marker>FIXME</marker>
-            </markers>
-        </api>
-        <guide format="rst">
-            <source dsn="file://../phpDocumentor/phpDocumentor2">
-                <path>docs</path>
-            </source>
-        </guide>
-    </version>
-    <template/>
-</phpdocumentor>
-XML;
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
     }
 }
