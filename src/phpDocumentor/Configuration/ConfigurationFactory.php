@@ -83,17 +83,8 @@ final class ConfigurationFactory
         $ignoreSymlinks     = true;
 
         if (isset($phpDocumentor->parser)) {
-            if (isset($phpDocumentor->parser->extensions)) {
-                foreach ($phpDocumentor->parser->extensions->children() as $extension) {
-                    $extensions[] = (string) $extension;
-                }
-            }
-
-            if (isset($phpDocumentor->parser->markers)) {
-                foreach ($phpDocumentor->parser->markers->children() as $marker) {
-                    $markers[] = (string) $marker;
-                }
-            }
+            $extensions = $this->buildExtensionsPart($phpDocumentor->parser);
+            $markers    = $this->buildMarkersPart($phpDocumentor->parser);
 
             $visibility         = ((string) $phpDocumentor->parser->visibility) ?: $visibility;
             $defaultPackageName = ((string) $phpDocumentor->parser->{'default-package-name'}) ?: $defaultPackageName;
@@ -228,7 +219,7 @@ final class ConfigurationFactory
     }
 
     /**
-     * * Builds the versions part of the array from the phpDocumentor3 configuration xml
+     * Builds the versions part of the array from the phpDocumentor3 configuration xml
      *
      * @param \SimpleXMLElement $version
      *
@@ -299,5 +290,43 @@ final class ConfigurationFactory
         }
 
         return $array;
+    }
+
+    /**
+     * Builds the extensions part of the array from the phpDocumentor2 configuration xml
+     *
+     * @param \SimpleXMLElement $parser
+     *
+     * @return array
+     */
+    private function buildExtensionsPart(\SimpleXMLElement $parser)
+    {
+        $extensions = [];
+        if (isset($parser->extensions)) {
+            foreach ($parser->extensions->children() as $extension) {
+                $extensions[] = (string) $extension;
+            }
+        }
+
+        return $extensions;
+    }
+
+    /**
+     * Builds the markers part of the array from the phpDocumentor2 configuration xml
+     *
+     * @param \SimpleXMLElement $parser
+     *
+     * @return array
+     */
+    private function buildMarkersPart(\SimpleXMLElement $parser)
+    {
+        $markers = [];
+        if (isset($parser->markers)) {
+            foreach ($parser->markers->children() as $marker) {
+                $markers[] = (string) $marker;
+            }
+        }
+
+        return $markers;
     }
 }
