@@ -114,8 +114,7 @@ class UpdateCommand extends Command
         $allowMajor,
         $allowPreRelease,
         OutputInterface $output
-    )
-    {
+    ) {
         if ($manager->update($version, $allowMajor, $allowPreRelease)) {
             $output->writeln('<info>Updated to latest version.</info>');
         } else {

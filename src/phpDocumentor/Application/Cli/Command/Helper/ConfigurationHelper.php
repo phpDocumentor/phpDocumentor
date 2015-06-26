@@ -64,8 +64,7 @@ class ConfigurationHelper extends Helper
         $configPath = null,
         $default = null,
         $commaSeparated = false
-    )
-    {
+    ) {
         $value = $input->getOption($name);
 
         // find value in config

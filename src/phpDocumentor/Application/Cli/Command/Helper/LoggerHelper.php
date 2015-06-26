@@ -112,8 +112,7 @@ class LoggerHelper extends Helper
         OutputInterface $output,
         EventDispatcherInterface $eventDispatcher,
         $message
-    )
-    {
+    ) {
         $output->writeln(sprintf($message, $fileDescriptor->getPath()));
 
         /** @var Error $error */
