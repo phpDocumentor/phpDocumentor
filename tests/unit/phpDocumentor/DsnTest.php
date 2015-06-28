@@ -65,6 +65,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::__toString
      * @covers ::getScheme
      * @covers ::getUsername
      * @covers ::getPassword
@@ -90,6 +91,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
             'other' => 'xxx'
         ];
 
+        $this->assertEquals($dsn, (string)$fixture);
         $this->assertEquals('git+http', $fixture->getScheme());
         $this->assertEquals('user', $fixture->getUsername());
         $this->assertEquals('pw', $fixture->getPassword());
@@ -102,6 +104,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::__toString
      * @covers ::getScheme
      * @covers ::getHost
      * @covers ::getPort
@@ -114,6 +117,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
         $dsn = "src";
         $fixture = new Dsn($dsn);
 
+        $this->assertEquals('file://src', (string)$fixture);
         $this->assertEquals('file', $fixture->getscheme());
         $this->assertEquals(null, $fixture->getHost());
         $this->assertEquals(0, $fixture->getPort());

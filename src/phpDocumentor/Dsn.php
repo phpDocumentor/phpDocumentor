@@ -18,6 +18,9 @@ namespace phpDocumentor;
 final class Dsn
 {
     /** @var string */
+    private $dsn;
+
+    /** @var string */
     private $scheme;
 
     /** @var string */
@@ -49,6 +52,16 @@ final class Dsn
     public function __construct($dsn)
     {
         $this->parse($dsn);
+    }
+
+    /**
+     * Returns a string representation of the DSN.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->dsn;
     }
 
     /**
@@ -161,6 +174,8 @@ final class Dsn
             );
         }
 
+        $this->parseDsn($location, $dsnParts);
+
         $this->parseScheme($locationParts);
 
         $this->parseHostAndPath($locationParts);
@@ -174,6 +189,20 @@ final class Dsn
         $this->parseQuery($locationParts);
 
         $this->parseParameters($dsnParts);
+    }
+
+    /**
+     * Reconstructs the original DSN but
+     * when scheme was omitted in the original DSN, it will now be file://
+     *
+     * @param string $location
+     * @param string[] $dsnParts
+     * @return void
+     */
+    private function parseDsn($location, array $dsnParts)
+    {
+        array_splice($dsnParts, 0, 0, $location);
+        $this->dsn = implode(";", $dsnParts);
     }
 
     /**
