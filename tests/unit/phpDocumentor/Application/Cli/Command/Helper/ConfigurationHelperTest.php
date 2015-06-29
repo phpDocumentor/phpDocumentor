@@ -9,12 +9,17 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Command\Helper;
+namespace phpDocumentor\Application\Cli\Command\Helper;
 
 use Mockery as m;
 use phpDocumentor\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
 
+/**
+ * Tests for the phpDocumentor ConfigurationHelper class.
+ *
+ * @coversDefaultClass phpDocumentor\Application\Cli\Command\Helper\ConfigurationHelper
+ */
 class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
 {
     /** @var ConfigurationHelper */
@@ -29,11 +34,11 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->configuration = new Configuration();
-        $this->fixture = new ConfigurationHelper($this->configuration);
+        $this->fixture       = new ConfigurationHelper($this->configuration);
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::__construct
+     * @covers ::__construct
      */
     public function testIfDependenciesAreCorrectlyRegistered()
     {
@@ -41,8 +46,8 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
      */
     public function testIfSimpleValueFromInputIsReturned()
     {
@@ -61,9 +66,9 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::splitCommaSeparatedValues
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::splitCommaSeparatedValues
+     * @covers ::valueIsEmpty
      */
     public function testIfSimpleCommaSeparatedValueFromInputIsReturnedAsArray()
     {
@@ -76,49 +81,49 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
         $result = $this->fixture->getOption($inputMock, $optionName, null, null, true);
 
         // Assert
-        $this->assertSame(array('value1', 'value2'), $result);
+        $this->assertSame(['value1', 'value2'], $result);
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::splitCommaSeparatedValues
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::splitCommaSeparatedValues
+     * @covers ::valueIsEmpty
      */
     public function testIfArrayContainingCommaSeparatedValueFromInputIsReturnedAsSimpleArray()
     {
         // Arrange
         $optionName = 'myOption';
         $inputMock  = $this->givenAnInputObject();
-        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, array('value1,value2'));
+        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, ['value1,value2']);
 
         // Act
         $result = $this->fixture->getOption($inputMock, $optionName, null, null, true);
 
         // Assert
-        $this->assertSame(array('value1', 'value2'), $result);
+        $this->assertSame(['value1', 'value2'], $result);
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
      */
     public function testIfEmptyArrayIsReturnedAsEmptyArrayEvenWhenDefaultIsNull()
     {
         // Arrange
         $optionName = 'myOption';
         $inputMock  = $this->givenAnInputObject();
-        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, array());
+        $this->whenAnOptionIsRetrievedFromInput($inputMock, $optionName, []);
 
         // Act
         $result = $this->fixture->getOption($inputMock, $optionName, null, null);
 
         // Assert
-        $this->assertSame(array(), $result);
+        $this->assertSame([], $result);
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
      */
     public function testIfEmptyValueIsReturnedAsDefault()
     {
@@ -135,9 +140,9 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getConfigValueFromPath
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
+     * @covers ::getConfigValueFromPath
      */
     public function testIfValueIsRetrievedFromConfigIfNotInInput()
     {
@@ -154,9 +159,9 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getConfigValueFromPath
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
+     * @covers ::getConfigValueFromPath
      */
     public function testIfValueIsNullWhenANonExistingConfigPathIsGiven()
     {
@@ -173,9 +178,9 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getOption
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::valueIsEmpty
-     * @covers phpDocumentor\Command\Helper\ConfigurationHelper::getConfigValueFromPath
+     * @covers ::getOption
+     * @covers ::valueIsEmpty
+     * @covers ::getConfigValueFromPath
      */
     public function testIfValueIsNotRetrievedFromConfigIfItIsInInput()
     {
@@ -199,7 +204,7 @@ class ConfigurationHelperTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAnInputObject()
     {
-        return m::mock('Symfony\Component\Console\Input\InputInterface');
+        return m::mock(InputInterface::class);
     }
 
     /**
