@@ -14,7 +14,7 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
-use phpDocumentor\Application\Commands\ContainerLocator;
+use phpDocumentor\Application\CommandBus\ContainerLocator;
 use phpDocumentor\Application\Cli\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Application\Cli\Command\Helper\LoggerHelper;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;

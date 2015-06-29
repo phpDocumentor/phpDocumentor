@@ -12,23 +12,25 @@
 
 namespace phpDocumentor\Application\Commands;
 
-use phpDocumentor\Configuration;
-
-final class ParseFiles
+final class LoadProjectFromCache
 {
-    /** @var Configuration */
-    private $configuration;
+    /** @var string */
+    private $source;
 
-    public function __construct($configuration)
+    public function __construct($source)
     {
-        $this->configuration = $configuration;
+        if (!file_exists($source) || !is_dir($source)) {
+            throw new \Exception('Invalid source location provided, a path to an existing folder was expected');
+        }
+
+        $this->source = $source;
     }
 
     /**
-     * @return Configuration
+     * @return string
      */
-    public function getConfiguration()
+    public function getSource()
     {
-        return $this->configuration;
+        return $this->source;
     }
 }

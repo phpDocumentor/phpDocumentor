@@ -12,17 +12,47 @@
 
 namespace phpDocumentor\Application\Commands;
 
+use phpDocumentor\Configuration;
+
 final class MergeConfigurationWithCommandLineOptions
 {
-    /** @var string[] */
-    public $options;
+    /** @var Configuration */
+    private $configuration;
 
     /** @var string[] */
-    public $arguments;
+    private $options;
 
-    public function __construct(array $options, array $arguments = [])
+    /** @var string[] */
+    private $arguments;
+
+    public function __construct(Configuration $configuration, array $options, array $arguments = [])
     {
         $this->options = $options;
         $this->arguments = $arguments;
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 }

@@ -21,23 +21,19 @@ final class ParseFilesHandler
     /** @var Parser */
     private $parser;
 
-    /** @var Configuration */
-    private $configuration;
-
     /** @var Collection */
     private $partialCollection;
 
-    public function __construct(Parser $parser, Configuration $configuration, Collection $partialCollection)
+    public function __construct(Parser $parser, Collection $partialCollection)
     {
         $this->parser = $parser;
-        $this->configuration = $configuration;
         $this->partialCollection = $partialCollection;
     }
 
-    public function __invoke(ParseFiles $parseFiles)
+    public function __invoke(ParseFiles $command)
     {
         $projectDescriptor = $this->parser->parse();
-        $projectDescriptor->setName($this->configuration->getTitle());
+        $projectDescriptor->setName($command->getConfiguration()->getTitle());
         $projectDescriptor->setPartials($this->partialCollection);
     }
 }

@@ -20,9 +20,6 @@ use phpDocumentor\Parser\Parser;
 
 final class InitializeParserHandler
 {
-    /** @var Configuration */
-    private $configuration;
-
     /** @var InitializerChain */
     private $initializerChain;
 
@@ -36,13 +33,11 @@ final class InitializeParserHandler
     private $exampleFinder;
 
     public function __construct(
-        Configuration $configuration,
         InitializerChain $initializerChain,
         Parser $parser,
         Analyzer $analyzer,
         Finder $exampleFinder
     ) {
-        $this->configuration    = $configuration;
         $this->initializerChain = $initializerChain;
         $this->parser           = $parser;
         $this->analyzer         = $analyzer;
@@ -52,8 +47,8 @@ final class InitializeParserHandler
     public function __invoke(InitializeParser $command)
     {
         $this->initializerChain->initialize($this->analyzer);
-        $this->parser->boot($this->configuration->getParser());
-        $this->configureExampleFinder($this->configuration);
+        $this->parser->boot($command->getConfiguration()->getParser());
+        $this->configureExampleFinder($command->getConfiguration());
     }
 
     /**

@@ -16,18 +16,10 @@ use phpDocumentor\Configuration;
 
 final class MergeConfigurationWithCommandLineOptionsHandler
 {
-    /** @var Configuration */
-    private $configuration;
-
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
-
     public function __invoke(MergeConfigurationWithCommandLineOptions $command)
     {
-        $configuration = $this->configuration;
-        $input = $command->options;
+        $configuration = $command->getConfiguration();
+        $input = $command->getOptions();
 
         $this->overwriteConfigurationSetting($input, $configuration->getFiles(), 'filename', 'Files');
         $this->overwriteConfigurationSetting($input, $configuration->getFiles(), 'directory', 'Directories');
@@ -57,8 +49,9 @@ final class MergeConfigurationWithCommandLineOptionsHandler
 
         $this->fixFilesConfiguration($configuration);
 
-        if (isset($command->arguments['paths']) && is_array($command->arguments['paths'])) {
-            foreach ($command->arguments['paths'] as $path) {
+        $arguments = $command->getArguments();
+        if (isset($arguments['paths']) && is_array($arguments['paths'])) {
+            foreach ($arguments['paths'] as $path) {
                 $this->addPathToConfiguration($path, $configuration);
             }
         }

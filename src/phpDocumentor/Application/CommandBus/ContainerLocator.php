@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Commands;
+namespace phpDocumentor\Application\CommandBus;
 
 use Interop\Container\ContainerInterface;
 use League\Tactician\Handler\Locator\HandlerLocator;

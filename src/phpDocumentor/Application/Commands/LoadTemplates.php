@@ -13,14 +13,23 @@
 namespace phpDocumentor\Application\Commands;
 
 use phpDocumentor\Configuration;
+use Symfony\Component\Console\Input\InputInterface;
 
-final class ParseFiles
+final class LoadTemplates
 {
     /** @var Configuration */
     private $configuration;
 
-    public function __construct($configuration)
+    /** @var array */
+    private $templates;
+
+    /**
+     * @param string[]      $templates
+     * @param Configuration $configuration
+     */
+    public function __construct(array $templates, Configuration $configuration)
     {
+        $this->templates     = $templates;
         $this->configuration = $configuration;
     }
 
@@ -30,5 +39,13 @@ final class ParseFiles
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTemplates()
+    {
+        return $this->templates;
     }
 }

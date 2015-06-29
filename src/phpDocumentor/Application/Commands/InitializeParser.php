@@ -12,7 +12,23 @@
 
 namespace phpDocumentor\Application\Commands;
 
+use phpDocumentor\Configuration;
+
 final class InitializeParser
 {
+    /** @var Configuration */
+    private $configuration;
 
+    public function __construct($configuration)
+    {
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
 }
