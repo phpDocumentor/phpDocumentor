@@ -13,8 +13,8 @@
 namespace phpDocumentor\Renderer {
 
     use Mockery as m;
-    use phpDocumentor\Renderer\Action\Action1;
-    use phpDocumentor\Renderer\Action\Action2;
+    use phpDocumentor\Renderer\Action\TestAction1;
+    use phpDocumentor\Renderer\Action\TestAction2;
     use phpDocumentor\Renderer\Template\Parameter;
 
     /**
@@ -30,9 +30,12 @@ namespace phpDocumentor\Renderer {
                 ['key' => 'Parameter2', 'value' => 'Value2'],
             ],
             'actions' => [
-                [ 'name' => 'Action1' ],
+                // Any name without slashes resolves to \phpDocumentor\Renderer\Action\ + class name
+                [ 'name' => 'TestAction1' ],
+                // or we can just provide the FQCN
+                [ 'name' => '\phpDocumentor\Renderer\Action\TestAction1' ],
                 [
-                    'name' => 'Action2',
+                    'name' => 'TestAction2',
                     'parameters' => [
                         ['key' => 'Parameter2', 'value' => 'Value3'],
                         ['key' => 'Parameter3', 'value' => 'Value4']
@@ -56,11 +59,15 @@ namespace phpDocumentor\Renderer {
                 'TemplateName',
                 [new Parameter('Parameter1', 'Value1'), new Parameter('Parameter2', 'Value2')],
                 [
-                    new Action1([
+                    new TestAction1([
                         'Parameter1' => new Parameter('Parameter1', 'Value1'),
                         'Parameter2' => new Parameter('Parameter2', 'Value2')
                     ]),
-                    new Action2([
+                    new TestAction1([
+                        'Parameter1' => new Parameter('Parameter1', 'Value1'),
+                        'Parameter2' => new Parameter('Parameter2', 'Value2')
+                    ]),
+                    new TestAction2([
                         'Parameter1' => new Parameter('Parameter1', 'Value1'),
                         // verify that Parameter2 is overridden; hence the value Value3
                         'Parameter2' => new Parameter('Parameter2', 'Value3'),
@@ -88,7 +95,7 @@ namespace phpDocumentor\Renderer {
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          */
@@ -99,7 +106,7 @@ namespace phpDocumentor\Renderer {
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          */
@@ -110,7 +117,7 @@ namespace phpDocumentor\Renderer {
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          * @uses phpDocumentor\Renderer\Template
@@ -122,7 +129,7 @@ namespace phpDocumentor\Renderer {
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          * @uses phpDocumentor\Renderer\Template
@@ -134,7 +141,7 @@ namespace phpDocumentor\Renderer {
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          * @uses phpDocumentor\Renderer\Template
@@ -146,7 +153,7 @@ namespace phpDocumentor\Renderer {
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          * @uses phpDocumentor\Renderer\Template
@@ -158,7 +165,7 @@ namespace phpDocumentor\Renderer {
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          * @uses phpDocumentor\Renderer\Template
@@ -166,11 +173,11 @@ namespace phpDocumentor\Renderer {
         public function testIfErrorIsThrownIfActionClassDoesNotExist()
         {
             $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'Action3']]]);
+            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'TestAction3']]]);
         }
 
         /**
-         * @expectedException InvalidArgumentException
+         * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
          * @uses phpDocumentor\Renderer\Template
@@ -178,11 +185,11 @@ namespace phpDocumentor\Renderer {
         public function testIfErrorIsThrownIfActionClassDoesNotImplementActionInterface()
         {
             $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'Action4']]]);
+            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'TestAction4']]]);
         }
 
         /**
-         * @expectedException RuntimeException
+         * @expectedException \RuntimeException
          * @covers ::create
          * @covers ::<!public>
          * @uses phpDocumentor\Renderer\Template
@@ -190,7 +197,7 @@ namespace phpDocumentor\Renderer {
         public function testIfErrorIsThrownIfActionFactoryMethodReturnsNothing()
         {
             $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'Action5']]]);
+            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'TestAction5']]]);
         }
     }
 }
@@ -200,7 +207,7 @@ namespace phpDocumentor\Renderer\Action {
     use phpDocumentor\Renderer\Action;
     use phpDocumentor\Renderer\Template;
 
-    class Action1 implements Action
+    class TestAction1 implements Action
     {
         private $parameters;
 
@@ -215,15 +222,15 @@ namespace phpDocumentor\Renderer\Action {
         }
     }
 
-    class Action2 extends Action1
+    class TestAction2 extends TestAction1
     {
     }
 
-    class Action4
+    class TestAction4
     {
     }
 
-    class Action5 implements Action
+    class TestAction5 implements Action
     {
         /**
          * @param Template\Parameter[] $parameters
