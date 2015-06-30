@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "cb887881adda9be821ccd0be8e5a567a",
@@ -618,7 +618,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mnapoli/PHP-DI/zipball/2edeea7e3cc36357c73fc20aad66fe1d919316b5",
+                "url": "https://api.github.com/repos/mnapoli/PHP-DI/zipball/927b36f37201a754ee86957de43d4784336803fe",
                 "reference": "2edeea7e3cc36357c73fc20aad66fe1d919316b5",
                 "shasum": ""
             },
@@ -932,7 +932,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/8eea2f44d907392fe21228e508939f808eb26ecb",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/068db09103546f1f673bb299137b505f904acc65",
                 "reference": "8eea2f44d907392fe21228e508939f808eb26ecb",
                 "shasum": ""
             },
