@@ -157,7 +157,7 @@ class Parser
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(
                 self::EVENT_PARSE_FILE_BEFORE,
-                (new PreFileEvent($this))->setFile($file->getPath())
+                (new PreFileEvent($this))->setFile($file->getRealPath())
             );
         }
 

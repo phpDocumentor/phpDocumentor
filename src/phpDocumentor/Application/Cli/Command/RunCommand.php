@@ -22,8 +22,12 @@ use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Transform;
 use phpDocumentor\Configuration;
 use phpDocumentor\Descriptor\Analyzer;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Parser\Backend\Php;
+use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -37,6 +41,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -304,9 +309,7 @@ HELP
         $this->commandBus->handle(new InitializeParser($this->configuration));
 
         $progress = $this->getProgressBar($input);
-        if ($progress) {
-            $this->connectOutputToEvents($progress, $output);
-        }
+        $this->connectOutputToEvents($progress, $output);
 
         $this->startProgressbar($progress, $output, $this->parser->getFiles()->count());
         $this->commandBus->handle(new ParseFiles($this->configuration));
@@ -379,40 +382,69 @@ HELP
      */
     private function connectOutputToEvents($progress, OutputInterface $output)
     {
-        $this->dispatcher->addListener(
-            'parser.file.pre',
-            function () use ($progress) {
-                $progress->advance();
-            }
-        );
+        if ($progress) {
+            $this->dispatcher->addListener(
+                Parser::EVENT_PARSE_FILE_BEFORE,
+                function () use ($progress) {
+                    $progress->advance();
+                }
+            );
 
-        $this->dispatcher->addListener(
-            'transformer.transformation.post',
-            function () use ($progress) {
-                $progress->advance();
-            }
-        );
-
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) use ($output) {
-                $transformations = $event->getSubject()->getTemplates()->getTransformations();
-                $output->writeln(sprintf("\nApplying %d transformations", count($transformations)));
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_PRE_INITIALIZATION,
-            function (WriterInitializationEvent $event) use ($output) {
-                $output->writeln('  Initialize writer "' . get_class($event->getWriter()) . '"');
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_PRE_TRANSFORMATION,
-            function (PreTransformationEvent $event) use ($output) {
-                $output->writeln(
-                    '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
-                );
-            }
-        );
+            $this->dispatcher->addListener(
+                Transformer::EVENT_POST_TRANSFORMATION,
+                function () use ($progress) {
+                    $progress->advance();
+                }
+            );
+        } else {
+            Dispatcher::getInstance()->addListener(
+                Parser::EVENT_PARSE_FILE_BEFORE,
+                function (PreFileEvent $event) use ($output) {
+                    $output->writeln(sprintf('  Parsing <comment>%s</comment>', $event->getFile()));
+                }
+            );
+            Dispatcher::getInstance()->addListener(
+                Php::EVENT_ANALYZED_FILE,
+                function (GenericEvent $event) use ($output) {
+                    /** @var FileDescriptor $descriptor */
+                    $descriptor = $event->getSubject();
+                    /** @var Error $error */
+                    foreach ($descriptor->getAllErrors() as $error) {
+                        $output->writeln(
+                            '  <error> ' . vsprintf($error->getCode(), $error->getContext()) . ' </error>'
+                        );
+                    }
+                }
+            );
+            Dispatcher::getInstance()->addListener(
+                Parser::EVENT_FILES_COLLECTED,
+                function (GenericEvent $event) use ($output) {
+                    $files = $event->getSubject();
+                    $output->writeln(sprintf("\nFound <info>%d</info> files", count($files)));
+                }
+            );
+            Dispatcher::getInstance()->addListener(
+                Transformer::EVENT_PRE_TRANSFORM,
+                function (PreTransformEvent $event) use ($output) {
+                    $transformations = $event->getSubject()->getTemplates()->getTransformations();
+                    $output->writeln(sprintf("\nApplying <info>%d</info> transformations", count($transformations)));
+                }
+            );
+            Dispatcher::getInstance()->addListener(
+                Transformer::EVENT_PRE_INITIALIZATION,
+                function (WriterInitializationEvent $event) use ($output) {
+                    $output->writeln('  Initialize writer <comment>' . get_class($event->getWriter()) . '</comment>');
+                }
+            );
+            Dispatcher::getInstance()->addListener(
+                Transformer::EVENT_PRE_TRANSFORMATION,
+                function (PreTransformationEvent $event) use ($output) {
+                    $output->writeln(
+                        '  Execute transformation using writer <comment>'
+                        . $event->getTransformation()->getWriter() . '</comment>'
+                    );
+                }
+            );
+        }
     }
 }
