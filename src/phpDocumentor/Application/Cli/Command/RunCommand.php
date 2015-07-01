@@ -14,6 +14,7 @@
 namespace phpDocumentor\Application\Cli\Command;
 
 use League\Tactician\CommandBus;
+use phpDocumentor\Application\Commands\DumpAstToDisk;
 use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\LoadProjectFromCache;
 use phpDocumentor\Application\Commands\LoadTemplates;
@@ -21,7 +22,6 @@ use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Transform;
 use phpDocumentor\Configuration;
-use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Validator\Error;
@@ -66,9 +66,6 @@ final class RunCommand extends Command
     /** @var Configuration */
     private $configuration;
 
-    /** @var Analyzer */
-    private $analyzer;
-
     /** @var Parser $parser */
     private $parser;
 
@@ -88,7 +85,6 @@ final class RunCommand extends Command
      * Initializes the command with all necessary dependencies
      *
      * @param Configuration  $configuration
-     * @param Analyzer       $analyzer
      * @param Parser         $parser
      * @param Transformer    $transformer
      * @param Dispatcher     $dispatcher
@@ -97,7 +93,6 @@ final class RunCommand extends Command
      */
     public function __construct(
         Configuration $configuration,
-        Analyzer $analyzer,
         Parser $parser,
         Transformer $transformer,
         Dispatcher $dispatcher,
@@ -105,7 +100,6 @@ final class RunCommand extends Command
         Filesystem $filesystem
     ) {
         $this->configuration = $configuration;
-        $this->analyzer      = $analyzer;
         $this->parser        = $parser;
         $this->transformer   = $transformer;
         $this->dispatcher    = $dispatcher;
@@ -333,7 +327,7 @@ HELP
         $this->finishProgressbar($progress);
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            file_put_contents('ast.dump', serialize($this->analyzer->getProjectDescriptor()));
+            $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
         }
 
         return 0;
