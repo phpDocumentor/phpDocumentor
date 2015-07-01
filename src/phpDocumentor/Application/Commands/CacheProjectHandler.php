@@ -17,7 +17,7 @@ use Desarrolla2\Cache\Cache;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 
-final class LoadProjectFromCacheHandler
+final class CacheProjectHandler
 {
     /** @var Cache */
     private $cache;
@@ -27,19 +27,18 @@ final class LoadProjectFromCacheHandler
 
     public function __construct(Cache $cache, Analyzer $analyzer)
     {
-        $this->cache = $cache;
+        $this->cache    = $cache;
         $this->analyzer = $analyzer;
     }
 
-    public function __invoke(LoadProjectFromCache $command)
+    public function __invoke(CacheProject $command)
     {
-        $projectDescriptor = $this->analyzer->getProjectDescriptor();
-        if (! $projectDescriptor) {
-            return;
-        }
+        $this->cache->setAdapter(new File($command->getTarget()));
 
-        $this->cache->setAdapter(new File($command->getSource()));
+        $projectDescriptor = $this->analyzer->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->cache);
-        $mapper->populate($projectDescriptor);
+        $mapper->save($projectDescriptor);
+
+        return $projectDescriptor;
     }
 }

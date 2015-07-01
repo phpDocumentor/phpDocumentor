@@ -12,19 +12,24 @@
 
 namespace phpDocumentor\Application\Commands;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use Symfony\Component\Filesystem\Filesystem;
 
-final class Transform
+final class CacheProject
 {
     /** @var string */
     private $target;
 
-    /**
-     * @param $target
-     */
     public function __construct($target)
     {
-        $this->target            = $target;
+        $filesystem = new Filesystem();
+        if (! $filesystem->isAbsolutePath($target)) {
+            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
+        }
+        if (!file_exists($target)) {
+            @mkdir($target);
+        }
+
+        $this->target = $target;
     }
 
     /**

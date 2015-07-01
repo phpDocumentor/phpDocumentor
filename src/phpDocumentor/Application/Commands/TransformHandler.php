@@ -14,6 +14,7 @@ namespace phpDocumentor\Application\Commands;
 
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Transformer\Transformer;
 
 final class TransformHandler
@@ -24,10 +25,14 @@ final class TransformHandler
     /** @var Transformer */
     private $transformer;
 
-    public function __construct(Transformer $transformer, Compiler $compiler)
+    /** @var Analyzer */
+    private $analyzer;
+
+    public function __construct(Transformer $transformer, Compiler $compiler, Analyzer $analyzer)
     {
         $this->compiler    = $compiler;
         $this->transformer = $transformer;
+        $this->analyzer = $analyzer;
     }
 
     public function __invoke(Transform $command)
@@ -36,7 +41,7 @@ final class TransformHandler
 
         /** @var CompilerPassInterface $pass */
         foreach ($this->compiler as $pass) {
-            $pass->execute($command->getProjectDescriptor());
+            $pass->execute($this->analyzer->getProjectDescriptor());
         }
     }
 }

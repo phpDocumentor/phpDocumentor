@@ -14,6 +14,7 @@
 namespace phpDocumentor\Application\Cli\Command;
 
 use League\Tactician\CommandBus;
+use phpDocumentor\Application\Commands\CacheProject;
 use phpDocumentor\Application\Commands\DumpAstToDisk;
 use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\LoadProjectFromCache;
@@ -42,7 +43,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -78,9 +78,6 @@ final class RunCommand extends Command
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var Filesystem */
-    private $filesystem;
-
     /**
      * Initializes the command with all necessary dependencies
      *
@@ -89,22 +86,19 @@ final class RunCommand extends Command
      * @param Transformer    $transformer
      * @param Dispatcher     $dispatcher
      * @param CommandBus     $commandBus
-     * @param Filesystem     $filesystem
      */
     public function __construct(
         Configuration $configuration,
         Parser $parser,
         Transformer $transformer,
         Dispatcher $dispatcher,
-        CommandBus $commandBus,
-        Filesystem $filesystem
+        CommandBus $commandBus
     ) {
         $this->configuration = $configuration;
         $this->parser        = $parser;
         $this->transformer   = $transformer;
         $this->dispatcher    = $dispatcher;
         $this->commandBus    = $commandBus;
-        $this->filesystem    = $filesystem;
 
         parent::__construct();
     }
@@ -300,6 +294,13 @@ HELP
                 $input->getArguments()
             )
         );
+
+        $target = (string)$this->configuration->getParser()->getTarget();
+        $cacheFolder = $input->getOption('cache-folder') ?: $target;
+        if (file_exists($cacheFolder)) {
+            $this->commandBus->handle(new LoadProjectFromCache($cacheFolder));
+        }
+
         $this->commandBus->handle(new InitializeParser($this->configuration));
 
         $progress = $this->getProgressBar($input);
@@ -309,21 +310,11 @@ HELP
         $this->commandBus->handle(new ParseFiles($this->configuration));
         $this->finishProgressbar($progress);
 
-        $target = (string)$this->configuration->getParser()->getTarget();
-        if (! $this->filesystem->isAbsolutePath($target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-        if (!file_exists($target)) {
-            @mkdir($target);
-        }
-
-        $projectDescriptor = $this->commandBus->handle(
-            new LoadProjectFromCache($input->getOption('cache-folder') ?: $target)
-        );
+        $this->commandBus->handle(new CacheProject($cacheFolder));
         $this->commandBus->handle(new LoadTemplates($input->getOption('template'), $this->configuration));
 
         $this->startProgressbar($progress, $output, count($this->transformer->getTemplates()->getTransformations()));
-        $this->commandBus->handle(new Transform($target, $projectDescriptor));
+        $this->commandBus->handle(new Transform($target));
         $this->finishProgressbar($progress);
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
