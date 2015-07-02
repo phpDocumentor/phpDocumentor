@@ -14,18 +14,31 @@ namespace phpDocumentor\Application\Commands;
 
 use phpDocumentor\Descriptor\Analyzer;
 
+/**
+ * Dumps a serialized version of the project to a provided location.
+ */
 final class DumpAstToDiskHandler
 {
-    /**
-     * @var Analyzer
-     */
+    /** @var Analyzer */
     private $analyzer;
 
+    /**
+     * Registers the required dependencies on this handler.
+     *
+     * @param Analyzer $analyzer
+     */
     public function __construct(Analyzer $analyzer)
     {
         $this->analyzer = $analyzer;
     }
 
+    /**
+     * Dumps the project to the location provided in the command.
+     *
+     * @param DumpAstToDisk $command
+     *
+     * @return void
+     */
     public function __invoke(DumpAstToDisk $command)
     {
         file_put_contents($command->getLocation(), serialize($this->analyzer->getProjectDescriptor()));

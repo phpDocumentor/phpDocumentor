@@ -12,16 +12,31 @@
 
 namespace phpDocumentor\Application\Commands;
 
+use Webmozart\Assert\Assert;
+
+/**
+ * Command used to dump a serialized version of the project to disk for debugging purposes.
+ */
 final class DumpAstToDisk
 {
+    /** @var string */
     private $location;
 
+    /**
+     * Registers the location where the AST should be dumped to.
+     *
+     * @param string $location
+     */
     public function __construct($location)
     {
+        Assert::stringNotEmpty($location);
+
         $this->location = $location;
     }
 
     /**
+     * Returns the location where the ast should be written to.
+     *
      * @return string
      */
     public function getLocation()
