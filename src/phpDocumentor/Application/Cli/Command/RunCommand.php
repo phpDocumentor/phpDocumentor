@@ -26,16 +26,21 @@ use phpDocumentor\Configuration;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Parser;
+use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformer;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -66,12 +71,6 @@ final class RunCommand extends Command
     /** @var Configuration */
     private $configuration;
 
-    /** @var Parser $parser */
-    private $parser;
-
-    /** @var Transformer $transformer Principal object for guiding the transformation process */
-    private $transformer;
-
     /** @var Dispatcher */
     private $dispatcher;
 
@@ -82,25 +81,16 @@ final class RunCommand extends Command
      * Initializes the command with all necessary dependencies
      *
      * @param Configuration  $configuration
-     * @param Parser         $parser
-     * @param Transformer    $transformer
      * @param Dispatcher     $dispatcher
      * @param CommandBus     $commandBus
      */
-    public function __construct(
-        Configuration $configuration,
-        Parser $parser,
-        Transformer $transformer,
-        Dispatcher $dispatcher,
-        CommandBus $commandBus
-    ) {
+    public function __construct(Configuration $configuration, Dispatcher $dispatcher, CommandBus $commandBus)
+    {
         $this->configuration = $configuration;
-        $this->parser        = $parser;
-        $this->transformer   = $transformer;
         $this->dispatcher    = $dispatcher;
         $this->commandBus    = $commandBus;
 
-        parent::__construct();
+        parent::__construct('project:run');
     }
 
     /**
@@ -111,7 +101,7 @@ final class RunCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('project:run')
+        $this
             ->setAliases(array('run'))
             ->setDescription(
                 'Parses and transforms the given files to a specified location'
@@ -287,6 +277,15 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln(
+            sprintf(
+                '<info>%s</info> version <comment>%s</comment>' . PHP_EOL,
+                $this->getApplication()->getName(),
+                $this->getApplication()->getVersion()
+            )
+        );
+        $this->attachListeners($input, $output);
+
         $this->commandBus->handle(
             new MergeConfigurationWithCommandLineOptions(
                 $this->configuration,
@@ -295,141 +294,176 @@ HELP
             )
         );
 
-        $target = (string)$this->configuration->getParser()->getTarget();
+        $target      = (string)$this->configuration->getParser()->getTarget();
         $cacheFolder = $input->getOption('cache-folder') ?: $target;
         if (file_exists($cacheFolder)) {
             $this->commandBus->handle(new LoadProjectFromCache($cacheFolder));
         }
 
         $this->commandBus->handle(new InitializeParser($this->configuration));
-
-        $progress = $this->getProgressBar($input);
-        $this->connectOutputToEvents($progress, $output);
-
-        $this->startProgressbar($progress, $output, $this->parser->getFiles()->count());
         $this->commandBus->handle(new ParseFiles($this->configuration));
-        $this->finishProgressbar($progress);
-
         $this->commandBus->handle(new CacheProject($cacheFolder));
         $this->commandBus->handle(new LoadTemplates($input->getOption('template'), $this->configuration));
-
-        $this->startProgressbar($progress, $output, count($this->transformer->getTemplates()->getTransformations()));
         $this->commandBus->handle(new Transform($target));
-        $this->finishProgressbar($progress);
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
             $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
         }
 
+        $output->writeln(
+            sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $this->configuration->getTransformer()->getTarget())
+        );
+
         return 0;
-    }
-
-    /**
-     * Initializes the progress bar component and register a listener that will increment the progressbar.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param integer         $numberOfFiles
-     *
-     * @return ProgressHelper
-     */
-    private function startProgressbar($progress, OutputInterface $output, $numberOfFiles)
-    {
-        if (! $progress) {
-            return;
-        }
-
-        $progress->start($output, $numberOfFiles);
-    }
-
-    /**
-     * Finalizes the progress bar after all handling is complete.
-     *
-     * @param ProgressHelper|null $progress
-     *
-     * @return void
-     */
-    private function finishProgressbar($progress)
-    {
-        if (! $progress) {
-            return;
-        }
-
-        $progress->finish();
     }
 
     /**
      * Connect a series of output messages to various events to display progress.
      *
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return void
      */
-    private function connectOutputToEvents($progress, OutputInterface $output)
+    private function attachListeners(InputInterface $input, OutputInterface $output)
     {
-        if ($progress) {
-            $this->dispatcher->addListener(
-                Parser::EVENT_PARSE_FILE_BEFORE,
-                function () use ($progress) {
-                    $progress->advance();
-                }
-            );
-
-            $this->dispatcher->addListener(
-                Transformer::EVENT_POST_TRANSFORMATION,
-                function () use ($progress) {
-                    $progress->advance();
-                }
-            );
-        } else {
+        if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
             Dispatcher::getInstance()->addListener(
-                Parser::EVENT_PARSE_FILE_BEFORE,
-                function (PreFileEvent $event) use ($output) {
-                    $output->writeln(sprintf('  Parsing <comment>%s</comment>', $event->getFile()));
-                }
-            );
-            Dispatcher::getInstance()->addListener(
-                Php::EVENT_ANALYZED_FILE,
-                function (GenericEvent $event) use ($output) {
-                    /** @var FileDescriptor $descriptor */
-                    $descriptor = $event->getSubject();
-                    /** @var Error $error */
-                    foreach ($descriptor->getAllErrors() as $error) {
-                        $output->writeln(
-                            '  <error> ' . vsprintf($error->getCode(), $error->getContext()) . ' </error>'
-                        );
-                    }
-                }
-            );
-            Dispatcher::getInstance()->addListener(
-                Parser::EVENT_FILES_COLLECTED,
-                function (GenericEvent $event) use ($output) {
-                    $files = $event->getSubject();
-                    $output->writeln(sprintf("\nFound <info>%d</info> files", count($files)));
-                }
-            );
-            Dispatcher::getInstance()->addListener(
-                Transformer::EVENT_PRE_TRANSFORM,
-                function (PreTransformEvent $event) use ($output) {
-                    $transformations = $event->getSubject()->getTemplates()->getTransformations();
-                    $output->writeln(sprintf("\nApplying <info>%d</info> transformations", count($transformations)));
-                }
-            );
-            Dispatcher::getInstance()->addListener(
-                Transformer::EVENT_PRE_INITIALIZATION,
-                function (WriterInitializationEvent $event) use ($output) {
-                    $output->writeln('  Initialize writer <comment>' . get_class($event->getWriter()) . '</comment>');
-                }
-            );
-            Dispatcher::getInstance()->addListener(
-                Transformer::EVENT_PRE_TRANSFORMATION,
-                function (PreTransformationEvent $event) use ($output) {
-                    $output->writeln(
-                        '  Execute transformation using writer <comment>'
-                        . $event->getTransformation()->getWriter() . '</comment>'
-                    );
+                'system.log',
+                function (LogEvent $event) use ($output) {
+                    $output->writeln('    <comment>-- ' . trim($event->getMessage()) . '</comment>');
                 }
             );
         }
+
+        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
+            Dispatcher::getInstance()->addListener(
+                'system.debug',
+                function (DebugEvent $event) use ($output) {
+                    $output->writeln('    <comment>-- ' . trim($event->getMessage()) . '</comment>');
+                }
+            );
+        }
+
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORM,
+            function (PreTransformEvent $event) use ($output) {
+                $transformations = $event->getSubject()->getTemplates()->getTransformations();
+                $output->writeln(sprintf("\nApplying <info>%d</info> transformations", count($transformations)));
+            }
+        );
+
+        Dispatcher::getInstance()->addListener(
+            Parser::EVENT_FILES_COLLECTED,
+            function (GenericEvent $event) use ($output) {
+                $output->writeln(sprintf("Found <info>%d</info> files", count($event->getSubject())));
+            }
+        );
+
+        if ($input->getOption('progressbar')) {
+            $this->attachListenersForProgressBar($output);
+            return;
+        }
+
+        $this->attachMessageListeners($output);
+    }
+
+    /**
+     * Attach all listeners that will initiate and advance the progress bars.
+     *
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
+    private function attachListenersForProgressBar(OutputInterface $output)
+    {
+        /** @var ProgressBar $progress */
+        $progress = $this->getHelperSet()->get('progress');
+
+        Dispatcher::getInstance()->addListener(
+            Parser::EVENT_FILES_COLLECTED,
+            function (GenericEvent $event) use ($output, $progress) {
+                $progress->start($output, count($event->getSubject()));
+            }
+        );
+        $this->dispatcher->addListener(
+            Parser::EVENT_PARSE_FILE_BEFORE,
+            function () use ($progress) {
+                $progress->advance();
+            }
+        );
+        $this->dispatcher->addListener(
+            Parser::EVENT_COMPLETED,
+            function () use ($progress) {
+                $progress->finish();
+            }
+        );
+
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORM,
+            function (PreTransformEvent $event) use ($output, $progress) {
+                $transformations = $event->getSubject()->getTemplates()->getTransformations();
+                $progress->start($output, count($transformations));
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_POST_TRANSFORM,
+            function () use ($progress) {
+                $progress->finish();
+            }
+        );
+        $this->dispatcher->addListener(
+            Transformer::EVENT_POST_TRANSFORMATION,
+            function () use ($progress) {
+                $progress->advance();
+            }
+        );
+    }
+
+    /**
+     * Attach all listeners that will generate messages on the STDOUT.
+     *
+     * @param OutputInterface $output
+     *
+     * @return void
+     */
+    private function attachMessageListeners(OutputInterface $output)
+    {
+        Dispatcher::getInstance()->addListener(
+            Parser::EVENT_PARSE_FILE_BEFORE,
+            function (PreFileEvent $event) use ($output) {
+                $output->writeln(sprintf('  Parsing <info>%s</info>', $event->getFile()));
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Php::EVENT_ANALYZED_FILE,
+            function (GenericEvent $event) use ($output) {
+                /** @var FileDescriptor $descriptor */
+                $descriptor = $event->getSubject();
+
+                /** @var Error $error */
+                foreach ($descriptor->getAllErrors() as $error) {
+                    $output->writeln(
+                        '  <error> ' . vsprintf($error->getCode(), $error->getContext()) . ' </error>'
+                    );
+                }
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_INITIALIZATION,
+            function (WriterInitializationEvent $event) use ($output) {
+                $output->writeln('  Initialize writer <info>' . get_class($event->getWriter()) . '</info>');
+            }
+        );
+        Dispatcher::getInstance()->addListener(
+            Transformer::EVENT_PRE_TRANSFORMATION,
+            function (PreTransformationEvent $event) use ($output) {
+                $output->writeln(
+                    '  Execute transformation using writer <info>'
+                    . $event->getTransformation()->getWriter()
+                    . '</info>'
+                );
+            }
+        );
     }
 }
