@@ -16,7 +16,11 @@ use Desarrolla2\Cache\Adapter\File;
 use Desarrolla2\Cache\Cache;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Descriptor\ProjectDescriptor;
 
+/**
+ * Caches the current Project.
+ */
 final class CacheProjectHandler
 {
     /** @var Cache */
@@ -25,12 +29,25 @@ final class CacheProjectHandler
     /** @var Analyzer */
     private $analyzer;
 
+    /**
+     * Initializes this handler with the required dependencies.
+     *
+     * @param Cache    $cache
+     * @param Analyzer $analyzer
+     */
     public function __construct(Cache $cache, Analyzer $analyzer)
     {
         $this->cache    = $cache;
         $this->analyzer = $analyzer;
     }
 
+    /**
+     * Caches the project.
+     *
+     * @param CacheProject $command
+     *
+     * @return void
+     */
     public function __invoke(CacheProject $command)
     {
         $this->cache->setAdapter(new File($command->getTarget()));
@@ -38,7 +55,5 @@ final class CacheProjectHandler
         $projectDescriptor = $this->analyzer->getProjectDescriptor();
         $mapper = new ProjectDescriptorMapper($this->cache);
         $mapper->save($projectDescriptor);
-
-        return $projectDescriptor;
     }
 }
