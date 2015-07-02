@@ -13,15 +13,24 @@ namespace phpDocumentor\Renderer\Template;
 
 /**
  * Tests the functionality for the Parameter class.
+ * @coversDefaultClass phpDocumentor\Renderer\Template\Parameter
  */
 class ParameterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::getKey
+     */
     public function testSetAndGetKey()
     {
         $fixture = new Parameter('key', 'value');
         $this->assertSame('key', $fixture->getKey());
     }
 
+    /**
+     * @covers ::__construct
+     * @covers ::getValue
+     */
     public function testSetAndGetValue()
     {
         $fixture = new Parameter('key', 'value');
@@ -31,6 +40,7 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage The key for a parameter is supposed to be a string, received true
+     * @covers ::__construct
      */
     public function testErrorIsThrownIfKeyIsNotAString()
     {
@@ -40,6 +50,7 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage The value for a parameter is supposed to be a string, received true
+     * @covers ::__construct
      */
     public function testErrorIsThrownIfValueIsNotAString()
     {
