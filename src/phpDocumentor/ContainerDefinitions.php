@@ -15,7 +15,6 @@ use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use phpDocumentor\Application\CommandBus\ContainerLocator;
-use phpDocumentor\Application\Cli\Command\Helper\ConfigurationHelper;
 use phpDocumentor\Application\Cli\Command\Helper\LoggerHelper;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Cli\Command\RunCommand;
@@ -144,7 +143,6 @@ return [
         );
 
         $application->getHelperSet()->set($c->get(LoggerHelper::class));
-        $application->getHelperSet()->set($c->get(ConfigurationHelper::class));
 
         $application->add($c->get(RunCommand::class));
         $application->add($c->get(ListCommand::class));
