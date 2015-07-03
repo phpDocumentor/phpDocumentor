@@ -55,7 +55,7 @@ final class Application
     {
         $this->console->setAutoExit(false);
 
-        return $this->console->run(new Console\Input\ArgvInput(), new Console\Output\Output());
+        return $this->console->run(new Console\Input\ArgvInput());
     }
 
     // TODO: Change this; plugins are not read from a config file provided on runtime
