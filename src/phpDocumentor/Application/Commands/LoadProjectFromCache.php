@@ -12,21 +12,36 @@
 
 namespace phpDocumentor\Application\Commands;
 
+/**
+ * Command used to load a project from the cache.
+ */
 final class LoadProjectFromCache
 {
     /** @var string */
     private $source;
 
+    /**
+     * Provides the cache with a source location from where to load the project.
+     *
+     * @param string $source
+     *
+     * @throws \InvalidArgumentException if the given source does not exist
+     * @throws \InvalidArgumentException if the given source is not a directory
+     */
     public function __construct($source)
     {
         if (!file_exists($source) || !is_dir($source)) {
-            throw new \Exception('Invalid source location provided, a path to an existing folder was expected');
+            throw new \InvalidArgumentException(
+                'Invalid source location provided, a path to an existing folder was expected'
+            );
         }
 
         $this->source = $source;
     }
 
     /**
+     * Returns the source location where the project can be loaded from.
+     *
      * @return string
      */
     public function getSource()
