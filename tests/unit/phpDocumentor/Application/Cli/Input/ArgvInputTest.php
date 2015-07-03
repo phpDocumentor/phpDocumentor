@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Console\Input;
+namespace phpDocumentor\Application\Cli\Input;
 
 /**
  * Tests the functionality for the InputStream class for phpDocumentor.

@@ -12,6 +12,7 @@
 namespace phpDocumentor;
 
 use Composer\Autoload\ClassLoader;
+use phpDocumentor\Application\Cli\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use phpDocumentor\Plugin\Plugin;
 
@@ -55,7 +56,7 @@ final class Application
     {
         $this->console->setAutoExit(false);
 
-        return $this->console->run(new Console\Input\ArgvInput(), new Console\Output\Output());
+        return $this->console->run(new ArgvInput());
     }
 
     // TODO: Change this; plugins are not read from a config file provided on runtime

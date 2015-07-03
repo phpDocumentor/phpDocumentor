@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Console\Input;
+namespace phpDocumentor\Application\Cli\Input;
 
 use Symfony\Component\Console\Input\InputDefinition;
 

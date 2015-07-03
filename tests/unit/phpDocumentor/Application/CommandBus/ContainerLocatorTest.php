@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Commands;
+namespace phpDocumentor\Application\CommandBus;
 
 use Interop\Container\ContainerInterface;
 use Mockery as m;
@@ -56,7 +56,7 @@ class ContainerLocatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::getHandlerForCommand
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testIfAnErrorOccursIfCommandClassDoesNotExist()
     {
@@ -69,7 +69,7 @@ class ContainerLocatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::getHandlerForCommand
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testIfAnErrorOccursIfCommandHandlerClassDoesNotExist()
     {

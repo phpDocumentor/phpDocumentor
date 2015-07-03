@@ -12,7 +12,7 @@
 namespace phpDocumentor\Configuration;
 
 use JMS\Serializer\Serializer;
-use phpDocumentor\Console\Input\ArgvInput;
+use phpDocumentor\Application\Cli\Input\ArgvInput;
 
 /**
  * Loads the template and user-defined configuration file from disk and creates a Configuration object from it.

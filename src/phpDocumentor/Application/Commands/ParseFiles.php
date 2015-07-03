@@ -12,12 +12,23 @@
 
 namespace phpDocumentor\Application\Commands;
 
-/**
- * A Dummy CommandHandler that is needed because the CommandLocator needs a real class.
- *
- * @see CommandLocatorTest
- */
-class DummyCommandHandler
-{
+use phpDocumentor\Configuration;
 
+final class ParseFiles
+{
+    /** @var Configuration */
+    private $configuration;
+
+    public function __construct($configuration)
+    {
+        $this->configuration = $configuration;
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
 }
