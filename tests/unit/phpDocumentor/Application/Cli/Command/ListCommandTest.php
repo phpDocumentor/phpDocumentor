@@ -1,26 +1,30 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.4
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Command\Template;
+namespace phpDocumentor\Application\Cli\Command;
 
 use Mockery as m;
 use phpDocumentor\Transformer\Template\Factory;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @coversDefaultClass phpDocumentor\Transformer\Command\Template\ListCommand
+ */
 class ListCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Command\Template\ListCommand::__construct
-     * @covers phpDocumentor\Transformer\Command\Template\ListCommand::configure
-     * @covers phpDocumentor\Transformer\Command\Template\ListCommand::execute
+     * @covers ::__construct
+     * @covers ::configure
+     * @covers ::execute
      */
     public function testExecuteListsCommands()
     {

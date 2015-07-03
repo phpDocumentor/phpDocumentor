@@ -1,20 +1,21 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.4
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Command\Template;
+namespace phpDocumentor\Application\Cli\Command;
 
 use phpDocumentor\Transformer\Template\Factory;
 use Symfony\Component\Console\Command\Command;
-use \Symfony\Component\Console\Input\InputInterface;
-use \Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Lists all templates known to phpDocumentor.
@@ -43,7 +44,7 @@ class ListCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('template:list')
+        $this
             ->setDescription(
                 'Displays a listing of all available templates in phpDocumentor'
             )
