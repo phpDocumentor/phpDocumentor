@@ -18,6 +18,9 @@ use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Parser\Parser;
 
+/**
+ * Sets up the initializer chain, boots the parser and prepares the Example finder.
+ */
 final class InitializeParserHandler
 {
     /** @var InitializerChain */
@@ -32,6 +35,14 @@ final class InitializeParserHandler
     /** @var Finder */
     private $exampleFinder;
 
+    /**
+     * Registers the required dependencies for this handler.
+     *
+     * @param InitializerChain $initializerChain
+     * @param Parser           $parser
+     * @param Analyzer         $analyzer
+     * @param Finder           $exampleFinder
+     */
     public function __construct(
         InitializerChain $initializerChain,
         Parser $parser,
@@ -44,23 +55,19 @@ final class InitializeParserHandler
         $this->exampleFinder    = $exampleFinder;
     }
 
+    /**
+     * Initializes and boots the parser by setting up the initializerChain and example finder.
+     *
+     * @param InitializeParser $command
+     *
+     * @return void
+     */
     public function __invoke(InitializeParser $command)
     {
         $this->initializerChain->initialize($this->analyzer);
         $this->parser->boot($command->getConfiguration()->getParser());
-        $this->configureExampleFinder($command->getConfiguration());
-    }
 
-    /**
-     * Configures the paths of the example finder to match the configuration.
-     *
-     * @param Configuration $configuration
-     *
-     * @return void
-     */
-    private function configureExampleFinder(Configuration $configuration)
-    {
         $this->exampleFinder->setSourceDirectory($this->parser->getFiles()->getProjectRoot());
-        $this->exampleFinder->setExampleDirectories($configuration->getFiles()->getExamples());
+        $this->exampleFinder->setExampleDirectories($command->getConfiguration()->getFiles()->getExamples());
     }
 }

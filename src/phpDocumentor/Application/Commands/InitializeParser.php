@@ -14,17 +14,27 @@ namespace phpDocumentor\Application\Commands;
 
 use phpDocumentor\Configuration;
 
+/**
+ * Prepares the system to initialize the parser using the given configuration.
+ */
 final class InitializeParser
 {
     /** @var Configuration */
     private $configuration;
 
+    /**
+     * Initializes the parser with the given configuration.
+     *
+     * @param Configuration $configuration
+     */
     public function __construct($configuration)
     {
         $this->configuration = $configuration;
     }
 
     /**
+     * Returns the configuration that is used to initialize the parser.
+     *
      * @return Configuration
      */
     public function getConfiguration()
