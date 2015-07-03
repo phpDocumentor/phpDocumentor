@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c6246d6f901bfd19c9c94bfd9c9eeb85",
+    "hash": "50f6247dd07a18e0893fedd807370a04",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -245,47 +245,6 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
-        },
-        {
-            "name": "dompdf/dompdf",
-            "version": "v0.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "cf7d8a0a27270418850cc7d7ea532159e5eeb3eb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/cf7d8a0a27270418850cc7d7ea532159e5eeb3eb",
-                "reference": "cf7d8a0a27270418850cc7d7ea532159e5eeb3eb",
-                "shasum": ""
-            },
-            "require": {
-                "phenx/php-font-lib": "0.2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "include/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                },
-                {
-                    "name": "Brian Sweeney",
-                    "email": "eclecticgeek@gmail.com"
-                }
-            ],
-            "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
-            "homepage": "https://github.com/dompdf/dompdf",
-            "time": "2014-03-11 01:59:52"
         },
         {
             "name": "erusev/parsedown",
@@ -827,40 +786,6 @@
                 "php"
             ],
             "time": "2014-07-23 18:24:17"
-        },
-        {
-            "name": "phenx/php-font-lib",
-            "version": "0.2.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PhenX/php-font-lib.git",
-                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
-                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "classes/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                }
-            ],
-            "description": "A library to read, parse, export and make subsets of different types of font files.",
-            "homepage": "https://github.com/PhenX/php-font-lib",
-            "time": "2014-02-01 15:22:28"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -1821,12 +1746,12 @@
             "target-dir": "Zend/Cache",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendCache.git",
+                "url": "https://github.com/zendframework/zend-cache.git",
                 "reference": "03cf30de6aa60ff9fb1a9f473202559a18b9f2f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendCache/zipball/03cf30de6aa60ff9fb1a9f473202559a18b9f2f5",
+                "url": "https://api.github.com/repos/zendframework/zend-cache/zipball/65af7c79abdfc6d66af3d8492469cf5d9afda907",
                 "reference": "03cf30de6aa60ff9fb1a9f473202559a18b9f2f5",
                 "shasum": ""
             },
@@ -1878,12 +1803,12 @@
             "target-dir": "Zend/Config",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendConfig.git",
+                "url": "https://github.com/zendframework/zend-config.git",
                 "reference": "c07bbcfd6c32e9eaf3de457cb880349f8c18885d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendConfig/zipball/c07bbcfd6c32e9eaf3de457cb880349f8c18885d",
+                "url": "https://api.github.com/repos/zendframework/zend-config/zipball/af95a57a75265f23f4fc0a9d9e193e29a3e75457",
                 "reference": "c07bbcfd6c32e9eaf3de457cb880349f8c18885d",
                 "shasum": ""
             },
@@ -1933,12 +1858,12 @@
             "target-dir": "Zend/EventManager",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendEventManager.git",
+                "url": "https://github.com/zendframework/zend-eventmanager.git",
                 "reference": "5992c202f13292415501aed41beba76404197866"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendEventManager/zipball/5992c202f13292415501aed41beba76404197866",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/40ef4dc17a9a8f88b3339630c7293cf3214054a9",
                 "reference": "5992c202f13292415501aed41beba76404197866",
                 "shasum": ""
             },
@@ -1975,12 +1900,12 @@
             "target-dir": "Zend/Filter",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendFilter.git",
+                "url": "https://github.com/zendframework/zend-filter.git",
                 "reference": "43206c8a7d847ebaff83c1c0b2f7dd8a318313eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendFilter/zipball/43206c8a7d847ebaff83c1c0b2f7dd8a318313eb",
+                "url": "https://api.github.com/repos/zendframework/zend-filter/zipball/01a50bbec514bd65691fe53ae0c34b4924118520",
                 "reference": "43206c8a7d847ebaff83c1c0b2f7dd8a318313eb",
                 "shasum": ""
             },
@@ -2029,12 +1954,12 @@
             "target-dir": "Zend/I18n",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendI18n.git",
+                "url": "https://github.com/zendframework/zend-i18n.git",
                 "reference": "0a78212878f5cf7d5ec0b554150717ddbe5755d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendI18n/zipball/0a78212878f5cf7d5ec0b554150717ddbe5755d6",
+                "url": "https://api.github.com/repos/zendframework/zend-i18n/zipball/4e6c21a9879aef5a5f332d46650e316002427415",
                 "reference": "0a78212878f5cf7d5ec0b554150717ddbe5755d6",
                 "shasum": ""
             },
@@ -2091,12 +2016,12 @@
             "target-dir": "Zend/Json",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendJson.git",
+                "url": "https://github.com/zendframework/zend-json.git",
                 "reference": "24b072788f42a025e479901e0c6e5c0bf0dcd960"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendJson/zipball/24b072788f42a025e479901e0c6e5c0bf0dcd960",
+                "url": "https://api.github.com/repos/zendframework/zend-json/zipball/ad97f8df77d038a0e4790f1389d536e7818ec0ce",
                 "reference": "24b072788f42a025e479901e0c6e5c0bf0dcd960",
                 "shasum": ""
             },
@@ -2143,12 +2068,12 @@
             "target-dir": "Zend/Math",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendMath.git",
+                "url": "https://github.com/zendframework/zend-math.git",
                 "reference": "45e7544d499a11c97d8b8fec00597f646e105ffb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendMath/zipball/45e7544d499a11c97d8b8fec00597f646e105ffb",
+                "url": "https://api.github.com/repos/zendframework/zend-math/zipball/ed65d3058cd99a2ca1e7114eeac4353433833e0e",
                 "reference": "45e7544d499a11c97d8b8fec00597f646e105ffb",
                 "shasum": ""
             },
@@ -2190,12 +2115,12 @@
             "target-dir": "Zend/Serializer",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendSerializer.git",
+                "url": "https://github.com/zendframework/zend-serializer.git",
                 "reference": "8cc08516ff69b275f22d2378cba0e0b482ba33a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendSerializer/zipball/8cc08516ff69b275f22d2378cba0e0b482ba33a1",
+                "url": "https://api.github.com/repos/zendframework/zend-serializer/zipball/928e6b0315142bfd93ec6f20751d480dec564556",
                 "reference": "8cc08516ff69b275f22d2378cba0e0b482ba33a1",
                 "shasum": ""
             },
@@ -2241,12 +2166,12 @@
             "target-dir": "Zend/ServiceManager",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendServiceManager.git",
+                "url": "https://github.com/zendframework/zend-servicemanager.git",
                 "reference": "148b1ce06fa0ac7fe58e3bd396df57f1ee0e9e82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendServiceManager/zipball/148b1ce06fa0ac7fe58e3bd396df57f1ee0e9e82",
+                "url": "https://api.github.com/repos/zendframework/zend-servicemanager/zipball/cdcbb5329c918f3ac6f00d46910ffcb6b1f3f6bc",
                 "reference": "148b1ce06fa0ac7fe58e3bd396df57f1ee0e9e82",
                 "shasum": ""
             },
@@ -2289,12 +2214,12 @@
             "target-dir": "Zend/Stdlib",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendStdlib.git",
+                "url": "https://github.com/zendframework/zend-stdlib.git",
                 "reference": "280e4ee6a8fea96b3de00a39174758b4002a7358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendStdlib/zipball/280e4ee6a8fea96b3de00a39174758b4002a7358",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/e79f79ab541fbe965e734268ab9c198c66750e71",
                 "reference": "280e4ee6a8fea96b3de00a39174758b4002a7358",
                 "shasum": ""
             },
@@ -2787,6 +2712,40 @@
                 "testing"
             ],
             "time": "2015-02-20 22:10:40"
+        },
+        {
+            "name": "phenx/php-font-lib",
+            "version": "0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhenX/php-font-lib.git",
+                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
+                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "classes/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Ménager",
+                    "email": "fabien.menager@gmail.com"
+                }
+            ],
+            "description": "A library to read, parse, export and make subsets of different types of font files.",
+            "homepage": "https://github.com/PhenX/php-font-lib",
+            "time": "2014-02-01 15:22:28"
         },
         {
             "name": "phpdocumentor/template-abstract",
