@@ -22,9 +22,6 @@
     <transformer>
         <target>output</target>
     </transformer>
-    <logging>
-        <level>error</level>
-    </logging>
     <transformations>
         <template name="clean"/>
     </transformations>
