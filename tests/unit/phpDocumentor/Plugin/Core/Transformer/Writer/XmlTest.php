@@ -66,7 +66,6 @@ class XmlTest extends \PHPUnit_Framework_TestCase
 
         $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array());
         $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
-        $this->projectDescriptor->shouldReceive('getPartials')->andReturn(array());
 
         $this->implementProtectedFinalize($this->projectDescriptor);
 
@@ -80,7 +79,6 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $xml = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0b8&#10;" title="project">
-  <partials/>
   <package name="global" full_name="global"/>
   <deprecated count="0"/>
 </project>
@@ -115,7 +113,6 @@ XML;
 
         $this->projectDescriptor->shouldReceive('getFiles')->andReturn(array($fileDescriptor));
         $this->projectDescriptor->shouldReceive('getName')->andReturn('project');
-        $this->projectDescriptor->shouldReceive('getPartials')->andReturn(array());
 
         $this->implementProtectedFinalize($this->projectDescriptor);
         $this->implementProtectedBuildDocBlock($fileDescriptor);
@@ -128,7 +125,6 @@ XML;
         $fileDescriptor->shouldReceive('getTraits')->andReturn(array());
         $fileDescriptor->shouldReceive('getMarkers')->andReturn(array());
         $fileDescriptor->shouldReceive('getErrors')->andReturn(array());
-        $fileDescriptor->shouldReceive('getPartials')->andReturn(array());
         $fileDescriptor->shouldReceive('getSource')->andReturn(null);
 
         // Call the actual method
@@ -141,7 +137,6 @@ XML;
         $xml = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0b8" title="project">
-  <partials/>
   <file path="foo.php" generated-path="generated-foo.php" hash="hash" package="myPackage">
     <docblock line="666">
       <description>my summary</description>

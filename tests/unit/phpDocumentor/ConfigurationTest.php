@@ -11,7 +11,6 @@
 
 namespace phpDocumentor;
 
-use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Plugin;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
@@ -59,23 +58,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         // Act && Assert
         $this->assertSame($expected, $this->fixture->getPlugins());
-    }
-
-    /**
-     * @covers phpDocumentor\Configuration::getPartials
-     */
-    public function testIfPartialsAreReturned()
-    {
-        // Arrange
-        $expected = array(new Partial());
-
-        $property = new \ReflectionProperty('phpDocumentor\Configuration', 'partials');
-        $property->setAccessible(true);
-        $property->setValue($this->fixture, $expected);
-        $property->setAccessible(false);
-
-        // Act && Assert
-        $this->assertSame($expected, $this->fixture->getPartials());
     }
 
     /**

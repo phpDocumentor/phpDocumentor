@@ -109,8 +109,6 @@ class Xml extends WriterAbstract
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
-        $this->buildPartials($document_element, $project);
-
         $transformer = $transformation->getTransformer();
 
         foreach ($project->getFiles() as $file) {
@@ -119,18 +117,6 @@ class Xml extends WriterAbstract
 
         $this->finalize($project);
         file_put_contents($artifact, $this->xml->saveXML());
-    }
-
-    protected function buildPartials(\DOMElement $parent, ProjectInterface $project)
-    {
-        $child = new \DOMElement('partials');
-        $parent->appendChild($child);
-        foreach ($project->getPartials() as $name => $element) {
-            $partial = new \DOMElement('partial');
-            $child->appendChild($partial);
-            $partial->setAttribute('name', $name);
-            $partial->appendChild(new \DOMText($element));
-        }
     }
 
     protected function buildFile(\DOMElement $parent, FileDescriptor $file, Transformer $transformer)

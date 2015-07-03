@@ -37,9 +37,6 @@ use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
-use phpDocumentor\Partials\Collection as PartialsCollection;
-use phpDocumentor\Partials\Exception\MissingNameForPartialException;
-use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use phpDocumentor\Transformer\Router\ExternalRouter;
@@ -195,40 +192,6 @@ return [
     Parser::class => \DI\object()
         ->method('registerEventDispatcher', \DI\get(Dispatcher::class))
         ->method('registerBackend', \DI\get(Php::class)),
-
-    // Partials
-    PartialsCollection::class => function (ContainerInterface $c) {
-        $partialsCollection = new PartialsCollection($c->get(\Parsedown::class));
-
-        /** @var Configuration $config */
-        $config = $c->get(Configuration::class);
-
-        // TODO: Move to factory!
-
-        /** @var Partial[] $partials */
-        $partials = $config->getPartials();
-        if ($partials) {
-            foreach ($partials as $partial) {
-                if (! $partial->getName()) {
-                    throw new MissingNameForPartialException('The name of the partial to load is missing');
-                }
-
-                $content = '';
-                if ($partial->getContent()) {
-                    $content = $partial->getContent();
-                } elseif ($partial->getLink()) {
-                    if (! is_readable($partial->getLink())) {
-                        continue;
-                    }
-
-                    $content = file_get_contents($partial->getLink());
-                }
-                $partialsCollection->set($partial->getName(), $content);
-            }
-        }
-
-        return $partialsCollection;
-    },
 
     // Transformer
     Linker::class => \DI\object()->constructorParameter('substitutions', \DI\get('linker.substitutions')),

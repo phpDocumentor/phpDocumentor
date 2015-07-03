@@ -14,7 +14,6 @@ namespace phpDocumentor;
 use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Configuration\Logging;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
-use phpDocumentor\Partials\Partial;
 use phpDocumentor\Plugin\Plugin;
 use phpDocumentor\Transformer\Configuration\Transformations;
 
@@ -68,12 +67,6 @@ class Configuration
      * @Serializer\Type("phpDocumentor\Transformer\Configuration\Transformations")
      */
     protected $transformations;
-
-    /**
-     * @var Partial[] A list of custom texts, or references thereto, that may be injected into templates.
-     * @Serializer\Type("array<phpDocumentor\Partials\Partial>")
-     */
-    protected $partials = array();
 
     /**
      * Initializes all settings with their default values.
@@ -153,16 +146,6 @@ class Configuration
     public function getParser()
     {
         return $this->parser;
-    }
-
-    /**
-     * Returns all partials that can be imported in the application.
-     *
-     * @return Partials\Partial[]
-     */
-    public function getPartials()
-    {
-        return $this->partials;
     }
 
     /**
