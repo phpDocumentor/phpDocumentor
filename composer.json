@@ -12,7 +12,6 @@
     },
     "require": {
         "php":               ">=5.5",
-        "mnapoli/php-di":    "^5.0@dev",
         "symfony/console":   "^2.3",
 
         "twig/twig":         "^1.3",
@@ -28,7 +27,8 @@
         "tedivm/stash": "^0.12.3",
         "league/tactician": "^0.6.0",
         "webmozart/assert": "^1.0",
-        "league/flysystem": "~1.0"
+        "league/flysystem": "~1.0",
+        "php-di/php-di": "^5.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
