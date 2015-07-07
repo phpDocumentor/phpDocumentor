@@ -5,13 +5,18 @@ namespace phpDocumentor;
 final class ConfigurationFactory
 {
     /**
-     * @var \SimpleXMLElement
+     * @var Uri
      */
-    private $xml;
+    private $uri;
 
+    /**
+     * @param Uri $uri
+     */
     public function __construct(Uri $uri)
     {
-        $this->xml = $this->validate($uri);
+        $this->validate($uri);
+
+        $this->uri = $uri;
     }
 
     /**
@@ -19,14 +24,16 @@ final class ConfigurationFactory
      *
      * @return array
      */
-    public function convert()
+    public function get()
     {
-        $version = $this->checkIfVersionAttributeIsPresent($this->xml);
+        $xml = new \SimpleXMLElement($this->uri, 0, true);
+
+        $version = $this->checkIfVersionAttributeIsPresent($xml);
         if ($version) {
-            $this->validateXmlStructure($this->xml);
-            $array = $this->convertPhpdoc3XmlToArray($this->xml);
+            $this->validateXmlStructure($xml);
+            $array = $this->convertPhpdoc3XmlToArray($xml);
         } else {
-            $array = $this->convertPhpdoc2XmlToArray($this->xml);
+            $array = $this->convertPhpdoc2XmlToArray($xml);
         }
 
         return $array;
@@ -37,7 +44,7 @@ final class ConfigurationFactory
      *
      * @param Uri $uri
      *
-     * @return \SimpleXMLElement
+     * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor
      */
     private function validate(Uri $uri)
     {
@@ -46,8 +53,6 @@ final class ConfigurationFactory
         if ($xml->getName() !== 'phpdocumentor') {
             throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found', $xml->getName()));
         }
-
-        return $xml;
     }
 
     /**

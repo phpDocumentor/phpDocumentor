@@ -80,49 +80,49 @@ XML;
 
     /**
      * @covers ::__construct
-     * @covers ::convert
+     * @covers ::get
      * @covers ::<private>
      */
     public function testItConvertsPhpdoc2XmlToAnArray()
     {
-        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpdoc.tpl.xml');
-        $xml   = new ConfigurationFactory($uri);
-        $array = $xml->convert();
+        $uri                  = new Uri(__DIR__ . '/../../../tests/data/phpdoc.tpl.xml');
+        $configurationFactory = new ConfigurationFactory($uri);
+        $array                = $configurationFactory->get();
 
         $this->assertEquals(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
     }
 
     /**
      * @covers ::__construct
-     * @covers ::convert
+     * @covers ::get
      * @covers ::<private>
      */
     public function testItConvertsPhpdoc3XmlToAnArray()
     {
-        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XML.xml');
-        $xml   = new ConfigurationFactory($uri);
-        $array = $xml->convert();
+        $uri                  = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XML.xml');
+        $configurationFactory = new ConfigurationFactory($uri);
+        $array                = $configurationFactory->get();
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
      * @covers ::__construct
-     * @covers ::convert
+     * @covers ::get
      * @covers ::<private>
      */
     public function testItUsesTheDefaultTemplateIfNoneIsFoundInThePhpdoc3Xml()
     {
-        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithoutTemplate.xml');
-        $xml   = new ConfigurationFactory($uri);
-        $array = $xml->convert();
+        $uri                  = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithoutTemplate.xml');
+        $configurationFactory = new ConfigurationFactory($uri);
+        $array                = $configurationFactory->get();
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
      * @covers ::__construct
-     * @covers ::convert
+     * @covers ::get
      * @covers ::<private>
      * @expectedException \Exception
      * @expectedExceptionMessage Element '{http://www.phpdoc.org}phpdocumentor': Missing child element(s). Expected is
@@ -140,14 +140,14 @@ XML;
         $path = tempnam(sys_get_temp_dir(), 'foo');
         file_put_contents($path, $xml);
 
-        $uri = new Uri($path);
-        $xml = new ConfigurationFactory($uri);
-        $xml->convert();
+        $uri                  = new Uri($path);
+        $configurationFactory = new ConfigurationFactory($uri);
+        $configurationFactory->get();
     }
 
     /**
      * @covers ::__construct
-     * @covers ::convert
+     * @covers ::get
      * @covers ::<private>
      */
     public function testItSetsDefaultValuesIfNoneAreFoundInThePhpdoc3Xml()
@@ -155,23 +155,23 @@ XML;
         $path = tempnam(sys_get_temp_dir(), 'foo');
         file_put_contents($path, '<phpdocumentor></phpdocumentor>');
 
-        $uri   = new Uri($path);
-        $xml   = new ConfigurationFactory($uri);
-        $array = $xml->convert();
+        $uri                  = new Uri($path);
+        $configurationFactory = new ConfigurationFactory($uri);
+        $array                = $configurationFactory->get();
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
     }
 
     /**
      * @covers ::__construct
-     * @covers ::convert
+     * @covers ::get
      * @covers ::<private>
      */
     public function testItAcceptsMultipleVersionsInThePhpdoc3Xml()
     {
-        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml');
-        $xml   = new ConfigurationFactory($uri);
-        $array = $xml->convert();
+        $uri                  = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml');
+        $configurationFactory = new ConfigurationFactory($uri);
+        $array                = $configurationFactory->get();
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
     }
