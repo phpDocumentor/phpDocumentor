@@ -109,7 +109,7 @@ final class ConfigurationFactory
                 ],
                 'versions'  => [
                     '1.0.0' => [
-                        'folder' => 'latest',
+                        'folder' => '',
                         'api'    => [
                             'format'               => 'php',
                             'source'               => [

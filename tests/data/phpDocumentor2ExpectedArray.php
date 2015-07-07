@@ -12,7 +12,7 @@ final class PhpDocumentor2ExpectedArray
                 ],
                 'versions'  => [
                     '1.0.0' => [
-                        'folder' => 'latest',
+                        'folder' => '',
                         'api'    => [
                             'format'               => 'php',
                             'source'               => [

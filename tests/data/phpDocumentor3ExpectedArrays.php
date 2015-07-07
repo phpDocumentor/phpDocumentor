@@ -73,7 +73,7 @@ final class PhpDocumentor3ExpectedArrays
                 ],
                 'versions'  => [
                     '1.0.0' => [
-                        'folder' => 'latest',
+                        'folder' => '',
                         'api'    => [
                             'format'               => 'php',
                             'source'               => [
