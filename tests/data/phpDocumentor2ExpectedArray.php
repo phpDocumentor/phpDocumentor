@@ -7,7 +7,7 @@ final class PhpDocumentor2ExpectedArray
         return [
             'phpdocumentor' => [
                 'paths'     => [
-                    'output' => 'file://build/docs',
+                    'output' => 'build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache'
                 ],
                 'versions'  => [

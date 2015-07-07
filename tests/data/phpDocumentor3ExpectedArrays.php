@@ -97,7 +97,7 @@ final class PhpDocumentor3ExpectedArrays
                         'guide'  => [
                             'format' => 'rst',
                             'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
+                                'dsn'   => 'file://../phpDocumentor/phpDocumentor3',
                                 'paths' => [
                                     0 => 'docs'
                                 ]

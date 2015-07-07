@@ -20,9 +20,11 @@
             </ignore>
             <extensions>
                 <extension>php</extension>
+                <extension>php3</extension>
+                <extension>phtml</extension>
             </extensions>
             <visibility>public</visibility>
-            <default-package-name>Default</default-package-name>
+            <default-package-name></default-package-name>
             <markers>
                 <marker>TODO</marker>
                 <marker>FIXME</marker>

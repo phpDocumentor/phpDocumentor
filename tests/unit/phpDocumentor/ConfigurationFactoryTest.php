@@ -153,7 +153,43 @@ XML;
     public function testItSetsDefaultValuesIfNoneAreFoundInThePhpdoc3Xml()
     {
         $path = tempnam(sys_get_temp_dir(), 'foo');
-        file_put_contents($path, '<phpdocumentor></phpdocumentor>');
+        file_put_contents($path, <<<XML
+<phpdocumentor
+        version="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="phpdoc.xsd"
+        >
+    <paths>
+        <output></output>
+        <cache></cache>
+    </paths>
+    <version number="1.0.0">
+        <folder></folder>
+        <api format="">
+            <source dsn="file://.">
+                <path></path>
+            </source>
+            <ignore>
+                <path></path>
+            </ignore>
+            <extensions>
+                <extension></extension>
+            </extensions>
+            <visibility>public</visibility>
+            <markers>
+                <marker></marker>
+            </markers>
+        </api>
+        <guide format="">
+            <source>
+                <path>docs</path>
+            </source>
+        </guide>
+    </version>
+    <template name="clean" location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean"/>
+</phpdocumentor>
+XML
+);
 
         $uri                  = new Uri($path);
         $configurationFactory = new ConfigurationFactory($uri);

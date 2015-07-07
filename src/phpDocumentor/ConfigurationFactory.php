@@ -123,10 +123,13 @@ final class ConfigurationFactory
             }
         }
 
+        $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
+        $sourcePath      = ((string) $phpDocumentor->parser->files->directory) ?: 'src';
+
         $phpdoc2Array = [
             'phpdocumentor' => [
                 'paths'     => [
-                    'output' => 'file://build/docs',
+                    'output' => (string) (new Dsn($outputDirectory))->getPath(),
                     'cache'  => '/tmp/phpdoc-doc-cache'
                 ],
                 'versions'  => [
@@ -137,7 +140,7 @@ final class ConfigurationFactory
                             'source'               => [
                                 'dsn'   => 'file://.',
                                 'paths' => [
-                                    0 => 'src'
+                                    0 => (string) (new Dsn($sourcePath))->getPath(),
                                 ]
                             ],
                             'ignore'               => [
@@ -225,12 +228,14 @@ final class ConfigurationFactory
                     break;
             }
         }
+        $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
+        $cacheDirectory  = ((string) $phpDocumentor->parser->cache) ?: '/tmp/phpdoc-doc-cache';
 
         $phpdoc3Array = [
             'phpdocumentor' => [
                 'paths'     => [
-                    'output' => (string) $phpDocumentor->paths->output,
-                    'cache'  => (string) $phpDocumentor->paths->cache,
+                    'output' => $outputDirectory,
+                    'cache'  => $cacheDirectory,
                 ],
                 'versions'  => $versions,
                 'templates' => $template,
@@ -249,6 +254,16 @@ final class ConfigurationFactory
      */
     private function buildVersions(\SimpleXMLElement $version)
     {
+        $extensions = [];
+        foreach ($version->api->extensions->children() as $extension) {
+            if ((string) $extension !== '') {
+                $extensions[] = (string) $extension;
+            }
+        }
+
+        $ignoreHidden   = filter_var($version->api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
+        $ignoreSymlinks = filter_var($version->api->ignore->attributes()->symlinks, FILTER_VALIDATE_BOOLEAN);
+
         return [
             'folder' => (string) $version->folder,
             'api'    => [
@@ -260,23 +275,19 @@ final class ConfigurationFactory
                     ]
                 ],
                 'ignore'               => [
-                    'hidden'   => filter_var($version->api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN),
-                    'symlinks' => filter_var($version->api->ignore->attributes()->symlinks, FILTER_VALIDATE_BOOLEAN),
-                    'paths'    => (array) $version->api->ignore->path,
+                    'hidden'   => ($ignoreHidden) ?: true,
+                    'symlinks' => ($ignoreSymlinks) ?: true,
+                    'paths'    => ((array) $version->api->ignore->path) ?: ['src/ServiceDefinitions.php'],
                 ],
-                'extensions'           => [
-                    0 => 'php',
-                    1 => 'php3',
-                    2 => 'phtml'
-                ],
-                'visibility'           => 'public',
-                'default-package-name' => 'Default',
+                'extensions'           => $extensions,
+                'visibility'           => (string) $version->api->visibility,
+                'default-package-name' => ((string) $version->api->{'default-package-name'}) ?: 'Default',
                 'markers'              => (array) $version->api->markers->children()->marker,
             ],
             'guide'  => [
-                'format' => (string) $version->guide->attributes()->format,
+                'format' => ((string) $version->guide->attributes()->format) ?: 'rst',
                 'source' => [
-                    'dsn'   => (string) $version->guide->source->attributes()->dsn,
+                    'dsn'   => ((string) $version->guide->source->attributes()->dsn) ?: 'file://../phpDocumentor/phpDocumentor3',
                     'paths' => (array) $version->guide->source->path,
                 ]
             ]
@@ -326,7 +337,9 @@ final class ConfigurationFactory
         $extensions = [];
         if (isset($parser->extensions)) {
             foreach ($parser->extensions->children() as $extension) {
-                $extensions[] = (string) $extension;
+                if ((string) $extension !== '') {
+                    $extensions[] = (string) $extension;
+                }
             }
         }
 

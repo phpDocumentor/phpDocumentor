@@ -3,7 +3,7 @@
     <parser>
         <default-package-name>Default</default-package-name>
         <encoding>utf-8</encoding>
-        <target>output/build</target>
+        <target>build/docs</target>
         <markers>
             <item>TODO</item>
             <item>FIXME</item>
@@ -17,6 +17,7 @@
         <files>
             <ignore-hidden>true</ignore-hidden>
             <ignore-symlinks>true</ignore-symlinks>
+            <directory>src</directory>
         </files>
     </parser>
     <transformer>
