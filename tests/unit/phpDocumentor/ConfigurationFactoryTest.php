@@ -1,16 +1,14 @@
 <?php
 
-namespace phpDocumentor\Configuration;
+namespace phpDocumentor;
 
-use phpDocumentor\Uri;
-
-require_once(__DIR__ . '/../../../../tests/data/phpDocumentor2ExpectedArray.php');
-require_once(__DIR__ . '/../../../../tests/data/phpDocumentor3ExpectedArrays.php');
+require_once(__DIR__ . '/../../../tests/data/phpDocumentor2ExpectedArray.php');
+require_once(__DIR__ . '/../../../tests/data/phpDocumentor3ExpectedArrays.php');
 
 /**
  * Test case for ConfigurationFactory
  *
- * @coversDefaultClass phpDocumentor\Configuration\ConfigurationFactory
+ * @coversDefaultClass phpDocumentor\ConfigurationFactory
  */
 final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -87,7 +85,7 @@ XML;
      */
     public function testItConvertsPhpdoc2XmlToAnArray()
     {
-        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpdoc.tpl.xml');
+        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpdoc.tpl.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
@@ -101,7 +99,7 @@ XML;
      */
     public function testItConvertsPhpdoc3XmlToAnArray()
     {
-        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpDocumentor3XML.xml');
+        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XML.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
@@ -115,7 +113,7 @@ XML;
      */
     public function testItUsesTheDefaultTemplateIfNoneIsFoundInThePhpdoc3Xml()
     {
-        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithoutTemplate.xml');
+        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithoutTemplate.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
@@ -171,7 +169,7 @@ XML;
      */
     public function testItAcceptsMultipleVersionsInThePhpdoc3Xml()
     {
-        $uri   = new Uri(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml');
+        $uri   = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml');
         $xml   = new ConfigurationFactory($uri);
         $array = $xml->convert();
 
