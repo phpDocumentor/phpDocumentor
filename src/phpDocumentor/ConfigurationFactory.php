@@ -168,7 +168,7 @@ final class ConfigurationFactory
         $domElement = $dom->importNode($domElement, true);
         $dom->appendChild($domElement);
 
-        $dom->schemaValidate(__DIR__ . '/configuration/phpdoc.xsd');
+        $dom->schemaValidate(__DIR__ . '/../../data/xsd/phpdoc.xsd');
 
         $error = libxml_get_last_error();
 
