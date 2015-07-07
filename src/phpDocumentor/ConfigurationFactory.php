@@ -10,13 +10,32 @@ final class ConfigurationFactory
     private $uri;
 
     /**
-     * @param Uri $uri
+     * @var string
      */
-    public function __construct(Uri $uri)
+    private $schemaPath;
+
+    /**
+     * @param Uri    $uri
+     * @param string $schemaPath
+     */
+    public function __construct(Uri $uri, $schemaPath = '../../data/xsd/phpdoc.xsd')
     {
         $this->validate($uri);
 
-        $this->uri = $uri;
+        $this->uri        = $uri;
+        $this->schemaPath = $schemaPath;
+    }
+
+    /**
+     * Replace the location of the configuration file.
+     *
+     * @param Uri $uri
+     *
+     * @return ConfigurationFactory
+     */
+    public function replaceLocation(Uri $uri)
+    {
+        return static::__construct($uri);
     }
 
     /**
@@ -44,7 +63,7 @@ final class ConfigurationFactory
      *
      * @param Uri $uri
      *
-     * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor
+     * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor.
      */
     private function validate(Uri $uri)
     {
@@ -173,7 +192,7 @@ final class ConfigurationFactory
         $domElement = $dom->importNode($domElement, true);
         $dom->appendChild($domElement);
 
-        $dom->schemaValidate(__DIR__ . '/../../data/xsd/phpdoc.xsd');
+        $dom->schemaValidate(__DIR__ . DIRECTORY_SEPARATOR . $this->schemaPath);
 
         $error = libxml_get_last_error();
 

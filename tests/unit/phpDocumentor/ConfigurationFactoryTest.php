@@ -175,4 +175,26 @@ XML;
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
     }
+
+    /**
+     * @covers ::__construct
+     * @covers ::replaceLocation
+     * @covers ::get
+     * @covers ::<private>
+     */
+    public function testItReplacesTheLocationOfTheConfigurationFile()
+    {
+        $oldUri = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XML.xml');
+        $newUri = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml');
+
+        $configurationFactory = new ConfigurationFactory($oldUri);
+
+        $array = $configurationFactory->get();
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
+
+        $configurationFactory->replaceLocation($newUri);
+
+        $array = $configurationFactory->get();
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
+    }
 }
