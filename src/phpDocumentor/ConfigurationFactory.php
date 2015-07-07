@@ -30,12 +30,12 @@ final class ConfigurationFactory
      * Replace the location of the configuration file.
      *
      * @param Uri $uri
-     *
-     * @return ConfigurationFactory
      */
     public function replaceLocation(Uri $uri)
     {
-        return static::__construct($uri);
+        $this->validate($uri);
+
+        $this->uri = $uri;
     }
 
     /**
