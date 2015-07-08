@@ -15,44 +15,58 @@ final class ConfigurationFactory
     private $schemaPath;
 
     /**
+     * @var bool
+     */
+    private $validateUri;
+
+    /**
+     * @var \SimpleXMLElement
+     */
+    private $xml;
+
+    /**
      * @param Uri    $uri
      * @param string $schemaPath
      */
-    public function __construct(Uri $uri, $schemaPath = '../../data/xsd/phpdoc.xsd')
+    public function __construct(Uri $uri, $schemaPath = '')
     {
-        $this->validate($uri);
+        if ($schemaPath === '') {
+            $schemaPath = __DIR__ . '/../../data/xsd/phpdoc.xsd';
+        }
 
-        $this->uri        = $uri;
+        $this->replaceLocation($uri);
         $this->schemaPath = $schemaPath;
     }
 
     /**
-     * Replace the location of the configuration file.
+     * Replaces the location of the configuration file if it is different.
      *
      * @param Uri $uri
      */
     public function replaceLocation(Uri $uri)
     {
-        $this->validate($uri);
+        if ($this->uri !== $uri) {
+            $this->validateUri = true;
+        }
 
         $this->uri = $uri;
     }
 
     /**
-     * Convert the phpDocumentor configuration xml to an array.
+     * Converts the phpDocumentor configuration xml to an array.
      *
      * @return array
      */
     public function get()
     {
-        $xml = new \SimpleXMLElement($this->uri, 0, true);
+        $this->validate($this->uri);
 
-        $version = $this->checkIfVersionAttributeIsPresent($xml);
+        $version = $this->checkIfVersionAttributeIsPresent($this->xml);
         if ($version) {
-            $this->validateXmlStructure($xml);
-            $array = $this->convertPhpdoc3XmlToArray($xml);
+            $this->validateXmlStructure($this->xml);
+            $array = $this->convertPhpdoc3XmlToArray($this->xml);
         } else {
-            $array = $this->convertPhpdoc2XmlToArray($xml);
+            $array = $this->convertPhpdoc2XmlToArray($this->xml);
         }
 
         return $array;
@@ -67,11 +81,20 @@ final class ConfigurationFactory
      */
     private function validate(Uri $uri)
     {
+        if ($this->validateUri === false) {
+            return;
+        }
+
         $xml = new \SimpleXMLElement($uri, 0, true);
 
         if ($xml->getName() !== 'phpdocumentor') {
-            throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found', $xml->getName()));
+            throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found',
+                $xml->getName()));
         }
+
+        $this->xml = $xml;
+
+        $this->validateUri = false;
     }
 
     /**
@@ -195,7 +218,7 @@ final class ConfigurationFactory
         $domElement = $dom->importNode($domElement, true);
         $dom->appendChild($domElement);
 
-        $dom->schemaValidate(__DIR__ . DIRECTORY_SEPARATOR . $this->schemaPath);
+        $dom->schemaValidate($this->schemaPath);
 
         $error = libxml_get_last_error();
 

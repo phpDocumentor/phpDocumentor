@@ -21,7 +21,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $uri = new Uri(tempnam(sys_get_temp_dir(), 'foo'));
         chmod($uri, 000);
-        new ConfigurationFactory($uri);
+        $configurationFactory = new ConfigurationFactory($uri);
+        $configurationFactory->get();
     }
 
     /**
@@ -32,7 +33,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     public function testItOnlyAcceptsAUriThatIsAFile()
     {
         $uri = new Uri(sys_get_temp_dir());
-        new ConfigurationFactory($uri);
+        $configurationFactory = new ConfigurationFactory($uri);
+        $configurationFactory->get();
     }
 
     /**
@@ -43,7 +45,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     public function testItOnlyAcceptsAUriWithContent()
     {
         $uri = new Uri(tempnam(sys_get_temp_dir(), 'foo'));
-        new ConfigurationFactory($uri);
+        $configurationFactory = new ConfigurationFactory($uri);
+        $configurationFactory->get();
     }
 
     /**
@@ -55,7 +58,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $uri = new Uri(tempnam(sys_get_temp_dir(), 'foo'));
         file_put_contents($uri, 'foo');
-        new ConfigurationFactory($uri);
+        $configurationFactory = new ConfigurationFactory($uri);
+        $configurationFactory->get();
     }
 
     /**
@@ -75,7 +79,8 @@ XML;
         file_put_contents($path, $xml);
 
         $uri = new Uri($path);
-        new ConfigurationFactory($uri);
+        $configurationFactory = new ConfigurationFactory($uri);
+        $configurationFactory->get();
     }
 
     /**
@@ -218,7 +223,7 @@ XML
      * @covers ::get
      * @covers ::<private>
      */
-    public function testItReplacesTheLocationOfTheConfigurationFile()
+    public function testItReplacesTheLocationOfTheConfigurationFileIfItIsDifferent()
     {
         $oldUri = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XML.xml');
         $newUri = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml');
@@ -232,5 +237,26 @@ XML
 
         $array = $configurationFactory->get();
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::replaceLocation
+     * @covers ::get
+     * @covers ::<private>
+     */
+    public function testItDoesNotReplaceTheLocationOfTheConfigurationFileIfItIsTheSame()
+    {
+        $uri = new Uri(__DIR__ . '/../../../tests/data/phpDocumentor3XML.xml');
+
+        $configurationFactory = new ConfigurationFactory($uri);
+
+        $array = $configurationFactory->get();
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
+
+        $configurationFactory->replaceLocation($uri);
+
+        $array = $configurationFactory->get();
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
 }
