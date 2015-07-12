@@ -80,12 +80,10 @@ final class Phpdoc3XmlToArrayConverter implements XmlConverter
         return [
             'folder' => (string) $version->folder,
             'api'    => [
-                'format'               => 'php',
+                'format'               => ((string) $version->api->attributes()->format) ?: 'php',
                 'source'               => [
-                    'dsn'   => 'file://.',
-                    'paths' => [
-                        0 => 'src'
-                    ]
+                    'dsn'   => (string) $version->api->source->attributes()->dsn,
+                    'paths' => ((array) $version->api->source->path) ?: ['src'],
                 ],
                 'ignore'               => [
                     'hidden'   => ($ignoreHidden) ?: true,
