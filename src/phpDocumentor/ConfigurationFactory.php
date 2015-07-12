@@ -10,6 +10,11 @@ final class ConfigurationFactory
     private $uri;
 
     /**
+     * @var \SimpleXMLElement
+     */
+    private $xml;
+
+    /**
      * @var string
      */
     private $schemaPath;
@@ -18,11 +23,6 @@ final class ConfigurationFactory
      * @var bool
      */
     private $validateUri;
-
-    /**
-     * @var \SimpleXMLElement
-     */
-    private $xml;
 
     /**
      * @param Uri    $uri
@@ -65,11 +65,11 @@ final class ConfigurationFactory
         if ($version) {
             $this->validateXmlStructure($this->xml);
             $xml = new Phpdoc3XmlToArrayConverter($this->xml);
-            $array = $xml->convert();
         } else {
             $xml = new Phpdoc2XmlToArrayConverter($this->xml);
-            $array = $xml->convert();
         }
+
+        $array = $xml->convert();
 
         return $array;
     }

@@ -2,7 +2,7 @@
 
 namespace phpDocumentor;
 
-final class Phpdoc3XmlToArrayConverter implements XmlToArrayConverter
+final class Phpdoc3XmlToArrayConverter implements XmlConverter
 {
     /**
      * @var \SimpleXMLElement

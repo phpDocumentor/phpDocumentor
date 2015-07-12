@@ -2,7 +2,7 @@
 
 namespace phpDocumentor;
 
-interface XmlToArrayConverter
+interface XmlConverter
 {
     public function __construct(\SimpleXMLElement $xml);
 
