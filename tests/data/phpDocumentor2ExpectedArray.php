@@ -38,26 +38,14 @@ final class PhpDocumentor2ExpectedArray
                             'markers'              => [
                                 0 => 'TODO',
                                 1 => 'FIXME'
-                            ]
+                            ],
                         ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
                     ]
                 ],
                 'templates' => [
-                    0 => [
-                        'name' => 'clean'
+                    [
+                        'name' => 'clean',
                     ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
                 ]
             ]
         ];

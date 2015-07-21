@@ -52,12 +52,9 @@ final class PhpDocumentor3ExpectedArrays
                     ]
                 ],
                 'templates' => [
-                    0 => [
-                        'name' => 'clean'
+                    [
+                        'name' => 'clean',
                     ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
                 ]
             ]
         ];
@@ -85,9 +82,7 @@ final class PhpDocumentor3ExpectedArrays
                             'ignore'               => [
                                 'hidden'   => true,
                                 'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
+                                'paths'    => [],
                             ],
                             'extensions'           => [],
                             'visibility'           => 'public',
@@ -97,7 +92,7 @@ final class PhpDocumentor3ExpectedArrays
                         'guide'  => [
                             'format' => 'rst',
                             'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor3',
+                                'dsn'   => 'file://.',
                                 'paths' => [
                                     0 => 'docs'
                                 ]
@@ -106,12 +101,9 @@ final class PhpDocumentor3ExpectedArrays
                     ]
                 ],
                 'templates' => [
-                    0 => [
-                        'name' => 'clean'
+                    [
+                        'name' => 'clean',
                     ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                    ]
                 ]
             ]
         ];
@@ -206,8 +198,8 @@ final class PhpDocumentor3ExpectedArrays
                     ]
                 ],
                 'templates' => [
-                    0 => [
-                        'name' => 'clean'
+                    [
+                        'name' => 'clean',
                     ],
                     1 => [
                         'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'

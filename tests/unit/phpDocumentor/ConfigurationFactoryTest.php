@@ -191,7 +191,7 @@ XML;
             </source>
         </guide>
     </version>
-    <template name="clean" location="https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean"/>
+    <template name="clean"/>
 </phpdocumentor>
 XML
 );

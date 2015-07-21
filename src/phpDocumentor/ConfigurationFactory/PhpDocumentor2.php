@@ -1,31 +1,20 @@
 <?php
 
-namespace phpDocumentor;
+namespace phpDocumentor\ConfigurationFactory;
 
-final class Phpdoc2XmlToArrayConverter implements XmlConverter
+use phpDocumentor\Dsn;
+
+final class PhpDocumentor2 implements Strategy
 {
-    /**
-     * @var \SimpleXMLElement
-     */
-    private $xml;
-
-    /**
-     * @param \SimpleXMLElement $xml
-     */
-    public function __construct(\SimpleXMLElement $xml)
-    {
-        $this->xml = $xml;
-    }
-
     /**
      * Converts the phpDocumentor2 configuration xml to an array.
      *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
      * @return array
      */
-    public function convert()
+    public function convert(\SimpleXMLElement $phpDocumentor)
     {
-        $phpDocumentor = $this->xml;
-
         $extensions         = [];
         $markers            = [];
         $visibility         = 'public';
@@ -60,7 +49,7 @@ final class Phpdoc2XmlToArrayConverter implements XmlConverter
             'phpdocumentor' => [
                 'paths'     => [
                     'output' => (string) (new Dsn($outputDirectory))->getPath(),
-                    'cache'  => '/tmp/phpdoc-doc-cache'
+                    'cache'  => '/tmp/phpdoc-doc-cache',
                 ],
                 'versions'  => [
                     '1.0.0' => [
@@ -69,45 +58,34 @@ final class Phpdoc2XmlToArrayConverter implements XmlConverter
                             'format'               => 'php',
                             'source'               => [
                                 'dsn'   => 'file://.',
-                                'paths' => [
-                                    0 => (string) (new Dsn($sourcePath))->getPath(),
-                                ]
+                                'paths' => [(string) (new Dsn($sourcePath))->getPath()],
                             ],
                             'ignore'               => [
                                 'hidden'   => $ignoreHidden,
                                 'symlinks' => $ignoreSymlinks,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php'
-                                ]
+                                'paths'    => ['src/ServiceDefinitions.php'],
                             ],
                             'extensions'           => $extensions,
                             'visibility'           => $visibility,
                             'default-package-name' => $defaultPackageName,
                             'markers'              => $markers,
                         ],
-                        'guide'  => [
-                            'format' => 'rst',
-                            'source' => [
-                                'dsn'   => 'file://../phpDocumentor/phpDocumentor2',
-                                'paths' => [
-                                    0 => 'docs'
-                                ]
-                            ]
-                        ]
-                    ]
+                    ],
                 ],
                 'templates' => [
-                    0 => [
-                        'name' => $template
+                    [
+                        'name' => $template,
                     ],
-                    1 => [
-                        'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/' . $template
-                    ]
-                ]
-            ]
+                ],
+            ],
         ];
 
         return $phpdoc2Array;
+    }
+
+    public function match()
+    {
+        return $this instanceof Strategy;
     }
 
     /**

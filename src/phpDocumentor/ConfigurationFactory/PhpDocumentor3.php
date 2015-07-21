@@ -1,30 +1,32 @@
 <?php
 
-namespace phpDocumentor;
+namespace phpDocumentor\ConfigurationFactory;
 
-final class Phpdoc3XmlToArrayConverter implements XmlConverter
+final class PhpDocumentor3 implements Strategy
 {
     /**
-     * @var \SimpleXMLElement
+     * @var string
      */
-    private $xml;
+    private $schemaPath;
 
     /**
-     * @param \SimpleXMLElement $xml
+     * @param string $schemaPath
      */
-    public function __construct(\SimpleXMLElement $xml)
+    public function __construct($schemaPath)
     {
-        $this->xml = $xml;
+        $this->schemaPath = $schemaPath;
     }
 
     /**
      * Converts the phpDocumentor3 configuration xml to an array.
      *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
      * @return array
      */
-    public function convert()
+    public function convert(\SimpleXMLElement $phpDocumentor)
     {
-        $phpDocumentor = $this->xml;
+        $this->validateXmlStructure($phpDocumentor);
 
         $versions = [];
         $template = [];
@@ -41,6 +43,7 @@ final class Phpdoc3XmlToArrayConverter implements XmlConverter
                     break;
             }
         }
+
         $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
         $cacheDirectory  = ((string) $phpDocumentor->parser->cache) ?: '/tmp/phpdoc-doc-cache';
 
@@ -52,14 +55,19 @@ final class Phpdoc3XmlToArrayConverter implements XmlConverter
                 ],
                 'versions'  => $versions,
                 'templates' => $template,
-            ]
+            ],
         ];
 
         return $phpdoc3Array;
     }
 
+    public function match()
+    {
+        return $this instanceof Strategy;
+    }
+
     /**
-     * Builds the versions part of the array from the phpDocumentor3 configuration xml
+     * Builds the versions part of the array from the phpDocumentor3 configuration xml.
      *
      * @param \SimpleXMLElement $version
      *
@@ -88,7 +96,7 @@ final class Phpdoc3XmlToArrayConverter implements XmlConverter
                 'ignore'               => [
                     'hidden'   => ($ignoreHidden) ?: true,
                     'symlinks' => ($ignoreSymlinks) ?: true,
-                    'paths'    => ((array) $version->api->ignore->path) ?: ['src/ServiceDefinitions.php'],
+                    'paths'    => ((array) $version->api->ignore->path) ?: [],
                 ],
                 'extensions'           => $extensions,
                 'visibility'           => (string) $version->api->visibility,
@@ -98,15 +106,15 @@ final class Phpdoc3XmlToArrayConverter implements XmlConverter
             'guide'  => [
                 'format' => ((string) $version->guide->attributes()->format) ?: 'rst',
                 'source' => [
-                    'dsn'   => ((string) $version->guide->source->attributes()->dsn) ?: 'file://../phpDocumentor/phpDocumentor3',
+                    'dsn'   => ((string) $version->guide->source->attributes()->dsn) ?: 'file://.',
                     'paths' => (array) $version->guide->source->path,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
     /**
-     * Builds the template part of the array from the phpDocumentor3 configuration xml
+     * Builds the template part of the array from the phpDocumentor3 configuration xml.
      *
      * @param \SimpleXMLElement $template
      *
@@ -117,12 +125,9 @@ final class Phpdoc3XmlToArrayConverter implements XmlConverter
         if (!$template) {
             // Use default template if none is found in the configuration
             return [
-                0 => [
-                    'name' => 'clean'
+                [
+                    'name' => 'clean',
                 ],
-                1 => [
-                    'location' => 'https://github.com/phpDocumentor/phpDocumentor2/tree/develop/data/templates/clean'
-                ]
             ];
         }
 
@@ -134,5 +139,31 @@ final class Phpdoc3XmlToArrayConverter implements XmlConverter
         }
 
         return $array;
+    }
+
+    /**
+     * Validates the phpDocumentor3 xml structure against the schema defined in the schemaPath.
+     *
+     * @param $phpDocumentor
+     *
+     * @throws \InvalidArgumentException if the xml structure is not valid.
+     */
+    private function validateXmlStructure(\SimpleXMLElement $phpDocumentor)
+    {
+        libxml_clear_errors();
+        libxml_use_internal_errors(true);
+
+        $dom        = new \DOMDocument();
+        $domElement = dom_import_simplexml($phpDocumentor);
+        $domElement = $dom->importNode($domElement, true);
+        $dom->appendChild($domElement);
+
+        $dom->schemaValidate($this->schemaPath);
+
+        $error = libxml_get_last_error();
+
+        if ($error) {
+            throw new \InvalidArgumentException($error->message);
+        }
     }
 }

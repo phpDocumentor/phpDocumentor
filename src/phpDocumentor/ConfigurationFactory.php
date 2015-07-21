@@ -2,6 +2,9 @@
 
 namespace phpDocumentor;
 
+use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
+use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
+
 final class ConfigurationFactory
 {
     /**
@@ -20,11 +23,6 @@ final class ConfigurationFactory
     private $schemaPath;
 
     /**
-     * @var bool
-     */
-    private $validateUri;
-
-    /**
      * @param Uri    $uri
      * @param string $schemaPath
      */
@@ -34,8 +32,9 @@ final class ConfigurationFactory
             $schemaPath = __DIR__ . '/../../data/xsd/phpdoc.xsd';
         }
 
-        $this->replaceLocation($uri);
         $this->schemaPath = $schemaPath;
+
+        $this->replaceLocation($uri);
     }
 
     /**
@@ -46,10 +45,10 @@ final class ConfigurationFactory
     public function replaceLocation(Uri $uri)
     {
         if ($this->uri !== $uri) {
-            $this->validateUri = true;
-        }
+            $this->xml = new \SimpleXMLElement($uri, 0, true);
 
-        $this->uri = $uri;
+            $this->uri = $uri;
+        }
     }
 
     /**
@@ -59,44 +58,33 @@ final class ConfigurationFactory
      */
     public function get()
     {
-        $this->validate($this->uri);
+        $this->validate($this->xml);
 
         $version = $this->checkIfVersionAttributeIsPresent($this->xml);
         if ($version) {
-            $this->validateXmlStructure($this->xml);
-            $xml = new Phpdoc3XmlToArrayConverter($this->xml);
+            $xml = new PhpDocumentor3($this->schemaPath);
         } else {
-            $xml = new Phpdoc2XmlToArrayConverter($this->xml);
+            $xml = new PhpDocumentor2();
         }
 
-        $array = $xml->convert();
+        $array = $xml->convert($this->xml);
 
         return $array;
     }
 
     /**
-     * Validates if the Uri contains an xml that has a root element which name is phpdocumentor.
+     * Validates if the xml has a root element which name is phpdocumentor.
      *
-     * @param Uri $uri
+     * @param \SimpleXMLElement $xml
      *
      * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor.
      */
-    private function validate(Uri $uri)
+    private function validate(\SimpleXMLElement $xml)
     {
-        if ($this->validateUri === false) {
-            return;
-        }
-
-        $xml = new \SimpleXMLElement($uri, 0, true);
-
         if ($xml->getName() !== 'phpdocumentor') {
             throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found',
                 $xml->getName()));
         }
-
-        $this->xml = $xml;
-
-        $this->validateUri = false;
     }
 
     /**
@@ -110,29 +98,5 @@ final class ConfigurationFactory
     private function checkIfVersionAttributeIsPresent(\SimpleXMLElement $phpDocumentor)
     {
         return isset($phpDocumentor->attributes()->version);
-    }
-
-    /**
-     * Validates the phpDocumentor3 xml structure against phpdoc.xsd
-     *
-     * @param $phpDocumentor
-     */
-    private function validateXmlStructure(\SimpleXMLElement $phpDocumentor)
-    {
-        libxml_clear_errors();
-        libxml_use_internal_errors(true);
-
-        $dom        = new \DOMDocument();
-        $domElement = dom_import_simplexml($phpDocumentor);
-        $domElement = $dom->importNode($domElement, true);
-        $dom->appendChild($domElement);
-
-        $dom->schemaValidate($this->schemaPath);
-
-        $error = libxml_get_last_error();
-
-        if ($error) {
-            throw new \InvalidArgumentException($error->message);
-        }
     }
 }
