@@ -43,7 +43,12 @@ final class PhpDocumentor2 implements Strategy
         }
 
         $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
-        $sourcePath      = ((string) $phpDocumentor->parser->files->directory) ?: 'src';
+        $directories      = ((array) $phpDocumentor->parser->files->directory) ?: ['src'];
+
+        $sourcePaths = [];
+        foreach ($directories as $directory) {
+            $sourcePaths[] = (string) (new Dsn($directory))->getPath();
+        }
 
         $phpdoc2Array = [
             'phpdocumentor' => [
@@ -58,7 +63,7 @@ final class PhpDocumentor2 implements Strategy
                             'format'               => 'php',
                             'source'               => [
                                 'dsn'   => 'file://.',
-                                'paths' => [(string) (new Dsn($sourcePath))->getPath()],
+                                'paths' => $sourcePaths,
                             ],
                             'ignore'               => [
                                 'hidden'   => $ignoreHidden,
