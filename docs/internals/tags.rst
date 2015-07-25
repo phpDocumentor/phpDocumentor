@@ -71,6 +71,43 @@ Variant approach: Quick and dirty
    the appropriate properties of the Descriptor.
 #. Tag template block
 
+The inheritDoc tag
+------------------
+
+Before we discuss how the documentation for each element is inherited it is interesting to point out the inheritDoc tag.
+The inline tag ``{@inheritDoc}`` is used in a description to import the description of a parent element, even if the
+child element already has a description.
+
+So let us look at an example. In the following code block we re-define (override) a method of an imaginary superclass::
+
+    /**
+     * This is the summary.
+     *
+     * This is the description specific to the redefined method. {@inheritDoc} And this is another
+     * part specific to the redefined method.
+     */
+    public function aMethod()
+    {
+    }
+
+Now suppose that the overridden method has the description ``This is the description specific to the overridden
+method.``; the description of the re-defined method will be::
+
+    This is the description specific to the redefined method. This is the description specific to the overridden
+    method. And this is another part specific to the redefined method.
+
+As you can see, the two descriptions have been combined into one, where the overridden element's description has been
+inserted in the location of the ``{@inheritDoc}`` inline tag.
+
+.. important::
+
+   Currently some applications have DocBlocks containing just the ``{@inheritDoc}`` inline tag to indicate that their
+   complete contents should be inherited. This usage breaks with the PHPDoc Standard as summaries cannot contain inline
+   tags and inheritance is automatic; you do not need to define a special tag for it.
+
+   However, it does make clear that an element has been explicitly documented (and thus not forgotten). As such we are
+   working to include a new (normal) tag in the PHPDoc Standard ``@inheritDoc`` that will serve that purpose.
+   
 Filtering tags
 --------------
 
