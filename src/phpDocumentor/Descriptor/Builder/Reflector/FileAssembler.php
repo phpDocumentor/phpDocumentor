@@ -41,16 +41,6 @@ class FileAssembler extends AssemblerAbstract
             $this->extractPackageFromDocBlock($data->getDocBlock()) ?: $data->getDefaultPackageName()
         );
 
-        $packages = new Collection();
-        $package = $this->extractPackageFromDocBlock($data->getDocBlock());
-        if (! $package) {
-            $package = $data->getDefaultPackageName();
-        }
-        $tag = new TagDescriptor('package');
-        $tag->setDescription($package);
-        $packages->add($tag);
-        $fileDescriptor->getTags()->set('package', $packages);
-
         $fileDescriptor->setName(basename($data->getFilename()));
         $fileDescriptor->setPath($data->getFilename());
         $fileDescriptor->setSource($data->getContents());
@@ -58,6 +48,7 @@ class FileAssembler extends AssemblerAbstract
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
         $this->assembleDocBlock($data->getDocBlock(), $fileDescriptor);
+        $this->overridePackageTag($data, $fileDescriptor);
 
         $this->addMarkers($data->getMarkers(), $fileDescriptor);
         $this->addConstants($data->getConstants(), $fileDescriptor);
@@ -226,5 +217,22 @@ class FileAssembler extends AssemblerAbstract
                 )
             );
         }
+    }
+
+    /**
+     * @param $data
+     * @param $fileDescriptor
+     */
+    protected function overridePackageTag($data, $fileDescriptor)
+    {
+        $packages = new Collection();
+        $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
+        if (! $package) {
+            $package = $data->getDefaultPackageName();
+        }
+        $tag = new TagDescriptor('package');
+        $tag->setDescription($package);
+        $packages->add($tag);
+        $fileDescriptor->getTags()->set('package', $packages);
     }
 }
