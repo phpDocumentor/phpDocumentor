@@ -21,8 +21,6 @@ use phpDocumentor\Renderer\ActionHandler;
 use phpDocumentor\Renderer\RenderPass;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Template;
-use phpDocumentor\Transformer\Transformation;
 
 class TwigHandler implements ActionHandler
 {

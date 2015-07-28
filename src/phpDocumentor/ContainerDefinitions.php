@@ -41,11 +41,9 @@ use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\TemplateFactory;
-use phpDocumentor\Renderer\TemplateRepository;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
-use phpDocumentor\Transformer\Template\PathResolver;
 use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
@@ -218,9 +216,6 @@ return [
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Templates
-    PathResolver::class => \DI\object()
-        ->constructorParameter('templatePath', \DI\get('template.directory')),
-
     Xml::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     TemplateFactory::class => \DI\object()
         ->constructorParameter('templateFolders', \DI\get('template.directories')),

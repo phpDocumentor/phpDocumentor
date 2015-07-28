@@ -19,7 +19,6 @@ use phpDocumentor\Application\Commands\CacheProject;
 use phpDocumentor\Application\Commands\DumpAstToDisk;
 use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\LoadProjectFromCache;
-use phpDocumentor\Application\Commands\LoadTemplates;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Transform;
@@ -37,7 +36,6 @@ use phpDocumentor\Parser\Parser;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
-use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
@@ -307,7 +305,6 @@ HELP
         $this->commandBus->handle(new InitializeParser($this->configuration));
         $this->commandBus->handle(new ParseFiles($this->configuration));
         $this->commandBus->handle(new CacheProject($cacheFolder));
-        $this->commandBus->handle(new LoadTemplates($input->getOption('template'), $this->configuration));
         $this->commandBus->handle(new Transform($target));
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
@@ -353,13 +350,6 @@ HELP
             RenderActionCompleted::class,
             function ($event) use ($output) {
                 $output->writeln(sprintf('  %s', (string)$event->getAction()));
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) use ($output) {
-                $transformations = $event->getSubject()->getTemplates()->getTransformations();
-                $output->writeln(sprintf("\nApplying <info>%d</info> transformations", count($transformations)));
             }
         );
 
@@ -416,18 +406,6 @@ HELP
                 $progress->start($output, count($transformations));
             }
         );
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_POST_TRANSFORM,
-            function () use ($progress) {
-                $progress->finish();
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_POST_TRANSFORMATION,
-            function () use ($progress) {
-                $progress->advance();
-            }
-        );
     }
 
     /**
@@ -457,22 +435,6 @@ HELP
                         '  <error> ' . vsprintf($error->getCode(), $error->getContext()) . ' </error>'
                     );
                 }
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_PRE_INITIALIZATION,
-            function (WriterInitializationEvent $event) use ($output) {
-                $output->writeln('  Initialize writer <info>' . get_class($event->getWriter()) . '</info>');
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_PRE_TRANSFORMATION,
-            function (PreTransformationEvent $event) use ($output) {
-                $output->writeln(
-                    '  Execute transformation using writer <info>'
-                    . $event->getTransformation()->getWriter()
-                    . '</info>'
-                );
             }
         );
     }

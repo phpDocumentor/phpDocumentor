@@ -13,7 +13,6 @@
 namespace phpDocumentor\Application\Cli\Command;
 
 use Mockery as m;
-use phpDocumentor\Transformer\Template\Factory;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -52,11 +51,11 @@ TXT;
      *
      * @param string[] $templateNames
      *
-     * @return m\MockInterface|Factory
+     * @return m\MockInterface
      */
     private function givenAFactoryWithTemplateNames(array $templateNames)
     {
-        $factoryMock = m::mock('phpDocumentor\Transformer\Template\Factory');
+        $factoryMock = m::mock('stdClass');
         $factoryMock->shouldReceive('getAllNames')->once()->andReturn($templateNames);
 
         return $factoryMock;

@@ -12,8 +12,6 @@
 namespace phpDocumentor\Plugin\Core;
 
 use phpDocumentor\Descriptor\Analyzer;
-use phpDocumentor\Plugin\Graphs\ServiceProvider as GraphServiceProvider;
-use phpDocumentor\Plugin\Twig\ServiceProvider as TwigServiceProvider;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Plugin\Core\Transformer\Writer;
 use phpDocumentor\Transformer\Writer\Collection;
@@ -29,15 +27,6 @@ final class ServiceProvider
 {
     /** @var Collection */
     private $writerCollection;
-
-    /** @var GraphServiceProvider */
-    private $graphProvider;
-
-    /** @var TwigServiceProvider */
-    private $twigProvider;
-
-    /** @var Writer\FileIo */
-    private $fileIoWriter;
 
     /** @var Writer\Checkstyle */
     private $checkstyleWriter;
@@ -65,9 +54,6 @@ final class ServiceProvider
 
     public function __construct(
         Collection           $writerCollection,
-        GraphServiceProvider $graphProvider,
-        TwigServiceProvider  $twigProvider,
-        Writer\FileIo        $fileIoWriter,
         Writer\Checkstyle    $checkstyleWriter,
         Writer\Sourcecode    $sourcecodeWriter,
         Writer\Statistics    $statisticsWriter,
@@ -78,9 +64,6 @@ final class ServiceProvider
         Analyzer             $analyzer
     ) {
         $this->writerCollection = $writerCollection;
-        $this->graphProvider    = $graphProvider;
-        $this->twigProvider     = $twigProvider;
-        $this->fileIoWriter     = $fileIoWriter;
         $this->checkstyleWriter = $checkstyleWriter;
         $this->sourcecodeWriter = $sourcecodeWriter;
         $this->statisticsWriter = $statisticsWriter;
@@ -98,7 +81,6 @@ final class ServiceProvider
      */
     public function __invoke()
     {
-        $this->writerCollection['FileIo']     = $this->fileIoWriter;
         $this->writerCollection['checkstyle'] = $this->checkstyleWriter;
         $this->writerCollection['sourcecode'] = $this->sourcecodeWriter;
         $this->writerCollection['statistics'] = $this->statisticsWriter;
@@ -108,8 +90,5 @@ final class ServiceProvider
 
         Xslt\Extension::$routers = $this->queue;
         Xslt\Extension::$analyzer = $this->analyzer;
-
-        call_user_func($this->twigProvider);
-        call_user_func($this->graphProvider);
     }
 }

@@ -55,19 +55,11 @@ class Configuration
     protected $plugins = array();
 
     /**
-     * @var Transformations[] contains a list of all templates and custom transformations that are to be executed during
-     *     the transformation process.
-     * @Serializer\Type("phpDocumentor\Transformer\Configuration\Transformations")
-     */
-    protected $transformations;
-
-    /**
      * Initializes all settings with their default values.
      */
     public function __construct()
     {
         $this->transformer     = new Transformer\Configuration();
-        $this->transformations = new Transformer\Configuration\Transformations();
         $this->files           = new Parser\Configuration\Files();
         $this->parser          = new Parser\Configuration();
     }
@@ -138,16 +130,6 @@ class Configuration
     public function getPlugins()
     {
         return $this->plugins;
-    }
-
-    /**
-     * Returns which templates and custom transformations need to be applied to the parsed data.
-     *
-     * @return Transformer\Configuration\Transformations
-     */
-    public function getTransformations()
-    {
-        return $this->transformations;
     }
 
     /**
