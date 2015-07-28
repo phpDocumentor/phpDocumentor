@@ -9,32 +9,41 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+namespace phpDocumentor\Renderer\Action;
 
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Renderer\Action;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
  * Checkstyle transformation writer; generates checkstyle report
  */
-class Checkstyle extends WriterAbstract
+class CheckstyleHandler
 {
+    /**
+     * @var Analyzer
+     */
+    private $analyzer;
+
+    public function __construct(Analyzer $analyzer)
+    {
+        $this->analyzer = $analyzer;
+    }
+
     /**
      * This method generates the checkstyle.xml report
      *
-     * @param ProjectInterface $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param Checkstyle $action
      *
      * @return void
      */
-    public function transform(ProjectInterface $project, Transformation $transformation)
+    public function __invoke(Action $action)
     {
-        $artifact = $this->getDestinationPath($transformation);
-
-        $this->checkForSpacesInPath($artifact);
+        $project = $this->analyzer->getProjectDescriptor();
 
         $document = new \DOMDocument();
         $document->formatOutput = true;
@@ -59,34 +68,10 @@ class Checkstyle extends WriterAbstract
             }
         }
 
-        $this->saveCheckstyleReport($artifact, $document);
-    }
-
-    /**
-     * Retrieves the destination location for this artifact.
-     *
-     * @param \phpDocumentor\Transformer\Transformation $transformation
-     *
-     * @return string
-     */
-    protected function getDestinationPath(Transformation $transformation)
-    {
-        $artifact = $transformation->getTransformer()->getTarget()
-            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
-
-        return $artifact;
-    }
-
-    /**
-     * Save the checkstyle report to the artifact
-     *
-     * @param string       $artifact Target name for the report
-     * @param \DOMDocument $document The actual xml document being saved
-     *
-     * @return void
-     */
-    protected function saveCheckstyleReport($artifact, \DOMDocument $document)
-    {
-        file_put_contents($artifact, $document->saveXML());
+        $fs = $action->getRenderPass()->getFilesystem();
+        $fs->put(
+            $action->getRenderPass()->getDestination() . '/' . ltrim($action->getDestination(), '\\/'),
+            $document->saveXML()
+        );
     }
 }

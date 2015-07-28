@@ -9,33 +9,41 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+namespace phpDocumentor\Renderer\Action;
 
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
-use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
+use phpDocumentor\Renderer\Action;
 
 /**
  * Sourcecode transformation writer; generates syntax highlighted source files in a destination's subfolder.
  */
-class Sourcecode extends WriterAbstract
+class SourcecodeHandler
 {
+    /**
+     * @var Analyzer
+     */
+    private $analyzer;
+
+    /**
+     * Sourcecode constructor.
+     */
+    public function __construct(Analyzer $analyzer)
+    {
+        $this->analyzer = $analyzer;
+    }
+
     /**
      * This method writes every source code entry in the structure file to a highlighted file.
      *
-     * @param ProjectInterface  $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param Sourcecode $action
      *
      * @return void
      */
-    public function transform(ProjectInterface $project, Transformation $transformation)
+    public function __invoke(Action $action)
     {
-        $artifact = $transformation->getTransformer()->getTarget()
-            . DIRECTORY_SEPARATOR
-            . ($transformation->getArtifact()
-                ? $transformation->getArtifact()
-                : 'source');
+        $artifact = $action->getRenderPass()->getDestination() . '/' . ltrim($action->getDestination(), '\\/');
+        $project = $this->analyzer->getProjectDescriptor();
 
         /** @var FileDescriptor $file */
         foreach ($project->getFiles() as $file) {
@@ -48,9 +56,11 @@ class Sourcecode extends WriterAbstract
                 mkdir(dirname($path), 0755, true);
             }
             $source = htmlentities($source);
-            file_put_contents(
+
+            $fs = $action->getRenderPass()->getFilesystem();
+            $fs->put(
                 $path.'.html',
-                <<<HTML
+<<<HTML
 <html>
     <head>
         <script
