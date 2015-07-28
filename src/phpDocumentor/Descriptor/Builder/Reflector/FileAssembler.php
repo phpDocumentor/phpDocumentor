@@ -39,9 +39,6 @@ class FileAssembler extends AssemblerAbstract
         $fileDescriptor->setName(basename($data->getFilename()));
         $fileDescriptor->setPath($data->getFilename());
         $fileDescriptor->setSource($data->getContents());
-        $fileDescriptor->setPackage(
-            $this->extractPackageFromDocBlock($data->getDocBlock()) ?: $data->getDefaultPackageName()
-        );
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
         $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaceAliases()));
 
