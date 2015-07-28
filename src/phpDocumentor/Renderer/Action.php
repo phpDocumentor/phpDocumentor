@@ -30,4 +30,6 @@ interface Action
      * @return static
      */
     public static function create(array $parameters);
+
+    public function __toString();
 }

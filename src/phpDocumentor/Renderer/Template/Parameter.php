@@ -20,7 +20,7 @@ final class Parameter
     /** @var string The name, or key, for this parameter. */
     private $key = '';
 
-    /** @var string The value provided with this parameter. */
+    /** @var mixed The value provided with this parameter. */
     private $value = '';
 
     /**
@@ -34,12 +34,6 @@ final class Parameter
         if (!is_string($key)) {
             throw new \InvalidArgumentException(
                 'The key for a parameter is supposed to be a string, received ' . var_export($key, true)
-            );
-        }
-
-        if (!is_string($value)) {
-            throw new \InvalidArgumentException(
-                'The value for a parameter is supposed to be a string, received ' . var_export($value, true)
             );
         }
 
@@ -60,7 +54,7 @@ final class Parameter
     /**
      * Returns the value for this parameter.
      *
-     * @return string
+     * @return mixed
      */
     public function getValue()
     {

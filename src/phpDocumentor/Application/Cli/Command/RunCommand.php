@@ -13,6 +13,7 @@
 
 namespace phpDocumentor\Application\Cli\Command;
 
+use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\Application\Commands\CacheProject;
 use phpDocumentor\Application\Commands\DumpAstToDisk;
@@ -29,10 +30,10 @@ use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
+use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Parser;
-use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
@@ -71,24 +72,27 @@ final class RunCommand extends Command
     /** @var Configuration */
     private $configuration;
 
-    /** @var Dispatcher */
-    private $dispatcher;
-
     /** @var CommandBus */
     private $commandBus;
+
+    /** @var Emitter */
+    private $emitter;
 
     /**
      * Initializes the command with all necessary dependencies
      *
-     * @param Configuration  $configuration
-     * @param Dispatcher     $dispatcher
-     * @param CommandBus     $commandBus
+     * @param Configuration $configuration
+     * @param CommandBus    $commandBus
+     * @param Emitter       $emitter
      */
-    public function __construct(Configuration $configuration, Dispatcher $dispatcher, CommandBus $commandBus)
-    {
+    public function __construct(
+        Configuration $configuration,
+        CommandBus    $commandBus,
+        Emitter       $emitter
+    ) {
         $this->configuration = $configuration;
-        $this->dispatcher    = $dispatcher;
         $this->commandBus    = $commandBus;
+        $this->emitter       = $emitter;
 
         parent::__construct('project:run');
     }
@@ -345,6 +349,12 @@ HELP
             );
         }
 
+        $this->emitter->addListener(
+            RenderActionCompleted::class,
+            function ($event) use ($output) {
+                $output->writeln(sprintf('  %s', (string)$event->getAction()));
+            }
+        );
         Dispatcher::getInstance()->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
             function (PreTransformEvent $event) use ($output) {
@@ -386,13 +396,13 @@ HELP
                 $progress->start($output, count($event->getSubject()));
             }
         );
-        $this->dispatcher->addListener(
+        Dispatcher::getInstance()->addListener(
             Parser::EVENT_PARSE_FILE_BEFORE,
             function () use ($progress) {
                 $progress->advance();
             }
         );
-        $this->dispatcher->addListener(
+        Dispatcher::getInstance()->addListener(
             Parser::EVENT_COMPLETED,
             function () use ($progress) {
                 $progress->finish();
@@ -412,7 +422,7 @@ HELP
                 $progress->finish();
             }
         );
-        $this->dispatcher->addListener(
+        Dispatcher::getInstance()->addListener(
             Transformer::EVENT_POST_TRANSFORMATION,
             function () use ($progress) {
                 $progress->advance();

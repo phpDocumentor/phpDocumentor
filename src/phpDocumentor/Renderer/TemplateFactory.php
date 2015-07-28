@@ -12,6 +12,7 @@
 
 namespace phpDocumentor\Renderer;
 
+use phpDocumentor\Uri;
 use Webmozart\Assert\Assert;
 use phpDocumentor\Renderer\Template\Parameter;
 
@@ -20,16 +21,25 @@ use phpDocumentor\Renderer\Template\Parameter;
  */
 final class TemplateFactory
 {
+    private $templateFolders   = [];
+    private $templateTemplates = [];
+
+    public function __construct(array $templateFolders)
+    {
+        $this->templateFolders = $templateFolders;
+    }
+
     /**
      * Creates a new Template entity with the given name, parameters and options.
      *
+     * @param RenderPass $renderPass
      * @param string[] $options Array with a 'name', 'parameters' and 'actions' key.
      *
      * @throws \InvalidArgumentException if the given options array does not map onto a Template.
      *
      * @return Template
      */
-    public function create(array $options)
+    public function create(RenderPass $renderPass, array $options)
     {
         Assert::keyExists($options, 'name');
         Assert::stringNotEmpty($options['name']);
@@ -45,9 +55,117 @@ final class TemplateFactory
             $options['actions'] = [];
         }
         Assert::isArray($options['actions']);
-        $this->addActionsToTemplate($options['actions'], $template);
+        $this->addActionsToTemplate($options['actions'], $renderPass, $template);
 
         return $template;
+    }
+
+    /**
+     * @param RenderPass $renderPass
+     * @param string     $name
+     *
+     * @return null|Template
+     */
+    public function createFromName(RenderPass $renderPass, $name)
+    {
+        Assert::stringNotEmpty($name);
+
+        foreach ($this->templateFolders as $folder) {
+            $path = rtrim($folder, '\\/') . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'template.xml';
+            if (file_exists($path) && is_file($path)) {
+                $template = $this->readFromXml($path);
+                $template['name'] = $name;
+
+                return $this->create($renderPass, $template);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param RenderPass $renderPass
+     * @param Uri        $uri
+     *
+     * @return Template
+     */
+    public function createFromUri(RenderPass $renderPass, Uri $uri)
+    {
+        $template = $this->readFromXml((string)$uri);
+
+        return $this->create($renderPass, $template);
+    }
+
+    private function readFromXml($path)
+    {
+        if (isset($this->templateTemplates[$path])) {
+            return $this->templateTemplates[$path];
+        }
+
+        libxml_use_internal_errors(false);
+        $xml = simplexml_load_file($path);
+        /** @var \LibXMLError[] $errors */
+        $errors = libxml_get_errors();
+        if (count($errors) > 0) {
+            throw new \RuntimeException(sprintf('The template "%s" could not be loaded due to errors', $path));
+        }
+
+        $result = [
+            'name'       => (string)$xml->name ?: basename(dirname($path)),
+            'parameters' => [
+                [ 'key' => 'directory', 'value' => dirname($path) ]
+            ],
+            'actions'    => [],
+        ];
+
+        if (isset($xml->parameters)) {
+            /** @var \SimpleXMLElement $parameters */
+            $parameters = $xml->parameters;
+
+            /** @var \SimpleXMLElement $parameter */
+            foreach ((array)$parameters->children() as $parameter) {
+                $result[] = ['key' => $parameter->getName(), 'value' => (string)$parameter];
+            }
+        }
+
+        // Backwards compatibility with phpDocumentor 2 template files
+        if (isset($xml->transformations)) {
+            /** @var \SimpleXMLElement $parameter */
+            foreach ($xml->transformations->transformation as $transformation) {
+                $name  = (string)$transformation['writer'];
+                $query = (string)$transformation['query'];
+                if (strtolower($name) === 'fileio') {
+                    $name = ucfirst($query) . 'File';
+                }
+                $result['actions'][] = [
+                    'name' => $name,
+                    'parameters' => [
+                        [ 'key' => 'query', 'value' => $query],
+                        [ 'key' => 'source', 'value' => (string)$transformation['source'] ],
+                        [ 'key' => 'destination', 'value' => (string)$transformation['artifact'] ],
+                    ]
+                ];
+            }
+        }
+
+        if (isset($xml->action)) {
+            /** @var \SimpleXMLElement $parameter */
+            foreach ((array)$xml->action as $action) {
+                $parameters = [];
+                foreach ((array)$action->parameter as $parameter) {
+                    $parameters[] = [ 'key' => $parameter['id'], 'value' => (string)$parameter ];
+                }
+                $result['actions'][] = [
+                    'name'       => (string)$action['name'],
+                    'parameters' => $parameters
+                ];
+            }
+        }
+
+        // cache template 'template'
+        $this->templateTemplates[$path] = $result;
+
+        return $result;
     }
 
     /**
@@ -75,18 +193,17 @@ final class TemplateFactory
     /**
      * Adds a series of Actions, as defined by entries in the $actions array, to the provided Template.
      *
-     * @param string[] $actions
-     * @param Template $template
-     *
-     * @throws \InvalidArgumentException if any element in the actions array is not an array.
+     * @param string[]   $actions
+     * @param RenderPass $renderPass
+     * @param Template   $template
      *
      * @return void
      */
-    private function addActionsToTemplate($actions, Template $template)
+    private function addActionsToTemplate($actions, RenderPass $renderPass, Template $template)
     {
         foreach ($actions as $action) {
             Assert::isArray($action);
-            $this->addActionToTemplate($template, $action);
+            $this->addActionToTemplate($renderPass, $template, $action);
         }
     }
 
@@ -96,8 +213,9 @@ final class TemplateFactory
      * To create the new Action its 'create' factory method is used and the template and action parameters are provided
      * to it.
      *
-     * @param Template $template
-     * @param string[] $action
+     * @param Template   $template
+     * @param RenderPass $renderPass
+     * @param string[]   $action
      *
      * @throws \InvalidArgumentException if the class deduced from the 'name' field does not exist
      * @throws \InvalidArgumentException if the class deduced from the 'name' field does not implement the Action
@@ -106,7 +224,7 @@ final class TemplateFactory
      *
      * @return void
      */
-    private function addActionToTemplate(Template $template, $action)
+    private function addActionToTemplate(RenderPass $renderPass, Template $template, $action)
     {
         $actionClass = $action['name'];
         if (strpos($actionClass, '\\') === false) {
@@ -116,8 +234,10 @@ final class TemplateFactory
         Assert::classExists($actionClass);
         Assert::implementsInterface($actionClass, Action::class);
         $parameters = $this->mergeTemplateParametersWithActionParameters($template, $action);
+        $parameters['renderPass'] = new Parameter('renderPass', $renderPass);
+        $parameters['template']   = new Parameter('template', $template);
 
-        $actionObject = call_user_func([$actionClass, 'create'], $parameters);
+        $actionObject = call_user_func([ $actionClass, 'create' ], $parameters);
         if (!$actionObject instanceof Action) {
             throw new \RuntimeException(
                 'An error occurred when constructing an Action object; nothing was returned. This is most probably'

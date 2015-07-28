@@ -28,7 +28,8 @@
         "league/tactician": "^0.6.0",
         "webmozart/assert": "^1.0",
         "league/flysystem": "~1.0",
-        "php-di/php-di": "^5.0"
+        "php-di/php-di": "^5.0",
+        "league/event": "^2.1"
     },
     "minimum-stability": "stable",
     "require-dev": {

@@ -37,7 +37,7 @@ use phpDocumentor\Transformer\Transformation;
  * - *sort_desc*, sorts the given objects by their Name property/getter in a descending fashion
  * - *sort_asc*, sorts the given objects by their Name property/getter in a ascending fashion
  */
-class Extension extends \Twig_Extension implements ExtensionInterface
+class Extension extends \Twig_Extension
 {
     /**
      * @var ProjectInterface
@@ -54,7 +54,7 @@ class Extension extends \Twig_Extension implements ExtensionInterface
      * @param Transformation    $transformation Represents the transformation meta data used in the current generation
      *     cycle.
      */
-    public function __construct(ProjectInterface $project, Transformation $transformation)
+    public function __construct(ProjectInterface $project)
     {
         $this->data          = $project;
         $this->routeRenderer = new Renderer(new Queue());

@@ -10,28 +10,26 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Commands;
+namespace phpDocumentor\Renderer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use League\Event\AbstractEvent;
+use phpDocumentor\Renderer\Action;
 
-final class Transform
+class RenderActionCompleted extends AbstractEvent
 {
-    /** @var string */
-    private $target;
+    /** @var Action */
+    private $action;
 
-    /**
-     * @param $target
-     */
-    public function __construct($target)
+    public function __construct(Action $action)
     {
-        $this->target = $target;
+        $this->action = $action;
     }
 
     /**
-     * @return string
+     * @return Action
      */
-    public function getTarget()
+    public function getAction()
     {
-        return $this->target;
+        return $this->action;
     }
 }

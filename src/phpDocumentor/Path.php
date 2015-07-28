@@ -11,17 +11,15 @@
 
 namespace phpDocumentor;
 
+use Webmozart\Assert\Assert;
+
 /**
  * Value Object for paths.
  * This can be absolute or relative.
  */
 final class Path
 {
-    /**
-     * file path
-     *
-     * @var string
-     */
+    /** @var string */
     private $path;
 
     /**
@@ -31,7 +29,9 @@ final class Path
      */
     public function __construct($path)
     {
-        $this->path = (string)$path;
+        Assert::stringNotEmpty($path);
+
+        $this->path = $path;
     }
 
     /**

@@ -39,6 +39,9 @@ use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
+use phpDocumentor\Renderer\Action\TwigHandler;
+use phpDocumentor\Renderer\TemplateFactory;
+use phpDocumentor\Renderer\TemplateRepository;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
@@ -65,7 +68,7 @@ return [
             : '@package_version@';
     },
     'command.middlewares' => [
-        \DI\link(CommandHandlerMiddleware::class)
+        \DI\get(CommandHandlerMiddleware::class)
     ],
     'cache.directory' => sys_get_temp_dir(),
     'linker.substitutions' => [
@@ -101,8 +104,13 @@ return [
 
         return $c->get('template.localDirectory');
     },
+    'template.directories' => [
+        __DIR__ . '/../../data',
+        __DIR__ . '/../../data/templates',
+    ],
     'config.template.path' => __DIR__ . '/Configuration/Resources/phpdoc.tpl.xml',
     'config.user.path'     => getcwd() . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml'),
+    'twig.cache.path'      => sys_get_temp_dir() . '/phpdoc-twig-cache',
 
     // -- Services
     ContainerInterface::class => function (ContainerInterface $c) {
@@ -213,5 +221,10 @@ return [
     PathResolver::class => \DI\object()
         ->constructorParameter('templatePath', \DI\get('template.directory')),
 
-    Xml::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class))
+    Xml::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
+    TemplateFactory::class => \DI\object()
+        ->constructorParameter('templateFolders', \DI\get('template.directories')),
+    TwigHandler::class => \DI\object()
+        ->constructorParameter('templateFolders', \DI\get('template.directories'))
+        ->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
 ];

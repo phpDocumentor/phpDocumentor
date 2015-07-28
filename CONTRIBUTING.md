@@ -109,6 +109,15 @@ In order to run the unit tests you can execute the following command from your p
 With this command you can specify a file or folder to limit which files it will check or omit that argument altogether,
 in which case all tests are ran.
 
+Using phpStorm's Debugger and Xdebug
+------------------------------------
+
+In order to use phpStorm's debug functionality you need to tell phpStorm to listen for a debugging session using
+the 'Start Listening for PHP Debug Connections' button (the telephone horn with a bug next to it) and setting the 
+following environment variable:
+
+    XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000 remote_host=127.0.0.1 remote_connect_back=0"
+
 Profiling phpDocumentor
 -----------------------
 
