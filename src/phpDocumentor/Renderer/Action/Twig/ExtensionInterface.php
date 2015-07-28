@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Twig;
+namespace phpDocumentor\Renderer\Action\Twig;
 
 use phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;

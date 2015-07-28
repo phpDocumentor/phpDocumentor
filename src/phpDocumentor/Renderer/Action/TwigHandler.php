@@ -15,7 +15,7 @@ use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Pathfinder;
-use phpDocumentor\Plugin\Twig\Extension;
+use phpDocumentor\Renderer\Action\Twig\Extension;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\ActionHandler;
 use phpDocumentor\Renderer\RenderPass;
