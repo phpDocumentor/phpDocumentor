@@ -14,7 +14,6 @@ namespace phpDocumentor\Renderer\Action;
 use League\Flysystem\Adapter\Local;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\ActionHandler;
-use phpDocumentor\Transformer\Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\Assert\Assert;
 

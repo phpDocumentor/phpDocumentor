@@ -61,8 +61,7 @@ class Renderer
      *
      * @param string $destination
      *
-     * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation
-     *     of this method.
+     * @see phpDocumentor\Renderer\Action\TwigHandler for the invocation of this method.
      *
      * @return void
      */

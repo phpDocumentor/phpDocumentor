@@ -14,7 +14,6 @@ namespace phpDocumentor;
 use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
 use phpDocumentor\Plugin\Plugin;
-use phpDocumentor\Transformer\Configuration\Transformations;
 
 /**
  * The definition for the configuration of phpDocumentor.

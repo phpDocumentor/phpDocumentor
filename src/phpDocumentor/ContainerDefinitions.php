@@ -44,7 +44,6 @@ use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
-use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -199,7 +198,7 @@ return [
         ->method('registerEventDispatcher', \DI\get(Dispatcher::class))
         ->method('registerBackend', \DI\get(Php::class)),
 
-    // Transformer
+    // Compiler
     Linker::class => \DI\object()->constructorParameter('substitutions', \DI\get('linker.substitutions')),
     Compiler::class => \DI\object()
         ->method('insert', \DI\get(ElementsIndexBuilder::class), ElementsIndexBuilder::COMPILER_PRIORITY)
@@ -208,8 +207,7 @@ return [
         ->method('insert', \DI\get(PackageTreeBuilder::class), PackageTreeBuilder::COMPILER_PRIORITY)
         ->method('insert', \DI\get(NamespaceTreeBuilder::class), NamespaceTreeBuilder::COMPILER_PRIORITY)
         ->method('insert', \DI\get(ResolveInlineLinkAndSeeTags::class), ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(Linker::class), Linker::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(Transformer::class), Transformer::COMPILER_PRIORITY),
+        ->method('insert', \DI\get(Linker::class), Linker::COMPILER_PRIORITY),
 
     Queue::class => \DI\object()
         ->method('insert', \DI\get(ExternalRouter::class), 10500)

@@ -15,7 +15,6 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
-use phpDocumentor\Transformer\Transformation;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -48,11 +47,9 @@ class Extension extends \Twig_Extension
     protected $routeRenderer;
 
     /**
-     * Registers the structure and transformation with this extension.
+     * Registers the structure.
      *
      * @param ProjectInterface $project        Represents the complete Abstract Syntax Tree.
-     * @param Transformation    $transformation Represents the transformation meta data used in the current generation
-     *     cycle.
      */
     public function __construct(ProjectInterface $project)
     {
@@ -91,7 +88,7 @@ class Extension extends \Twig_Extension
      *
      * @param string $destination
      *
-     * @see phpDocumentor\Plugin\Twig\Transformer\Writer\Twig for the invocation of this method.
+     * @see phpDocumentor\Renderer\Action\TwigHandler for the invocation of this method.
      *
      * @return void
      */

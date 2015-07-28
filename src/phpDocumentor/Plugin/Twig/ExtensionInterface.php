@@ -13,7 +13,6 @@ namespace phpDocumentor\Plugin\Twig;
 
 use phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
-use phpDocumentor\Transformer\Transformation;
 
 /**
  * An interface shared by all Twig interfaces intended for phpDocumentor.
@@ -27,8 +26,6 @@ interface ExtensionInterface
      * and to provide additional information.
      *
      * @param ProjectInterface  $project        Represents the complete Abstract Syntax Tree.
-     * @param Transformation    $transformation Represents the transformation meta data used in the current generation
-     *     cycle.
      */
-    public function __construct(ProjectInterface $project, Transformation $transformation);
+    public function __construct(ProjectInterface $project);
 }

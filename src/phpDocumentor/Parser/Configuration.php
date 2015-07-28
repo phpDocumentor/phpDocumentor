@@ -199,7 +199,7 @@ final class Configuration
      * actually changed and as such speed up processing.
      *
      * Because the parser's product can be omitted from the generated documentation it is possible to store the cache
-     * in a central location and have the transformer output the generated documentation somewhere else.
+     * in a central location and have the transform process output the generated documentation somewhere else.
      *
      * @return string
      */
