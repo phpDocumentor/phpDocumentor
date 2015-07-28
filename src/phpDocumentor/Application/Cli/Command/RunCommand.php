@@ -20,7 +20,7 @@ use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\LoadProjectFromCache;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
-use phpDocumentor\Application\Commands\Transform;
+use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\Configuration;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -298,7 +298,7 @@ HELP
         $this->commandBus->handle(new InitializeParser($this->configuration));
         $this->commandBus->handle(new ParseFiles($this->configuration));
         $this->commandBus->handle(new CacheProject($cacheFolder));
-        $this->commandBus->handle(new Transform($target));
+        $this->commandBus->handle(new Render($target));
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
             $this->commandBus->handle(new DumpAstToDisk('ast.dump'));

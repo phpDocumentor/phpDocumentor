@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Commands;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 
-final class Transform
+final class Render
 {
     /** @var string */
     private $target;

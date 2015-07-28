@@ -23,7 +23,7 @@ use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Renderer\RenderingFinished;
 use phpDocumentor\Renderer\RenderingStarted;
 
-final class TransformHandler
+final class RenderHandler
 {
     /** @var TemplateFactory */
     private $templateFactory;
@@ -49,7 +49,7 @@ final class TransformHandler
         $this->emitter           = $emitter;
     }
 
-    public function __invoke(Transform $command)
+    public function __invoke(Render $command)
     {
         $this->emitter->emit(new RenderingStarted());
         $destinationFilesystem = $this->filesystemFactory->create(
