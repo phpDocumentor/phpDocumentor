@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Behaviour\Tag;
+namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag;
 
 /**
  * Behaviour that links to email addresses in the @author tag.
