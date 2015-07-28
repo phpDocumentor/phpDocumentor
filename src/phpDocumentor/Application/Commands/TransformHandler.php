@@ -15,7 +15,6 @@ namespace phpDocumentor\Application\Commands;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\Dsn;
-use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\FilesystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Renderer\TemplateFactory;
@@ -35,7 +34,7 @@ final class TransformHandler
     /** @var FilesystemFactory */
     private $filesystemFactory;
 
-    /** @var Dispatcher */
+    /** @var Emitter */
     private $emitter;
 
     public function __construct(

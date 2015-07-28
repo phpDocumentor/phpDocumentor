@@ -16,7 +16,6 @@ use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use phpDocumentor\Application\Cli\Command\ListCommand;
 use phpDocumentor\Application\CommandBus\ContainerLocator;
-use phpDocumentor\Application\Cli\Command\Helper\LoggerHelper;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Cli\Command\RunCommand;
 use phpDocumentor\Compiler\Compiler;
@@ -140,8 +139,6 @@ return [
                 'Location of a custom configuration file'
             )
         );
-
-        $application->getHelperSet()->set($c->get(LoggerHelper::class));
 
         $application->add($c->get(RunCommand::class));
         $application->add($c->get(ListCommand::class));

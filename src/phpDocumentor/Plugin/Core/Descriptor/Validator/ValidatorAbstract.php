@@ -11,11 +11,6 @@
 
 namespace phpDocumentor\Plugin\Core\Descriptor\Validator;
 
-use Psr\Log\LogLevel;
-use phpDocumentor\Event\DebugEvent;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Event\EventAbstract;
-use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Reflection\BaseReflector;
 use phpDocumentor\Reflection\DocBlock;
 
@@ -93,91 +88,6 @@ abstract class ValidatorAbstract
     abstract public function isValid(BaseReflector $element);
 
     /**
-     * Dispatches an event to the Event Dispatcher.
-     *
-     * This method tries to dispatch an event; if no Event Dispatcher has been
-     * set than this method will explicitly not fail and return null.
-     *
-     * By not failing we make the Event Dispatcher optional and is it easier
-     * for people to re-use this component in their own application.
-     *
-     * @param string        $name  Name of the event to dispatch.
-     * @param EventAbstract $event Arguments for this event.
-     *
-     * @throws \Exception if there is a dispatcher but it is not of type EventDispatcher
-     *
-     * @return void
-     */
-    public function dispatch($name, $event)
-    {
-        if (!$this->event_dispatcher) {
-            return null;
-        }
-
-        if (!$this->event_dispatcher instanceof Dispatcher) {
-            throw new \Exception(
-                'Expected the event dispatcher to be an instance of phpDocumentor\Event\Dispatcher'
-            );
-        }
-
-        $this->event_dispatcher->dispatch($name, $event);
-    }
-
-    /**
-     * Dispatches a logging request.
-     *
-     * @param string $message  The message to log.
-     * @param string $priority The logging priority.
-     *
-     * @return void
-     */
-    public function log($message, $priority = LogLevel::INFO)
-    {
-        $this->dispatch(
-            'system.log',
-            LogEvent::createInstance($this)
-                ->setMessage($message)
-                ->setPriority($priority)
-        );
-    }
-
-    /**
-     * Dispatches a parser error to be logged.
-     *
-     * @param string   $type      The logging priority as string
-     * @param string   $code      The message to log.
-     * @param string   $line      The line number where the error occurred..
-     * @param string[] $variables an array with message substitution variables.
-     *
-     * @return void
-     */
-    public function logParserError($type, $code, $line, $variables = array())
-    {
-        $message = sprintf($code, $variables);
-        $this->log($message, LogLevel::ERROR);
-        $this->dispatch(
-            'parser.log',
-            LogEvent::createInstance($this)
-                ->setMessage($message)
-                ->setType($type)
-                ->setCode($code)
-                ->setLine($line)
-        );
-    }
-
-    /**
-     * Dispatches a logging request to log a debug message.
-     *
-     * @param string $message The message to log.
-     *
-     * @return void
-     */
-    public function debug($message)
-    {
-        $this->dispatch('system.debug', DebugEvent::createInstance($this)->setMessage($message));
-    }
-
-    /**
      * Returns the configuration for this object.
      *
      * @return \phpDocumentor\Configuration
@@ -185,15 +95,5 @@ abstract class ValidatorAbstract
     public function getConfiguration()
     {
         return $this->configuration;
-    }
-
-    /**
-     * Returns the event dispatcher.
-     *
-     * @return Dispatcher
-     */
-    public function getEventDispatcher()
-    {
-        return $this->event_dispatcher;
     }
 }

@@ -25,9 +25,7 @@ use phpDocumentor\Configuration;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Event\DebugEvent;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Event\PreFileEvent;
@@ -321,24 +319,6 @@ HELP
      */
     private function attachListeners(InputInterface $input, OutputInterface $output)
     {
-        if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
-            Dispatcher::getInstance()->addListener(
-                'system.log',
-                function (LogEvent $event) use ($output) {
-                    $output->writeln('    <comment>-- ' . trim($event->getMessage()) . '</comment>');
-                }
-            );
-        }
-
-        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            Dispatcher::getInstance()->addListener(
-                'system.debug',
-                function (DebugEvent $event) use ($output) {
-                    $output->writeln('    <comment>-- ' . trim($event->getMessage()) . '</comment>');
-                }
-            );
-        }
-
         $this->emitter->addListener(
             RenderActionCompleted::class,
             function ($event) use ($output) {

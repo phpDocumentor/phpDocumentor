@@ -78,7 +78,7 @@ class Dispatcher extends Symfony\EventDispatcher
      *
      * @codeCoverageIgnore Untestable and not really necessary
      *
-     * @return EventAbstract
+     * @return Event
      */
     public function dispatch($eventName, Event $event = null)
     {
