@@ -42,6 +42,8 @@ class ExternalRouter extends RouterAbstract
      */
     public function configure()
     {
+        // TODO: Replace this
+        return;
         $docs = $this->configuration->getTransformer()->getExternalClassDocumentation();
         foreach ($docs as $external) {
             $prefix = (string) $external->getPrefix();

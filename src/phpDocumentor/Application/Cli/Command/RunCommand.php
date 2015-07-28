@@ -10,7 +10,6 @@
  * @link      http://phpdoc.org
  */
 
-
 namespace phpDocumentor\Application\Cli\Command;
 
 use League\Event\Emitter;
@@ -33,10 +32,6 @@ use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Parser;
-use phpDocumentor\Transformer\Event\PreTransformationEvent;
-use phpDocumentor\Transformer\Event\PreTransformEvent;
-use phpDocumentor\Transformer\Event\WriterInitializationEvent;
-use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -311,9 +306,7 @@ HELP
             $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
         }
 
-        $output->writeln(
-            sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $this->configuration->getTransformer()->getTarget())
-        );
+        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $target));
 
         return 0;
     }
@@ -396,14 +389,6 @@ HELP
             Parser::EVENT_COMPLETED,
             function () use ($progress) {
                 $progress->finish();
-            }
-        );
-
-        Dispatcher::getInstance()->addListener(
-            Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) use ($output, $progress) {
-                $transformations = $event->getSubject()->getTemplates()->getTransformations();
-                $progress->start($output, count($transformations));
             }
         );
     }

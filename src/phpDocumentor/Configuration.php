@@ -34,12 +34,6 @@ class Configuration
     protected $parser;
 
     /**
-     * @var Transformer\Configuration The settings used during the transformation phase.
-     * @Serializer\Type("phpDocumentor\Transformer\Configuration")
-     */
-    protected $transformer;
-
-    /**
      * @var Parser\Configuration\Files contains a list of all files and directories to parse and to ignore.
      * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
      * @deprecated to be removed in phpDocumentor 4
@@ -59,7 +53,6 @@ class Configuration
      */
     public function __construct()
     {
-        $this->transformer     = new Transformer\Configuration();
         $this->files           = new Parser\Configuration\Files();
         $this->parser          = new Parser\Configuration();
     }
@@ -130,15 +123,5 @@ class Configuration
     public function getPlugins()
     {
         return $this->plugins;
-    }
-
-    /**
-     * Returns the settings for the transformer.
-     *
-     * @return Transformer\Configuration
-     */
-    public function getTransformer()
-    {
-        return $this->transformer;
     }
 }
