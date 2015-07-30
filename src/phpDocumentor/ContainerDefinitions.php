@@ -40,6 +40,7 @@ use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
+use phpDocumentor\Renderer\Action\Xslt\Extension;
 use phpDocumentor\Renderer\Template\PathsRepository;
 use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Transformer\Router\ExternalRouter;
@@ -57,6 +58,9 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\ValidatorInterface;
 use phpDocumentor\Descriptor;
+
+// maintain BC in XSL-based templates
+class_alias(Extension::class, 'phpDocumentor\\Plugin\\Core\\Xslt\\Extension');
 
 return [
     // -- Parameters
