@@ -31,9 +31,8 @@ final class Xsl implements Action
 
     /** @var Path|null */
     private $destination;
-    /**
-     * @var Template
-     */
+
+    /** @var Template */
     private $template;
 
     public function __construct(
@@ -43,6 +42,13 @@ final class Xsl implements Action
         Path $destination = null,
         Template $template = null
     ) {
+        if (!class_exists('XSLTProcessor') && (!extension_loaded('xslcache'))) {
+            throw new \RuntimeException(
+                'The XSL writer was unable to find your XSLTProcessor; '
+                . 'please check if you have installed the PHP XSL extension or XSLCache extension'
+            );
+        }
+
         Assert::string($query);
 
         $this->view        = $view;

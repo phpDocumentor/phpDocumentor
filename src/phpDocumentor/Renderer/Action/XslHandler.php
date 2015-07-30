@@ -9,108 +9,79 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+namespace phpDocumentor\Renderer\Action;
 
 use phpDocumentor\Application;
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Plugin\Core\Exception;
-use phpDocumentor\Transformer\Event\PreXslWriterEvent;
+use phpDocumentor\Renderer\Action;
+use phpDocumentor\Renderer\Template\FileRepository;
 use phpDocumentor\Transformer\Router\ForFileProxy;
-use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Transformation as TransformationObject;
-use phpDocumentor\Transformer\Writer\Exception\RequirementMissing;
-use phpDocumentor\Transformer\Writer\Routable;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
+use phpDocumentor\Transformer\Router\RouterAbstract;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.
  */
-class Xsl extends WriterAbstract implements Routable
+class XslHandler
 {
     /** @var string[] */
     protected $xsl_variables = array();
 
-    /** @var Queue */
+    /** @var RouterAbstract */
     private $routers;
 
-    /**
-     * Checks whether XSL handling is enabled with PHP as that is not enabled by default.
-     *
-     * To enable XSL handling you need either the xsl extension or the xslcache extension installed.
-     *
-     * @throws RequirementMissing if neither xsl extensions are installed.
-     *
-     * @return void
-     */
-    public function checkRequirements()
-    {
-        if (!class_exists('XSLTProcessor') && (!extension_loaded('xslcache'))) {
-            throw new RequirementMissing(
-                'The XSL writer was unable to find your XSLTProcessor; '
-                . 'please check if you have installed the PHP XSL extension or XSLCache extension'
-            );
-        }
-    }
+    /** @var Analyzer */
+    private $analyzer;
 
-    /**
-     * Sets the routers that can be used to determine the path of links.
-     *
-     * @param Queue $routers
-     *
-     * @return void
-     */
-    public function setRouters(Queue $routers)
+    /** @var FileRepository */
+    private $fileRepository;
+
+    public function __construct(Analyzer $analyzer, RouterAbstract $router, FileRepository $fileRepository)
     {
-        $this->routers = $routers;
+        $this->analyzer = $analyzer;
+        $this->routers  = $router;
+        $this->fileRepository = $fileRepository;
     }
 
     /**
      * This method combines the structure.xml and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectInterface  $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param Xsl $action
      *
      * @throws \RuntimeException if the structure.xml file could not be found.
-     * @throws Exception        if the structure.xml file's documentRoot could not be read because of encoding issues
+     * @throws \Exception        if the structure.xml file's documentRoot could not be read because of encoding issues
      *    or because it was absent.
      *
      * @return void
      */
-    public function transform(ProjectInterface $project, Transformation $transformation)
+    public function __invoke(Action $action)
     {
-        $structure = $this->loadAst($this->getAstPath($transformation));
+        $structure = $this->loadAst($this->getAstPath($action->getRenderPass()->getDestination()));
+        $project = $this->analyzer->getProjectDescriptor();
 
-        $proc = $this->getXslProcessor($transformation);
+        $view = $this->fileRepository->findByTemplateAndPath($action->getTemplate(), $action->getView());
+        $proc = $this->getXslProcessor((string)$view);
         $proc->registerPHPFunctions();
-        $this->registerDefaultVariables($transformation, $proc, $structure);
-        $this->setProcessorParameters($transformation, $proc);
+        $this->registerDefaultVariables($proc, $structure);
+        $this->setProcessorParameters($proc);
 
-        $artifact = $this->getArtifactPath($transformation);
-
-        $this->checkForSpacesInPath($artifact);
+        $artifact = $action->getDestination()
+            ? $action->getRenderPass()->getDestination() . '/' . $action->getDestination()
+            : null;
 
         // if a query is given, then apply a transformation to the artifact
         // location by replacing ($<var>} with the sluggified node-value of the
         // search result
-        if ($transformation->getQuery() !== '') {
+        if ($action->getQuery() !== '') {
             $xpath = new \DOMXPath($structure);
 
             /** @var \DOMNodeList $qry */
-            $qry = $xpath->query($transformation->getQuery());
+            $qry = $xpath->query($action->getQuery());
             $count = $qry->length;
             foreach ($qry as $key => $element) {
-                Dispatcher::getInstance()->dispatch(
-                    'transformer.writer.xsl.pre',
-                    PreXslWriterEvent::createInstance($this)->setElement($element)->setProgress(array($key+1, $count))
-                );
-
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);
-                $file_name = $transformation->getTransformer()->generateFilename(
-                    $element->nodeValue
-                );
+                $file_name = $this->generateFilename($element->nodeValue);
 
                 if (! $artifact) {
                     $url = $this->generateUrlForXmlElement($project, $element);
@@ -118,29 +89,53 @@ class Xsl extends WriterAbstract implements Routable
                         continue;
                     }
 
-                    $filename = $transformation->getTransformer()->getTarget()
+                    $filename = $action->getRenderPass()->getDestination()
                         . str_replace('/', DIRECTORY_SEPARATOR, $url);
                 } else {
                     $filename = str_replace('{$' . $element->nodeName . '}', $file_name, $artifact);
                 }
 
-                $relativeFileName = substr($filename, strlen($transformation->getTransformer()->getTarget()) + 1);
+                $relativeFileName = substr($filename, strlen($action->getRenderPass()->getDestination()) + 1);
                 $proc->setParameter('', 'root', str_repeat('../', substr_count($relativeFileName, '/')));
 
                 $this->writeToFile($filename, $proc, $structure);
             }
         } else {
-            if (substr($transformation->getArtifact(), 0, 1) == '$') {
+            if (substr($action->getDestination(), 0, 1) == '$') {
                 // not a file, it must become a variable!
-                $variable_name = substr($transformation->getArtifact(), 1);
+                $variable_name = substr($action->getDestination(), 1);
                 $this->xsl_variables[$variable_name] = $proc->transformToXml($structure);
             } else {
-                $relativeFileName = substr($artifact, strlen($transformation->getTransformer()->getTarget()) + 1);
+                $relativeFileName = substr($artifact, strlen($action->getRenderPass()->getDestination()) + 1);
                 $proc->setParameter('', 'root', str_repeat('../', substr_count($relativeFileName, '/')));
 
                 $this->writeToFile($artifact, $proc, $structure);
             }
         }
+    }
+
+    /**
+     * Converts a source file name to the name used for generating the end result.
+     *
+     * This method strips down the given $name using the following rules:
+     *
+     * * if the $name is suffixed with .php then that is removed
+     * * any occurrence of \ or DIRECTORY_SEPARATOR is replaced with .
+     * * any dots that the name starts or ends with is removed
+     * * the result is suffixed with .html
+     *
+     * @param string $name Name to convert.
+     *
+     * @return string
+     */
+    private function generateFilename($name)
+    {
+        if (substr($name, -4) == '.php') {
+            $name = substr($name, 0, -4);
+        }
+
+        return trim(str_replace(array(DIRECTORY_SEPARATOR, '\\'), '.', trim($name, DIRECTORY_SEPARATOR . '.')), '.')
+        . '.html';
     }
 
     /**
@@ -166,12 +161,11 @@ class Xsl extends WriterAbstract implements Routable
     /**
      * Sets the parameters of the XSLT processor.
      *
-     * @param TransformationObject $transformation Transformation.
-     * @param \XSLTProcessor       $proc           XSLTProcessor.
+     * @param \XSLTProcessor $proc XSLTProcessor.
      *
      * @return void
      */
-    public function setProcessorParameters(TransformationObject $transformation, $proc)
+    public function setProcessorParameters($proc)
     {
         foreach ($this->xsl_variables as $key => $variable) {
             // XSL does not allow both single and double quotes in a string
@@ -192,27 +186,28 @@ class Xsl extends WriterAbstract implements Routable
 
         // add / overwrite the parameters with those defined in the
         // transformation entry
-        $parameters = $transformation->getParameters();
-        if (isset($parameters['variables'])) {
-            /** @var \DOMElement $variable */
-            foreach ($parameters['variables'] as $key => $value) {
-                $proc->setParameter('', $key, $value);
-            }
-        }
+        // TODO: Re-add differently
+//        $parameters = $transformation->getParameters();
+//        if (isset($parameters['variables'])) {
+//            /** @var \DOMElement $variable */
+//            foreach ($parameters['variables'] as $key => $value) {
+//                $proc->setParameter('', $key, $value);
+//            }
+//        }
     }
 
     /**
      *
      *
-     * @param Transformation $transformation
+     * @param string $source
      *
      * @return \XSLTCache|\XSLTProcessor
      */
-    protected function getXslProcessor(Transformation $transformation)
+    protected function getXslProcessor($source)
     {
-        $xslTemplatePath = $transformation->getSourceAsPath();
+        $xslTemplatePath = $source;
         if (!file_exists($xslTemplatePath)) {
-            throw new Exception('Unable to find XSL template "' . $xslTemplatePath . '"');
+            throw new \Exception('Unable to find XSL template "' . $xslTemplatePath . '"');
         }
 
         if (extension_loaded('xslcache')) {
@@ -255,27 +250,19 @@ class Xsl extends WriterAbstract implements Routable
                 $message .= PHP_EOL . 'Apparently an error occurred with reading the structure.xml file, the reported '
                     . 'error was "' . trim($error->message) . '" on line ' . $error->line;
             }
-            throw new Exception($message);
+            throw new \Exception($message);
         }
 
         return $structure;
     }
 
     /**
-     * @param Transformation $transformation
-     * @param $proc
-     * @param $structure
+     * @param \XSLTProcessor $proc
+     * @param \DOMDocument $structure
      */
-    private function registerDefaultVariables(Transformation $transformation, $proc, $structure)
+    private function registerDefaultVariables($proc, $structure)
     {
         $proc->setParameter('', 'title', $structure->documentElement->getAttribute('title'));
-
-        if ($transformation->getParameter('search') !== null && $transformation->getParameter('search')->getValue()) {
-            $proc->setParameter('', 'search_template', $transformation->getParameter('search')->getValue());
-        } else {
-            $proc->setParameter('', 'search_template', 'none');
-        }
-
         $proc->setParameter('', 'version', Application::$VERSION);
         $proc->setParameter('', 'generated_datetime', date('r'));
     }
@@ -294,27 +281,12 @@ class Xsl extends WriterAbstract implements Routable
     }
 
     /**
-     * @param Transformation $transformation
+     * @param string $target
      * @return string
      */
-    private function getAstPath(Transformation $transformation)
+    private function getAstPath($target)
     {
-        return $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . 'structure.xml';
-    }
-
-    /**
-     * Returns the path to the location where the artifact should be written, or null to automatically detect the
-     * location using the router.
-     *
-     * @param Transformation $transformation
-     *
-     * @return string|null
-     */
-    private function getArtifactPath(Transformation $transformation)
-    {
-        return $transformation->getArtifact()
-            ? $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact()
-            : null;
+        return $target . DIRECTORY_SEPARATOR . 'structure.xml';
     }
 
     /**

@@ -37,8 +37,10 @@ use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use phpDocumentor\Renderer\Action\TwigHandler;
+use phpDocumentor\Renderer\Action\XmlHandler;
+use phpDocumentor\Renderer\Action\XslHandler;
+use phpDocumentor\Renderer\Template\FileRepository;
 use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
@@ -211,10 +213,10 @@ return [
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Templates
-    Xml::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
+    FileRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
+    XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
+    XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     TemplateFactory::class => \DI\object()
         ->constructorParameter('templateFolders', \DI\get('template.directories')),
-    TwigHandler::class => \DI\object()
-        ->constructorParameter('templateFolders', \DI\get('template.directories'))
-        ->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
+    TwigHandler::class => \DI\object()->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
 ];
