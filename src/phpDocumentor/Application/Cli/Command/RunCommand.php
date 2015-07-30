@@ -15,6 +15,7 @@ namespace phpDocumentor\Application\Cli\Command;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\Application\Commands\CacheProject;
+use phpDocumentor\Application\Commands\Compile;
 use phpDocumentor\Application\Commands\DumpAstToDisk;
 use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\LoadProjectFromCache;
@@ -298,7 +299,8 @@ HELP
         $this->commandBus->handle(new InitializeParser($this->configuration));
         $this->commandBus->handle(new ParseFiles($this->configuration));
         $this->commandBus->handle(new CacheProject($cacheFolder));
-        $this->commandBus->handle(new Render($target));
+        $this->commandBus->handle(new Compile());
+        $this->commandBus->handle(new Render($target, $input->getOption('template') ?: ['clean']));
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
             $this->commandBus->handle(new DumpAstToDisk('ast.dump'));

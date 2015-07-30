@@ -13,6 +13,9 @@ namespace phpDocumentor\Renderer\Action\Xml;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use PhpParser\Node;
+use PhpParser\PrettyPrinter\Standard;
+use PhpParser\PrettyPrinterTest;
 
 /**
  * Converter used to create an XML Element representing a method or function argument.
@@ -39,8 +42,14 @@ class ArgumentConverter
         $child->setAttribute('line', $argument->getLine());
         $child->setAttribute('by_reference', var_export($argument->isByReference(), true));
         $child->appendChild(new \DOMElement('name', $argument->getName()));
+
+        $printer = new Standard();
+        $default = $argument->getDefault();
+        if ($default instanceof Node) {
+            $default = substr($printer->prettyPrint([$default]), 0, -1);
+        }
         $child->appendChild(new \DOMElement('default'))
-              ->appendChild(new \DOMText($argument->getDefault()));
+              ->appendChild(new \DOMText($default));
 
         $types = $argument->getTypes();
 

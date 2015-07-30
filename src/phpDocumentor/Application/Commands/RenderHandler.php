@@ -56,10 +56,13 @@ final class RenderHandler
             new Dsn($command->getTarget()[0] === '/' ? '/' : '.')
         );
         $renderPass = new RenderPass($destinationFilesystem, new Path($command->getTarget()));
-        $template   = $this->templateFactory->createFromName($renderPass, 'clean');
-        foreach ($template->getActions() as $action) {
-            $this->commandBus->handle($action);
-            $this->emitter->emit(new RenderActionCompleted($action));
+
+        foreach ($command->getTemplates() as $templateName) {
+            $template = $this->templateFactory->createFromName($renderPass, $templateName);
+            foreach ($template->getActions() as $action) {
+                $this->commandBus->handle($action);
+                $this->emitter->emit(new RenderActionCompleted($action));
+            }
         }
         $this->emitter->emit(new RenderingFinished());
     }

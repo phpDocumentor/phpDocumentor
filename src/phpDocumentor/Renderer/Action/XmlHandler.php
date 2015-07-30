@@ -102,7 +102,7 @@ class XmlHandler
      *
      * @return void
      */
-    public function handle(Action $action)
+    public function __invoke(Action $action)
     {
         $artifact = $action->getRenderPass()->getDestination() . '/' . $action->getDestination();
         $project = $this->analyzer->getProjectDescriptor();

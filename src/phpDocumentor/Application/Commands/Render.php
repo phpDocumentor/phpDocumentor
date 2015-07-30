@@ -19,12 +19,17 @@ final class Render
     /** @var string */
     private $target;
 
+    /** @var string[] */
+    private $templates;
+
     /**
-     * @param $target
+     * @param          $target
+     * @param string[] $templates array of templates to render.
      */
-    public function __construct($target)
+    public function __construct($target, array $templates)
     {
-        $this->target = $target;
+        $this->target    = $target;
+        $this->templates = $templates;
     }
 
     /**
@@ -33,5 +38,13 @@ final class Render
     public function getTarget()
     {
         return $this->target;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTemplates()
+    {
+        return $this->templates;
     }
 }
