@@ -19,7 +19,7 @@ use phpDocumentor\Renderer\Action\Twig\Extension;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\ActionHandler;
 use phpDocumentor\Renderer\RenderPass;
-use phpDocumentor\Renderer\Template\FileRepository;
+use phpDocumentor\Renderer\Template\PathsRepository;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
 
@@ -34,7 +34,7 @@ class TwigHandler implements ActionHandler
     /** @var Queue */
     private $routers;
 
-    /** @var FileRepository */
+    /** @var PathsRepository */
     private $fileRepository;
 
     /** @var string */
@@ -44,7 +44,7 @@ class TwigHandler implements ActionHandler
         Analyzer $analyzer,
         Pathfinder $pathfinder,
         Queue $routers,
-        FileRepository $fileRepository,
+        PathsRepository $fileRepository,
         $cacheFolder = null
     ) {
         if ($cacheFolder === null) {
