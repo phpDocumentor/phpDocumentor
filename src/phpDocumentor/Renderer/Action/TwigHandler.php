@@ -15,14 +15,13 @@ use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Pathfinder;
-use phpDocumentor\Plugin\Twig\Extension;
+use phpDocumentor\Renderer\Action\Twig\Extension;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\ActionHandler;
 use phpDocumentor\Renderer\RenderPass;
+use phpDocumentor\Renderer\Template\FileRepository;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Template;
-use phpDocumentor\Transformer\Transformation;
 
 class TwigHandler implements ActionHandler
 {
@@ -35,8 +34,8 @@ class TwigHandler implements ActionHandler
     /** @var Queue */
     private $routers;
 
-    /** @var array */
-    private $templatesFolders = [];
+    /** @var FileRepository */
+    private $fileRepository;
 
     /** @var string */
     private $cacheFolder = '';
@@ -45,7 +44,7 @@ class TwigHandler implements ActionHandler
         Analyzer $analyzer,
         Pathfinder $pathfinder,
         Queue $routers,
-        $templateFolders = [],
+        FileRepository $fileRepository,
         $cacheFolder = null
     ) {
         if ($cacheFolder === null) {
@@ -55,7 +54,7 @@ class TwigHandler implements ActionHandler
         $this->analyzer         = $analyzer;
         $this->pathfinder       = $pathfinder;
         $this->routers          = $routers;
-        $this->templatesFolders = $templateFolders;
+        $this->fileRepository   = $fileRepository;
         $this->cacheFolder      = $cacheFolder;
     }
 
@@ -119,28 +118,7 @@ class TwigHandler implements ActionHandler
     private function initializeEnvironment(ProjectInterface $project, $destination, Twig $action)
     {
         // move to local variable because we want to add to it without affecting other runs
-        $templatesFolders = $this->templatesFolders;
-
-        // Determine the path of the current template and prepend it to the list so that it will always be queried
-        // first.
-        // http://twig.sensiolabs.org/doc/recipes.html#overriding-a-template-that-also-extends-itself
-        if ($action->getTemplate()) {
-            $parameters = $action->getTemplate()->getParameters();
-            if (isset($parameters['directory'])
-                && file_exists($parameters['directory']->getValue())
-                && is_dir($parameters['directory']->getValue())
-            ) {
-                array_unshift($templatesFolders, $parameters['directory']->getValue());
-            } elseif ($action->getTemplate()->getName()) {
-                foreach ($templatesFolders as $folder) {
-                    $currentTemplatePath = $folder . '/' . $action->getTemplate()->getName();
-                    if (file_exists($currentTemplatePath)) {
-                        array_unshift($templatesFolders, $currentTemplatePath);
-                        break;
-                    }
-                }
-            }
-        }
+        $templatesFolders = $this->fileRepository->listLocations($action->getTemplate());
 
         $env = new \Twig_Environment(
             new \Twig_Loader_Filesystem($templatesFolders),

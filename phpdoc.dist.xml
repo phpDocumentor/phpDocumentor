@@ -12,9 +12,6 @@
     <transformer>
         <target>/tmp/phpdoc-demo/responsive</target>
     </transformer>
-    <plugins>
-        <plugin path="Core" />
-    </plugins>
     <transformations>
         <template name="clean" />
     </transformations>

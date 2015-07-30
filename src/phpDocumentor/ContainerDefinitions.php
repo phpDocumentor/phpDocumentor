@@ -16,7 +16,6 @@ use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use phpDocumentor\Application\Cli\Command\ListCommand;
 use phpDocumentor\Application\CommandBus\ContainerLocator;
-use phpDocumentor\Application\Cli\Command\Helper\LoggerHelper;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Cli\Command\RunCommand;
 use phpDocumentor\Compiler\Compiler;
@@ -38,15 +37,14 @@ use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml;
 use phpDocumentor\Renderer\Action\TwigHandler;
+use phpDocumentor\Renderer\Action\XmlHandler;
+use phpDocumentor\Renderer\Action\XslHandler;
+use phpDocumentor\Renderer\Template\FileRepository;
 use phpDocumentor\Renderer\TemplateFactory;
-use phpDocumentor\Renderer\TemplateRepository;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
-use phpDocumentor\Transformer\Template\PathResolver;
-use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -144,8 +142,6 @@ return [
             )
         );
 
-        $application->getHelperSet()->set($c->get(LoggerHelper::class));
-
         $application->add($c->get(RunCommand::class));
         $application->add($c->get(ListCommand::class));
         if (\Phar::running()) {
@@ -201,7 +197,7 @@ return [
         ->method('registerEventDispatcher', \DI\get(Dispatcher::class))
         ->method('registerBackend', \DI\get(Php::class)),
 
-    // Transformer
+    // Compiler
     Linker::class => \DI\object()->constructorParameter('substitutions', \DI\get('linker.substitutions')),
     Compiler::class => \DI\object()
         ->method('insert', \DI\get(ElementsIndexBuilder::class), ElementsIndexBuilder::COMPILER_PRIORITY)
@@ -210,21 +206,17 @@ return [
         ->method('insert', \DI\get(PackageTreeBuilder::class), PackageTreeBuilder::COMPILER_PRIORITY)
         ->method('insert', \DI\get(NamespaceTreeBuilder::class), NamespaceTreeBuilder::COMPILER_PRIORITY)
         ->method('insert', \DI\get(ResolveInlineLinkAndSeeTags::class), ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(Linker::class), Linker::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(Transformer::class), Transformer::COMPILER_PRIORITY),
+        ->method('insert', \DI\get(Linker::class), Linker::COMPILER_PRIORITY),
 
     Queue::class => \DI\object()
         ->method('insert', \DI\get(ExternalRouter::class), 10500)
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Templates
-    PathResolver::class => \DI\object()
-        ->constructorParameter('templatePath', \DI\get('template.directory')),
-
-    Xml::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
+    FileRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
+    XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
+    XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     TemplateFactory::class => \DI\object()
         ->constructorParameter('templateFolders', \DI\get('template.directories')),
-    TwigHandler::class => \DI\object()
-        ->constructorParameter('templateFolders', \DI\get('template.directories'))
-        ->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
+    TwigHandler::class => \DI\object()->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
 ];

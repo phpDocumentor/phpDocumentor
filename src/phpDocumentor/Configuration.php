@@ -14,7 +14,6 @@ namespace phpDocumentor;
 use JMS\Serializer\Annotation as Serializer;
 use phpDocumentor\Configuration\Merger\Annotation as Merger;
 use phpDocumentor\Plugin\Plugin;
-use phpDocumentor\Transformer\Configuration\Transformations;
 
 /**
  * The definition for the configuration of phpDocumentor.
@@ -34,12 +33,6 @@ class Configuration
     protected $parser;
 
     /**
-     * @var Transformer\Configuration The settings used during the transformation phase.
-     * @Serializer\Type("phpDocumentor\Transformer\Configuration")
-     */
-    protected $transformer;
-
-    /**
      * @var Parser\Configuration\Files contains a list of all files and directories to parse and to ignore.
      * @Serializer\Type("phpDocumentor\Parser\Configuration\Files")
      * @deprecated to be removed in phpDocumentor 4
@@ -55,19 +48,10 @@ class Configuration
     protected $plugins = array();
 
     /**
-     * @var Transformations[] contains a list of all templates and custom transformations that are to be executed during
-     *     the transformation process.
-     * @Serializer\Type("phpDocumentor\Transformer\Configuration\Transformations")
-     */
-    protected $transformations;
-
-    /**
      * Initializes all settings with their default values.
      */
     public function __construct()
     {
-        $this->transformer     = new Transformer\Configuration();
-        $this->transformations = new Transformer\Configuration\Transformations();
         $this->files           = new Parser\Configuration\Files();
         $this->parser          = new Parser\Configuration();
     }
@@ -138,25 +122,5 @@ class Configuration
     public function getPlugins()
     {
         return $this->plugins;
-    }
-
-    /**
-     * Returns which templates and custom transformations need to be applied to the parsed data.
-     *
-     * @return Transformer\Configuration\Transformations
-     */
-    public function getTransformations()
-    {
-        return $this->transformations;
-    }
-
-    /**
-     * Returns the settings for the transformer.
-     *
-     * @return Transformer\Configuration
-     */
-    public function getTransformer()
-    {
-        return $this->transformer;
     }
 }
