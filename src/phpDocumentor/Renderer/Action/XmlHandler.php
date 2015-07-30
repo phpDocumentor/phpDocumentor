@@ -9,20 +9,22 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+namespace phpDocumentor\Renderer\Action;
 
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Validator\Error;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ArgumentConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\InterfaceConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter;
+use phpDocumentor\Renderer\Action;
+use phpDocumentor\Renderer\Action\Xml\ArgumentConverter;
+use phpDocumentor\Renderer\Action\Xml\ConstantConverter;
+use phpDocumentor\Renderer\Action\Xml\DocBlockConverter;
+use phpDocumentor\Renderer\Action\Xml\InterfaceConverter;
+use phpDocumentor\Renderer\Action\Xml\MethodConverter;
+use phpDocumentor\Renderer\Action\Xml\PropertyConverter;
+use phpDocumentor\Renderer\Action\Xml\TagConverter;
+use phpDocumentor\Renderer\Action\Xml\TraitConverter;
+use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\RouterAbstract;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
 use phpDocumentor\Application;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
@@ -32,24 +34,22 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\AuthorTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\CoversTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\IgnoreTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\InternalTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\LicenseTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\MethodTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\ParamTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\PropertyTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\ReturnTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\UsesTag;
-use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag\VarTag;
-use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Transformer;
+use phpDocumentor\Renderer\Action\Xml\Tag\AuthorTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\CoversTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\IgnoreTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\InternalTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\LicenseTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\MethodTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\ParamTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\PropertyTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\ReturnTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\UsesTag;
+use phpDocumentor\Renderer\Action\Xml\Tag\VarTag;
 
 /**
  * Converts the structural information of phpDocumentor into an XML file.
  */
-class Xml extends WriterAbstract
+class XmlHandler
 {
     /** @var \DOMDocument $xml */
     protected $xml;
@@ -68,7 +68,13 @@ class Xml extends WriterAbstract
 
     protected $traitConverter;
 
-    public function __construct(RouterAbstract $router)
+    /** @var Analyzer */
+    private $analyzer;
+
+    /** @var RouterAbstract */
+    private $router;
+
+    public function __construct(Analyzer $analyzer, RouterAbstract $router)
     {
         $this->docBlockConverter  = new DocBlockConverter(new TagConverter(), $router);
         $this->argumentConverter  = new ArgumentConverter();
@@ -85,21 +91,21 @@ class Xml extends WriterAbstract
             $this->methodConverter,
             $this->propertyConverter
         );
+        $this->analyzer = $analyzer;
+        $this->router = $router;
     }
 
     /**
      * This method generates the AST output
      *
-     * @param ProjectInterface $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param Xml $action
      *
      * @return void
      */
-    public function transform(ProjectInterface $project, Transformation $transformation)
+    public function handle(Action $action)
     {
-        $artifact = $this->getDestinationPath($transformation);
-
-        $this->checkForSpacesInPath($artifact);
+        $artifact = $action->getRenderPass()->getDestination() . '/' . $action->getDestination();
+        $project = $this->analyzer->getProjectDescriptor();
 
         $this->xml = new \DOMDocument('1.0', 'utf-8');
         $this->xml->formatOutput = true;
@@ -109,27 +115,23 @@ class Xml extends WriterAbstract
         $document_element->setAttribute('title', $project->getName());
         $document_element->setAttribute('version', Application::$VERSION);
 
-        $transformer = $transformation->getTransformer();
-
         foreach ($project->getFiles() as $file) {
-            $this->buildFile($document_element, $file, $transformer);
+            $this->buildFile($document_element, $file);
         }
 
         $this->finalize($project);
         file_put_contents($artifact, $this->xml->saveXML());
     }
 
-    protected function buildFile(\DOMElement $parent, FileDescriptor $file, Transformer $transformer)
+    protected function buildFile(\DOMElement $parent, FileDescriptor $file)
     {
         $child = new \DOMElement('file');
         $parent->appendChild($child);
 
+        $router = new ForFileProxy($this->router->match($file));
         $path = ltrim($file->getPath(), './');
         $child->setAttribute('path', $path);
-        $child->setAttribute(
-            'generated-path',
-            $transformer->generateFilename($path)
-        );
+        $child->setAttribute('generated-path', $router->generate($file));
         $child->setAttribute('hash', $file->getHash());
 
         $this->docBlockConverter->convert($child, $file);
@@ -221,19 +223,6 @@ class Xml extends WriterAbstract
         $marker_obj->appendChild(new \DOMText($message));
         $marker_obj->setAttribute('line', $error->getLine());
         $marker_obj->setAttribute('code', $error->getCode());
-    }
-
-    /**
-     * Retrieves the destination location for this artifact.
-     *
-     * @param Transformation $transformation
-     *
-     * @return string
-     */
-    protected function getDestinationPath(Transformation $transformation)
-    {
-        return $transformation->getTransformer()->getTarget()
-            . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     }
 
     /**

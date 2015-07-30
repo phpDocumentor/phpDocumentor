@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer\Xml\Tag;
+namespace phpDocumentor\Renderer\Action\Xml\Tag;
 
 /**
  * Behaviour that adds support for the @param tags.
