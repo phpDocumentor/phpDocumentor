@@ -5,7 +5,7 @@ namespace phpDocumentor\Renderer\Template;
 use phpDocumentor\Path;
 use phpDocumentor\Renderer\Template;
 
-final class FileRepository
+final class PathsRepository
 {
     /** @var string */
     private $templateFolders = [];

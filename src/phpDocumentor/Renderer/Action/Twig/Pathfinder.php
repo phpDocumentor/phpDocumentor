@@ -1,6 +1,6 @@
 <?php
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+namespace phpDocumentor\Renderer\Action\Twig;
 
 class Pathfinder
 {

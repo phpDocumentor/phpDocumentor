@@ -15,7 +15,7 @@ use phpDocumentor\Application;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Renderer\Action;
-use phpDocumentor\Renderer\Template\FileRepository;
+use phpDocumentor\Renderer\Template\PathsRepository;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\RouterAbstract;
 
@@ -33,10 +33,10 @@ class XslHandler
     /** @var Analyzer */
     private $analyzer;
 
-    /** @var FileRepository */
+    /** @var PathsRepository */
     private $fileRepository;
 
-    public function __construct(Analyzer $analyzer, RouterAbstract $router, FileRepository $fileRepository)
+    public function __construct(Analyzer $analyzer, RouterAbstract $router, PathsRepository $fileRepository)
     {
         $this->analyzer = $analyzer;
         $this->routers  = $router;

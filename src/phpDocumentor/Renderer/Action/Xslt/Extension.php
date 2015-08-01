@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Plugin\Core\Xslt;
+namespace phpDocumentor\Renderer\Action\Xslt;
 
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Transformer\Router\Queue;

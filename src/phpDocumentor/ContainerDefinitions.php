@@ -40,7 +40,8 @@ use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
-use phpDocumentor\Renderer\Template\FileRepository;
+use phpDocumentor\Renderer\Action\Xslt\Extension;
+use phpDocumentor\Renderer\Template\PathsRepository;
 use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
@@ -57,6 +58,9 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\ValidatorInterface;
 use phpDocumentor\Descriptor;
+
+// maintain BC in XSL-based templates
+class_alias(Extension::class, 'phpDocumentor\\Plugin\\Core\\Xslt\\Extension');
 
 return [
     // -- Parameters
@@ -213,7 +217,7 @@ return [
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Templates
-    FileRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
+    PathsRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
     XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     TemplateFactory::class => \DI\object()

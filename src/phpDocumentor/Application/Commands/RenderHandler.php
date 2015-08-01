@@ -17,6 +17,7 @@ use League\Tactician\CommandBus;
 use phpDocumentor\Dsn;
 use phpDocumentor\FilesystemFactory;
 use phpDocumentor\Path;
+use phpDocumentor\Renderer\Template;
 use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\RenderPass;
 use phpDocumentor\Renderer\RenderActionCompleted;
@@ -59,6 +60,10 @@ final class RenderHandler
 
         foreach ($command->getTemplates() as $templateName) {
             $template = $this->templateFactory->createFromName($renderPass, $templateName);
+            if (! $template instanceof Template) {
+                throw new \InvalidArgumentException(sprintf('The template "%s" could not be found', $templateName));
+            }
+
             foreach ($template->getActions() as $action) {
                 $this->commandBus->handle($action);
                 $this->emitter->emit(new RenderActionCompleted($action));

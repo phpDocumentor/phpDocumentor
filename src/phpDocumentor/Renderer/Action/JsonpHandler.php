@@ -1,7 +1,8 @@
 <?php
 
-namespace phpDocumentor\Plugin\Core\Transformer\Writer;
+namespace phpDocumentor\Renderer\Action;
 
+use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
@@ -12,12 +13,10 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
+use phpDocumentor\Renderer\Action;
 
 /**
  * Writes the collected data as a series of JSONP files.
@@ -57,8 +56,16 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
  *     member `type` that can be either 'class', 'interface' or 'trait' to distinguish between the three types
  *     of 'classes'.
  */
-final class Jsonp extends WriterAbstract
+final class JsonpHandler
 {
+    /** @var Analyzer */
+    private $analyzer;
+
+    public function __construct(Analyzer $analyzer)
+    {
+        $this->analyzer = $analyzer;
+    }
+
     /**
      * Generate a series of JSONP files based on the ProjectDescriptor's structure in the target directory.
      *
@@ -66,14 +73,14 @@ final class Jsonp extends WriterAbstract
      * user when starting phpDocumentor. A complete description of what is generated can be found in the documentation
      * of this class itself.
      *
-     * @param ProjectInterface $project Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param Jsonp $action
      *
      * @return void
      */
-    public function transform(ProjectInterface $project, Transformation $transformation)
+    public function handle(Action $action)
     {
-        $folder = $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
+        $project = $this->analyzer->getProjectDescriptor();
+        $folder = $action->getRenderPass()->getDestination() . '/' . ltrim($action->getDestination(), '\\/');
         @mkdir($folder . 'classes');
         @mkdir($folder . 'files');
 
@@ -233,12 +240,12 @@ final class Jsonp extends WriterAbstract
         foreach ($element->getInheritedProperties() as $property) {
             $class['properties'][] = $this->transformProperty($property);
         }
-        
+
         /** @var PropertyDescriptor $property */
         foreach ($element->getMagicProperties() as $property) {
             $class['properties'][] = $this->transformProperty($property);
         }
-        
+
         /** @var MethodDescriptor $method */
         foreach ($element->getMethods() as $method) {
             $class['methods'][] = $this->transformMethod($method);
@@ -248,14 +255,14 @@ final class Jsonp extends WriterAbstract
         foreach ($element->getInheritedMethods() as $method) {
             $class['methods'][] = $this->transformMethod($method);
         }
-        
+
         /** @var MethodDescriptor $property */
         foreach ($element->getMagicMethods() as $method) {
             $class['methods'][] = $this->transformMethod($method);
         }
-        
+
         $class['tags'] = $this->transformTags($element);
-        
+
         return $class;
     }
 
