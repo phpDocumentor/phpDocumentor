@@ -22,6 +22,8 @@ use phpDocumentor\Renderer\RenderPass;
 use phpDocumentor\Renderer\Template\PathsRepository;
 use phpDocumentor\Transformer\Router\ForFileProxy;
 use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Views\ViewFactory;
+use phpDocumentor\Views\Views;
 
 class TwigHandler implements ActionHandler
 {
@@ -40,11 +42,15 @@ class TwigHandler implements ActionHandler
     /** @var string */
     private $cacheFolder = '';
 
+    /** @var ViewFactory */
+    private $viewFactory;
+
     public function __construct(
         Analyzer $analyzer,
         Pathfinder $pathfinder,
         Queue $routers,
         PathsRepository $fileRepository,
+        ViewFactory $viewFactory,
         $cacheFolder = null
     ) {
         if ($cacheFolder === null) {
@@ -56,6 +62,7 @@ class TwigHandler implements ActionHandler
         $this->routers          = $routers;
         $this->fileRepository   = $fileRepository;
         $this->cacheFolder      = $cacheFolder;
+        $this->viewFactory      = $viewFactory;
     }
 
     /**
@@ -67,16 +74,18 @@ class TwigHandler implements ActionHandler
      */
     public function __invoke(Action $action)
     {
-        $actionDestination  = $action->getDestination();
+        $dataView = $this->viewFactory->create($action->getDataView(), $this->analyzer->getProjectDescriptor());
+        $views    = new Views([$dataView->getName() => $dataView()]);
 
-        $nodes = $this->pathfinder->find($this->analyzer->getProjectDescriptor(), $action->getQuery());
+        // TODO: Move path finding to View
+        $nodes = $this->pathfinder->find($dataView(), $action->getQuery());
 
         foreach ($nodes as $node) {
             if (!$node) {
                 continue;
             }
 
-            if (! $actionDestination) {
+            if (! ($action->getDestination())) {
                 $rule = $this->routers->match($node);
                 if (!$rule) {
                     throw new \InvalidArgumentException(
@@ -90,10 +99,10 @@ class TwigHandler implements ActionHandler
                 if ($url === false || $url[0] !== DIRECTORY_SEPARATOR) {
                     $destination = false;
                 } else {
-                    $destination = $actionDestination . $url;
+                    $destination = $action->getDestination() . $url;
                 }
             } else {
-                $destination = $this->getDestinationPath($node, $actionDestination);
+                $destination = $this->getDestinationPath($node, $action->getDestination());
             }
 
             if ($destination === false) {
@@ -107,7 +116,16 @@ class TwigHandler implements ActionHandler
                 mkdir(dirname($destination), 0777, true);
             }
 
-            $environment = $this->initializeEnvironment($this->analyzer->getProjectDescriptor(), $destination, $action);
+            // move to local variable because we want to add to it without affecting other runs
+            $templatesFolders = $this->fileRepository->listLocations($action->getTemplate());
+
+            $environment = new \Twig_Environment(
+                new \Twig_Loader_Filesystem($templatesFolders),
+                array('cache' => $this->cacheFolder, 'auto_reload' => true)
+            );
+
+            $this->addPhpDocumentorExtension($views, $destination, $environment, $action->getRenderPass());
+            // $this->addExtensionsFromTemplateConfiguration($transformation, $project, $environment);
             $environment->addGlobal('node', $node);
 
             $html = $environment->render((string)$action->getView());
@@ -115,41 +133,23 @@ class TwigHandler implements ActionHandler
         }
     }
 
-    private function initializeEnvironment(ProjectInterface $project, $destination, Twig $action)
-    {
-        // move to local variable because we want to add to it without affecting other runs
-        $templatesFolders = $this->fileRepository->listLocations($action->getTemplate());
-
-        $env = new \Twig_Environment(
-            new \Twig_Loader_Filesystem($templatesFolders),
-            array('cache' => $this->cacheFolder, 'auto_reload' => true)
-        );
-
-        $this->addPhpDocumentorExtension($project, $destination, $env, $action->getRenderPass());
-//        $this->addExtensionsFromTemplateConfiguration($transformation, $project, $env);
-
-        return $env;
-    }
-
     /**
      * Adds the phpDocumentor base extension to the Twig Environment.
      *
-     * @param ProjectInterface  $project
+     * @param Views             $views
      * @param string            $destination
      * @param \Twig_Environment $twigEnvironment
      *
      * @return void
      */
     private function addPhpDocumentorExtension(
-        ProjectInterface $project,
+        Views $views,
         $destination,
         \Twig_Environment $twigEnvironment,
         RenderPass $renderPass
     ) {
-        $baseExtension = new Extension($project);
-        $baseExtension->setDestination(
-            substr($destination, strlen($renderPass->getDestination()) + 1)
-        );
+        $baseExtension = new Extension($views);
+        $baseExtension->setDestination(substr($destination, strlen($renderPass->getDestination()) + 1));
         $baseExtension->setRouters($this->routers);
         $twigEnvironment->addExtension($baseExtension);
     }

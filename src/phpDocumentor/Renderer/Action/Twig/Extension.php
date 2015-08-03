@@ -15,45 +15,22 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
+use phpDocumentor\Views\Views;
 
-/**
- * Basic extension adding phpDocumentor specific functionality for Twig
- * templates.
- *
- * Global variables:
- *
- * - *ast_node*, the current $data element
- *
- * Functions:
- *
- * - *path(string) *, converts the given relative path to be based of the projects
- *   root instead of the current directory
- *
- * Filters:
- *
- * - *markdown*, converts the associated text from Markdown formatting to HTML.
- * - *route*, attempts to generate a URL for a given Descriptor
- * - *sort_desc*, sorts the given objects by their Name property/getter in a descending fashion
- * - *sort_asc*, sorts the given objects by their Name property/getter in a ascending fashion
- */
 class Extension extends \Twig_Extension
 {
-    /**
-     * @var ProjectInterface
-     */
-    protected $data = null;
+    /** @var Views */
+    protected $views = null;
 
     /** @var Renderer */
     protected $routeRenderer;
 
     /**
      * Registers the structure.
-     *
-     * @param ProjectInterface $project        Represents the complete Abstract Syntax Tree.
      */
-    public function __construct(ProjectInterface $project)
+    public function __construct(Views $views)
     {
-        $this->data          = $project;
+        $this->views          = $views;
         $this->routeRenderer = new Renderer(new Queue());
     }
 
@@ -114,9 +91,7 @@ class Extension extends \Twig_Extension
      */
     public function getGlobals()
     {
-        return array(
-            'project' => $this->data
-        );
+        return $this->views->getArrayCopy();
     }
 
     /**

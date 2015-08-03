@@ -46,6 +46,9 @@ use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Transformer\Router\ExternalRouter;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\StandardRouter;
+use phpDocumentor\Views\MapperFactory;
+use phpDocumentor\Views\MapperFactory\Container;
+use phpDocumentor\Views\Mappers\Project;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -215,6 +218,12 @@ return [
     Queue::class => \DI\object()
         ->method('insert', \DI\get(ExternalRouter::class), 10500)
         ->method('insert', \DI\get(StandardRouter::class), 10000),
+
+    // Views
+    MapperFactory::class => \DI\object(Container::class)
+        ->constructorParameter('mapperAliases', [
+            'php' => Project::class
+        ]),
 
     // Templates
     PathsRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
