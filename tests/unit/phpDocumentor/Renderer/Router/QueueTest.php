@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Renderer\Router;
 
 use Mockery as m;
 
@@ -27,13 +27,13 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Queue::match
+     * @covers \phpDocumentor\Renderer\Router\Queue::match
      */
     public function testFirstRuleIsReturnedForNodeBasedOnPriorityOrder()
     {
         // Arrange
         $nodeName = 'test';
-        $expected = m::mock('phpDocumentor\Transformer\Router\Rule');
+        $expected = m::mock('phpDocumentor\Renderer\Router\Rule');
         $this->fixture->insert($this->givenARouterMatchingNodeWithResult($nodeName, false), 0);
         $this->fixture->insert($this->givenARouterMatchingNodeWithResult($nodeName, 'test'), 500);
         $this->fixture->insert($this->givenARouterMatchingNodeWithResult($nodeName, $expected), 1000);
@@ -46,7 +46,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Queue::match
+     * @covers \phpDocumentor\Renderer\Router\Queue::match
      */
     public function testNullIsReturnedWhenNoMatchingRuleCanBeFound()
     {
@@ -70,7 +70,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
      */
     protected function givenARouterMatchingNodeWithResult($nodeName, $returns)
     {
-        $router = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
+        $router = m::mock('phpDocumentor\Renderer\Router\RouterAbstract');
         $router->shouldReceive('match')->with($nodeName)->andReturn($returns);
 
         return $router;

@@ -9,13 +9,13 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Renderer\Router;
 
 class RuleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\Rule::__construct
-     * @covers phpDocumentor\Transformer\Router\Rule::match
+     * @covers phpDocumentor\Renderer\Router\Rule::__construct
+     * @covers phpDocumentor\Renderer\Router\Rule::match
      */
     public function testIfRuleCanBeMatched()
     {
@@ -40,8 +40,8 @@ class RuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\Rule::__construct
-     * @covers phpDocumentor\Transformer\Router\Rule::generate
+     * @covers phpDocumentor\Renderer\Router\Rule::__construct
+     * @covers phpDocumentor\Renderer\Router\Rule::generate
      */
     public function testIfUrlCanBeGenerated()
     {
@@ -57,9 +57,9 @@ class RuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\Rule::__construct
-     * @covers phpDocumentor\Transformer\Router\Rule::generate
-     * @covers phpDocumentor\Transformer\Router\Rule::translateToUrlEncodedPath
+     * @covers phpDocumentor\Renderer\Router\Rule::__construct
+     * @covers phpDocumentor\Renderer\Router\Rule::generate
+     * @covers phpDocumentor\Renderer\Router\Rule::translateToUrlEncodedPath
      */
     public function testTranslateToUrlEncodedPath()
     {

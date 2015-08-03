@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Renderer\Router;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\Collection;
@@ -39,10 +39,10 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
-     * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
-     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers phpDocumentor\Renderer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Renderer\Router\RouterAbstract::__construct
+     * @covers phpDocumentor\Renderer\Router\RouterAbstract::configure
+     * @covers phpDocumentor\Renderer\Router\RouterAbstract::match
      * @dataProvider provideDescriptorNames
      */
     public function testIfARouteForAFileCanBeGenerated($descriptorName, $generatorName = null)
@@ -55,19 +55,19 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
         $rule = $this->fixture->match($file);
 
         // Assert
-        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertInstanceOf('phpDocumentor\\Renderer\\Router\\Rule', $rule);
         $this->assertAttributeInstanceOf(
-            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\' . $generatorName,
+            '\phpDocumentor\\Renderer\\Router\\UrlGenerator\\Standard\\' . $generatorName,
             'generator',
             $rule
         );
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
-     * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
-     * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
-     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers phpDocumentor\Renderer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Renderer\Router\RouterAbstract::__construct
+     * @covers phpDocumentor\Renderer\Router\RouterAbstract::configure
+     * @covers phpDocumentor\Renderer\Router\RouterAbstract::match
      */
     public function testIfARouteForAFqsenCanBeGenerated()
     {
@@ -79,16 +79,16 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
         $rule = $this->fixture->match($fqsen);
 
         // Assert
-        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertInstanceOf('phpDocumentor\\Renderer\\Router\\Rule', $rule);
         $this->assertAttributeInstanceOf(
-            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\MethodDescriptor',
+            '\phpDocumentor\\Renderer\\Router\\UrlGenerator\\Standard\\MethodDescriptor',
             'generator',
             $rule
         );
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     * @covers phpDocumentor\Renderer\Router\RouterAbstract::match
      */
     public function testGeneratingRouteForUnknownNodeReturnsFalse()
     {

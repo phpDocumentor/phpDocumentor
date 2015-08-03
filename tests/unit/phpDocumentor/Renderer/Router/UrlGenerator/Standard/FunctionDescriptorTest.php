@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Renderer\Router\UrlGenerator\Standard;
 
 use Mockery as m;
 
@@ -19,8 +19,8 @@ use Mockery as m;
 class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
+     * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForFunctionDescriptor()
     {
@@ -38,8 +38,8 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
-     * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
+     * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
      */
     public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace()
     {

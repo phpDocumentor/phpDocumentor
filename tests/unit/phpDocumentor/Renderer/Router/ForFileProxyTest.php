@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Renderer\Router;
 
 use Mockery as m;
 
@@ -26,12 +26,12 @@ class ForFileProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->ruleMock = m::mock('phpDocumentor\Transformer\Router\Rule');
+        $this->ruleMock = m::mock('phpDocumentor\Renderer\Router\Rule');
         $this->fixture = new ForFileProxy($this->ruleMock);
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ForFileProxy::__construct
+     * @covers phpDocumentor\Renderer\Router\ForFileProxy::__construct
      */
     public function testIfDependenciesAreRegisteredOnInitialization()
     {
@@ -39,7 +39,7 @@ class ForFileProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ForFileProxy::generate
+     * @covers phpDocumentor\Renderer\Router\ForFileProxy::generate
      */
     public function testIfDirectorySeparatorsAreTranslated()
     {
@@ -54,7 +54,7 @@ class ForFileProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ForFileProxy::generate
+     * @covers phpDocumentor\Renderer\Router\ForFileProxy::generate
      */
     public function testIfNullIsReturnedIfNodeDoesNotMatch()
     {

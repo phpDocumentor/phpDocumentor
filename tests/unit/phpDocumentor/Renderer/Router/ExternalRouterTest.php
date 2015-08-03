@@ -9,17 +9,17 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Renderer\Router;
 
 use phpDocumentor\Configuration;
-use phpDocumentor\Transformer\Configuration\ExternalClassDocumentation;
+use phpDocumentor\Renderer\Configuration\ExternalClassDocumentation;
 
 class ExternalRouterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::__construct
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::configure
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::match
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::__construct
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::configure
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::match
      */
     public function testIfNoUrlIsGeneratedWhenThereIsNoDefinition()
     {
@@ -35,15 +35,15 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::__construct
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::configure
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::match
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::__construct
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::configure
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::match
      */
     public function testIfSingleDefinitionGeneratesAnUrl()
     {
         // Arrange
         $config = new Configuration();
-        $config->getTransformer()->setExternalClassDocumentation(
+        $config->getRenderer()->setExternalClassDocumentation(
             array(new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html'))
         );
 
@@ -57,15 +57,15 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::__construct
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::configure
-     * @covers phpDocumentor\Transformer\Router\ExternalRouter::match
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::__construct
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::configure
+     * @covers phpDocumentor\Renderer\Router\ExternalRouter::match
      */
     public function testIfMultipleDefinitionsGenerateAnUrl()
     {
         // Arrange
         $config = new Configuration();
-        $config->getTransformer()->setExternalClassDocumentation(
+        $config->getRenderer()->setExternalClassDocumentation(
             array(
                 new ExternalClassDocumentation('My_Zen_Space', 'http://abc/zen/{CLASS}.html'),
                 new ExternalClassDocumentation('My_Space', 'http://abc/{CLASS}.html')
