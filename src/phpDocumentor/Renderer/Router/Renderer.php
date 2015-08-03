@@ -1,6 +1,6 @@
 <?php
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Renderer\Router;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;

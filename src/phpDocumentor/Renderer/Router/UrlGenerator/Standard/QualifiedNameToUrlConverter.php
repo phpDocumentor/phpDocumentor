@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Renderer\Router\UrlGenerator\Standard;
 
 /**
  * Service class used to convert Qualified names into URL paths for the Standard Router.

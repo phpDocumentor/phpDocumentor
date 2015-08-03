@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router;
+namespace phpDocumentor\Renderer\Router;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;

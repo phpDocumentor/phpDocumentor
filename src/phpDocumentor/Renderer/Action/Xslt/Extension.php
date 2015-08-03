@@ -12,7 +12,7 @@
 namespace phpDocumentor\Renderer\Action\Xslt;
 
 use phpDocumentor\Descriptor\Analyzer;
-use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Renderer\Router\Queue;
 
 /**
  * XSLT filters that can be used inside a template.

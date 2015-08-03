@@ -12,9 +12,8 @@
 namespace phpDocumentor\Renderer\Action\Twig;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
-use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Router\Renderer;
+use phpDocumentor\Renderer\Router\Queue;
+use phpDocumentor\Renderer\Router\Renderer;
 use phpDocumentor\Views\Views;
 
 class Extension extends \Twig_Extension

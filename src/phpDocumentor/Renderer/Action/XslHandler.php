@@ -16,8 +16,8 @@ use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\Template\PathsRepository;
-use phpDocumentor\Transformer\Router\ForFileProxy;
-use phpDocumentor\Transformer\Router\RouterAbstract;
+use phpDocumentor\Renderer\Router\ForFileProxy;
+use phpDocumentor\Renderer\Router\RouterAbstract;
 
 /**
  * XSL transformation writer; generates static HTML out of the structure and XSL templates.

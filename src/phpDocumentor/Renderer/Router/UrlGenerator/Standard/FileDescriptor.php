@@ -9,17 +9,17 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Renderer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
+use phpDocumentor\Renderer\Router\UrlGenerator\UrlGeneratorInterface;
 
-class ClassDescriptor implements UrlGeneratorInterface
+class FileDescriptor implements UrlGeneratorInterface
 {
     /**
      * Generates a URL from the given node or returns false if unable.
      *
-     * @param string|Descriptor\ClassDescriptor $node
+     * @param string|Descriptor\FileDescriptor $node
      *
      * @return string|false
      */
@@ -27,8 +27,6 @@ class ClassDescriptor implements UrlGeneratorInterface
     {
         $converter = new QualifiedNameToUrlConverter();
 
-        return ($node instanceof Descriptor\DescriptorAbstract)
-            ? '/classes/' . $converter->fromClass($node->getFullyQualifiedStructuralElementName()) .'.html'
-            : false;
+        return '/files/' . $converter->fromFile($node->getPath()) .'.html';
     }
 }

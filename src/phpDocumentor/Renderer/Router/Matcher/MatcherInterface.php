@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\Matcher;
+namespace phpDocumentor\Renderer\Router\Matcher;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 

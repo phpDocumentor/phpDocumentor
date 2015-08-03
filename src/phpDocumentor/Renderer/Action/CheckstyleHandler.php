@@ -13,14 +13,11 @@ namespace phpDocumentor\Renderer\Action;
 
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Renderer\Action;
-use phpDocumentor\Transformer\Transformation;
-use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 /**
- * Checkstyle transformation writer; generates checkstyle report
+ * Checkstyle writer; generates checkstyle report
  */
 class CheckstyleHandler
 {

@@ -12,7 +12,7 @@
 namespace phpDocumentor\Renderer\Action\Xml;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Transformer\Router\RouterAbstract;
+use phpDocumentor\Renderer\Router\RouterAbstract;
 
 /**
  * Converter used to create an XML Element representing a DocBlock and its tags.

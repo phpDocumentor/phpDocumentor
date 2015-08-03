@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator;
+namespace phpDocumentor\Renderer\Router\UrlGenerator;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
 

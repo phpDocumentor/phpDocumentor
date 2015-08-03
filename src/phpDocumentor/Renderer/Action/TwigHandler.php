@@ -20,8 +20,8 @@ use phpDocumentor\Renderer\Action\Twig\Pathfinder;
 use phpDocumentor\Renderer\ActionHandler;
 use phpDocumentor\Renderer\RenderPass;
 use phpDocumentor\Renderer\Template\PathsRepository;
-use phpDocumentor\Transformer\Router\ForFileProxy;
-use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Renderer\Router\ForFileProxy;
+use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Views\ViewFactory;
 use phpDocumentor\Views\Views;
 

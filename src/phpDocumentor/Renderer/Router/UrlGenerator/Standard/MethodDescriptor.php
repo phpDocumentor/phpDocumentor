@@ -9,10 +9,10 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Router\UrlGenerator\Standard;
+namespace phpDocumentor\Renderer\Router\UrlGenerator\Standard;
 
 use phpDocumentor\Descriptor;
-use phpDocumentor\Transformer\Router\UrlGenerator\UrlGeneratorInterface;
+use phpDocumentor\Renderer\Router\UrlGenerator\UrlGeneratorInterface;
 
 /**
  * Generates a relative URL with methods for use in the generated HTML documentation.
