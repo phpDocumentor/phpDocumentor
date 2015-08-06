@@ -87,7 +87,7 @@ Initially we will be supporting three schemes:
 
 1. `file` – the local file system, which is represented by the ‘Local’ Adapter
 2. `git+http` – A git repository that is cloned in the ‘tmp’ folder, this is represented by the ‘CloneRemoteGitToLocal’
-   adapter (https://github.com/potherca/POC-flysystem-readonly-git)
+   adapter (https://github.com/potherca/flysystem-readonly-git-adapter)
 3. `git+https` – which is an alias for `git+http` only we connect over https instead of http.
 
 After the Adapter and Filesystem is created we need to add the Flysystem Finder Plugin onto the Filesystem entity, as
