@@ -100,7 +100,7 @@ class Loader
      * Combines the given configuration files and serializes a new Configuration object from them.
      *
      * @param string           $templatePath          Path to the template configuration file.
-     * @param string           $defaultUserConfigPath Path to the phpdoc.xml or phpdoc,dist.xml in the current working
+     * @param string           $defaultUserConfigPath Path to the phpdoc.xml or phpdoc.dist.xml in the current working
      *     directory.
      * @param null|bool|string $customUserConfigPath  Path to the user-defined config file given using the command-line.
      * @param string           $class                 Base Configuration class name to construct and populate.
