@@ -13,6 +13,8 @@ namespace phpDocumentor\ApiReference;
 
 use Mockery as m;
 use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\Reflection\Element;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Test case for Api
