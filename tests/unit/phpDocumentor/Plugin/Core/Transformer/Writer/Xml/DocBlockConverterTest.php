@@ -34,6 +34,7 @@ class DocBlockConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        $this->markTestIncomplete('Shall be rewritten.');
         $this->tagConverterMock  = $this->givenATagConverter();
         $this->routerMock        = $this->givenARouter();
         $this->fixture           = new DocBlockConverter($this->tagConverterMock, $this->routerMock);

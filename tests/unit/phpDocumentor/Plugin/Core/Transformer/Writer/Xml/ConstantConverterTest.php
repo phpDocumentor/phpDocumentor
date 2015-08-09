@@ -22,6 +22,11 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
  */
 class ConstantConverterTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->markTestIncomplete('Shall be rewritten.');
+    }
+
     /**
      * Tests whether the XML Element representing a constant is properly created.
      *

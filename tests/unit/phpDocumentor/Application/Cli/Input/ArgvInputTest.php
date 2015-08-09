@@ -13,11 +13,12 @@ namespace phpDocumentor\Application\Cli\Input;
 
 /**
  * Tests the functionality for the InputStream class for phpDocumentor.
+ * @coversDefaultClass phpDocumentor\Application\Cli\Input\ArgvInput
  */
 class ArgvInputTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers       phpDocumentor\Console\Input\ArgvInput::__construct
+     * @covers       ::__construct
      * @dataProvider provideArgvArrays
      */
     public function testPrependsCommandName($argvArray, $expected)
@@ -27,7 +28,7 @@ class ArgvInputTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Console\Input\ArgvInput::__construct
+     * @covers ::__construct
      */
     public function testIfServerArgvIsArray()
     {

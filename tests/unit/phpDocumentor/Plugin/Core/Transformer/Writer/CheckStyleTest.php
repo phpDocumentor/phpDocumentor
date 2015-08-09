@@ -35,6 +35,7 @@ class CheckStyleTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        $this->markTestIncomplete('Shall be rewritten.');
         $this->checkStyle = new CheckStyle();
         $this->fs = vfsStream::setup('CheckStyleTest');
     }

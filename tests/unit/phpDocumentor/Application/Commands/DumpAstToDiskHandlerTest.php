@@ -42,6 +42,7 @@ class DumpAstToDiskHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testProjectGetsSerializedAndDumpedToDisk()
     {
+        $this->markTestIncomplete('Shall be rewritten after new reflection integration.');
         $target = sys_get_temp_dir() . '/phpdoc.ast';
         $projectDescriptor = new ProjectDescriptor('');
 

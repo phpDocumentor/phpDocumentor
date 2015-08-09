@@ -47,6 +47,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        $this->markTestIncomplete('Shall be rewritten.');
         $this->fs                = vfsStream::setup('XmlTest');
         $this->projectDescriptor = m::mock('phpDocumentor\Descriptor\Interfaces\ProjectInterface');
         $this->routerMock        = m::mock('phpDocumentor\Transformer\Router\RouterAbstract');
