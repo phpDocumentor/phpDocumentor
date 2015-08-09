@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "784c197346ec011051349a71db39072f",
+    "hash": "fa170c977f53199bf9b4544bd2d42721",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -949,12 +949,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "d7c824c32aefeb53c7169cee30ed42dec280989f"
+                "reference": "3516b9749cc18e4b7f7282e2dce2591a00d25365"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/3516b9749cc18e4b7f7282e2dce2591a00d25365",
-                "reference": "d7c824c32aefeb53c7169cee30ed42dec280989f",
+                "reference": "3516b9749cc18e4b7f7282e2dce2591a00d25365",
                 "shasum": ""
             },
             "require": {
@@ -994,7 +994,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-08-09 13:23:06"
+            "time": "2015-08-09 18:22:17"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2201,6 +2201,55 @@
                 "schema"
             ],
             "time": "2015-07-14 16:29:50"
+        },
+        {
+            "name": "league/flysystem-memory",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-memory.git",
+                "reference": "46df9a22e2854ea919ccafb50c3306bdf309fbe8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/46df9a22e2854ea919ccafb50c3306bdf309fbe8",
+                "reference": "46df9a22e2854ea919ccafb50c3306bdf309fbe8",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Memory\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Leppanen",
+                    "email": "chris.leppanen@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An in-memory adapter for Flysystem.",
+            "homepage": "http://github.com/twistor/flysystem-memory-adapter",
+            "keywords": [
+                "league"
+            ],
+            "time": "2015-06-26 18:25:54"
         },
         {
             "name": "mikey179/vfsStream",

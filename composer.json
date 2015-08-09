@@ -44,7 +44,8 @@
         "squizlabs/php_codesniffer":   "^1.4",
         "symfony/expression-language": "^2.4",
         "symfony/process":             "^2.3",
-        "herrera-io/phar-update": "^2.0"
+        "herrera-io/phar-update": "^2.0",
+        "league/flysystem-memory": "^1.0"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
