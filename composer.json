@@ -23,13 +23,16 @@
 
         "phpdocumentor/graphviz":   "^1.0",
         "phpdocumentor/fileset":    "^1.0",
-        "phpdocumentor/reflection": "dev-develop",
+        "phpdocumentor/reflection": "dev-develop@dev",
+        "phpdocumentor/reflection-common": "^1.0@dev",
+        "phpdocumentor/reflection-docblock": "^3.0@dev",
         "tedivm/stash": "^0.12.3",
         "league/tactician": "^0.6.0",
         "webmozart/assert": "^1.0",
         "league/flysystem": "~1.0",
         "php-di/php-di": "^5.0",
-        "league/event": "^2.1"
+        "league/event": "^2.1",
+        "symfony/validator": "^2.7"
     },
     "minimum-stability": "stable",
     "require-dev": {
