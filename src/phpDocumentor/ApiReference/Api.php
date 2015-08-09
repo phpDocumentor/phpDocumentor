@@ -12,6 +12,8 @@
 namespace phpDocumentor\ApiReference;
 
 use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\Reflection\Element;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Container for Elements.
