@@ -41,6 +41,7 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfSingleDefinitionGeneratesAnUrl()
     {
+        $this->fail('getTransformer does not exist');
         // Arrange
         $config = new Configuration();
         $config->getTransformer()->setExternalClassDocumentation(
@@ -63,6 +64,7 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfMultipleDefinitionsGenerateAnUrl()
     {
+        $this->fail('getTransformer does not exist');
         // Arrange
         $config = new Configuration();
         $config->getTransformer()->setExternalClassDocumentation(

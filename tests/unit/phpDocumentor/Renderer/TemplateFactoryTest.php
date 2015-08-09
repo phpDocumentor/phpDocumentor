@@ -220,6 +220,11 @@ namespace phpDocumentor\Renderer\Action {
         {
             return new static($parameters);
         }
+
+        public function __toString()
+        {
+            return __CLASS__;
+        }
     }
 
     class TestAction2 extends TestAction1
@@ -240,6 +245,11 @@ namespace phpDocumentor\Renderer\Action {
         public static function create(array $parameters)
         {
             return null;
+        }
+
+        public function __toString()
+        {
+            return __CLASS__;
         }
     }
 }

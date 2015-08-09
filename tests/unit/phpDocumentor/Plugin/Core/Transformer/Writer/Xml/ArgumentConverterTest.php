@@ -21,6 +21,11 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
  */
 class ArgumentConverterTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->markTestIncomplete('Shall be rewritten.');
+    }
+
     /**
      * Tests whether the XML Element representing an argument is properly created.
      *

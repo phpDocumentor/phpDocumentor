@@ -23,6 +23,11 @@ class TagConverterTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_LINENUMBER = 100;
 
+    protected function setUp()
+    {
+        $this->markTestIncomplete('Shall be rewritten.');
+    }
+
     /**
      * Tests whether the information common to all tags is stored on an XML element.
      *

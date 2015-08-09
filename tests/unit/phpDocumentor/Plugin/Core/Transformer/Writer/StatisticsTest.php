@@ -32,6 +32,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        $this->markTestIncomplete('Shall be rewritten.');
         $this->statistics = new Statistics();
         $this->fs = vfsStream::setup('StatisticsTest');
     }

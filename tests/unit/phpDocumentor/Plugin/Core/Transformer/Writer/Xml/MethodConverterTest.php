@@ -23,6 +23,11 @@ use phpDocumentor\Descriptor\MethodDescriptor;
  */
 class MethodConverterTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->markTestIncomplete('Shall be rewritten.');
+    }
+
     /**
      * Tests whether the XML Element representing a method is properly created.
      *

@@ -80,10 +80,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Configuration::__construct
-     * @covers phpDocumentor\Configuration::getTransformations
      */
     public function testIfTransformationsConfigurationIsReturned()
     {
+        $this->fail('getTransformations does not exist');
         $this->assertInstanceOf(
             'phpDocumentor\Transformer\Configuration\Transformations',
             $this->fixture->getTransformations()
@@ -92,10 +92,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Configuration::__construct
-     * @covers phpDocumentor\Configuration::getTransformer
      */
     public function testIfTransformerConfigurationIsReturned()
     {
+        $this->fail('getTransformer does not exist');
         $this->assertInstanceOf('phpDocumentor\Transformer\Configuration', $this->fixture->getTransformer());
     }
 }

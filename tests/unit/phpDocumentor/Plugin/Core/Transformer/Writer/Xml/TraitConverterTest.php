@@ -24,6 +24,11 @@ use phpDocumentor\Descriptor\MethodDescriptor;
  */
 class TraitConverterTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->markTestIncomplete('Shall be rewritten.');
+    }
+
     /**
      * Tests whether the XML Element representing a trait is properly created.
      *
