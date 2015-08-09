@@ -13,18 +13,18 @@
 namespace phpDocumentor\Reflection\Php\Factory\File;
 
 
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 final class FlySystemAdapter implements Adapter
 {
     /**
      * Filesystem used to read file.
      *
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $filesystem;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(FilesystemInterface $filesystem)
     {
         $this->filesystem = $filesystem;
     }
@@ -59,7 +59,7 @@ final class FlySystemAdapter implements Adapter
      */
     public function md5($filePath)
     {
-        return md5($this->getContents());
+        return md5($this->getContents($filePath));
     }
 
     /**
