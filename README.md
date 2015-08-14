@@ -15,7 +15,7 @@ Features
 
 phpDocumentor supports the following:
 
-* *PHP 5.5 compatible*, full support for Namespaces, Closures and more is provided.
+* *PHP 5.3 compatible*, full support for Namespaces, Closures and more is provided.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
 * *Processing speed*, Zend Framework experienced a significant reduction in processing time compared to phpDocumentor 1.
 * *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
