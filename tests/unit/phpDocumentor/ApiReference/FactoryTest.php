@@ -12,6 +12,7 @@
 
 namespace phpDocumentor\ApiReference;
 
+use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\FilesystemInterface;
 use Mockery as m;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
@@ -38,7 +39,13 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testMatches()
     {
         $this->assertFalse($this->fixture->matches(m::mock(DocumentGroupDefinitionInterface::class)));
-        $this->assertTrue($this->fixture->matches(new DocumentGroupDefinition(new DocumentGroupFormat('php'), m::mock(FilesystemInterface::class))));
+        $this->assertTrue($this->fixture->matches(
+            new DocumentGroupDefinition(
+                new DocumentGroupFormat('php'),
+                m::mock(FilesystemInterface::class),
+                m::mock(SpecificationInterface::class)
+            )
+        ));
     }
 
     /**
@@ -46,8 +53,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate()
     {
+        $fileSystem = m::mock(FilesystemInterface::class);
+        $fileSystem->shouldReceive('find')->andReturn([]);
         $format = new DocumentGroupFormat('php');
-        $definition = new DocumentGroupDefinition($format, m::mock(FilesystemInterface::class));
+        $definition = new DocumentGroupDefinition($format, $fileSystem, m::mock(SpecificationInterface::class));
 
         $api = $this->fixture->create($definition);
 
