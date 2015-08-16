@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\FlyFinder;
 
-
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
 use Flyfinder\Specification\HasExtension;
@@ -21,10 +20,16 @@ use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
 use Flyfinder\Specification\SpecificationInterface;
+use phpDocumentor\SpecificationFactory as FactoryInterface;
 
-final class SpecificationFactory
+/**
+ * Factory class to build Specification used by FlyFinder when reading files to process.
+ */
+final class SpecificationFactory implements FactoryInterface
 {
     /**
+     * Creates a SpecificationInterface object based on the ignore and extension parameters.
+     *
      * @param array $ignore
      * @param array $extensions
      *
@@ -62,6 +67,12 @@ final class SpecificationFactory
         return new OrSpecification($spec, $or);
     }
 
+    /**
+     * Creates an InPath specification.
+     *
+     * @param string $path
+     * @return InPath
+     */
     private function inPath($path)
     {
         return new InPath(new Path($path));
