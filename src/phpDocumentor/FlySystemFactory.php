@@ -20,7 +20,7 @@ use League\Flysystem\MountManager;
 /**
  * Class FilesystemFactory
  */
-final class FilesystemFactory
+final class FlySystemFactory implements FileSystemFactory
 {
     /** @var MountManager */
     private $mountManager;

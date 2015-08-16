@@ -18,10 +18,10 @@ use Mockery as m;
  * Test case for FilesystemFactory
  * @coversDefaultClass phpDocumentor\FilesystemFactory
  */
-class FilesystemFactoryTest extends \PHPUnit_Framework_TestCase
+class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var FilesystemFactory */
+    /** @var FlySystemFactory */
     private $fixture;
 
     /** @var m\Mock */
@@ -38,7 +38,7 @@ class FilesystemFactoryTest extends \PHPUnit_Framework_TestCase
         $this->mountManagerMock = m::mock('League\Flysystem\MountManager');
         $this->filesystemMock = m::mock('League\Flysystem\Filesystem');
         $this->dsn = new Dsn('file:///tmp');
-        $this->fixture = new FilesystemFactory($this->mountManagerMock);
+        $this->fixture = new FlySystemFactory($this->mountManagerMock);
     }
 
     /**
