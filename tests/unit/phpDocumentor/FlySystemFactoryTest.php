@@ -12,11 +12,12 @@
 
 namespace phpDocumentor;
 
+use Flyfinder\Specification\InPath;
 use Mockery as m;
 
 /**
  * Test case for FilesystemFactory
- * @coversDefaultClass phpDocumentor\FilesystemFactory
+ * @coversDefaultClass phpDocumentor\FlySystemFactory
  */
 class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -73,6 +74,7 @@ class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->mountManagerMock->shouldReceive('mountFilesystem')->never();
         $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andReturn($this->filesystemMock);
+        $this->filesystemMock->shouldReceive('addPlugin');
 
         $result = $this->fixture->create($this->dsn);
 
@@ -93,5 +95,21 @@ class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
         $dsn = new Dsn('git+http://github.com');
 
         $this->fixture->create($dsn);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::create
+     * @covers ::<private>
+     * @uses phpDocumentor\Path
+     * @uses phpDocumentor\Dsn
+     */
+    public function testFlyFinderIsRegistered()
+    {
+        $this->mountManagerMock->shouldReceive('mountFilesystem')->once();
+        $this->mountManagerMock->shouldReceive('getFilesystem')->once()->andThrow('\LogicException');
+        $fileSystem = $this->fixture->create($this->dsn);
+
+        $fileSystem->find(new InPath(new \Flyfinder\Path('a')));
     }
 }

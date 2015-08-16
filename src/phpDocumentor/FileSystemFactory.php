@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\FileSystem;
+namespace phpDocumentor;
 
 use phpDocumentor\Dsn;
 
