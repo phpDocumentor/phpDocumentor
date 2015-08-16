@@ -32,7 +32,8 @@
         "league/flysystem": "~1.0",
         "php-di/php-di": "^5.0",
         "league/event": "^2.1",
-        "symfony/validator": "^2.7"
+        "symfony/validator": "^2.7",
+        "phpdocumentor/flyfinder": "dev-master@dev"
     },
     "minimum-stability": "stable",
     "require-dev": {

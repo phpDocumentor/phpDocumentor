@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ec477ef05db1d2bce2f26bd7c8af8c73",
+    "hash": "784c197346ec011051349a71db39072f",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -861,6 +861,48 @@
             "time": "2013-08-06 21:07:42"
         },
         {
+            "name": "phpdocumentor/flyfinder",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/FlyFinder.git",
+                "reference": "f7c0c22ea56c97c5cf904e304b8d03c92170f0da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/FlyFinder/zipball/f7c0c22ea56c97c5cf904e304b8d03c92170f0da",
+                "reference": "f7c0c22ea56c97c5cf904e304b8d03c92170f0da",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "~1.0.8",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9@dev",
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Flyfinder\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Flysystem plugin to add file finding capabilities to the Filesystem entity",
+            "homepage": "http://www.phpdoc.org",
+            "keywords": [
+                "Flysystem",
+                "phpdoc"
+            ],
+            "time": "2015-07-15 18:53:34"
+        },
+        {
             "name": "phpdocumentor/graphviz",
             "version": "1.0.3",
             "source": {
@@ -911,7 +953,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/d7c824c32aefeb53c7169cee30ed42dec280989f",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/3516b9749cc18e4b7f7282e2dce2591a00d25365",
                 "reference": "d7c824c32aefeb53c7169cee30ed42dec280989f",
                 "shasum": ""
             },
@@ -3493,6 +3535,7 @@
         "phpdocumentor/reflection": 20,
         "phpdocumentor/reflection-common": 20,
         "phpdocumentor/reflection-docblock": 20,
+        "phpdocumentor/flyfinder": 20,
         "mockery/mockery": 20
     },
     "prefer-stable": false,
