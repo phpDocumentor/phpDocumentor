@@ -38,6 +38,13 @@ final class DocumentGroupDefinition implements DocumentGroupDefinitionInterface
      */
     private $specification;
 
+    /**
+     * Initializes the object with the required format, filesystem and specification to query the filesystem.
+     *
+     * @param DocumentGroupFormat $format
+     * @param FilesystemInterface $filesystem
+     * @param SpecificationInterface $specification
+     */
     public function __construct(
         DocumentGroupFormat $format,
         FilesystemInterface $filesystem,
@@ -85,4 +92,3 @@ final class DocumentGroupDefinition implements DocumentGroupDefinitionInterface
         return $files;
     }
 }
-

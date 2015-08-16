@@ -17,8 +17,15 @@ use League\Flysystem\FilesystemInterface;
 use Mockery as m;
 use phpDocumentor\DocumentGroupFormat;
 
+/**
+ * @coversDefaultClass \phpDocumentor\ApiReference\DocumentGroupDefinition
+ */
 class DocumentGroupDefinitionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::getFiles
+     */
     public function testGetFiles()
     {
         $fileSystemMock = m::mock(FileSystemInterface::class);

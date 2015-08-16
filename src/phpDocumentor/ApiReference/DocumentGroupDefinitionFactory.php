@@ -15,9 +15,13 @@ namespace phpDocumentor\ApiReference;
 use phpDocumentor\DocumentGroupDefinitionFactory as DocumentGroupDefinitionFactoryInterface;
 use phpDocumentor\DocumentGroupFormat;
 use phpDocumentor\Dsn;
-use phpDocumentor\Filesystem\FilesystemFactory;
+use phpDocumentor\FileSystemFactory;
 use phpDocumentor\SpecificationFactory;
 
+/**
+ * Factory for DocumentGroupDefinition.
+ * This factory delegates most of it's work to a FileSystemFactory and SpecificationFactory.
+ */
 final class DocumentGroupDefinitionFactory implements DocumentGroupDefinitionFactoryInterface
 {
     /**
@@ -30,7 +34,13 @@ final class DocumentGroupDefinitionFactory implements DocumentGroupDefinitionFac
      */
     private $specificationFactory;
 
-    public function __construct(FilesystemFactory $filesystemFactory, SpecificationFactory $specificationFactory)
+    /**
+     * Initializes the object with required factories.
+     *
+     * @param FileSystemFactory $filesystemFactory
+     * @param SpecificationFactory $specificationFactory
+     */
+    public function __construct(FileSystemFactory $filesystemFactory, SpecificationFactory $specificationFactory)
     {
         $this->fileSystemFactory = $filesystemFactory;
         $this->specificationFactory = $specificationFactory;
@@ -38,35 +48,6 @@ final class DocumentGroupDefinitionFactory implements DocumentGroupDefinitionFac
 
     /**
      * Creates a Definition using the provided options
-     *
-     * ```
-     * 'api' => array(
-     *   'format' => 'php',
-     *   'source' => array(
-     *       'dsn' => 'file://.',
-     *       'paths' => array(
-     *           0 => 'src'
-     *       )
-     *   ),
-     *   'ignore' => array(
-     *   'hidden' => true,
-     *   'symlinks' => true,
-     *   'paths' => array(
-     *   0 => 'src/ServiceDefinitions.php'
-     *   )
-     *   ),
-     *   'extensions' => array(
-     *   0 => 'php',
-     *   1 => 'php3',
-     *   2 => 'phtml'
-     *   ),
-     *   'visibility' => 'public',
-     *   'default-package-name' => 'Default',
-     *   'markers' => array(
-     *   0 => 'TODO',
-     *   1 => 'FIXME'
-     *   )
-     *   ),
      *
      * @param array $options
      * @return DocumentGroupDefinition
@@ -84,4 +65,3 @@ final class DocumentGroupDefinitionFactory implements DocumentGroupDefinitionFac
         return new DocumentGroupDefinition($format, $fileSystem, $specification);
     }
 }
-
