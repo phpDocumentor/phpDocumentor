@@ -32,7 +32,7 @@ final class DocumentGroupDefinition implements DocumentGroupDefinitionInterface
      * @var FilesystemInterface
      */
     private $filesystem;
-    
+
     /**
      * @var SpecificationInterface
      */
@@ -76,7 +76,13 @@ final class DocumentGroupDefinition implements DocumentGroupDefinitionInterface
      */
     public function getFiles()
     {
-        return [];
+        $files = [];
+        $result = $this->filesystem->find($this->specification);
+        foreach ($result as $file) {
+            $files[] = $file;
+        }
+
+        return $files;
     }
 }
 
