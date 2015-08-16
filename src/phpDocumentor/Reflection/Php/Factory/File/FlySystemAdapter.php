@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\Reflection\Php\Factory\File;
 
-
 use League\Flysystem\FilesystemInterface;
 
 final class FlySystemAdapter implements Adapter
@@ -24,6 +23,11 @@ final class FlySystemAdapter implements Adapter
      */
     private $filesystem;
 
+    /**
+     * Initializes the object with a FileSystem.
+     *
+     * @param FilesystemInterface $filesystem
+     */
     public function __construct(FilesystemInterface $filesystem)
     {
         $this->filesystem = $filesystem;
@@ -73,3 +77,4 @@ final class FlySystemAdapter implements Adapter
         return $filePath;
     }
 }
+

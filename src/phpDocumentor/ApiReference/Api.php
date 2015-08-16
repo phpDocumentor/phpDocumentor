@@ -16,6 +16,7 @@ use phpDocumentor\DocumentGroup;
 use phpDocumentor\DocumentGroupFormat;
 use phpDocumentor\Reflection\Element;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Project;
 
 /**
  * Container for Elements.
@@ -35,6 +36,13 @@ final class Api implements DocumentGroup
      * @var Element[]
      */
     private $elements = [];
+
+    /**
+     * Project containing all elements.
+     *
+     * @var Project
+     */
+    private $project;
 
     /**
      * Initialized the class with the given format.

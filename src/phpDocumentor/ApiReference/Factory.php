@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\ApiReference;
 
+use InvalidArgumentException;
 use phpDocumentor\DocumentGroup;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFactory;
@@ -31,30 +32,32 @@ final class Factory implements DocumentGroupFactory
      */
     public function create(DocumentGroupDefinitionInterface $definition)
     {
-        if ($definition instanceof DocumentGroupDefinition) {
-
-            $projectFactory = new ProjectFactory(
-                [
-                    new ProjectFactoryStrategy\Argument(new PrettyPrinter()),
-                    new ProjectFactoryStrategy\Class_(),
-                    new ProjectFactoryStrategy\Constant(new PrettyPrinter()),
-                    new ProjectFactoryStrategy\DocBlock(DocBlockFactory::createInstance()),
-                    new ProjectFactoryStrategy\File(
-                        NodesFactory::createInstance(),
-                        new FlySystemAdapter($definition->getFilesystem())
-                    ),
-                    new ProjectFactoryStrategy\Function_(),
-                    new ProjectFactoryStrategy\Interface_(),
-                    new ProjectFactoryStrategy\Method(),
-                    new ProjectFactoryStrategy\Property(new PrettyPrinter()),
-                    new ProjectFactoryStrategy\Trait_(),
-                ]
-            );
-
-            $project = $projectFactory->create('My Project', $definition->getFiles());
-
-            return new Api($definition->getFormat(), $project);
+        /** @var DocumentGroupDefinition $definition */
+        if (!$this->matches($definition)) {
+            throw new InvalidArgumentException('Definition must be an instance of ' . DocumentGroupDefinition::class);
         }
+
+        $projectFactory = new ProjectFactory(
+            [
+                new ProjectFactoryStrategy\Argument(new PrettyPrinter()),
+                new ProjectFactoryStrategy\Class_(),
+                new ProjectFactoryStrategy\Constant(new PrettyPrinter()),
+                new ProjectFactoryStrategy\DocBlock(DocBlockFactory::createInstance()),
+                new ProjectFactoryStrategy\File(
+                    NodesFactory::createInstance(),
+                    new FlySystemAdapter($definition->getFilesystem())
+                ),
+                new ProjectFactoryStrategy\Function_(),
+                new ProjectFactoryStrategy\Interface_(),
+                new ProjectFactoryStrategy\Method(),
+                new ProjectFactoryStrategy\Property(new PrettyPrinter()),
+                new ProjectFactoryStrategy\Trait_(),
+            ]
+        );
+
+        $project = $projectFactory->create('My Project', $definition->getFiles());
+
+        return new Api($definition->getFormat(), $project);
     }
 
     /**
