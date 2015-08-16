@@ -15,7 +15,7 @@ namespace phpDocumentor\Application\Commands;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\Dsn;
-use phpDocumentor\FilesystemFactory;
+use phpDocumentor\FlySystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Renderer\Template;
 use phpDocumentor\Renderer\TemplateFactory;
@@ -32,7 +32,7 @@ final class RenderHandler
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var FilesystemFactory */
+    /** @var FlySystemFactory */
     private $filesystemFactory;
 
     /** @var Emitter */
@@ -41,7 +41,7 @@ final class RenderHandler
     public function __construct(
         TemplateFactory   $templateFactory,
         CommandBus        $commandBus,
-        FilesystemFactory $filesystemFactory,
+        FlySystemFactory $filesystemFactory,
         Emitter           $emitter
     ) {
         $this->templateFactory   = $templateFactory;
