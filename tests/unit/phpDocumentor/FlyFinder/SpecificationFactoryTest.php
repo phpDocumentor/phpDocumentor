@@ -38,6 +38,10 @@ class SpecificationFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateIgnoreHidden()
     {
+        $paths = array(
+            'some/path',
+        );
+
         $ignore = array(
             'hidden' => true,
         );
@@ -46,14 +50,17 @@ class SpecificationFactoryTest extends \PHPUnit_Framework_TestCase
             'php'
         );
 
-        $specification = $this->fixture->create($ignore, $extensions);
+        $specification = $this->fixture->create($paths, $ignore, $extensions);
 
         $this->assertEquals(
             new AndSpecification(
-                new NotSpecification(
-                    new IsHidden()
-                ),
-                new HasExtension(['php'])
+                new InPath(new Path('some/path')),
+                new AndSpecification(
+                    new NotSpecification(
+                        new IsHidden()
+                    ),
+                    new HasExtension(['php'])
+                )
             ),
             $specification
         );
@@ -61,25 +68,32 @@ class SpecificationFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateIgnorePath()
     {
+        $paths = array(
+            'src/',
+        );
+
         $ignore = array(
-            'paths' => ['some/path', 'some/other/path'],
+            'paths' => ['src/some/path', 'src/some/other/path'],
         );
 
         $extensions = array(
             'php'
         );
 
-        $specification = $this->fixture->create($ignore, $extensions);
+        $specification = $this->fixture->create($paths, $ignore, $extensions);
 
         $this->assertEquals(
             new AndSpecification(
-                new NotSpecification(
-                    new OrSpecification(
-                        new InPath(new Path('some/path')),
-                        new InPath(new Path('some/other/path'))
-                    )
-                ),
-                new HasExtension(['php'])
+                new InPath(new Path('src/')),
+                new AndSpecification(
+                    new NotSpecification(
+                        new OrSpecification(
+                            new InPath(new Path('src/some/path')),
+                            new InPath(new Path('src/some/other/path'))
+                        )
+                    ),
+                    new HasExtension(['php'])
+                )
             ),
             $specification
         );

@@ -30,13 +30,18 @@ final class SpecificationFactory implements FactoryInterface
     /**
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
+     * @param array $paths
      * @param array $ignore
      * @param array $extensions
-     *
      * @return SpecificationInterface
      */
-    public function create(array $ignore, array $extensions)
+    public function create(array $paths, array $ignore, array $extensions)
     {
+        $pathSpec = null;
+        foreach ($paths as $path) {
+            $pathSpec = $this->orSpec($this->inPath($path), $pathSpec);
+        }
+
         $ignoreSpec = null;
         if (isset($ignore['paths'])) {
             foreach ($ignore['paths'] as $path) {
@@ -48,7 +53,12 @@ final class SpecificationFactory implements FactoryInterface
             $ignoreSpec = $this->orSpec(new IsHidden(), $ignoreSpec);
         }
 
-        return new AndSpecification(new NotSpecification($ignoreSpec), new HasExtension($extensions));
+        return new AndSpecification($pathSpec,
+            new AndSpecification(
+                new NotSpecification($ignoreSpec),
+                new HasExtension($extensions)
+            )
+        );
     }
 
     /**
