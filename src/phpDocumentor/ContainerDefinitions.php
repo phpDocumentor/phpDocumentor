@@ -63,7 +63,9 @@ use Symfony\Component\Validator\ValidatorInterface;
 use phpDocumentor\Descriptor;
 
 // maintain BC in XSL-based templates
-class_alias(Extension::class, 'phpDocumentor\\Plugin\\Core\\Xslt\\Extension');
+if (!class_exists('phpDocumentor\\Plugin\\Core\\Xslt\\Extension')) {
+    class_alias(Extension::class, 'phpDocumentor\\Plugin\\Core\\Xslt\\Extension');
+}
 
 return [
     // -- Parameters

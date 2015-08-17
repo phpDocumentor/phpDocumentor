@@ -35,7 +35,7 @@ class Extension
      * ```
      * <div class="long_description">
      *     <xsl:value-of
-     *         select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown',
+     *         select="php:function('phpDocumentor\Renderer\Action\Xslt::markdown',
      *             string(docblock/long-description))"
      *         disable-output-escaping="yes" />
      * </div>

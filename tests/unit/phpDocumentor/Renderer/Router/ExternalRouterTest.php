@@ -23,6 +23,7 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfNoUrlIsGeneratedWhenThereIsNoDefinition()
     {
+        $this->markTestIncomplete();
         // Arrange
         $config = new Configuration();
         $router = new ExternalRouter($config);
@@ -41,6 +42,7 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfSingleDefinitionGeneratesAnUrl()
     {
+        $this->markTestIncomplete();
         // Arrange
         $config = new Configuration();
         $config->getRenderer()->setExternalClassDocumentation(
@@ -63,6 +65,7 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfMultipleDefinitionsGenerateAnUrl()
     {
+        $this->markTestIncomplete();
         // Arrange
         $config = new Configuration();
         $config->getRenderer()->setExternalClassDocumentation(
