@@ -24,6 +24,10 @@ class ViewFactory implements Mapper
         $mapper = $this->mapperFactory->create($viewDefinition->getType());
         $data = $mapper->create($viewDefinition, $documentation);
 
+        foreach ($viewDefinition->getFilters() as $filter) {
+            $data = $filter($data);
+        }
+
         return new View($viewDefinition, $data);
     }
 }

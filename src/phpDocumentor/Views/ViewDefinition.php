@@ -10,17 +10,17 @@ class ViewDefinition
     /** @var ViewType */
     private $type;
 
-    /** @var Filter|null */
-    private $filter;
+    /** @var Filter[] */
+    private $filters = [];
 
     /** @var string[] */
     private $properties = [];
 
-    public function __construct($name, ViewType $type, $filter = null, $properties = [])
+    public function __construct($name, ViewType $type, array $filters = [], array $properties = [])
     {
         $this->name       = $name;
         $this->type       = $type;
-        $this->filter     = $filter;
+        $this->filters    = $filters;
         $this->properties = $properties;
     }
 
@@ -41,11 +41,11 @@ class ViewDefinition
     }
 
     /**
-     * @return Filter|null
+     * @return Filter[]
      */
-    public function getFilter()
+    public function getFilters()
     {
-        return $this->filter;
+        return $this->filters;
     }
 
     /**
