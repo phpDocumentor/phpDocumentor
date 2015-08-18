@@ -4,25 +4,41 @@ namespace phpDocumentor;
 
 use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
 use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
+use phpDocumentor\ConfigurationFactory\Strategy;
 
 final class ConfigurationFactory
 {
     /**
+     * The Uri that contains the path to the configuration file
+     *
      * @var Uri
      */
     private $uri;
 
     /**
+     * The configuration xml
+     *
      * @var \SimpleXMLElement
      */
     private $xml;
 
     /**
+     * The path to the xsd that is used for validation of the configuration file.
+     *
      * @var string
      */
     private $schemaPath;
 
     /**
+     * All strategies that are used by the ConfigurationFactory
+     *
+     * @var Strategy[]
+     */
+    private $strategies;
+
+    /**
+     * Initializes the ConfigurationFactory.
+     *
      * @param Uri    $uri
      * @param string $schemaPath
      */
@@ -35,6 +51,8 @@ final class ConfigurationFactory
         $this->schemaPath = $schemaPath;
 
         $this->replaceLocation($uri);
+
+        $this->registerStrategies();
     }
 
     /**
@@ -55,21 +73,33 @@ final class ConfigurationFactory
      * Converts the phpDocumentor configuration xml to an array.
      *
      * @return array
+     *
+     * @throws \RuntimeException if no strategy can be found.
      */
     public function get()
     {
         $this->validate($this->xml);
 
-        $version = $this->checkIfVersionAttributeIsPresent($this->xml);
-        if ($version) {
-            $xml = new PhpDocumentor3($this->schemaPath);
-        } else {
-            $xml = new PhpDocumentor2();
-        }
+        foreach ($this->strategies as $strategy) {
+            if ($strategy->match($this->xml) === true) {
+                return $strategy->convert($this->xml);
+            }
+        };
 
-        $array = $xml->convert($this->xml);
+        throw new \RuntimeException('No strategy found that matches the configuration xml');
+    }
 
-        return $array;
+    /**
+     * Registers strategies that are used in the ConfigurationFactory.
+     *
+     * @return void
+     */
+    private function registerStrategies()
+    {
+        $this->strategies = [
+            new PhpDocumentor2(),
+            new PhpDocumentor3($this->schemaPath),
+        ];
     }
 
     /**
@@ -85,18 +115,5 @@ final class ConfigurationFactory
             throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found',
                 $xml->getName()));
         }
-    }
-
-    /**
-     * Checks if version attribute is present. If found, it is phpDocumentor3 configuration.
-     * If no version attribute is found, it is assumed that it is phpDocumentor2 configuration.
-     *
-     * @param \SimpleXMLElement $phpDocumentor
-     *
-     * @return bool
-     */
-    private function checkIfVersionAttributeIsPresent(\SimpleXMLElement $phpDocumentor)
-    {
-        return isset($phpDocumentor->attributes()->version);
     }
 }

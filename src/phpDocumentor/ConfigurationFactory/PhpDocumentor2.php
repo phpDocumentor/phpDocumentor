@@ -88,9 +88,16 @@ final class PhpDocumentor2 implements Strategy
         return $phpdoc2Array;
     }
 
-    public function match()
+    /**
+     * Checks if the provided configuration xml is for phpDocumentor2.
+     *
+     * @param $phpDocumentor
+     *
+     * @return bool
+     */
+    public function match(\SimpleXMLElement $phpDocumentor)
     {
-        return $this instanceof Strategy;
+        return (string) $phpDocumentor->attributes()->version === '';
     }
 
     /**

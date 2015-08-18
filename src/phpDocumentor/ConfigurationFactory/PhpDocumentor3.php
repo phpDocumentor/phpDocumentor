@@ -61,9 +61,16 @@ final class PhpDocumentor3 implements Strategy
         return $phpdoc3Array;
     }
 
-    public function match()
+    /**
+     * Checks if the provided configuration xml is for phpDocumentor3.
+     *
+     * @param $phpDocumentor
+     *
+     * @return bool
+     */
+    public function match(\SimpleXMLElement $phpDocumentor)
     {
-        return $this instanceof Strategy;
+        return (string) $phpDocumentor->attributes()->version === '3';
     }
 
     /**
