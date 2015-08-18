@@ -238,7 +238,7 @@ namespace phpDocumentor\Renderer\Action {
 
         public function __toString()
         {
-            return '';
+            return __CLASS__;
         }
     }
 
@@ -264,7 +264,7 @@ namespace phpDocumentor\Renderer\Action {
 
         public function __toString()
         {
-            return '';
+            return __CLASS__;
         }
     }
 }

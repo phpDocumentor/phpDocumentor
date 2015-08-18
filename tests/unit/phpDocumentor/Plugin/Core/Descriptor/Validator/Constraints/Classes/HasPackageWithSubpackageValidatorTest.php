@@ -65,6 +65,7 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateHappyPath()
     {
+        $this->markTestIncomplete('Shall be rewritten after new reflection integration.');
         $packageCollection = new Collection(array());
         $subpackageCollection = new Collection(array('x'));
         $tagPackageCollection = new Collection(
@@ -89,6 +90,7 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateSubpackageWithPackage()
     {
+        $this->markTestIncomplete('Shall be rewritten after new reflection integration.');
         $packageCollection = new Collection(array('x'));
         $subpackageCollection = new Collection(array('y'));
         $tagPackageCollection = new Collection(

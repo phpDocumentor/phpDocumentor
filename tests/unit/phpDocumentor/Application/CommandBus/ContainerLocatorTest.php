@@ -17,7 +17,7 @@ use Mockery as m;
 
 /**
  * Tests the class responsible for passing command handlers from the DIC to the CommandBus.
- * @coversDefaultClass phpDocumentor\Application\Commands\ContainerLocator
+ * @coversDefaultClass phpDocumentor\Application\CommandBus\ContainerLocator
  */
 class ContainerLocatorTest extends \PHPUnit_Framework_TestCase
 {

@@ -65,7 +65,6 @@ class ExternalRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfMultipleDefinitionsGenerateAnUrl()
     {
-        $this->markTestIncomplete();
         // Arrange
         $config = new Configuration();
         $config->getRenderer()->setExternalClassDocumentation(

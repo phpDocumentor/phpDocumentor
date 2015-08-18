@@ -19,7 +19,7 @@ class DumpAstToDiskTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::__construct
-     * @covers ::getTarget
+     * @covers ::getLocation
      */
     public function testCanRegisterAbsoluteTargetLocation()
     {
@@ -30,7 +30,6 @@ class DumpAstToDiskTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::getTarget
      * @expectedException \InvalidArgumentException
      */
     public function testErrorIsThrownIfLocationIsEmpty()
@@ -40,7 +39,6 @@ class DumpAstToDiskTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::getTarget
      * @expectedException \InvalidArgumentException
      */
     public function testErrorIsThrownIfLocationIsNotAString()
