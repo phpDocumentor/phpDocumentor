@@ -12,7 +12,7 @@
 namespace phpDocumentor\Renderer\Action\Xslt;
 
 use phpDocumentor\Descriptor\Analyzer;
-use phpDocumentor\Transformer\Router\Queue;
+use phpDocumentor\Renderer\Router\Queue;
 
 /**
  * XSLT filters that can be used inside a template.
@@ -35,7 +35,7 @@ class Extension
      * ```
      * <div class="long_description">
      *     <xsl:value-of
-     *         select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown',
+     *         select="php:function('phpDocumentor\Renderer\Action\Xslt::markdown',
      *             string(docblock/long-description))"
      *         disable-output-escaping="yes" />
      * </div>

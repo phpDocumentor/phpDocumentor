@@ -52,8 +52,8 @@ namespace phpDocumentor\Renderer {
          */
         public function testCreateTemplateFromOptionsArray()
         {
-            $fixture = new TemplateFactory();
-            $template = $fixture->create($this->exampleOptionsArray);
+            $fixture = new TemplateFactory([]);
+            $template = $fixture->create(m::mock(RenderPass::class), $this->exampleOptionsArray);
 
             $expectedTemplate = new Template(
                 'TemplateName',
@@ -86,8 +86,8 @@ namespace phpDocumentor\Renderer {
          */
         public function testCreatingATemplateWithoutParametersAndActions()
         {
-            $fixture = new TemplateFactory();
-            $template = $fixture->create([ 'name' => 'TemplateName' ]);
+            $fixture = new TemplateFactory([]);
+            $template = $fixture->create(m::mock(RenderPass::class), [ 'name' => 'TemplateName' ]);
 
             $expectedTemplate = new Template('TemplateName');
 
@@ -101,8 +101,8 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfNameIsNotProvided()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create([]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(m::mock(RenderPass::class), []);
         }
 
         /**
@@ -112,8 +112,8 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfNameIsNotAString()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => true]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(m::mock(RenderPass::class), ['name' => true]);
         }
 
         /**
@@ -124,8 +124,8 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfTemplateParametersIsNotAnArray()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'parameters' => ['bla']]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(m::mock(RenderPass::class), ['name' => 'TemplateName', 'parameters' => ['bla']]);
         }
 
         /**
@@ -136,8 +136,8 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionsIsNotAnArray()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'actions' => ['bla']]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(m::mock(RenderPass::class), ['name' => 'TemplateName', 'actions' => ['bla']]);
         }
 
         /**
@@ -148,8 +148,11 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfTemplateParametersDoesNotHaveAKey()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'parameters' => [['value' => 'value1']]]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(
+                m::mock(RenderPass::class),
+                ['name' => 'TemplateName', 'parameters' => [['value' => 'value1']]]
+            );
         }
 
         /**
@@ -160,8 +163,11 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfTemplateParametersDoesNotHaveAValue()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'parameters' => [['key' => 'key1']]]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(
+                m::mock(RenderPass::class),
+                ['name' => 'TemplateName', 'parameters' => [['key' => 'key1']]]
+            );
         }
 
         /**
@@ -172,8 +178,11 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionClassDoesNotExist()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'TestAction3']]]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(
+                m::mock(RenderPass::class),
+                ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction3']]]
+            );
         }
 
         /**
@@ -184,8 +193,11 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionClassDoesNotImplementActionInterface()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'TestAction4']]]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(
+                m::mock(RenderPass::class),
+                ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction4']]]
+            );
         }
 
         /**
@@ -196,8 +208,11 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionFactoryMethodReturnsNothing()
         {
-            $fixture = new TemplateFactory();
-            $fixture->create(['name' => 'TemplateName', 'actions' => [['name' => 'TestAction5']]]);
+            $fixture = new TemplateFactory([]);
+            $fixture->create(
+                m::mock(RenderPass::class),
+                ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction5']]]
+            );
         }
     }
 }

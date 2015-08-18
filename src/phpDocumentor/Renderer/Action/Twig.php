@@ -16,6 +16,8 @@ use phpDocumentor\Path;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\RenderPass;
 use phpDocumentor\Renderer\Template;
+use phpDocumentor\Views\ViewDefinition;
+use phpDocumentor\Views\ViewType;
 use Webmozart\Assert\Assert;
 
 final class Twig implements Action
@@ -31,25 +33,33 @@ final class Twig implements Action
 
     /** @var Path|null */
     private $destination;
-    /**
-     * @var Template
-     */
+
+    /** @var Template */
     private $template;
+
+    /** @var ViewDefinition */
+    private $dataView;
 
     public function __construct(
         RenderPass $renderPass,
         Path $view,
         $query = '',
         Path $destination = null,
-        Template $template = null
+        Template $template = null,
+        $dataView = null
     ) {
         Assert::string($query);
+
+        if ($dataView === null) {
+            $dataView = new ViewDefinition('project', new ViewType('php'));
+        }
 
         $this->view        = $view;
         $this->query       = $query;
         $this->renderPass  = $renderPass;
         $this->destination = $destination;
         $this->template    = $template;
+        $this->dataView    = $dataView;
     }
 
     /**
@@ -113,6 +123,14 @@ final class Twig implements Action
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * @return ViewDefinition
+     */
+    public function getDataView()
+    {
+        return $this->dataView;
     }
 
     public function __toString()

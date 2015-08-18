@@ -77,25 +77,4 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('phpDocumentor\Parser\Configuration', $this->fixture->getParser());
     }
-
-    /**
-     * @covers phpDocumentor\Configuration::__construct
-     */
-    public function testIfTransformationsConfigurationIsReturned()
-    {
-        $this->fail('getTransformations does not exist');
-        $this->assertInstanceOf(
-            'phpDocumentor\Transformer\Configuration\Transformations',
-            $this->fixture->getTransformations()
-        );
-    }
-
-    /**
-     * @covers phpDocumentor\Configuration::__construct
-     */
-    public function testIfTransformerConfigurationIsReturned()
-    {
-        $this->fail('getTransformer does not exist');
-        $this->assertInstanceOf('phpDocumentor\Transformer\Configuration', $this->fixture->getTransformer());
-    }
 }

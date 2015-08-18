@@ -16,8 +16,8 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Reflection\DocBlock\Context;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
-use phpDocumentor\Transformer\Router\Queue;
-use phpDocumentor\Transformer\Router\RouterAbstract;
+use phpDocumentor\Renderer\Router\Queue;
+use phpDocumentor\Renderer\Router\RouterAbstract;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
