@@ -80,8 +80,8 @@ final class PhpDocumentor3ExpectedArrays
                                 ]
                             ],
                             'ignore'               => [
-                                'hidden'   => true,
-                                'symlinks' => true,
+                                'hidden'   => false,
+                                'symlinks' => false,
                                 'paths'    => [],
                             ],
                             'extensions'           => [],

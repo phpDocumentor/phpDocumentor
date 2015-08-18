@@ -94,8 +94,8 @@ final class PhpDocumentor3 implements Strategy
                     'paths' => ((array) $version->api->source->path) ?: ['src'],
                 ],
                 'ignore'               => [
-                    'hidden'   => ($ignoreHidden) ?: true,
-                    'symlinks' => ($ignoreSymlinks) ?: true,
+                    'hidden'   => $ignoreHidden,
+                    'symlinks' => $ignoreSymlinks,
                     'paths'    => ((array) $version->api->ignore->path) ?: [],
                 ],
                 'extensions'           => $extensions,
