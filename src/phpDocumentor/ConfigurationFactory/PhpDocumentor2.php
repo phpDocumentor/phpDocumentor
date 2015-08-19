@@ -15,6 +15,8 @@ final class PhpDocumentor2 implements Strategy
      */
     public function convert(\SimpleXMLElement $phpDocumentor)
     {
+        $this->validate($phpDocumentor);
+
         $extensions         = [];
         $markers            = [];
         $visibility         = 'public';
@@ -43,7 +45,7 @@ final class PhpDocumentor2 implements Strategy
         }
 
         $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
-        $directories      = ((array) $phpDocumentor->parser->files->directory) ?: ['src'];
+        $directories     = ((array) $phpDocumentor->parser->files->directory) ?: ['src'];
 
         $sourcePaths = [];
         foreach ($directories as $directory) {
@@ -140,5 +142,20 @@ final class PhpDocumentor2 implements Strategy
         }
 
         return $markers;
+    }
+
+    /**
+     * Validates if the xml has a root element which name is phpdocumentor.
+     *
+     * @param \SimpleXMLElement $xml
+     *
+     * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor.
+     */
+    private function validate(\SimpleXMLElement $xml)
+    {
+        if ($xml->getName() !== 'phpdocumentor') {
+            throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found',
+                $xml->getName()));
+        }
     }
 }

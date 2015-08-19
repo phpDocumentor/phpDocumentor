@@ -5,19 +5,27 @@ namespace phpDocumentor\ConfigurationFactory;
 final class PhpDocumentor3 implements Strategy
 {
     /**
+     * The path to the xsd that is used for validation of the configuration file.
+     *
      * @var string
      */
     private $schemaPath;
 
     /**
+     * Initializes the PhpDocumentor3 strategy.
+     *
      * @param string $schemaPath
      */
     public function __construct($schemaPath)
     {
+        if ($schemaPath === '') {
+            $schemaPath = __DIR__ . '../../../../data/xsd/phpdoc.xsd';
+        }
+
         $this->schemaPath = $schemaPath;
     }
 
-    /**
+    /**å
      * Converts the phpDocumentor3 configuration xml to an array.
      *
      * @param \SimpleXMLElement $phpDocumentor
@@ -26,7 +34,7 @@ final class PhpDocumentor3 implements Strategy
      */
     public function convert(\SimpleXMLElement $phpDocumentor)
     {
-        $this->validateXmlStructure($phpDocumentor);
+        $this->validate($phpDocumentor);
 
         $versions = [];
         $template = [];
@@ -129,7 +137,7 @@ final class PhpDocumentor3 implements Strategy
      */
     private function buildTemplate(\SimpleXMLElement $template)
     {
-        if (!$template) {
+        if ((array) $template === []) {
             // Use default template if none is found in the configuration
             return [
                 [
@@ -149,13 +157,13 @@ final class PhpDocumentor3 implements Strategy
     }
 
     /**
-     * Validates the phpDocumentor3 xml structure against the schema defined in the schemaPath.
+     * Validates the phpDocumentor3 configuration xml structure against the schema defined in the schemaPath.
      *
      * @param $phpDocumentor
      *
      * @throws \InvalidArgumentException if the xml structure is not valid.
      */
-    private function validateXmlStructure(\SimpleXMLElement $phpDocumentor)
+    private function validate(\SimpleXMLElement $phpDocumentor)
     {
         libxml_clear_errors();
         libxml_use_internal_errors(true);
@@ -169,7 +177,7 @@ final class PhpDocumentor3 implements Strategy
 
         $error = libxml_get_last_error();
 
-        if ($error) {
+        if ($error !== false) {
             throw new \InvalidArgumentException($error->message);
         }
     }

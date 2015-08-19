@@ -9,32 +9,25 @@ use phpDocumentor\ConfigurationFactory\Strategy;
 final class ConfigurationFactory
 {
     /**
-     * The Uri that contains the path to the configuration file
+     * The Uri that contains the path to the configuration file.
      *
      * @var Uri
      */
     private $uri;
 
     /**
-     * The configuration xml
+     * The configuration xml.
      *
      * @var \SimpleXMLElement
      */
     private $xml;
 
     /**
-     * The path to the xsd that is used for validation of the configuration file.
-     *
-     * @var string
-     */
-    private $schemaPath;
-
-    /**
-     * All strategies that are used by the ConfigurationFactory
+     * All strategies that are used by the ConfigurationFactory.
      *
      * @var Strategy[]
      */
-    private $strategies;
+    private $strategies = [];
 
     /**
      * Initializes the ConfigurationFactory.
@@ -44,21 +37,25 @@ final class ConfigurationFactory
      */
     public function __construct(Uri $uri, $schemaPath = '')
     {
-        if ($schemaPath === '') {
-            $schemaPath = __DIR__ . '/../../data/xsd/phpdoc.xsd';
-        }
-
-        $this->schemaPath = $schemaPath;
+        // @todo: strategies should be constructor arguments, but that requires updating all tests.
+        $strategies = [
+            new PhpDocumentor2(),
+            new PhpDocumentor3($schemaPath),
+        ];
 
         $this->replaceLocation($uri);
 
-        $this->registerStrategies();
+        foreach ($strategies as $strategy) {
+            $this->registerStrategy($strategy);
+        }
     }
 
     /**
-     * Replaces the location of the configuration file if it is different.
+     * Replaces the location of the configuration file if it differs from the existing one.
      *
      * @param Uri $uri
+     *
+     * @return void
      */
     public function replaceLocation(Uri $uri)
     {
@@ -74,12 +71,10 @@ final class ConfigurationFactory
      *
      * @return array
      *
-     * @throws \RuntimeException if no strategy can be found.
+     * @throws \RuntimeException if no matching strategy can be found.
      */
     public function get()
     {
-        $this->validate($this->xml);
-
         foreach ($this->strategies as $strategy) {
             if ($strategy->match($this->xml) === true) {
                 return $strategy->convert($this->xml);
@@ -90,30 +85,14 @@ final class ConfigurationFactory
     }
 
     /**
-     * Registers strategies that are used in the ConfigurationFactory.
+     * Adds strategies that are used in the ConfigurationFactory.
+     *
+     * @param Strategy $strategy
      *
      * @return void
      */
-    private function registerStrategies()
+    private function registerStrategy(Strategy $strategy)
     {
-        $this->strategies = [
-            new PhpDocumentor2(),
-            new PhpDocumentor3($this->schemaPath),
-        ];
-    }
-
-    /**
-     * Validates if the xml has a root element which name is phpdocumentor.
-     *
-     * @param \SimpleXMLElement $xml
-     *
-     * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor.
-     */
-    private function validate(\SimpleXMLElement $xml)
-    {
-        if ($xml->getName() !== 'phpdocumentor') {
-            throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found',
-                $xml->getName()));
-        }
+        $this->strategies[] = $strategy;
     }
 }
