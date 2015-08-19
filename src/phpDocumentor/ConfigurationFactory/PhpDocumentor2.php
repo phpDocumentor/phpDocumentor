@@ -108,7 +108,7 @@ final class PhpDocumentor2 implements Strategy
      */
     public function match(\SimpleXMLElement $phpDocumentor)
     {
-        return (string) $phpDocumentor->attributes()->version === '';
+        return (bool) $phpDocumentor->attributes()->version === false;
     }
 
     /**

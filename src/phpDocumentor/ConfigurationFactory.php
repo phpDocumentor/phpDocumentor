@@ -2,8 +2,6 @@
 
 namespace phpDocumentor;
 
-use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
-use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
 use phpDocumentor\ConfigurationFactory\Strategy;
 
 /**
@@ -35,22 +33,17 @@ final class ConfigurationFactory
     /**
      * Initializes the ConfigurationFactory.
      *
-     * @param Uri    $uri
-     * @param string $schemaPath
+     * @param Strategy[] $strategies
+     * @param Uri        $uri
+     * @param string     $schemaPath
      */
-    public function __construct(Uri $uri, $schemaPath = '')
+    public function __construct(array $strategies, Uri $uri, $schemaPath = '')
     {
-        // @todo: strategies should be constructor arguments, but that requires updating all tests.
-        $strategies = [
-            new PhpDocumentor2(),
-            new PhpDocumentor3($schemaPath),
-        ];
-
-        $this->replaceLocation($uri);
-
         foreach ($strategies as $strategy) {
             $this->registerStrategy($strategy);
         }
+
+        $this->replaceLocation($uri);
     }
 
     /**
