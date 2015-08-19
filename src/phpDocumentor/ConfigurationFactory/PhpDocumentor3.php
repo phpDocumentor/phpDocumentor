@@ -2,6 +2,9 @@
 
 namespace phpDocumentor\ConfigurationFactory;
 
+/**
+ * phpDocumentor3 strategy for converting the configuration xml to an array.
+ */
 final class PhpDocumentor3 implements Strategy
 {
     /**

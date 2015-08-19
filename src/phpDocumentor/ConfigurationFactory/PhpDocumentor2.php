@@ -4,6 +4,9 @@ namespace phpDocumentor\ConfigurationFactory;
 
 use phpDocumentor\Dsn;
 
+/**
+ * phpDocumentor2 strategy for converting the configuration xml to an array.
+ */
 final class PhpDocumentor2 implements Strategy
 {
     /**
@@ -35,11 +38,17 @@ final class PhpDocumentor2 implements Strategy
 
             if (isset($phpDocumentor->parser->files)) {
                 if (isset($phpDocumentor->parser->files->{'ignore-hidden'})) {
-                    $ignoreHidden = filter_var($phpDocumentor->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
+                    $ignoreHidden = filter_var(
+                        $phpDocumentor->parser->files->{'ignore-hidden'},
+                        FILTER_VALIDATE_BOOLEAN
+                    );
                 }
 
                 if (isset($phpDocumentor->parser->files->{'ignore-symlinks'})) {
-                    $ignoreSymlinks = filter_var($phpDocumentor->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+                    $ignoreSymlinks = filter_var(
+                        $phpDocumentor->parser->files->{'ignore-symlinks'},
+                        FILTER_VALIDATE_BOOLEAN
+                    );
                 }
             }
         }
@@ -154,8 +163,9 @@ final class PhpDocumentor2 implements Strategy
     private function validate(\SimpleXMLElement $xml)
     {
         if ($xml->getName() !== 'phpdocumentor') {
-            throw new \InvalidArgumentException(sprintf('Root element name should be phpdocumentor, %s found',
-                $xml->getName()));
+            throw new \InvalidArgumentException(
+                sprintf('Root element name should be phpdocumentor, %s found', $xml->getName())
+            );
         }
     }
 }

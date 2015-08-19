@@ -6,6 +6,9 @@ use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
 use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
 use phpDocumentor\ConfigurationFactory\Strategy;
 
+/**
+ * The ConfigurationFactory converts the configuration xml from a Uri into an array.
+ */
 final class ConfigurationFactory
 {
     /**
