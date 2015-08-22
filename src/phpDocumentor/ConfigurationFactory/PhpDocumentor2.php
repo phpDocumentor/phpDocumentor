@@ -27,7 +27,7 @@ final class PhpDocumentor2 implements Strategy
         $this->validate($phpDocumentor);
 
         $extensions         = ['php', 'php3', 'phtml'];
-        $markers            = [];
+        $markers            = ['TODO', 'FIXME'];
         $visibility         = 'public';
         $defaultPackageName = 'Default';
         $template           = 'clean';
