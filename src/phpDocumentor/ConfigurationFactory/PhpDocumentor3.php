@@ -101,8 +101,7 @@ final class PhpDocumentor3 implements Strategy
             }
         }
 
-        $ignoreHidden   = filter_var($version->api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
-        $ignoreSymlinks = filter_var($version->api->ignore->attributes()->symlinks, FILTER_VALIDATE_BOOLEAN);
+        $ignoreHidden = filter_var($version->api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
 
         return [
             'folder' => (string) $version->folder,
@@ -114,7 +113,6 @@ final class PhpDocumentor3 implements Strategy
                 ],
                 'ignore'               => [
                     'hidden'   => $ignoreHidden,
-                    'symlinks' => $ignoreSymlinks,
                     'paths'    => ((array) $version->api->ignore->path) ?: [],
                 ],
                 'extensions'           => $extensions,

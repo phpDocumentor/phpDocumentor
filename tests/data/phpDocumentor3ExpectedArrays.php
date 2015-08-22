@@ -41,7 +41,6 @@ final class PhpDocumentor3ExpectedArrays
                             ],
                             'ignore'               => [
                                 'hidden'   => true,
-                                'symlinks' => true,
                                 'paths'    => [
                                     0 => 'src/ServiceDefinitions.php'
                                 ]
@@ -104,7 +103,6 @@ final class PhpDocumentor3ExpectedArrays
                             ],
                             'ignore'               => [
                                 'hidden'   => false,
-                                'symlinks' => false,
                                 'paths'    => [],
                             ],
                             'extensions'           => [],
@@ -158,7 +156,6 @@ final class PhpDocumentor3ExpectedArrays
                             ],
                             'ignore'               => [
                                 'hidden'   => true,
-                                'symlinks' => true,
                                 'paths'    => [
                                     0 => 'src/ServiceDefinitions.php'
                                 ]
@@ -197,7 +194,6 @@ final class PhpDocumentor3ExpectedArrays
                             ],
                             'ignore'               => [
                                 'hidden'   => true,
-                                'symlinks' => true,
                                 'paths'    => [
                                     0 => 'src/ServiceDefinitions.php'
                                 ]
