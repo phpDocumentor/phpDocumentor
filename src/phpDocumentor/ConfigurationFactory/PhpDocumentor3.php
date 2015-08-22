@@ -32,9 +32,8 @@ final class PhpDocumentor3 implements Strategy
     public function __construct($schemaPath)
     {
         if ($schemaPath === '') {
-            $schemaPath = __DIR__ . '../../../../data/xsd/phpdoc.xsd';
+            $schemaPath = __DIR__ . '/../../../data/xsd/phpdoc.xsd';
         }
-
         $this->schemaPath = $schemaPath;
     }
 
