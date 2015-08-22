@@ -20,11 +20,7 @@ use phpDocumentor\Dsn;
 final class PhpDocumentor2 implements Strategy
 {
     /**
-     * Converts the phpDocumentor2 configuration xml to an array.
-     *
-     * @param \SimpleXMLElement $phpDocumentor
-     *
-     * @return array
+     * @inheritdoc
      */
     public function convert(\SimpleXMLElement $phpDocumentor)
     {
@@ -110,11 +106,7 @@ final class PhpDocumentor2 implements Strategy
     }
 
     /**
-     * Checks if the provided configuration xml is for phpDocumentor2.
-     *
-     * @param $phpDocumentor
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function match(\SimpleXMLElement $phpDocumentor)
     {

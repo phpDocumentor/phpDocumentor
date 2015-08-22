@@ -38,12 +38,8 @@ final class PhpDocumentor3 implements Strategy
         $this->schemaPath = $schemaPath;
     }
 
-    /**å
-     * Converts the phpDocumentor3 configuration xml to an array.
-     *
-     * @param \SimpleXMLElement $phpDocumentor
-     *
-     * @return array
+    /**
+     * @inheritdoc
      */
     public function convert(\SimpleXMLElement $phpDocumentor)
     {
@@ -83,11 +79,7 @@ final class PhpDocumentor3 implements Strategy
     }
 
     /**
-     * Checks if the provided configuration xml is for phpDocumentor3.
-     *
-     * @param $phpDocumentor
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function match(\SimpleXMLElement $phpDocumentor)
     {
@@ -172,7 +164,7 @@ final class PhpDocumentor3 implements Strategy
     /**
      * Validates the phpDocumentor3 configuration xml structure against the schema defined in the schemaPath.
      *
-     * @param $phpDocumentor
+     * @param \SimpleXMLElement $phpDocumentor
      *
      * @throws \InvalidArgumentException if the xml structure is not valid.
      */
