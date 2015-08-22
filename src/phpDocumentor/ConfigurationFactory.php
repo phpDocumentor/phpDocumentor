@@ -45,9 +45,8 @@ final class ConfigurationFactory
      *
      * @param Strategy[] $strategies
      * @param Uri        $uri
-     * @param string     $schemaPath
      */
-    public function __construct(array $strategies, Uri $uri, $schemaPath = '')
+    public function __construct(array $strategies, Uri $uri)
     {
         foreach ($strategies as $strategy) {
             $this->registerStrategy($strategy);
