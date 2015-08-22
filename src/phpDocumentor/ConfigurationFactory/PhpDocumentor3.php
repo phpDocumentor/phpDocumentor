@@ -87,7 +87,7 @@ final class PhpDocumentor3 implements Strategy
     }
 
     /**
-     * Builds the versions part of the array from the phpDocumentor3 configuration xml.
+     * Builds the versions part of the array from the configuration xml.
      *
      * @param \SimpleXMLElement $version
      *
@@ -134,7 +134,7 @@ final class PhpDocumentor3 implements Strategy
     }
 
     /**
-     * Builds the template part of the array from the phpDocumentor3 configuration xml.
+     * Builds the template part of the array from the configuration xml.
      *
      * @param \SimpleXMLElement $template
      *
@@ -162,7 +162,7 @@ final class PhpDocumentor3 implements Strategy
     }
 
     /**
-     * Validates the phpDocumentor3 configuration xml structure against the schema defined in the schemaPath.
+     * Validates the configuration xml structure against the schema defined in the schemaPath.
      *
      * @param \SimpleXMLElement $phpDocumentor
      *

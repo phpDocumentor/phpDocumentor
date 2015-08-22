@@ -41,22 +41,11 @@ final class PhpDocumentor2 implements Strategy
             $visibility         = ((string) $phpDocumentor->parser->visibility) ?: $visibility;
             $defaultPackageName = ((string) $phpDocumentor->parser->{'default-package-name'}) ?: $defaultPackageName;
             $template           = ((string) $phpDocumentor->transformations->template->attributes()->name) ?: $template;
+        }
 
-            if (isset($phpDocumentor->parser->files)) {
-                if (isset($phpDocumentor->parser->files->{'ignore-hidden'})) {
-                    $ignoreHidden = filter_var(
-                        $phpDocumentor->parser->files->{'ignore-hidden'},
-                        FILTER_VALIDATE_BOOLEAN
-                    );
-                }
-
-                if (isset($phpDocumentor->parser->files->{'ignore-symlinks'})) {
-                    $ignoreSymlinks = filter_var(
-                        $phpDocumentor->parser->files->{'ignore-symlinks'},
-                        FILTER_VALIDATE_BOOLEAN
-                    );
-                }
-            }
+        if (isset($phpDocumentor->parser->files)) {
+            $ignoreHidden   = $this->buildIgnoreHiddenPart($phpDocumentor->parser->files);
+            $ignoreSymlinks = $this->buildIgnoreSymlinksPart($phpDocumentor->parser->files);
         }
 
         $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
@@ -114,7 +103,41 @@ final class PhpDocumentor2 implements Strategy
     }
 
     /**
-     * Builds the extensions part of the array from the phpDocumentor2 configuration xml.
+     * Builds the ignore-hidden part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return mixed
+     */
+    private function buildIgnoreHiddenPart(\SimpleXMLElement $phpDocumentor)
+    {
+        $ignoreHidden = true;
+        if (isset($phpDocumentor->parser->files->{'ignore-hidden'})) {
+            $ignoreHidden = filter_var($phpDocumentor->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return $ignoreHidden;
+    }
+
+    /**
+     * Builds the ignore-symlinks part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $files
+     *
+     * @return mixed
+     */
+    private function buildIgnoreSymlinksPart(\SimpleXMLElement $files)
+    {
+        $ignoreSymlinks = [];
+        if (isset($files->{'ignore-symlinks'})) {
+            $ignoreSymlinks = filter_var($files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return $ignoreSymlinks;
+    }
+
+    /**
+     * Builds the extensions part of the array from the configuration xml.
      *
      * @param \SimpleXMLElement $parser
      *
@@ -135,7 +158,7 @@ final class PhpDocumentor2 implements Strategy
     }
 
     /**
-     * Builds the markers part of the array from the phpDocumentor2 configuration xml.
+     * Builds the markers part of the array from the configuration xml.
      *
      * @param \SimpleXMLElement $parser
      *
