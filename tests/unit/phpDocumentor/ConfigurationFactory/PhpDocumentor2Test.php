@@ -32,7 +32,7 @@ final class PhpDocumentor2Test extends \PHPUnit_Framework_TestCase
         $phpDocumentor2 = new PhpDocumentor2();
         $array          = $phpDocumentor2->convert($xml);
 
-        $this->assertSame(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
+        $this->assertEquals(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
     }
 
     /**

@@ -33,7 +33,7 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
 
-        $this->assertSame(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
@@ -48,7 +48,7 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
 
-        $this->assertSame(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
 
     /**
@@ -124,7 +124,7 @@ XML;
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
 
-        $this->assertSame(\PhpDocumentor3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
     }
 
     /**
@@ -139,7 +139,7 @@ XML;
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
 
-        $this->assertSame(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
     }
 
     /**
