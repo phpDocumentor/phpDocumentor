@@ -82,7 +82,7 @@ final class PhpDocumentor3 implements Strategy
      */
     public function match(\SimpleXMLElement $phpDocumentor)
     {
-        return (int) $phpDocumentor->attributes()->version === 3;
+        return (string) $phpDocumentor->attributes()->version === '3';
     }
 
     /**
