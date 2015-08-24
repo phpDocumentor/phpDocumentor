@@ -19,11 +19,15 @@ namespace phpDocumentor;
 final class Uri
 {
     /**
+     * Uri path.
+     *
      * @var string
      */
     private $uri;
 
     /**
+     * Initializes the Uri.
+     *
      * @param string $uri
      */
     public function __construct($uri)
@@ -48,10 +52,23 @@ final class Uri
     }
 
     /**
+     * Checks if the provided uri is equal to the current uri.
+     *
+     * @param Uri $other
+     *
+     * @return bool
+     */
+    public function equals($other)
+    {
+        return $other == $this;
+    }
+
+    /**
      * Checks if $uri is of type string.
      *
-     * @param  string $uri
-     * @throws \InvalidArgumentException if $uri is not a string
+     * @param string $uri
+     *
+     * @throws \InvalidArgumentException if $uri is not a string.
      * @return void
      */
     private function validateString($uri)
@@ -64,8 +81,9 @@ final class Uri
     /**
      * Checks if $uri is valid.
      *
-     * @param  string $uri
-     * @throws \InvalidArgumentException if $uri is not a valid uri
+     * @param string $uri
+     *
+     * @throws \InvalidArgumentException if $uri is not a valid uri.
      * @return void
      */
     private function validateUri($uri)
@@ -76,10 +94,11 @@ final class Uri
     }
 
     /**
-     * Checks if a scheme is present
+     * Checks if a scheme is present.
      * If no scheme is found, it is assumed that a local path is used, and file:// is prepended.
      *
-     * @param  string $uri
+     * @param string $uri
+     *
      * @return string
      */
     private function addFileSchemeWhenSchemeIsAbsent($uri)

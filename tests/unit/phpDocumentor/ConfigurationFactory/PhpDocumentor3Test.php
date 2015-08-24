@@ -149,8 +149,8 @@ XML;
     {
         $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XML.xml', 0, true);
 
-        $phpDocumentor2 = new PhpDocumentor3('');
-        $bool = $phpDocumentor2->match($xml);
+        $phpDocumentor3 = new PhpDocumentor3('');
+        $bool           = $phpDocumentor3->match($xml);
 
         $this->assertTrue($bool);
     }

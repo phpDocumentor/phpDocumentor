@@ -64,7 +64,7 @@ final class ConfigurationFactory
      */
     public function replaceLocation(Uri $uri)
     {
-        if ($this->uri !== $uri) {
+        if (!isset($this->uri) || !$this->uri->equals($uri)) {
             $this->xml = new \SimpleXMLElement($uri, 0, true);
 
             $this->uri = $uri;
