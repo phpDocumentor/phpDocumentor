@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+{% use 'elements/constant.html.twig' %}
+{% use 'elements/property.html.twig' %}
+{% use 'elements/method.html.twig' %}
+{% use 'elements/sidebar.html.twig' %}
+{% use 'elements/source.view.html.twig' %}
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+	<meta charset="utf-8"/>
+	<title>{% block title %}{{ project.name }}{% endblock %}</title>
+	<meta name="author" content=""/>
+	<meta name="description" content=""/>
+
+	<link href="{{ path('css/bootstrap-combined.no-icons.min.css') }}" rel="stylesheet">
+	<link href="{{ path('css/font-awesome.min.css') }}" rel="stylesheet">
+	<link href="{{ path('css/prism.css') }}" rel="stylesheet" media="all"/>
+	<link href="{{ path('css/select2.min.css') }}" rel="stylesheet" media="all"/>
+	<link href="{{ path('css/template.css') }}" rel="stylesheet" media="all"/>
+	{% block stylesheets %}{% endblock %}
+
+	<!--[if lt IE 9]>
+	<script src="{{ path('js/html5.js') }}"></script>
+	<![endif]-->
+	<script src="{{ path('js/jquery-1.11.0.min.js') }}"></script>
+	<script src="{{ path('js/ui/1.10.4/jquery-ui.min.js') }}"></script>
+	<script src="{{ path('js/bootstrap.min.js') }}"></script>
+	<script src="{{ path('js/jquery.smooth-scroll.js') }}"></script>
+	<script src="{{ path('js/prism.min.js') }}"></script>
+	<script src="{{ path('js/select2/select2.min.js') }}"></script>
+	<script type="text/javascript">
+		var searchXML = "{{ path('search.xml') }}";
+		var defaultTab = "{{ (project.indexes.packages|first).children|length > 0 ? '#menuPackage' : '#menuNamespace' }}";
+	</script>
+	<script src="{{ path('js/script.js') }}"></script>
+	<!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+	{% block javascripts %}{% endblock %}
+
+	<link rel="shortcut icon" href="{{ path('images/favicon.ico') }}"/>
+	<link rel="apple-touch-icon" href="{{ path('images/apple-touch-icon.png') }}"/>
+	<link rel="apple-touch-icon" sizes="72x72" href="{{ path('images/apple-touch-icon-72x72.png') }}"/>
+	<link rel="apple-touch-icon" sizes="114x114" href="{{ path('images/apple-touch-icon-114x114.png') }}"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<i class="fa fa-ellipsis-vertical"></i>
+			</a>
+			<a class="brand" href="{{  path('index.html') }}">{{ project.name }}</a>
+
+			<div class="nav-collapse">
+				<ul class="nav pull-right">
+					<li class="dropdown" id="reports-menu">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							Indexes <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							{% if project.indexes.constants|length > 0 %}<li><a href="{{ path('costants.html') }}"><i class="fa fa-code"></i>&#160;Costants <span class="label label-info pull-right">{{ project.indexes.constants|length }}</span></a></li>{% endif %}
+							{% if project.indexes.functions|length > 0 %}<li><a href="{{ path('functions.html') }}"><i class="fa fa-code"></i>&#160;Functions <span class="label label-info pull-right">{{ project.indexes.functions|length }}</span></a></li>{% endif %}
+							{% if project.indexes.traits|length > 0 %}<li><a href="{{ path('traits.html') }}"><i class="fa fa-code"></i>&#160;Traits <span class="label label-info pull-right">{{ project.indexes.traits|length }}</span></a></li>{% endif %}
+							{% if project.indexes.interfaces|length > 0 %}<li><a href="{{ path('interfaces.html') }}"><i class="fa fa-code"></i>&#160;Interfaces <span class="label label-info pull-right">{{ project.indexes.interfaces|length }}</span></a></li>{% endif %}
+							{% if project.indexes.classes|length > 0 %}<li><a href="{{ path('classes.html') }}"><i class="fa fa-code"></i>&#160;Classes <span class="label label-info pull-right">{{ project.indexes.classes|length }}</span></a></li>{% endif %}
+						</ul>
+					</li>
+					<li class="dropdown" style="padding-left: 10px;">
+						<select class="search" multiple="multiple">
+							<option></option>
+						</select>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="___" class="container-fluid">
+	<noscript>
+		<div class="alert alert-warning">
+			Javascript is disabled; several features are only available if Javascript is enabled.
+		</div>
+	</noscript>
+	{% block content %}{% endblock %}
+
+	<footer class="row-fluid">
+		<section class="span10 offset2">
+			<section class="row-fluid">
+				<section class="span10 offset1">
+					Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+					on {{ "now"|date('F jS, Y \\a\\t H:i') }}.
+				</section>
+			</section>
+		</section>
+	</footer>
+</div>
+
+</body>
+</html>

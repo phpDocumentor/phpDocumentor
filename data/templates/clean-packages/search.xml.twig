@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project>
+	{% if project.indexes.constants|length > 0 %}
+		{% for constant in project.indexes.constants|sort_asc %}
+			<element>
+				<name>{{ constant.name }}</name>
+				<url>{{ constant.package|route("url") }}#constant_{{ constant.name }}</url>
+				<label><![CDATA[<span class="light"></span><strong>{{ constant.name }}</strong><em class="light"> - Constant</em>]]></label>
+			</element>
+		{% endfor %}
+	{% endif %}
+	{% if project.indexes.functions|length > 0 %}
+		{% for function in project.indexes.functions|sort_asc %}
+			<element>
+				<name>{{ function.name }}</name>
+				<url>{{ function.package|route("url") }}#method_{{ function.name }}</url>
+				<label><![CDATA[<span class="light"></span><strong>{{ function.name }}()</strong><em class="light"> - Function</em>]]></label>
+			</element>
+		{% endfor %}
+	{% endif %}
+	{% if project.indexes.interfaces|length > 0 %}
+		{% for interface in project.indexes.interfaces|sort_asc %}
+			<element>
+				<name>{{ interface.name }}</name>
+				<url>{{ interface|route("url") }}</url>
+				<label><![CDATA[<span class="light"></span><strong>{{ interface.name }}()</strong><em class="light"> - Interface</em>]]></label>
+			</element>
+			{% for method in interface.inheritedMethods.merge(interface.methods) if method.visibility == 'public' %}
+				<element>
+					<name>{{ method.name }}</name>
+					<url>{{ method|route('url')}}</url>
+					<label><![CDATA[<span class="light">{{ interface.name }}-></span><strong>{{ method.name }}()</strong><em class="light"> - Method</em>]]></label>
+				</element>
+			{% endfor %}
+			{% for constant in interface.inheritedConstants.merge(interface.constants) %}
+				<element>
+					<name>{{ constant.name }}</name>
+					<url>{{ constant|route('url')}}</url>
+					<label><![CDATA[<span class="light">{{ interface.name }}::</span><strong>{{ constant.name }}()</strong><em class="light"> - Constant</em>]]></label>
+				</element>
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+	{% if project.indexes.traits|length > 0 %}
+		{% for trait in project.indexes.traits|sort_asc %}
+			<element>
+				<name>{{ trait.name }}</name>
+				<url>{{ trait|route("url") }}</url>
+				<label><![CDATA[<span class="light"></span><strong>{{ trait.name }}()</strong><em class="light"> - Trait</em>]]></label>
+			</element>
+		{% endfor %}
+	{% endif %}
+	{% if project.indexes.classes|length > 0 %}
+		{% for class in project.indexes.classes|sort_asc %}
+			<element>
+				<name>{{ class.name }}</name>
+				<url>{{ class|route("url") }}</url>
+				<label><![CDATA[<span class="light"></span><strong>{{ class.name }}()</strong><em class="light"> - Class</em>]]></label>
+			</element>
+			{% for method in class.inheritedMethods.merge(class.methods.merge(class.magicMethods)) if method.visibility == 'public' %}
+				<element>
+					<name>{{ method.name }}</name>
+					<url>{{ method|route('url')}}</url>
+					<label><![CDATA[<span class="light">{{ class.name }}-></span><strong>{{ method.name }}()</strong><em class="light"> - Method</em>]]></label>
+				</element>
+			{% endfor %}
+			{% for property in class.inheritedProperties.merge(class.properties.merge(class.magicProperties)) if property.visibility == 'public' %}
+				<element>
+					<name>{{ property.name }}</name>
+					<url>{{ property|route('url')}}</url>
+					<label><![CDATA[<span class="light">{{ class.name }}-></span><strong>{{ property.name }}()</strong><em class="light"> - Property</em>]]></label>
+				</element>
+			{% endfor %}
+			{% for constant in class.inheritedConstants.merge(class.constants) %}
+				<element>
+					<name>{{ constant.name }}</name>
+					<url>{{ constant|route('url')}}</url>
+					<label><![CDATA[<span class="light">{{ class.name }}::</span><strong>{{ constant.name }}()</strong><em class="light"> - Constant</em>]]></label>
+				</element>
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+</project>

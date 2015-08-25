@@ -1,0 +1,120 @@
+{% extends 'layout.html.twig' %}
+
+{% block javascripts %}
+	{{ block('sourceViewJS') }}
+{% endblock %}
+
+{% block content %}
+	<section class="row-fluid">
+		<div class="span2 sidebar">
+			{% set currentPackages = node %}
+			{% set currentNamespace = project.namespace %}
+			{{ block('sidebarMenu') }}
+		</div>
+	</section>
+	<section class="row-fluid">
+		<div class="span10 offset2">
+			<div class="row-fluid">
+				<div class="span8 content package">
+					<h1>{% if node.name != '\\' %}{{ node.name }}{% else %}Global ({{ (project.indexes.packages|first).name }}){% endif %}</h1>
+
+					{% if node.children|length > 0 %}
+					<h2>Packages</h2>
+					<table class="table table-hover">
+						{% for packages in node.children|sort_asc %}
+							<tr>
+								<td>{{ packages|route('class:short')|raw }}</td>
+							</tr>
+						{% endfor %}
+					</table>
+					{% endif %}
+
+					{% if node.traits|length > 0 %}
+					<h2>Traits</h2>
+					<table class="table table-hover">
+						{% for trait in node.traits|sort_asc %}
+							<tr>
+								<td>{{ trait|route('class:short')|raw }}</td>
+								<td><em>{{ trait.summary|markdown|raw }}</em></td>
+							</tr>
+						{% endfor %}
+					</table>
+					{% endif %}
+
+					{% if node.interfaces|length > 0 %}
+					<h2>Interfaces</h2>
+					<table class="table table-hover">
+						{% for interface in node.interfaces|sort_asc %}
+							<tr>
+								<td>{{ interface|route('class:short')|raw }}</td>
+								<td><em>{{ interface.summary|markdown|raw }}</em></td>
+							</tr>
+						{% endfor %}
+					</table>
+					{% endif %}
+
+					{% if node.classes|length > 0 %}
+					<h2>Classes</h2>
+					<table class="table table-hover">
+					{% for class in node.classes|sort_asc %}
+						<tr>
+							<td>{{ class|route('class:short')|raw }}</td>
+							<td><em>{{ class.summary|markdown|raw }}</em></td>
+						</tr>
+					{% endfor %}
+					</table>
+					{% endif %}
+				</div>
+
+				<aside class="span4 detailsbar">
+					<dl>
+						<dt>Package hierarchy</dt>
+						<dd class="hierarchy">
+							{% set packages = node.parent %}
+							{% block hierarchy_element %}
+								{% if packages %}
+									{% set child = packages %}
+									{% set packages = packages.parent %}
+									{{ block('hierarchy_element') }}
+									<div class="namespace-wrapper"><a href="{{ child|route("url") }}">{% if child.name != '\\' %}└ {{ child.name }}{% else %}Global ({{ (project.indexes.packages|first).name }}){% endif %}</a></div>
+								{% endif %}
+							{% endblock %}
+							<div class="namespace-wrapper">{% if node.name != '\\' %}└ {{ node.name }}{% else %}Global ({{ (project.indexes.packages|first).name }}){% endif %}</div>
+						</dd>
+					</dl>
+				</aside>
+			</div>
+
+			{% if node.constants|length > 0 %}
+			<div class="row-fluid">
+				<section class="span8 content namespace">
+					<h2>Constants</h2>
+				</section>
+				<aside class="span4 detailsbar"></aside>
+			</div>
+
+				{% for constant in node.constants|sort_asc %}
+					{% set fileInfo = constant %}
+					{{ block('constant') }}
+				{% endfor %}
+			{% endif %}
+
+			{% if node.functions|length > 0 %}
+			<div class="row-fluid">
+				<section class="span8 content namespace">
+					<h2>Functions</h2>
+				</section>
+				<aside class="span4 detailsbar"></aside>
+			</div>
+
+				{% for method in node.functions|sort_asc %}
+					{% set swcode = random() %}
+					{% set fileInfo = method %}
+					{{ block('method') }}
+					{{ block('sourceView') }}
+				{% endfor %}
+			{% endif %}
+
+		</div>
+	</section>
+{% endblock %}

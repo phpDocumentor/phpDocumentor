@@ -1,0 +1,136 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+	<section class="row-fluid">
+		<div class="span2 sidebar">
+			{% set currentPackages = (project.indexes.packages|first) %}
+			{% set currentNamespace = project.namespace %}
+			{{ block('sidebarMenu') }}
+		</div>
+	</section>
+	<section class="row-fluid">
+		<div class="span10 offset2">
+			<div class="row-fluid">
+				<div class="span8 content package">
+					<h1>{{ project.name }}</h1>
+					{{ project.partials.readme }}
+
+					{% if (project.indexes.packages|first).children|length > 0 %}
+					<h2><i class="fa fa-cubes"></i> Packages</h2>
+					<table class="table table-hover" style="color: #DDD;">
+						{% set package = (project.indexes.packages|first) %}
+						{% set a = [] %}
+						{% block package_index_list %}
+							{% for children in package.children|sort_asc %}
+								{% if loop.last %}
+									{% set i = a|merge([0]) %}
+									{% set s = '└ ' %}
+								{% else %}
+									{% set i = a|merge([1]) %}
+									{% set s = '├ ' %}
+								{% endif %}
+								<tr><td>{% for n in a %}{{ n > 0 ? '│ ' : '&#160;&#160;' }}{% endfor %}{{ s }}{{ children|route('class:short')|raw }}</td></tr>
+								{% set package = children %}
+								{% set b = a %}
+								{% set a = i %}
+								{{ block('package_index_list') }}
+								{% set a = b %}
+							{% endfor %}
+						{% endblock %}
+					</table>
+					{% endif %}
+
+					{% if project.namespace.children|length > 0 %}
+					<h2><i class="fa fa-sitemap"></i> Namespaces</h2>
+					<table class="table table-hover" style="color: #DDD;">
+						{% set namespace = project.namespace %}
+						{% set a = [] %}
+						<tr><td>{{ namespace|route|raw }}</td></tr>
+						{% block namespace_index_list %}
+							{% for children in namespace.children|sort_asc %}
+								{% if loop.last %}
+									{% set i = a|merge([0]) %}
+									{% set s = '└ ' %}
+								{% else %}
+									{% set i = a|merge([1]) %}
+									{% set s = '├ ' %}
+								{% endif %}
+								<tr><td>{% for n in a %}{{ n > 0 ? '│ ' : '&#160;&#160;' }}{% endfor %}{{ s }}{{ children|route('class:short')|raw }}</td></tr>
+								{% set namespace = children %}
+								{% set b = a %}
+								{% set a = i %}
+								{{ block('namespace_index_list') }}
+								{% set a = b %}
+							{% endfor %}
+						{% endblock %}
+					</table>
+					{% endif %}
+
+				</div>
+
+				<aside class="span4 detailsbar">
+					<dl>
+					</dl>
+					<h2><i class="fa fa-bookmark"></i> Indexes</h2>
+					<table class="table table-condensed">
+						<tr>
+							<th><i class="fa fa-code"></i>&#160;<a href="{{ path('costants.html') }}">Costants</a></th>
+							<td>{{ project.indexes.constants|length }}</td>
+						</tr>
+						<tr>
+							<th><i class="fa fa-code"></i>&#160;<a href="{{ path('functions.html') }}">Functions</a></th>
+							<td>{{ project.indexes.functions|length }}</td>
+						</tr>
+						<tr>
+							<th><i class="fa fa-code"></i>&#160;<a href="{{ path('traits.html') }}">Traits</a></th>
+							<td>{{ project.indexes.traits|length }}</td>
+						</tr>
+						<tr>
+							<th><i class="fa fa-code"></i>&#160;<a href="{{ path('interfaces.html') }}">Interfaces</a></th>
+							<td>{{ project.indexes.interfaces|length }}</td>
+						</tr>
+						<tr>
+							<th><i class="fa fa-code"></i>&#160;<a href="{{ path('classes.html') }}">Classes</a></th>
+							<td>{{ project.indexes.classes|length }}</td>
+						</tr>
+					</table>
+					<br>
+					<h2><i class="fa fa-pushpin"></i> Reports</h2>
+					<table class="table table-condensed">
+						<tr>
+							<th><i class="fa fa-list-alt"></i>&#160;<a href="{{ path('reports/errors.html') }}">Errors</a></th>
+							<td>
+								{% set errorCount = 0 %}
+								{% for file in project.files %}
+									{% set errorCount = errorCount + file.allerrors.count %}
+								{% endfor %}
+								{{ errorCount }}
+							</td>
+						</tr>
+						<tr>
+							<th><i class="fa fa-list-alt"></i>&#160;<a href="{{ path('reports/markers.html') }}">Markers</a></th>
+							<td>
+								{% set markerCount = 0 %}
+								{% for file in project.files %}
+									{% set markerCount = markerCount + file.markers.count %}
+								{% endfor %}
+								{{ markerCount }}
+							</td>
+						</tr>
+						<tr>
+							<th><i class="fa fa-list-alt"></i>&#160;<a href="{{ path('reports/deprecated.html') }}">Deprecated</a></th>
+							<td>
+								{% set deprecatedCount = 0 %}
+								{% for element in project.indexes.elements if element.deprecated %}
+									{% set deprecatedCount = deprecatedCount + element.tags.deprecated.count %}
+								{% endfor %}
+								{{ deprecatedCount }}
+							</td>
+						</tr>
+					</table>
+				</aside>
+			</div>
+
+		</div>
+	</section>
+{% endblock %}

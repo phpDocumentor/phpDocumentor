@@ -1,0 +1,145 @@
+{% extends 'layout.html.twig' %}
+
+{% block javascripts %}
+	{{ block('sourceViewJS') }}
+{% endblock %}
+
+{% block content %}
+	{% set swcode = random() %}
+	{% set fileInfo = node %}
+	<section class="row-fluid">
+		<div class="span2 sidebar">
+			{% set currentPackages = node.package %}
+			{% set currentNamespace = node.namespace %}
+			{{ block('sidebarMenu') }}
+		</div>
+	</section>
+	<section class="row-fluid">
+		<div class="span10 offset2">
+			<div class="row-fluid">
+				<div class="span8 content file">
+					<h1>
+						<small>{{ node.path|split('/')|slice(0,-1)|join('/') }}</small>
+						<a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" data-target="#source-view-{{ swcode }}"><i class="fa fa-code"></i></a>
+						{{ node.name }}
+					</h1>
+					<p><em>{{ node.summary|markdown|raw }}</em></p>
+					{{ node.description|markdown|raw }}
+
+					{% if node.traits|length > 0 %}
+					<h2>Traits</h2>
+					<table class="table table-hover">
+						{% for trait in node.traits %}
+							<tr>
+								<td>{{ trait|route('class:short')|raw }}</td>
+								<td><em>{{ trait.summary|markdown|raw }}</em></td>
+							</tr>
+						{% endfor %}
+					</table>
+					{% endif %}
+
+					{% if node.interfaces|length > 0 %}
+					<h2>Interfaces</h2>
+					<table class="table table-hover">
+						{% for interface in node.interfaces %}
+							<tr>
+								<td>{{ interface|route('class:short')|raw }}</td>
+								<td><em>{{ interface.summary|markdown|raw }}</em></td>
+							</tr>
+						{% endfor %}
+					</table>
+					{% endif %}
+
+					{% if node.classes|length > 0 %}
+					<h2>Classes</h2>
+					<table class="table table-hover">
+					{% for class in node.classes %}
+						<tr>
+							<td>{{ class|route('class:short')|raw }}</td>
+							<td><em>{{ class.summary|markdown|raw }}</em></td>
+						</tr>
+					{% endfor %}
+					</table>
+					{% endif %}
+				</div>
+
+				<aside class="span4 detailsbar">
+					<dl>
+						{% if node.package.name is not empty and node.package.name != '\\' %}
+						<dt>Package</dt>
+							<dd><div class="namespace-wrapper">
+								{% set package = node.package %}
+								{% block package_breadcrumb_element %}
+									{% if package %}
+										{% set child = package %}
+										{% set package = package.parent %}
+										{{ block('package_breadcrumb_element') }}
+										<a href="{{ child|route("url") }}">{{ child.name }}</a>{% if child.name != '\\' and child.name!=node.package.name %} \ {% endif %}
+									{% endif %}
+								{% endblock %}
+							</div></dd>
+						{% endif %}
+
+						{% for tagName,tags in node.tags if tagName in ['link', 'see'] %}
+							{% if loop.first %}
+								<dt>See also</dt>
+							{% endif %}
+							{% for tag in tags %}
+								<dd><a href="{{ tag.link }}"><div class="namespace-wrapper">{{ tag.description|markdown|raw }}</div></a></dd>
+							{% endfor %}
+						{% endfor %}
+
+					</dl>
+
+					<h2>Tags</h2>
+					<table class="table table-condensed">
+					{% for tagName,tags in node.tags if tagName not in ['link', 'see', 'abstract', 'example', 'method', 'property', 'property-read', 'property-write', 'package', 'subpackage', 'param', 'return', 'access', 'var', 'deprecated', 'throws', 'throw', 'uses'] %}
+						<tr>
+							<th>
+								{{ tagName }}
+							</th>
+							<td>
+								{% for tag in tags %}
+									{% if tag.version %}{{ tag.version }}{% endif %}
+									{{ tag.description|markdown|raw }}
+								{% endfor %}
+							</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="2"><em>None found</em></td></tr>
+					{% endfor %}
+					</table>
+				</aside>
+			</div>
+
+			{% if node.constants|length > 0 %}
+				<div class="row-fluid">
+					<section class="span8 content file">
+						<h2>Constants</h2>
+					</section>
+					<aside class="span4 detailsbar"></aside>
+				</div>
+				{% for constant in node.constants %}
+					{% set fileInfo = constant %}
+					{{ block('constant') }}
+				{% endfor %}
+			{% endif %}
+
+			{% if node.functions|length > 0 %}
+				<div class="row-fluid">
+					<section class="span8 content file">
+						<h2>Functions</h2>
+					</section>
+					<aside class="span4 detailsbar"></aside>
+				</div>
+				{% for method in node.functions %}
+					{% set fileInfo = method %}
+					{{ block('method') }}
+				{% endfor %}
+			{% endif %}
+
+		</div>
+	</section>
+
+	{{ block('sourceView') }}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ project.name }} &raquo; Classes
+{% endblock %}
+
+{% block content %}
+	<section class="row-fluid">
+		<div class="span2 sidebar">
+			{% set currentPackages = (project.indexes.packages|first) %}
+			{% set currentNamespace = project.namespace %}
+			{{ block('sidebarMenu') }}
+		</div>
+	</section>
+	<section class="row-fluid">
+		<div class="span10 offset2">
+			<div class="package-contents">
+				<h3>
+					<i class="fa fa-code"></i> Classes
+					<small style="float: right;padding-right: 10px;">{{ project.indexes.classes|length }}</small>
+				</h3>
+				{% if project.indexes.classes|length > 0 %}
+				<div>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Namespace</th>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for class in project.indexes.classes|sort_asc %}
+							<tr>
+								<td class='namespaceMini'>{{ class.namespace }}</td><td><a href="{{ class|route("url") }}" class="{{ class.visibility }} {% if class.deprecated %}deprecated{% endif %}">{{ class.name }}</a></td>
+								<td><em>{{ class.summary|markdown|raw }}</em></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+{% endblock %}

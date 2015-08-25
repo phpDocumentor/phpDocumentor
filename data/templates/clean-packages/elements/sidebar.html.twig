@@ -1,0 +1,88 @@
+{% block sidebarMenu %}
+	{% set packages = (project.indexes.packages|first) %}
+	{% set namespace = project.namespace %}
+	<div id="menuPackage">
+		<div class="navmod">
+			<i class="fa fa-cubes"></i> Packages
+			<a href="#menuNamespace"><i class="fa fa-sitemap"></i></a>
+		</div>
+		{{ block('sidebarPackages') }}
+	</div>
+	<div id="menuNamespace" style="display:none">
+		<div class="navmod">
+			<i class="fa fa-sitemap"></i> Namespaces
+			<a href="#menuPackage"><i class="fa fa-cubes"></i></a>
+		</div>
+		{{ block('sidebarNamespaces') }}
+	</div>
+{% endblock %}
+
+{% block sidebarPackages %}
+	{% set code = random() %}
+	<div class="accordion" style="margin-bottom: 0">
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				{% if packages.children|length > 0 or packages.classes|length > 0 or packages.interfaces|length > 0 or packages.traits|length > 0 %}
+					<a class="accordion-toggle {{ not (packages.fullyQualifiedStructuralElementName in currentPackages.fullyQualifiedStructuralElementName) ? 'collapsed' }}" data-toggle="collapse" data-target="#packages-{{ code }}"></a>
+				{% endif %}
+				<a href="{{ packages|route("url")|raw }}" style="margin-left: 30px; padding-left: 5px;">
+				{% if packages.name != '\\' %}{{ packages.name }}{% else %}Global ({{ (project.indexes.packages|first).name }}){% endif %}
+				</a>
+			</div>
+			<div id="packages-{{ code }}" class="accordion-body collapse {{ packages.fullyQualifiedStructuralElementName in currentPackages.fullyQualifiedStructuralElementName ? 'in' }}">
+				<div class="accordion-inner">
+
+					{% for packages in packages.children|sort_asc %}
+						{{ block('sidebarPackages') }}
+					{% endfor %}
+
+					<ul>
+						{% for class in packages.interfaces|sort_asc %}
+							<li class="interface">{{ class|route('class:short')|raw }}</li>
+						{% endfor %}
+						{% for class in packages.traits|sort_asc %}
+							<li class="trait">{{ class|route('class:short')|raw }}</li>
+						{% endfor %}
+						{% for class in packages.classes|sort_asc %}
+							<li class="class">{{ class|route('class:short')|raw }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block sidebarNamespaces %}
+	{% set code = random() %}
+	<div class="accordion" style="margin-bottom: 0">
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				{% if namespace.children|length > 0 or namespace.classes|length > 0 or namespace.interfaces|length > 0 or namespace.traits|length > 0 %}
+					<a class="accordion-toggle {{ not (namespace.fullyQualifiedStructuralElementName in currentNamespace.fullyQualifiedStructuralElementName) ? 'collapsed' }}" data-toggle="collapse" data-target="#namespace-{{ code }}"></a>
+				{% endif %}
+				<a href="{{ namespace|route("url")|raw }}" style="margin-left: 30px; padding-left: 5px;">{{ namespace.name }}</a>
+			</div>
+			<div id="namespace-{{ code }}" class="accordion-body collapse {{ namespace.fullyQualifiedStructuralElementName in currentNamespace.fullyQualifiedStructuralElementName ? 'in' }}">
+				<div class="accordion-inner">
+
+					{% for namespace in namespace.children|sort_asc %}
+						{{ block('sidebarNamespaces') }}
+					{% endfor %}
+
+					<ul>
+						{% for class in namespace.interfaces|sort_asc %}
+							<li class="interface">{{ class|route('class:short')|raw }}</li>
+						{% endfor %}
+						{% for class in namespace.traits|sort_asc %}
+							<li class="trait">{{ class|route('class:short')|raw }}</li>
+						{% endfor %}
+						{% for class in namespace.classes|sort_asc %}
+							<li class="class">{{ class|route('class:short')|raw }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

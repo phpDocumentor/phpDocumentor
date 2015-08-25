@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ project.name }} &raquo; Constants
+{% endblock %}
+
+{% block content %}
+	<section class="row-fluid">
+		<div class="span2 sidebar">
+			{% set currentPackages = (project.indexes.packages|first) %}
+			{% set currentNamespace = project.namespace %}
+			{{ block('sidebarMenu') }}
+		</div>
+	</section>
+	<section class="row-fluid">
+		<div class="span10 offset2">
+			<div class="package-contents">
+				<h3>
+					<i class="fa fa-code"></i> Costants
+					<small style="float: right;padding-right: 10px;">{{ project.indexes.constants|length }}</small>
+				</h3>
+				{% if project.indexes.constants|length > 0 %}
+				<div>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Namespace</th>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for constant in project.indexes.constants|sort_asc %}
+							<tr>
+								<td class='namespaceMini'>{{ constant.namespace }}</td><td><a href="{{ constant.package|route("url") }}#constant_{{ constant.name }}" class="{{ constant.visibility }} {% if constant.deprecated %}deprecated{% endif %}">{{ constant.name }}</a></td>
+								<td><em>{{ constant.summary|markdown|raw }}</em></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ project.name }} &raquo; Traits
+{% endblock %}
+
+{% block content %}
+	<section class="row-fluid">
+		<div class="span2 sidebar">
+			{% set currentPackages = (project.indexes.packages|first) %}
+			{% set currentNamespace = project.namespace %}
+			{{ block('sidebarMenu') }}
+		</div>
+	</section>
+	<section class="row-fluid">
+		<div class="span10 offset2">
+			<div class="package-contents">
+				<h3>
+					<i class="fa fa-code"></i> Traits
+					<small style="float: right;padding-right: 10px;">{{ project.indexes.traits|length }}</small>
+				</h3>
+				{% if project.indexes.traits|length > 0 %}
+				<div>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Namespace</th>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for trait in project.indexes.traits|sort_asc %}
+							<tr>
+								<td class='namespaceMini'>{{ trait.namespace }}</td><td><a href="{{ trait|route("url") }}" class="{{ trait.visibility }} {% if trait.deprecated %}deprecated{% endif %}">{{ trait.name }}</a></td>
+								<td><em>{{ trait.summary|markdown|raw }}</em></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+{% endblock %}
