@@ -77,7 +77,7 @@
 					<dt>File</dt>
 					<dd><div class="path-wrapper"><a href="{{ fileInfo.file|route('url') }}">{{ fileInfo.path }}</a>:{{ fileInfo.line }}</div></dd>
 				{% endif %}
-				{% if (node.parent is not null and method.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+				{% if (node.parent is not null and method.parent.fullyQualifiedStructuralElementName != "" and method.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
 					<dt>Inherited from</dt>
 					<dd><a href="{{ method.parent|route('url') }}"><div class="path-wrapper">{{ method.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
 				{% endif %}

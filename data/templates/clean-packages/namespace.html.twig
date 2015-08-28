@@ -46,7 +46,7 @@
 					<table class="table table-hover">
 						{% for interface in node.interfaces|sort_asc %}
 							<tr>
-								<td>{{ interface|route('class:short')|raw }}</td>
+								<td><a href="{{ interface|route("url") }}" class="{{ interface.visibility }} {% if interface.deprecated %}deprecated{% endif %}">{{ interface.name }}</a></td>
 								<td><em>{{ interface.summary|markdown|raw }}</em></td>
 							</tr>
 						{% endfor %}
@@ -58,7 +58,7 @@
 					<table class="table table-hover">
 					{% for class in node.classes|sort_asc %}
 						<tr>
-							<td>{{ class|route('class:short')|raw }}</td>
+							<td><a href="{{ class|route("url") }}" class="{{ class.visibility }} {% if class.deprecated %}deprecated{% endif %}">{{ class.name }}</a></td>
 							<td><em>{{ class.summary|markdown|raw }}</em></td>
 						</tr>
 					{% endfor %}

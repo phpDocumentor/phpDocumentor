@@ -119,10 +119,10 @@
 						<span class="label label-info">final</span>
 					{% endif %}
 
-					{% if method.deprecated %}
+					{% if node.deprecated %}
 						<aside class="alert alert-block alert-error">
 							<h4>Deprecated</h4>
-							{{ method.tags.deprecated[0].description|markdown|raw }}
+							{{ node.tags.deprecated[0].description|markdown|raw }}
 						</aside>
 					{% endif %}
 
