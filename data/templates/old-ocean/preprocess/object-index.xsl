@@ -144,7 +144,7 @@
           <xsl:sort select="name" />
           <li>
             <span class="{name()}">
-              <a href="{$root}{../@generated-path}#{name}">
+              <a href="{../@generated-path}#{name}">
                 <xsl:value-of select="name" />
               </a>
               <br />
