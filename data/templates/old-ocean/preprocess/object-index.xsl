@@ -39,12 +39,14 @@
       </div>
     </xsl:if>
 
-    <!--<h1>Files</h1>-->
-    <!--<div id="file">-->
-    <!--<xsl:apply-templates select="file">-->
-    <!--<xsl:sort select="@path" />-->
-    <!--</xsl:apply-templates>-->
-    <!--</div>-->
+    <div class="section">
+      <h1>Files</h1>
+      <ul id="file" class="filetree">
+        <xsl:apply-templates select="/project/file">
+          <xsl:sort select="@path" />
+        </xsl:apply-templates>
+      </ul>
+    </div>
   </xsl:template>
 
   <xsl:template match="file">
@@ -53,10 +55,10 @@
     </h2>
     <xsl:variable name="file" select="@hash" />
     <ul id="files_{$file}" class="treeview-phpdoc">
-      <xsl:for-each select="class">
+      <xsl:for-each select="class|interface">
         <li>
-          <span>
-            <a href="{$root}/{../@generated-path}#{name}">
+          <span class="{name()}">
+            <a href="{../@generated-path}#{name}">
               <xsl:value-of select="name" />
             </a>
           </span>
@@ -84,7 +86,7 @@
           <xsl:sort select="name"/>
           <li class="closed">
             <span class="{name()}">
-              <a href="{$root}{../@generated-path}#{name}">
+              <a href="{../@generated-path}#{name}">
                 <xsl:value-of select="name" />
               </a>
               <br />
