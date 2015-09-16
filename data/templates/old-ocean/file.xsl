@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:php="http://php.net/xsl">
   <xsl:output indent="yes" method="html" />
   <xsl:include href="chrome.xsl" />
   <xsl:include href="class.xsl" />
@@ -41,8 +41,7 @@
       <br />
     </xsl:if>
     <xsl:if test="docblock/long-description != ''">
-      <!-- The following doesn't work currently and blocks the rest of the script. Therefor it is temporarily disabled -->
-<!--      <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" /><br /> -->
+      <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" /><br />
     </xsl:if>
 
     <xsl:if test="include">
