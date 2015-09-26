@@ -7,7 +7,7 @@
     <xsl:apply-templates select="/project/class[name=$class]" />
   </xsl:template>
 
-  <xsl:template match="class|interface">
+  <xsl:template name="class">
     <h3><xsl:value-of select="name" /></h3>
     <div class="properties">
       <h1>Properties</h1>
@@ -28,7 +28,7 @@
         <xsl:sort select="@name" />
         <label class="property-key"><xsl:value-of select="@name" /></label>
         <div class="property-value">
-          <xsl:if test="@link and @link != ''"><a title="{.}" href="{@link}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
+          <xsl:if test="@link and @link != ''"><a title="{.}" href="{$root}{@link}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
           <xsl:if test="not(@link) or @link = ''"><a title="{.}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
             &#160;
         </div>

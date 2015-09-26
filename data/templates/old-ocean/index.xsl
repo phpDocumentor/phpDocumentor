@@ -2,6 +2,12 @@
   <xsl:output indent="yes" method="html" />
   <xsl:include href="chrome.xsl" />
 
+  <xsl:template match="/">
+    <xsl:call-template name="nav">
+      <xsl:with-param name="start" select="'.'" />
+    </xsl:call-template>
+  </xsl:template>
+
   <xsl:template match="/project">
     <div id="content">
       <h2>Welcome!</h2>
