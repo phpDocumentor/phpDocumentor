@@ -82,44 +82,7 @@ XML;
      */
     public function testItSetsDefaultValuesIfNoneAreFoundInThePhpdoc3Xml()
     {
-        $xml = <<<XML
-<phpdocumentor
-        version="3"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpdoc.org"
-        xsi:noNamespaceSchemaLocation="phpdoc.xsd"
-        >
-    <paths>
-        <output></output>
-        <cache></cache>
-    </paths>
-    <version number="1.0.0">
-        <folder></folder>
-        <api format="">
-            <source dsn="file://.">
-                <path></path>
-            </source>
-            <ignore>
-                <path></path>
-            </ignore>
-            <extensions>
-                <extension></extension>
-            </extensions>
-            <visibility>public</visibility>
-            <markers>
-                <marker></marker>
-            </markers>
-        </api>
-        <guide format="">
-            <source>
-                <path>docs</path>
-            </source>
-        </guide>
-    </version>
-    <template name="clean"/>
-</phpdocumentor>
-XML;
-
-        $xml = new \SimpleXMLElement($xml);
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithoutValues.xml', 0, true);
 
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
@@ -140,6 +103,51 @@ XML;
         $array          = $phpDocumentor3->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItAcceptsMultipleApisInThePhpdoc3Xml()
+    {
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleApis.xml', 0, true);
+
+        $phpDocumentor3 = new PhpDocumentor3('');
+        $array          = $phpDocumentor3->convert($xml);
+
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleApis(), $array);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItAcceptsMultipleGuidesInThePhpdoc3Xml()
+    {
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleGuides.xml', 0, true);
+
+        $phpDocumentor3 = new PhpDocumentor3('');
+        $array          = $phpDocumentor3->convert($xml);
+
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleGuides(), $array);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItAcceptsMultipleTemplatesInThePhpdoc3Xml()
+    {
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleTemplates.xml', 0, true);
+
+        $phpDocumentor3 = new PhpDocumentor3('');
+        $array          = $phpDocumentor3->convert($xml);
+
+        $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleTemplates(), $array);
     }
 
     /**

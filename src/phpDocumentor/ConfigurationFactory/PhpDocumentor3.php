@@ -34,6 +34,7 @@ final class PhpDocumentor3 implements Strategy
         if ($schemaPath === '') {
             $schemaPath = __DIR__ . '/../../../data/xsd/phpdoc.xsd';
         }
+
         $this->schemaPath = $schemaPath;
     }
 
@@ -44,33 +45,30 @@ final class PhpDocumentor3 implements Strategy
     {
         $this->validate($phpDocumentor);
 
-        $versions = [];
-        $template = [];
+        $versions  = [];
+        $templates = [];
 
-        foreach ($phpDocumentor->children() as $key => $value) {
-            switch ((string) $key) {
+        foreach ($phpDocumentor->children() as $child) {
+            switch ($child->getName()) {
                 case 'version':
-                    $versions[(string) $value->attributes()->number] = $this->buildVersions($value);
+                    $versions[(string) $child->attributes()->number] = $this->buildVersion($child);
                     break;
                 case 'template':
-                    $template = $this->buildTemplate($value);
+                    $templates[] = $this->buildTemplate($child);
                     break;
                 default:
                     break;
             }
         }
 
-        $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
-        $cacheDirectory  = ((string) $phpDocumentor->parser->cache) ?: '/tmp/phpdoc-doc-cache';
-
         $phpdoc3Array = [
             'phpdocumentor' => [
                 'paths'     => [
-                    'output' => $outputDirectory,
-                    'cache'  => $cacheDirectory,
+                    'output' => ((string) $phpDocumentor->paths->output) ?: 'file://build/docs',
+                    'cache'  => ((string) $phpDocumentor->paths->cache) ?: '/tmp/phpdoc-doc-cache',
                 ],
-                'versions'  => $versions,
-                'templates' => $template,
+                'versions'  => ($versions) ?: $this->defaultVersions(),
+                'templates' => ($templates) ?: [$this->defaultTemplate()],
             ],
         ];
 
@@ -92,40 +90,87 @@ final class PhpDocumentor3 implements Strategy
      *
      * @return array
      */
-    private function buildVersions(\SimpleXMLElement $version)
+    private function buildVersion(\SimpleXMLElement $version)
+    {
+        $apis   = [];
+        $guides = [];
+        foreach ($version->children() as $child) {
+            switch ($child->getName()) {
+                case 'api':
+                    $apis[] = $this->buildApi($child);
+                    break;
+                case 'guide':
+                    $guides[] = $this->buildGuide($child);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $version = [
+            'folder' => (string) $version->folder,
+        ];
+
+        if (count($apis) > 0) {
+            $version['api'] = $apis;
+        }
+
+        if (count($guides) > 0) {
+            $version['guide'] = $guides;
+        }
+
+        return $version;
+    }
+
+    /**
+     * Builds the api part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $api
+     *
+     * @return array
+     */
+    private function buildApi(\SimpleXMLElement $api)
     {
         $extensions = [];
-        foreach ($version->api->extensions->children() as $extension) {
+        foreach ($api->extensions->children() as $extension) {
             if ((string) $extension !== '') {
                 $extensions[] = (string) $extension;
             }
         }
 
-        $ignoreHidden = filter_var($version->api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
+        $ignoreHidden = filter_var($api->ignore->attributes()->hidden, FILTER_VALIDATE_BOOLEAN);
 
         return [
-            'folder' => (string) $version->folder,
-            'api'    => [
-                'format'               => ((string) $version->api->attributes()->format) ?: 'php',
-                'source'               => [
-                    'dsn'   => (string) $version->api->source->attributes()->dsn,
-                    'paths' => ((array) $version->api->source->path) ?: ['src'],
-                ],
-                'ignore'               => [
-                    'hidden'   => $ignoreHidden,
-                    'paths'    => ((array) $version->api->ignore->path) ?: [],
-                ],
-                'extensions'           => $extensions,
-                'visibility'           => (string) $version->api->visibility,
-                'default-package-name' => ((string) $version->api->{'default-package-name'}) ?: 'Default',
-                'markers'              => (array) $version->api->markers->children()->marker,
+            'format'               => ((string) $api->attributes()->format) ?: 'php',
+            'source'               => [
+                'dsn'   => ((string) $api->source->attributes()->dsn) ?: 'file://.',
+                'paths' => ((array) $api->source->path) ?: ['.'],
             ],
-            'guide'  => [
-                'format' => ((string) $version->guide->attributes()->format) ?: 'rst',
-                'source' => [
-                    'dsn'   => ((string) $version->guide->source->attributes()->dsn) ?: 'file://.',
-                    'paths' => (array) $version->guide->source->path,
-                ],
+            'ignore'               => [
+                'hidden' => $ignoreHidden,
+                'paths'  => (array) $api->ignore->path,
+            ],
+            'extensions'           => $extensions,
+            'visibility'           => (string) $api->visibility,
+            'default-package-name' => ((string) $api->{'default-package-name'}) ?: 'Default',
+            'markers'              => (array) $api->markers->children()->marker,
+        ];
+    }
+
+    /**
+     * Builds the guide part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $guide
+     *
+     * @return array
+     */
+    private function buildGuide(\SimpleXMLElement $guide)
+    {
+        return [
+            'format' => ((string) $guide->attributes()->format) ?: 'rst',
+            'source' => [
+                'dsn'   => ((string) $guide->source->attributes()->dsn) ?: 'file://.',
+                'paths' => ((array) $guide->source->path) ?: [''],
             ],
         ];
     }
@@ -140,22 +185,80 @@ final class PhpDocumentor3 implements Strategy
     private function buildTemplate(\SimpleXMLElement $template)
     {
         if ((array) $template === []) {
-            // Use default template if none is found in the configuration
-            return [
-                [
-                    'name' => 'clean',
+            return $this->defaultTemplate();
+        }
+
+        $attributes = [];
+        foreach ($template->attributes() as $attribute) {
+            $attributes[$attribute->getName()] = (string) $attribute;
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Default versions part if none is found in the configuration.
+     *
+     * @return array
+     */
+    private function defaultVersions()
+    {
+        return [
+            '1.0.0' => [
+                'folder' => 'latest',
+                'api'    => [
+                    0 => [
+                        'format'               => 'php',
+                        'source'               => [
+                            'dsn'   => 'file://.',
+                            'paths' => [
+                                0 => 'src'
+                            ]
+                        ],
+                        'ignore'               => [
+                            'hidden' => true,
+                            'paths'  => [
+                                0 => 'src/ServiceDefinitions.php'
+                            ]
+                        ],
+                        'extensions'           => [
+                            0 => 'php',
+                            1 => 'php3',
+                            2 => 'phtml'
+                        ],
+                        'visibility'           => 'public',
+                        'default-package-name' => 'Default',
+                        'markers'              => [
+                            0 => 'TODO',
+                            1 => 'FIXME'
+                        ]
+                    ]
                 ],
-            ];
-        }
+                'guide'  => [
+                    0 => [
+                        'format' => 'rst',
+                        'source' => [
+                            'dsn'   => 'file://.',
+                            'paths' => [
+                                0 => 'docs'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    }
 
-        $array = [];
-        foreach ($template->attributes() as $key => $value) {
-            $array[] = [
-                (string) $key => (string) $value,
-            ];
-        }
-
-        return $array;
+    /**
+     * Default template part if none is found in the configuration.
+     *
+     * @return array
+     */
+    private function defaultTemplate()
+    {
+        return [
+            'name' => 'clean'
+        ];
     }
 
     /**

@@ -24,16 +24,29 @@
                 <extension>phtml</extension>
             </extensions>
             <visibility>public</visibility>
+            <markers>
+                <marker>TODO</marker>
+                <marker>FIXME</marker>
+            </markers>
+        </api>
+        <api format="php3">
+            <source dsn="file://.">
+                <path>src</path>
+            </source>
+            <ignore hidden="true" symlinks="true">
+                <path>src/ServiceDefinitions.php</path>
+            </ignore>
+            <extensions>
+                <extension>php</extension>
+                <extension>php3</extension>
+                <extension>phtml</extension>
+            </extensions>
+            <visibility>public</visibility>
             <default-package-name>Default</default-package-name>
             <markers>
                 <marker>TODO</marker>
                 <marker>FIXME</marker>
             </markers>
         </api>
-        <guide format="rst">
-            <source dsn="file://../phpDocumentor/phpDocumentor2">
-                <path>docs</path>
-            </source>
-        </guide>
     </version>
 </phpdocumentor>

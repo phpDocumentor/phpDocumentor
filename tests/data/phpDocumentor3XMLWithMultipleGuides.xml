@@ -10,9 +10,16 @@
         <cache>/tmp/phpdoc-doc-cache</cache>
     </paths>
     <version number="1.0.0">
-        <folder>earliest</folder>
-    </version>
-    <version number="2.0.0">
         <folder>latest</folder>
+        <guide format="rst">
+            <source dsn="file://../phpDocumentor/phpDocumentor2">
+                <path>docs</path>
+            </source>
+        </guide>
+        <guide format="rst">
+            <source dsn="file://../phpDocumentor/phpDocumentor3">
+                <path>docs</path>
+            </source>
+        </guide>
     </version>
 </phpdocumentor>
