@@ -27,7 +27,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteListsCommands()
     {
-        $this->markTestIncomplete();
+        $this->markTestSkipped('Functionality is broken and this test can be used to assert that it works again');
         // Arrange
         $command = new ListCommand($this->givenAFactoryWithTemplateNames(array('default', 'second')));
 
@@ -56,7 +56,6 @@ TXT;
      */
     private function givenAFactoryWithTemplateNames(array $templateNames)
     {
-        $this->markTestIncomplete();
         $factoryMock = m::mock('stdClass');
         $factoryMock->shouldReceive('getAllNames')->once()->andReturn($templateNames);
 

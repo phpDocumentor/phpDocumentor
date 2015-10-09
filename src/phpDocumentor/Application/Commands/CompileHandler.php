@@ -46,7 +46,7 @@ final class CompileHandler
     /**
      * Caches the project.
      *
-     * @param CacheProject $command
+     * @param Compile $command
      *
      * @return void
      */

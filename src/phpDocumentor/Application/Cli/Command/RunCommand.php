@@ -14,18 +14,13 @@ namespace phpDocumentor\Application\Cli\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
-use phpDocumentor\Application\Commands\CacheProject;
 use phpDocumentor\Application\Commands\Compile;
 use phpDocumentor\Application\Commands\DumpAstToDisk;
 use phpDocumentor\Application\Commands\InitializeParser;
-use phpDocumentor\Application\Commands\LoadProjectFromCache;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\Configuration;
-use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Validator\Error;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
@@ -292,13 +287,9 @@ HELP
 
         $target      = (string)$this->configuration->getParser()->getTarget();
         $cacheFolder = $input->getOption('cache-folder') ?: $target;
-        if (file_exists($cacheFolder)) {
-            $this->commandBus->handle(new LoadProjectFromCache($cacheFolder));
-        }
 
         $this->commandBus->handle(new InitializeParser($this->configuration));
         $this->commandBus->handle(new ParseFiles($this->configuration));
-        $this->commandBus->handle(new CacheProject($cacheFolder));
         $this->commandBus->handle(new Compile());
         $this->commandBus->handle(new Render($target, $input->getOption('template') ?: ['clean']));
 
