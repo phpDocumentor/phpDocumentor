@@ -12,6 +12,7 @@
 
 namespace phpDocumentor;
 
+use Flyfinder\Finder;
 use \LogicException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
@@ -20,7 +21,7 @@ use League\Flysystem\MountManager;
 /**
  * Class FilesystemFactory
  */
-final class FilesystemFactory
+final class FlySystemFactory implements FileSystemFactory
 {
     /** @var MountManager */
     private $mountManager;
@@ -49,7 +50,7 @@ final class FilesystemFactory
             if ($dsn->getScheme() === 'file') {
 
                 $path = $dsn->getPath();
-                $filesystem = new Filesystem(new Local($path));
+                $filesystem = new Filesystem(new Local($path, LOCK_EX, Local::SKIP_LINKS));
 
             } else {
                 //This will be implemented as soon as the CloneRemoteGitToLocal adapter is finished
@@ -59,6 +60,7 @@ final class FilesystemFactory
             $this->mountManager->mountFilesystem($dsnId, $filesystem);
         }
 
+        $filesystem->addPlugin(new Finder());
         return $filesystem;
     }
 }
