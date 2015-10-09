@@ -12,9 +12,10 @@
 namespace phpDocumentor;
 
 /**
- * General interace for Definitions used in phpdocumentor to provide
+ * General interface for Definitions used in phpdocumentor to provide
  * factories with information of the object to create.
  */
-interface Definition {
+interface Definition
+{
 
 }
