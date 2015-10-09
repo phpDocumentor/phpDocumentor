@@ -60,4 +60,20 @@ final class UriTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('file://foo/phpdoc.xml', (string) $uri);
     }
+
+    public function testItShouldReturnTrueIfUrisAreEqual()
+    {
+        $uri1 = new Uri('foo');
+        $uri2 = new Uri('foo');
+
+        $this->assertTrue($uri1->equals($uri2));
+    }
+
+    public function testItShouldReturnTrueIfUrisAreNotEqual()
+    {
+        $uri1 = new Uri('foo');
+        $uri2 = new Uri('bar');
+
+        $this->assertFalse($uri1->equals($uri2));
+    }
 }
