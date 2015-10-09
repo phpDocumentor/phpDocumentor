@@ -21,11 +21,18 @@ use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\Configuration;
+use phpDocumentor\DocumentationFactory;
+use phpDocumentor\DocumentationRepository;
+use phpDocumentor\DocumentGroupFormat;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Project\Version\DefinitionFactory;
+use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Parser;
+use Stash\Driver\FileSystem;
+use Stash\Pool;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -286,18 +293,39 @@ HELP
         );
 
         $target      = (string)$this->configuration->getParser()->getTarget();
-        $cacheFolder = $input->getOption('cache-folder') ?: $target;
 
-        $this->commandBus->handle(new InitializeParser($this->configuration));
-        $this->commandBus->handle(new ParseFiles($this->configuration));
-        $this->commandBus->handle(new Compile());
-        $this->commandBus->handle(new Render($target, $input->getOption('template') ?: ['clean']));
+        $configurationFactory = null;
+        $definitionFactory = new DefinitionFactory();
+        //TODO: add correct factories
+        //$definitionFactory->registerDocumentGroupDefinitionFactory('api', new DocumentGroupFormat('php'), new Factory());
 
-        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
+        $definitionRepository = new DefinitionRepository($configurationFactory, $definitionFactory);
+        $documentationRepository = new DocumentationRepository(new Pool(new FileSystem()));
+        $documentationFactory = new DocumentationFactory();
+        //TODO: add correct factories
+        //$documentationFactory->addDocumentGroupFactory(new ApiFactory());
+
+        foreach($definitionRepository->fetchAll() as $definition) {
+            $documentation = $documentationRepository->findByVersionNumber($definition->getVersionNumber());
+
+            if ($documentation === null) {
+                $documentation = $documentationFactory->create($definition);
+            }
+
+            $documentationRepository->save($documentation);
+            //render
         }
 
-        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $target));
+//        $this->commandBus->handle(new InitializeParser($this->configuration));
+//        $this->commandBus->handle(new ParseFiles($this->configuration));
+//        $this->commandBus->handle(new Compile());
+//        $this->commandBus->handle(new Render($target, $input->getOption('template') ?: ['clean']));
+//
+//        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
+//            $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
+//        }
+//
+//        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $target));
 
         return 0;
     }
