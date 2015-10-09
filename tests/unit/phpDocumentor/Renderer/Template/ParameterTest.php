@@ -38,22 +38,12 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The key for a parameter is supposed to be a string, received true
      * @covers ::__construct
      */
     public function testErrorIsThrownIfKeyIsNotAString()
     {
         new Parameter(true, 'value');
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The value for a parameter is supposed to be a string, received true
-     * @covers ::__construct
-     */
-    public function testErrorIsThrownIfValueIsNotAString()
-    {
-        new Parameter('key', true);
     }
 }

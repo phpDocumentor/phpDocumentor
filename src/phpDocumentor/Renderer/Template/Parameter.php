@@ -27,7 +27,7 @@ final class Parameter
      * Initializes this parameter with the given key and value, and asserts that they are strings.
      *
      * @param string $key
-     * @param string $value
+     * @param mixed $value
      */
     public function __construct($key, $value)
     {

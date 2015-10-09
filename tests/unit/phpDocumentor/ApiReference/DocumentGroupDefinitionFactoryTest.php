@@ -16,17 +16,14 @@ use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\Filesystem;
 use Mockery as m;
 use phpDocumentor\DocumentGroupFormat;
-use phpDocumentor\Dsn;
-use phpDocumentor\FileSystem\FileSystemFactory;
+use phpDocumentor\FileSystemFactory;
 use phpDocumentor\SpecificationFactory;
-use PHPUnit_Framework_TestCase;
 
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\DocumentGroupDefinitionFactory
  */
-final class DocumentGroupDefinitionFactoryTest extends PHPUnit_Framework_TestCase
+final class DocumentGroupDefinitionFactoryTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var DocumentGroupDefinitionFactory
      */

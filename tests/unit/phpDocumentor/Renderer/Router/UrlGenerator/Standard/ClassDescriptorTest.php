@@ -24,6 +24,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateUrlForClassDescriptor()
     {
+        $this->markTestIncomplete();
         // Arrange
         $fixture = new ClassDescriptor();
         $classDescriptorMock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');

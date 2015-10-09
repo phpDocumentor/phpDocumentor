@@ -10,7 +10,8 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\FlyFinder;
+namespace phpDocumentor\Infrastructure\FlyFinder;
+
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;
 use Flyfinder\Specification\HasExtension;
@@ -20,7 +21,7 @@ use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
 
 /**
- * @coversDefaultClass \phpDocumentor\FlyFinder\SpecificationFactory
+ * @coversDefaultClass \phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory
  * @covers ::create
  * @covers ::<private>
  */
