@@ -20,7 +20,6 @@ use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Render;
-use phpDocumentor\Configuration;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
@@ -56,9 +55,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class RunCommand extends Command
 {
-    /** @var Configuration */
-    private $configuration;
-
     /** @var CommandBus */
     private $commandBus;
 
@@ -73,11 +69,9 @@ final class RunCommand extends Command
      * @param Emitter       $emitter
      */
     public function __construct(
-        Configuration $configuration,
         CommandBus    $commandBus,
         Emitter       $emitter
     ) {
-        $this->configuration = $configuration;
         $this->commandBus    = $commandBus;
         $this->emitter       = $emitter;
 
@@ -279,7 +273,6 @@ HELP
 
         $this->commandBus->handle(
             new MergeConfigurationWithCommandLineOptions(
-                $this->configuration,
                 $input->getOptions(),
                 $input->getArguments()
             )

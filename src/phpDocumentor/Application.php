@@ -62,11 +62,9 @@ final class Application
     // TODO: Change this; plugins are not read from a config file provided on runtime
     private function registerPlugins($container)
     {
-        /** @var Configuration $config */
-        $config = $container->get(Configuration::class);
-
+        //TODO: refactor this method. Previously config was used here.
         /** @var Plugin $plugin */
-        foreach ($config->getPlugins() as $plugin) {
+        foreach (array() as $plugin) {
             // TODO: Retrieving the Plugin should be in a Repository class
             $provider = (strpos($plugin->getClassName(), '\\') === false)
                 ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getClassName())
