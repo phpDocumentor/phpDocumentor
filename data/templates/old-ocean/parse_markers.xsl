@@ -26,7 +26,7 @@
                 <xsl:if test="parse_markers">
                     <h3>
                         <a href="#">
-                            <xsl:value-of select="@path"/>
+                            <xsl:value-of select="concat(@path, ' - ')"/>
                             <small><xsl:value-of select="count(parse_markers/*)"/></small>
                         </a>
                     </h3>
