@@ -74,6 +74,18 @@ final class RunCommand extends Command
      * @var ConfigurationFactory
      */
     private $configurationFactory;
+    /**
+     * @var DefinitionRepository
+     */
+    private $definitionRepository;
+    /**
+     * @var DocumentationFactory
+     */
+    private $documentationFactory;
+    /**
+     * @var DocumentationRepository
+     */
+    private $documentationRepository;
 
     /**
      * Initializes the command with all necessary dependencies
@@ -83,6 +95,9 @@ final class RunCommand extends Command
      */
     public function __construct(
         ConfigurationFactory $configurationFactory,
+        DefinitionRepository $definitionRepository,
+        DocumentationRepository $documentationRepository,
+        DocumentationFactory $documentationFactory,
         CommandBus    $commandBus,
         Emitter       $emitter
     ) {
@@ -91,6 +106,9 @@ final class RunCommand extends Command
         $this->configurationFactory = $configurationFactory;
 
         parent::__construct('project:run');
+        $this->definitionRepository = $definitionRepository;
+        $this->documentationFactory = $documentationFactory;
+        $this->documentationRepository = $documentationRepository;
     }
 
     /**
@@ -302,25 +320,13 @@ HELP
 //            )
 //        );
 
-        //TODO: add correct factories
-        $definitionFactory = new DefinitionFactory();
-        //$definitionFactory->registerDocumentGroupDefinitionFactory('api', new DocumentGroupFormat('php'), new Factory());
-
-
-        $definitionRepository = new DefinitionRepository($this->configurationFactory, $definitionFactory);
-        $documentationRepository = new DocumentationRepository(new Pool(new FileSystem()));
-        $documentationFactory = new DocumentationFactory();
-        //TODO: add correct factories
-        //$documentationFactory->addDocumentGroupFactory(new ApiFactory());
-
-        foreach($definitionRepository->fetchAll() as $definition) {
-            $documentation = $documentationRepository->findByVersionNumber($definition->getVersionNumber());
+        foreach($this->definitionRepository->fetchAll() as $definition) {
+            $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
 
             if ($documentation === null) {
-                $documentation = $documentationFactory->create($definition);
+                $documentation = $this->documentationFactory->create($definition);
+                $this->documentationRepository->save($documentation);
             }
-
-            $documentationRepository->save($documentation);
             //render
         }
 

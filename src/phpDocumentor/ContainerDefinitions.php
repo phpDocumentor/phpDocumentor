@@ -35,11 +35,18 @@ use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\DefaultFilters;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\ReflectionAssemblers;
+use phpDocumentor\DocumentationFactory;
+use phpDocumentor\DocumentationRepository;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\FileSystemFactory;
+use phpDocumentor\FlySystemFactory;
+use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
+use phpDocumentor\Project\Version\DefinitionFactory;
+use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
@@ -49,6 +56,7 @@ use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
+use phpDocumentor\SpecificationFactory;
 use phpDocumentor\Uri;
 use phpDocumentor\Views\MapperFactory;
 use phpDocumentor\Views\MapperFactory\Container;
@@ -179,6 +187,26 @@ return [
     ConstraintValidatorFactoryInterface::class => \DI\object(ConstraintValidatorFactory::class),
     TranslatorInterface::class => \DI\object(DefaultTranslator::class),
 
+    //Definition Factories
+    \phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class => \DI\object(\phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class),
+    DefinitionFactory::class => function (ContainerInterface $c) {
+        $factory = new \phpDocumentor\Project\Version\DefinitionFactory();
+
+        $factory->registerDocumentGroupDefinitionFactory(
+            'api',
+            new \phpDocumentor\DocumentGroupFormat('php'),
+            $c->get(\phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class)
+        );
+
+        return $factory;
+    },
+    DefinitionRepository::class => \Di\object(DefinitionRepository::class),
+
+    //Documentation Respositories
+    DocumentationRepository::class => \DI\object(DocumentationRepository::class),
+    DocumentationFactory::class => \DI\object()
+        ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),
+
     // Descriptors
     InitializerChain::class => \DI\object()
         ->method('addInitializer', \DI\get(DefaultFilters::class))
@@ -186,10 +214,15 @@ return [
         ->method('addInitializer', \DI\get(ReflectionAssemblers::class))
         ->method('addInitializer', \DI\get(DefaultValidators::class)),
 
-    // Cache
+    // Infrastructure
     Pool::class => function (ContainerInterface $c) {
-        return new Pool(new FileSystem($c->get('cache.directory')));
+        $adapter = new \Stash\Driver\BlackHole();
+        $adapter->setOptions(['path' => $c->get('cache.directory')]);
+        return new Pool($adapter);
     },
+
+    FileSystemFactory::class => \DI\object(FlySystemFactory::class),
+    SpecificationFactory::class => \DI\object(FlySystemSpecificationFactory::class),
 
     // Parser
     Php::class => \DI\object()
