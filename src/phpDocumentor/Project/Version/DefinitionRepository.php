@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Project\Version;
+use phpDocumentor\ConfigurationFactory;
 
 /**
  * Repository providing version definitions.
@@ -17,7 +18,9 @@ namespace phpDocumentor\Project\Version;
 final class DefinitionRepository
 {
     /**
-     * @todo missing docblock here. Since the configuration factory is not in place yet
+     * Factory class to create configuration.
+     *
+     * @var ConfigurationFactory
      */
     private $configurationFactory;
 
@@ -31,10 +34,10 @@ final class DefinitionRepository
     /**
      * Initializes the repository.
      *
-     * @param $configurationFactory
+     * @param ConfigurationFactory $configurationFactory
      * @param DefinitionFactory $definitionFactory
      */
-    public function __construct($configurationFactory, DefinitionFactory $definitionFactory)
+    public function __construct(ConfigurationFactory $configurationFactory, DefinitionFactory $definitionFactory)
     {
         $this->configurationFactory = $configurationFactory;
         $this->definitionFactory = $definitionFactory;
