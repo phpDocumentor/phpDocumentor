@@ -172,20 +172,6 @@ return [
         return Dispatcher::getInstance();
     },
 
-    // Serializer
-    Serializer::class => function (ContainerInterface $c) {
-        $vendorPath     = $c->get('composer.vendor_path') ?: __DIR__ . '/../vendor';
-        $serializerPath = $vendorPath . '/jms/serializer/src';
-
-        AnnotationRegistry::registerAutoloadNamespace('JMS\Serializer\Annotation', $serializerPath);
-        AnnotationRegistry::registerAutoloadNamespace(
-            'phpDocumentor\Configuration\Merger\Annotation',
-            __DIR__ . '/..'
-        );
-
-        return SerializerBuilder::create()->build();
-    },
-
     // Validator
     ValidatorInterface::class => \DI\object(Validator::class),
     MetadataFactoryInterface::class => \DI\object(LazyLoadingMetadataFactory::class)
