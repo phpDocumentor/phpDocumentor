@@ -36,7 +36,11 @@
       <xsl:for-each select="../docblock/tag">
         <xsl:sort select="@name" />
         <label class="property-key"><xsl:value-of select="@name" /></label>
-        <div class="property-value"><xsl:value-of select="@description" /></div>
+        <div class="property-value">
+          <xsl:if test="@link and @link != ''"><a title="{.}" href="{@link}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
+          <xsl:if test="not(@link) or @link = ''"><a title="{.}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
+          &#160;
+        </div>
       </xsl:for-each>
     </div>
     </xsl:if>
