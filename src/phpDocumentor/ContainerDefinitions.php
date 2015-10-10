@@ -53,6 +53,8 @@ use phpDocumentor\Uri;
 use phpDocumentor\Views\MapperFactory;
 use phpDocumentor\Views\MapperFactory\Container;
 use phpDocumentor\Views\Mappers\Project;
+use Stash\Driver\FileSystem;
+use Stash\Pool;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -199,8 +201,9 @@ return [
         ->method('addInitializer', \DI\get(DefaultValidators::class)),
 
     // Cache
-    AdapterInterface::class => \DI\Object(File::class)->constructor(\DI\get('cache.directory')),
-    CacheInterface::class => \DI\object(Cache::class),
+    Pool::class => function (ContainerInterface $c) {
+        return new Pool(new FileSystem($c->get('cache.directory')));
+    },
 
     // Parser
     Php::class => \DI\object()
