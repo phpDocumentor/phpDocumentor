@@ -20,11 +20,13 @@ use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Render;
+use phpDocumentor\ConfigurationFactory;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Parser;
+use phpDocumentor\Uri;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -62,18 +64,24 @@ final class RunCommand extends Command
     private $emitter;
 
     /**
+     * @var ConfigurationFactory
+     */
+    private $configurationFactory;
+
+    /**
      * Initializes the command with all necessary dependencies
      *
-     * @param Configuration $configuration
      * @param CommandBus    $commandBus
      * @param Emitter       $emitter
      */
     public function __construct(
+        ConfigurationFactory $configurationFactory,
         CommandBus    $commandBus,
         Emitter       $emitter
     ) {
         $this->commandBus    = $commandBus;
         $this->emitter       = $emitter;
+        $this->configurationFactory = $configurationFactory;
 
         parent::__construct('project:run');
     }
@@ -271,26 +279,31 @@ HELP
         );
         $this->attachListeners($input, $output);
 
-        $this->commandBus->handle(
-            new MergeConfigurationWithCommandLineOptions(
-                $input->getOptions(),
-                $input->getArguments()
-            )
-        );
+        //TODO: find a better way to change this?
+        if ($input->getOption('config')) {
+            $this->configurationFactory->replaceLocation(
+                new Uri(realpath($input->getOption('config')))
+            );
+        }
 
-        $target      = (string)$this->configuration->getParser()->getTarget();
-        $cacheFolder = $input->getOption('cache-folder') ?: $target;
+        $configuration = $this->configurationFactory->get();
 
-        $this->commandBus->handle(new InitializeParser($this->configuration));
-        $this->commandBus->handle(new ParseFiles($this->configuration));
+        //TODO: refactor creation of configuration overrides by parameters.
+//        $this->commandBus->handle(
+//            new MergeConfigurationWithCommandLineOptions(
+//                $input->getOptions(),
+//                $input->getArguments()
+//            )
+//        );
+
         $this->commandBus->handle(new Compile());
-        $this->commandBus->handle(new Render($target, $input->getOption('template') ?: ['clean']));
+        $this->commandBus->handle(new Render(sys_get_temp_dir(), $input->getOption('template') ?: ['clean']));
 
         if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
             $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
         }
 
-        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $target));
+        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', sys_get_temp_dir()));
 
         return 0;
     }
