@@ -13,16 +13,13 @@
       <h1>Properties</h1>
       <label class="property-key">Extends</label>
       <div class="property-value">
-        <xsl:if test="extends[@link = '']">
-          <xsl:value-of select="extends" />
-        </xsl:if>
-        <xsl:if test="extends[@link != '']">
-          <a href="{extends/@link}"><xsl:value-of select="extends" /></a>
-        </xsl:if>
+        <xsl:value-of select="extends" />
         &#160;</div>
       <label class="property-key">Implements</label>
       <div class="property-value">
-        <xsl:for-each select="implements"><xsl:value-of select="." /><br /></xsl:for-each>&#160;
+        <xsl:for-each select="implements">
+          <xsl:value-of select="." /><br />
+        </xsl:for-each>&#160;
       </div>
       <xsl:for-each select="docblock/tag">
         <xsl:sort select="@name" />
