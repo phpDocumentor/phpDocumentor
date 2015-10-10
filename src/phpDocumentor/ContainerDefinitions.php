@@ -28,6 +28,9 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Configuration;
 use phpDocumentor\Configuration\Loader;
+use phpDocumentor\ConfigurationFactory;
+use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
+use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\DefaultFilters;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
@@ -46,6 +49,7 @@ use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
+use phpDocumentor\Uri;
 use phpDocumentor\Views\MapperFactory;
 use phpDocumentor\Views\MapperFactory\Container;
 use phpDocumentor\Views\Mappers\Project;
@@ -131,11 +135,12 @@ return [
     MethodNameInflector::class  => \DI\object(InvokeInflector::class),
 
     // Configuration
-    Configuration::class => function (ContainerInterface $c) {
-        /** @var Loader $loader */
-        $loader = $c->get(Loader::class);
-
-        return $loader->load($c->get('config.template.path'), $c->get('config.user.path'));
+    ConfigurationFactory::class => function (ContainerInterface $c) {
+        return new \phpDocumentor\ConfigurationFactory([
+            new PhpDocumentor3(''),
+            new PhpDocumentor2(),
+        ],
+        new Uri($c->get('config.user.path')));
     },
 
     // Console
