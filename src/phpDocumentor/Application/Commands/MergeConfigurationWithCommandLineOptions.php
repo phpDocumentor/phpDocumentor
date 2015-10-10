@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\Application\Commands;
 
-use phpDocumentor\Configuration;
-
 final class MergeConfigurationWithCommandLineOptions
 {
     /** @var string[] */
