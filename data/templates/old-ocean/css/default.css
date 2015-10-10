@@ -52,6 +52,11 @@ th, td
   padding-top: 36px;
 }
 
+#header img
+{
+  margin-right: -1px;
+}
+
 #footer
 {
   clear:both;
