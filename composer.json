@@ -16,8 +16,6 @@
 
         "twig/twig":         "^1.3",
         "erusev/parsedown":  "^1.0",
-        "jms/serializer":    "~0.12",
-        "desarrolla2/cache": "^1.8",
 
         "symfony/event-dispatcher": "^2.1",
 
