@@ -86,7 +86,7 @@ final class DocumentGroupDefinition implements DocumentGroupDefinitionInterface
         $files = [];
         $result = $this->filesystem->find($this->specification);
         foreach ($result as $file) {
-            $files[] = $file;
+            $files[] = $file['path'];
         }
 
         return $files;
