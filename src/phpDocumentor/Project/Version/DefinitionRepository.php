@@ -52,11 +52,11 @@ final class DefinitionRepository
     public function fetch($versionNumber)
     {
         $config = $this->configurationFactory->get();
-        if (isset($config['versions'][$versionNumber])) {
+        if (isset($config['phpdocumentor']['versions'][$versionNumber])) {
             return $this->definitionFactory->create(
                 array_merge(
                     ['version' => $versionNumber],
-                    $config['versions'][$versionNumber]
+                    $config['phpdocumentor']['versions'][$versionNumber]
                 )
             );
         }
@@ -73,8 +73,8 @@ final class DefinitionRepository
     {
         $definitions = array();
         $config = $this->configurationFactory->get();
-        if (isset($config['versions'])) {
-            foreach ($config['versions'] as $version => $options ) {
+        if (isset($config['phpdocumentor']['versions'])) {
+            foreach ($config['phpdocumentor']['versions'] as $version => $options ) {
                 $definitions[] = $this->fetch($version);
             }
         }

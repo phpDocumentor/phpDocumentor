@@ -12,6 +12,7 @@
 namespace phpDocumentor\Project\Version;
 
 use Mockery as m;
+use phpDocumentor\ConfigurationFactory;
 use phpDocumentor\Project\VersionNumber;
 
 /**
@@ -38,15 +39,17 @@ class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->configurationFactoryMock = m::mock(\stdClass::class);
+        $this->configurationFactoryMock = m::mock(ConfigurationFactory::class);
         $this->configurationFactoryMock->shouldReceive('get')
             ->andReturn(
                 [
-                    'versions' => [
-                        '1.0.0' => [
-                            'api' => []
+                    'phpdocumentor' => [
+                        'versions' => [
+                            '1.0.0' => [
+                                'api' => []
+                            ],
+                            '1.1.0' => [],
                         ],
-                        '1.1.0' => [],
                     ],
                 ]
             );
