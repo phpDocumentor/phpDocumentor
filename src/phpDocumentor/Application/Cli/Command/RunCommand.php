@@ -293,19 +293,19 @@ HELP
             );
         }
 
-        $configuration = $this->configurationFactory->get();
-
-        //TODO: add correct factories
-        $definitionFactory = new DefinitionFactory();
-        //$definitionFactory->registerDocumentGroupDefinitionFactory('api', new DocumentGroupFormat('php'), new Factory());
-
         //TODO: refactor creation of configuration overrides by parameters.
+        $configuration = $this->configurationFactory->get();
 //        $this->commandBus->handle(
 //            new MergeConfigurationWithCommandLineOptions(
 //                $input->getOptions(),
 //                $input->getArguments()
 //            )
 //        );
+
+        //TODO: add correct factories
+        $definitionFactory = new DefinitionFactory();
+        //$definitionFactory->registerDocumentGroupDefinitionFactory('api', new DocumentGroupFormat('php'), new Factory());
+
 
         $definitionRepository = new DefinitionRepository($this->configurationFactory, $definitionFactory);
         $documentationRepository = new DocumentationRepository(new Pool(new FileSystem()));
