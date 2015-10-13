@@ -53,13 +53,13 @@ final class PhpDocumentor2 implements Strategy
 
         $sourcePaths = [];
         foreach ($directories as $directory) {
-            $sourcePaths[] = (string) (new Dsn($directory))->getPath();
+            $sourcePaths[] = (new Dsn($directory))->getPath();
         }
 
         $phpdoc2Array = [
             'phpdocumentor' => [
                 'paths'     => [
-                    'output' => (string) (new Dsn($outputDirectory))->getPath(),
+                    'output' => (new Dsn($outputDirectory))->getPath(),
                     'cache'  => '/tmp/phpdoc-doc-cache',
                 ],
                 'versions'  => [
