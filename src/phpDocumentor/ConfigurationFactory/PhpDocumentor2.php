@@ -19,6 +19,16 @@ use phpDocumentor\Dsn;
  */
 final class PhpDocumentor2 implements Strategy
 {
+    private $extensions         = ['php', 'php3', 'phtml'];
+    private $markers            = ['TODO', 'FIXME'];
+    private $visibility         = 'public';
+    private $defaultPackageName = 'Default';
+    private $template           = 'clean';
+    private $ignoreHidden       = true;
+    private $ignoreSymlinks     = true;
+    private $outputDirectory    = 'file://build/docs';
+    private $directories        = ['src'];
+
     /**
      * @inheritdoc
      */
@@ -26,35 +36,7 @@ final class PhpDocumentor2 implements Strategy
     {
         $this->validate($phpDocumentor);
 
-        $extensions         = ['php', 'php3', 'phtml'];
-        $markers            = ['TODO', 'FIXME'];
-        $visibility         = 'public';
-        $defaultPackageName = 'Default';
-        $template           = 'clean';
-        $ignoreHidden       = true;
-        $ignoreSymlinks     = true;
-
-        if (isset($phpDocumentor->parser)) {
-            $extensions = $this->buildExtensionsPart($phpDocumentor->parser);
-            $markers    = $this->buildMarkersPart($phpDocumentor->parser);
-
-            $visibility         = ((string) $phpDocumentor->parser->visibility) ?: $visibility;
-            $defaultPackageName = ((string) $phpDocumentor->parser->{'default-package-name'}) ?: $defaultPackageName;
-            $template           = ((string) $phpDocumentor->transformations->template->attributes()->name) ?: $template;
-        }
-
-        if (isset($phpDocumentor->parser->files)) {
-            $ignoreHidden   = $this->buildIgnoreHiddenPart($phpDocumentor->parser->files);
-            $ignoreSymlinks = $this->buildIgnoreSymlinksPart($phpDocumentor->parser->files);
-        }
-
-        $outputDirectory = ((string) $phpDocumentor->parser->target) ?: 'file://build/docs';
-        $directories     = ((array) $phpDocumentor->parser->files->directory) ?: ['src'];
-
-        $sourcePaths = [];
-        foreach ($directories as $directory) {
-            $sourcePaths[] = (new Dsn($directory))->getPath();
-        }
+        $outputDirectory = $this->buildOutputDirectory($phpDocumentor);
 
         $phpdoc2Array = [
             'phpdocumentor' => [
@@ -69,23 +51,23 @@ final class PhpDocumentor2 implements Strategy
                             'format'               => 'php',
                             'source'               => [
                                 'dsn'   => 'file://.',
-                                'paths' => $sourcePaths,
+                                'paths' => $this->buildSourcePaths($phpDocumentor),
                             ],
                             'ignore'               => [
-                                'hidden'   => $ignoreHidden,
-                                'symlinks' => $ignoreSymlinks,
+                                'hidden'   => $this->buildIgnoreHidden($phpDocumentor),
+                                'symlinks' => $this->buildIgnoreSymlinks($phpDocumentor),
                                 'paths'    => ['src/ServiceDefinitions.php'],
                             ],
-                            'extensions'           => $extensions,
-                            'visibility'           => $visibility,
-                            'default-package-name' => $defaultPackageName,
-                            'markers'              => $markers,
+                            'extensions'           => $this->buildExtensions($phpDocumentor),
+                            'visibility'           => $this->buildVisibility($phpDocumentor),
+                            'default-package-name' => $this->buildDefaultPackageName($phpDocumentor),
+                            'markers'              => $this->buildMarkers($phpDocumentor),
                         ],
                     ],
                 ],
                 'templates' => [
                     [
-                        'name' => $template,
+                        'name' => $this->buildTemplate($phpDocumentor),
                     ],
                 ],
             ],
@@ -103,79 +85,222 @@ final class PhpDocumentor2 implements Strategy
     }
 
     /**
+     * Loops over a node and fills an array with the found children.
+     *
+     * @param \SimpleXMLElement $node
+     *
+     * @return array
+     */
+    private function buildArrayFromNode(\SimpleXMLElement $node)
+    {
+        $array = [];
+        foreach ($node->children() as $extension) {
+            if ((string) $extension !== '') {
+                $array[] = (string) $extension;
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Builds the extensions part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return array
+     */
+    private function buildExtensions(\SimpleXMLElement $phpDocumentor)
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->extensions;
+        }
+
+        if ((array) $phpDocumentor->parser->extensions === []) {
+            return $this->extensions;
+        }
+
+        return $this->buildArrayFromNode($phpDocumentor->parser->extensions);
+    }
+
+    /**
+     * Builds the markers part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return array
+     */
+    private function buildMarkers(\SimpleXMLElement $phpDocumentor)
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->markers;
+        }
+
+        if ((array) $phpDocumentor->parser->markers === []) {
+            return $this->markers;
+        }
+
+        return $this->buildArrayFromNode($phpDocumentor->parser->markers);
+    }
+
+    /**
+     * Builds the visibility part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return string
+     */
+    private function buildVisibility(\SimpleXMLElement $phpDocumentor)
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->visibility;
+        }
+
+        if ((string) $phpDocumentor->parser->visibility === '') {
+            return $this->visibility;
+        }
+
+        return (string) $phpDocumentor->parser->visibility;
+    }
+
+    /**
+     * Builds the defaultPackageName part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return string
+     */
+    private function buildDefaultPackageName(\SimpleXMLElement $phpDocumentor)
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->defaultPackageName;
+        }
+
+        if ((string) $phpDocumentor->parser->{'default-package-name'} === '') {
+            return $this->defaultPackageName;
+        }
+
+        return (string) $phpDocumentor->parser->{'default-package-name'};
+    }
+
+    /**
+     * Builds the template part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return string
+     */
+    private function buildTemplate(\SimpleXMLElement $phpDocumentor)
+    {
+        if ((array) $phpDocumentor->transformations === []) {
+            return $this->template;
+        }
+
+        if ((string) $phpDocumentor->transformations->template === '') {
+            return $this->template;
+        }
+
+        return (string) $phpDocumentor->transformations->template->attributes()->name;
+    }
+
+    /**
      * Builds the ignore-hidden part of the array from the configuration xml.
      *
      * @param \SimpleXMLElement $phpDocumentor
      *
      * @return mixed
      */
-    private function buildIgnoreHiddenPart(\SimpleXMLElement $phpDocumentor)
+    private function buildIgnoreHidden(\SimpleXMLElement $phpDocumentor)
     {
-        $ignoreHidden = true;
-        if (isset($phpDocumentor->parser->files->{'ignore-hidden'})) {
-            $ignoreHidden = filter_var($phpDocumentor->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->ignoreHidden;
         }
 
-        return $ignoreHidden;
+        if ((string) $phpDocumentor->parser->files->{'ignore-hidden'} === '') {
+            return $this->ignoreHidden;
+
+        }
+
+        return filter_var($phpDocumentor->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
      * Builds the ignore-symlinks part of the array from the configuration xml.
      *
-     * @param \SimpleXMLElement $files
+     * @param \SimpleXMLElement $phpDocumentor
      *
      * @return mixed
      */
-    private function buildIgnoreSymlinksPart(\SimpleXMLElement $files)
+    private function buildIgnoreSymlinks(\SimpleXMLElement $phpDocumentor)
     {
-        $ignoreSymlinks = [];
-        if (isset($files->{'ignore-symlinks'})) {
-            $ignoreSymlinks = filter_var($files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->ignoreSymlinks;
         }
 
-        return $ignoreSymlinks;
+        if ((string) $phpDocumentor->parser->files->{'ignore-symlinks'} === '') {
+            return $this->ignoreSymlinks;
+        }
+
+        return filter_var($phpDocumentor->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
-     * Builds the extensions part of the array from the configuration xml.
+     * Builds the outputDirectory part of the array from the configuration xml.
      *
-     * @param \SimpleXMLElement $parser
+     * @param \SimpleXMLElement $phpDocumentor
      *
-     * @return array
+     * @return string
      */
-    private function buildExtensionsPart(\SimpleXMLElement $parser)
+    private function buildOutputDirectory(\SimpleXMLElement $phpDocumentor)
     {
-        $extensions = [];
-        if (isset($parser->extensions)) {
-            foreach ($parser->extensions->children() as $extension) {
-                if ((string) $extension !== '') {
-                    $extensions[] = (string) $extension;
-                }
-            }
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->outputDirectory;
         }
 
-        return $extensions;
+        if ((string) $phpDocumentor->parser->target === '') {
+            return $this->outputDirectory;
+        }
+
+        return (string) $phpDocumentor->parser->target;
     }
 
     /**
-     * Builds the markers part of the array from the configuration xml.
+     * Builds the directories that are used in the sourcePaths.
      *
-     * @param \SimpleXMLElement $parser
+     * @param \SimpleXMLElement $phpDocumentor
      *
      * @return array
      */
-    private function buildMarkersPart(\SimpleXMLElement $parser)
+    private function buildDirectories(\SimpleXMLElement $phpDocumentor)
     {
-        $markers = [];
-        if (isset($parser->markers)) {
-            foreach ($parser->markers->children() as $marker) {
-                if ((string) $marker !== '') {
-                    $markers[] = (string) $marker;
-                }
-            }
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->directories;
         }
 
-        return $markers;
+        if ((string) $phpDocumentor->parser->files->directory === '') {
+            return $this->directories;
+        }
+
+        return (array) $phpDocumentor->parser->files->directory;
+    }
+
+    /**
+     * Builds the sourcePaths part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return array
+     */
+    private function buildSourcePaths(\SimpleXMLElement $phpDocumentor)
+    {
+        $sourcePaths = [];
+        $directories = $this->buildDirectories($phpDocumentor);
+
+        foreach ($directories as $directory) {
+            $sourcePaths[] = (new Dsn($directory))->getPath();
+        }
+
+        return $sourcePaths;
     }
 
     /**

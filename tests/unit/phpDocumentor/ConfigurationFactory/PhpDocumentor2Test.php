@@ -66,4 +66,18 @@ XML;
 
         $this->assertTrue($bool);
     }
+
+    /**
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItRevertsToDefaultsIfValuesAreNotInTheConfigurationFile()
+    {
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithoutExtensions.xml', 0, true);
+
+        $phpDocumentor2 = new PhpDocumentor2();
+        $array          = $phpDocumentor2->convert($xml);
+
+        $this->assertEquals(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
+    }
 }
