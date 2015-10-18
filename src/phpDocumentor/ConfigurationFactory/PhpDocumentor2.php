@@ -26,6 +26,7 @@ final class PhpDocumentor2 implements Strategy
     private $template           = 'clean';
     private $ignoreHidden       = true;
     private $ignoreSymlinks     = true;
+    private $ignorePaths        = ['src/ServiceDefinitions.php'];
     private $outputDirectory    = 'file://build/docs';
     private $directories        = ['src'];
 
@@ -56,7 +57,7 @@ final class PhpDocumentor2 implements Strategy
                             'ignore'               => [
                                 'hidden'   => $this->buildIgnoreHidden($phpDocumentor),
                                 'symlinks' => $this->buildIgnoreSymlinks($phpDocumentor),
-                                'paths'    => ['src/ServiceDefinitions.php'],
+                                'paths'    => $this->buildIgnorePaths($phpDocumentor),
                             ],
                             'extensions'           => $this->buildExtensions($phpDocumentor),
                             'visibility'           => $this->buildVisibility($phpDocumentor),
@@ -94,9 +95,9 @@ final class PhpDocumentor2 implements Strategy
     private function buildArrayFromNode(\SimpleXMLElement $node)
     {
         $array = [];
-        foreach ($node->children() as $extension) {
-            if ((string) $extension !== '') {
-                $array[] = (string) $extension;
+        foreach ($node->children() as $child) {
+            if ((string) $child !== '') {
+                $array[] = (string) $child;
             }
         }
 
@@ -242,6 +243,33 @@ final class PhpDocumentor2 implements Strategy
         }
 
         return filter_var($phpDocumentor->parser->files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * Builds the ignorePaths part of the array from the configuration xml.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return mixed
+     */
+    private function buildIgnorePaths(\SimpleXMLElement $phpDocumentor)
+    {
+        if ((array) $phpDocumentor->parser === []) {
+            return $this->ignorePaths;
+        }
+
+        $ignorePaths = [];
+        foreach ($phpDocumentor->parser->files->children() as $child) {
+            if ($child->getName() === 'ignore') {
+                $ignorePaths[] = (string) $child;
+            }
+        }
+
+        if (count($ignorePaths) === 0) {
+            return $this->ignorePaths;
+        }
+
+        return $ignorePaths;
     }
 
     /**

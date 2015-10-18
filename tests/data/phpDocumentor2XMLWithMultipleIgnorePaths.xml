@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+    <parser>
+        <default-package-name>Default</default-package-name>
+        <encoding>utf-8</encoding>
+        <target>build/docs</target>
+        <files>
+            <directory>src</directory>
+            <ignore>vendor/*</ignore>
+            <ignore>logs/*</ignore>
+        </files>
+    </parser>
+    <transformer>
+        <target>output</target>
+    </transformer>
+    <logging>
+        <level>error</level>
+    </logging>
+    <transformations>
+        <template name="clean"/>
+    </transformations>
+</phpdocumentor>

@@ -80,4 +80,18 @@ XML;
 
         $this->assertEquals(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
     }
+
+    /**
+     * @covers ::convert
+     * @covers ::<private>
+     */
+    public function testItAcceptsMultipleIgnorePathsInThePhpdoc2Xml()
+    {
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithMultipleIgnorePaths.xml', 0, true);
+
+        $phpDocumentor2 = new PhpDocumentor2();
+        $array          = $phpDocumentor2->convert($xml);
+
+        $this->assertEquals(\PhpDocumentor2ExpectedArray::getArrayWithMultipleIgnorePaths(), $array);
+    }
 }
