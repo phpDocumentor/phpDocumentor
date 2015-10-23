@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\Application\Commands;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
-
 final class Render
 {
     /** @var string */

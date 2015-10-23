@@ -92,30 +92,6 @@ return [
         \DI\get(CommandHandlerMiddleware::class)
     ],
     'cache.directory' => sys_get_temp_dir(),
-    'linker.substitutions' => [
-        Descriptor\ProjectDescriptor::class => [ 'files' ],
-        Descriptor\FileDescriptor::class    => [ 'tags', 'classes', 'interfaces', 'traits', 'functions', 'constants' ],
-        Descriptor\ClassDescriptor::class   => [
-            'tags',
-            'parent',
-            'interfaces',
-            'constants',
-            'properties',
-            'methods',
-            'usedTraits',
-        ],
-        Descriptor\InterfaceDescriptor::class       => [ 'tags', 'parent', 'constants', 'methods' ],
-        Descriptor\TraitDescriptor::class           => [ 'tags', 'properties', 'methods', 'usedTraits' ],
-        Descriptor\FunctionDescriptor::class        => ['tags', 'arguments'],
-        Descriptor\MethodDescriptor::class          => ['tags', 'arguments'],
-        Descriptor\ArgumentDescriptor::class        => ['types'],
-        Descriptor\PropertyDescriptor::class        => ['tags', 'types'],
-        Descriptor\ConstantDescriptor::class        => ['tags', 'types'],
-        Descriptor\Tag\ParamDescriptor::class       => ['types'],
-        Descriptor\Tag\ReturnDescriptor::class      => ['types'],
-        Descriptor\Tag\SeeDescriptor::class         => ['reference'],
-        Descriptor\Type\CollectionDescriptor::class => ['baseType', 'types', 'keyTypes'],
-    ],
     'template.localDirectory'    => __DIR__ . '/../../data/templates',
     'template.composerDirectory' => __DIR__ . '/../../../templates',
     'template.directory'         => function (ContainerInterface $c) {
@@ -232,17 +208,6 @@ return [
     Parser::class => \DI\object()
         ->method('registerEventDispatcher', \DI\get(Dispatcher::class))
         ->method('registerBackend', \DI\get(Php::class)),
-
-    // Compiler
-    Linker::class => \DI\object()->constructorParameter('substitutions', \DI\get('linker.substitutions')),
-    Compiler::class => \DI\object()
-        ->method('insert', \DI\get(ElementsIndexBuilder::class), ElementsIndexBuilder::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(MarkerFromTagsExtractor::class), MarkerFromTagsExtractor::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(ExampleTagsEnricher::class), ExampleTagsEnricher::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(PackageTreeBuilder::class), PackageTreeBuilder::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(NamespaceTreeBuilder::class), NamespaceTreeBuilder::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(ResolveInlineLinkAndSeeTags::class), ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY)
-        ->method('insert', \DI\get(Linker::class), Linker::COMPILER_PRIORITY),
 
     Queue::class => \DI\object()
         ->method('insert', \DI\get(ExternalRouter::class), 10500)
