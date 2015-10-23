@@ -32,10 +32,10 @@ class DocumentGroupDefinitionTest extends \PHPUnit_Framework_TestCase
         $specificationMock = m::mock(SpecificationInterface::class);
         $definition = new DocumentGroupDefinition(new DocumentGroupFormat('PHP'), $fileSystemMock, $specificationMock);
 
-        $result = ['myFile.php', ['someFile.php']];
+        $result = [['path' => 'myFile.php'], ['path' => 'someFile.php']];
 
         $fileSystemMock->shouldReceive('find')->with($specificationMock)->andReturn(new \ArrayIterator($result));
 
-        $this->assertEquals($result, $definition->getFiles());
+        $this->assertEquals(['myFile.php', 'someFile.php'], $definition->getFiles());
     }
 }

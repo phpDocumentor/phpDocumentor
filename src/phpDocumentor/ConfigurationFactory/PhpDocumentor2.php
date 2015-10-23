@@ -128,7 +128,7 @@ final class PhpDocumentor2 implements Strategy
      */
     private function buildIgnoreSymlinksPart(\SimpleXMLElement $files)
     {
-        $ignoreSymlinks = [];
+        $ignoreSymlinks = true;
         if (isset($files->{'ignore-symlinks'})) {
             $ignoreSymlinks = filter_var($files->{'ignore-symlinks'}, FILTER_VALIDATE_BOOLEAN);
         }

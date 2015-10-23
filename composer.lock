@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "784c197346ec011051349a71db39072f",
+    "hash": "f03496ebfba4058592e29908f1d34c12",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -866,12 +866,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/FlyFinder.git",
-                "reference": "f7c0c22ea56c97c5cf904e304b8d03c92170f0da"
+                "reference": "47e21713bc6d0619ae6bb511ae981af7be1e8ac7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/FlyFinder/zipball/f7c0c22ea56c97c5cf904e304b8d03c92170f0da",
-                "reference": "f7c0c22ea56c97c5cf904e304b8d03c92170f0da",
+                "url": "https://api.github.com/repos/phpDocumentor/FlyFinder/zipball/47e21713bc6d0619ae6bb511ae981af7be1e8ac7",
+                "reference": "47e21713bc6d0619ae6bb511ae981af7be1e8ac7",
                 "shasum": ""
             },
             "require": {
@@ -879,6 +879,7 @@
                 "php": ">=5.5"
             },
             "require-dev": {
+                "league/flysystem-memory": "^1.0",
                 "mockery/mockery": "~0.9@dev",
                 "phpunit/phpunit": "^4.0"
             },
@@ -900,7 +901,7 @@
                 "Flysystem",
                 "phpdoc"
             ],
-            "time": "2015-07-15 18:53:34"
+            "time": "2015-08-18 07:03:57"
         },
         {
             "name": "phpdocumentor/graphviz",
@@ -1238,12 +1239,12 @@
             "version": "v2.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Console.git",
+                "url": "https://github.com/symfony/console.git",
                 "reference": "d6cf02fe73634c96677e428f840704bfbcaec29e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/d6cf02fe73634c96677e428f840704bfbcaec29e",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d6cf02fe73634c96677e428f840704bfbcaec29e",
                 "reference": "d6cf02fe73634c96677e428f840704bfbcaec29e",
                 "shasum": ""
             },
@@ -1295,12 +1296,12 @@
             "version": "v2.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher.git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
                 "reference": "9310b5f9a87ec2ea75d20fec0b0017c77c66dac3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/9310b5f9a87ec2ea75d20fec0b0017c77c66dac3",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/9310b5f9a87ec2ea75d20fec0b0017c77c66dac3",
                 "reference": "9310b5f9a87ec2ea75d20fec0b0017c77c66dac3",
                 "shasum": ""
             },
@@ -3226,12 +3227,12 @@
             "version": "v2.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/ClassLoader.git",
+                "url": "https://github.com/symfony/class-loader.git",
                 "reference": "2fccbc544997340808801a7410cdcb96dd12edc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ClassLoader/zipball/2fccbc544997340808801a7410cdcb96dd12edc4",
+                "url": "https://api.github.com/repos/symfony/class-loader/zipball/2fccbc544997340808801a7410cdcb96dd12edc4",
                 "reference": "2fccbc544997340808801a7410cdcb96dd12edc4",
                 "shasum": ""
             },
@@ -3276,12 +3277,12 @@
             "version": "v2.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Config.git",
+                "url": "https://github.com/symfony/config.git",
                 "reference": "6c905bbed1e728226de656e4c07d620dfe9e80d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Config/zipball/6c905bbed1e728226de656e4c07d620dfe9e80d9",
+                "url": "https://api.github.com/repos/symfony/config/zipball/6c905bbed1e728226de656e4c07d620dfe9e80d9",
                 "reference": "6c905bbed1e728226de656e4c07d620dfe9e80d9",
                 "shasum": ""
             },
@@ -3326,12 +3327,12 @@
             "version": "v2.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/DependencyInjection.git",
+                "url": "https://github.com/symfony/dependency-injection.git",
                 "reference": "851e3ffe8a366b1590bdaf3df2c1395f2d27d8a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/DependencyInjection/zipball/851e3ffe8a366b1590bdaf3df2c1395f2d27d8a6",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/851e3ffe8a366b1590bdaf3df2c1395f2d27d8a6",
                 "reference": "851e3ffe8a366b1590bdaf3df2c1395f2d27d8a6",
                 "shasum": ""
             },
@@ -3435,12 +3436,12 @@
             "version": "v2.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Filesystem.git",
+                "url": "https://github.com/symfony/filesystem.git",
                 "reference": "2d7b2ddaf3f548f4292df49a99d19c853d43f0b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/2d7b2ddaf3f548f4292df49a99d19c853d43f0b8",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/2d7b2ddaf3f548f4292df49a99d19c853d43f0b8",
                 "reference": "2d7b2ddaf3f548f4292df49a99d19c853d43f0b8",
                 "shasum": ""
             },

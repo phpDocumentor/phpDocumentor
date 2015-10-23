@@ -28,15 +28,25 @@ use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
 use phpDocumentor\Configuration;
 use phpDocumentor\Configuration\Loader;
+use phpDocumentor\ConfigurationFactory;
+use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
+use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\DefaultFilters;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
 use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\ReflectionAssemblers;
+use phpDocumentor\DocumentationFactory;
+use phpDocumentor\DocumentationRepository;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\FileSystemFactory;
+use phpDocumentor\FlySystemFactory;
+use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Listeners\Cache as CacheListener;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
+use phpDocumentor\Project\Version\DefinitionFactory;
+use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
@@ -46,9 +56,13 @@ use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
+use phpDocumentor\SpecificationFactory;
+use phpDocumentor\Uri;
 use phpDocumentor\Views\MapperFactory;
 use phpDocumentor\Views\MapperFactory\Container;
 use phpDocumentor\Views\Mappers\Project;
+use Stash\Driver\FileSystem;
+use Stash\Pool;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -131,11 +145,12 @@ return [
     MethodNameInflector::class  => \DI\object(InvokeInflector::class),
 
     // Configuration
-    Configuration::class => function (ContainerInterface $c) {
-        /** @var Loader $loader */
-        $loader = $c->get(Loader::class);
-
-        return $loader->load($c->get('config.template.path'), $c->get('config.user.path'));
+    ConfigurationFactory::class => function (ContainerInterface $c) {
+        return new \phpDocumentor\ConfigurationFactory([
+            new PhpDocumentor3(''),
+            new PhpDocumentor2(),
+        ],
+        new Uri($c->get('config.user.path')));
     },
 
     // Console
@@ -165,26 +180,32 @@ return [
         return Dispatcher::getInstance();
     },
 
-    // Serializer
-    Serializer::class => function (ContainerInterface $c) {
-        $vendorPath     = $c->get('composer.vendor_path') ?: __DIR__ . '/../vendor';
-        $serializerPath = $vendorPath . '/jms/serializer/src';
-
-        AnnotationRegistry::registerAutoloadNamespace('JMS\Serializer\Annotation', $serializerPath);
-        AnnotationRegistry::registerAutoloadNamespace(
-            'phpDocumentor\Configuration\Merger\Annotation',
-            __DIR__ . '/..'
-        );
-
-        return SerializerBuilder::create()->build();
-    },
-
     // Validator
     ValidatorInterface::class => \DI\object(Validator::class),
     MetadataFactoryInterface::class => \DI\object(LazyLoadingMetadataFactory::class)
         ->constructorParameter('loader', \DI\object(StaticMethodLoader::class)),
     ConstraintValidatorFactoryInterface::class => \DI\object(ConstraintValidatorFactory::class),
     TranslatorInterface::class => \DI\object(DefaultTranslator::class),
+
+    //Definition Factories
+    \phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class => \DI\object(\phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class),
+    DefinitionFactory::class => function (ContainerInterface $c) {
+        $factory = new \phpDocumentor\Project\Version\DefinitionFactory();
+
+        $factory->registerDocumentGroupDefinitionFactory(
+            'api',
+            new \phpDocumentor\DocumentGroupFormat('php'),
+            $c->get(\phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class)
+        );
+
+        return $factory;
+    },
+    DefinitionRepository::class => \Di\object(DefinitionRepository::class),
+
+    //Documentation Respositories
+    DocumentationRepository::class => \DI\object(DocumentationRepository::class),
+    DocumentationFactory::class => \DI\object()
+        ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),
 
     // Descriptors
     InitializerChain::class => \DI\object()
@@ -193,9 +214,15 @@ return [
         ->method('addInitializer', \DI\get(ReflectionAssemblers::class))
         ->method('addInitializer', \DI\get(DefaultValidators::class)),
 
-    // Cache
-    AdapterInterface::class => \DI\Object(File::class)->constructor(\DI\get('cache.directory')),
-    CacheInterface::class => \DI\object(Cache::class),
+    // Infrastructure
+    Pool::class => function (ContainerInterface $c) {
+        $adapter = new \Stash\Driver\BlackHole();
+        $adapter->setOptions(['path' => $c->get('cache.directory')]);
+        return new Pool($adapter);
+    },
+
+    FileSystemFactory::class => \DI\object(FlySystemFactory::class),
+    SpecificationFactory::class => \DI\object(FlySystemSpecificationFactory::class),
 
     // Parser
     Php::class => \DI\object()

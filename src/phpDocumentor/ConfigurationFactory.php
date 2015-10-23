@@ -17,7 +17,7 @@ use phpDocumentor\ConfigurationFactory\Strategy;
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
  */
-final class ConfigurationFactory
+class ConfigurationFactory
 {
     /**
      * The Uri that contains the path to the configuration file.

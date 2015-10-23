@@ -20,12 +20,20 @@ use phpDocumentor\Application\Commands\InitializeParser;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Render;
-use phpDocumentor\Configuration;
+use phpDocumentor\DocumentationFactory;
+use phpDocumentor\DocumentationRepository;
+use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\ConfigurationFactory;
 use phpDocumentor\Event\Dispatcher;
+use phpDocumentor\Project\Version\DefinitionFactory;
+use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Parser\Backend\Php;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Parser;
+use Stash\Driver\FileSystem;
+use Stash\Pool;
+use phpDocumentor\Uri;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -56,9 +64,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class RunCommand extends Command
 {
-    /** @var Configuration */
-    private $configuration;
-
     /** @var CommandBus */
     private $commandBus;
 
@@ -66,22 +71,44 @@ final class RunCommand extends Command
     private $emitter;
 
     /**
+     * @var ConfigurationFactory
+     */
+    private $configurationFactory;
+    /**
+     * @var DefinitionRepository
+     */
+    private $definitionRepository;
+    /**
+     * @var DocumentationFactory
+     */
+    private $documentationFactory;
+    /**
+     * @var DocumentationRepository
+     */
+    private $documentationRepository;
+
+    /**
      * Initializes the command with all necessary dependencies
      *
-     * @param Configuration $configuration
      * @param CommandBus    $commandBus
      * @param Emitter       $emitter
      */
     public function __construct(
-        Configuration $configuration,
+        ConfigurationFactory $configurationFactory,
+        DefinitionRepository $definitionRepository,
+        DocumentationRepository $documentationRepository,
+        DocumentationFactory $documentationFactory,
         CommandBus    $commandBus,
         Emitter       $emitter
     ) {
-        $this->configuration = $configuration;
         $this->commandBus    = $commandBus;
         $this->emitter       = $emitter;
+        $this->configurationFactory = $configurationFactory;
 
         parent::__construct('project:run');
+        $this->definitionRepository = $definitionRepository;
+        $this->documentationFactory = $documentationFactory;
+        $this->documentationRepository = $documentationRepository;
     }
 
     /**
@@ -277,27 +304,43 @@ HELP
         );
         $this->attachListeners($input, $output);
 
-        $this->commandBus->handle(
-            new MergeConfigurationWithCommandLineOptions(
-                $this->configuration,
-                $input->getOptions(),
-                $input->getArguments()
-            )
-        );
-
-        $target      = (string)$this->configuration->getParser()->getTarget();
-        $cacheFolder = $input->getOption('cache-folder') ?: $target;
-
-        $this->commandBus->handle(new InitializeParser($this->configuration));
-        $this->commandBus->handle(new ParseFiles($this->configuration));
-        $this->commandBus->handle(new Compile());
-        $this->commandBus->handle(new Render($target, $input->getOption('template') ?: ['clean']));
-
-        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-            $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
+        //TODO: find a better way to change this?
+        if ($input->getOption('config')) {
+            $this->configurationFactory->replaceLocation(
+                new Uri(realpath($input->getOption('config')))
+            );
         }
 
-        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $target));
+        //TODO: refactor creation of configuration overrides by parameters.
+        $configuration = $this->configurationFactory->get();
+//        $this->commandBus->handle(
+//            new MergeConfigurationWithCommandLineOptions(
+//                $input->getOptions(),
+//                $input->getArguments()
+//            )
+//        );
+
+        foreach($this->definitionRepository->fetchAll() as $definition) {
+            $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
+
+            if ($documentation === null) {
+                $documentation = $this->documentationFactory->create($definition);
+                $this->documentationRepository->save($documentation);
+            }
+            //render
+        }
+
+
+//        $this->commandBus->handle(new InitializeParser($this->configuration));
+//        $this->commandBus->handle(new ParseFiles($this->configuration));
+//        $this->commandBus->handle(new Compile());
+//        $this->commandBus->handle(new Render(sys_get_temp_dir(), $input->getOption('template') ?: ['clean']));
+//
+//        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
+//            $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
+//        }
+//
+        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', sys_get_temp_dir()));
 
         return 0;
     }

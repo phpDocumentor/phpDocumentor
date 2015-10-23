@@ -3,10 +3,13 @@
     <parser>
         <default-package-name>phpDocumentor</default-package-name>
         <target>/tmp/phpdoc-demo</target>
+        <extensions>
+            <extension>php</extension>
+            <extension>php3</extension>
+            <extension>phtml</extension>
+        </extensions>
         <files>
-            <directory>.</directory>
-            <ignore>tests/*</ignore>
-            <ignore>vendor/*</ignore>
+            <directory>src</directory>
         </files>
     </parser>
     <transformer>

@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Project\Version;
+use phpDocumentor\ConfigurationFactory;
 
 /**
  * Repository providing version definitions.
@@ -17,7 +18,9 @@ namespace phpDocumentor\Project\Version;
 final class DefinitionRepository
 {
     /**
-     * @todo missing docblock here. Since the configuration factory is not in place yet
+     * Factory class to create configuration.
+     *
+     * @var ConfigurationFactory
      */
     private $configurationFactory;
 
@@ -31,10 +34,10 @@ final class DefinitionRepository
     /**
      * Initializes the repository.
      *
-     * @param $configurationFactory
+     * @param ConfigurationFactory $configurationFactory
      * @param DefinitionFactory $definitionFactory
      */
-    public function __construct($configurationFactory, DefinitionFactory $definitionFactory)
+    public function __construct(ConfigurationFactory $configurationFactory, DefinitionFactory $definitionFactory)
     {
         $this->configurationFactory = $configurationFactory;
         $this->definitionFactory = $definitionFactory;
@@ -49,11 +52,11 @@ final class DefinitionRepository
     public function fetch($versionNumber)
     {
         $config = $this->configurationFactory->get();
-        if (isset($config['versions'][$versionNumber])) {
+        if (isset($config['phpdocumentor']['versions'][$versionNumber])) {
             return $this->definitionFactory->create(
                 array_merge(
                     ['version' => $versionNumber],
-                    $config['versions'][$versionNumber]
+                    $config['phpdocumentor']['versions'][$versionNumber]
                 )
             );
         }
@@ -70,8 +73,8 @@ final class DefinitionRepository
     {
         $definitions = array();
         $config = $this->configurationFactory->get();
-        if (isset($config['versions'])) {
-            foreach ($config['versions'] as $version => $options ) {
+        if (isset($config['phpdocumentor']['versions'])) {
+            foreach ($config['phpdocumentor']['versions'] as $version => $options ) {
                 $definitions[] = $this->fetch($version);
             }
         }
