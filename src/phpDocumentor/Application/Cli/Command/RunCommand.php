@@ -14,25 +14,13 @@ namespace phpDocumentor\Application\Cli\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
-use phpDocumentor\Application\Commands\Compile;
-use phpDocumentor\Application\Commands\DumpAstToDisk;
-use phpDocumentor\Application\Commands\InitializeParser;
-use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
-use phpDocumentor\Application\Commands\ParseFiles;
 use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
-use phpDocumentor\DocumentGroupFormat;
 use phpDocumentor\ConfigurationFactory;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\RenderActionCompleted;
-use phpDocumentor\Parser\Backend\Php;
-use phpDocumentor\Parser\Event\PreFileEvent;
-use phpDocumentor\Parser\Parser;
 use Stash\Driver\FileSystem;
-use Stash\Pool;
 use phpDocumentor\Uri;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
@@ -43,7 +31,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Parse and transform the given directory (-d|-f) to the given location (-t).
@@ -304,21 +291,11 @@ HELP
         );
         $this->attachListeners($input, $output);
 
-        //TODO: find a better way to change this?
         if ($input->getOption('config')) {
             $this->configurationFactory->replaceLocation(
                 new Uri(realpath($input->getOption('config')))
             );
         }
-
-        //TODO: refactor creation of configuration overrides by parameters.
-        $configuration = $this->configurationFactory->get();
-//        $this->commandBus->handle(
-//            new MergeConfigurationWithCommandLineOptions(
-//                $input->getOptions(),
-//                $input->getArguments()
-//            )
-//        );
 
         foreach($this->definitionRepository->fetchAll() as $definition) {
             $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
@@ -327,19 +304,11 @@ HELP
                 $documentation = $this->documentationFactory->create($definition);
                 $this->documentationRepository->save($documentation);
             }
-            //render
+            $this->commandBus->handle(new Render(sys_get_temp_dir() . '/phpdoc', $input->getOption('template') ?: ['clean']));
         }
 
 
-//        $this->commandBus->handle(new InitializeParser($this->configuration));
-//        $this->commandBus->handle(new ParseFiles($this->configuration));
-//        $this->commandBus->handle(new Compile());
-//        $this->commandBus->handle(new Render(sys_get_temp_dir(), $input->getOption('template') ?: ['clean']));
-//
-//        if ($output->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
-//            $this->commandBus->handle(new DumpAstToDisk('ast.dump'));
-//        }
-//
+
         $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', sys_get_temp_dir()));
 
         return 0;
@@ -362,12 +331,12 @@ HELP
             }
         );
 
-        Dispatcher::getInstance()->addListener(
-            Parser::EVENT_FILES_COLLECTED,
-            function (GenericEvent $event) use ($output) {
-                $output->writeln(sprintf("Found <info>%d</info> files", count($event->getSubject())));
-            }
-        );
+//        Dispatcher::getInstance()->addListener(
+//            Parser::EVENT_FILES_COLLECTED,
+//            function (GenericEvent $event) use ($output) {
+//                $output->writeln(sprintf("Found <info>%d</info> files", count($event->getSubject())));
+//            }
+//        );
 
         if ($input->getOption('progressbar')) {
             $this->attachListenersForProgressBar($output);
@@ -389,24 +358,24 @@ HELP
         /** @var ProgressBar $progress */
         $progress = $this->getHelperSet()->get('progress');
 
-        Dispatcher::getInstance()->addListener(
-            Parser::EVENT_FILES_COLLECTED,
-            function (GenericEvent $event) use ($output, $progress) {
-                $progress->start($output, count($event->getSubject()));
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Parser::EVENT_PARSE_FILE_BEFORE,
-            function () use ($progress) {
-                $progress->advance();
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Parser::EVENT_COMPLETED,
-            function () use ($progress) {
-                $progress->finish();
-            }
-        );
+//        Dispatcher::getInstance()->addListener(
+//            Parser::EVENT_FILES_COLLECTED,
+//            function (GenericEvent $event) use ($output, $progress) {
+//                $progress->start($output, count($event->getSubject()));
+//            }
+//        );
+//        Dispatcher::getInstance()->addListener(
+//            Parser::EVENT_PARSE_FILE_BEFORE,
+//            function () use ($progress) {
+//                $progress->advance();
+//            }
+//        );
+//        Dispatcher::getInstance()->addListener(
+//            Parser::EVENT_COMPLETED,
+//            function () use ($progress) {
+//                $progress->finish();
+//            }
+//        );
     }
 
     /**
@@ -418,25 +387,25 @@ HELP
      */
     private function attachMessageListeners(OutputInterface $output)
     {
-        Dispatcher::getInstance()->addListener(
-            Parser::EVENT_PARSE_FILE_BEFORE,
-            function (PreFileEvent $event) use ($output) {
-                $output->writeln(sprintf('  Parsing <info>%s</info>', $event->getFile()));
-            }
-        );
-        Dispatcher::getInstance()->addListener(
-            Php::EVENT_ANALYZED_FILE,
-            function (GenericEvent $event) use ($output) {
-                /** @var FileDescriptor $descriptor */
-                $descriptor = $event->getSubject();
-
-                /** @var Error $error */
-                foreach ($descriptor->getAllErrors() as $error) {
-                    $output->writeln(
-                        '  <error> ' . vsprintf($error->getCode(), $error->getContext()) . ' </error>'
-                    );
-                }
-            }
-        );
+//        Dispatcher::getInstance()->addListener(
+//            Parser::EVENT_PARSE_FILE_BEFORE,
+//            function (PreFileEvent $event) use ($output) {
+//                $output->writeln(sprintf('  Parsing <info>%s</info>', $event->getFile()));
+//            }
+//        );
+//        Dispatcher::getInstance()->addListener(
+//            Php::EVENT_ANALYZED_FILE,
+//            function (GenericEvent $event) use ($output) {
+//                /** @var FileDescriptor $descriptor */
+//                $descriptor = $event->getSubject();
+//
+//                /** @var Error $error */
+//                foreach ($descriptor->getAllErrors() as $error) {
+//                    $output->writeln(
+//                        '  <error> ' . vsprintf($error->getCode(), $error->getContext()) . ' </error>'
+//                    );
+//                }
+//            }
+//        );
     }
 }

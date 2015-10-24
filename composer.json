@@ -11,39 +11,36 @@
         "psr-0": { "phpDocumentor": ["tests/unit/"] }
     },
     "require": {
-        "php":               ">=5.5",
-        "symfony/console":   "^2.3",
-
-        "twig/twig":         "^1.3",
-        "erusev/parsedown":  "^1.0",
-
-        "symfony/event-dispatcher": "^2.1",
-
-        "phpdocumentor/graphviz":   "^1.0",
-        "phpdocumentor/fileset":    "^1.0",
-        "phpdocumentor/reflection": "dev-develop@dev",
-        "phpdocumentor/reflection-common": "^1.0@dev",
+        "php":                               ">=5.5",
+        "php-di/php-di":                     "^5.0",
+        "twig/twig":                         "^1.3",
+        "erusev/parsedown":                  "^1.0",
+        "tedivm/stash":                      "^0.12.3",
+        "webmozart/assert":                  "^1.0",
+        "symfony/console":                   "^2.3",
+        "symfony/event-dispatcher":          "^2.1",
+        "symfony/validator":                 "^2.7",
+        "phpdocumentor/graphviz":            "^1.0",
+        "phpdocumentor/fileset":             "^1.0",
+        "phpdocumentor/reflection":          "^2.0@dev",
+        "phpdocumentor/reflection-common":   "^1.0@dev",
         "phpdocumentor/reflection-docblock": "^3.0@dev",
-        "tedivm/stash": "^0.12.3",
-        "league/tactician": "^0.6.0",
-        "webmozart/assert": "^1.0",
-        "league/flysystem": "~1.0",
-        "php-di/php-di": "^5.0",
-        "league/event": "^2.1",
-        "symfony/validator": "^2.7",
-        "phpdocumentor/flyfinder": "dev-master@dev"
+        "phpdocumentor/flyfinder":           "^1.0@dev",
+        "league/tactician":                  "^0.6.0",
+        "league/flysystem":                  "^1.0",
+        "league/event":                      "^2.1"
     },
     "minimum-stability": "stable",
     "require-dev": {
         "behat/behat":                 "^3.0",
         "phpunit/phpunit":             "^4.0",
-        "mockery/mockery":             "~0.9@dev",
+        "mockery/mockery":             "~0.9",
         "mikey179/vfsStream":          "^1.2",
         "squizlabs/php_codesniffer":   "^1.4",
         "symfony/expression-language": "^2.4",
         "symfony/process":             "^2.3",
-        "herrera-io/phar-update": "^2.0",
-        "league/flysystem-memory": "^1.0"
+        "herrera-io/phar-update":      "^2.0",
+        "league/flysystem-memory":     "^1.0"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",

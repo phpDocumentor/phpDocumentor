@@ -74,7 +74,7 @@ final class DefinitionRepository
         $definitions = array();
         $config = $this->configurationFactory->get();
         if (isset($config['phpdocumentor']['versions'])) {
-            foreach ($config['phpdocumentor']['versions'] as $version => $options ) {
+            foreach ($config['phpdocumentor']['versions'] as $version => $options) {
                 $definitions[] = $this->fetch($version);
             }
         }

@@ -1,12 +1,5 @@
 <?php
-use Desarrolla2\Cache\Adapter\AdapterInterface;
-use Desarrolla2\Cache\Adapter\File;
-use Desarrolla2\Cache\Cache;
-use Desarrolla2\Cache\CacheInterface;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Interop\Container\ContainerInterface;
-use JMS\Serializer\Serializer;
-use JMS\Serializer\SerializerBuilder;
 use League\Tactician\CommandBus;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
@@ -14,37 +7,20 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
+use phpDocumentor\ApiReference\DocumentGroupDefinitionFactory;
 use phpDocumentor\Application\Cli\Command\ListCommand;
 use phpDocumentor\Application\CommandBus\ContainerLocator;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Cli\Command\RunCommand;
-use phpDocumentor\Compiler\Compiler;
-use phpDocumentor\Compiler\Linker\Linker;
-use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
-use phpDocumentor\Compiler\Pass\ExampleTagsEnricher;
-use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
-use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
-use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
-use phpDocumentor\Compiler\Pass\ResolveInlineLinkAndSeeTags;
-use phpDocumentor\Configuration;
-use phpDocumentor\Configuration\Loader;
 use phpDocumentor\ConfigurationFactory;
 use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
 use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
-use phpDocumentor\Descriptor\ProjectDescriptor\InitializerChain;
-use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\DefaultFilters;
-use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\PhpParserAssemblers;
-use phpDocumentor\Descriptor\ProjectDescriptor\InitializerCommand\ReflectionAssemblers;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\FileSystemFactory;
 use phpDocumentor\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
-use phpDocumentor\Parser\Backend\Php;
-use phpDocumentor\Parser\Listeners\Cache as CacheListener;
-use phpDocumentor\Parser\Parser;
-use phpDocumentor\Plugin\Core\Descriptor\Validator\DefaultValidators;
 use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\Action\TwigHandler;
@@ -74,7 +50,6 @@ use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\ValidatorInterface;
-use phpDocumentor\Descriptor;
 
 // maintain BC in XSL-based templates
 if (!class_exists('phpDocumentor\\Plugin\\Core\\Xslt\\Extension')) {
@@ -122,11 +97,13 @@ return [
 
     // Configuration
     ConfigurationFactory::class => function (ContainerInterface $c) {
-        return new \phpDocumentor\ConfigurationFactory([
-            new PhpDocumentor3(''),
-            new PhpDocumentor2(),
-        ],
-        new Uri($c->get('config.user.path')));
+        return new \phpDocumentor\ConfigurationFactory(
+            [
+                new PhpDocumentor3(''),
+                new PhpDocumentor2(),
+            ],
+            new Uri($c->get('config.user.path'))
+        );
     },
 
     // Console
@@ -164,31 +141,24 @@ return [
     TranslatorInterface::class => \DI\object(DefaultTranslator::class),
 
     //Definition Factories
-    \phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class => \DI\object(\phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class),
+    DocumentGroupDefinitionFactory::class => \DI\object(DocumentGroupDefinitionFactory::class),
     DefinitionFactory::class => function (ContainerInterface $c) {
         $factory = new \phpDocumentor\Project\Version\DefinitionFactory();
 
         $factory->registerDocumentGroupDefinitionFactory(
             'api',
             new \phpDocumentor\DocumentGroupFormat('php'),
-            $c->get(\phpDocumentor\ApiReference\DocumentGroupDefinitionFactory::class)
+            $c->get(DocumentGroupDefinitionFactory::class)
         );
 
         return $factory;
     },
-    DefinitionRepository::class => \Di\object(DefinitionRepository::class),
+    DefinitionRepository::class => \DI\object(DefinitionRepository::class),
 
     //Documentation Respositories
     DocumentationRepository::class => \DI\object(DocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
         ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),
-
-    // Descriptors
-    InitializerChain::class => \DI\object()
-        ->method('addInitializer', \DI\get(DefaultFilters::class))
-        ->method('addInitializer', \DI\get(PhpParserAssemblers::class))
-        ->method('addInitializer', \DI\get(ReflectionAssemblers::class))
-        ->method('addInitializer', \DI\get(DefaultValidators::class)),
 
     // Infrastructure
     Pool::class => function (ContainerInterface $c) {
@@ -201,14 +171,6 @@ return [
     SpecificationFactory::class => \DI\object(FlySystemSpecificationFactory::class),
 
     // Parser
-    Php::class => \DI\object()
-        ->method('setEventDispatcher', \DI\get(Dispatcher::class)),
-    CacheListener::class => \DI\object()
-        ->method('register', \DI\get(Dispatcher::class)),
-    Parser::class => \DI\object()
-        ->method('registerEventDispatcher', \DI\get(Dispatcher::class))
-        ->method('registerBackend', \DI\get(Php::class)),
-
     Queue::class => \DI\object()
         ->method('insert', \DI\get(ExternalRouter::class), 10500)
         ->method('insert', \DI\get(StandardRouter::class), 10000),
