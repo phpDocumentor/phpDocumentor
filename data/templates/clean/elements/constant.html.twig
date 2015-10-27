@@ -18,7 +18,7 @@
                 </aside>
             {% endif %}
             <dl>
-                {% if s(node.parent is null) %}
+                {% if (node.parent is null) %}
                 <dt>File</dt>
                 <dd><a href="{{ node.file|route('url') }}"><div class="path-wrapper">{{ node.path }}</div></a></dd>
                 {% endif %}
