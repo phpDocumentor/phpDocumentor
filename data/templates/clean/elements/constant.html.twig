@@ -18,7 +18,7 @@
                 </aside>
             {% endif %}
             <dl>
-                {% if (node.parent is null) %}
+                {% if s(node.parent is null) %}
                 <dt>File</dt>
                 <dd><a href="{{ node.file|route('url') }}"><div class="path-wrapper">{{ node.path }}</div></a></dd>
                 {% endif %}
@@ -31,7 +31,7 @@
                         <dt>See also</dt>
                     {% endif %}
                     {% for tag in tags %}
-                        <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description }}</span></a></dd>
+                        <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
                     {% endfor %}
                 {% endfor %}
                 {% for tagName,tags in method.tags if tagName in ['uses'] %}
