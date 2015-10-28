@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="continuousphp-phing-tasks">
+    <description>PSR2 Coding standard</description>
+    <rule ref="PSR2"/>
+</ruleset>
