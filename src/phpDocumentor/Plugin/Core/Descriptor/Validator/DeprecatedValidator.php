@@ -75,7 +75,12 @@
 //            if (count($this->docblock->getTagsByName($tag)) < 1) {
 //                continue;
 //            }
-//            $this->logParserError('CRITICAL', 'Found deprecated tag "%s" in %s', $this->lineNumber, array($tag, $this->entityName));
+//            $this->logParserError(
+//              'CRITICAL',
+//              'Found deprecated tag "%s" in %s',
+//              $this->lineNumber,
+//              array($tag, $this->entityName)
+//            );
 //        }
 //    }
 //}

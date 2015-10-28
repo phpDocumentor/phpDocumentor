@@ -48,7 +48,6 @@ final class FlySystemFactory implements FileSystemFactory
             $filesystem = $this->mountManager->getFilesystem($dsnId);
         } catch (LogicException $e) {
             if ($dsn->getScheme() === 'file') {
-
                 $path = $dsn->getPath();
                 $filesystem = new Filesystem(new Local($path, LOCK_EX, Local::SKIP_LINKS));
 

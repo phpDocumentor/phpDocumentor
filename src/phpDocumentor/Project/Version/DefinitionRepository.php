@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Project\Version;
+
 use phpDocumentor\ConfigurationFactory;
 
 /**

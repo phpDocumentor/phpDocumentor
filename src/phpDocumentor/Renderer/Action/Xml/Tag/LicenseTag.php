@@ -50,7 +50,6 @@ class LicenseTag
 
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {
-
             $license = $node->nodeValue;
 
             // FIXME: migrate to '#^' . PHPDOC::LINK_REGEX . '(\s+(?P<text>.+))

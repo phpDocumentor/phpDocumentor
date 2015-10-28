@@ -11,7 +11,6 @@
 
 namespace phpDocumentor;
 
-
 use phpDocumentor\Project\VersionNumber;
 
 /**
@@ -42,4 +41,3 @@ class DocumentationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($documentGroups, $documentation->getDocumentGroups());
     }
 }
-

@@ -20,8 +20,10 @@ use Symfony\Component\Validator\Constraint;
  */
 class DoesArgumentTypehintMatchParam extends Constraint
 {
+    // @codingStandardsIgnoreStart
     /** @var string message */
     public $message = 'The type hint of the argument is incorrect for the type definition of the @param tag with argument %s in %s';
+    // @codingStandardsIgnoreEnd
 
     public $code = 50016;
 

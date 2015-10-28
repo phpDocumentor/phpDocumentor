@@ -227,6 +227,7 @@ namespace phpDocumentor\Renderer {
     }
 }
 
+// @codingStandardsIgnoreStart
 namespace phpDocumentor\Renderer\Action {
 
     use phpDocumentor\Renderer\Action;
@@ -278,3 +279,4 @@ namespace phpDocumentor\Renderer\Action {
         }
     }
 }
+// @codingStandardsIgnoreEnd

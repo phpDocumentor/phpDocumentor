@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\Reflection\Php\Factory\File;
 
-
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
 

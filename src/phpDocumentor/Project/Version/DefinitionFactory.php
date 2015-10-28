@@ -56,7 +56,7 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
         $documentGroups = array();
 
         foreach ($options as $documentGroupType => $documentGroupOptions) {
-            if(is_array($documentGroupOptions)) {
+            if (is_array($documentGroupOptions)) {
                 $factory = $this->findFactory($documentGroupType, $documentGroupOptions['format']);
                 $documentGroups[] = $factory->create($documentGroupOptions);
             }
@@ -93,8 +93,11 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
      * @param DocumentGroupFormat $format
      * @param DocumentGroupDefinitionFactory $factory
      */
-    public function registerDocumentGroupDefinitionFactory($type, DocumentGroupFormat $format, DocumentGroupDefinitionFactory $factory)
-    {
+    public function registerDocumentGroupDefinitionFactory(
+        $type,
+        DocumentGroupFormat $format,
+        DocumentGroupDefinitionFactory $factory
+    ) {
         $this->documentGroupDefinitionFactories[$type][(string)$format] = $factory;
     }
 }

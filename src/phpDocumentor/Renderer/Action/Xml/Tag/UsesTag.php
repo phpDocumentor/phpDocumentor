@@ -118,7 +118,6 @@ class UsesTag
                     $referral_name = $node->parentNode->parentNode
                         ->getElementsByTagName('full_name')->item(0)->nodeValue;
                 } else {
-
                     $referral_class_name = null;
                     if ($node->parentNode->parentNode->nodeName == 'method') {
                         // gather the name of the class where the @uses is in

@@ -27,4 +27,3 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new VersionNumber('1.0.0'), $version->getVersionNumber());
     }
 }
-

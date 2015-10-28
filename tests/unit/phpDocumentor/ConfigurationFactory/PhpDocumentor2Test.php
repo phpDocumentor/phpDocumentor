@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\ConfigurationFactory;
 
-require_once(__DIR__ . '/../../../../tests/data/phpDocumentor2ExpectedArray.php');
-
 /**
  * Test case for PhpDocumentor2
  *
@@ -21,6 +19,11 @@ require_once(__DIR__ . '/../../../../tests/data/phpDocumentor2ExpectedArray.php'
  */
 final class PhpDocumentor2Test extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        require_once(__DIR__ . '/../../../../tests/data/phpDocumentor2ExpectedArray.php');
+    }
+    
     /**
      * @covers ::convert
      * @covers ::<private>
@@ -73,7 +76,11 @@ XML;
      */
     public function testItRevertsToDefaultsIfValuesAreNotInTheConfigurationFile()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithoutExtensions.xml', 0, true);
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithoutExtensions.xml',
+            0,
+            true
+        );
 
         $phpDocumentor2 = new PhpDocumentor2();
         $array          = $phpDocumentor2->convert($xml);
@@ -87,7 +94,11 @@ XML;
      */
     public function testItAcceptsMultipleIgnorePathsInThePhpdoc2Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithMultipleIgnorePaths.xml', 0, true);
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithMultipleIgnorePaths.xml',
+            0,
+            true
+        );
 
         $phpDocumentor2 = new PhpDocumentor2();
         $array          = $phpDocumentor2->convert($xml);

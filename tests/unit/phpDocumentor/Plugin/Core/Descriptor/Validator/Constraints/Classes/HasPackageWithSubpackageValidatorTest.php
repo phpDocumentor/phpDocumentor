@@ -47,22 +47,22 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->initialize($this->context);
     }
 
+    // @codingStandardsIgnoreStart
     /**
-     * @codingStandardsIgnoreStart
      * @expectedException Symfony\Component\Validator\Exception\ConstraintDefinitionException
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackageValidator::validate
-     * @codingStandardsIgnoreEnd
      */
+    // @codingStandardsIgnoreEnd
     public function testValidateWithBadInput()
     {
         $this->validator->validate(new \stdClass(), $this->constraint);
     }
 
+    // @codingStandardsIgnoreStart
     /**
-     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackageValidator::validate
-     * @codingStandardsIgnoreEnd
      */
+    // @codingStandardsIgnoreEnd
     public function testValidateHappyPath()
     {
         $this->markTestIncomplete('Shall be rewritten after new reflection integration.');
@@ -74,20 +74,21 @@ class HasPackageWithSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->fileDescriptor->shouldReceive('getTags')->andReturn($tagPackageCollection)->twice();
 
-        $this->context->shouldReceive('addViolationAt')
-		    ->once()
-			->with('package', $this->constraint->message, array(), null, null, $this->constraint->code);
+        $this->context
+            ->shouldReceive('addViolationAt')
+            ->once()
+            ->with('package', $this->constraint->message, array(), null, null, $this->constraint->code);
 
         $this->validator->validate($this->fileDescriptor, $this->constraint);
 
         $this->assertTrue(true);
     }
 
+    // @codingStandardsIgnoreStart
     /**
-     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasPackageWithSubpackageValidator::validate
-     * @codingStandardsIgnoreEnd
      */
+    // @codingStandardsIgnoreEnd
     public function testValidateSubpackageWithPackage()
     {
         $this->markTestIncomplete('Shall be rewritten after new reflection integration.');
