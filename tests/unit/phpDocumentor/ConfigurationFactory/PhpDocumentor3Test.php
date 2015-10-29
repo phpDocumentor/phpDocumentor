@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\ConfigurationFactory;
 
-require_once(__DIR__ . '/../../../../tests/data/phpDocumentor3ExpectedArrays.php');
-
 /**
  * Test case for PhpDocumentor3
  *
@@ -21,6 +19,11 @@ require_once(__DIR__ . '/../../../../tests/data/phpDocumentor3ExpectedArrays.php
  */
 final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        require_once(__DIR__ . '/../../../../tests/data/phpDocumentor3ExpectedArrays.php');
+    }
+    
     /**
      * @covers ::__construct
      * @covers ::convert
@@ -97,7 +100,11 @@ XML;
      */
     public function testItAcceptsMultipleVersionsInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml', 0, true);
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml',
+            0,
+            true
+        );
 
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
@@ -112,7 +119,11 @@ XML;
      */
     public function testItAcceptsMultipleApisInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleApis.xml', 0, true);
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleApis.xml',
+            0,
+            true
+        );
 
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
@@ -127,7 +138,11 @@ XML;
      */
     public function testItAcceptsMultipleGuidesInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleGuides.xml', 0, true);
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleGuides.xml',
+            0,
+            true
+        );
 
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);
@@ -142,7 +157,11 @@ XML;
      */
     public function testItAcceptsMultipleTemplatesInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleTemplates.xml', 0, true);
+        $xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleTemplates.xml',
+            0,
+            true
+        );
 
         $phpDocumentor3 = new PhpDocumentor3('');
         $array          = $phpDocumentor3->convert($xml);

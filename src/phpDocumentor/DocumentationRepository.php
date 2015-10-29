@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor;
+
 use phpDocumentor\Project\VersionNumber;
 use Stash\Pool;
 

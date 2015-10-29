@@ -112,7 +112,7 @@ final class RunCommand extends Command
                 'Parses and transforms the given files to a specified location'
             )
             ->setHelp(
-<<<HELP
+                <<<HELP
 phpDocumentor creates documentation from PHP source files. The simplest way
 to use it is:
 
@@ -297,14 +297,19 @@ HELP
             );
         }
 
-        foreach($this->definitionRepository->fetchAll() as $definition) {
+        foreach ($this->definitionRepository->fetchAll() as $definition) {
             $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
 
             if ($documentation === null) {
                 $documentation = $this->documentationFactory->create($definition);
                 $this->documentationRepository->save($documentation);
             }
-            $this->commandBus->handle(new Render(sys_get_temp_dir() . '/phpdoc', $input->getOption('template') ?: ['clean']));
+            $this->commandBus->handle(
+                new Render(
+                    sys_get_temp_dir() . '/phpdoc',
+                    $input->getOption('template') ?: ['clean']
+                )
+            );
         }
 
 

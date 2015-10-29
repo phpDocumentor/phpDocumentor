@@ -18,14 +18,14 @@ use Mockery as m;
  */
 class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
 {
+    // @codingStandardsIgnoreStart
     /**
-     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
-     * @codingStandardsIgnoreEnd
      */
+    // @codingStandardsIgnoreEnd
     public function testGenerateUrlForGlobalConstants()
     {
         // Arrange
@@ -43,14 +43,14 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('/namespaces/My.Space.html#constant_myConstant', $result);
     }
 
+    // @codingStandardsIgnoreStart
     /**
-     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\ConstantDescriptor::__construct
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\ConstantDescriptor::__invoke
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\ConstantDescriptor::getUrlPathPrefixForGlobalConstants
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
-     * @codingStandardsIgnoreEnd
      */
+    // @codingStandardsIgnoreEnd
     public function testGenerateUrlForGlobalConstantsAtRootNamespace()
     {
         // Arrange

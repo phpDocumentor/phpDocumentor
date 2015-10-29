@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0943046d08ba4e6b9e5c2478ec7845fd",
-    "content-hash": "8ec08ef5cbedbd65bd48ff22e1dffa45",
+    "hash": "17585b9d56ef56a9089b309b820f22d5",
+    "content-hash": "c23a4654f0b5319a75b2277e2666a15c",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -684,7 +684,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/1f637ffba2af2867bda3b4f682487442f190ea14",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/82f9aba5a508878923f6a2f88dfb698ec26bbb87",
                 "reference": "1f637ffba2af2867bda3b4f682487442f190ea14",
                 "shasum": ""
             },
@@ -2729,32 +2729,31 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "1.5.6",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "6f3e42d311b882b25b4d409d23a289f4d3b803d5"
+                "reference": "11a2545c44a5915f883e2e5ec12e14ed345e3ab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6f3e42d311b882b25b4d409d23a289f4d3b803d5",
-                "reference": "6f3e42d311b882b25b4d409d23a289f4d3b803d5",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/11a2545c44a5915f883e2e5ec12e14ed345e3ab2",
+                "reference": "11a2545c44a5915f883e2e5ec12e14ed345e3ab2",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
                 "php": ">=5.1.2"
             },
-            "suggest": {
-                "phpunit/php-timer": "dev-master"
-            },
             "bin": [
-                "scripts/phpcs"
+                "scripts/phpcs",
+                "scripts/phpcbf"
             ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-phpcs-fixer": "2.0.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -2763,12 +2762,12 @@
                     "CodeSniffer/CLI.php",
                     "CodeSniffer/Exception.php",
                     "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
                     "CodeSniffer/Report.php",
                     "CodeSniffer/Reporting.php",
                     "CodeSniffer/Sniff.php",
                     "CodeSniffer/Tokens.php",
                     "CodeSniffer/Reports/",
-                    "CodeSniffer/CommentParser/",
                     "CodeSniffer/Tokenizers/",
                     "CodeSniffer/DocGenerators/",
                     "CodeSniffer/Standards/AbstractPatternSniff.php",
@@ -2794,13 +2793,13 @@
                     "role": "lead"
                 }
             ],
-            "description": "PHP_CodeSniffer tokenises PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
             "homepage": "http://www.squizlabs.com/php-codesniffer",
             "keywords": [
                 "phpcs",
                 "standards"
             ],
-            "time": "2014-12-04 22:32:15"
+            "time": "2015-09-09 00:18:50"
         },
         {
             "name": "symfony/class-loader",

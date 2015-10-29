@@ -94,8 +94,8 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
         $bootstrap = Bootstrap::createInstance();
         $baseDir = vfsStream::url('root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
-            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor'
-            , $bootstrap->findVendorPath($baseDir)
+            'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../../vendor',
+            $bootstrap->findVendorPath($baseDir)
         );
     }
 
@@ -126,5 +126,4 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
         $bootstrap = Bootstrap::createInstance();
         $this->assertTrue($bootstrap->createAutoloader(vfsStream::url('root/dummy/vendor')));
     }
-
 }

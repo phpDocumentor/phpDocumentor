@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\ApiReference;
 
-
 use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
@@ -49,8 +48,7 @@ final class DocumentGroupDefinition implements DocumentGroupDefinitionInterface
         DocumentGroupFormat $format,
         FilesystemInterface $filesystem,
         SpecificationInterface $specification
-    )
-    {
+    ) {
         $this->format = $format;
         $this->filesystem = $filesystem;
         $this->specification = $specification;

@@ -100,4 +100,3 @@ class SpecificationFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
-

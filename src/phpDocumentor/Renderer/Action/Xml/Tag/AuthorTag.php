@@ -45,7 +45,6 @@ class AuthorTag
 
         /** @var \DOMElement $node */
         foreach ($nodes as $node) {
-
             // FIXME: #193
             if (preg_match($regex, $node->nodeValue, $matches)) {
                 if ($matches['name']) {
