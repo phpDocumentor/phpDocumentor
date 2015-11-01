@@ -811,6 +811,8 @@ XML
      */
     private function getLatestVersion()
     {
-        return file_get_contents('https://raw.githubusercontent.com/phpDocumentor/phpDocumentor2/master/VERSION');
+        $version = file_get_contents('https://raw.githubusercontent.com/phpDocumentor/phpDocumentor2/master/VERSION');
+        $version = str_replace("\n", '', $version);
+        return $version;
     }
 }
