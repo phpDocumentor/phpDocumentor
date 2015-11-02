@@ -38,7 +38,7 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
             ->with($file);
 
         $poolMock->shouldReceive('getItem->get')
-            ->once()
+            ->never()
             ->andReturn($file);
 
         $adapterMock = m::mock(Adapter::class);

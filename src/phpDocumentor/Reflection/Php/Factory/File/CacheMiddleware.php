@@ -51,6 +51,7 @@ final class CacheMiddleware implements Middleware
             $file = $next($command);
             $item->lock();
             $item->set($file);
+            return $file;
         }
 
         return $item->get();

@@ -184,7 +184,8 @@ return [
         ];
 
         $middleware = [
-            $c->get(LoggingMiddleware::class)
+            $c->get(LoggingMiddleware::class),
+            new \phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware($c->get(Pool::class)),
         ];
 
         return new \phpDocumentor\ApiReference\Factory($c->get(Emitter::class), $strategies, $middleware);
