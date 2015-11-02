@@ -186,6 +186,7 @@ return [
         ];
 
         $middleware = [
+            new \phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware($c->get(Pool::class))
         ];
 
         return new \phpDocumentor\ApiReference\Factory($strategies, $middleware);
