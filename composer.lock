@@ -680,18 +680,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "1f637ffba2af2867bda3b4f682487442f190ea14"
+                "reference": "82f9aba5a508878923f6a2f88dfb698ec26bbb87"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/82f9aba5a508878923f6a2f88dfb698ec26bbb87",
-                "reference": "1f637ffba2af2867bda3b4f682487442f190ea14",
+                "reference": "82f9aba5a508878923f6a2f88dfb698ec26bbb87",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5",
                 "phpdocumentor/reflection-common": "^1.0@dev",
-                "phpdocumentor/type-resolver": "^0.1.2",
+                "phpdocumentor/type-resolver": "^0.1.5",
                 "webmozart/assert": "^1.0"
             },
             "require-dev": {
@@ -721,7 +721,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2015-08-02 15:12:31"
+            "time": "2015-10-26 14:52:52"
         },
         {
             "name": "phpdocumentor/type-resolver",
