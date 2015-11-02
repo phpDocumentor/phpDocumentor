@@ -16,21 +16,36 @@ use League\Event\Emitter;
 use phpDocumentor\DocumentGroup;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFactory;
-use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
+use phpDocumentor\Reflection\Middleware\Middleware;
+use phpDocumentor\Reflection\Php\Factory\File;
 use phpDocumentor\Reflection\Php\Factory\File\FlySystemAdapter;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\Reflection\Php\Factory as ProjectFactoryStrategy;
-use phpDocumentor\Reflection\PrettyPrinter;
+use phpDocumentor\Reflection\Php\ProjectFactoryStrategy;
 
 final class Factory implements DocumentGroupFactory
 {
     /** @var Emitter */
     private $emitter;
 
-    public function __construct(Emitter $emitter)
+    /**
+     * @var \phpDocumentor\ApiReference\ProjectFactoryStrategy
+     */
+    private $stategies;
+
+    /**
+     * @var array
+     */
+    private $middleware;
+
+    /**
+     * @param ProjectFactoryStrategy[] $stategies
+     * @param Middleware[] $cache
+     */
+    public function __construct(Emitter $emitter, array $stategies = array(), array $middleware = array())
     {
+        $this->stategies = $stategies;
+        $this->middleware = $middleware;
         $this->emitter = $emitter;
     }
 
@@ -47,25 +62,15 @@ final class Factory implements DocumentGroupFactory
             throw new InvalidArgumentException('Definition must be an instance of ' . DocumentGroupDefinition::class);
         }
 
-        // TODO: move this to a custom factory so that we can inject the factory in this class and then have the
-        // middleware as dependency of that factory.
+        $strategies = $this->stategies;
+        $strategies[] = new File(
+            NodesFactory::createInstance(),
+            new FlySystemAdapter($definition->getFilesystem()),
+            $this->middleware
+        );
+
         $projectFactory = new ProjectFactory(
-            [
-                new ProjectFactoryStrategy\Argument(new PrettyPrinter()),
-                new ProjectFactoryStrategy\Class_(),
-                new ProjectFactoryStrategy\Constant(new PrettyPrinter()),
-                new ProjectFactoryStrategy\DocBlock(DocBlockFactory::createInstance()),
-                new ProjectFactoryStrategy\File(
-                    NodesFactory::createInstance(),
-                    new FlySystemAdapter($definition->getFilesystem()),
-                    [new LoggingMiddleware($this->emitter)]
-                ),
-                new ProjectFactoryStrategy\Function_(),
-                new ProjectFactoryStrategy\Interface_(),
-                new ProjectFactoryStrategy\Method(),
-                new ProjectFactoryStrategy\Property(new PrettyPrinter()),
-                new ProjectFactoryStrategy\Trait_(),
-            ]
+            $strategies
         );
 
         // TODO: Read title (My Project) from configuration
