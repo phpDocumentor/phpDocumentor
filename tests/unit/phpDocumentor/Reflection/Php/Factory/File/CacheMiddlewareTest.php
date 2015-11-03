@@ -38,8 +38,7 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
             ->with($file);
 
         $poolMock->shouldReceive('getItem->get')
-            ->never()
-            ->andReturn($file);
+            ->never();
 
         $adapterMock = m::mock(Adapter::class);
         $stategies = m::mock(StrategyContainer::class);
@@ -49,5 +48,41 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
         $result = $fixture->execute($command, function() use($file) { return $file; });
 
         $this->assertSame($file, $result);
+    }
+
+    public function testChecksHash()
+    {
+        $cachedFile = new File('OldHash', 'myFile.php');
+        $freshFile = new File('NewHash', 'myFile.php');
+        $poolMock = m::mock(Pool::class);
+        $poolMock->shouldReceive('getItem')
+            ->andReturnSelf();
+
+        $poolMock->shouldReceive('getItem->isMiss')
+            ->once()
+            ->andReturn(false);
+
+        $poolMock->shouldReceive('getItem->lock')
+            ->once();
+
+        $poolMock->shouldReceive('getItem->set')
+            ->once()
+            ->with($freshFile);
+
+
+        $poolMock->shouldReceive('getItem->get')
+            ->once()
+            ->andReturn($cachedFile);
+
+        $adapterMock = m::mock(Adapter::class);
+        $adapterMock->shouldReceive('md5')
+            ->andReturn('NewHash');
+        $stategies = m::mock(StrategyContainer::class);
+        $command = new CreateCommand($adapterMock, 'myFile.php', $stategies);
+        $fixture = new CacheMiddleware($poolMock);
+
+        $result = $fixture->execute($command, function() use($freshFile) { return $freshFile; });
+
+        $this->assertSame($freshFile, $result);
     }
 }
