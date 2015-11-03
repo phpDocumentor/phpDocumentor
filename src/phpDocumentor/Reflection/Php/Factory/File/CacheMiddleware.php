@@ -13,6 +13,7 @@
 namespace phpDocumentor\Reflection\Php\Factory\File;
 
 use phpDocumentor\Reflection\Php\File;
+use Stash\Item;
 use Stash\Pool;
 
 final class CacheMiddleware implements Middleware
@@ -48,13 +49,31 @@ final class CacheMiddleware implements Middleware
         $itemName = $this->getItemName($command->getObject());
         $item = $this->dataStore->getItem($itemName);
         if ($item->isMiss()) {
-            $file = $next($command);
-            $item->lock();
-            $item->set($file);
-            return $file;
+            return $this->updateCache($command, $next, $item);
         }
 
-        return $item->get();
+        /** @var File $cachedFile */
+        $cachedFile = $item->get();
+
+        if ($cachedFile->getHash() !== $command->getAdapter()->md5($command->getObject())) {
+            return $this->updateCache($command, $next, $item);
+        }
+
+        return $cachedFile;
+    }
+
+    /**
+     * @param CreateCommand $command
+     * @param callable $next
+     * @param Item $item
+     * @return mixed
+     */
+    private function updateCache(CreateCommand $command, callable $next, $item)
+    {
+        $file = $next($command);
+        $item->lock();
+        $item->set($file);
+        return $file;
     }
 
     /**
