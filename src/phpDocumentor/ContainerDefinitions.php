@@ -26,6 +26,7 @@ use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Php\Factory\Argument;
 use phpDocumentor\Reflection\Php\Factory\Class_;
 use phpDocumentor\Reflection\Php\Factory\Constant;
@@ -172,15 +173,15 @@ return [
     //ApiReference
     phpDocumentor\ApiReference\Factory::class => function (ContainerInterface $c) {
         $strategies = [
-            new Argument(new PrettyPrinter()),
-            new Class_(),
-            new Constant(new PrettyPrinter()),
-            new DocBlock(DocBlockFactory::createInstance()),
-            new Function_(),
-            new Interface_(),
-            new Method(),
-            new Property(new PrettyPrinter()),
-            new Trait_(),
+            $c->get(Argument::class),
+            $c->get(Class_::class),
+            $c->get(Constant::class),
+            $c->get(DocBlock::class),
+            $c->get(Function_::class),
+            $c->get(Interface_::class),
+            $c->get(Method::class),
+            $c->get(Property::class),
+            $c->get(Trait_::class),
         ];
 
         $middleware = [
@@ -193,6 +194,9 @@ return [
 
     Emitter::class => \DI\object(Emitter::class),
     LoggingMiddleWare::class => \DI\Object(LoggingMiddleWare::class),
+    DocBlockFactoryInterface::class => function (ContainerInterface $c) {
+        return DocBlockFactory::createInstance();
+    },
 
     // Infrastructure
     Pool::class => function (ContainerInterface $c) {
