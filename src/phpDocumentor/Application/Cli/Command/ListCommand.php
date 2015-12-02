@@ -12,6 +12,7 @@
 
 namespace phpDocumentor\Application\Cli\Command;
 
+use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,11 +23,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ListCommand extends Command
 {
     /**
-     * Initializes this command with its dependencies.
+     * @var PathsRepositoryInterface
      */
-    public function __construct()
+    private $pathsRepository;
+
+    /**
+     * Initializes this command with its dependencies.
+     * @param PathsRepositoryInterface $pathsRepository
+     */
+    public function __construct(PathsRepositoryInterface $pathsRepository)
     {
         parent::__construct('template:list');
+        $this->pathsRepository = $pathsRepository;
     }
 
     /**
@@ -50,7 +58,7 @@ HELP
     }
 
     /**
-     * Retrieves all template names from the Template Factory and sends those to stdout.
+     * Retrieves all template names from PathsRepository and sends those to stdout.
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
@@ -60,10 +68,9 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Available templates:');
-//        foreach ($this->factory->getAllNames() as $template_name) {
-//            $output->writeln('* '.$template_name);
-//        }
-        // TODO: re-add this functionality using the new Factory
+        foreach ($this->pathsRepository->listTemplates() as $template_name) {
+            $output->writeln('* '.$template_name);
+        }
         $output->writeln('');
     }
 }
