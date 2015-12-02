@@ -1,34 +1,31 @@
 <?xml version="1.0"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:php="http://php.net/xsl">
   <xsl:output indent="yes" method="html" />
 
   <xsl:template match="/project">
     <xsl:apply-templates select="/project/class[name=$class]" />
   </xsl:template>
 
-  <xsl:template match="class|interface">
+  <xsl:template name="class">
     <h3><xsl:value-of select="name" /></h3>
     <div class="properties">
       <h1>Properties</h1>
       <label class="property-key">Extends</label>
       <div class="property-value">
-        <xsl:if test="extends[@link = '']">
-          <xsl:value-of select="extends" />
-        </xsl:if>
-        <xsl:if test="extends[@link != '']">
-          <a href="{extends/@link}"><xsl:value-of select="extends" /></a>
-        </xsl:if>
+        <xsl:value-of select="extends" />
         &#160;</div>
       <label class="property-key">Implements</label>
       <div class="property-value">
-        <xsl:for-each select="implements"><xsl:value-of select="." /><br /></xsl:for-each>&#160;
+        <xsl:for-each select="implements">
+          <xsl:value-of select="." /><br />
+        </xsl:for-each>&#160;
       </div>
       <xsl:for-each select="docblock/tag">
         <xsl:sort select="@name" />
         <label class="property-key"><xsl:value-of select="@name" /></label>
         <div class="property-value">
-          <xsl:if test="@link and @link != ''"><a title="{.}" href="{@link}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
+          <xsl:if test="@link and @link != ''"><a title="{.}" href="{$root}{@link}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
           <xsl:if test="not(@link) or @link = ''"><a title="{.}"><xsl:value-of select="@description" disable-output-escaping="yes" /></a></xsl:if>
             &#160;
         </div>
@@ -53,7 +50,7 @@
     <em><xsl:value-of select="docblock/description" disable-output-escaping="yes" /></em><br />
     </xsl:if>
     <xsl:if test="docblock/long-description">
-    <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" /><br />
+      <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::markdown', string(docblock/long-description))" disable-output-escaping="yes" /><br />
     </xsl:if>
 
     <xsl:if test="count(method) > 0">

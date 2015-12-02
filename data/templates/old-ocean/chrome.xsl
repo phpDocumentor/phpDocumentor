@@ -4,6 +4,7 @@
   <xsl:output indent="yes" method="html" />
   <xsl:include href="menu.xsl" />
   <xsl:include href="search.xsl" />
+  <xsl:include href="object-index.xsl" />
 
   <!-- Concatenate items with a given separator: http://symphony-cms.com/download/xslt-utilities/view/22517/-->
   <xsl:template name="implode">
@@ -19,7 +20,8 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="/">
+  <xsl:template name="nav">
+    <xsl:param name="start"/>
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <title><xsl:value-of select="$title" /></title>
@@ -105,9 +107,9 @@
                 <xsl:with-param name="search_template" select="$search_template" />
               </xsl:call-template>
               <input id="search_box" />
-              <xsl:if test="$object-index">
-              <xsl:value-of select="$object-index" disable-output-escaping="yes"/>
-              </xsl:if>
+              <xsl:call-template name="side">
+                <xsl:with-param name="start" select="$start" />
+              </xsl:call-template>
             </div>
           </div>
 
