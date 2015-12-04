@@ -45,12 +45,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
-use Symfony\Component\Validator\DefaultTranslator;
+use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
-use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
-use Symfony\Component\Validator\Validator;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 // maintain BC in XSL-based templates
 if (!class_exists('phpDocumentor\\Plugin\\Core\\Xslt\\Extension')) {
@@ -135,11 +134,11 @@ return [
     },
 
     // Validator
-    ValidatorInterface::class => \DI\object(Validator::class),
-    MetadataFactoryInterface::class => \DI\object(LazyLoadingMetadataFactory::class)
+    ValidatorInterface::class => \DI\object(RecursiveValidator::class),
+    LazyLoadingMetadataFactory::class => \DI\object(LazyLoadingMetadataFactory::class)
         ->constructorParameter('loader', \DI\object(StaticMethodLoader::class)),
     ConstraintValidatorFactoryInterface::class => \DI\object(ConstraintValidatorFactory::class),
-    TranslatorInterface::class => \DI\object(DefaultTranslator::class),
+    TranslatorInterface::class => \DI\object(IdentityTranslator::class),
 
     //Definition Factories
     DocumentGroupDefinitionFactory::class => \DI\object(DocumentGroupDefinitionFactory::class),
