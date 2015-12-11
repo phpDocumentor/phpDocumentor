@@ -95,7 +95,7 @@ final class Application
      */
     private function setTimezone()
     {
-        if (false === ini_get('date.timezone')
+        if (false == ini_get('date.timezone')
             || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
         ) {
             date_default_timezone_set('UTC');
