@@ -21,3 +21,20 @@ You can archive this by configuring the parameter *NamespacePrefix*:
           <parameter key="NamespacePrefix">VendorName</parameter>
         </plugin>
         ..
+
+If you're getting generation errors like: 
+
+    PPC:ERR-50008
+    PHP Notice:  Undefined index: VAL:ERRLVL-50015 
+
+you probably need to add the default 'Core' plugin also:
+
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <phpdocumentor>
+      <plugins>
+        <plugin path="Core" />
+        <plugin path="LegacyNamespaceConverter" />
+      </plugins>
+    </phpdocumentor>
+
+This is so because "when you define plugins you override the whole set so that you could replace everything should you want to.". For more info - [here](https://github.com/phpDocumentor/phpDocumentor2/issues/1534#issuecomment-128092193)
