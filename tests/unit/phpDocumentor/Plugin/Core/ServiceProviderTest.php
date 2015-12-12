@@ -56,7 +56,6 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->thenProviderIsRegistered($mockApplication, 'phpDocumentor\Plugin\Graphs\ServiceProvider');
         $this->thenProviderIsRegistered($mockApplication, 'phpDocumentor\Plugin\Twig\ServiceProvider');
-        $this->thenProviderIsRegistered($mockApplication, 'phpDocumentor\Plugin\Pdf\ServiceProvider');
 
         $this->fixture->register($mockApplication);
 
