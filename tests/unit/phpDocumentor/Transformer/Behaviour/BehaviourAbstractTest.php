@@ -27,7 +27,7 @@ class BehaviourAbstractTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $transformerMock = m::mock('\phpDocumentor\Transformer\Transformer');
         /** @var m\MockInterface|\phpDocumentor\Transformer\Behaviour\BehaviourAbstract $fixture */
-        $fixture = m::mock('phpDocumentor\Transformer\Behaviour\BehaviourAbstract[process]');
+        $fixture = m::mock('phpDocumentor\Transformer\Behaviour\BehaviourAbstract');
 
         // Act
         $fixture->setTransformer($transformerMock);
