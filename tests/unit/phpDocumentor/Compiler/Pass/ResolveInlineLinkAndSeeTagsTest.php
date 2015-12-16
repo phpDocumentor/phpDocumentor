@@ -157,7 +157,6 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
 
         $descriptor = $this->givenAChildDescriptorWithDescription($description);
         $collection = $this->givenACollection($descriptor);
-        $elementToLinkTo = null;
 
         $this->thenDescriptionOfDescriptorIsChangedInto($descriptor, $expected);
 
