@@ -19,6 +19,11 @@ final class FilesystemTest extends \PHPUnit_Framework_TestCase
 {
     const PROJECT_ROOT = '../';
 
+    /**
+     * Maximum filepath length for Windows.
+     */
+    const WINDOWS_MAX_FILEPATH_LENGTH = 260;
+
     public function testFilenamesShouldNotContainNonASCIICharacters()
     {
         $iterator = new \RecursiveDirectoryIterator(self::PROJECT_ROOT);
@@ -77,8 +82,8 @@ final class FilesystemTest extends \PHPUnit_Framework_TestCase
 
     public function testFilepathShouldNotExceedMaximumPathLengthForWindows()
     {
-        $maxFilepathLength = 160; // Maximum filepath length for Windows.
-        $safeMargin        = count(realpath(self::PROJECT_ROOT));  // Safe margin to account for filepaths longer than the current one.
+        // Safe margin to account for filepaths longer than the current one.
+        $safeMargin = count(realpath(self::PROJECT_ROOT));
 
         $iterator = new \RecursiveDirectoryIterator(self::PROJECT_ROOT);
         $iterator = new \RecursiveIteratorIterator($iterator);
@@ -87,7 +92,7 @@ final class FilesystemTest extends \PHPUnit_Framework_TestCase
 
         /** @var \SplFileInfo $file */
         foreach ($iterator as $file) {
-            if (strlen(realpath($file->getPathname())) > $maxFilepathLength - $safeMargin) {
+            if (strlen(realpath($file->getPathname())) > self::WINDOWS_MAX_FILEPATH_LENGTH - $safeMargin) {
                 $filepathTooLong[count($filepathTooLong)] = [
                     'filepath' => realpath($file->getPathname()),
                     'length'   => strlen(realpath($file->getPathname())),
