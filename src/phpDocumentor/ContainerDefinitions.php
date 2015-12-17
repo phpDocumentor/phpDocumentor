@@ -128,11 +128,6 @@ return [
         return $application;
     },
 
-    // Dispatcher
-    Dispatcher::class => function () {
-        return Dispatcher::getInstance();
-    },
-
     // Validator
     ValidatorInterface::class => \DI\object(Validator::class),
     MetadataFactoryInterface::class => \DI\object(LazyLoadingMetadataFactory::class)
