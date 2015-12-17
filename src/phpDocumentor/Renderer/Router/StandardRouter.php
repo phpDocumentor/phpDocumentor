@@ -11,38 +11,21 @@
 
 namespace phpDocumentor\Renderer\Router;
 
-use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\ConstantDescriptor;
-use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\Analyzer;
-use phpDocumentor\Descriptor\PropertyDescriptor;
-use phpDocumentor\Descriptor\TraitDescriptor;
-use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Reflection\Php\Class_ as ClassDescriptor;
+use phpDocumentor\Reflection\Php\Constant as ConstantDescriptor;
+use phpDocumentor\Reflection\Php\Function_ as FunctionDescriptor;
+use phpDocumentor\Reflection\Php\Interface_ as InterfaceDescriptor;
+use phpDocumentor\Reflection\Php\Method as MethodDescriptor;
+use phpDocumentor\Reflection\Php\Namespace_ as NamespaceDescriptor;
+use phpDocumentor\Reflection\Php\Property as PropertyDescriptor;
+use phpDocumentor\Reflection\Php\Trait_ as TraitDescriptor;
+use phpDocumentor\Reflection\Php\File as FileDescriptor;
 
 /**
  * The default router for phpDocumentor.
  */
 class StandardRouter extends RouterAbstract
 {
-    /** @var Analyzer */
-    private $analyzer;
-
-    /**
-     * Initializes this router with a list of all elements.
-     *
-     * @param Analyzer $analyzer
-     */
-    public function __construct(Analyzer $analyzer)
-    {
-        $this->analyzer = $analyzer;
-
-        parent::__construct();
-    }
-
     /**
      * Configuration function to add routing rules to a router.
      *
@@ -50,32 +33,21 @@ class StandardRouter extends RouterAbstract
      */
     public function configure()
     {
-        $analyzer = $this->analyzer;
-
         $fileGenerator      = new UrlGenerator\Standard\FileDescriptor();
         $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
-        $packageGenerator   = new UrlGenerator\Standard\PackageDescriptor();
         $classGenerator     = new UrlGenerator\Standard\ClassDescriptor();
         $methodGenerator    = new UrlGenerator\Standard\MethodDescriptor();
         $constantGenerator  = new UrlGenerator\Standard\ConstantDescriptor();
         $functionGenerator  = new UrlGenerator\Standard\FunctionDescriptor();
         $propertyGenerator  = new UrlGenerator\Standard\PropertyDescriptor();
 
-        // Here we cheat! If a string element is passed to this rule then we try to transform it into a Descriptor
-        // if the node is translated we do not let it match and instead fall through to one of the other rules.
-        $stringRule = function (&$node) use ($analyzer) {
-            $elements = $analyzer->getProjectDescriptor()->getIndexes()->get('elements');
-            if (is_string($node) && isset($elements[$node])) {
-                $node = $elements[$node];
-            };
-
+        $stringRule = function ($node) {
             return false;
         };
 
         // @codingStandardsIgnoreStart
         $this[] = new Rule($stringRule, function () { return false; });
         $this[] = new Rule(function ($node) { return ($node instanceof FileDescriptor); }, $fileGenerator);
-        $this[] = new Rule(function ($node) { return ($node instanceof PackageDescriptor); }, $packageGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof TraitDescriptor); }, $classGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof NamespaceDescriptor); }, $namespaceGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof InterfaceDescriptor); }, $classGenerator );

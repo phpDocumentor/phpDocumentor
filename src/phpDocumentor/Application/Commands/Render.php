@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Application\Commands;
 
+use phpDocumentor\Documentation;
+
 final class Render
 {
     /** @var string */
@@ -20,14 +22,18 @@ final class Render
     /** @var string[] */
     private $templates;
 
+    /** @var Documentation */
+    private $documentation;
+
     /**
      * @param          $target
      * @param string[] $templates array of templates to render.
      */
-    public function __construct($target, array $templates)
+    public function __construct($documentation, $target, array $templates)
     {
         $this->target    = $target;
         $this->templates = $templates;
+        $this->documentation = $documentation;
     }
 
     /**
@@ -44,5 +50,10 @@ final class Render
     public function getTemplates()
     {
         return $this->templates;
+    }
+
+    public function getDocumentation()
+    {
+        return $this->documentation;
     }
 }

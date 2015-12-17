@@ -281,7 +281,7 @@ HELP
                 $this->documentationRepository->save($documentation);
             }
             $this->commandBus->handle(
-                new Render(sys_get_temp_dir() . '/phpdoc', $input->getOption('template') ?: ['clean'])
+                new Render($documentation, sys_get_temp_dir() . '/phpdoc', $input->getOption('template') ?: ['clean'])
             );
         }
 

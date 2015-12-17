@@ -3,6 +3,7 @@
 namespace phpDocumentor\Renderer;
 
 use League\Flysystem\Filesystem;
+use phpDocumentor\Documentation;
 use phpDocumentor\Path;
 
 class RenderPass
@@ -12,15 +13,20 @@ class RenderPass
 
     /** @var Path */
     private $destination;
+    /**
+     * @var Documentation
+     */
+    private $documentation;
 
     /**
      * @param Filesystem  $filesystem
      * @param Path        $destination
      */
-    public function __construct(Filesystem $filesystem, Path $destination)
+    public function __construct(Filesystem $filesystem, Path $destination, Documentation $documentation)
     {
         $this->destination = $destination;
         $this->filesystem  = $filesystem;
+        $this->documentation = $documentation;
     }
 
     /**
@@ -37,5 +43,13 @@ class RenderPass
     public function getDestination()
     {
         return $this->destination;
+    }
+
+    /**
+     * @return Documentation
+     */
+    public function getDocumentation()
+    {
+        return $this->documentation;
     }
 }

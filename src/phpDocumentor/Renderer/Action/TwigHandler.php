@@ -11,9 +11,6 @@
 
 namespace phpDocumentor\Renderer\Action;
 
-use phpDocumentor\Descriptor\Analyzer;
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Renderer\Action\Twig\Extension;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\Action\Twig\Pathfinder;
@@ -27,9 +24,6 @@ use phpDocumentor\Views\Views;
 
 class TwigHandler implements ActionHandler
 {
-    /** @var Analyzer */
-    private $analyzer;
-
     /** @var Pathfinder */
     private $pathfinder;
 
@@ -46,7 +40,6 @@ class TwigHandler implements ActionHandler
     private $viewFactory;
 
     public function __construct(
-        Analyzer $analyzer,
         Pathfinder $pathfinder,
         Queue $routers,
         PathsRepository $fileRepository,
@@ -57,7 +50,6 @@ class TwigHandler implements ActionHandler
             $cacheFolder = sys_get_temp_dir() . '/phpdoc-twig-cache';
         }
 
-        $this->analyzer         = $analyzer;
         $this->pathfinder       = $pathfinder;
         $this->routers          = $routers;
         $this->fileRepository   = $fileRepository;
@@ -74,7 +66,7 @@ class TwigHandler implements ActionHandler
      */
     public function __invoke(Action $action)
     {
-        $dataView = $this->viewFactory->create($action->getDataView(), $this->analyzer->getProjectDescriptor());
+        $dataView = $this->viewFactory->create($action->getDataView(), $action->getRenderPass()->getDocumentation());
         $views    = new Views([$dataView->getName() => $dataView()]);
 
         // TODO: Move path finding to View

@@ -167,7 +167,8 @@ return [
 
     // Parser
     Queue::class => \DI\object()
-        ->method('insert', \DI\get(ExternalRouter::class), 10500)
+// TODO: Refactor the external router to use the new configuration
+//        ->method('insert', \DI\get(ExternalRouter::class), 10500)
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Views

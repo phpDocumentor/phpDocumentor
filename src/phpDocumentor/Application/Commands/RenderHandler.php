@@ -56,19 +56,33 @@ final class RenderHandler
         $destinationFilesystem = $this->filesystemFactory->create(
             new Dsn($command->getTarget()[0] === '/' ? '/' : '.')
         );
-        $renderPass = new RenderPass($destinationFilesystem, new Path($command->getTarget()));
+
+        $renderPass = new RenderPass(
+            $destinationFilesystem,
+            new Path($command->getTarget()),
+            $command->getDocumentation()
+        );
 
         foreach ($command->getTemplates() as $templateName) {
-            $template = $this->templateFactory->createFromName($renderPass, $templateName);
-            if (! $template instanceof Template) {
-                throw new \InvalidArgumentException(sprintf('The template "%s" could not be found', $templateName));
-            }
-
-            foreach ($template->getActions() as $action) {
-                $this->commandBus->handle($action);
-                $this->emitter->emit(new RenderActionCompleted($action));
-            }
+            $this->renderTemplate($renderPass, $templateName);
         }
         $this->emitter->emit(new RenderingFinished());
+    }
+
+    /**
+     * @param RenderPass $renderPass
+     * @param string $templateName
+     */
+    private function renderTemplate(RenderPass $renderPass, $templateName)
+    {
+        $template = $this->templateFactory->createFromName($renderPass, $templateName);
+        if (! $template instanceof Template) {
+            throw new \InvalidArgumentException(sprintf('The template "%s" could not be found', $templateName));
+        }
+
+        foreach ($template->getActions() as $action) {
+            $this->commandBus->handle($action);
+            $this->emitter->emit(new RenderActionCompleted($action));
+        }
     }
 }
