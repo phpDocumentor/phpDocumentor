@@ -12,9 +12,10 @@ use phpDocumentor\Application\Cli\Command\ListCommand;
 use phpDocumentor\Application\CommandBus\ContainerLocator;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Cli\Command\RunCommand;
-use phpDocumentor\ConfigurationFactory;
-use phpDocumentor\ConfigurationFactory\PhpDocumentor2;
-use phpDocumentor\ConfigurationFactory\PhpDocumentor3;
+use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
+use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
+use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
 use phpDocumentor\Event\Dispatcher;
@@ -80,8 +81,10 @@ return [
         __DIR__ . '/../../data',
         __DIR__ . '/../../data/templates',
     ],
-    'config.template.path' => __DIR__ . '/Configuration/Resources/phpdoc.tpl.xml',
-    'config.user.path'     => getcwd() . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml'),
+    'config.user.path'     => new Uri(getcwd() . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')),
+    'config.schema.path'   => __DIR__ . '/data/xsd/phpdoc.xsd',
+    'config.strategies'    => [ \DI\get(PhpDocumentor3::class), \DI\get(PhpDocumentor2::class) ],
+    'config.middlewares'   => [ \DI\get(CommandlineOptionsMiddleware::class) ],
     'twig.cache.path'      => sys_get_temp_dir() . '/phpdoc-twig-cache',
 
     // -- Services
@@ -96,15 +99,12 @@ return [
     MethodNameInflector::class  => \DI\object(InvokeInflector::class),
 
     // Configuration
-    ConfigurationFactory::class => function (ContainerInterface $c) {
-        return new \phpDocumentor\ConfigurationFactory(
-            [
-                new PhpDocumentor3(''),
-                new PhpDocumentor2(),
-            ],
-            new Uri($c->get('config.user.path'))
-        );
-    },
+    ConfigurationFactory::class => \DI\object()
+        ->constructorParameter('strategies', \DI\get('config.strategies'))
+        ->constructorParameter('uri', \DI\get('config.user.path'))
+        ->constructorParameter('middlewares', \DI\get('config.middlewares')),
+
+    PhpDocumentor3::class => \DI\object()->constructorParameter('schemaPath', \DI\get('config.schema.path')),
 
     // Console
     Application::class => function (ContainerInterface $c) {

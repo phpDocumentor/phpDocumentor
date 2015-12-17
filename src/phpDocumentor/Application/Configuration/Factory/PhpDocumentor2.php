@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\ConfigurationFactory;
+namespace phpDocumentor\Application\Configuration\Factory;
 
 use phpDocumentor\Dsn;
 
@@ -21,12 +21,12 @@ final class PhpDocumentor2 implements Strategy
 {
     private $extensions         = ['php', 'php3', 'phtml'];
     private $markers            = ['TODO', 'FIXME'];
-    private $visibility         = 'public';
+    private $visibility         = ['public'];
     private $defaultPackageName = 'Default';
     private $template           = 'clean';
     private $ignoreHidden       = true;
     private $ignoreSymlinks     = true;
-    private $ignorePaths        = ['src/ServiceDefinitions.php'];
+    private $ignorePaths        = [];
     private $outputDirectory    = 'file://build/docs';
     private $directories        = ['src'];
 

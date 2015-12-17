@@ -14,14 +14,13 @@ namespace phpDocumentor\Application\Cli\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
+use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
-use phpDocumentor\ConfigurationFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use Stash\Driver\FileSystem;
-use phpDocumentor\Uri;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -57,45 +56,38 @@ final class RunCommand extends Command
     /** @var Emitter */
     private $emitter;
 
-    /**
-     * @var ConfigurationFactory
-     */
-    private $configurationFactory;
-    /**
-     * @var DefinitionRepository
-     */
+    /** @var DefinitionRepository */
     private $definitionRepository;
-    /**
-     * @var DocumentationFactory
-     */
+
+    /** @var DocumentationFactory */
     private $documentationFactory;
-    /**
-     * @var DocumentationRepository
-     */
+
+    /** @var DocumentationRepository */
     private $documentationRepository;
 
     /**
      * Initializes the command with all necessary dependencies
      *
-     * @param CommandBus    $commandBus
-     * @param Emitter       $emitter
+     * @param DefinitionRepository    $definitionRepository
+     * @param DocumentationRepository $documentationRepository
+     * @param DocumentationFactory    $documentationFactory
+     * @param CommandBus              $commandBus
+     * @param Emitter                 $emitter
      */
     public function __construct(
-        ConfigurationFactory $configurationFactory,
         DefinitionRepository $definitionRepository,
         DocumentationRepository $documentationRepository,
         DocumentationFactory $documentationFactory,
-        CommandBus    $commandBus,
-        Emitter       $emitter
+        CommandBus $commandBus,
+        Emitter $emitter
     ) {
-        $this->commandBus    = $commandBus;
-        $this->emitter       = $emitter;
-        $this->configurationFactory = $configurationFactory;
+        $this->commandBus                   = $commandBus;
+        $this->emitter                      = $emitter;
+        $this->definitionRepository         = $definitionRepository;
+        $this->documentationFactory         = $documentationFactory;
+        $this->documentationRepository      = $documentationRepository;
 
         parent::__construct('project:run');
-        $this->definitionRepository = $definitionRepository;
-        $this->documentationFactory = $documentationFactory;
-        $this->documentationRepository = $documentationRepository;
     }
 
     /**
@@ -194,19 +186,6 @@ HELP
                 . 'ignored. Wildcards * and ? are supported'
             )
             ->addOption(
-                'ignore-hidden',
-                null,
-                InputOption::VALUE_NONE,
-                'Use this option to tell phpDocumentor to parse files and directories that begin with a period (.), '
-                . 'by default these are ignored'
-            )
-            ->addOption(
-                'ignore-symlinks',
-                null,
-                InputOption::VALUE_NONE,
-                'Ignore symlinks to other files or directories, default is on'
-            )
-            ->addOption(
                 'markers',
                 'm',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
@@ -235,8 +214,7 @@ HELP
                 'defaultpackagename',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Name to use for the default package.',
-                'Default'
+                'Name to use for the default package.'
             )
             ->addOption(
                 'sourcecode',
@@ -291,23 +269,21 @@ HELP
         );
         $this->attachListeners($input, $output);
 
-        if ($input->getOption('config')) {
-            $this->configurationFactory->replaceLocation(
-                new Uri(realpath($input->getOption('config')))
-            );
-        }
+        $this->commandBus->handle(
+            new MergeConfigurationWithCommandLineOptions($input->getOptions(), $input->getArguments())
+        );
 
-        foreach($this->definitionRepository->fetchAll() as $definition) {
+        foreach ($this->definitionRepository->fetchAll() as $definition) {
             $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
 
             if ($documentation === null) {
                 $documentation = $this->documentationFactory->create($definition);
                 $this->documentationRepository->save($documentation);
             }
-            $this->commandBus->handle(new Render(sys_get_temp_dir() . '/phpdoc', $input->getOption('template') ?: ['clean']));
+            $this->commandBus->handle(
+                new Render(sys_get_temp_dir() . '/phpdoc', $input->getOption('template') ?: ['clean'])
+            );
         }
-
-
 
         $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', sys_get_temp_dir()));
 

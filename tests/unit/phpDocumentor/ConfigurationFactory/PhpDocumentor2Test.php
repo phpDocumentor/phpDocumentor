@@ -10,14 +10,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\ConfigurationFactory;
+namespace phpDocumentor\Application\Configuration\Factory;
 
 require_once(__DIR__ . '/../../../../tests/data/phpDocumentor2ExpectedArray.php');
 
 /**
  * Test case for PhpDocumentor2
  *
- * @coversDefaultClass phpDocumentor\ConfigurationFactory\PhpDocumentor2
+ * @coversDefaultClass phpDocumentor\Application\Configuration\Factory\PhpDocumentor2
  */
 final class PhpDocumentor2Test extends \PHPUnit_Framework_TestCase
 {

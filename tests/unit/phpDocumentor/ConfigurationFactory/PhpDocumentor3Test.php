@@ -10,17 +10,29 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\ConfigurationFactory;
+namespace phpDocumentor\Application\Configuration\Factory;
 
 require_once(__DIR__ . '/../../../../tests/data/phpDocumentor3ExpectedArrays.php');
 
 /**
  * Test case for PhpDocumentor3
  *
- * @coversDefaultClass phpDocumentor\ConfigurationFactory\PhpDocumentor3
+ * @coversDefaultClass phpDocumentor\Application\Configuration\Factory\PhpDocumentor3
  */
 final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
 {
+    /** @var string */
+    private $dataFolder = '';
+
+    /** @var PhpDocumentor3 */
+    private $strategy;
+
+    public function setUp()
+    {
+        $this->strategy   = new PhpDocumentor3(__DIR__ . '/../../../../data/xsd/phpdoc.xsd');
+        $this->dataFolder = __DIR__ . '/../../../../tests/data/';
+    }
+
     /**
      * @covers ::__construct
      * @covers ::convert
@@ -28,10 +40,9 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
      */
     public function testItConvertsPhpdoc3XmlToAnArray()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XML.xml', 0, true);
+        $xml = $this->givenXmlFromFile('phpDocumentor3XML.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $array          = $phpDocumentor3->convert($xml);
+        $array = $this->strategy->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
@@ -43,10 +54,9 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
      */
     public function testItUsesTheDefaultTemplateIfNoneIsFoundInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithoutTemplate.xml', 0, true);
+        $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithoutTemplate.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $array          = $phpDocumentor3->convert($xml);
+        $array = $this->strategy->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
@@ -71,8 +81,7 @@ XML;
 
         $xml = new \SimpleXMLElement($xml);
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $phpDocumentor3->convert($xml);
+        $this->strategy->convert($xml);
     }
 
     /**
@@ -82,10 +91,9 @@ XML;
      */
     public function testItSetsDefaultValuesIfNoneAreFoundInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithoutValues.xml', 0, true);
+        $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithoutValues.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $array          = $phpDocumentor3->convert($xml);
+        $array = $this->strategy->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
     }
@@ -97,10 +105,9 @@ XML;
      */
     public function testItAcceptsMultipleVersionsInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleVersions.xml', 0, true);
+        $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleVersions.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $array          = $phpDocumentor3->convert($xml);
+        $array = $this->strategy->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
     }
@@ -112,10 +119,9 @@ XML;
      */
     public function testItAcceptsMultipleApisInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleApis.xml', 0, true);
+        $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleApis.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $array          = $phpDocumentor3->convert($xml);
+        $array = $this->strategy->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleApis(), $array);
     }
@@ -127,10 +133,9 @@ XML;
      */
     public function testItAcceptsMultipleGuidesInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleGuides.xml', 0, true);
+        $xml = $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleGuides.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $array          = $phpDocumentor3->convert($xml);
+        $array = $this->strategy->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleGuides(), $array);
     }
@@ -142,10 +147,9 @@ XML;
      */
     public function testItAcceptsMultipleTemplatesInThePhpdoc3Xml()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XMLWithMultipleTemplates.xml', 0, true);
+        $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleTemplates.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $array          = $phpDocumentor3->convert($xml);
+        $array = $this->strategy->convert($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleTemplates(), $array);
     }
@@ -155,11 +159,20 @@ XML;
      */
     public function testItMatchesWhenVersionIs3()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpDocumentor3XML.xml', 0, true);
+        $xml = $this->givenXmlFromFile('phpDocumentor3XML.xml');
 
-        $phpDocumentor3 = new PhpDocumentor3('');
-        $bool           = $phpDocumentor3->match($xml);
+        $bool = $this->strategy->match($xml);
 
         $this->assertTrue($bool);
+    }
+
+    /**
+     * @param $file
+     *
+     * @return \SimpleXMLElement
+     */
+    private function givenXmlFromFile($file)
+    {
+        return new \SimpleXMLElement($this->dataFolder . $file, 0, true);
     }
 }

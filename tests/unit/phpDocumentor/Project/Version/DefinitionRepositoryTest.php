@@ -12,7 +12,7 @@
 namespace phpDocumentor\Project\Version;
 
 use Mockery as m;
-use phpDocumentor\ConfigurationFactory;
+use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Project\VersionNumber;
 
 /**

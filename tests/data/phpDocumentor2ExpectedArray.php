@@ -42,16 +42,14 @@ final class PhpDocumentor2ExpectedArray
                             'ignore'               => [
                                 'hidden'   => true,
                                 'symlinks' => true,
-                                'paths'    => [
-                                    0 => 'src/ServiceDefinitions.php',
-                                ],
+                                'paths'    => [],
                             ],
                             'extensions'           => [
                                 0 => 'php',
                                 1 => 'php3',
                                 2 => 'phtml',
                             ],
-                            'visibility'           => 'public',
+                            'visibility'           => ['public'],
                             'default-package-name' => 'Default',
                             'markers'              => [
                                 0 => 'TODO',
@@ -106,7 +104,7 @@ final class PhpDocumentor2ExpectedArray
                                 1 => 'php3',
                                 2 => 'phtml',
                             ],
-                            'visibility'           => 'public',
+                            'visibility'           => ['public'],
                             'default-package-name' => 'Default',
                             'markers'              => [
                                 0 => 'TODO',

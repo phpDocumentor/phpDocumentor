@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\ConfigurationFactory;
+namespace phpDocumentor\Application\Configuration\Factory;
 
 /**
  * phpDocumentor3 strategy for converting the configuration xml to an array.
@@ -31,10 +31,6 @@ final class PhpDocumentor3 implements Strategy
      */
     public function __construct($schemaPath)
     {
-        if ($schemaPath === '') {
-            $schemaPath = __DIR__ . '/../../../data/xsd/phpdoc.xsd';
-        }
-
         $this->schemaPath = $schemaPath;
     }
 
@@ -151,7 +147,7 @@ final class PhpDocumentor3 implements Strategy
                 'paths'  => (array) $api->ignore->path,
             ],
             'extensions'           => $extensions,
-            'visibility'           => (string) $api->visibility,
+            'visibility'           => (array) $api->visibility,
             'default-package-name' => ((string) $api->{'default-package-name'}) ?: 'Default',
             'markers'              => (array) $api->markers->children()->marker,
         ];
@@ -217,16 +213,14 @@ final class PhpDocumentor3 implements Strategy
                         ],
                         'ignore'               => [
                             'hidden' => true,
-                            'paths'  => [
-                                0 => 'src/ServiceDefinitions.php'
-                            ]
+                            'paths'  => []
                         ],
                         'extensions'           => [
                             0 => 'php',
                             1 => 'php3',
                             2 => 'phtml'
                         ],
-                        'visibility'           => 'public',
+                        'visibility'           => ['public'],
                         'default-package-name' => 'Default',
                         'markers'              => [
                             0 => 'TODO',

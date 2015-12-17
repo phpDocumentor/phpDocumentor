@@ -52,6 +52,9 @@ class CopyFileHandler implements ActionHandler
         $destination = $this->getDestination($action);
 
         Assert::fileExists($source);
+        if (!file_exists(dirname($destination))) {
+            mkdir(dirname($destination), 0777, true);
+        }
         Assert::writable(dirname($destination));
 
         $destinationFS = $action->getRenderPass()->getFilesystem();

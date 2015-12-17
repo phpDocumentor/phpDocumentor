@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0943046d08ba4e6b9e5c2478ec7845fd",
+    "hash": "49877a82d90d92b7cfa1b4cff430bbbb",
     "content-hash": "8ec08ef5cbedbd65bd48ff22e1dffa45",
     "packages": [
         {
@@ -684,7 +684,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/1f637ffba2af2867bda3b4f682487442f190ea14",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/82f9aba5a508878923f6a2f88dfb698ec26bbb87",
                 "reference": "1f637ffba2af2867bda3b4f682487442f190ea14",
                 "shasum": ""
             },
@@ -725,16 +725,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "0.1.5",
+            "version": "0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "83e31258fb03b9a27884a83b81501cb4cb297a81"
+                "reference": "14bb2da6387c6a58648b4a87ff02d4c971050309"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/83e31258fb03b9a27884a83b81501cb4cb297a81",
-                "reference": "83e31258fb03b9a27884a83b81501cb4cb297a81",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/14bb2da6387c6a58648b4a87ff02d4c971050309",
+                "reference": "14bb2da6387c6a58648b4a87ff02d4c971050309",
                 "shasum": ""
             },
             "require": {
@@ -768,7 +768,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2015-07-18 13:58:32"
+            "time": "2015-07-02 17:28:34"
         },
         {
             "name": "psr/log",

@@ -5,7 +5,8 @@
     "homepage": "http://www.phpdoc.org",
     "license": "MIT",
     "autoload": {
-        "psr-0": { "phpDocumentor": ["src/" ] }
+        "psr-0": { "phpDocumentor": ["src/" ] },
+        "psr-4": { "phpDocumentor\\Infrastructure\\": ["src/Infrastructure" ] }
     },
     "autoload-dev": {
         "psr-0": { "phpDocumentor": ["tests/unit/"] }

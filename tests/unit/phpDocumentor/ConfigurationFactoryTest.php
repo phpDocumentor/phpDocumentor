@@ -10,22 +10,22 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\Application\Configuration;
 
 use Mockery as m;
-use phpDocumentor\ConfigurationFactory\Strategy;
+use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\Uri;
 
 /**
  * Test case for ConfigurationFactory
  *
- * @coversDefaultClass phpDocumentor\ConfigurationFactory
+ * @coversDefaultClass phpDocumentor\Application\Configuration\ConfigurationFactory
+ * @covers ::<private>
  */
 final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::<private>
-     * @expectedException \Exception
-     * @expectedExceptionMessage String could not be parsed as XML
+     * @covers ::__construct
      */
     public function testItOnlyAcceptsAReadableUri()
     {
@@ -36,9 +36,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::<private>
-     * @expectedException \Exception
-     * @expectedExceptionMessage String could not be parsed as XML
+     * @covers ::__construct
      */
     public function testItOnlyAcceptsAUriThatIsAFile()
     {
@@ -48,9 +46,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::<private>
-     * @expectedException \Exception
-     * @expectedExceptionMessage String could not be parsed as XML
+     * @covers ::__construct
      */
     public function testItOnlyAcceptsAUriWithContent()
     {

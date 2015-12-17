@@ -10,7 +10,8 @@
  */
 
 namespace phpDocumentor\Project\Version;
-use phpDocumentor\ConfigurationFactory;
+
+use phpDocumentor\Application\Configuration\ConfigurationFactory;
 
 /**
  * Repository providing version definitions.

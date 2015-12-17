@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\ConfigurationFactory;
+namespace phpDocumentor\Application\Configuration\Factory;
 
 /**
  * Interface that strategies for the ConfigurationFactory should implement.
