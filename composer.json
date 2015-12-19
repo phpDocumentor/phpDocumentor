@@ -12,6 +12,7 @@
     },
     "require": {
         "php":                               ">=5.5",
+        "ext-libxml":                        "*",
         "php-di/php-di":                     "^5.0",
         "twig/twig":                         "^1.3",
         "erusev/parsedown":                  "^1.0",
