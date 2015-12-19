@@ -23,6 +23,17 @@ use phpDocumentor\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
+use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\Php\Factory\Argument;
+use phpDocumentor\Reflection\Php\Factory\Class_;
+use phpDocumentor\Reflection\Php\Factory\Constant;
+use phpDocumentor\Reflection\Php\Factory\DocBlock;
+use phpDocumentor\Reflection\Php\Factory\Function_;
+use phpDocumentor\Reflection\Php\Factory\Interface_;
+use phpDocumentor\Reflection\Php\Factory\Method;
+use phpDocumentor\Reflection\Php\Factory\Property;
+use phpDocumentor\Reflection\Php\Factory\Trait_;
+use phpDocumentor\Reflection\PrettyPrinter;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
@@ -159,6 +170,27 @@ return [
     DocumentationRepository::class => \DI\object(DocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
         ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),
+
+    //ApiReference
+    phpDocumentor\ApiReference\Factory::class => function (ContainerInterface $c) {
+        $strategies = [
+            new Argument(new PrettyPrinter()),
+            new Class_(),
+            new Constant(new PrettyPrinter()),
+            new DocBlock(DocBlockFactory::createInstance()),
+            new Function_(),
+            new Interface_(),
+            new Method(),
+            new Property(new PrettyPrinter()),
+            new Trait_(),
+        ];
+
+        $middleware = [
+            new \phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware($c->get(Pool::class))
+        ];
+
+        return new \phpDocumentor\ApiReference\Factory($strategies, $middleware);
+    },
 
     // Infrastructure
     Pool::class => function (ContainerInterface $c) {

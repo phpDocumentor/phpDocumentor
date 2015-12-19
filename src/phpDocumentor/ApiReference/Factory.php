@@ -16,14 +16,34 @@ use phpDocumentor\DocumentGroup;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFactory;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\Php\Factory\File;
 use phpDocumentor\Reflection\Php\Factory\File\FlySystemAdapter;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\Reflection\Php\Factory as ProjectFactoryStrategy;
-use phpDocumentor\Reflection\PrettyPrinter;
+use phpDocumentor\Reflection\Php\ProjectFactoryStrategy;
 
 final class Factory implements DocumentGroupFactory
 {
+    /**
+     * @var \phpDocumentor\ApiReference\ProjectFactoryStrategy
+     */
+    private $stategies;
+
+    /**
+     * @var array
+     */
+    private $middleware;
+
+    /**
+     * @param ProjectFactoryStrategy[] $stategies
+     * @param ProjectFactoryStrategy\File\Middleware[] $cache
+     */
+    public function __construct(array $stategies = array(), array $middleware = array())
+    {
+        $this->stategies = $stategies;
+        $this->middleware = $middleware;
+    }
+
     /**
      * Creates Document group using the provided definition.
      *
@@ -37,22 +57,15 @@ final class Factory implements DocumentGroupFactory
             throw new InvalidArgumentException('Definition must be an instance of ' . DocumentGroupDefinition::class);
         }
 
+        $strategies = $this->stategies;
+        $strategies[] = new File(
+            NodesFactory::createInstance(),
+            new FlySystemAdapter($definition->getFilesystem()),
+            $this->middleware
+        );
+
         $projectFactory = new ProjectFactory(
-            [
-                new ProjectFactoryStrategy\Argument(new PrettyPrinter()),
-                new ProjectFactoryStrategy\Class_(),
-                new ProjectFactoryStrategy\Constant(new PrettyPrinter()),
-                new ProjectFactoryStrategy\DocBlock(DocBlockFactory::createInstance()),
-                new ProjectFactoryStrategy\File(
-                    NodesFactory::createInstance(),
-                    new FlySystemAdapter($definition->getFilesystem())
-                ),
-                new ProjectFactoryStrategy\Function_(),
-                new ProjectFactoryStrategy\Interface_(),
-                new ProjectFactoryStrategy\Method(),
-                new ProjectFactoryStrategy\Property(new PrettyPrinter()),
-                new ProjectFactoryStrategy\Trait_(),
-            ]
+            $strategies
         );
 
         $project = $projectFactory->create('My Project', $definition->getFiles());
