@@ -78,7 +78,6 @@ class XslHandler
 
             /** @var \DOMNodeList $qry */
             $qry = $xpath->query($action->getQuery());
-            $count = $qry->length;
             foreach ($qry as $key => $element) {
                 $proc->setParameter('', $element->nodeName, $element->nodeValue);
                 $file_name = $this->generateFilename($element->nodeValue);
