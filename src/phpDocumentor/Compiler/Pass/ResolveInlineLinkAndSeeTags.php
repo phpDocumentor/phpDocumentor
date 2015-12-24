@@ -202,7 +202,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
         $rule = $this->router->match($element);
 
         if ($rule) {
-            $url = $rule->generate($element);
+            $url = '..' . $rule->generate($element);
             $link = $this->generateMarkdownLink($url, $description ? : $link);
         }
 
