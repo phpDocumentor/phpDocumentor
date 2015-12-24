@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "49877a82d90d92b7cfa1b4cff430bbbb",
-    "content-hash": "8ec08ef5cbedbd65bd48ff22e1dffa45",
+    "hash": "424243a529e504b2d460d047cacad01d",
+    "content-hash": "72f46157d02e1936d31335cc705ef0ab",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -260,32 +260,38 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v1.4.1",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51"
+                "reference": "c542e5d86a9775abd1021618eb2430278bfc1e01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
-                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c542e5d86a9775abd1021618eb2430278bfc1e01",
+                "reference": "c542e5d86a9775abd1021618eb2430278bfc1e01",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=5.3"
+                "php": ">=5.4"
             },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
-                "files": [
-                    "lib/bootstrap.php"
-                ]
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -301,7 +307,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2015-09-19 14:15:08"
+            "time": "2015-12-04 15:28:43"
         },
         {
             "name": "php-di/invoker",
@@ -569,20 +575,20 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "2.0.0-alpha1",
+            "version": "2.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "3516b9749cc18e4b7f7282e2dce2591a00d25365"
+                "reference": "8fc02e76b7024d38c7693827156448bd074f6359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/3516b9749cc18e4b7f7282e2dce2591a00d25365",
-                "reference": "3516b9749cc18e4b7f7282e2dce2591a00d25365",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/8fc02e76b7024d38c7693827156448bd074f6359",
+                "reference": "8fc02e76b7024d38c7693827156448bd074f6359",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "~1.0",
+                "nikic/php-parser": "^2.0",
                 "php": ">=5.4.0",
                 "phpdocumentor/reflection-common": "^1.0@dev",
                 "phpdocumentor/reflection-docblock": "^3.0@dev",
@@ -618,7 +624,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-08-09 18:22:17"
+            "time": "2015-12-05 13:26:26"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -725,16 +731,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "0.1.4",
+            "version": "0.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "14bb2da6387c6a58648b4a87ff02d4c971050309"
+                "reference": "60fe23665f018d608a7113acc9ab17a69fb87871"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/14bb2da6387c6a58648b4a87ff02d4c971050309",
-                "reference": "14bb2da6387c6a58648b4a87ff02d4c971050309",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/60fe23665f018d608a7113acc9ab17a69fb87871",
+                "reference": "60fe23665f018d608a7113acc9ab17a69fb87871",
                 "shasum": ""
             },
             "require": {
@@ -768,7 +774,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2015-07-02 17:28:34"
+            "time": "2015-12-02 08:05:55"
         },
         {
             "name": "psr/log",
@@ -3162,7 +3168,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpdocumentor/reflection": 20,
+        "phpdocumentor/reflection": 15,
         "phpdocumentor/reflection-common": 20,
         "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/flyfinder": 20

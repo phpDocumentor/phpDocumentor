@@ -23,7 +23,7 @@
         "symfony/validator":                 "^2.7",
         "phpdocumentor/graphviz":            "^1.0",
         "phpdocumentor/fileset":             "^1.0",
-        "phpdocumentor/reflection":          "^2.0@dev",
+        "phpdocumentor/reflection":          "2.0.0-alpha2",
         "phpdocumentor/reflection-common":   "^1.0@dev",
         "phpdocumentor/reflection-docblock": "^3.0@dev",
         "phpdocumentor/flyfinder":           "^1.0@dev",
