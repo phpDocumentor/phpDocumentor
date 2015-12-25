@@ -14,12 +14,17 @@ namespace phpDocumentor\Application\Cli\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
+use phpDocumentor\ApiReference\DocumentGroupDefinition;
+use phpDocumentor\ApiReference\FileParsed;
+use phpDocumentor\ApiReference\ParsingStarted;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
 use phpDocumentor\Project\Version\DefinitionRepository;
 use phpDocumentor\Renderer\RenderActionCompleted;
+use phpDocumentor\Renderer\RenderingFinished;
+use phpDocumentor\Renderer\RenderingStarted;
 use Stash\Driver\FileSystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
@@ -301,87 +306,38 @@ HELP
     private function attachListeners(InputInterface $input, OutputInterface $output)
     {
         $this->emitter->addListener(
-            RenderActionCompleted::class,
-            function ($event) use ($output) {
-                $output->writeln(sprintf('  %s', (string)$event->getAction()));
+            ParsingStarted::class,
+            function (ParsingStarted $event) use ($output) {
+                /** @var DocumentGroupDefinition $definition */
+                $definition = $event->definition();
+                $output->writeln(
+                    sprintf('Parsing <info>%d</info> files', count($definition->getFiles()))
+                );
             }
         );
-
-//        Dispatcher::getInstance()->addListener(
-//            Parser::EVENT_FILES_COLLECTED,
-//            function (GenericEvent $event) use ($output) {
-//                $output->writeln(sprintf("Found <info>%d</info> files", count($event->getSubject())));
-//            }
-//        );
-
-        if ($input->getOption('progressbar')) {
-            $this->attachListenersForProgressBar($output);
-            return;
-        }
-
-        $this->attachMessageListeners($output);
-    }
-
-    /**
-     * Attach all listeners that will initiate and advance the progress bars.
-     *
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
-    private function attachListenersForProgressBar(OutputInterface $output)
-    {
-        /** @var ProgressBar $progress */
-        $progress = $this->getHelperSet()->get('progress');
-
-//        Dispatcher::getInstance()->addListener(
-//            Parser::EVENT_FILES_COLLECTED,
-//            function (GenericEvent $event) use ($output, $progress) {
-//                $progress->start($output, count($event->getSubject()));
-//            }
-//        );
-//        Dispatcher::getInstance()->addListener(
-//            Parser::EVENT_PARSE_FILE_BEFORE,
-//            function () use ($progress) {
-//                $progress->advance();
-//            }
-//        );
-//        Dispatcher::getInstance()->addListener(
-//            Parser::EVENT_COMPLETED,
-//            function () use ($progress) {
-//                $progress->finish();
-//            }
-//        );
-    }
-
-    /**
-     * Attach all listeners that will generate messages on the STDOUT.
-     *
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
-    private function attachMessageListeners(OutputInterface $output)
-    {
-//        Dispatcher::getInstance()->addListener(
-//            Parser::EVENT_PARSE_FILE_BEFORE,
-//            function (PreFileEvent $event) use ($output) {
-//                $output->writeln(sprintf('  Parsing <info>%s</info>', $event->getFile()));
-//            }
-//        );
-//        Dispatcher::getInstance()->addListener(
-//            Php::EVENT_ANALYZED_FILE,
-//            function (GenericEvent $event) use ($output) {
-//                /** @var FileDescriptor $descriptor */
-//                $descriptor = $event->getSubject();
-//
-//                /** @var Error $error */
-//                foreach ($descriptor->getAllErrors() as $error) {
-//                    $output->writeln(
-//                        '  <error> ' . vsprintf($error->getCode(), $error->getContext()) . ' </error>'
-//                    );
-//                }
-//            }
-//        );
+        $this->emitter->addListener(
+            FileParsed::class,
+            function (FileParsed $event) use ($output) {
+                $output->writeln(sprintf('  Parsed <info>%s</info>', (string)$event->filename()));
+            }
+        );
+        $this->emitter->addListener(
+            RenderingStarted::class,
+            function (RenderingStarted $event) use ($output) {
+                $output->writeln('Started rendering');
+            }
+        );
+        $this->emitter->addListener(
+            RenderingFinished::class,
+            function (RenderingFinished $event) use ($output) {
+                $output->writeln('Completed rendering');
+            }
+        );
+        $this->emitter->addListener(
+            RenderActionCompleted::class,
+            function (RenderActionCompleted $event) use ($output) {
+                $output->writeln(sprintf('  %s', (string)$event->action()));
+            }
+        );
     }
 }

@@ -18,7 +18,6 @@ use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
-use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\FileSystemFactory;
 use phpDocumentor\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
@@ -150,7 +149,7 @@ return [
     },
     DefinitionRepository::class => \DI\object(DefinitionRepository::class),
 
-    //Documentation Respositories
+    // Documentation Repositories
     DocumentationRepository::class => \DI\object(DocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
         ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),

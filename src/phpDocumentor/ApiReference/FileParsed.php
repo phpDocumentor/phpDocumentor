@@ -10,26 +10,22 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Renderer;
+namespace phpDocumentor\ApiReference;
 
 use League\Event\AbstractEvent;
-use phpDocumentor\Renderer\Action;
 
-class RenderActionCompleted extends AbstractEvent
+final class FileParsed extends AbstractEvent
 {
-    /** @var Action */
-    private $action;
+    /** @var string */
+    private $filename;
 
-    public function __construct(Action $action)
+    public function __construct($filename)
     {
-        $this->action = $action;
+        $this->filename = $filename;
     }
 
-    /**
-     * @return Action
-     */
-    public function action()
+    public function filename()
     {
-        return $this->action;
+        return $this->filename;
     }
 }

@@ -12,10 +12,12 @@
 namespace phpDocumentor\ApiReference;
 
 use InvalidArgumentException;
+use League\Event\Emitter;
 use phpDocumentor\DocumentGroup;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFactory;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\Php\Factory\File\FlySystemAdapter;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use phpDocumentor\Reflection\Php\ProjectFactory;
@@ -24,6 +26,14 @@ use phpDocumentor\Reflection\PrettyPrinter;
 
 final class Factory implements DocumentGroupFactory
 {
+    /** @var Emitter */
+    private $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * Creates Document group using the provided definition.
      *
@@ -37,6 +47,8 @@ final class Factory implements DocumentGroupFactory
             throw new InvalidArgumentException('Definition must be an instance of ' . DocumentGroupDefinition::class);
         }
 
+        // TODO: move this to a custom factory so that we can inject the factory in this class and then have the
+        // middleware as dependency of that factory.
         $projectFactory = new ProjectFactory(
             [
                 new ProjectFactoryStrategy\Argument(new PrettyPrinter()),
@@ -45,7 +57,8 @@ final class Factory implements DocumentGroupFactory
                 new ProjectFactoryStrategy\DocBlock(DocBlockFactory::createInstance()),
                 new ProjectFactoryStrategy\File(
                     NodesFactory::createInstance(),
-                    new FlySystemAdapter($definition->getFilesystem())
+                    new FlySystemAdapter($definition->getFilesystem()),
+                    [new LoggingMiddleware($this->emitter)]
                 ),
                 new ProjectFactoryStrategy\Function_(),
                 new ProjectFactoryStrategy\Interface_(),
@@ -55,7 +68,10 @@ final class Factory implements DocumentGroupFactory
             ]
         );
 
+        // @TODO: Read title (My Project) from configuration
+        $this->emitter->emit(new ParsingStarted($definition));
         $project = $projectFactory->create('My Project', $definition->getFiles());
+        $this->emitter->emit(new ParsingCompleted($definition));
 
         return new Api($definition->getFormat(), $project);
     }

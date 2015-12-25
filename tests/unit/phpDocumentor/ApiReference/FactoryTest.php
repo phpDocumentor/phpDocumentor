@@ -13,6 +13,7 @@
 namespace phpDocumentor\ApiReference;
 
 use Flyfinder\Specification\SpecificationInterface;
+use League\Event\Emitter;
 use League\Flysystem\FilesystemInterface;
 use Mockery as m;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
@@ -23,6 +24,7 @@ use phpDocumentor\DocumentGroupFormat;
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
+    private $emitter;
     /**
      * @var Factory
      */
@@ -30,7 +32,11 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->fixture = new Factory();
+        $this->emitter = m::mock(Emitter::class);
+
+        // TODO: Check explicitly whether the right events are emitted
+        $this->emitter->shouldReceive('emit');
+        $this->fixture = new Factory($this->emitter);
     }
 
     /**
