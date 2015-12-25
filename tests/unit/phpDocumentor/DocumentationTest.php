@@ -11,34 +11,39 @@
 
 namespace phpDocumentor;
 
-
 use phpDocumentor\Project\VersionNumber;
 
 /**
  * Test case for Documentation class.
  *
  * @coversDefaultClass phpDocumentor\Documentation
+ * @covers ::<private>
+ * @covers ::__construct
  */
-class DocumentationTest extends \PHPUnit_Framework_TestCase
+final class DocumentationTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
      * @covers ::getVersionNumber
+     * @covers ::getDocumentGroups
+     * @uses phpDocumentor\Project\VersionNumber
      */
     public function testGetVersion()
     {
         $documentation = new Documentation(new VersionNumber('1.0.0'));
         $this->assertEquals(new VersionNumber('1.0.0'), $documentation->getVersionNumber());
+        $this->assertInternalType('array', $documentation->getDocumentGroups());
     }
 
     /**
-     * @covers ::__construct
      * @covers ::getVersionNumber
+     * @covers ::getDocumentGroups
+     * @uses phpDocumentor\Project\VersionNumber
      */
     public function testGetDocumentGroups()
     {
         $documentGroups = array('dummy');
         $documentation = new Documentation(new VersionNumber('1.0.0'), $documentGroups);
+        $this->assertEquals(new VersionNumber('1.0.0'), $documentation->getVersionNumber());
         $this->assertEquals($documentGroups, $documentation->getDocumentGroups());
     }
 }

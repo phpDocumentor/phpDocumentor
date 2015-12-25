@@ -11,6 +11,7 @@
  */
 
 namespace phpDocumentor;
+
 use phpDocumentor\Project\VersionNumber;
 
 /**

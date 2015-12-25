@@ -39,6 +39,8 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::create
+     * @uses phpDocumentor\Project\VersionNumber
+     * @uses phpDocumentor\Project\Version\Definition
      */
     public function testMinimalDocumentationCreation()
     {

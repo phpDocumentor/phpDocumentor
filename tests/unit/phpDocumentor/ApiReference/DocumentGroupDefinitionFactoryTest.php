@@ -21,6 +21,7 @@ use phpDocumentor\SpecificationFactory;
 
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\DocumentGroupDefinitionFactory
+ * @covers ::__construct
  */
 final class DocumentGroupDefinitionFactoryTest extends \PHPUnit_Framework_TestCase
 {

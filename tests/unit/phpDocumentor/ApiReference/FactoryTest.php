@@ -21,21 +21,20 @@ use phpDocumentor\DocumentGroupFormat;
 
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\Factory
+ * @covers ::__construct
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Emitter|m\MockInterface */
     private $emitter;
-    /**
-     * @var Factory
-     */
+
+    /** @var Factory */
     private $fixture;
 
     protected function setUp()
     {
         $this->emitter = m::mock(Emitter::class);
 
-        // TODO: Check explicitly whether the right events are emitted
-        $this->emitter->shouldReceive('emit');
         $this->fixture = new Factory($this->emitter);
     }
 
@@ -64,8 +63,21 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $format = new DocumentGroupFormat('php');
         $definition = new DocumentGroupDefinition($format, $fileSystem, m::mock(SpecificationInterface::class));
 
+        $this->emitter->shouldReceive('emit')->once()->with(m::type(ParsingStarted::class));
+        $this->emitter->shouldReceive('emit')->once()->with(m::type(ParsingCompleted::class));
+
         $api = $this->fixture->create($definition);
 
         $this->assertSame($format, $api->getFormat());
+    }
+
+    /**
+     * @covers ::create
+     */
+    public function testExceptionIsThrownWhenTryingToCreateWithNonMatchingDefinition()
+    {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        $this->fixture->create(m::mock(\phpDocumentor\DocumentGroupDefinition::class));
     }
 }

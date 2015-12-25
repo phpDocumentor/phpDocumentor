@@ -19,23 +19,56 @@ use phpDocumentor\DocumentGroupFormat;
 
 /**
  * @coversDefaultClass \phpDocumentor\ApiReference\DocumentGroupDefinition
+ * @covers ::__construct
  */
 class DocumentGroupDefinitionTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var  DocumentGroupDefinition */
+    private $definition;
+
+    /** @var SpecificationInterface|m\MockInterface */
+    private $specification;
+
+    /** @var FilesystemInterface|m\MockInterface */
+    private $fileSystem;
+
+    /** @var DocumentGroupFormat */
+    private $format;
+
+    public function setUp()
+    {
+        $this->fileSystem = m::mock(FileSystemInterface::class);
+        $this->specification = m::mock(SpecificationInterface::class);
+        $this->format = new DocumentGroupFormat('PHP');
+
+        $this->definition = new DocumentGroupDefinition($this->format, $this->fileSystem, $this->specification);
+    }
+
     /**
-     * @covers ::__construct
      * @covers ::getFiles
      */
-    public function testGetFiles()
+    public function testFindingTheProjectFilesAndReturningThem()
     {
-        $fileSystemMock = m::mock(FileSystemInterface::class);
-        $specificationMock = m::mock(SpecificationInterface::class);
-        $definition = new DocumentGroupDefinition(new DocumentGroupFormat('PHP'), $fileSystemMock, $specificationMock);
-
         $result = [['path' => 'myFile.php'], ['path' => 'someFile.php']];
 
-        $fileSystemMock->shouldReceive('find')->with($specificationMock)->andReturn(new \ArrayIterator($result));
+        $this->fileSystem->shouldReceive('find')->with($this->specification)->andReturn(new \ArrayIterator($result));
 
-        $this->assertEquals(['myFile.php', 'someFile.php'], $definition->getFiles());
+        $this->assertSame(['myFile.php', 'someFile.php'], $this->definition->getFiles());
+    }
+
+    /**
+     * @covers ::getFormat
+     */
+    public function testExposeTheFormatForThisDefinition()
+    {
+        $this->assertSame($this->format, $this->definition->getFormat());
+    }
+
+    /**
+     * @covers ::getFilesystem
+     */
+    public function testExposeTheFilesystemForThisDefinition()
+    {
+        $this->assertSame($this->fileSystem, $this->definition->getFilesystem());
     }
 }

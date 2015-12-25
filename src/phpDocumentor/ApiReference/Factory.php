@@ -68,7 +68,7 @@ final class Factory implements DocumentGroupFactory
             ]
         );
 
-        // @TODO: Read title (My Project) from configuration
+        // TODO: Read title (My Project) from configuration
         $this->emitter->emit(new ParsingStarted($definition));
         $project = $projectFactory->create('My Project', $definition->getFiles());
         $this->emitter->emit(new ParsingCompleted($definition));
