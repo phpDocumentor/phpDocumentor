@@ -13,6 +13,7 @@
 namespace phpDocumentor\Application\Cli\Command;
 
 use Mockery as m;
+use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -27,7 +28,6 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteListsCommands()
     {
-        $this->markTestSkipped('Functionality is broken and this test can be used to assert that it works again');
         // Arrange
         $command = new ListCommand($this->givenAFactoryWithTemplateNames(array('default', 'second')));
 
@@ -48,7 +48,7 @@ TXT;
     }
 
     /**
-     * Returns a factory mock object with the provided template names returned using the `getAllNames()` method.
+     * Returns a mock object with the provided template names returned using the `listTemplates()` method.
      *
      * @param string[] $templateNames
      *
@@ -56,9 +56,9 @@ TXT;
      */
     private function givenAFactoryWithTemplateNames(array $templateNames)
     {
-        $factoryMock = m::mock('stdClass');
-        $factoryMock->shouldReceive('getAllNames')->once()->andReturn($templateNames);
+        $pathsRepositoryMock = m::mock(PathsRepositoryInterface::class);
+        $pathsRepositoryMock->shouldReceive('listTemplates')->once()->andReturn($templateNames);
 
-        return $factoryMock;
+        return $pathsRepositoryMock;
     }
 }

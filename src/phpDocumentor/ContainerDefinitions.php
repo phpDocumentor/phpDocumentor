@@ -29,6 +29,8 @@ use phpDocumentor\Renderer\Action\XslHandler;
 use phpDocumentor\Renderer\Action\Xslt\Extension;
 use phpDocumentor\Renderer\Template\PathsRepository;
 use phpDocumentor\Renderer\XmlTemplateFactory;
+use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
+use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
@@ -178,6 +180,7 @@ return [
 
     // Templates
     PathsRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
+    PathsRepositoryInterface::class => \DI\object(PathsRepository::class),
     XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     XmlTemplateFactory::class => \DI\object()
