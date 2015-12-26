@@ -16,24 +16,33 @@ use phpDocumentor\Documentation;
 
 final class Render
 {
+    /** @var Documentation */
+    private $documentation;
+
     /** @var string */
     private $target;
 
     /** @var string[] */
     private $templates;
 
-    /** @var Documentation */
-    private $documentation;
-
     /**
-     * @param          $target
+     * @param Documentation $documentation
+     * @param string $target
      * @param string[] $templates array of templates to render.
      */
-    public function __construct($documentation, $target, array $templates)
+    public function __construct(Documentation $documentation, $target, array $templates)
     {
+        $this->documentation = $documentation;
         $this->target    = $target;
         $this->templates = $templates;
-        $this->documentation = $documentation;
+    }
+
+    /**
+     * @return Documentation
+     */
+    public function getDocumentation()
+    {
+        return $this->documentation;
     }
 
     /**
@@ -50,10 +59,5 @@ final class Render
     public function getTemplates()
     {
         return $this->templates;
-    }
-
-    public function getDocumentation()
-    {
-        return $this->documentation;
     }
 }

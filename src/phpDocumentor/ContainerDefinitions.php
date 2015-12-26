@@ -28,7 +28,7 @@ use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
 use phpDocumentor\Renderer\Action\Xslt\Extension;
 use phpDocumentor\Renderer\Template\PathsRepository;
-use phpDocumentor\Renderer\TemplateFactory;
+use phpDocumentor\Renderer\XmlTemplateFactory;
 use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
@@ -180,7 +180,7 @@ return [
     PathsRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
     XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
-    TemplateFactory::class => \DI\object()
+    XmlTemplateFactory::class => \DI\object()
         ->constructorParameter('templateFolders', \DI\get('template.directories')),
     TwigHandler::class => \DI\object()->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
 ];

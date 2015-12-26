@@ -55,7 +55,7 @@ namespace phpDocumentor\Renderer {
             $this->markTestIncomplete(
                 'Templates cannot be asserted; more fine-grained assertions are needed to make this work'
             );
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $renderPass = m::mock(RenderPass::class);
             $template = $fixture->create($renderPass, $this->exampleOptionsArray);
 
@@ -96,7 +96,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testCreatingATemplateWithoutParametersAndActions()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $template = $fixture->create(m::mock(RenderPass::class), [ 'name' => 'TemplateName' ]);
 
             $expectedTemplate = new Template('TemplateName');
@@ -111,7 +111,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfNameIsNotProvided()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(m::mock(RenderPass::class), []);
         }
 
@@ -122,7 +122,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfNameIsNotAString()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(m::mock(RenderPass::class), ['name' => true]);
         }
 
@@ -134,7 +134,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfTemplateParametersIsNotAnArray()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(m::mock(RenderPass::class), ['name' => 'TemplateName', 'parameters' => ['bla']]);
         }
 
@@ -146,7 +146,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionsIsNotAnArray()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(m::mock(RenderPass::class), ['name' => 'TemplateName', 'actions' => ['bla']]);
         }
 
@@ -158,7 +158,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfTemplateParametersDoesNotHaveAKey()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(
                 m::mock(RenderPass::class),
                 ['name' => 'TemplateName', 'parameters' => [['value' => 'value1']]]
@@ -173,7 +173,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfTemplateParametersDoesNotHaveAValue()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(
                 m::mock(RenderPass::class),
                 ['name' => 'TemplateName', 'parameters' => [['key' => 'key1']]]
@@ -188,7 +188,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionClassDoesNotExist()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(
                 m::mock(RenderPass::class),
                 ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction3']]]
@@ -203,7 +203,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionClassDoesNotImplementActionInterface()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(
                 m::mock(RenderPass::class),
                 ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction4']]]
@@ -218,7 +218,7 @@ namespace phpDocumentor\Renderer {
          */
         public function testIfErrorIsThrownIfActionFactoryMethodReturnsNothing()
         {
-            $fixture = new TemplateFactory([]);
+            $fixture = new XmlTemplateFactory([]);
             $fixture->create(
                 m::mock(RenderPass::class),
                 ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction5']]]

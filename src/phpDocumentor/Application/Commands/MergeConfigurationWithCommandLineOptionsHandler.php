@@ -41,11 +41,14 @@ final class MergeConfigurationWithCommandLineOptionsHandler
 
     public function __invoke(MergeConfigurationWithCommandLineOptions $command)
     {
-        if ($command->getOptions()['config']) {
-            $this->configurationFactory->replaceLocation(
-                new Uri(realpath($command->getOptions()['config']))
-            );
+        if (isset($command->getOptions()['config'])
+            && $command->getOptions()['config']
+            && realpath($command->getOptions()['config'])
+        ) {
+            $uri = new Uri(realpath($command->getOptions()['config']));
+            $this->configurationFactory->replaceLocation($uri);
         }
+
         $this->commandlineOptionsMiddleware->provideOptions($command->getOptions());
         $this->configurationFactory->clearCache();
     }

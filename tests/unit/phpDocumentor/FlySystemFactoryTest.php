@@ -60,7 +60,7 @@ class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
 
         $adapter = $result->getAdapter();
         $pathPrefix = $adapter->getPathPrefix();
-        $this->assertEquals("/tmp/", $pathPrefix);
+        $this->assertEquals(realpath('/tmp').'/', $pathPrefix);
     }
 
     /**
