@@ -31,6 +31,7 @@ use phpDocumentor\Reflection\Php\Factory\Argument;
 use phpDocumentor\Reflection\Php\Factory\Class_;
 use phpDocumentor\Reflection\Php\Factory\Constant;
 use phpDocumentor\Reflection\Php\Factory\DocBlock;
+use phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware;
 use phpDocumentor\Reflection\Php\Factory\Function_;
 use phpDocumentor\Reflection\Php\Factory\Interface_;
 use phpDocumentor\Reflection\Php\Factory\Method;
@@ -186,14 +187,12 @@ return [
 
         $middleware = [
             $c->get(LoggingMiddleware::class),
-            new \phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware($c->get(Pool::class)),
+            $c->get(CacheMiddleware::class),
         ];
 
         return new \phpDocumentor\ApiReference\Factory($c->get(Emitter::class), $strategies, $middleware);
     },
 
-    Emitter::class => \DI\object(Emitter::class),
-    LoggingMiddleWare::class => \DI\Object(LoggingMiddleWare::class),
     DocBlockFactoryInterface::class => function (ContainerInterface $c) {
         return DocBlockFactory::createInstance();
     },
