@@ -575,11 +575,7 @@
         },
         {
             "name": "phpdocumentor/reflection",
-<<<<<<< HEAD
             "version": "2.0.0-alpha2",
-=======
-            "version": "dev-develop",
->>>>>>> upgrade reflection component
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
@@ -731,12 +727,8 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-<<<<<<< HEAD
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "time": "2015-12-24 06:44:45"
-=======
-            "time": "2015-10-26 14:52:52"
->>>>>>> upgrade reflection-docblock
         },
         {
             "name": "phpdocumentor/type-resolver",
