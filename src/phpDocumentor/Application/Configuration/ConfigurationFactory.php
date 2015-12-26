@@ -104,6 +104,16 @@ class ConfigurationFactory
     }
 
     /**
+     * Clears the cache for the configuration.
+     *
+     * @return null
+     */
+    public function clearCache()
+    {
+        return $this->cachedConfiguration = null;
+    }
+
+    /**
      * Adds strategies that are used in the ConfigurationFactory.
      *
      * @param Strategy $strategy
@@ -141,15 +151,5 @@ class ConfigurationFactory
         foreach ($this->middlewares as $middleware) {
             $this->cachedConfiguration = $middleware($this->cachedConfiguration);
         }
-    }
-
-    /**
-     * Clears the cache for the configuration.
-     *
-     * @return null
-     */
-    public function clearCache()
-    {
-        return $this->cachedConfiguration = null;
     }
 }
