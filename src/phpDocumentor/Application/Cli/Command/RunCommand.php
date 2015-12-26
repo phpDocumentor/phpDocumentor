@@ -109,7 +109,7 @@ final class RunCommand extends Command
                 'Parses and transforms the given files to a specified location'
             )
             ->setHelp(
-<<<HELP
+                <<<HELP
 phpDocumentor creates documentation from PHP source files. The simplest way
 to use it is:
 

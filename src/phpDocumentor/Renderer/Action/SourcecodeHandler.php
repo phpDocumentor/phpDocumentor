@@ -60,7 +60,7 @@ class SourcecodeHandler
             $fs = $action->getRenderPass()->getFilesystem();
             $fs->put(
                 $path.'.html',
-<<<HTML
+                <<<HTML
 <html>
     <head>
         <script

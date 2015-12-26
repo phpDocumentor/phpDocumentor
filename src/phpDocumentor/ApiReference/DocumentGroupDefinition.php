@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\ApiReference;
 
-
 use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;

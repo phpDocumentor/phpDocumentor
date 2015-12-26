@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Guides;
+
 use phpDocumentor\Path;
 
 /**

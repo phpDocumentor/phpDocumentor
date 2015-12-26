@@ -16,8 +16,8 @@ or inline:
     {@internal [description]}}
 
 The inline version of this tag may, contrary to other inline tags, contain
-text but also other inline tags. To increase readability and ease parsing should
-the tag be terminated with a double closing brace, instead of a single one.
+text but also other inline tags. To increase readability and ease parsing, the
+tag should be terminated with a double closing brace, instead of a single one.
 
 Description
 -----------

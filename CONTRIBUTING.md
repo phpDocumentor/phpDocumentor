@@ -19,11 +19,12 @@ GitHub Usage & Branching
 Once you decide you want to contribute to phpDocumentor (which we really appreciate!) you can fork the project from
 http://github.com/phpDocumentor/phpDocumentor2.
 
-Please do *not* develop your contribution on your master branch but create a separate feature branch, that is based off
-the `develop` branch, for each feature that you want to contribute.
+Currently phpdocumentor version 3.0 is developed in our develop branch. Large parts of the code in there will be rewritten or 
+removed. If you want to contribute to phpdocumentor v3.0 create your feature branch from develop. If you want to fix a bug in the
+current released version base your branch on master. Please create *aways* a new branch for each feature/bugfix you want to contribute.
 
-> Not doing so means that if you decide to work on two separate features and place a pull request for one of them, that
-> the changes of the other issue that you are working on is also submitted. Even if it is not completely finished.
+> If you create your branch from the wrong base branch we won't be able to merge your feature in to the right version. Which means that 
+> either your feature will only be released with v3.0 or bugfix will never be in a new 2.* release.
 
 To get more information about the usage of Git, please refer to the [Pro Git book][PROGIT] written
 by Scott Chacon and/or [this help page of GitHub][GITHUB_HELP_PR].

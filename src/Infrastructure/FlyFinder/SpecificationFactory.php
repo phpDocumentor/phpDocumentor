@@ -53,7 +53,8 @@ final class SpecificationFactory implements FactoryInterface
             $ignoreSpec = $this->orSpec(new IsHidden(), $ignoreSpec);
         }
 
-        return new AndSpecification($pathSpec,
+        return new AndSpecification(
+            $pathSpec,
             new AndSpecification(
                 new NotSpecification($ignoreSpec),
                 new HasExtension($extensions)
@@ -88,4 +89,3 @@ final class SpecificationFactory implements FactoryInterface
         return new InPath(new Path($path));
     }
 }
-

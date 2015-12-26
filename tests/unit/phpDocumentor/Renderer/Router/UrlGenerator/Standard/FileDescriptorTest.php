@@ -18,13 +18,13 @@ use Mockery as m;
  */
 class FileDescriptorTest extends \PHPUnit_Framework_TestCase
 {
+    // @codingStandardsIgnoreStart
     /**
-     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\FileDescriptor::__invoke
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromFile
      * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::removeFileExtensionFromPath
-     * @codingStandardsIgnoreEnd
      */
+    // @codingStandardsIgnoreEnd
     public function testGenerateUrlForFileDescriptor()
     {
         // Arrange

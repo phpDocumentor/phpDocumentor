@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "424243a529e504b2d460d047cacad01d",
-    "content-hash": "72f46157d02e1936d31335cc705ef0ab",
+    "hash": "17585b9d56ef56a9089b309b820f22d5",
+    "content-hash": "c23a4654f0b5319a75b2277e2666a15c",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -260,38 +260,32 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v2.0.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "c542e5d86a9775abd1021618eb2430278bfc1e01"
+                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c542e5d86a9775abd1021618eb2430278bfc1e01",
-                "reference": "c542e5d86a9775abd1021618eb2430278bfc1e01",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
+                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=5.4"
+                "php": ">=5.3"
             },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "bin": [
-                "bin/php-parse"
-            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "PhpParser\\": "lib/PhpParser"
-                }
+                "files": [
+                    "lib/bootstrap.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -307,7 +301,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2015-12-04 15:28:43"
+            "time": "2015-09-19 14:15:08"
         },
         {
             "name": "php-di/invoker",
@@ -575,20 +569,20 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "2.0.0-alpha2",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "8fc02e76b7024d38c7693827156448bd074f6359"
+                "reference": "3516b9749cc18e4b7f7282e2dce2591a00d25365"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/8fc02e76b7024d38c7693827156448bd074f6359",
-                "reference": "8fc02e76b7024d38c7693827156448bd074f6359",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/3516b9749cc18e4b7f7282e2dce2591a00d25365",
+                "reference": "3516b9749cc18e4b7f7282e2dce2591a00d25365",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^2.0",
+                "nikic/php-parser": "~1.0",
                 "php": ">=5.4.0",
                 "phpdocumentor/reflection-common": "^1.0@dev",
                 "phpdocumentor/reflection-docblock": "^3.0@dev",
@@ -624,7 +618,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-05 13:26:26"
+            "time": "2015-08-09 18:22:17"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -690,7 +684,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/ba00c4ba78c0ea14c41a73be5f0790a7a6c7414e",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/82f9aba5a508878923f6a2f88dfb698ec26bbb87",
                 "reference": "1f637ffba2af2867bda3b4f682487442f190ea14",
                 "shasum": ""
             },
@@ -731,16 +725,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "0.1.6",
+            "version": "0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "60fe23665f018d608a7113acc9ab17a69fb87871"
+                "reference": "83e31258fb03b9a27884a83b81501cb4cb297a81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/60fe23665f018d608a7113acc9ab17a69fb87871",
-                "reference": "60fe23665f018d608a7113acc9ab17a69fb87871",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/83e31258fb03b9a27884a83b81501cb4cb297a81",
+                "reference": "83e31258fb03b9a27884a83b81501cb4cb297a81",
                 "shasum": ""
             },
             "require": {
@@ -774,7 +768,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2015-12-02 08:05:55"
+            "time": "2015-07-18 13:58:32"
         },
         {
             "name": "psr/log",
@@ -1841,16 +1835,16 @@
         },
         {
             "name": "mikey179/vfsStream",
-            "version": "v1.6.1",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "f4aabeb1976f96343ad1253c8d60ad40307e409a"
+                "reference": "73bcb605b741a7d5044b47592338c633788b0eb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/f4aabeb1976f96343ad1253c8d60ad40307e409a",
-                "reference": "f4aabeb1976f96343ad1253c8d60ad40307e409a",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/73bcb605b741a7d5044b47592338c633788b0eb7",
+                "reference": "73bcb605b741a7d5044b47592338c633788b0eb7",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1877,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2015-12-04 12:02:33"
+            "time": "2015-10-06 16:59:57"
         },
         {
             "name": "mockery/mockery",
@@ -2735,32 +2729,31 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "1.5.6",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "6f3e42d311b882b25b4d409d23a289f4d3b803d5"
+                "reference": "11a2545c44a5915f883e2e5ec12e14ed345e3ab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6f3e42d311b882b25b4d409d23a289f4d3b803d5",
-                "reference": "6f3e42d311b882b25b4d409d23a289f4d3b803d5",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/11a2545c44a5915f883e2e5ec12e14ed345e3ab2",
+                "reference": "11a2545c44a5915f883e2e5ec12e14ed345e3ab2",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
                 "php": ">=5.1.2"
             },
-            "suggest": {
-                "phpunit/php-timer": "dev-master"
-            },
             "bin": [
-                "scripts/phpcs"
+                "scripts/phpcs",
+                "scripts/phpcbf"
             ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-phpcs-fixer": "2.0.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -2769,12 +2762,12 @@
                     "CodeSniffer/CLI.php",
                     "CodeSniffer/Exception.php",
                     "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
                     "CodeSniffer/Report.php",
                     "CodeSniffer/Reporting.php",
                     "CodeSniffer/Sniff.php",
                     "CodeSniffer/Tokens.php",
                     "CodeSniffer/Reports/",
-                    "CodeSniffer/CommentParser/",
                     "CodeSniffer/Tokenizers/",
                     "CodeSniffer/DocGenerators/",
                     "CodeSniffer/Standards/AbstractPatternSniff.php",
@@ -2800,13 +2793,13 @@
                     "role": "lead"
                 }
             ],
-            "description": "PHP_CodeSniffer tokenises PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
             "homepage": "http://www.squizlabs.com/php-codesniffer",
             "keywords": [
                 "phpcs",
                 "standards"
             ],
-            "time": "2014-12-04 22:32:15"
+            "time": "2015-09-09 00:18:50"
         },
         {
             "name": "symfony/class-loader",
@@ -3168,7 +3161,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpdocumentor/reflection": 15,
+        "phpdocumentor/reflection": 20,
         "phpdocumentor/reflection-common": 20,
         "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/flyfinder": 20

@@ -12,6 +12,7 @@
 namespace phpDocumentor;
 
 use Composer\Autoload\ClassLoader;
+use DI\ContainerBuilder;
 use phpDocumentor\Application\Cli\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use phpDocumentor\Plugin\Plugin;
@@ -95,7 +96,7 @@ final class Application
      */
     private function setTimezone()
     {
-        if (false === ini_get('date.timezone')
+        if (false == ini_get('date.timezone')
             || (version_compare(phpversion(), '5.4.0', '<') && false === getenv('TZ'))
         ) {
             date_default_timezone_set('UTC');
@@ -131,7 +132,7 @@ final class Application
      */
     private function createContainer(array $values)
     {
-        $builder = new \DI\ContainerBuilder();
+        $builder = new ContainerBuilder();
         $builder->addDefinitions($values);
         $builder->addDefinitions(__DIR__ . '/ContainerDefinitions.php');
         $builder->useAnnotations(false);

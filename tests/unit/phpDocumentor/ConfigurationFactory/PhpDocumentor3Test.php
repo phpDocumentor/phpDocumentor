@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
-require_once(__DIR__ . '/../../../../tests/data/phpDocumentor3ExpectedArrays.php');
-
 /**
  * Test case for PhpDocumentor3
  *
@@ -31,6 +29,7 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
     {
         $this->strategy   = new PhpDocumentor3(__DIR__ . '/../../../../data/xsd/phpdoc.xsd');
         $this->dataFolder = __DIR__ . '/../../../../tests/data/';
+        require_once($this->dataFolder . 'phpDocumentor3ExpectedArrays.php');
     }
 
     /**

@@ -105,5 +105,4 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fixture->addDocumentGroupFactory($this->documentGroupFactoryMock);
         $this->fixture->create($versionDefinition);
     }
-
 }

@@ -77,4 +77,3 @@ final class FlySystemAdapter implements Adapter
         return $filePath;
     }
 }
-

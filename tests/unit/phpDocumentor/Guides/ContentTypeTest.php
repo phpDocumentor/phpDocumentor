@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Guides;
 
-
 /**
  * Test case for ContentType.
  * @coversDefaultClass phpDocumentor\Guides\ContentType
