@@ -81,7 +81,8 @@ return [
         __DIR__ . '/../../data',
         __DIR__ . '/../../data/templates',
     ],
-    'config.user.path'     => new Uri(getcwd() . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')),
+    'config.user.path'     => new Uri(getcwd()
+        . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')),
     'config.schema.path'   => __DIR__ . '/data/xsd/phpdoc.xsd',
     'config.strategies'    => [ \DI\get(PhpDocumentor3::class), \DI\get(PhpDocumentor2::class) ],
     'config.middlewares'   => [ \DI\get(CommandlineOptionsMiddleware::class) ],

@@ -14,6 +14,7 @@ namespace phpDocumentor;
 
 /**
  * Test case for checking the project's filesystem.
+ * @coversNothing
  */
 final class FilesystemTest extends \PHPUnit_Framework_TestCase
 {
@@ -79,8 +80,18 @@ final class FilesystemTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->assertCount(0, $invalidDirectories, 'Found ' . count($invalidDirectories) . ' directories that contain invalid characters for Windows:' . PHP_EOL . print_r($invalidDirectories, true));
-        $this->assertCount(0, $invalidFilenames, 'Found ' . count($invalidCharacters) . ' filenames that contain invalid characters for Windows:' . PHP_EOL . print_r($invalidFilenames, true));
+        $this->assertCount(
+            0,
+            $invalidDirectories,
+            'Found ' . count($invalidDirectories) . ' directories that contain invalid characters for Windows:'
+            . PHP_EOL . print_r($invalidDirectories, true)
+        );
+        $this->assertCount(
+            0,
+            $invalidFilenames,
+            'Found ' . count($invalidCharacters) . ' filenames that contain invalid characters for Windows:' . PHP_EOL
+            . print_r($invalidFilenames, true)
+        );
     }
 
     public function testFilepathShouldNotExceedMaximumPathLengthForWindows()
@@ -103,6 +114,12 @@ final class FilesystemTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->assertCount(0, $filepathTooLong, 'Found ' . count($filepathTooLong) . ' filepaths that potentially exceed the maximum path length for Windows:' . PHP_EOL . print_r($filepathTooLong, true));
+        $this->assertCount(
+            0,
+            $filepathTooLong,
+            'Found ' . count($filepathTooLong)
+            . ' filepaths that potentially exceed the maximum path length for Windows:' . PHP_EOL
+            . print_r($filepathTooLong, true)
+        );
     }
 }
