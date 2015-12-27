@@ -16,6 +16,8 @@ use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\Reflection\File;
+use phpDocumentor\Reflection\File\FlySystemFile;
 
 /**
  * Document group definition for Api documentation.
@@ -77,14 +79,14 @@ final class DocumentGroupDefinition implements DocumentGroupDefinitionInterface
     /**
      * Returns an array of paths to files to process.
      *
-     * @return string[]
+     * @return File[]
      */
     public function getFiles()
     {
         $files = [];
         $result = $this->filesystem->find($this->specification);
         foreach ($result as $file) {
-            $files[] = $file['path'];
+            $files[] = new FlySystemFile($this->filesystem, $file['path']);
         }
 
         return $files;

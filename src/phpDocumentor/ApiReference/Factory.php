@@ -16,22 +16,28 @@ use League\Event\Emitter;
 use phpDocumentor\DocumentGroup;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFactory;
-use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
+use phpDocumentor\Reflection\ProjectFactory;
+use phpDocumentor\Reflection\Php\Factory\File;
 use phpDocumentor\Reflection\Php\Factory\File\FlySystemAdapter;
-use phpDocumentor\Reflection\Php\NodesFactory;
-use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\Reflection\Php\Factory as ProjectFactoryStrategy;
-use phpDocumentor\Reflection\PrettyPrinter;
 
 final class Factory implements DocumentGroupFactory
 {
     /** @var Emitter */
     private $emitter;
 
-    public function __construct(Emitter $emitter)
+    /**
+     * @var ProjectFactory
+     */
+    private $projectFactory;
+
+    /**
+     * @param Emitter $emitter
+     * @param ProjectFactory $projectFactory
+     */
+    public function __construct(Emitter $emitter, ProjectFactory $projectFactory)
     {
         $this->emitter = $emitter;
+        $this->projectFactory = $projectFactory;
     }
 
     /**
@@ -47,30 +53,9 @@ final class Factory implements DocumentGroupFactory
             throw new InvalidArgumentException('Definition must be an instance of ' . DocumentGroupDefinition::class);
         }
 
-        // TODO: move this to a custom factory so that we can inject the factory in this class and then have the
-        // middleware as dependency of that factory.
-        $projectFactory = new ProjectFactory(
-            [
-                new ProjectFactoryStrategy\Argument(new PrettyPrinter()),
-                new ProjectFactoryStrategy\Class_(),
-                new ProjectFactoryStrategy\Constant(new PrettyPrinter()),
-                new ProjectFactoryStrategy\DocBlock(DocBlockFactory::createInstance()),
-                new ProjectFactoryStrategy\File(
-                    NodesFactory::createInstance(),
-                    new FlySystemAdapter($definition->getFilesystem()),
-                    [new LoggingMiddleware($this->emitter)]
-                ),
-                new ProjectFactoryStrategy\Function_(),
-                new ProjectFactoryStrategy\Interface_(),
-                new ProjectFactoryStrategy\Method(),
-                new ProjectFactoryStrategy\Property(new PrettyPrinter()),
-                new ProjectFactoryStrategy\Trait_(),
-            ]
-        );
-
         // TODO: Read title (My Project) from configuration
         $this->emitter->emit(new ParsingStarted($definition));
-        $project = $projectFactory->create('My Project', $definition->getFiles());
+        $project = $this->projectFactory->create('My Project', $definition->getFiles());
         $this->emitter->emit(new ParsingCompleted($definition));
 
         return new Api($definition->getFormat(), $project);
