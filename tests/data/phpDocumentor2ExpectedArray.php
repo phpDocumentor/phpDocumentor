@@ -24,6 +24,7 @@ final class PhpDocumentor2ExpectedArray
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'     => [
                     'output' => 'build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache',
@@ -76,6 +77,7 @@ final class PhpDocumentor2ExpectedArray
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'    => [
                     'output' => 'build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache',
