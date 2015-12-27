@@ -63,11 +63,6 @@ final class Factory implements DocumentGroupFactory
         }
 
         $strategies = $this->stategies;
-        $strategies[] = new File(
-            NodesFactory::createInstance(),
-            new FlySystemAdapter($definition->getFilesystem()),
-            $this->middleware
-        );
 
         $projectFactory = new ProjectFactory(
             $strategies

@@ -56,7 +56,7 @@ final class CacheMiddleware implements Middleware
         /** @var File $cachedFile */
         $cachedFile = $item->get();
 
-        if ($cachedFile->getHash() !== $command->getAdapter()->md5($command->getFilePath())) {
+        if ($cachedFile->getHash() !== $command->getFile()->md5()) {
             return $this->updateCache($command, $next, $item);
         }
 
