@@ -49,4 +49,13 @@ class FlySystemFileTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(md5($this->fileContents), $this->fixture->md5());
     }
+
+    /**
+     * @covers ::__construct
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructorAcceptsStringsOnly()
+    {
+        new FlySystemFile(new Filesystem(new MemoryAdapter()), 123);
+    }
 }

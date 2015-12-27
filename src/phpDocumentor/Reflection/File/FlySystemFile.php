@@ -14,6 +14,7 @@ namespace phpDocumentor\Reflection\File;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Reflection\File;
+use Webmozart\Assert\Assert;
 
 /**
  * Wrapper for FlySystem's FilesystemInterface.
@@ -24,18 +25,20 @@ final class FlySystemFile implements File
      * @var FilesystemInterface
      */
     private $fileSystem;
+
     /**
-     * @var
+     * @var string
      */
     private $fileName;
 
     /**
      * FlySystemFile constructor.
      * @param FilesystemInterface $fileSystem
-     * @param $fileName
+     * @param string $fileName
      */
     public function __construct(FilesystemInterface $fileSystem, $fileName)
     {
+        Assert::string($fileName);
         $this->fileSystem = $fileSystem;
         $this->fileName = $fileName;
     }
