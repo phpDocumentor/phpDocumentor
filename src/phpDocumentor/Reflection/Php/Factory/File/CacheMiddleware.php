@@ -47,7 +47,7 @@ final class CacheMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
-        $itemName = $this->getItemName($command->getFilePath());
+        $itemName = $this->getItemName($command->getFile()->path());
         $item = $this->dataStore->getItem($itemName);
         if ($item->isMiss()) {
             return $this->updateCache($command, $next, $item);

@@ -31,7 +31,7 @@ class LoggingMiddleware implements Middleware
         $result = $next($command);
 
         if ($command instanceof CreateCommand) {
-            $this->emitter->emit(new FileParsed($command->getFilePath()));
+            $this->emitter->emit(new FileParsed($command->getFile()->path()));
         }
 
         return $result;

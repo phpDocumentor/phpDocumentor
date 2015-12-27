@@ -31,6 +31,7 @@ use phpDocumentor\Reflection\Php\Factory\Argument;
 use phpDocumentor\Reflection\Php\Factory\Class_;
 use phpDocumentor\Reflection\Php\Factory\Constant;
 use phpDocumentor\Reflection\Php\Factory\DocBlock;
+use phpDocumentor\Reflection\Php\Factory\File;
 use phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware;
 use phpDocumentor\Reflection\Php\Factory\Function_;
 use phpDocumentor\Reflection\Php\Factory\Interface_;
@@ -183,6 +184,7 @@ return [
             $c->get(Method::class),
             $c->get(Property::class),
             $c->get(Trait_::class),
+            $c->get(File::class),
         ];
 
         $middleware = [
@@ -191,6 +193,16 @@ return [
         ];
 
         return new \phpDocumentor\ApiReference\Factory($c->get(Emitter::class), $strategies, $middleware);
+    },
+
+    File::class => function (ContainerInterface $c) {
+        $middleware = [
+            $c->get(LoggingMiddleware::class),
+            $c->get(CacheMiddleware::class),
+        ];
+
+
+        return new File(\phpDocumentor\Reflection\Php\NodesFactory::createInstance(), $middleware);
     },
 
     DocBlockFactoryInterface::class => function (ContainerInterface $c) {

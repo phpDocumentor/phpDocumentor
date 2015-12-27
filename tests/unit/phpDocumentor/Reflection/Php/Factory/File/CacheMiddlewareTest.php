@@ -13,6 +13,7 @@
 namespace phpDocumentor\Reflection\Php\Factory\File;
 
 use Mockery as m;
+use phpDocumentor\Reflection\File as SourceFile;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\StrategyContainer;
 use Stash\Pool;
@@ -40,9 +41,10 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
         $poolMock->shouldReceive('getItem->get')
             ->never();
 
-        $adapterMock = m::mock(Adapter::class);
+        $sourceFile = m::mock(SourceFile::class);
+        $sourceFile->shouldReceive('path')->andReturn('myFile.php');
         $stategies = m::mock(StrategyContainer::class);
-        $command = new CreateCommand($adapterMock, 'myFile.php', $stategies);
+        $command = new CreateCommand($sourceFile, $stategies);
         $fixture = new CacheMiddleware($poolMock);
 
         $result = $fixture->execute($command, function() use($file) { return $file; });
@@ -74,11 +76,12 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->andReturn($cachedFile);
 
-        $adapterMock = m::mock(Adapter::class);
-        $adapterMock->shouldReceive('md5')
+        $sourceFile = m::mock(SourceFile::class);
+        $sourceFile->shouldReceive('path')->andReturn('myFile.php');
+        $sourceFile->shouldReceive('md5')
             ->andReturn('NewHash');
         $stategies = m::mock(StrategyContainer::class);
-        $command = new CreateCommand($adapterMock, 'myFile.php', $stategies);
+        $command = new CreateCommand($sourceFile, $stategies);
         $fixture = new CacheMiddleware($poolMock);
 
         $result = $fixture->execute($command, function() use($freshFile) { return $freshFile; });
