@@ -21,16 +21,16 @@ final class PhpDocumentor2Test extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        require_once(__DIR__ . '/../../../../tests/data/phpDocumentor2ExpectedArray.php');
+        require_once(__DIR__ . '/../../../../../../tests/data/phpDocumentor2ExpectedArray.php');
     }
-    
+
     /**
      * @covers ::convert
      * @covers ::<private>
      */
     public function testItConvertsPhpdoc2XmlToAnArray()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpdoc.tpl.xml', 0, true);
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../../../tests/data/phpdoc.tpl.xml', 0, true);
 
         $phpDocumentor2 = new PhpDocumentor2();
         $array          = $phpDocumentor2->convert($xml);
@@ -62,7 +62,7 @@ XML;
      */
     public function testItMatchesWhenVersionIsEmpty()
     {
-        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../tests/data/phpdoc.tpl.xml', 0, true);
+        $xml = new \SimpleXMLElement(__DIR__ . '/../../../../../../tests/data/phpdoc.tpl.xml', 0, true);
 
         $phpDocumentor2 = new PhpDocumentor2();
         $bool = $phpDocumentor2->match($xml);
@@ -77,7 +77,7 @@ XML;
     public function testItRevertsToDefaultsIfValuesAreNotInTheConfigurationFile()
     {
         $xml = new \SimpleXMLElement(
-            __DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithoutExtensions.xml',
+            __DIR__ . '/../../../../../../tests/data/phpDocumentor2XMLWithoutExtensions.xml',
             0,
             true
         );
@@ -95,7 +95,7 @@ XML;
     public function testItAcceptsMultipleIgnorePathsInThePhpdoc2Xml()
     {
         $xml = new \SimpleXMLElement(
-            __DIR__ . '/../../../../tests/data/phpDocumentor2XMLWithMultipleIgnorePaths.xml',
+            __DIR__ . '/../../../../../../tests/data/phpDocumentor2XMLWithMultipleIgnorePaths.xml',
             0,
             true
         );

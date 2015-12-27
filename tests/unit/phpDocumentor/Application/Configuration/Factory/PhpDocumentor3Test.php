@@ -27,8 +27,8 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->strategy   = new PhpDocumentor3(__DIR__ . '/../../../../data/xsd/phpdoc.xsd');
-        $this->dataFolder = __DIR__ . '/../../../../tests/data/';
+        $this->strategy   = new PhpDocumentor3(__DIR__ . '/../../../../../../data/xsd/phpdoc.xsd');
+        $this->dataFolder = __DIR__ . '/../../../../../../tests/data/';
         require_once($this->dataFolder . 'phpDocumentor3ExpectedArrays.php');
     }
 

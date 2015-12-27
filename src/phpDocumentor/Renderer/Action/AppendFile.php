@@ -25,17 +25,9 @@ final class AppendFile implements Action
 
     /** @var Path */
     private $destination;
-    /**
-     * @var RenderPass
-     */
-    private $renderPass;
 
-    public function __construct(RenderPass $renderPass, Path $source, Path $destination)
-    {
-        $this->renderPass  = $renderPass;
-        $this->source      = $source;
-        $this->destination = $destination;
-    }
+    /** @var RenderPass */
+    private $renderPass;
 
     /**
      * Factory method used to map a parameters array onto the constructor and properties for this Action.
@@ -84,5 +76,12 @@ final class AppendFile implements Action
     public function __toString()
     {
         return sprintf('Appended file %s onto %s', $this->source, $this->destination);
+    }
+
+    private function __construct(RenderPass $renderPass, Path $source, Path $destination)
+    {
+        $this->renderPass  = $renderPass;
+        $this->source      = $source;
+        $this->destination = $destination;
     }
 }

@@ -29,13 +29,6 @@ final class CopyFile implements Action
     /** @var Path */
     private $destination;
 
-    public function __construct(RenderPass $renderPass, Path $source, Path $destination)
-    {
-        $this->renderPass  = $renderPass;
-        $this->source      = $source;
-        $this->destination = $destination;
-    }
-
     /**
      * Factory method used to map a parameters array onto the constructor and properties for this Action.
      *
@@ -83,5 +76,12 @@ final class CopyFile implements Action
     public function __toString()
     {
         return sprintf('Copied file %s to %s', $this->source, $this->destination);
+    }
+
+    private function __construct(RenderPass $renderPass, Path $source, Path $destination)
+    {
+        $this->renderPass  = $renderPass;
+        $this->source      = $source;
+        $this->destination = $destination;
     }
 }
