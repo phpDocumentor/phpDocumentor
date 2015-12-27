@@ -17,7 +17,8 @@
                 "Test",
                 "Tests",
                 "test",
-                "tests"
+                "tests",
+                "features"
             ],
             "in": [
                 "vendor/composer",
@@ -57,7 +58,8 @@
                 "Test",
                 "Tests",
                 "test",
-                "tests"
+                "tests",
+                "features"
             ],
             "in": [
                 "vendor/composer",
