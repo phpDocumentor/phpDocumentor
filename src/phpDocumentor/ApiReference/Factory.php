@@ -16,12 +16,9 @@ use League\Event\Emitter;
 use phpDocumentor\DocumentGroup;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFactory;
-use phpDocumentor\Reflection\Middleware\Middleware;
+use phpDocumentor\Reflection\ProjectFactory;
 use phpDocumentor\Reflection\Php\Factory\File;
 use phpDocumentor\Reflection\Php\Factory\File\FlySystemAdapter;
-use phpDocumentor\Reflection\Php\NodesFactory;
-use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\Reflection\Php\ProjectFactoryStrategy;
 
 final class Factory implements DocumentGroupFactory
 {
@@ -29,24 +26,18 @@ final class Factory implements DocumentGroupFactory
     private $emitter;
 
     /**
-     * @var \phpDocumentor\ApiReference\ProjectFactoryStrategy
+     * @var ProjectFactory
      */
-    private $stategies;
+    private $projectFactory;
 
     /**
-     * @var array
+     * @param Emitter $emitter
+     * @param ProjectFactory $projectFactory
      */
-    private $middleware;
-
-    /**
-     * @param ProjectFactoryStrategy[] $stategies
-     * @param Middleware[] $cache
-     */
-    public function __construct(Emitter $emitter, array $stategies = array(), array $middleware = array())
+    public function __construct(Emitter $emitter, ProjectFactory $projectFactory)
     {
-        $this->stategies = $stategies;
-        $this->middleware = $middleware;
         $this->emitter = $emitter;
+        $this->projectFactory = $projectFactory;
     }
 
     /**
@@ -62,15 +53,9 @@ final class Factory implements DocumentGroupFactory
             throw new InvalidArgumentException('Definition must be an instance of ' . DocumentGroupDefinition::class);
         }
 
-        $strategies = $this->stategies;
-
-        $projectFactory = new ProjectFactory(
-            $strategies
-        );
-
         // TODO: Read title (My Project) from configuration
         $this->emitter->emit(new ParsingStarted($definition));
-        $project = $projectFactory->create('My Project', $definition->getFiles());
+        $project = $this->projectFactory->create('My Project', $definition->getFiles());
         $this->emitter->emit(new ParsingCompleted($definition));
 
         return new Api($definition->getFormat(), $project);

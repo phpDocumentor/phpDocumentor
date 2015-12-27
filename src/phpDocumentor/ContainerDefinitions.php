@@ -24,6 +24,7 @@ use phpDocumentor\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
+use phpDocumentor\Reflection\ProjectFactory as ProjectFactoryInterface;
 use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
@@ -38,6 +39,7 @@ use phpDocumentor\Reflection\Php\Factory\Interface_;
 use phpDocumentor\Reflection\Php\Factory\Method;
 use phpDocumentor\Reflection\Php\Factory\Property;
 use phpDocumentor\Reflection\Php\Factory\Trait_;
+use phpDocumentor\Reflection\Php\ProjectFactory;
 use phpDocumentor\Reflection\PrettyPrinter;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
@@ -173,7 +175,7 @@ return [
         ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),
 
     //ApiReference
-    phpDocumentor\ApiReference\Factory::class => function (ContainerInterface $c) {
+    ProjectFactoryInterface::class => function (ContainerInterface $c) {
         $strategies = [
             $c->get(Argument::class),
             $c->get(Class_::class),
@@ -187,12 +189,7 @@ return [
             $c->get(File::class),
         ];
 
-        $middleware = [
-            $c->get(LoggingMiddleware::class),
-            $c->get(CacheMiddleware::class),
-        ];
-
-        return new \phpDocumentor\ApiReference\Factory($c->get(Emitter::class), $strategies, $middleware);
+        return new ProjectFactory($strategies);
     },
 
     File::class => function (ContainerInterface $c) {
