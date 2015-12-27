@@ -18,4 +18,3 @@ package.xml export-ignore
 phpdoc.dist.xml export-ignore
 phpmd.xml.dist export-ignore
 phpunit.xml.dist export-ignore
-wercker.yml export-ignore
