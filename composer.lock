@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6085a28a1a1f17910c932de6e44b2760",
-    "content-hash": "c727754ce33191456d422b2f3a8ba793",
+    "hash": "4ebcedc9be28b03b185fb3bef1ba3e1f",
+    "content-hash": "43454416831ac0ceaf37a6de0823b0f7",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -575,16 +575,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "2.0.0-alpha2",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "8fc02e76b7024d38c7693827156448bd074f6359"
+                "reference": "32b0b0c7208e0a4462c2340dc25bd39ebe3bba32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/8fc02e76b7024d38c7693827156448bd074f6359",
-                "reference": "8fc02e76b7024d38c7693827156448bd074f6359",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/32b0b0c7208e0a4462c2340dc25bd39ebe3bba32",
+                "reference": "32b0b0c7208e0a4462c2340dc25bd39ebe3bba32",
                 "shasum": ""
             },
             "require": {
@@ -597,7 +597,8 @@
             "require-dev": {
                 "mikey179/vfsstream": "~1.2",
                 "mockery/mockery": "~0.8",
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "^2.5"
             },
             "type": "library",
             "extra": {
@@ -624,7 +625,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-05 13:26:26"
+            "time": "2015-12-27 13:02:54"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -632,12 +633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "8dfc66d8a72f6741ed9f5a39227f99f78ae8d9a5"
+                "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/8dfc66d8a72f6741ed9f5a39227f99f78ae8d9a5",
-                "reference": "8dfc66d8a72f6741ed9f5a39227f99f78ae8d9a5",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
+                "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
                 "shasum": ""
             },
             "require": {
@@ -678,7 +679,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-08-09 12:13:56"
+            "time": "2015-12-27 11:43:31"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1667,8 +1668,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io/",
-                    "role": "Developer"
+                    "homepage": "http://kevin.herrera.io"
                 }
             ],
             "description": "A library for simplifying JSON linting and validation.",
@@ -1727,7 +1727,8 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io"
+                    "homepage": "http://kevin.herrera.io/",
+                    "role": "Developer"
                 }
             ],
             "description": "A library for self-updating Phars.",
@@ -1778,7 +1779,8 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io"
+                    "homepage": "http://kevin.herrera.io/",
+                    "role": "Developer"
                 }
             ],
             "description": "A library for creating, editing, and comparing semantic versioning numbers.",
@@ -3239,7 +3241,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpdocumentor/reflection": 15,
+        "phpdocumentor/reflection": 20,
         "phpdocumentor/reflection-common": 20,
         "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/flyfinder": 20
