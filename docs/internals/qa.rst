@@ -1,10 +1,10 @@
 Quality Assurance
 =================
 
-To continuously improve on the stability of phpDocumentor we make use of Wercker_ and Scrutinizer_ to verify and inspect
+To continuously improve on the stability of phpDocumentor we make use of ContinuousPHP_ and Scrutinizer_ to verify and inspect
 the source code.
 
-Using Wercker_ we are able to run all automated tests, such as PHPUnit and Behat, and verify if the application still
+Using ContinuousPHP_ we are able to run all automated tests, such as PHPUnit and Behat, and verify if the application still
 behaves as expected. The code coverage that is collected during the running of PHPUnit is sent to Scrutinizer, which
 will create statistics out of it.
 
@@ -27,6 +27,6 @@ The best location to start looking for parts to improve is on the Issues_ page; 
 Scrutinizer detected to be wrong with the project.
 
 
-.. _Wercker:     http://wercker.com
-.. _Scrutinizer: https://scrutinizer-ci.com
-.. _Issues:      https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/issues/develop
+.. _ContinuousPHP: https://continuousphp.com
+.. _Scrutinizer:   https://scrutinizer-ci.com
+.. _Issues:        https://scrutinizer-ci.com/g/phpDocumentor/phpDocumentor2/issues/develop
