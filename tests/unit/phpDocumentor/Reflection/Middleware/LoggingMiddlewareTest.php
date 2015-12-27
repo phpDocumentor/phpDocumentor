@@ -19,8 +19,15 @@ use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit_Framework_TestCase;
 
-class LoggingMiddlewareTest extends PHPUnit_Framework_TestCase
+/**
+ * @coversDefaultClass phpDocumentor\Reflection\Middleware\LoggingMiddleware
+ */
+final class LoggingMiddlewareTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::__construct
+     * @covers ::execute
+     */
     public function testExecute()
     {
         $emitterMock = m::mock(Emitter::class);

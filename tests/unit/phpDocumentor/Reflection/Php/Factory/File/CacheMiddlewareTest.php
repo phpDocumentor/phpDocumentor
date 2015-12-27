@@ -18,8 +18,18 @@ use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\StrategyContainer;
 use Stash\Pool;
 
-class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
+/**
+ * @coversDefaultClass phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware
+ * @covers ::<private>
+ * @covers ::__construct
+ */
+final class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ::execute
+     * @uses phpDocumentor\Reflection\Php\Factory\File\CreateCommand
+     * @uses phpDocumentor\Reflection\Php\File
+     */
     public function testCacheIsUsed()
     {
         $file = new File('hash', 'myFile.php');
@@ -54,6 +64,11 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($file, $result);
     }
 
+    /**
+     * @covers ::execute
+     * @uses phpDocumentor\Reflection\Php\Factory\File\CreateCommand
+     * @uses phpDocumentor\Reflection\Php\File
+     */
     public function testChecksHash()
     {
         $cachedFile = new File('OldHash', 'myFile.php');

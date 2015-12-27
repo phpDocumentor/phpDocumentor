@@ -18,7 +18,7 @@ use League\Flysystem\Memory\MemoryAdapter;
 /**
  * @coversDefaultClass phpDocumentor\Reflection\File\FlySystemFile
  */
-class FlySystemFileTest extends \PHPUnit_Framework_TestCase
+final class FlySystemFileTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var FlySystemFile
