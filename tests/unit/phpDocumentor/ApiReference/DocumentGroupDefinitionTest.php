@@ -53,7 +53,8 @@ class DocumentGroupDefinitionTest extends \PHPUnit_Framework_TestCase
 
         $this->fileSystem->shouldReceive('find')->with($this->specification)->andReturn(new \ArrayIterator($result));
 
-        $this->assertSame(['myFile.php', 'someFile.php'], $this->definition->getFiles());
+        $this->assertSame('myFile.php', $this->definition->getFiles()[0]->path());
+        $this->assertSame('someFile.php', $this->definition->getFiles()[1]->path());
     }
 
     /**

@@ -18,6 +18,8 @@ use League\Flysystem\FilesystemInterface;
 use Mockery as m;
 use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\Reflection\Php\Project;
+use phpDocumentor\Reflection\ProjectFactory;
 
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\Factory
@@ -31,11 +33,17 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     /** @var Factory */
     private $fixture;
 
+    /**
+     * @var ProjectFactory|m\MockInterface
+     */
+    private $projectFactory;
+
     protected function setUp()
     {
         $this->emitter = m::mock(Emitter::class);
+        $this->projectFactory = m::mock(ProjectFactory::class);
 
-        $this->fixture = new Factory($this->emitter);
+        $this->fixture = new Factory($this->emitter, $this->projectFactory);
     }
 
     /**
@@ -63,6 +71,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $format = new DocumentGroupFormat('php');
         $definition = new DocumentGroupDefinition($format, $fileSystem, m::mock(SpecificationInterface::class));
 
+        $this->projectFactory->shouldReceive('create')->andReturn(new Project('MyProject'));
         $this->emitter->shouldReceive('emit')->once()->with(m::type(ParsingStarted::class));
         $this->emitter->shouldReceive('emit')->once()->with(m::type(ParsingCompleted::class));
 

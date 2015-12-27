@@ -1,5 +1,6 @@
 <?php
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
@@ -23,6 +24,23 @@ use phpDocumentor\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
+use phpDocumentor\Reflection\ProjectFactory as ProjectFactoryInterface;
+use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
+use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
+use phpDocumentor\Reflection\Php\Factory\Argument;
+use phpDocumentor\Reflection\Php\Factory\Class_;
+use phpDocumentor\Reflection\Php\Factory\Constant;
+use phpDocumentor\Reflection\Php\Factory\DocBlock;
+use phpDocumentor\Reflection\Php\Factory\File;
+use phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware;
+use phpDocumentor\Reflection\Php\Factory\Function_;
+use phpDocumentor\Reflection\Php\Factory\Interface_;
+use phpDocumentor\Reflection\Php\Factory\Method;
+use phpDocumentor\Reflection\Php\Factory\Property;
+use phpDocumentor\Reflection\Php\Factory\Trait_;
+use phpDocumentor\Reflection\Php\ProjectFactory;
+use phpDocumentor\Reflection\PrettyPrinter;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
@@ -155,6 +173,38 @@ return [
     DocumentationRepository::class => \DI\object(DocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
         ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),
+
+    //ApiReference
+    ProjectFactoryInterface::class => function (ContainerInterface $c) {
+        $strategies = [
+            $c->get(Argument::class),
+            $c->get(Class_::class),
+            $c->get(Constant::class),
+            $c->get(DocBlock::class),
+            $c->get(Function_::class),
+            $c->get(Interface_::class),
+            $c->get(Method::class),
+            $c->get(Property::class),
+            $c->get(Trait_::class),
+            $c->get(File::class),
+        ];
+
+        return new ProjectFactory($strategies);
+    },
+
+    File::class => function (ContainerInterface $c) {
+        $middleware = [
+            $c->get(LoggingMiddleware::class),
+            $c->get(CacheMiddleware::class),
+        ];
+
+
+        return new File(\phpDocumentor\Reflection\Php\NodesFactory::createInstance(), $middleware);
+    },
+
+    DocBlockFactoryInterface::class => function (ContainerInterface $c) {
+        return DocBlockFactory::createInstance();
+    },
 
     // Infrastructure
     Pool::class => function (ContainerInterface $c) {
