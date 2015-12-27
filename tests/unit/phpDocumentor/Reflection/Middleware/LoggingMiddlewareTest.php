@@ -29,6 +29,10 @@ class LoggingMiddlewareTest extends PHPUnit_Framework_TestCase
 
         $fixture = new LoggingMiddleware($emitterMock);
 
-        $fixture->execute($command, function() {});
+        $fixture->execute(
+            $command,
+            function () {
+            }
+        );
     }
 }

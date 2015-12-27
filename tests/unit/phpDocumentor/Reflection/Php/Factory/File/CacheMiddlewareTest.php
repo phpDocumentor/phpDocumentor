@@ -47,7 +47,9 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
         $command = new CreateCommand($sourceFile, $stategies);
         $fixture = new CacheMiddleware($poolMock);
 
-        $result = $fixture->execute($command, function() use($file) { return $file; });
+        $result = $fixture->execute($command, function () use ($file) {
+            return $file;
+        });
 
         $this->assertSame($file, $result);
     }
@@ -84,7 +86,9 @@ class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
         $command = new CreateCommand($sourceFile, $stategies);
         $fixture = new CacheMiddleware($poolMock);
 
-        $result = $fixture->execute($command, function() use($freshFile) { return $freshFile; });
+        $result = $fixture->execute($command, function () use ($freshFile) {
+            return $freshFile;
+        });
 
         $this->assertSame($freshFile, $result);
     }
