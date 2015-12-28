@@ -208,7 +208,7 @@ return [
 
     // Infrastructure
     Pool::class => function (ContainerInterface $c) {
-        $adapter = new \Stash\Driver\BlackHole();
+        $adapter = new \Stash\Driver\FileSystem();
         $adapter->setOptions(['path' => $c->get('cache.directory')]);
         return new Pool($adapter);
     },

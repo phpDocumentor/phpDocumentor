@@ -32,6 +32,7 @@ final class CommandlineOptionsMiddleware
     public function __invoke(array $configuration)
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
+        $configuration = $this->disableCache($configuration);
         $configuration = $this->overwriteCacheFolder($configuration);
         $configuration = $this->overwriteTitle($configuration);
         $configuration = $this->overwriteTemplates($configuration);
@@ -282,6 +283,15 @@ final class CommandlineOptionsMiddleware
     {
         if ($this->options['template']) {
             $configuration['templates'] = (string)$this->options['template'];
+        }
+
+        return $configuration;
+    }
+
+    private function disableCache($configuration)
+    {
+        if ($this->options['force']) {
+            $configuration['phpdocumentor']['use-cache'] = false;
         }
 
         return $configuration;

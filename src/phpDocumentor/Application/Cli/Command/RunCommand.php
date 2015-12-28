@@ -17,6 +17,7 @@ use League\Tactician\CommandBus;
 use phpDocumentor\ApiReference\DocumentGroupDefinition;
 use phpDocumentor\ApiReference\FileParsed;
 use phpDocumentor\ApiReference\ParsingStarted;
+use phpDocumentor\Application\Commands\ConfigureCache;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\DocumentationFactory;
@@ -276,6 +277,10 @@ HELP
 
         $this->commandBus->handle(
             new MergeConfigurationWithCommandLineOptions($input->getOptions(), $input->getArguments())
+        );
+
+        $this->commandBus->handle(
+            new ConfigureCache()
         );
 
         foreach ($this->definitionRepository->fetchAll() as $definition) {

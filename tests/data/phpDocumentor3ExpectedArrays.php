@@ -24,6 +24,7 @@ final class PhpDocumentor3ExpectedArrays
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'     => [
                     'output' => 'file://build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache'
@@ -90,6 +91,7 @@ final class PhpDocumentor3ExpectedArrays
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'     => [
                     'output' => 'file://build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache'
@@ -136,6 +138,7 @@ final class PhpDocumentor3ExpectedArrays
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'     => [
                     'output' => 'file://build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache'
@@ -161,6 +164,7 @@ final class PhpDocumentor3ExpectedArrays
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'     => [
                     'output' => 'file://build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache'
@@ -237,6 +241,7 @@ final class PhpDocumentor3ExpectedArrays
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'     => [
                     'output' => 'file://build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache'
@@ -279,6 +284,7 @@ final class PhpDocumentor3ExpectedArrays
     {
         return [
             'phpdocumentor' => [
+                'use-cache' => true,
                 'paths'     => [
                     'output' => 'file://build/docs',
                     'cache'  => '/tmp/phpdoc-doc-cache'
