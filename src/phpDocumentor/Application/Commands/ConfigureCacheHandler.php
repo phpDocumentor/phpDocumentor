@@ -32,7 +32,6 @@ final class ConfigureCacheHandler
      */
     public function __construct(Pool $pool, ConfigurationFactory $configurationFactory)
     {
-
         $this->pool = $pool;
         $this->configurationFactory = $configurationFactory;
     }
@@ -40,9 +39,7 @@ final class ConfigureCacheHandler
     public function __invoke()
     {
         $this->pool->getDriver()->setOptions(
-            [
-                'path' => $this->configurationFactory->get()['phpdocumentor']['paths']['cache']
-            ]
+            [ 'path' => $this->configurationFactory->get()['phpdocumentor']['paths']['cache'] ]
         );
 
         if ($this->configurationFactory->get()['phpdocumentor']['use-cache'] === false) {

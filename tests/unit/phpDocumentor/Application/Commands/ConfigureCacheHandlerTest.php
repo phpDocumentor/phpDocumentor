@@ -46,9 +46,6 @@ final class ConfigureCacheHandlerTest extends PHPUnit_Framework_TestCase
      */
     private $configStrategy;
 
-    /**
-     *
-     */
     protected function setUp()
     {
         $this->pool = m::mock(Pool::class);
@@ -66,21 +63,9 @@ final class ConfigureCacheHandlerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @dataProvider provideOnOffToggleForTestIfCacheCanBeDisabled
      */
-    public function testDisableCache()
-    {
-        $this->invokeTest(false);
-    }
-
-    /**
-     * @covers ::__invoke
-     */
-    public function testLeaveCache()
-    {
-        $this->invokeTest(true);
-    }
-
-    private function invokeTest($useCache)
+    public function testSettingTheCachePathAndTogglingIfItIsEnabled($useCache)
     {
         $this->configStrategy->shouldReceive('convert')->andReturn([
             'phpdocumentor' => [
@@ -95,5 +80,10 @@ final class ConfigureCacheHandlerTest extends PHPUnit_Framework_TestCase
         $this->pool->shouldReceive('getDriver->setOptions')->with(['path' => './']);
 
         $this->fixture->__invoke(new ConfigureCache());
+    }
+
+    public function provideOnOffToggleForTestIfCacheCanBeDisabled()
+    {
+        return [ [true], [false] ];
     }
 }
