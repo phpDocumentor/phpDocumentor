@@ -59,6 +59,7 @@ final class PhpDocumentor3 implements Strategy
 
         $phpdoc3Array = [
             'phpdocumentor' => [
+                'use-cache' => $phpDocumentor->{"use-cache"} ?: true,
                 'paths'     => [
                     'output' => ((string) $phpDocumentor->paths->output) ?: 'file://build/docs',
                     'cache'  => ((string) $phpDocumentor->paths->cache) ?: '/tmp/phpdoc-doc-cache',
