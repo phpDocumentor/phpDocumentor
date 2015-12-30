@@ -26,12 +26,6 @@ final class Xml implements Action
     /** @var Path|null */
     private $destination;
 
-    public function __construct(RenderPass $renderPass, Path $destination = null)
-    {
-        $this->renderPass  = $renderPass;
-        $this->destination = $destination;
-    }
-
     /**
      * Factory method used to map a parameters array onto the constructor and properties for this Action.
      *
@@ -41,6 +35,13 @@ final class Xml implements Action
      */
     public static function create(array $parameters)
     {
+        Assert::keyExists($parameters, 'renderPass');
+        try {
+            Assert::keyExists($parameters, 'destination');
+        } catch (\InvalidArgumentException $e) {
+            Assert::keyExists($parameters, 'artifact');
+        }
+
         // make this parameter BC-compatible with phpDocumentor 2
         $destination = isset($parameters['artifact'])
             ? $parameters['artifact']->getValue()
@@ -71,5 +72,11 @@ final class Xml implements Action
     public function __toString()
     {
         return sprintf('Rendered XML structure at "%s"', $this->destination);
+    }
+
+    private function __construct(RenderPass $renderPass, Path $destination = null)
+    {
+        $this->renderPass  = $renderPass;
+        $this->destination = $destination;
     }
 }

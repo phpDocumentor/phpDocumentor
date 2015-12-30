@@ -16,6 +16,7 @@ use phpDocumentor\Path;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\RenderPass;
 use phpDocumentor\Renderer\Template;
+use Webmozart\Assert\Assert;
 
 final class Graph implements Action
 {
@@ -28,13 +29,6 @@ final class Graph implements Action
     /** @var RenderPass */
     private $renderPass;
 
-    public function __construct(RenderPass $renderPass, Path $source, Path $destination)
-    {
-        $this->source      = $source;
-        $this->destination = $destination;
-        $this->renderPass  = $renderPass;
-    }
-
     /**
      * Factory method used to map a parameters array onto the constructor and properties for this Action.
      *
@@ -44,6 +38,14 @@ final class Graph implements Action
      */
     public static function create(array $parameters)
     {
+        Assert::keyExists($parameters, 'renderPass');
+        Assert::keyExists($parameters, 'source');
+        try {
+            Assert::keyExists($parameters, 'destination');
+        } catch (\InvalidArgumentException $e) {
+            Assert::keyExists($parameters, 'artifact');
+        }
+
         $destination = isset($parameters['artifact']) ? $parameters['artifact'] : $parameters['destination'];
 
         return new static(
@@ -80,5 +82,12 @@ final class Graph implements Action
     public function __toString()
     {
         return 'Generated the class diagram';
+    }
+
+    private function __construct(RenderPass $renderPass, Path $source, Path $destination)
+    {
+        $this->source      = $source;
+        $this->destination = $destination;
+        $this->renderPass  = $renderPass;
     }
 }
