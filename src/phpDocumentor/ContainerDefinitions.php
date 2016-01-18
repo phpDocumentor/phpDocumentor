@@ -24,6 +24,7 @@ use phpDocumentor\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
+use phpDocumentor\Reflection\Middleware\ValidatingMiddleware;
 use phpDocumentor\Reflection\ProjectFactory as ProjectFactoryInterface;
 use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -194,12 +195,20 @@ return [
 
     File::class => function (ContainerInterface $c) {
         $middleware = [
+            $c->get(ValidatingMiddleware::class),
             $c->get(LoggingMiddleware::class),
             $c->get(CacheMiddleware::class),
         ];
 
 
         return new File(\phpDocumentor\Reflection\Php\NodesFactory::createInstance(), $middleware);
+    },
+
+    ValidatingMiddleware::class => function (ContainerInterface $c) {
+        $ruleSet = (new \phpDocumentor\Validation\Factory())->create('test');
+        $validator = new \phpDocumentor\Validation\Validator($ruleSet);
+
+        return new ValidatingMiddleware($validator, $c->get(Emitter::class));
     },
 
     DocBlockFactoryInterface::class => function (ContainerInterface $c) {
