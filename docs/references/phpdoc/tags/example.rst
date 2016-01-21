@@ -15,7 +15,7 @@ Syntax
 
 or inline
 
-    {@example [location] [<start-line> [<number-of-lines>] ] [<description>]}
+    {\@example [location] [<start-line> [<number-of-lines>] ] [<description>]}
 
 Description
 -----------

@@ -18,7 +18,7 @@ Syntax
 
 or inline
 
-   {@link [URI] [<description>]}
+   {\@link [URI] [<description>]}
 
 Description
 -----------
