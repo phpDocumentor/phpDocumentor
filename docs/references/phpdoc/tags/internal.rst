@@ -13,7 +13,7 @@ Syntax
 
 or inline:
 
-    {@internal [description]}}
+    {\@internal [description]}}
 
 The inline version of this tag may, contrary to other inline tags, contain
 text but also other inline tags. To increase readability and ease parsing, the
