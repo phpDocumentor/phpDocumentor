@@ -12,9 +12,9 @@
 
 namespace phpDocumentor\DomainModel;
 
-use League\Event\AbstractEvent;
+use phpDocumentor\DomainModel\DomainEvent;
 
-class RenderingFinished extends AbstractEvent
+class RenderingFinished extends DomainEvent
 {
 
 }

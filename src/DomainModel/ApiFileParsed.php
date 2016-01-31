@@ -12,9 +12,9 @@
 
 namespace phpDocumentor\DomainModel;
 
-use League\Event\AbstractEvent;
+use phpDocumentor\DomainModel\DomainEvent;
 
-final class ApiFileParsed extends AbstractEvent
+final class ApiFileParsed extends DomainEvent
 {
     /** @var string */
     private $filename;

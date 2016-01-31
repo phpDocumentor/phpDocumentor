@@ -2,10 +2,10 @@
 
 namespace phpDocumentor\DomainModel;
 
-use League\Event\AbstractEvent;
+use phpDocumentor\DomainModel\DomainEvent;
 use phpDocumentor\DomainModel\Documentation\Api\Definition;
 
-final class ApiParsingCompleted extends AbstractEvent
+final class ApiParsingCompleted extends DomainEvent
 {
     /**
      * @var Definition

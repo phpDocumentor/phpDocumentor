@@ -12,10 +12,10 @@
 
 namespace phpDocumentor\DomainModel;
 
-use League\Event\AbstractEvent;
+use phpDocumentor\DomainModel\DomainEvent;
 use phpDocumentor\DomainModel\Template\Action;
 
-class RenderActionCompleted extends AbstractEvent
+class RenderActionCompleted extends DomainEvent
 {
     /** @var Action */
     private $action;
