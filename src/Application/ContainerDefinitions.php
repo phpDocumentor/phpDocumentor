@@ -19,8 +19,8 @@ use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
-use phpDocumentor\FileSystemFactory;
-use phpDocumentor\FlySystemFactory;
+use phpDocumentor\Infrastructure\FileSystemFactory;
+use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\Project\Version\DefinitionFactory;
 use phpDocumentor\Project\Version\DefinitionRepository;
@@ -46,13 +46,13 @@ use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
 use phpDocumentor\Renderer\Action\Xslt\Extension;
 use phpDocumentor\Renderer\Template\PathsRepository;
+use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\XmlTemplateFactory;
 use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
-use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
-use phpDocumentor\SpecificationFactory;
+use phpDocumentor\Infrastructure\SpecificationFactory;
 use phpDocumentor\Uri;
 use phpDocumentor\Views\MapperFactory;
 use phpDocumentor\Views\MapperFactory\Container;
@@ -233,7 +233,7 @@ return [
     PathsRepositoryInterface::class => \DI\object(PathsRepository::class),
     XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
-    XmlTemplateFactory::class => \DI\object()
+    TemplateFactory::class => \DI\object(XmlTemplateFactory::class)
         ->constructorParameter('templateFolders', \DI\get('template.directories')),
     TwigHandler::class => \DI\object()->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
 ];

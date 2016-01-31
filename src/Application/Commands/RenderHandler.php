@@ -15,7 +15,7 @@ namespace phpDocumentor\Application\Commands;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\Dsn;
-use phpDocumentor\FileSystemFactory;
+use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Renderer\Template;
 use phpDocumentor\Renderer\TemplateFactory;

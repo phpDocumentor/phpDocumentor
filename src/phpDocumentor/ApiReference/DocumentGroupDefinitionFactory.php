@@ -15,8 +15,8 @@ namespace phpDocumentor\ApiReference;
 use phpDocumentor\DocumentGroupDefinitionFactory as DocumentGroupDefinitionFactoryInterface;
 use phpDocumentor\DocumentGroupFormat;
 use phpDocumentor\Dsn;
-use phpDocumentor\FileSystemFactory;
-use phpDocumentor\SpecificationFactory;
+use phpDocumentor\Infrastructure\FileSystemFactory;
+use phpDocumentor\Infrastructure\SpecificationFactory;
 
 /**
  * Factory for DocumentGroupDefinition.

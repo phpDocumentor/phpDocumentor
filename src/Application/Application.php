@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\Application;
 
 use Composer\Autoload\ClassLoader;
 use DI\ContainerBuilder;

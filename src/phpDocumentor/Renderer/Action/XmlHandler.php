@@ -25,7 +25,7 @@ use phpDocumentor\Renderer\Action\Xml\TagConverter;
 use phpDocumentor\Renderer\Action\Xml\TraitConverter;
 use phpDocumentor\Renderer\Router\ForFileProxy;
 use phpDocumentor\Renderer\Router\RouterAbstract;
-use phpDocumentor\Application;
+use phpDocumentor\Application\Application;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;

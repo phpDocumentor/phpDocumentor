@@ -16,9 +16,9 @@ $bootstrap_folder = (strpos('@php_dir@', '@php_dir') === 0)
     ? __DIR__ . '/../src'
     : '@php_dir@/phpDocumentor/src';
 
-include $bootstrap_folder . '/phpDocumentor/Bootstrap.php';
+include $bootstrap_folder . '/Application/Bootstrap.php';
 
-$app = \phpDocumentor\Bootstrap::createInstance()
+$app = \phpDocumentor\Application\Bootstrap::createInstance()
     ->registerProfiler()
     ->initialize();
 $app->run();

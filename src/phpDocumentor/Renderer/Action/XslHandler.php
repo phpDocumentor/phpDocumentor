@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Renderer\Action;
 
-use phpDocumentor\Application;
+use phpDocumentor\Application\Application;
 use phpDocumentor\Descriptor\Analyzer;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Renderer\Action;

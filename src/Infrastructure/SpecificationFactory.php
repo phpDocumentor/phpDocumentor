@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\Infrastructure;
 
 use Flyfinder\Specification\SpecificationInterface;
 

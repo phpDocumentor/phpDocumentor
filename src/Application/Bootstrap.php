@@ -9,9 +9,11 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\Application;
 
 use Composer\Autoload\ClassLoader;
+use phpDocumentor\Application\Application;
+use phpDocumentor\parameter;
 
 /**
  * This class provides a bootstrap for all application who wish to interface with phpDocumentor.

@@ -18,7 +18,7 @@ use League\Flysystem\Memory\MemoryAdapter;
 use League\Tactician\CommandBus;
 use Mockery as m;
 use phpDocumentor\Documentation;
-use phpDocumentor\FileSystemFactory;
+use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Project\VersionNumber;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\RenderActionCompleted;

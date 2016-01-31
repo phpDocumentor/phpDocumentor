@@ -20,7 +20,7 @@ use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
 use Flyfinder\Specification\SpecificationInterface;
-use phpDocumentor\SpecificationFactory as FactoryInterface;
+use phpDocumentor\Infrastructure\SpecificationFactory as FactoryInterface;
 
 /**
  * Factory class to build Specification used by FlyFinder when reading files to process.

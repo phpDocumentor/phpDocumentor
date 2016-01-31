@@ -14,6 +14,7 @@ namespace phpDocumentor;
 
 use Flyfinder\Specification\InPath;
 use Mockery as m;
+use phpDocumentor\Infrastructure\FlySystemFactory;
 
 /**
  * Test case for FilesystemFactory

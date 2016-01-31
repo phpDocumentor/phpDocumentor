@@ -16,4 +16,4 @@ if (!defined('phpDocumentor\PHPUnit\TEMP_DIR')) {
     define('phpDocumentor\PHPUnit\TEMP_DIR', realpath(sys_get_temp_dir()));
 }
 
-\phpDocumentor\Bootstrap::createInstance()->initialize();
+\phpDocumentor\Application\Bootstrap::createInstance()->initialize();

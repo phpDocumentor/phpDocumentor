@@ -11,6 +11,7 @@
 namespace phpDocumentor;
 
 use org\bovigo\vfs\vfsStream;
+use phpDocumentor\Application\Bootstrap;
 use PHPUnit_Framework_TestCase;
 
 /**

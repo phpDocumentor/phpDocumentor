@@ -16,8 +16,8 @@ use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\Filesystem;
 use Mockery as m;
 use phpDocumentor\DocumentGroupFormat;
-use phpDocumentor\FileSystemFactory;
-use phpDocumentor\SpecificationFactory;
+use phpDocumentor\Infrastructure\FileSystemFactory;
+use phpDocumentor\Infrastructure\SpecificationFactory;
 
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\DocumentGroupDefinitionFactory
