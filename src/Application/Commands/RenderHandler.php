@@ -17,12 +17,12 @@ use League\Tactician\CommandBus;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\DomainModel\Path;
-use phpDocumentor\Renderer\Template;
-use phpDocumentor\Renderer\TemplateFactory;
-use phpDocumentor\Renderer\RenderPass;
-use phpDocumentor\Renderer\RenderActionCompleted;
-use phpDocumentor\Renderer\RenderingFinished;
-use phpDocumentor\Renderer\RenderingStarted;
+use phpDocumentor\DomainModel\Template;
+use phpDocumentor\DomainModel\TemplateFactory;
+use phpDocumentor\DomainModel\Template\RenderPass;
+use phpDocumentor\DomainModel\RenderActionCompleted;
+use phpDocumentor\DomainModel\RenderingFinished;
+use phpDocumentor\DomainModel\RenderingStarted;
 
 final class RenderHandler
 {

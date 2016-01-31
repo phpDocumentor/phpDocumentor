@@ -26,7 +26,7 @@ use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpec
 use phpDocumentor\DomainModel\Version\DefinitionFactory;
 use phpDocumentor\DomainModel\Version\DefinitionRepository;
 use phpDocumentor\Reflection\ProjectFactory as ProjectFactoryInterface;
-use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
+use phpDocumentor\Infrastructure\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Php\Factory\Argument;
@@ -34,21 +34,21 @@ use phpDocumentor\Reflection\Php\Factory\Class_;
 use phpDocumentor\Reflection\Php\Factory\Constant;
 use phpDocumentor\Reflection\Php\Factory\DocBlock;
 use phpDocumentor\Reflection\Php\Factory\File;
-use phpDocumentor\Reflection\Php\Factory\File\CacheMiddleware;
+use phpDocumentor\Infrastructure\Reflection\Middleware\CacheMiddleware;
 use phpDocumentor\Reflection\Php\Factory\Function_;
 use phpDocumentor\Reflection\Php\Factory\Interface_;
 use phpDocumentor\Reflection\Php\Factory\Method;
 use phpDocumentor\Reflection\Php\Factory\Property;
 use phpDocumentor\Reflection\Php\Factory\Trait_;
 use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\Renderer\Action\TwigHandler;
-use phpDocumentor\Renderer\Action\XmlHandler;
-use phpDocumentor\Renderer\Action\XslHandler;
-use phpDocumentor\Renderer\Action\Xslt\Extension;
-use phpDocumentor\Renderer\Template\PathsRepository;
-use phpDocumentor\Renderer\TemplateFactory;
-use phpDocumentor\Renderer\XmlTemplateFactory;
-use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
+use phpDocumentor\DomainModel\Template\Action\TwigHandler;
+use phpDocumentor\DomainModel\Template\Action\XmlHandler;
+use phpDocumentor\DomainModel\Template\Action\XslHandler;
+use phpDocumentor\DomainModel\Template\Action\Xslt\Extension;
+use phpDocumentor\Infrastructure\Template\LocalPathsRepository;
+use phpDocumentor\DomainModel\TemplateFactory;
+use phpDocumentor\Infrastructure\XmlTemplateFactory;
+use phpDocumentor\DomainModel\Template\PathsRepository;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
 use phpDocumentor\Infrastructure\SpecificationFactory;
@@ -227,8 +227,8 @@ return [
         ]),
 
     // Templates
-    PathsRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
-    PathsRepositoryInterface::class => \DI\object(PathsRepository::class),
+    LocalPathsRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
+    PathsRepository::class => \DI\object(LocalPathsRepository::class),
     XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     TemplateFactory::class => \DI\object(XmlTemplateFactory::class)

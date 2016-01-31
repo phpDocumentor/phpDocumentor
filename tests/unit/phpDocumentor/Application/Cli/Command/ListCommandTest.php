@@ -13,7 +13,7 @@
 namespace phpDocumentor\Application\Cli\Command;
 
 use Mockery as m;
-use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
+use phpDocumentor\DomainModel\Template\PathsRepository;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -56,7 +56,7 @@ TXT;
      */
     private function givenAFactoryWithTemplateNames(array $templateNames)
     {
-        $pathsRepositoryMock = m::mock(PathsRepositoryInterface::class);
+        $pathsRepositoryMock = m::mock(PathsRepository::class);
         $pathsRepositoryMock->shouldReceive('listTemplates')->once()->andReturn($templateNames);
 
         return $pathsRepositoryMock;

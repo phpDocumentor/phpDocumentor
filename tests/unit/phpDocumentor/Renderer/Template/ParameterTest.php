@@ -11,6 +11,8 @@
 
 namespace phpDocumentor\Renderer\Template;
 
+use phpDocumentor\DomainModel\Template\Parameter;
+
 /**
  * Tests the functionality for the Parameter class.
  * @coversDefaultClass phpDocumentor\Renderer\Template\Parameter

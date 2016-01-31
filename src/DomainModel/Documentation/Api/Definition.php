@@ -17,10 +17,11 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\Reflection\File;
-use phpDocumentor\Reflection\File\FlySystemFile;
+use phpDocumentor\DomainModel\FlySystemFile;
 
 /**
  * Document group definition for Api documentation.
+ * @TODO this code belongs in the infrastructure layer
  */
 final class Definition implements DocumentGroupDefinitionInterface
 {

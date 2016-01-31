@@ -15,7 +15,9 @@ namespace phpDocumentor\Renderer\Template;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\DomainModel\Path;
-use phpDocumentor\Renderer\Template;
+use phpDocumentor\DomainModel\Template;
+use phpDocumentor\DomainModel\Template\Parameter;
+use phpDocumentor\Infrastructure\Template\LocalPathsRepository;
 
 /**
  * Tests the functionality for the PathsRepository class.
@@ -45,7 +47,7 @@ class PathsRepositoryTest extends \PHPUnit_Framework_TestCase
     ];
 
     /**
-     * @var PathsRepository
+     * @var LocalPathsRepository
      */
     private $fixture;
 
@@ -53,7 +55,7 @@ class PathsRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->root = vfsStream::setup('root', null, $this->filesystem);
 
-        $this->fixture = new PathsRepository(['vfs://root','vfs://root/dummy/data/templates']);
+        $this->fixture = new LocalPathsRepository(['vfs://root','vfs://root/dummy/data/templates']);
     }
 
     /**

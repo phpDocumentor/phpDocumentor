@@ -3,9 +3,10 @@
 namespace phpDocumentor\Renderer\Action;
 
 use phpDocumentor\DomainModel\Path;
-use phpDocumentor\Renderer\RenderPass;
+use phpDocumentor\DomainModel\Template\Action\CopyFile;
+use phpDocumentor\DomainModel\Template\RenderPass;
 use Mockery as m;
-use phpDocumentor\Renderer\Template\Parameter;
+use phpDocumentor\DomainModel\Template\Parameter;
 
 /**
  * @coversDefaultClass phpDocumentor\Renderer\Action\CopyFile

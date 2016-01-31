@@ -13,6 +13,7 @@
 namespace phpDocumentor\Reflection\Php\Factory\File;
 
 use Mockery as m;
+use phpDocumentor\Infrastructure\Reflection\Middleware\CacheMiddleware;
 use phpDocumentor\Reflection\File as SourceFile;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\StrategyContainer;

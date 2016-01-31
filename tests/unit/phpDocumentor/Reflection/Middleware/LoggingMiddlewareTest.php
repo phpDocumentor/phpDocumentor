@@ -14,6 +14,7 @@ namespace phpDocumentor\Reflection\Middleware;
 
 use League\Event\Emitter;
 use Mockery as m;
+use phpDocumentor\Infrastructure\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;

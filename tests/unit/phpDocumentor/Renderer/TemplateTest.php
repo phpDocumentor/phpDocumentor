@@ -13,7 +13,9 @@
 namespace phpDocumentor\Renderer;
 
 use Mockery as m;
-use phpDocumentor\Renderer\Template\Parameter;
+use phpDocumentor\DomainModel\Template;
+use phpDocumentor\DomainModel\Template\Action;
+use phpDocumentor\DomainModel\Template\Parameter;
 
 /**
  * Tests the functionality for the Template class.

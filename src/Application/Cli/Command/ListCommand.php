@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Application\Cli\Command;
 
-use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
+use phpDocumentor\DomainModel\Template\PathsRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,15 +23,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ListCommand extends Command
 {
     /**
-     * @var PathsRepositoryInterface
+     * @var PathsRepository
      */
     private $pathsRepository;
 
     /**
      * Initializes this command with its dependencies.
-     * @param PathsRepositoryInterface $pathsRepository
+     *
+*@param PathsRepository $pathsRepository
      */
-    public function __construct(PathsRepositoryInterface $pathsRepository)
+    public function __construct(PathsRepository $pathsRepository)
     {
         parent::__construct('template:list');
         $this->pathsRepository = $pathsRepository;

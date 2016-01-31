@@ -14,6 +14,7 @@ namespace phpDocumentor\Reflection\File;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
+use phpDocumentor\DomainModel\FlySystemFile;
 
 /**
  * @coversDefaultClass phpDocumentor\Reflection\File\FlySystemFile

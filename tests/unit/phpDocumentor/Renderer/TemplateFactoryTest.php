@@ -13,9 +13,12 @@
 namespace phpDocumentor\Renderer {
 
     use Mockery as m;
+    use phpDocumentor\DomainModel\Template;
+    use phpDocumentor\DomainModel\Template\RenderPass;
+    use phpDocumentor\Infrastructure\XmlTemplateFactory;
     use phpDocumentor\Renderer\Action\TestAction1;
     use phpDocumentor\Renderer\Action\TestAction2;
-    use phpDocumentor\Renderer\Template\Parameter;
+    use phpDocumentor\DomainModel\Template\Parameter;
 
     /**
      * Tests the functionality for the TemplateFactory class.
@@ -230,8 +233,8 @@ namespace phpDocumentor\Renderer {
 // @codingStandardsIgnoreStart
 namespace phpDocumentor\Renderer\Action {
 
-    use phpDocumentor\Renderer\Action;
-    use phpDocumentor\Renderer\Template;
+    use phpDocumentor\DomainModel\Template\Action;
+    use phpDocumentor\DomainModel\Template;
 
     class TestAction1 implements Action
     {

@@ -20,12 +20,12 @@ use Mockery as m;
 use phpDocumentor\DomainModel\Documentation;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\DomainModel\Version\Number;
-use phpDocumentor\Renderer\Action;
-use phpDocumentor\Renderer\RenderActionCompleted;
-use phpDocumentor\Renderer\RenderingFinished;
-use phpDocumentor\Renderer\RenderingStarted;
-use phpDocumentor\Renderer\Template;
-use phpDocumentor\Renderer\TemplateFactory;
+use phpDocumentor\DomainModel\Template\Action;
+use phpDocumentor\DomainModel\RenderActionCompleted;
+use phpDocumentor\DomainModel\RenderingFinished;
+use phpDocumentor\DomainModel\RenderingStarted;
+use phpDocumentor\DomainModel\Template;
+use phpDocumentor\DomainModel\TemplateFactory;
 
 /**
  * @coversDefaultClass phpDocumentor\Application\Commands\RenderHandler
