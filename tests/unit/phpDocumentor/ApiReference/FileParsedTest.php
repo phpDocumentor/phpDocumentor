@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\ApiReference;
 
-use phpDocumentor\DomainModel\Documentation\Api\FileParsed;
+use phpDocumentor\DomainModel\ApiFileParsed;
 
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\FileParsed
@@ -28,7 +28,7 @@ final class FileParsedTest extends \PHPUnit_Framework_TestCase
     {
         $filename = 'my_file';
 
-        $event = new FileParsed($filename);
+        $event = new ApiFileParsed($filename);
 
         $this->assertSame($filename, $event->filename());
     }

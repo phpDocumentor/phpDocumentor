@@ -13,6 +13,7 @@
 namespace phpDocumentor\Application\Commands;
 
 use Mockery as m;
+use phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptions;
 
 /**
  * @coversDefaultClass phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions

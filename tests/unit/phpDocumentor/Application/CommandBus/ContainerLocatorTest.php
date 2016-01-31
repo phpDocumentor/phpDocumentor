@@ -14,6 +14,7 @@ namespace phpDocumentor\Application\CommandBus;
 
 use Interop\Container\ContainerInterface;
 use Mockery as m;
+use phpDocumentor\Infrastructure\Tactician\ContainerLocator;
 
 /**
  * Tests the class responsible for passing command handlers from the DIC to the CommandBus.

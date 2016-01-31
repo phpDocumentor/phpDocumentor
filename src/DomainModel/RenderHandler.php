@@ -10,11 +10,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Commands;
+namespace phpDocumentor\DomainModel;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\DomainModel\Render;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Template;

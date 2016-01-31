@@ -18,8 +18,8 @@ use League\Flysystem\FilesystemInterface;
 use Mockery as m;
 use phpDocumentor\DomainModel\Documentation\Api\Definition;
 use phpDocumentor\DomainModel\Documentation\Api\Factory;
-use phpDocumentor\DomainModel\Documentation\Api\ParsingCompleted;
-use phpDocumentor\DomainModel\Documentation\Api\ParsingStarted;
+use phpDocumentor\DomainModel\ApiParsingCompleted;
+use phpDocumentor\DomainModel\ApiParsingStarted;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition as DocumentGroupDefinitionInterface;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\Reflection\Php\Project;
@@ -76,8 +76,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $definition = new Definition($format, $fileSystem, m::mock(SpecificationInterface::class));
 
         $this->projectFactory->shouldReceive('create')->andReturn(new Project('MyProject'));
-        $this->emitter->shouldReceive('emit')->once()->with(m::type(ParsingStarted::class));
-        $this->emitter->shouldReceive('emit')->once()->with(m::type(ParsingCompleted::class));
+        $this->emitter->shouldReceive('emit')->once()->with(m::type(ApiParsingStarted::class));
+        $this->emitter->shouldReceive('emit')->once()->with(m::type(ApiParsingCompleted::class));
 
         $api = $this->fixture->create($definition);
 

@@ -15,11 +15,11 @@ namespace phpDocumentor\Application\Cli\Command;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\DomainModel\Documentation\Api\Definition;
-use phpDocumentor\DomainModel\Documentation\Api\FileParsed;
-use phpDocumentor\DomainModel\Documentation\Api\ParsingStarted;
-use phpDocumentor\Application\Commands\ConfigureCache;
-use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
-use phpDocumentor\Application\Commands\Render;
+use phpDocumentor\DomainModel\ApiFileParsed;
+use phpDocumentor\DomainModel\ApiParsingStarted;
+use phpDocumentor\DomainModel\ConfigureCache;
+use phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptions;
+use phpDocumentor\DomainModel\Render;
 use phpDocumentor\DomainModel\DocumentationFactory;
 use phpDocumentor\DomainModel\DocumentationRepository;
 use phpDocumentor\DomainModel\Version\DefinitionRepository;
@@ -311,8 +311,8 @@ HELP
     private function attachListeners(InputInterface $input, OutputInterface $output)
     {
         $this->emitter->addListener(
-            ParsingStarted::class,
-            function (ParsingStarted $event) use ($output) {
+            ApiParsingStarted::class,
+            function (ApiParsingStarted $event) use ($output) {
                 /** @var Definition $definition */
                 $definition = $event->definition();
                 $output->writeln(
@@ -321,8 +321,8 @@ HELP
             }
         );
         $this->emitter->addListener(
-            FileParsed::class,
-            function (FileParsed $event) use ($output) {
+            ApiFileParsed::class,
+            function (ApiFileParsed $event) use ($output) {
                 $output->writeln(sprintf('  Parsed <info>%s</info>', (string)$event->filename()));
             }
         );

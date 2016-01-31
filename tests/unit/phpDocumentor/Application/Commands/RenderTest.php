@@ -14,6 +14,7 @@ namespace phpDocumentor\Application\Commands;
 
 use Mockery as m;
 use phpDocumentor\DomainModel\Documentation;
+use phpDocumentor\DomainModel\Render;
 use phpDocumentor\DomainModel\Version\Number;
 
 /**

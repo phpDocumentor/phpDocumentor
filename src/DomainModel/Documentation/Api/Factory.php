@@ -13,8 +13,8 @@ namespace phpDocumentor\DomainModel\Documentation\Api;
 
 use InvalidArgumentException;
 use League\Event\Emitter;
-use phpDocumentor\DomainModel\Documentation\Api\ParsingCompleted;
-use phpDocumentor\DomainModel\Documentation\Api\ParsingStarted;
+use phpDocumentor\DomainModel\ApiParsingCompleted;
+use phpDocumentor\DomainModel\ApiParsingStarted;
 use phpDocumentor\DomainModel\Documentation\Api\Api;
 use phpDocumentor\DomainModel\Documentation\Api\Definition;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup;
@@ -58,9 +58,9 @@ final class Factory implements DocumentGroupFactory
         }
 
         // TODO: Read title (My Project) from configuration
-        $this->emitter->emit(new ParsingStarted($definition));
+        $this->emitter->emit(new ApiParsingStarted($definition));
         $project = $this->projectFactory->create('My Project', $definition->getFiles());
-        $this->emitter->emit(new ParsingCompleted($definition));
+        $this->emitter->emit(new ApiParsingCompleted($definition));
 
         return new Api($definition->getFormat(), $project);
     }

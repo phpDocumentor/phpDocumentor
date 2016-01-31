@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Commands;
+namespace phpDocumentor\DomainModel;
 
 use phpDocumentor\DomainModel\Documentation;
 

@@ -10,7 +10,7 @@ use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use phpDocumentor\DomainModel\Documentation\Api;
 use phpDocumentor\Application\Cli\Command\ListCommand;
-use phpDocumentor\Application\CommandBus\ContainerLocator;
+use phpDocumentor\Infrastructure\Tactician\ContainerLocator;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Cli\Command\RunCommand;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;

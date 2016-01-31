@@ -10,9 +10,22 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application\Commands;
+namespace phpDocumentor\DomainModel;
 
-final class ConfigureCache
+use League\Event\AbstractEvent;
+
+final class ApiFileParsed extends AbstractEvent
 {
+    /** @var string */
+    private $filename;
 
+    public function __construct($filename)
+    {
+        $this->filename = $filename;
+    }
+
+    public function filename()
+    {
+        return $this->filename;
+    }
 }

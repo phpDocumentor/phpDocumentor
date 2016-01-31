@@ -3,7 +3,7 @@
 namespace phpDocumentor\Infrastructure\Reflection\Middleware;
 
 use League\Event\Emitter;
-use phpDocumentor\DomainModel\Documentation\Api\FileParsed;
+use phpDocumentor\DomainModel\ApiFileParsed;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 
@@ -32,7 +32,7 @@ class LoggingMiddleware implements Middleware
         $result = $next($command);
 
         if ($command instanceof CreateCommand) {
-            $this->emitter->emit(new FileParsed($command->getFile()->path()));
+            $this->emitter->emit(new ApiFileParsed($command->getFile()->path()));
         }
 
         return $result;

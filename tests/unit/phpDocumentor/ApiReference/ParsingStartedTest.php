@@ -16,7 +16,7 @@ use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\FilesystemInterface;
 use Mockery as m;
 use phpDocumentor\DomainModel\Documentation\Api\Definition;
-use phpDocumentor\DomainModel\Documentation\Api\ParsingStarted;
+use phpDocumentor\DomainModel\ApiParsingStarted;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 
 /**
@@ -37,7 +37,7 @@ final class ParsingStartedTest extends \PHPUnit_Framework_TestCase
             m::mock(SpecificationInterface::class)
         );
 
-        $event = new ParsingStarted($definition);
+        $event = new ApiParsingStarted($definition);
 
         $this->assertSame($definition, $event->definition());
     }
