@@ -12,8 +12,10 @@
 namespace phpDocumentor;
 
 use Mockery as m;
-use phpDocumentor\Project\Version\Definition as VersionDefinition;
-use phpDocumentor\Project\VersionNumber;
+use phpDocumentor\DomainModel\Documentation\DocumentGroupFactory;
+use phpDocumentor\DomainModel\DocumentationFactory;
+use phpDocumentor\DomainModel\Version\Definition as VersionDefinition;
+use phpDocumentor\DomainModel\VersionNumber;
 
 /**
  * Class DocumentationFactoryTest
@@ -58,7 +60,7 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testDocumentGroupFactoryIsCalled()
     {
-        $groupDefinition = new DummyDocumentGroupDefinition();
+        $groupDefinition = new DummyDefinition();
         $versionDefinition = new VersionDefinition(
             new VersionNumber('1.0.0'),
             array($groupDefinition)
@@ -91,7 +93,7 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $versionDefinition = new VersionDefinition(
             new VersionNumber('1.0.0'),
-            array(new DummyDocumentGroupDefinition())
+            array(new DummyDefinition())
         );
 
         $this->documentGroupFactoryMock

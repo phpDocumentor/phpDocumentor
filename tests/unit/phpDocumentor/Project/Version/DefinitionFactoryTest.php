@@ -12,8 +12,10 @@
 namespace phpDocumentor\Project\Version;
 
 use Mockery as m;
-use phpDocumentor\DocumentGroupDefinitionFactory;
-use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupDefinitionFactory;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Version\Definition;
+use phpDocumentor\DomainModel\Version\DefinitionFactory;
 
 /**
  * Test case for DefinitionFactory

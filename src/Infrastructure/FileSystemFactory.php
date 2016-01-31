@@ -13,7 +13,7 @@
 namespace phpDocumentor\Infrastructure;
 
 use League\Flysystem\Filesystem;
-use phpDocumentor\Dsn;
+use phpDocumentor\DomainModel\Dsn;
 
 /**
  * Interface for FileSystem factories.

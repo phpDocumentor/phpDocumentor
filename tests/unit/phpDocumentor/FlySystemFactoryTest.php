@@ -14,6 +14,7 @@ namespace phpDocumentor;
 
 use Flyfinder\Specification\InPath;
 use Mockery as m;
+use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 
 /**

@@ -13,7 +13,7 @@
 namespace phpDocumentor\Application\Configuration;
 
 use phpDocumentor\Application\Configuration\Factory\Strategy;
-use phpDocumentor\Uri;
+use phpDocumentor\DomainModel\Uri;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.

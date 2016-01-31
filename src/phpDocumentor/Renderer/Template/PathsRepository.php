@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Renderer\Template;
 
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Path;
 use phpDocumentor\Renderer\Template;
 
 final class PathsRepository implements PathsRepositoryInterface

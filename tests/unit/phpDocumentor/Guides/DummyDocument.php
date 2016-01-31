@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Guides;
 
+use phpDocumentor\DomainModel\Documentation\Guides\ContentType;
+use phpDocumentor\DomainModel\Documentation\Guides\Document;
+
 /**
  * Dummy class implementing Document
  */

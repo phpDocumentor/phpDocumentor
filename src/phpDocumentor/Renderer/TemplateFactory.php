@@ -1,7 +1,7 @@
 <?php
 namespace phpDocumentor\Renderer;
 
-use phpDocumentor\Uri;
+use phpDocumentor\DomainModel\Uri;
 
 /**
  * Creates a new Template based on an array with a Template definition.

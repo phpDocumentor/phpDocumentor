@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Guides;
 
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Path;
 
 /**
  * Test case for Document

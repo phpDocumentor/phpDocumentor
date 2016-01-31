@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\ApiReference;
 
+use phpDocumentor\DomainModel\Documentation\Api\FileParsed;
+
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\FileParsed
  * @covers ::<private>

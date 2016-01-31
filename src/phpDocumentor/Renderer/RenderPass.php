@@ -3,8 +3,8 @@
 namespace phpDocumentor\Renderer;
 
 use League\Flysystem\Filesystem;
-use phpDocumentor\Documentation;
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Documentation;
+use phpDocumentor\DomainModel\Path;
 
 class RenderPass
 {

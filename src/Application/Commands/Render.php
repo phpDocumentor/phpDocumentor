@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Application\Commands;
 
-use phpDocumentor\Documentation;
+use phpDocumentor\DomainModel\Documentation;
 
 final class Render
 {

@@ -14,15 +14,15 @@ namespace phpDocumentor\Application\Cli\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
-use phpDocumentor\ApiReference\DocumentGroupDefinition;
-use phpDocumentor\ApiReference\FileParsed;
-use phpDocumentor\ApiReference\ParsingStarted;
+use phpDocumentor\DomainModel\Documentation\Api\Definition;
+use phpDocumentor\DomainModel\Documentation\Api\FileParsed;
+use phpDocumentor\DomainModel\Documentation\Api\ParsingStarted;
 use phpDocumentor\Application\Commands\ConfigureCache;
 use phpDocumentor\Application\Commands\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\Application\Commands\Render;
-use phpDocumentor\DocumentationFactory;
-use phpDocumentor\DocumentationRepository;
-use phpDocumentor\Project\Version\DefinitionRepository;
+use phpDocumentor\DomainModel\DocumentationFactory;
+use phpDocumentor\DomainModel\DocumentationRepository;
+use phpDocumentor\DomainModel\Version\DefinitionRepository;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Renderer\RenderingFinished;
 use phpDocumentor\Renderer\RenderingStarted;
@@ -313,7 +313,7 @@ HELP
         $this->emitter->addListener(
             ParsingStarted::class,
             function (ParsingStarted $event) use ($output) {
-                /** @var DocumentGroupDefinition $definition */
+                /** @var Definition $definition */
                 $definition = $event->definition();
                 $output->writeln(
                     sprintf('Parsing <info>%d</info> files', count($definition->getFiles()))

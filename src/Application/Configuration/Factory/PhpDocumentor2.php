@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
-use phpDocumentor\Dsn;
+use phpDocumentor\DomainModel\Dsn;
 
 /**
  * phpDocumentor2 strategy for converting the configuration xml to an array.

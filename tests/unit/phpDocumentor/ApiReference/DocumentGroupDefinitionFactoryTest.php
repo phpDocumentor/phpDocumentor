@@ -15,7 +15,8 @@ namespace phpDocumentor\ApiReference;
 use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\Filesystem;
 use Mockery as m;
-use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Documentation\Api\DocumentGroupDefinitionFactory;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\SpecificationFactory;
 

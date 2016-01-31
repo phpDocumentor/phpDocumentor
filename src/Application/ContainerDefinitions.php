@@ -8,7 +8,7 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
-use phpDocumentor\ApiReference\DocumentGroupDefinitionFactory;
+use phpDocumentor\DomainModel\Documentation\Api\DocumentGroupDefinitionFactory;
 use phpDocumentor\Application\Cli\Command\ListCommand;
 use phpDocumentor\Application\CommandBus\ContainerLocator;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
@@ -17,13 +17,13 @@ use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
-use phpDocumentor\DocumentationFactory;
-use phpDocumentor\DocumentationRepository;
+use phpDocumentor\DomainModel\DocumentationFactory;
+use phpDocumentor\DomainModel\DocumentationRepository;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
-use phpDocumentor\Project\Version\DefinitionFactory;
-use phpDocumentor\Project\Version\DefinitionRepository;
+use phpDocumentor\DomainModel\Version\DefinitionFactory;
+use phpDocumentor\DomainModel\Version\DefinitionRepository;
 use phpDocumentor\Reflection\ProjectFactory as ProjectFactoryInterface;
 use phpDocumentor\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -53,7 +53,7 @@ use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
 use phpDocumentor\Infrastructure\SpecificationFactory;
-use phpDocumentor\Uri;
+use phpDocumentor\DomainModel\Uri;
 use phpDocumentor\Views\MapperFactory;
 use phpDocumentor\Views\MapperFactory\Container;
 use phpDocumentor\Views\Mappers\Project;
@@ -157,11 +157,11 @@ return [
     //Definition Factories
     DocumentGroupDefinitionFactory::class => \DI\object(DocumentGroupDefinitionFactory::class),
     DefinitionFactory::class => function (ContainerInterface $c) {
-        $factory = new \phpDocumentor\Project\Version\DefinitionFactory();
+        $factory = new \phpDocumentor\DomainModel\Version\DefinitionFactory();
 
         $factory->registerDocumentGroupDefinitionFactory(
             'api',
-            new \phpDocumentor\DocumentGroupFormat('php'),
+            new \phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat('php'),
             $c->get(DocumentGroupDefinitionFactory::class)
         );
 
@@ -172,7 +172,7 @@ return [
     // Documentation Repositories
     DocumentationRepository::class => \DI\object(DocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
-        ->method('addDocumentGroupFactory', \DI\get(phpDocumentor\ApiReference\Factory::class)),
+        ->method('addDocumentGroupFactory', \DI\get(\phpDocumentor\DomainModel\Documentation\Api\Factory::class)),
 
     //ApiReference
     ProjectFactoryInterface::class => function (ContainerInterface $c) {

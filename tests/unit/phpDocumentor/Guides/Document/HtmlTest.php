@@ -11,8 +11,9 @@
 
 namespace phpDocumentor\Guides\Document;
 
-use phpDocumentor\Guides\ContentType;
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Documentation\Guides\ContentType;
+use phpDocumentor\DomainModel\Documentation\Guides\Document\Html;
+use phpDocumentor\DomainModel\Path;
 
 /**
  * Test case for Html

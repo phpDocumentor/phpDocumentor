@@ -13,7 +13,10 @@ namespace phpDocumentor\Project\Version;
 
 use Mockery as m;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
-use phpDocumentor\Project\VersionNumber;
+use phpDocumentor\DomainModel\Version\Definition;
+use phpDocumentor\DomainModel\Version\DefinitionFactory;
+use phpDocumentor\DomainModel\Version\DefinitionRepository;
+use phpDocumentor\DomainModel\VersionNumber;
 
 /**
  * Test case for DefinitionRepository

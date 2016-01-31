@@ -15,7 +15,9 @@ namespace phpDocumentor\ApiReference;
 use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\FilesystemInterface;
 use Mockery as m;
-use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Documentation\Api\Definition;
+use phpDocumentor\DomainModel\Documentation\Api\ParsingCompleted;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 
 /**
  * @coversDefaultClass phpDocumentor\ApiReference\ParsingCompleted
@@ -29,7 +31,7 @@ final class ParsingCompletedTest extends \PHPUnit_Framework_TestCase
      */
     public function testApiDocumentGroupDefinitionIsPassedToEvent()
     {
-        $definition = new DocumentGroupDefinition(
+        $definition = new Definition(
             new DocumentGroupFormat('php'),
             m::mock(FilesystemInterface::class),
             m::mock(SpecificationInterface::class)

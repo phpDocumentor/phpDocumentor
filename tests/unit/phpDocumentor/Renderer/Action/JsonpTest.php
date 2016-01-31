@@ -2,7 +2,7 @@
 
 namespace phpDocumentor\Renderer\Action;
 
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Path;
 use phpDocumentor\Renderer\RenderPass;
 use Mockery as m;
 use phpDocumentor\Renderer\Template\Parameter;

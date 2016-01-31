@@ -13,8 +13,8 @@
 namespace phpDocumentor\Application\Commands;
 
 use Mockery as m;
-use phpDocumentor\Documentation;
-use phpDocumentor\Project\VersionNumber;
+use phpDocumentor\DomainModel\Documentation;
+use phpDocumentor\DomainModel\VersionNumber;
 
 /**
  * @coversDefaultClass phpDocumentor\Application\Commands\Render

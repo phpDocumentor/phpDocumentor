@@ -11,6 +11,9 @@
 
 namespace phpDocumentor;
 
+use phpDocumentor\DomainModel\Documentation\DocumentGroup;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
+
 /**
  * Dummy class for test purpose only
  */

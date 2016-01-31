@@ -17,7 +17,7 @@ use \LogicException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
-use phpDocumentor\Dsn;
+use phpDocumentor\DomainModel\Dsn;
 
 /**
  * Class FilesystemFactory

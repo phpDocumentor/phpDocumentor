@@ -12,6 +12,8 @@
 
 namespace phpDocumentor;
 
+use phpDocumentor\DomainModel\Dsn;
+
 /**
  * Class DsnTest
  * @coversDefaultClass phpDocumentor\Dsn

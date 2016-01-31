@@ -3,7 +3,7 @@
 namespace phpDocumentor\Reflection\Middleware;
 
 use League\Event\Emitter;
-use phpDocumentor\ApiReference\FileParsed;
+use phpDocumentor\DomainModel\Documentation\Api\FileParsed;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 
 class LoggingMiddleware implements Middleware

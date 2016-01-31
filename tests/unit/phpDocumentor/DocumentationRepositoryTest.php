@@ -12,7 +12,9 @@
 namespace phpDocumentor;
 
 use Mockery as m;
-use phpDocumentor\Project\VersionNumber;
+use phpDocumentor\DomainModel\Documentation;
+use phpDocumentor\DomainModel\DocumentationRepository;
+use phpDocumentor\DomainModel\VersionNumber;
 use Stash\Pool;
 
 /**

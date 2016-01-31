@@ -12,7 +12,8 @@
 namespace phpDocumentor\ApiReference;
 
 use Mockery as m;
-use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Documentation\Api\Api;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\Reflection\Element;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Project;

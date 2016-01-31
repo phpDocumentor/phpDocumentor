@@ -14,7 +14,7 @@ namespace phpDocumentor\Renderer\Template;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Path;
 use phpDocumentor\Renderer\Template;
 
 /**

@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Renderer\Action;
 
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Path;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\RenderPass;
 use phpDocumentor\Renderer\Template;

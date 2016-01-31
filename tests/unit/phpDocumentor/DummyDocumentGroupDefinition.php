@@ -11,9 +11,11 @@
 
 namespace phpDocumentor;
 
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition;
+
 /**
  * Dummy class for test purpose only
  */
-class DummyDocumentGroupDefinition implements DocumentGroupDefinition
+class DummyDefinition implements Definition
 {
 }

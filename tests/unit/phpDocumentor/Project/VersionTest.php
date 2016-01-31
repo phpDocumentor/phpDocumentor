@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Project;
 
+use phpDocumentor\DomainModel\Version;
+use phpDocumentor\DomainModel\VersionNumber;
+
 /**
  * Testcase for Version
  * @coversDefaultClass phpDocumentor\Project\Version

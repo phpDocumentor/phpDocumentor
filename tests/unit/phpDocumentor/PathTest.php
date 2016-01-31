@@ -11,6 +11,8 @@
 
 namespace phpDocumentor;
 
+use phpDocumentor\DomainModel\Path;
+
 /**
  * Test case for Path
  * @coversDefaultClass phpDocumentor\Path

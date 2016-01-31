@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Renderer;
 
-use phpDocumentor\Uri;
+use phpDocumentor\DomainModel\Uri;
 use Webmozart\Assert\Assert;
 use phpDocumentor\Renderer\Template\Parameter;
 

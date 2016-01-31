@@ -16,8 +16,12 @@ use Flyfinder\Specification\SpecificationInterface;
 use League\Event\Emitter;
 use League\Flysystem\FilesystemInterface;
 use Mockery as m;
-use phpDocumentor\DocumentGroupDefinition as DocumentGroupDefinitionInterface;
-use phpDocumentor\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Documentation\Api\Definition;
+use phpDocumentor\DomainModel\Documentation\Api\Factory;
+use phpDocumentor\DomainModel\Documentation\Api\ParsingCompleted;
+use phpDocumentor\DomainModel\Documentation\Api\ParsingStarted;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition as DocumentGroupDefinitionInterface;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
 
@@ -53,7 +57,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->fixture->matches(m::mock(DocumentGroupDefinitionInterface::class)));
         $this->assertTrue($this->fixture->matches(
-            new DocumentGroupDefinition(
+            new Definition(
                 new DocumentGroupFormat('php'),
                 m::mock(FilesystemInterface::class),
                 m::mock(SpecificationInterface::class)
@@ -69,7 +73,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $fileSystem = m::mock(FilesystemInterface::class);
         $fileSystem->shouldReceive('find')->andReturn([]);
         $format = new DocumentGroupFormat('php');
-        $definition = new DocumentGroupDefinition($format, $fileSystem, m::mock(SpecificationInterface::class));
+        $definition = new Definition($format, $fileSystem, m::mock(SpecificationInterface::class));
 
         $this->projectFactory->shouldReceive('create')->andReturn(new Project('MyProject'));
         $this->emitter->shouldReceive('emit')->once()->with(m::type(ParsingStarted::class));
@@ -87,6 +91,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(\InvalidArgumentException::class);
 
-        $this->fixture->create(m::mock(\phpDocumentor\DocumentGroupDefinition::class));
+        $this->fixture->create(m::mock(\phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition::class));
     }
 }

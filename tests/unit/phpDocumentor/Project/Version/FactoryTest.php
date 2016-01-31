@@ -11,8 +11,10 @@
 
 namespace phpDocumentor\Project\Version;
 
-use phpDocumentor\Project\VersionNumber;
-use phpDocumentor\Project\Version;
+use phpDocumentor\DomainModel\Version\Definition;
+use phpDocumentor\DomainModel\Version\Factory;
+use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version;
 
 /**
  * Test case for Factory

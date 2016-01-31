@@ -15,7 +15,7 @@ namespace phpDocumentor\Application\Commands;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration;
-use phpDocumentor\Uri;
+use phpDocumentor\DomainModel\Uri;
 
 final class MergeConfigurationWithCommandLineOptionsHandler
 {

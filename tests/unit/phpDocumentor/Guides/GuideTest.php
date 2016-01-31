@@ -12,8 +12,9 @@
 namespace phpDocumentor\Guides;
 
 use Mockery as m;
-use phpDocumentor\DocumentGroupFormat;
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Documentation\Guides\Guide;
+use phpDocumentor\DomainModel\Path;
 
 /**
  * Test case for Guide

@@ -12,6 +12,8 @@
 
 namespace phpDocumentor;
 
+use phpDocumentor\DomainModel\Uri;
+
 /**
  * Test case for Uri
  *

@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
-use phpDocumentor\Path;
+use phpDocumentor\DomainModel\Path;
 
 final class CommandlineOptionsMiddleware
 {
