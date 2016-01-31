@@ -11,12 +11,12 @@
 
 namespace phpDocumentor\DomainModel\Version;
 
-use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupDefinitionFactory;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition\Factory;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Version\Definition;
 use phpDocumentor\Exception;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition as DocumentGroupDefinition;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * Factory for Version definition.
@@ -25,7 +25,7 @@ use phpDocumentor\DomainModel\VersionNumber;
 class DefinitionFactory implements \phpDocumentor\DefinitionFactory
 {
     /**
-     * @var DocumentGroupDefinitionFactory[]
+     * @var Factory[]
      */
     private $documentGroupDefinitionFactories;
 
@@ -40,7 +40,7 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
         $documentGroups = $this->createDocumentGroupDefinitions($options);
 
         return new Definition(
-            new VersionNumber($options['version']),
+            new Number($options['version']),
             $documentGroups
         );
     }
@@ -70,7 +70,8 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
     /**
      * @param string $type
      * @param string $format
-     * @return DocumentGroupDefinitionFactory
+     *
+*@return Factory
      * @throws Exception
      */
     private function findFactory($type, $format)
@@ -93,12 +94,12 @@ class DefinitionFactory implements \phpDocumentor\DefinitionFactory
      *
      * @param string $type
      * @param DocumentGroupFormat $format
-     * @param DocumentGroupDefinitionFactory $factory
+     * @param Factory $factory
      */
     public function registerDocumentGroupDefinitionFactory(
         $type,
         DocumentGroupFormat $format,
-        DocumentGroupDefinitionFactory $factory
+        Factory $factory
     ) {
         $this->documentGroupDefinitionFactories[$type][(string)$format] = $factory;
     }

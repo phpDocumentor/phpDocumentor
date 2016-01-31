@@ -15,7 +15,7 @@ namespace phpDocumentor\ApiReference;
 use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\Filesystem;
 use Mockery as m;
-use phpDocumentor\DomainModel\Documentation\Api\DocumentGroupDefinitionFactory;
+use phpDocumentor\DomainModel\Documentation\Api\Factory;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\SpecificationFactory;
@@ -27,7 +27,7 @@ use phpDocumentor\Infrastructure\SpecificationFactory;
 final class DocumentGroupDefinitionFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var DocumentGroupDefinitionFactory
+     * @var Factory
      */
     private $fixture;
 
@@ -45,7 +45,7 @@ final class DocumentGroupDefinitionFactoryTest extends \PHPUnit_Framework_TestCa
     {
         $this->fileSystemFactoryMock = m::mock(FileSystemFactory::class);
         $this->specificationFactoryMock = m::mock(SpecificationFactory::class);
-        $this->fixture = new DocumentGroupDefinitionFactory(
+        $this->fixture = new Factory(
             $this->fileSystemFactoryMock,
             $this->specificationFactoryMock
         );

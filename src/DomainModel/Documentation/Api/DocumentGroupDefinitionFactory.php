@@ -13,7 +13,7 @@
 namespace phpDocumentor\DomainModel\Documentation\Api;
 
 use phpDocumentor\DomainModel\Documentation\Api\Definition;
-use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupDefinitionFactory as DocumentGroupDefinitionFactoryInterface;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition\Factory as DocumentGroupDefinitionFactoryInterface;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\Infrastructure\FileSystemFactory;

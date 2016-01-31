@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Commands;
 
 use Mockery as m;
 use phpDocumentor\DomainModel\Documentation;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * @coversDefaultClass phpDocumentor\Application\Commands\Render
@@ -29,7 +29,7 @@ final class RenderTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfCommandIsProperlyCreatedAndReturnsParameters()
     {
-        $documentation = new Documentation(new VersionNumber('1.0'));
+        $documentation = new Documentation(new Number('1.0'));
         $target = '.';
         $templates = ['template'];
 

@@ -14,7 +14,7 @@ namespace phpDocumentor;
 use Mockery as m;
 use phpDocumentor\DomainModel\Documentation;
 use phpDocumentor\DomainModel\DocumentationRepository;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 use Stash\Pool;
 
 /**
@@ -54,14 +54,14 @@ class DocumentationRepositoryTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->andReturn(false);
 
-        $documentation = new Documentation(new VersionNumber('1.0.0'));
+        $documentation = new Documentation(new Number('1.0.0'));
         $this->cacheMock->shouldReceive('getItem->get')
             ->once()
             ->andReturn($documentation);
 
         $this->assertSame(
             $documentation,
-            $this->fixture->findByVersionNumber(new VersionNumber('1.0.0'))
+            $this->fixture->findByVersionNumber(new Number('1.0.0'))
         );
     }
 
@@ -82,7 +82,7 @@ class DocumentationRepositoryTest extends \PHPUnit_Framework_TestCase
             ->andReturn(true);
 
         $this->assertNull(
-            $this->fixture->findByVersionNumber(new VersionNumber('1.0.1'))
+            $this->fixture->findByVersionNumber(new Number('1.0.1'))
         );
     }
 
@@ -93,7 +93,7 @@ class DocumentationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSave()
     {
-        $documentation = new Documentation(new VersionNumber('1.0.2'));
+        $documentation = new Documentation(new Number('1.0.2'));
 
         $this->cacheMock->shouldReceive('getItem')
             ->once()

@@ -15,7 +15,7 @@ use Mockery as m;
 use phpDocumentor\DomainModel\Documentation\DocumentGroupFactory;
 use phpDocumentor\DomainModel\DocumentationFactory;
 use phpDocumentor\DomainModel\Version\Definition as VersionDefinition;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * Class DocumentationFactoryTest
@@ -46,11 +46,11 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testMinimalDocumentationCreation()
     {
-        $versionDefinition = new VersionDefinition(new VersionNumber('1.0.0'));
+        $versionDefinition = new VersionDefinition(new Number('1.0.0'));
 
         $documentation = $this->fixture->create($versionDefinition);
 
-        $this->assertEquals(new VersionNumber('1.0.0'), $documentation->getVersionNumber());
+        $this->assertEquals(new Number('1.0.0'), $documentation->getVersionNumber());
     }
 
     /**
@@ -62,7 +62,7 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $groupDefinition = new DummyDefinition();
         $versionDefinition = new VersionDefinition(
-            new VersionNumber('1.0.0'),
+            new Number('1.0.0'),
             array($groupDefinition)
         );
 
@@ -79,7 +79,7 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fixture->addDocumentGroupFactory($this->documentGroupFactoryMock);
         $documentation = $this->fixture->create($versionDefinition);
 
-        $this->assertEquals(new VersionNumber('1.0.0'), $documentation->getVersionNumber());
+        $this->assertEquals(new Number('1.0.0'), $documentation->getVersionNumber());
         $this->assertCount(1, $documentation->getDocumentGroups());
     }
 
@@ -92,7 +92,7 @@ class DocumentationFactoryTest extends \PHPUnit_Framework_TestCase
     public function testDocumentGroupFactoryShouldHaveMatch()
     {
         $versionDefinition = new VersionDefinition(
-            new VersionNumber('1.0.0'),
+            new Number('1.0.0'),
             array(new DummyDefinition())
         );
 

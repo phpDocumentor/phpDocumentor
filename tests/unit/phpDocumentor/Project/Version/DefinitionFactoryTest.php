@@ -12,7 +12,7 @@
 namespace phpDocumentor\Project\Version;
 
 use Mockery as m;
-use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupDefinitionFactory;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition\Factory;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Version\Definition;
 use phpDocumentor\DomainModel\Version\DefinitionFactory;
@@ -37,7 +37,7 @@ class DefinitionFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->apiPHPDocumentGroupDefinitionFactoryMock = m::mock(DocumentGroupDefinitionFactory::class);
+        $this->apiPHPDocumentGroupDefinitionFactoryMock = m::mock(Factory::class);
 
         $this->fixture = new DefinitionFactory();
         $this->fixture->registerDocumentGroupDefinitionFactory(

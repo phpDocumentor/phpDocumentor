@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\DomainModel;
 
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * Version Entity
@@ -21,16 +21,16 @@ final class Version
     /**
      * number of this version.
      *
-     * @var VersionNumber
+     * @var Number
      */
     private $versionNumber;
 
     /**
      * Initializes the object.
      *
-     * @param VersionNumber $versionNumber
+     * @param Number $versionNumber
      */
-    public function __construct(VersionNumber $versionNumber)
+    public function __construct(Number $versionNumber)
     {
         $this->versionNumber = $versionNumber;
     }
@@ -38,7 +38,7 @@ final class Version
     /**
      * Return number of this version.
      *
-     * @return VersionNumber
+     * @return Number
      */
     public function getVersionNumber()
     {

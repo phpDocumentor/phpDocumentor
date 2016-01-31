@@ -16,7 +16,7 @@ use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\DomainModel\Version\Definition;
 use phpDocumentor\DomainModel\Version\DefinitionFactory;
 use phpDocumentor\DomainModel\Version\DefinitionRepository;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * Test case for DefinitionRepository
@@ -71,7 +71,7 @@ class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->definitionFactoryMock->shouldReceive('create')
             ->once()
             ->with(['version' => '1.0.0', 'api' => []])
-            ->andReturn(new Definition(new VersionNumber(null)));
+            ->andReturn(new Definition(new Number(null)));
         $this->assertInstanceOf(Definition::class, $this->fixture->fetch('1.0.0'));
     }
 
@@ -79,7 +79,7 @@ class DefinitionRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->definitionFactoryMock->shouldReceive('create')
             ->times(2)
-            ->andReturn(new Definition(new VersionNumber(null)));
+            ->andReturn(new Definition(new Number(null)));
 
         $definitions = $this->fixture->fetchAll();
         $this->assertCount(2, $definitions);

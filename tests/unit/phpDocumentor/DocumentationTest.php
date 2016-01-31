@@ -12,7 +12,7 @@
 namespace phpDocumentor;
 
 use phpDocumentor\DomainModel\Documentation;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * Test case for Documentation class.
@@ -30,8 +30,8 @@ final class DocumentationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetVersion()
     {
-        $documentation = new Documentation(new VersionNumber('1.0.0'));
-        $this->assertEquals(new VersionNumber('1.0.0'), $documentation->getVersionNumber());
+        $documentation = new Documentation(new Number('1.0.0'));
+        $this->assertEquals(new Number('1.0.0'), $documentation->getVersionNumber());
         $this->assertInternalType('array', $documentation->getDocumentGroups());
     }
 
@@ -43,8 +43,8 @@ final class DocumentationTest extends \PHPUnit_Framework_TestCase
     public function testGetDocumentGroups()
     {
         $documentGroups = array('dummy');
-        $documentation = new Documentation(new VersionNumber('1.0.0'), $documentGroups);
-        $this->assertEquals(new VersionNumber('1.0.0'), $documentation->getVersionNumber());
+        $documentation = new Documentation(new Number('1.0.0'), $documentGroups);
+        $this->assertEquals(new Number('1.0.0'), $documentation->getVersionNumber());
         $this->assertEquals($documentGroups, $documentation->getDocumentGroups());
     }
 }

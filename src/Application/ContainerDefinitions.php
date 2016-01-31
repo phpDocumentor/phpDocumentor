@@ -8,7 +8,7 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
-use phpDocumentor\DomainModel\Documentation\Api\DocumentGroupDefinitionFactory;
+use phpDocumentor\DomainModel\Documentation\Api;
 use phpDocumentor\Application\Cli\Command\ListCommand;
 use phpDocumentor\Application\CommandBus\ContainerLocator;
 use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
@@ -17,6 +17,7 @@ use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
+use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\DocumentationFactory;
 use phpDocumentor\DomainModel\DocumentationRepository;
 use phpDocumentor\Infrastructure\FileSystemFactory;
@@ -40,7 +41,6 @@ use phpDocumentor\Reflection\Php\Factory\Method;
 use phpDocumentor\Reflection\Php\Factory\Property;
 use phpDocumentor\Reflection\Php\Factory\Trait_;
 use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\Reflection\PrettyPrinter;
 use phpDocumentor\Renderer\Action\TwigHandler;
 use phpDocumentor\Renderer\Action\XmlHandler;
 use phpDocumentor\Renderer\Action\XslHandler;
@@ -49,7 +49,6 @@ use phpDocumentor\Renderer\Template\PathsRepository;
 use phpDocumentor\Renderer\TemplateFactory;
 use phpDocumentor\Renderer\XmlTemplateFactory;
 use phpDocumentor\Renderer\Template\PathsRepositoryInterface;
-use phpDocumentor\Renderer\Router\ExternalRouter;
 use phpDocumentor\Renderer\Router\Queue;
 use phpDocumentor\Renderer\Router\StandardRouter;
 use phpDocumentor\Infrastructure\SpecificationFactory;
@@ -155,14 +154,13 @@ return [
     TranslatorInterface::class => \DI\object(IdentityTranslator::class),
 
     //Definition Factories
-    DocumentGroupDefinitionFactory::class => \DI\object(DocumentGroupDefinitionFactory::class),
     DefinitionFactory::class => function (ContainerInterface $c) {
         $factory = new \phpDocumentor\DomainModel\Version\DefinitionFactory();
 
         $factory->registerDocumentGroupDefinitionFactory(
             'api',
-            new \phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat('php'),
-            $c->get(DocumentGroupDefinitionFactory::class)
+            new DocumentGroupFormat('php'),
+            $c->get(Api\DocumentGroupDefinitionFactory::class)
         );
 
         return $factory;
@@ -172,7 +170,7 @@ return [
     // Documentation Repositories
     DocumentationRepository::class => \DI\object(DocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
-        ->method('addDocumentGroupFactory', \DI\get(\phpDocumentor\DomainModel\Documentation\Api\Factory::class)),
+        ->method('addDocumentGroupFactory', \DI\get(Api\Factory::class)),
 
     //ApiReference
     ProjectFactoryInterface::class => function (ContainerInterface $c) {

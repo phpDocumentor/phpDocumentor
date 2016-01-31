@@ -13,7 +13,7 @@ namespace phpDocumentor\Project\Version;
 
 use phpDocumentor\DomainModel\Version\Definition;
 use phpDocumentor\DomainModel\Version\Factory;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 use phpDocumentor\DomainModel\Version;
 
 /**
@@ -37,10 +37,10 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate()
     {
-        $versionDefinition = new Definition(new VersionNumber('1.0.0'));
+        $versionDefinition = new Definition(new Number('1.0.0'));
         $version = $this->fixture->create($versionDefinition);
 
         $this->assertInstanceOf(Version::class, $version);
-        $this->assertEquals(new Version(new VersionNumber('1.0.0')), $version);
+        $this->assertEquals(new Version(new Number('1.0.0')), $version);
     }
 }

@@ -9,12 +9,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\DomainModel\Version;
 
 /**
  * A value object for versionNumbers
  */
-final class VersionNumber
+final class Number
 {
     /**
      * String containing the version this object represents

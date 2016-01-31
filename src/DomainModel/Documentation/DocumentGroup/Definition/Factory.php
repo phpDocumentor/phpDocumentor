@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel\Documentation\DocumentGroup;
+namespace phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition;
 
 use phpDocumentor\DefinitionFactory;
 
@@ -17,7 +17,7 @@ use phpDocumentor\DefinitionFactory;
  * Interface for factories creating DocumentGroupDefinitions.
  * These factories shall be registered on phpDocumentor\Project\Version\DefinitionFactory
  */
-interface DocumentGroupDefinitionFactory extends DefinitionFactory
+interface Factory extends DefinitionFactory
 {
 
 }

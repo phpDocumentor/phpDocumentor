@@ -12,7 +12,7 @@
 namespace phpDocumentor\DomainModel;
 
 use phpDocumentor\DomainModel\Documentation;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 use Stash\Pool;
 
 /**
@@ -45,10 +45,11 @@ final class DocumentationRepository
     /**
      * Find documentation by versionNumber.
      *
-     * @param VersionNumber $versionNumber
-     * @return Documentation|null
+     * @param Number $versionNumber
+     *
+*@return Documentation|null
      */
-    public function findByVersionNumber(VersionNumber $versionNumber)
+    public function findByVersionNumber(Number $versionNumber)
     {
         $item = $this->dataStore->getItem($this->getItemName($versionNumber));
 
@@ -74,10 +75,11 @@ final class DocumentationRepository
     /**
      * Convert VersionObject to item name.
      *
-     * @param VersionNumber $versionNumber
-     * @return string
+     * @param Number $versionNumber
+     *
+*@return string
      */
-    private function getItemName(VersionNumber $versionNumber)
+    private function getItemName(Number $versionNumber)
     {
         return static::CACHE_NAMESPACE . '\\' . $versionNumber;
     }

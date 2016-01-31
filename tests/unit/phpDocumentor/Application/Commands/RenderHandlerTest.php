@@ -19,7 +19,7 @@ use League\Tactician\CommandBus;
 use Mockery as m;
 use phpDocumentor\DomainModel\Documentation;
 use phpDocumentor\Infrastructure\FileSystemFactory;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 use phpDocumentor\Renderer\Action;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Renderer\RenderingFinished;
@@ -64,7 +64,7 @@ final class RenderHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIfTemplateActionsAreExecutedWhenRenderingATemplate()
     {
-        $documentation = new Documentation(new VersionNumber('1.0'));
+        $documentation = new Documentation(new Number('1.0'));
         $target = '.';
         $templates = ['template'];
         $renderActionCommand = m::mock(Action::class);
@@ -92,7 +92,7 @@ final class RenderHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(\InvalidArgumentException::class, 'The template "template" could not be found');
 
-        $documentation = new Documentation(new VersionNumber('1.0'));
+        $documentation = new Documentation(new Number('1.0'));
         $target = '.';
         $templates = ['template'];
 

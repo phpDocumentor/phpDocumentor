@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Project;
 
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * Test case for VersionNumber
@@ -25,7 +25,7 @@ class VersionNumberTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetVersion()
     {
-        $versionNumber = new VersionNumber('1.0.0');
+        $versionNumber = new Number('1.0.0');
         $this->assertSame('1.0.0', $versionNumber->getVersion());
     }
 }

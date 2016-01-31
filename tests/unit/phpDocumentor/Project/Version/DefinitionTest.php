@@ -12,7 +12,7 @@
 namespace phpDocumentor\Project\Version;
 
 use phpDocumentor\DomainModel\Version\Definition;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * @coversDefaultClass phpDocumentor\Project\Version\Definition
@@ -24,8 +24,8 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testVersionNumber()
     {
-        $definition = new Definition(new VersionNumber('1.0.1'));
+        $definition = new Definition(new Number('1.0.1'));
 
-        $this->assertEquals(new VersionNumber('1.0.1'), $definition->getVersionNumber());
+        $this->assertEquals(new Number('1.0.1'), $definition->getVersionNumber());
     }
 }

@@ -13,7 +13,7 @@
 namespace phpDocumentor\DomainModel;
 
 use phpDocumentor\DomainModel\Documentation\DocumentGroup;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * Documentation class containing one or more DocumentGroups.
@@ -23,7 +23,7 @@ final class Documentation
     /**
      * Version number of the documentation.
      *
-     * @var VersionNumber
+     * @var Number
      */
     private $versionNumber;
 
@@ -37,10 +37,10 @@ final class Documentation
     /**
      * Initializes the documentation object.
      *
-     * @param VersionNumber $versionNumber
+     * @param Number $versionNumber
      * @param DocumentGroup[] $documentGroups
      */
-    public function __construct(VersionNumber $versionNumber, array $documentGroups = array())
+    public function __construct(Number $versionNumber, array $documentGroups = array())
     {
         $this->versionNumber = $versionNumber;
         $this->documentGroups = $documentGroups;
@@ -49,7 +49,7 @@ final class Documentation
     /**
      * Returns the versionNumber of the documentation.
      *
-     * @return VersionNumber
+     * @return Number
      */
     public function getVersionNumber()
     {

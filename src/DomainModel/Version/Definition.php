@@ -13,14 +13,14 @@ namespace phpDocumentor\DomainModel\Version;
 
 use phpDocumentor\Definition as DefinitionInterface;
 use phpDocumentor\DomainModel\Documentation\DocumentGroup\Definition as DocumentGroupDefinition;
-use phpDocumentor\DomainModel\VersionNumber;
+use phpDocumentor\DomainModel\Version\Number;
 
 /**
  * An aggregate of documentGroupDefinitions that belong to a version.
  */
 final class Definition implements DefinitionInterface
 {
-    /** @var VersionNumber */
+    /** @var Number */
     private $versionNumber;
 
     /** @var DocumentGroupDefinition[] */
@@ -29,10 +29,10 @@ final class Definition implements DefinitionInterface
     /**
      * Initializes the object with passed values.
      *
-     * @param VersionNumber $versionNumber
+     * @param Number $versionNumber
      * @param DocumentGroupDefinition[] $documentGroupDefinition
      */
-    public function __construct(VersionNumber $versionNumber, array $documentGroupDefinition = array())
+    public function __construct(Number $versionNumber, array $documentGroupDefinition = array())
     {
         $this->versionNumber = $versionNumber;
         $this->documentGroupDefinitions = $documentGroupDefinition;
@@ -51,7 +51,7 @@ final class Definition implements DefinitionInterface
     /**
      * Returns the VersionNumber of this version definition.
      *
-     * @return VersionNumber
+     * @return Number
      */
     public function getVersionNumber()
     {
