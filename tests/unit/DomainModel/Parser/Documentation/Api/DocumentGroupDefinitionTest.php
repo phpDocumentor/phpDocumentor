@@ -19,7 +19,7 @@ use phpDocumentor\DomainModel\Parser\Documentation\Api\Definition;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 
 /**
- * @coversDefaultClass \phpDocumentor\DomainModel\Parser\Documentation\Api\DocumentGroupDefinition
+ * @coversDefaultClass phpDocumentor\DomainModel\Parser\Documentation\Api\Definition
  * @covers ::__construct
  */
 class DocumentGroupDefinitionTest extends \PHPUnit_Framework_TestCase

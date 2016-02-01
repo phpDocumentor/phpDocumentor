@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Php\Project;
 
 /**
  * Test case for Api
- * @coversDefaultClass phpDocumentor\DomainModel\Documentation\Parser\Api\Api
+ * @coversDefaultClass phpDocumentor\DomainModel\Parser\Documentation\Api\Api
  * @covers ::__construct
  */
 class ApiTest extends \PHPUnit_Framework_TestCase

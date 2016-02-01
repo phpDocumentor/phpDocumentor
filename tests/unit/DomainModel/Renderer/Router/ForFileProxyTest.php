@@ -14,7 +14,7 @@ namespace phpDocumentor\DomainModel\Renderer\Router;
 use Mockery as m;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\Renderer\ForFileProxy
+ * @coversDefaultClass phpDocumentor\DomainModel\Renderer\Router\ForFileProxy
  */
 class ForFileProxyTest extends \PHPUnit_Framework_TestCase
 {

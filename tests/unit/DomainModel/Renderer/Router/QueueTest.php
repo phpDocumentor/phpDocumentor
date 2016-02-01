@@ -27,7 +27,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Renderer\Router\Queue::match
+     * @covers \phpDocumentor\DomainModel\Renderer\Router\Queue::match
      */
     public function testFirstRuleIsReturnedForNodeBasedOnPriorityOrder()
     {
@@ -46,7 +46,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Renderer\Router\Queue::match
+     * @covers \phpDocumentor\DomainModel\Renderer\Router\Queue::match
      */
     public function testNullIsReturnedWhenNoMatchingRuleCanBeFound()
     {

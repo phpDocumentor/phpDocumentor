@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\DomainModel\Renderer\Template;
 
-use phpDocumentor\Renderer\Template;
-
 /**
  * Represents the definition of an action as mentioned in the Template file(s).
  *
@@ -27,7 +25,7 @@ interface Action
     /**
      * Factory method used to map a parameters array onto the constructor and properties for this Action.
      *
-     * @param \phpDocumentor\DomainModel\Renderer\Template\Parameter[] $parameters
+     * @param Parameter[] $parameters
      *
      * @return static
      */

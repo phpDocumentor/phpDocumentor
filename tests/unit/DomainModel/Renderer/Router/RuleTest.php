@@ -12,7 +12,7 @@
 namespace phpDocumentor\DomainModel\Renderer\Router;
 
 /**
- * @coversDefaultClass phpDocumentor\Renderer\Router\Rule
+ * @coversDefaultClass phpDocumentor\DomainModel\Renderer\Router\Rule
  */
 class RuleTest extends \PHPUnit_Framework_TestCase
 {

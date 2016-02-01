@@ -47,8 +47,6 @@ class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::create
      * @covers ::<private>
-     * @uses phpDocumentor\Path
-     * @uses phpDocumentor\Dsn
      */
     public function testCreateLocalFilesystemWithoutCache()
     {
@@ -68,8 +66,6 @@ class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::create
      * @covers ::<private>
-     * @uses phpDocumentor\Path
-     * @uses phpDocumentor\Dsn
      */
     public function testCreateLocalFilesystemWithCache()
     {
@@ -86,7 +82,6 @@ class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::create
      * @covers ::<private>
-     * @uses phpDocumentor\Dsn
      * @expectedException \InvalidArgumentException
      */
     public function testUnsupportedScheme()
@@ -102,8 +97,6 @@ class FlySystemFactoryTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::create
      * @covers ::<private>
-     * @uses phpDocumentor\Path
-     * @uses phpDocumentor\Dsn
      */
     public function testFlyFinderIsRegistered()
     {

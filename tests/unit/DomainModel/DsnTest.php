@@ -14,7 +14,7 @@ namespace phpDocumentor\DomainModel;
 
 /**
  * Class DsnTest
- * @coversDefaultClass phpDocumentor\Dsn
+ * @coversDefaultClass phpDocumentor\DomainModel\Dsn
  */
 class DsnTest extends \PHPUnit_Framework_TestCase
 {
@@ -75,7 +75,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
      * @covers ::getQuery
      * @covers ::getParameters
      * @covers ::<private>
-     * @uses phpDocumentor\Path
+     * @uses phpDocumentor\DomainModel\Path
      */
     public function testValidDsnWithScheme()
     {
@@ -110,7 +110,7 @@ class DsnTest extends \PHPUnit_Framework_TestCase
      * @covers ::getPort
      * @covers ::getPath
      * @covers ::<private>
-     * @uses phpDocumentor\Path
+     * @uses phpDocumentor\DomainModel\Path
      */
     public function testValidDsnWithoutScheme()
     {

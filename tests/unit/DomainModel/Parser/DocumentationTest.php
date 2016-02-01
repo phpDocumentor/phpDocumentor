@@ -17,7 +17,7 @@ use phpDocumentor\DomainModel\Parser\Version\Number;
 /**
  * Test case for Documentation class.
  *
- * @coversDefaultClass phpDocumentor\DomainModel\Parser
+ * @coversDefaultClass phpDocumentor\DomainModel\Parser\Documentation
  * @covers ::<private>
  * @covers ::__construct
  */
@@ -26,7 +26,6 @@ final class DocumentationTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::getVersionNumber
      * @covers ::getDocumentGroups
-     * @uses phpDocumentor\Project\VersionNumber
      */
     public function testGetVersion()
     {
@@ -38,7 +37,6 @@ final class DocumentationTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::getVersionNumber
      * @covers ::getDocumentGroups
-     * @uses phpDocumentor\Project\VersionNumber
      */
     public function testGetDocumentGroups()
     {

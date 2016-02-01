@@ -12,7 +12,7 @@
 namespace phpDocumentor\DomainModel\Renderer\Template;
 
 /**
- * @coversDefaultClass phpDocumentor\Application\Renderer\Template\Parameter
+ * @coversDefaultClass phpDocumentor\DomainModel\Renderer\Template\Parameter
  */
 class ParameterTest extends \PHPUnit_Framework_TestCase
 {

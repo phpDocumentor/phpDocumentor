@@ -93,7 +93,6 @@ namespace phpDocumentor\DomainModel\Renderer {
         /**
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testCreatingATemplateWithoutParametersAndActions()
         {
@@ -131,7 +130,6 @@ namespace phpDocumentor\DomainModel\Renderer {
          * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testIfErrorIsThrownIfTemplateParametersIsNotAnArray()
         {
@@ -143,7 +141,6 @@ namespace phpDocumentor\DomainModel\Renderer {
          * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testIfErrorIsThrownIfActionsIsNotAnArray()
         {
@@ -155,7 +152,6 @@ namespace phpDocumentor\DomainModel\Renderer {
          * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testIfErrorIsThrownIfTemplateParametersDoesNotHaveAKey()
         {
@@ -170,7 +166,6 @@ namespace phpDocumentor\DomainModel\Renderer {
          * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testIfErrorIsThrownIfTemplateParametersDoesNotHaveAValue()
         {
@@ -185,7 +180,6 @@ namespace phpDocumentor\DomainModel\Renderer {
          * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testIfErrorIsThrownIfActionClassDoesNotExist()
         {
@@ -200,7 +194,6 @@ namespace phpDocumentor\DomainModel\Renderer {
          * @expectedException \InvalidArgumentException
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testIfErrorIsThrownIfActionClassDoesNotImplementActionInterface()
         {
@@ -215,7 +208,6 @@ namespace phpDocumentor\DomainModel\Renderer {
          * @expectedException \RuntimeException
          * @covers ::create
          * @covers ::<!public>
-         * @uses phpDocumentor\Renderer\Template
          */
         public function testIfErrorIsThrownIfActionFactoryMethodReturnsNothing()
         {

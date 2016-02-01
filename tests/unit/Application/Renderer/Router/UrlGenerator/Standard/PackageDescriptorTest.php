@@ -37,8 +37,8 @@ class PackageDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
-     * @covers phpDocumentor\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
+     * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke
+     * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromPackage
      */
     public function testGenerateUrlForPackageDescriptorWithGlobalNamespace()
     {
