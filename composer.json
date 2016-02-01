@@ -5,7 +5,6 @@
     "homepage": "http://www.phpdoc.org",
     "license": "MIT",
     "autoload": {
-        "psr-0": { "phpDocumentor": ["src/" ] },
         "psr-4": {
             "phpDocumentor\\Infrastructure\\": ["src/Infrastructure" ],
             "phpDocumentor\\DomainModel\\": ["src/DomainModel" ],
@@ -13,7 +12,12 @@
         }
     },
     "autoload-dev": {
-        "psr-0": { "phpDocumentor": ["tests/unit/"] }
+        "psr-0": { "phpDocumentor": ["tests/unit/"] },
+        "psr-4": {
+            "phpDocumentor\\Infrastructure\\": ["tests/unit/Infrastructure" ],
+            "phpDocumentor\\DomainModel\\": ["tests/unit/DomainModel" ],
+            "phpDocumentor\\Application\\": ["tests/unit/Application" ]
+        }
     },
     "require": {
         "php":                               ">=5.5",

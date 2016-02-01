@@ -12,13 +12,13 @@
 
 namespace phpDocumentor\Infrastructure;
 
-use phpDocumentor\DomainModel\Template;
-use phpDocumentor\DomainModel\TemplateFactory;
+use phpDocumentor\DomainModel\Renderer\Template;
+use phpDocumentor\DomainModel\Renderer\TemplateFactory;
 use phpDocumentor\DomainModel\Uri;
-use phpDocumentor\DomainModel\Template\Action;
-use phpDocumentor\DomainModel\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\Template\Action;
+use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
 use Webmozart\Assert\Assert;
-use phpDocumentor\DomainModel\Template\Parameter;
+use phpDocumentor\DomainModel\Renderer\Template\Parameter;
 
 /**
  * Creates a new Template based on an array with a Template definition.
@@ -232,7 +232,7 @@ final class XmlTemplateFactory implements TemplateFactory
     {
         $actionClass = $action['name'];
         if (strpos($actionClass, '\\') === false) {
-            $actionClass = 'phpDocumentor\\Renderer\\Action\\' . $actionClass;
+            $actionClass = 'phpDocumentor\\Application\\Renderer\\Template\\Action\\' . $actionClass;
         }
 
         Assert::classExists($actionClass);

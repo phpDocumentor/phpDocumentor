@@ -13,7 +13,7 @@ namespace phpDocumentor\Application;
 
 use Composer\Autoload\ClassLoader;
 use DI\ContainerBuilder;
-use phpDocumentor\Application\Cli\Input\ArgvInput;
+use phpDocumentor\Application\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use phpDocumentor\Plugin\Plugin;
 

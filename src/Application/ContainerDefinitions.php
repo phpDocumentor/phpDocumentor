@@ -8,23 +8,23 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
-use phpDocumentor\DomainModel\Documentation\Api;
-use phpDocumentor\Application\Cli\Command\ListCommand;
+use phpDocumentor\DomainModel\Parser\Documentation\Api;
+use phpDocumentor\Application\Console\Command\ListCommand;
 use phpDocumentor\Infrastructure\Tactician\ContainerLocator;
-use phpDocumentor\Application\Cli\Command\Phar\UpdateCommand;
-use phpDocumentor\Application\Cli\Command\RunCommand;
+use phpDocumentor\Application\Console\Command\Phar\UpdateCommand;
+use phpDocumentor\Application\Console\Command\RunCommand;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
-use phpDocumentor\DomainModel\Documentation\DocumentGroup\DocumentGroupFormat;
-use phpDocumentor\DomainModel\DocumentationFactory;
-use phpDocumentor\DomainModel\DocumentationRepository;
+use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Parser\DocumentationFactory;
+use phpDocumentor\DomainModel\Parser\DocumentationRepository;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
-use phpDocumentor\DomainModel\Version\DefinitionFactory;
-use phpDocumentor\DomainModel\Version\DefinitionRepository;
+use phpDocumentor\DomainModel\Parser\Version\DefinitionFactory;
+use phpDocumentor\DomainModel\Parser\Version\DefinitionRepository;
 use phpDocumentor\Reflection\ProjectFactory as ProjectFactoryInterface;
 use phpDocumentor\Infrastructure\Reflection\Middleware\LoggingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -41,21 +41,21 @@ use phpDocumentor\Reflection\Php\Factory\Method;
 use phpDocumentor\Reflection\Php\Factory\Property;
 use phpDocumentor\Reflection\Php\Factory\Trait_;
 use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\DomainModel\Template\Action\TwigHandler;
-use phpDocumentor\DomainModel\Template\Action\XmlHandler;
-use phpDocumentor\DomainModel\Template\Action\XslHandler;
-use phpDocumentor\DomainModel\Template\Action\Xslt\Extension;
+use phpDocumentor\Application\Renderer\Template\Action\TwigHandler;
+use phpDocumentor\Application\Renderer\Template\Action\XmlHandler;
+use phpDocumentor\Application\Renderer\Template\Action\XslHandler;
+use phpDocumentor\Application\Renderer\XsltRenderer\Extension;
 use phpDocumentor\Infrastructure\Template\LocalPathsRepository;
-use phpDocumentor\DomainModel\TemplateFactory;
+use phpDocumentor\DomainModel\Renderer\TemplateFactory;
 use phpDocumentor\Infrastructure\XmlTemplateFactory;
-use phpDocumentor\DomainModel\Template\PathsRepository;
-use phpDocumentor\Renderer\Router\Queue;
-use phpDocumentor\Renderer\Router\StandardRouter;
+use phpDocumentor\DomainModel\Renderer\Template\PathsRepository;
+use phpDocumentor\DomainModel\Renderer\Router\Queue;
+use phpDocumentor\Application\Renderer\Router\StandardRouter;
 use phpDocumentor\Infrastructure\SpecificationFactory;
 use phpDocumentor\DomainModel\Uri;
-use phpDocumentor\Views\MapperFactory;
-use phpDocumentor\Views\MapperFactory\Container;
-use phpDocumentor\Views\Mappers\Project;
+use phpDocumentor\DomainModel\Views\MapperFactory;
+use phpDocumentor\DomainModel\Views\MapperFactory\Container;
+use phpDocumentor\Application\Views\Mappers\Project;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 use Symfony\Component\Console\Application;
@@ -85,8 +85,8 @@ return [
         \DI\get(CommandHandlerMiddleware::class)
     ],
     'cache.directory' => sys_get_temp_dir(),
-    'template.localDirectory'    => __DIR__ . '/../../data/templates',
-    'template.composerDirectory' => __DIR__ . '/../../../templates',
+    'template.localDirectory'    => __DIR__ . '/../../../data/templates',
+    'template.composerDirectory' => __DIR__ . '/../../../../templates',
     'template.directory'         => function (ContainerInterface $c) {
         if (file_exists($c->get('template.composerDirectory'))) {
             return $c->get('template.composerDirectory');
@@ -155,7 +155,7 @@ return [
 
     //Definition Factories
     DefinitionFactory::class => function (ContainerInterface $c) {
-        $factory = new \phpDocumentor\DomainModel\Version\DefinitionFactory();
+        $factory = new \phpDocumentor\DomainModel\Parser\Version\DefinitionFactory();
 
         $factory->registerDocumentGroupDefinitionFactory(
             'api',

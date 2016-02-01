@@ -13,8 +13,8 @@
 namespace phpDocumentor\Infrastructure\Template;
 
 use phpDocumentor\DomainModel\Path;
-use phpDocumentor\DomainModel\Template;
-use phpDocumentor\DomainModel\Template\PathsRepository;
+use phpDocumentor\DomainModel\Renderer\Template;
+use phpDocumentor\DomainModel\Renderer\Template\PathsRepository;
 
 final class LocalPathsRepository implements PathsRepository
 {

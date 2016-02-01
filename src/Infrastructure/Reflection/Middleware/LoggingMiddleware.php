@@ -3,7 +3,7 @@
 namespace phpDocumentor\Infrastructure\Reflection\Middleware;
 
 use League\Event\Emitter;
-use phpDocumentor\DomainModel\ApiFileParsed;
+use phpDocumentor\DomainModel\Parser\ApiFileParsed;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 

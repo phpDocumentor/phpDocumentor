@@ -18,12 +18,12 @@ use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Render;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\DomainModel\Path;
-use phpDocumentor\DomainModel\Template;
-use phpDocumentor\DomainModel\TemplateFactory;
-use phpDocumentor\DomainModel\Template\RenderPass;
-use phpDocumentor\DomainModel\RenderActionCompleted;
-use phpDocumentor\DomainModel\RenderingFinished;
-use phpDocumentor\DomainModel\RenderingStarted;
+use phpDocumentor\DomainModel\Renderer\Template;
+use phpDocumentor\DomainModel\Renderer\TemplateFactory;
+use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderActionCompleted;
+use phpDocumentor\DomainModel\Renderer\RenderingFinished;
+use phpDocumentor\DomainModel\Renderer\RenderingStarted;
 
 final class RenderHandler
 {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7459b59d43f5bb49d9c9e6519e1cc1d",
+    "hash": "66cff00e6af399671a3ad4607edd7162",
     "content-hash": "43454416831ac0ceaf37a6de0823b0f7",
     "packages": [
         {
@@ -583,7 +583,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/904dd0b6280693ad8ddc7005e4ee1f829e44a015",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/7938f1c065f21c0210be506dd2cfcb631242c562",
                 "reference": "904dd0b6280693ad8ddc7005e4ee1f829e44a015",
                 "shasum": ""
             },
