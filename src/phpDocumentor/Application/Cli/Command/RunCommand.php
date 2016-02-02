@@ -27,7 +27,7 @@ use phpDocumentor\Reflection\Middleware\Validated;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Renderer\RenderingFinished;
 use phpDocumentor\Renderer\RenderingStarted;
-use phpDocumentor\Validation\Rule;
+use phpDocumentor\Validation\Rule\Rule;
 use Stash\Driver\FileSystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
