@@ -42,8 +42,9 @@ class ConfigurationFactory
      *
      * @param Strategy[] $strategies
      * @param Uri        $uri
+     * @param callable[] $middlewares
      */
-    public function __construct(array $strategies, Uri $uri, $middlewares = [])
+    public function __construct(array $strategies, Uri $uri, array $middlewares = [])
     {
         foreach ($strategies as $strategy) {
             $this->registerStrategy($strategy);
