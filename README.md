@@ -1,3 +1,5 @@
+[![Build Status](https://status.continuousphp.com/git-hub/phpDocumentor/phpDocumentor2?token=afada8dc-b28c-4a79-b5ee-78851685bc26)](https://continuousphp.com/git-hub/phpDocumentor/phpDocumentor2)
+
 README
 ======
 
