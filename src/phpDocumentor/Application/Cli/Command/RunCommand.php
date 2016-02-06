@@ -23,9 +23,11 @@ use phpDocumentor\Application\Commands\Render;
 use phpDocumentor\DocumentationFactory;
 use phpDocumentor\DocumentationRepository;
 use phpDocumentor\Project\Version\DefinitionRepository;
+use phpDocumentor\Reflection\Middleware\Validated;
 use phpDocumentor\Renderer\RenderActionCompleted;
 use phpDocumentor\Renderer\RenderingFinished;
 use phpDocumentor\Renderer\RenderingStarted;
+use phpDocumentor\Validation\Rule\Rule;
 use Stash\Driver\FileSystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
@@ -326,6 +328,29 @@ HELP
                 $output->writeln(sprintf('  Parsed <info>%s</info>', (string)$event->filename()));
             }
         );
+
+        $this->emitter->addListener(Validated::class, function (Validated $event) use ($output) {
+            $output->writeln(sprintf('  Validated <info>%s</info>', $event->getValidatedFile()));
+
+            foreach ($event->getValidationResult()->getViolations() as $violation) {
+                $message = '  ';
+                switch ($violation->getSeverity()) {
+                    case Rule::SEVERITY_ERROR:
+                        $message .= '<error>%s</error>';
+                        break;
+                    case Rule::SEVERITY_WARNING:
+                        $message .= '<comment>%s</comment>';
+                        break;
+                    default:
+                        $message .= '<info>%s</info>';
+                        break;
+                }
+
+                $output->writeln(sprintf($message, $violation->getMessage()));
+            }
+
+        });
+
         $this->emitter->addListener(
             RenderingStarted::class,
             function (RenderingStarted $event) use ($output) {
