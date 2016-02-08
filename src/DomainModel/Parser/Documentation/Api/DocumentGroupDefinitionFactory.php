@@ -13,7 +13,7 @@
 namespace phpDocumentor\DomainModel\Parser\Documentation\Api;
 
 use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
-use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition\Factory
+use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition\Factory;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\Infrastructure\FileSystemFactory;
