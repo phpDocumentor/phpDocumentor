@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\Template;
+namespace phpDocumentor\Infrastructure\Renderer\Template;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -21,7 +21,7 @@ use phpDocumentor\Infrastructure\Renderer\Template\LocalPathsRepository;
 
 /**
  * Tests the functionality for the PathsRepository class.
- * @coversDefaultClass phpDocumentor\Infrastructure\Template\LocalPathsRepository
+ * @coversDefaultClass phpDocumentor\Infrastructure\Renderer\Template\LocalPathsRepository
  */
 class LocalPathsRepositoryTest extends \PHPUnit_Framework_TestCase
 {

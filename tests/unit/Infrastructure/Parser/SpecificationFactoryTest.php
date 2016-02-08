@@ -22,7 +22,7 @@ use Flyfinder\Specification\OrSpecification;
 use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 
 /**
- * @coversDefaultClass \phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory
+ * @coversDefaultClass \phpDocumentor\Infrastructure\Parser\SpecificationFactory
  * @covers ::create
  * @covers ::<private>
  */

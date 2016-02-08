@@ -13,7 +13,7 @@
 namespace phpDocumentor\DomainModel\Parser\Documentation\Api;
 
 use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
-use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition\Factory as DocumentGroupDefinitionFactoryInterface;
+use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition\Factory
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\Infrastructure\FileSystemFactory;
@@ -23,7 +23,7 @@ use phpDocumentor\Infrastructure\SpecificationFactory;
  * Factory for DocumentGroupDefinition.
  * This factory delegates most of it's work to a FileSystemFactory and SpecificationFactory.
  */
-final class DocumentGroupDefinitionFactory implements DocumentGroupDefinitionFactoryInterface
+final class DocumentGroupDefinitionFactory implements Factory
 {
     /**
      * @var FilesystemFactory

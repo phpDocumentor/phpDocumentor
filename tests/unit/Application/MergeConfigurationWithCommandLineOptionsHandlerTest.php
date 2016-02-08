@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
 use Mockery as m;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
@@ -20,7 +20,7 @@ use phpDocumentor\Application\MergeConfigurationWithCommandLineOptionsHandler;
 use phpDocumentor\DomainModel\Uri;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptionsHandler
+ * @coversDefaultClass phpDocumentor\Application\MergeConfigurationWithCommandLineOptionsHandler
  * @covers ::__construct
  * @covers ::<private>
  */

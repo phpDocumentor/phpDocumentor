@@ -10,14 +10,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Infrastructure\Parser;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
 use phpDocumentor\Infrastructure\Parser\FlySystemFile;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\FlySystemFile
+ * @coversDefaultClass phpDocumentor\Infrastructure\Parser\FlySystemFile
  */
 final class FlySystemFileTest extends \PHPUnit_Framework_TestCase
 {

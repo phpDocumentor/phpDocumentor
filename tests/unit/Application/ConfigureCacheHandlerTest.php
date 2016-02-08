@@ -10,20 +10,18 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
-use phpDocumentor\Application\ConfigureCache;
-use phpDocumentor\Application\ConfigureCacheHandler;
 use phpDocumentor\DomainModel\Uri;
 use PHPUnit_Framework_TestCase;
 use Stash\Pool;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\ConfigureCacheHandler
+ * @coversDefaultClass phpDocumentor\Application\ConfigureCacheHandler
  * @covers ::__construct
  */
 final class ConfigureCacheHandlerTest extends PHPUnit_Framework_TestCase

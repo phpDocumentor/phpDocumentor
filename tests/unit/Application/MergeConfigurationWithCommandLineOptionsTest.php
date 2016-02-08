@@ -10,13 +10,13 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
 use Mockery as m;
 use phpDocumentor\Application\MergeConfigurationWithCommandLineOptions;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptions
+ * @coversDefaultClass phpDocumentor\Application\MergeConfigurationWithCommandLineOptions
  * @covers ::__construct
  */
 class MergeConfigurationWithCommandLineOptionsTest extends \PHPUnit_Framework_TestCase

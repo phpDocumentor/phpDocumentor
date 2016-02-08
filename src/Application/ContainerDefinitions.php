@@ -7,6 +7,7 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
+use phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory;
 use phpDocumentor\Application\Renderer\TwigRenderer;
 use phpDocumentor\DomainModel\Parser\Documentation\Api;
 use phpDocumentor\Application\Console\Command\ListCommand;
@@ -174,7 +175,7 @@ return [
     // Documentation Repositories
     StashDocumentationRepository::class => \DI\object(StashDocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
-        ->method('addDocumentGroupFactory', \DI\get(\phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory::class)),
+        ->method('addDocumentGroupFactory', \DI\get(FromReflectionFactory::class)),
 
     //ApiReference
     ProjectFactoryInterface::class => function (ContainerInterface $c) {
@@ -231,7 +232,8 @@ return [
         ]),
 
     // Templates
-    LocalPathsRepository::class => \DI\object()->constructorParameter('templateFolders', \DI\get('template.directories')),
+    LocalPathsRepository::class => \DI\object()
+        ->constructorParameter('templateFolders', \DI\get('template.directories')),
     PathsRepository::class => \DI\object(LocalPathsRepository::class),
     XmlHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
