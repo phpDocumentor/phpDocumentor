@@ -1,13 +1,13 @@
 <?php
 
-namespace phpDocumentor\DomainModel\Views;
+namespace phpDocumentor\DomainModel\ReadModel;
 
-class ViewDefinition
+class Definition
 {
     /** @var string */
     private $name;
 
-    /** @var ViewType */
+    /** @var Type */
     private $type;
 
     /** @var Filter[] */
@@ -16,7 +16,7 @@ class ViewDefinition
     /** @var string[] */
     private $properties = [];
 
-    public function __construct($name, ViewType $type, array $filters = [], array $properties = [])
+    public function __construct($name, Type $type, array $filters = [], array $properties = [])
     {
         $this->name       = $name;
         $this->type       = $type;
@@ -33,7 +33,7 @@ class ViewDefinition
     }
 
     /**
-     * @return ViewType
+     * @return Type
      */
     public function getType()
     {

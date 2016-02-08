@@ -1,16 +1,16 @@
 <?php
 
-namespace phpDocumentor\DomainModel\Views;
+namespace phpDocumentor\DomainModel\ReadModel;
 
-final class View
+final class ReadModel
 {
-    /** @var ViewDefinition */
+    /** @var Definition */
     private $definition;
 
     /** @var mixed */
     private $data;
 
-    public function __construct(ViewDefinition $definition, $data)
+    public function __construct(Definition $definition, $data)
     {
         $this->definition = $definition;
         $this->data       = $data;

@@ -1,6 +1,6 @@
 <?php
 
-namespace phpDocumentor\DomainModel\Views;
+namespace phpDocumentor\DomainModel\ReadModel;
 
 interface Filter
 {

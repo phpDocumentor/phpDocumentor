@@ -1,22 +1,21 @@
 <?php
 
-namespace phpDocumentor\Application\Views\Mappers;
+namespace phpDocumentor\Application\ReadModel\Mappers;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\DomainModel\Views\Mapper;
-use phpDocumentor\DomainModel\Views\ViewDefinition;
+use phpDocumentor\DomainModel\ReadModel\Mapper;
+use phpDocumentor\DomainModel\ReadModel\Definition;
 
 class Project implements Mapper
 {
     /**
      * Returns the data needed by the ViewFactory to create a new View.
      *
-     * @param ViewDefinition $viewDefinition
+     * @param Definition $readModelDefinition
      * @param                $documentation
      *
      * @return mixed
      */
-    public function create(ViewDefinition $viewDefinition, $documentation)
+    public function create(Definition $readModelDefinition, $documentation)
     {
         if ($documentation instanceof ProjectDescriptor) {
             return $documentation;

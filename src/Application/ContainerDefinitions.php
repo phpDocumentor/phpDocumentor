@@ -1,6 +1,5 @@
 <?php
 use Interop\Container\ContainerInterface;
-use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
@@ -8,8 +7,10 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
+use phpDocumentor\Application\Renderer\TwigRenderer;
 use phpDocumentor\DomainModel\Parser\Documentation\Api;
 use phpDocumentor\Application\Console\Command\ListCommand;
+use phpDocumentor\DomainModel\ReadModel\Mapper\Factory as MapperFactory;
 use phpDocumentor\Infrastructure\Tactician\ContainerLocator;
 use phpDocumentor\Application\Console\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Console\Command\RunCommand;
@@ -53,9 +54,9 @@ use phpDocumentor\DomainModel\Renderer\Router\Queue;
 use phpDocumentor\Application\Renderer\Router\StandardRouter;
 use phpDocumentor\Infrastructure\SpecificationFactory;
 use phpDocumentor\DomainModel\Uri;
-use phpDocumentor\DomainModel\Views\MapperFactory;
-use phpDocumentor\DomainModel\Views\MapperFactory\Container;
-use phpDocumentor\Application\Views\Mappers\Project;
+use phpDocumentor\Application\ReadModel;
+use phpDocumentor\Application\ReadModel\FromContainerFactory;
+use phpDocumentor\Application\ReadModel\Mappers\Project;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 use Symfony\Component\Console\Application;
@@ -221,7 +222,7 @@ return [
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
     // Views
-    MapperFactory::class => \DI\object(Container::class)
+    MapperFactory::class => \DI\object(FromContainerFactory::class)
         ->constructorParameter('mapperAliases', [
             'php' => Project::class
         ]),
@@ -233,5 +234,6 @@ return [
     XslHandler::class => \DI\object()->constructorParameter('router', \DI\get(StandardRouter::class)),
     TemplateFactory::class => \DI\object(XmlTemplateFactory::class)
         ->constructorParameter('templateFolders', \DI\get('template.directories')),
-    TwigHandler::class => \DI\object()->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
+    TwigRenderer::class => \DI\object()->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
+    TwigHandler::class => \DI\object()->constructorParameter('renderer', \DI\get(TwigRenderer::class)),
 ];

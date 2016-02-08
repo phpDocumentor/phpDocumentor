@@ -1,20 +1,20 @@
 <?php
 
-namespace Application\Renderer;
+namespace phpDocumentor\Application\Renderer;
 
-use DomainModel\Renderer;
 use phpDocumentor\DomainModel\Path;
-use phpDocumentor\DomainModel\Views\View;
+use phpDocumentor\DomainModel\ReadModel\ReadModel;
 use phpDocumentor\Application\Application;
 use phpDocumentor\Application\Renderer\Template\Action;
 use phpDocumentor\Application\Renderer\Template\Action\Xsl;
+use phpDocumentor\DomainModel\Renderer\Renderer;
 use phpDocumentor\Infrastructure\Template\LocalPathsRepository;
 use phpDocumentor\DomainModel\Renderer\Router\ForFileProxy;
 use phpDocumentor\DomainModel\Renderer\Router\RouterAbstract;
 
 class XslRenderer implements Renderer
 {
-    public function render(View $view, Path $destination, $template = null)
+    public function render(ReadModel $view, Path $destination, $template = null)
     {
         // TODO: Implement render() method.
     }

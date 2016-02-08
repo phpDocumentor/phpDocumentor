@@ -1,10 +1,12 @@
 <?php
 
-namespace Application\Renderer;
+namespace phpDocumentor\Application\Renderer;
 
-use DomainModel\Renderer;
+use phpDocumentor\Application\Renderer\Template\Action\Jsonp;
 use phpDocumentor\DomainModel\Path;
-use phpDocumentor\DomainModel\Views\View;
+use phpDocumentor\DomainModel\ReadModel\ReadModel;
+use phpDocumentor\DomainModel\Renderer\Renderer;
+use phpDocumentor\DomainModel\Renderer\Template\Action;
 
 /**
  * Writes the collected data as a series of JSONP files.
@@ -46,7 +48,7 @@ use phpDocumentor\DomainModel\Views\View;
  */
 class JsonpRenderer implements Renderer
 {
-    public function render(View $view, Path $destination, $template = null)
+    public function render(ReadModel $view, Path $destination, $template = null)
     {
         // TODO: Implement render() method.
     }

@@ -1,13 +1,14 @@
 <?php
 
-namespace phpDocumentor\DomainModel\Views\MapperFactory;
+namespace phpDocumentor\Application\ReadModel;
 
 use Interop\Container\ContainerInterface;
-use phpDocumentor\DomainModel\Views\Mapper;
-use phpDocumentor\DomainModel\Views\MapperFactory;
-use phpDocumentor\DomainModel\Views\ViewType;
+use phpDocumentor\DomainModel\ReadModel\Mapper;
+use phpDocumentor\Application\ReadModel;
+use phpDocumentor\DomainModel\ReadModel\Mapper\Factory;
+use phpDocumentor\DomainModel\ReadModel\Type;
 
-class Container implements MapperFactory
+class FromContainerFactory implements Factory
 {
     /** @var ContainerInterface */
     private $container;
@@ -24,11 +25,11 @@ class Container implements MapperFactory
     /**
      * Returns a mapper for the given type of view.
      *
-     * @param ViewType $viewType
+     * @param Type $viewType
      *
      * @return Mapper
      */
-    public function create(ViewType $viewType)
+    public function create(Type $viewType)
     {
         $mapperName = (string)$viewType;
         if (isset($this->mapperAliases[$mapperName])) {

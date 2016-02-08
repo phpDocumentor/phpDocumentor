@@ -1,11 +1,12 @@
 <?php
 
-namespace phpDocumentor\DomainModel\Views;
+namespace phpDocumentor\DomainModel\ReadModel;
 
 use Webmozart\Assert\Assert;
 
-class ViewType
+class Type
 {
+    /** @var string */
     private $type;
 
     public function __construct($type)

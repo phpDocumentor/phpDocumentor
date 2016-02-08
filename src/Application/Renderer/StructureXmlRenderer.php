@@ -11,7 +11,6 @@
 
 namespace phpDocumentor\Application\Renderer;
 
-use DomainModel\Renderer;
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\Application\Renderer\Template\Action;
 use phpDocumentor\Application\Renderer\Template\Action\Xml;
@@ -23,6 +22,7 @@ use phpDocumentor\Application\Renderer\StructureXmlRenderer\MethodConverter;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\PropertyConverter;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\TagConverter;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\TraitConverter;
+use phpDocumentor\DomainModel\Renderer\Renderer;
 use phpDocumentor\DomainModel\Renderer\Router\ForFileProxy;
 use phpDocumentor\DomainModel\Renderer\Router\RouterAbstract;
 use phpDocumentor\Application\Application;
@@ -37,7 +37,7 @@ use phpDocumentor\Application\Renderer\StructureXmlRenderer\Tag\PropertyTag;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\Tag\ReturnTag;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\Tag\UsesTag;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\Tag\VarTag;
-use phpDocumentor\DomainModel\Views\View;
+use phpDocumentor\DomainModel\ReadModel\ReadModel;
 
 /**
  * Converts the structural information of phpDocumentor into an XML file.
@@ -84,7 +84,7 @@ final class StructureXmlRenderer implements Renderer
         $this->router = $router;
     }
 
-    public function render(View $view, Path $destination, $template = null)
+    public function render(ReadModel $view, Path $destination, $template = null)
     {
         $artifact = (string)$destination;
 

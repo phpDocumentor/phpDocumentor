@@ -36,13 +36,13 @@ class StandardRouter extends RouterAbstract
      */
     public function configure()
     {
-        $fileGenerator      = new phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\FileDescriptor();
-        $namespaceGenerator = new phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\NamespaceDescriptor();
-        $classGenerator     = new phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\ClassDescriptor();
-        $methodGenerator    = new phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\MethodDescriptor();
-        $constantGenerator  = new phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\ConstantDescriptor();
-        $functionGenerator  = new phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\FunctionDescriptor();
-        $propertyGenerator  = new phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\PropertyDescriptor();
+        $fileGenerator      = new UrlGenerator\Standard\FileDescriptor();
+        $namespaceGenerator = new UrlGenerator\Standard\NamespaceDescriptor();
+        $classGenerator     = new UrlGenerator\Standard\ClassDescriptor();
+        $methodGenerator    = new UrlGenerator\Standard\MethodDescriptor();
+        $constantGenerator  = new UrlGenerator\Standard\ConstantDescriptor();
+        $functionGenerator  = new UrlGenerator\Standard\FunctionDescriptor();
+        $propertyGenerator  = new UrlGenerator\Standard\PropertyDescriptor();
 
         $stringRule = function ($node) {
             return false;

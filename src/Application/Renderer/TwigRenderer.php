@@ -1,24 +1,24 @@
 <?php
 
-namespace Application\Renderer;
+namespace phpDocumentor\Application\Renderer;
 
-use DomainModel\Renderer;
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\Application\Renderer\Template\Action\Twig;
 use phpDocumentor\Application\Renderer\TwigRenderer\Extension;
 use phpDocumentor\Application\Renderer\Template\Action;
 use phpDocumentor\Application\Renderer\TwigRenderer\Pathfinder;
+use phpDocumentor\DomainModel\Renderer\Renderer;
 use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
 use phpDocumentor\Infrastructure\Template\LocalPathsRepository;
 use phpDocumentor\DomainModel\Renderer\Router\ForFileProxy;
 use phpDocumentor\DomainModel\Renderer\Router\Queue;
-use phpDocumentor\DomainModel\Views\View;
-use phpDocumentor\DomainModel\Views\ViewFactory;
-use phpDocumentor\DomainModel\Views\Views;
+use phpDocumentor\DomainModel\ReadModel\ReadModel;
+use phpDocumentor\DomainModel\ReadModel\Factory;
+use phpDocumentor\DomainModel\ReadModel\Collection;
 
 class TwigRenderer implements Renderer
 {
-    public function render(View $view, Path $destination, $template = null)
+    public function render(ReadModel $view, Path $destination, $template = null)
     {
         // TODO: Implement render() method.
     }
@@ -35,14 +35,14 @@ class TwigRenderer implements Renderer
     /** @var string */
     private $cacheFolder = '';
 
-    /** @var ViewFactory */
+    /** @var Factory */
     private $viewFactory;
 
     public function __construct(
         Pathfinder $pathfinder,
         Queue $routers,
         LocalPathsRepository $fileRepository,
-        ViewFactory $viewFactory,
+        Factory $viewFactory,
         $cacheFolder = null
     ) {
         if ($cacheFolder === null) {
@@ -66,7 +66,7 @@ class TwigRenderer implements Renderer
     public function __invoke(Action $action)
     {
         $dataView = $this->viewFactory->create($action->getDataView(), $action->getRenderPass()->getDocumentation());
-        $views    = new Views([$dataView->getName() => $dataView()]);
+        $views    = new Collection([$dataView->getName() => $dataView()]);
 
         // TODO: Move path finding to View
         $nodes = $this->pathfinder->find($dataView(), $action->getQuery());
@@ -127,14 +127,14 @@ class TwigRenderer implements Renderer
     /**
      * Adds the phpDocumentor base extension to the Twig Environment.
      *
-     * @param Views             $views
+     * @param Collection             $views
      * @param string            $destination
      * @param \Twig_Environment $twigEnvironment
      *
      * @return void
      */
     private function addPhpDocumentorExtension(
-        Views $views,
+        Collection $views,
         $destination,
         \Twig_Environment $twigEnvironment,
         RenderPass $renderPass

@@ -1,15 +1,15 @@
 <?php
 
-namespace phpDocumentor\DomainModel\Views;
+namespace phpDocumentor\DomainModel\ReadModel;
 
 use Webmozart\Assert\Assert;
 
-class Views extends \ArrayObject
+class Collection extends \ArrayObject
 {
     public function offsetSet($index, $newval)
     {
         Assert::stringNotEmpty($index);
-        Assert::isInstanceOf($newval, View::class);
+        Assert::isInstanceOf($newval, ReadModel::class);
 
         parent::offsetSet($index, $newval);
     }

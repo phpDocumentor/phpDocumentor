@@ -11,14 +11,13 @@
 
 namespace phpDocumentor\Application\Renderer\TwigRenderer;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\DomainModel\Renderer\Router\Queue;
 use phpDocumentor\DomainModel\Renderer\Router\Renderer;
-use phpDocumentor\DomainModel\Views\Views;
+use phpDocumentor\DomainModel\ReadModel\Collection;
 
 class Extension extends \Twig_Extension
 {
-    /** @var Views */
+    /** @var Collection */
     protected $views = null;
 
     /** @var Renderer */
@@ -27,7 +26,7 @@ class Extension extends \Twig_Extension
     /**
      * Registers the structure.
      */
-    public function __construct(Views $views)
+    public function __construct(Collection $views)
     {
         $this->views          = $views;
         $this->routeRenderer = new Renderer(new Queue());

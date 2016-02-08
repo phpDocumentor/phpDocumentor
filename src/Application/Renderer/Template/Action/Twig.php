@@ -16,8 +16,8 @@ use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
 use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
 use phpDocumentor\DomainModel\Renderer\Template;
-use phpDocumentor\DomainModel\Views\ViewDefinition;
-use phpDocumentor\DomainModel\Views\ViewType;
+use phpDocumentor\DomainModel\ReadModel\Definition;
+use phpDocumentor\DomainModel\ReadModel\Type;
 use Webmozart\Assert\Assert;
 
 final class Twig implements Action
@@ -37,7 +37,7 @@ final class Twig implements Action
     /** @var Template */
     private $template;
 
-    /** @var ViewDefinition */
+    /** @var Definition */
     private $dataView;
 
     public function __construct(
@@ -51,7 +51,7 @@ final class Twig implements Action
         Assert::string($query);
 
         if ($dataView === null) {
-            $dataView = new ViewDefinition('project', new ViewType('php'));
+            $dataView = new Definition('project', new Type('php'));
         }
 
         $this->view        = $view;
@@ -126,7 +126,7 @@ final class Twig implements Action
     }
 
     /**
-     * @return ViewDefinition
+     * @return Definition
      */
     public function getDataView()
     {
