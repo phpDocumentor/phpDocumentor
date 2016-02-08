@@ -14,6 +14,7 @@ namespace phpDocumentor\DomainModel\Parser;
 use Mockery as m;
 use phpDocumentor\DomainModel\Parser\Documentation;
 use phpDocumentor\DomainModel\Parser\Version\Number;
+use phpDocumentor\Infrastructure\Parser\StashDocumentationRepository;
 use Stash\Pool;
 
 /**
@@ -35,7 +36,7 @@ class DocumentationRepositoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->cacheMock = m::mock(Pool::class);
-        $this->fixture = new DocumentationRepository($this->cacheMock);
+        $this->fixture = new StashDocumentationRepository($this->cacheMock);
     }
 
     /**

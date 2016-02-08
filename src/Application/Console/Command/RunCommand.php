@@ -14,6 +14,7 @@ namespace phpDocumentor\Application\Console\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
+use phpDocumentor\DomainModel\Parser\DocumentationRepository;
 use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
 use phpDocumentor\DomainModel\Parser\ApiFileParsed;
 use phpDocumentor\DomainModel\Parser\ApiParsingStarted;
@@ -21,7 +22,7 @@ use phpDocumentor\DomainModel\ConfigureCache;
 use phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\DomainModel\Render;
 use phpDocumentor\DomainModel\Parser\DocumentationFactory;
-use phpDocumentor\DomainModel\Parser\DocumentationRepository;
+use phpDocumentor\Infrastructure\Parser\StashDocumentationRepository;
 use phpDocumentor\DomainModel\Parser\Version\DefinitionRepository;
 use phpDocumentor\DomainModel\Renderer\RenderActionCompleted;
 use phpDocumentor\DomainModel\Renderer\RenderingFinished;
@@ -74,11 +75,11 @@ final class RunCommand extends Command
     /**
      * Initializes the command with all necessary dependencies
      *
-     * @param DefinitionRepository    $definitionRepository
+     * @param DefinitionRepository $definitionRepository
      * @param DocumentationRepository $documentationRepository
-     * @param DocumentationFactory    $documentationFactory
-     * @param CommandBus              $commandBus
-     * @param Emitter                 $emitter
+     * @param DocumentationFactory $documentationFactory
+     * @param CommandBus $commandBus
+     * @param Emitter $emitter
      */
     public function __construct(
         DefinitionRepository $definitionRepository,

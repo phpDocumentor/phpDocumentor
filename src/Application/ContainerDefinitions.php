@@ -20,7 +20,7 @@ use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
 use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Parser\DocumentationFactory;
-use phpDocumentor\DomainModel\Parser\DocumentationRepository;
+use phpDocumentor\Infrastructure\Parser\StashDocumentationRepository;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\FlySystemFactory;
 use phpDocumentor\Infrastructure\Parser\SpecificationFactory as FlySystemSpecificationFactory;
@@ -147,6 +147,9 @@ return [
         return $application;
     },
 
+    RunCommand::class => \DI\object()
+        ->constructorParameter('documentationRepository', \DI\get(StashDocumentationRepository::class)),
+
     // Validator
     ValidatorInterface::class => \DI\object(RecursiveValidator::class),
     LazyLoadingMetadataFactory::class => \DI\object(LazyLoadingMetadataFactory::class)
@@ -169,7 +172,7 @@ return [
     DefinitionRepository::class => \DI\object(DefinitionRepository::class),
 
     // Documentation Repositories
-    DocumentationRepository::class => \DI\object(DocumentationRepository::class),
+    StashDocumentationRepository::class => \DI\object(StashDocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
         ->method('addDocumentGroupFactory', \DI\get(\phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory::class)),
 
