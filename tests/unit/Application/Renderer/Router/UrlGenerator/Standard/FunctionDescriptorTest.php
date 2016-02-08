@@ -19,8 +19,10 @@ use Mockery as m;
 class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForFunctionDescriptor()
     {
@@ -38,8 +40,10 @@ class FunctionDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\FunctionDescriptor::__invoke
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForFunctionDescriptorWithGlobalNamespace()
     {

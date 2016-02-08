@@ -19,8 +19,10 @@ use Mockery as m;
 class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForNamespaceDescriptor()
     {
@@ -37,8 +39,10 @@ class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @codingStandardsIgnoreStart
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke
      * @covers phpDocumentor\Application\Renderer\Router\UrlGenerator\Standard\QualifiedNameToUrlConverter::fromNamespace
+     * @codingStandardsIgnoreEnd
      */
     public function testGenerateUrlForNamespaceDescriptorWithGlobalNamespace()
     {
