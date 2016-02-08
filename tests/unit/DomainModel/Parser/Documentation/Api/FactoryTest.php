@@ -16,8 +16,8 @@ use Flyfinder\Specification\SpecificationInterface;
 use League\Event\Emitter;
 use League\Flysystem\FilesystemInterface;
 use Mockery as m;
-use phpDocumentor\DomainModel\Parser\Documentation\Api\Definition;
-use phpDocumentor\DomainModel\Parser\Documentation\Api\Factory;
+use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
+use phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory;
 use phpDocumentor\DomainModel\Parser\ApiParsingCompleted;
 use phpDocumentor\DomainModel\Parser\ApiParsingStarted;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition as DocumentGroupDefinitionInterface;
@@ -34,7 +34,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     /** @var Emitter|m\MockInterface */
     private $emitter;
 
-    /** @var Factory */
+    /** @var FromReflectionFactory */
     private $fixture;
 
     /**
@@ -47,7 +47,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->emitter = m::mock(Emitter::class);
         $this->projectFactory = m::mock(ProjectFactory::class);
 
-        $this->fixture = new Factory($this->emitter, $this->projectFactory);
+        $this->fixture = new FromReflectionFactory($this->emitter, $this->projectFactory);
     }
 
     /**
@@ -57,7 +57,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->fixture->matches(m::mock(DocumentGroupDefinitionInterface::class)));
         $this->assertTrue($this->fixture->matches(
-            new Definition(
+            new FlySystemDefinition(
                 new DocumentGroupFormat('php'),
                 m::mock(FilesystemInterface::class),
                 m::mock(SpecificationInterface::class)
@@ -73,7 +73,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $fileSystem = m::mock(FilesystemInterface::class);
         $fileSystem->shouldReceive('find')->andReturn([]);
         $format = new DocumentGroupFormat('php');
-        $definition = new Definition($format, $fileSystem, m::mock(SpecificationInterface::class));
+        $definition = new FlySystemDefinition($format, $fileSystem, m::mock(SpecificationInterface::class));
 
         $this->projectFactory->shouldReceive('create')->andReturn(new Project('MyProject'));
         $this->emitter->shouldReceive('emit')->once()->with(m::type(ApiParsingStarted::class));

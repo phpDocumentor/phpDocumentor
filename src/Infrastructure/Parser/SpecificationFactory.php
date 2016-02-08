@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure\FlyFinder;
+namespace phpDocumentor\Infrastructure\Parser;
 
 use Flyfinder\Path;
 use Flyfinder\Specification\AndSpecification;

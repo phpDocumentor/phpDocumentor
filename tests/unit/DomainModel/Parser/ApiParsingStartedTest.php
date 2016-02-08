@@ -15,7 +15,7 @@ namespace phpDocumentor\DomainModel\Parser;
 use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\FilesystemInterface;
 use Mockery as m;
-use phpDocumentor\DomainModel\Parser\Documentation\Api\Definition;
+use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 
 /**
@@ -30,7 +30,7 @@ final class ApiParsingStartedTest extends \PHPUnit_Framework_TestCase
      */
     public function testApiDocumentGroupDefinitionIsPassedToEvent()
     {
-        $definition = new Definition(
+        $definition = new FlySystemDefinition(
             new DocumentGroupFormat('php'),
             m::mock(FilesystemInterface::class),
             m::mock(SpecificationInterface::class)

@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\DomainModel\Parser\Documentation\Api;
 
-use phpDocumentor\DomainModel\Parser\Documentation\Api\Definition;
+use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition\Factory as DocumentGroupDefinitionFactoryInterface;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Dsn;
@@ -52,7 +52,7 @@ final class DocumentGroupDefinitionFactory implements DocumentGroupDefinitionFac
      *
      * @param array $options
      *
-*@return Definition
+     * @return FlySystemDefinition
      */
     public function create(array $options)
     {
@@ -64,6 +64,6 @@ final class DocumentGroupDefinitionFactory implements DocumentGroupDefinitionFac
             $options['extensions']
         );
 
-        return new Definition($format, $fileSystem, $specification);
+        return new FlySystemDefinition($format, $fileSystem, $specification);
     }
 }

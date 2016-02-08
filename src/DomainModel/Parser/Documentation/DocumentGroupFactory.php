@@ -24,7 +24,7 @@ interface DocumentGroupFactory
      *
      * @param Definition $definition
      *
-*@return DocumentGroup
+     * @return DocumentGroup
      */
     public function create(Definition $definition);
 
@@ -33,7 +33,7 @@ interface DocumentGroupFactory
      *
      * @param Definition $definition
      *
-*@return boolean
+     * @return boolean
      */
     public function matches(Definition $definition);
 }

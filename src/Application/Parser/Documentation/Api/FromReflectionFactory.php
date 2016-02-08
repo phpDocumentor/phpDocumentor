@@ -9,7 +9,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel\Parser\Documentation\Api;
+namespace phpDocumentor\Application\Parser\Documentation\Api;
 
 use InvalidArgumentException;
 use League\Event\Emitter;
@@ -22,9 +22,8 @@ use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition as D
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroupFactory;
 use phpDocumentor\Reflection\ProjectFactory;
 use phpDocumentor\Reflection\Php\Factory\File;
-use phpDocumentor\Reflection\Php\Factory\File\FlySystemAdapter;
 
-final class Factory implements DocumentGroupFactory
+final class FromReflectionFactory implements DocumentGroupFactory
 {
     /** @var Emitter */
     private $emitter;

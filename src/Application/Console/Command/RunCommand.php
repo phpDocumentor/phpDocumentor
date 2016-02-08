@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Console\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
-use phpDocumentor\DomainModel\Parser\Documentation\Api\Definition;
+use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
 use phpDocumentor\DomainModel\Parser\ApiFileParsed;
 use phpDocumentor\DomainModel\Parser\ApiParsingStarted;
 use phpDocumentor\DomainModel\ConfigureCache;
@@ -313,7 +313,7 @@ HELP
         $this->emitter->addListener(
             ApiParsingStarted::class,
             function (ApiParsingStarted $event) use ($output) {
-                /** @var Definition $definition */
+                /** @var FlySystemDefinition $definition */
                 $definition = $event->definition();
                 $output->writeln(
                     sprintf('Parsing <info>%d</info> files', count($definition->getFiles()))

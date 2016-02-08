@@ -23,7 +23,7 @@ use phpDocumentor\DomainModel\Parser\DocumentationFactory;
 use phpDocumentor\DomainModel\Parser\DocumentationRepository;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\FlySystemFactory;
-use phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory as FlySystemSpecificationFactory;
+use phpDocumentor\Infrastructure\Parser\SpecificationFactory as FlySystemSpecificationFactory;
 use phpDocumentor\DomainModel\Parser\Version\DefinitionFactory;
 use phpDocumentor\DomainModel\Parser\Version\DefinitionRepository;
 use phpDocumentor\Reflection\ProjectFactory as ProjectFactoryInterface;
@@ -171,7 +171,7 @@ return [
     // Documentation Repositories
     DocumentationRepository::class => \DI\object(DocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
-        ->method('addDocumentGroupFactory', \DI\get(Api\Factory::class)),
+        ->method('addDocumentGroupFactory', \DI\get(\phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory::class)),
 
     //ApiReference
     ProjectFactoryInterface::class => function (ContainerInterface $c) {

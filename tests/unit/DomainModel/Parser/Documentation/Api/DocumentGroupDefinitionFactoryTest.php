@@ -15,6 +15,7 @@ namespace phpDocumentor\DomainModel\Parser\Documentation\Api;
 use Flyfinder\Specification\SpecificationInterface;
 use League\Flysystem\Filesystem;
 use Mockery as m;
+use phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\SpecificationFactory;
@@ -26,7 +27,7 @@ use phpDocumentor\Infrastructure\SpecificationFactory;
 final class DocumentGroupDefinitionFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Factory
+     * @var FromReflectionFactory
      */
     private $fixture;
 

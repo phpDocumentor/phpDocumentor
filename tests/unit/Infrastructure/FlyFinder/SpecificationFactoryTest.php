@@ -19,6 +19,7 @@ use Flyfinder\Specification\InPath;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
+use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 
 /**
  * @coversDefaultClass \phpDocumentor\Infrastructure\FlyFinder\SpecificationFactory
