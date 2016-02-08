@@ -15,7 +15,7 @@ namespace phpDocumentor\DomainModel\Renderer {
     use Mockery as m;
     use phpDocumentor\DomainModel\Renderer\Template;
     use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
-    use phpDocumentor\Infrastructure\XmlTemplateFactory;
+    use phpDocumentor\Infrastructure\Renderer\XmlTemplateFactory;
     use phpDocumentor\Application\Renderer\Action\TestAction1;
     use phpDocumentor\Application\Renderer\Action\TestAction2;
     use phpDocumentor\DomainModel\Renderer\Template\Parameter;

@@ -8,7 +8,7 @@ use phpDocumentor\Application\Application;
 use phpDocumentor\Application\Renderer\Template\Action;
 use phpDocumentor\Application\Renderer\Template\Action\Xsl;
 use phpDocumentor\DomainModel\Renderer\Renderer;
-use phpDocumentor\Infrastructure\Template\LocalPathsRepository;
+use phpDocumentor\Infrastructure\Renderer\Template\LocalPathsRepository;
 use phpDocumentor\DomainModel\Renderer\Router\ForFileProxy;
 use phpDocumentor\DomainModel\Renderer\Router\RouterAbstract;
 

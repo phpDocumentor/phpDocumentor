@@ -17,6 +17,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template;
 use phpDocumentor\DomainModel\Renderer\Template\Parameter;
+use phpDocumentor\Infrastructure\Renderer\Template\LocalPathsRepository;
 
 /**
  * Tests the functionality for the PathsRepository class.

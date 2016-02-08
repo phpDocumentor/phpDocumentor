@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Infrastructure;
+namespace phpDocumentor\Infrastructure\Renderer;
 
 use phpDocumentor\DomainModel\Renderer\Template;
 use phpDocumentor\DomainModel\Renderer\TemplateFactory;

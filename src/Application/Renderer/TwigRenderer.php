@@ -9,7 +9,7 @@ use phpDocumentor\Application\Renderer\Template\Action;
 use phpDocumentor\Application\Renderer\TwigRenderer\Pathfinder;
 use phpDocumentor\DomainModel\Renderer\Renderer;
 use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
-use phpDocumentor\Infrastructure\Template\LocalPathsRepository;
+use phpDocumentor\Infrastructure\Renderer\Template\LocalPathsRepository;
 use phpDocumentor\DomainModel\Renderer\Router\ForFileProxy;
 use phpDocumentor\DomainModel\Renderer\Router\Queue;
 use phpDocumentor\DomainModel\ReadModel\ReadModel;
