@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
 final class MergeConfigurationWithCommandLineOptions
 {

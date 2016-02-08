@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\DomainModel;
 
-use phpDocumentor\DomainModel\Path;
-
 /**
  * Value Object for DSN.
  */
