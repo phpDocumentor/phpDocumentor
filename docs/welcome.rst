@@ -64,6 +64,6 @@ It tries to achieve this goal by:
 * Enabling PHP Developers to extend the functionality and/or integrate these tools into your own application using
   plugins.
 
-.. _`PHPDoc Standard`: https://github.com/phpDocumentor/phpDocumentor2/blob/develop/docs/PSR.md
+.. _`PHPDoc Standard`: https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md
 .. _phpDocumentor:     https://github.com/phpDocumentor/phpDocumentor2
 .. _templates:         http://www.phpdoc.org/templates
