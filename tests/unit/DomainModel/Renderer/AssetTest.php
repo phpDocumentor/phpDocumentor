@@ -13,26 +13,22 @@
 namespace phpDocumentor\DomainModel\Renderer;
 
 /**
- * An asset that can be consumed by an action such as a template's contents or image.
+ * @coversDefaultClass phpDocumentor\DomainModel\Renderer\Asset
+ * @covers ::<private>
  */
-final class Asset
+final class AssetTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var string */
-    private $content;
-
     /**
-     * @param string $content
+     * @test
+     * @covers ::__construct
+     * @covers ::content
      */
-    public function __construct($content)
+    public function it_registers_the_content_of_an_asset()
     {
-        $this->content = $content;
-    }
+        $content = 'content';
 
-    /**
-     * @return string
-     */
-    public function content()
-    {
-        return $this->content;
+        $asset = new Asset($content);
+
+        $this->assertSame($content, $asset->content());
     }
 }
