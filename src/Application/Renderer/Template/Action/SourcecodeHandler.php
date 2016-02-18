@@ -37,7 +37,7 @@ class SourcecodeHandler
      */
     public function __invoke(Action $action)
     {
-        $artifact = $action->getRenderPass()->getDestination() . '/' . ltrim($action->getDestination(), '\\/');
+        $artifact = $action->getRenderContext()->getDestination() . '/' . ltrim($action->getDestination(), '\\/');
         $project = $this->analyzer->getProjectDescriptor();
 
         /** @var FileDescriptor $file */
@@ -52,7 +52,7 @@ class SourcecodeHandler
             }
             $source = htmlentities($source);
 
-            $fs = $action->getRenderPass()->getFilesystem();
+            $fs = $action->getRenderContext()->getFilesystem();
             $fs->put(
                 $path.'.html',
                 <<<HTML

@@ -10,8 +10,9 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
+use League\Flysystem\Filesystem;
 use phpDocumentor\DomainModel\Parser\Documentation;
 
 final class Render
@@ -27,10 +28,10 @@ final class Render
 
     /**
      * @param Documentation $documentation
-     * @param string $target
+     * @param Filesystem $target
      * @param string[] $templates array of templates to render.
      */
-    public function __construct(Documentation $documentation, $target, array $templates)
+    public function __construct(Documentation $documentation, Filesystem $target, array $templates)
     {
         $this->documentation = $documentation;
         $this->target    = $target;
@@ -46,7 +47,7 @@ final class Render
     }
 
     /**
-     * @return string
+     * @return Filesystem
      */
     public function getTarget()
     {

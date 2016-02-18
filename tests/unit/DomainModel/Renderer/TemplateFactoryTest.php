@@ -14,7 +14,7 @@ namespace phpDocumentor\DomainModel\Renderer {
 
     use Mockery as m;
     use phpDocumentor\DomainModel\Renderer\Template;
-    use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+    use phpDocumentor\DomainModel\Renderer\RenderContext;
     use phpDocumentor\Infrastructure\Renderer\XmlTemplateFactory;
     use phpDocumentor\Application\Renderer\Action\TestAction1;
     use phpDocumentor\Application\Renderer\Action\TestAction2;
@@ -57,7 +57,7 @@ namespace phpDocumentor\DomainModel\Renderer {
                 'Templates cannot be asserted; more fine-grained assertions are needed to make this work'
             );
             $fixture = new XmlTemplateFactory([]);
-            $renderPass = m::mock(RenderPass::class);
+            $renderPass = m::mock(RenderContext::class);
             $template = $fixture->create($renderPass, $this->exampleOptionsArray);
 
             $expectedTemplate = new Template(
@@ -97,7 +97,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         public function testCreatingATemplateWithoutParametersAndActions()
         {
             $fixture = new XmlTemplateFactory([]);
-            $template = $fixture->create(m::mock(RenderPass::class), [ 'name' => 'TemplateName' ]);
+            $template = $fixture->create(m::mock(RenderContext::class), [ 'name' => 'TemplateName' ]);
 
             $expectedTemplate = new Template('TemplateName');
 
@@ -112,7 +112,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         public function testIfErrorIsThrownIfNameIsNotProvided()
         {
             $fixture = new XmlTemplateFactory([]);
-            $fixture->create(m::mock(RenderPass::class), []);
+            $fixture->create(m::mock(RenderContext::class), []);
         }
 
         /**
@@ -123,7 +123,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         public function testIfErrorIsThrownIfNameIsNotAString()
         {
             $fixture = new XmlTemplateFactory([]);
-            $fixture->create(m::mock(RenderPass::class), ['name' => true]);
+            $fixture->create(m::mock(RenderContext::class), ['name' => true]);
         }
 
         /**
@@ -134,7 +134,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         public function testIfErrorIsThrownIfTemplateParametersIsNotAnArray()
         {
             $fixture = new XmlTemplateFactory([]);
-            $fixture->create(m::mock(RenderPass::class), ['name' => 'TemplateName', 'parameters' => ['bla']]);
+            $fixture->create(m::mock(RenderContext::class), ['name' => 'TemplateName', 'parameters' => ['bla']]);
         }
 
         /**
@@ -145,7 +145,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         public function testIfErrorIsThrownIfActionsIsNotAnArray()
         {
             $fixture = new XmlTemplateFactory([]);
-            $fixture->create(m::mock(RenderPass::class), ['name' => 'TemplateName', 'actions' => ['bla']]);
+            $fixture->create(m::mock(RenderContext::class), ['name' => 'TemplateName', 'actions' => ['bla']]);
         }
 
         /**
@@ -157,7 +157,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         {
             $fixture = new XmlTemplateFactory([]);
             $fixture->create(
-                m::mock(RenderPass::class),
+                m::mock(RenderContext::class),
                 ['name' => 'TemplateName', 'parameters' => [['value' => 'value1']]]
             );
         }
@@ -171,7 +171,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         {
             $fixture = new XmlTemplateFactory([]);
             $fixture->create(
-                m::mock(RenderPass::class),
+                m::mock(RenderContext::class),
                 ['name' => 'TemplateName', 'parameters' => [['key' => 'key1']]]
             );
         }
@@ -185,7 +185,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         {
             $fixture = new XmlTemplateFactory([]);
             $fixture->create(
-                m::mock(RenderPass::class),
+                m::mock(RenderContext::class),
                 ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction3']]]
             );
         }
@@ -199,7 +199,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         {
             $fixture = new XmlTemplateFactory([]);
             $fixture->create(
-                m::mock(RenderPass::class),
+                m::mock(RenderContext::class),
                 ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction4']]]
             );
         }
@@ -213,7 +213,7 @@ namespace phpDocumentor\DomainModel\Renderer {
         {
             $fixture = new XmlTemplateFactory([]);
             $fixture->create(
-                m::mock(RenderPass::class),
+                m::mock(RenderContext::class),
                 ['name' => 'TemplateName', 'actions' => [['name' => 'TestAction5']]]
             );
         }

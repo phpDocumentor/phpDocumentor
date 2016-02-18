@@ -12,6 +12,7 @@
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
+use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
 final class CommandlineOptionsMiddleware
@@ -176,9 +177,7 @@ final class CommandlineOptionsMiddleware
     private function overwriteDestinationFolder(array $configuration)
     {
         if ($this->options['target']) {
-            $configuration['phpdocumentor']['paths']['output'] = new Path($this->options['target']);
-
-            return $configuration;
+            $configuration['phpdocumentor']['paths']['output'] = new Dsn($this->options['target']);
         }
 
         return $configuration;
@@ -193,8 +192,6 @@ final class CommandlineOptionsMiddleware
     {
         if ($this->options['cache-folder']) {
             $configuration['phpdocumentor']['paths']['cache'] = new Path($this->options['cache-folder']);
-
-            return $configuration;
         }
 
         return $configuration;

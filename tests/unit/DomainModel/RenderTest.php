@@ -12,9 +12,10 @@
 
 namespace phpDocumentor\DomainModel;
 
+use League\Flysystem\Filesystem;
 use Mockery as m;
 use phpDocumentor\DomainModel\Parser\Documentation;
-use phpDocumentor\DomainModel\Render;
+use phpDocumentor\Application\Render;
 use phpDocumentor\DomainModel\Parser\Version\Number;
 
 /**
@@ -31,8 +32,8 @@ final class RenderTest extends \PHPUnit_Framework_TestCase
     public function testIfCommandIsProperlyCreatedAndReturnsParameters()
     {
         $documentation = new Documentation(new Number('1.0'));
-        $target = '.';
-        $templates = ['template'];
+        $target = m::mock(Filesystem::class);
+        $templates = [['name' => 'template']];
 
         $fixture = new Render($documentation, $target, $templates);
 

@@ -99,7 +99,7 @@ class GraphHandler implements ActionHandler
             }
         }
 
-        $destination = $action->getRenderPass()->getDestination() . '/' . $action->getDestination();
+        $destination = $action->getRenderContext()->getDestination() . '/' . $action->getDestination();
         if (! file_exists(dirname($destination))) {
             @mkdir(dirname($destination), 0777, true);
         }

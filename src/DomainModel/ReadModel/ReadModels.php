@@ -14,7 +14,7 @@ namespace phpDocumentor\DomainModel\ReadModel;
 
 use Webmozart\Assert\Assert;
 
-final class Collection extends \ArrayObject
+final class ReadModels extends \ArrayObject
 {
     public function offsetSet($index, $newval)
     {

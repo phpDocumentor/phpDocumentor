@@ -47,7 +47,7 @@ class AppendFileHandler implements ActionHandler
         Assert::fileExists($source);
         Assert::writable(dirname($destination));
 
-        $destinationFS = $action->getRenderPass()->getFilesystem();
+        $destinationFS = $action->getRenderContext()->getFilesystem();
 
         if (is_file($source)) {
             $stream = fopen($source, 'r+');
@@ -96,7 +96,7 @@ class AppendFileHandler implements ActionHandler
      */
     private function getDestination(Action $action)
     {
-        $destination = $action->getRenderPass()->getDestination() . '/' . ltrim($action->getDestination(), '\\/');
+        $destination = $action->getRenderContext()->getDestination() . '/' . ltrim($action->getDestination(), '\\/');
 
         return $destination;
     }

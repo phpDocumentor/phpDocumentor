@@ -9,6 +9,7 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
+use phpDocumentor\DomainModel\Path;
 
 /**
  * Expected phpDocumentor2 configuration arrays used for unit testing.
@@ -26,8 +27,8 @@ final class PhpDocumentor2ExpectedArray
             'phpdocumentor' => [
                 'use-cache' => true,
                 'paths'     => [
-                    'output' => 'build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache',
+                    'output' => new \phpDocumentor\DomainModel\Dsn('build/docs'),
+                    'cache'  => new \phpDocumentor\DomainModel\Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions'  => [
                     '1.0.0' => [
@@ -79,8 +80,8 @@ final class PhpDocumentor2ExpectedArray
             'phpdocumentor' => [
                 'use-cache' => true,
                 'paths'    => [
-                    'output' => 'build/docs',
-                    'cache'  => '/tmp/phpdoc-doc-cache',
+                    'output' => new \phpDocumentor\DomainModel\Dsn('build/docs'),
+                    'cache'  => new Path('/tmp/phpdoc-doc-cache'),
                 ],
                 'versions' => [
                     '1.0.0' => [

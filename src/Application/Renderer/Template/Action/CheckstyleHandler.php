@@ -62,9 +62,9 @@ class CheckstyleHandler
             }
         }
 
-        $fs = $action->getRenderPass()->getFilesystem();
+        $fs = $action->getRenderContext()->getFilesystem();
         $fs->put(
-            $action->getRenderPass()->getDestination() . '/' . ltrim($action->getDestination(), '\\/'),
+            $action->getRenderContext()->getDestination() . '/' . ltrim($action->getDestination(), '\\/'),
             $document->saveXML()
         );
     }

@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\DomainModel\ReadModel;
 
+use phpDocumentor\DomainModel\Parser\Documentation;
+
 final class Factory implements Mapper
 {
     /** @var Factory */
@@ -25,7 +27,7 @@ final class Factory implements Mapper
     /**
      * @inheritDoc
      */
-    public function create(Definition $readModelDefinition, $documentation)
+    public function create(Definition $readModelDefinition, Documentation $documentation)
     {
         $mapper = $this->mapperFactory->create($readModelDefinition->getType());
         $data = $mapper->create($readModelDefinition, $documentation);

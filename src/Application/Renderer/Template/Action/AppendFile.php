@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Renderer\Template\Action;
 
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use phpDocumentor\DomainModel\Renderer\Template;
 use Webmozart\Assert\Assert;
 
@@ -26,8 +26,8 @@ final class AppendFile implements Action
     /** @var Path */
     private $destination;
 
-    /** @var RenderPass */
-    private $renderPass;
+    /** @var RenderContext */
+    private $renderContext;
 
     /**
      * Factory method used to map a parameters array onto the constructor and properties for this Action.
@@ -38,12 +38,12 @@ final class AppendFile implements Action
      */
     public static function create(array $parameters)
     {
-        Assert::keyExists($parameters, 'renderPass');
+        Assert::keyExists($parameters, 'renderContext');
         Assert::keyExists($parameters, 'source');
         Assert::keyExists($parameters, 'destination');
 
         return new static(
-            $parameters['renderPass']->getValue(),
+            $parameters['renderContext']->getValue(),
             new Path($parameters['source']->getValue()),
             new Path($parameters['destination']->getValue())
         );
@@ -66,11 +66,11 @@ final class AppendFile implements Action
     }
 
     /**
-     * @return RenderPass
+     * @return RenderContext
      */
-    public function getRenderPass()
+    public function getRenderContext()
     {
-        return $this->renderPass;
+        return $this->renderContext;
     }
 
     public function __toString()
@@ -78,9 +78,9 @@ final class AppendFile implements Action
         return sprintf('Appended file %s onto %s', $this->source, $this->destination);
     }
 
-    private function __construct(RenderPass $renderPass, Path $source, Path $destination)
+    private function __construct(RenderContext $renderContext, Path $source, Path $destination)
     {
-        $this->renderPass  = $renderPass;
+        $this->renderContext  = $renderContext;
         $this->source      = $source;
         $this->destination = $destination;
     }
