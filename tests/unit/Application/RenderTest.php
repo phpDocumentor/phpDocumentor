@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
 use League\Flysystem\Filesystem;
 use Mockery as m;
@@ -19,7 +19,7 @@ use phpDocumentor\Application\Render;
 use phpDocumentor\DomainModel\Parser\Version\Number;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\Render
+ * @coversDefaultClass phpDocumentor\Application\Render
  * @covers ::__construct
  */
 final class RenderTest extends \PHPUnit_Framework_TestCase

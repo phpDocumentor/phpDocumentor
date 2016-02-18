@@ -10,9 +10,8 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
-use League\Event\Emitter;
 use League\Event\EmitterInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
@@ -32,8 +31,7 @@ use phpDocumentor\DomainModel\Renderer\Template;
 use phpDocumentor\DomainModel\Renderer\TemplateFactory;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\RenderHandler
- * @covers ::__construct
+ * @coversDefaultClass phpDocumentor\Application\RenderHandler
  * @covers ::<private>
  */
 final class RenderHandlerTest extends \PHPUnit_Framework_TestCase
