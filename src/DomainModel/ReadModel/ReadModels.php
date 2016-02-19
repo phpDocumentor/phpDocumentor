@@ -16,9 +16,15 @@ use Webmozart\Assert\Assert;
 
 final class ReadModels extends \ArrayObject
 {
+    public function __construct($input = [])
+    {
+        Assert::allIsInstanceOf($input, ReadModel::class);
+
+        parent::__construct($input);
+    }
+
     public function offsetSet($index, $newval)
     {
-        Assert::stringNotEmpty($index);
         Assert::isInstanceOf($newval, ReadModel::class);
 
         parent::offsetSet($index, $newval);

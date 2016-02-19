@@ -13,6 +13,7 @@
 namespace phpDocumentor\DomainModel\ReadModel;
 
 use phpDocumentor\DomainModel\Parser\Documentation;
+use Webmozart\Assert\Assert;
 
 final class Factory implements Mapper
 {
@@ -30,6 +31,8 @@ final class Factory implements Mapper
     public function create(Definition $readModelDefinition, Documentation $documentation)
     {
         $mapper = $this->mapperFactory->create($readModelDefinition->getType());
+        Assert::isInstanceOf($mapper, Mapper::class);
+
         $data = $mapper->create($readModelDefinition, $documentation);
 
         foreach ($readModelDefinition->getFilters() as $filter) {
