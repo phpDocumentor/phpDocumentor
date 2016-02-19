@@ -24,7 +24,7 @@ final class ReadModelTest extends \PHPUnit_Framework_TestCase
      * @covers ::getName
      * @covers ::getData
      */
-    public function it_registers_the_definition_and_data()
+    public function itRegistersTheDefinitionAndData()
     {
         $definition = new Definition('abc', new Type('all'));
         $data = 'content';
@@ -40,7 +40,7 @@ final class ReadModelTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::__invoke
      */
-    public function it_returns_the_data_when_used_as_callable()
+    public function itReturnsTheDataWhenUsedAsCallable()
     {
         $definition = new Definition('abc', new Type('all'));
         $data = 'content';

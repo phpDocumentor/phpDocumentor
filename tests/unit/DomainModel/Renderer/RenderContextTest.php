@@ -28,7 +28,7 @@ final class RenderContextTest extends \PHPUnit_Framework_TestCase
      * @covers ::assets
      * @covers ::artefacts
      */
-    public function it_registers_the_artefacts_assets_and_read_models()
+    public function itRegistersTheArtefactsAssetsAndReadModels()
     {
         $readModels = new ReadModels([]);
         $assets = m::mock(Assets::class);

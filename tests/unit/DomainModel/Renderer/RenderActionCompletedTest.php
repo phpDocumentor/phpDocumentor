@@ -25,7 +25,7 @@ final class RenderActionCompletedTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::action
      */
-    public function it_registers_the_associated_action()
+    public function itRegistersTheAssociatedAction()
     {
         $action = m::mock(Template\Action::class);
 

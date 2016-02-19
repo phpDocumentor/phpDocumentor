@@ -26,7 +26,7 @@ final class ArtefactTest extends \PHPUnit_Framework_TestCase
      * @covers ::location
      * @covers ::content
      */
-    public function it_registers_the_location_and_content_of_an_artefact()
+    public function itRegistersTheLocationAndContentOfAnArtefact()
     {
         $location = new Path('.');
         $content = 'content';

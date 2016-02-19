@@ -23,7 +23,7 @@ final class QueryTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::expression
      */
-    public function it_registers_the_expression_for_a_query()
+    public function itRegistersTheExpressionForAQuery()
     {
         $expression = 'expression';
 

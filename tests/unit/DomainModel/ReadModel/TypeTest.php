@@ -23,7 +23,7 @@ final class TypeTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function it_registers_the_type_name()
+    public function itRegistersTheTypeName()
     {
         $type = new Type('all');
 

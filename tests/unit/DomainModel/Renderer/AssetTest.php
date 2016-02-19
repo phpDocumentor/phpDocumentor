@@ -23,7 +23,7 @@ final class AssetTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::content
      */
-    public function it_registers_the_content_of_an_asset()
+    public function itRegistersTheContentOfAnAsset()
     {
         $content = 'content';
 
