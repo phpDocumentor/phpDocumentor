@@ -22,7 +22,6 @@ use phpDocumentor\Application\Renderer\StructureXmlRenderer\MethodConverter;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\PropertyConverter;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\TagConverter;
 use phpDocumentor\Application\Renderer\StructureXmlRenderer\TraitConverter;
-use phpDocumentor\DomainModel\Renderer\Renderer;
 use phpDocumentor\DomainModel\Renderer\Router\ForFileProxy;
 use phpDocumentor\DomainModel\Renderer\Router\RouterAbstract;
 use phpDocumentor\Application\Application;
@@ -42,7 +41,7 @@ use phpDocumentor\DomainModel\ReadModel\ReadModel;
 /**
  * Converts the structural information of phpDocumentor into an XML file.
  */
-final class StructureXmlRenderer implements Renderer
+final class StructureXmlRenderer
 {
     /** @var \DOMDocument $xml */
     protected $xml;
