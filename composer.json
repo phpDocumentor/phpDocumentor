@@ -44,7 +44,6 @@
         "mockery/mockery":             "~0.9",
         "mikey179/vfsStream":          "^1.2",
         "symfony/expression-language": "^2.4",
-        "symfony/process":             "^2.3",
         "herrera-io/phar-update":      "^2.0",
         "league/flysystem-memory":     "^1.0"
     },
@@ -63,7 +62,8 @@
             "curl -LSs https://box-project.github.io/box2/installer.php | php; mv box.phar build/box.phar"
         ],
         "test": [ "./bin/phpunit --colors=always -v" ],
-        "coverage": [ "./bin/phpunit --colors=always -v --coverage-html build/coverage" ]
+        "coverage": [ "./bin/phpunit --colors=always -v --coverage-html build/coverage" ],
+        "style": [ "./bin/phpcs --colors -p" ]
     },
     "extra": {
         "branch-alias": {
