@@ -38,9 +38,13 @@ final class CopyFile implements Action
      */
     public static function create(array $parameters)
     {
+        Assert::allIsInstanceOf($parameters, Template\Parameter::class);
         Assert::keyExists($parameters, 'renderContext');
+        Assert::isInstanceOf($parameters['renderContext']->getValue(), RenderContext::class);
         Assert::keyExists($parameters, 'source');
+        Assert::string($parameters['source']->getValue());
         Assert::keyExists($parameters, 'destination');
+        Assert::string($parameters['destination']->getValue());
 
         return new static(
             $parameters['renderContext']->getValue(),
@@ -80,8 +84,8 @@ final class CopyFile implements Action
 
     private function __construct(RenderContext $renderContext, Path $source, Path $destination)
     {
-        $this->renderContext  = $renderContext;
-        $this->source      = $source;
-        $this->destination = $destination;
+        $this->renderContext = $renderContext;
+        $this->source        = $source;
+        $this->destination   = $destination;
     }
 }

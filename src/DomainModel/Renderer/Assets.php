@@ -38,13 +38,14 @@ interface Assets
     public function has(Path $location);
 
     /**
-     * Retrieves the asset with the given name.
+     * Retrieves an array with the requested asset or if the name matches multiple assets (such as with a folder)
+     * then it returns all of them.
      *
      * @param Path $location a location in one of the asset locations.
      *
      * @throws AssetNotFoundException if no asset could be found at that location.
      *
-     * @return Asset
+     * @return Asset[]
      */
     public function get(Path $location);
 }

@@ -1,10 +1,11 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.5
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,19 +13,34 @@
 namespace phpDocumentor\DomainModel;
 
 /**
- * Test case for Path
  * @coversDefaultClass phpDocumentor\DomainModel\Path
+ * @covers ::<private>
  */
-class PathTest extends \PHPUnit_Framework_TestCase
+final class PathTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @test
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testToString()
+    public function itCanContainALocationOnAStorageService()
     {
         $path = new Path('/my/Path');
 
-        $this->assertEquals('/my/Path', (string)$path);
+        $this->assertSame('/my/Path', (string)$path);
+    }
+
+    /**
+     * @test
+     * @covers ::equals
+     */
+    public function itCanCompareItselfToAnotherPath()
+    {
+        $subject = new Path('a');
+        $similar = new Path('a');
+        $dissimilar = new Path('b');
+
+        $this->assertTrue($subject->equals($similar));
+        $this->assertFalse($subject->equals($dissimilar));
     }
 }
