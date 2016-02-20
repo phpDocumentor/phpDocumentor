@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
-<ruleset name="continuousphp-phing-tasks">
+<ruleset name="phpDocumentor">
+    <file>src</file>
+    <file>tests/common</file>
+    <file>tests/unit</file>
+
     <description>PSR2 Coding standard</description>
     <rule ref="PSR2"/>
 </ruleset>
