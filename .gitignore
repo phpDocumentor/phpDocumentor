@@ -1,4 +1,5 @@
 .idea
+bin/phing
 bin/behat
 bin/jsonlint
 bin/validate-json

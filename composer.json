@@ -45,7 +45,8 @@
         "mikey179/vfsStream":          "^1.2",
         "symfony/expression-language": "^2.4",
         "herrera-io/phar-update":      "^2.0",
-        "league/flysystem-memory":     "^1.0"
+        "league/flysystem-memory":     "^1.0",
+        "phing/phing": "^2.13"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
@@ -56,11 +57,7 @@
     },
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "scripts": {
-        "post-install-cmd": [
-            "php -r \"readfile('https://phar.phpunit.de/phpunit-5.2.9.phar');\" > build/phpunit.phar",
-            "php -r \"readfile('https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar');\" > build/phpcs.phar",
-            "curl -LSs https://box-project.github.io/box2/installer.php | php; mv box.phar build/box.phar"
-        ],
+        "post-install-cmd": [ "php bin/phing build:dependencies:install" ],
         "test": [ "./bin/phpunit --colors=always -v" ],
         "coverage": [ "./bin/phpunit --colors=always -v --coverage-html build/coverage" ],
         "style": [ "./bin/phpcs --colors -p" ]
