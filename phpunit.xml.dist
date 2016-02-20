@@ -2,43 +2,27 @@
 
 <phpunit bootstrap="tests/common/bootstrap.php" colors="true">
     <testsuites>
-        <testsuite name="phpDocumentor">
-            <directory>./tests/unit/</directory>
-        </testsuite>
+        <testsuite name="unit"><directory>./tests/unit/</directory></testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">src/phpDocumentor</directory>
+            <directory suffix=".php">src</directory>
             <exclude>
-                <directory suffix=".php">src/phpDocumentor/*/Messages</directory>
-                <directory suffix=".php">src/phpDocumentor/Plugin/*/Tests</directory>
+                <!-- Temporary excludes because these files and folders will be refactored away -->
+                <directory>src/DomainModel/Renderer/Router</directory>
+                <directory>src/Application/Renderer/Router</directory>
+                <directory>src/Application/Renderer/*Renderer*</directory>
+                <file>src/Application/Renderer/JsonpRenderer.php</file>
+                <file>src/Application/Renderer/StructureXmlRenderer.php</file>
+                <file>src/Application/Renderer/TwigRenderer.php</file>
+                <file>src/Application/Renderer/XslRenderer.php</file>
             </exclude>
         </whitelist>
     </filter>
-    <php>
-        <!--
-            Temporary folder for some tests' output.
-            Must already exist.
-            Defaults to the OS' temp folder.
-        -->
-        <!--<const name="phpDocumentor\PHPUnit\TEMP_DIR" value="/tmp" />-->
-        <!-- A folder guaranteed not to exist during the test run. -->
-        <const name="phpDocumentor\PHPUnit\UNKNOWN_DIR" value="/tmpa" />
-    </php>
-    <logging>
-        <log type="coverage-html"
-            title="phpDocumentor"
-            target="build/coverage"
-            charset="UTF-8"
-            yui="true"
-            highlight="false"
-            lowUpperBound="35"
-            highLowerBound="70" />
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
-    </logging>
     <listeners>
-        <listener class="Mockery\Adapter\Phpunit\TestListener"
-            file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"></listener>
+        <listener
+            class="Mockery\Adapter\Phpunit\TestListener"
+            file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"
+        />
     </listeners>
 </phpunit>
