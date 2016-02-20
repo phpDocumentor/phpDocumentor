@@ -1,5 +1,7 @@
 <?php
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
+use League\Event\EmitterInterface;
 use League\Tactician\CommandBus;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
@@ -9,9 +11,12 @@ use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory;
 use phpDocumentor\Application\Renderer\TwigRenderer;
+use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\Documentation\Api;
 use phpDocumentor\Application\Console\Command\ListCommand;
 use phpDocumentor\DomainModel\ReadModel\Mapper\Factory as MapperFactory;
+use phpDocumentor\DomainModel\Renderer\Assets;
+use phpDocumentor\Infrastructure\Renderer\FlySystemAssets;
 use phpDocumentor\Infrastructure\Tactician\ContainerLocator;
 use phpDocumentor\Application\Console\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Console\Command\RunCommand;
@@ -111,6 +116,7 @@ return [
     ContainerInterface::class => function (ContainerInterface $c) {
         return $c;
     },
+    EmitterInterface::class => \DI\object(Emitter::class),
 
     // Command Bus
     CommandBus::class           => \DI\object()->constructor(\DI\get('command.middlewares')),
@@ -230,6 +236,13 @@ return [
         ->constructorParameter('mapperAliases', [
             'php' => Project::class
         ]),
+
+    // Renderer
+    Assets::class => \DI\object(FlySystemAssets::class)
+        ->constructorParameter('filesystem', \DI\factory(function (ContainerInterface $c) {
+            $filesystemFactory = $c->get(FileSystemFactory::class);
+            return $filesystemFactory->create(new Dsn('file://' . __DIR__ . '/../../data/templates'));
+        })),
 
     // Templates
     LocalPathsRepository::class => \DI\object()

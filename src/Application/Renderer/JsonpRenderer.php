@@ -5,7 +5,6 @@ namespace phpDocumentor\Application\Renderer;
 use phpDocumentor\Application\Renderer\Template\Action\Jsonp;
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\ReadModel\ReadModel;
-use phpDocumentor\DomainModel\Renderer\Renderer;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
 
 /**
@@ -46,7 +45,7 @@ use phpDocumentor\DomainModel\Renderer\Template\Action;
  *     member `type` that can be either 'class', 'interface' or 'trait' to distinguish between the three types
  *     of 'classes'.
  */
-class JsonpRenderer implements Renderer
+class JsonpRenderer
 {
     public function render(ReadModel $view, Path $destination, $template = null)
     {

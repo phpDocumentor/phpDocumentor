@@ -11,16 +11,16 @@
 
 namespace phpDocumentor\Application\Renderer\Template\Action;
 
+use phpDocumentor\Application\Renderer\TwigRenderer;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Renderer;
 use phpDocumentor\DomainModel\Renderer\Template\ActionHandler;
 
 class TwigHandler implements ActionHandler
 {
-    /** @var Renderer */
+    /** @var TwigRenderer */
     private $renderer;
 
-    public function __construct(Renderer $renderer)
+    public function __construct(TwigRenderer $renderer)
     {
         $this->renderer = $renderer;
     }

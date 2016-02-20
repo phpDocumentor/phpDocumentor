@@ -10,15 +10,16 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\DomainModel;
+namespace phpDocumentor\Application;
 
+use League\Flysystem\Filesystem;
 use Mockery as m;
 use phpDocumentor\DomainModel\Parser\Documentation;
-use phpDocumentor\DomainModel\Render;
+use phpDocumentor\Application\Render;
 use phpDocumentor\DomainModel\Parser\Version\Number;
 
 /**
- * @coversDefaultClass phpDocumentor\DomainModel\Render
+ * @coversDefaultClass phpDocumentor\Application\Render
  * @covers ::__construct
  */
 final class RenderTest extends \PHPUnit_Framework_TestCase
@@ -31,8 +32,8 @@ final class RenderTest extends \PHPUnit_Framework_TestCase
     public function testIfCommandIsProperlyCreatedAndReturnsParameters()
     {
         $documentation = new Documentation(new Number('1.0'));
-        $target = '.';
-        $templates = ['template'];
+        $target = m::mock(Filesystem::class);
+        $templates = [['name' => 'template']];
 
         $fixture = new Render($documentation, $target, $templates);
 

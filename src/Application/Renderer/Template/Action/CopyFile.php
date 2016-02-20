@@ -14,14 +14,14 @@ namespace phpDocumentor\Application\Renderer\Template\Action;
 
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use phpDocumentor\DomainModel\Renderer\Template;
 use Webmozart\Assert\Assert;
 
 final class CopyFile implements Action
 {
-    /** @var RenderPass */
-    private $renderPass;
+    /** @var RenderContext */
+    private $renderContext;
 
     /** @var Path */
     private $source;
@@ -38,23 +38,23 @@ final class CopyFile implements Action
      */
     public static function create(array $parameters)
     {
-        Assert::keyExists($parameters, 'renderPass');
+        Assert::keyExists($parameters, 'renderContext');
         Assert::keyExists($parameters, 'source');
         Assert::keyExists($parameters, 'destination');
 
         return new static(
-            $parameters['renderPass']->getValue(),
+            $parameters['renderContext']->getValue(),
             new Path($parameters['source']->getValue()),
             new Path($parameters['destination']->getValue())
         );
     }
 
     /**
-     * @return RenderPass
+     * @return RenderContext
      */
-    public function getRenderPass()
+    public function getRenderContext()
     {
-        return $this->renderPass;
+        return $this->renderContext;
     }
 
     /**
@@ -78,9 +78,9 @@ final class CopyFile implements Action
         return sprintf('Copied file %s to %s', $this->source, $this->destination);
     }
 
-    private function __construct(RenderPass $renderPass, Path $source, Path $destination)
+    private function __construct(RenderContext $renderContext, Path $source, Path $destination)
     {
-        $this->renderPass  = $renderPass;
+        $this->renderContext  = $renderContext;
         $this->source      = $source;
         $this->destination = $destination;
     }

@@ -14,15 +14,17 @@ namespace phpDocumentor\Application\Console\Command;
 
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
+use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\DocumentationRepository;
+use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
 use phpDocumentor\DomainModel\Parser\ApiFileParsed;
 use phpDocumentor\DomainModel\Parser\ApiParsingStarted;
 use phpDocumentor\Application\ConfigureCache;
 use phpDocumentor\Application\MergeConfigurationWithCommandLineOptions;
-use phpDocumentor\DomainModel\Render;
+use phpDocumentor\Application\Render;
 use phpDocumentor\DomainModel\Parser\DocumentationFactory;
-use phpDocumentor\Infrastructure\Parser\StashDocumentationRepository;
 use phpDocumentor\DomainModel\Parser\Version\DefinitionRepository;
 use phpDocumentor\DomainModel\Renderer\RenderActionCompleted;
 use phpDocumentor\DomainModel\Renderer\RenderingFinished;
@@ -72,6 +74,12 @@ final class RunCommand extends Command
     /** @var DocumentationRepository */
     private $documentationRepository;
 
+    /** @var ConfigurationFactory */
+    private $configurationFactory;
+
+    /** @var FileSystemFactory */
+    private $fileSystemFactory;
+
     /**
      * Initializes the command with all necessary dependencies
      *
@@ -80,13 +88,17 @@ final class RunCommand extends Command
      * @param DocumentationFactory $documentationFactory
      * @param CommandBus $commandBus
      * @param Emitter $emitter
+     * @param ConfigurationFactory $configurationFactory
+     * @param FileSystemFactory $fileSystemFactory
      */
     public function __construct(
         DefinitionRepository $definitionRepository,
         DocumentationRepository $documentationRepository,
         DocumentationFactory $documentationFactory,
         CommandBus $commandBus,
-        Emitter $emitter
+        Emitter $emitter,
+        ConfigurationFactory $configurationFactory,
+        FileSystemFactory $fileSystemFactory
     ) {
         $this->commandBus                   = $commandBus;
         $this->emitter                      = $emitter;
@@ -95,6 +107,8 @@ final class RunCommand extends Command
         $this->documentationRepository      = $documentationRepository;
 
         parent::__construct('project:run');
+        $this->configurationFactory = $configurationFactory;
+        $this->fileSystemFactory = $fileSystemFactory;
     }
 
     /**
@@ -279,24 +293,25 @@ HELP
         $this->commandBus->handle(
             new MergeConfigurationWithCommandLineOptions($input->getOptions(), $input->getArguments())
         );
-
+        $config = $this->configurationFactory->get();
         $this->commandBus->handle(
-            new ConfigureCache()
+            new ConfigureCache($config['phpdocumentor']['paths']['cache'], $config['phpdocumentor']['use-cache'])
         );
 
-        foreach ($this->definitionRepository->fetchAll() as $definition) {
-            $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
+        $destination = $this->getDestination();
+        $destinationFilesystem = $this->fileSystemFactory->create($destination);
+        $templates = $this->getTemplates();
 
-            if ($documentation === null) {
-                $documentation = $this->documentationFactory->create($definition);
-                $this->documentationRepository->save($documentation);
-            }
-            $this->commandBus->handle(
-                new Render($documentation, sys_get_temp_dir() . '/phpdoc', $input->getOption('template') ?: ['clean'])
+        foreach ($this->definitionRepository->fetchAll() as $definition) {
+            $this->render(
+                $this->parse($definition),
+                $destinationFilesystem,
+                $templates
             );
         }
 
-        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', sys_get_temp_dir()));
+        $expandedDestination = $this->getExpandedDestination($destination);
+        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $expandedDestination));
 
         return 0;
     }
@@ -345,5 +360,72 @@ HELP
                 $output->writeln(sprintf('  %s', (string)$event->action()));
             }
         );
+    }
+
+    /**
+     * @return Dsn
+     */
+    private function getDestination()
+    {
+        $config = $this->configurationFactory->get();
+
+        return $config['phpdocumentor']['paths']['output'];
+    }
+
+    /**
+     * Returns the destination as a string and expands it to show the absolute path if the destination is on disk.
+     *
+     * Because the destination location is created during rendering we can only expand the path using realpath
+     * because realpath will return false on a non-existent location.
+     *
+     * @param Dsn $destination
+     *
+     * @return string
+     */
+    private function getExpandedDestination($destination)
+    {
+        return $destination->getScheme() == 'file'
+            ? realpath($destination->getPath())
+            : $destination;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getTemplates()
+    {
+        $config = $this->configurationFactory->get();
+
+        return $config['phpdocumentor']['templates'];
+    }
+
+    /**
+     * @param $definition
+     *
+     * @return null|\phpDocumentor\DomainModel\Parser\Documentation
+     */
+    private function parse($definition)
+    {
+        $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
+
+        // TODO: does this mean that if a documentation comes from cache it is never updated?
+        if ($documentation === null) {
+            $documentation = $this->documentationFactory->create($definition);
+            $this->documentationRepository->save($documentation);
+
+            return $documentation;
+        }
+
+        return $documentation;
+    }
+
+    /**
+     * @param $documentation
+     * @param $destinationFilesystem
+     * @param $templates
+     */
+    private function render($documentation, $destinationFilesystem, $templates)
+    {
+        $this->commandBus->handle(new Render($documentation, $destinationFilesystem, $templates));
     }
 }

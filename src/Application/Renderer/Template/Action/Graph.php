@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Renderer\Template\Action;
 
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use phpDocumentor\DomainModel\Renderer\Template;
 use Webmozart\Assert\Assert;
 
@@ -26,8 +26,8 @@ final class Graph implements Action
     /** @var Path */
     private $destination;
 
-    /** @var RenderPass */
-    private $renderPass;
+    /** @var RenderContext */
+    private $renderContext;
 
     /**
      * Factory method used to map a parameters array onto the constructor and properties for this Action.
@@ -38,7 +38,7 @@ final class Graph implements Action
      */
     public static function create(array $parameters)
     {
-        Assert::keyExists($parameters, 'renderPass');
+        Assert::keyExists($parameters, 'renderContext');
         Assert::keyExists($parameters, 'source');
         try {
             Assert::keyExists($parameters, 'destination');
@@ -49,18 +49,18 @@ final class Graph implements Action
         $destination = isset($parameters['artifact']) ? $parameters['artifact'] : $parameters['destination'];
 
         return new static(
-            $parameters['renderPass']->getValue(),
+            $parameters['renderContext']->getValue(),
             new Path($parameters['source']->getValue()),
             new Path($destination->getValue())
         );
     }
 
     /**
-     * @return RenderPass
+     * @return RenderContext
      */
-    public function getRenderPass()
+    public function getRenderContext()
     {
-        return $this->renderPass;
+        return $this->renderContext;
     }
 
     /**
@@ -84,10 +84,10 @@ final class Graph implements Action
         return 'Generated the class diagram';
     }
 
-    private function __construct(RenderPass $renderPass, Path $source, Path $destination)
+    private function __construct(RenderContext $renderContext, Path $source, Path $destination)
     {
         $this->source      = $source;
         $this->destination = $destination;
-        $this->renderPass  = $renderPass;
+        $this->renderContext  = $renderContext;
     }
 }

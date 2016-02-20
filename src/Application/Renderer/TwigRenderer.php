@@ -7,16 +7,15 @@ use phpDocumentor\Application\Renderer\Template\Action\Twig;
 use phpDocumentor\Application\Renderer\TwigRenderer\Extension;
 use phpDocumentor\Application\Renderer\Template\Action;
 use phpDocumentor\Application\Renderer\TwigRenderer\Pathfinder;
-use phpDocumentor\DomainModel\Renderer\Renderer;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use phpDocumentor\Infrastructure\Renderer\Template\LocalPathsRepository;
 use phpDocumentor\DomainModel\Renderer\Router\ForFileProxy;
 use phpDocumentor\DomainModel\Renderer\Router\Queue;
 use phpDocumentor\DomainModel\ReadModel\ReadModel;
 use phpDocumentor\DomainModel\ReadModel\Factory;
-use phpDocumentor\DomainModel\ReadModel\Collection;
+use phpDocumentor\DomainModel\ReadModel\ReadModels;
 
-class TwigRenderer implements Renderer
+class TwigRenderer
 {
     public function render(ReadModel $view, Path $destination, $template = null)
     {
@@ -66,7 +65,7 @@ class TwigRenderer implements Renderer
     public function __invoke(Action $action)
     {
         $dataView = $this->viewFactory->create($action->getDataView(), $action->getRenderPass()->getDocumentation());
-        $views    = new Collection([$dataView->getName() => $dataView()]);
+        $views    = new ReadModels([$dataView->getName() => $dataView()]);
 
         // TODO: Move path finding to View
         $nodes = $this->pathfinder->find($dataView(), $action->getQuery());
@@ -127,17 +126,17 @@ class TwigRenderer implements Renderer
     /**
      * Adds the phpDocumentor base extension to the Twig Environment.
      *
-     * @param Collection             $views
+     * @param ReadModels             $views
      * @param string            $destination
      * @param \Twig_Environment $twigEnvironment
      *
      * @return void
      */
     private function addPhpDocumentorExtension(
-        Collection $views,
+        ReadModels $views,
         $destination,
         \Twig_Environment $twigEnvironment,
-        RenderPass $renderPass
+        RenderContext $renderPass
     ) {
         $baseExtension = new Extension($views);
         $baseExtension->setDestination(substr($destination, strlen($renderPass->getDestination()) + 1));

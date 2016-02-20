@@ -2,16 +2,16 @@
 
 namespace phpDocumentor\Application\Renderer\Template\Action;
 
-use phpDocumentor\DomainModel\Renderer\Renderer;
+use phpDocumentor\Application\Renderer\JsonpRenderer;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
 use phpDocumentor\DomainModel\Renderer\Template\ActionHandler;
 
 final class JsonpHandler implements ActionHandler
 {
-    /** @var Renderer */
+    /** @var JsonpRenderer */
     private $renderer;
 
-    public function __construct(Renderer $renderer)
+    public function __construct(JsonpRenderer $renderer)
     {
         $this->renderer = $renderer;
     }

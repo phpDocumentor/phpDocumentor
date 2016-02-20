@@ -12,37 +12,25 @@
 
 namespace phpDocumentor\Application;
 
-use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use Stash\Pool;
 
 final class ConfigureCacheHandler
 {
-    /**
-     * @var Pool
-     */
+    /** @var Pool */
     private $pool;
-
-    /**
-     * @var ConfigurationFactory
-     */
-    private $configurationFactory;
 
     /**
      * ConfigureCacheHandler constructor.
      */
-    public function __construct(Pool $pool, ConfigurationFactory $configurationFactory)
+    public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->configurationFactory = $configurationFactory;
     }
 
-    public function __invoke()
+    public function __invoke(ConfigureCache $command)
     {
-        $this->pool->getDriver()->setOptions(
-            [ 'path' => $this->configurationFactory->get()['phpdocumentor']['paths']['cache'] ]
-        );
-
-        if ($this->configurationFactory->get()['phpdocumentor']['use-cache'] === false) {
+        $this->pool->getDriver()->setOptions(['path' => $command->location()]);
+        if ($command->enabled() === false) {
             $this->pool->flush();
         }
     }

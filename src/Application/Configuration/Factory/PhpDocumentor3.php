@@ -12,6 +12,9 @@
 
 namespace phpDocumentor\Application\Configuration\Factory;
 
+use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\DomainModel\Path;
+
 /**
  * phpDocumentor3 strategy for converting the configuration xml to an array.
  */
@@ -61,8 +64,8 @@ final class PhpDocumentor3 implements Strategy
             'phpdocumentor' => [
                 'use-cache' => $phpDocumentor->{"use-cache"} ?: true,
                 'paths'     => [
-                    'output' => ((string) $phpDocumentor->paths->output) ?: 'file://build/docs',
-                    'cache'  => ((string) $phpDocumentor->paths->cache) ?: '/tmp/phpdoc-doc-cache',
+                    'output' => new Dsn(((string) $phpDocumentor->paths->output) ?: 'file://build/docs'),
+                    'cache'  => new Path(((string) $phpDocumentor->paths->cache) ?: '/tmp/phpdoc-doc-cache'),
                 ],
                 'versions'  => ($versions) ?: $this->defaultVersions(),
                 'templates' => ($templates) ?: [$this->defaultTemplate()],

@@ -14,14 +14,14 @@ namespace phpDocumentor\Application\Renderer\Template\Action;
 
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use phpDocumentor\DomainModel\Renderer\Template;
 use Webmozart\Assert\Assert;
 
 final class Xsl implements Action
 {
-    /** @var RenderPass */
-    private $renderPass;
+    /** @var RenderContext */
+    private $renderContext;
 
     /** @var Path */
     private $view;
@@ -36,7 +36,7 @@ final class Xsl implements Action
     private $template;
 
     public function __construct(
-        RenderPass $renderPass,
+        RenderContext $renderContext,
         Path $view,
         $query = '',
         Path $destination = null,
@@ -53,7 +53,7 @@ final class Xsl implements Action
 
         $this->view        = $view;
         $this->query       = $query;
-        $this->renderPass  = $renderPass;
+        $this->renderContext  = $renderContext;
         $this->destination = $destination;
         $this->template    = $template;
     }
@@ -73,7 +73,7 @@ final class Xsl implements Action
             : $parameters['destination']->getValue();
 
         return new static(
-            $parameters['renderPass']->getValue(),
+            $parameters['renderContext']->getValue(),
             new Path($parameters['source']->getValue()),
             $parameters['query']->getValue(),
             $destination ? new Path($destination) : null,
@@ -90,11 +90,11 @@ final class Xsl implements Action
     }
 
     /**
-     * @return RenderPass
+     * @return RenderContext
      */
-    public function getRenderPass()
+    public function getRenderContext()
     {
-        return $this->renderPass;
+        return $this->renderContext;
     }
 
     /**

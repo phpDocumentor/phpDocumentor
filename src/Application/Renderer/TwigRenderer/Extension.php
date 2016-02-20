@@ -13,11 +13,11 @@ namespace phpDocumentor\Application\Renderer\TwigRenderer;
 
 use phpDocumentor\DomainModel\Renderer\Router\Queue;
 use phpDocumentor\DomainModel\Renderer\Router\Renderer;
-use phpDocumentor\DomainModel\ReadModel\Collection;
+use phpDocumentor\DomainModel\ReadModel\ReadModels;
 
 class Extension extends \Twig_Extension
 {
-    /** @var Collection */
+    /** @var ReadModels */
     protected $views = null;
 
     /** @var Renderer */
@@ -26,7 +26,7 @@ class Extension extends \Twig_Extension
     /**
      * Registers the structure.
      */
-    public function __construct(Collection $views)
+    public function __construct(ReadModels $views)
     {
         $this->views          = $views;
         $this->routeRenderer = new Renderer(new Queue());
@@ -137,7 +137,7 @@ class Extension extends \Twig_Extension
             'sort' => new \Twig_SimpleFilter(
                 'sort_*',
                 function ($direction, $collection) {
-                    if (!$collection instanceof Collection) {
+                    if (!$collection instanceof ReadModels) {
                         return $collection;
                     }
 

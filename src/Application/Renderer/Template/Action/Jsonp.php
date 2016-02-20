@@ -14,14 +14,14 @@ namespace phpDocumentor\Application\Renderer\Template\Action;
 
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use phpDocumentor\DomainModel\Renderer\Template;
 use Webmozart\Assert\Assert;
 
 final class Jsonp implements Action
 {
-    /** @var RenderPass */
-    private $renderPass;
+    /** @var RenderContext */
+    private $renderContext;
 
     /** @var Path|null */
     private $destination;
@@ -35,7 +35,7 @@ final class Jsonp implements Action
      */
     public static function create(array $parameters)
     {
-        Assert::keyExists($parameters, 'renderPass');
+        Assert::keyExists($parameters, 'renderContext');
         try {
             Assert::keyExists($parameters, 'destination');
         } catch (\InvalidArgumentException $e) {
@@ -48,17 +48,17 @@ final class Jsonp implements Action
             : $parameters['destination']->getValue();
 
         return new static(
-            $parameters['renderPass']->getValue(),
+            $parameters['renderContext']->getValue(),
             $destination ? new Path($destination) : null
         );
     }
 
     /**
-     * @return RenderPass
+     * @return RenderContext
      */
-    public function getRenderPass()
+    public function getRenderContext()
     {
-        return $this->renderPass;
+        return $this->renderContext;
     }
 
     /**
@@ -74,9 +74,9 @@ final class Jsonp implements Action
         return sprintf('Rendered jsonp report at "%s"', $this->destination);
     }
 
-    private function __construct(RenderPass $renderPass, Path $destination = null)
+    private function __construct(RenderContext $renderContext, Path $destination = null)
     {
-        $this->renderPass  = $renderPass;
+        $this->renderContext  = $renderContext;
         $this->destination = $destination;
     }
 }

@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Renderer\Template\Action;
 
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use phpDocumentor\DomainModel\Renderer\Template;
 use phpDocumentor\DomainModel\ReadModel\Definition;
 use phpDocumentor\DomainModel\ReadModel\Type;
@@ -22,8 +22,8 @@ use Webmozart\Assert\Assert;
 
 final class Twig implements Action
 {
-    /** @var RenderPass */
-    private $renderPass;
+    /** @var RenderContext */
+    private $renderContext;
 
     /** @var Path */
     private $view;
@@ -41,7 +41,7 @@ final class Twig implements Action
     private $dataView;
 
     public function __construct(
-        RenderPass $renderPass,
+        RenderContext $renderContext,
         Path $view,
         $query = '',
         Path $destination = null,
@@ -56,7 +56,7 @@ final class Twig implements Action
 
         $this->view        = $view;
         $this->query       = $query;
-        $this->renderPass  = $renderPass;
+        $this->renderContext  = $renderContext;
         $this->destination = $destination;
         $this->template    = $template;
         $this->dataView    = $dataView;
@@ -77,7 +77,7 @@ final class Twig implements Action
             : $parameters['destination']->getValue();
 
         return new static(
-            $parameters['renderPass']->getValue(),
+            $parameters['renderContext']->getValue(),
             new Path($parameters['source']->getValue()),
             $parameters['query']->getValue(),
             $destination ? new Path($destination) : null,
@@ -94,11 +94,11 @@ final class Twig implements Action
     }
 
     /**
-     * @return RenderPass
+     * @return RenderContext
      */
-    public function getRenderPass()
+    public function getRenderContext()
     {
-        return $this->renderPass;
+        return $this->renderContext;
     }
 
     /**

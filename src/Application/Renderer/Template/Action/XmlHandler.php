@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Application\Renderer\Template\Action;
 
-use phpDocumentor\DomainModel\Renderer\Renderer;
+use phpDocumentor\Application\Renderer\StructureXmlRenderer;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
 use phpDocumentor\DomainModel\Renderer\Template\ActionHandler;
 
@@ -20,10 +20,10 @@ use phpDocumentor\DomainModel\Renderer\Template\ActionHandler;
  */
 class XmlHandler implements ActionHandler
 {
-    /** @var Renderer */
+    /** @var StructureXmlRenderer */
     private $renderer;
 
-    public function __construct(Renderer $renderer)
+    public function __construct(StructureXmlRenderer $renderer)
     {
         $this->renderer = $renderer;
     }

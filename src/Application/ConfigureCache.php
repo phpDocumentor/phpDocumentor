@@ -12,7 +12,39 @@
 
 namespace phpDocumentor\Application;
 
+use phpDocumentor\DomainModel\Path;
+
 final class ConfigureCache
 {
+    /** @var Path */
+    private $location;
 
+    /** @var bool */
+    private $enabled = true;
+
+    /**
+     * @param Path $location
+     * @param bool $enabled
+     */
+    public function __construct(Path $location, $enabled = true)
+    {
+        $this->location = $location;
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * @return Path
+     */
+    public function location()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function enabled()
+    {
+        return $this->enabled;
+    }
 }

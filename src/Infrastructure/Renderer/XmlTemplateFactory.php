@@ -16,7 +16,7 @@ use phpDocumentor\DomainModel\Renderer\Template;
 use phpDocumentor\DomainModel\Renderer\TemplateFactory;
 use phpDocumentor\DomainModel\Uri;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
-use phpDocumentor\DomainModel\Renderer\Template\RenderPass;
+use phpDocumentor\DomainModel\Renderer\RenderContext;
 use Webmozart\Assert\Assert;
 use phpDocumentor\DomainModel\Renderer\Template\Parameter;
 
@@ -36,14 +36,14 @@ final class XmlTemplateFactory implements TemplateFactory
     /**
      * Creates a new Template entity with the given name, parameters and options.
      *
-     * @param RenderPass $renderPass
+     * @param RenderContext $renderContext
      * @param string[] $options Array with a 'name', 'parameters' and 'actions' key.
      *
      * @throws \InvalidArgumentException if the given options array does not map onto a Template.
      *
      * @return Template
      */
-    public function create(RenderPass $renderPass, array $options)
+    public function create(RenderContext $renderContext, array $options)
     {
         Assert::keyExists($options, 'name');
         Assert::stringNotEmpty($options['name']);
@@ -59,18 +59,18 @@ final class XmlTemplateFactory implements TemplateFactory
             $options['actions'] = [];
         }
         Assert::isArray($options['actions']);
-        $this->addActionsToTemplate($options['actions'], $renderPass, $template);
+        $this->addActionsToTemplate($options['actions'], $renderContext, $template);
 
         return $template;
     }
 
     /**
-     * @param RenderPass $renderPass
+     * @param RenderContext $renderContext
      * @param string     $name
      *
      * @return null|Template
      */
-    public function createFromName(RenderPass $renderPass, $name)
+    public function createFromName(RenderContext $renderContext, $name)
     {
         Assert::stringNotEmpty($name);
 
@@ -80,7 +80,7 @@ final class XmlTemplateFactory implements TemplateFactory
                 $template = $this->readFromXml($path);
                 $template['name'] = $name;
 
-                return $this->create($renderPass, $template);
+                return $this->create($renderContext, $template);
             }
         }
 
@@ -88,16 +88,16 @@ final class XmlTemplateFactory implements TemplateFactory
     }
 
     /**
-     * @param RenderPass $renderPass
+     * @param RenderContext $renderContext
      * @param Uri        $uri
      *
      * @return Template
      */
-    public function createFromUri(RenderPass $renderPass, Uri $uri)
+    public function createFromUri(RenderContext $renderContext, Uri $uri)
     {
         $template = $this->readFromXml((string)$uri);
 
-        return $this->create($renderPass, $template);
+        return $this->create($renderContext, $template);
     }
 
     private function readFromXml($path)
@@ -198,16 +198,16 @@ final class XmlTemplateFactory implements TemplateFactory
      * Adds a series of Actions, as defined by entries in the $actions array, to the provided Template.
      *
      * @param string[]   $actions
-     * @param RenderPass $renderPass
+     * @param RenderContext $renderContext
      * @param Template   $template
      *
      * @return void
      */
-    private function addActionsToTemplate($actions, RenderPass $renderPass, Template $template)
+    private function addActionsToTemplate($actions, RenderContext $renderContext, Template $template)
     {
         foreach ($actions as $action) {
             Assert::isArray($action);
-            $this->addActionToTemplate($renderPass, $template, $action);
+            $this->addActionToTemplate($renderContext, $template, $action);
         }
     }
 
@@ -218,7 +218,7 @@ final class XmlTemplateFactory implements TemplateFactory
      * to it.
      *
      * @param Template   $template
-     * @param RenderPass $renderPass
+     * @param RenderContext $renderContext
      * @param string[]   $action
      *
      * @throws \InvalidArgumentException if the class deduced from the 'name' field does not exist
@@ -228,7 +228,7 @@ final class XmlTemplateFactory implements TemplateFactory
      *
      * @return void
      */
-    private function addActionToTemplate(RenderPass $renderPass, Template $template, $action)
+    private function addActionToTemplate(RenderContext $renderContext, Template $template, $action)
     {
         $actionClass = $action['name'];
         if (strpos($actionClass, '\\') === false) {
@@ -238,7 +238,7 @@ final class XmlTemplateFactory implements TemplateFactory
         Assert::classExists($actionClass);
         Assert::implementsInterface($actionClass, Action::class);
         $parameters = $this->mergeTemplateParametersWithActionParameters($template, $action);
-        $parameters['renderPass'] = new Parameter('renderPass', $renderPass);
+        $parameters['renderContext'] = new Parameter('renderContext', $renderContext);
         $parameters['template']   = new Parameter('template', $template);
 
         $actionObject = call_user_func([ $actionClass, 'create' ], $parameters);

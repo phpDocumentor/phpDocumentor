@@ -16,6 +16,7 @@ use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Uri;
 use PHPUnit_Framework_TestCase;
 use Stash\Pool;
@@ -26,39 +27,16 @@ use Stash\Pool;
  */
 final class ConfigureCacheHandlerTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var m\MockInterface|Pool
-     */
+    /** @var m\MockInterface|Pool */
     private $pool;
 
-    /**
-     * @var ConfigurationFactory
-     */
-    private $configurationFactory;
-
-    /**
-     * @var ConfigureCacheHandler
-     */
+    /** @var ConfigureCacheHandler */
     private $fixture;
-
-    /**
-     * @var m\MockInterface
-     */
-    private $configStrategy;
 
     protected function setUp()
     {
         $this->pool = m::mock(Pool::class);
-        $this->configStrategy = m::mock(Strategy::class);
-        $this->configStrategy->shouldReceive('match')->andReturn(true);
-
-        $root = vfsStream::setup('dir');
-
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
-
-        $this->configurationFactory = new ConfigurationFactory([$this->configStrategy], $uri);
-        $this->fixture = new ConfigureCacheHandler($this->pool, $this->configurationFactory);
+        $this->fixture = new ConfigureCacheHandler($this->pool);
     }
 
     /**
@@ -67,19 +45,11 @@ final class ConfigureCacheHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function testSettingTheCachePathAndTogglingIfItIsEnabled($useCache)
     {
-        $this->configStrategy->shouldReceive('convert')->andReturn([
-            'phpdocumentor' => [
-                'use-cache' => $useCache,
-                'paths' => [
-                    'cache' => './',
-                ],
-            ],
-        ]);
-
+        $path = './';
         $this->pool->shouldReceive('flush')->times(!$useCache ? 1 : 0);
-        $this->pool->shouldReceive('getDriver->setOptions')->with(['path' => './']);
+        $this->pool->shouldReceive('getDriver->setOptions')->with(['path' => $path]);
 
-        $this->fixture->__invoke(new ConfigureCache());
+        $this->fixture->__invoke(new ConfigureCache(new Path($path), $useCache));
     }
 
     public function provideOnOffToggleForTestIfCacheCanBeDisabled()
