@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d392ed8d155a4b00f47f6128b1ff46a4",
-    "content-hash": "7cc42d41f708a4b61834da4b1a04026e",
+    "hash": "9fef8b19a2109110a9775c07a47400ca",
+    "content-hash": "e4de5a148ce01c48cefad79f6b2be50f",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -682,16 +682,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "dev-master",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "ba00c4ba78c0ea14c41a73be5f0790a7a6c7414e"
+                "reference": "52723f0fb83d053be05c3f6b58ec45e5851c0e99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/ba00c4ba78c0ea14c41a73be5f0790a7a6c7414e",
-                "reference": "ba00c4ba78c0ea14c41a73be5f0790a7a6c7414e",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/52723f0fb83d053be05c3f6b58ec45e5851c0e99",
+                "reference": "52723f0fb83d053be05c3f6b58ec45e5851c0e99",
                 "shasum": ""
             },
             "require": {
@@ -705,11 +705,6 @@
                 "phpunit/phpunit": "^4.4"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "phpDocumentor\\Reflection\\": [
@@ -728,7 +723,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2015-12-24 06:44:45"
+            "time": "2016-02-26 20:44:16"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -2418,7 +2413,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "phpdocumentor/reflection": 20,
-        "phpdocumentor/reflection-docblock": 20,
         "phpdocumentor/flyfinder": 20
     },
     "prefer-stable": false,

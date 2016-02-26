@@ -32,7 +32,7 @@
         "phpdocumentor/graphviz":            "^1.0",
         "phpdocumentor/fileset":             "^1.0",
         "phpdocumentor/reflection":          "dev-develop@dev",
-        "phpdocumentor/reflection-docblock": "^3.0@dev",
+        "phpdocumentor/reflection-docblock": "^3.0",
         "phpdocumentor/flyfinder":           "^1.0@dev",
         "league/tactician":                  "^0.6.0",
         "league/flysystem":                  "^1.0",
