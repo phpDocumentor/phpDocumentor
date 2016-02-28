@@ -14,6 +14,7 @@ namespace phpDocumentor\DomainModel\Parser\Version;
 use Mockery as m;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition\Factory;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
+use phpDocumentor\DomainModel\Parser\Documentation\DummyDocumentGroupDefinition;
 use phpDocumentor\DomainModel\Parser\Version\Definition;
 use phpDocumentor\DomainModel\Parser\Version\DefinitionFactory;
 
@@ -24,7 +25,6 @@ use phpDocumentor\DomainModel\Parser\Version\DefinitionFactory;
  */
 class DefinitionFactoryTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var DefinitionFactory
      */
@@ -60,7 +60,9 @@ class DefinitionFactoryTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->apiPHPDocumentGroupDefinitionFactoryMock->shouldReceive('create')->once();
+        $this->apiPHPDocumentGroupDefinitionFactoryMock
+            ->shouldReceive('create')->once()
+            ->andReturn(new DummyDocumentGroupDefinition());
 
         $versionDefinition = $this->fixture->create($versionConfig);
 

@@ -1,10 +1,11 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.5
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -13,7 +14,7 @@ namespace phpDocumentor\DomainModel\Parser\Version;
 
 use phpDocumentor\DomainModel\Parser\Definition as DefinitionInterface;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition as DocumentGroupDefinition;
-use phpDocumentor\DomainModel\Parser\Version\Number;
+use Webmozart\Assert\Assert;
 
 /**
  * An aggregate of documentGroupDefinitions that belong to a version.
@@ -34,6 +35,8 @@ final class Definition implements DefinitionInterface
      */
     public function __construct(Number $versionNumber, array $documentGroupDefinition = array())
     {
+        Assert::allIsInstanceOf($documentGroupDefinition, DocumentGroupDefinition::class);
+
         $this->versionNumber = $versionNumber;
         $this->documentGroupDefinitions = $documentGroupDefinition;
     }
