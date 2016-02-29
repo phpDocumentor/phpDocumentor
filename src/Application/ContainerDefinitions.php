@@ -74,7 +74,6 @@ use phpDocumentor\Infrastructure\SpecificationFactory;
 use phpDocumentor\DomainModel\Uri;
 use phpDocumentor\Application\ReadModel;
 use phpDocumentor\Application\ReadModel\FromContainerFactory;
-use phpDocumentor\Application\ReadModel\Mappers\Project;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 use Symfony\Component\Console\Application;
@@ -243,11 +242,9 @@ return [
 //        ->method('insert', \DI\get(ExternalRouter::class), 10500)
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
-    // Views
+    // Read Models
     MapperFactory::class => \DI\object(FromContainerFactory::class)
-        ->constructorParameter('mapperAliases', [
-            'php' => Project::class
-        ]),
+        ->constructorParameter('mapperAliases', []),
 
     // Renderer
     Assets::class => \DI\object(FlySystemAssets::class)
