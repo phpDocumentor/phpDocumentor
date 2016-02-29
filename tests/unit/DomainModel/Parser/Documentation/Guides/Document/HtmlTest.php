@@ -1,10 +1,11 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.5
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,19 +13,20 @@
 namespace phpDocumentor\DomainModel\Parser\Documentation\Guides\Document;
 
 use phpDocumentor\DomainModel\Parser\Documentation\Guides\ContentType;
-use phpDocumentor\DomainModel\Parser\Documentation\Guides\Document\Html;
 use phpDocumentor\DomainModel\Path;
 
 /**
- * Test case for Html
  * @coversDefaultClass phpDocumentor\DomainModel\Parser\Documentation\Guides\Document\Html
+ * @covers ::__construct
+ * @covers ::<private>
  */
 class HtmlTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::getContent
+     * @test
+     * @covers ::getContentType
      */
-    public function testGetContentType()
+    public function itRegistersThePathNameAndContentForThisDocument()
     {
         $htmlDocument = new Html(new Path('my/Path'), 'MyTitle', 'content');
 
