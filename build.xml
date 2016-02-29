@@ -25,6 +25,12 @@
         <mkdir dir="${project.basedir}/build/pdepend"/>
     </target>
 
+    <target name="build:dependencies:install" depends="build:clean">
+        <exec command="php -r &quot;readfile('https://phar.phpunit.de/phpunit-5.2.9.phar');&quot; > build/phpunit.phar" passthru="true" />
+        <exec command="php -r &quot;readfile('https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar');&quot; > build/phpcs.phar" passthru="true" />
+        <exec command="curl -LSs https://box-project.github.io/box2/installer.php | php; mv box.phar build/box.phar" passthru="true" />
+    </target>
+
     <target name="build:composer:install">
         <exec executable="wget" passthru="true">
             <arg value="-Ocomposer.phar" />

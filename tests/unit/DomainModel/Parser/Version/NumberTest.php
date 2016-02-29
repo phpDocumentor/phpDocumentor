@@ -1,10 +1,11 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.4
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -12,18 +13,31 @@
 namespace phpDocumentor\DomainModel\Parser\Version;
 
 /**
- * Test case for VersionNumber
  * @coversDefaultClass phpDocumentor\DomainModel\Parser\Version\Number
+ * @covers ::<private>
+ * @covers ::__construct
  */
-class VersionNumberTest extends \PHPUnit_Framework_TestCase
+class NumberTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
+     * @test
      * @covers ::getVersion
      */
-    public function testGetVersion()
+    public function itShouldReturnTheProvidedVersionNumber()
     {
         $versionNumber = new Number('1.0.0');
+
         $this->assertSame('1.0.0', $versionNumber->getVersion());
+    }
+
+    /**
+     * @test
+     * @covers ::__toString
+     */
+    public function itShouldProvideTheVersionNumberWhenCastToString()
+    {
+        $versionNumber = new Number('1.0.0');
+
+        $this->assertSame('1.0.0', (string)$versionNumber);
     }
 }

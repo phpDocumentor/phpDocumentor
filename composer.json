@@ -28,13 +28,11 @@
         "tedivm/stash":                      "^0.12.3",
         "webmozart/assert":                  "^1.0",
         "symfony/console":                   "^2.3",
-        "symfony/event-dispatcher":          "^2.1",
         "symfony/validator":                 "^2.7",
         "phpdocumentor/graphviz":            "^1.0",
         "phpdocumentor/fileset":             "^1.0",
         "phpdocumentor/reflection":          "dev-develop@dev",
-        "phpdocumentor/reflection-common":   "^1.0@dev",
-        "phpdocumentor/reflection-docblock": "^3.0@dev",
+        "phpdocumentor/reflection-docblock": "^3.0",
         "phpdocumentor/flyfinder":           "^1.0@dev",
         "league/tactician":                  "^0.6.0",
         "league/flysystem":                  "^1.0",
@@ -43,14 +41,12 @@
     "minimum-stability": "stable",
     "require-dev": {
         "behat/behat":                 "^3.0",
-        "phpunit/phpunit":             "^4.0",
         "mockery/mockery":             "~0.9",
         "mikey179/vfsStream":          "^1.2",
-        "squizlabs/php_codesniffer":   "^2.3",
         "symfony/expression-language": "^2.4",
-        "symfony/process":             "^2.3",
         "herrera-io/phar-update":      "^2.0",
-        "league/flysystem-memory":     "^1.0"
+        "league/flysystem-memory":     "^1.0",
+        "phing/phing": "^2.13"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
@@ -60,6 +56,12 @@
         "bin-dir":"bin/"
     },
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
+    "scripts": {
+        "post-install-cmd": [ "php bin/phing build:dependencies:install" ],
+        "test": [ "./bin/phpunit --colors=always -v" ],
+        "coverage": [ "./bin/phpunit --colors=always -v --coverage-html build/coverage" ],
+        "style": [ "./bin/phpcs --colors -p" ]
+    },
     "extra": {
         "branch-alias": {
             "dev-develop": "3.0-dev"
