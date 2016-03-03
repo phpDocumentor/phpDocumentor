@@ -55,7 +55,7 @@ final class DocumentationFactory
      *
      * @param Definition $definition
      *
-*@return DocumentGroup
+     * @return DocumentGroup
      * @throws FactoryNotFoundException when a DocumentGroupDefinition did not match any of the registered factories.
      */
     private function createDocumentGroup(Definition $definition)

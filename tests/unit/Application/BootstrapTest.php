@@ -1,43 +1,35 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.4
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-namespace phpDocumentor;
+
+namespace phpDocumentor\Application;
 
 use org\bovigo\vfs\vfsStream;
-use phpDocumentor\Application\Bootstrap;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Test class for \phpDocumentor\Application\Bootstrap.
- *
- * @covers phpDocumentor\Application\Bootstrap
+ * @coversDefaultClass phpDocumentor\Application\Bootstrap
+ * @covers ::<private>
  */
-class BootstrapTest extends PHPUnit_Framework_TestCase
+final class BootstrapTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Directory structure when phpdocumentor is installed using composer.
      *
      * @var array
      */
-    protected $composerInstalledStructure = array(
-        'dummy' => array(
-            'vendor' => array(
-                'phpDocumentor' => array(
-                    'phpDocumentor' => array(
-                        'src' => array(
-                            'phpDocumentor' => array(),
-                        ),
-                    ),
-                ),
-            ),
-        ),
+    private $composerInstalledStructure = array(
+        'dummy' => [
+            'vendor' => [ 'phpDocumentor' => [ 'phpDocumentor' => [ 'src' => [ 'phpDocumentor' => [] ] ] ] ],
+        ],
     );
 
     /**
@@ -45,18 +37,16 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
      *
      * @var array
      */
-    protected $standaloneStructure = array(
-        'dummy' => array(
-            'vendor' => array(),
-            'src' => array(
-                'phpDocumentor' => array(),
-            ),
-            'test' => array(),
-        ),
+    private $standaloneStructure = array(
+        'dummy' => [
+            'vendor' => [],
+            'src' => [ 'phpDocumentor' => [] ],
+            'test' => [],
+        ],
     );
 
     /**
-     * @covers phpDocumentor\Application\Bootstrap::createInstance
+     * @covers ::createInstance
      */
     public function testCreatingAnInstanceUsingStaticFactoryMethod()
     {
@@ -64,7 +54,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Application\Bootstrap::initialize
+     * @covers ::initialize
      */
     public function testInitializingTheApplication()
     {
@@ -73,7 +63,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Application\Bootstrap::findVendorPath
+     * @covers ::findVendorPath
      */
     public function testFindVendorPathStandAloneInstall()
     {
@@ -85,7 +75,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Application\Bootstrap::findVendorPath
+     * @covers ::findVendorPath
      */
     public function testFindVendorPathComposerInstalled()
     {
@@ -103,11 +93,12 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     /**
      * Tests if exception is thrown when no autoloader is present
      *
-     * @expectedException \RuntimeException
-     * @covers phpDocumentor\Application\Bootstrap::createAutoloader
+     * @covers ::createAutoloader
      */
     public function testCreateAutoloaderNoAutoloader()
     {
+        $this->expectException(\RuntimeException::class);
+
         vfsStream::setup('root', null, $this->standaloneStructure);
         $bootstrap = Bootstrap::createInstance();
         $bootstrap->createAutoloader(vfsStream::url('root/dummy/vendor'));
@@ -116,7 +107,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     /**
      * checks autoload.php is required and returned by createAutoloader
      *
-     * @covers phpDocumentor\Application\Bootstrap::createAutoloader
+     * @covers ::createAutoloader
      */
     public function testCreateAutoloader()
     {

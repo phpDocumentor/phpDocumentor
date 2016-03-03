@@ -12,8 +12,6 @@
 namespace phpDocumentor\Application;
 
 use Composer\Autoload\ClassLoader;
-use phpDocumentor\Application\Application;
-use phpDocumentor\parameter;
 
 /**
  * This class provides a bootstrap for all application who wish to interface with phpDocumentor.
@@ -59,9 +57,9 @@ class Bootstrap
     {
         $vendorPath = $this->findVendorPath();
 
-        $autoloader = $this->createAutoloader($vendorPath);
+        $this->createAutoloader($vendorPath);
 
-        return new Application($autoloader, array('composer.vendor_path' => $vendorPath));
+        return new Application(['composer.vendor_path' => $vendorPath]);
     }
 
     /**
@@ -95,7 +93,9 @@ class Bootstrap
     public function createAutoloader($vendorDir = null)
     {
         if (!$vendorDir) {
+            // @codeCoverageIgnoreStart
             $vendorDir = __DIR__ . '/../../vendor';
+            // @codeCoverageIgnoreEnd
         }
 
         $autoloader_location = $vendorDir . '/autoload.php';
@@ -128,7 +128,8 @@ class Bootstrap
      *
      * If neither locations exist, then this method returns null because no vendor path could be found.
      *
-     * @param $baseDir parameter for test purposes only.
+     * @param string $baseDir parameter for test purposes only.
+     *
      * @return string|null
      */
     public function findVendorPath($baseDir = __DIR__)

@@ -1,21 +1,20 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.4
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Application;
 
-use Composer\Autoload\ClassLoader;
 use DI\ContainerBuilder;
 use phpDocumentor\Application\Console\Input\ArgvInput;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use phpDocumentor\Plugin\Plugin;
 
 /**
  * Application class for phpDocumentor.
@@ -24,28 +23,21 @@ use phpDocumentor\Plugin\Plugin;
  */
 final class Application
 {
-    /** @var string $VERSION represents the version of phpDocumentor as stored in /VERSION */
-    public static $VERSION;
-
     /**
      * Initializes all components used by phpDocumentor.
      *
-     * @param ClassLoader $autoloader
-     * @param array       $values
+     * @param array $values
      */
-    public function __construct($autoloader = null, array $values = array())
-    {
-        $container = $this->createContainer($values);
-
-        gc_disable();
+    public function __construct(
+        array $values = [],
+        $dependencyInjectionDefinitions = [__DIR__ . '/ContainerDefinitions.php']
+    ) {
+        $this->disableGarbageCollection();
         $this->setTimezone();
         $this->removePhpMemoryLimit();
-        $this->ensureAnnotationsAreCached();
 
-        self::$VERSION = $container->get('application.version');
+        $container = $this->createContainer($values, $dependencyInjectionDefinitions);
         $this->console = $container->get(ConsoleApplication::class);
-
-        $this->registerPlugins($container);
     }
 
     /**
@@ -60,24 +52,18 @@ final class Application
         return $this->console->run(new ArgvInput());
     }
 
-    // TODO: Change this; plugins are not read from a config file provided on runtime
-    private function registerPlugins($container)
+    /**
+     * phpDocumentor creates large nested, and sometimes recursive, data structures; by disabling garbage collection
+     * we lose some memory efficiency but gain performance.
+     *
+     * The trade-off between memory efficiency and performance was made because this is not part of a long running
+     * process. Should the application ever be used as a daemon then this decision should be revisited.
+     *
+     * @return void
+     */
+    private function disableGarbageCollection()
     {
-        //TODO: refactor this method. Previously config was used here.
-        /** @var Plugin $plugin */
-        foreach (array() as $plugin) {
-            // TODO: Retrieving the Plugin should be in a Repository class
-            $provider = (strpos($plugin->getClassName(), '\\') === false)
-                ? sprintf('phpDocumentor\\Plugin\\%s\\ServiceProvider', $plugin->getClassName())
-                : $plugin->getClassName();
-
-            try {
-                $pluginObject = $container->get($provider);
-                call_user_func($pluginObject, $plugin->getParameters());
-            } catch (\InvalidArgumentException $e) {
-                throw new \RuntimeException($e->getMessage());
-            }
-        }
+        gc_disable();
     }
 
     /**
@@ -90,8 +76,6 @@ final class Application
      * @link http://php.net/manual/en/function.date-default-timezone-get.php for more information how PHP determines the
      *     default timezone.
      *
-     * @codeCoverageIgnore this method is very hard, if not impossible, to unit test and not critical.
-     *
      * @return void
      */
     private function setTimezone()
@@ -103,40 +87,35 @@ final class Application
         }
     }
 
-    private function ensureAnnotationsAreCached()
-    {
-        // this code cannot be tested because we cannot control the system settings in unit tests
-        // @codeCoverageIgnoreStart
-        if (extension_loaded('Zend OPcache') && ini_get('opcache.enable') && ini_get('opcache.enable_cli')) {
-            if (ini_get('opcache.save_comments')) {
-                ini_set('opcache.load_comments', 1);
-            } else {
-                ini_set('opcache.enable', 0);
-            }
-        }
-
-        if (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.save_comments') == 0) {
-            throw new \RuntimeException('Please enable zend_optimizerplus.save_comments in php.ini.');
-        }
-        // @codeCoverageIgnoreEnd
-    }
-
+    /**
+     * Ensure that the memory limit of PHP doesn't get in the way by disabling it.
+     *
+     * @return void
+     */
     private function removePhpMemoryLimit()
     {
         ini_set('memory_limit', -1);
     }
 
     /**
-     * @param array $values
+     * Creates the dependency injection container user by phpDocumentor and disables the
+     * use of annotations in it.
+     *
+     * @param string[] $values
+     * @param array $definitions
+     *
      * @return \DI\Container
      */
-    private function createContainer(array $values)
+    private function createContainer(array $values, array $definitions)
     {
         $builder = new ContainerBuilder();
         $builder->addDefinitions($values);
-        $builder->addDefinitions(__DIR__ . '/ContainerDefinitions.php');
+        foreach ($definitions as $definition) {
+            $builder->addDefinitions($definition);
+        }
         $builder->useAnnotations(false);
         $phpDiContainer = $builder->build();
+
         return $phpDiContainer;
     }
 }
