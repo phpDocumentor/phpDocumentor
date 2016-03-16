@@ -103,4 +103,15 @@ final class Api implements DocumentGroup
     {
         return $this->elements;
     }
+
+
+    /**
+     * Returns the project of the api.
+     *
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
 }
