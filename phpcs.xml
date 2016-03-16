@@ -6,4 +6,12 @@
 
     <description>PSR2 Coding standard</description>
     <rule ref="PSR2"/>
+
+    <description>Allow specific classes to break PSR2 class naming convention because of reserved keywords</description>
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+        <exclude-pattern>src/Application/ReadModel/Mappers/Project/Class_.php</exclude-pattern>
+        <exclude-pattern>src/Application/ReadModel/Mappers/Project/Function_.php</exclude-pattern>
+        <exclude-pattern>src/Application/ReadModel/Mappers/Project/Interface_.php</exclude-pattern>
+        <exclude-pattern>src/Application/ReadModel/Mappers/Project/Trait_.php</exclude-pattern>
+    </rule>
 </ruleset>
