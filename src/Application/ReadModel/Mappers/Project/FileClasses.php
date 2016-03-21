@@ -20,7 +20,7 @@ final class FileClasses extends AbstractReducer implements Reducer
 {
     public function __invoke(InterpretInterface $command, $state)
     {
-        if (!$command->subject() instanceof FileType/* || !$command->subject()->getConstants()*/) {
+        if (!$command->subject() instanceof FileType) {
             return $command->interpreter()->next($command, $state);
         }
 
