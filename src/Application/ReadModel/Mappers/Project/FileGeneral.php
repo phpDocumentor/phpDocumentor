@@ -16,7 +16,7 @@ use phpDocumentor\DomainModel\ReadModel\Mapper\Project\Reducer;
 use phpDocumentor\Reflection\InterpretInterface;
 use phpDocumentor\Reflection\Php\File as FileType;
 
-final class File extends AbstractReducer implements Reducer
+final class FileGeneral implements Reducer
 {
     public function __invoke(InterpretInterface $command, $state)
     {
@@ -31,43 +31,12 @@ final class File extends AbstractReducer implements Reducer
             $description = '';
         }
 
-        if ($file->getDocBlock() && $file->getDocBlock()->getTags()) {
-            $tags = $file->getDocBlock()->getTags();
-        } else {
-            $tags = [];
-        }
-
         $newState = [
             'hash' => $file->getHash(),
             'path' => $file->getPath(),
             'source' => $file->getSource(),
             'namespaceAliases' => $command->context()->getNamespaceAliases(),
             'includes' => $file->getIncludes(),
-            'constants' => $this->convertItems(
-                $file->getConstants(),
-                $command->interpreter(),
-                $command->context()
-            ),
-            'functions' => $this->convertItems(
-                $file->getFunctions(),
-                $command->interpreter(),
-                $command->context()
-            ),
-            'classes' => $this->convertItems(
-                $file->getClasses(),
-                $command->interpreter(),
-                $command->context()
-            ),
-            'interfaces' => $this->convertItems(
-                $file->getInterfaces(),
-                $command->interpreter(),
-                $command->context()
-            ),
-            'traits' => $this->convertItems(
-                $file->getTraits(),
-                $command->interpreter(),
-                $command->context()
-            ),
             'markers' => [],
             'fqsen' => '',
             'name' => $file->getName(),
@@ -77,25 +46,12 @@ final class File extends AbstractReducer implements Reducer
             'description' => $description,
             'filedescriptor' => null,
             'line' => 0,
-            'tags' => $this->convertItems(
-                $tags,
-                $command->interpreter(),
-                $command->context()
-            ),
             'errors' => '',
             'inheritedElement' => null
-
         ];
 
-        return $newState;
-    }
+        $newState = $command->interpreter()->next($command, $newState);
 
-    private function convertItems($items, $interpreter, $context)
-    {
-        $convertedItems = [];
-        foreach ($items as $item) {
-            $convertedItems[$item->getName()] = $this->convertItem($item, $interpreter, $context);
-        }
-        return $convertedItems;
+        return $newState;
     }
 }

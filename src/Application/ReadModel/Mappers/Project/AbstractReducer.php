@@ -16,6 +16,15 @@ use phpDocumentor\Reflection\Interpret;
 
 class AbstractReducer
 {
+    public function convertItems($items, $interpreter, $context)
+    {
+        $convertedItems = [];
+        foreach ($items as $item) {
+            $convertedItems[$item->getName()] = $this->convertItem($item, $interpreter, $context);
+        }
+        return $convertedItems;
+    }
+
     public function convertItem($item, $interpreter, $context, $state = null)
     {
         $command = new Interpret($item, $context);
