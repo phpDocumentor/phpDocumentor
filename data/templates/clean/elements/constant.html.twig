@@ -4,7 +4,7 @@
             <a id="constant_{{ constant.name }}" name="constant_{{ constant.name }}" class="anchor"></a>
             <article id="constant_{{ constant.name }}" class="constant">
                 <h3 class="{% if constant.deprecated %}deprecated{% endif %}">{{ constant.name }}</h3>
-                <pre class="signature">{{ constant.name }}</pre>
+                <pre class="signature">{{ constant.name }} = {{ constant.value }}{% if not (constant.types is empty) %} : {{ constant.types|join('|') }}{% endif %}</pre>
                 <p><em>{{ constant.summary }}</em></p>
                 {{ constant.description|markdown|raw }}
             </article>
