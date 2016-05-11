@@ -5,7 +5,7 @@
                                     <div class="long_description">{{ method.description|markdown|raw }}</div>
 
                                     <table class="table">
-                                        {% for tagList in method.tags if tagList.0.name not in ['param', 'return', 'api'] %}
+                                        {% for tagList in method.tags if tagList.0.name not in ['param', 'return', 'api', 'throws', 'throw'] %}
                                             <tr>
                                                 <th>
                                                     {{ tagList.0.name }}
@@ -23,6 +23,23 @@
                                                 </td>
                                             </tr>
                                         {% endfor %}
+                                        {% if method.tags.throws|length > 0 or method.tags.throw|length > 0 %}
+                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                    {% for exception in method.tags.throws %}
+                                                        <dt>{{ exception.types|route|join('|')|raw }}</dt>
+                                                        <dd>{{ exception.description|markdown|raw }}</dd>
+                                                    {% endfor %}
+                                                    {% for exception in method.tags.throw %}
+                                                        <dt>{{ exception.types|route|join('|')|raw }}</dt>
+                                                        <dd>{{ exception.description|markdown|raw }}</dd>
+                                                    {% endfor %}
+                                                    </dl>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
                                     </table>
 
                                     {% if method.arguments|length > 0 %}
