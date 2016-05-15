@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
     xmlns:dbx="http://phpdoc.org/xsl/functions"
     xmlns:func="http://exslt.org/functions"
+    xmlns:php="http://php.net/xsl"
     extension-element-prefixes="func"
     exclude-result-prefixes="dbx">
 
