@@ -40,7 +40,7 @@
 
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",
-        "phpdocumentor/reflection":          "^1.1",
+        "phpdocumentor/reflection":          "^3.0",
         "phpdocumentor/reflection-docblock": "~2.0"
     },
     "minimum-stability": "stable",

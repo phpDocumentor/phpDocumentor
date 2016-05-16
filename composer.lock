@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7edd25dfb1070624b622e0f42392c68f",
-    "content-hash": "f2beab0c54fa3086ce54218072cfc631",
+    "hash": "000bdd4198beae5485864c8c391892a8",
+    "content-hash": "3a0e14a34befa3c7586fff969373fcd3",
     "packages": [
         {
             "name": "cilex/cilex",
@@ -924,7 +924,7 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "1.1.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
