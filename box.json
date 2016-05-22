@@ -23,6 +23,7 @@
                 "vendor/cilex/cilex/src",
                 "vendor/cilex/console-service-provider/src",
                 "vendor/composer",
+                "vendor/hamcrest",
                 "vendor/herrera-io",
                 "vendor/seld/jsonlint",
                 "vendor/justinrainbow/json-schema",
@@ -36,7 +37,6 @@
                 "vendor/monolog/monolog/src",
                 "vendor/nikic/php-parser/lib",
                 "vendor/nikic/php-parser/grammar",
-                "vendor/phenx/php-font-lib",
                 "vendor/phpcollection/phpcollection/src",
                 "vendor/phpdocumentor/fileset/src",
                 "vendor/phpdocumentor/graphviz/src",
@@ -47,7 +47,7 @@
                 "vendor/psr/log/Psr",
                 "vendor/symfony",
                 "vendor/twig/twig/lib",
-                "vendor/zendframework/",
+                "vendor/zendframework",
                 "vendor/zetacomponents/base/src",
                 "vendor/zetacomponents/document/src"
             ]
@@ -75,7 +75,6 @@
                 "vendor/monolog/monolog/src",
                 "vendor/nikic/php-parser/lib",
                 "vendor/nikic/php-parser/grammar",
-                "vendor/phenx/php-font-lib",
                 "vendor/phpcollection/phpcollection/src",
                 "vendor/phpdocumentor/fileset/src",
                 "vendor/phpdocumentor/graphviz/src",
@@ -86,7 +85,7 @@
                 "vendor/psr/log/Psr",
                 "vendor/symfony",
                 "vendor/twig/twig/lib",
-                "vendor/zendframework/",
+                "vendor/zendframework",
                 "vendor/zetacomponents/base/src",
                 "vendor/zetacomponents/document/src"
             ]
