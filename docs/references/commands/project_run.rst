@@ -70,7 +70,7 @@ Parameters
     ???
 
 **-i|--ignore["..."]**
-    Provide a comma-seeparated list of paths to skip when parsing.
+    Provide a comma-separated list of paths to skip when parsing.
 
 **--ignore-tags[="..."]**
     ???
