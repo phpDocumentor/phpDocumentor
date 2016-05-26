@@ -135,6 +135,7 @@
                                 </th>
                                 <td>
                                     {% for tag in tags %}
+                                        {% if tag.version %}{{ tag.version }}{% endif %}
                                         {{ tag.description|markdown|raw }}
                                     {% endfor %}
                                 </td>
