@@ -51,7 +51,6 @@ final class FlySystemFactory implements FileSystemFactory
             if ($dsn->getScheme() === 'file') {
                 $path = $dsn->getPath();
                 $filesystem = new Filesystem(new Local($path, LOCK_EX, Local::SKIP_LINKS));
-
             } else {
                 //This will be implemented as soon as the CloneRemoteGitToLocal adapter is finished
                 throw new \InvalidArgumentException('http and https are not supported yet');

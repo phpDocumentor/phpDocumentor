@@ -221,7 +221,6 @@ final class PhpDocumentor2 implements Strategy
 
         if ((string) $phpDocumentor->parser->files->{'ignore-hidden'} === '') {
             return $this->ignoreHidden;
-
         }
 
         return filter_var($phpDocumentor->parser->files->{'ignore-hidden'}, FILTER_VALIDATE_BOOLEAN);
