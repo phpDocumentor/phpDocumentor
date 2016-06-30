@@ -269,7 +269,7 @@ final class PhpDocumentor3 implements Strategy
     private function validate(\SimpleXMLElement $phpDocumentor)
     {
         libxml_clear_errors();
-        libxml_use_internal_errors(true);
+        $priorSetting = libxml_use_internal_errors(true);
 
         $dom        = new \DOMDocument();
         $domElement = dom_import_simplexml($phpDocumentor);
@@ -281,7 +281,9 @@ final class PhpDocumentor3 implements Strategy
         $error = libxml_get_last_error();
 
         if ($error !== false) {
-            throw new \InvalidArgumentException($error->message);
+            throw new \InvalidArgumentException(trim($error->message));
         }
+
+        libxml_use_internal_errors($priorSetting);
     }
 }
