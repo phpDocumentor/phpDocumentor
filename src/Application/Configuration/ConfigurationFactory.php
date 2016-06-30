@@ -141,6 +141,8 @@ class ConfigurationFactory
             }
         };
 
+        $this->upcast($xml);
+
         throw new \RuntimeException('No strategy found that matches the configuration xml');
     }
 
@@ -152,5 +154,41 @@ class ConfigurationFactory
         foreach ($this->middlewares as $middleware) {
             $this->cachedConfiguration = $middleware($this->cachedConfiguration);
         }
+    }
+
+    /**
+     * @param \SimpleXMLElement $xml
+     *
+     * @return \SimpleXMLElement
+     */
+    private function upcast(\SimpleXMLElement $xml)
+    {
+        $XSLTProcessor = new \XSLTProcessor();
+        $XSLTProcessor->importStylesheet($this->getXsl());
+        $result = $XSLTProcessor->transformToXml($xml);
+
+        if ($result === false) {
+            throw new \RuntimeException('Could not upcast the xml');
+        }
+
+        $xmlResult = new \SimpleXMLElement($result);
+
+        foreach ($this->strategies as $strategy) {
+            if ($strategy->match($xmlResult) === true) {
+                return $strategy->convert($xmlResult);
+            }
+        };
+    }
+
+    /**
+     * @return \DOMDocument
+     */
+    private function getXsl()
+    {
+        $xsl  = new \DOMDocument();
+        $data = file_get_contents(__DIR__ . '/style.xsl');
+        $xsl->loadXML($data);
+
+        return $xsl;
     }
 }
