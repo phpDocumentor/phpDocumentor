@@ -103,7 +103,7 @@ HELP
     {
         $result = simplexml_load_string(file_get_contents($sourcePath));
         if ($result === false) {
-            throw new \InvalidArgumentException(libxml_get_last_error()->message);
+            throw new \InvalidArgumentException(trim(libxml_get_last_error()->message));
         }
 
         return $result;
@@ -121,7 +121,7 @@ HELP
         $result = file_put_contents($path, $contents);
 
         if ($result === false) {
-            throw new \InvalidArgumentException(libxml_get_last_error()->message);
+            throw new \InvalidArgumentException(trim(libxml_get_last_error()->message));
         }
     }
 }
