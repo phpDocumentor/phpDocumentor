@@ -149,6 +149,8 @@ In addition to this command phpDocumentor also supports additional commands:
   parse
   run
   transform
+<comment>configuration</comment>
+  configuration:convert
 <comment>project</comment>
   project:parse
   project:run

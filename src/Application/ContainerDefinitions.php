@@ -9,6 +9,8 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
+use phpDocumentor\Application\Configuration\ConfigurationConverter;
+use phpDocumentor\Application\Console\Command\ConvertCommand;
 use phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory;
 use phpDocumentor\Application\Renderer\TwigRenderer;
 use phpDocumentor\DomainModel\Dsn;
@@ -81,6 +83,8 @@ if (!class_exists('phpDocumentor\\Plugin\\Core\\Xslt\\Extension')) {
     class_alias(Extension::class, 'phpDocumentor\\Plugin\\Core\\Xslt\\Extension');
 }
 
+$projectRoot = __DIR__ . '/../..';
+
 return [
     // -- Parameters
     'application.version' => function () {
@@ -107,7 +111,7 @@ return [
     ],
     'config.user.path'     => new Uri(getcwd()
         . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')),
-    'config.schema.path'   => __DIR__ . '/data/xsd/phpdoc.xsd',
+    'config.schema.path'   => $projectRoot . '/data/xsd/phpdoc.xsd',
     'config.strategies'    => [ \DI\get(PhpDocumentor3::class), \DI\get(PhpDocumentor2::class) ],
     'config.middlewares'   => [ \DI\get(CommandlineOptionsMiddleware::class) ],
     'twig.cache.path'      => sys_get_temp_dir() . '/phpdoc-twig-cache',
@@ -125,6 +129,10 @@ return [
     MethodNameInflector::class  => \DI\object(InvokeInflector::class),
 
     // Configuration
+    ConfigurationConverter::class => \DI\object()
+        ->constructorParameter('uri', \DI\get('config.user.path'))
+        ->constructorParameter('schemaPath', \DI\get('config.schema.path')),
+
     ConfigurationFactory::class => \DI\object()
         ->constructorParameter('strategies', \DI\get('config.strategies'))
         ->constructorParameter('uri', \DI\get('config.user.path'))
@@ -147,6 +155,7 @@ return [
 
         $application->add($c->get(RunCommand::class));
         $application->add($c->get(ListCommand::class));
+        $application->add($c->get(ConvertCommand::class));
         if (\Phar::running()) {
             $application->add($c->get(UpdateCommand::class));
         }
@@ -156,6 +165,9 @@ return [
 
     RunCommand::class => \DI\object()
         ->constructorParameter('documentationRepository', \DI\get(StashDocumentationRepository::class)),
+
+    ConvertCommand::class => \DI\object()
+        ->constructorParameter('configurationConverter', \DI\get(ConfigurationConverter::class)),
 
     // Validator
     ValidatorInterface::class => \DI\object(RecursiveValidator::class),
