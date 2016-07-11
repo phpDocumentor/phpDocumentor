@@ -16,27 +16,10 @@ use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
 /**
- * phpDocumentor3 strategy for converting the configuration xml to an array.
+ * phpDocumentor3 converter for converting the configuration xml to an array.
  */
-final class PhpDocumentor3 implements Strategy
+final class PhpDocumentor3Converter extends BaseConverter implements Converter
 {
-    /**
-     * The path to the xsd that is used for validation of the configuration file.
-     *
-     * @var string
-     */
-    private $schemaPath;
-
-    /**
-     * Initializes the PhpDocumentor3 strategy.
-     *
-     * @param string $schemaPath
-     */
-    public function __construct($schemaPath)
-    {
-        $this->schemaPath = $schemaPath;
-    }
-
     /**
      * @inheritdoc
      */
@@ -268,8 +251,8 @@ final class PhpDocumentor3 implements Strategy
      */
     private function validate(\SimpleXMLElement $phpDocumentor)
     {
-        libxml_clear_errors();
         $priorSetting = libxml_use_internal_errors(true);
+        libxml_clear_errors();
 
         $dom        = new \DOMDocument();
         $domElement = dom_import_simplexml($phpDocumentor);

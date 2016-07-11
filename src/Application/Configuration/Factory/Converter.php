@@ -15,14 +15,14 @@ namespace phpDocumentor\Application\Configuration\Factory;
 /**
  * Interface that strategies for the ConfigurationFactory should implement.
  */
-interface Strategy
+interface Converter
 {
     /**
-     * Converts the configuration xml to an array.
+     * Converts the configuration xml to either an array or another xml.
      *
      * @param \SimpleXMLElement $xml
      *
-     * @return array
+     * @return mixed
      */
     public function convert(\SimpleXMLElement $xml);
 

@@ -9,7 +9,6 @@ use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
-use phpDocumentor\Application\Configuration\ConfigurationConverter;
 use phpDocumentor\Application\Console\Command\ConvertCommand;
 use phpDocumentor\Application\Parser\Documentation\Api\FromReflectionFactory;
 use phpDocumentor\Application\Renderer\TwigRenderer;
@@ -24,8 +23,8 @@ use phpDocumentor\Application\Console\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Console\Command\RunCommand;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
-use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2;
-use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3;
+use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2Converter;
+use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3Converter;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Parser\DocumentationFactory;
 use phpDocumentor\Infrastructure\Parser\StashDocumentationRepository;
@@ -112,7 +111,7 @@ return [
     'config.user.path'     => new Uri(getcwd()
         . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')),
     'config.schema.path'   => $projectRoot . '/data/xsd/phpdoc.xsd',
-    'config.strategies'    => [ \DI\get(PhpDocumentor3::class), \DI\get(PhpDocumentor2::class) ],
+    'config.converters'    => [ \DI\get(PhpDocumentor3Converter::class), \DI\get(PhpDocumentor2Converter::class) ],
     'config.middlewares'   => [ \DI\get(CommandlineOptionsMiddleware::class) ],
     'twig.cache.path'      => sys_get_temp_dir() . '/phpdoc-twig-cache',
 
@@ -129,19 +128,22 @@ return [
     MethodNameInflector::class  => \DI\object(InvokeInflector::class),
 
     // Configuration
-    ConfigurationConverter::class => \DI\object()
-        ->constructorParameter('uri', \DI\get('config.user.path'))
-        ->constructorParameter('schemaPath', \DI\get('config.schema.path')),
-
     ConfigurationFactory::class => \DI\object()
-        ->constructorParameter('strategies', \DI\get('config.strategies'))
+        ->constructorParameter('converters', \DI\get('config.converters'))
         ->constructorParameter('uri', \DI\get('config.user.path'))
         ->constructorParameter('middlewares', \DI\get('config.middlewares')),
 
-    PhpDocumentor3::class => \DI\object()->constructorParameter('schemaPath', \DI\get('config.schema.path')),
+    PhpDocumentor2Converter::class => \DI\object()
+        ->constructorParameter('schemaPath', \DI\get('config.schema.path')),
+
+    PhpDocumentor3Converter::class => \DI\object()
+        ->constructorParameter('schemaPath', \DI\get('config.schema.path')),
+
+     \DI\object(PhpDocumentor2Converter::class)
+        ->methodParameter('setSuccessor', 'converter', \DI\object(PhpDocumentor3Converter::class)),
 
     // Console
-    Application::class => function (ContainerInterface $c) {
+    Application::class             => function (ContainerInterface $c) {
         $application = new Application('phpDocumentor', $c->get('application.version'));
 
         $application->getDefinition()->addOption(
@@ -167,7 +169,7 @@ return [
         ->constructorParameter('documentationRepository', \DI\get(StashDocumentationRepository::class)),
 
     ConvertCommand::class => \DI\object()
-        ->constructorParameter('configurationConverter', \DI\get(ConfigurationConverter::class)),
+        ->constructorParameter('converter', \DI\get(PhpDocumentor2Converter::class)),
 
     // Validator
     ValidatorInterface::class => \DI\object(RecursiveValidator::class),

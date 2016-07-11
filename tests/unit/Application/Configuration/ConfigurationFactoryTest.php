@@ -14,7 +14,7 @@ namespace phpDocumentor\Application\Configuration;
 
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
-use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\Application\Configuration\Factory\Converter;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -54,7 +54,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
 
         /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
+        $strategy = m::mock(Converter::class);
         $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class));
 
@@ -72,7 +72,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
 
         /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
+        $strategy = m::mock(Converter::class);
         $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
 
@@ -100,7 +100,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
 
         /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
+        $strategy = m::mock(Converter::class);
         $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
 
@@ -125,7 +125,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
 
         /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
+        $strategy = m::mock(Converter::class);
         $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
 
@@ -169,7 +169,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         };
 
         /** @var m\Mock $strategy */
-        $strategy = m::mock(Strategy::class);
+        $strategy = m::mock(Converter::class);
         $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
         $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($inputValue);
 

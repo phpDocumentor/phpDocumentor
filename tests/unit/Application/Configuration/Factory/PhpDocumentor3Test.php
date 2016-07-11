@@ -22,12 +22,12 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
     /** @var string */
     private $dataFolder = '';
 
-    /** @var PhpDocumentor3 */
+    /** @var PhpDocumentor3Converter */
     private $strategy;
 
     public function setUp()
     {
-        $this->strategy   = new PhpDocumentor3(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
+        $this->strategy   = new PhpDocumentor3Converter(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
         $this->dataFolder = __DIR__ . '/../../../../../tests/data/';
         require_once($this->dataFolder . 'phpDocumentor3ExpectedArrays.php');
     }

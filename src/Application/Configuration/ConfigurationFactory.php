@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Application\Configuration;
 
-use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\Application\Configuration\Factory\Converter;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -26,8 +26,8 @@ class ConfigurationFactory
     /** @var string[] The cached configuration as an array so that we improve performance */
     private $cachedConfiguration = [];
 
-    /** @var Strategy[] All strategies that are used by the ConfigurationFactory. */
-    private $strategies = [];
+    /** @var Converter[] All converters that are used by the ConfigurationFactory. */
+    private $converters = [];
 
     /**
      * A series of callables that take the configuration array as parameter and should return that array or a modified
@@ -40,14 +40,14 @@ class ConfigurationFactory
     /**
      * Initializes the ConfigurationFactory.
      *
-     * @param Strategy[] $strategies
-     * @param Uri        $uri
-     * @param callable[] $middlewares
+     * @param Converter[] $converters
+     * @param Uri         $uri
+     * @param callable[]  $middlewares
      */
-    public function __construct(array $strategies, Uri $uri, array $middlewares = [])
+    public function __construct(array $converters, Uri $uri, array $middlewares = [])
     {
-        foreach ($strategies as $strategy) {
-            $this->registerStrategy($strategy);
+        foreach ($converters as $converter) {
+            $this->registerConverter($converter);
         }
 
         $this->replaceLocation($uri);
@@ -89,7 +89,7 @@ class ConfigurationFactory
      *
      * @return array
      *
-     * @throws \RuntimeException if no matching strategy can be found.
+     * @throws \RuntimeException if no matching converter can be found.
      */
     public function get()
     {
@@ -115,15 +115,15 @@ class ConfigurationFactory
     }
 
     /**
-     * Adds strategies that are used in the ConfigurationFactory.
+     * Adds converters that are used in the ConfigurationFactory.
      *
-     * @param Strategy $strategy
+     * @param Converter $converter
      *
      * @return void
      */
-    private function registerStrategy(Strategy $strategy)
+    private function registerConverter(Converter $converter)
     {
-        $this->strategies[] = $strategy;
+        $this->converters[] = $converter;
     }
 
     /**
@@ -135,15 +135,13 @@ class ConfigurationFactory
      */
     private function extractConfigurationArray($xml)
     {
-        foreach ($this->strategies as $strategy) {
-            if ($strategy->match($xml) === true) {
-                return $strategy->convert($xml);
+        foreach ($this->converters as $converter) {
+            if ($converter->match($xml) === true) {
+                return $converter->convert($xml);
             }
         };
 
-        $this->upcast($xml);
-
-        throw new \RuntimeException('No strategy found that matches the configuration xml');
+        throw new \RuntimeException('No converter found that matches the configuration xml');
     }
 
     /**
@@ -154,41 +152,5 @@ class ConfigurationFactory
         foreach ($this->middlewares as $middleware) {
             $this->cachedConfiguration = $middleware($this->cachedConfiguration);
         }
-    }
-
-    /**
-     * @param \SimpleXMLElement $xml
-     *
-     * @return \SimpleXMLElement
-     */
-    private function upcast(\SimpleXMLElement $xml)
-    {
-        $XSLTProcessor = new \XSLTProcessor();
-        $XSLTProcessor->importStylesheet($this->getXsl());
-        $result = $XSLTProcessor->transformToXml($xml);
-
-        if ($result === false) {
-            throw new \RuntimeException('Could not upcast the xml');
-        }
-
-        $xmlResult = new \SimpleXMLElement($result);
-
-        foreach ($this->strategies as $strategy) {
-            if ($strategy->match($xmlResult) === true) {
-                return $strategy->convert($xmlResult);
-            }
-        };
-    }
-
-    /**
-     * @return \DOMDocument
-     */
-    private function getXsl()
-    {
-        $xsl  = new \DOMDocument();
-        $data = file_get_contents(__DIR__ . '/style.xsl');
-        $xsl->loadXML($data);
-
-        return $xsl;
     }
 }
