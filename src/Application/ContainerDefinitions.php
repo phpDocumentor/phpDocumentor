@@ -23,8 +23,8 @@ use phpDocumentor\Application\Console\Command\Phar\UpdateCommand;
 use phpDocumentor\Application\Console\Command\RunCommand;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
-use phpDocumentor\Application\Configuration\Factory\PhpDocumentor2Converter;
-use phpDocumentor\Application\Configuration\Factory\PhpDocumentor3Converter;
+use phpDocumentor\Application\Configuration\Factory\ConfigurationConverter;
+use phpDocumentor\Application\Configuration\Factory\ConfigurationExtractor;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\DocumentGroupFormat;
 use phpDocumentor\DomainModel\Parser\DocumentationFactory;
 use phpDocumentor\Infrastructure\Parser\StashDocumentationRepository;
@@ -111,7 +111,8 @@ return [
     'config.user.path'     => new Uri(getcwd()
         . ((file_exists(getcwd() . '/phpdoc.xml')) ? '/phpdoc.xml' : '/phpdoc.dist.xml')),
     'config.schema.path'   => $projectRoot . '/data/xsd/phpdoc.xsd',
-    'config.converters'    => [ \DI\get(PhpDocumentor3Converter::class), \DI\get(PhpDocumentor2Converter::class) ],
+    'config.converter'     => \DI\get(ConfigurationConverter::class),
+    'config.extractor'     => \DI\get(ConfigurationExtractor::class),
     'config.middlewares'   => [ \DI\get(CommandlineOptionsMiddleware::class) ],
     'twig.cache.path'      => sys_get_temp_dir() . '/phpdoc-twig-cache',
 
@@ -129,18 +130,15 @@ return [
 
     // Configuration
     ConfigurationFactory::class => \DI\object()
-        ->constructorParameter('converters', \DI\get('config.converters'))
+        ->constructorParameter('converter', \DI\get('config.converter'))
+        ->constructorParameter('extractor', \DI\get('config.extractor'))
         ->constructorParameter('uri', \DI\get('config.user.path'))
         ->constructorParameter('middlewares', \DI\get('config.middlewares')),
 
-    PhpDocumentor2Converter::class => \DI\object()
-        ->constructorParameter('schemaPath', \DI\get('config.schema.path')),
+    ConfigurationConverter::class => \DI\object(),
 
-    PhpDocumentor3Converter::class => \DI\object()
+    ConfigurationExtractor::class => \DI\object()
         ->constructorParameter('schemaPath', \DI\get('config.schema.path')),
-
-     \DI\object(PhpDocumentor2Converter::class)
-        ->methodParameter('setSuccessor', 'converter', \DI\object(PhpDocumentor3Converter::class)),
 
     // Console
     Application::class             => function (ContainerInterface $c) {
@@ -169,7 +167,7 @@ return [
         ->constructorParameter('documentationRepository', \DI\get(StashDocumentationRepository::class)),
 
     ConvertCommand::class => \DI\object()
-        ->constructorParameter('converter', \DI\get(PhpDocumentor2Converter::class)),
+        ->constructorParameter('converter', \DI\get(ConfigurationConverter::class)),
 
     // Validator
     ValidatorInterface::class => \DI\object(RecursiveValidator::class),

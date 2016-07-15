@@ -22,12 +22,12 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
     /** @var string */
     private $dataFolder = '';
 
-    /** @var PhpDocumentor3Converter */
+    /** @var ConfigurationExtractor */
     private $strategy;
 
     public function setUp()
     {
-        $this->strategy   = new PhpDocumentor3Converter(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
+        $this->strategy   = new ConfigurationExtractor(__DIR__ . '/../../../../../data/xsd/phpdoc.xsd');
         $this->dataFolder = __DIR__ . '/../../../../../tests/data/';
         require_once($this->dataFolder . 'phpDocumentor3ExpectedArrays.php');
     }
@@ -41,7 +41,7 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XML.xml');
 
-        $array = $this->strategy->convert($xml);
+        $array = $this->strategy->extract($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
@@ -55,7 +55,7 @@ final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithoutTemplate.xml');
 
-        $array = $this->strategy->convert($xml);
+        $array = $this->strategy->extract($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getDefaultArray(), $array);
     }
@@ -80,7 +80,7 @@ XML;
 
         $xml = new \SimpleXMLElement($xml);
 
-        $this->strategy->convert($xml);
+        $this->strategy->extract($xml);
     }
 
     /**
@@ -92,7 +92,7 @@ XML;
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithoutValues.xml');
 
-        $array = $this->strategy->convert($xml);
+        $array = $this->strategy->extract($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithEmptyExtensionsAndMarkers(), $array);
     }
@@ -106,7 +106,7 @@ XML;
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleVersions.xml');
 
-        $array = $this->strategy->convert($xml);
+        $array = $this->strategy->extract($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleVersions(), $array);
     }
@@ -120,7 +120,7 @@ XML;
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleApis.xml');
 
-        $array = $this->strategy->convert($xml);
+        $array = $this->strategy->extract($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleApis(), $array);
     }
@@ -134,7 +134,7 @@ XML;
     {
         $xml = $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleGuides.xml');
 
-        $array = $this->strategy->convert($xml);
+        $array = $this->strategy->extract($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleGuides(), $array);
     }
@@ -148,7 +148,7 @@ XML;
     {
         $xml = $this->givenXmlFromFile('phpDocumentor3XMLWithMultipleTemplates.xml');
 
-        $array = $this->strategy->convert($xml);
+        $array = $this->strategy->extract($xml);
 
         $this->assertEquals(\PhpDocumentor3ExpectedArrays::getArrayWithMultipleTemplates(), $array);
     }

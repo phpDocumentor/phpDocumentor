@@ -18,12 +18,33 @@ use phpDocumentor\DomainModel\Path;
 /**
  * phpDocumentor3 converter for converting the configuration xml to an array.
  */
-final class PhpDocumentor3Converter extends BaseConverter implements Converter
+final class ConfigurationExtractor
 {
     /**
-     * @inheritdoc
+     * The path to the xsd that is used for validation of the configuration file.
+     *
+     * @var string
      */
-    public function convert(\SimpleXMLElement $phpDocumentor)
+    private $schemaPath;
+
+    /**
+     * Initializes the configuration extractor.
+     *
+     * @param string $schemaPath
+     */
+    public function __construct($schemaPath)
+    {
+        $this->schemaPath = $schemaPath;
+    }
+
+    /**
+     * Extracts the configuration array.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return array the extracted configuration array.
+     */
+    public function extract(\SimpleXMLElement $phpDocumentor)
     {
         $this->validate($phpDocumentor);
 
@@ -56,14 +77,6 @@ final class PhpDocumentor3Converter extends BaseConverter implements Converter
         ];
 
         return $phpdoc3Array;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function match(\SimpleXMLElement $phpDocumentor)
-    {
-        return (string) $phpDocumentor->attributes()->version === '3';
     }
 
     /**
@@ -254,19 +267,21 @@ final class PhpDocumentor3Converter extends BaseConverter implements Converter
         $priorSetting = libxml_use_internal_errors(true);
         libxml_clear_errors();
 
-        $dom        = new \DOMDocument();
-        $domElement = dom_import_simplexml($phpDocumentor);
-        $domElement = $dom->importNode($domElement, true);
-        $dom->appendChild($domElement);
+        try {
+            $dom        = new \DOMDocument();
+            $domElement = dom_import_simplexml($phpDocumentor);
+            $domElement = $dom->importNode($domElement, true);
+            $dom->appendChild($domElement);
 
-        $dom->schemaValidate($this->schemaPath);
+            $dom->schemaValidate($this->schemaPath);
 
-        $error = libxml_get_last_error();
+            $error = libxml_get_last_error();
 
-        if ($error !== false) {
-            throw new \InvalidArgumentException(trim($error->message));
+            if ($error !== false) {
+                throw new \InvalidArgumentException(trim($error->message));
+            }
+        } finally {
+            libxml_use_internal_errors($priorSetting);
         }
-
-        libxml_use_internal_errors($priorSetting);
     }
 }

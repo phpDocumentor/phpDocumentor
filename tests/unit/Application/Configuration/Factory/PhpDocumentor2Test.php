@@ -32,7 +32,7 @@ final class PhpDocumentor2Test extends \PHPUnit_Framework_TestCase
     {
         $xml = new \SimpleXMLElement(__DIR__ . '/../../../../../tests/data/phpdoc.tpl.xml', 0, true);
 
-        $phpDocumentor2 = new PhpDocumentor2Converter();
+        $phpDocumentor2 = new ConfigurationConverter();
         $array          = $phpDocumentor2->convert($xml);
 
         $this->assertEquals(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
@@ -53,7 +53,7 @@ XML;
 
         $xml = new \SimpleXMLElement($xml);
 
-        $phpDocumentor2 = new PhpDocumentor2Converter();
+        $phpDocumentor2 = new ConfigurationConverter();
         $phpDocumentor2->convert($xml);
     }
 
@@ -64,7 +64,7 @@ XML;
     {
         $xml = new \SimpleXMLElement(__DIR__ . '/../../../../../tests/data/phpdoc.tpl.xml', 0, true);
 
-        $phpDocumentor2 = new PhpDocumentor2Converter();
+        $phpDocumentor2 = new ConfigurationConverter();
         $bool = $phpDocumentor2->match($xml);
 
         $this->assertTrue($bool);
@@ -82,7 +82,7 @@ XML;
             true
         );
 
-        $phpDocumentor2 = new PhpDocumentor2Converter();
+        $phpDocumentor2 = new ConfigurationConverter();
         $array          = $phpDocumentor2->convert($xml);
 
         $this->assertEquals(\PhpDocumentor2ExpectedArray::getDefaultArray(), $array);
@@ -100,7 +100,7 @@ XML;
             true
         );
 
-        $phpDocumentor2 = new PhpDocumentor2Converter();
+        $phpDocumentor2 = new ConfigurationConverter();
         $array          = $phpDocumentor2->convert($xml);
 
         $this->assertEquals(\PhpDocumentor2ExpectedArray::getArrayWithMultipleIgnorePaths(), $array);

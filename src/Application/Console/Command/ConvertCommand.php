@@ -12,7 +12,7 @@
 
 namespace phpDocumentor\Application\Console\Command;
 
-use phpDocumentor\Application\Configuration\Factory\Converter;
+use phpDocumentor\Application\Configuration\Factory\ConfigurationConverter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,11 +24,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConvertCommand extends Command
 {
     /**
-     * @var Converter
+     * @var ConfigurationConverter
      */
     private $converter;
 
-    public function __construct(Converter $converter)
+    public function __construct(ConfigurationConverter $converter)
     {
         parent::__construct('configuration:convert');
 
@@ -81,16 +81,17 @@ HELP
         $priorSetting = libxml_use_internal_errors(true);
         libxml_clear_errors();
 
-        $source = $this->loadFile($sourcePath);
+        try {
+            $source = $this->loadFile($sourcePath);
 
-        $config = $this->converter->convert($source);
+            $config = $this->converter->convert($source);
 
-        $this->saveFile($targetPath, $config->saveXML());
+            $this->saveFile($targetPath, $config->saveXML());
 
-        libxml_clear_errors();
-        libxml_use_internal_errors($priorSetting);
-
-        $output->writeln('Finished conversion');
+            $output->writeln('Finished conversion');
+        } finally {
+            libxml_use_internal_errors($priorSetting);
+        }
     }
 
     /**

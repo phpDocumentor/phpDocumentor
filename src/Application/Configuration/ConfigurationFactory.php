@@ -12,7 +12,8 @@
 
 namespace phpDocumentor\Application\Configuration;
 
-use phpDocumentor\Application\Configuration\Factory\Converter;
+use phpDocumentor\Application\Configuration\Factory\ConfigurationConverter;
+use phpDocumentor\Application\Configuration\Factory\ConfigurationExtractor;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -20,14 +21,17 @@ use phpDocumentor\DomainModel\Uri;
  */
 class ConfigurationFactory
 {
+    /** @var ConfigurationConverter */
+    private $converter;
+
+    /** @var ConfigurationExtractor */
+    private $extractor;
+
     /** @var Uri The Uri that contains the path to the configuration file. */
     private $uri;
 
     /** @var string[] The cached configuration as an array so that we improve performance */
     private $cachedConfiguration = [];
-
-    /** @var Converter[] All converters that are used by the ConfigurationFactory. */
-    private $converters = [];
 
     /**
      * A series of callables that take the configuration array as parameter and should return that array or a modified
@@ -40,16 +44,19 @@ class ConfigurationFactory
     /**
      * Initializes the ConfigurationFactory.
      *
-     * @param Converter[] $converters
-     * @param Uri         $uri
-     * @param callable[]  $middlewares
+     * @param ConfigurationConverter $converter
+     * @param ConfigurationExtractor $extractor
+     * @param Uri                    $uri
+     * @param callable[]             $middlewares
      */
-    public function __construct(array $converters, Uri $uri, array $middlewares = [])
-    {
-        foreach ($converters as $converter) {
-            $this->registerConverter($converter);
-        }
-
+    public function __construct(
+        ConfigurationConverter $converter,
+        ConfigurationExtractor $extractor,
+        Uri $uri,
+        array $middlewares = []
+    ) {
+        $this->converter = $converter;
+        $this->extractor = $extractor;
         $this->replaceLocation($uri);
         $this->middlewares = $middlewares;
     }
@@ -115,18 +122,6 @@ class ConfigurationFactory
     }
 
     /**
-     * Adds converters that are used in the ConfigurationFactory.
-     *
-     * @param Converter $converter
-     *
-     * @return void
-     */
-    private function registerConverter(Converter $converter)
-    {
-        $this->converters[] = $converter;
-    }
-
-    /**
      * Converts the given XML structure into an array containing the configuration.
      *
      * @param \SimpleXMLElement $xml
@@ -135,13 +130,14 @@ class ConfigurationFactory
      */
     private function extractConfigurationArray($xml)
     {
-        foreach ($this->converters as $converter) {
-            if ($converter->match($xml) === true) {
-                return $converter->convert($xml);
-            }
-        };
-
-        throw new \RuntimeException('No converter found that matches the configuration xml');
+        switch ((string) $xml->attributes()->version) {
+            case '': // version 2 has no version
+                $xml = $this->converter->convert($xml);
+            // no break
+            case '3':
+                return $this->extractor->extract($xml);
+        }
+            throw new \RuntimeException('No converter found that matches the configuration xml');
     }
 
     /**

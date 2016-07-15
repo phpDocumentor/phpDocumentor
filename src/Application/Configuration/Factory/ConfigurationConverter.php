@@ -15,7 +15,7 @@ namespace phpDocumentor\Application\Configuration\Factory;
 /**
  * phpDocumentor2 converter for converting the configuration xml to a phpDocumentor3 xml.
  */
-final class PhpDocumentor2Converter extends BaseConverter implements Converter
+final class ConfigurationConverter
 {
     /**
      * Converts the phpDocumentor2 configuration file.
@@ -29,33 +29,26 @@ final class PhpDocumentor2Converter extends BaseConverter implements Converter
         $priorSetting = libxml_use_internal_errors(true);
         libxml_clear_errors();
 
-        $XSLTProcessor = new \XSLTProcessor();
-        $XSLTProcessor->importStylesheet($this->getXsl());
-        $result = $XSLTProcessor->transformToXml($xml);
+        try {
+            $XSLTProcessor = new \XSLTProcessor();
+            $XSLTProcessor->importStylesheet($this->getXsl());
+            $result = $XSLTProcessor->transformToXml($xml);
 
-        if ($result === false) {
-            $errors = [];
-            foreach (libxml_get_errors() as $error) {
-                $errors[] = $error->message;
+            if ($result === false) {
+                $errors = [];
+                foreach (libxml_get_errors() as $error) {
+                    $errors[] = $error->message;
+                }
+
+                throw new \RuntimeException('Could not convert the xml. ' . implode('; ', $errors));
             }
 
-            throw new \RuntimeException('Could not convert the xml. ' . implode('; ', $errors));
+            $xmlResult = new \SimpleXMLElement($result);
+
+            return $xmlResult;
+        } finally {
+            libxml_use_internal_errors($priorSetting);
         }
-
-        $xmlResult = new \SimpleXMLElement($result);
-
-        libxml_clear_errors();
-        libxml_use_internal_errors($priorSetting);
-
-        return $xmlResult;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function match(\SimpleXMLElement $phpDocumentor)
-    {
-        return !isset($phpDocumentor->attributes()->version);
     }
 
     /**
