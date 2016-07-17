@@ -13,11 +13,11 @@
 namespace phpDocumentor\Application\Configuration\Factory;
 
 /**
- * Test case for PhpDocumentor3
+ * Test case for ConfigurationExtractor
  *
- * @coversDefaultClass phpDocumentor\Application\Configuration\Factory\PhpDocumentor3
+ * @coversDefaultClass phpDocumentor\Application\Configuration\Factory\ConfigurationExtractor
  */
-final class PhpDocumentor3Test extends \PHPUnit_Framework_TestCase
+final class ConfigurationExtractorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var string */
     private $dataFolder = '';

@@ -84,7 +84,7 @@ HELP
         try {
             $source = $this->loadFile($sourcePath);
 
-            $config = $this->converter->convert($source);
+            $config = $this->converter->convertToLatestVersion($source);
 
             $this->saveFile($targetPath, $config->saveXML());
 

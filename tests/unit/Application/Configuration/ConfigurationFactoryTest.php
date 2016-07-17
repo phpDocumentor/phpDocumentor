@@ -37,7 +37,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
 
-        $configurationFactory = new ConfigurationFactory([], $uri);
+        $configurationFactory = new ConfigurationFactory($uri);
         $configurationFactory->get();
     }
 

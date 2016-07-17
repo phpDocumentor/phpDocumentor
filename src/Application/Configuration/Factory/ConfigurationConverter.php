@@ -18,37 +18,58 @@ namespace phpDocumentor\Application\Configuration\Factory;
 final class ConfigurationConverter
 {
     /**
-     * Converts the phpDocumentor2 configuration file.
+     * Converts the phpDocumentor2 configuration file to the latest version.
      *
      * @param \SimpleXMLElement $xml
      *
      * @return \SimpleXMLElement
      */
-    public function convert(\SimpleXMLElement $xml)
+    public function convertToLatestVersion(\SimpleXMLElement $xml)
     {
         $priorSetting = libxml_use_internal_errors(true);
         libxml_clear_errors();
 
         try {
-            $XSLTProcessor = new \XSLTProcessor();
-            $XSLTProcessor->importStylesheet($this->getXsl());
-            $result = $XSLTProcessor->transformToXml($xml);
-
-            if ($result === false) {
-                $errors = [];
-                foreach (libxml_get_errors() as $error) {
-                    $errors[] = $error->message;
-                }
-
-                throw new \RuntimeException('Could not convert the xml. ' . implode('; ', $errors));
+            switch ((string) $xml->attributes()->version) {
+                case '': // version 2 has no version
+                    $xml = $this->convertToVersion3($xml);
+                    // no break
+                case '3':
+                    // for future use
+                    // no break
             }
 
-            $xmlResult = new \SimpleXMLElement($result);
-
-            return $xmlResult;
+            return $xml;
         } finally {
             libxml_use_internal_errors($priorSetting);
         }
+    }
+
+    /**
+     * Converts the configuration file from phpDocumentor2 to phpDocumentor3.
+     *
+     * @param \SimpleXMLElement $xml
+     *
+     * @return \SimpleXMLElement
+     */
+    private function convertToVersion3(\SimpleXMLElement $xml)
+    {
+        $XSLTProcessor = new \XSLTProcessor();
+        $XSLTProcessor->importStylesheet($this->getXsl());
+        $result = $XSLTProcessor->transformToXml($xml);
+
+        if ($result === false) {
+            $errors = [];
+            foreach (libxml_get_errors() as $error) {
+                $errors[] = $error->message;
+            }
+
+            throw new \RuntimeException('Could not convert the xml. ' . implode('; ', $errors));
+        }
+
+        $xmlResult = new \SimpleXMLElement($result);
+
+        return $xmlResult;
     }
 
     /**

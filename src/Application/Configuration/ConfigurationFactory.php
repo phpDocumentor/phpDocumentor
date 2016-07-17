@@ -130,14 +130,9 @@ class ConfigurationFactory
      */
     private function extractConfigurationArray($xml)
     {
-        switch ((string) $xml->attributes()->version) {
-            case '': // version 2 has no version
-                $xml = $this->converter->convert($xml);
-            // no break
-            case '3':
-                return $this->extractor->extract($xml);
-        }
-            throw new \RuntimeException('No converter found that matches the configuration xml');
+        $xml = $this->converter->convertToLatestVersion($xml);
+
+        $this->extractor->extract($xml);
     }
 
     /**
