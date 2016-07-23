@@ -102,6 +102,10 @@ HELP
      */
     protected function loadFile($sourcePath)
     {
+        if (!file_exists($sourcePath)) {
+            throw new \InvalidArgumentException(sprintf('Could not find file %s.', $sourcePath));
+        }
+
         $result = simplexml_load_string(file_get_contents($sourcePath));
         if ($result === false) {
             throw new \InvalidArgumentException(trim(libxml_get_last_error()->message));

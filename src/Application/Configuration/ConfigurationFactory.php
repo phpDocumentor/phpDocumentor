@@ -95,8 +95,6 @@ class ConfigurationFactory
      * Converts the phpDocumentor configuration xml to an array.
      *
      * @return array
-     *
-     * @throws \RuntimeException if no matching converter can be found.
      */
     public function get()
     {

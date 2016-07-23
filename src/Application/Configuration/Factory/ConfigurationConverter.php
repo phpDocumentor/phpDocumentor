@@ -54,6 +54,8 @@ final class ConfigurationConverter
      */
     private function convertToVersion3(\SimpleXMLElement $xml)
     {
+        $this->validateVersion2($xml);
+
         $XSLTProcessor = new \XSLTProcessor();
         $XSLTProcessor->importStylesheet($this->getXsl());
         $result = $XSLTProcessor->transformToXml($xml);
@@ -83,5 +85,21 @@ final class ConfigurationConverter
         $xsl->loadXML($data);
 
         return $xsl;
+    }
+
+    /**
+     * Validates if the xml has a root element which name is phpdocumentor.
+     *
+     * @param \SimpleXMLElement $xml
+     *
+     * @throws \InvalidArgumentException if the root element of the xml is not phpdocumentor.
+     */
+    private function validateVersion2(\SimpleXMLElement $xml)
+    {
+        if ($xml->getName() !== 'phpdocumentor') {
+            throw new \InvalidArgumentException(
+                sprintf('Root element of the xml should be phpdocumentor, %s found.', $xml->getName())
+            );
+        }
     }
 }
