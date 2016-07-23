@@ -18,7 +18,7 @@ use phpDocumentor\DomainModel\Path;
 /**
  * phpDocumentor3 converter for converting the configuration xml to an array.
  */
-final class ConfigurationExtractor
+final class ConfigurationExtractor implements Extractor
 {
     /**
      * The path to the xsd that is used for validation of the configuration file.

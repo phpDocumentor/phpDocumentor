@@ -154,18 +154,6 @@ XML;
     }
 
     /**
-     * @covers ::match
-     */
-    public function testItMatchesWhenVersionIs3()
-    {
-        $xml = $this->givenXmlFromFile('phpDocumentor3XML.xml');
-
-        $bool = $this->strategy->match($xml);
-
-        $this->assertTrue($bool);
-    }
-
-    /**
      * @param $file
      *
      * @return \SimpleXMLElement

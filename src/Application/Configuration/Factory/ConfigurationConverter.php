@@ -15,10 +15,10 @@ namespace phpDocumentor\Application\Configuration\Factory;
 /**
  * phpDocumentor2 converter for converting the configuration xml to a phpDocumentor3 xml.
  */
-final class ConfigurationConverter
+final class ConfigurationConverter implements Converter
 {
     /**
-     * Converts the phpDocumentor2 configuration file to the latest version.
+     * Converts the phpDocumentor configuration file to the latest version.
      *
      * @param \SimpleXMLElement $xml
      *

@@ -15,6 +15,7 @@ namespace phpDocumentor\Application\Configuration;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Application\Configuration\Factory\Converter;
+use phpDocumentor\Application\Configuration\Factory\Extractor;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -25,22 +26,6 @@ use phpDocumentor\DomainModel\Uri;
  */
 final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers ::get
-     * @expectedException \Exception
-     * @expectedExceptionMessage No strategy found that matches the configuration xml
-     */
-    public function testItHaltsIfNoMatchingStrategyCanBeFound()
-    {
-        $root = vfsStream::setup('dir');
-
-        vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
-        $uri = new Uri(vfsStream::url('dir/foo.xml'));
-
-        $configurationFactory = new ConfigurationFactory($uri);
-        $configurationFactory->get();
-    }
-
     /**
      * @covers ::__construct
      * @covers ::get
@@ -53,12 +38,15 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
 
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Converter::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class));
+        /** @var m\Mock $converter */
+        $converter = m::mock(Converter::class);
+        $converter->shouldReceive('convertToLatestVersion')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(new \SimpleXMLElement('<foo></foo>'));
 
-        $configurationFactory = new ConfigurationFactory([$strategy], $uri);
+        /** @var m\Mock $extractor */
+        $extractor = m::mock(Extractor::class);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class));
+
+        $configurationFactory = new ConfigurationFactory($converter, $extractor, $uri);
         $configurationFactory->get();
     }
 

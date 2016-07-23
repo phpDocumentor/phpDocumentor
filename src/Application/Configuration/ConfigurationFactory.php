@@ -12,8 +12,8 @@
 
 namespace phpDocumentor\Application\Configuration;
 
-use phpDocumentor\Application\Configuration\Factory\ConfigurationConverter;
-use phpDocumentor\Application\Configuration\Factory\ConfigurationExtractor;
+use phpDocumentor\Application\Configuration\Factory\Converter;
+use phpDocumentor\Application\Configuration\Factory\Extractor;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -21,10 +21,10 @@ use phpDocumentor\DomainModel\Uri;
  */
 class ConfigurationFactory
 {
-    /** @var ConfigurationConverter */
+    /** @var Converter */
     private $converter;
 
-    /** @var ConfigurationExtractor */
+    /** @var Extractor */
     private $extractor;
 
     /** @var Uri The Uri that contains the path to the configuration file. */
@@ -44,14 +44,14 @@ class ConfigurationFactory
     /**
      * Initializes the ConfigurationFactory.
      *
-     * @param ConfigurationConverter $converter
-     * @param ConfigurationExtractor $extractor
-     * @param Uri                    $uri
-     * @param callable[]             $middlewares
+     * @param Converter  $converter
+     * @param Extractor  $extractor
+     * @param Uri        $uri
+     * @param callable[] $middlewares
      */
     public function __construct(
-        ConfigurationConverter $converter,
-        ConfigurationExtractor $extractor,
+        Converter $converter,
+        Extractor $extractor,
         Uri $uri,
         array $middlewares = []
     ) {
@@ -128,9 +128,9 @@ class ConfigurationFactory
      */
     private function extractConfigurationArray($xml)
     {
-        $xml = $this->converter->convertToLatestVersion($xml);
+        $convertedXml = $this->converter->convertToLatestVersion($xml);
 
-        $this->extractor->extract($xml);
+        return $this->extractor->extract($convertedXml);
     }
 
     /**
