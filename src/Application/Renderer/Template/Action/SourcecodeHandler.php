@@ -103,7 +103,6 @@ class SourcecodeHandler
 </html>
 HTML
             );
-
         }
     }
 }
