@@ -40,7 +40,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 
         /** @var m\Mock $converter */
         $converter = m::mock(Converter::class);
-        $converter->shouldReceive('convertToLatestVersion')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(new \SimpleXMLElement('<foo></foo>'));
+        $converter->shouldReceive('convertToLatestVersion')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn(new \SimpleXMLElement('<foo></foo>'));
 
         /** @var m\Mock $extractor */
         $extractor = m::mock(Extractor::class);
