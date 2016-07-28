@@ -4,5 +4,5 @@ namespace phpDocumentor\Application\Configuration\Factory;
 
 interface Converter
 {
-    public function convertToLatestVersion(\SimpleXMLElement $xml);
+    public function convert(\SimpleXMLElement $xml);
 }

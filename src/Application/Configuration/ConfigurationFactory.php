@@ -128,7 +128,7 @@ class ConfigurationFactory
      */
     private function extractConfigurationArray($xml)
     {
-        $convertedXml = $this->converter->convertToLatestVersion($xml);
+        $convertedXml = $this->converter->convert($xml);
 
         return $this->extractor->extract($convertedXml);
     }
