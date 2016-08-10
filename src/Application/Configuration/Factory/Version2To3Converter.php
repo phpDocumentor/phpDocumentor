@@ -58,7 +58,7 @@ final class Version2To3Converter extends BaseConverter
     private function getXsl()
     {
         $xsl  = new \DOMDocument();
-        $data = file_get_contents(__DIR__ . '/../style.xsl');
+        $data = file_get_contents(__DIR__ . '/../phpDocumentor3.xsl');
 
         $xsl->loadXML($data);
 

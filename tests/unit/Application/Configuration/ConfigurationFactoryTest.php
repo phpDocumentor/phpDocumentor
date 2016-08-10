@@ -40,7 +40,7 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 
         /** @var m\Mock $converter */
         $converter = m::mock(Converter::class);
-        $converter->shouldReceive('convertToLatestVersion')->once()->with(m::type(\SimpleXMLElement::class))
+        $converter->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))
             ->andReturn(new \SimpleXMLElement('<foo></foo>'));
 
         /** @var m\Mock $extractor */
@@ -60,14 +60,18 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         $root = vfsStream::setup('dir');
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
 
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Converter::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+        /** @var m\Mock $converter */
+        $converter = m::mock(Converter::class);
+        $converter->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn(new \SimpleXMLElement('<foo></foo>'));
 
-        // Setup a prepopulated factory with path and cachedContents
+        /** @var m\Mock $extractor */
+        $extractor = m::mock(Extractor::class);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+
+        // Setup a pre-populated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri);
+        $factory = new ConfigurationFactory($converter, $extractor, $uri);
         $this->assertAttributeSame($uri, 'uri', $factory);
         $factory->get();
         $this->assertAttributeSame($cachedContent, 'cachedConfiguration', $factory);
@@ -88,14 +92,18 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         $root = vfsStream::setup('dir');
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
 
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Converter::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+        /** @var m\Mock $converter */
+        $converter = m::mock(Converter::class);
+        $converter->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn(new \SimpleXMLElement('<foo></foo>'));
 
-        // Setup a prepopulated factory with path and cachedContents
+        /** @var m\Mock $extractor */
+        $extractor = m::mock(Extractor::class);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+
+        // Setup a pre-populated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri);
+        $factory = new ConfigurationFactory($converter, $extractor, $uri);
         $this->assertAttributeSame($uri, 'uri', $factory);
         $factory->get();
         $this->assertAttributeSame($cachedContent, 'cachedConfiguration', $factory);
@@ -113,14 +121,18 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         $root = vfsStream::setup('dir');
         vfsStream::newFile('foo.xml')->at($root)->withContent('<foo></foo>');
 
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Converter::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+        /** @var m\Mock $converter */
+        $converter = m::mock(Converter::class);
+        $converter->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn(new \SimpleXMLElement('<foo></foo>'));
 
-        // Setup a prepopulated factory with path and cachedContents
+        /** @var m\Mock $extractor */
+        $extractor = m::mock(Extractor::class);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+
+        // Setup a pre-populated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri);
+        $factory = new ConfigurationFactory($converter, $extractor, $uri);
         $this->assertAttributeSame($uri, 'uri', $factory);
 
         // populate the cache
@@ -157,14 +169,18 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
             return $afterMiddleware2Value;
         };
 
-        /** @var m\Mock $strategy */
-        $strategy = m::mock(Converter::class);
-        $strategy->shouldReceive('match')->once()->with(m::type(\SimpleXMLElement::class))->andReturn(true);
-        $strategy->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($inputValue);
+        /** @var m\Mock $converter */
+        $converter = m::mock(Converter::class);
+        $converter->shouldReceive('convert')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn(new \SimpleXMLElement('<foo></foo>'));
 
-        // Setup a prepopulated factory with path and cachedContents
+        /** @var m\Mock $extractor */
+        $extractor = m::mock(Extractor::class);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($inputValue);
+
+        // Setup a pre-populated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
-        $factory = new ConfigurationFactory([$strategy], $uri, [$middleWare1]);
+        $factory = new ConfigurationFactory($converter, $extractor, $uri, [$middleWare1]);
         $factory->addMiddleware($middleWare2);
 
         $factory->get();

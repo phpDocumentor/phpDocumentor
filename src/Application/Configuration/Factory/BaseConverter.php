@@ -15,6 +15,9 @@ abstract class BaseConverter implements Converter
 
     abstract protected function match(\SimpleXMLElement $xml);
 
+    /**
+     * @inheritdoc
+     */
     public function convert(\SimpleXMLElement $xml)
     {
         if (!$this->match($xml)) {

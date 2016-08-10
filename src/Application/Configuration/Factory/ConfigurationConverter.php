@@ -15,13 +15,16 @@ namespace phpDocumentor\Application\Configuration\Factory;
 /**
  * phpDocumentor2 converter for converting the configuration xml to a phpDocumentor3 xml.
  */
-final class ConfigurationConverter implements Converter
+final class ConfigurationConverter extends BaseConverter implements Converter
 {
-    /**
-     * @var BaseConverter
-     */
-    private $nextConverter;
+    public function __construct(Converter $converter = null)
+    {
+        $this->nextConverter = $converter;
+    }
 
+    /**
+     * @inheritdoc
+     */
     public function convert(\SimpleXMLElement $xml)
     {
         if (!$this->match($xml)) {
@@ -38,7 +41,6 @@ final class ConfigurationConverter implements Converter
      *
      * @return \SimpleXMLElement
      */
-
     protected function innerConvert(\SimpleXMLElement $xml)
     {
         $priorSetting = libxml_use_internal_errors(true);
@@ -62,6 +64,6 @@ final class ConfigurationConverter implements Converter
 
     protected function match(\SimpleXMLElement $xml)
     {
-        return (string) $xml->attributes()->version === '3';
+        return !isset($xml->attributes()->version);
     }
 }

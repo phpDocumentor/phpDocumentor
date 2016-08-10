@@ -6,7 +6,7 @@
         xsi:noNamespaceSchemaLocation="phpdoc.xsd"
 >
     <paths>
-        <output>file://build/docs</output>
+        <output>build/docs</output>
         <cache>/tmp/phpdoc-doc-cache</cache>
     </paths>
     <version number="1.0.0">
@@ -16,7 +16,7 @@
                 <path>src</path>
             </source>
             <ignore hidden="true" symlinks="true">
-                <path>src/ServiceDefinitions.php</path>
+                <path>src</path>
             </ignore>
             <extensions>
                 <extension>php</extension>

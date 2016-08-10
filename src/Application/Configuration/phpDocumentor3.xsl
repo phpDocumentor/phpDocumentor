@@ -19,7 +19,7 @@
                 <cache>/tmp/phpdoc-doc-cache</cache>
             </paths>
             <version number="1.0.0">
-                <folder></folder>
+                <folder>latest</folder>
                 <api format="php">
                     <source dsn="file://.">
                         <path>src</path>
