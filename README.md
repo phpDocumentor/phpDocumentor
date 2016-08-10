@@ -85,9 +85,10 @@ Afterwards you are able to run phpDocumentor directly from your `vendor` directo
 
 ### Using the PHAR
 
-1. Download the phar file from http://phpdoc.org/phpDocumentor.phar
-2. ???
-3. Profit!
+1. Download the phar file from http://phpdoc.org/phpDocumentor.phar, or from a release listed on github
+2. Move the file with sudo to your bin directory: sudo mv phpDocumentor.phar /usr/local/bin/phpdoc
+3. Ensure the file has execute rights: sudo chmod +x /usr/local/bin/phpdoc
+4. Confirm it runs (you may have to restart your SSH session if you're connecting remotely first) by running phpdoc --version from any directory.
 
 How to use phpDocumentor?
 -------------------
