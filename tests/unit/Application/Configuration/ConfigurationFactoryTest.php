@@ -67,7 +67,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 
         /** @var m\Mock $extractor */
         $extractor = m::mock(Extractor::class);
-        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn($cachedContent);
 
         // Setup a pre-populated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
@@ -99,7 +100,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 
         /** @var m\Mock $extractor */
         $extractor = m::mock(Extractor::class);
-        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn($cachedContent);
 
         // Setup a pre-populated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));
@@ -128,7 +130,8 @@ final class ConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 
         /** @var m\Mock $extractor */
         $extractor = m::mock(Extractor::class);
-        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))->andReturn($cachedContent);
+        $extractor->shouldReceive('extract')->once()->with(m::type(\SimpleXMLElement::class))
+            ->andReturn($cachedContent);
 
         // Setup a pre-populated factory with path and cachedContents
         $uri = new Uri(vfsStream::url('dir/foo.xml'));

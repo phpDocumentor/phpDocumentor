@@ -22,7 +22,11 @@ final class Version2To3ConverterTest extends \PHPUnit_Framework_TestCase
     public function testItConvertsPhpDocumentor2XmlToAnArray()
     {
         $phpDoc2Xml = new \SimpleXMLElement(__DIR__ . '/../../../../../tests/data/phpdoc.tpl.xml', 0, true);
-        $phpDoc3Xml = new \SimpleXMLElement(__DIR__ . '/../../../../../tests/data/phpDocumentor2XMLConvertedToPhpDocumentor3XML.xml', 0, true);
+        $phpDoc3Xml = new \SimpleXMLElement(
+            __DIR__ . '/../../../../../tests/data/phpDocumentor2XMLConvertedToPhpDocumentor3XML.xml',
+            0,
+            true
+        );
 
         $converter = new Version2To3Converter();
 
