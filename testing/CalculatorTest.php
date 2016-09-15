@@ -1,0 +1,29 @@
+<?php
+    /**
+     * this file tests the Calculator Class
+     */
+
+    require("Calculator.php");
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    /**
+     * This class is to test the calcultor class
+     * this test add and sub function
+     * @todo [test for sub()]
+     */
+
+class CalculatorTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * [tests that add() in calculator class works accurately]
+     * @method tesAdd
+     * @return [boolean]  [confirms that add return 15, if input is 5 and 10]
+     */
+
+    public function testAdd()
+    {
+        $c = New Calculator;
+        $result = $c->add(5,10);
+        $this->assertEquals(15, $result);
+    }
+}
