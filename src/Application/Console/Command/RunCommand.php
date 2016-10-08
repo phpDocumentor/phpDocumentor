@@ -15,8 +15,11 @@ namespace phpDocumentor\Application\Console\Command;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
+use phpDocumentor\Application\Parse;
 use phpDocumentor\DomainModel\Dsn;
+use phpDocumentor\DomainModel\Parser\Documentation;
 use phpDocumentor\DomainModel\Parser\DocumentationRepository;
+use phpDocumentor\DomainModel\Parser\Version\Definition;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
 use phpDocumentor\DomainModel\Parser\ApiFileParsed;
@@ -303,11 +306,14 @@ HELP
         $templates = $this->getTemplates();
 
         foreach ($this->definitionRepository->fetchAll() as $definition) {
-            $this->render(
-                $this->parse($definition),
-                $destinationFilesystem,
-                $templates
-            );
+            // TODO: Does this mean that once cached it is never refreshed?
+            if ($this->documentationRepository->hasForVersionNumber($definition->getVersionNumber()) === null) {
+                $this->commandBus->handle(new Parse($definition));
+            }
+
+            $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
+
+            $this->commandBus->handle(new Render($documentation, $destinationFilesystem, $templates));
         }
 
         $expandedDestination = $this->getExpandedDestination($destination);
@@ -389,43 +395,10 @@ HELP
             : $destination;
     }
 
-    /**
-     * @return mixed
-     */
     private function getTemplates()
     {
         $config = $this->configurationFactory->get();
 
         return $config['phpdocumentor']['templates'];
-    }
-
-    /**
-     * @param $definition
-     *
-     * @return null|\phpDocumentor\DomainModel\Parser\Documentation
-     */
-    private function parse($definition)
-    {
-        $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
-
-        // TODO: does this mean that if a documentation comes from cache it is never updated?
-        if ($documentation === null) {
-            $documentation = $this->documentationFactory->create($definition);
-            $this->documentationRepository->save($documentation);
-
-            return $documentation;
-        }
-
-        return $documentation;
-    }
-
-    /**
-     * @param $documentation
-     * @param $destinationFilesystem
-     * @param $templates
-     */
-    private function render($documentation, $destinationFilesystem, $templates)
-    {
-        $this->commandBus->handle(new Render($documentation, $destinationFilesystem, $templates));
     }
 }

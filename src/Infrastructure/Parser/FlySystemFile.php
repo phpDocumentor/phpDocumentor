@@ -18,7 +18,6 @@ use Webmozart\Assert\Assert;
 
 /**
  * Wrapper for FlySystem's FilesystemInterface.
- * @todo This code belongs in the infrastructure layer
  */
 final class FlySystemFile implements File
 {

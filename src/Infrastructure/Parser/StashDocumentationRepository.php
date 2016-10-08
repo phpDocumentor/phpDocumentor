@@ -48,7 +48,7 @@ final class StashDocumentationRepository implements DocumentationRepository
      *
      * @param Number $versionNumber
      *
-*@return Documentation|null
+     * @return Documentation|null
      */
     public function findByVersionNumber(Number $versionNumber)
     {
@@ -59,6 +59,11 @@ final class StashDocumentationRepository implements DocumentationRepository
         }
 
         return $item->get();
+    }
+
+    public function hasForVersionNumber(Number $versionNumber): bool
+    {
+        return !$this->dataStore->getItem($this->getItemName($versionNumber))->isMiss();
     }
 
     /**
@@ -78,7 +83,7 @@ final class StashDocumentationRepository implements DocumentationRepository
      *
      * @param Number $versionNumber
      *
-*@return string
+     * @return string
      */
     private function getItemName(Number $versionNumber)
     {

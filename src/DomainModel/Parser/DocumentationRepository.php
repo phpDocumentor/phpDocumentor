@@ -17,6 +17,8 @@ interface DocumentationRepository
      */
     public function findByVersionNumber(Number $versionNumber);
 
+    public function hasForVersionNumber(Number $versionNumber) : bool;
+
     /**
      * Store the documentation object to the data store for later usage.
      *
