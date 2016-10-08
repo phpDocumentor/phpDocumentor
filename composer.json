@@ -52,7 +52,6 @@
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
         "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates."
     },
-    "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "scripts": {
         "post-install-cmd": [ "php vendor/bin/phing build:dependencies:install" ],
         "test": [ "./vendor/bin/phpunit --colors=always -v" ],
