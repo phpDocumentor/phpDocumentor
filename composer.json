@@ -40,7 +40,6 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "behat/behat":                 "^3.0",
         "mockery/mockery":             "~0.9",
         "mikey179/vfsStream":          "^1.2",
         "symfony/expression-language": "^2.4",
@@ -51,9 +50,6 @@
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
         "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates."
-    },
-    "config": {
-        "bin-dir":"bin/"
     },
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "scripts": {
