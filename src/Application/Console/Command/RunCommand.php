@@ -15,19 +15,17 @@ namespace phpDocumentor\Application\Console\Command;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
-use phpDocumentor\Application\Parse;
+use phpDocumentor\DomainModel\Parse;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\Documentation;
 use phpDocumentor\DomainModel\Parser\DocumentationRepository;
-use phpDocumentor\DomainModel\Parser\Version\Definition;
 use phpDocumentor\Infrastructure\FileSystemFactory;
 use phpDocumentor\Infrastructure\Parser\Documentation\Api\FlySystemDefinition;
 use phpDocumentor\DomainModel\Parser\ApiFileParsed;
 use phpDocumentor\DomainModel\Parser\ApiParsingStarted;
-use phpDocumentor\Application\ConfigureCache;
-use phpDocumentor\Application\MergeConfigurationWithCommandLineOptions;
-use phpDocumentor\Application\Render;
-use phpDocumentor\DomainModel\Parser\DocumentationFactory;
+use phpDocumentor\DomainModel\ConfigureCache;
+use phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptions;
+use phpDocumentor\DomainModel\Render;
 use phpDocumentor\DomainModel\Parser\Version\DefinitionRepository;
 use phpDocumentor\DomainModel\Renderer\RenderActionCompleted;
 use phpDocumentor\DomainModel\Renderer\RenderingFinished;
@@ -36,7 +34,6 @@ use Stash\Driver\FileSystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -71,9 +68,6 @@ final class RunCommand extends Command
     /** @var DefinitionRepository */
     private $definitionRepository;
 
-    /** @var DocumentationFactory */
-    private $documentationFactory;
-
     /** @var DocumentationRepository */
     private $documentationRepository;
 
@@ -88,7 +82,6 @@ final class RunCommand extends Command
      *
      * @param DefinitionRepository $definitionRepository
      * @param DocumentationRepository $documentationRepository
-     * @param DocumentationFactory $documentationFactory
      * @param CommandBus $commandBus
      * @param Emitter $emitter
      * @param ConfigurationFactory $configurationFactory
@@ -97,7 +90,6 @@ final class RunCommand extends Command
     public function __construct(
         DefinitionRepository $definitionRepository,
         DocumentationRepository $documentationRepository,
-        DocumentationFactory $documentationFactory,
         CommandBus $commandBus,
         Emitter $emitter,
         ConfigurationFactory $configurationFactory,
@@ -106,12 +98,11 @@ final class RunCommand extends Command
         $this->commandBus                   = $commandBus;
         $this->emitter                      = $emitter;
         $this->definitionRepository         = $definitionRepository;
-        $this->documentationFactory         = $documentationFactory;
         $this->documentationRepository      = $documentationRepository;
+        $this->configurationFactory         = $configurationFactory;
+        $this->fileSystemFactory            = $fileSystemFactory;
 
         parent::__construct('project:run');
-        $this->configurationFactory = $configurationFactory;
-        $this->fileSystemFactory = $fileSystemFactory;
     }
 
     /**
@@ -284,42 +275,16 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(
-            sprintf(
-                '<info>%s</info> version <comment>%s</comment>' . PHP_EOL,
-                $this->getApplication()->getName(),
-                $this->getApplication()->getVersion()
-            )
-        );
+        $this->outputHeader($output);
         $this->attachListeners($input, $output);
 
-        $this->commandBus->handle(
-            new MergeConfigurationWithCommandLineOptions($input->getOptions(), $input->getArguments())
-        );
-        $config = $this->configurationFactory->get();
-        $this->commandBus->handle(
-            new ConfigureCache($config['phpdocumentor']['paths']['cache'], $config['phpdocumentor']['use-cache'])
-        );
-
+        $this->mergeArgumentsIntoConfiguration($input);
         $destination = $this->getDestination();
-        $destinationFilesystem = $this->fileSystemFactory->create($destination);
-        $templates = $this->getTemplates();
 
-        foreach ($this->definitionRepository->fetchAll() as $definition) {
-            // TODO: Does this mean that once cached it is never refreshed?
-            if ($this->documentationRepository->hasForVersionNumber($definition->getVersionNumber()) === null) {
-                $this->commandBus->handle(new Parse($definition));
-            }
+        $this->configureCache();
+        $this->renderDocumentationTo($destination);
 
-            $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
-
-            $this->commandBus->handle(new Render($documentation, $destinationFilesystem, $templates));
-        }
-
-        $expandedDestination = $this->getExpandedDestination($destination);
-        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $expandedDestination));
-
-        return 0;
+        $this->outputFooter($output, $destination);
     }
 
     /**
@@ -400,5 +365,59 @@ HELP
         $config = $this->configurationFactory->get();
 
         return $config['phpdocumentor']['templates'];
+    }
+
+    private function configureCache()
+    {
+        $config = $this->configurationFactory->get();
+
+        $cacheLocation = $config['phpdocumentor']['paths']['cache'];
+        $cacheEnabled = $config['phpdocumentor']['use-cache'];
+
+        $this->commandBus->handle(new ConfigureCache($cacheLocation, $cacheEnabled));
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    protected function outputHeader(OutputInterface $output)
+    {
+        $output->writeln(
+            sprintf(
+                '<info>%s</info> version <comment>%s</comment>' . PHP_EOL,
+                $this->getApplication()->getName(),
+                $this->getApplication()->getVersion()
+            )
+        );
+    }
+
+    private function mergeArgumentsIntoConfiguration(InputInterface $input)
+    {
+        $this->commandBus->handle(
+            new MergeConfigurationWithCommandLineOptions($input->getOptions(), $input->getArguments())
+        );
+    }
+
+    private function renderDocumentationTo($destination)
+    {
+        $destinationFilesystem = $this->fileSystemFactory->create($destination);
+        $templates = $this->getTemplates();
+
+        foreach ($this->definitionRepository->fetchAll() as $definition) {
+            // TODO: Does this mean that once cached it is never refreshed?
+            if ($this->documentationRepository->hasForVersionNumber($definition->getVersionNumber()) === null) {
+                $this->commandBus->handle(new Parse($definition));
+            }
+
+            $documentation = $this->documentationRepository->findByVersionNumber($definition->getVersionNumber());
+
+            $this->commandBus->handle(new Render($documentation, $destinationFilesystem, $templates));
+        }
+    }
+
+    private function outputFooter(OutputInterface $output, $destination)
+    {
+        $expandedDestination = $this->getExpandedDestination($destination);
+        $output->writeln(sprintf(PHP_EOL . '<fg=black;bg=green>OK (%s)</>', $expandedDestination));
     }
 }

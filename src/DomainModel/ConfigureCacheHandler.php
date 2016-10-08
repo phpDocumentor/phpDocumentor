@@ -10,8 +10,9 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application;
+namespace phpDocumentor\DomainModel;
 
+use phpDocumentor\DomainModel\ConfigureCache;
 use Stash\Pool;
 
 final class ConfigureCacheHandler

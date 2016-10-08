@@ -10,8 +10,9 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application;
+namespace phpDocumentor\DomainModel;
 
+use phpDocumentor\DomainModel\Parse;
 use phpDocumentor\DomainModel\Parser\DocumentationFactory;
 use phpDocumentor\DomainModel\Parser\DocumentationRepository;
 

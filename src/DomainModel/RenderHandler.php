@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application;
+namespace phpDocumentor\DomainModel;
 
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
@@ -18,7 +18,7 @@ use League\Flysystem\Filesystem;
 use League\Tactician\CommandBus;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\DomainModel\Dsn;
-use phpDocumentor\Application\Render;
+use phpDocumentor\DomainModel\Render;
 use phpDocumentor\DomainModel\Parser\Documentation;
 use phpDocumentor\DomainModel\ReadModel\ReadModels;
 use phpDocumentor\DomainModel\Renderer\Assets;

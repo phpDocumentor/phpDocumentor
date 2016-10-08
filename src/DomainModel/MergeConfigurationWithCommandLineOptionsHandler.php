@@ -10,12 +10,12 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application;
+namespace phpDocumentor\DomainModel;
 
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
 use phpDocumentor\Configuration;
-use phpDocumentor\Application\MergeConfigurationWithCommandLineOptions;
+use phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptions;
 use phpDocumentor\DomainModel\Uri;
 
 final class MergeConfigurationWithCommandLineOptionsHandler

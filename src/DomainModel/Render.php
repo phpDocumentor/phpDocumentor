@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application;
+namespace phpDocumentor\DomainModel;
 
 use League\Flysystem\Filesystem;
 use phpDocumentor\DomainModel\Parser\Documentation;

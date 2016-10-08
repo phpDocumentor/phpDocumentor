@@ -15,8 +15,8 @@ namespace phpDocumentor\Application;
 use Mockery as m;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\CommandlineOptionsMiddleware;
-use phpDocumentor\Application\MergeConfigurationWithCommandLineOptions;
-use phpDocumentor\Application\MergeConfigurationWithCommandLineOptionsHandler;
+use phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptions;
+use phpDocumentor\DomainModel\MergeConfigurationWithCommandLineOptionsHandler;
 use phpDocumentor\DomainModel\Uri;
 
 /**
