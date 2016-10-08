@@ -12,11 +12,10 @@
 namespace phpDocumentor\DomainModel\Parser;
 
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup;
-use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition;
+use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroup\Definition as DocumentGroupDefinition;
 use phpDocumentor\DomainModel\Parser\Documentation\DocumentGroupFactory;
 use phpDocumentor\DomainModel\Parser\Documentation;
 use phpDocumentor\DomainModel\Parser\Version\Definition as VersionDefinition;
-use phpDocumentor\DomainModel\Parser\FactoryNotFoundException;
 
 /**
  * Factory to create Documentation objects out of Project\Version\Definition.
@@ -53,12 +52,12 @@ final class DocumentationFactory
     /**
      * Find matching factory and use it to create DocumentGroup.
      *
-     * @param Definition $definition
+     * @param DocumentGroupDefinition $definition
      *
-*@return DocumentGroup
+     * @return DocumentGroup
      * @throws FactoryNotFoundException when a DocumentGroupDefinition did not match any of the registered factories.
      */
-    private function createDocumentGroup(Definition $definition)
+    private function createDocumentGroup(DocumentGroupDefinition $definition)
     {
         foreach ($this->documentGroupFactories as $factory) {
             if ($factory->matches($definition)) {
