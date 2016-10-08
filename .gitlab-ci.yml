@@ -1,0 +1,111 @@
+cache:
+  paths:
+  - vendor/
+
+stages:
+  - test
+  - style
+  - deploy
+
+before_script:
+  - apt-get update && apt-get install -y zip
+  - curl --silent --show-error https://getcomposer.org/installer | php
+  - php composer.phar install
+
+test:php7.0:
+  image: php:7.0
+  stage: test
+  script:
+    - curl -OL https://phar.phpunit.de/phpunit.phar
+    - php phpunit.phar
+
+style:check-style:
+  image: php:7.0
+  stage: style
+  script:
+    - curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+    - php phpcs.phar --report=full
+
+style:copy-past:
+  image: php:7.0
+  stage: style
+  script:
+    - curl -OL https://phar.phpunit.de/phpcpd.phar
+    - php phpcpd.phar src
+  allow_failure: true
+
+style:mess-detect:
+  image: php:7.0
+  stage: style
+  script:
+    - apt-get install -y libbz2-dev
+    - docker-php-ext-install bz2
+    - curl -OL http://static.phpmd.org/php/latest/phpmd.phar
+    - php phpmd.phar src text codesize,design,naming,unusedcode
+  allow_failure: true
+
+deploy:nightly-pear:
+  image: php:7.0
+  stage: deploy
+  script:
+    - php composer.phar install --no-dev -o
+    - echo '3.0.0-$CI_BUILD_REF' > VERSION
+    - pear install XML_Serializer-beta
+    - pear install --alldeps PEAR_PackageFileManager2
+    - pear channel-discover pear.phpdoc.org
+    - php bin/utils/package.php '3.0.0-$CI_BUILD_REF' '3.0.0-$CI_BUILD_REF' devel make
+    - pear package package.xml
+  only:
+    - develop
+    - master
+  artifacts:
+    paths:
+      - phpdocumentor-*.tgz
+
+deploy:nightly-phar:
+  image: php:7.0
+  stage: deploy
+  script:
+    - apt-get install --no-install-recommends git
+    - curl -LSs https://box-project.github.io/box2/installer.php | php
+    - php composer.phar install --no-dev -o
+    - echo '3.0.0-$CI_BUILD_REF' > VERSION
+    - php box.phar build -v
+  only:
+    - develop
+    - master
+  artifacts:
+    paths:
+      - phpDocumentor.phar
+
+deploy:pear:
+  image: php:7.0
+  stage: deploy
+  script:
+    - php composer.phar install --no-dev -o
+    - echo $CI_BUILD_TAG > VERSION
+    - pear install XML_Serializer-beta
+    - pear install --alldeps PEAR_PackageFileManager2
+    - pear channel-discover pear.phpdoc.org
+    - php bin/utils/package.php '$CI_BUILD_TAG' '$CI_BUILD_TAG' stable make
+    - pear package package.xml
+  only:
+    - tags
+  artifacts:
+    paths:
+      - phpdocumentor-*.tgz
+
+deploy:phar:
+  image: php:7.0
+  stage: deploy
+  script:
+    - apt-get install --no-install-recommends git
+    - curl -LSs https://box-project.github.io/box2/installer.php | php
+    - php composer.phar install --no-dev -o
+    - echo $CI_BUILD_TAG > VERSION
+    - php box.phar build -v
+  only:
+    - tags
+  artifacts:
+    paths:
+      - phpDocumentor.phar
