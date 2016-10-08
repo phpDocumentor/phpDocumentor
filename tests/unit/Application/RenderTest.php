@@ -15,7 +15,7 @@ namespace phpDocumentor\Application;
 use League\Flysystem\Filesystem;
 use Mockery as m;
 use phpDocumentor\DomainModel\Parser\Documentation;
-use phpDocumentor\Application\Render;
+use phpDocumentor\DomainModel\Render;
 use phpDocumentor\DomainModel\Parser\Version\Number;
 
 /**

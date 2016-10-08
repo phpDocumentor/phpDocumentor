@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "php":                               ">=5.5",
+        "php":                               ">=7",
         "ext-libxml":                        "*",
         "php-di/php-di":                     "^5.0",
         "twig/twig":                         "^1.3",
@@ -40,27 +40,23 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "behat/behat":                 "^3.0",
         "mockery/mockery":             "~0.9",
         "mikey179/vfsStream":          "^1.2",
         "symfony/expression-language": "^2.4",
         "herrera-io/phar-update":      "^2.0",
         "league/flysystem-memory":     "^1.0",
-        "phing/phing": "^2.13"
+        "phing/phing": "^2.13",
+        "phpunit/phpunit": "^5.6"
     },
     "suggest": {
         "ext-twig": "Enabling the twig extension improves the generation of twig based templates.",
         "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates."
     },
-    "config": {
-        "bin-dir":"bin/"
-    },
-    "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "scripts": {
-        "post-install-cmd": [ "php bin/phing build:dependencies:install" ],
-        "test": [ "./bin/phpunit --colors=always -v" ],
-        "coverage": [ "./bin/phpunit --colors=always -v --coverage-html build/coverage" ],
-        "style": [ "./bin/phpcs --colors -p" ]
+        "post-install-cmd": [ "php vendor/bin/phing build:dependencies:install" ],
+        "test": [ "./vendor/bin/phpunit --colors=always -v" ],
+        "coverage": [ "./vendor/bin/phpunit --colors=always -v --coverage-html build/coverage" ],
+        "style": [ "./vendor/bin/phpcs --colors -p" ]
     },
     "extra": {
         "branch-alias": {

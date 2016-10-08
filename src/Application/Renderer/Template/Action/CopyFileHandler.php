@@ -12,9 +12,9 @@
 namespace phpDocumentor\Application\Renderer\Template\Action;
 
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use phpDocumentor\DomainModel\Renderer\Template\Action;
 use phpDocumentor\DomainModel\Renderer\Template\ActionHandler;
-use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\Assert\Assert;
 
 /**

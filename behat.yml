@@ -1,6 +1,0 @@
-default:
-    formatters:
-        progress: true
-    gherkin:
-        filters:
-            tags: ~roadmap-v3

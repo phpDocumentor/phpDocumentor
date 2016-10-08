@@ -16,5 +16,4 @@ use phpDocumentor\DomainModel\DomainEvent;
 
 class RenderingFinished extends DomainEvent
 {
-
 }

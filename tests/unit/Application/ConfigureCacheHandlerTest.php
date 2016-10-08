@@ -16,6 +16,8 @@ use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Application\Configuration\ConfigurationFactory;
 use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\DomainModel\ConfigureCache;
+use phpDocumentor\DomainModel\ConfigureCacheHandler;
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Uri;
 use PHPUnit_Framework_TestCase;
