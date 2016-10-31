@@ -1,6 +1,15 @@
 $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
 $.browser.ipad   = /ipad/.test(navigator.userAgent.toLowerCase());
 
+/*!
+ * JavaScript Cookie v2.1.3
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}(';(7(a){3 b=1z;6(r v===\'7\'&&v.1u){v(a);b=x}6(r N===\'1s\'){1r.N=a();b=x}6(!b){3 c=F.u;3 d=F.u=a();d.1p=7(){F.u=c;8 d}}}(7(){7 C(){3 i=0;3 a={};A(;i<o.y;i++){3 b=o[i];A(3 c 1o b){a[c]=b[c]}}8 a}7 w(m){7 4(a,b,c){3 d;6(r p===\'1n\'){8}6(o.y>1){c=C({q:\'/\'},4.I,c);6(r c.9===\'1l\'){3 f=10 1j();f.1i(f.1h()+c.9*1f+5);c.9=f}B{d=K.1c(b);6(/^[\\{\\[]/.1b(d)){b=d}}D(e){}6(!m.P){b=Q(H(b)).n(/%(T|U|V|W|18|17|11|1k|12|13|14|15|16|Y|X|19|1a|M)/g,s)}1d{b=m.P(b,a)}a=Q(H(a));a=a.n(/%(T|U|V|W|Y|X|M)/g,s);a=a.n(/[\\(\\)]/g,1e);8(p.t=[a,\'=\',b,c.9?\'; 9=\'+c.9.1g():\'\',c.q?\'; q=\'+c.q:\'\',c.z?\'; z=\'+c.z:\'\',c.S?\'; S\':\'\'].R(\'\'))}6(!a){d={}}3 g=p.t?p.t.O(\'; \'):[];3 h=/(%[0-1m-Z]{2})+/g;3 i=0;A(;i<g.y;i++){3 j=g[i].O(\'=\');3 k=j.E(1).R(\'=\');6(k.1q(0)===\'"\'){k=k.E(1,-1)}B{3 l=j[0].n(h,s);k=m.G?m.G(k,l):m(k,l)||k.n(h,s);6(1t.J){B{k=K.1v(k)}D(e){}}6(a===l){d=k;1w}6(!a){d[l]=k}}D(e){}}8 d}4.1x=4;4.1y=7(a){8 4.L(4,a)};4.1A=7(){8 4.1B({J:x},[].E.L(o))};4.I={};4.1C=7(a,b){4(a,\'\',C(b,{9:-1}))};4.1D=w;8 4}8 w(7(){})}));',62,102,'|||var|api||if|function|return|expires||||||||||||||replace|arguments|document|path|typeof|decodeURIComponent|cookie|Cookies|define|init|true|length|domain|for|try|extend|catch|slice|window|read|String|defaults|json|JSON|call|7C|exports|split|write|encodeURIComponent|join|secure|23|24|26|2B|60|5E||new|3E|2F|3F|40|5B|5D|3C|3A|7B|7D|test|stringify|else|escape|864e|toUTCString|getMilliseconds|setMilliseconds|Date|3D|number|9A|undefined|in|noConflict|charAt|module|object|this|amd|parse|break|set|get|false|getJSON|apply|remove|withConverter'.split('|'),0,{}));
+
 /**
  * Initializes page contents for progressive enhancement.
  */
@@ -245,4 +254,41 @@ $(document).ready(function() {
             return true;
         }
     }).parent().hide();
+    
+    
+    
+	var all=Cookies.getJSON('activeAccordionGroup');
+	if (all!=null) {
+		for(href in all){
+			$("a[href=\""+all[href]+'"]').parents('div.accordion-body:first').collapse("show");
+		}
+	}
+	
+	//when a group is shown, save it as the active accordion group
+	$(".accordion:first").on('shown.bs.collapse', function(e) {
+		var all = Cookies.getJSON('activeAccordionGroup');
+		if(all == null){all = {};}
+		var href = $('.accordion-heading a[href]:first',e.target).attr('href');
+		if(href==undefined){
+			href = $('.accordion-heading a[href]:first',e.target.parentNode).attr('href');
+		}
+		if(href != undefined){
+			all[href.replace(/\-\.\//gi,'')] = href;
+			Cookies.set('activeAccordionGroup', all);
+		}
+	}).on('hidden.bs.collapse',function(e){
+		var all = Cookies.getJSON('activeAccordionGroup');
+		if(all == null){all = {};}
+		var href = $('.accordion-heading a[href]:first',e.target).attr('href');
+		if(href==undefined){
+			href = $('.accordion-heading a[href]:first',e.target.parentNode).attr('href');
+		}
+		if(href != undefined){
+			href = href.replace(/\-\.\//gi,'');
+			if(all[href] != undefined){
+				delete all[href];
+			}
+			Cookies.set('activeAccordionGroup', all);
+		}
+	}) ;
 });
