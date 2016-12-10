@@ -96,9 +96,9 @@ In some cases you will have to **ignore** certain files in your project; example
 and/or tests. In this case you can use the ``ignore`` element and provide a pattern (not a path) to ignore. Thus if you
 provide ``*test*`` it will ignore any file or directory containing the text *test* in it.
 
-The *starting point* or *base directory* for the ignore directive is the *Project Root*; which is the highest folder
+The *starting point* or *base directory* for the ignore directive is the *Project Root*, which is the highest folder
 that all files share in common. Thus if you provide a single directory and that does not contain any parseable files
-and only on subfolder (which does contain parseable files) then the *Project Root* if not the given folder but the
+and only one subfolder (which does contain parseable files), then the *Project Root* is not the given folder but the
 subfolder.
 
 Reference
