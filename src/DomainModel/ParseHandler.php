@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\DomainModel;
 
-use phpDocumentor\DomainModel\Parse;
 use phpDocumentor\DomainModel\Parser\DocumentationFactory;
 use phpDocumentor\DomainModel\Parser\DocumentationRepository;
 
@@ -24,7 +23,8 @@ final class ParseHandler
     /** @var DocumentationRepository */
     private $repository;
 
-    public function __construct(DocumentationFactory $factory, DocumentationRepository $repository) {
+    public function __construct(DocumentationFactory $factory, DocumentationRepository $repository)
+    {
 
         $this->factory = $factory;
         $this->repository = $repository;
