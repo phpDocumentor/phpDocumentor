@@ -16,9 +16,9 @@ use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Path;
 
 /**
- * phpDocumentor3 strategy for converting the configuration xml to an array.
+ * phpDocumentor3 converter for converting the configuration xml to an array.
  */
-final class PhpDocumentor3 implements Strategy
+final class ConfigurationExtractor implements Extractor
 {
     /**
      * The path to the xsd that is used for validation of the configuration file.
@@ -28,7 +28,7 @@ final class PhpDocumentor3 implements Strategy
     private $schemaPath;
 
     /**
-     * Initializes the PhpDocumentor3 strategy.
+     * Initializes the configuration extractor.
      *
      * @param string $schemaPath
      */
@@ -38,9 +38,13 @@ final class PhpDocumentor3 implements Strategy
     }
 
     /**
-     * @inheritdoc
+     * Extracts the configuration array.
+     *
+     * @param \SimpleXMLElement $phpDocumentor
+     *
+     * @return array the extracted configuration array.
      */
-    public function convert(\SimpleXMLElement $phpDocumentor)
+    public function extract(\SimpleXMLElement $phpDocumentor)
     {
         $this->validate($phpDocumentor);
 
@@ -73,14 +77,6 @@ final class PhpDocumentor3 implements Strategy
         ];
 
         return $phpdoc3Array;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function match(\SimpleXMLElement $phpDocumentor)
-    {
-        return (string) $phpDocumentor->attributes()->version === '3';
     }
 
     /**
@@ -268,22 +264,24 @@ final class PhpDocumentor3 implements Strategy
      */
     private function validate(\SimpleXMLElement $phpDocumentor)
     {
-        libxml_clear_errors();
         $priorSetting = libxml_use_internal_errors(true);
+        libxml_clear_errors();
 
-        $dom        = new \DOMDocument();
-        $domElement = dom_import_simplexml($phpDocumentor);
-        $domElement = $dom->importNode($domElement, true);
-        $dom->appendChild($domElement);
+        try {
+            $dom        = new \DOMDocument();
+            $domElement = dom_import_simplexml($phpDocumentor);
+            $domElement = $dom->importNode($domElement, true);
+            $dom->appendChild($domElement);
 
-        $dom->schemaValidate($this->schemaPath);
+            $dom->schemaValidate($this->schemaPath);
 
-        $error = libxml_get_last_error();
+            $error = libxml_get_last_error();
 
-        if ($error !== false) {
-            throw new \InvalidArgumentException(trim($error->message));
+            if ($error !== false) {
+                throw new \InvalidArgumentException(trim($error->message));
+            }
+        } finally {
+            libxml_use_internal_errors($priorSetting);
         }
-
-        libxml_use_internal_errors($priorSetting);
     }
 }

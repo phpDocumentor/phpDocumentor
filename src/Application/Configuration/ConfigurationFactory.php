@@ -12,7 +12,8 @@
 
 namespace phpDocumentor\Application\Configuration;
 
-use phpDocumentor\Application\Configuration\Factory\Strategy;
+use phpDocumentor\Application\Configuration\Factory\Converter;
+use phpDocumentor\Application\Configuration\Factory\Extractor;
 use phpDocumentor\DomainModel\Uri;
 
 /**
@@ -20,14 +21,17 @@ use phpDocumentor\DomainModel\Uri;
  */
 class ConfigurationFactory
 {
+    /** @var Converter */
+    private $converter;
+
+    /** @var Extractor */
+    private $extractor;
+
     /** @var Uri The Uri that contains the path to the configuration file. */
     private $uri;
 
     /** @var string[] The cached configuration as an array so that we improve performance */
     private $cachedConfiguration = [];
-
-    /** @var Strategy[] All strategies that are used by the ConfigurationFactory. */
-    private $strategies = [];
 
     /**
      * A series of callables that take the configuration array as parameter and should return that array or a modified
@@ -40,16 +44,19 @@ class ConfigurationFactory
     /**
      * Initializes the ConfigurationFactory.
      *
-     * @param Strategy[] $strategies
+     * @param Converter  $converter
+     * @param Extractor  $extractor
      * @param Uri        $uri
      * @param callable[] $middlewares
      */
-    public function __construct(array $strategies, Uri $uri, array $middlewares = [])
-    {
-        foreach ($strategies as $strategy) {
-            $this->registerStrategy($strategy);
-        }
-
+    public function __construct(
+        Converter $converter,
+        Extractor $extractor,
+        Uri $uri,
+        array $middlewares = []
+    ) {
+        $this->converter = $converter;
+        $this->extractor = $extractor;
         $this->replaceLocation($uri);
         $this->middlewares = $middlewares;
     }
@@ -88,8 +95,6 @@ class ConfigurationFactory
      * Converts the phpDocumentor configuration xml to an array.
      *
      * @return array
-     *
-     * @throws \RuntimeException if no matching strategy can be found.
      */
     public function get()
     {
@@ -115,18 +120,6 @@ class ConfigurationFactory
     }
 
     /**
-     * Adds strategies that are used in the ConfigurationFactory.
-     *
-     * @param Strategy $strategy
-     *
-     * @return void
-     */
-    private function registerStrategy(Strategy $strategy)
-    {
-        $this->strategies[] = $strategy;
-    }
-
-    /**
      * Converts the given XML structure into an array containing the configuration.
      *
      * @param \SimpleXMLElement $xml
@@ -135,13 +128,9 @@ class ConfigurationFactory
      */
     private function extractConfigurationArray($xml)
     {
-        foreach ($this->strategies as $strategy) {
-            if ($strategy->match($xml) === true) {
-                return $strategy->convert($xml);
-            }
-        };
+        $convertedXml = $this->converter->convert($xml);
 
-        throw new \RuntimeException('No strategy found that matches the configuration xml');
+        return $this->extractor->extract($convertedXml);
     }
 
     /**
