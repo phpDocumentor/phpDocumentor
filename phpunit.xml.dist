@@ -12,6 +12,7 @@
                 <directory>src/DomainModel/Renderer/Router</directory>
                 <directory>src/Application/Renderer/Router</directory>
                 <directory>src/Application/Renderer/*Renderer*</directory>
+                <directory>src/Application/Renderer/Template/Action</directory>
                 <file>src/Application/Renderer/JsonpRenderer.php</file>
                 <file>src/Application/Renderer/StructureXmlRenderer.php</file>
                 <file>src/Application/Renderer/TwigRenderer.php</file>

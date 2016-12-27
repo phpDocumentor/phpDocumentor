@@ -1,4 +1,16 @@
 <?php
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
+ */
+// @codeCoverageIgnoreStart
+
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
@@ -63,7 +75,6 @@ use phpDocumentor\Infrastructure\SpecificationFactory;
 use phpDocumentor\DomainModel\Uri;
 use phpDocumentor\Application\ReadModel;
 use phpDocumentor\Application\ReadModel\FromContainerFactory;
-use phpDocumentor\Application\ReadModel\Mappers\Project;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 use Symfony\Component\Console\Application;
@@ -233,11 +244,9 @@ return [
 //        ->method('insert', \DI\get(ExternalRouter::class), 10500)
         ->method('insert', \DI\get(StandardRouter::class), 10000),
 
-    // Views
+    // Read Models
     MapperFactory::class => \DI\object(FromContainerFactory::class)
-        ->constructorParameter('mapperAliases', [
-            'php' => Project::class
-        ]),
+        ->constructorParameter('mapperAliases', []),
 
     // Renderer
     Assets::class => \DI\object(FlySystemAssets::class)
@@ -257,3 +266,4 @@ return [
     TwigRenderer::class => \DI\object()->constructorParameter('cacheFolder', \DI\get('twig.cache.path')),
     TwigHandler::class => \DI\object()->constructorParameter('renderer', \DI\get(TwigRenderer::class)),
 ];
+// @codeCoverageIgnoreEnd

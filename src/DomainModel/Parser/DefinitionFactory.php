@@ -10,8 +10,6 @@
  */
 namespace phpDocumentor\DomainModel\Parser;
 
-use phpDocumentor\DomainModel\Parser\Definition;
-
 /**
  * Interface for Definition factories
  */

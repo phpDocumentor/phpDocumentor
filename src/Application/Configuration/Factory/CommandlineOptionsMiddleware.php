@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
+ * @copyright 2010-2016 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -37,6 +37,10 @@ final class CommandlineOptionsMiddleware
         $configuration = $this->overwriteCacheFolder($configuration);
         $configuration = $this->overwriteTitle($configuration);
         $configuration = $this->overwriteTemplates($configuration);
+
+        if (!isset($configuration['phpdocumentor']['versions'])) {
+            return $configuration;
+        }
 
         foreach ($configuration['phpdocumentor']['versions'] as &$version) {
             $version = $this->setFilesInPath($version);
@@ -81,7 +85,7 @@ final class CommandlineOptionsMiddleware
      */
     private function setFilesInPath($version)
     {
-        if (! $this->options['filename']) {
+        if (! isset($this->options['filename']) || ! $this->options['filename']) {
             return $version;
         }
 
@@ -106,7 +110,7 @@ final class CommandlineOptionsMiddleware
      */
     private function setDirectoriesInPath($version)
     {
-        if (! $this->options['directory']) {
+        if (! isset($this->options['directory']) || ! $this->options['directory']) {
             return $version;
         }
 
@@ -131,7 +135,7 @@ final class CommandlineOptionsMiddleware
      */
     private function overwriteIgnoredPaths($version)
     {
-        if (! $this->options['ignore']) {
+        if (! isset($this->options['ignore']) || ! $this->options['ignore']) {
             return $version;
         }
 
@@ -156,7 +160,7 @@ final class CommandlineOptionsMiddleware
      */
     private function registerExtensions($version)
     {
-        if (! $this->options['extensions']) {
+        if (!isset($this->options['extensions']) || ! $this->options['extensions']) {
             return $version;
         }
 
@@ -176,7 +180,7 @@ final class CommandlineOptionsMiddleware
      */
     private function overwriteDestinationFolder(array $configuration)
     {
-        if ($this->options['target']) {
+        if (isset($this->options['target']) && $this->options['target']) {
             $configuration['phpdocumentor']['paths']['output'] = new Dsn($this->options['target']);
         }
 
@@ -190,7 +194,7 @@ final class CommandlineOptionsMiddleware
      */
     private function overwriteCacheFolder(array $configuration)
     {
-        if ($this->options['cache-folder']) {
+        if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
             $configuration['phpdocumentor']['paths']['cache'] = new Path($this->options['cache-folder']);
         }
 
@@ -204,7 +208,7 @@ final class CommandlineOptionsMiddleware
      */
     private function overwriteMarkers($version)
     {
-        if (! $this->options['markers']) {
+        if (! isset($this->options['markers']) || ! $this->options['markers']) {
             return $version;
         }
 
@@ -224,7 +228,7 @@ final class CommandlineOptionsMiddleware
      */
     private function overwriteVisibility($version)
     {
-        if (! $this->options['visibility']) {
+        if (! isset($this->options['visibility']) || ! $this->options['visibility']) {
             return $version;
         }
 
@@ -244,7 +248,7 @@ final class CommandlineOptionsMiddleware
      */
     private function overwriteDefaultPackageName($version)
     {
-        if (! $this->options['defaultpackagename']) {
+        if (! isset($this->options['defaultpackagename']) || ! $this->options['defaultpackagename']) {
             return $version;
         }
 
@@ -264,30 +268,39 @@ final class CommandlineOptionsMiddleware
      */
     private function overwriteTitle(array $configuration)
     {
-        if ($this->options['title']) {
-            $configuration['title'] = $this->options['title'];
+        if (isset($this->options['title']) && $this->options['title']) {
+            $configuration['phpdocumentor']['title'] = $this->options['title'];
         }
 
         return $configuration;
     }
 
     /**
-     * @param array $configuration
+     * Changes the given configuration array to feature the templates from the options.
      *
-     * @return array
+     * @param string[] $configuration
+     *
+     * @return string[]
      */
     private function overwriteTemplates(array $configuration)
     {
-        if ($this->options['template']) {
-            $configuration['templates'] = (string)$this->options['template'];
+        if (isset($this->options['template']) && $this->options['template']) {
+            $configuration['phpdocumentor']['templates'] = (array)$this->options['template'];
         }
 
         return $configuration;
     }
 
+    /**
+     * Changes the given configuration array so that the cache handling is disabled.
+     *
+     * @param string[] $configuration
+     *
+     * @return string[]
+     */
     private function disableCache($configuration)
     {
-        if ($this->options['force']) {
+        if (isset($this->options['force']) && $this->options['force']) {
             $configuration['phpdocumentor']['use-cache'] = false;
         }
 
