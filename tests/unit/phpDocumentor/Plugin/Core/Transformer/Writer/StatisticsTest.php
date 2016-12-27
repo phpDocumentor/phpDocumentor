@@ -60,7 +60,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
 
     public function testTransformWithStartingArtifactAsFile()
     {
-        $version = file_get_contents(__DIR__ . '/../../../../../../../VERSION');
+        $version = trim(file_get_contents(__DIR__ . '/../../../../../../../VERSION'));
         $statsXml = '<?xml version="1.0"?><phpdoc-stats version="' . $version . '"></phpdoc-stats>';
         vfsStream::create(array('artifact.xml' => $statsXml));
 
@@ -136,7 +136,7 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
         $numberOfErrors,
         $numberOfMarkers
     ) {
-        $version = file_get_contents(__DIR__ . '/../../../../../../../VERSION');
+        $version = trim(file_get_contents(__DIR__ . '/../../../../../../../VERSION'));
 
         $expectedXml = new \DOMDocument;
         $expectedXml->loadXML(
