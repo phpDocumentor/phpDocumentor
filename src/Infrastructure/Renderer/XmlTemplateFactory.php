@@ -232,6 +232,7 @@ final class XmlTemplateFactory implements TemplateFactory
     {
         $actionClass = $action['name'];
         if (strpos($actionClass, '\\') === false) {
+            $actionClass = ucfirst($actionClass);
             $actionClass = 'phpDocumentor\\Application\\Renderer\\Template\\Action\\' . $actionClass;
         }
 

@@ -14,6 +14,7 @@ use phpDocumentor\Application\Renderer\TwigRenderer;
 use phpDocumentor\DomainModel\Dsn;
 use phpDocumentor\DomainModel\Parser\Documentation\Api;
 use phpDocumentor\Application\Console\Command\ListCommand;
+use phpDocumentor\DomainModel\Parser\DocumentationRepository;
 use phpDocumentor\DomainModel\ReadModel\Mapper\Factory as MapperFactory;
 use phpDocumentor\DomainModel\Renderer\Assets;
 use phpDocumentor\Infrastructure\Renderer\FlySystemAssets;
@@ -180,6 +181,7 @@ return [
 
     // Documentation Repositories
     StashDocumentationRepository::class => \DI\object(StashDocumentationRepository::class),
+    DocumentationRepository::class => \DI\get(StashDocumentationRepository::class),
     DocumentationFactory::class => \DI\object()
         ->method('addDocumentGroupFactory', \DI\get(FromReflectionFactory::class)),
 

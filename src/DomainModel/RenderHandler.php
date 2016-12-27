@@ -163,7 +163,7 @@ final class RenderHandler
     private function renderAction(Action $action)
     {
         // TODO: This gives fatal error; restore it ASAP
-//        $this->commandBus->handle($action);
+        $this->commandBus->handle($action);
         $this->emitter->emit(new RenderActionCompleted($action));
     }
 

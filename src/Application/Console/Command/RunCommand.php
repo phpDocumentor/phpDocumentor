@@ -405,7 +405,7 @@ HELP
 
         foreach ($this->definitionRepository->fetchAll() as $definition) {
             // TODO: Does this mean that once cached it is never refreshed?
-            if ($this->documentationRepository->hasForVersionNumber($definition->getVersionNumber()) === null) {
+            if (!$this->documentationRepository->hasForVersionNumber($definition->getVersionNumber())) {
                 $this->commandBus->handle(new Parse($definition));
             }
 

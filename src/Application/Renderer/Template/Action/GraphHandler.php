@@ -28,10 +28,10 @@ class GraphHandler implements ActionHandler
     /** @var Analyzer */
     private $analyzer;
 
-    public function __construct(Analyzer $analyzer)
-    {
-        $this->analyzer = $analyzer;
-    }
+//    public function __construct(Analyzer $analyzer)
+//    {
+//        $this->analyzer = $analyzer;
+//    }
 
     /**
      * Executes the activities that this Action represents.
@@ -42,68 +42,68 @@ class GraphHandler implements ActionHandler
      */
     public function __invoke(Action $action)
     {
-        $project = $this->analyzer->getProjectDescriptor();
-        try {
-            $this->checkIfGraphVizIsInstalled();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-
-            return;
-        }
-
-        $graph = GraphVizGraph::create()
-            ->setRankSep('1.0')
-            ->setCenter('true')
-            ->setRank('source')
-            ->setRankDir('RL')
-            ->setSplines('true')
-            ->setConcentrate('true');
-
-        $this->buildNamespaceTree($graph, $project->getNamespace());
-
-        $classes    = $project->getIndexes()->get('classes', new Collection())->getAll();
-        $interfaces = $project->getIndexes()->get('interfaces', new Collection())->getAll();
-        $traits     = $project->getIndexes()->get('traits', new Collection())->getAll();
-
-        /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers  */
-        $containers = array_merge($classes, $interfaces, $traits);
-
-        foreach ($containers as $container) {
-            $from_name = $container->getFullyQualifiedStructuralElementName();
-
-            $parents     = array();
-            $implemented = array();
-            if ($container instanceof ClassDescriptor) {
-                if ($container->getParent()) {
-                    $parents[] = $container->getParent();
-                }
-                $implemented = $container->getInterfaces()->getAll();
-            }
-            if ($container instanceof InterfaceDescriptor) {
-                $parents = $container->getParent()->getAll();
-            }
-
-            /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
-            foreach ($parents as $parent) {
-                $edge = $this->createEdge($graph, $from_name, $parent);
-                $edge->setArrowHead('empty');
-                $graph->link($edge);
-            }
-
-            /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
-            foreach ($implemented as $parent) {
-                $edge = $this->createEdge($graph, $from_name, $parent);
-                $edge->setStyle('dotted');
-                $edge->setArrowHead('empty');
-                $graph->link($edge);
-            }
-        }
-
-        $destination = $action->getRenderContext()->getDestination() . '/' . $action->getDestination();
-        if (! file_exists(dirname($destination))) {
-            @mkdir(dirname($destination), 0777, true);
-        }
-        $graph->export('svg', $destination);
+//        $project = $this->analyzer->getProjectDescriptor();
+//        try {
+//            $this->checkIfGraphVizIsInstalled();
+//        } catch (\Exception $e) {
+//            echo $e->getMessage();
+//
+//            return;
+//        }
+//
+//        $graph = GraphVizGraph::create()
+//            ->setRankSep('1.0')
+//            ->setCenter('true')
+//            ->setRank('source')
+//            ->setRankDir('RL')
+//            ->setSplines('true')
+//            ->setConcentrate('true');
+//
+//        $this->buildNamespaceTree($graph, $project->getNamespace());
+//
+//        $classes    = $project->getIndexes()->get('classes', new Collection())->getAll();
+//        $interfaces = $project->getIndexes()->get('interfaces', new Collection())->getAll();
+//        $traits     = $project->getIndexes()->get('traits', new Collection())->getAll();
+//
+//        /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers  */
+//        $containers = array_merge($classes, $interfaces, $traits);
+//
+//        foreach ($containers as $container) {
+//            $from_name = $container->getFullyQualifiedStructuralElementName();
+//
+//            $parents     = array();
+//            $implemented = array();
+//            if ($container instanceof ClassDescriptor) {
+//                if ($container->getParent()) {
+//                    $parents[] = $container->getParent();
+//                }
+//                $implemented = $container->getInterfaces()->getAll();
+//            }
+//            if ($container instanceof InterfaceDescriptor) {
+//                $parents = $container->getParent()->getAll();
+//            }
+//
+//            /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
+//            foreach ($parents as $parent) {
+//                $edge = $this->createEdge($graph, $from_name, $parent);
+//                $edge->setArrowHead('empty');
+//                $graph->link($edge);
+//            }
+//
+//            /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
+//            foreach ($implemented as $parent) {
+//                $edge = $this->createEdge($graph, $from_name, $parent);
+//                $edge->setStyle('dotted');
+//                $edge->setArrowHead('empty');
+//                $graph->link($edge);
+//            }
+//        }
+//
+//        $destination = $action->getRenderContext()->getDestination() . '/' . $action->getDestination();
+//        if (! file_exists(dirname($destination))) {
+//            @mkdir(dirname($destination), 0777, true);
+//        }
+//        $graph->export('svg', $destination);
     }
 
     /**
