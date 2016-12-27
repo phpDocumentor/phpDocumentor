@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "eeaaa98432167f38a2f885a905da57ad",
+    "hash": "1a1ca8b2e761dfc3ad8ac924523f1e9e",
     "content-hash": "388e946be7816a9cc9f01107b20d8a7a",
     "packages": [
         {
@@ -1499,8 +1499,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io/",
-                    "role": "Developer"
+                    "homepage": "http://kevin.herrera.io"
                 }
             ],
             "description": "A library for simplifying JSON linting and validation.",
