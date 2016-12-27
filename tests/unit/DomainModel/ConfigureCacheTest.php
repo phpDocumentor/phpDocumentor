@@ -10,9 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Application;
-
-use phpDocumentor\DomainModel\Path;
+namespace phpDocumentor\DomainModel;
 
 /**
  * @coversDefaultClass phpDocumentor\Application\ConfigureCache
