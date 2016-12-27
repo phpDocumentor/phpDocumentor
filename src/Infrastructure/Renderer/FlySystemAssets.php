@@ -12,7 +12,9 @@
 
 namespace phpDocumentor\Infrastructure\Renderer;
 
+use League\Flysystem\File;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use phpDocumentor\DomainModel\Path;
 use phpDocumentor\DomainModel\Renderer\Asset;
@@ -22,11 +24,11 @@ use phpDocumentor\DomainModel\Renderer\Template;
 
 final class FlySystemAssets implements Assets
 {
-    /** @var Filesystem|MountManager */
+    /** @var FilesystemInterface|MountManager */
     private $filesystem;
 
     /**
-     * @param Filesystem|MountManager $filesystem
+     * @param FilesystemInterface|MountManager $filesystem
      */
     public function __construct($filesystem)
     {
@@ -42,7 +44,25 @@ final class FlySystemAssets implements Assets
             throw new AssetNotFoundException(sprintf('Asset at "%s" could not found', $location));
         }
 
-        return new Asset($this->filesystem->get((string)$location));
+        /** @var File $flyLocation */
+        $flyLocation = $this->filesystem->get((string)$location);
+        if ($flyLocation->isDir()) {
+            $listing = $this->filesystem->listContents((string)$location, true);
+            $locations = array_map(
+                function ($value) {
+                    if ($value['type'] === 'dir') {
+                        return null;
+                    }
+
+                    return new Path($value['path']);
+                },
+                $listing
+            );
+
+            return new Asset\Folder($location, array_values(array_filter($locations)));
+        }
+
+        return new Asset($flyLocation->read());
     }
 
     /**

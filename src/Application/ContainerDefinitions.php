@@ -241,7 +241,7 @@ return [
     Assets::class => \DI\object(FlySystemAssets::class)
         ->constructorParameter('filesystem', \DI\factory(function (ContainerInterface $c) {
             $filesystemFactory = $c->get(FileSystemFactory::class);
-            return $filesystemFactory->create(new Dsn('file://' . __DIR__ . '/../../data/templates'));
+            return $filesystemFactory->create(new Dsn('file://' . __DIR__ . '/../../data'));
         })),
 
     // Templates
