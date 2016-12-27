@@ -7,7 +7,6 @@
     "directories-bin": ["data"],
     "files": [
         "vendor/autoload.php",
-        "vendor/herrera-io/phar-update/res/schema.json",
         "VERSION"
     ],
     "finder": [
@@ -18,77 +17,30 @@
                 "Tests",
                 "test",
                 "tests",
-                "features"
+                "features",
+                "examples"
             ],
             "in": [
                 "vendor/composer",
                 "vendor/container-interop/container-interop/src",
-                "vendor/desarrolla2/cache/src",
-                "vendor/doctrine/annotations/lib",
-                "vendor/doctrine/lexer/lib",
                 "vendor/erusev/parsedown",
-                "vendor/herrera-io/json/src",
-                "vendor/herrera-io/phar-update/src",
-                "vendor/herrera-io/version/src",
-                "vendor/jms/metadata/src",
-                "vendor/jms/parser-lib/src",
-                "vendor/jms/serializer/src",
-                "vendor/justinrainbow/json-schema/src",
-                "vendor/mnapoli/php-di/src",
+                "vendor/league",
                 "vendor/nikic/php-parser/lib",
                 "vendor/nikic/php-parser/grammar",
                 "vendor/php-di/invoker/src",
-                "vendor/phpcollection/phpcollection/src",
+                "vendor/php-di/php-di/src",
                 "vendor/phpdocumentor/fileset/src",
+                "vendor/phpdocumentor/flyfinder/src",
                 "vendor/phpdocumentor/graphviz/src",
+                "vendor/phpdocumentor/reflection-common/src",
                 "vendor/phpdocumentor/reflection/src",
                 "vendor/phpdocumentor/reflection-docblock/src",
-                "vendor/phpoption/phpoption/src",
+                "vendor/phpdocumentor/type-resolver/src",
                 "vendor/psr/log/Psr",
-                "vendor/seld/jsonlint/src",
                 "vendor/symfony",
-                "vendor/twig/twig/lib"
-            ]
-        }
-    ],
-    "finder-bin": [
-        {
-            "notName": "*.php",
-            "exclude": [
-                "Test",
-                "Tests",
-                "test",
-                "tests",
-                "features"
-            ],
-            "in": [
-                "vendor/composer",
-                "vendor/container-interop/container-interop/src",
-                "vendor/desarrolla2/cache/src",
-                "vendor/doctrine/annotations/lib",
-                "vendor/doctrine/lexer/lib",
-                "vendor/erusev/parsedown",
-                "vendor/herrera-io/json/src",
-                "vendor/herrera-io/phar-update/src",
-                "vendor/herrera-io/version/src",
-                "vendor/jms/metadata/src",
-                "vendor/jms/parser-lib/src",
-                "vendor/jms/serializer/src",
-                "vendor/justinrainbow/json-schema/src",
-                "vendor/mnapoli/php-di/src",
-                "vendor/nikic/php-parser/lib",
-                "vendor/nikic/php-parser/grammar",
-                "vendor/php-di/invoker/src",
-                "vendor/phpcollection/phpcollection/src",
-                "vendor/phpdocumentor/fileset/src",
-                "vendor/phpdocumentor/graphviz/src",
-                "vendor/phpdocumentor/reflection/src",
-                "vendor/phpdocumentor/reflection-docblock/src",
-                "vendor/phpoption/phpoption/src",
-                "vendor/psr/log/Psr",
-                "vendor/seld/jsonlint/src",
-                "vendor/symfony",
-                "vendor/twig/twig/lib"
+                "vendor/twig/twig/lib",
+                "vendor/tedivm/stash",
+                "vendor/webmozart/assert/src"
             ]
         }
     ],
