@@ -59,7 +59,7 @@ class FileClassesTest extends \PHPUnit_Framework_TestCase
 
         $expectedState = ['classes' => ['MyClass' => null]];
 
-        $this->assertSame($reducerStub->isCalled, 2);
+        $this->assertSame($reducerStub->isCalled, 3);
         $this->assertSame($expectedState, $state);
     }
 

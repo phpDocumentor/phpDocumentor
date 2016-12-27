@@ -88,7 +88,7 @@ class FileTagsTest extends \PHPUnit_Framework_TestCase
                     [new DocBlock\Tags\Method('MyTag')]
                 ),
                 ['tags' => ['method' => null]],
-                1
+                2
             ],
             [
                 null,

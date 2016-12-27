@@ -59,7 +59,7 @@ class FileTraitsTest extends \PHPUnit_Framework_TestCase
 
         $expectedState = ['traits' => ['MyTrait' => null]];
 
-        $this->assertSame($reducerStub->isCalled, 2);
+        $this->assertSame($reducerStub->isCalled, 3);
         $this->assertSame($expectedState, $state);
     }
 

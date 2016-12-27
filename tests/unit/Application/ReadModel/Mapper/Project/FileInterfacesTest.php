@@ -59,7 +59,7 @@ class FileInterfacesTest extends \PHPUnit_Framework_TestCase
 
         $expectedState = ['interfaces' => ['MyInterface' => null]];
 
-        $this->assertSame($reducerStub->isCalled, 2);
+        $this->assertSame($reducerStub->isCalled, 3);
         $this->assertSame($expectedState, $state);
     }
 
