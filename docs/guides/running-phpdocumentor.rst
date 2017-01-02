@@ -85,14 +85,14 @@ Influencing the List of Project Files
 As mentioned in the Quickstart above you can select which directories and files to document using the ``-d`` option (for
 directories and their files) or the ``-f`` option (for just single files). To include multiple directories and files, specify  those options multiple times
 
-Sometimes you may need to exclude directories or files from your documentation build because they contain third-party libraries, or because you just don't need to reference certain files in your final generated documentation. 
-The ``--ignore`` option lets you specify what directories and files to exclude from your documentation build.  
+Sometimes you may want to exclude entire directories, or files from your documentation build because they contain unwanted third-party documentation, or because you just don't need to transform documentation content for certain files in your project. 
+The ``--ignore`` option lets you specify what directories and files to exclude from your project.  
 
 A basic example of the ``--ignore`` option is excluding one or more directories from your project. 
-If you have a ``vendor`` directory that is not relevant to your project documentation, you can exclude it by specifying ``--ignore "vendor/"``. 
-To exclude the ``vendor`` and ``tests`` directories, you separate each directory with a comma: ``--ignore "vendor/,tests/"``
+If you have a 'vendor' directory that is not relevant to your project documentation, you can exclude it by specifying ``--ignore "vendor/"``. 
+To exclude the 'vendor' and 'tests' directories at the project root, separate each directory with a comma: ``--ignore "vendor/,tests/"``.
 
-If you have a single file in the ``tests`` directory that you want to exclude from the documentation build, you can declare it explicitly by specifying ``--ignore "tests/excludeme.php``. 
+If you have a single file in the 'tests' directory that you want to exclude from the documentation build, you can declare it explicitly by specifying ``--ignore "tests/excludeme.php"``. This command will transform all PHP files in the 'tests' directory *except for* 'excludeme.php'.
 
 The ``--ignore`` option also supports wildcards to indicate that there may be any number of undetermined characters in the path. 
 For example, ``--ignore "*/tests/*,tests/*"`` will ignore any files in a subdirectory 'tests' or if 'tests' is a subdirectory
