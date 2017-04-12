@@ -216,5 +216,5 @@ phpDocumentor; see the guide on :doc:`../guides/running-phpdocumentor` for more 
 .. _Class constant: http://php.net/manual/en/language.oop5.constants.php
 .. _Property:       http://php.net/manual/en/language.oop5.properties.php
 .. _Method:         http://php.net/manual/en/language.oop5.basic.php
-.. _Markdown:       http://daringfireball.com
+.. _Markdown:       https://help.github.com/articles/basic-writing-and-formatting-syntax/
 .. _templates:      http://phpdoc.org/templates
