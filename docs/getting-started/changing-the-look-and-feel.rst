@@ -4,13 +4,13 @@ Changing the Look and Feel
 Overview
 --------
 
-With this tutorial I want to show you how the look and feel of phpDocumentor can be changed using one of the
+This tutorial will show you how the look and feel of phpDocumentor can be changed using one of the
 existing :term:`templates` or by selecting a custom-made :term:`template`.
 
 What is a template?
 -------------------
 
-To be fair, the title of this tutorial is mildly misleading. Why? Because a template in phpDocumentor means so much
+To be fair, the title of this tutorial is slightly misleading. Why? Because a template in phpDocumentor means so much
 more than just the look and feel of your generated documentation.
 
 .. sidebar:: It used to be themes
@@ -52,7 +52,7 @@ You can instruct phpDocumentor to use multiple templates by using a comma-separa
 
     $ phpdoc -d "./src" -t "./docs/api" --template="checkstyle,clean"
 
-Here you can see how both the ``checkstyle`` template and the ``clean`` template are applied; which results in both
+Here you can see how both the ``checkstyle`` template and the ``clean`` templates are applied; which results in both
 HTML documentation and an XML Checkstyle error report.
 
 Using a custom template
@@ -63,8 +63,8 @@ of your template's folder::
 
     $ phpdoc -d "./src" -t "./docs/api" --template="data/templates/my_template"
 
-In the above example is demonstrated how a custom template in a folder ``data/templates/my_template``, relative to the
-current working directory, is being used to generate documentation with.
+The above example demonstrates how a custom template in a folder ``data/templates/my_template``, relative to the
+current working directory, is being used to generate documentation.
 
 Adding templates to configuration
 ---------------------------------
@@ -93,12 +93,12 @@ Here is an example where the clean and checkstyle templates are used:
 Creating your own look and feel
 -------------------------------
 
-It is also possible to create your own template using either XSL or Twig as templating engine. This can be done by
+It is also possible to create your own template using either XSL or Twig as the templating engine. This can be done by
 extending, or re-using, parts of an existing template or by starting from scratch. phpDocumentor offers a lot of
 conveniences for template writers, which would go beyond the scope of this tutorial.
 
 A tutorial for creating your own documentation with Twig is offered in the chapter
-:doc:`creating-your-own-template-using-twig`, for a complete overview of all options and possibilities see the guide
+:doc:`creating-your-own-template-using-twig`. For a complete overview of all options and possibilities see the guide
 on :doc:`creating templates<../guides/templates>` how to accomplish this.
 
 If you want to tweak one or two things it is also possible to define :term:`transformations` directly in your
