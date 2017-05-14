@@ -6,11 +6,11 @@ script:
 - bin/phpunit
 
 install:
-- composer install --no-interaction --prefer-source --dev
+- composer install --no-interaction --prefer-dist
 
 cache:
   directories:
-    - $HOME/vendor
+    - $HOME/.composer/cache/files
 
 notifications:
   irc: irc.freenode.org#phpdocumentor
