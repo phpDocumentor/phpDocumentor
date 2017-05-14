@@ -1,11 +1,16 @@
 language: php
 php: [ 5.4, 5.5, 5.6, 7.0, 7.1 ]
+sudo: false
 
 script:
 - bin/phpunit
 
-before_script:
+install:
 - composer install --no-interaction --prefer-source --dev
+
+cache:
+  directories:
+    - $HOME/vendor
 
 notifications:
   irc: irc.freenode.org#phpdocumentor
