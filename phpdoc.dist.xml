@@ -5,7 +5,7 @@
         <target>/tmp/phpdoc-demo</target>
     </parser>
     <transformer>
-        <target>/tmp/phpdoc-demo/responsive</target>
+        <target>build/api</target>
     </transformer>
     <files>
         <directory>.</directory>
