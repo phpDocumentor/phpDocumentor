@@ -202,7 +202,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAnElementToLinkTo()
     {
-        $namespaceAliases = ['LinkDescriptor' => '\phpDocumentor\LinkDescriptor'];
+        $namespaceAliases = array('LinkDescriptor' => '\phpDocumentor\LinkDescriptor');
         $namespaceCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
         $namespaceCollection->shouldReceive('getAll')->once()->andReturn($namespaceAliases);
 
@@ -223,7 +223,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
     {
         $collection = m::mock('phpDocumentor\Transformer\Template\Collection');
 
-        $items = ['\phpDocumentor\LinkDescriptor' => $descriptor];
+        $items = array('\phpDocumentor\LinkDescriptor' => $descriptor);
 
         $collection->shouldReceive('get')->once()->andReturn($items);
 
