@@ -2,7 +2,7 @@
 <phpdocumentor>
     <parser>
         <default-package-name>phpDocumentor</default-package-name>
-        <target>/tmp/phpdoc-demo</target>
+        <target>/build/api-cache</target>
     </parser>
     <transformer>
         <target>build/api</target>

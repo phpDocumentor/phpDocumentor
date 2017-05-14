@@ -13,6 +13,5 @@ tests
 Vagrantfile
 package.xml
 phpmd.xml.dist
-composer.*
 behat.yml
 box.json
