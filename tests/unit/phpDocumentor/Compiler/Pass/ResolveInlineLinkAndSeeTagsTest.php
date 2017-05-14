@@ -37,7 +37,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->router = m::mock(Queue::class);
+        $this->router = m::mock('phpDocumentor\Transformer\Router\Queue');
         $this->fixture = new ResolveInlineLinkAndSeeTags($this->router);
     }
 
@@ -174,7 +174,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAChildDescriptorWithDescription($description)
     {
-        $descriptor = m::mock(DescriptorAbstract::class);
+        $descriptor = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $descriptor->shouldReceive('getDescription')->andReturn($description);
 
         return $descriptor;
@@ -189,7 +189,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      */
     private function givenAProjectDescriptorWithChildDescriptors($descriptors)
     {
-        $projectDescriptor = m::mock(ProjectDescriptor::class);
+        $projectDescriptor = m::mock('phpDocumentor\Descriptor\ProjectDescriptor');
         $projectDescriptor->shouldReceive('getIndexes')->andReturn($descriptors);
 
         return $projectDescriptor;
@@ -203,10 +203,10 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
     private function givenAnElementToLinkTo()
     {
         $namespaceAliases = ['LinkDescriptor' => '\phpDocumentor\LinkDescriptor'];
-        $namespaceCollection = m::mock(Collection::class);
+        $namespaceCollection = m::mock('phpDocumentor\Transformer\Template\Collection');
         $namespaceCollection->shouldReceive('getAll')->once()->andReturn($namespaceAliases);
 
-        $elementToLinkTo = m::mock(DescriptorAbstract::class);
+        $elementToLinkTo = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $elementToLinkTo->shouldReceive('getNamespaceAliases')->once()->andReturn($namespaceCollection);
 
         return $elementToLinkTo;
@@ -221,7 +221,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      */
     private function givenACollection($descriptor)
     {
-        $collection = m::mock(Collection::class);
+        $collection = m::mock('phpDocumentor\Transformer\Template\Collection');
 
         $items = ['\phpDocumentor\LinkDescriptor' => $descriptor];
 
@@ -253,7 +253,7 @@ class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
      */
     private function whenDescriptionContainsSeeOrLinkWithElement($descriptor, $elementToLinkTo)
     {
-        $rule = m::mock(Rule::class);
+        $rule = m::mock('phpDocumentor\Transformer\Router\Rule');
         $rule->shouldReceive('generate')->andReturn('/classes/phpDocumentor.LinkDescriptor.html');
         $this->router->shouldReceive('match')->andReturn($rule);
         $descriptor->shouldReceive('getFile')->andReturn($elementToLinkTo);
