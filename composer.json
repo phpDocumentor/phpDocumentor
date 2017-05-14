@@ -57,9 +57,7 @@
         "ext-xslcache": "Enabling the XSLCache extension improves the generation of xml based templates."
     },
     "config": {
-        "bin-dir":"bin/",
-        "disable-tls": true,
-        "secure-http": false
+        "bin-dir":"bin/"
     },
     "bin": ["bin/phpdoc.php", "bin/phpdoc"],
     "extra": {
