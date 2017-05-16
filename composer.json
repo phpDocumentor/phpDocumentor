@@ -30,7 +30,7 @@
         "symfony/console":                   "^2.8|~3.0",
         "symfony/validator":                 "^2.8|~3.0",
         "phpdocumentor/graphviz":            "^1.0",
-        "phpdocumentor/fileset":             "^1.0",
+        "phpdocumentor/fileset":             "dev-master",
         "phpdocumentor/reflection":          "dev-develop@dev",
         "phpdocumentor/reflection-docblock": "^3.0",
         "phpdocumentor/flyfinder":           "^1.0@dev",
