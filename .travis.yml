@@ -9,9 +9,6 @@ env:
 script:
 - bin/phpunit
 
-after_success:
-- ./vendor/bin/phing release
-
 install:
 - composer install --no-interaction --prefer-dist -o
 
