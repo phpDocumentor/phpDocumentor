@@ -248,6 +248,20 @@ TEXT
             $templates = array('clean');
         }
 
+        // Support template entries that contain multiple templates using a comma separated list
+        // like checkstyle,clean
+        foreach ($templates as $key => $template) {
+            $commaSeparatedTemplates = explode(',', $template);
+            if (count($commaSeparatedTemplates) > 1) {
+                // replace the current item with the first in the list
+                $templates[$key] = trim(array_shift($commaSeparatedTemplates));
+                // append all additional templates to the list of templates
+                foreach ($commaSeparatedTemplates as $subtemplate) {
+                    $templates[] = $subtemplate;
+                }
+            }
+        }
+
         return $templates;
     }
 
