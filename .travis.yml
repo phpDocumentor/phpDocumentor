@@ -26,7 +26,7 @@ notifications:
 
 before_deploy:
 - echo "${VERSION}" > VERSION
-- pear upgrade --force
+- yes "" | pear upgrade --force
 - pear install XML_Serializer-beta
 - pear install PEAR_PackageFileManager2-1.0.4
 - php bin/utils/package.php '${VERSION}' '${VERSION}' 'stable' make
