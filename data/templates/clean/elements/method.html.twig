@@ -43,7 +43,7 @@
                         &mdash; {{ method.response.description|markdown|raw }}
                     {% endif %}
                 {% endif %}
-				
+
                 {% for tagName,tags in method.tags if tagName in ['example'] %}
                     {% if loop.first %}
                         <h4>Examples</h4>
@@ -73,11 +73,11 @@
                 </aside>
             {% endif %}
             <dl>
-                {% if (node.parent is null) %}
+                {% if (method.parent is null) %}
                     <dt>File</dt>
-                    <dd><a href="{{ node.file|route('url') }}"><div class="path-wrapper">{{ node.path }}</div></a></dd>
+                    <dd><a href="{{ method.file|route('url') }}"><div class="path-wrapper">{{ method.path }}</div></a></dd>
                 {% endif %}
-                {% if (node.parent is not null and method.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+                {% if (method.parent is not null and method.parent.fullyQualifiedStructuralElementName != method.fullyQualifiedStructuralElementName) %}
                     <dt>Inherited from</dt>
                     <dd><a href="{{ method.parent|route('url') }}"><div class="path-wrapper">{{ method.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
                 {% endif %}
