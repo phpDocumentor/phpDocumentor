@@ -133,7 +133,7 @@ class MethodAssembler extends AssemblerAbstract
         }
 
         if ($lastParamTag->isVariadic()
-            && !in_array($lastParamTag->getVariableName(), array_keys($methodDescriptor->getArguments()->getAll()))
+            && in_array($lastParamTag->getVariableName(), array_keys($methodDescriptor->getArguments()->getAll()))
         ) {
             $types = $this->builder->buildDescriptor(new Collection($lastParamTag->getTypes()));
 

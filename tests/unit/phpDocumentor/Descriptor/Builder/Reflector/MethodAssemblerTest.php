@@ -128,9 +128,7 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
             $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
 
             $tag->shouldReceive('isVariadic')->once()->andReturn(true);
-            $tag->shouldReceive('getVariableName')->atLeast()->once()->andReturn('variableName');
-            $tag->shouldReceive('getTypes')->once()->andReturn(array('string'));
-            $tag->shouldReceive('getDescription')->once()->andReturn('I am a tag');
+            $tag->shouldReceive('getVariableName')->andReturn('variableName');
 
             return array($tag);
         });
