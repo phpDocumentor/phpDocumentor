@@ -13,5 +13,4 @@ vendor/*
 composer.phar
 .vagrant
 /nbproject/private/
-box.phar
 phpunit.xml
