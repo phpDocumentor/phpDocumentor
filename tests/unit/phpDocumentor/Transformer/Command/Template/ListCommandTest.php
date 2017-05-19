@@ -35,6 +35,7 @@ Available templates:
 
 
 TXT;
+        $expectedOutput = str_replace("\n", PHP_EOL, $expectedOutput);
 
         // Act
         $commandTester = new CommandTester($command);

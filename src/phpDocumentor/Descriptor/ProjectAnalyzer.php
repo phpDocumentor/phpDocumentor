@@ -71,6 +71,8 @@ In the ProjectDescriptor are:
   %8d unresolvable parent classes
 
 TEXT;
+        $logString = str_replace("\n", PHP_EOL, $logString);
+
         foreach ($this->descriptorCountByType as $class => $count) {
             $logString .= sprintf('  %8d %s elements' . PHP_EOL, $count, $class);
         }
