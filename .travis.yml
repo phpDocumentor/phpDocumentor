@@ -44,4 +44,4 @@ deploy:
   on:
     repo: phpDocumentor/phpDocumentor2
     tags: true
-    php: 7.0
+    php: 5.4
