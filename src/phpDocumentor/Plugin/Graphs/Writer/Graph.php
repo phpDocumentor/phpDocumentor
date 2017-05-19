@@ -44,6 +44,9 @@ class Graph extends WriterAbstract
     /** @var Node[] a cache where nodes for classes, interfaces and traits are stored for reference */
     protected $nodeCache = array();
 
+    /** @var GraphVizGraph[] */
+    protected $namespaceCache = array();
+
     /**
      * Invokes the query method contained in this class.
      *
@@ -149,13 +152,44 @@ class Graph extends WriterAbstract
         $to_name = !is_string($to) ? $to->getFullyQualifiedStructuralElementName() : $to;
 
         if (!isset($this->nodeCache[$from_name])) {
-            $this->nodeCache[$from_name] = $this->createEmptyNode($from_name, $graph);
+            $namespaceParts = explode('\\', $from_name);
+            $this->nodeCache[$from_name] = $this->createEmptyNode(array_pop($namespaceParts), $this->createNamespaceGraph($from_name));
         }
         if (!isset($this->nodeCache[$to_name])) {
-            $this->nodeCache[$to_name] = $this->createEmptyNode($to_name, $graph);
+            $namespaceParts = explode('\\', $to_name);
+            $this->nodeCache[$to_name] = $this->createEmptyNode(array_pop($namespaceParts), $this->createNamespaceGraph($to_name));
         }
 
+
         return Edge::create($this->nodeCache[$from_name], $this->nodeCache[$to_name]);
+    }
+
+    protected function createNamespaceGraph($fqcn)
+    {
+        $namespaceParts = explode('\\', $fqcn);
+
+        // push the classname off the stack
+        array_pop($namespaceParts);
+
+        $graph = null;
+        $reassembledFqnn = '';
+        foreach ($namespaceParts as $part) {
+            if ($part == '\\' || $part == '') {
+                $part = 'Global';
+                $reassembledFqnn = 'Global';
+            } else {
+                $reassembledFqnn = $reassembledFqnn . '\\' . $part;
+            }
+            if (isset($this->namespaceCache[$part])) {
+                $graph = $this->namespaceCache[$part];
+            } else {
+                $subgraph = $this->createGraphForNamespace($reassembledFqnn, $part);
+                $graph->addGraph($subgraph);
+                $graph = $subgraph;
+            }
+        }
+
+        return $graph;
     }
 
     /**
@@ -189,13 +223,9 @@ class Graph extends WriterAbstract
             $full_namespace_name = 'Global';
         }
 
-        $sub_graph = GraphVizGraph::create('cluster_' . $full_namespace_name)
-            ->setLabel($namespace->getName() == '\\' ? 'Global' : $namespace->getName())
-            ->setStyle('rounded')
-            ->setColor('gray')
-            ->setFontColor('gray')
-            ->setFontSize('11')
-            ->setRankDir('LR');
+        $label = $namespace->getName() == '\\' ? 'Global' : $namespace->getName();
+        $sub_graph = $this->createGraphForNamespace($full_namespace_name, $label);
+        $this->namespaceCache[$full_namespace_name] = $sub_graph;
 
         $elements = array_merge(
             $namespace->getClasses()->getAll(),
@@ -258,5 +288,25 @@ class Graph extends WriterAbstract
                 . 'Is GraphViz correctly installed and present in your path?'
             );
         }
+    }
+
+    /**
+     * @param $full_namespace_name
+     * @param $label
+     *
+     * @return mixed
+     */
+    protected function createGraphForNamespace($full_namespace_name, $label)
+    {
+        $sub_graph = GraphVizGraph::create('cluster_' . $full_namespace_name)
+            ->setLabel($label)
+            ->setStyle('rounded')
+            ->setColor('gray')
+            ->setFontColor('gray')
+            ->setFontSize('11')
+            ->setRankDir('LR')
+        ;
+
+        return $sub_graph;
     }
 }
