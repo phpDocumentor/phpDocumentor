@@ -145,9 +145,11 @@ In the ProjectDescriptor are:
          1 phpDocumentor\Descriptor\InterfaceDescriptor elements
 
 TEXT;
+        $expected = str_replace("\n", PHP_EOL, $expected);
 
         // Act
         $result = (string) $this->fixture;
+
 
         // Assert
         $this->assertSame($expected, $result);
