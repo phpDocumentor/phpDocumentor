@@ -215,7 +215,8 @@ class Xml extends WriterAbstract implements Translatable
                     continue;
                 }
 
-                $marker_obj = new \DOMElement(strtolower($marker['type']));
+                $type = preg_replace('/[^A-Za-z0-9\-]/', '', $marker['type']);
+                $marker_obj = new \DOMElement(strtolower($type));
                 $markers->appendChild($marker_obj);
 
                 $marker_obj->appendChild(new \DOMText(trim($marker['message'])));
