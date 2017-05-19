@@ -30,6 +30,9 @@ class Settings
     /** @var integer a bitflag representing which visibilities are contained and allowed in this project */
     protected $visibility = self::VISIBILITY_DEFAULT;
 
+    /** @var bool */
+    protected $includeSource = false;
+
     /**
      * Stores the visibilities that are allowed to be executed as a bitflag.
      *
@@ -84,5 +87,20 @@ class Settings
         }
 
         $this->$propertyName = $value;
+    }
+
+    public function includeSource()
+    {
+        $this->includeSource = true;
+    }
+
+    public function excludeSource()
+    {
+        $this->includeSource = false;
+    }
+
+    public function shouldIncludeSource()
+    {
+        return $this->includeSource;
     }
 }

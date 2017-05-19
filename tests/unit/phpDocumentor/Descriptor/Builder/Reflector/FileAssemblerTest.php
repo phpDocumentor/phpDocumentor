@@ -116,6 +116,7 @@ DOCBLOCK
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
 
+        $projectDescriptorBuilderMock->shouldReceive('getProjectDescriptor->getSettings->shouldIncludeSource')->andReturn(true);
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
             $mock = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
             $mock->shouldReceive('setLocation')->atLeast()->once();

@@ -147,7 +147,7 @@ class ParseCommand extends Command
         if (strpos($target, '/tmp/') === 0) {
             $target = str_replace('/tmp/', sys_get_temp_dir() . DIRECTORY_SEPARATOR, $target);
         }
-        
+
         $fileSystem = new Filesystem();
         if (! $fileSystem->isAbsolutePath($target)) {
             $target = getcwd().DIRECTORY_SEPARATOR.$target;
@@ -220,6 +220,9 @@ class ParseCommand extends Command
                 $visibility = $visibility | ProjectDescriptor\Settings::VISIBILITY_INTERNAL;
             }
             $projectDescriptor->getSettings()->setVisibility($visibility);
+            $input->getOption('sourcecode')
+                ? $projectDescriptor->getSettings()->includeSource()
+                : $projectDescriptor->getSettings()->excludeSource();
 
             $this->getParser()->parse($builder, $files);
         } catch (FilesNotFoundException $e) {
