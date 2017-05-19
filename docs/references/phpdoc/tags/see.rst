@@ -9,6 +9,10 @@ Syntax
 
     @see [URI | :term:`FQSEN`] [<description>]
 
+or inline
+
+   {\@see [URI | :term:`FQSEN`] [<description>]}
+
 Description
 -----------
 
@@ -36,6 +40,8 @@ itself.
 Examples
 --------
 
+Normal tag:
+
 .. code-block:: php
    :linenos:
 
@@ -45,6 +51,19 @@ Examples
      * @see MyClass::setItems()       To set the items for this collection.
      *
      * @return integer Indicates the number of items.
+     */
+    function count()
+    {
+        <...>
+    }
+
+Inline tag:
+
+.. code-block:: php
+   :linenos:
+
+    /**
+     * @return integer Indicates the number of {@see MyClass} items.
      */
     function count()
     {
