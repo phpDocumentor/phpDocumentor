@@ -70,7 +70,7 @@ class ProjectDescriptorMapper
             $settings = $this->igBinaryCompatibleCacheClear(self::KEY_SETTINGS, $e);
         }
 
-        if ($settings) {
+        if ($settings instanceof Settings) {
             $projectDescriptor->setSettings($settings);
         }
 
