@@ -34,7 +34,12 @@ class StatisticsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->statistics = new Statistics();
+        $this->statistics = $this->getMockBuilder('phpDocumentor\Plugin\Core\Transformer\Writer\Statistics')
+            ->setMethods(['getDestinationPath'])
+            ->getMock();
+        $this->statistics->method('getDestinationPath')
+            ->willReturn(vfsStream::url('StatisticsTest/artifact.xml'));
+
         $this->fs = vfsStream::setup('StatisticsTest');
     }
 
