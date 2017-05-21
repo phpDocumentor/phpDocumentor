@@ -39,7 +39,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
         $fqsenWithContextMarker  = '@context::MyMethod()';
         $fqsen  = '\phpDocumentor\Descriptor\MyClass::MyMethod()';
-        $container = m::mock(ClassDescriptor::class);
+        $container = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $container->shouldReceive('getFullyQualifiedStructuralElementName')
             ->andReturn('\phpDocumentor\Descriptor\MyClass');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
@@ -62,7 +62,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
         $fqsenWithContextMarker  = '@context::MyClass';
         $fqsen = '\phpDocumentor\Descriptor\MyClass';
-        $container = m::mock(DescriptorAbstract::class);
+        $container = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
 
@@ -84,7 +84,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
         $fqsenWithContextMarker  = '@context::MyClass';
         $fqsen = '\MyClass';
-        $container = m::mock(DescriptorAbstract::class);
+        $container = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
 
@@ -105,7 +105,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented()
     {
         $fqsenWithContextMarker  = '@context::MyClass';
-        $container = m::mock(NamespaceDescriptor::class);
+        $container = m::mock('phpDocumentor\Descriptor\NamespaceDescriptor');
         $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
         $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
 
@@ -250,7 +250,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         list($childObject, $childFqsen) = $this->createMockDescriptorForResult($result);
 
-        $object = m::mock(DescriptorAbstract::class);
+        $object = m::mock('phpDocumentor\Descripto\DescriptorAbstract');
         $fqsen  = get_class($object);
         $object->shouldReceive('getChild')->atLeast()->once()->andReturn($childObject);
         $object->shouldReceive('setChild')->never();
@@ -284,7 +284,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         list($childObject, $childFqsen) = $this->createMockDescriptorForResult($result);
 
-        $object = m::mock(DescriptorAbstract::class);
+        $object = m::mock('phpDocumentor\Descriptor\DescriptorAbstract');
         $fqsen  = get_class($object);
         $object->shouldReceive('getChild')->atLeast()->once()->andReturn(array($childObject));
         $object->shouldReceive('setChild');
@@ -478,7 +478,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createMockUnknownTypeDescriptorForResult($result = null)
     {
-        $object = m::mock(UnknownTypeDescriptor::class);
+        $object = m::mock('phpDocumentor\Descriptor\Type\UnknownTypeDescriptor');
         $fqsen  = get_class($object);
 
         $object->shouldReceive('getName')->andReturn('\Name');
