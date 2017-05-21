@@ -232,6 +232,13 @@ class Linker implements CompilerPassInterface
                 return $namespaceMember;
             }
 
+            // otherwise check if the element exists in the global namespace and if it exists, return that
+            $globalNamespaceContext = $this->getTypeWithGlobalNamespaceAsContext($fqsen);
+            $globalNamespaceMember  = $this->fetchElementByFqsen($globalNamespaceContext);
+            if ($globalNamespaceMember) {
+                return $globalNamespaceMember;
+            }
+
             // Otherwise we assume it is an undocumented class/interface/trait and return `\My\element` so
             // that the name containing the marker may be replaced by the class reference as string
             return $namespaceContext;
@@ -343,6 +350,17 @@ class Linker implements CompilerPassInterface
             : $namespace;
 
         return str_replace(self::CONTEXT_MARKER . '::', $fqnn . '\\', $fqsen);
+    }
+
+    /**
+     * Normalizes the given FQSEN as if the context marker represents the global namespace as parent.
+     *
+     * @param string             $fqsen
+     * @return string
+     */
+    protected function getTypeWithGlobalNamespaceAsContext($fqsen)
+    {
+        return str_replace(self::CONTEXT_MARKER . '::', '\\', $fqsen);
     }
 
     /**

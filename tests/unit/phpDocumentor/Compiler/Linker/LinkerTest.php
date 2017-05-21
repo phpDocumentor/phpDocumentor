@@ -14,31 +14,111 @@ namespace phpDocumentor\Compiler\Linker;
 use Mockery as m;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
+use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
 
 /**
  * Tests the functionality for the Linker class.
+ *
+ * @coversDefaultClass phpDocumentor\Compiler\Linker\Linker
  */
 class LinkerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::setObjectAliasesList
-     * @covers phpDocumentor\Compiler\Linker\Linker::findAlias
+     * @covers ::setObjectAliasesList
+     * @covers ::findAlias
+     * @covers ::isContextMarkerInFqsen()
+     * @covers ::fetchElementByFqsen()
+     * @covers ::getTypeWithClassAsContext()
      */
-    public function testFindObjectAliasWithFqsen()
+    public function testFindObjectAliasWithFqsenWhenContextIsClass()
     {
         $object = new \stdClass();
-        $fqsen  = '\phpDocumentor\MyClass';
+        $fqsenWithContextMarker  = '@context::MyMethod()';
+        $fqsen  = '\phpDocumentor\Descriptor\MyClass::MyMethod()';
+        $container = m::mock(ClassDescriptor::class);
+        $container->shouldReceive('getFullyQualifiedStructuralElementName')
+            ->andReturn('\phpDocumentor\Descriptor\MyClass');
+        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
 
         $linker = new Linker(array());
         $linker->setObjectAliasesList(array($fqsen => $object));
 
-        $this->assertSame($object, $linker->findAlias($fqsen));
+        $this->assertSame($object, $linker->findAlias($fqsenWithContextMarker, $container));
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::findAlias
+     * @covers ::setObjectAliasesList
+     * @covers ::findAlias
+     * @covers ::isContextMarkerInFqsen()
+     * @covers ::fetchElementByFqsen()
+     * @covers ::getTypeWithNamespaceAsContext()
+     */
+    public function testFindObjectAliasWithFqsenAndContainerWhenContextIsContainerNamespace()
+    {
+        $object = new \stdClass();
+        $fqsenWithContextMarker  = '@context::MyClass';
+        $fqsen = '\phpDocumentor\Descriptor\MyClass';
+        $container = m::mock(DescriptorAbstract::class);
+        $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
+        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
+
+        $linker = new Linker(array());
+        $linker->setObjectAliasesList(array($fqsen => $object));
+
+        $this->assertSame($object, $linker->findAlias($fqsenWithContextMarker, $container));
+    }
+
+    /**
+     * @covers ::setObjectAliasesList
+     * @covers ::findAlias
+     * @covers ::isContextMarkerInFqsen()
+     * @covers ::fetchElementByFqsen()
+     * @covers ::getTypeWithGlobalNamespaceAsContext()
+     */
+    public function testFindObjectAliasWithFqsenAndContainerWhenContextIsGlobalNamespace()
+    {
+        $object = new \stdClass();
+        $fqsenWithContextMarker  = '@context::MyClass';
+        $fqsen = '\MyClass';
+        $container = m::mock(DescriptorAbstract::class);
+        $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
+        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
+
+        $linker = new Linker(array());
+        $linker->setObjectAliasesList(array($fqsen => $object));
+
+        $this->assertSame($object, $linker->findAlias($fqsenWithContextMarker, $container));
+    }
+
+    /**
+     * @covers ::findAlias
+     * @covers ::isContextMarkerInFqsen()
+     * @covers ::fetchElementByFqsen()
+     * @covers ::getTypeWithClassAsContext()
+     * @covers ::getTypeWithNamespaceAsContext()
+     * @covers ::getTypeWithGlobalNamespaceAsContext()
+     */
+    public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented()
+    {
+        $fqsenWithContextMarker  = '@context::MyClass';
+        $container = m::mock(NamespaceDescriptor::class);
+        $container->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('\phpDocumentor\Descriptor');
+        $container->shouldReceive('getNamespace')->andReturn('\phpDocumentor\Descriptor');
+
+        $linker = new Linker(array());
+
+        $this->assertSame(
+            '\phpDocumentor\Descriptor\MyClass',
+            $linker->findAlias($fqsenWithContextMarker, $container)
+        );
+    }
+
+    /**
+     * @covers ::findAlias
      */
     public function testFindObjectAliasReturnsNothingWithUnknownFqsen()
     {
@@ -48,7 +128,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::findFieldValue
+     * @covers ::findFieldValue
      */
     public function testFindFqsenInObject()
     {
@@ -64,8 +144,8 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::__construct
-     * @covers phpDocumentor\Compiler\Linker\Linker::getSubstitutions
+     * @covers ::__construct
+     * @covers ::getSubstitutions
      */
     public function testSetFieldsToSubstitute()
     {
@@ -80,8 +160,9 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::__construct
-     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     * @covers ::__construct
+     * @covers ::substitute
+     * @covers ::isDescriptorContainer()
      */
     public function testSubstituteFqsenInObject()
     {
@@ -103,30 +184,32 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
-     *
-     * @param $result
-     *
-     * @return array
+     * @covers ::__construct
+     * @covers ::substitute
+     * @covers ::isDescriptorContainer()
      */
-    protected function createMockDescriptorForResult($result = null)
+    public function testSubstituteFqsenInUnknownTypeDescriptor()
     {
-        $object = m::mock('stdClass');
-        $fqsen  = get_class($object);
-        $object->shouldReceive('getField')->atLeast()->once()->andReturn($fqsen);
+        // initialize parameters
+        $result    = new \stdClass();
+        $fieldName = 'field';
 
-        if ($result) {
-            $object->shouldReceive('setField')->atLeast()->once()->with($result);
-        } else {
-            $object->shouldReceive('setField')->never();
-        }
+        list($object, $fqsen) = $this->createMockUnknownTypeDescriptorForResult($result);
 
-        return array($object, $fqsen);
+        // prepare linker
+        $linker = new Linker(array($fqsen => array($fieldName)));
+        $linker->setObjectAliasesList(array($fqsen => $result));
+
+        // execute test.
+        $linker->substitute($object);
+
+        // mark test as successful due to asserts in Mockery
+        $this->assertTrue(true);
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::__construct
-     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     * @covers ::__construct
+     * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
     public function testMultipleSubstitutionsInOneObject()
@@ -155,13 +238,11 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
     public function testSubstituteFieldsViaChildObject()
     {
-        $this->markTestIncomplete('Fix this');
-
         // initialize parameters
         $result         = new \stdClass();
         $childFieldName = 'field';
@@ -169,7 +250,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         list($childObject, $childFqsen) = $this->createMockDescriptorForResult($result);
 
-        $object = m::mock('stdClass');
+        $object = m::mock(DescriptorAbstract::class);
         $fqsen  = get_class($object);
         $object->shouldReceive('getChild')->atLeast()->once()->andReturn($childObject);
         $object->shouldReceive('setChild')->never();
@@ -191,13 +272,11 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     * @covers ::substitute
      * @depends testSubstituteFqsenInObject
      */
     public function testSubstituteFieldsViaArrayOfChildObjects()
     {
-        $this->markTestIncomplete('Fix this');
-
         // initialize parameters
         $result         = new \stdClass();
         $childFieldName = 'field';
@@ -205,7 +284,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
 
         list($childObject, $childFqsen) = $this->createMockDescriptorForResult($result);
 
-        $object = m::mock('stdClass');
+        $object = m::mock(DescriptorAbstract::class);
         $fqsen  = get_class($object);
         $object->shouldReceive('getChild')->atLeast()->once()->andReturn(array($childObject));
         $object->shouldReceive('setChild');
@@ -227,7 +306,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     * @covers ::substitute
      */
     public function testSubstituteArrayRecursive()
     {
@@ -248,7 +327,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
      * Test that already processed objects don't substitute again
      * Using mockery, as return value would be `null` in both cases
      *
-     * @covers phpDocumentor\Compiler\Linker\Linker::substitute
+     * @covers ::substitute
      */
     public function testSubstituteSkipProcessed()
     {
@@ -270,7 +349,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::getDescription
+     * @covers ::getDescription
      */
     public function testGetDescription()
     {
@@ -280,7 +359,7 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::execute
+     * @covers ::execute
      */
     public function testExecute()
     {
@@ -301,8 +380,8 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::execute
-     * @covers phpDocumentor\Compiler\Linker\Linker::replacePseudoTypes
+     * @covers ::execute
+     * @covers ::replacePseudoTypes
      */
     public function testReplaceSelfWithCurrentClassInScope()
     {
@@ -337,8 +416,8 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Linker\Linker::execute
-     * @covers phpDocumentor\Compiler\Linker\Linker::replacePseudoTypes
+     * @covers ::execute
+     * @covers ::replacePseudoTypes
      */
     public function testReplaceThisWithCurrentClassInScope()
     {
@@ -370,6 +449,41 @@ class LinkerTest extends \PHPUnit_Framework_TestCase
         $fixture->substitute($classDescriptor);
 
         $this->assertSame($methodDescriptor, $seeDescriptor->getReference());
+    }
+
+    /**
+     * @param $result
+     *
+     * @return array
+     */
+    protected function createMockDescriptorForResult($result = null)
+    {
+        $object = m::mock('stdClass');
+        $fqsen  = get_class($object);
+        $object->shouldReceive('getField')->atLeast()->once()->andReturn($fqsen);
+
+        if ($result) {
+            $object->shouldReceive('setField')->atLeast()->once()->with($result);
+        } else {
+            $object->shouldReceive('setField')->never();
+        }
+
+        return array($object, $fqsen);
+    }
+
+    /**
+     * @param $result
+     *
+     * @return array
+     */
+    protected function createMockUnknownTypeDescriptorForResult($result = null)
+    {
+        $object = m::mock(UnknownTypeDescriptor::class);
+        $fqsen  = get_class($object);
+
+        $object->shouldReceive('getName')->andReturn('\Name');
+
+        return array($object, $fqsen);
     }
 
     /**
