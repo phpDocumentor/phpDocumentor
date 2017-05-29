@@ -38,7 +38,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException('\InvalidArgumentException');
         }
 
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $fixture->setName($name);
         $this->assertEquals($name, $fixture->getName());
     }
@@ -70,7 +70,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadAndWriteExtension()
     {
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $this->assertEquals('html', $fixture->getExtension());
         $fixture->setExtension('pdf');
         $this->assertEquals('pdf', $fixture->getExtension());
@@ -86,7 +86,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException('\InvalidArgumentException');
         }
 
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $fixture->setExtension($extension);
         $this->assertEquals($extension, $fixture->getExtension());
     }
@@ -116,9 +116,9 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadAndWriteBaseTemplatePath()
     {
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $this->assertEquals(
-            realpath(__DIR__.'/../../../../data/templates'),
+            realpath(__DIR__ . '/../../../../data/templates'),
             $fixture->getPath()
         );
         $fixture->setPath(__DIR__);
@@ -131,7 +131,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetNonExistingBaseTemplatePath()
     {
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $fixture->setPath('bla');
     }
 
@@ -141,7 +141,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetFileAsBaseTemplatePath()
     {
-        $fixture = new Twig();
+        $fixture = new Twig('');
         $fixture->setPath(__FILE__);
     }
 
@@ -150,7 +150,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAssets()
     {
-        $fixture = new Twig('');
+        $fixture = new Twig(__DIR__ . '/../../../../../../src/phpDocumentor/Plugin/Scrybe/data/templates');
         $assets = $fixture->getAssets();
 
         $this->assertInternalType('array', $assets);

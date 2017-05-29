@@ -10,6 +10,7 @@
  */
 
 namespace phpDocumentor\Plugin\Scrybe\Template;
+use Webmozart\Assert\Assert;
 
 /**
  * A factory used to retrieve a template engine given a simplified name.
@@ -51,6 +52,7 @@ class Factory
      */
     public function register($name, TemplateInterface $templateEngine)
     {
+        Assert::stringNotEmpty($name);
         $this->engines[$name] = $templateEngine;
     }
 
