@@ -41,7 +41,8 @@
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",
         "phpdocumentor/reflection":          "^3.0",
-        "phpdocumentor/reflection-docblock": "~2.0"
+        "phpdocumentor/reflection-docblock": "~2.0",
+        "webmozart/assert": "^1.2"
     },
     "minimum-stability": "stable",
     "require-dev": {
