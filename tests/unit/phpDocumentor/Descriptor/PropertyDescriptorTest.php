@@ -74,6 +74,27 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getTypes
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setTypes
+     */
+    public function testSetAndGetTypesWhenVarIsPresent()
+    {
+        // Arrange
+        $typesCollection = new Collection();
+        $varTagDescriptor = new VarDescriptor('var');
+        $varTagDescriptor->setTypes($typesCollection);
+        $varCollection = new Collection(array($varTagDescriptor));
+        $this->fixture->getTags()->clear();
+        $this->fixture->getTags()->set('var', $varCollection);
+
+        // Act
+        $result = $this->fixture->getTypes();
+
+        // Assert
+        $this->assertSame($typesCollection, $result);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\PropertyDescriptor::getDefault
      * @covers phpDocumentor\Descriptor\PropertyDescriptor::setDefault
      */
@@ -194,6 +215,17 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVar
+     */
+    public function testVarTagsWhenNoneArePresent()
+    {
+        $varCollection = new Collection();
+        $result = $this->fixture->getVar();
+
+        $this->assertEquals($varCollection, $result);
+    }
+
+    /**
      * @covers phpDocumentor\Descriptor\PropertyDescriptor::getAuthor
      * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
@@ -251,6 +283,45 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($copyrightCollection, $result);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setParent
+     */
+    public function testFqsenHasDollarSignWhenParentIsSet()
+    {
+        $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $this->assertSame('::$property', $this->fixture->getFullyQualifiedStructuralElementName());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setParent
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getParent
+     */
+    public function testSettingAndGettingAParent()
+    {
+        $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+        $this->assertInstanceOf('phpDocumentor\Descriptor\ClassDescriptor', $this->fixture->getParent());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
+     */
+    public function testGettingAnInheritedElement()
+    {
+        $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
+
+        $inheritedProperty = $this->fixture->getInheritedElement();
+
+        $this->assertSame($inheritedProperty->getName(), $this->fixture->getName());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
+     */
+    public function testGettingAnInheritedElementWhenThereIsNone()
+    {
+        $this->assertNull($this->fixture->getInheritedElement());
     }
 
     /**

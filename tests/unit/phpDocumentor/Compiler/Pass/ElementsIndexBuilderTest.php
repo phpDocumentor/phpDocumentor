@@ -261,7 +261,7 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
         $file1->getClasses()->add($classDescriptor1);
 
         $classPropertyDescriptor1 = new PropertyDescriptor();
-        $classPropertyDescriptor1->setFullyQualifiedStructuralElementName('My\Space\Class1::PROPERTY');
+        $classPropertyDescriptor1->setFullyQualifiedStructuralElementName('My\Space\Class1::$property');
         $classDescriptor1->getProperties()->add($classPropertyDescriptor1);
 
         $file2 = $this->project->getFiles()->get(1);
@@ -270,16 +270,15 @@ class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
         $file2->getClasses()->add($classDescriptor2);
 
         $classPropertyDescriptor2 = new PropertyDescriptor();
-        $classPropertyDescriptor2->setFullyQualifiedStructuralElementName('My\Space\Class2::PROPERTY');
+        $classPropertyDescriptor2->setFullyQualifiedStructuralElementName('My\Space\Class2::$property');
         $classDescriptor2->getProperties()->add($classPropertyDescriptor2);
 
         $this->fixture->execute($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(4, $elements);
-        // note the addition of the dollar sign in front of the property name
         $this->assertSame(
-            array('My\Space\Class1', 'My\Space\Class1::$PROPERTY', 'My\Space\Class2', 'My\Space\Class2::$PROPERTY'),
+            array('My\Space\Class1', 'My\Space\Class1::$property', 'My\Space\Class2', 'My\Space\Class2::$property'),
             array_keys($elements)
         );
         $this->assertSame(

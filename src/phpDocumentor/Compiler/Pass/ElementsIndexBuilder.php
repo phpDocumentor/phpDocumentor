@@ -145,14 +145,6 @@ class ElementsIndexBuilder implements CompilerPassInterface
      */
     protected function getIndexKey($element)
     {
-        $key = $element->getFullyQualifiedStructuralElementName();
-
-        // properties should have an additional $ before the property name
-        if ($element instanceof PropertyInterface) {
-            list($fqcn, $propertyName) = explode('::', $key);
-            $key = $fqcn . '::$' . $propertyName;
-        }
-
-        return $key;
+        return $element->getFullyQualifiedStructuralElementName();
     }
 }
