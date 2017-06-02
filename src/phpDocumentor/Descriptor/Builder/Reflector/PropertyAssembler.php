@@ -1,14 +1,14 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2010-2014 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
-
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\PropertyDescriptor;
@@ -29,6 +29,7 @@ class PropertyAssembler extends AssemblerAbstract
     public function create($data)
     {
         $propertyDescriptor = new PropertyDescriptor();
+        $propertyDescriptor->setNamespace('\\' . $data->getNamespace());
         $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getName());
         $propertyDescriptor->setName($data->getShortName());
         $propertyDescriptor->setVisibility($data->getVisibility() ?: 'public');
