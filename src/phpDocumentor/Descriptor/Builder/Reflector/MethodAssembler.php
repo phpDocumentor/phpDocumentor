@@ -46,6 +46,7 @@ class MethodAssembler extends AssemblerAbstract
     public function create($data)
     {
         $methodDescriptor = new MethodDescriptor();
+        $methodDescriptor->setNamespace('\\' . $data->getNamespace());
         $this->mapReflectorToDescriptor($data, $methodDescriptor);
 
         $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);

@@ -1,12 +1,11 @@
 <?php
 /**
- * phpDocumentor
+ * This file is part of phpDocumentor.
  *
- * PHP Version 5.3
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @author    Mike van Riel <mike.vanriel@naenius.com>
- * @author    Sven Hagemann <sven@rednose.nl>
- * @copyright 2010-2012 Mike van Riel / Naenius (http://www.naenius.com)
+ * @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
@@ -38,7 +37,8 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->builderMock->shouldReceive('buildDescriptor')->andReturn(null);
 
         $this->argumentAssemblerMock = m::mock('phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler');
-        $this->argumentAssemblerMock->shouldReceive('getBuilder')->andReturn($this->builderMock);
+        $this->argumentAssemblerMock->shouldReceive('getBuilder')->once()->andReturn(null);
+        $this->argumentAssemblerMock->shouldReceive('setBuilder')->once();
 
         $this->fixture = new MethodAssembler($this->argumentAssemblerMock);
         $this->fixture->setBuilder($this->builderMock);
@@ -57,14 +57,14 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $namespace    = 'Namespace';
         $methodName   = 'goodbyeWorld';
-        $argumentName = 'waveHand';
+        $argumentName = 'variableName';
 
         $argumentDescriptorMock = $this->givenAnArgumentWithName($argumentName);
         $methodReflectorMock = $this->givenAMethodReflector(
             $namespace,
             $methodName,
             $argumentDescriptorMock,
-            $this->givenADocBlockObject()
+            $this->givenADocBlockObject(true)
         );
 
         // Act
@@ -74,11 +74,73 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
         $expectedFqsen = $namespace . '\\' . $methodName . '()';
         $this->assertSame($expectedFqsen, $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($methodName, $descriptor->getName());
+        $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
         $this->assertSame('protected', $descriptor->getVisibility());
         $this->assertSame(false, $descriptor->isFinal());
         $this->assertSame(false, $descriptor->isAbstract());
         $this->assertSame(false, $descriptor->isStatic());
 
+        $argument = $descriptor->getArguments()->get($argumentName);
+        $this->assertSame($argument->getName(), $argumentDescriptorMock->getName());
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
+     */
+    public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent()
+    {
+        // Arrange
+        $namespace    = 'Namespace';
+        $methodName   = 'goodbyeWorld';
+        $argumentName = 'waveHand';
+
+        $argumentDescriptorMock = $this->givenAnArgumentWithName($argumentName);
+        $methodReflectorMock = $this->givenAMethodReflector(
+            $namespace,
+            $methodName,
+            $argumentDescriptorMock
+        );
+
+        // Act
+        $descriptor = $this->fixture->create($methodReflectorMock);
+
+        // Assert
+        $argument = $descriptor->getArguments()->get($argumentName);
+        $this->assertSame($argument, $argumentDescriptorMock);
+    }
+
+    /**
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
+     * @covers phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
+     */
+    public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent()
+    {
+        // Arrange
+        $namespace    = 'Namespace';
+        $methodName   = 'goodbyeWorld';
+        $argumentName = 'waveHand';
+
+        $argumentDescriptorMock = $this->givenAnArgumentWithName($argumentName);
+        $methodReflectorMock = $this->givenAMethodReflector(
+            $namespace,
+            $methodName,
+            $argumentDescriptorMock,
+            $this->givenADocBlockObject(false)
+        );
+
+        // Act
+        $descriptor = $this->fixture->create($methodReflectorMock);
+
+        // Assert
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argument, $argumentDescriptorMock);
     }
@@ -93,7 +155,7 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
      *
      * @return MethodReflector|m\MockInterface
      */
-    protected function givenAMethodReflector($namespace, $methodName, $argumentMock, $docBlockMock)
+    protected function givenAMethodReflector($namespace, $methodName, $argumentMock, $docBlockMock = null)
     {
         $methodReflectorMock = m::mock('phpDocumentor\Reflection\MethodReflector');
         $methodReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $methodName);
@@ -115,7 +177,7 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
      *
      * @return DocBlock|m\MockInterface
      */
-    protected function givenADocBlockObject()
+    protected function givenADocBlockObject($withTags)
     {
         $docBlockDescription = new DocBlock\Description('This is an example description');
 
@@ -124,14 +186,20 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
         $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
         $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
 
-        $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function ($param) {
-            $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
+        if ($withTags) {
+            $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function ($param) {
+                $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
 
-            $tag->shouldReceive('isVariadic')->once()->andReturn(true);
-            $tag->shouldReceive('getVariableName')->andReturn('variableName');
+                $tag->shouldReceive('isVariadic')->once()->andReturn(true);
+                $tag->shouldReceive('getVariableName')->andReturn('variableName');
+                $tag->shouldReceive('getTypes')->andReturn(array());
+                $tag->shouldReceive('getDescription');
 
-            return array($tag);
-        });
+                return array($tag);
+            });
+        } else {
+            $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
+        }
 
         return $docBlockMock;
     }
