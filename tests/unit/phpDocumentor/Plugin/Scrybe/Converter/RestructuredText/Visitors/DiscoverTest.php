@@ -11,6 +11,9 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Visitors;
 
+use Mockery as m;
+use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
+
 /**
  * Test class for the Discovery Visitor.
  */
@@ -40,28 +43,17 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->document) {
 
-            $file = $this->getMock(
-                '\phpDocumentor\Fileset\File',
-                array('getFilename'),
-                array(),
-                '',
-                false
-            );
-            $file->expects($this->any())->method('getFilename')
-                ->will($this->returnValue(self::FILENAME));
+            $file = m::mock('\phpDocumentor\Fileset\File');
+            $file->shouldReceive('getFileName')
+                ->andReturn(self::FILENAME);
 
-            $this->document = $this->getMock(
-                '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Document',
-                array('getConverter', 'getFile'),
-                array(),
-                '',
-                false
-            );
-            $this->document->expects($this->any())
-                ->method('getConverter')
-                ->will($this->returnValue($this->getConverterMock()));
-            $this->document->expects($this->any())
-                ->method('getFile')->will($this->returnValue($file));
+            $this->document = m::mock('\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\Document');
+            $this->document->shouldDeferMissing();
+            $this->document->shouldReceive('getConverter')
+                ->andReturn($this->getConverterMock());
+
+            $this->document->shouldReceive('getFile')
+                ->andReturn($file);
         }
 
         return $this->document;
@@ -79,18 +71,16 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
             );
             $this->converter->expects($this->any())
                 ->method('getTableOfContents')
-                ->will($this->returnValue($this->getTableOfContentsMock()));
+                ->will($this->returnValue($this->getTableOfContents()));
         }
 
         return $this->converter;
     }
 
-    protected function getTableOfContentsMock()
+    protected function getTableOfContents()
     {
         if (!$this->table_of_contents) {
-            $this->table_of_contents = $this->getMock(
-                '\phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents'
-            );
+            $this->table_of_contents = new TableOfContents();
         }
 
         return $this->table_of_contents;
@@ -99,7 +89,7 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
     public function testRetrieveTableOfContents()
     {
         $this->assertSame(
-            $this->getTableOfContentsMock(),
+            $this->getTableOfContents(),
             $this->object->getTableOfContents()
         );
     }
