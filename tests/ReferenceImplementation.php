@@ -73,6 +73,7 @@ namespace My\Space {
      * @author Mike van Riel <mike.vanriel@naenius.com>
      * @package Class
      * @method string myMagicMethod(\stdClass $argument1) This is a description.
+     * @method static string myStaticMagicMethod(\stdClass $argument1) This is a description.
      * @property string $myMagicProperty This is a description.
      */
     class SuperClass implements SubInterface

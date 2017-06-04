@@ -22,6 +22,9 @@ class MethodDescriptor extends TagDescriptor
 
     protected $response;
 
+    /** @var bool */
+    protected $static;
+
     public function __construct($name)
     {
         parent::__construct($name);
@@ -75,5 +78,21 @@ class MethodDescriptor extends TagDescriptor
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * @param bool $static
+     */
+    public function setStatic($static)
+    {
+        $this->static = $static;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStatic()
+    {
+        return $this->static;
     }
 }
