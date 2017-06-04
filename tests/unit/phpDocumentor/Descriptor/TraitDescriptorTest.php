@@ -96,12 +96,14 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
+     * @dataProvider provideMagicMethodProperties
+     * @param bool $isStatic
      */
-    public function testMagicMethodsReturnsExpectedCollectionWithTags()
+    public function testMagicMethodsReturnsExpectedCollectionWithTags($isStatic)
     {
         $mockMethodDescriptor = m::mock('phpDocumentor\Descriptor\Tag\MethodDescriptor');
         $mockMethodDescriptor->shouldReceive('getMethodName')->andReturn('Sample');
-        $mockMethodDescriptor->shouldReceive('isStatic')->andReturn(false);
+        $mockMethodDescriptor->shouldReceive('isStatic')->andReturn($isStatic);
         $mockMethodDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
 
         $methodCollection = new Collection(array($mockMethodDescriptor));
@@ -112,8 +114,23 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $magicMethodsCollection->count());
         $this->assertSame('Sample', $magicMethodsCollection[0]->getName());
         $this->assertSame('Sample description', $magicMethodsCollection[0]->getDescription());
-        $this->assertSame(false, $magicMethodsCollection[0]->isStatic());
+        $this->assertSame($isStatic, $magicMethodsCollection[0]->isStatic());
         $this->assertSame($this->fixture, $magicMethodsCollection[0]->getParent());
+    }
+
+    /**
+     * Provider to test different properties for a trait magic method
+     * (provides isStatic)
+     * @return bool[][]
+     */
+    public function provideMagicMethodProperties()
+    {
+        return array(
+            // Instance magic method (default)
+            array(false),
+            // Static magic method
+            array(true),
+        );
     }
 
     /**
