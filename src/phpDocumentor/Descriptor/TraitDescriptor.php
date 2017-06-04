@@ -76,6 +76,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $method = new MethodDescriptor();
             $method->setName($methodTag->getMethodName());
             $method->setDescription($methodTag->getDescription());
+            $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
 
             $methods->add($method);

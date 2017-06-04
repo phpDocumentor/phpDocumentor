@@ -203,6 +203,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $method = new MethodDescriptor();
             $method->setName($methodTag->getMethodName());
             $method->setDescription($methodTag->getDescription());
+            $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
 
             $returnTags = $method->getTags()->get('return', new Collection());

@@ -38,6 +38,7 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor = new MethodDescriptor($data->getName());
         $descriptor->setDescription($data->getDescription());
         $descriptor->setMethodName($data->getMethodName());
+        $descriptor->setStatic($data->isStatic());
 
         $response = new ReturnDescriptor('return');
         $response->setTypes($this->builder->buildDescriptor(new Collection($data->getTypes())));

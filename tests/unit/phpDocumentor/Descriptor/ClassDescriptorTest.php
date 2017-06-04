@@ -377,6 +377,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $methodMock->shouldReceive('getDescription')->andReturn($description);
         $methodMock->shouldReceive('getResponse')->andReturn($response);
         $methodMock->shouldReceive('getArguments')->andReturn($arguments);
+        $methodMock->shouldReceive('isStatic')->andReturn(true);
 
         $this->fixture->getTags()->get('method', new Collection())->add($methodMock);
 
@@ -389,6 +390,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($methodName, $magicMethod->getName());
         $this->assertEquals($description, $magicMethod->getDescription());
         $this->assertEquals($response, $magicMethod->getResponse());
+        $this->assertEquals(true, $magicMethod->isStatic());
 
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $mock->shouldReceive('getMagicMethods')->andReturn(new Collection(array('magicMethods')));
