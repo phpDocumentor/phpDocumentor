@@ -361,8 +361,10 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Descriptor\ClassDescriptor::getMagicMethods
+     * @dataProvider provideMagicMethodProperties
+     * @param bool $isStatic
      */
-    public function testGetMagicMethods()
+    public function testGetMagicMethods($isStatic)
     {
         $methodName  = 'methodName';
         $description = 'description';
@@ -377,7 +379,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $methodMock->shouldReceive('getDescription')->andReturn($description);
         $methodMock->shouldReceive('getResponse')->andReturn($response);
         $methodMock->shouldReceive('getArguments')->andReturn($arguments);
-        $methodMock->shouldReceive('isStatic')->andReturn(true);
+        $methodMock->shouldReceive('isStatic')->andReturn($isStatic);
 
         $this->fixture->getTags()->get('method', new Collection())->add($methodMock);
 
@@ -390,7 +392,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($methodName, $magicMethod->getName());
         $this->assertEquals($description, $magicMethod->getDescription());
         $this->assertEquals($response, $magicMethod->getResponse());
-        $this->assertEquals(true, $magicMethod->isStatic());
+        $this->assertEquals($isStatic, $magicMethod->isStatic());
 
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $mock->shouldReceive('getMagicMethods')->andReturn(new Collection(array('magicMethods')));
@@ -398,6 +400,21 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
 
         $magicMethods = $this->fixture->getMagicMethods();
         $this->assertCount(2, $magicMethods);
+    }
+
+    /**
+     * Provider to test different properties for a class magic method
+     * (provides isStatic)
+     * @return bool[][]
+     */
+    public function provideMagicMethodProperties()
+    {
+        return array(
+            // Instance magic method (default)
+            array(false),
+            // Static magic method
+            array(true),
+        );
     }
 
     /**
