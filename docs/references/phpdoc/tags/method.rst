@@ -6,13 +6,13 @@ The @method allows a class to know which 'magic' methods are callable.
 Syntax
 ------
 
-    @method [return type] [name]([[type] [parameter]<, ...>]) [<description>]
+    @method [[static] return type] [name]([[type] [parameter]<, ...>]) [<description>]
 
 Description
 -----------
 
 The @method tag is used in situation where a class contains the ``__call()``
-magic method and defines some definite uses.
+or ``__callStatic()`` magic method and defines some definite uses.
 
 An example of this is a child class whose parent has a __call() to have dynamic
 getters or setters for predefined properties. The child knows which getters and
@@ -25,6 +25,11 @@ return value by including those types in the signature.
 
 When the intended method does not have a return value then the return type MAY
 be omitted; in which case 'void' is implied.
+
+If the intended method is static, the ``static`` keyword can be placed before
+the return type to communicate that.
+There must be a return type, ``static`` on its own would mean that the method
+returns an instance of the child class which the method is called on.
 
 @method tags MUST NOT be used in a :term:`PHPDoc` that is not associated with
 a *class* or *interface*.
@@ -54,6 +59,7 @@ Examples
      * @method string getString()
      * @method void setInteger(integer $integer)
      * @method setString(integer $integer)
+     * @method static string staticGetter()
      */
     class Child extends Parent
     {
