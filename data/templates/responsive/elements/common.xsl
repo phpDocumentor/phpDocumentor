@@ -1,4 +1,4 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:php="http://php.net/xsl">
     <xsl:output indent="yes" method="html" />
 
     <!-- Concatenate items with links with a given separator, based on: http://symphony-cms.com/download/xslt-utilities/view/22517/-->
@@ -164,8 +164,37 @@
         </tr>
     </xsl:template>
 
-    <xsl:template match="tag[@name = 'license' or @name = 'link' or @name = 'see' or @name = 'uses' or @name = 'author']" mode="tabular">
+    <xsl:template match="tag[@name = 'see' or @name = 'uses']" mode="tabular">
+        <xsl:variable name="url">
+            <xsl:choose>
+                <xsl:when test="not(contains(@link, 'http'))">
+                    <xsl:value-of select="concat($root, php:function('phpDocumentor\Plugin\Core\Xslt\Extension::path', string(@link)))" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="@link" />
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
         <tr>
+            <th><xsl:value-of select="@name"/></th>
+            <td>
+                <a href="{$url}">
+                    <xsl:choose>
+                        <xsl:when test="@description = ''">
+                            <xsl:value-of select="@link" disable-output-escaping="yes" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="@description" disable-output-escaping="yes" />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </a>
+            </td>
+        </tr>
+    </xsl:template>
+
+    <xsl:template match="tag[@name = 'license' or @name = 'link' or @name = 'author']" mode="tabular">
+         <tr>
             <th><xsl:value-of select="@name"/></th>
             <td>
                 <a href="{@link}">
