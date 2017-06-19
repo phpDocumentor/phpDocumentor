@@ -1,6 +1,8 @@
 default:
-    formatters:
-        progress: true
-    gherkin:
-        filters:
-            tags: ~roadmap-v3
+    suites:
+        core_features:
+            contexts:
+              - phpDocumentor\Behat\Contexts\EnvironmentContext:
+                  workingDir: /tmp/phpdoc-behat/core
+              - phpDocumentor\Behat\Contexts\Ast\ApiContext
+            paths:    [ %paths.base%/tests/features/core ]
