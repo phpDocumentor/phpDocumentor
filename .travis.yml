@@ -8,6 +8,7 @@ env:
 
 script:
 - bin/phpunit
+- bin/behat
 
 install:
 - composer install --no-interaction --prefer-dist -o
