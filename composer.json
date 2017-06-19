@@ -10,6 +10,13 @@
             "Cilex\\Provider": ["src/"]
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "phpDocumentor\\Behat\\Contexts\\": [
+                "tests/features/bootstrap"
+            ]
+        }
+    },
     "require": {
         "php": ">=5.3.3",
 
