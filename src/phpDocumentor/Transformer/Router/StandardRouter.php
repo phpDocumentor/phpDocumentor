@@ -88,7 +88,7 @@ class StandardRouter extends RouterAbstract
         // if this is a link to an external page; return that URL
         $this[] = new Rule(
             function ($node) {
-                return is_string($node) && (substr($node, 0, 7) == 'http://' || substr($node, 0, 7) == 'https://');
+                return is_string($node) && (substr($node, 0, 7) == 'http://' || substr($node, 0, 8) == 'https://');
             },
             function ($node) { return $node; }
         );

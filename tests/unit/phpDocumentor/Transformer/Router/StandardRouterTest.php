@@ -65,6 +65,7 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Transformer\Router\StandardRouter::__construct
      * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
      * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
      * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
