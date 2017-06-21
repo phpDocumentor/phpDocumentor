@@ -11,6 +11,7 @@
 
 namespace phpDocumentor\Plugin\Core\Xslt;
 
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Transformer\Router\Queue;
 
@@ -71,15 +72,7 @@ class Extension
      */
     public static function path($fqsen)
     {
-        $projectDescriptor = self::$descriptorBuilder->getProjectDescriptor();
-        $elementList = $projectDescriptor->getIndexes()->get('elements');
-
-        $node = $fqsen;
-        if (isset($elementList[$fqsen])) {
-            $node = $elementList[$fqsen];
-        } elseif (isset($elementList['~\\' . $fqsen])) {
-            $node = $elementList['~\\' . $fqsen];
-        }
+        $node = self::getDocumentedElement($fqsen) ?: $fqsen;
 
         $rule = self::$routers->match($node);
         if (! $rule) {
@@ -89,5 +82,51 @@ class Extension
         $generatedUrl = $rule->generate($node);
 
         return $generatedUrl ? ltrim($generatedUrl, '/') : false;
+    }
+
+    /**
+     *
+     * Example usage inside template would be (where @link is an attribute called link):
+     *
+     * ```
+     * <xsl:value-of select="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::typeOfElement', string(@link))" />
+     * ```
+     * @param string $link
+     *
+     * @return string
+     */
+    public static function typeOfElement($link)
+    {
+        if (self::getDocumentedElement($link)) {
+            return 'documented';
+        }
+
+        if (!self::getDocumentedElement($link) && filter_var($link, FILTER_VALIDATE_URL)) {
+            return 'url';
+        } else {
+            return 'undocumented';
+        }
+    }
+
+    /**
+     * Returns a Descriptor Object if the given FQSEN exists in the project.
+     *
+     * @param string $fqsen
+     *
+     * @return bool|DescriptorAbstract
+     */
+    private static function getDocumentedElement($fqsen)
+    {
+        $projectDescriptor = self::$descriptorBuilder->getProjectDescriptor();
+        $elementList = $projectDescriptor->getIndexes()->get('elements');
+        $prefixedLink = '~\\' . $fqsen;
+
+        if (isset($elementList[$fqsen])) {
+            return $elementList[$fqsen];
+        } elseif (isset($elementList[$prefixedLink])) {
+            return $elementList[$prefixedLink];
+        }
+
+        return false;
     }
 }

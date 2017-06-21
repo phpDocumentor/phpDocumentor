@@ -167,11 +167,14 @@
     <xsl:template match="tag[@name = 'see' or @name = 'uses']" mode="tabular">
         <xsl:variable name="url">
             <xsl:choose>
-                <xsl:when test="not(contains(@link, 'http'))">
+                <xsl:when test="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::typeOfElement', string(@link)) = 'documented'">
                     <xsl:value-of select="concat($root, php:function('phpDocumentor\Plugin\Core\Xslt\Extension::path', string(@link)))" />
                 </xsl:when>
-                <xsl:otherwise>
+                <xsl:when test="php:function('phpDocumentor\Plugin\Core\Xslt\Extension::typeOfElement', string(@link)) = 'url'">
                     <xsl:value-of select="@link" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="'#'" />
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
