@@ -19,7 +19,7 @@ Feature: Classes inherit information from parent classes
       """
       This is a class description.
       """
-    Then class "\C" has description:
+    And class "\C" has description:
       """
       This is a class description.
       """
