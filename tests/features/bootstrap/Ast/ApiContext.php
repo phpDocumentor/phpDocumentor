@@ -21,7 +21,6 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag;
 use PHPUnit\Framework\Assert;
 
 class ApiContext implements Context
