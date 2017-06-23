@@ -13,10 +13,7 @@
 namespace phpDocumentor\Behat\Contexts;
 
 use Behat\Behat\Context;
-use Behat\Gherkin\Node\PyStringNode;
 use FilesystemIterator;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Process\Process;
@@ -34,6 +31,7 @@ final class EnvironmentContext implements Context\Context
 
     /**
      * EnvironmentContext constructor.
+     * @param string $workingDir
      */
     public function __construct($workingDir)
     {
@@ -85,8 +83,7 @@ final class EnvironmentContext implements Context\Context
     {
         $argumentsString .= ' --template=xml';
         $argumentsString = strtr($argumentsString, array('\'' => '"'));
-//die( sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), $argumentsString . ' -vvv'));
-//         the app is always run in debug mode to catch debug information and collect the AST that is written to disk
+//      the app is always run in debug mode to catch debug information and collect the AST that is written to disk
         $this->process->setCommandLine(
             sprintf('%s %s %s', 'php', escapeshellarg($this->binaryPath), $argumentsString . ' -vvv')
         );
@@ -96,6 +93,7 @@ final class EnvironmentContext implements Context\Context
 
     /**
      * @Then /^the application must have run successfully$/
+     * @throws \Exception when exit code of phpdoc was not 0.
      */
     public function theApplicationMustHaveRunSuccessfully()
     {

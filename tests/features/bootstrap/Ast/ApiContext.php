@@ -14,7 +14,6 @@ namespace phpDocumentor\Behat\Contexts\Ast;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
-use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Behat\Contexts\EnvironmentContext;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
@@ -28,18 +27,19 @@ use PHPUnit\Framework\Assert;
 class ApiContext implements Context
 {
     /** @var EnvironmentContext */
-    private $minkContext;
+    private $environmentContext;
 
     /** @BeforeScenario */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
 
-        $this->minkContext = $environment->getContext('phpDocumentor\Behat\Contexts\EnvironmentContext');
+        $this->environmentContext = $environment->getContext('phpDocumentor\Behat\Contexts\EnvironmentContext');
     }
 
     /**
      * @Then /^the AST has a class named "([^"]*)" in file "([^"]*)"$/
+     * @throws \Exception
      */
     public function theASTHasAclassNamedInFile($class, $file)
     {
@@ -50,7 +50,7 @@ class ApiContext implements Context
 
         /** @var ClassDescriptor $classDescriptor */
         foreach ($fileDescriptor->getClasses() as $classDescriptor) {
-            if ($classDescriptor->getName() == $class) {
+            if ($classDescriptor->getName() === $class) {
                 return;
             }
         }
@@ -60,6 +60,7 @@ class ApiContext implements Context
 
     /**
      * @Then /^the class named "([^"]*)" is in the default package$/
+     * @throws \Exception
      */
     public function theASTHasAClassInDefaultPackage($class)
     {
@@ -85,6 +86,7 @@ class ApiContext implements Context
      * @param $docElement
      * @param $value
      * @Then class ":classFqsen" has :docElement:
+     * @throws \Exception
      */
     public function classHasDocblockContent($classFqsen, $docElement, PyStringNode $value)
     {
@@ -97,7 +99,6 @@ class ApiContext implements Context
 
     /**
      * @param $classFqsen
-     * @param $docElement
      * @param $value
      * @Then class ":classFqsen" has version :value
      */
@@ -117,7 +118,7 @@ class ApiContext implements Context
 
     /**
      * @param $classFqsen
-     * @param $tag
+     * @param $tagName
      * @Then class ":classFqsen" without tag :tagName
      */
     public function classWithoutTag($classFqsen, $tagName)
@@ -126,8 +127,9 @@ class ApiContext implements Context
     }
 
     /**
-     * @param $classFqsen
-     * @param $tag
+     * @param string $classFqsen
+     * @param string $tagName
+     * @param int $expectedNumber
      * @Then class ":classFqsen" has exactly :expectedNumber tag :tagName
      */
     public function classHasTag($classFqsen, $tagName, $expectedNumber)
@@ -140,7 +142,6 @@ class ApiContext implements Context
      * @param string $classFqsen
      * @param string $tagName
      * @param string $method
-     * @internal param $tag
      * @Then class ":classFqsen" has a method named :method without tag :tagName
      */
     public function classHasMethodWithoutTag($classFqsen, $tagName, $method)
@@ -152,7 +153,6 @@ class ApiContext implements Context
      * @param string $classFqsen
      * @param string $tagName
      * @param string $methodName
-     * @internal param $tag
      * @Then class ":classFqsen" has a method named :method with exactly :expected tag :tagName
      */
     public function classHasMethodWithExpectedCountTag($classFqsen, $tagName, $methodName, $expectedCount)
@@ -203,14 +203,15 @@ class ApiContext implements Context
 
     /**
      * @return ProjectDescriptor|null
+     * @throws \Exception when AST file doesn't exist
      */
     protected function getAst()
     {
-        $file = $this->minkContext->getWorkingDir() . '/ast.dump';
+        $file = $this->environmentContext->getWorkingDir() . '/ast.dump';
         if (!file_exists($file)) {
             throw new \Exception(
                 'The output of phpDocumentor was not generated, this probably means that the execution failed. '
-                . 'The error output was: ' . $this->minkContext->getErrorOutput()
+                . 'The error output was: ' . $this->environmentContext->getErrorOutput()
             );
         }
 
