@@ -136,7 +136,6 @@ class RendererTest extends \PHPUnit_Framework_TestCase
         $rule = $this->givenARule('@Class::$property');
         $queue = $this->givenAQueue($rule);
         $queue->shouldReceive('match')->with('@Class::$property')->andReturn($rule);
-        $queue->shouldReceive('match')->with('@')->andReturn($rule);
         $this->renderer->setRouters($queue);
         $result = $this->renderer->convertToRootPath('@Class::$property');
 
