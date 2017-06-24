@@ -105,7 +105,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
         $queue = $this->givenAQueue($rule);
         $queue->shouldReceive('match')->andReturn($rule);
         $this->renderer->setRouters($queue);
-        $this->renderer->setDestination('/root/of/project');
+        $this->renderer->setDestination(str_replace('/', DIRECTORY_SEPARATOR,'/root/of/project'));
         $collection = new Collection(['\My\Namespace\Class']);
         $result = $this->renderer->render($collection, 'url');
 
