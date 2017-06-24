@@ -38,23 +38,22 @@ class SeeAssembler extends AssemblerAbstract
         $descriptor->setDescription($data->getDescription());
 
         $reference = $data->getReference();
+        $context = $data->getDocBlock() ? $data->getDocBlock()->getContext() : null;
 
         if (substr($reference, 0, 7) !== 'http://'
             && substr($reference, 0, 8) !== 'https://'
+            && substr($reference, 0, 6) !== 'ftp://'
             && $reference !== 'self'
             && $reference !== '$this'
+            && $reference[0] !== '\\'
         ) {
             // TODO: move this to the ReflectionDocBlock component
             // Expand FQCN part of the FQSEN
             $referenceParts = explode('::', $reference);
-            if (count($referenceParts) > 1 && $reference[0] != '\\') {
-                $type = current($referenceParts);
-                $type = new Collection(
-                    array($type),
-                    $data->getDocBlock() ? $data->getDocBlock()->getContext() : null
-                );
-                $referenceParts[0] = $type;
-            } elseif (isset($reference[0]) && $reference[0] != '\\') {
+
+            if (count($referenceParts) > 1 || $this->referenceIsNamespaceAlias($reference, $context)) {
+                $referenceParts = $this->setFirstReferencePartAsType($context, $referenceParts);
+            } elseif (isset($reference[0])) {
                 array_unshift($referenceParts, Linker::CONTEXT_MARKER);
             }
 
@@ -64,5 +63,38 @@ class SeeAssembler extends AssemblerAbstract
         $descriptor->setReference($reference);
 
         return $descriptor;
+    }
+
+    /**
+     * @param $context
+     * @param $referenceParts
+     * @return mixed
+     */
+    private function setFirstReferencePartAsType($context, $referenceParts)
+    {
+        $type = current($referenceParts);
+        $type = new Collection(
+            array($type),
+            $context
+        );
+        $referenceParts[0] = $type;
+        return $referenceParts;
+    }
+
+    /**
+     * When you have a relative reference to a class, we need to check if this class exists in the namespace aliases
+     *
+     * @param $reference
+     * @param $context
+     * @return bool
+     */
+    private function referenceIsNamespaceAlias($reference, $context)
+    {
+        /** @var \phpDocumentor\Reflection\DocBlock\Context $context*/
+        foreach ($context->getNamespaceAliases() as $alias) {
+            if (substr($alias, -strlen($reference), strlen($reference)) === $reference) {
+                return true;
+            }
+        }
     }
 }
