@@ -212,6 +212,7 @@ class Renderer
             && $url[0] != '/'
             && (strpos($url, 'http://') !== 0)
             && (strpos($url, 'https://') !== 0)
+            && (strpos($url, 'ftp://') !== 0)
         ) {
             $url = $this->convertToRootPath($url);
         }
