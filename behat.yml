@@ -5,4 +5,5 @@ default:
               - phpDocumentor\Behat\Contexts\EnvironmentContext:
                   workingDir: /tmp/phpdoc-behat/core
               - phpDocumentor\Behat\Contexts\Ast\ApiContext
+              - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
             paths:    [ %paths.base%/tests/features/core ]

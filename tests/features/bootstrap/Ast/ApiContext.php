@@ -25,19 +25,8 @@ use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use PHPUnit\Framework\Assert;
 
-class ApiContext implements Context
+class ApiContext extends BaseContext implements Context
 {
-    /** @var EnvironmentContext */
-    private $environmentContext;
-
-    /** @BeforeScenario */
-    public function gatherContexts(BeforeScenarioScope $scope)
-    {
-        $environment = $scope->getEnvironment();
-
-        $this->environmentContext = $environment->getContext('phpDocumentor\Behat\Contexts\EnvironmentContext');
-    }
-
     /**
      * @Then /^the AST has a class named "([^"]*)" in file "([^"]*)"$/
      * @throws \Exception
@@ -197,66 +186,6 @@ class ApiContext implements Context
         static::AssertTagCount($method, $tagName, $expectedCount);
     }
 
-
-    /**
-     * @param string $classFqsen
-     * @param $reference
-     * @throws \Exception
-     * @Then class ":classFqsen" has a tag see referencing url ":reference"
-     */
-    public function classHasTagSeeReferencingUrl($classFqsen, $reference)
-    {
-        $class = $this->findClassByFqsen($classFqsen);
-        $seeTags = $class->getTags()->get('see', new Collection());
-        /** @var SeeTag $tag */
-        foreach ($seeTags as $tag) {
-            if ($tag->getReference() === $reference) {
-                return;
-            }
-        }
-
-        throw new \Exception(sprintf('Missing see tag with reference "%s"', $reference));
-    }
-
-    /**
-     * @param string $classFqsen
-     * @param $element
-     * @param $reference
-     * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference"
-     */
-    public function classHasTagSeeReferencing($classFqsen, $number, $element, $reference)
-    {
-        $this->classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, new PyStringNode([],0));
-    }
-
-    /**
-     * @param string $classFqsen
-     * @param $element
-     * @param $reference
-     * @param $description
-     * @throws \Exception
-     * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference" with description:
-     */
-    public function classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, PyStringNode $description)
-    {
-        $count = 0;
-        $class = $this->findClassByFqsen($classFqsen);
-        $seeTags = $class->getTags()->get('see', new Collection());
-        $element = '\\phpDocumentor\\Descriptor\\' .ucfirst($element) . 'Descriptor';
-        /** @var SeeTag $tag */
-        foreach ($seeTags as $tag) {
-            $r = $tag->getReference();
-            if ($r instanceof $element
-                && $r->getFullyQualifiedStructuralElementName() === $reference
-                && $tag->getDescription() === $description->getRaw()
-            ) {
-                $count++;
-            }
-        }
-
-        Assert::assertEquals($number, $count, sprintf('Missing see tag with reference "%s"', $reference));
-    }
-
     /**
      * @param string $className
      * @return ClassDescriptor
@@ -274,43 +203,6 @@ class ApiContext implements Context
         }
 
         throw new \Exception(sprintf('Didn\'t find expected class "%s"', $className));
-    }
-
-    /**
-     * @param string $classFqsen
-     * @return ClassDescriptor
-     * @throws \Exception
-     */
-    private function findClassByFqsen($classFqsen)
-    {
-        $ast = $this->getAst();
-        foreach ($ast->getFiles() as $file) {
-            /** @var ClassDescriptor $classDescriptor */
-            foreach ($file->getClasses() as $classDescriptor) {
-                if ($classDescriptor->getFullyQualifiedStructuralElementName() === $classFqsen) {
-                    return $classDescriptor;
-                }
-            }
-        }
-
-        throw new \Exception(sprintf('Didn\'t find expected class "%s"', $classFqsen));
-    }
-
-    /**
-     * @return ProjectDescriptor|null
-     * @throws \Exception when AST file doesn't exist
-     */
-    protected function getAst()
-    {
-        $file = $this->environmentContext->getWorkingDir() . '/ast.dump';
-        if (!file_exists($file)) {
-            throw new \Exception(
-                'The output of phpDocumentor was not generated, this probably means that the execution failed. '
-                . 'The error output was: ' . $this->environmentContext->getErrorOutput()
-            );
-        }
-
-        return unserialize(file_get_contents($file));
     }
 
     /**
