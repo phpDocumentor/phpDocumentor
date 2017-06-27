@@ -5,10 +5,11 @@
  *  For the full copyright and license information, please view the LICENSE
  *  file that was distributed with this source code.
  *
- *  @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
- *  @license   http://www.opensource.org/licenses/mit-license.php MIT
- *  @link      http://phpdoc.org
+ * @copyright 2010-2017 Mike van Riel<mike@phpdoc.org>
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
@@ -21,6 +22,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use PHPUnit\Framework\Assert;
 
 class ApiContext implements Context
@@ -98,6 +100,39 @@ class ApiContext implements Context
 
     /**
      * @param $classFqsen
+     * @param $elementType
+     * @param $elementName
+     * @param $docElement
+     * @param PyStringNode $value
+     * @Then class ":classFqsen" has :elementType :elementName with :docElement:
+     */
+    public function classHasElementWithDocblockContent($classFqsen, $elementType, $elementName, $docElement, PyStringNode $value)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+
+        switch ($elementType) {
+            case 'method':
+            case 'constant':
+                $method = $method = 'get' . $elementType . 's';
+                break;
+            case 'property':
+                $method = 'getProperties';
+                break;
+            default:
+                $method = 'get' . $elementType;
+                break;
+        }
+
+        $element = $class-> $method()->get($elementName);
+
+        $method = 'get' . $docElement;
+        $actual = $element->$method();
+
+        Assert::assertEquals($value->getRaw(), $actual);
+    }
+
+    /**
+     * @param $classFqsen
      * @param $value
      * @Then class ":classFqsen" has version :value
      */
@@ -107,7 +142,7 @@ class ApiContext implements Context
 
         /** @var VersionDescriptor $tag */
         foreach ($class->getVersion() as $tag) {
-            if($tag->getVersion() === $value) {
+            if ($tag->getVersion() === $value) {
                 return;
             }
         }
@@ -162,12 +197,73 @@ class ApiContext implements Context
         static::AssertTagCount($method, $tagName, $expectedCount);
     }
 
+
+    /**
+     * @param string $classFqsen
+     * @param $reference
+     * @throws \Exception
+     * @Then class ":classFqsen" has a tag see referencing url ":reference"
+     */
+    public function classHasTagSeeReferencingUrl($classFqsen, $reference)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        $seeTags = $class->getTags()->get('see', new Collection());
+        /** @var SeeTag $tag */
+        foreach ($seeTags as $tag) {
+            if ($tag->getReference() === $reference) {
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf('Missing see tag with reference "%s"', $reference));
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param $element
+     * @param $reference
+     * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference"
+     */
+    public function classHasTagSeeReferencing($classFqsen, $number, $element, $reference)
+    {
+        $this->classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, new PyStringNode([],0));
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param $element
+     * @param $reference
+     * @param $description
+     * @throws \Exception
+     * @Then class ":classFqsen" has :number tag/tags see referencing :element descriptor ":reference" with description:
+     */
+    public function classHasTagSeeReferencingWithDescription($classFqsen, $number, $element, $reference, PyStringNode $description)
+    {
+        $count = 0;
+        $class = $this->findClassByFqsen($classFqsen);
+        $seeTags = $class->getTags()->get('see', new Collection());
+        $element = '\\phpDocumentor\\Descriptor\\' .ucfirst($element) . 'Descriptor';
+        /** @var SeeTag $tag */
+        foreach ($seeTags as $tag) {
+            $r = $tag->getReference();
+            if ($r instanceof $element
+                && $r->getFullyQualifiedStructuralElementName() === $reference
+                && $tag->getDescription() === $description->getRaw()
+            ) {
+                $count++;
+            }
+        }
+
+        Assert::assertEquals($number, $count, sprintf('Missing see tag with reference "%s"', $reference));
+    }
+
     /**
      * @param string $className
      * @return ClassDescriptor
      * @throws \Exception
      */
-    private function findClassByName($className) {
+    private function findClassByName($className)
+    {
         $ast = $this->getAst();
         foreach ($ast->getFiles() as $file) {
             foreach ($file->getClasses() as $classDescriptor) {
