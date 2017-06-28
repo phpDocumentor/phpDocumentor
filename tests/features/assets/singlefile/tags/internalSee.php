@@ -129,7 +129,7 @@ class TestSeeTagIssue
     const CONSTANT = 1;
 
     /**
-     * Class to check if see tags are working correctly
+     * Property to check if see tags are working correctly
      *
      * Inline see to same class relative {@see TestSeeTagIssue}
      * Inline see to same class absolute {@see \phpDocumentor\Descriptor\TestSeeTagIssue}
@@ -192,7 +192,7 @@ class TestSeeTagIssue
     public $property;
 
     /**
-     * Class to check if see tags are working correctly
+     * Method to check if see tags are working correctly
      *
      * Inline see to same class relative {@see TestSeeTagIssue}
      * Inline see to same class absolute {@see \phpDocumentor\Descriptor\TestSeeTagIssue}
