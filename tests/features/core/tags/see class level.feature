@@ -7,12 +7,12 @@ Feature:
     Given A single file named "test.php" based on "tags/internalSee.php"
     When I run "phpdoc -f test.php"
 
-  Scenario: class level self linking to external urls (http and https)
+  Scenario: class level linking to external urls (http and https)
     Then class "\phpDocumentor\Descriptor\TestSeeTagIssue" has a tag see referencing url "http://www.phpdoc.org"
     And class "\phpDocumentor\Descriptor\TestSeeTagIssue" has a tag see referencing url "https://www.phpdoc.org"
     And class "\phpDocumentor\Descriptor\TestSeeTagIssue" has a tag see referencing url "http://www.phpdoc.org/docs/latest/references/phpdoc/tags/uses.html"
 
-  Scenario: class level self linking to external url (Ftp)
+  Scenario: class level linking to external url (Ftp)
     Then class "\phpDocumentor\Descriptor\TestSeeTagIssue" has a tag see referencing url "ftp://somesite.nl"
 
   Scenario: class level self reference without description
