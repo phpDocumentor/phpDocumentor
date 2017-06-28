@@ -48,7 +48,7 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
         $name = 'see';
         $description = 'a see tag';
         $reference = 'ReferenceClass';
-        $context = $this->givenAContext([]);
+        $context = $this->givenAContext([$reference => '\My\Namespace\Alias\AnotherClass']);
         $docBlock = $this->givenADocBlock($context);
 
         $seeTagMock = $this->givenASeeTag($name, $description, $reference, $docBlock);

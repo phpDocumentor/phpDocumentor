@@ -92,7 +92,7 @@ class SeeAssembler extends AssemblerAbstract
     {
         /** @var \phpDocumentor\Reflection\DocBlock\Context $context*/
         foreach ($context->getNamespaceAliases() as $alias) {
-            if (substr($alias, -strlen($reference))) {
+            if (substr($alias, -strlen($reference)) === $reference) {
                 return true;
             }
         }
