@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
+use phpDocumentor\Reflection\DocBlock\Context;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
@@ -47,7 +48,6 @@ class SeeAssembler extends AssemblerAbstract
             && $reference !== '$this'
             && $reference[0] !== '\\'
         ) {
-            // TODO: move this to the ReflectionDocBlock component
             // Expand FQCN part of the FQSEN
             $referenceParts = explode('::', $reference);
 
@@ -66,9 +66,9 @@ class SeeAssembler extends AssemblerAbstract
     }
 
     /**
-     * @param $context
-     * @param $referenceParts
-     * @return mixed
+     * @param Context $context
+     * @param string[] $referenceParts
+     * @return array The returned array will consist of a Collection object with the type, and strings for methods, etc.
      */
     private function setFirstReferencePartAsType($context, $referenceParts)
     {
@@ -84,15 +84,15 @@ class SeeAssembler extends AssemblerAbstract
     /**
      * When you have a relative reference to a class, we need to check if this class exists in the namespace aliases
      *
-     * @param $reference
-     * @param $context
+     * @param string $reference
+     * @param Context $context
      * @return bool
      */
     private function referenceIsNamespaceAlias($reference, $context)
     {
         /** @var \phpDocumentor\Reflection\DocBlock\Context $context*/
         foreach ($context->getNamespaceAliases() as $alias) {
-            if (substr($alias, -strlen($reference), strlen($reference)) === $reference) {
+            if (substr($alias, -strlen($reference))) {
                 return true;
             }
         }

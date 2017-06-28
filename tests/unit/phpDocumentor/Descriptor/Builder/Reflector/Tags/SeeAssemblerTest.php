@@ -18,7 +18,8 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
  *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler::<private>
+ * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
+ * @covers ::<private>
  */
 class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +40,7 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler::create
+     * @covers ::create
      */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses()
     {
@@ -63,7 +64,7 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler::create
+     * @covers ::create
      */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameInNamespaceAliases()
     {
@@ -87,7 +88,7 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler::create
+     * @covers ::create
      * @dataProvider provideReferences
      */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference)
@@ -111,7 +112,7 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler::create
+     * @covers ::create
      */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceHasMultipleParts()
     {

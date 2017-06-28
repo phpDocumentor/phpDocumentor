@@ -19,7 +19,8 @@ use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 /**
  * Test class for phpDocumentor\Transformer\Router\Renderer
  *
- * @covers \phpDocumentor\Transformer\Router\Renderer::<protected>
+ * @coversDefaultClass \phpDocumentor\Transformer\Router\Renderer
+ * @covers ::<protected>
  */
 class RendererTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,8 +42,8 @@ class RendererTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::__construct
-     * @covers \phpDocumentor\Transformer\Router\Renderer::getRouters
+     * @covers ::__construct
+     * @covers ::getRouters
      */
     public function testConstructRenderer()
     {
@@ -52,9 +53,9 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::__construct
-     * @covers \phpDocumentor\Transformer\Router\Renderer::getRouters
-     * @covers \phpDocumentor\Transformer\Router\Renderer::setRouters
+     * @covers ::__construct
+     * @covers ::getRouters
+     * @covers ::setRouters
      */
     public function testGetAndSetRouters()
     {
@@ -81,8 +82,8 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::render
-     * @covers \phpDocumentor\Transformer\Router\Renderer::convertToRootPath
+     * @covers ::render
+     * @covers ::convertToRootPath
      */
     public function testRenderWithFqsenAndRepresentationUrl()
     {
@@ -96,8 +97,8 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::render
-     * @covers \phpDocumentor\Transformer\Router\Renderer::convertToRootPath
+     * @covers ::render
+     * @covers ::convertToRootPath
      */
     public function testRenderWithCollectionOfFqsensAndRepresentationUrl()
     {
@@ -113,8 +114,8 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::render
-     * @covers \phpDocumentor\Transformer\Router\Renderer::convertToRootPath
+     * @covers ::render
+     * @covers ::convertToRootPath
      */
     public function testRenderWithUrlAndNoRuleMatch()
     {
@@ -129,7 +130,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::convertToRootPath
+     * @covers ::convertToRootPath
      */
     public function testConvertToRootPathWithUrlAndAtSignInRelativePath()
     {
@@ -143,8 +144,8 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::render
-     * @covers \phpDocumentor\Transformer\Router\Renderer::convertToRootPath
+     * @covers ::render
+     * @covers ::convertToRootPath
      */
     public function testRenderWithCollectionDescriptorWithNameIsNotArrayAndRepresentationUrl()
     {
@@ -160,8 +161,8 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::render
-     * @covers \phpDocumentor\Transformer\Router\Renderer::convertToRootPath
+     * @covers ::render
+     * @covers ::convertToRootPath
      */
     public function testRenderWithCollectionDescriptorWithNameIsArrayAndRepresentationUrl()
     {
@@ -176,7 +177,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::render
+     * @covers ::render
      */
     public function testRenderWithFqsenAndRepresentationClassShort()
     {
@@ -190,7 +191,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Transformer\Router\Renderer::render
+     * @covers ::render
      * @dataProvider provideUrls
      */
     public function testRenderWithUrl($url)
@@ -205,16 +206,18 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * $param string $returnValue
      * @return m\MockInterface
      */
     protected function givenARule($returnValue)
     {
-        $rule = m::mock('phpDocumentor\Transformer\Router');
+        $rule = m::mock('phpDocumentor\Transformer\Router\Rule');
         $rule->shouldReceive('generate')->andReturn($returnValue);
         return $rule;
     }
 
     /**
+     * @param string $name
      * @return CollectionDescriptor
      */
     protected function givenACollectionDescriptor($name)
@@ -227,7 +230,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $rule
+     * @param Rule $rule
      * @return m\MockInterface
      */
     private function givenAQueue($rule)
