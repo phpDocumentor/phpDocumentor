@@ -33,7 +33,7 @@
         "symfony/event-dispatcher": "~2.1",
         "symfony/stopwatch":        "~2.3",
         "symfony/config":           "~2.3",
-        "jms/serializer":           ">=0.12",
+        "jms/serializer":           "~1.7",
 
         "herrera-io/phar-update": "1.0.3",
 
