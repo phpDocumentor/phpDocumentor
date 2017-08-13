@@ -1,14 +1,20 @@
 language: php
-php: [ 5.4, 5.5, 5.6, 7.0, 7.1, nightly ]
+php: [5.6, 7.0, 7.1, 7.2, nightly ]
 sudo: false
 
+matrix:
+    include:
+      - php: 5.4
+        env: BEHAT_FILTER="--suite=core_features"
+      - php: 5.5
+        env: BEHAT_FILTER="--suite=core_features"
 env:
   global:
     - VERSION=$(echo $TRAVIS_TAG | cut -c 2-10)
 
 script:
 - bin/phpunit
-- bin/behat
+- bin/behat $BEHAT_FILTER
 
 install:
 - composer install --no-interaction --prefer-dist -o

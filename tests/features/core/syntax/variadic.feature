@@ -1,5 +1,6 @@
 Feature: Phpdocumentor is able to process varidict parameters
 
+  @php5.6+
   Scenario:
     Given A single file named "test.php" based on "syntax/variadic.php"
     When I run "phpdoc -f test.php"
