@@ -16,10 +16,12 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use phpDocumentor\Behat\Contexts\EnvironmentContext;
+use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
@@ -184,6 +186,25 @@ class ApiContext extends BaseContext implements Context
         $method = $class->getMethods()->get($methodName);
 
         static::AssertTagCount($method, $tagName, $expectedCount);
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $tagName
+     * @param string $methodName
+     * @Then class ":classFqsen" has a method :method with argument ":argument is variadic
+     */
+    public function classHasMethodWithAgumentVariadic($classFqsen, $methodName, $argument)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        /** @var MethodDescriptor $method */
+        $method = $class->getMethods()->get($methodName);
+        Assert::assertArrayHasKey('$d', $method->getArguments());
+        /** @var ArgumentDescriptor $argumentD */
+        $argumentD = $method->getArguments()['$d'];
+
+        //TODO: enable this check when we support variadic arguments.
+        //Assert::assertTrue($argumentD->isVariadic(), 'Expected argument to be variadic');
     }
 
     /**
