@@ -7,3 +7,14 @@ default:
               - phpDocumentor\Behat\Contexts\Ast\ApiContext
               - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
             paths:    [ %paths.base%/tests/features/core ]
+            filters:
+                tags: ~@php5.6+
+        php56_features:
+            contexts:
+              - phpDocumentor\Behat\Contexts\EnvironmentContext:
+                  workingDir: /tmp/phpdoc-behat/core
+              - phpDocumentor\Behat\Contexts\Ast\ApiContext
+              - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
+            paths:    [ %paths.base%/tests/features/core ]
+            filters:
+                tags: @php5.6+
