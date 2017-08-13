@@ -119,7 +119,7 @@ class ApiContext extends BaseContext implements Context
         $method = 'get' . $docElement;
         $actual = $element->$method();
 
-        Assert::assertEquals($value->getRaw(), $actual);
+        Assert::assertEquals($value->getRaw(), $actual,  sprintf('"%s" does not match "%s"', $actual, $value->getRaw()));
     }
 
     /**
