@@ -15,8 +15,10 @@ environment:
   matrix:
     - PHP_VERSION: '5.4.45'
       VC_VERSION: 'VC9'
+      BEHAT_FLAGS: '--suite=core_features'
     - PHP_VERSION: '5.5.37'
       VC_VERSION: 'VC11'
+      BEHAT_FLAGS: '--suite=core_features'
     - PHP_VERSION: '5.6.29'
       VC_VERSION: 'VC11'
     - PHP_VERSION: '7.0.18'
@@ -59,4 +61,4 @@ install:
 test_script:
   - cd c:\phpdocumentor
   - bin/phpunit
-  - bin/behat
+  - bin/behat %BEHAT_FLAGS%
