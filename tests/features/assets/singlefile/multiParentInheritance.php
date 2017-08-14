@@ -17,7 +17,6 @@ interface ExampleInterface
      *
      * @param \stdClass $object The object
      * @return bool
-     * @internal
      */
     public function doSomething(\stdClass $object);
 }
