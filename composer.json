@@ -35,8 +35,6 @@
         "symfony/config":           "~2.3",
         "jms/serializer":           ">=0.12 < 1.8.0",
 
-        "herrera-io/phar-update": "1.0.3",
-
         "zendframework/zend-stdlib":         "~2.1",
         "zendframework/zend-servicemanager": "~2.1",
         "zendframework/zend-config":         "~2.1",
@@ -49,7 +47,8 @@
         "phpdocumentor/fileset":             "~1.0",
         "phpdocumentor/reflection":          "^3.0",
         "phpdocumentor/reflection-docblock": "~2.0",
-        "webmozart/assert": "^1.2"
+        "webmozart/assert": "^1.2",
+        "padraic/phar-updater": "^1.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
