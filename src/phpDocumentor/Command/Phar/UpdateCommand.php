@@ -11,14 +11,15 @@
 
 namespace phpDocumentor\Command\Phar;
 
-use Herrera\Json\Exception\FileException;
-use Herrera\Phar\Update\Manager;
-use Herrera\Phar\Update\Manifest;
+use \Exception;
+use Humbug\SelfUpdate\Strategy\GithubStrategy;
+use Humbug\SelfUpdate\Updater;
+use phpDocumentor\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Updates phpDocumentor.phar to the latest version.
@@ -29,7 +30,6 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 class UpdateCommand extends Command
 {
-    const MANIFEST_FILE = 'http://www.phpdoc.org/get/manifest.json';
 
     /**
      * Initializes this command and sets the name, description, options and arguments.
@@ -40,13 +40,13 @@ class UpdateCommand extends Command
     {
         $this->setName('phar:update')
             ->setAliases(array('selfupdate', 'self-update'))
-            ->setDescription('Updates phpDocumentor.phar to the indicated version or the latest if none is specified')
-            ->addArgument(
-                'version',
-                InputArgument::OPTIONAL,
-                'Updates to version-number (i.e. 2.6.0). When omitted phpDocumentor will update to the latest version'
+            ->setDescription('Updates the binary with the latest version.')
+            ->addOption(
+                'rollback',
+                null,
+                InputOption::VALUE_NONE,
+                'Rollsback the updated binary to the last version.'
             )
-            ->addOption('major', 'm', InputOption::VALUE_NONE, 'Lock to current major version')
             ->addOption('pre', 'p', InputOption::VALUE_NONE, 'Allow pre-release version update');
     }
 
@@ -62,63 +62,56 @@ class UpdateCommand extends Command
     {
         $output->writeln('Looking for updates...');
 
-        $manager         = $this->createManager($output);
-        $version         = $input->getArgument('version')
-            ? $input->getArgument('version')
-            : $this->getApplication()->getVersion();
-        $allowMajor      = $input->getOption('major');
+
         $allowPreRelease = $input->getOption('pre');
 
-        if (strpos($version, 'v') === 0) {
-            // strip v tag from phar version for self-update
-            $version = str_replace('v', '', $version);
+        if (PHP_VERSION_ID < 50600) {
+            $message = 'Self updating is not available in PHP versions under 5.6.' . "\n";
+            $message .= 'The latest version can be found at ' . self::PHAR_URL;
+            $output->writeln(sprintf('<error>%s</error>', $message));
+            return 1;
+        } elseif (Application::VERSION === ('@' . 'package_version' . '@')) {
+            $output->writeln('<error>Self updating has been disabled in source version.</error>');
+            return 1;
         }
 
-        $this->updateCurrentVersion($manager, $version, $allowMajor, $allowPreRelease, $output);
+        $exitCode = 1;
 
-        return 0;
-    }
+        $updater = new Updater();
+        $updater->setStrategy(Updater::STRATEGY_GITHUB);
+        $updater->getStrategy()->setPackageName('phpdocumentor/phpDocumentor2');
+        $updater->getStrategy()->setPharName('phpDocumentor.phar');
+        $updater->getStrategy()->getCurrentLocalVersion(Application::$VERSION);
 
-    /**
-     * Returns manager instance or exit with status code 1 on failure.
-     *
-     * @param OutputInterface $output
-     *
-     * @return \Herrera\Phar\Update\Manager
-     */
-    private function createManager(OutputInterface $output)
-    {
+        if ($allowPreRelease) {
+            $updater->getStrategy()->setStability(GithubStrategy::ANY);
+        }
+
         try {
-            return new Manager(Manifest::loadFile(self::MANIFEST_FILE));
-        } catch (FileException $e) {
-            $output->writeln('<error>Unable to search for updates.</error>');
+            if ($input->getOption('rollback')) {
+                $output->writeln('Rolling back to previous version...');
+                $result = $updater->rollback();
+            } else {
+                if (!$updater->hasUpdate()) {
+                    $output->writeln('No new version available.');
+                    return 0;
+                }
 
-            exit(1);
-        }
-    }
+                $output->writeln('Updating to newer version...');
+                $result = $updater->update();
+            }
 
-    /**
-     * Updates current version.
-     *
-     * @param Manager         $manager
-     * @param string          $version
-     * @param bool|null       $allowMajor
-     * @param bool|null       $allowPreRelease
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
-    private function updateCurrentVersion(
-        Manager $manager,
-        $version,
-        $allowMajor,
-        $allowPreRelease,
-        OutputInterface $output
-    ) {
-        if ($manager->update($version, $allowMajor, $allowPreRelease)) {
-            $output->writeln('<info>Updated to latest version.</info>');
-        } else {
-            $output->writeln('<comment>Already up-to-date.</comment>');
+            if ($result) {
+                $new = $updater->getNewVersion();
+                $old = $updater->getOldVersion();
+
+                $output->writeln(sprintf('Updated from %s to %s', $old, $new));
+                $exitCode = 0;
+            }
+        } catch (Exception $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
         }
+
+        return $exitCode;
     }
 }
