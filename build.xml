@@ -92,7 +92,7 @@
     <!-- Generate behat results -->
     <target name="build:behat" description="Run BDD tests for phpDocumentor">
         <exec executable="php" dir="${project.basedir}" checkreturn="true" passthru="true">
-            <arg line="bin/behat --no-paths -f progress" />
+            <arg line="bin/behat -f progress" />
         </exec>
     </target>
 
