@@ -29,34 +29,37 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     /** @var \Cilex\Application $application */
     protected $application = null;
 
-    /** @var ProjectDescriptorBuilder  */
-    protected $projectDescriptorBuilder;
-
     /**
      * Setup test fixture and mocks used in this TestCase
      */
     protected function setUp()
     {
         $this->application = new Application('test');
-        $this->projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-        $this->application['descriptor.builder'] = $this->projectDescriptorBuilder;
-        $this->application['serializer'] = m::mock('JMS\Serializer\Serializer');
 
-        $configuration = new \phpDocumentor\Configuration();
+        $projectDescriptorBuilder = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
+        $serializer = m::mock('JMS\Serializer\Serializer');
+
+        $transformer = m::mock('phpDocumentor\Transformer\Transformer');
+        $transformer->shouldReceive('getExternalClassDocumentation')->andReturn([]);
+
+        $configuration = m::mock('\phpDocumentor\Configuration');
+        $configuration->shouldReceive('getTransformer')->andReturn($transformer);
+
         $finder = m::mock('\phpDocumentor\Descriptor\Example\Finder');
-        $this->application['config'] = $configuration;
-        $this->application['parser.example.finder'] = $finder;
-
         $logger = m::mock('\monolog\Logger');
-        $this->application['monolog'] = $logger;
-
         $analyzer = m::mock('\phpDocumentor\Descriptor\ProjectAnalyzer');
-        $this->application['descriptor.analyzer'] = $analyzer;
 
         $loggerHelper = m::mock('\phpDocumentor\Command\Helper\LoggerHelper');
         $loggerHelper->shouldReceive('getName')->andReturn('phpdocumentor_logger');
         $loggerHelper->shouldReceive('setHelperSet');
         $loggerHelper->shouldReceive('addOptions');
+
+        $this->application['descriptor.builder'] = $projectDescriptorBuilder;
+        $this->application['serializer'] = $serializer;
+        $this->application['config'] = $configuration;
+        $this->application['parser.example.finder'] = $finder;
+        $this->application['monolog'] = $logger;
+        $this->application['descriptor.analyzer'] = $analyzer;
         $this->application['console']->getHelperSet()->set($loggerHelper);
 
         $this->fixture = new ServiceProvider();
