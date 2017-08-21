@@ -231,13 +231,21 @@
                                 <dd><a href="{{ (tag.reference|route('url')) ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
                             {% endfor %}
                         {% endfor %}
+                        {% for tagName,tags in node.tags if tagName in ['uses'] %}
+                            {% if loop.first %}
+                                <dt>Uses</dt>
+                            {% endif %}
+                            {% for tag in tags %}
+                                <dd><a href="{{ (tag.reference|route('url')) }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                            {% endfor %}
+                        {% endfor %}
 
                         {#<dt>Categories</dt>#}
                             {#<dd><a href="">Assemblers</a></dd>#}
                     </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                    {% for tagName,tags in node.tags if tagName not in ['link', 'see', 'abstract', 'example', 'method', 'property', 'property-read', 'property-write', 'package', 'subpackage'] %}
+                    {% for tagName,tags in node.tags if tagName not in ['link', 'see', 'uses', 'abstract', 'example', 'method', 'property', 'property-read', 'property-write', 'package', 'subpackage'] %}
                         <tr>
                             <th>
                                 {{ tagName }}
