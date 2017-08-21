@@ -97,6 +97,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             'phpDocumentor\Descriptor\Tag\ParamDescriptor'       => array('types'),
             'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => array('types'),
             'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => array('reference'),
+            'phpDocumentor\Descriptor\Tag\UsesDescriptor'        => array('reference'),
             'phpDocumentor\Descriptor\Type\CollectionDescriptor' => array('baseType', 'types', 'keyTypes'),
         );
 
@@ -147,6 +148,7 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 return new Router\StandardRouter($projectDescriptorBuilder);
             }
         );
+
         $app['transformer.routing.external'] = $app->share(
             function ($container) {
                 return new Router\ExternalRouter($container['config']);
