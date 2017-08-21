@@ -6,6 +6,7 @@ default:
                   workingDir: /tmp/phpdoc-behat/core
               - phpDocumentor\Behat\Contexts\Ast\ApiContext
               - phpDocumentor\Behat\Contexts\Ast\SeeTagContext
+              - phpDocumentor\Behat\Contexts\Ast\UsesTagContext
             paths:    [ %paths.base%/tests/features/core ]
             filters:
                 tags: ~@php5.6+
