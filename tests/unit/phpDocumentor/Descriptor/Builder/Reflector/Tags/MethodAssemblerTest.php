@@ -13,9 +13,14 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Reflection\Types\Void_;
 
 class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,54 +48,26 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
      * @param string   $description
      *
      * @dataProvider provideNotations
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::create
-     * @covers phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::createArgumentDescriptorForMagicMethod
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler::createArgumentDescriptorForMagicMethod
      */
     public function testCreateMethodDescriptorFromVariousNotations(
-        $notation,
         $returnType,
         $name,
         $arguments = array(),
-        $description = ''
+        $description = null
     ) {
-        $this->builder->shouldReceive('buildDescriptor')
-            ->with(
-                m::on(
-                    function (TypeCollection $value) use ($returnType) {
-                        return $value[0] == $returnType;
-                    }
-                )
-            )
-            ->andReturn(new Collection(array($returnType)));
-
-        foreach ($arguments as $argument) {
-            list($argumentType, $argumentName, $argumentDefault) = $argument;
-            $this->builder->shouldReceive('buildDescriptor')
-                ->with(
-                    m::on(
-                        function (TypeCollection $value) use ($argumentType) {
-                            return $value[0] == $argumentType;
-                        }
-                    )
-                )
-                ->andReturn(new Collection(array($argumentType)));
-        }
-
-        $tag = new MethodTag('method', $notation);
+        $tag = new Method($name, $arguments, $returnType, false, $description);
 
         $descriptor = $this->fixture->create($tag);
 
-        $this->assertSame(1, $descriptor->getResponse()->getTypes()->count());
-        $this->assertSame($returnType, $descriptor->getResponse()->getTypes()->get(0));
+        $this->assertEquals($returnType, $descriptor->getResponse()->getTypes());
         $this->assertSame($name, $descriptor->getMethodName());
         $this->assertSame($description, $descriptor->getDescription());
         $this->assertSame(count($arguments), $descriptor->getArguments()->count());
         foreach ($arguments as $argument) {
-            list($argumentType, $argumentName, $argumentDefault) = $argument;
-
-            $this->assertSame($argumentType, $descriptor->getArguments()->get($argumentName)->getTypes()->get(0));
-            $this->assertSame($argumentName, $descriptor->getArguments()->get($argumentName)->getName());
-            $this->assertSame($argumentDefault, $descriptor->getArguments()->get($argumentName)->getDefault());
+            $this->assertSame($argument['type'], $descriptor->getArguments()->get($argument['name'])->getTypes());
+            $this->assertSame($argument['name'], $descriptor->getArguments()->get($argument['name'])->getName());
         }
     }
 
@@ -103,88 +80,59 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             // just a method without a return type
-            array('myMethod()', 'void', 'myMethod'),
+            array(new Void_(), 'myMethod'),
 
             // a method with two arguments
             array(
-                'myMethod($argument1, $argument2)',
-                'void',
+                new Void_(),
                 'myMethod',
                 array(
-                    array('mixed', '$argument1', null),
-                    array('mixed', '$argument2', null),
+                    array('type' => new Mixed_(), 'name' => '$argument1'),
+                    array('type' => new Mixed_(), 'name' => '$argument2'),
                 )
             ),
 
             // a method with two arguments without dollar sign
             array(
-                'myMethod(argument1, argument2)',
-                'void',
+                new Void_(),
                 'myMethod',
                 array(
-                    array('mixed', '$argument1', null),
-                    array('mixed', '$argument2', null),
+                    array('type' => new Mixed_(), 'name' => '$argument1'),
+                    array('type' => new Mixed_(), 'name' => '$argument2'),
                 )
             ),
 
             // a method without return type, but with 2 arguments and a description
             array(
-                'myMethod($argument1, $argument2) This is a description.',
-                'void',
+                new Void_(),
                 'myMethod',
                 array(
-                    array('mixed', '$argument1', null),
-                    array('mixed', '$argument2', null),
+                    array('type' => new Mixed_(), 'name' => '$argument1'),
+                    array('type' => new Mixed_(), 'name' => '$argument2'),
                 ),
-                'This is a description.'
+                new Description('This is a description.')
             ),
 
             // a method without return type, but with 2 arguments (with types) and a description
             array(
-                'myMethod(boolean $argument1, string $argument2) This is a description.',
-                'void',
+                new Void_(),
                 'myMethod',
                 array(
-                    array('boolean', '$argument1', null),
-                    array('string', '$argument2', null),
+                    array('type' => new Boolean(), 'name' => '$argument1'),
+                    array('type' => new String_(), 'name' => '$argument2'),
                 ),
-                'This is a description.'
+                new Description('This is a description.')
             ),
 
             // a method with return type, 2 arguments (with types) and a description
             array(
-                'integer myMethod(boolean $argument1, string $argument2) This is a description.',
-                'integer',
+                new Integer(),
                 'myMethod',
                 array(
-                    array('boolean', '$argument1', null),
-                    array('string', '$argument2', null),
+                    array('type' => new Boolean(), 'name' => '$argument1'),
+                    array('type' => new String_(), 'name' => '$argument2'),
                 ),
-                'This is a description.'
-            ),
-
-            // a method with return type, 2 arguments (with types and a default value) and a description
-            array(
-                'integer myMethod(boolean $argument1, string $argument2 = \'test\') This is a description.',
-                'integer',
-                'myMethod',
-                array(
-                    array('boolean', '$argument1', null),
-                    array('string', '$argument2', '\'test\''),
-                ),
-                'This is a description.'
-            ),
-
-            // a method with return type, 2 arguments (with types and a boolean default value) and a description
-            array(
-                'integer myMethod(boolean $argument1, string $argument2 = false) This is a description.',
-                'integer',
-                'myMethod',
-                array(
-                    array('boolean', '$argument1', null),
-                    array('string', '$argument2', 'false'),
-                ),
-                'This is a description.'
+                new Description('This is a description.')
             ),
         );
     }

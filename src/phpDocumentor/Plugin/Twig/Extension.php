@@ -17,6 +17,7 @@ use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Translator\Translator;
+use Twig_Extension_GlobalsInterface;
 
 /**
  * Basic extension adding phpDocumentor specific functionality for Twig
@@ -39,7 +40,7 @@ use phpDocumentor\Translator\Translator;
  * - *sort_desc*, sorts the given objects by their Name property/getter in a descending fashion
  * - *sort_asc*, sorts the given objects by their Name property/getter in a ascending fashion
  */
-class Extension extends \Twig_Extension implements ExtensionInterface
+class Extension extends \Twig_Extension implements ExtensionInterface, Twig_Extension_GlobalsInterface
 {
     /**
      * @var ProjectDescriptor
@@ -63,16 +64,6 @@ class Extension extends \Twig_Extension implements ExtensionInterface
     {
         $this->data          = $project;
         $this->routeRenderer = new Renderer(new Queue());
-    }
-
-    /**
-     * Returns the name of this extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'phpdocumentor';
     }
 
     /**

@@ -13,18 +13,20 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\Example\Finder;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler class.
  */
 class ExampleAssemblerTest extends \PHPUnit_Framework_TestCase
 {
-    const EXAMPLE_FILE_PATH     = 'examples/example.txt';
+    const EXAMPLE_FILE_PATH = 'examples/example.txt';
     const EXAMPLE_STARTING_LINE = 10;
-    const EXAMPLE_LINE_COUNT    = 5;
-    const EXAMPLE_DESCRIPTION   = 'This is a description';
-    const EXAMPLE_TEXT          = 'This is an example';
-    const TAG_NAME              = 'example';
+    const EXAMPLE_LINE_COUNT = 5;
+    const EXAMPLE_DESCRIPTION = 'This is a description';
+    const EXAMPLE_TEXT = 'This is an example';
+    const TAG_NAME = 'example';
 
     /** @var ExampleAssembler */
     private $fixture;
@@ -37,7 +39,7 @@ class ExampleAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->finderMock = m::mock('phpDocumentor\Descriptor\Example\Finder');
+        $this->finderMock = m::mock(ExampleFinder::class);
         $this->fixture = new ExampleAssembler($this->finderMock);
     }
 
@@ -52,12 +54,12 @@ class ExampleAssemblerTest extends \PHPUnit_Framework_TestCase
 
         $descriptor = $this->fixture->create($exampleTagMock);
 
-        $this->assertSame($descriptor->getName(), self::TAG_NAME);
-        $this->assertSame($descriptor->getDescription(), self::EXAMPLE_DESCRIPTION);
-        $this->assertSame($descriptor->getFilePath(), self::EXAMPLE_FILE_PATH);
-        $this->assertSame($descriptor->getStartingLine(), self::EXAMPLE_STARTING_LINE);
-        $this->assertSame($descriptor->getLineCount(), self::EXAMPLE_LINE_COUNT);
-        $this->assertSame($descriptor->getExample(), self::EXAMPLE_TEXT);
+        $this->assertSame(self::TAG_NAME, $descriptor->getName());
+        $this->assertSame(self::EXAMPLE_DESCRIPTION, $descriptor->getDescription());
+        $this->assertSame(self::EXAMPLE_FILE_PATH, $descriptor->getFilePath());
+        $this->assertSame(self::EXAMPLE_STARTING_LINE, $descriptor->getStartingLine());
+        $this->assertSame(self::EXAMPLE_LINE_COUNT, $descriptor->getLineCount());
+        $this->assertSame(self::EXAMPLE_TEXT, $descriptor->getExample());
     }
 
     /**
@@ -76,12 +78,13 @@ class ExampleAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     private function givenExampleTagWithTestData()
     {
-        $exampleTagMock = m::mock('phpDocumentor\Reflection\DocBlock\Tag\ExampleTag');
-        $exampleTagMock->shouldReceive('getName')->andReturn(self::TAG_NAME);
-        $exampleTagMock->shouldReceive('getFilePath')->andReturn(self::EXAMPLE_FILE_PATH);
-        $exampleTagMock->shouldReceive('getStartingLine')->andReturn(self::EXAMPLE_STARTING_LINE);
-        $exampleTagMock->shouldReceive('getLineCount')->andReturn(self::EXAMPLE_LINE_COUNT);
-        $exampleTagMock->shouldReceive('getDescription')->andReturn(self::EXAMPLE_DESCRIPTION);
+        $exampleTagMock = new Example(
+            self::EXAMPLE_FILE_PATH,
+            false,
+            self::EXAMPLE_STARTING_LINE,
+            self::EXAMPLE_LINE_COUNT,
+            self::EXAMPLE_DESCRIPTION
+        );
 
         return $exampleTagMock;
     }

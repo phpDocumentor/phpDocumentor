@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\VersionTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Version;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@version` tag.
@@ -26,7 +27,7 @@ class VersionAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param VersionTag $data
+     * @param Version $data
      *
      * @return VersionDescriptor
      */

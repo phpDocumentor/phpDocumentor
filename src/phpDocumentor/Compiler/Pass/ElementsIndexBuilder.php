@@ -145,6 +145,6 @@ class ElementsIndexBuilder implements CompilerPassInterface
      */
     protected function getIndexKey($element)
     {
-        return $element->getFullyQualifiedStructuralElementName();
+        return (string)$element->getFullyQualifiedStructuralElementName();
     }
 }

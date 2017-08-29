@@ -15,8 +15,8 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@method` tag.
@@ -29,7 +29,7 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param MethodTag $data
+     * @param Method $data
      *
      * @return MethodDescriptor
      */
@@ -41,11 +41,11 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setStatic($data->isStatic());
 
         $response = new ReturnDescriptor('return');
-        $response->setTypes($this->builder->buildDescriptor(new Collection($data->getTypes())));
+        $response->setTypes($data->getReturnType());
         $descriptor->setResponse($response);
 
         foreach ($data->getArguments() as $argument) {
-            $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod($argument);
+            $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod($argument['name'], $argument['type']);
             $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 
@@ -56,51 +56,16 @@ class MethodAssembler extends AssemblerAbstract
      * Construct an argument descriptor given the array representing an argument with a Method Tag in the Reflection
      * component.
      *
-     * @param string[] $argument
-     *
+     * @param string $name
+     * @param Type $type
      * @return ArgumentDescriptor
+     *
      */
-    private function createArgumentDescriptorForMagicMethod($argument)
+    private function createArgumentDescriptorForMagicMethod($name, Type $type)
     {
-        $argumentType = null;
-        $argumentName = null;
-        $argumentDefault = false; // false means we have not encountered the '=' yet.
-        foreach ($argument as $part) {
-            $part = trim($part);
-            if (!$part) {
-                continue;
-            }
-
-            // Type should not be assigned after name
-            if (!$argumentName && !$argumentType && $part{0} != '$') {
-                $argumentType = $part;
-            } elseif (!$argumentName && $part{0} == '$') {
-                $argumentName = $part;
-            } elseif ($part == '=') {
-                $argumentDefault = null;
-            } elseif ($argumentDefault === null) {
-                $argumentDefault = $part;
-            }
-        }
-        if ($argumentDefault === false) {
-            $argumentDefault = null;
-        }
-
-        // if no name is set but a type is then the input is malformed and we correct for it
-        if ($argumentType && !$argumentName) {
-            $argumentName = $argumentType;
-            $argumentType = null;
-        }
-
-        // if there is no type then we assume it is 'mixed'
-        if (!$argumentType) {
-            $argumentType = 'mixed';
-        }
-
         $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setTypes($this->builder->buildDescriptor(new Collection(array($argumentType))));
-        $argumentDescriptor->setName($argumentName[0] == '$' ? $argumentName : '$' . $argumentName);
-        $argumentDescriptor->setDefault($argumentDefault);
+        $argumentDescriptor->setTypes($type);
+        $argumentDescriptor->setName($name);
 
         return $argumentDescriptor;
     }

@@ -13,9 +13,15 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Reflection\DocBlock\Context;
+use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
+use phpDocumentor\Reflection\DocBlock\StandardTagFactory;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
+use phpDocumentor\Reflection\DocBlock\Tags\Link;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
+use phpDocumentor\Reflection\DocBlock\Tags\See;
+use phpDocumentor\Reflection\FqsenResolver;
+use phpDocumentor\Reflection\TypeResolver;
+use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Transformer\Router\Queue;
 use phpDocumentor\Transformer\Router\RouterAbstract;
 use phpDocumentor\Compiler\CompilerPassInterface;
@@ -107,7 +113,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     private function resolveTag($match)
     {
         $tagReflector = $this->createLinkOrSeeTagFromRegexMatch($match);
-        if (!$tagReflector instanceof Tag\SeeTag && !$tagReflector instanceof Tag\LinkTag) {
+        if (!$tagReflector instanceof See && !$tagReflector instanceof Link) {
             return $match;
         }
 
@@ -148,7 +154,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function isFqsen($link)
     {
-        return $link[0] == '\\';
+        return $link instanceof Fqsen;
     }
 
     /**
@@ -162,7 +168,18 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     {
         list($completeMatch, $tagName, $tagContent) = $match;
 
-        return Tag::createInstance('@' . $tagName . ' ' . $tagContent);
+        $fqsenResolver = new FqsenResolver();
+        $tagFactory = new StandardTagFactory($fqsenResolver);
+        $descriptionFactory = new DescriptionFactory($tagFactory);
+        $tagFactory->addService($descriptionFactory);
+        $tagFactory->addService(new TypeResolver($fqsenResolver));
+
+        switch ($tagName) {
+            case 'see':
+                return See::create($tagContent, $fqsenResolver, $descriptionFactory, $this->createDocBlockContext());
+            case 'link':
+                return Link::create($tagContent, $descriptionFactory, $this->createDocBlockContext());
+        }
     }
 
     /**
@@ -178,10 +195,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     private function resolveQsen($link)
     {
         if (!$this->isFqsen($link)) {
-            $typeCollection = new TypeCollection(array($link), $this->createDocBlockContext());
-
-            // only a single element reference is allowed!
-            $link = $typeCollection[0];
+            return $link;
         }
 
         return $link;
@@ -215,13 +229,21 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      * Because the link tag and the see tag have different methods to acquire the link text we abstract that into this
      * method.
      *
-     * @param Tag\SeeTag|Tag\LinkTag $tagReflector
+     * @param See|Link $tagReflector
      *
      * @return string
      */
     private function getLinkText($tagReflector)
     {
-        return ($tagReflector instanceof Tag\SeeTag) ? $tagReflector->getReference() : $tagReflector->getLink();
+        if ($tagReflector instanceof See) {
+            return $tagReflector->getReference();
+        }
+
+        if ($tagReflector instanceof Link) {
+            return $tagReflector->getLink();
+        }
+
+        return null;
     }
 
     /**
@@ -233,7 +255,7 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
      */
     private function findElement($fqsen)
     {
-        return isset($this->elementCollection[$fqsen]) ? $this->elementCollection[$fqsen] : null;
+        return isset($this->elementCollection[(string)$fqsen]) ? $this->elementCollection[(string)$fqsen] : null;
     }
 
     /**
@@ -245,8 +267,11 @@ class ResolveInlineLinkAndSeeTags implements CompilerPassInterface
     {
         $file = $this->descriptor->getFile();
         $namespaceAliases = $file ? $file->getNamespaceAliases()->getAll() : array();
+        foreach ($namespaceAliases as $alias => $fqsen) {
+            $namespaceAliases[$alias] = (string)$fqsen;
+        }
 
-        return new Context($this->descriptor->getNamespace(), $namespaceAliases);
+        return new Context((string)$this->descriptor->getNamespace(), $namespaceAliases);
     }
 
     /**

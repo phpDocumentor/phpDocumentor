@@ -15,6 +15,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Reflection\DocBlock;
 
 use Mockery as m;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Constant;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
@@ -55,24 +57,14 @@ class ConstantAssemblerTest extends \PHPUnit_Framework_TestCase
 DOCBLOCK
         );
 
-        $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
-        $docBlockMock->shouldReceive('getTags')->andReturn(array());
-        $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
-        $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
-
-        $constantReflectorMock = m::mock('phpDocumentor\Reflection\ConstantReflector');
-        $constantReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\' . $name);
-        $constantReflectorMock->shouldReceive('getShortName')->andReturn($name);
-        $constantReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
-        $constantReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
-        $constantReflectorMock->shouldReceive('getValue')->andReturn($pi);
-        $constantReflectorMock->shouldReceive('getLinenumber')->andReturn(5);
+        $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
+        $constantReflectorMock = new Constant(new Fqsen('\\' . $namespace . '::' . $name), $docBlockMock, $pi);
 
         $descriptor = $this->fixture->create($constantReflectorMock);
 
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame('\\' . $namespace . '\\' . $name, $descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame('\\' . $namespace . '::' . $name, (string)$descriptor->getFullyQualifiedStructuralElementName());
+        $this->assertSame('\\' .$namespace, $descriptor->getNamespace());
         $this->assertSame($pi, $descriptor->getValue());
     }
 }

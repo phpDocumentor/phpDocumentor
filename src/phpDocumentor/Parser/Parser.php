@@ -12,11 +12,15 @@
 
 namespace phpDocumentor\Parser;
 
+use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Event\LogEvent;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Reflection\File\LocalFile;
+use phpDocumentor\Reflection\Php\Project;
+use phpDocumentor\Reflection\ProjectFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -28,16 +32,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  *
  * This class can be used to parse one or more files to the intermediate file
  * format for further processing.
- *
- * Example of use:
- *
- *     $files = new \phpDocumentor\File\Collection();
- *     $ files->addDirectories(getcwd());
- *     $parser = new \phpDocumentor\Parser\Parser();
- *     $parser->setPath($files->getProjectRoot());
- *     echo $parser->parseFiles($files);
  */
-class Parser implements LoggerAwareInterface
+class Parser
 {
     /** @var string the name of the default package */
     protected $defaultPackageName = 'Default';
@@ -67,6 +63,11 @@ class Parser implements LoggerAwareInterface
     protected $stopwatch = null;
 
     /**
+     * @var ProjectFactory
+     */
+    private $projectFactory;
+
+    /**
      * Initializes the parser.
      *
      * This constructor checks the user's PHP ini settings to detect which encoding is used by default. This encoding
@@ -75,24 +76,16 @@ class Parser implements LoggerAwareInterface
      * If no encoding is specified than 'utf-8' is assumed by default.
      *
      * @codeCoverageIgnore the ini_get call cannot be tested as setting it using ini_set has no effect.
+     * @param ProjectFactory $projectFactory
+     * @param Stopwatch $stopwatch
      */
-    public function __construct()
+    public function __construct(ProjectFactory $projectFactory, Stopwatch $stopwatch)
     {
         $defaultEncoding = ini_get('zend.script_encoding');
         if ($defaultEncoding) {
             $this->encoding = $defaultEncoding;
         }
-    }
-
-    /**
-     * Registers the component that profiles the execution of the parser.
-     *
-     * @param Stopwatch $stopwatch
-     *
-     * @return void
-     */
-    public function setStopwatch(Stopwatch $stopwatch)
-    {
+        $this->projectFactory = $projectFactory;
         $this->stopwatch = $stopwatch;
     }
 
@@ -280,18 +273,6 @@ class Parser implements LoggerAwareInterface
     }
 
     /**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return null
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
-    /**
      * Iterates through the given files feeds them to the builder.
      *
      * @param ProjectDescriptorBuilder $builder
@@ -299,9 +280,9 @@ class Parser implements LoggerAwareInterface
      *
      * @api
      *
-     * @throws Exception if no files were found.
+     * @throws FilesNotFoundException if no files were found.
      *
-     * @return bool|string
+     * @return ProjectDescriptor
      */
     public function parse(ProjectDescriptorBuilder $builder, Collection $files)
     {
@@ -309,18 +290,25 @@ class Parser implements LoggerAwareInterface
 
         $this->forceRebuildIfSettingsHaveModified($builder);
 
-        $paths = $this->getFilenames($files);
+        $paths = array_map(
+            function ($filename) {
+                return new LocalFile($filename);
+            },
+            $this->getFilenames($files)
+        );
 
         $this->log('  Project root is:  ' . $files->getProjectRoot());
         $this->log('  Ignore paths are: ' . implode(', ', $files->getIgnorePatterns()->getArrayCopy()));
 
-        $memory = 0;
-        foreach ($paths as $filename) {
-            $this->parseFileIntoDescriptor($builder, $filename);
-            $memory = $this->logAfterParsingAFile($memory);
-        }
-
+        /** @var Project $project */
+        $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $paths);
         $this->logAfterParsingAllFiles();
+
+        /*
+         *TODO: This should be moved to some view adapter layer when we are removing the descriptors from the application.
+         * because we are now partly migrating to the new reflection component we are transforming back to the original structure.
+         */
+        $builder->build($project);
 
         return $builder->getProjectDescriptor();
     }
@@ -346,27 +334,13 @@ class Parser implements LoggerAwareInterface
     }
 
     /**
-     * Parses a file and creates a Descriptor for it in the project.
-     *
-     * @param ProjectDescriptorBuilder $builder
-     * @param string                   $filename
-     *
-     * @return void
-     */
-    protected function parseFileIntoDescriptor(ProjectDescriptorBuilder $builder, $filename)
-    {
-        $parser = new File($this);
-        $parser->parse($filename, $builder);
-    }
-
-    /**
      * Checks if the settings of the project have changed and forces a complete rebuild if they have.
      *
      * @param ProjectDescriptorBuilder $builder
      *
      * @return void
      */
-    protected function forceRebuildIfSettingsHaveModified(ProjectDescriptorBuilder $builder)
+    private function forceRebuildIfSettingsHaveModified(ProjectDescriptorBuilder $builder)
     {
         if ($builder->getProjectDescriptor()->getSettings()->isModified()) {
             $this->setForced(true);
@@ -375,41 +349,11 @@ class Parser implements LoggerAwareInterface
     }
 
     /**
-     * Collects the time and duration of processing a file, logs it and returns the new amount of memory in use.
-     *
-     * @param integer $memory
-     *
-     * @return integer
-     */
-    protected function logAfterParsingAFile($memory)
-    {
-        if (!$this->stopwatch) {
-            return $memory;
-        }
-
-        $lap = $this->stopwatch->lap('parser.parse');
-        $oldMemory = $memory;
-        $periods = $lap->getPeriods();
-        $memory = end($periods)->getMemory();
-
-        $this->log(
-            '>> Memory after processing of file: ' . number_format($memory / 1024 / 1024, 2)
-            . ' megabytes (' . (($memory - $oldMemory >= 0)
-                ? '+'
-                : '-') . number_format(($memory - $oldMemory) / 1024)
-            . ' kilobytes)',
-            LogLevel::DEBUG
-        );
-
-        return $memory;
-    }
-
-    /**
      * Writes the complete parsing cycle to log.
      *
      * @return void
      */
-    protected function logAfterParsingAllFiles()
+    private function logAfterParsingAllFiles()
     {
         if (!$this->stopwatch) {
             return;
@@ -430,7 +374,7 @@ class Parser implements LoggerAwareInterface
      *
      * @return void
      */
-    protected function log($message, $priority = LogLevel::INFO, $parameters = array())
+    private function log($message, $priority = LogLevel::INFO, $parameters = array())
     {
         Dispatcher::getInstance()->dispatch(
             'system.log',
@@ -441,7 +385,7 @@ class Parser implements LoggerAwareInterface
         );
     }
 
-    protected function startTimingTheParsePhase()
+    private function startTimingTheParsePhase()
     {
         if ($this->stopwatch) {
             $this->stopwatch->start('parser.parse');

@@ -13,36 +13,33 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Reflection\ConstantReflector;
+use phpDocumentor\Reflection\Php\Constant;
 
 /**
  * Assembles a ConstantDescriptor from a ConstantReflector.
  */
 class ConstantAssembler extends AssemblerAbstract
 {
+    const SEPARATOR_SIZE = 2;
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param ConstantReflector $data
+     * @param Constant $data
      *
      * @return ConstantDescriptor
      */
     public function create($data)
     {
         $constantDescriptor = new ConstantDescriptor();
-        $constantDescriptor->setName($data->getShortName());
+        $constantDescriptor->setName($data->getName());
         $constantDescriptor->setValue($data->getValue());
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
-        $constantDescriptor->setNamespace(
-            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
-        );
-        $constantDescriptor->setFullyQualifiedStructuralElementName(
-            (trim($constantDescriptor->getNamespace(), '\\') ? $constantDescriptor->getNamespace() : '')
-            . '\\' . $data->getShortName()
-        );
+        $constantDescriptor->setNamespace(substr($data->getFqsen(), 0, - strlen($data->getName()) - static::SEPARATOR_SIZE));
+        $constantDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
 
         $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);
 
-        $constantDescriptor->setLine($data->getLinenumber());
+//       $constantDescriptor->setLine($data->getLinenumber());
 
         return $constantDescriptor;
     }

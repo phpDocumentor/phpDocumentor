@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\PropertyDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 /**
@@ -27,7 +28,7 @@ class PropertyAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param PropertyTag $data
+     * @param Property $data
      *
      * @return PropertyDescriptor
      */
@@ -36,9 +37,7 @@ class PropertyAssembler extends AssemblerAbstract
         $descriptor = new PropertyDescriptor($data->getName());
         $descriptor->setVariableName($data->getVariableName());
         $descriptor->setDescription($data->getDescription());
-        $descriptor->setTypes(
-            $this->builder->buildDescriptor(new Collection($data->getTypes()))
-        );
+        $descriptor->setTypes($data->getType());
 
         return $descriptor;
     }

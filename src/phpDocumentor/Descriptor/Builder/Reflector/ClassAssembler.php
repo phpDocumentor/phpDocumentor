@@ -15,6 +15,10 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Reflection\ClassReflector;
 use phpDocumentor\Reflection\ConstantReflector;
+use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
 
 /**
  * Assembles an ClassDescriptor using an ClassReflector.
@@ -24,7 +28,7 @@ class ClassAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param ClassReflector $data
+     * @param Class_ $data
      *
      * @return ClassDescriptor
      */
@@ -32,18 +36,15 @@ class ClassAssembler extends AssemblerAbstract
     {
         $classDescriptor = new ClassDescriptor();
 
-        $classDescriptor->setFullyQualifiedStructuralElementName($data->getName());
-        $classDescriptor->setName($data->getShortName());
+        $classDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
+        $classDescriptor->setName($data->getName());
         $classDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
-        $classDescriptor->setLine($data->getLinenumber());
-        $classDescriptor->setParent($data->getParentClass());
+        //$classDescriptor->setLine($data->getLinenumber());
+        $classDescriptor->setParent($data->getParent());
         $classDescriptor->setAbstract($data->isAbstract());
         $classDescriptor->setFinal($data->isFinal());
 
-        // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
-        $classDescriptor->setNamespace(
-            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
-        );
+        $classDescriptor->setNamespace(substr($data->getFqsen(), -strlen($data->getName())));
 
         foreach ($data->getInterfaces() as $interfaceClassName) {
             $classDescriptor->getInterfaces()->set($interfaceClassName, $interfaceClassName);
@@ -58,7 +59,7 @@ class ClassAssembler extends AssemblerAbstract
         $this->addConstants($data->getConstants(), $classDescriptor);
         $this->addProperties($data->getProperties(), $classDescriptor);
         $this->addMethods($data->getMethods(), $classDescriptor);
-        $this->addUses($data->getTraits(), $classDescriptor);
+        $this->addUses($data->getUsedTraits(), $classDescriptor);
 
         return $classDescriptor;
     }
@@ -66,7 +67,7 @@ class ClassAssembler extends AssemblerAbstract
     /**
      * Registers the child constants with the generated Class Descriptor.
      *
-     * @param ConstantReflector[] $constants
+     * @param Constant[] $constants
      * @param ClassDescriptor     $classDescriptor
      *
      * @return void
@@ -85,7 +86,7 @@ class ClassAssembler extends AssemblerAbstract
     /**
      * Registers the child properties with the generated Class Descriptor.
      *
-     * @param ClassReflector\PropertyReflector[] $properties
+     * @param Property[] $properties
      * @param ClassDescriptor                    $classDescriptor
      *
      * @return void
@@ -104,7 +105,7 @@ class ClassAssembler extends AssemblerAbstract
     /**
      * Registers the child methods with the generated Class Descriptor.
      *
-     * @param ClassReflector\MethodReflector[] $methods
+     * @param Method[] $methods
      * @param ClassDescriptor $classDescriptor
      *
      * @return void

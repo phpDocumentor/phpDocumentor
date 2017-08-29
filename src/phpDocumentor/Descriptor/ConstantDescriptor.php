@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a constant
@@ -62,7 +63,7 @@ class ConstantDescriptor extends DescriptorAbstract implements Interfaces\Consta
     /**
      * {@inheritDoc}
      */
-    public function setTypes(Collection $types)
+    public function setTypes(Type $types)
     {
         $this->types = $types;
     }

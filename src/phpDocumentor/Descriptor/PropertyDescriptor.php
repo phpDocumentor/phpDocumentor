@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a property.
@@ -90,7 +91,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * {@inheritDoc}
      */
-    public function setTypes(Collection $types)
+    public function setTypes(Type $types)
     {
         $this->types = $types;
     }

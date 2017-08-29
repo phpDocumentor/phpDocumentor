@@ -14,6 +14,9 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\ClassReflector\MethodReflector;
 use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
+use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Php\Trait_;
 use phpDocumentor\Reflection\TraitReflector;
 
 /**
@@ -24,7 +27,7 @@ class TraitAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param TraitReflector $data
+     * @param Trait_ $data
      *
      * @return TraitDescriptor
      */
@@ -32,14 +35,14 @@ class TraitAssembler extends AssemblerAbstract
     {
         $traitDescriptor = new TraitDescriptor();
 
-        $traitDescriptor->setFullyQualifiedStructuralElementName($data->getName());
-        $traitDescriptor->setName($data->getShortName());
-        $traitDescriptor->setLine($data->getLinenumber());
+        $traitDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
+        $traitDescriptor->setName($data->getName());
+        //$traitDescriptor->setLine($data->getLinenumber());
         $traitDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
 
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
         $traitDescriptor->setNamespace(
-            '\\' . (strtolower($data->getNamespace()) == 'global' ? '' :$data->getNamespace())
+            substr($data->getFqsen(), -strlen($data->getName()))
         );
 
         $this->assembleDocBlock($data->getDocBlock(), $traitDescriptor);
@@ -53,7 +56,7 @@ class TraitAssembler extends AssemblerAbstract
     /**
      * Registers the child properties with the generated Trait Descriptor.
      *
-     * @param PropertyReflector[] $properties
+     * @param Property[] $properties
      * @param TraitDescriptor     $traitDescriptor
      *
      * @return void
@@ -72,7 +75,7 @@ class TraitAssembler extends AssemblerAbstract
     /**
      * Registers the child methods with the generated Trait Descriptor.
      *
-     * @param MethodReflector[] $methods
+     * @param Method[] $methods
      * @param TraitDescriptor   $traitDescriptor
      *
      * @return void

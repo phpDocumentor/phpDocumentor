@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Tag\DeprecatedDescriptor;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@deprecated` tag.
@@ -26,7 +27,7 @@ class DeprecatedAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param DeprecatedTag $data
+     * @param Deprecated $data
      *
      * @return DeprecatedDescriptor
      */

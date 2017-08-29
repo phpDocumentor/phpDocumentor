@@ -38,12 +38,11 @@ class DoesArgumentTypehintMatchParamValidator extends ConstraintValidator
         $parameter = $value->parameter;
 
         if ($argument instanceof ArgumentDescriptor && $parameter instanceof ParamDescriptor) {
-            if (count($argument->getTypes()) === 0
-                || in_array(current($argument->getTypes()->getAll()), $parameter->getTypes()->getAll())
+            if ($argument->getTypes() === $parameter->getTypes()
             ) {
                 return null;
-            } elseif (current($argument->getTypes()->getAll()) === 'array'
-                && substr(current($parameter->getTypes()->getAll()), -2) == '[]'
+            } elseif (current($argument->getTypes()) === 'array'
+                && substr(current($parameter->getTypes()), -2) == '[]'
             ) {
                 return null;
             }

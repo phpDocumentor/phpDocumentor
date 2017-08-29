@@ -4,6 +4,7 @@ namespace phpDocumentor\Compiler\Pass;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\Example\Finder;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 /**
  * Tests the \phpDocumentor\Compiler\Pass\ExampleTagsEnricher class.
@@ -21,7 +22,7 @@ class ExampleTagsEnricherTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->finderMock = m::mock('phpDocumentor\Descriptor\Example\Finder');
+        $this->finderMock = m::mock(ExampleFinder::class);
         $this->fixture    = new ExampleTagsEnricher($this->finderMock);
     }
     /**

@@ -13,11 +13,14 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\ClassReflector\MethodReflector;
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
+use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Php\Method;
 
 /**
  * Assembles a MethodDescriptor from a MethodReflector.
@@ -40,14 +43,14 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param MethodReflector $data
+     * @param Method $data
      *
      * @return MethodDescriptor
      */
     public function create($data)
     {
         $methodDescriptor = new MethodDescriptor();
-        $methodDescriptor->setNamespace('\\' . $data->getNamespace());
+        $methodDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 4));
         $this->mapReflectorToDescriptor($data, $methodDescriptor);
 
         $this->assembleDocBlock($data->getDocBlock(), $methodDescriptor);
@@ -60,26 +63,26 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Maps the fields to the reflector to the descriptor.
      *
-     * @param MethodReflector  $reflector
+     * @param Method  $reflector
      * @param MethodDescriptor $descriptor
      *
      * @return void
      */
     protected function mapReflectorToDescriptor($reflector, $descriptor)
     {
-        $descriptor->setFullyQualifiedStructuralElementName($reflector->getName() . '()');
-        $descriptor->setName($reflector->getShortName());
+        $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
+        $descriptor->setName($reflector->getName());
         $descriptor->setVisibility($reflector->getVisibility() ? : 'public');
         $descriptor->setFinal($reflector->isFinal());
         $descriptor->setAbstract($reflector->isAbstract());
         $descriptor->setStatic($reflector->isStatic());
-        $descriptor->setLine($reflector->getLinenumber());
+//        $descriptor->setLine($reflector->getLinenumber());
     }
 
     /**
      * Adds the reflected Arguments to the Descriptor.
      *
-     * @param MethodReflector  $reflector
+     * @param Method  $reflector
      * @param MethodDescriptor $descriptor
      *
      * @return void
@@ -94,7 +97,7 @@ class MethodAssembler extends AssemblerAbstract
     /**
      * Adds a single reflected Argument to the Method Descriptor.
      *
-     * @param ArgumentReflector $argument
+     * @param Argument $argument
      * @param MethodDescriptor  $descriptor
      *
      * @return void
@@ -115,7 +118,7 @@ class MethodAssembler extends AssemblerAbstract
      * Checks if there is a variadic argument in the `@param` tags and adds it to the list of Arguments in
      * the Descriptor unless there is already one present.
      *
-     * @param MethodReflector  $data
+     * @param Method  $data
      * @param MethodDescriptor $methodDescriptor
      *
      * @return void
@@ -128,7 +131,7 @@ class MethodAssembler extends AssemblerAbstract
 
         $paramTags = $data->getDocBlock()->getTagsByName('param');
 
-        /** @var ParamTag $lastParamTag */
+        /** @var Param $lastParamTag */
         $lastParamTag = end($paramTags);
         if (!$lastParamTag) {
             return;
@@ -137,7 +140,7 @@ class MethodAssembler extends AssemblerAbstract
         if ($lastParamTag->isVariadic()
             && in_array($lastParamTag->getVariableName(), array_keys($methodDescriptor->getArguments()->getAll()))
         ) {
-            $types = $this->builder->buildDescriptor(new Collection($lastParamTag->getTypes()));
+            $types = $lastParamTag->getType();
 
             $argument = new ArgumentDescriptor();
             $argument->setName($lastParamTag->getVariableName());

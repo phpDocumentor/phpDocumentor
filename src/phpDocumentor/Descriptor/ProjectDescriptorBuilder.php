@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -44,6 +45,7 @@ class ProjectDescriptorBuilder
 
     /** @var Translator $translator */
     protected $translator;
+    private $defaultPackage;
 
     public function __construct(AssemblerFactory $assemblerFactory, Filter $filterManager, Validator $validator)
     {
@@ -104,16 +106,6 @@ class ProjectDescriptorBuilder
         }
 
         return $this->getProjectDescriptor()->isVisibilityAllowed($visibility);
-    }
-
-    public function buildFileUsingSourceData($data)
-    {
-        $descriptor = $this->buildDescriptor($data);
-        if (!$descriptor) {
-            return;
-        }
-
-        $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);
     }
 
     /**
@@ -277,5 +269,31 @@ class ProjectDescriptorBuilder
     public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
+    }
+
+    public function build(Project $project)
+    {
+        $packageName = $project->getRootNamespace()->getFqsen()->getName();
+        $this->defaultPackage = new PackageDescriptor();
+        $this->defaultPackage->setFullyQualifiedStructuralElementName((string)$project->getRootNamespace()->getFqsen());
+        $this->defaultPackage->setName($packageName);
+        $this->defaultPackage->setNamespace(substr((string)$project->getRootNamespace()->getFqsen(), 0, -strlen($packageName)-1));
+
+        foreach ($project->getFiles() as $file) {
+            $descriptor = $this->buildDescriptor($file);
+            if (!$descriptor) {
+                return;
+            }
+
+            $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultPackage()
+    {
+        return $this->defaultPackage;
     }
 }

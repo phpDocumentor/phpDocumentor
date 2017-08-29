@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Link;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@link` tag.
@@ -26,7 +27,7 @@ class LinkAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param LinkTag $data
+     * @param Link $data
      *
      * @return LinkDescriptor
      */

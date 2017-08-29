@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@author` tag.
@@ -26,7 +27,7 @@ class AuthorAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param AuthorTag $data
+     * @param Author $data
      *
      * @return AuthorDescriptor
      */
