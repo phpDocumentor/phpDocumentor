@@ -13,6 +13,7 @@ namespace phpDocumentor\Descriptor\Tag\BaseTypes;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Base descriptor for tags that have a type associated with them.
@@ -29,7 +30,7 @@ abstract class TypedAbstract extends TagDescriptor
      *
      * @return void
      */
-    public function setTypes(Collection $types)
+    public function setTypes(Type $types = null)
     {
         $this->types = $types;
     }

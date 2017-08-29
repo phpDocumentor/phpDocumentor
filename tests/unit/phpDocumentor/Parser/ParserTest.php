@@ -12,6 +12,7 @@
 namespace phpDocumentor\Parser;
 
 use \Mockery as m;
+use phpDocumentor\Reflection\ProjectFactory;
 
 /**
  * Test class for \phpDocumentor\Parser\Parser.
@@ -31,16 +32,22 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         ini_set('zend.script_encoding', null);
-        $this->fixture = new Parser();
+        $this->fixture = new Parser(
+            m::mock(ProjectFactory::class),
+            m::mock('Symfony\Component\Stopwatch\Stopwatch')
+        );
     }
 
     /**
-     * @covers phpDocumentor\Parser\Parser::getIgnoredTags
-     * @covers phpDocumentor\Parser\Parser::setIgnoredTags
+     * @covers \phpDocumentor\Parser\Parser::getIgnoredTags
+     * @covers \phpDocumentor\Parser\Parser::setIgnoredTags
      */
     public function testSetAndGetIgnoredTags()
     {
-        $parser = new Parser();
+        $parser = new Parser(
+            m::mock(ProjectFactory::class),
+            m::mock('Symfony\Component\Stopwatch\Stopwatch')
+        );
         $this->assertEquals(array(), $parser->getIgnoredTags());
 
         $parser->setIgnoredTags(array('param'));
@@ -48,8 +55,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Parser\Parser::setForced
-     * @covers phpDocumentor\Parser\Parser::isForced
+     * @covers \phpDocumentor\Parser\Parser::setForced
+     * @covers \phpDocumentor\Parser\Parser::isForced
      */
     public function testSetAndCheckWhetherParsingIsForced()
     {
@@ -60,8 +67,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Parser\Parser::setEncoding
-     * @covers phpDocumentor\Parser\Parser::getEncoding
+     * @covers \phpDocumentor\Parser\Parser::setEncoding
+     * @covers \phpDocumentor\Parser\Parser::getEncoding
      */
     public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles()
     {
@@ -85,32 +92,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame(sys_get_temp_dir(), $this->fixture->getPath());
-    }
-
-    /**
-     * @covers phpDocumentor\Parser\Parser::setStopwatch
-     */
-    public function testSetStopWatch()
-    {
-        $stopwatch = m::mock('Symfony\Component\Stopwatch\Stopwatch');
-        $this->assertAttributeEquals(null, 'stopwatch', $this->fixture);
-
-        $this->fixture->setStopwatch($stopwatch);
-
-        $this->assertAttributeSame($stopwatch, 'stopwatch', $this->fixture);
-    }
-
-    /**
-     * @covers phpDocumentor\Parser\Parser::setLogger
-     */
-    public function testSettingALogger()
-    {
-        $logger = m::mock('Psr\Log\LoggerInterface');
-        $this->assertAttributeEquals(null, 'logger', $this->fixture);
-
-        $this->fixture->setLogger($logger);
-
-        $this->assertAttributeSame($logger, 'logger', $this->fixture);
     }
 
     /**
@@ -138,8 +119,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      * Tests whether the getMarker() and setMarkers methods function
      * properly.
      *
-     * @covers phpDocumentor\Parser\Parser::setMarkers
-     * @covers phpDocumentor\Parser\Parser::getMarkers
+     * @covers \phpDocumentor\Parser\Parser::setMarkers
+     * @covers \phpDocumentor\Parser\Parser::getMarkers
      *
      * @return void
      */
@@ -155,12 +136,15 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Parser\Parser::setDefaultPackageName
-     * @covers phpDocumentor\Parser\Parser::getDefaultPackageName
+     * @covers \phpDocumentor\Parser\Parser::setDefaultPackageName
+     * @covers \phpDocumentor\Parser\Parser::getDefaultPackageName
      */
     public function testSetAndGetDefaultPackageName()
     {
-        $parser = new Parser();
+        $parser = new Parser(
+            m::mock(ProjectFactory::class),
+            m::mock('Symfony\Component\Stopwatch\Stopwatch')
+        );
 
         $this->assertEquals('Default', $parser->getDefaultPackageName());
 

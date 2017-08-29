@@ -45,28 +45,30 @@ use phpDocumentor\Descriptor\Filter\StripIgnore;
 use phpDocumentor\Descriptor\Filter\StripInternal;
 use phpDocumentor\Descriptor\Filter\StripOnVisibility;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints as phpDocAssert;
-use phpDocumentor\Reflection\ClassReflector\ConstantReflector as ClassConstant;
-use phpDocumentor\Reflection\ClassReflector;
-use phpDocumentor\Reflection\ConstantReflector;
-use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
-use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
-use phpDocumentor\Reflection\DocBlock\Tag\LinkTag;
-use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
-use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
-use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
-use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
-use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
-use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
-use phpDocumentor\Reflection\FileReflector;
-use phpDocumentor\Reflection\FunctionReflector;
-use phpDocumentor\Reflection\InterfaceReflector;
-use phpDocumentor\Reflection\TraitReflector;
+use phpDocumentor\Reflection\DocBlock\Tags;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
+use phpDocumentor\Reflection\DocBlock\Tags\Link;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use phpDocumentor\Reflection\DocBlock\Tags\See;
+use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
+use phpDocumentor\Reflection\DocBlock\Tags\Uses;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use phpDocumentor\Reflection\DocBlock\Tags\Version;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\File;
+use phpDocumentor\Reflection\Php\Function_;
+use phpDocumentor\Reflection\Php\Interface_;
+use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Php\Trait_;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator;
@@ -88,7 +90,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['parser.example.finder'] = new Example\Finder();
+        $app['parser.example.finder'] = new ExampleFinder();
 
         $this->addCache($app);
         $this->addAssemblers($app);
@@ -115,34 +117,34 @@ class ServiceProvider implements ServiceProviderInterface
     public function attachAssemblersToFactory(AssemblerFactory $factory, Application $app)
     {
         // @codingStandardsIgnoreStart because we limit the verbosity by making all closures single-line
-        $fileMatcher      = function ($criteria) { return $criteria instanceof FileReflector; };
+        $fileMatcher      = function ($criteria) { return $criteria instanceof File; };
         $constantMatcher  = function ($criteria) {
-            return $criteria instanceof ConstantReflector || $criteria instanceof ClassConstant;
+            return $criteria instanceof Constant; // || $criteria instanceof ClassConstant;
         };
-        $traitMatcher     = function ($criteria) { return $criteria instanceof TraitReflector; };
-        $classMatcher     = function ($criteria) { return $criteria instanceof ClassReflector; };
-        $interfaceMatcher = function ($criteria) { return $criteria instanceof InterfaceReflector; };
-        $propertyMatcher  = function ($criteria) { return $criteria instanceof ClassReflector\PropertyReflector; };
-        $methodMatcher    = function ($criteria) { return $criteria instanceof ClassReflector\MethodReflector; };
-        $argumentMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector\ArgumentReflector; };
-        $functionMatcher  = function ($criteria) { return $criteria instanceof FunctionReflector; };
+        $traitMatcher     = function ($criteria) { return $criteria instanceof Trait_; };
+        $classMatcher     = function ($criteria) { return $criteria instanceof Class_; };
+        $interfaceMatcher = function ($criteria) { return $criteria instanceof Interface_; };
+        $propertyMatcher  = function ($criteria) { return $criteria instanceof Property; };
+        $methodMatcher    = function ($criteria) { return $criteria instanceof Method; };
+        $argumentMatcher  = function ($criteria) { return $criteria instanceof Argument; };
+        $functionMatcher  = function ($criteria) { return $criteria instanceof Function_; };
 
-        $authorMatcher      = function ($criteria) { return $criteria instanceof AuthorTag; };
-        $deprecatedMatcher  = function ($criteria) { return $criteria instanceof DeprecatedTag; };
-        $exampleMatcher     = function ($criteria) { return $criteria instanceof ExampleTag; };
-        $linkMatcher        = function ($criteria) { return $criteria instanceof LinkTag; };
-        $methodTagMatcher   = function ($criteria) { return $criteria instanceof MethodTag; };
-        $propertyTagMatcher = function ($criteria) { return $criteria instanceof PropertyTag; };
-        $paramMatcher       = function ($criteria) { return $criteria instanceof ParamTag; };
-        $throwsMatcher      = function ($criteria) { return $criteria instanceof ThrowsTag; };
-        $returnMatcher      = function ($criteria) { return $criteria instanceof ReturnTag; };
-        $usesMatcher        = function ($criteria) { return $criteria instanceof UsesTag; };
-        $seeMatcher         = function ($criteria) { return $criteria instanceof SeeTag; };
-        $sinceMatcher       = function ($criteria) { return $criteria instanceof SinceTag; };
-        $varMatcher         = function ($criteria) { return $criteria instanceof VarTag; };
-        $versionMatcher     = function ($criteria) { return $criteria instanceof Tag\VersionTag; };
+        $authorMatcher      = function ($criteria) { return $criteria instanceof Author; };
+        $deprecatedMatcher  = function ($criteria) { return $criteria instanceof Deprecated; };
+        $exampleMatcher     = function ($criteria) { return $criteria instanceof Example; };
+        $linkMatcher        = function ($criteria) { return $criteria instanceof Link; };
+        $methodTagMatcher   = function ($criteria) { return $criteria instanceof Tags\Method; };
+        $propertyTagMatcher = function ($criteria) { return $criteria instanceof Tags\Property; };
+        $paramMatcher       = function ($criteria) { return $criteria instanceof Param; };
+        $throwsMatcher      = function ($criteria) { return $criteria instanceof Throws; };
+        $returnMatcher      = function ($criteria) { return $criteria instanceof Return_; };
+        $usesMatcher        = function ($criteria) { return $criteria instanceof Uses; };
+        $seeMatcher         = function ($criteria) { return $criteria instanceof See; };
+        $sinceMatcher       = function ($criteria) { return $criteria instanceof Since; };
+        $varMatcher         = function ($criteria) { return $criteria instanceof Var_; };
+        $versionMatcher     = function ($criteria) { return $criteria instanceof Version; };
 
-        $typeCollectionMatcher = function ($criteria) { return $criteria instanceof TypeCollection; };
+        //$typeCollectionMatcher = function ($criteria) { return $criteria instanceof TypeCollection; };
 
         $tagFallbackMatcher = function ($criteria) { return $criteria instanceof Tag; };
         // @codingStandardsIgnoreEnd
@@ -173,7 +175,7 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($sinceMatcher, new SinceAssembler());
         $factory->register($versionMatcher, new VersionAssembler());
 
-        $factory->register($typeCollectionMatcher, new TypeCollectionAssembler());
+//        $factory->register($typeCollectionMatcher, new TypeCollectionAssembler());
 
         $factory->registerFallback($tagFallbackMatcher, new GenericTagAssembler());
 

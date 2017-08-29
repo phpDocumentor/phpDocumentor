@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
+use phpDocumentor\Reflection\Php\Property;
 
 /**
  * Assembles a PropertyDescriptor from a PropertyReflector.
@@ -23,22 +24,22 @@ class PropertyAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param PropertyReflector $data
+     * @param Property $data
      *
      * @return PropertyDescriptor
      */
     public function create($data)
     {
         $propertyDescriptor = new PropertyDescriptor();
-        $propertyDescriptor->setNamespace('\\' . $data->getNamespace());
-        $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getName());
-        $propertyDescriptor->setName($data->getShortName());
+        $propertyDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName()) - 3));
+        $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
+        $propertyDescriptor->setName($data->getName());
         $propertyDescriptor->setVisibility($data->getVisibility() ?: 'public');
         $propertyDescriptor->setStatic($data->isStatic());
         $propertyDescriptor->setDefault($data->getDefault());
 
         $this->assembleDocBlock($data->getDocBlock(), $propertyDescriptor);
-        $propertyDescriptor->setLine($data->getLinenumber());
+        //$propertyDescriptor->setLine($data->getLinenumber());
 
         return $propertyDescriptor;
     }

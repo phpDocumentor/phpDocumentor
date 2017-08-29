@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\SinceDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Since;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@since` tag.
@@ -26,7 +27,7 @@ class SinceAssembler extends AssemblerAbstract
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param SinceTag $data
+     * @param Since $data
      *
      * @return SinceDescriptor
      */

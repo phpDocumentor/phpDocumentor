@@ -15,9 +15,20 @@ use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Fileset\Collection;
 use phpDocumentor\Parser\Command\Project\ParseCommand;
+use phpDocumentor\Parser\Middleware\CacheMiddleware;
+use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
+use phpDocumentor\Parser\Middleware\StopwatchMiddleware;
+use phpDocumentor\Parser\Middleware\EmittingMiddleware;
 use phpDocumentor\Plugin\Core\Descriptor\Validator\ValidatorAbstract;
+use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Event\PostDocBlockExtractionEvent;
+use phpDocumentor\Reflection\Php\Factory as Factory;
+use phpDocumentor\Reflection\Php\NodesFactory;
+use phpDocumentor\Reflection\Php\ProjectFactory;
+use phpDocumentor\Reflection\PrettyPrinter;
 use phpDocumentor\Translator\Translator;
+use Stash\Driver\FileSystem;
+use Stash\Pool;
 
 /**
  * This provider is responsible for registering the parser component with the given Application.
@@ -30,8 +41,10 @@ class ServiceProvider implements ServiceProviderInterface
      * @param Application $app An Application instance
      *
      * @throws Exception\MissingDependencyException if the Descriptor Builder is not present.
+     * @throws \Stash\Exception\RuntimeException
      *
      * @return void
+     *
      */
     public function register(Application $app)
     {
@@ -43,9 +56,40 @@ class ServiceProvider implements ServiceProviderInterface
 
         $app['parser'] = $app->share(
             function ($app) {
-                $parser = new Parser();
-                $parser->setStopwatch($app['kernel.stopwatch']);
-                $parser->setLogger($app['monolog']);
+                $stopWatch = $app['kernel.stopwatch'];
+
+                $adapter = new FileSystem(['path' => 'build/api-cache']);
+                $cachePool = new Pool($adapter);
+
+                $strategies = [
+                    new Factory\Argument(new PrettyPrinter()),
+                    new Factory\Class_(),
+                    new Factory\Constant(new PrettyPrinter()),
+                    new Factory\DocBlock(DocBlockFactory::createInstance()),
+                    new Factory\Function_(),
+                    new Factory\Interface_(),
+                    new Factory\Method(),
+                    new Factory\Property(new PrettyPrinter()),
+                    new Factory\Trait_(),
+                    new Factory\File(
+                        NodesFactory::createInstance(),
+                        [
+                            new EmittingMiddleware(),
+                            new StopwatchMiddleware(
+                                $stopWatch
+                            ),
+                            new CacheMiddleware(
+                                $cachePool
+                            ),
+                            new ErrorHandlingMiddleware()
+                        ]
+                    )
+                ];
+
+                $parser = new Parser(
+                    new ProjectFactory($strategies),
+                    $stopWatch
+                );
 
                 return $parser;
             }

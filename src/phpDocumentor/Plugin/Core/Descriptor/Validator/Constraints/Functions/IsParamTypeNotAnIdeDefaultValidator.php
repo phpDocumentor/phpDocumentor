@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Type\UnknownTypeDescriptor;
+use phpDocumentor\Reflection\Type;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -73,8 +74,8 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
      *
      * @return bool
      */
-    private function isTypeAnIdeDefault(TypeInterface $type)
+    private function isTypeAnIdeDefault(Type $type)
     {
-        return $type->getName() === '\\type' || $type->getName() === '\\unknown';
+        return (string)$type === '\\type' || (string)$type === '\\unknown';
     }
 }

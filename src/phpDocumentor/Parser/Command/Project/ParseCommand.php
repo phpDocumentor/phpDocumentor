@@ -51,7 +51,7 @@ class ParseCommand extends Command
     /** @var Translator */
     protected $translator;
 
-    public function __construct($builder, $parser, $translator, $files)
+    public function     __construct($builder, $parser, $translator, $files)
     {
         $this->builder    = $builder;
         $this->parser     = $parser;

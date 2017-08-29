@@ -16,6 +16,11 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
 use Mockery as m;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Php\Visibility;
+use phpDocumentor\Reflection\Types\String_;
 
 class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -56,12 +61,12 @@ class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
         $descriptor = $this->fixture->create($propertyReflectorMock);
 
         // Assert
-        $expectedFqsen = $namespace . '\\$' . $propertyName;
-        $this->assertSame($expectedFqsen, $descriptor->getFullyQualifiedStructuralElementName());
+        $expectedFqsen = '\\' . $namespace . '::$' . $propertyName;
+        $this->assertSame($expectedFqsen, (string)$descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($propertyName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame('protected', $descriptor->getVisibility());
-        $this->assertSame(false, $descriptor->isStatic());
+        $this->assertSame('protected', (string)$descriptor->getVisibility());
+        $this->assertFalse($descriptor->isStatic());
     }
 
     /**
@@ -75,15 +80,11 @@ class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected function givenAPropertyReflector($namespace, $propertyName, $docBlockMock = null)
     {
-        $propertyReflectorMock = m::mock('phpDocumentor\Reflection\PropertyReflector');
-        $propertyReflectorMock->shouldReceive('getName')->andReturn($namespace . '\\$' . $propertyName);
-        $propertyReflectorMock->shouldReceive('getShortName')->andReturn($propertyName);
-        $propertyReflectorMock->shouldReceive('getNamespace')->andReturn($namespace);
-        $propertyReflectorMock->shouldReceive('getDocBlock')->andReturn($docBlockMock);
-        $propertyReflectorMock->shouldReceive('getLinenumber')->andReturn(128);
-        $propertyReflectorMock->shouldReceive('getVisibility')->andReturn('protected');
-        $propertyReflectorMock->shouldReceive('getDefault')->andReturn(null);
-        $propertyReflectorMock->shouldReceive('isStatic')->andReturn(false);
+        $propertyReflectorMock = new Property(
+            new Fqsen('\\' .  $namespace . '::$' . $propertyName),
+            new Visibility(Visibility::PROTECTED_),
+            $docBlockMock
+        );
 
         return $propertyReflectorMock;
     }
@@ -95,28 +96,14 @@ class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected function givenADocBlockObject($withTags)
     {
-        $docBlockDescription = new DocBlock\Description('This is an example description');
+        $docBlockDescription = new Description('This is an example description');
 
-        $docBlockMock = m::mock('phpDocumentor\Reflection\DocBlock');
-        $docBlockMock->shouldReceive('getTags')->andReturn(array());
-        $docBlockMock->shouldReceive('getShortDescription')->andReturn('This is a example description');
-        $docBlockMock->shouldReceive('getLongDescription')->andReturn($docBlockDescription);
+        $tags = [];
 
         if ($withTags) {
-            $docBlockMock->shouldReceive('getTagsByName')->andReturnUsing(function ($param) {
-                $tag = m::mock('phpDocumentor\Reflection\DocBlock\Tag');
-
-                $tag->shouldReceive('isVariadic')->once()->andReturn(true);
-                $tag->shouldReceive('getVariableName')->andReturn('variableName');
-                $tag->shouldReceive('getTypes')->andReturn(array());
-                $tag->shouldReceive('getDescription');
-
-                return array($tag);
-            });
-        } else {
-            $docBlockMock->shouldReceive('getTagsByName')->andReturn(array());
+            $tags[] = new DocBlock\Tags\Var_('variableName', new String_(), new Description('Var description'));
         }
 
-        return $docBlockMock;
+        return $docBlockMock = new DocBlock('This is a example description', $docBlockDescription, $tags);
     }
 }

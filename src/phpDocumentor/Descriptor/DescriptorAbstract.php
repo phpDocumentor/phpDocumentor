@@ -439,7 +439,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function __toString()
     {
-        return $this->getFullyQualifiedStructuralElementName();
+        return (string)$this->getFullyQualifiedStructuralElementName();
     }
 
     /**

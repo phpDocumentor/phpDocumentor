@@ -15,6 +15,7 @@ use \Mockery as m;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
@@ -34,8 +35,8 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getParent
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      */
     public function testSetAndGetParentClass()
     {
@@ -50,7 +51,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      * @expectedException \InvalidArgumentException
      */
     public function testSettingAParentFailsWhenInputIsNotNullClassOrInterface()
@@ -59,8 +60,8 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getParent
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getParent
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setParent
      */
     public function testSetAndGetParentInterface()
     {
@@ -74,13 +75,13 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setTypes
      */
     public function testSetAndGetTypes()
     {
         $this->assertEquals(new Collection(), $this->fixture->getTypes());
-        $expected = new Collection(array(1));
+        $expected = new Array_();
 
         $this->fixture->setTypes($expected);
 
@@ -88,8 +89,8 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
     public function testgetTypesDerivedFromVarTag()
     {
@@ -104,8 +105,8 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
     public function testGetTypesUsingInheritanceOfVarTag()
     {
@@ -123,8 +124,8 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getValue
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::setValue
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getValue
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::setValue
      */
     public function testSetAndGetValue()
     {
@@ -136,7 +137,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
      */
     public function testRetrieveFileAssociatedWithAGlobalConstant()
     {
@@ -151,7 +152,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getFile
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getFile
      */
     public function testRetrieveFileAssociatedWithAClassConstant()
     {
@@ -167,7 +168,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent()
     {
@@ -185,7 +186,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -203,7 +204,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenInheritDocIsPresent()
     {
@@ -221,7 +222,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
     {
@@ -239,7 +240,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ConstantDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\ConstantDescriptor::getVar
      */
     public function testVarTagsInheritWhenNoneArePresent()
     {
@@ -258,7 +259,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getPackage
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage
      */
     public function testPackageInheritWhenNoneArePresent()
     {
@@ -276,7 +277,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
@@ -295,7 +296,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
@@ -314,7 +315,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {
@@ -349,7 +350,7 @@ class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
         $varTag = m::mock('phpDocumentor\Descriptor\Tag\VarDescriptor');
         $varTag->shouldReceive('getTypes')->andReturn($types);
 
-        $parentConstant = m::mock('phpDocumentor\Descriptor\ConstantDescriptor');
+        $parentConstant = m::mock('\phpDocumentor\Descriptor\ConstantDescriptor');
         $parentConstant->shouldReceive('getVar')->andReturn(new Collection(array($varTag)));
 
         // create SuperClassMock and add a Constant collection with out to-be-inherited constant

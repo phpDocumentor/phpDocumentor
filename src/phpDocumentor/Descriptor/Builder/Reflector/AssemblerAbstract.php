@@ -32,8 +32,8 @@ abstract class AssemblerAbstract extends BaseAssembler
             return;
         }
 
-        $target->setSummary($docBlock->getShortDescription());
-        $target->setDescription($docBlock->getLongDescription()->getContents());
+        $target->setSummary($docBlock->getSummary());
+        $target->setDescription($docBlock->getDescription());
 
         /** @var DocBlock\Tag $tag */
         foreach ($docBlock->getTags() as $tag) {
@@ -59,14 +59,14 @@ abstract class AssemblerAbstract extends BaseAssembler
      */
     protected function extractPackageFromDocBlock($docBlock)
     {
-        $packageTags = $docBlock ? $docBlock->getTagsByName('package') : null;
-        if (! $packageTags) {
+        $packageTags = $docBlock ? $docBlock->getTagsByName('package') : [];
+        if (count($packageTags) === 0) {
             return null;
         }
 
-        /** @var DocBlock\Tag $tag */
+        /** @var DocBlock\Tags\Generic $tag */
         $tag = reset($packageTags);
 
-        return trim($tag->getContent());
+        return trim($tag->getDescription());
     }
 }

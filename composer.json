@@ -45,15 +45,15 @@
 
         "phpdocumentor/graphviz":            "~1.0",
         "phpdocumentor/fileset":             "~1.0",
-        "phpdocumentor/reflection":          "^3.0",
-        "phpdocumentor/reflection-docblock": "~2.0",
+        "phpdocumentor/reflection":          "dev-develop@dev",
         "webmozart/assert": "^1.2",
-        "padraic/phar-updater": "^1.0"
+        "padraic/phar-updater": "^1.0",
+        "tedivm/stash": "^0.14.2"
     },
     "minimum-stability": "stable",
     "require-dev": {
         "behat/behat":        "^3.0",
-        "phpunit/phpunit":    "^4.0",
+        "phpunit/phpunit":    "^5.0",
         "mockery/mockery":    "^0.9@dev",
         "mikey179/vfsStream": "^1.2",
         "squizlabs/php_codesniffer": "^1.4",

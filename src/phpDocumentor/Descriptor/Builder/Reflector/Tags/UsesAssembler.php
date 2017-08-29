@@ -15,15 +15,15 @@ use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Reflection\DocBlock\Context;
-use phpDocumentor\Reflection\DocBlock\Tag\UsesTag;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Reflection\DocBlock\Tags\Uses;
+
 
 class UsesAssembler extends AssemblerAbstract
 {
     /**
      * Creates a new Descriptor from the given Reflector.
      *
-     * @param UsesTag $data
+     * @param Uses $data
      *
      * @return UsesDescriptor
      */

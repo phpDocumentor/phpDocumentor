@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Tests the functionality for the ReturnDescriptor class.
@@ -30,12 +30,12 @@ class ReturnDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setTypes
-     * @covers phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getTypes
      */
     public function testSetAndGetTypes()
     {
-        $expected = new Collection(array('a' => 'b'));
+        $expected = new Array_();
         $this->assertEmpty($this->fixture->getTypes());
 
         $this->fixture->setTypes($expected);

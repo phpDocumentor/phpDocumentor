@@ -119,7 +119,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      */
     protected function createNamespaceDescriptorTree(ProjectDescriptor $project, $namespaceName)
     {
-        $parts   = explode('\\', ltrim($namespaceName, '\\'));
+        $parts   = explode('\\', trim($namespaceName, '\\'));
         $fqnn    = '';
 
         // this method does not use recursion to traverse the tree but uses a pointer that will be overridden with the
@@ -139,7 +139,12 @@ class NamespaceTreeBuilder implements CompilerPassInterface
             $interimNamespaceDescriptor->setFullyQualifiedStructuralElementName($fqnn);
 
             // add to the pointer's list of children
-            $pointer->getChildren()->set($part, $interimNamespaceDescriptor);
+            try {
+                $pointer->getChildren()->set($part, $interimNamespaceDescriptor);
+            } catch (\Exception $e) {
+                var_dump($parts, $namespaceName, $part);
+                throw $e;
+            }
 
             // add to index
             $project->getIndexes()->elements['~' . $fqnn] = $interimNamespaceDescriptor;

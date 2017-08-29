@@ -12,9 +12,10 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
-use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
-use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use \phpDocumentor\Descriptor\Tag\AuthorDescriptor;
+use \phpDocumentor\Descriptor\Tag\VarDescriptor;
+use \phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
@@ -34,8 +35,8 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::isStatic
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setStatic
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::isStatic
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setStatic
      */
     public function testSettingAndGettingWhetherPropertyIsStatic()
     {
@@ -47,8 +48,8 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVisibility
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setVisibility
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVisibility
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setVisibility
      */
     public function testSettingAndGettingVisibility()
     {
@@ -60,13 +61,13 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setTypes
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setTypes
      */
     public function testSetAndGetTypes()
     {
         $this->assertEquals(new Collection(), $this->fixture->getTypes());
-        $expected = new Collection(array(1));
+        $expected = new Array_();
 
         $this->fixture->setTypes($expected);
 
@@ -74,13 +75,13 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getTypes
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setTypes
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getTypes
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setTypes
      */
     public function testSetAndGetTypesWhenVarIsPresent()
     {
         // Arrange
-        $typesCollection = new Collection();
+        $typesCollection = new Array_();
         $varTagDescriptor = new VarDescriptor('var');
         $varTagDescriptor->setTypes($typesCollection);
         $varCollection = new Collection(array($varTagDescriptor));
@@ -95,8 +96,8 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getDefault
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setDefault
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getDefault
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setDefault
      */
     public function testSetAndGetDefault()
     {
@@ -108,7 +109,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getFile
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getFile
      */
     public function testRetrieveFileAssociatedWithAProperty()
     {
@@ -124,7 +125,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent()
     {
@@ -142,7 +143,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {
@@ -160,7 +161,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenInheritDocIsPresent()
     {
@@ -178,7 +179,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionIsAugmentedWhenInheritDocInlineTagIsPresent()
     {
@@ -196,7 +197,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVar
      */
     public function testVarTagsInheritWhenNoneArePresent()
     {
@@ -215,7 +216,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVar
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVar
      */
     public function testVarTagsWhenNoneArePresent()
     {
@@ -226,8 +227,8 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getAuthor
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getAuthor
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
      */
     public function testAuthorTagsInheritWhenNoneArePresent()
     {
@@ -246,8 +247,8 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getVersion
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getVersion
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getVersion
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
      */
     public function testVersionTagsInheritWhenNoneArePresent()
     {
@@ -266,8 +267,8 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getCopyright
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getCopyright
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
      */
     public function testCopyrightTagsInheritWhenNoneArePresent()
     {
@@ -286,7 +287,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setParent
      */
     public function testFqsenHasDollarSignWhenParentIsSet()
     {
@@ -295,17 +296,17 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::setParent
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getParent
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getParent
      */
     public function testSettingAndGettingAParent()
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $this->assertInstanceOf('phpDocumentor\Descriptor\ClassDescriptor', $this->fixture->getParent());
+        $this->assertInstanceOf('\phpDocumentor\Descriptor\ClassDescriptor', $this->fixture->getParent());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
      */
     public function testGettingAnInheritedElement()
     {
@@ -317,7 +318,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
+     * @covers \phpDocumentor\Descriptor\PropertyDescriptor::getInheritedElement
      */
     public function testGettingAnInheritedElementWhenThereIsNone()
     {
@@ -331,7 +332,7 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     protected function whenFixtureIsDirectlyRelatedToAFile()
     {
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
+        $file = m::mock('\phpDocumentor\Descriptor\FileDescriptor');
         $this->fixture->setFile($file);
         return $file;
     }
@@ -343,8 +344,8 @@ class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
      */
     protected function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock('phpDocumentor\Descriptor\FileDescriptor');
-        $parent = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
+        $file = m::mock('\phpDocumentor\Descriptor\FileDescriptor');
+        $parent = m::mock('\phpDocumentor\Descriptor\ClassDescriptor');
         $parent->shouldReceive('getFile')->andReturn($file);
         $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn('Class1');
         $this->fixture->setParent($parent);

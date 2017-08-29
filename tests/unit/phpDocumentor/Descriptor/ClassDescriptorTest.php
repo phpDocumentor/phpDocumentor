@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Tests the functionality for the ClassDescriptor class.
@@ -32,7 +33,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether all collection objects are properly initialized.
      *
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::__construct
      */
     public function testInitialize()
     {
@@ -43,8 +44,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setParent
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getParent
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getParent
      */
     public function testSettingAndGettingAParent()
     {
@@ -58,7 +59,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setParent
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setParent
      */
     public function testSettingNoParent()
     {
@@ -70,8 +71,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setInterfaces
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInterfaces
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setInterfaces
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInterfaces
      */
     public function testSettingAndGettingInterfaces()
     {
@@ -85,8 +86,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setConstants
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getConstants
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setConstants
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getConstants
      */
     public function testSettingAndGettingConstants()
     {
@@ -100,8 +101,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setProperties
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getProperties
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setProperties
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getProperties
      */
     public function testSettingAndGettingProperties()
     {
@@ -115,8 +116,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setMethods
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getMethods
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setMethods
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getMethods
      */
     public function testSettingAndGettingMethods()
     {
@@ -130,7 +131,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
      */
     public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent()
     {
@@ -140,7 +141,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
      */
     public function testRetrievingInheritedMethodsReturnsCollectionWithParent()
     {
@@ -158,7 +159,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
      */
     public function testRetrievingInheritedMethodsReturnsTraitMethods()
     {
@@ -177,7 +178,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedMethods
      * @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307
      */
     public function testRetrievingInheritedMethodsDoesNotCrashWhenUsedTraitIsNotInProject()
@@ -196,8 +197,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::isAbstract
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setAbstract
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::isAbstract
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setAbstract
      */
     public function testSettingAndGettingWhetherClassIsAbstract()
     {
@@ -209,8 +210,8 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::isFinal
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setFinal
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::isFinal
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setFinal
      */
     public function testSettingAndGettingWhetherClassIsFinal()
     {
@@ -222,7 +223,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getMagicProperties
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getMagicProperties
      */
     public function testGetMagicPropertiesUsingPropertyTags()
     {
@@ -235,7 +236,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $propertyMock = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
         $propertyMock->shouldReceive('getVariableName')->andReturn($variableName);
         $propertyMock->shouldReceive('getDescription')->andReturn($description);
-        $propertyMock->shouldReceive('getTypes')->andReturn($types);
+        $propertyMock->shouldReceive('getTypes')->andReturn(new String_());
 
         $this->fixture->getTags()->get('property', new Collection())->add($propertyMock);
 
@@ -247,7 +248,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
         $magicProperty = current($magicProperties->getAll());
         $this->assertEquals($variableName, $magicProperty->getName());
         $this->assertEquals($description, $magicProperty->getDescription());
-        $this->assertEquals($types, $magicProperty->getTypes());
+        $this->assertEquals(new String_(), $magicProperty->getTypes());
 
         $mock = m::mock('phpDocumentor\Descriptor\ClassDescriptor');
         $mock->shouldReceive('getMagicProperties')->andReturn(new Collection(array('magicProperties')));
@@ -258,7 +259,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedConstants
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedConstants
      */
     public function testGetInheritedConstantsNoParent()
     {
@@ -270,7 +271,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedConstants
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedConstants
      */
     public function testGetInheritedConstantsWithClassDescriptorParent()
     {
@@ -290,7 +291,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
      */
     public function testGetInheritedPropertiesNoParent()
     {
@@ -302,7 +303,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
      */
     public function testGetInheritedPropertiesWithClassDescriptorParent()
     {
@@ -322,7 +323,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
      */
     public function testRetrievingInheritedPropertiesReturnsTraitProperties()
     {
@@ -341,7 +342,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getInheritedProperties
      * @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307
      */
     public function testRetrievingInheritedPropertiesDoesNotCrashWhenUsedTraitIsNotInProject()
@@ -360,7 +361,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::getMagicMethods
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::getMagicMethods
      * @dataProvider provideMagicMethodProperties
      * @param bool $isStatic
      */
@@ -418,7 +419,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\ClassDescriptor::setPackage
+     * @covers \phpDocumentor\Descriptor\ClassDescriptor::setPackage
      */
     public function testSetPackage()
     {
@@ -463,7 +464,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test to cover magic method of parent abstract class
      *
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::__call
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__call
      */
     public function testCall()
     {
@@ -472,7 +473,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getSummary
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
      */
     public function testSummaryInheritsWhenNoneIsPresent()
     {
@@ -490,7 +491,7 @@ class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\DescriptorAbstract::getDescription
+     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getDescription
      */
     public function testDescriptionInheritsWhenNoneIsPresent()
     {

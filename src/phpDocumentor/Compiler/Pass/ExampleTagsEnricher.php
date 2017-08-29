@@ -15,8 +15,9 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Reflection\DocBlock\Tag\ExampleTag;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 /**
  * This index builder collects all examples from tags and inserts them into the example index.
@@ -31,9 +32,9 @@ class ExampleTagsEnricher implements CompilerPassInterface
     /**
      * Initializes this compiler pass with its dependencies.
      *
-     * @param Finder $finder Finds examples in several directories.
+     * @param ExampleFinder $finder Finds examples in several directories.
      */
-    public function __construct(Finder $finder)
+    public function __construct(ExampleFinder $finder)
     {
         $this->exampleAssembler = new ExampleAssembler($finder);
     }
@@ -85,7 +86,7 @@ class ExampleTagsEnricher implements CompilerPassInterface
             }
 
             $matched[$match] = true;
-            $exampleReflector = new ExampleTag('example', $matches[1][$index]);
+            $exampleReflector = Example::create($matches[1][$index]);
 
             $example = $this->exampleAssembler->create($exampleReflector);
 

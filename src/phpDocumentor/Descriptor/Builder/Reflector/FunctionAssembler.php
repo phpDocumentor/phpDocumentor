@@ -16,6 +16,8 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\FunctionReflector;
+use phpDocumentor\Reflection\Php\Argument;
+use phpDocumentor\Reflection\Php\Function_;
 
 /**
  * Assembles a FunctionDescriptor from a FunctionReflector.
@@ -36,7 +38,7 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param FunctionReflector $data
+     * @param Function_ $data
      *
      * @return FunctionDescriptor
      */
@@ -54,7 +56,7 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Maps the properties of the Function reflector onto the Descriptor.
      *
-     * @param FunctionReflector  $reflector
+     * @param Function_  $reflector
      * @param FunctionDescriptor $descriptor
      *
      * @return void
@@ -63,6 +65,7 @@ class FunctionAssembler extends AssemblerAbstract
     {
         $packages = new Collection();
         $package = $this->extractPackageFromDocBlock($reflector->getDocBlock());
+        //TODO: this looks like a potential bug. Have to investigate this!
         if ($package) {
             $tag = new TagDescriptor('package');
             $tag->setDescription($package);
@@ -70,16 +73,16 @@ class FunctionAssembler extends AssemblerAbstract
         }
         $descriptor->getTags()->set('package', $packages);
 
-        $descriptor->setFullyQualifiedStructuralElementName($reflector->getName() . '()');
-        $descriptor->setName($reflector->getShortName());
-        $descriptor->setLine($reflector->getLinenumber());
-        $descriptor->setNamespace($this->getFullyQualifiedNamespaceName($reflector));
+        $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
+        $descriptor->setName($reflector->getName());
+//        $descriptor->setLine($reflector->getLinenumber());
+        $descriptor->setNamespace(substr($reflector->getFqsen(), 0, -strlen($reflector->getName())));
     }
 
     /**
      * Converts each argument reflector to an argument descriptor and adds it to the function descriptor.
      *
-     * @param FunctionReflector\ArgumentReflector[] $arguments
+     * @param Argument[] $arguments
      * @param FunctionDescriptor                    $functionDescriptor
      *
      * @return void
@@ -124,19 +127,5 @@ class FunctionAssembler extends AssemblerAbstract
         }
 
         return $this->argumentAssembler->create($argument, $params);
-    }
-
-    /**
-     * Retrieves the Fully Qualified Namespace Name from the FunctionReflector.
-     *
-     * Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself.
-     *
-     * @param FunctionReflector $reflector
-     *
-     * @return string
-     */
-    protected function getFullyQualifiedNamespaceName($reflector)
-    {
-        return '\\' . (strtolower($reflector->getNamespace()) == 'global' ? '' : $reflector->getNamespace());
     }
 }

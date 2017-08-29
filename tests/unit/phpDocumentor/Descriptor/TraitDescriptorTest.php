@@ -12,6 +12,7 @@
 namespace phpDocumentor\Descriptor;
 
 use \Mockery as m;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Tests the functionality for the TraitDescriptor class.
@@ -32,7 +33,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether all collection objects are properly initialized.
      *
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::__construct
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::__construct
      */
     public function testInitialize()
     {
@@ -41,8 +42,8 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::setProperties
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getProperties
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::setProperties
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getProperties
      */
     public function testSettingAndGettingProperties()
     {
@@ -56,8 +57,8 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::setMethods
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMethods
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::setMethods
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMethods
      */
     public function testSettingAndGettingMethods()
     {
@@ -71,7 +72,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getInheritedMethods
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getInheritedMethods
      */
     public function testGetInheritedMethods()
     {
@@ -83,7 +84,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
      */
     public function testMagicMethodsReturnsEmptyCollectionWhenNoTags()
     {
@@ -95,7 +96,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMagicMethods
      * @dataProvider provideMagicMethodProperties
      * @param bool $isStatic
      */
@@ -134,7 +135,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getInheritedProperties
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getInheritedProperties
      */
     public function testGetInheritedProperties()
     {
@@ -146,7 +147,7 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
      */
     public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags()
     {
@@ -158,14 +159,14 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getMagicProperties
      */
     public function testMagicPropertiesReturnsExpectedCollectionWithTags()
     {
         $mockTagPropertyDescriptor = m::mock('phpDocumentor\Descriptor\Tag\PropertyDescriptor');
         $mockTagPropertyDescriptor->shouldReceive('getVariableName')->andReturn('Sample');
         $mockTagPropertyDescriptor->shouldReceive('getDescription')->andReturn('Sample description');
-        $mockTagPropertyDescriptor->shouldReceive('getTypes')->andReturn(new Collection);
+        $mockTagPropertyDescriptor->shouldReceive('getTypes')->andReturn(new Mixed_());
 
         $propertyCollection = new Collection(array($mockTagPropertyDescriptor));
         $this->fixture->getTags()->set('property', $propertyCollection);
@@ -176,13 +177,12 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $magicPropertiesCollection->count());
         $this->assertSame('Sample', $magicPropertiesCollection[0]->getName());
         $this->assertSame('Sample description', $magicPropertiesCollection[0]->getDescription());
-        $this->assertInstanceOf('phpDocumentor\Descriptor\Collection', $magicPropertiesCollection[0]->getTypes());
-        $this->assertSame(0, $magicPropertiesCollection[0]->getTypes()->count());
+        $this->assertEquals(new Mixed_(), $magicPropertiesCollection[0]->getTypes());
         $this->assertSame($this->fixture, $magicPropertiesCollection[0]->getParent());
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::setPackage
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::setPackage
      */
     public function testSettingAndGettingPackage()
     {
@@ -204,8 +204,8 @@ class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::getUsedTraits
-     * @covers phpDocumentor\Descriptor\TraitDescriptor::setUsedTraits
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::getUsedTraits
+     * @covers \phpDocumentor\Descriptor\TraitDescriptor::setUsedTraits
      */
     public function testSettingAndGettingUsedTraits()
     {

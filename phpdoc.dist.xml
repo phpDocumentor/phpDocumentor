@@ -2,7 +2,7 @@
 <phpdocumentor>
     <parser>
         <default-package-name>phpDocumentor</default-package-name>
-        <target>/build/api-cache</target>
+        <target>build/api-cache</target>
     </parser>
     <transformer>
         <target>build/api</target>
@@ -10,6 +10,7 @@
     <files>
         <directory>.</directory>
         <ignore>tests/*</ignore>
+        <ignore>build/*</ignore>
         <ignore>vendor/*</ignore>
     </files>
     <plugins>

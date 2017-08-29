@@ -15,6 +15,7 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
+use phpDocumentor\Reflection\Php\Argument;
 
 /**
  * Assembles an ArgumentDescriptor using an ArgumentReflector and ParamDescriptors.
@@ -24,7 +25,7 @@ class ArgumentAssembler extends AssemblerAbstract
     /**
      * Creates a Descriptor from the provided data.
      *
-     * @param ArgumentReflector $data
+     * @param Argument $data
      * @param ParamDescriptor[] $params
      *
      * @return ArgumentDescriptor
@@ -33,18 +34,14 @@ class ArgumentAssembler extends AssemblerAbstract
     {
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($data->getName());
-        $argumentDescriptor->setTypes(
-            $this->builder->buildDescriptor(
-                $data->getType() ? new Collection(array($data->getType())) : new Collection()
-            )
-        );
+        $argumentDescriptor->setTypes($data->getTypes());
 
         foreach ($params as $paramDescriptor) {
             $this->overwriteTypeAndDescriptionFromParamTag($data, $paramDescriptor, $argumentDescriptor);
         }
 
         $argumentDescriptor->setDefault($data->getDefault());
-        $argumentDescriptor->setByReference($data->isByRef());
+        $argumentDescriptor->setByReference($data->isByReference());
 
         return $argumentDescriptor;
     }
@@ -52,14 +49,14 @@ class ArgumentAssembler extends AssemblerAbstract
     /**
      * Overwrites the type and description in the Argument Descriptor with that from the tag if the names match.
      *
-     * @param ArgumentReflector  $argument
+     * @param Argument  $argument
      * @param ParamDescriptor    $paramDescriptor
      * @param ArgumentDescriptor $argumentDescriptor
      *
      * @return void
      */
     protected function overwriteTypeAndDescriptionFromParamTag(
-        ArgumentReflector  $argument,
+        Argument  $argument,
         ParamDescriptor    $paramDescriptor,
         ArgumentDescriptor $argumentDescriptor
     ) {
@@ -68,10 +65,6 @@ class ArgumentAssembler extends AssemblerAbstract
         }
 
         $argumentDescriptor->setDescription($paramDescriptor->getDescription());
-        $argumentDescriptor->setTypes(
-            $paramDescriptor->getTypes() ?: $this->builder->buildDescriptor(
-                new Collection(array($argument->getType() ?: 'mixed'))
-            )
-        );
+        $argumentDescriptor->setTypes($paramDescriptor->getTypes());
     }
 }
