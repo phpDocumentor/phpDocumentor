@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer;
 use Cilex\Application;
 use \phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Mockery as m;
+use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 
 /**
  * Tests for phpDocumentor\Translator\ServiceProvider
@@ -45,7 +46,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $configuration = m::mock('\phpDocumentor\Configuration');
         $configuration->shouldReceive('getTransformer')->andReturn($transformer);
 
-        $finder = m::mock('\phpDocumentor\Descriptor\Example\Finder');
+        $finder = new ExampleFinder();
         $logger = m::mock('\monolog\Logger');
         $analyzer = m::mock('\phpDocumentor\Descriptor\ProjectAnalyzer');
 
