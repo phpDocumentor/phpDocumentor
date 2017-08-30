@@ -80,8 +80,8 @@ class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
-        $this->assertSame($description, $descriptor->getDescription());
-        $this->assertSame($reference, (string)$descriptor->getReference());
+        $this->assertSame($description, (string)$descriptor->getDescription());
+        $this->assertSame($reference, $descriptor->getReference());
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
