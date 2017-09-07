@@ -30,6 +30,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateCommand extends Command
 {
+    const PHAR_URL = 'https://github.com/phpDocumentor/phpDocumentor2/releases/latest';
 
     /**
      * Initializes this command and sets the name, description, options and arguments.
@@ -70,7 +71,7 @@ class UpdateCommand extends Command
             $message .= 'The latest version can be found at ' . self::PHAR_URL;
             $output->writeln(sprintf('<error>%s</error>', $message));
             return 1;
-        } elseif (Application::VERSION === ('@' . 'package_version' . '@')) {
+        } elseif (Application::VERSION === ('@package_version@')) {
             $output->writeln('<error>Self updating has been disabled in source version.</error>');
             return 1;
         }
