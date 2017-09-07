@@ -76,7 +76,7 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setFinal($reflector->isFinal());
         $descriptor->setAbstract($reflector->isAbstract());
         $descriptor->setStatic($reflector->isStatic());
-//        $descriptor->setLine($reflector->getLinenumber());
+        $descriptor->setLine($reflector->getLocation()->getLineNumber());
     }
 
     /**
