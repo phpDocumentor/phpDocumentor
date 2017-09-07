@@ -39,7 +39,7 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor->setDefault($data->getDefault());
 
         $this->assembleDocBlock($data->getDocBlock(), $propertyDescriptor);
-        //$propertyDescriptor->setLine($data->getLinenumber());
+        $propertyDescriptor->setLine($data->getLocation()->getLineNumber());
 
         return $propertyDescriptor;
     }

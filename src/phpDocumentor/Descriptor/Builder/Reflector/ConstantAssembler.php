@@ -39,7 +39,7 @@ class ConstantAssembler extends AssemblerAbstract
 
         $this->assembleDocBlock($data->getDocBlock(), $constantDescriptor);
 
-//       $constantDescriptor->setLine($data->getLinenumber());
+       $constantDescriptor->setLine($data->getLocation()->getLineNumber());
 
         return $constantDescriptor;
     }
