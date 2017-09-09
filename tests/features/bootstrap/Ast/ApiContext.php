@@ -37,6 +37,7 @@ class ApiContext extends BaseContext implements Context
     {
         $ast = $this->getAst();
 
+        $file = $this->processFilePath($file);
         /** @var FileDescriptor $fileDescriptor */
         $fileDescriptor = $ast->getFiles()->get($file);
 
