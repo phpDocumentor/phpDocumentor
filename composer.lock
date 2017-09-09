@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-<<<<<<< f3ce8158e4e33112ef749417107c48e31ef8d0fa
     "content-hash": "db9ec4549b0d3fa9cb1c2f789844fc20",
-=======
-    "content-hash": "841dfd1b86e917239d959ee834fdd7bf",
->>>>>>> bumps reflection components
     "packages": [
         {
             "name": "cilex/cilex",
@@ -672,7 +668,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }
@@ -824,32 +820,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-<<<<<<< f3ce8158e4e33112ef749417107c48e31ef8d0fa
                 "reference": "66de6ad978edf45fe18cd8e7b025790da9d053d1"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/66de6ad978edf45fe18cd8e7b025790da9d053d1",
                 "reference": "66de6ad978edf45fe18cd8e7b025790da9d053d1",
-=======
-                "reference": "c21c7862c811b6f2715a74d13ce2f5f2abbc1f70"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/c21c7862c811b6f2715a74d13ce2f5f2abbc1f70",
-                "reference": "c21c7862c811b6f2715a74d13ce2f5f2abbc1f70",
->>>>>>> bumps reflection components
                 "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "^3.0",
                 "php": "^7.0",
                 "phpdocumentor/reflection-common": "^1.0@dev",
-<<<<<<< f3ce8158e4e33112ef749417107c48e31ef8d0fa
                 "phpdocumentor/reflection-docblock": "^4.1",
-=======
-                "phpdocumentor/reflection-docblock": "4.1.1 as 3.3.0",
->>>>>>> bumps reflection components
                 "psr/log": "~1.0"
             },
             "require-dev": {
@@ -883,11 +866,7 @@
                 "reflection",
                 "static analysis"
             ],
-<<<<<<< f3ce8158e4e33112ef749417107c48e31ef8d0fa
             "time": "2017-09-07 19:41:32"
-=======
-            "time": "2017-08-30 19:09:42"
->>>>>>> bumps reflection components
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -4514,19 +4493,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-<<<<<<< f3ce8158e4e33112ef749417107c48e31ef8d0fa
             "time": "2017-07-29T21:54:42+00:00"
-=======
-            "time": "2017-05-01T14:31:55+00:00"
-        }
-    ],
-    "aliases": [
-        {
-            "alias": "3.3.0",
-            "alias_normalized": "3.3.0.0",
-            "version": "4.1.1.0",
-            "package": "phpdocumentor/reflection-docblock"
->>>>>>> bumps reflection components
         }
     ],
     "aliases": [],
