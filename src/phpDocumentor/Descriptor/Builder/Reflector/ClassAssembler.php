@@ -47,7 +47,7 @@ class ClassAssembler extends AssemblerAbstract
         $classDescriptor->setNamespace(substr($data->getFqsen(), -strlen($data->getName())));
 
         foreach ($data->getInterfaces() as $interfaceClassName) {
-            $classDescriptor->getInterfaces()->set($interfaceClassName, $interfaceClassName);
+            $classDescriptor->getInterfaces()->set((string)$interfaceClassName, $interfaceClassName);
         }
 
         $fqcn = $classDescriptor->getFullyQualifiedStructuralElementName();

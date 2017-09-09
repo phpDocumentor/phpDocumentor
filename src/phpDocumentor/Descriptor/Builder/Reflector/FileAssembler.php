@@ -80,7 +80,7 @@ class FileAssembler extends AssemblerAbstract
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant);
             if ($constantDescriptor) {
-                $constantDescriptor->setLocation($fileDescriptor); //$constant->getLineNumber());
+                $constantDescriptor->setLocation($fileDescriptor, $constant->getLocation()->getLineNumber());
                 if (count($constantDescriptor->getTags()->get('package', new Collection())) == 0) {
                     $constantDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
@@ -107,7 +107,7 @@ class FileAssembler extends AssemblerAbstract
         foreach ($functions as $function) {
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function);
             if ($functionDescriptor) {
-                $functionDescriptor->setLocation($fileDescriptor); //, $function->getLineNumber());
+                $functionDescriptor->setLocation($fileDescriptor, $function->getLocation()->getLineNumber());
                 if (count($functionDescriptor->getTags()->get('package', new Collection())) == 0) {
                     $functionDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
@@ -134,7 +134,7 @@ class FileAssembler extends AssemblerAbstract
         foreach ($classes as $class) {
             $classDescriptor = $this->getBuilder()->buildDescriptor($class);
             if ($classDescriptor) {
-                $classDescriptor->setLocation($fileDescriptor); //, $class->getLineNumber());
+                $classDescriptor->setLocation($fileDescriptor, $class->getLocation()->getLineNumber());
                 if (count($classDescriptor->getTags()->get('package', new Collection())) == 0) {
                     $classDescriptor->getTags()->set(
                         'package',
@@ -163,7 +163,7 @@ class FileAssembler extends AssemblerAbstract
         foreach ($interfaces as $interface) {
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface);
             if ($interfaceDescriptor) {
-                $interfaceDescriptor->setLocation($fileDescriptor);//, $interface->getLineNumber());
+                $interfaceDescriptor->setLocation($fileDescriptor, $interface->getLocation()->getLineNumber());
                 if (count($interfaceDescriptor->getTags()->get('package', new Collection())) == 0) {
                     $interfaceDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));
@@ -190,7 +190,7 @@ class FileAssembler extends AssemblerAbstract
         foreach ($traits as $trait) {
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait);
             if ($traitDescriptor) {
-                $traitDescriptor->setLocation($fileDescriptor);//, $trait->getLineNumber());
+                $traitDescriptor->setLocation($fileDescriptor, $trait->getLocation()->getLineNumber());
                 if (count($traitDescriptor->getTags()->get('package', new Collection())) == 0) {
                     $traitDescriptor->getTags()
                         ->set('package', $fileDescriptor->getTags()->get('package', new Collection()));

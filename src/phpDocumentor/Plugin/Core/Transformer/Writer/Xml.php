@@ -20,6 +20,7 @@ use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\PropertyConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TagConverter;
 use phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Transformer\Router\RouterAbstract;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use phpDocumentor\Transformer\Writer\Translatable;
@@ -340,17 +341,17 @@ class Xml extends WriterAbstract implements Translatable
         $child->setAttribute('abstract', $class->isAbstract() ? 'true' : 'false');
 
         if ($class->getParent() !== null) {
-            $parentFqcn = is_string($class->getParent())
-                ? $class->getParent()
+            $parentFqcn = $class->getParent() instanceof Fqsen
+                ? (string)$class->getParent()
                 : (string)$class->getParent()->getFullyQualifiedStructuralElementName();
             $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 
         /** @var InterfaceDescriptor $interface */
         foreach ($class->getInterfaces() as $interface) {
-            $interfaceFqcn = is_string($interface)
-                ? $interface
-                : $interface->getFullyQualifiedStructuralElementName();
+            $interfaceFqcn =  $interface instanceof Fqsen
+                ? (string)$interface
+                : (string)$interface->getFullyQualifiedStructuralElementName();
             $child->appendChild(new \DOMElement('implements', $interfaceFqcn));
         }
 

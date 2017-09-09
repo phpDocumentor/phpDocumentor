@@ -15,9 +15,11 @@ use Cilex\Application;
 use Cilex\ServiceProviderInterface;
 use phpDocumentor\Compiler\Compiler;
 use phpDocumentor\Compiler\Linker\Linker;
+use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
 use phpDocumentor\Compiler\Pass\Debug;
 use phpDocumentor\Compiler\Pass\ElementsIndexBuilder;
 use phpDocumentor\Compiler\Pass\ExampleTagsEnricher;
+use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\NamespaceTreeBuilder;
 use phpDocumentor\Compiler\Pass\PackageTreeBuilder;
 use phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor;
@@ -113,6 +115,8 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
                 );
                 $compiler->insert(new PackageTreeBuilder(), PackageTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert(new NamespaceTreeBuilder(), NamespaceTreeBuilder::COMPILER_PRIORITY);
+                $compiler->insert(new ClassTreeBuilder(), ClassTreeBuilder::COMPILER_PRIORITY);
+                $compiler->insert(new InterfaceTreeBuilder(), InterfaceTreeBuilder::COMPILER_PRIORITY);
                 $compiler->insert(
                     new ResolveInlineLinkAndSeeTags($container['transformer.routing.queue']),
                     ResolveInlineLinkAndSeeTags::COMPILER_PRIORITY
