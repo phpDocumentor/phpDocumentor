@@ -39,7 +39,7 @@ class BaseContext
         foreach ($ast->getFiles() as $file) {
             /** @var ClassDescriptor $classDescriptor */
             foreach ($file->getClasses() as $classDescriptor) {
-                if ($classDescriptor->getFullyQualifiedStructuralElementName() === $classFqsen) {
+                if ((string)$classDescriptor->getFullyQualifiedStructuralElementName() === $classFqsen) {
                     return $classDescriptor;
                 }
             }
@@ -63,5 +63,10 @@ class BaseContext
         }
 
         return unserialize(file_get_contents($file));
+    }
+
+    protected function processFilePath($file)
+    {
+        return $this->environmentContext->getWorkingDir() . DIRECTORY_SEPARATOR . $file;
     }
 }
