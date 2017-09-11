@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\FileAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\NamespaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
@@ -67,6 +68,7 @@ use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Function_;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Namespace_;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -128,6 +130,7 @@ class ServiceProvider implements ServiceProviderInterface
         $methodMatcher    = function ($criteria) { return $criteria instanceof Method; };
         $argumentMatcher  = function ($criteria) { return $criteria instanceof Argument; };
         $functionMatcher  = function ($criteria) { return $criteria instanceof Function_; };
+        $namespaceMatcher  = function ($criteria) { return $criteria instanceof Namespace_; };
 
         $authorMatcher      = function ($criteria) { return $criteria instanceof Author; };
         $deprecatedMatcher  = function ($criteria) { return $criteria instanceof Deprecated; };
@@ -159,6 +162,7 @@ class ServiceProvider implements ServiceProviderInterface
         $factory->register($argumentMatcher, $argumentAssembler);
         $factory->register($methodMatcher, new MethodAssembler($argumentAssembler));
         $factory->register($functionMatcher, new FunctionAssembler($argumentAssembler));
+        $factory->register($namespaceMatcher, new NamespaceAssembler());
 
         $factory->register($authorMatcher, new AuthorAssembler());
         $factory->register($deprecatedMatcher, new DeprecatedAssembler());

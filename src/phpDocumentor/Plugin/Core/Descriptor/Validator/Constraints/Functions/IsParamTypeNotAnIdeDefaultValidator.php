@@ -50,20 +50,18 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
 
             /** @var UnknownTypeDescriptor[]|Collection $types */
             $types = $param->getTypes();
-            foreach ($types as $type) {
-                if (! $this->isTypeAnIdeDefault($type)) {
-                    continue;
-                }
-
-                $this->context->addViolationAt(
-                    'params',
-                    $constraint->message,
-                    array($param->getVariableName(), $value->getFullyQualifiedStructuralElementName()),
-                    null,
-                    null,
-                    $constraint->code
-                );
+            if (! $this->isTypeAnIdeDefault($types)) {
+                continue;
             }
+
+            $this->context->addViolationAt(
+                'params',
+                $constraint->message,
+                array($param->getVariableName(), $value->getFullyQualifiedStructuralElementName()),
+                null,
+                null,
+                $constraint->code
+            );
         }
     }
 
@@ -74,7 +72,7 @@ class IsParamTypeNotAnIdeDefaultValidator extends ConstraintValidator
      *
      * @return bool
      */
-    private function isTypeAnIdeDefault(Type $type)
+    private function isTypeAnIdeDefault(Type $type = null)
     {
         return (string)$type === '\\type' || (string)$type === '\\unknown';
     }

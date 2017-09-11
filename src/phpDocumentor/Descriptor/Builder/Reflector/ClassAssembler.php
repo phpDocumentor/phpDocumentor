@@ -43,16 +43,11 @@ class ClassAssembler extends AssemblerAbstract
         $classDescriptor->setParent($data->getParent());
         $classDescriptor->setAbstract($data->isAbstract());
         $classDescriptor->setFinal($data->isFinal());
-
-        $classDescriptor->setNamespace(substr($data->getFqsen(), -strlen($data->getName())));
+        $classDescriptor->setNamespace(substr($data->getFqsen(), 0, -strlen($data->getName())-1));
 
         foreach ($data->getInterfaces() as $interfaceClassName) {
             $classDescriptor->getInterfaces()->set((string)$interfaceClassName, $interfaceClassName);
         }
-
-        $fqcn = $classDescriptor->getFullyQualifiedStructuralElementName();
-        $namespace = substr($fqcn, 0, strrpos($fqcn, '\\'));
-        $classDescriptor->setNamespace($namespace);
 
         $this->assembleDocBlock($data->getDocBlock(), $classDescriptor);
 

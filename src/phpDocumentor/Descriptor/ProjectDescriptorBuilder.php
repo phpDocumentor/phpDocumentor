@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Validator\Error;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Translator\Translator;
 use Psr\Log\LogLevel;
@@ -286,6 +287,13 @@ class ProjectDescriptorBuilder
             }
 
             $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);
+        }
+
+        $namespaces = $this->getProjectDescriptor()->getIndexes()->get('namespaces', new Collection());
+//        $namespaces->add($this->defaultPackage);
+
+        foreach ($project->getNamespaces() as $namespace) {
+            $namespaces->set((string)$namespace->getFqsen(), $this->buildDescriptor($namespace));
         }
     }
 

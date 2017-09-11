@@ -58,7 +58,7 @@ final class ClassTreeBuilder implements CompilerPassInterface
 
                 foreach ($class->getInterfaces()->getAll() as $interface) {
                     $interfaceDescriptor = $project->getIndexes()->get('interfaces')->get((string)$interface);
-                    $class->getInterfaces()->set($interface, $interfaceDescriptor);
+                    $class->getInterfaces()->set((string)$interface, $interfaceDescriptor);
                 }
             }
         }
