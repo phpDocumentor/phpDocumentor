@@ -13,6 +13,7 @@ namespace phpDocumentor\Plugin\Graphs\Writer;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -20,6 +21,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\GraphViz\Edge;
 use phpDocumentor\GraphViz\Graph as GraphVizGraph;
 use phpDocumentor\GraphViz\Node;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Zend\Stdlib\Exception\ExtensionNotLoadedException;
@@ -105,7 +107,7 @@ class Graph extends WriterAbstract
         $containers = array_merge($classes, $interfaces, $traits);
 
         foreach ($containers as $container) {
-            $from_name = $container->getFullyQualifiedStructuralElementName();
+            $from_name = (string)$container->getFullyQualifiedStructuralElementName();
 
             $parents     = array();
             $implemented = array();
@@ -122,16 +124,20 @@ class Graph extends WriterAbstract
             /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
             foreach ($parents as $parent) {
                 $edge = $this->createEdge($graph, $from_name, $parent);
-                $edge->setArrowHead('empty');
-                $graph->link($edge);
+                if ($edge !== null) {
+                    $edge->setArrowHead('empty');
+                    $graph->link($edge);
+                }
             }
 
             /** @var string|ClassDescriptor|InterfaceDescriptor $parent */
             foreach ($implemented as $parent) {
                 $edge = $this->createEdge($graph, $from_name, $parent);
-                $edge->setStyle('dotted');
-                $edge->setArrowHead('empty');
-                $graph->link($edge);
+                if ($edge !== null) {
+                    $edge->setStyle('dotted');
+                    $edge->setArrowHead('empty');
+                    $graph->link($edge);
+                }
             }
         }
 
@@ -145,23 +151,29 @@ class Graph extends WriterAbstract
      * @param string $from_name
      * @param string|ClassDescriptor|InterfaceDescriptor|TraitDescriptor $to
      *
-     * @return Edge
+     * @return Edge|null
      */
     protected function createEdge($graph, $from_name, $to)
     {
-        $to_name = !is_string($to) ? $to->getFullyQualifiedStructuralElementName() : $to;
+        $to_name = (string)($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
 
         if (!isset($this->nodeCache[$from_name])) {
             $namespaceParts = explode('\\', $from_name);
             $this->nodeCache[$from_name] = $this->createEmptyNode(array_pop($namespaceParts), $this->createNamespaceGraph($from_name));
         }
+
         if (!isset($this->nodeCache[$to_name])) {
             $namespaceParts = explode('\\', $to_name);
             $this->nodeCache[$to_name] = $this->createEmptyNode(array_pop($namespaceParts), $this->createNamespaceGraph($to_name));
         }
 
+        $fromNode = $this->nodeCache[$from_name];
+        $toNode = $this->nodeCache[$to_name];
+        if ($fromNode !== null && $toNode !== null) {
+            return Edge::create($fromNode, $toNode);
+        }
 
-        return Edge::create($this->nodeCache[$from_name], $this->nodeCache[$to_name]);
+        return null;
     }
 
     protected function createNamespaceGraph($fqcn)
@@ -200,6 +212,10 @@ class Graph extends WriterAbstract
      */
     protected function createEmptyNode($name, $graph)
     {
+        if ($graph === null) {
+            return null;
+        }
+
         $node = Node::create($name);
         $node->setFontColor('gray');
         $node->setLabel($name);
@@ -218,7 +234,7 @@ class Graph extends WriterAbstract
      */
     protected function buildNamespaceTree(GraphVizGraph $graph, NamespaceDescriptor $namespace)
     {
-        $full_namespace_name = $namespace->getFullyQualifiedStructuralElementName();
+        $full_namespace_name = (string)$namespace->getFullyQualifiedStructuralElementName();
         if ($full_namespace_name == '\\') {
             $full_namespace_name = 'Global';
         }
@@ -235,7 +251,7 @@ class Graph extends WriterAbstract
 
         /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $sub_element */
         foreach ($elements as $sub_element) {
-            $node = Node::create($sub_element->getFullyQualifiedStructuralElementName(), $sub_element->getName())
+            $node = Node::create((string)$sub_element->getFullyQualifiedStructuralElementName(), $sub_element->getName())
                 ->setShape('box')
                 ->setFontName($this->nodeFont)
                 ->setFontSize('11');
@@ -248,7 +264,7 @@ class Graph extends WriterAbstract
             //$node->setURL($this->class_paths[$full_name]);
             //$node->setTarget('_parent');
 
-            $this->nodeCache[$sub_element->getFullyQualifiedStructuralElementName()] = $node;
+            $this->nodeCache[(string)$sub_element->getFullyQualifiedStructuralElementName()] = $node;
             $sub_graph->setNode($node);
         }
 

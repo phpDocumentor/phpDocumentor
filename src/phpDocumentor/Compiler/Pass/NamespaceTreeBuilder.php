@@ -16,6 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Rebuilds the namespace tree from the elements found in files.
@@ -45,7 +46,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     public function execute(ProjectDescriptor $project)
     {
         $project->getIndexes()->get('elements', new Collection())->set('~\\', $project->getNamespace());
-        $project->getIndexes()->get('namespaces', new Collection())->add($project->getNamespace());
+        $project->getIndexes()->get('namespaces', new Collection())->set('\\', $project->getNamespace());
 
         foreach ($project->getFiles() as $file) {
             $this->addElementsOfTypeToNamespace($project, $file->getConstants()->getAll(), 'constants');
@@ -53,6 +54,14 @@ class NamespaceTreeBuilder implements CompilerPassInterface
             $this->addElementsOfTypeToNamespace($project, $file->getClasses()->getAll(), 'classes');
             $this->addElementsOfTypeToNamespace($project, $file->getInterfaces()->getAll(), 'interfaces');
             $this->addElementsOfTypeToNamespace($project, $file->getTraits()->getAll(), 'traits');
+        }
+
+        /** @var NamespaceDescriptor $namespace */
+        foreach ($project->getIndexes()->get('namespaces')->getAll() as $namespace) {
+            if ($namespace->getNamespace() !== '') {
+                $this->addToParentNamespace($project, $namespace);
+
+            }
         }
     }
 
@@ -62,9 +71,9 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the namespace as registered in the namespace field of that
      * element. If a namespace does not exist yet it will automatically be created.
      *
-     * @param ProjectDescriptor    $project
+     * @param ProjectDescriptor $project
      * @param DescriptorAbstract[] $elements Series of elements to add to their respective namespace.
-     * @param string               $type     Declares which field of the namespace will be populated with the given
+     * @param string $type Declares which field of the namespace will be populated with the given
      * series of elements. This name will be transformed to a getter which must exist. Out of performance
      * considerations will no effort be done to verify whether the provided type is valid.
      *
@@ -74,84 +83,60 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     {
         /** @var DescriptorAbstract $element */
         foreach ($elements as $element) {
-            $namespaceName = (string) $element->getNamespace();
-
-            // ensure consistency by trimming the slash prefix and then re-appending it.
-            $namespaceIndexName = '~\\' . ltrim($namespaceName, '\\');
-
-            if (!isset($project->getIndexes()->elements[$namespaceIndexName])) {
-                $this->createNamespaceDescriptorTree($project, $namespaceName);
+            $namespaceName = (string)$element->getNamespace();
+            //TODO: find out why this can happen. Some bug in the assembler?
+            if ($namespaceName === '') {
+                $namespaceName = '\\';
             }
 
-            /** @var NamespaceDescriptor $namespace */
-            $namespace = $project->getIndexes()->elements[$namespaceIndexName];
+            $namespace = $project->getIndexes()->get('namespaces', new Collection())->get($namespaceName);
+
+            if ($namespace === null) {
+                $namespace = new NamespaceDescriptor();
+                $namespace->setName($namespaceName);
+                $namespace->setFullyQualifiedStructuralElementName(new Fqsen($namespaceName));
+                $project->getIndexes()->get('namespaces')->set($namespaceName, $namespace);
+            }
 
             // replace textual representation with an object representation
             $element->setNamespace($namespace);
 
             // add element to namespace
-            $getter = 'get'.ucfirst($type);
+            $getter = 'get' . ucfirst($type);
 
-            /** @var Collection $collection  */
+            /** @var Collection $collection */
             $collection = $namespace->$getter();
             $collection->add($element);
+
         }
     }
 
     /**
-     * Creates a tree of NamespaceDescriptors based on the provided FQNN (namespace name).
-     *
-     * This method will examine the namespace name and create a namespace descriptor for each part of
-     * the FQNN if it doesn't exist in the namespaces field of the current namespace (starting with the root
-     * Namespace in the Project Descriptor),
-     *
-     * As an intended side effect this method also populates the *elements* index of the ProjectDescriptor with all
-     * created NamespaceDescriptors. Each index key is prefixed with a tilde (~) so that it will not conflict with
-     * other FQSEN's, such as classes or interfaces.
-     *
      * @param ProjectDescriptor $project
-     * @param string            $namespaceName A FQNN of the namespace (and parents) to create.
-     *
-     * @see ProjectDescriptor::getNamespace() for the root namespace.
-     * @see NamespaceDescriptor::getNamespaces() for the child namespaces of a given namespace.
-     *
-     * @return void
+     * @param $namespace
      */
-    protected function createNamespaceDescriptorTree(ProjectDescriptor $project, $namespaceName)
+    private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace)
     {
-        $parts   = explode('\\', trim($namespaceName, '\\'));
-        $fqnn    = '';
+        /** @var NamespaceDescriptor $parent */
+        $parent = $project->getIndexes()->get('namespaces')->get($namespace->getNamespace());
 
-        // this method does not use recursion to traverse the tree but uses a pointer that will be overridden with the
-        // next item that is to be traversed (child namespace) at the end of the loop.
-        $pointer = $project->getNamespace();
-        foreach ($parts as $part) {
-            $fqnn .= '\\' . $part;
-            if ($pointer->getChildren()->get($part)) {
-                $pointer = $pointer->getChildren()->get($part);
-                continue;
+        try {
+            if ($parent === null) {
+                $parent = new NamespaceDescriptor();
+                $fqsen = new Fqsen($namespace->getNamespace());
+                $parent->setFullyQualifiedStructuralElementName($fqsen);
+                $parent->setName($fqsen->getName());
+                $namespaceName = substr((string)$fqsen, 0, -strlen($parent->getName())-1);
+                $parent->setNamespace($namespaceName === '' ? '\\' : $namespaceName);
+                $project->getIndexes()->get('namespaces')->set($namespace->getNamespace(), $namespace);
+                $this->addToParentNamespace($project, $parent);
             }
 
-            // namespace does not exist, create it
-            $interimNamespaceDescriptor = new NamespaceDescriptor();
-            $interimNamespaceDescriptor->setParent($pointer);
-            $interimNamespaceDescriptor->setName($part);
-            $interimNamespaceDescriptor->setFullyQualifiedStructuralElementName($fqnn);
-
-            // add to the pointer's list of children
-            try {
-                $pointer->getChildren()->set($part, $interimNamespaceDescriptor);
-            } catch (\Exception $e) {
-                var_dump($parts, $namespaceName, $part);
-                throw $e;
-            }
-
-            // add to index
-            $project->getIndexes()->elements['~' . $fqnn] = $interimNamespaceDescriptor;
-            $project->getIndexes()->get('namespaces', new Collection())->add($interimNamespaceDescriptor);
-
-            // move pointer forward
-            $pointer = $interimNamespaceDescriptor;
+            $namespace->setParent($parent);
+            $parent->getChildren()->add($namespace);
+        } catch (\InvalidArgumentException $e) {
+            //bit hacky but it works for now.
+            //$project->getNamespace()->getChildren()->add($namespace);
         }
     }
 }
