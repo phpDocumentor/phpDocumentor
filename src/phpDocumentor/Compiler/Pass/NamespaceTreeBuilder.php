@@ -93,9 +93,13 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 
             if ($namespace === null) {
                 $namespace = new NamespaceDescriptor();
-                $namespace->setName($namespaceName);
-                $namespace->setFullyQualifiedStructuralElementName(new Fqsen($namespaceName));
-                $project->getIndexes()->get('namespaces')->set($namespaceName, $namespace);
+                $fqsen = new Fqsen($namespaceName);
+                $namespace->setName($fqsen->getName());
+                $namespace->setFullyQualifiedStructuralElementName($fqsen);
+                $namespaceName = substr((string)$fqsen, 0, -strlen($fqsen->getName())-1);
+                $namespace->setNamespace($namespaceName);
+                $project->getIndexes()->get('namespaces')->set((string)$namespace->getFullyQualifiedStructuralElementName(), $namespace);
+                $this->addToParentNamespace($project, $namespace);
             }
 
             // replace textual representation with an object representation
@@ -119,6 +123,10 @@ class NamespaceTreeBuilder implements CompilerPassInterface
     {
         /** @var NamespaceDescriptor $parent */
         $parent = $project->getIndexes()->get('namespaces')->get($namespace->getNamespace());
+        $project->getIndexes()->get('elements')->set(
+            '~' . (string)$namespace->getFullyQualifiedStructuralElementName(),
+            $namespace
+        );
 
         try {
             if ($parent === null) {
@@ -128,12 +136,12 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $parent->setName($fqsen->getName());
                 $namespaceName = substr((string)$fqsen, 0, -strlen($parent->getName())-1);
                 $parent->setNamespace($namespaceName === '' ? '\\' : $namespaceName);
-                $project->getIndexes()->get('namespaces')->set($namespace->getNamespace(), $namespace);
+                $project->getIndexes()->get('namespaces')->set((string)$parent->getFullyQualifiedStructuralElementName(), $parent);
                 $this->addToParentNamespace($project, $parent);
             }
 
             $namespace->setParent($parent);
-            $parent->getChildren()->add($namespace);
+            $parent->getChildren()->set($namespace->getName(), $namespace);
         } catch (\InvalidArgumentException $e) {
             //bit hacky but it works for now.
             //$project->getNamespace()->getChildren()->add($namespace);
