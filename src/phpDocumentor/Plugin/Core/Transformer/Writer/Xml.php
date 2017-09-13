@@ -341,17 +341,17 @@ class Xml extends WriterAbstract implements Translatable
         $child->setAttribute('abstract', $class->isAbstract() ? 'true' : 'false');
 
         if ($class->getParent() !== null) {
-            $parentFqcn = $class->getParent() instanceof Fqsen
-                ? (string)$class->getParent()
-                : (string)$class->getParent()->getFullyQualifiedStructuralElementName();
+            $parentFqcn = $class->getParent() instanceof ClassDescriptor
+                ? (string)$class->getParent()->getFullyQualifiedStructuralElementName()
+                : (string)$class->getParent();
             $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 
         /** @var InterfaceDescriptor $interface */
         foreach ($class->getInterfaces() as $interface) {
-            $interfaceFqcn =  $interface instanceof Fqsen
-                ? (string)$interface
-                : (string)$interface->getFullyQualifiedStructuralElementName();
+            $interfaceFqcn = $interface instanceof InterfaceDescriptor
+                ? (string)$interface->getFullyQualifiedStructuralElementName()
+                : (string)$interface;
             $child->appendChild(new \DOMElement('implements', $interfaceFqcn));
         }
 

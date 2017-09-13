@@ -35,7 +35,7 @@ class InterfaceAssembler extends AssemblerAbstract
     {
         $interfaceDescriptor = new InterfaceDescriptor();
 
-        $interfaceDescriptor->setFullyQualifiedStructuralElementName($data->getName());
+        $interfaceDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $interfaceDescriptor->setName($data->getName());
         $interfaceDescriptor->setLine($data->getLocation()->getLineNumber());
         $interfaceDescriptor->setPackage($this->extractPackageFromDocBlock($data->getDocBlock()) ?: '');
