@@ -13,6 +13,8 @@
 namespace phpDocumentor\Transformer;
 
 use Cilex\Application;
+use phpDocumentor\Compiler\Pass\ClassTreeBuilder;
+use phpDocumentor\Compiler\Pass\InterfaceTreeBuilder;
 use \phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use Mockery as m;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
@@ -87,7 +89,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $compiler = $this->application->offsetGet('compiler');
 
         $this->assertInstanceOf('phpDocumentor\Compiler\Compiler', $compiler);
-        $this->assertCount(9, $compiler);
+        $this->assertCount(11, $compiler);
         $this->assertInstanceOf('phpDocumentor\Compiler\Pass\ElementsIndexBuilder', $compiler->current());
         $compiler->next();
         $this->assertInstanceOf('phpDocumentor\Compiler\Linker\Linker', $compiler->current());
@@ -98,9 +100,13 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $compiler->next();
         $this->assertInstanceOf('phpDocumentor\Compiler\Pass\PackageTreeBuilder', $compiler->current());
         $compiler->next();
-        $this->assertInstanceOf('phpDocumentor\Compiler\Pass\NamespaceTreeBuilder', $compiler->current());
+        $this->assertInstanceOf(InterfaceTreeBuilder::class, $compiler->current());
         $compiler->next();
         $this->assertInstanceOf('phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor', $compiler->current());
+        $compiler->next();
+        $this->assertInstanceOf('phpDocumentor\Compiler\Pass\NamespaceTreeBuilder', $compiler->current());
+        $compiler->next();
+        $this->assertInstanceOf(ClassTreeBuilder::class, $compiler->current());
         $compiler->next();
         $this->assertInstanceOf('phpDocumentor\Transformer\Transformer', $compiler->current());
         $compiler->next();

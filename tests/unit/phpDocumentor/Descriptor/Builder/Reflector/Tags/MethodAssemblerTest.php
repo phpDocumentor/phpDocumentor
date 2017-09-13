@@ -87,8 +87,8 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
                 new Void_(),
                 'myMethod',
                 array(
-                    array('type' => new Mixed_(), 'name' => '$argument1'),
-                    array('type' => new Mixed_(), 'name' => '$argument2'),
+                    array('name' => '$argument1', 'type' => new Mixed_()),
+                    array('name' => '$argument2', 'type' => new Mixed_()),
                 )
             ),
 
@@ -97,8 +97,8 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
                 new Void_(),
                 'myMethod',
                 array(
-                    array('type' => new Mixed_(), 'name' => '$argument1'),
-                    array('type' => new Mixed_(), 'name' => '$argument2'),
+                    array('name' => '$argument1', 'type' => new Mixed_()),
+                    array('name' => '$argument2', 'type' => new Mixed_()),
                 )
             ),
 
@@ -107,8 +107,8 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
                 new Void_(),
                 'myMethod',
                 array(
-                    array('type' => new Mixed_(), 'name' => '$argument1'),
-                    array('type' => new Mixed_(), 'name' => '$argument2'),
+                    array('name' => '$argument1', 'type' => new Mixed_()),
+                    array('name' => '$argument2', 'type' => new Mixed_()),
                 ),
                 new Description('This is a description.')
             ),
@@ -118,8 +118,8 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
                 new Void_(),
                 'myMethod',
                 array(
-                    array('type' => new Boolean(), 'name' => '$argument1'),
-                    array('type' => new String_(), 'name' => '$argument2'),
+                    array('name' => '$argument1', 'type' => new Boolean()),
+                    array('name' => '$argument2', 'type' => new String_()),
                 ),
                 new Description('This is a description.')
             ),
@@ -129,8 +129,8 @@ class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
                 new Integer(),
                 'myMethod',
                 array(
-                    array('type' => new Boolean(), 'name' => '$argument1'),
-                    array('type' => new String_(), 'name' => '$argument2'),
+                    array('name' => '$argument1', 'type' => new Boolean()),
+                    array('name' => '$argument2', 'type' => new String_()),
                 ),
                 new Description('This is a description.')
             ),

@@ -108,7 +108,7 @@ DOCBLOCK;
     protected function getProjectDescriptorBuilderMock()
     {
         $projectDescriptorBuilderMock = m::mock('phpDocumentor\Descriptor\ProjectDescriptorBuilder');
-
+        $projectDescriptorBuilderMock->shouldReceive('getDefaultPackage')->andReturn('\\');
         $projectDescriptorBuilderMock->shouldReceive('buildDescriptor')->andReturnUsing(function ($param) {
             $mock = null;
 

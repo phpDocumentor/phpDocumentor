@@ -62,16 +62,9 @@ class DiscoverTest extends \PHPUnit_Framework_TestCase
     protected function getConverterMock()
     {
         if (!$this->converter) {
-            $this->converter = $this->getMock(
-                '\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml',
-                array('getTableOfContents'),
-                array(),
-                '',
-                false
-            );
-            $this->converter->expects($this->any())
-                ->method('getTableOfContents')
-                ->will($this->returnValue($this->getTableOfContents()));
+            $this->converter = m::mock('\phpDocumentor\Plugin\Scrybe\Converter\RestructuredText\ToHtml');
+            $this->converter->shouldReceive('getTableOfContents')
+                ->andReturn($this->getTableOfContents());
         }
 
         return $this->converter;

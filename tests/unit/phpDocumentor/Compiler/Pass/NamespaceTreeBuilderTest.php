@@ -22,7 +22,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 /**
  * Tests the functionality for the ElementsIndexBuilder
  *
- * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
+ * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
  */
 class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,7 +41,7 @@ class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::getDescription
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::getDescription
      */
     public function testGetDescription()
     {
@@ -52,29 +52,30 @@ class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::createNamespaceDescriptorTree
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testNamespaceStringIsConvertedToTreeAndAddedToElements()
     {
         $class = new ClassDescriptor();
-        $class->setNamespace('My\Space\Deeper');
-        $class->setFullyQualifiedStructuralElementName('My\Space\Deeper\Class1');
+        $class->setNamespace('\My\Space\Deeper');
+        $class->setFullyQualifiedStructuralElementName('\My\Space\Deeper\Class1');
         $this->project->getFiles()->get(0)->getClasses()->add($class);
 
         // assert that namespaces are not created in duplicate by processing two classes
         $class2 = new ClassDescriptor();
-        $class2->setNamespace('My\Space\Deeper2');
-        $class2->setFullyQualifiedStructuralElementName('My\Space\Deeper2\Class2');
+        $class2->setNamespace('\My\Space\Deeper2');
+        $class2->setFullyQualifiedStructuralElementName('\My\Space\Deeper2\Class2');
         $this->project->getFiles()->get(0)->getClasses()->add($class2);
 
         $this->fixture->execute($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
+        $elementNames = array_keys($elements);
+        sort($elementNames);
         $this->assertSame(
             array('~\\', '~\\My', '~\\My\\Space', '~\\My\\Space\\Deeper', '~\\My\\Space\\Deeper2'),
-            array_keys($elements)
+            $elementNames
         );
         $this->assertInstanceOf(
             'phpDocumentor\Descriptor\NamespaceDescriptor',
@@ -88,20 +89,20 @@ class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddClassToNamespace()
     {
         $class = new ClassDescriptor();
-        $class->setNamespace('My\Space');
+        $class->setNamespace('\My\Space');
         $class->setFullyQualifiedStructuralElementName('My\Space\Class1');
         $this->project->getFiles()->get(0)->getClasses()->add($class);
 
         // double check if a second class in the same deep namespace ends up at the right location
         $class2 = new ClassDescriptor();
-        $class2->setNamespace('My\Space');
-        $class2->setFullyQualifiedStructuralElementName('My\Space\Class2');
+        $class2->setNamespace('\My\Space');
+        $class2->setFullyQualifiedStructuralElementName('\My\Space\Class2');
         $this->project->getFiles()->get(0)->getClasses()->add($class2);
 
         $this->fixture->execute($this->project);
@@ -116,20 +117,20 @@ class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddInterfaceToNamespace()
     {
         $interface = new InterfaceDescriptor();
-        $interface->setNamespace('My\Space');
-        $interface->setFullyQualifiedStructuralElementName('My\Space\Interface1');
+        $interface->setNamespace('\My\Space');
+        $interface->setFullyQualifiedStructuralElementName('\My\Space\Interface1');
         $this->project->getFiles()->get(0)->getInterfaces()->add($interface);
 
         // double check if a second interface in the same deep namespace ends up at the right location
         $interface2 = new InterfaceDescriptor();
-        $interface2->setNamespace('My\Space');
-        $interface2->setFullyQualifiedStructuralElementName('My\Space\Interface2');
+        $interface2->setNamespace('\My\Space');
+        $interface2->setFullyQualifiedStructuralElementName('\My\Space\Interface2');
         $this->project->getFiles()->get(0)->getInterfaces()->add($interface2);
 
         $this->fixture->execute($this->project);
@@ -144,20 +145,20 @@ class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddTraitToNamespace()
     {
         $trait = new TraitDescriptor();
-        $trait->setNamespace('My\Space');
-        $trait->setFullyQualifiedStructuralElementName('My\Space\Trait1');
+        $trait->setNamespace('\My\Space');
+        $trait->setFullyQualifiedStructuralElementName('\My\Space\Trait1');
         $this->project->getFiles()->get(0)->getTraits()->add($trait);
 
         // double check if a second trait in the same deep namespace ends up at the right location
         $trait2 = new TraitDescriptor();
-        $trait2->setNamespace('My\Space');
-        $trait2->setFullyQualifiedStructuralElementName('My\Space\Trait2');
+        $trait2->setNamespace('\My\Space');
+        $trait2->setFullyQualifiedStructuralElementName('\My\Space\Trait2');
         $this->project->getFiles()->get(0)->getTraits()->add($trait2);
 
         $this->fixture->execute($this->project);
@@ -172,20 +173,20 @@ class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddConstantToNamespace()
     {
         $constant = new ConstantDescriptor();
-        $constant->setNamespace('My\Space');
-        $constant->setFullyQualifiedStructuralElementName('My\Space\Constant1');
+        $constant->setNamespace('\My\Space');
+        $constant->setFullyQualifiedStructuralElementName('\My\Space\Constant1');
         $this->project->getFiles()->get(0)->getConstants()->add($constant);
 
         // double check if a second constant in the same deep namespace ends up at the right location
         $constant2 = new ConstantDescriptor();
-        $constant2->setNamespace('My\Space');
-        $constant2->setFullyQualifiedStructuralElementName('My\Space\Constant2');
+        $constant2->setNamespace('\My\Space');
+        $constant2->setFullyQualifiedStructuralElementName('\My\Space\Constant2');
         $this->project->getFiles()->get(0)->getConstants()->add($constant2);
 
         $this->fixture->execute($this->project);
@@ -200,20 +201,20 @@ class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
-     * @covers phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddFunctionToNamespace()
     {
         $function = new FunctionDescriptor();
-        $function->setNamespace('My\Space');
-        $function->setFullyQualifiedStructuralElementName('My\Space\Function1');
+        $function->setNamespace('\My\Space');
+        $function->setFullyQualifiedStructuralElementName('\My\Space\Function1');
         $this->project->getFiles()->get(0)->getFunctions()->add($function);
 
         // double check if a second function in the same deep namespace ends up at the right location
         $function2 = new FunctionDescriptor();
-        $function2->setNamespace('My\Space');
-        $function2->setFullyQualifiedStructuralElementName('My\Space\Function2');
+        $function2->setNamespace('\My\Space');
+        $function2->setFullyQualifiedStructuralElementName('\My\Space\Function2');
         $this->project->getFiles()->get(0)->getFunctions()->add($function2);
 
         $this->fixture->execute($this->project);
