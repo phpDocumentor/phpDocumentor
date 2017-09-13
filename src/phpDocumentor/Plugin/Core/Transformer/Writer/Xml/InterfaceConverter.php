@@ -70,9 +70,9 @@ class InterfaceConverter
 
         /** @var InterfaceDescriptor $parentInterface */
         foreach ($interface->getParent() as $parentInterface) {
-            $parentFqcn = is_string($parentInterface) === false
+            $parentFqcn = (string)($parentInterface instanceof InterfaceDescriptor
                 ? $parentInterface->getFullyQualifiedStructuralElementName()
-                : $parentInterface;
+                : $parentInterface);
             $child->appendChild(new \DOMElement('extends', $parentFqcn));
         }
 

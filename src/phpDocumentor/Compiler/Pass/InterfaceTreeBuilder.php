@@ -53,7 +53,7 @@ final class InterfaceTreeBuilder implements CompilerPassInterface
                 foreach ($interface->getParent()->getAll() as $parentName) {
                     $parent = $project->getIndexes()->get('interfaces')->get((string)$parentName);
                     if ($parent instanceof InterfaceDescriptor) {
-                        $interface->getParent()->set($parentName, $parent);
+                        $interface->getParent()->set((string)$parentName, $parent);
                     }
                 }
             }
