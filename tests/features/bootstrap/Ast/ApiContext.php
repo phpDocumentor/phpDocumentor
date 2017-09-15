@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use PHPUnit\Framework\Assert;
@@ -207,6 +208,45 @@ class ApiContext extends BaseContext implements Context
 
         //TODO: enable this check when we support variadic arguments.
         //Assert::assertTrue($argumentD->isVariadic(), 'Expected argument to be variadic');
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $methodName
+     * @param string $argument
+     * @param string $type
+     * @Then class ":classFqsen" has a method :method with argument :argument of type ":type"
+     */
+    public function classHasMethodWithAgumentOfType($classFqsen, $methodName, $argument, $type)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        /** @var MethodDescriptor $method */
+        $method = $class->getMethods()->get($methodName);
+        Assert::assertArrayHasKey($argument, $method->getArguments());
+        /** @var ArgumentDescriptor $argumentDescriptor */
+        $argumentDescriptor = $method->getArguments()[$argument];
+
+        Assert::assertEquals($type, (string)$argumentDescriptor->getTypes());
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $methodName
+     * @param string $param
+     * @param string $type
+     * @Then class ":classFqsen" has a method :method with param :param of type ":type"
+     */
+    public function classHasMethodWithParamOfType($classFqsen, $methodName, $param, $type)
+    {
+        $class = $this->findClassByFqsen($classFqsen);
+        /** @var MethodDescriptor $method */
+        $method = $class->getMethods()->get($methodName);
+        /** @var ParamDescriptor $paramDescriptor */
+        foreach ($method->getParam() as $paramDescriptor) {
+            if($paramDescriptor->getName() === $param) {
+                Assert::assertEquals($type, (string)$paramDescriptor->getTypes());
+            }
+        }
     }
 
     /**
