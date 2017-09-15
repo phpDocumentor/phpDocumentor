@@ -19,6 +19,7 @@ use phpDocumentor\Behat\Contexts\EnvironmentContext;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
@@ -206,6 +207,19 @@ class ApiContext extends BaseContext implements Context
 
         //TODO: enable this check when we support variadic arguments.
         //Assert::assertTrue($argumentD->isVariadic(), 'Expected argument to be variadic');
+    }
+
+    /**
+     * @param string $classFqsen
+     * @param string $constantName
+     * @Then class ":classFqsen" has a constant :constantName
+     */
+    public function classHasConstant($classFqsen, $constantName)
+    {
+        /** @var ClassDescriptor $class */
+        $class = $this->findClassByFqsen($classFqsen);
+        $constant = $class->getConstants()->get($constantName);
+        Assert::assertInstanceOf(ConstantDescriptor::class, $constant);
     }
 
     /**
