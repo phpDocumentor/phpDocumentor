@@ -39,7 +39,7 @@ class BaseContext
         foreach ($ast->getFiles() as $file) {
             /** @var ClassDescriptor $classDescriptor */
             foreach ($file->getClasses() as $classDescriptor) {
-                if ((string)$classDescriptor->getFullyQualifiedStructuralElementName() === $classFqsen) {
+                if (((string)$classDescriptor->getFullyQualifiedStructuralElementName()) === $classFqsen) {
                     return $classDescriptor;
                 }
             }

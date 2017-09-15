@@ -200,9 +200,9 @@ class ApiContext extends BaseContext implements Context
         $class = $this->findClassByFqsen($classFqsen);
         /** @var MethodDescriptor $method */
         $method = $class->getMethods()->get($methodName);
-        Assert::assertArrayHasKey('$d', $method->getArguments());
+        Assert::assertArrayHasKey($argument, $method->getArguments());
         /** @var ArgumentDescriptor $argumentD */
-        $argumentD = $method->getArguments()['$d'];
+        $argumentD = $method->getArguments()[$argument];
 
         //TODO: enable this check when we support variadic arguments.
         //Assert::assertTrue($argumentD->isVariadic(), 'Expected argument to be variadic');

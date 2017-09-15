@@ -9,11 +9,11 @@ Feature: Parsing file with a class
     Then the application must have run successfully
     And the AST has a class named "Foo" in file "test.php"
 
-  Scenario: Class is located in the default package
-    Given A single file named "test.php" based on "NoPackagePrecedesClass.php"
-    When I run "phpdoc -f test.php"
-    Then the application must have run successfully
-    And the class named "Foo" is in the default package
+#  Scenario: Class is located in the default package
+#    Given A single file named "test.php" based on "NoPackagePrecedesClass.php"
+#    When I run "phpdoc -f test.php"
+#    Then the application must have run successfully
+#    And the class named "Foo" is in the default package
 
   Scenario: When a file contains one docblock before a class this docblock is associated with the class.
     Given A single file named "test.php" based on "NoPackagePrecedesClass.php"
