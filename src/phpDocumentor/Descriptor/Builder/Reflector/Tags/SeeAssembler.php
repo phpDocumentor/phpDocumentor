@@ -14,10 +14,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Compiler\Linker\Linker;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
-use phpDocumentor\Reflection\DocBlock\Context;
-use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use phpDocumentor\Reflection\Types\Context;
 
 /**
  * Constructs a new Descriptor from a Reflector object for the `@see` tag.
@@ -43,38 +41,5 @@ class SeeAssembler extends AssemblerAbstract
         $descriptor->setReference($reference);
 
         return $descriptor;
-    }
-
-    /**
-     * @param Context $context
-     * @param string[] $referenceParts
-     * @return array The returned array will consist of a Collection object with the type, and strings for methods, etc.
-     */
-    private function setFirstReferencePartAsType($context, $referenceParts)
-    {
-        $type = current($referenceParts);
-        $type = new Collection(
-            array($type),
-            $context
-        );
-        $referenceParts[0] = $type;
-        return $referenceParts;
-    }
-
-    /**
-     * When you have a relative reference to a class, we need to check if this class exists in the namespace aliases
-     *
-     * @param string $reference
-     * @param Context $context
-     * @return bool
-     */
-    private function referenceIsNamespaceAlias($reference, $context)
-    {
-        /** @var \phpDocumentor\Reflection\DocBlock\Context $context*/
-        foreach ($context->getNamespaceAliases() as $alias) {
-            if (substr($alias, -strlen($reference)) === $reference) {
-                return true;
-            }
-        }
     }
 }

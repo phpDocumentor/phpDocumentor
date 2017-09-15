@@ -14,7 +14,6 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@var` tag.

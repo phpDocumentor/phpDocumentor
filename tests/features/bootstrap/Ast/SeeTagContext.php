@@ -14,7 +14,6 @@ namespace phpDocumentor\Behat\Contexts\Ast;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -33,10 +32,10 @@ final class SeeTagContext extends BaseContext implements Context
     public function classHasTagSeeReferencingUrl($classFqsen, $reference)
     {
         $class = $this->findClassByFqsen($classFqsen);
-        $seeTags = $class->getTags()->get('see', new Collection());
+        $seeTags = $class->getTags()->get('see', []);
         /** @var SeeTag $tag */
         foreach ($seeTags as $tag) {
-            if ($tag->getReference() === $reference) {
+            if (((string)$tag->getReference()) === $reference) {
                 return;
             }
         }
@@ -67,14 +66,12 @@ final class SeeTagContext extends BaseContext implements Context
     {
         $count = 0;
         $class = $this->findClassByFqsen($classFqsen);
-        $seeTags = $class->getTags()->get('see', new Collection());
-        $element = '\\phpDocumentor\\Descriptor\\' .ucfirst($element) . 'Descriptor';
+        $seeTags = $class->getTags()->get('see', []);
         /** @var SeeTag $tag */
         foreach ($seeTags as $tag) {
-            $r = $tag->getReference();
-            if ($r instanceof $element
-                && $r->getFullyQualifiedStructuralElementName() === $reference
-                && $tag->getDescription() === $description->getRaw()
+            $r = (string)$tag->getReference();
+            if ($r === $reference
+                && ((string)$tag->getDescription()) === $description->getRaw()
             ) {
                 $count++;
             }

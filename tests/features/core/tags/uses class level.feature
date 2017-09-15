@@ -17,7 +17,7 @@ Feature:
   """
 
   Scenario: class level own constant reference without description
-    Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 3 tags uses referencing constant descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::CONSTANT"
+    Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 2 tags uses referencing constant descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::CONSTANT"
 
   Scenario: class level own constant reference with description
     Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 2 tags uses referencing constant descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::CONSTANT" with description:
@@ -26,7 +26,7 @@ Feature:
   """
 
   Scenario: class level own property reference without description
-    Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 3 tags uses referencing property descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::$property"
+    Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 2 tags uses referencing property descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::$property"
 
   Scenario: class level own property reference with description
     Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 2 tags uses referencing property descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::$property" with description:
@@ -35,7 +35,7 @@ Feature:
   """
 
   Scenario: class level own method reference without description
-    Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 3 tags uses referencing method descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::method()"
+    Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 2 tags uses referencing method descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::method()"
 
   Scenario: class level own method reference with description
     Then class "\phpDocumentor\Descriptor\TestUsesTagIssue" has 2 tags uses referencing method descriptor "\phpDocumentor\Descriptor\TestUsesTagIssue::method()" with description:

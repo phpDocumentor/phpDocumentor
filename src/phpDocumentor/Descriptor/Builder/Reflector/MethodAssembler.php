@@ -14,11 +14,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Reflection\ClassReflector\MethodReflector;
-use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
-use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
 

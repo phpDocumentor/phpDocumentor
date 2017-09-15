@@ -100,7 +100,6 @@ class ServiceProvider extends \stdClass implements ServiceProviderInterface
             'phpDocumentor\Descriptor\Tag\ReturnDescriptor'      => array('types'),
             'phpDocumentor\Descriptor\Tag\SeeDescriptor'         => array('reference'),
             'phpDocumentor\Descriptor\Tag\UsesDescriptor'        => array('reference'),
-            'phpDocumentor\Descriptor\Type\CollectionDescriptor' => array('baseType', 'types', 'keyTypes'),
         );
 
         // services

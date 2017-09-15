@@ -12,9 +12,7 @@
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ArgumentDescriptor;
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
-use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 use phpDocumentor\Reflection\Php\Argument;
 
 /**

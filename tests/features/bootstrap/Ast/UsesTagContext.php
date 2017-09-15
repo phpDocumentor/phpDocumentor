@@ -31,10 +31,10 @@ final class UsesTagContext extends BaseContext implements Context
     public function classHasTagUsesReferencingUrl($classFqsen, $reference)
     {
         $class = $this->findClassByFqsen($classFqsen);
-        $usesTags = $class->getTags()->get('uses', new Collection());
+        $usesTags = $class->getTags()->get('uses', []);
         /** @var UsesTag $tag */
         foreach ($usesTags as $tag) {
-            if ($tag->getReference() === $reference) {
+            if (((string)$tag->getReference()) === $reference) {
                 return;
             }
         }
@@ -65,14 +65,12 @@ final class UsesTagContext extends BaseContext implements Context
     {
         $count = 0;
         $class = $this->findClassByFqsen($classFqsen);
-        $usesTags = $class->getTags()->get('uses', new Collection());
-        $element = '\\phpDocumentor\\Descriptor\\' .ucfirst($element) . 'Descriptor';
+        $usesTags = $class->getTags()->get('uses', []);
         /** @var UsesTag $tag */
         foreach ($usesTags as $tag) {
-            $r = $tag->getReference();
-            if ($r instanceof $element
-                && $r->getFullyQualifiedStructuralElementName() === $reference
-                && $tag->getDescription() === $description->getRaw()
+            $r = (string)$tag->getReference();
+            if ($r === $reference
+                && ((string)$tag->getDescription()) === $description->getRaw()
             ) {
                 $count++;
             }
