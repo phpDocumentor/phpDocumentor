@@ -4,6 +4,7 @@ namespace phpDocumentor\Transformer\Router;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\Type\CollectionDescriptor;
 
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
@@ -92,6 +93,10 @@ class Renderer
             return $this->renderASeriesOfLinks($value, $presentation);
         }
 
+        if ($value instanceof CollectionDescriptor) {
+            return $this->renderTypeCollection($value, $presentation);
+        }
+
         return $this->renderLink($value, $presentation);
     }
 
@@ -162,6 +167,36 @@ class Renderer
         }
 
         return $result;
+    }
+
+    /**
+     * Renders the view representation for an array or collection.
+     *
+     * @param CollectionDescriptor $value
+     * @param string               $presentation
+     *
+     * @return string
+     */
+    protected function renderTypeCollection($value, $presentation)
+    {
+        $baseType = $this->render($value->getBaseType(), $presentation);
+        $keyTypes = $this->render($value->getKeyTypes(), $presentation);
+        $types = $this->render($value->getTypes(), $presentation);
+
+        $arguments = array();
+        if ($keyTypes) {
+            $arguments[] = implode('|', $keyTypes);
+        }
+        $arguments[] = implode('|', $types);
+
+        if ($value->getName() == 'array' && count($value->getKeyTypes()) == 0) {
+            $typeString = (count($types) > 1) ? '(' . reset($arguments) . ')' : reset($arguments);
+            $collection = $typeString . '[]';
+        } else {
+            $collection = ($baseType ? : $value->getName()) . '&lt;' . implode(',', $arguments) . '&gt;';
+        }
+
+        return $collection;
     }
 
     protected function renderLink($path, $presentation)
