@@ -26,6 +26,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag\SeeTag;
 use PHPUnit\Framework\Assert;
 
@@ -62,6 +63,28 @@ class ApiContext extends BaseContext implements Context
         $class = $this->findClassByName($class);
 
         Assert::assertEquals('Default', $class->getPackage()->getName());
+    }
+
+    /**
+     * @Then /^the AST has a trait named "([^"]*)" in file "([^"]*)"$/
+     * @throws \Exception
+     */
+    public function theASTHasATraitNamedInFile($trait, $file)
+    {
+        $ast = $this->getAst();
+
+        $file = $this->processFilePath($file);
+        /** @var FileDescriptor $fileDescriptor */
+        $fileDescriptor = $ast->getFiles()->get($file);
+
+        /** @var TraitDescriptor $classDescriptor */
+        foreach ($fileDescriptor->getTraits() as $classDescriptor) {
+            if ($classDescriptor->getName() === $trait) {
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf('Didn\'t find expected trait "%s" in "%s"', $trait, $file));
     }
 
     /**
