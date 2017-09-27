@@ -22,6 +22,8 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 
 /**
  * The default router for phpDocumentor.
@@ -60,6 +62,7 @@ class StandardRouter extends RouterAbstract
         $constantGenerator  = new UrlGenerator\Standard\ConstantDescriptor();
         $functionGenerator  = new UrlGenerator\Standard\FunctionDescriptor();
         $propertyGenerator  = new UrlGenerator\Standard\PropertyDescriptor();
+        $fqsenGenerator     = new UrlGenerator\Standard\FqsenDescriptor();
 
         // Here we cheat! If a string element is passed to this rule then we try to transform it into a Descriptor
         // if the node is translated we do not let it match and instead fall through to one of the other rules.
@@ -83,14 +86,15 @@ class StandardRouter extends RouterAbstract
         $this[] = new Rule(function ($node) { return ($node instanceof ConstantDescriptor); }, $constantGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof MethodDescriptor); }, $methodGenerator);
         $this[] = new Rule(function ($node) { return ($node instanceof FunctionDescriptor); }, $functionGenerator);
-        $this[] = new Rule( function ($node) { return ($node instanceof PropertyDescriptor); }, $propertyGenerator);
+        $this[] = new Rule(function ($node) { return ($node instanceof PropertyDescriptor); }, $propertyGenerator);
+        $this[] = new Rule(function ($node) { return ($node instanceof Fqsen); }, $fqsenGenerator);
 
         // if this is a link to an external page; return that URL
         $this[] = new Rule(
             function ($node) {
-                return is_string($node) && (substr($node, 0, 7) == 'http://' || substr($node, 0, 8) == 'https://' || substr($node, 0, 6) == 'ftp://');
+                return $node instanceof Url;
             },
-            function ($node) { return $node; }
+            function ($node) { return (string)$node; }
         );
 
         // do not generate a file for every unknown type

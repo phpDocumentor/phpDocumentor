@@ -13,6 +13,9 @@ namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
+use phpDocumentor\Reflection\Fqsen as RealFqsen;
 
 class StandardRouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -61,6 +64,51 @@ class StandardRouterTest extends \PHPUnit_Framework_TestCase
             'generator',
             $rule
         );
+    }
+
+    /**
+     * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     */
+    public function testIfARouteForAFqsenFileCanBeGenerated()
+    {
+        // Arrange
+        $fqsen = new RealFqsen('\Fqsen');
+        $file = new Fqsen($fqsen);
+
+        // Act
+        $rule = $this->fixture->match($file);
+
+        // Assert
+        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertAttributeInstanceOf(
+            '\phpDocumentor\\Transformer\\Router\\UrlGenerator\\Standard\\FqsenDescriptor',
+            'generator',
+            $rule
+        );
+    }
+
+
+    /**
+     * @covers phpDocumentor\Transformer\Router\StandardRouter::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::__construct
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::configure
+     * @covers phpDocumentor\Transformer\Router\RouterAbstract::match
+     */
+    public function testIfARouteForAUrlCanBeGenerated()
+    {
+        // Arrange
+        $file = new Url('http://www.phpdoc.org');
+
+        // Act
+        $rule = $this->fixture->match($file);
+        $result = $rule->generate($file);
+
+        // Assert
+        $this->assertInstanceOf('phpDocumentor\\Transformer\\Router\\Rule', $rule);
+        $this->assertSame('http://www.phpdoc.org', $result);
     }
 
     /**
