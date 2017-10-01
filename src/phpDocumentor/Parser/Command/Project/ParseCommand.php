@@ -26,6 +26,7 @@ use phpDocumentor\Infrastructure\Parser\FlySystemFile;
 use phpDocumentor\Infrastructure\Parser\SpecificationFactory;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Parser\Exception\FilesNotFoundException;
+use phpDocumentor\Parser\Middleware\CacheMiddleware;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Parser\Util\ParserPopulator;
 use phpDocumentor\Partials\Collection as PartialsCollection;
@@ -202,6 +203,10 @@ class ParseCommand extends Command
             throw new \Exception($this->__('PPCPP:EXC-BADTARGET'));
         }
         $this->getCache()->getOptions()->setCacheDir($target);
+
+        if ($input->getOption('force')) {
+            $this->getCacheMiddleware()->disable();
+        }
 
         $builder = $this->getBuilder();
         $builder->createProjectDescriptor();
@@ -408,5 +413,10 @@ class ParseCommand extends Command
             $input,
             $configurationHelper
         );
+    }
+
+    private function getCacheMiddleware(): CacheMiddleware
+    {
+        return $this->getContainer()->offsetGet('parser.middleware.cache');
     }
 }
