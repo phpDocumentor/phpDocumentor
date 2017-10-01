@@ -33,9 +33,16 @@ final class CacheMiddleware implements Middleware
      */
     private $dataStore;
 
+    private $enabled = true;
+
     public function __construct(Pool $dataStore)
     {
         $this->dataStore = $dataStore;
+    }
+
+    public function disable()
+    {
+        $this->enabled = false;
     }
 
     /**
@@ -51,7 +58,7 @@ final class CacheMiddleware implements Middleware
     {
         $itemName = $this->getItemName($command->getFile()->path());
         $item = $this->dataStore->getItem($itemName);
-        if ($item->isMiss()) {
+        if ($item->isMiss() || $this->enabled === false) {
             return $this->updateCache($command, $next, $item);
         }
 

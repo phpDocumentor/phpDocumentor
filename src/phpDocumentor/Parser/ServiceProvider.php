@@ -58,6 +58,12 @@ class ServiceProvider implements ServiceProviderInterface
             );
         }
 
+        $app['parser.middleware.cache'] = function () {
+                return new CacheMiddleware(
+                    new Pool(new FileSystem(['path' => 'build/api-cache']))
+                );
+            };
+
         $app['parser'] = function ($app) {
             $stopWatch = $app['kernel.stopwatch'];
 
@@ -81,9 +87,7 @@ class ServiceProvider implements ServiceProviderInterface
                         new StopwatchMiddleware(
                             $stopWatch
                         ),
-                        new CacheMiddleware(
-                            $cachePool
-                        ),
+                        $app['parser.middleware.cache'],
                         new ErrorHandlingMiddleware()
                     ]
                 )
