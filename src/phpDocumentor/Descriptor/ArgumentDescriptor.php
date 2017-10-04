@@ -53,10 +53,9 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
      */
     public function getTypes()
     {
-        if (count($this->types)==0 &&
-            $this->getInheritedElement() !== null
-            ) {
-                $this->setTypes($this->getInheritedElement()->getTypes());
+        $countable = $this->types instanceof \Countable || is_array($this->types);
+        if ((!$countable || count($this->types) == 0) && $this->getInheritedElement() !== null) {
+            $this->setTypes($this->getInheritedElement()->getTypes());
         }
 
         return $this->types;
