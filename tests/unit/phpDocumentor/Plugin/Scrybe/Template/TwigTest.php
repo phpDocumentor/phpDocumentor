@@ -195,8 +195,6 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
         $fixture = new Twig('');
         $fixture->setPath('vfs://root');
-        $result = $fixture->decorate('something');
-
-        $this->assertEquals('something', $result);
+        $fixture->decorate('something');
     }
 }

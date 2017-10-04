@@ -62,7 +62,7 @@ class Twig implements TemplateInterface
     /**
      * Returns the name of this template.
      *
-     * See Twig::setName() for a specification of the format.
+     * @see Twig::setName() for a specification of the format.
      *
      * @return string
      */
