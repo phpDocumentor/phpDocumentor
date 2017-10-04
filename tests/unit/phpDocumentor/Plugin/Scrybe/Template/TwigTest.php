@@ -11,14 +11,19 @@
 
 namespace phpDocumentor\Plugin\Scrybe\Template;
 
+use org\bovigo\vfs\vfsStream;
+
 /**
  * Test for the Template\Factory class of phpDocumentor Scrybe.
+ * @coversDefaultClass phpDocumentor\Plugin\Scrybe\Template\Twig
+ * @covers ::<<protected>>
+ * @covers ::__construct
  */
 class TwigTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::getName
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::setName
+     * @covers ::getName
+     * @covers ::setName
      */
     public function testReadAndWriteTemplateName()
     {
@@ -30,7 +35,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideTestNamesForSetName
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::setName
+     * @covers ::setName
      */
     public function testSetTemplateNameValidity($name, $erroneous)
     {
@@ -65,8 +70,8 @@ class TwigTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::getExtension
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::setExtension
+     * @covers ::getExtension
+     * @covers ::setExtension
      */
     public function testReadAndWriteExtension()
     {
@@ -78,7 +83,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provideTestNamesForSetExtension
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::setExtension
+     * @covers ::setExtension
      */
     public function testSetExtensionValidity($extension, $erroneous)
     {
@@ -111,8 +116,8 @@ class TwigTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::getPath
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::setPath
+     * @covers ::getPath
+     * @covers ::setPath
      */
     public function testReadAndWriteBaseTemplatePath()
     {
@@ -126,27 +131,27 @@ class TwigTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::setPath
-     * @expectedException InvalidArgumentException
+     * @covers ::setPath
      */
     public function testSetNonExistingBaseTemplatePath()
     {
+        $this->expectException('InvalidArgumentException');
         $fixture = new Twig('');
         $fixture->setPath('bla');
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::setPath
-     * @expectedException InvalidArgumentException
+     * @covers ::setPath
      */
     public function testSetFileAsBaseTemplatePath()
     {
+        $this->expectException('InvalidArgumentException');
         $fixture = new Twig('');
         $fixture->setPath(__FILE__);
     }
 
     /**
-     * @covers \phpDocumentor\Plugin\Scrybe\Template\Twig::getAssets
+     * @covers ::getAssets
      */
     public function testGetAssets()
     {
@@ -160,5 +165,38 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         foreach (array_keys($assets) as $filename) {
             $this->assertStringEndsNotWith('.twig', $filename);
         }
+    }
+
+    /**
+     * @covers ::decorate
+     */
+    public function testDecorate()
+    {
+        vfsStream::setup('root')
+            ->addChild(vfsStream::newFile('default/layout.html.twig')
+            ->withContent('{{ contents }}')
+            );
+
+        $fixture = new Twig('');
+        $fixture->setPath('vfs://root');
+        $result = $fixture->decorate('something');
+
+        $this->assertEquals('something', $result);
+    }
+
+    /**
+     * @covers ::decorate
+     */
+    public function testDecorateWhenTemplateCannotBeFound()
+    {
+        $this->expectException('DomainException');
+        $this->expectExceptionMessage('Template file "vfs://root/default/layout.html.twig" could not be found');
+        vfsStream::setup('root');
+
+        $fixture = new Twig('');
+        $fixture->setPath('vfs://root');
+        $result = $fixture->decorate('something');
+
+        $this->assertEquals('something', $result);
     }
 }
