@@ -29,6 +29,8 @@ A URI MUST be complete and well-formed as specified in
 The @see tag SHOULD have a description appended to indicate the type of
 reference defined by this occurrence.
 
+The @see tag cannot refer to a namespace element.
+
 Effects in phpDocumentor
 ------------------------
 
