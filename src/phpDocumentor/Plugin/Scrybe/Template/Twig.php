@@ -62,7 +62,7 @@ class Twig implements TemplateInterface
     /**
      * Returns the name of this template.
      *
-     * See setName() for a specification of the format.
+     * See Twig::setName() for a specification of the format.
      *
      * @return string
      */
@@ -127,7 +127,7 @@ class Twig implements TemplateInterface
     /**
      * Returns the extension of the destination file extension.
      *
-     * @see setExtension for more information and the format of the extension.
+     * @see Twig::setExtension() for more information and the format of the extension.
      *
      * @return string
      */
@@ -147,7 +147,7 @@ class Twig implements TemplateInterface
      * @param string   $contents
      * @param string[] $options
      *
-     * @see getTemplateFileName() how the filename is assembled
+     * @see Twig::getTemplateFilename() how the filename is assembled
      *
      * @return string
      */
@@ -222,7 +222,7 @@ class Twig implements TemplateInterface
      * This uses the path as defined with this class to instantiate a new Environment and disables the escaping
      * mechanism since we use it to generate HTML; even embedded.
      *
-     * @see $path for the template base path.
+     * @see Twig::$path for the template base path.
      *
      * @return \Twig_Environment
      */
