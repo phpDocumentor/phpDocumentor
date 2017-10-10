@@ -16,7 +16,7 @@ namespace phpDocumentor\Translator;
  *
  * @covers phpDocumentor\Translator\Translator
  */
-class TranslatorTest extends \PHPUnit_Framework_TestCase
+class TranslatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const TEST_KEY = 'KEY';
 

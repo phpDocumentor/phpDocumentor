@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
  *
  * @covers phpDocumentor\Transformer\Transformer
  */
-class TransformerTest extends \PHPUnit_Framework_TestCase
+class TransformerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Max length of description printed.

@@ -16,7 +16,7 @@ use \Mockery as m;
 /**
  * Tests the functionality for the FileDescriptor class.
  */
-class FileDescriptorTest extends \PHPUnit_Framework_TestCase
+class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_HASH   = 'a-hash-string';
     const EXAMPLE_PATH   = 'a-path-string';

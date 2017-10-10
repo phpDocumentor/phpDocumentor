@@ -17,7 +17,7 @@ use Mockery as m;
 /**
  * Tests for phpDocumentor\Translator\ServiceProvider
  */
-class ServiceProviderTest extends \PHPUnit_Framework_TestCase
+class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Dummy locale.

@@ -25,7 +25,7 @@ use Stash\Pool;
  * @covers ::<private>
  * @covers ::__construct
  */
-final class CacheMiddlewareTest extends \PHPUnit_Framework_TestCase
+final class CacheMiddlewareTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers ::execute

@@ -18,7 +18,7 @@ use phpDocumentor\Transformer\Template\Parameter;
 /**
  * Test class for phpDocumentor\Transformer\Transformation
  */
-class TransformationTest extends \PHPUnit_Framework_TestCase
+class TransformationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Transformation $fixture */
     protected $fixture;

@@ -14,7 +14,7 @@ namespace phpDocumentor\Transformer\Event;
 /**
  * Tests the functionality for the PreTransformationEvent class.
  */
-class PreTransformationEventTest extends \PHPUnit_Framework_TestCase
+class PreTransformationEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PreTransformationEvent $fixture */
     protected $fixture;

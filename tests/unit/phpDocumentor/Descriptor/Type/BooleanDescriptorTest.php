@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-class BooleanDescriptorTest extends \PHPUnit_Framework_TestCase
+class BooleanDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\BooleanDescriptor::getName

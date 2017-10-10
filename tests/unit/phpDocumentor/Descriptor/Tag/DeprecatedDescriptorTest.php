@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Tag;
 /**
  * Tests the functionality for the DeprecatedDescriptor class.
  */
-class DeprecatedDescriptorTest extends \PHPUnit_Framework_TestCase
+class DeprecatedDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_VERSION = '2.0';
 

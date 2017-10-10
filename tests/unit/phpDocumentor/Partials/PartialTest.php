@@ -14,7 +14,7 @@ namespace phpDocumentor\Partials;
 /**
  * Tests for the phpDocumentor\Partials\Partial class.
  */
-class PartialTest extends \PHPUnit_Framework_TestCase
+class PartialTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Partial */
     private $fixture;

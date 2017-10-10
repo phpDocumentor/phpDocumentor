@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests whether the utility functions for writing to stdOut work.
  */
-class OutputTest extends \PHPUnit_Framework_TestCase
+class OutputTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Console\Output\Output::setLogger

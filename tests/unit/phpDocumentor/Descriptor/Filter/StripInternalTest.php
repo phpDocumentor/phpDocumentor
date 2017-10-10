@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 /**
  * Tests the functionality for the StripInternal class.
  */
-class StripInternalTest extends \PHPUnit_Framework_TestCase
+class StripInternalTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
     protected $builderMock;

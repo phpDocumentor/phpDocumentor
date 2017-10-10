@@ -13,7 +13,7 @@ namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
 
-class ForFileProxyTest extends \PHPUnit_Framework_TestCase
+class ForFileProxyTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Rule|m\MockInterface */
     private $ruleMock;

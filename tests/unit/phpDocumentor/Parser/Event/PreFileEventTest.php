@@ -14,7 +14,7 @@ namespace phpDocumentor\Parser\Event;
 /**
  * Test for the PreFileEvent class.
  */
-class PreFileEventTest extends \PHPUnit_Framework_TestCase
+class PreFileEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PreFileEvent $fixture */
     protected $fixture;

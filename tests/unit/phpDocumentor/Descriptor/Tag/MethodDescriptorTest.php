@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Tests the functionality for the MethodDescriptor class.
  */
-class MethodDescriptorTest extends \PHPUnit_Framework_TestCase
+class MethodDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_NAME = 'methodname';
 

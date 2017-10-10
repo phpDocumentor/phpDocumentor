@@ -26,7 +26,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
  *
  * @covers phpDocumentor\Compiler\Pass\ElementsIndexBuilder
  */
-class ElementsIndexBuilderTest extends \PHPUnit_Framework_TestCase
+class ElementsIndexBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ElementsIndexBuilder $fixture */
     protected $fixture;

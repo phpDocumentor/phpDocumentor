@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 /**
  * Tests the functionality for the StripIgnore class.
  */
-class StripIgnoreTest extends \PHPUnit_Framework_TestCase
+class StripIgnoreTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder|m\Mock */
     protected $builderMock;

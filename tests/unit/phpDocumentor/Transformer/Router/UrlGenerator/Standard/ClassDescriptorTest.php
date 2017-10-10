@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the ClassDescriptor URL Generator with the Standard Router
  */
-class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
+class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\ClassDescriptor::__invoke

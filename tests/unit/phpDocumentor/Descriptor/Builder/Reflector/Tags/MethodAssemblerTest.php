@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
 
-class MethodAssemblerTest extends \PHPUnit_Framework_TestCase
+class MethodAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var MethodAssembler */
     private $fixture;

@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Php\Argument;
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
  */
-class ArgumentAssemblerTest extends \PHPUnit_Framework_TestCase
+class ArgumentAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ArgumentAssembler $fixture */
     protected $fixture;

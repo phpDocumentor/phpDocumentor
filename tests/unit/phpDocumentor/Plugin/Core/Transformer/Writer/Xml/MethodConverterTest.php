@@ -21,7 +21,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\MethodConverter
  */
-class MethodConverterTest extends \PHPUnit_Framework_TestCase
+class MethodConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a method is properly created.

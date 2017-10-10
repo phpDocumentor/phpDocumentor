@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests for the plugin configuration definition.
  */
-class PluginTest extends \PHPUnit_Framework_TestCase
+class PluginTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_CLASS_NAME = 'className';
 

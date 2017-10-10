@@ -20,7 +20,7 @@ use phpDocumentor\Plugin\Core\Transformer\Writer\Xsl;
 /**
  * Test class for phpDocumentor\Transformer\Writer\Collection
  */
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var MockInterface|Queue */
     protected $routers;

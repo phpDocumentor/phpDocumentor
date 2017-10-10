@@ -20,7 +20,7 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\ConstantConverter
  */
-class ConstantConverterTest extends \PHPUnit_Framework_TestCase
+class ConstantConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a constant is properly created.

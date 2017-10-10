@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Reflection\Types\String_;
 
-class PropertyAssemblerTest extends \PHPUnit_Framework_TestCase
+class PropertyAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PropertyAssembler */
     private $fixture;

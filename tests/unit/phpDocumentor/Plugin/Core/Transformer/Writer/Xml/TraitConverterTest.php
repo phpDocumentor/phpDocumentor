@@ -22,7 +22,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml\TraitConverter
  */
-class TraitConverterTest extends \PHPUnit_Framework_TestCase
+class TraitConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether the XML Element representing a trait is properly created.

@@ -10,6 +10,10 @@ script:
 - bin/phpunit
 - bin/behat $BEHAT_FILTER
 
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+
 install:
 - composer install --no-interaction --prefer-dist -o
 

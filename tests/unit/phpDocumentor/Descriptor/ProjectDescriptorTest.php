@@ -16,7 +16,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 /**
  * Tests the functionality for the ProjectDescriptor class.
  */
-class ProjectDescriptorTest extends \PHPUnit_Framework_TestCase
+class ProjectDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_NAME = 'Initial name';
 

@@ -22,7 +22,7 @@ use phpDocumentor\Descriptor\Type\CollectionDescriptor;
  * @coversDefaultClass \phpDocumentor\Transformer\Router\Renderer
  * @covers ::<protected>
  */
-class RendererTest extends \PHPUnit_Framework_TestCase
+class RendererTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @var Queue

@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 /**
  * Test file for the File entry type.
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     public function testAddingAFilename()
     {

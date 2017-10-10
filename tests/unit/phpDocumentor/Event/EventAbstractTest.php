@@ -16,7 +16,7 @@ use phpDocumentor\Event\Mock\EventAbstract as EventAbstractMock;
 /**
  * Test for the EventAbstract class.
  */
-class EventAbstractTest extends \PHPUnit_Framework_TestCase
+class EventAbstractTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Event\EventAbstract::__construct

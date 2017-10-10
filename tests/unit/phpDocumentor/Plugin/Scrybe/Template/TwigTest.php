@@ -19,7 +19,7 @@ use org\bovigo\vfs\vfsStream;
  * @covers ::<<protected>>
  * @covers ::__construct
  */
-class TwigTest extends \PHPUnit_Framework_TestCase
+class TwigTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers ::getName
@@ -40,7 +40,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
     public function testSetTemplateNameValidity($name, $erroneous)
     {
         if ($erroneous) {
-            $this->setExpectedException('\InvalidArgumentException');
+            $this->expectException('\InvalidArgumentException');
         }
 
         $fixture = new Twig('');
@@ -88,7 +88,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
     public function testSetExtensionValidity($extension, $erroneous)
     {
         if ($erroneous) {
-            $this->setExpectedException('\InvalidArgumentException');
+            $this->expectException('\InvalidArgumentException');
         }
 
         $fixture = new Twig('');

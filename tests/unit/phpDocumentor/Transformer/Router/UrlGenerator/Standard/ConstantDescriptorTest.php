@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the ConstantDescriptor URL Generator with the Standard Router
  */
-class ConstantDescriptorTest extends \PHPUnit_Framework_TestCase
+class ConstantDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @codingStandardsIgnoreStart

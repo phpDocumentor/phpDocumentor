@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\Types\String_;
 /**
  * Tests the functionality for the ClassDescriptor class.
  */
-class ClassDescriptorTest extends \PHPUnit_Framework_TestCase
+class ClassDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ClassDescriptor $fixture */
     protected $fixture;

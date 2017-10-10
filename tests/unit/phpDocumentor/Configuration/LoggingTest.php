@@ -13,7 +13,7 @@ namespace phpDocumentor\Configuration;
 
 use Psr\Log\LogLevel;
 
-class LoggingTest extends \PHPUnit_Framework_TestCase
+class LoggingTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Logging */
     private $fixture;

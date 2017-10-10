@@ -12,7 +12,7 @@ use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Object_;
 
-class ThrowsAssemblerTest extends \PHPUnit_Framework_TestCase
+class ThrowsAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ThrowsAssembler */
     private $fixture;

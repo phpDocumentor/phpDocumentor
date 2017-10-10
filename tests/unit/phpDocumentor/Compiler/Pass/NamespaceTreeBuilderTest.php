@@ -24,7 +24,7 @@ use phpDocumentor\Descriptor\TraitDescriptor;
  *
  * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
  */
-class NamespaceTreeBuilderTest extends \PHPUnit_Framework_TestCase
+class NamespaceTreeBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var NamespaceTreeBuilder $fixture */
     protected $fixture;

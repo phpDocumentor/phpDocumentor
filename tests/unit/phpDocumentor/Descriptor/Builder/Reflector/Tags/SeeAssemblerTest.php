@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\Fqsen;
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
  * @covers ::<private>
  */
-class SeeAssemblerTest extends \PHPUnit_Framework_TestCase
+class SeeAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var SeeAssembler $fixture */
     protected $fixture;

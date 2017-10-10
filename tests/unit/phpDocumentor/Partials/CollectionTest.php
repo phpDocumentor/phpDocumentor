@@ -4,7 +4,7 @@ namespace phpDocumentor\Partials;
 
 use Mockery as m;
 
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Collection */
     protected $fixture;

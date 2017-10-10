@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Validator;
 /**
  * Tests the functionality for the Error class.
  */
-class ErrorTest extends \PHPUnit_Framework_TestCase
+class ErrorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_SEVERITY = 'severity';
     const EXAMPLE_CODE     = 'code';

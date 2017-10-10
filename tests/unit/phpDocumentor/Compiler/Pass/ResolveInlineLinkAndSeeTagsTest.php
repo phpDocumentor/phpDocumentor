@@ -24,7 +24,7 @@ use phpDocumentor\Transformer\Template\Collection;
  * @covers ::__construct
  * @covers ::<private>
  */
-class ResolveInlineLinkAndSeeTagsTest extends \PHPUnit_Framework_TestCase
+class ResolveInlineLinkAndSeeTagsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Queue||m\MockInterface */
     private $router;

@@ -24,7 +24,7 @@ use phpDocumentor\Reflection\DocBlock\ExampleFinder;
  * @coversDefaultClass \phpDocumentor\Transformer\ServiceProvider
  * @covers ::<protected>
  */
-class ServiceProviderTest extends \PHPUnit_Framework_TestCase
+class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ServiceProvider $fixture */
     protected $fixture = null;

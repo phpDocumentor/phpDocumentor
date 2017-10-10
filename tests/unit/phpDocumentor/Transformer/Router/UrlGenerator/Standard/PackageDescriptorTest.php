@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the PackageDescriptor URL Generator with the Standard Router
  */
-class PackageDescriptorTest extends \PHPUnit_Framework_TestCase
+class PackageDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PackageDescriptor::__invoke

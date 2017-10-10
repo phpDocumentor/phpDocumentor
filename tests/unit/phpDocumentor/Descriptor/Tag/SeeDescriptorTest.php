@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Tag;
 /**
  * Tests the functionality for the SeeDescriptor class.
  */
-class SeeDescriptorTest extends \PHPUnit_Framework_TestCase
+class SeeDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_REFERENCE = 'reference';
 

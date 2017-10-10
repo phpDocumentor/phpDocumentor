@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor;
 /**
  * Tests the functionality for the NamespaceDescriptor class.
  */
-class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
+class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var NamespaceDescriptor $fixture */
     protected $fixture;

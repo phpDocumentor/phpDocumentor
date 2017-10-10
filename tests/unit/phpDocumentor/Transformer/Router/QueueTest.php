@@ -13,7 +13,7 @@ namespace phpDocumentor\Transformer\Router;
 
 use Mockery as m;
 
-class QueueTest extends \PHPUnit_Framework_TestCase
+class QueueTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Queue */
     private $fixture;

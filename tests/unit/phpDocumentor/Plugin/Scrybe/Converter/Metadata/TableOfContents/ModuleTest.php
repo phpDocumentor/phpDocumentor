@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 /**
  * Test file for the module.
  */
-class ModuleTest extends \PHPUnit_Framework_TestCase
+class ModuleTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
 
     public function testRetrieveModuleRoot()

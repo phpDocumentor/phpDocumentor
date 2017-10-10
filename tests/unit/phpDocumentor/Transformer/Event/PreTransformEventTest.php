@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Tests the functionality for the PreTransformEvent class.
  */
-class PreTransformEventTest extends \PHPUnit_Framework_TestCase
+class PreTransformEventTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var PreTransformEvent $fixture */
     protected $fixture;

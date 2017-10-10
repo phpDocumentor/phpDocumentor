@@ -7,7 +7,7 @@ use Mockery as m;
 /**
  * Tests for the \phpDocumentor\Descriptor\ProjectAnalyzer class.
  */
-class ProjectAnalyzerTest extends \PHPUnit_Framework_TestCase
+class ProjectAnalyzerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ProjectAnalyzer */
     private $fixture;

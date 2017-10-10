@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Tag;
 /**
  * Tests the functionality for the LinkDescriptor class.
  */
-class LinkDescriptorTest extends \PHPUnit_Framework_TestCase
+class LinkDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_LINK = 'http://phpdoc.org';
 

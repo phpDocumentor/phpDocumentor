@@ -16,7 +16,7 @@ use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Transformer\Template;
 
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var m\MockInterface|PathResolver */
     private $pathResolverMock;

@@ -17,7 +17,7 @@ use Mockery as m;
 /**
  * Test class for the BaseEntry object.
  */
-class BaseEntryTest extends \PHPUnit_Framework_TestCase
+class BaseEntryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @var BaseEntry

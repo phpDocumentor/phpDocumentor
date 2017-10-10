@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the NamespaceDescriptor URL Generator with the Standard Router
  */
-class NamespaceDescriptorTest extends \PHPUnit_Framework_TestCase
+class NamespaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\NamespaceDescriptor::__invoke

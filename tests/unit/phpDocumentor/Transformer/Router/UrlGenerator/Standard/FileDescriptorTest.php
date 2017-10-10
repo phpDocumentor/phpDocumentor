@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the FileDescriptor URL Generator with the Standard Router
  */
-class FileDescriptorTest extends \PHPUnit_Framework_TestCase
+class FileDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @codingStandardsIgnoreStart

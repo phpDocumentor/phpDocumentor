@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 use phpDocumentor\Reflection\Fqsen as RealFqsen;
 
-class StandardRouterTest extends \PHPUnit_Framework_TestCase
+class StandardRouterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var StandardRouter */
     private $fixture;

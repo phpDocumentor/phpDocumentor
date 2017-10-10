@@ -2,7 +2,7 @@
 
 namespace phpDocumentor\Descriptor;
 
-class TagDescriptorTest extends \PHPUnit_Framework_TestCase
+class TagDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const TAG_NAME = 'test';
 

@@ -17,7 +17,7 @@ use Mockery as m;
 /**
  * Tests for the phpDocumentor Command class.
  */
-class CommandTest extends \PHPUnit_Framework_TestCase
+class CommandTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Command */
     protected $fixture;

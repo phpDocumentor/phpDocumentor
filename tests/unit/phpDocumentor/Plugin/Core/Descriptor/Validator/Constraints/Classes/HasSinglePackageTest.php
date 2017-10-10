@@ -15,7 +15,7 @@ namespace phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes;
 /**
  * Test class for \phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSinglePackage.
  */
-class HasSinglePackageTest extends \PHPUnit_Framework_TestCase
+class HasSinglePackageTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSinglePackage::getTargets

@@ -17,7 +17,7 @@ use phpDocumentor\Plugin\Scrybe\Converter\Metadata\TableOfContents;
 /**
  * Test class for the Discovery Visitor.
  */
-class DiscoverTest extends \PHPUnit_Framework_TestCase
+class DiscoverTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const FILENAME = 'test';
 

@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * Test class for \phpDocumentor\Plugin\Core\Descriptor\Validator\Constraints\Classes\HasSingleSubpackageValidator.
  */
-class HasSingleSubpackageValidatorTest extends \PHPUnit_Framework_TestCase
+class HasSingleSubpackageValidatorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var HasSingleSubpackageValidator */
     protected $validator;

@@ -18,7 +18,7 @@
         }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=7.0",
 
         "cilex/cilex":        "~1.0",
         "symfony/validator":  "~2.2",
@@ -53,8 +53,8 @@
     "minimum-stability": "stable",
     "require-dev": {
         "behat/behat":        "^3.0",
-        "phpunit/phpunit":    "^5.0",
-        "mockery/mockery":    "^0.9@dev",
+        "phpunit/phpunit":    "^6.4",
+        "mockery/mockery":    "^1.0",
         "mikey179/vfsStream": "^1.2",
         "squizlabs/php_codesniffer": "^1.4",
         "symfony/expression-language": "^2.4"

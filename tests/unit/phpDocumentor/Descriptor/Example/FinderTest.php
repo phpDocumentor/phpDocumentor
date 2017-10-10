@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Tests for the \phpDocumentor\Descriptor\Example\Finder class.
  */
-class FinderTest extends \PHPUnit_Framework_TestCase
+class FinderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_TEXT = 'This is an example';
 

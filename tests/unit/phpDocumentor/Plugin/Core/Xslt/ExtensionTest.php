@@ -20,7 +20,7 @@ use Mockery as m;
  *
  * @covers \phpDocumentor\Plugin\Core\Xslt\Extension
  */
-class ExtensionTest extends \PHPUnit_Framework_TestCase
+class ExtensionTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers \phpDocumentor\Plugin\Core\Xslt\Extension::markdown

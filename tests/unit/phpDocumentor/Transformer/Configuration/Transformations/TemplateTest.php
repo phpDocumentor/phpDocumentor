@@ -14,7 +14,7 @@ namespace phpDocumentor\Transformer\Configuration\Transformations;
 /**
  * Test for a template configuration definition.
  */
-class TemplateTest extends \PHPUnit_Framework_TestCase
+class TemplateTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_NAME = 'name';
 

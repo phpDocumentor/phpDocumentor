@@ -6,7 +6,7 @@ use Mockery as m;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleApplication;
 
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Application */
     private $fixture;

@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Type\Collection as TypeCollection;
 use phpDocumentor\Reflection\Types\String_;
 
-class ReturnAssemblerTest extends \PHPUnit_Framework_TestCase
+class ReturnAssemblerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ReturnAssembler */
     private $fixture;

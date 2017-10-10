@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 
-class MarkerFromTagsExtractorTest extends \PHPUnit_Framework_TestCase
+class MarkerFromTagsExtractorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var MarkerFromTagsExtractor */
     protected $fixture;
@@ -78,18 +78,16 @@ class MarkerFromTagsExtractorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
-     * @covers phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
      */
     public function testExceptionShouldBeThrownIfElementHasNoFileAssociated()
     {
         $classDescriptor = $this->givenProjectHasClassDescriptorAssociatedWithFile(null);
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
 
-        $this->setExpectedException(
-            'UnexpectedValueException',
-            'An element should always have a file associated with it'
-        );
+        $this->expectException('UnexpectedValueException');
+        $this->expectExceptionMessage('An element should always have a file associated with it');
 
         $this->fixture->execute($this->project);
     }

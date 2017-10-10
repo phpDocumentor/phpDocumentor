@@ -17,7 +17,7 @@ use Mockery as m;
 /**
  * Test for the Template\Factory class of phpDocumentor Scrybe.
  */
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * Tests whether a Template can be registered using the constructor.

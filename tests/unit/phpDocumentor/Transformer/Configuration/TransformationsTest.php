@@ -13,7 +13,7 @@ namespace phpDocumentor\Transformer\Configuration;
 
 use Mockery as m;
 
-class TransformationsTest extends \PHPUnit_Framework_TestCase
+class TransformationsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Transformations */
     private $fixture;

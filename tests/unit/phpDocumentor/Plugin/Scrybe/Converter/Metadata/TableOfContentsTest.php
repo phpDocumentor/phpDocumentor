@@ -14,7 +14,7 @@ namespace phpDocumentor\Plugin\Scrybe\Converter\Metadata;
 /**
  * Test class for the Table of Contents.
  */
-class TableOfContentsTest extends \PHPUnit_Framework_TestCase
+class TableOfContentsTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @var TableOfContents

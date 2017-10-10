@@ -14,7 +14,7 @@ namespace phpDocumentor\Descriptor\Tag;
 /**
  * Tests the functionality for the VersionDescriptor class.
  */
-class VersionDescriptorTest extends \PHPUnit_Framework_TestCase
+class VersionDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     const EXAMPLE_VERSION = '2.0';
 

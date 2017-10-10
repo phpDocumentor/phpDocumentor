@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 /**
  * Tests the functionality for the TraitDescriptor class.
  */
-class TraitDescriptorTest extends \PHPUnit_Framework_TestCase
+class TraitDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var TraitDescriptor $fixture */
     protected $fixture;

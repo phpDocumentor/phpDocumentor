@@ -26,7 +26,7 @@ use phpDocumentor\Translator;
  *
  * @covers phpDocumentor\Plugin\Core\Transformer\Writer\Xml
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var Xml $xml */
     protected $xml;

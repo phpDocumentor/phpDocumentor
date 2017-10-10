@@ -18,7 +18,7 @@ use phpDocumentor\Transformer\Router\RouterAbstract;
 /**
  * Test class for \phpDocumentor\Plugin\Core\Transformer\Writer\Xml\DocBlockConverter.
  */
-class DocBlockConverterTest extends \PHPUnit_Framework_TestCase
+class DocBlockConverterTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var DocBlockConverter */
     protected $fixture;

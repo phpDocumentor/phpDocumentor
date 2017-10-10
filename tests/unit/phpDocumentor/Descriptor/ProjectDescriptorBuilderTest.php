@@ -17,7 +17,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
  */
-class ProjectDescriptorBuilderTest extends \PHPUnit_Framework_TestCase
+class ProjectDescriptorBuilderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var \phpDocumentor\Descriptor\ProjectDescriptorBuilder $fixture */
     protected $fixture;

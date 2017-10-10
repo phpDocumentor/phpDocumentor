@@ -17,7 +17,7 @@ use Cilex\Application;
 /**
  * Tests whether all expected Services for the Core plugin are loaded using the ServiceProvider.
  */
-class ServiceProviderTest extends \PHPUnit_Framework_TestCase
+class ServiceProviderTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var ServiceProvider */
     private $fixture;
@@ -210,7 +210,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     private function thenATranslationFolderIsAdded($mockTranslator)
     {
-        $mockTranslator->shouldReceive('addTranslationFolder')->with('/Messages$/')->once();
+        $mockTranslator->shouldReceive('addTranslationFolder')->with(m::pattern('/Messages$/'))->once();
     }
 
     /**

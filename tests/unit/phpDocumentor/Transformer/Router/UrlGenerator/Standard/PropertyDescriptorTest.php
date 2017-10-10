@@ -16,7 +16,7 @@ use Mockery as m;
 /**
  * Test for the PropertyDescriptor URL Generator with the Standard Router
  */
-class PropertyDescriptorTest extends \PHPUnit_Framework_TestCase
+class PropertyDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Transformer\Router\UrlGenerator\Standard\PropertyDescriptor::__invoke

@@ -11,7 +11,7 @@
 
 namespace phpDocumentor\Descriptor\Type;
 
-class FloatDescriptorTest extends \PHPUnit_Framework_TestCase
+class FloatDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /**
      * @covers phpDocumentor\Descriptor\Type\FloatDescriptor::getName

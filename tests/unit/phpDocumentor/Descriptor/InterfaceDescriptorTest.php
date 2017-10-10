@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 /**
  * Tests the functionality for the InterfaceDescriptor class.
  */
-class InterfaceDescriptorTest extends \PHPUnit_Framework_TestCase
+class InterfaceDescriptorTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 {
     /** @var InterfaceDescriptor $fixture */
     protected $fixture;
